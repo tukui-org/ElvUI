@@ -7,7 +7,6 @@ local CanDispel = {
 	PRIEST = { Magic = true, Disease = true },
 	SHAMAN = { Magic = false, Curse = true },
 	PALADIN = { Magic = false, Poison = true, Disease = true },
-	MAGE = { Curse = true },
 	DRUID = { Magic = false, Curse = true, Poison = true, Disease = false },
 	MONK = { Magic = false, Poison = true, Disease = true }
 }

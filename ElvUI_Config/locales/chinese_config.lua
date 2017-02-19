@@ -329,6 +329,7 @@ L["ELVUI_CREDITS"] = "我想透过这个特别方式, 向那些协助测试、�
 L["Testing:"] = "测试:"
 
 --DataBars
+L["Current - Percent (Remaining)"] = true;
 L["Current - Remaining"] = "当前值 - 剩余值"
 L["DataBars"] = "数据条"
 L["Hide In Combat"] = "战斗中隐藏"
@@ -525,6 +526,7 @@ L["Version"] = "版本"
 --NamePlates
 L["# Displayed Auras"] = "显示光环的数量"
 L["Add Name"] = "添加名称"
+L["Always Show"] = true;
 L["Bad Color"] = "危险颜色"
 L["Bad Scale"] = "危险缩放"
 L["Bad Transition Color"] = "危险过渡颜色"
@@ -576,8 +578,8 @@ L["Good Transition Color"] = "正常过渡颜色"
 L["Healer Frames"] = "治疗框架"
 L["Healer Icon"] = "治疗图标"
 L["HEALER"] = "Healer"
+L["Hide Delay"] = true;
 L["Hide Spell Name"] = "隐藏法术名字"
-L["Hide the nameplate unless you are in combat, you are not on full health or have a target you can attack."] = "除非你在战斗中/未满血/有一个可以攻击的目标, 否则隐藏姓名板"
 L["Hide Time"] = "隐藏时间"
 L["Hide"] = "隐藏"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "在施法失败或被打断时施法条保持可见的秒数"
@@ -599,7 +601,9 @@ L["Set Settings to Default"] = "恢复默认设置"
 L["Set the transparency level of nameplates that are not the target nameplate."] = "设定未被选中目标的姓名板的透明度"
 L["Set to either stack nameplates vertically or allow them to overlap."] = "设置将姓名板垂直排列或者允许重叠"
 L["Shortcuts"] = "快捷键"
+L["Show In Combat"] = true;
 L["Show NPC Titles"] = "显示NPC头衔"
+L["Show With Target"] = true;
 L["Suramar Detection"] = "苏拉玛卫兵探测"
 L["Tagged NPC"] = "标记的NPC"
 L["Tanked Color"] = "坦克颜色"

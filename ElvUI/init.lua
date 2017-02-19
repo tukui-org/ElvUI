@@ -187,7 +187,7 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
-function AddOn:ToggleConfig()
+function AddOn:ToggleConfig(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -195,7 +195,6 @@ function AddOn:ToggleConfig()
 	end
 	
 	if not IsAddOnLoaded("ElvUI_Config") then
-
 		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
 			self.GUIFrame = false
@@ -217,11 +216,19 @@ function AddOn:ToggleConfig()
 
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
+	local pages
+	if (msg and msg ~= "") then
+		pages = {string.split(",", msg)}
+	end
 	local mode = 'Close'
-	if not ACD.OpenFrames[AddOnName] then
+	if not ACD.OpenFrames[AddOnName] or (pages ~= nil) then
 		mode = 'Open'
 	end
 	ACD[mode](ACD, AddOnName)
+
+	if pages then
+		ACD:SelectGroup("ElvUI", unpack(pages))
+	end
 
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end

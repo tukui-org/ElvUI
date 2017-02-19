@@ -376,6 +376,7 @@ L["ELVUI_CREDITS"] = "저는 이 애드온의 유지와 개발 코딩에 도움�
 L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 
 --DataBars
+L["Current - Percent (Remaining)"] = true;
 L["Current - Remaining"] = true;
 L["DataBars"] = true;
 L["Hide In Combat"] = true;
@@ -572,6 +573,7 @@ L["Version"] = "버전"
 --NamePlates
 L["# Displayed Auras"] = true;
 L["Add Name"] = "이름표 필터 추가"
+L["Always Show"] = true;
 L["Bad Color"] = true;
 L["Bad Scale"] = true;
 L["Bad Transition Color"] = true;
@@ -624,10 +626,10 @@ L["Good Transition Color"] = true;
 L["Healer Frames"] = true;
 L["Healer Icon"] = "힐러 아이콘 표시"
 L["HEALER"] = "Healer"
+L["Hide Delay"] = true;
 L["Hide Spell Name"] = true;
 L["Hide Time"] = true;
 L["Hide"] = "숨기기"
-L["Hide the nameplate unless you are in combat, you are not on full health or have a target you can attack."] = true
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = true;
 L["Icon Base Height"] = true;
 L["Load Distance"] = true;
@@ -647,7 +649,9 @@ L["Set Settings to Default"] = true;
 L["Set the transparency level of nameplates that are not the target nameplate."] = true;
 L["Set to either stack nameplates vertically or allow them to overlap."] = true;
 L["Shortcuts"] = true;
+L["Show In Combat"] = true;
 L["Show NPC Titles"] = true;
+L["Show With Target"] = true;
 L["Suramar Detection"] = true;
 L["Tagged NPC"] = "선점된 유닛"
 L["Tanked Color"] = true;

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -68,53 +69,25 @@ function mod:UpdateHonor(event, unit)
 		local text = ''
 		local textFormat = self.db.honor.textFormat
 
-		if textFormat == 'PERCENT' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+		if (CanPrestige()) then
+			text = PVP_HONOR_PRESTIGE_AVAILABLE
+		elseif (level == levelmax) then
+			text = MAX_HONOR_LEVEL
+		else
+			if textFormat == 'PERCENT' then
 				text = format('%d%%', current / max * 100)
-			end
-		elseif textFormat == 'CURMAX' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+			elseif textFormat == 'CURMAX' then
 				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
-			end
-		elseif textFormat == 'CURPERC' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+			elseif textFormat == 'CURPERC' then
 				text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
-			end
-		elseif textFormat == 'CUR' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+			elseif textFormat == 'CUR' then
 				text = format('%s', E:ShortValue(current))
-			end
-		elseif textFormat == 'REM' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+			elseif textFormat == 'REM' then
 				text = format('%s', E:ShortValue(max-current))
-			end
-		elseif textFormat == 'CURREM' then
-			if (CanPrestige()) then
-				text = PVP_HONOR_PRESTIGE_AVAILABLE
-			elseif (level == levelmax) then
-				text = MAX_HONOR_LEVEL
-			else
+			elseif textFormat == 'CURREM' then
 				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s - %d%% (%s)', E:ShortValue(current), current / max * 100, E:ShortValue(max - current))
 			end
 		end
 
@@ -159,7 +132,7 @@ function mod:UpdateHonorDimensions()
 	self.honorBar:Height(self.db.honor.height)
 	self.honorBar.statusBar:SetOrientation(self.db.honor.orientation)
 	self.honorBar.statusBar:SetReverseFill(self.db.honor.reverseFill)
-	self.honorBar.text:FontTemplate(nil, self.db.honor.textSize)
+	self.honorBar.text:FontTemplate(LSM:Fetch("font", self.db.honor.font), self.db.honor.textSize, self.db.honor.fontOutline)
 	if self.db.honor.mouseover then
 		self.honorBar:SetAlpha(0)
 	else

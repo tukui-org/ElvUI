@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -70,6 +71,8 @@ function mod:UpdateExperience(event)
 				text = format('%s R:%s', E:ShortValue(max - cur), E:ShortValue(rested))
 			elseif textFormat == 'CURREM' then
 				text = format('%s - %s R:%s', E:ShortValue(cur), E:ShortValue(max - cur), E:ShortValue(rested))
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s - %d%% (%s) R:%s', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur), E:ShortValue(rested))
 			end
 		else
 			bar.rested:SetMinMaxValues(0, 1)
@@ -87,6 +90,8 @@ function mod:UpdateExperience(event)
 				text = format('%s', E:ShortValue(max - cur))
 			elseif textFormat == 'CURREM' then
 				text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
 			end
 		end
 
@@ -124,7 +129,7 @@ function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
 	self.expBar:Height(self.db.experience.height)
 
-	self.expBar.text:FontTemplate(nil, self.db.experience.textSize)
+	self.expBar.text:FontTemplate(LSM:Fetch("font", self.db.experience.font), self.db.experience.textSize, self.db.experience.fontOutline)
 	self.expBar.rested:SetOrientation(self.db.experience.orientation)
 	self.expBar.statusBar:SetReverseFill(self.db.experience.reverseFill)
 
