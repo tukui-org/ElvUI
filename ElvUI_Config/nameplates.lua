@@ -981,7 +981,7 @@ E.Options.args.nameplate = {
 									set = function(info, value) E.db.nameplates.clickThrough.friendly = value; NP:SetNamePlateFriendlyClickThrough() end,
 								},
 								enemy = {
-									order = 1,
+									order = 3,
 									type = "toggle",
 									name = L["Enemy"],
 									set = function(info, value) E.db.nameplates.clickThrough.enemy = value; NP:SetNamePlateEnemyClickThrough() end,
