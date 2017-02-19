@@ -16,7 +16,7 @@ local function LoadSkin()
 	ArtifactFrameTab1:ClearAllPoints()
 	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 
-	ArtifactFrame.ForgeBadgeFrame.ForgeClassBadgeIcon:Hide()
+	ArtifactFrame.ForgeBadgeFrame.ItemIcon:Hide()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 end
