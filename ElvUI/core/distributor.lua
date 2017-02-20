@@ -372,9 +372,16 @@ function D:Decode(dataString)
 
 		local serializedData, success
 		serializedData, profileInfo = E:SplitString(decompressedData, "^^::") -- "^^" indicates the end of the AceSerializer string
+
+		if not profileInfo then
+			E:Print("Error importing profile. String is invalid or corrupted!")
+			return
+		end
+
 		serializedData = format("%s%s", serializedData, "^^") --Add back the AceSerializer terminator
 		profileType, profileKey = E:SplitString(profileInfo, "::")
 		success, profileData = D:Deserialize(serializedData)
+
 		if not success then
 			E:Print("Error deserializing:", profileData)
 			return
