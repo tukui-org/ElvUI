@@ -515,6 +515,7 @@ L["Version"] = true;
 --NamePlates
 L["# Displayed Auras"] = true;
 L["Add Name"] = true;
+L["Always Show Target Health"] = true;
 L["Always Show"] = true;
 L["Bad Color"] = true;
 L["Bad Scale"] = true;

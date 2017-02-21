@@ -525,6 +525,7 @@ L["Version"] = "Версия"
 --NamePlates
 L["# Displayed Auras"] = "Кол-во аур"
 L["Add Name"] = "Добавить имя"
+L["Always Show Target Health"] = true;
 L["Always Show"] = "Всегда отображать"
 L["Bad Color"] = "Плохой цвет"
 L["Bad Scale"] = "Плохой масштаб"
