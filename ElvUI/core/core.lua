@@ -315,6 +315,7 @@ function E:LockCVar(cvarName, value)
 end
 
 function E:IgnoreCVar(cvarName, ignore)
+	ignore = not not ignore --cast to bool, just in case
 	self.IgnoredCVars[cvarName] = ignore
 end
 
