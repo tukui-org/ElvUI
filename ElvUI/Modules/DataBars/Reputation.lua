@@ -30,9 +30,11 @@ function mod:UpdateReputation(event)
 	local ID
 	local isFriend, friendText, standingLabel
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if (C_Reputation_IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max, value = 0, threshold, currentValue
+	if E.wowbuild >= 23623 then --7.2
+		if (C_Reputation_IsFactionParagon(factionID)) then
+			local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+			min, max, value = 0, threshold, currentValue
+		end
 	end
 	
 	local numFactions = GetNumFactions();
@@ -103,9 +105,11 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if (C_Reputation_IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max, value = 0, threshold, currentValue
+	if E.wowbuild >= 23623 then --7.2
+		if (C_Reputation_IsFactionParagon(factionID)) then
+			local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+			min, max, value = 0, threshold, currentValue
+		end
 	end
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 	if name then

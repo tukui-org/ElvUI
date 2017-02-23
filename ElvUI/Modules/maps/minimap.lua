@@ -289,6 +289,9 @@ local function PositionTicketButtons()
 	HelpOpenWebTicketButton:ClearAllPoints()
 	HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
 end
+if not (E.wowbuild >= 23623) then --7.1.5
+	hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
+end
 
 local isResetting
 local function ResetZoom()
