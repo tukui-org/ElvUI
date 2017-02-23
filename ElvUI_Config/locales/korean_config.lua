@@ -573,6 +573,7 @@ L["Version"] = "버전"
 --NamePlates
 L["# Displayed Auras"] = true;
 L["Add Name"] = "이름표 필터 추가"
+L["Always Show Target Health"] = true;
 L["Always Show"] = true;
 L["Bad Color"] = true;
 L["Bad Scale"] = true;

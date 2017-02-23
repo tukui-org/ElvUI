@@ -225,7 +225,7 @@ function mod:SetTargetFrame(frame)
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
 		frame.isTarget = true
-		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
+		if(self.db.units[frame.UnitType].healthbar.enable ~= true and self.db.alwaysShowTargetHealth) then
 			frame.Name:ClearAllPoints()
 			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
@@ -516,7 +516,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
-	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or frame.isTarget) then
+	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
@@ -637,7 +637,7 @@ function mod:RegisterEvents(frame, unit)
 		displayedUnit = frame.displayedUnit;
 	end
 
-	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
+	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
 		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit, displayedUnit);
 		frame:RegisterUnitEvent("UNIT_HEALTH", unit, displayedUnit);
 		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit, displayedUnit);
@@ -649,7 +649,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("UNIT_NAME_UPDATE");
 	frame:RegisterUnitEvent("UNIT_LEVEL", unit, displayedUnit);
 
-	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
+	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
 		if(frame.UnitType == "ENEMY_NPC") then
 			frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit, displayedUnit);
 		end

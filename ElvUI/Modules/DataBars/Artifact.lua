@@ -37,9 +37,7 @@ function mod:UpdateArtifact(event, unit)
 	end
 
 	local bar = self.artifactBar
-	local artifactMaxed = select(13, C_ArtifactUI_GetEquippedArtifactInfo())
-	local showArtifact = HasArtifactEquipped() and (not self.db.artifact.hideAtMaxLevel or not artifactMaxed)
-
+	local showArtifact = HasArtifactEquipped();
 	if not showArtifact or (event == "PLAYER_REGEN_DISABLED" and self.db.artifact.hideInCombat) then
 		bar:Hide()
 	elseif showArtifact and (not self.db.artifact.hideInCombat or not InCombatLockdown()) then

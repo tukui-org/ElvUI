@@ -282,10 +282,12 @@ function E:UpdateMedia()
 end
 
 E.LockedCVars = {}
+E.IgnoredCVars = {}
+
 function E:PLAYER_REGEN_ENABLED(_)
 	if(self.CVarUpdate) then
 		for cvarName, value in pairs(self.LockedCVars) do
-			if(GetCVar(cvarName) ~= value) then
+			if (not self.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value)) then
 				SetCVar(cvarName, value)
 			end			
 		end
@@ -294,7 +296,7 @@ function E:PLAYER_REGEN_ENABLED(_)
 end
 
 local function CVAR_UPDATE(cvarName, value)
-	if(E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value) then
+	if(not E.IgnoredCVars[cvarName] and E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value) then
 		if(InCombatLockdown()) then
 			E.CVarUpdate = true
 			return
@@ -310,6 +312,11 @@ function E:LockCVar(cvarName, value)
 		SetCVar(cvarName, value)
 	end
 	self.LockedCVars[cvarName] = value
+end
+
+function E:IgnoreCVar(cvarName, ignore)
+	ignore = not not ignore --cast to bool, just in case
+	self.IgnoredCVars[cvarName] = ignore
 end
 
 --Update font/texture paths when they are registered by the addon providing them

@@ -152,7 +152,6 @@ P['databars'] = {
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
 		["hideInCombat"] = false,
-		["hideAtMaxLevel"] = false,
 	},
 	['honor'] = {
 		['enable'] = true,
@@ -226,6 +225,7 @@ P["nameplates"] = {
 	["clampToScreen"] = false,
 	["loadDistance"] = 40,
 	["useTargetGlow"] = true,
+	["alwaysShowTargetHealth"] = true,
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",
