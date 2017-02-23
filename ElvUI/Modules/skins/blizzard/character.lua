@@ -359,7 +359,9 @@ local function LoadSkin()
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
 	--Reputation
-	S:HandleCloseButton(CharacterFrame.ReputationTabHelpBox.CloseButton)
+	if E.wowbuild >= 23623 then --7.2
+		S:HandleCloseButton(CharacterFrame.ReputationTabHelpBox.CloseButton)
+	end
 	local function UpdateFactionSkins()
 		ReputationListScrollFrame:StripTextures()
 		ReputationFrame:StripTextures(true)
@@ -392,23 +394,25 @@ local function LoadSkin()
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 
-	--Reputation Paragon Tooltip
-	local tooltip = ReputationParagonTooltip
-	local statusBar = ReputationParagonTooltipStatusBar.Bar
-	local reward = tooltip.ItemTooltip
-	local icon = reward.Icon
-	tooltip:SetTemplate("Transparent")
-	statusBar:StripTextures()
-	statusBar:SetStatusBarTexture(E["media"].normTex)
-	statusBar:CreateBackdrop("Transparent")
-	if icon then
-		S:HandleIcon(icon)
-		reward.IconBorder:SetTexture(nil)
-		reward.IconBorder:SetAlpha(0)
+	if E.wowbuild >= 23623 then --7.2
+		--Reputation Paragon Tooltip
+		local tooltip = ReputationParagonTooltip
+		local statusBar = ReputationParagonTooltipStatusBar.Bar
+		local reward = tooltip.ItemTooltip
+		local icon = reward.Icon
+		tooltip:SetTemplate("Transparent")
+		statusBar:StripTextures()
+		statusBar:SetStatusBarTexture(E["media"].normTex)
+		statusBar:CreateBackdrop("Transparent")
+		if icon then
+			S:HandleIcon(icon)
+			reward.IconBorder:SetTexture(nil)
+			reward.IconBorder:SetAlpha(0)
+		end
+		tooltip:HookScript("OnShow", function(self)
+			self:SetTemplate("Transparent")
+		end)
 	end
-	tooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent")
-	end)
 
 	--Currency
 	TokenFrame:HookScript("OnShow", function()

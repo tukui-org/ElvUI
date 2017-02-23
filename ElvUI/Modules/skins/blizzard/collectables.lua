@@ -44,8 +44,13 @@ local function LoadSkin()
 	S:HandleButton(MountJournalMountButton, true)
 	S:HandleEditBox(MountJournalSearchBox)
 	S:HandleScrollBar(MountJournalListScrollFrameScrollBar)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
+	if E.wowbuild >= 23623 then --7.2
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
+	else
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelFrame.RotateLeftButton)
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelFrame.RotateRightButton)
+	end
 
 	for i = 1, #MountJournal.ListScrollFrame.buttons do
 		local b = _G["MountJournalListScrollFrameButton"..i];
@@ -234,9 +239,15 @@ local function LoadSkin()
 
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
-	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
+	if E.wowbuild >= 23623 then --7.2
+		S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
+		S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
+		SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
+	else
+		S:HandleNextPrevButton(ToyBox.navigationFrame.nextPageButton)
+		S:HandleNextPrevButton(ToyBox.navigationFrame.prevPageButton)
+		SquareButton_SetIcon(ToyBox.navigationFrame.prevPageButton, 'LEFT')
+	end
 	ToyBox.progressBar:StripTextures()
 
 	local function TextColorModified(self, r, g, b)
@@ -269,9 +280,15 @@ local function LoadSkin()
 
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
-	SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
+	if E.wowbuild >= 23623 then --7.2
+		S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
+		S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
+		SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
+	else
+		S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.nextPageButton)
+		S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.prevPageButton)
+		SquareButton_SetIcon(HeirloomsJournal.navigationFrame.prevPageButton, 'LEFT')
+	end
 	HeirloomsJournal.progressBar:StripTextures()
 	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
 	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
@@ -311,13 +328,15 @@ local function LoadSkin()
 	end)
 	
 	-- Appearances Tab
-	local function SkinTab(tab)
-		S:HandleTab(tab)
-		tab.backdrop:SetTemplate("Default", true)
-		tab.backdrop:SetOutside(nil, 2, 2)
+	if E.wowbuild >= 23623 then --7.2
+		local function SkinTab(tab)
+			S:HandleTab(tab)
+			tab.backdrop:SetTemplate("Default", true)
+			tab.backdrop:SetOutside(nil, 2, 2)
+		end
+		SkinTab(WardrobeCollectionFrame.ItemsTab)
+		SkinTab(WardrobeCollectionFrame.SetsTab)
 	end
-	SkinTab(WardrobeCollectionFrame.ItemsTab)
-	SkinTab(WardrobeCollectionFrame.SetsTab)
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
@@ -328,58 +347,65 @@ local function LoadSkin()
 	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
-	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
-	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate("Transparent")
-	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
-	--Sets
-	WardrobeCollectionFrame.SetsCollectionFrame.RightInset:StripTextures()
-	WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
-	WardrobeCollectionFrame.SetsCollectionFrame.LeftInset:StripTextures()
-	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
-	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
-	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
+	if E.wowbuild >= 23623 then --7.2
+		WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+		WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate("Transparent")
+		S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
+		S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
-	--Skin set buttons
-	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
-		local b = WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons[i];
-		S:HandleItemButton(b)
-		b.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
-		b.Favorite:Point("TOPLEFT", b.Icon, "TOPLEFT", -8, 8)
-		b.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
-	end
+		--Sets
+		WardrobeCollectionFrame.SetsCollectionFrame.RightInset:StripTextures()
+		WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
+		WardrobeCollectionFrame.SetsCollectionFrame.LeftInset:StripTextures()
+		S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
+		S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
+		S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
 
-	--Set quality color on set item buttons
-	local function SetItemQuality(self, itemFrame)
-		if (itemFrame.backdrop) then
-			local _, _, quality = GetItemInfo(itemFrame.itemID);
-			local alpha = 1
-			if (not itemFrame.collected) then
-				alpha = 0.4
-			end
-			
-			if (not quality or quality < 2) then --Not collected or item is white or grey
-				itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
-			else
-				itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
+		--Skin set buttons
+		for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
+			local b = WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons[i];
+			S:HandleItemButton(b)
+			b.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
+			b.Favorite:Point("TOPLEFT", b.Icon, "TOPLEFT", -8, 8)
+			b.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
+		end
+
+		--Set quality color on set item buttons
+		local function SetItemQuality(self, itemFrame)
+			if (itemFrame.backdrop) then
+				local _, _, quality = GetItemInfo(itemFrame.itemID);
+				local alpha = 1
+				if (not itemFrame.collected) then
+					alpha = 0.4
+				end
+				
+				if (not quality or quality < 2) then --Not collected or item is white or grey
+					itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
+				else
+					itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
+				end
 			end
 		end
-	end
-	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "SetItemFrameQuality", SetItemQuality)
+		hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "SetItemFrameQuality", SetItemQuality)
 
-	--Skin set item buttons
-	local function SkinSetItemButtons(self)
-		for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
-			if (not itemFrame.isSkinned) then
-				S:HandleIcon(itemFrame.Icon, itemFrame)
-				itemFrame.isSkinned = true
+		--Skin set item buttons
+		local function SkinSetItemButtons(self)
+			for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
+				if (not itemFrame.isSkinned) then
+					S:HandleIcon(itemFrame.Icon, itemFrame)
+					itemFrame.isSkinned = true
+				end
+				itemFrame.IconBorder:SetAlpha(0)
+				SetItemQuality(self, itemFrame)
 			end
-			itemFrame.IconBorder:SetAlpha(0)
-			SetItemQuality(self, itemFrame)
 		end
+		hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
+	else
+		WardrobeCollectionFrame.ModelsFrame:StripTextures()
+		S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton, nil, true)
+		S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
 	end
-	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC
 	WardrobeFrame:StripTextures()
@@ -412,13 +438,15 @@ local function LoadSkin()
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
-	
-	--Transmogrify NPC Sets tab
-	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
-	
+
+	if E.wowbuild >= 23623 then --7.2
+		--Transmogrify NPC Sets tab
+		WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
+		WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
+		S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
+		S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
+	end
+
 	-- Outfit Edit Frame
 	WardrobeOutfitEditFrame:StripTextures()
 	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
