@@ -527,7 +527,7 @@ L["Version"] = "Version"
 --NamePlates
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["Add Name"] = "Name hinzufügen"
-L["Always Show Target Health"] = true;
+L["Always Show Target Health"] = "Zeige immer Ziel Gesundheit"
 L["Always Show"] = "Immer anzeigen"
 L["Bad Color"] = "Schlechte Farbe"
 L["Bad Scale"] = "Schlechte Skalierung"
