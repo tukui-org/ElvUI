@@ -729,6 +729,7 @@ local function LoadSkin()
 		"SocialPanelOnlineFriends",
 		"SocialPanelOfflineFriends",
 		"SocialPanelBroadcasts",
+		"SocialPanelAutoAcceptQuickJoinRequests",
 		"SocialPanelFriendRequests",
 		"SocialPanelShowToastWindow",
 		"SocialPanelGuildMemberAlert",
