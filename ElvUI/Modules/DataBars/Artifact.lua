@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, select, pcall = tonumber, select, pcall
 local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
 --WoW API / Variables
-local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
+local C_ArtifactUI_GetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumSlots = GetContainerNumSlots
@@ -50,7 +50,7 @@ function mod:UpdateArtifact(event, unit)
 		end
 
 		local text = ''
-		local _, _, _, _, totalXP, pointsSpent = C_ArtifactUIGetEquippedArtifactInfo();
+		local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI_GetEquippedArtifactInfo();
 		local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
 		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
 		bar.statusBar:SetValue(xp)
@@ -95,7 +95,7 @@ function mod:ArtifactBar_OnEnter()
 	GameTooltip:AddLine(ARTIFACT_POWER)
 	GameTooltip:AddLine(' ')
 
-	local _, _, _, _, totalXP, pointsSpent = C_ArtifactUIGetEquippedArtifactInfo();
+	local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI_GetEquippedArtifactInfo();
 	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
