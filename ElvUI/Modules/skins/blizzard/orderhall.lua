@@ -35,9 +35,7 @@ local function LoadSkin()
 	OrderHallMissionFrame:CreateBackdrop("Transparent")
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
-	if E.wowbuild >= 23623 then --7.2
-		S:HandleCloseButton(OrderHallMissionTutorialFrame.GlowBox.CloseButton)
-	end
+	S:HandleCloseButton(OrderHallMissionTutorialFrame.GlowBox.CloseButton)
 
 	for i = 1, 3 do
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
