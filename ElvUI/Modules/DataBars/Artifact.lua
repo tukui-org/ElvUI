@@ -52,8 +52,8 @@ function mod:UpdateArtifact(event, unit)
 		end
 
 		local text = ''
-		local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI_GetEquippedArtifactInfo();
-		local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+		local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI_GetEquippedArtifactInfo();
+		local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
 		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
 		bar.statusBar:SetValue(xp)
 
@@ -97,8 +97,8 @@ function mod:ArtifactBar_OnEnter()
 	GameTooltip:AddLine(ARTIFACT_POWER)
 	GameTooltip:AddLine(' ')
 
-	local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI_GetEquippedArtifactInfo();
-	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+	local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI_GetEquippedArtifactInfo();
+	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
 
