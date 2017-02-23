@@ -152,7 +152,6 @@ P['databars'] = {
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
 		["hideInCombat"] = false,
-		["hideAtMaxLevel"] = false,
 	},
 	['honor'] = {
 		['enable'] = true,
