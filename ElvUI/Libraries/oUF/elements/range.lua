@@ -28,7 +28,7 @@ do
 		AddSpell(enemySpells, 339) -- Entangling Roots (35 yards)
 		AddSpell(longEnemySpells, 8921) -- Moonfire (40 yards)
 		AddSpell(friendlySpells, 2782) -- Remove Corruption (Balance/Feral/Guardian) (40 yards)
-		AddSpell(friendlySpells, 88423) -- Nature's Cure (Resto) (40 yards)
+		AddSpell(friendlySpells, 774) -- Rejuvenation (Resto) (40 yards)
 		AddSpell(resSpells, 50769) -- Revive (40 yards)
 		AddSpell(resSpells, 20484) -- Rebirth (40 yards)
 	elseif class == "PALADIN" then
