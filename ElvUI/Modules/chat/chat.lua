@@ -44,7 +44,9 @@ local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_StartAlertFlash = FCF_StartAlertFlash
 local FlashClientIcon = FlashClientIcon
 local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
+local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
+local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
 local GetChatWindowSavedPosition = GetChatWindowSavedPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
@@ -53,6 +55,7 @@ local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
 local GMChatFrame_IsGM = GMChatFrame_IsGM
@@ -104,6 +107,27 @@ local Var = {
 	["PLAYER_LIST_DELIMITER"] = PLAYER_LIST_DELIMITER,
 	["RAID_WARNING"] = RAID_WARNING,
 }
+
+if not (E.wowbuild >= 23623) then --7.1.5
+	--Provide copies of GetPlayerLink and GetBNPlayerLink for patch 7.1.5 backwards compatibility
+	local function FormatLink(linkType, linkDisplayText, ...)
+		local linkFormatTable = { ("|H%s"):format(linkType), ... };
+		return tconcat(linkFormatTable, ":") .. ("|h%s|h"):format(linkDisplayText);
+	end
+
+	function GetPlayerLink(characterName, linkDisplayText, lineID, chatType, chatTarget)
+		-- Use simplified link if possible
+		if lineID or chatType or chatTarget then
+			return FormatLink("player", linkDisplayText, characterName, lineID or 0, chatType or 0, chatTarget or "");
+		else
+			return FormatLink("player", linkDisplayText, characterName);
+		end
+	end
+
+	function GetBNPlayerLink(name, linkDisplayText, bnetIDAccount, lineID, chatType, chatTarget)
+		return FormatLink("BNplayer", linkDisplayText, name, bnetIDAccount, lineID or 0, chatType, chatTarget);
+	end
+end
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetColoredName, LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
