@@ -1203,9 +1203,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
 				end
 			end
-			self:AddMessage(format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1:format(GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			local message = format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
+			local message = arg1:format(GetPlayerLink(arg2, ("[%s]"):format(coloredName)));
 			if (C_SocialIsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1);
 				if (achieveID) then
@@ -1234,7 +1234,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
 
-			if(strlen(arg5) > 0) then
+			if(arg5 ~= "") then
 				-- TWO users in this notice (E.G. x kicked y)
 				self:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id);
 			elseif ( arg1 == "INVITE" ) then
@@ -1267,27 +1267,30 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
-				local _, _, _, _, characterName, _, client = BNGetFriendInfoByID(arg13);
+				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13);
 				if (client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
 					characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
 					local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName;
-					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s] (%s)|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2, characterNameText);
+					local linkDisplayText = ("[%s] (%s)"):format(arg2, characterNameText);
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
 					message = format(globalstring, playerLink);
 				else
-					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
+					local linkDisplayText = ("[%s]"):format(arg2);
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
 					message = format(globalstring, playerLink);
 				end
 			else
-				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
+				local linkDisplayText = ("[%s]"):format(arg2);
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
 				message = format(globalstring, playerLink);
 			end
 			self:AddMessage(message, info.r, info.g, info.b, info.id);
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
-				arg1 = RemoveExtraSpaces(arg1);
-				arg1 = RemoveNewlines(arg1);
-				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
+				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1));
+				local linkDisplayText = ("[%s]"):format(arg2);
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
 				self:AddMessage(format(Var.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
@@ -1308,7 +1311,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			-- Add AFK/DND flags
 			local pflag = GetChatIcons(arg2);
 			local pluginIcon = CH:GetPluginIcon(arg2)
-			if(strlen(arg6) > 0) then
+			if(arg6 ~= "") then
 				if ( arg6 == "GM" ) then
 					--If it was a whisper, dispatch it to the GMChat addon.
 					if ( type == "WHISPER" ) then
@@ -1361,7 +1364,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					local groupIndex = GROUP_TAG_LIST[term];
 					local groupList = "[";
 					for i=1, GetNumGroupMembers() do
-						local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i);
+						local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
 						if ( name and subgroup == groupIndex ) then
 							local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
 							if ( classColorTable ) then
@@ -1378,13 +1381,28 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			--Remove groups of many spaces
 			arg1 = RemoveExtraSpaces(arg1);
 
-			local playerLink;
-
-			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then --Use this when 6.2.4 goes live
-				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
-			else
+			--ElvUI: Get class colored name for BattleNet friend
+			if ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
 				coloredName = CH:GetBNFriendColor(arg2, arg13)
-				playerLink = "|HBNplayer:"..arg2..":"..arg13..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
+			end
+
+			local playerLink;
+			local playerLinkDisplayText = coloredName;
+			local relevantDefaultLanguage = self.defaultLanguage;
+			if ( (type == "SAY") or (type == "YELL") ) then
+				relevantDefaultLanguage = self.alternativeDefaultLanguage;
+			end
+			local usingDifferentLanguage = (arg3 ~= "") and (arg3 ~= relevantDefaultLanguage);
+			local usingEmote = (type == "EMOTE") or (type == "TEXT_EMOTE");
+
+			if ( usingDifferentLanguage or not usingEmote ) then
+				playerLinkDisplayText = ("[%s]"):format(coloredName);
+			end
+
+			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
+				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
+			else
+				playerLink = GetBNPlayerLink(arg2, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget);
 			end
 
 			local message = arg1;
@@ -1392,19 +1410,15 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 			end
 
-			local relevantDefaultLanguage = self.defaultLanguage;
-			if ( (type == "SAY") or (type == "YELL") ) then
-				relevantDefaultLanguage = self.alternativeDefaultLanguage;
-			end
-			if ( (strlen(arg3) > 0) and (arg3 ~= relevantDefaultLanguage) ) then
+			if ( usingDifferentLanguage ) then
 				local languageHeader = "["..arg3.."] ";
-				if ( showLink and (strlen(arg2) > 0) ) then
-					body = format(_G["CHAT_"..type.."_GET"]..languageHeader..message, pflag..playerLink.."["..coloredName.."]".."|h");
+				if ( showLink and (arg2 ~= "") ) then
+					body = format(_G["CHAT_"..type.."_GET"]..languageHeader..message, pflag..playerLink);
 				else
 					body = format(_G["CHAT_"..type.."_GET"]..languageHeader..message, pflag..arg2);
 				end
 			else
-				if ( not showLink or strlen(arg2) == 0 ) then
+				if ( not showLink or arg2 == "" ) then
 					if ( type == "TEXT_EMOTE" ) then
 						body = message;
 					else
@@ -1412,13 +1426,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					end
 				else
 					if ( type == "EMOTE" ) then
-						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink..coloredName.."|h");
+						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
 					elseif ( type == "TEXT_EMOTE") then
-						body = gsub(message, arg2, pflag..playerLink..coloredName.."|h", 1);
+						body = gsub(message, arg2, pflag..playerLink, 1);
 					elseif (type == "GUILD_ITEM_LOOTED") then
-						body = gsub(message, "$s", "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
+						body = gsub(message, "$s", GetPlayerLink(arg2, playerLinkDisplayText));
 					else
-						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink.."["..coloredName.."]".."|h");
+						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
 					end
 				end
 			end
@@ -1442,7 +1456,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
 				body = body:gsub("^%["..Var.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
-			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, accessID, typeID);
+			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID);
 		end
 
 		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
