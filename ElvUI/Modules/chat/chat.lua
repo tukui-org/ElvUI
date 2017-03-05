@@ -81,7 +81,7 @@ local PET_BATTLE_COMBAT_LOG = PET_BATTLE_COMBAT_LOG
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 --Variables that are only used in ChatFrame_MessageEventHandler
 --Store them in a table as we would otherwise hit the "max 60 upvalues" limit
-local Var = {
+local GlobalStrings = {
 	["AFK"] = AFK,
 	["BN_INLINE_TOAST_BROADCAST"] = BN_INLINE_TOAST_BROADCAST,
 	["BN_INLINE_TOAST_BROADCAST_INFORM"] = BN_INLINE_TOAST_BROADCAST_INFORM,
@@ -1161,9 +1161,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				local matchFound = false;
 				local message = strlower(arg1);
 				for playerName, _ in pairs(self.privateMessageList) do
-					local playerNotFoundMsg = strlower(format(Var.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName));
-					local charOnlineMsg = strlower(format(Var.ERR_FRIEND_ONLINE_SS, playerName, playerName));
-					local charOfflineMsg = strlower(format(Var.ERR_FRIEND_OFFLINE_S, playerName));
+					local playerNotFoundMsg = strlower(format(GlobalStrings.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName));
+					local charOnlineMsg = strlower(format(GlobalStrings.ERR_FRIEND_ONLINE_SS, playerName, playerName));
+					local charOfflineMsg = strlower(format(GlobalStrings.ERR_FRIEND_OFFLINE_S, playerName));
 					if ( message == playerNotFoundMsg or message == charOnlineMsg or message == charOfflineMsg) then
 						matchFound = true;
 						break;
@@ -1217,11 +1217,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			self:AddMessage(message, info.r, info.g, info.b, info.id);
 		elseif ( type == "IGNORED" ) then
-			self:AddMessage(format(Var.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(GlobalStrings.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "FILTERED" ) then
-			self:AddMessage(format(Var.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(GlobalStrings.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(Var.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id);
+			self:AddMessage(GlobalStrings.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
 				self:AddMessage(format(_G["CHAT_"..type.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
@@ -1243,12 +1243,12 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				self:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id);
 			end
 			if ( arg1 == "INVITE" and GetCVarBool("blockChannelInvites") ) then
-				self:AddMessage(Var.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id);
+				self:AddMessage(GlobalStrings.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id);
 			end
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if( arg1 == "TRIAL_RESTRICTED" ) then
-				globalstring = Var.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
+				globalstring = GlobalStrings.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
 				if ( not globalstring ) then
 					globalstring = _G["CHAT_"..arg1.."_NOTICE"];
@@ -1263,7 +1263,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( arg1 == "FRIEND_REQUEST" ) then
 				message = globalstring;
 			elseif ( arg1 == "FRIEND_PENDING" ) then
-				message = format(Var.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
+				message = format(GlobalStrings.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
@@ -1288,12 +1288,12 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg1 = RemoveExtraSpaces(arg1);
 				arg1 = RemoveNewlines(arg1);
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
-				self:AddMessage(format(Var.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(GlobalStrings.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
-				self:AddMessage(Var.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id);
+				self:AddMessage(GlobalStrings.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id);
 			end
 		else
 			local body;
@@ -1367,7 +1367,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 							if ( classColorTable ) then
 								name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
 							end
-							groupList = groupList..(groupList == "[" and "" or Var.PLAYER_LIST_DELIMITER)..name;
+							groupList = groupList..(groupList == "[" and "" or GlobalStrings.PLAYER_LIST_DELIMITER)..name;
 						end
 					end
 					groupList = groupList.."]";
@@ -1437,10 +1437,10 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L["whispers"], "%1")
 				body = body:gsub("^(.-|h) "..L["says"], "%1")
 				body = body:gsub("^(.-|h) "..L["yells"], "%1")
-				body = body:gsub("<"..Var.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-				body = body:gsub("<"..Var.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+				body = body:gsub("<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+				body = body:gsub("<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
 				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
-				body = body:gsub("^%["..Var.RAID_WARNING.."%]", '['..L["RW"]..']')
+				body = body:gsub("^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, accessID, typeID);
 		end
@@ -1451,7 +1451,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
 				PlaySound("TellMessage");
 			end
-			self.tellTimer = GetTime() + Var.CHAT_TELL_ALERT_TIME;
+			self.tellTimer = GetTime() + GlobalStrings.CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
 			FlashClientIcon();
 		end
