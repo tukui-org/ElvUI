@@ -713,6 +713,7 @@ P['chat'] = {
 	["useCustomTimeColor"] = true,
 	["customTimeColor"] = {r = 0.7, g = 0.7, b = 0.7},
 	["numScrollMessages"] = 3,
+	["autoClosePetBattleLog"] = true,
 
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,

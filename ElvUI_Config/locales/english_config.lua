@@ -237,6 +237,7 @@ L["Alerts"] = true;
 L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = true;
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = true;
+L["Auto-Close Pet Battle Log"] = true;
 L["Below Chat"] = true;
 L["Chat EditBox Position"] = true;
 L["Chat History"] = true;

@@ -136,8 +136,13 @@ E.Options.args.chat = {
 					name = L["Class Color Mentions"],
 					desc = L["Use class color for the names of players when they are mentioned."],
 				},
-				throttleInterval = {
+				autoClosePetBattleLog = {
 					order = 12,
+					type = "toggle",
+					name = L["Auto-Close Pet Battle Log"],
+				},
+				throttleInterval = {
+					order = 13,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -150,7 +155,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 13,
+					order = 14,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -160,26 +165,26 @@ E.Options.args.chat = {
 					end,
 				},
 				numAllowedCombatRepeat = {
-					order = 14,
+					order = 15,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				numScrollMessages = {
-					order = 15,
+					order = 16,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
 				spacer = {
-					order = 16,
+					order = 17,
 					type = "description",
 					name = " ",
 				},
 				timeStampFormat = {
-					order = 17,
+					order = 18,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -194,13 +199,13 @@ E.Options.args.chat = {
 					},
 				},
 				useCustomTimeColor = {
-					order = 18,
+					order = 19,
 					type = "toggle",
 					name = L["Custom Timestamp Color"],
 					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
 				},
 				customTimeColor = {
-					order = 19,
+					order = 20,
 					type = "color",
 					hasAlpha = false,
 					name = L["Timestamp Color"],

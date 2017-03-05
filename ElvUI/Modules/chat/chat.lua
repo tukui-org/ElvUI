@@ -77,7 +77,6 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName, UnitGUID = UnitName, UnitGUID
 local UnitRealmRelationship = UnitRealmRelationship
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
-local PET_BATTLE_COMBAT_LOG = PET_BATTLE_COMBAT_LOG
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 --Variables that are only used in ChatFrame_MessageEventHandler
 --Store them in a table as we would otherwise hit the "max 60 upvalues" limit
@@ -1738,9 +1737,13 @@ function CH:UpdateChatKeywords()
 end
 
 function CH:PET_BATTLE_CLOSE()
+	if not self.db.autoClosePetBattleLog then
+		return
+	end
+
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if frame and _G[frameName.."Tab"]:GetText():match(PET_BATTLE_COMBAT_LOG) then
+		if frame and _G[frameName.."Tab"]:GetText():match(GlobalStrings.PET_BATTLE_COMBAT_LOG) then
 			FCF_Close(frame)
 		end
 	end
