@@ -567,7 +567,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
-	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then 
+	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
 	end
 
@@ -679,10 +679,10 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		frame:RegisterEvent("RAID_TARGET_UPDATE")
 		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 	end
 
+	frame:RegisterEvent("RAID_TARGET_UPDATE")
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
