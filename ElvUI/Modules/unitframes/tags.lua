@@ -1054,3 +1054,33 @@ ElvUF.Tags.Methods['guild:brackets'] = function(unit)
 
 	return guildName and format("<%s>", guildName) or ""
 end
+
+ElvUF.Tags.Events['target:veryshort'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target:veryshort'] = function(unit)
+	local targetName = UnitName(unit.."target")
+	return targetName ~= nil and E:ShortenString(targetName, 5) or ''
+end
+
+ElvUF.Tags.Events['target:short'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target:short'] = function(unit)
+	local targetName = UnitName(unit.."target")
+	return targetName ~= nil and E:ShortenString(targetName, 10) or ''
+end
+
+ElvUF.Tags.Events['target:medium'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target:medium'] = function(unit)
+	local targetName = UnitName(unit.."target")
+	return targetName ~= nil and E:ShortenString(targetName, 15) or ''
+end
+
+ElvUF.Tags.Events['target:long'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target:long'] = function(unit)
+	local targetName = UnitName(unit.."target")
+	return targetName ~= nil and E:ShortenString(targetName, 20) or ''
+end
+
+ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target'] = function(unit)
+	local targetName = UnitName(unit.."target")
+	return targetName or ''
+end
