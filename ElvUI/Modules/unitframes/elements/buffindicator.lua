@@ -129,9 +129,10 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 				icon.textThreshold = buffs[i].textThreshold or -1
 				icon.displayText = buffs[i].displayText
 				icon.decimalThreshold = buffs[i].decimalThreshold
+				icon.size = (buffs[i].sizeOverride ~= nil and buffs[i].sizeOverride > 0 and buffs[i].sizeOverride or db.size)
 
-				icon:Width(db.size);
-				icon:Height(db.size);
+				icon:Width(icon.size);
+				icon:Height(icon.size);
 				--Protect against missing .point value
 				if not buffs[i].point then buffs[i].point = "TOPLEFT" end
 				

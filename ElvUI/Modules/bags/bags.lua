@@ -192,7 +192,11 @@ end
 function B:SetSearch(query)
 	local empty = len(query:gsub(' ', '')) == 0
 	local method = Search.Matches
+	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
+		if itemsearchquery == "rel" or itemsearchquery == "reli" or itemsearchquery == "relic" then
+			allowPartialMatch = true
+		end
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
@@ -202,7 +206,7 @@ function B:SetSearch(query)
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
-				local success, result = pcall(method, Search, link, query)
+				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if ( empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
 					button:SetAlpha(1);
@@ -233,7 +237,11 @@ end
 function B:SetGuildBankSearch(query)
 	local empty = len(query:gsub(' ', '')) == 0
 	local method = Search.Matches
+	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
+		if itemsearchquery == "rel" or itemsearchquery == "reli" or itemsearchquery == "relic" then
+			allowPartialMatch = true
+		end
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
@@ -251,7 +259,7 @@ function B:SetGuildBankSearch(query)
 				if col == 0 then col = 1 end
 				if btn == 0 then btn = 14 end
 				local button = _G["GuildBankColumn"..col.."Button"..btn]
-				local success, result = pcall(method, Search, link, query)
+				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if (empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
 					button:SetAlpha(1);

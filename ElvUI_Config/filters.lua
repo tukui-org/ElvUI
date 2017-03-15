@@ -301,9 +301,9 @@ local function UpdateFilterGroup()
 							E:Print(L["Not valid spell id"])
 						else
 							E.global.unitframe.buffwatch.PET[tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
+							selectedSpell = nil;
 							UpdateFilterGroup();
 							UF:CreateAndUpdateUF('pet');
-							selectedSpell = nil;
 						end
 					end,
 				},
@@ -385,21 +385,27 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					xOffset = {
+					sizeOverride = {
 						order = 2,
+						type = "range",
+						name = L["Size Override"],
+						min = 0, max = 50, step = 1,
+					},
+					xOffset = {
+						order = 3,
 						type = 'range',
 						name = L["xOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
-						order = 3,
+						order = 4,
 						type = 'range',
 						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					style = {
 						name = L["Style"],
-						order = 4,
+						order = 5,
 						type = 'select',
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
@@ -410,7 +416,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L["Color"],
 						type = 'color',
-						order = 5,
+						order = 6,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -424,12 +430,12 @@ local function UpdateFilterGroup()
 					displayText = {
 						name = L["Display Text"],
 						type = 'toggle',
-						order = 6,
+						order = 7,
 					},
 					textColor = {
 						name = L["Text Color"],
 						type = 'color',
-						order = 7,
+						order = 8,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
 							if t then
@@ -448,24 +454,24 @@ local function UpdateFilterGroup()
 						name = L["Decimal Threshold"],
 						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
 						type = 'range',
-						order = 8,
+						order = 9,
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
 						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
-						order = 9,
+						order = 10,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L["Show Aura From Other Players"],
-						order = 10,
+						order = 11,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
 						name = L["Show When Not Active"],
-						order = 11,
+						order = 12,
 						type = 'toggle',
 					},
 				},
@@ -494,13 +500,13 @@ local function UpdateFilterGroup()
 							E:Print(L["Not valid spell id"])
 						else
 							E.global.unitframe.buffwatch[E.myclass][tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
+							selectedSpell = nil;
 							UpdateFilterGroup();
 
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')
 							UF:UpdateAuraWatchFromHeader('party')
 							UF:UpdateAuraWatchFromHeader('raidpet', true)
-							selectedSpell = nil;
 						end
 					end,
 				},
@@ -592,21 +598,27 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					xOffset = {
+					sizeOverride = {
 						order = 2,
+						type = "range",
+						name = L["Size Override"],
+						min = 0, max = 50, step = 1,
+					},
+					xOffset = {
+						order = 3,
 						type = 'range',
 						name = L["xOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
-						order = 3,
+						order = 4,
 						type = 'range',
 						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					style = {
 						name = L["Style"],
-						order = 4,
+						order = 5,
 						type = 'select',
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
@@ -617,7 +629,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L["Color"],
 						type = 'color',
-						order = 5,
+						order = 6,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -634,12 +646,12 @@ local function UpdateFilterGroup()
 					displayText = {
 						name = L["Display Text"],
 						type = 'toggle',
-						order = 6,
+						order = 7,
 					},
 					textColor = {
 						name = L["Text Color"],
 						type = 'color',
-						order = 7,
+						order = 8,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
 							if t then
@@ -662,24 +674,24 @@ local function UpdateFilterGroup()
 						name = L["Decimal Threshold"],
 						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
 						type = 'range',
-						order = 8,
+						order = 9,
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
 						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
-						order = 9,
+						order = 10,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L["Show Aura From Other Players"],
-						order = 10,
+						order = 11,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
 						name = L["Show When Not Active"],
-						order = 11,
+						order = 12,
 						type = 'toggle',
 					},
 				},
@@ -706,12 +718,12 @@ local function UpdateFilterGroup()
 							E:Print(L["Not valid spell id"])
 						else
 							E.db.unitframe.filters.buffwatch[tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
+							selectedSpell = nil;
 							UpdateFilterGroup();
 
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')
 							UF:UpdateAuraWatchFromHeader('party')
-							selectedSpell = nil;
 						end
 					end,
 				},
@@ -806,21 +818,27 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					xOffset = {
+					sizeOverride = {
 						order = 2,
+						type = "range",
+						name = L["Size Override"],
+						min = 0, max = 50, step = 1,
+					},
+					xOffset = {
+						order = 3,
 						type = 'range',
 						name = L["xOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
-						order = 3,
+						order = 4,
 						type = 'range',
 						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					style = {
 						name = L["Style"],
-						order = 4,
+						order = 5,
 						type = 'select',
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
@@ -831,7 +849,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L["Color"],
 						type = 'color',
-						order = 5,
+						order = 6,
 						get = function(info)
 							if E.db.unitframe.filters.buffwatch[selectedSpell] then
 								local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
@@ -849,12 +867,12 @@ local function UpdateFilterGroup()
 					displayText = {
 						name = L["Display Text"],
 						type = 'toggle',
-						order = 6,
+						order = 7,
 					},
 					textColor = {
 						name = L["Text Color"],
 						type = 'color',
-						order = 7,
+						order = 8,
 						get = function(info)
 							if E.db.unitframe.filters.buffwatch[selectedSpell] then
 								local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
@@ -878,24 +896,24 @@ local function UpdateFilterGroup()
 						name = L["Decimal Threshold"],
 						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
 						type = 'range',
-						order = 8,
+						order = 9,
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
 						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
-						order = 9,
+						order = 10,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L["Show Aura From Other Players"],
-						order = 10,
+						order = 11,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
 						name = L["Show When Not Active"],
-						order = 11,
+						order = 12,
 						type = 'toggle',
 					},
 				},

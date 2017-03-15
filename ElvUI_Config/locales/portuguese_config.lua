@@ -239,6 +239,7 @@ L["Alerts"] = true;
 L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "Tentar criar links URL dentro do bate-papo."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Tentar bloquear a posição dos painéis do bate-papo esquerdo e direito. Desativar esta opção permitirá mover os painéis de bate-papo para qualquer lugar que desejar."
+L["Auto-Close Pet Battle Log"] = true;
 L["Below Chat"] = "Abaixo do Bate-papo"
 L["Chat EditBox Position"] = "Posição da caixa de edição do bate-papo"
 L["Chat History"] = "Histórico do bate-papo"

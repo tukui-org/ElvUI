@@ -25,12 +25,9 @@ do
 		AddSpell(friendlySpells, 17) -- Power Word: Shield (40 yards)
 		AddSpell(resSpells, 2006) -- Resurrection (40 yards)
 	elseif class == "DRUID" then
-		AddSpell(enemySpells, 339) -- Entangling Roots (35 yards)
-		AddSpell(longEnemySpells, 8921) -- Moonfire (40 yards)
-		AddSpell(friendlySpells, 2782) -- Remove Corruption (Balance/Feral/Guardian) (40 yards)
-		AddSpell(friendlySpells, 88423) -- Nature's Cure (Resto) (40 yards)
-		AddSpell(resSpells, 50769) -- Revive (40 yards)
-		AddSpell(resSpells, 20484) -- Rebirth (40 yards)
+		AddSpell(enemySpells, 8921) -- Moonfire (40 yards, all specs, lvl 3)
+		AddSpell(friendlySpells, 8936) -- Regrowth (40 yards, all specs, lvl 5)
+		AddSpell(resSpells, 50769) -- Revive (40 yards, all specs, lvl 14)
 	elseif class == "PALADIN" then
 		AddSpell(enemySpells, 20271) -- Judgement (30 yards)
 		AddSpell(longEnemySpells, 20473) -- Holy Shock (40 yards)

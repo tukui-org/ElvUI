@@ -239,6 +239,7 @@ L["Alerts"] = "提醒"
 L["Allowed Combat Repeat"] = "战斗连续按键修复"
 L["Attempt to create URL links inside the chat."] = "在聊天框中创建超链接"
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "锁定左右聊天框架的位置.禁用此选项将允许你移动聊天框架到任意位置"
+L["Auto-Close Pet Battle Log"] = true;
 L["Below Chat"] = '聊天框下方'
 L["Chat EditBox Position"] = '对话輸入框位置'
 L["Chat History"] = '聊天历史'
