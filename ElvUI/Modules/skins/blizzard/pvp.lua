@@ -96,6 +96,7 @@ local function LoadSkin()
 	honorBar:StripTextures()
 
 	bar:CreateBackdrop("Default")
+	bar.Spark:SetAlpha(0)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
@@ -165,6 +166,7 @@ local function LoadSkin()
 	conquestBar:StripTextures()
 
 	bar:CreateBackdrop("Default")
+	bar.Spark:SetAlpha(0)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
