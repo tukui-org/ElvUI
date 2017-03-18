@@ -419,6 +419,7 @@ L["Emotion Icons"] = "表情图标"
 L["Enable + Adjust Movers"] = "启用并移动其他框架"
 L["Enable/Disable the loot frame."] = "开/关物品掉落框架"
 L["Enable/Disable the loot roll frame."] = "开/关掷骰子框架"
+L["Enables the ElvUI Raid Control panel."] = true;
 L["Enhanced PVP Messages"] = "PVP增强信息"
 L["General"] = "一般"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "任务框体的高度.增加大小以看到更多目标"

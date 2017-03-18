@@ -419,6 +419,7 @@ L["Emotion Icons"] = "Emoticons"
 L["Enable + Adjust Movers"] = "Aktiveren + Anpassen der Anker"
 L["Enable/Disable the loot frame."] = "Aktiviere/Deaktiviere das Beutefenster."
 L["Enable/Disable the loot roll frame."] = "Aktiviere/Deaktiviere das Beutewürfelfenster."
+L["Enables the ElvUI Raid Control panel."] = true;
 L["Enhanced PVP Messages"] = "Erweiterte PvP Nachrichten"
 L["General"] = "Allgemein"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Höhe des Questfenster. Größe verändern um mehr Ziele zu sehen."

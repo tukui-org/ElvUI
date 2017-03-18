@@ -419,6 +419,7 @@ L["Emotion Icons"] = "Emoticônes"
 L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
+L["Enables the ElvUI Raid Control panel."] = true;
 L["Enhanced PVP Messages"] = "Messages PVP améliorés";
 L["General"] = "Général"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Hauteur de la fenêtre des suivis d'objectif, augmenter pour afficher plus d'objectifs";

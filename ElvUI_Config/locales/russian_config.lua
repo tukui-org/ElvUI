@@ -418,6 +418,7 @@ L["Emotion Icons"] = "Иконки эмоций"
 L["Enable + Adjust Movers"] = "Включить и двигать фиксаторы"
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."
 L["Enable/Disable the loot roll frame."] = "Включить/выключить фрейм распределения добычи ElvUI."
+L["Enables the ElvUI Raid Control panel."] = true;
 L["Enhanced PVP Messages"] = "Улущенные PvP сообщения"
 L["General"] = "Общие"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Высота списка заданий. Увеличение размера позволить видеть большее количество."
