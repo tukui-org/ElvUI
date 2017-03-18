@@ -584,6 +584,7 @@ L["HEALER"] = "Healer"
 L["Hide Delay"] = "Versteckungsverzögerung"
 L["Hide Spell Name"] = "Verstecke Zaubername"
 L["Hide Time"] = "Verstecke Zeit"
+L["Hide When Empty"] = true;
 L["Hide"] = "Verstecken" --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "Wieviele Sekunden die Zauberleiste sichtbar bleibt, nachdem ein Zauber abgebrochen oder unterbrochen wurde."
 L["Icon Base Height"] = "Symbol Grundhöhe"

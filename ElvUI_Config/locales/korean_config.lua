@@ -631,6 +631,7 @@ L["HEALER"] = "Healer"
 L["Hide Delay"] = true;
 L["Hide Spell Name"] = true;
 L["Hide Time"] = true;
+L["Hide When Empty"] = true;
 L["Hide"] = "숨기기"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = true;
 L["Icon Base Height"] = true;
