@@ -205,8 +205,13 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle",
 					},
-					height = {
+					hideWhenEmpty = {
 						order = 2,
+						name = L["Hide When Empty"],
+						type = "toggle",
+					},
+					height = {
+						order = 3,
 						name = L["Height"],
 						type = "range",
 						min = 4, max = 20, step = 1,

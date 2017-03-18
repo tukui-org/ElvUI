@@ -582,6 +582,7 @@ L["HEALER"] = "Healer"
 L["Hide Delay"] = "Задержка скрытия"
 L["Hide Spell Name"] = "Скрыть название заклинания"
 L["Hide Time"] = "Скрыть время"
+L["Hide When Empty"] = true;
 L["Hide"] = "Скрыть" --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "После прерывания или отмены, полоса заклинаний будет оставаться видимой указаное количество секунд."
 L["Icon Base Height"] = "Базовая высота иконки"

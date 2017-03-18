@@ -583,6 +583,7 @@ L["HEALER"] = "Healer"
 L["Hide Delay"] = true;
 L["Hide Spell Name"] = "隐藏法术名字"
 L["Hide Time"] = "隐藏时间"
+L["Hide When Empty"] = true;
 L["Hide"] = "隐藏"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "在施法失败或被打断时施法条保持可见的秒数"
 L["Icon Base Height"] = "图标基础高度"

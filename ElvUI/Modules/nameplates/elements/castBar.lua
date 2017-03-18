@@ -229,7 +229,7 @@ function mod:ConfigureElement_CastBar(frame)
 
 	--Position
 	castBar:ClearAllPoints()
-	if(self.db.units[frame.UnitType].powerbar.enable) then
+	if(self.db.units[frame.UnitType].powerbar.enable and frame.PowerBar:IsShown()) then
 		castBar:SetPoint("TOPLEFT", frame.PowerBar, "BOTTOMLEFT", 0, -E.Border - E.Spacing*3)
 		castBar:SetPoint("TOPRIGHT", frame.PowerBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)
 	else
