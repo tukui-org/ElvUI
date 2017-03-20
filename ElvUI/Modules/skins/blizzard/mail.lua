@@ -95,6 +95,7 @@ local function LoadSkin()
 	S:HandleButton(OpenMailReplyButton)
 	S:HandleButton(OpenMailDeleteButton)
 	S:HandleButton(OpenMailCancelButton)
+	S:HandleButton(OpenAllMail)
 
 	InboxFrame:StripTextures()
 	MailFrameInset:Kill()
