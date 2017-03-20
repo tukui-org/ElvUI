@@ -942,7 +942,15 @@ local function LoadSkin()
 		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
 		S:HandleButton(CompactUnitFrameProfilesSaveButton)
 		S:HandleButton(CompactUnitFrameProfilesDeleteButton)
+
+		CompactUnitFrameProfilesNewProfileDialog:StripTextures()
+		CompactUnitFrameProfilesNewProfileDialog:CreateBackdrop("Transparent")
+		S:HandleEditBox(CompactUnitFrameProfilesNewProfileDialogEditBox) -- The Editbox is quite huge
+		S:HandleDropDownBox(CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
+		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCreateButton)
+		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCancelButton)
 	end
+
 	GraphicsButton:StripTextures()
 	RaidButton:StripTextures()
 	local raidcheckbox = {
