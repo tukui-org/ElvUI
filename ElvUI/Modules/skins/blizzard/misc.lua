@@ -945,7 +945,8 @@ local function LoadSkin()
 
 		CompactUnitFrameProfilesNewProfileDialog:StripTextures()
 		CompactUnitFrameProfilesNewProfileDialog:CreateBackdrop("Transparent")
-		S:HandleEditBox(CompactUnitFrameProfilesNewProfileDialogEditBox) -- The Editbox is quite huge
+		S:HandleEditBox(CompactUnitFrameProfilesNewProfileDialogEditBox)
+		CompactUnitFrameProfilesNewProfileDialogEditBox:SetSize(150, 20)
 		S:HandleDropDownBox(CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
 		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCreateButton)
 		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCancelButton)
