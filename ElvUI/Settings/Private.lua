@@ -21,6 +21,7 @@ V['general'] = {
 		['hideCalendar'] = true,
 	},
 	["classColorMentionsSpeech"] = true,
+	["raidUtility"] = true,
 }
 
 V['bags'] = {

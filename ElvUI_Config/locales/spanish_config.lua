@@ -419,6 +419,7 @@ L["Emotion Icons"] = "Emoticonos"
 L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = "Activa/Desactiva el marco de botín."
 L["Enable/Disable the loot roll frame."] = "Activa/Desactiva el marco de sorteo de botín."
+L["Enables the ElvUI Raid Control panel."] = true;
 L["Enhanced PVP Messages"] = true;
 L["General"] = "General"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;

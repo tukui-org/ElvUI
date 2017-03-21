@@ -840,9 +840,18 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 -- Trial of Valor
 	-- Odyn
 		[227959] = Defaults(), -- Storm of Justice
+		[227807] = Defaults(), -- Storm of Justice
 		[227475] = Defaults(), -- Cleansing Flame
 		[192044] = Defaults(), -- Expel Light
+		[228030] = Defaults(), -- Expel Light
 		[227781] = Defaults(), -- Glowing Fragment
+		[228918] = Defaults(), -- Stormforged Spear
+		[227490] = Defaults(), -- Branded
+		[227491] = Defaults(), -- Branded
+		[227498] = Defaults(), -- Branded
+		[227499] = Defaults(), -- Branded
+		[227500] = Defaults(), -- Branded
+		[231297] = Defaults(), -- Runic Brand (Mythic Only)
 
 	-- Guarm
 		[228228] = Defaults(), -- Flame Lick
@@ -853,8 +862,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[227570] = Defaults(), -- Dark Discharge
 
 	-- Helya
+		[228883] = Defaults(5), -- Unholy Reckoning (Trash)
 		[227903] = Defaults(), -- Orb of Corruption
 		[228058] = Defaults(), -- Orb of Corrosion
+		[229119] = Defaults(), -- Orb of Corrosion
 		[228054] = Defaults(), -- Taint of the Sea
 		[193367] = Defaults(), -- Fetid Rot
 		[227982] = Defaults(), -- Bilewater Redox
