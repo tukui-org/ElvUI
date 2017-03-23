@@ -95,7 +95,9 @@ local function LoadSkin()
 	S:HandleButton(OpenMailReplyButton)
 	S:HandleButton(OpenMailDeleteButton)
 	S:HandleButton(OpenMailCancelButton)
-	S:HandleButton(OpenAllMail)
+	if E.wowbuild >= 23623 then --7.2
+		S:HandleButton(OpenAllMail)
+	end
 
 	InboxFrame:StripTextures()
 	MailFrameInset:Kill()
