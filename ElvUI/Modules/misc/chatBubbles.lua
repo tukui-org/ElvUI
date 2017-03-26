@@ -169,11 +169,15 @@ function M:SkinBubble(frame)
 end
 
 function M:IsChatBubble(frame)
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
+	if not frame:IsForbidden() then
+		for i = 1, frame:GetNumRegions() do
+			local region = select(i, frame:GetRegions())
 
-		if region.GetTexture and region:GetTexture() and type(region:GetTexture() == "string") then
-			if find(strlower(region:GetTexture()), "chatbubble%-background") then return true end;
+			if region.GetTexture and region:GetTexture() and type(region:GetTexture() == "string") then
+				if find(strlower(region:GetTexture()), "chatbubble%-background") then
+					return true
+				end
+			end
 		end
 	end
 	return false
