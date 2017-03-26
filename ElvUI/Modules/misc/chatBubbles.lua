@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:GetModule('Misc');
+local M = E:GetModule('Misc', 'AceEvent-3.0');
 local CH = E:GetModule("Chat");
 
 --Cache global variables
@@ -10,6 +10,7 @@ local strlower, find, format = strlower, string.find, string.format
 local CreateFrame = CreateFrame
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, WorldFrame
@@ -179,6 +180,17 @@ function M:IsChatBubble(frame)
 	return false
 end
 
+local NamePlatesCached = {}
+function M:NamePlateCache(event, unit)
+	local frame = GetNamePlateForUnit(unit, true);
+	if event == "FORBIDDEN_NAME_PLATE_UNIT_ADDED" then
+		NamePlatesCached[frame] = true
+	elseif event == "FORBIDDEN_NAME_PLATE_UNIT_REMOVED" then
+		NamePlatesCached[frame] = nil
+	end
+end
+
+
 local numChildren = 0
 function M:LoadChatBubbles()
 	if E.private.general.bubbles == false then
@@ -200,12 +212,23 @@ function M:LoadChatBubbles()
 		if(count ~= numChildren) then
 			for i = numChildren + 1, count do
 				local frame = select(i, WorldFrame:GetChildren())
-				
-				if M:IsChatBubble(frame) then
-					M:SkinBubble(frame)
+				if E.wowbuild >= 23623 then --7.2
+					if not NamePlatesCached[frame] then
+						if M:IsChatBubble(frame) then
+							M:SkinBubble(frame)
+						end
+					end
+				else
+					if M:IsChatBubble(frame) then
+						M:SkinBubble(frame)
+					end
 				end
 			end
 			numChildren = count
 		end
 	end)
+	if E.wowbuild >= 23623 then --7.2
+		M:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_ADDED", "NamePlateCache")
+		M:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_REMOVED", "NamePlateCache")
+	end
 end
