@@ -1311,7 +1311,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1));
 				local linkDisplayText = ("[%s]"):format(arg2);
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
-				self:AddMessage(format(Var.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(GlobalStrings.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
