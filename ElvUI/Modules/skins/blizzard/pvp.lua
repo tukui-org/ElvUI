@@ -51,6 +51,14 @@ local function LoadSkin()
 	HonorFrame.BonusFrame.AshranButton.SelectedTexture:SetInside()
 	HonorFrame.BonusFrame.AshranButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
+	if E.wowbuild >= 23623 then --7.2
+		HonorFrame.BonusFrame.BrawlButton:StripTextures()
+		HonorFrame.BonusFrame.BrawlButton:SetTemplate()
+		HonorFrame.BonusFrame.BrawlButton:StyleButton(nil, true)
+		HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetInside()
+		HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	end
+
 	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
 	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
 

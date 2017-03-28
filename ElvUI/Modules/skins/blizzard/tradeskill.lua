@@ -63,7 +63,12 @@ local function LoadSkin()
 			ResultIcon:GetNormalTexture():SetInside()
 		end
 		ResultIcon:SetTemplate("Default")
-		ResultIcon.Background:SetTexture(nil)
+		if E.wowbuild >= 23623 then --7.2
+			ResultIcon.IconBorder:SetTexture(nil)
+			ResultIcon.ResultBorder:SetTexture(nil)
+		else
+			ResultIcon.Background:SetTexture(nil)
+		end
 
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.Reagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]

@@ -6,7 +6,6 @@ local UF = E:GetModule('UnitFrames');
 local random = random
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitPowerType = UnitPowerType
 
 local _, ns = ...
 local ElvUF = ns.oUF

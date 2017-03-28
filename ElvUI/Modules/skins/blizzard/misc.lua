@@ -761,6 +761,9 @@ local function LoadSkin()
 		"AccessibilityPanelCinematicSubtitles",
 		"AccessibilityPanelColorblindMode",
 	}
+	if E.wowbuild >= 23623 then --7.2
+		table.insert(interfacecheckbox, "SocialPanelAutoAcceptQuickJoinRequests")
+	end
 
 	for i = 1, getn(interfacecheckbox) do
 		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
@@ -939,7 +942,16 @@ local function LoadSkin()
 		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
 		S:HandleButton(CompactUnitFrameProfilesSaveButton)
 		S:HandleButton(CompactUnitFrameProfilesDeleteButton)
+
+		CompactUnitFrameProfilesNewProfileDialog:StripTextures()
+		CompactUnitFrameProfilesNewProfileDialog:CreateBackdrop("Transparent")
+		S:HandleEditBox(CompactUnitFrameProfilesNewProfileDialogEditBox)
+		CompactUnitFrameProfilesNewProfileDialogEditBox:SetSize(150, 20)
+		S:HandleDropDownBox(CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
+		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCreateButton)
+		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCancelButton)
 	end
+
 	GraphicsButton:StripTextures()
 	RaidButton:StripTextures()
 	local raidcheckbox = {

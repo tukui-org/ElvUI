@@ -16,7 +16,11 @@ local function LoadSkin()
 	ArtifactFrameTab1:ClearAllPoints()
 	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 
-	ArtifactFrame.ForgeBadgeFrame.ForgeClassBadgeIcon:Hide()
+	if E.wowbuild >= 23623 then --7.2
+		ArtifactFrame.ForgeBadgeFrame.ItemIcon:Hide()
+	else
+		ArtifactFrame.ForgeBadgeFrame.ForgeClassBadgeIcon:Hide()
+	end
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 end

@@ -332,14 +332,25 @@ function AFK:Initialize()
 	self.AFKMode.bottom.model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	self.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	self.AFKMode.bottom.model:SetFacing(6)
-	self.AFKMode.bottom.model:SetScript("OnUpdateModel", function(self)
-		local timePassed = GetTime() - self.startTime
-		if(timePassed > self.duration) and self.isIdle ~= true then
-			self:SetAnimation(0)
-			self.isIdle = true
-			AFK.animTimer = AFK:ScheduleTimer("LoopAnimations", self.idleDuration)
-		end
-	end)
+	if E.wowbuild >= 23623 then --7.2
+		self.AFKMode.bottom.model:SetScript("OnUpdate", function(self)
+			local timePassed = GetTime() - self.startTime
+			if(timePassed > self.duration) and self.isIdle ~= true then
+				self:SetAnimation(0)
+				self.isIdle = true
+				AFK.animTimer = AFK:ScheduleTimer("LoopAnimations", self.idleDuration)
+			end
+		end)
+	else
+		self.AFKMode.bottom.model:SetScript("OnUpdateModel", function(self)
+			local timePassed = GetTime() - self.startTime
+			if(timePassed > self.duration) and self.isIdle ~= true then
+				self:SetAnimation(0)
+				self.isIdle = true
+				AFK.animTimer = AFK:ScheduleTimer("LoopAnimations", self.idleDuration)
+			end
+		end)
+	end
 
 	self:Toggle()
 	self.isActive = false
