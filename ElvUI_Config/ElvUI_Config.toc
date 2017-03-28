@@ -1,4 +1,4 @@
-## Interface: 70100
+## Interface: 70200
 ## Author: Elv
 ## Version: 1.04
 ## Title: |cff1784d1ElvUI Config|r
