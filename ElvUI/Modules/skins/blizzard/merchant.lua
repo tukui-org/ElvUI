@@ -33,21 +33,23 @@ local function LoadSkin()
 
 	-- skin icons / merchant slots
 	for i = 1, 12 do
-		local b = _G["MerchantItem"..i.."ItemButton"]
-		local t = _G["MerchantItem"..i.."ItemButtonIconTexture"]
-		local item_bar = _G["MerchantItem"..i]
-		item_bar:StripTextures(true)
-		item_bar:CreateBackdrop("Default")
+		local button = _G["MerchantItem"..i.."ItemButton"]
+		local icon = button.icon
+		local iconBorder = button.IconBorder
+		local item = _G["MerchantItem"..i]
+		item:StripTextures(true)
+		item:CreateBackdrop("Default")
 
-		b:StripTextures()
-		b:StyleButton(false)
-		b:SetTemplate("Default", true)
-		b:Point("TOPLEFT", item_bar, "TOPLEFT", 4, -4)
-		t:SetTexCoord(unpack(E.TexCoords))
-		t:SetInside()
+		button:StripTextures()
+		button:StyleButton(false)
+		button:SetTemplate("Default", true)
+		button:Point("TOPLEFT", item, "TOPLEFT", 4, -4)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetInside()
+		iconBorder:SetAlpha(0)
 
 		_G["MerchantItem"..i.."MoneyFrame"]:ClearAllPoints()
-		_G["MerchantItem"..i.."MoneyFrame"]:Point("BOTTOMLEFT", b, "BOTTOMRIGHT", 3, 0)
+		_G["MerchantItem"..i.."MoneyFrame"]:Point("BOTTOMLEFT", button, "BOTTOMRIGHT", 3, 0)
 
 	end
 
@@ -57,6 +59,7 @@ local function LoadSkin()
 	MerchantBuyBackItemItemButton:SetTemplate("Default", true)
 	MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	MerchantBuyBackItemItemButtonIconTexture:SetInside()
+	MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 
 
 	MerchantRepairItemButton:StyleButton(false)
