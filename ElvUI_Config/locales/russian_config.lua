@@ -661,6 +661,7 @@ L["BG Score"] = "Таблица ПБ"
 L["Black Market AH"] = "Черный Рынок"
 L["Calendar Frame"] = "Календарь"
 L["Character Frame"] = "Окно персонажа"
+L["Contribution"] = true;
 L["Death Recap"] = "Информация о смерти"
 L["Debug Tools"] = "Инструменты отладки"
 L["Dressing Room"] = "Примерочная"

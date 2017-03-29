@@ -662,6 +662,7 @@ L["BG Score"] = "戰場積分"
 L["Black Market AH"] = "黑市"
 L["Calendar Frame"] = "行事曆"
 L["Character Frame"] = "角色"
+L["Contribution"] = true;
 L["Death Recap"] = "死亡回放"
 L["Debug Tools"] = "除錯工具"
 L["Dressing Room"] = "試衣間"

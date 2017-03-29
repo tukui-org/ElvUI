@@ -651,6 +651,7 @@ L["BG Score"] = true;
 L["Black Market AH"] = true;
 L["Calendar Frame"] = true;
 L["Character Frame"] = true;
+L["Contribution"] = true;
 L["Death Recap"] = true;
 L["Debug Tools"] = true;
 L["Dressing Room"] = true;

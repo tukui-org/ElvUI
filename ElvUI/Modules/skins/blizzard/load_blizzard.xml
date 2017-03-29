@@ -15,6 +15,7 @@
 	<Script file='calendar.lua'/>
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
+	<Script file='Contribution.lua'/>
 	<Script file='deathRecap.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='dressingroom.lua'/>

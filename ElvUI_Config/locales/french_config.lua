@@ -662,6 +662,7 @@ L["BG Score"] = "Scores Champs de bataille"
 L["Black Market AH"] = "HV du marché noir"
 L["Calendar Frame"] = "Fenêtre du Calendrier"
 L["Character Frame"] = "Fenêtre du Personnage"
+L["Contribution"] = true;
 L["Death Recap"] = "Récapitulatif lors de la mort";
 L["Debug Tools"] = "Outils de débogage"
 L["Dressing Room"] = "Cabine d'essayage"

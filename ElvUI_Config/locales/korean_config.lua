@@ -710,6 +710,7 @@ L["BG Score"] = "전장 점수판"
 L["Black Market AH"] = "암시장"
 L["Calendar Frame"] = "달력"
 L["Character Frame"] = "캐릭터 창"
+L["Contribution"] = true;
 L["Death Recap"] = DEATH_RECAP
 L["Debug Tools"] = "오류 확인 창"
 L["Dressing Room"] = "아이템 미리보기 창"
