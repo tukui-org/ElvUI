@@ -349,6 +349,11 @@ E.Options.args.skins = {
 					name = OBLITERUM_FORGE_TITLE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Contribution = {
+					type = "toggle",
+					name = L["Contribution"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
