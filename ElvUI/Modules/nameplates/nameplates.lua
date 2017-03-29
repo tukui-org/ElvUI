@@ -861,7 +861,13 @@ function mod:Initialize()
 	self:UpdateCVars()
 	InterfaceOptionsNamesPanelUnitNameplates:Kill()
 	NamePlateDriverFrame:UnregisterAllEvents()
-	NamePlateDriverFrame.ApplyFrameOptions = E.noop
+	NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
+
+	--We need to re-register these in order for default nameplates to show in dungeons and raids
+	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_CREATED")
+	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_ADDED")
+	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_REMOVED")
+
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("NAME_PLATE_CREATED");
@@ -880,7 +886,7 @@ function mod:Initialize()
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
-	self:SetBaseNamePlateSize()
+	self:SetBaseNamePlateSize() --This taints and prevents default nameplates in dungeons and raids
 
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
