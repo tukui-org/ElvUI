@@ -298,6 +298,7 @@ local function LoadSkin()
 
 	--Honor progress bar
 	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
+	PlayerTalentFramePVPTalents.XPBar.Bar.Spark:SetAlpha(0)
 
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:StripTextures()
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:CreateBackdrop("Default")
