@@ -643,6 +643,10 @@ local function LoadSecondarySkin()
 	ChallengesFrame.GuildBest:StripTextures()
 	ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
 	ChallengesFrame.GuildBest.Line:Hide()
+	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
+	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
+	ChallengesFrame.GuildBest:ClearAllPoints()
+	ChallengesFrame.GuildBest:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 50)
 
 	-- Mythic+ KeyStoneFrame
 	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
