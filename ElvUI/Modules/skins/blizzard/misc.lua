@@ -266,17 +266,6 @@ local function LoadSkin()
 
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
-		S:HandleDropDownBox(MovieRecordingOptionsFrameResolutionDropDown)
-		S:HandleDropDownBox(MovieRecordingOptionsFrameFramerateDropDown)
-		S:HandleDropDownBox(MovieRecordingOptionsFrameCodecDropDown)
-
-		S:HandleButton(MovieRecordingOptionsButtonCompress)
-		S:HandleSliderFrame(MovieRecordingOptionsFrameQualitySlider)
-
-		for i=1, 6 do
-			S:HandleCheckBox(_G["MovieRecordingOptionsFrameCheckButton"..i])
-		end
-
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton9)
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton10)
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton11)
