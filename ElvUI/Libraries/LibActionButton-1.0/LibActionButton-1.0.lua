@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 8
+local MINOR_VERSION = 9
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -727,6 +727,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
+	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
@@ -878,6 +879,8 @@ function OnEvent(frame, event, arg1, ...)
 				end
 			end
 		end
+	elseif event == "SPELL_UPDATE_ICON" then
+		ForAllButtons(Update, true)
 	end
 end
 
