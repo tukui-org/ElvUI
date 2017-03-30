@@ -10,16 +10,30 @@ local ipairs = ipairs
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Contribution ~= true then return end
 
+	--Main Frame
 	S:HandleCloseButton(ContributionCollectionFrame.CloseButton)
 	ContributionCollectionFrame.CloseButton.CloseButtonBackground:SetAlpha(0)
+
+	--Reward Tooltip
 	ContributionBuffTooltip:StripTextures()
 	ContributionBuffTooltip:SetTemplate("Transparent")
+	ContributionBuffTooltip:CreateBackdrop()
+	ContributionBuffTooltip:StyleButton()
+	ContributionBuffTooltip.Border:SetAlpha(0)
+	ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
+	
+	--Contribution Tooltip
 	ContributionTooltip:StripTextures()
 	ContributionTooltip:CreateBackdrop("Transparent")
+	ContributionTooltip.ItemTooltip.IconBorder:SetAlpha(0)
+	ContributionTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	ContributionTooltip.ItemTooltip:CreateBackdrop()
+	ContributionTooltip.ItemTooltip.backdrop:SetOutside(ContributionTooltip.ItemTooltip.Icon)
 
 	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(self)
+		-- Skin the Contribute Buttons
 		if (not self.isSkinned) then
-			-- Skin the ContributeButtons
 			S:HandleButton(self.ContributeButton)
 			self.isSkinned = true
 		end
@@ -33,11 +47,13 @@ local function LoadSkin()
 			statusBar.isSkinned = true
 		end
 	end)
-	
+
+	--Skin the reward icons
 	hooksecurefunc(ContributionMixin, "AddReward", function(self, _, rewardID)
 		local reward = self:FindOrAcquireReward(rewardID);
 		if (reward and not reward.isSkinned) then
-			reward:CreateBackdrop("Default", true)
+			reward:SetFrameLevel(5)
+			reward:CreateBackdrop()
 			reward:StyleButton()
 			reward.Border:SetAlpha(0)
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
