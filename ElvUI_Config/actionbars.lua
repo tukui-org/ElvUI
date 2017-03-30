@@ -705,7 +705,7 @@ E.Options.args.actionbar = {
 					type = 'range',
 					name = L["Buttons Per Row"],
 					desc = L["The amount of buttons to display per row."],
-					min = 1, max = #MICRO_BUTTONS - 1, step = 1,
+					min = 1, max = #MICRO_BUTTONS, step = 1,
 				},
 			},
 		},
