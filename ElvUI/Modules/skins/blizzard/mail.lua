@@ -29,6 +29,15 @@ local function LoadSkin()
 		local t = _G["MailItem"..i.."ButtonIcon"]
 		t:SetTexCoord(unpack(E.TexCoords))
 		t:SetInside()
+
+		local ib = _G["MailItem"..i.."ButtonIconBorder"]
+		hooksecurefunc(ib, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(ib, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 	end
 
 	S:HandleCloseButton(MailFrameCloseButton)
