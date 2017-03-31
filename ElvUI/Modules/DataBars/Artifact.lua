@@ -26,25 +26,6 @@ local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame, UIParent
 
---Credit: Artifact Power (https://mods.curse.com/addons/wow/artifact-power)
-local empoweringSpellName
-local EMPOWERING_SPELL_ID = 227907
-local apString = {
-	["enUS"] = "Grants(%d+)ArtifactPowertoyourcurrentlyequippedArtifact",
-	["enGB"] = "Grants(%d+)ArtifactPowertoyourcurrentlyequippedArtifact",
-	["ptBR"] = "Concede(%d+)dePoderdoArtefatoaoartefatoequipado",
-	["esMX"] = "Otorga(%d+)pdePoderdeartefactoparaelartefactoquellevasequipado",
-	["deDE"] = "GewährtEuremderzeitausgerüstetenArtefakt(%d+)Artefaktmacht",
-	["esES"] = "Otorga(%d+)pdepoderdeartefactoalartefactoquellevesequipado",
-	["frFR"] = "Confère(%d+) pointsdepuissanceàl’armeprodigieusequevousmaniez",
-	["itIT"] = "Fornisce(%d+)PotereArtefattoall'Artefattoattualmenteequipaggiato",
-	["ruRU"] = "Добавляетиспользуемомувданныймоментартефакту(%d+)едсилыартефакта",
-	["koKR"] = "현재장착한유물에(%d+)의유물력을부여합니다",
-	["zhTW"] = "賦予你目前裝備的神兵武器(%d+)點神兵之力。",
-	["zhCN"] = "将(%d+)点神器能量注入到你当前装备的神器之中。"
-}
-local apStringLocal = apString[GetLocale()]
-
 function mod:UpdateArtifact(event, unit)
 	if not mod.db.artifact.enable then return end
 	if (event == "UNIT_INVENTORY_CHANGED" and unit ~= "player") then
@@ -181,6 +162,23 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
+local apStringValueMillion = {
+	["enUS"] = "(%d+)[%p%s]?(%d+) million",
+	["enGB"] = "(%d+)[%p%s]?(%d+) million",
+	["ptBR"] = "(%d+)[%p%s]?(%d+) milhões",
+	["esMX"] = "(%d+)[%p%s]?(%d+) millones",
+	["deDE"] = "(%d+)[%p%s]?(%d+) Millionen",
+	["esES"] = "(%d+)[%p%s]?(%d+) millones",
+	["frFR"] = "(%d+)[%p%s]?(%d+) millions",
+	["itIT"] = "(%d+)[%p%s]?(%d+) milioni",
+	["ruRU"] = "(%d+)[%p%s]?(%d+) million", --Placeholder, RU client apparently never breaks up large numbers
+	["koKR"] = "(%d+)[%p%s]?(%d+) million",
+	["zhTW"] = "(%d+)[%p%s]?(%d+) million",
+	["zhCN"] = "(%d+)[%p%s]?(%d+) million",
+}
+local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
+local empoweringSpellName
+
 --AP item caches
 local apValueCache = {}
 local apItemCache = {}
@@ -201,14 +199,21 @@ local function GetAPFromTooltip(itemLink)
 		mod.artifactBar.tooltip:SetHyperlink(itemLink)
 
 		local apFound
-		for i = #mod.artifactBar.tooltipLines, 1, -1 do
+		for i = 4,5 do
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
 			if (tooltipText) then
-				tooltipText = tooltipText:gsub("[,%.%s]", "")
-				local ap = tooltipText:match(apStringLocal) or ""
-				if (ap ~= "") then
-					apValue = tonumber(ap)
+				local digit1, digit2, ap
+				if string.match(tooltipText, apStringValueMillionLocal) then
+					digit1, digit2 = string.match(tooltipText, apStringValueMillionLocal)
+					ap = tonumber(string.format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
+				else
+					digit1, digit2 = string.match(tooltipText,"(%d+)[%p%s]?(%d+)")
+					ap = tonumber(string.format("%s%s", digit1 or "", digit2 or ""))
+				end
+
+				if (ap) then
+					apValue = ap
 					apFound = true
 					break
 				end
@@ -273,7 +278,7 @@ function mod:GetArtifactPowerInBags()
 end
 
 function mod:LoadArtifactBar()
-	empoweringSpellName = GetSpellInfo(EMPOWERING_SPELL_ID)
+	empoweringSpellName = GetSpellInfo(227907)
 
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, self.ArtifactBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
@@ -300,7 +305,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
 	self.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	self.artifactBar.tooltipLines = {}
-	for i = 1, 5 do
+	for i = 4, 5 do
 		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
 	end
 
