@@ -203,13 +203,17 @@ local function GetAPFromTooltip(itemLink)
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
 			if (tooltipText) then
-				local digit1, digit2, ap
+				local digit1, digit2, digit3, ap
 				if string.match(tooltipText, apStringValueMillionLocal) then
 					digit1, digit2 = string.match(tooltipText, apStringValueMillionLocal)
-					ap = tonumber(string.format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
+					if digit2 then
+						ap = tonumber(string.format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
+					else
+						ap = tonumber(digit1) * 1e6 --Multiply by one million
+					end
 				else
-					digit1, digit2 = string.match(tooltipText,"(%d+)[%p%s]?(%d+)")
-					ap = tonumber(string.format("%s%s", digit1 or "", digit2 or ""))
+					digit1, digit2, digit3 = string.match(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d+)")
+					ap = tonumber(string.format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
 				end
 
 				if (ap) then
@@ -229,6 +233,19 @@ local function GetAPFromTooltip(itemLink)
 
 	return apValue
 end
+
+--[[ This can be used to test if the tooltip scanning works as expected
+function TestAPExtraction(itemID)
+	local itemLink = select(2, GetItemInfo(itemID))
+	if not itemLink then --WoW client hasn't seen this item before, so run again a little later when info has been received
+		C_Timer.After(2, function() TestItemLinkForAP(itemID) end)
+		return
+	end
+
+	local apValue = GetAPFromTooltip(itemLink)
+	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
+end
+]]
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
