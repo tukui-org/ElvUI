@@ -671,6 +671,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Chronomatic Anomaly
 		[206607] = Defaults(), -- Chronometric Particles (Tank stack debuff)
 		[206609] = Defaults(), -- Time Release (Heal buff/debuff)
+		[219966] = Defaults(), -- Time Release (Heal Absorb Red)
+		[219965] = Defaults(), -- Time Release (Heal Absorb Yellow)
+		[219964] = Defaults(), -- Time Release (Heal Absorb Green)
 		[205653] = Defaults(), -- Passage of Time
 		[225901] = Defaults(), -- Time Bomb
 		[207871] = Defaults(), -- Vortex (Mythic)
