@@ -190,7 +190,7 @@ local function GetAPFromTooltip(itemLink)
 	local apValue = 0
 
 	local itemSpell = GetItemSpell(itemLink)
-	if itemSpell and itemSpell = empoweringSpellName then
+	if itemSpell and itemSpell == empoweringSpellName then
 		--Clear tooltip from previous item
 		mod.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before
