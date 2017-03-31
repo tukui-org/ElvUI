@@ -93,11 +93,13 @@ local function LoadSkin()
 		end
 	end)
 
+	-- The Icon Border should be in Quality Color
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
 		local rewardButton = rewardsFrame.RewardButtons[index];
 		if(not rewardButton.skinned) then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
+			rewardButton.IconBorder:SetAlpha(0)
 			rewardButton:CreateBackdrop("Default")
 			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 			rewardButton.Icon:SetDrawLayer("OVERLAY")
