@@ -163,18 +163,18 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 local apStringValueMillion = {
-	["enUS"] = "(%d+)[%p%s]?(%d+) million",
-	["enGB"] = "(%d+)[%p%s]?(%d+) million",
-	["ptBR"] = "(%d+)[%p%s]?(%d+) milhões",
-	["esMX"] = "(%d+)[%p%s]?(%d+) millones",
-	["deDE"] = "(%d+)[%p%s]?(%d+) Millionen",
-	["esES"] = "(%d+)[%p%s]?(%d+) millones",
-	["frFR"] = "(%d+)[%p%s]?(%d+) millions",
-	["itIT"] = "(%d+)[%p%s]?(%d+) milioni",
-	["ruRU"] = "(%d+)[%p%s]?(%d+) млн",
-	["koKR"] = "(%d+)[%p%s]?(%d+) million",
-	["zhTW"] = "(%d+)[%p%s]?(%d+) million",
-	["zhCN"] = "(%d+)[%p%s]?(%d+) million",
+	["enUS"] = "(%d+)[%p%s]?[(%d+)]? million",
+	["enGB"] = "(%d+)[%p%s]?[(%d+)]? million",
+	["ptBR"] = "(%d+)[%p%s]?[(%d+)]? [[milhão][milhões]]?",
+	["esMX"] = "(%d+)[%p%s]?[(%d+)]? [[millón][millones]]?",
+	["deDE"] = "(%d+)[%p%s]?[(%d+)]? [[Million][Millionen]]?",
+	["esES"] = "(%d+)[%p%s]?[(%d+)]? [[millón][millones]]?",
+	["frFR"] = "(%d+)[%p%s]?[(%d+)]? [[million][millions]]?",
+	["itIT"] = "(%d+)[%p%s]?[(%d+)]? [[milione][milioni]]?",
+	["ruRU"] = "(%d+)[%p%s]?[(%d+)]? млн",
+	["koKR"] = "(%d+)[%p%s]?[(%d+)]?만",
+	["zhTW"] = "(%d+)[%p%s]?[(%d+)]?萬",
+	["zhCN"] = "(%d+)[%p%s]?[(%d+)]?万",
 }
 local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
 local empoweringSpellName
@@ -190,7 +190,7 @@ local function GetAPFromTooltip(itemLink)
 	local apValue = 0
 
 	local itemSpell = GetItemSpell(itemLink)
-	if itemSpell and itemSpell == empoweringSpellName then
+	if itemSpell and itemSpell == "Refreshment" --empoweringSpellName then
 		--Clear tooltip from previous item
 		mod.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before
