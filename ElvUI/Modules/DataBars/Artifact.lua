@@ -111,9 +111,9 @@ function mod:ArtifactBar_OnEnter()
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
 
-	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%d%%)', xp, xpForNextPoint, xp/xpForNextPoint * 100), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d %s)', xpForNextPoint - xp, remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %d (%d%% - %d %s)', apInBags, apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%d%%)', BreakUpLargeNumbers(xp), BreakUpLargeNumbers(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', BreakUpLargeNumbers(xpForNextPoint - xp), remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %d %s)', BreakUpLargeNumbers(apInBags), apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(format(ARTIFACT_POWER_TOOLTIP_BODY, numPointsAvailableToSpend), nil, nil, nil, true)
 
