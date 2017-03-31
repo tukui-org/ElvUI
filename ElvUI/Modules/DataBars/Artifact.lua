@@ -8,6 +8,7 @@ local _G = _G
 local tonumber, select, pcall = tonumber, select, pcall
 local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
 --WoW API / Variables
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_ArtifactUI_GetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemLink = GetContainerItemLink
