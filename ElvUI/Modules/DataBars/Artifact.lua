@@ -164,18 +164,18 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 local apStringValueMillion = {
-	["enUS"] = "(%d+)[%p%s]?[(%d+)]? million",
-	["enGB"] = "(%d+)[%p%s]?[(%d+)]? million",
-	["ptBR"] = "(%d+)[%p%s]?[(%d+)]? [[milhão][milhões]]?",
-	["esMX"] = "(%d+)[%p%s]?[(%d+)]? [[millón][millones]]?",
-	["deDE"] = "(%d+)[%p%s]?[(%d+)]? [[Million][Millionen]]?",
-	["esES"] = "(%d+)[%p%s]?[(%d+)]? [[millón][millones]]?",
-	["frFR"] = "(%d+)[%p%s]?[(%d+)]? [[million][millions]]?",
-	["itIT"] = "(%d+)[%p%s]?[(%d+)]? [[milione][milioni]]?",
-	["ruRU"] = "(%d+)[%p%s]?[(%d+)]? млн",
-	["koKR"] = "(%d+)[%p%s]?[(%d+)]?만",
-	["zhTW"] = "(%d+)[%p%s]?[(%d+)]?萬",
-	["zhCN"] = "(%d+)[%p%s]?[(%d+)]?万",
+	["enUS"] = "(%d*%.?%d+) million",
+	["enGB"] = "(%d*%.?%d+) million",
+	["ptBR"] = "(%d*%.?%d+) [[milhão][milhões]]?",
+	["esMX"] = "(%d*%.?%d+) [[millón][millones]]?",
+	["deDE"] = "(%d*%.?%d+) [[Million][Millionen]]?",
+	["esES"] = "(%d*%.?%d+) [[millón][millones]]?",
+	["frFR"] = "(%d*%.?%d+) [[million][millions]]?",
+	["itIT"] = "(%d*%.?%d+) [[milione][milioni]]?",
+	["ruRU"] = "(%d*%.?%d+) млн",
+	["koKR"] = "(%d*%.?%d+)만",
+	["zhTW"] = "(%d*%.?%d+)萬",
+	["zhCN"] = "(%d*%.?%d+)万",
 }
 local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
 local empoweringSpellName
@@ -206,12 +206,7 @@ local function GetAPFromTooltip(itemLink)
 			if (tooltipText) then
 				local digit1, digit2, digit3, ap
 				if string.match(tooltipText, apStringValueMillionLocal) then
-					digit1, digit2 = string.match(tooltipText, apStringValueMillionLocal)
-					if digit2 then
-						ap = tonumber(string.format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
-					else
-						ap = tonumber(digit1) * 1e6 --Multiply by one million
-					end
+					ap = tonumber(string.match(tooltipText, apStringValueMillionLocal)) * 1e6 --Multiply by one million
 				else
 					digit1, digit2, digit3 = string.match(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d+)")
 					ap = tonumber(string.format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
@@ -235,18 +230,19 @@ local function GetAPFromTooltip(itemLink)
 	return apValue
 end
 
---[[ This can be used to test if the tooltip scanning works as expected
-function TestAPExtraction(itemID)
+--This can be used to test if the tooltip scanning works as expected
+--/run ElvUI[1].DataBars:TestAPExtraction(147203)
+--/run ElvUI[1].DataBars:TestAPExtraction(140307)
+function mod:TestAPExtraction(itemID)
 	local itemLink = select(2, GetItemInfo(itemID))
 	if not itemLink then --WoW client hasn't seen this item before, so run again a little later when info has been received
-		C_Timer.After(2, function() TestItemLinkForAP(itemID) end)
+		C_Timer.After(2, function() mod:TestAPExtraction(itemID) end)
 		return
 	end
 
 	local apValue = GetAPFromTooltip(itemLink)
 	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
 end
-]]
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
