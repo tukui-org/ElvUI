@@ -96,8 +96,18 @@ local function LoadSkin()
 			_G["StaticPopup"..i.."ItemFrame"]:GetNormalTexture():Kill()
 			_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
 			_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
+			_G["StaticPopup"..i.."ItemFrame"].IconBorder:SetAlpha(0)
 			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside()
+
+			-- Quality IconBorder
+			hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(self, r, g, b)
+ 				self:GetParent():SetBackdropBorderColor(r, g, b)
+ 				self:SetTexture("")
+ 			end)
+ 			hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
+ 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 		end
 	end
 
