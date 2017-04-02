@@ -40,7 +40,7 @@ function mod:UpdateReputation(event)
 			min, max, value = 0, threshold, currentValue
 		end
 	end
-	
+
 	local numFactions = GetNumFactions();
 
 	if not name or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
@@ -81,12 +81,18 @@ function mod:UpdateReputation(event)
 			standingLabel = FactionStandingLabelUnknown
 		end
 
+		--Prevent a division by zero
+		local maxMinDiff = max - min
+		if (maxMinDiff == 0) then
+			maxMinDiff = 1
+		end
+
 		if textFormat == 'PERCENT' then
-			text = format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), isFriend and friendText or standingLabel)
+			text = format('%s: %d%% [%s]', name, ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURMAX' then
 			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURPERC' then
-			text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), isFriend and friendText or standingLabel)
+			text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CUR' then
 			text = format('%s: %s [%s]', name, E:ShortValue(value - min), isFriend and friendText or standingLabel)
 		elseif textFormat == 'REM' then
@@ -94,7 +100,7 @@ function mod:UpdateReputation(event)
 		elseif textFormat == 'CURREM' then
 			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURPERCREM' then
-			text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+			text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
 		end
 
 		bar.text:SetText(text)
