@@ -200,7 +200,7 @@ local function GetAPFromTooltip(itemLink)
 		mod.artifactBar.tooltip:SetHyperlink(itemLink)
 
 		local apFound
-		for i = 4,5 do
+		for i = #mod.artifactBar.tooltipLines, 1, -1 do
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
 			if (tooltipText) then
@@ -326,7 +326,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
 	self.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	self.artifactBar.tooltipLines = {}
-	for i = 4, 5 do
+	for i = 1, 5 do
 		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
 	end
 
