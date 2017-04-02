@@ -205,18 +205,18 @@ local function GetAPFromTooltip(itemLink)
 
 			if (tooltipText) then
 				local digit1, digit2, digit3, ap
-				local value = string.match(tooltipText, apStringValueMillionLocal)
+				local value = strmatch(tooltipText, apStringValueMillionLocal)
 
 				if (value) then
-					digit1, digit2 = string.match(value, "(%d+)[%p%s](%d+)")
+					digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
 					if (digit1 and digit2) then
-						ap = tonumber(string.format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
+						ap = tonumber(format("%s.%s", digit1, digit2)) * 1e6 --Multiply by one million
 					else
 						ap = tonumber(value) * 1e6 --Multiply by one million
 					end 
 				else
-					digit1, digit2, digit3 = string.match(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d+)")
-					ap = tonumber(string.format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
+					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d+)")
+					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
 				end
 
 				if (ap) then
