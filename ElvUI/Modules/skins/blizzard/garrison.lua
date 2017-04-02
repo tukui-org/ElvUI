@@ -98,7 +98,6 @@ local function LoadSkin()
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	CapacitiveDisplay.ShipmentIconFrame:SetTemplate("Default", true)
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetInside()
 	--Fix unitframes appearing above work orders
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
