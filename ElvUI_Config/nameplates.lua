@@ -942,7 +942,7 @@ E.Options.args.nameplate = {
 							order = 11,
 							type = "group",
 							guiInline = true,
-							name = L["Targeted NamePlate"],
+							name = L["Targeted Nameplate"],
 							get = function(info) return E.db.nameplates[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
 							args = {
