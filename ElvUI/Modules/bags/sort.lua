@@ -375,6 +375,8 @@ local function ConvertLinkToID(link)
 
 	if tonumber(match(link, "item:(%d+)")) then
 		return tonumber(match(link, "item:(%d+)"));
+	elseif tonumber(match(link, "keystone:(%d+)")) then
+		return tonumber(match(link, "keystone:(%d+)")), nil, true
 	else
 		return tonumber(match(link, "battlepet:(%d+)")), true;
 	end
@@ -417,18 +419,24 @@ end
 function B:ScanBags()
 	for _, bag, slot in B.IterateBags(allBags) do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local itemID, isBattlePet = ConvertLinkToID(B:GetItemLink(bag, slot))
+		local itemID, isBattlePet, isKeystone = ConvertLinkToID(B:GetItemLink(bag, slot))
 		if itemID then
 			if isBattlePet then
 				bagPetIDs[bagSlot] = itemID
 				bagMaxStacks[bagSlot] = 1
+			elseif isKeystone then
+				bagMaxStacks[bagSlot] = 1
+				bagQualities[bagSlot] = 4
+				bagStacks[bagSlot] = 1
 			else
 				bagMaxStacks[bagSlot] = select(8, GetItemInfo(itemID))
 			end
 
 			bagIDs[bagSlot] = itemID
-			bagQualities[bagSlot] = select(3, GetItemInfo(B:GetItemLink(bag, slot)))
-			bagStacks[bagSlot] = select(2, B:GetItemInfo(bag, slot))
+			if not isKeystone then
+				bagQualities[bagSlot] = select(3, GetItemInfo(B:GetItemLink(bag, slot)))
+				bagStacks[bagSlot] = select(2, B:GetItemInfo(bag, slot))
+			end
 		end
 	end
 end
