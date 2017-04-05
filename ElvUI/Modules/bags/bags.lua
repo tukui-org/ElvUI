@@ -1548,7 +1548,7 @@ function B:OpenBank()
 	BankFrame:Show()
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
-	self.BagFrame:Show();
+	self:OpenBags()
 	self:UpdateTokens()
 
 	--Allow opening reagent tab directly by holding Shift
