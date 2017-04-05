@@ -32,6 +32,7 @@ local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
 local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
+local UnitCastingInfo = UnitCastingInfo
 local UnitFactionGroup = UnitFactionGroup
 local UnitIsAFK = UnitIsAFK
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
