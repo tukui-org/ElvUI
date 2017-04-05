@@ -57,14 +57,8 @@ local function LoadSkin()
 					local region = select(i, button:GetRegions())
 					if region:GetObjectType() == "Texture" then
 						if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
-							and region ~= button.AbilityHighlight then
-							if E.wowbuild >= 23623 then --7.2
-								if region ~= button.SpellHighlightTexture then
-									region:SetTexture(nil)
-								end
-							else
-								region:SetTexture(nil)
-							end
+						  and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
+							region:SetTexture(nil)
 						end
 					end
 				end

@@ -8,12 +8,8 @@ local _G = _G
 local format = format
 
 --WoW API / Variables
-local C_Reputation_GetFactionParagonInfo
-local C_Reputation_IsFactionParagon
-if E.wowbuild >= 23623 then --7.2
-	C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
-	C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
-end
+local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
+local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
@@ -34,11 +30,10 @@ function mod:UpdateReputation(event)
 	local ID
 	local isFriend, friendText, standingLabel
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if E.wowbuild >= 23623 then --7.2
-		if (C_Reputation_IsFactionParagon(factionID)) then
-			local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-			min, max, value = 0, threshold, currentValue
-		end
+
+	if (C_Reputation_IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+		min, max, value = 0, threshold, currentValue
 	end
 
 	local numFactions = GetNumFactions();
@@ -115,12 +110,12 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if E.wowbuild >= 23623 then --7.2
-		if (C_Reputation_IsFactionParagon(factionID)) then
-			local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-			min, max, value = 0, threshold, currentValue
-		end
+
+	if (C_Reputation_IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+		min, max, value = 0, threshold, currentValue
 	end
+
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 	if name then
 		GameTooltip:AddLine(name)

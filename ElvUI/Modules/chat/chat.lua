@@ -107,27 +107,6 @@ local GlobalStrings = {
 	["RAID_WARNING"] = RAID_WARNING,
 }
 
-if not (E.wowbuild >= 23623) then --7.1.5
-	--Provide copies of GetPlayerLink and GetBNPlayerLink for patch 7.1.5 backwards compatibility
-	local function FormatLink(linkType, linkDisplayText, ...)
-		local linkFormatTable = { ("|H%s"):format(linkType), ... };
-		return tconcat(linkFormatTable, ":") .. ("|h%s|h"):format(linkDisplayText);
-	end
-
-	function GetPlayerLink(characterName, linkDisplayText, lineID, chatType, chatTarget)
-		-- Use simplified link if possible
-		if lineID or chatType or chatTarget then
-			return FormatLink("player", linkDisplayText, characterName, lineID or 0, chatType or 0, chatTarget or "");
-		else
-			return FormatLink("player", linkDisplayText, characterName);
-		end
-	end
-
-	function GetBNPlayerLink(name, linkDisplayText, bnetIDAccount, lineID, chatType, chatTarget)
-		return FormatLink("BNplayer", linkDisplayText, name, bnetIDAccount, lineID or 0, chatType, chatTarget);
-	end
-end
-
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetColoredName, LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
 -- GLOBALS: LeftChatPanel, LeftChatToggleButton, ChatFrame1, ChatTypeInfo, ChatMenu

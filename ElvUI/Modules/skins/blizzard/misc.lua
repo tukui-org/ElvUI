@@ -740,6 +740,7 @@ local function LoadSkin()
 		"SocialPanelProfanityFilter",
 		"SocialPanelSpamFilter",
 		"SocialPanelEnableTwitter",
+		"SocialPanelAutoAcceptQuickJoinRequests",
 		-- ActionBars
 		"ActionBarsPanelLockActionBars",
 		"ActionBarsPanelAlwaysShowActionBars",
@@ -766,9 +767,6 @@ local function LoadSkin()
 		"AccessibilityPanelCinematicSubtitles",
 		"AccessibilityPanelColorblindMode",
 	}
-	if E.wowbuild >= 23623 then --7.2
-		table.insert(interfacecheckbox, "SocialPanelAutoAcceptQuickJoinRequests")
-	end
 
 	for i = 1, getn(interfacecheckbox) do
 		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
