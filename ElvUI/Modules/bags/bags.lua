@@ -1545,6 +1545,9 @@ function B:OpenBank()
 		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
 	end
 
+	--Call :Layout first so all elements are created before we update
+	self:Layout(true)
+
 	BankFrame:Show()
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
@@ -1559,8 +1562,6 @@ function B:OpenBank()
 		self.BankFrame.editBox:Point('RIGHT', self.BankFrame.depositButton, 'LEFT', -5, 0);
 		self.BankFrame.bagText:SetText(L["Reagent Bank"])
 	end
-
-	self:Layout(true)
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
