@@ -74,7 +74,7 @@ local Update = function(self, event, unit)
 
 
 	local maxHealth = UnitHealthMax("player")
-	local stagger = UnitStagger("player")
+	local stagger = UnitStagger("player") or 0 --For some reason stagger sometimes is nil
 	local staggerPercent = stagger / maxHealth
 
 	element:SetMinMaxValues(0, maxHealth)
