@@ -332,6 +332,25 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
+	-- Taken from AddOnSkins
+	for i = 1, 3 do
+		for j = 1, 6 do
+			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:StripTextures()
+			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:SetFrameLevel(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:GetFrameLevel() + 2)
+			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:CreateBackdrop("Default")
+			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border:Kill()
+			hooksecurefunc(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border, 'SetAtlas', function(self, texture)
+				local color = E.media.bordercolor
+				if texture == "transmog-wardrobe-border-uncollected" then
+					color = { 1, 1, 0}
+				elseif texture == "transmog-wardrobe-border-unusable" then
+					color = { 1, 0, 0}
+				end
+				self:GetParent().backdrop:SetBackdropBorderColor(unpack(color))
+			end)
+		end
+	end
+
 	--Sets
 	WardrobeCollectionFrame.SetsCollectionFrame.RightInset:StripTextures()
 	WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
@@ -405,7 +424,7 @@ local function LoadSkin()
 		WardrobeTransmogFrame.Model.SlotButtons[i].Border:Kill()
 		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
 	end
-	
+
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
 	WardrobeTransmogFrame.SpecButton:SetPoint("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
@@ -417,6 +436,14 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
+
+	-- Taken from AddOnSkins
+	for i = 1, 2 do
+		for j = 1, 4 do
+			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:StripTextures()
+			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop("Default")
+		end
+	end
 
 	-- Outfit Edit Frame
 	WardrobeOutfitEditFrame:StripTextures()
