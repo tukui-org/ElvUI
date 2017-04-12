@@ -795,6 +795,41 @@ function TT:Initialize()
 	
 	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
 	playerGUID = UnitGUID("player")
+
+	-- Tooltip Statusbars
+	local function SkinTooltipStatusBar()
+		local bar = _G["WorldMapTaskTooltipStatusBar"].Bar
+		local label = bar.Label
+
+		if bar then
+			bar:StripTextures()
+			bar:SetStatusBarTexture(E["media"].normTex)
+			bar:SetTemplate("Transparent")
+			E:RegisterStatusBar(bar)
+
+			label:ClearAllPoints()
+			label:Point("CENTER", bar, 0, 0)
+			label:SetDrawLayer("OVERLAY")
+		end
+	end
+	hooksecurefunc("TaskPOI_OnEnter", SkinTooltipStatusBar)
+
+	local function SkinTooltipReputationBar()
+		local bar = _G["ReputationParagonTooltipStatusBar"].Bar
+		local label = bar.Label
+
+		if bar then
+			bar:StripTextures()
+			bar:SetStatusBarTexture(E["media"].normTex)
+			bar:SetTemplate("Transparent")
+			E:RegisterStatusBar(bar)
+
+			label:ClearAllPoints()
+			label:Point("CENTER", bar, 0, 0)
+			label:SetDrawLayer("OVERLAY")
+		end
+	end
+	hooksecurefunc("ReputationParagonFrame_SetupParagonTooltip", SkinTooltipReputationBar)
 end
 
 E:RegisterModule(TT:GetName())
