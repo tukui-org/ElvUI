@@ -111,9 +111,47 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleDropDownBox(FriendsFrameStatusDropDown,70)
+	S:HandleDropDownBox(FriendsFrameStatusDropDown, 70)
+	FriendsFrameStatusDropDown:ClearAllPoints()
+	FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", 10, -28)
 
 	FriendsFrameBattlenetFrame:StripTextures()
+	FriendsFrameBattlenetFrame:GetRegions():Hide()
+
+	FriendsTabHeaderSoRButton:SetPushedTexture("")
+	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
+
+	local SoRBg = CreateFrame("Frame", nil, FriendsTabHeaderSoRButton)
+	SoRBg:Point("TOPLEFT", -1, 1)
+	SoRBg:Point("BOTTOMRIGHT", 1, -1)
+
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
+
+	FriendsFrameBattlenetFrame.Tag:SetParent(FriendsListFrame)
+	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
+
+	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
+		if BNFeaturesEnabled() then
+			local frame = FriendsFrameBattlenetFrame
+
+			frame.BroadcastButton:Hide()
+
+			if BNConnected() then
+				frame:Hide()
+				FriendsFrameBroadcastInput:Show()
+				FriendsFrameBroadcastInput_UpdateDisplay()
+			end
+		end
+	end)
+	FriendsFrame_CheckBattlenetStatus()
+
+	hooksecurefunc("FriendsFrame_Update", function()
+		if FriendsFrame.selectedTab == 1 and FriendsTabHeader.selectedTab == 1 and FriendsFrameBattlenetFrame.Tag:IsShown() then
+			FriendsFrameTitleText:Hide()
+		else
+			FriendsFrameTitleText:Show()
+		end
+	end)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:CreateBackdrop()
 	FriendsFrameBattlenetFrame.BroadcastButton:Size(17)
