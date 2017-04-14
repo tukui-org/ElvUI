@@ -342,7 +342,7 @@ E.Options.args.general = {
 					type = "color",
 					order = 31,
 					name = L["Border Color"],
-					desc = L["Main border color of the UI. |cffFF0000This is disabled if you are using the Thin Border Theme.|r"],
+					desc = L["Main border color of the UI."],
 					hasAlpha = false,
 					get = function(info)
 						local t = E.db.general[ info[#info] ]
@@ -356,7 +356,6 @@ E.Options.args.general = {
 						E:UpdateMedia()
 						E:UpdateBorderColors()
 					end,
-					disabled = function() return E.PixelMode end,
 				},
 				backdropcolor = {
 					type = "color",
