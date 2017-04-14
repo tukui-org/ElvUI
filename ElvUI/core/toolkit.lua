@@ -14,7 +14,7 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 E.mult = 1;
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
-local function GetTemplate(t, isPixelPerfectForced)
+local function GetTemplate(t)
 	backdropa = 1
 
 	if t == "ClassColor" then
@@ -35,10 +35,6 @@ local function GetTemplate(t, isPixelPerfectForced)
 		borderr, borderg, borderb = unpack(E["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
 	end
-	
-	if(isPixelPerfectForced) then
-		borderr, borderg, borderb = 0, 0, 0
-	end	
 end
 
 local function Size(frame, width, height)
@@ -105,7 +101,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
-	GetTemplate(t, f.forcePixelMode or forcePixelMode)
+	GetTemplate(t)
 
 	if(t) then
 	   f.template = t
@@ -122,6 +118,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	if(forcePixelMode) then
 		f.forcePixelMode = forcePixelMode
 	end
+
 	if t ~= "NoBackdrop" then
 		if E.private.general.pixelPerfect or f.forcePixelMode then
 			f:SetBackdrop({
@@ -198,7 +195,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	end
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
-	if not f.ignoreUpdates and not f.forcePixelMode then
+	if not f.ignoreUpdates then
 		E["frames"][f] = true
 	end
 end
