@@ -1256,6 +1256,13 @@ function E:DBConversions()
 	if E.db.nameplate then
 		E.db.nameplate = nil
 	end
+	
+	if not E.db.thinBorderColorSet then
+		if E.PixelMode then
+			E.db.general.bordercolor = {r = 0, g = 0, b = 0}
+		end
+		E.db.thinBorderColorSet = true
+	end
 end
 
 local CPU_USAGE = {}
