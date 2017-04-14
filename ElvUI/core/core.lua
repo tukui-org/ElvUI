@@ -163,7 +163,7 @@ E.ClassRole = {
 	},
 	DEMONHUNTER = {
 		[1] = "Melee",
-		[2] = "Tank"	
+		[2] = "Tank"
 	},
 }
 
@@ -207,7 +207,7 @@ function E:CheckClassColor(r, g, b)
 	return matchFound
 end
 
-function E:GetColorTable(data)	
+function E:GetColorTable(data)
 	if not data.r or not data.g or not data.b then
 		error("Could not unpack color values.")
 	end
@@ -243,8 +243,6 @@ function E:UpdateMedia()
 		E.db['general'].bordercolor.r = classColor.r
 		E.db['general'].bordercolor.g = classColor.g
 		E.db['general'].bordercolor.b = classColor.b
-	elseif E.PixelMode then
-		border = {r = 0, g = 0, b = 0}
 	end
 
 	self["media"].bordercolor = {border.r, border.g, border.b}
@@ -289,7 +287,7 @@ function E:PLAYER_REGEN_ENABLED(_)
 		for cvarName, value in pairs(self.LockedCVars) do
 			if (not self.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value)) then
 				SetCVar(cvarName, value)
-			end			
+			end
 		end
 		self.CVarUpdate = nil
 	end
@@ -301,7 +299,7 @@ local function CVAR_UPDATE(cvarName, value)
 			E.CVarUpdate = true
 			return
 		end
-		
+
 		SetCVar(cvarName, E.LockedCVars[cvarName])
 	end
 end
@@ -972,7 +970,7 @@ function E:UpdateAll(ignoreInstall)
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:EnableDisable_ArtifactBar()
 	DataBars:EnableDisable_HonorBar()
-	
+
 	local T = self:GetModule('Threat')
 	T.db = self.db.general.threat
 	T:UpdatePosition()
@@ -1010,7 +1008,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:SetDataPanelStyle()
 
 	self:GetModule('Blizzard'):SetObjectiveFrameHeight()
-	
+
 	self:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect');
@@ -1092,7 +1090,7 @@ end
 
 function E:EnterVehicleHideFrames(_, unit)
 	if unit ~= "player" then return; end
-	
+
 	for object in pairs(E.VehicleLocks) do
 		object:SetParent(E.HiddenFrame)
 	end
@@ -1100,7 +1098,7 @@ end
 
 function E:ExitVehicleShowFrames(_, unit)
 	if unit ~= "player" then return; end
-	
+
 	for object, originalParent in pairs(E.VehicleLocks) do
 		object:SetParent(originalParent)
 	end
@@ -1218,7 +1216,7 @@ function E:InitializeModules()
 end
 
 --DATABASE CONVERSIONS
-function E:DBConversions()	
+function E:DBConversions()
 	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
 	if not E.db.actionbar.backdropSpacingConverted then
 		for i = 1, 10 do
@@ -1228,10 +1226,10 @@ function E:DBConversions()
 		end
 		E.db.actionbar.barPet.backdropSpacing = E.db.actionbar.barPet.buttonspacing
 		E.db.actionbar.stanceBar.backdropSpacing = E.db.actionbar.stanceBar.buttonspacing
-		
+
 		E.db.actionbar.backdropSpacingConverted = true
 	end
-	
+
 	--Convert E.db.actionbar.showGrid to E.db.actionbar["barX"].showGrid
 	if E.db.actionbar.showGrid ~= nil then
 		local gridEnabled = E.db.actionbar.showGrid
@@ -1242,18 +1240,18 @@ function E:DBConversions()
 		end
 		E.db.actionbar.showGrid = nil
 	end
-	
+
 	--Convert old WorldMapCoordinates from boolean to new table format
 	if type(E.global.general.WorldMapCoordinates) == "boolean" then
 		local enabledState = E.global.general.WorldMapCoordinates
-		
+
 		--Remove boolean value
 		E.global.general.WorldMapCoordinates = nil
-		
+
 		--Add old enabled state
 		E.global.general.WorldMapCoordinates.enable = enabledState
 	end
-	
+
 	--Remove old nameplate settings, no need for them to take up space
 	if E.db.nameplate then
 		E.db.nameplate = nil
