@@ -111,24 +111,44 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleDropDownBox(FriendsFrameStatusDropDown, 70)
-	FriendsFrameStatusDropDown:ClearAllPoints()
-	FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", 10, -28)
+	FriendsFrame:SetTemplate('Transparent')
 
-	FriendsFrameBattlenetFrame:StripTextures()
-	FriendsFrameBattlenetFrame:GetRegions():Hide()
+	S:HandleEditBox(FriendsFriendsList)
+	S:HandleDropDownBox(FriendsFriendsFrameDropDown,150)
 
-	FriendsTabHeaderSoRButton:SetPushedTexture("")
+	FriendsTabHeaderSoRButton:SetTemplate('Default')
+	FriendsTabHeaderSoRButton:StyleButton()
+	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
+	FriendsTabHeaderSoRButtonIcon:SetInside()
+	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
 
 	local SoRBg = CreateFrame("Frame", nil, FriendsTabHeaderSoRButton)
 	SoRBg:Point("TOPLEFT", -1, 1)
 	SoRBg:Point("BOTTOMRIGHT", 1, -1)
 
+	FriendsTabHeaderRecruitAFriendButton:SetTemplate("Default")
+	FriendsTabHeaderRecruitAFriendButton:StyleButton()
+	FriendsTabHeaderRecruitAFriendButtonIcon:SetDrawLayer("OVERLAY")
+	FriendsTabHeaderRecruitAFriendButtonIcon:SetTexCoord(unpack(E.TexCoords))
+	FriendsTabHeaderRecruitAFriendButtonIcon:SetInside()
+
+	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)
+	S:HandleDropDownBox(FriendsFrameStatusDropDown, 70)
+
+	FriendsFrameStatusDropDown:ClearAllPoints()
+	FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -13, -28)
+
+	FriendsFrameBattlenetFrame:StripTextures()
+	FriendsFrameBattlenetFrame:GetRegions():Hide()
+
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
 
 	FriendsFrameBattlenetFrame.Tag:SetParent(FriendsListFrame)
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
+
+	FriendsFrameBroadcastInput:CreateBackdrop("Default")
+	FriendsFrameBroadcastInput:SetWidth(259)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
 		if BNFeaturesEnabled() then
@@ -153,6 +173,8 @@ local function LoadSkin()
 		end
 	end)
 
+	--[[
+	-- We don't need this anymore since we have an infobox in the FriendsFrame.
 	FriendsFrameBattlenetFrame.BroadcastButton:CreateBackdrop()
 	FriendsFrameBattlenetFrame.BroadcastButton:Size(17)
 	FriendsFrameBattlenetFrame.BroadcastButton:ClearAllPoints()
@@ -161,6 +183,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.BroadcastButton:GetPushedTexture():SetTexCoord(.28, .72, .28, .72)
 	FriendsFrameBattlenetFrame.BroadcastButton:GetHighlightTexture():SetTexCoord(.28, .72, .28, .72)
 	FriendsFrameBattlenetFrame.BroadcastButton:SetScript('OnClick', function() E:StaticPopup_Show("SET_BN_BROADCAST") end)
+	--]]
 
 	S:HandleEditBox(AddFriendNameEditBox)
 	AddFriendFrame:SetTemplate("Transparent")
@@ -168,6 +191,7 @@ local function LoadSkin()
 	ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
 	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
+
 
 	--Pending invites
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
@@ -192,7 +216,6 @@ local function LoadSkin()
 		ChannelRosterScrollFrame:StripTextures()
 	end
 	--BNet Frame
-	FriendsFrameBroadcastInput:CreateBackdrop("Default")
 	ChannelFrameDaughterFrameChannelName:CreateBackdrop("Default")
 	ChannelFrameDaughterFrameChannelPassword:CreateBackdrop("Default")
 
@@ -213,12 +236,9 @@ local function LoadSkin()
 
 	ChannelFrameDaughterFrame:CreateBackdrop("Transparent")
 
-	FriendsFrame:SetTemplate('Transparent')
-
 	S:HandleCloseButton(ChannelFrameDaughterFrameDetailCloseButton,ChannelFrameDaughterFrame)
 	S:HandleCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
 	S:HandleDropDownBox(WhoFrameDropDown,150)
-
 
 	--Bottom Tabs
 	for i=1, 4 do
@@ -262,24 +282,6 @@ local function LoadSkin()
 	for _, button in pairs(buttons) do
 		S:HandleButton(_G[button])
 	end
-
-	S:HandleEditBox(FriendsFriendsList)
-	S:HandleDropDownBox(FriendsFriendsFrameDropDown,150)
-
-	FriendsTabHeaderSoRButton:SetTemplate('Default')
-	FriendsTabHeaderSoRButton:StyleButton()
-	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
-	FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	FriendsTabHeaderSoRButtonIcon:SetInside()
-	FriendsTabHeaderSoRButton:Point('TOPRIGHT', FriendsTabHeader, 'TOPRIGHT', -8, -56)
-
-	FriendsTabHeaderRecruitAFriendButton:SetTemplate('Default')
-	FriendsTabHeaderRecruitAFriendButton:StyleButton()
-	FriendsTabHeaderRecruitAFriendButtonIcon:SetDrawLayer("OVERLAY")
-	FriendsTabHeaderRecruitAFriendButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	FriendsTabHeaderRecruitAFriendButtonIcon:SetInside()
-
-	S:HandleScrollBar(FriendsFrameIgnoreScrollFrameScrollBar, 4)
 
 	IgnoreListFrame:StripTextures()
 
