@@ -46,17 +46,12 @@ function UF:Configure_ClassBar(frame, cur)
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
-	local c = self.db.colors.classResources.bgColor
+	local color = self.db.colors.classResources.bgColor
 	bars.backdrop.ignoreUpdates = true
-	bars.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
-	if(not E.PixelMode) then
-		c = E.db.general.bordercolor
-		if(self.thinBorders) then
-			bars.backdrop:SetBackdropBorderColor(0, 0, 0)
-		else
-			bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
-		end
-	end
+	bars.backdrop.backdropTexture:SetVertexColor(color.r, color.g, color.b)
+
+	color = E.db.general.bordercolor
+	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
@@ -134,11 +129,11 @@ function UF:Configure_ClassBar(frame, cur)
 
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
-				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
-				if(not E.PixelMode) then
-					c = E.db.general.bordercolor
-					bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
-				end
+				bars[i].backdrop.backdropTexture:SetVertexColor(color.r, color.g, color.b)
+				
+				color = E.db.general.bordercolor
+				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+
 				bars[i]:Height(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
 					bars[i]:SetWidth(CLASSBAR_WIDTH)
