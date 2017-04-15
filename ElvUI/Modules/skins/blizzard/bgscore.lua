@@ -32,7 +32,8 @@ local function LoadSkin()
 
 	WorldStateScoreFrame.XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
 	WorldStateScoreFrame.XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
-	WorldStateScoreFrame.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
+	-- This seems to break some icons at higher prestige level. ElvUI/issue#1853
+	-- WorldStateScoreFrame.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
 end
 
 S:AddCallback("WorldStateScore", LoadSkin)

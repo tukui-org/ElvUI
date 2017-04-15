@@ -289,7 +289,7 @@ local function LoadSkin()
 			child:DisableDrawLayer("OVERLAY")
 		end
 	end
-	
+
 	-- PVP Talents
 	PlayerTalentFramePVPTalents.XPBar:StripTextures()
 	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:ClearAllPoints()
@@ -310,7 +310,8 @@ local function LoadSkin()
 	--Next Available Icon
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
+	-- This seems to break some icons at higher prestige level. ElvUI/issue#1853
+	-- PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
 
 	--Skin talent rows and buttons
 	for i = 1, MAX_PVP_TALENT_TIERS do
