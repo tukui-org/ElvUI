@@ -149,4 +149,4 @@ function D:Initialize()
 	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")
 end
 
-E:RegisterModule(D:GetName())
+-- E:RegisterModule(D:GetName())
