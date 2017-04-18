@@ -2006,6 +2006,30 @@ E.Options.args.unitframe = {
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 					args = {
+						generalGroup = {
+							order = 1,
+							type = "group",
+							guiInline = true,
+							name = L["General"],
+							args = {
+								borderColor = {
+									order = 1,
+									type = "color",
+									name = L["Border Color"],
+									get = function(info)
+										local t = E.db.unitframe.colors.borderColor
+										local d = P.unitframe.colors.borderColor
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+									end,
+									set = function(info, r, g, b)
+										local t = E.db.unitframe.colors.borderColor
+										t.r, t.g, t.b = r, g, b
+										E:UpdateMedia()
+										E:UpdateBorderColors()
+									end,
+								},
+							},
+						},
 						healthGroup = {
 							order = 7,
 							type = 'group',

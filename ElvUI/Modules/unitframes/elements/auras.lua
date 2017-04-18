@@ -56,7 +56,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default', nil, nil, UF.thinBorders)
+	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true

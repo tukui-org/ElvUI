@@ -100,7 +100,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
-local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
+local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(t)
 
 	if(t) then
@@ -117,6 +117,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	
 	if(forcePixelMode) then
 		f.forcePixelMode = forcePixelMode
+	end
+	
+	if (isUnitFrameElement) then
+		f.isUnitFrameElement = isUnitFrameElement
 	end
 
 	if t ~= "NoBackdrop" then
@@ -196,11 +200,15 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
 	if not f.ignoreUpdates then
-		E["frames"][f] = true
+		if f.isUnitFrameElement then
+			E["unitFrameElements"][f] = true
+		else
+			E["frames"][f] = true
+		end
 	end
 end
 
-local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode)
+local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	if not t then t = "Default" end
 	
 	local b = CreateFrame("Frame", nil, f)
@@ -209,7 +217,7 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode)
 	else
 		b:SetOutside()
 	end
-	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode)
+	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 
 	if f:GetFrameLevel() - 1 >= 0 then
 		b:SetFrameLevel(f:GetFrameLevel() - 1)

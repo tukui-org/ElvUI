@@ -293,7 +293,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
+	bars:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
 	local maxBars = max(UF['classMaxResourceBar'][E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
@@ -302,7 +302,7 @@ function UF:Construct_ClassBar(frame)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
+		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
 		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
@@ -363,7 +363,7 @@ end
 -------------------------------------------------------------
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
-	runes:CreateBackdrop('Default', nil, nil, self.thinBorders)
+	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		runes[i] = CreateFrame("StatusBar", frame:GetName().."RuneButton"..i, runes)
@@ -371,7 +371,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i]:SetStatusBarTexture(E['media'].blankTex)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 
-		runes[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
+		runes[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 		runes[i].backdrop:SetParent(runes)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
@@ -520,7 +520,7 @@ end
 function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame("Statusbar", nil, frame)
 	UF['statusbars'][stagger] = true
-	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
+	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
 
