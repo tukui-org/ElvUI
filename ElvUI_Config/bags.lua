@@ -131,7 +131,6 @@ E.Options.args.bags = {
 								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
-								E.db.bags[ info[#info] ] = {}
 								local t = E.db.bags[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								B:UpdateCountDisplay()
