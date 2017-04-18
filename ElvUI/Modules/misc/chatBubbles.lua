@@ -31,7 +31,7 @@ function M:UpdateBubbleBorder()
 
 	local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord
 	local text = self.text:GetText()
-	if text then
+	if text and text:match("[^%s]+") then
 		for word in text:gmatch("[^%s]+") do
 			lowerCaseWord = word:lower()
 			lowerCaseWord = lowerCaseWord:gsub("%p", "")
