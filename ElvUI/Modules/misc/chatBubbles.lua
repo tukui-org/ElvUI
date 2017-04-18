@@ -55,7 +55,9 @@ function M:UpdateBubbleBorder()
 			end
 		end
 
-		self.text:SetText(rebuiltString)
+		if rebuiltString ~= nil then
+			self.text:SetText(rebuiltString)
+		end
 	end
 end
 
