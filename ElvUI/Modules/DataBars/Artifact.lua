@@ -199,7 +199,7 @@ local function GetAPFromTooltip(itemLink)
 		mod.artifactBar.tooltip:SetHyperlink(itemLink)
 
 		local apFound
-		for i = #mod.artifactBar.tooltipLines, 1, -1 do
+		for i = 3, #mod.artifactBar.tooltipLines do
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
 			if (tooltipText) then
