@@ -330,7 +330,7 @@ end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
-	if((tt:GetOwner() ~= UIParent) and self.db.visibility.unitFrames ~= 'NONE') then
+	if((tt:GetOwner() ~= UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE') then
 		local modifier = self.db.visibility.unitFrames
 
 		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
@@ -533,7 +533,7 @@ end
 
 function TT:GameTooltip_OnTooltipSetItem(tt)
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if (self.db.visibility.bags ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Container") or find(ownerName, "ElvUI_BankContainer"))) then
+	if (self.db.visibility and self.db.visibility.bags ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Container") or find(ownerName, "ElvUI_BankContainer"))) then
 		local modifier = self.db.visibility.bags
 
 		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
