@@ -977,6 +977,8 @@ local function LoadSkin()
 		"AutoActivate40Players",
 		"AutoActivateSpec1",
 		"AutoActivateSpec2",
+		"AutoActivateSpec3",
+		"AutoActivateSpec4",
 		"AutoActivatePvP",
 		"AutoActivatePvE",
 	}
