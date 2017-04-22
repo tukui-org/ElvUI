@@ -76,8 +76,6 @@ local function LoadSkin()
 		"RP",
 		"Weekdays",
 		"Weekends",
-		"LevelAny",
-		"LevelMax",
 	}
 
 	for _, frame in pairs(checkbuttons) do
@@ -87,6 +85,8 @@ local function LoadSkin()
 	S:HandleCheckBox(GuildRecruitmentTankButton:GetChildren())
 	S:HandleCheckBox(GuildRecruitmentHealerButton:GetChildren())
 	S:HandleCheckBox(GuildRecruitmentDamagerButton:GetChildren())
+	S:HandleButton(GuildRecruitmentLevelAnyButton)
+	S:HandleButton(GuildRecruitmentLevelMaxButton)
 
 	for i=1,5 do
 		S:HandleTab(_G["GuildFrameTab"..i])
