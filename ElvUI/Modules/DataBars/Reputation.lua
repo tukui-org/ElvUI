@@ -32,8 +32,12 @@ function mod:UpdateReputation(event)
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 
 	if (C_Reputation_IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max, value = 0, threshold, currentValue
+		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+		min, max = 0, threshold
+		value = currentValue % threshold
+		if hasRewardPending then 
+			value = value + threshold
+		end
 	end
 
 	local numFactions = GetNumFactions();
@@ -112,8 +116,12 @@ function mod:ReputationBar_OnEnter()
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 
 	if (C_Reputation_IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max, value = 0, threshold, currentValue
+		local currentValue, threshold, _, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID);
+		min, max  = 0, threshold;
+		value = currentValue % threshold;
+		if hasRewardPending then 
+			value = value + threshold;
+		end
 	end
 
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
