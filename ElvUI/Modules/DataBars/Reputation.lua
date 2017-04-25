@@ -13,7 +13,6 @@ local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
-local ToggleCharacter = ToggleCharacter
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
 
