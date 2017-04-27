@@ -1670,7 +1670,7 @@ function CH:CheckKeyword(message)
 		end
 
 		if self.db.classColorMentionsChat then
-			tempWord = word:gsub("^%p-([^%p]+)([%-]-)([^%p]-)%p-$","%1%2%3")
+			tempWord = word:gsub("^%p-([^%p]+)([%-]?[^%p]-)%p-$","%1%2")
 			lowerCaseWord = tempWord:lower()
 
 			classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
