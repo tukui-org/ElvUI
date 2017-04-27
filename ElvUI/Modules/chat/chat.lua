@@ -1629,8 +1629,10 @@ function CH:ThrottleSound()
 	self.SoundPlayed = nil;
 end
 
+local protectLinks = {}
 function CH:CheckKeyword(message)
 	for itemLink in message:gmatch("|%x+|Hitem:.-|h.-|h|r") do
+		protectLinks[itemLink]=itemLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if itemLink == keyword then
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
@@ -1644,7 +1646,11 @@ function CH:CheckKeyword(message)
 		end
 	end
 
-	local classColorTable, tempWord, rebuiltString, lowerCaseWord
+	for itemLink, tempLink in pairs(protectLinks) do
+		message = message:gsub(itemLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
+	end
+
+	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
 	for word in message:gmatch("[^%s]+") do
 		lowerCaseWord = word:lower()
@@ -1664,13 +1670,15 @@ function CH:CheckKeyword(message)
 		end
 
 		if self.db.classColorMentionsChat then
-			if(CH.ClassNames[lowerCaseWord]) then
-				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
-				tempWord = word:gsub("%p", "")
-				word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
-			elseif(CH.ClassNames[word]) then
-				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[word]] or RAID_CLASS_COLORS[CH.ClassNames[word]];
-				word = word:gsub(word:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, word))
+			tempWord = word:gsub("^%p-(.-)%p-$","%1")
+			lowerCaseWord = tempWord:lower()
+
+			classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
+			wordMatch = (CH.ClassNames[lowerCaseWord] and lowerCaseWord) or (CH.ClassNames[tempWord] and tempWord:lower())
+
+			if(wordMatch and not E.global.chat.excludeNames[wordMatch]) then
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+				word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 			end
 		end
 
@@ -1680,6 +1688,11 @@ function CH:CheckKeyword(message)
 		else
 			rebuiltString = format("%s %s", rebuiltString, word)
 		end
+	end
+
+	for itemLink, tempLink in pairs(protectLinks) do
+		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), itemLink)
+		protectLinks[itemLink] = nil
 	end
 
 	return rebuiltString

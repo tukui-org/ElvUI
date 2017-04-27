@@ -29,34 +29,33 @@ function M:UpdateBubbleBorder()
 		end
 	end
 
-	local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord
-	local text = self.text:GetText()
-	if text and text:match("[^%s]+") then
-		for word in text:gmatch("[^%s]+") do
-			lowerCaseWord = word:lower()
-			lowerCaseWord = lowerCaseWord:gsub("%p", "")
+	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
+		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
+		local text = self.text:GetText()
+		if text and text:match("[^%s]+") then
+			for word in text:gmatch("[^%s]+") do
+				tempWord = word:gsub("^%p-(.-)%p-$","%1")
+				lowerCaseWord = tempWord:lower()
 
-			if E.private.general.classColorMentionsSpeech then
-				if(CH.ClassNames[lowerCaseWord]) then
-					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
-					tempWord = word:gsub("%p", "")
-					word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
-				elseif(CH.ClassNames[word]) then
-					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[word]] or RAID_CLASS_COLORS[CH.ClassNames[word]];
-					word = word:gsub(word:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..word.."\124r")
+				classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
+				wordMatch = (CH.ClassNames[lowerCaseWord] and lowerCaseWord) or (CH.ClassNames[tempWord] and tempWord:lower())
+
+				if(wordMatch and not E.global.chat.excludeNames[wordMatch]) then
+					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+				end
+
+				if not isFirstWord then
+					rebuiltString = word
+					isFirstWord = true
+				else
+					rebuiltString = format("%s %s", rebuiltString, word)
 				end
 			end
 
-			if not isFirstWord then
-				rebuiltString = word
-				isFirstWord = true
-			else
-				rebuiltString = format("%s %s", rebuiltString, word)
+			if rebuiltString ~= nil then
+				self.text:SetText(rebuiltString)
 			end
-		end
-
-		if rebuiltString ~= nil then
-			self.text:SetText(rebuiltString)
 		end
 	end
 end
