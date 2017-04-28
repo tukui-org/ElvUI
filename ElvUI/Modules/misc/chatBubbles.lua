@@ -40,7 +40,7 @@ function M:UpdateBubbleBorder()
 				classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
 				wordMatch = (CH.ClassNames[lowerCaseWord] and lowerCaseWord) or (CH.ClassNames[tempWord] and tempWord:lower())
 
-				if(wordMatch and not E.global.chat.excludeNames[wordMatch]) then
+				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
 					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
 					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end

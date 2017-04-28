@@ -28,7 +28,7 @@ G['unitframe'] = {
 }
 
 G["chat"] = {
-	["excludeNames"] = {},
+	["classColorMentionExcludedNames"] = {},
 }
 
 G["bags"] = {
