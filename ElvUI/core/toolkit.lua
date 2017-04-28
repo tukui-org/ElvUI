@@ -14,7 +14,7 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 E.mult = 1;
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
-local function GetTemplate(t)
+local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
 	if t == "ClassColor" then
@@ -29,10 +29,18 @@ local function GetTemplate(t)
 			backdropr, backdropg, backdropb, backdropa = unpack(E["media"].backdropfadecolor)
 		end
 	elseif t == "Transparent" then
-		borderr, borderg, borderb = unpack(E["media"].bordercolor)
+		if isUnitFrameElement then
+			borderr, borderg, borderb = unpack(E["media"].unitframeBorderColor)
+		else
+			borderr, borderg, borderb = unpack(E["media"].bordercolor)
+		end
 		backdropr, backdropg, backdropb, backdropa = unpack(E["media"].backdropfadecolor)
 	else
-		borderr, borderg, borderb = unpack(E["media"].bordercolor)
+		if isUnitFrameElement then
+			borderr, borderg, borderb = unpack(E["media"].unitframeBorderColor)
+		else
+			borderr, borderg, borderb = unpack(E["media"].bordercolor)
+		end
 		backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
 	end
 end
@@ -101,7 +109,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	GetTemplate(t)
+	GetTemplate(t, isUnitFrameElement)
 
 	if(t) then
 	   f.template = t

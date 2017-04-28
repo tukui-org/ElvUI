@@ -462,7 +462,6 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	E:UpdateBorderColors() --We need this to update the border color of unitframes after a /reload
 	self:UpdateAllHeaders()
 end
 

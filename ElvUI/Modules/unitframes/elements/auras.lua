@@ -384,7 +384,7 @@ function UF:PostUpdateAura(unit, button, index)
 		if (isStealable) and not isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			button:SetBackdropBorderColor(unpack(E["media"].unitframeBorderColor))
 		end
 	end
 
