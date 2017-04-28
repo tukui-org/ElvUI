@@ -559,15 +559,6 @@ E.Options.args.general = {
 						['disabled'] = L["Disabled"]
 					}
 				},
-				classColorMentionsSpeech = {
-					order = 2,
-					type = "toggle",
-					name = L["Class Color Mentions"],
-					desc = L["Use class color for the names of players when they are mentioned."],
-					get = function(info) return E.private.general.classColorMentionsSpeech end,
-					set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					disabled = function() return E.private.general.chatBubbles == "disabled" end,
-				},
 				font = {
 					order = 3,
 					type = "select",
