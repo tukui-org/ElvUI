@@ -214,7 +214,7 @@ local function GetAPFromTooltip(itemLink)
 						ap = tonumber(value) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
 					end 
 				else
-					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d+)")
+					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
 					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
 				end
 
