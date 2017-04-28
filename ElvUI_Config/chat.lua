@@ -220,6 +220,28 @@ E.Options.args.chat = {
 						t.r, t.g, t.b = r, g, b
 					end,
 				},
+				excludeNames = {
+					order = 21,
+					name = L["Exclude Names"],
+					desc = L["List of names to exclude from Class Color Mentions."],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value)
+						if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+						E.global.chat.excludeNames[strlower(value)] = value
+					end,
+				},
+				clearExcludeNames = {
+					order = 22,
+					type = "multiselect",
+					name = L["Names excluded from Class Color Mentions"],
+					values = function() return E.global.chat.excludeNames end,
+					get = function(info, value)	return E.global.chat.excludeNames[value] end,
+					set = function(info, value)
+						E.global.chat.excludeNames[value] = nil
+						GameTooltip:Hide()--Make sure tooltip is properly hidden
+					end,
+				},
 			},
 		},
 		alerts = {

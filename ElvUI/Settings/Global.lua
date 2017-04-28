@@ -27,6 +27,10 @@ G['unitframe'] = {
 	['buffwatch'] = {},
 }
 
+G["chat"] = {
+	["excludeNames"] = {},
+}
+
 G["bags"] = {
 	["ignoredItems"] = {},
 }
