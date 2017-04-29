@@ -50,14 +50,12 @@ local function LoadSkin()
 	for i = 1, 7 do
 		for j = 1, 3 do
 			local button = _G["TalentsTalentRow"..i.."Talent"..j]
-			local icon = _G["TalentsTalentRow"..i.."Talent"..j.."IconTexture"]
 
 			button:StripTextures()
 			button:CreateBackdrop("Default")
-			button.backdrop:SetPoint("TOPLEFT", icon, -2, 2)
-			button.backdrop:SetPoint("BOTTOMRIGHT", icon, 2, -2)
 
-			icon:SetTexCoord(unpack(E.TexCoords))
+			button.icon:SetAllPoints()
+			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
 
@@ -65,14 +63,12 @@ local function LoadSkin()
 	for i = 1, 6 do
 		for j = 1, 3 do
 			local button = _G["InspectPVPFrameTalentRow"..i.."Talent"..j]
-			local icon = _G["InspectPVPFrameTalentRow"..i.."Talent"..j.."IconTexture"]
 
 			button:StripTextures()
 			button:CreateBackdrop("Default")
-			button.backdrop:SetPoint("TOPLEFT", icon, -2, 2)
-			button.backdrop:SetPoint("BOTTOMRIGHT", icon, 2, -2)
 
-			icon:SetTexCoord(unpack(E.TexCoords))
+			button.Icon:SetAllPoints()
+			button.Icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
 
