@@ -95,6 +95,7 @@ function mod:UpdateHonor(event, unit)
 	end
 end
 
+local PRESTIGE_TEXT = PVP_PRESTIGE_RANK_UP_TITLE..HEADER_COLON
 function mod:HonorBar_OnEnter()
 	if mod.db.honor.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
@@ -106,10 +107,12 @@ function mod:HonorBar_OnEnter()
 	local max = UnitHonorMax("player");
 	local level = UnitHonorLevel("player");
 	local levelmax = GetMaxPlayerHonorLevel();
+	local prestigeLevel = UnitPrestige("player");
 
 	GameTooltip:AddLine(HONOR)
 
 	GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
+	GameTooltip:AddDoubleLine(PRESTIGE_TEXT, prestigeLevel, 1, 1, 1)
 	GameTooltip:AddLine(' ')
 
 	if (CanPrestige()) then
