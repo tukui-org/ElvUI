@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true'>
+	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true' framelevel="4"> <!-- framelevel 4 for Masque support -->
 		<Size x='26' y='26'/>
 		<Attributes>
 			<Attribute name='type' value='cancelaura'/>
@@ -7,11 +7,9 @@
 		<Scripts>
 			<OnLoad>
 				ElvUI[1]:GetModule('Auras'):CreateIcon(self)
-
 				self:RegisterForClicks('RightButtonUp')
 			</OnLoad>
 			<OnEnter>
-
 				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
 				if(self:GetAttribute'index') then
 					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute("filter"))
