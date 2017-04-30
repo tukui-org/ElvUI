@@ -1080,16 +1080,10 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, (success and arg12 or nil), arg13, arg14);
 
 		--Cache name->class
+		realm = (realm and realm ~= '') and gsub(realm,"[%s%-]","")
 		if name and name ~= '' then
 			CH.ClassNames[name:lower()] = englishClass
-			if realm and realm ~= '' then
-				CH.ClassNames[name.."-"..gsub(realm,"[%s%-]","")] = englishClass
-			else
-				local _, myRealm = UnitFullName("player")
-				if myRealm and myRealm ~= "" then
-					CH.ClassNames[name.."-"..gsub(myRealm,"[%s%-]","")] = englishClass
-				end
-			end
+			CH.ClassNames[(realm and name.."-"..realm) or name.."-"..PLAYER_REALM] = englishClass
 		end
 
 		local channelLength = strlen(arg4);
@@ -1300,13 +1294,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		else
 			local body;
 
-			local _, fontHeight = FCF_GetChatWindowInfo(self:GetID());
-
-			if ( fontHeight == 0 ) then
-				--fontHeight will be 0 if it's still at the default (14)
-				fontHeight = 14;
-			end
-
 			-- Add AFK/DND flags
 			local pflag = GetChatIcons(arg2);
 			local pluginIcon = CH:GetPluginIcon(arg2)
@@ -1398,7 +1385,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				playerLinkDisplayText = ("[%s]"):format(coloredName);
 			end
 
-			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
+			if ( type == "TEXT_EMOTE" and realm) then
+				playerLink = GetPlayerLink(arg2.."-"..realm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
+			elseif ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
 				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
 			else
 				playerLink = GetBNPlayerLink(arg2, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget);
@@ -1426,9 +1415,15 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				else
 					if ( type == "EMOTE" ) then
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
-					elseif ( type == "TEXT_EMOTE") then
+					elseif ( type == "TEXT_EMOTE" and realm ) then
+						if info.colorNameByClass then
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+						else
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
+						end
+					elseif ( type == "TEXT_EMOTE" ) then
 						body = gsub(message, arg2, pflag..playerLink, 1);
-					elseif (type == "GUILD_ITEM_LOOTED") then
+					elseif (type == "GUILD_ITEM_LOOTED" ) then
 						body = gsub(message, "$s", GetPlayerLink(arg2, playerLinkDisplayText));
 					else
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
