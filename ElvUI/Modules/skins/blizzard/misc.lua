@@ -271,13 +271,12 @@ local function LoadSkin()
 	InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
 	InterfaceOptionsFrame:SetScript("OnDragStart", function(self)
 		if InCombatLockdown() then return end
-
-		if IsShiftKeyDown() then
-			self:StartMoving()
-		end
+		self:StartMoving()
+		self.isMoving = true
 	end)
 	InterfaceOptionsFrame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
+		self.isMoving = false
 	end)
 
 	-- mac menu/option panel, made by affli.
