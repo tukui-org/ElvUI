@@ -1414,8 +1414,12 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				else
 					if ( type == "EMOTE" ) then
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
-					elseif ( type == "TEXT_EMOTE" and realm) then
-						body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+					elseif ( type == "TEXT_EMOTE" and realm ) then
+						if info.colorNameByClass then
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+						else
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
+						end
 					elseif ( type == "TEXT_EMOTE" ) then
 						body = gsub(message, arg2, pflag..playerLink, 1);
 					elseif (type == "GUILD_ITEM_LOOTED" ) then
