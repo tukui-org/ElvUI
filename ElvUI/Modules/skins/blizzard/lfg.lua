@@ -635,22 +635,38 @@ S:AddCallback("LFG", LoadSkin)
 
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
 
 	-- Mythic Dungeon Tab
+	ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
+	ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
+	ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -27)
+	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
+	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
 	ChallengesFrame.GuildBest:StripTextures()
 	ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
 	ChallengesFrame.GuildBest.Line:Hide()
-	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
-	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
 	ChallengesFrame.GuildBest:ClearAllPoints()
 	ChallengesFrame.GuildBest:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 50)
 
 	-- Mythic+ KeyStoneFrame
 	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
 	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)
+
+	hooksecurefunc("ChallengesFrame_Update", function(self)
+		for _, frame in ipairs(self.DungeonIcons) do
+			if not frame.backdrop then
+				frame:CreateBackdrop("Transparent")
+				frame.backdrop:SetAllPoints()
+				frame:DisableDrawLayer("BORDER")
+				frame.Icon:SetTexCoord(unpack(E.TexCoords))
+				frame.Icon:SetInside()
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)
