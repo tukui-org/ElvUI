@@ -292,6 +292,8 @@ local function LoadSkin()
 	RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
 	RaidFinderQueueFrame:StripTextures()
+	RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
+	S:HandleScrollBar(RaidFinderQueueFrameScrollFrameScrollBar)
 
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
