@@ -162,20 +162,18 @@ local function LoadSkin()
 	end
 
 	for _, button in pairs(professionbuttons) do
-		local icon = _G[button.."IconTexture"]
 		local button = _G[button]
 		button:StripTextures()
+		button:SetTemplate("Transparent")
+		button.iconTexture:SetTexCoord(unpack(E.TexCoords))
+		button.iconTexture:SetInside()
+		button.highlightTexture:SetInside()
 
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetInside()
-
-			button:SetFrameLevel(button:GetFrameLevel() + 2)
-			if not button.backdrop then
-				button:CreateBackdrop("Default", true)
-				button.backdrop:SetAllPoints()
+		hooksecurefunc(button.highlightTexture, "SetTexture", function(self, texture)
+			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
+				self:SetColorTexture(1, 1, 1, 0.3)
 			end
-		end
+		end)
 	end
 
 	local professionstatusbars = {
