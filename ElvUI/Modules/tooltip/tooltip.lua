@@ -804,7 +804,7 @@ function TT:Initialize()
 		if bar then
 			bar:StripTextures()
 			bar:SetStatusBarTexture(E["media"].normTex)
-			bar:SetTemplate("Transparent")
+			bar:CreateBackdrop("Transparent")
 			E:RegisterStatusBar(bar)
 
 			label:ClearAllPoints()
@@ -821,7 +821,6 @@ function TT:Initialize()
 		if bar then
 			bar:StripTextures()
 			bar:SetStatusBarTexture(E["media"].normTex)
-			bar:SetTemplate("Transparent")
 			E:RegisterStatusBar(bar)
 
 			label:ClearAllPoints()
