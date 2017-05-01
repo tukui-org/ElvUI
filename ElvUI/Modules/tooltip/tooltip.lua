@@ -782,8 +782,14 @@ function TT:Initialize()
 	end
 
 	--World Quest Reward Icon
-	WorldMapTooltip.ItemTooltip.IconBorder:SetAlpha(0)
 	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, "SetVertexColor", function(self, r, g, b)
+		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+		self:SetTexture("")
+	end)
+	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, "Hide", function(self)
+		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end)
 	WorldMapTooltip.ItemTooltip:CreateBackdrop()
 	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
 	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
