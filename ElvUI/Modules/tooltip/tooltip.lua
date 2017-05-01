@@ -797,38 +797,16 @@ function TT:Initialize()
 	playerGUID = UnitGUID("player")
 
 	-- Tooltip Statusbars
-	local function SkinTooltipStatusBar()
-		local bar = _G["WorldMapTaskTooltipStatusBar"].Bar
-		local label = bar.Label
-
-		if bar then
-			bar:StripTextures()
-			bar:SetStatusBarTexture(E["media"].normTex)
-			bar:CreateBackdrop("Transparent")
-			E:RegisterStatusBar(bar)
-
-			label:ClearAllPoints()
-			label:Point("CENTER", bar, 0, 0)
-			label:SetDrawLayer("OVERLAY")
-		end
+	local function SkinTooltipProgressBar(frame)
+		frame:CreateBackdrop("Transparent")
+		frame:DisableDrawLayer("BORDER")
+		frame:DisableDrawLayer("ARTWORK")
+		frame:SetStatusBarTexture(E["media"].normTex)
+		E:RegisterStatusBar(frame)
+		frame.Label:SetDrawLayer("OVERLAY")
 	end
-	hooksecurefunc("TaskPOI_OnEnter", SkinTooltipStatusBar)
-
-	local function SkinTooltipReputationBar()
-		local bar = _G["ReputationParagonTooltipStatusBar"].Bar
-		local label = bar.Label
-
-		if bar then
-			bar:StripTextures()
-			bar:SetStatusBarTexture(E["media"].normTex)
-			E:RegisterStatusBar(bar)
-
-			label:ClearAllPoints()
-			label:Point("CENTER", bar, 0, 0)
-			label:SetDrawLayer("OVERLAY")
-		end
-	end
-	hooksecurefunc("ReputationParagonFrame_SetupParagonTooltip", SkinTooltipReputationBar)
+	SkinTooltipProgressBar(ReputationParagonTooltipStatusBar.Bar)
+	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar.Bar)
 end
 
 E:RegisterModule(TT:GetName())
