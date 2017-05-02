@@ -101,6 +101,7 @@ local function LoadSkin()
 			line.ProgressBar.Bar:Height(18)
 			line.ProgressBar.Bar:CreateBackdrop("Transparent")
 			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
 			line.ProgressBar.Bar.BarFrame:Hide()
 			line.ProgressBar.Bar.IconBG:SetAlpha(0)
 			line.ProgressBar.Bar.BarFrame2:Hide()
@@ -135,6 +136,29 @@ local function LoadSkin()
 			E:RegisterCooldown(item.Cooldown)
 			item.skinned = true
 		end
+	end)
+
+	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		if not line.ProgressBar.Bar.backdrop then
+			line.ProgressBar.Bar:Height(18)
+			line.ProgressBar.Bar:CreateBackdrop("Transparent")
+			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
+			line.ProgressBar.Bar.BarFrame:Hide()
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.BarFrame2:Hide()
+			line.ProgressBar.Bar.BarFrame3:Hide()
+
+			line.ProgressBar.Bar.Icon:ClearAllPoints()
+			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
+			line.ProgressBar.Bar.Icon:SetMask("")
+			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			line.ProgressBar:CreateBackdrop("Default")
+			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 end
 
