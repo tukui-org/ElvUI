@@ -113,6 +113,8 @@ local function LoadSkin()
 			line.ProgressBar:CreateBackdrop("Default")
 			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
 		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)

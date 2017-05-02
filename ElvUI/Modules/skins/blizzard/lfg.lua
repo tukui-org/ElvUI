@@ -292,6 +292,8 @@ local function LoadSkin()
 	RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
 	RaidFinderQueueFrame:StripTextures()
+	RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
+	S:HandleScrollBar(RaidFinderQueueFrameScrollFrameScrollBar)
 
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
@@ -451,15 +453,6 @@ local function LoadSkin()
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point("BOTTOMRIGHT", -6, 3)
 
-	--Fix issue with labels not following changes to GameFontNormal as they should
-	local function SetLabelFontObject(self, btnIndex)
-		local button = self.CategoryButtons[btnIndex]
-		if button then
-			button.Label:SetFontObject(GameFontNormal)
-		end
-	end
-	hooksecurefunc("LFGListCategorySelection_AddButton", SetLabelFontObject)
-
 	LFGListFrame.EntryCreation.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.EntryCreation.CancelButton, true)
 	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton, true)
@@ -613,10 +606,13 @@ local function LoadSkin()
 			if not button.isSkinned then
 				button:SetTemplate("Default")
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
+				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
+				--Fix issue with labels not following changes to GameFontNormal as they should
+				button.Label:SetFontObject(GameFontNormal)
 				button.isSkinned = true
 			end
 
