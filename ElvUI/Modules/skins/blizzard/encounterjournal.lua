@@ -222,6 +222,8 @@ local function LoadSkin()
 			bossButton = _G["EncounterJournalBossButton"..bossIndex];
 			if bossButton and not bossButton.isSkinned then
 				S:HandleButton(bossButton)
+				bossButton.creature:ClearAllPoints()
+				bossButton.creature:Point("TOPLEFT", 1, -4)
 				bossButton.isSkinned = true
 			end
 

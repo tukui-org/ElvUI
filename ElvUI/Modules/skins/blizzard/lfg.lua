@@ -292,6 +292,8 @@ local function LoadSkin()
 	RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
 	RaidFinderQueueFrame:StripTextures()
+	RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
+	S:HandleScrollBar(RaidFinderQueueFrameScrollFrameScrollBar)
 
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
@@ -451,15 +453,6 @@ local function LoadSkin()
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point("BOTTOMRIGHT", -6, 3)
 
-	--Fix issue with labels not following changes to GameFontNormal as they should
-	local function SetLabelFontObject(self, btnIndex)
-		local button = self.CategoryButtons[btnIndex]
-		if button then
-			button.Label:SetFontObject(GameFontNormal)
-		end
-	end
-	hooksecurefunc("LFGListCategorySelection_AddButton", SetLabelFontObject)
-
 	LFGListFrame.EntryCreation.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.EntryCreation.CancelButton, true)
 	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton, true)
@@ -613,10 +606,13 @@ local function LoadSkin()
 			if not button.isSkinned then
 				button:SetTemplate("Default")
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
+				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
+				--Fix issue with labels not following changes to GameFontNormal as they should
+				button.Label:SetFontObject(GameFontNormal)
 				button.isSkinned = true
 			end
 
@@ -635,22 +631,38 @@ S:AddCallback("LFG", LoadSkin)
 
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
 
 	-- Mythic Dungeon Tab
+	ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
+	ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
+	ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -27)
+	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
+	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
 	ChallengesFrame.GuildBest:StripTextures()
 	ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
 	ChallengesFrame.GuildBest.Line:Hide()
-	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
-	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
 	ChallengesFrame.GuildBest:ClearAllPoints()
 	ChallengesFrame.GuildBest:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 50)
 
 	-- Mythic+ KeyStoneFrame
 	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
 	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)
+
+	hooksecurefunc("ChallengesFrame_Update", function(self)
+		for _, frame in ipairs(self.DungeonIcons) do
+			if not frame.backdrop then
+				frame:CreateBackdrop("Transparent")
+				frame.backdrop:SetAllPoints()
+				frame:DisableDrawLayer("BORDER")
+				frame.Icon:SetTexCoord(unpack(E.TexCoords))
+				frame.Icon:SetInside()
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)

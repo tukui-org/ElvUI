@@ -75,7 +75,30 @@ local function LoadSkin()
 	ObjectiveTrackerBlocksFrame.AchievementHeader.backdrop:Point("BOTTOMRIGHT", 0, 2)
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
 	]]
-	
+
+		hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		if not line.ProgressBar.Bar.backdrop then
+			line.ProgressBar.Bar:Height(18)
+			line.ProgressBar.Bar:CreateBackdrop("Transparent")
+			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
+			line.ProgressBar.Bar.BarFrame:Hide()
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.BarFrame2:Hide()
+			line.ProgressBar.Bar.BarFrame3:Hide()
+
+			line.ProgressBar.Bar.Icon:ClearAllPoints()
+			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
+			line.ProgressBar.Bar.Icon:SetMask("")
+			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			line.ProgressBar:CreateBackdrop("Default")
+			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
+	end)
+
 	--Skin ObjectiveTrackerFrame item buttons
 	hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 		local item = block.itemButton
@@ -85,9 +108,8 @@ local function LoadSkin()
 			item:StyleButton()
 			item:SetNormalTexture(nil)
 			item.icon:SetTexCoord(unpack(E.TexCoords))
-			item.icon:SetPoint("TOPLEFT", item, 2, -2)
-			item.icon:SetPoint("BOTTOMRIGHT", item, -2, 2)
-			item.Cooldown:SetAllPoints(item.icon)
+			item.icon:SetInside()
+			item.Cooldown:SetInside()
 			item.Count:ClearAllPoints()
 			item.Count:SetPoint("TOPLEFT", 1, -1)
 			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
@@ -96,7 +118,30 @@ local function LoadSkin()
 			item.skinned = true
 		end
 	end)
-	
+
+	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		if not line.ProgressBar.Bar.backdrop then
+			line.ProgressBar.Bar:Height(18)
+			line.ProgressBar.Bar:CreateBackdrop("Transparent")
+			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
+			line.ProgressBar.Bar.BarFrame:Hide()
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.BarFrame2:Hide()
+			line.ProgressBar.Bar.BarFrame3:Hide()
+
+			line.ProgressBar.Bar.Icon:ClearAllPoints()
+			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
+			line.ProgressBar.Bar.Icon:SetMask("")
+			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			line.ProgressBar:CreateBackdrop("Default")
+			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
+	end)
+
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
 		local item = block.itemButton
 		if item and not item.skinned then
@@ -105,9 +150,8 @@ local function LoadSkin()
 			item:StyleButton()
 			item:SetNormalTexture(nil)
 			item.icon:SetTexCoord(unpack(E.TexCoords))
-			item.icon:SetPoint("TOPLEFT", item, 2, -2)
-			item.icon:SetPoint("BOTTOMRIGHT", item, -2, 2)
-			item.Cooldown:SetAllPoints(item.icon)
+			item.icon:SetInside()
+			item.Cooldown:SetInside()
 			item.Count:ClearAllPoints()
 			item.Count:SetPoint("TOPLEFT", 1, -1)
 			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
@@ -115,6 +159,39 @@ local function LoadSkin()
 			E:RegisterCooldown(item.Cooldown)
 			item.skinned = true
 		end
+	end)
+
+	local function SkinFindGroupButton(block, button)
+		block.rightButton = button
+		if button and not button.skinned then
+			S:HandleButton(button)
+			button:Size(16, 16)
+			button.skinned = true
+		end
+	end
+	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
+
+	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		if not line.ProgressBar.Bar.backdrop then
+			line.ProgressBar.Bar:Height(18)
+			line.ProgressBar.Bar:CreateBackdrop("Transparent")
+			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
+			line.ProgressBar.Bar.BarFrame:Hide()
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.BarFrame2:Hide()
+			line.ProgressBar.Bar.BarFrame3:Hide()
+
+			line.ProgressBar.Bar.Icon:ClearAllPoints()
+			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
+			line.ProgressBar.Bar.Icon:SetMask("")
+			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			line.ProgressBar:CreateBackdrop("Default")
+			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 end
 

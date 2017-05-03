@@ -242,6 +242,7 @@ local specialChatIcons = {
 	},
 	["Silvermoon"] = {
 		["Blazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Chazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	},
 	["Shattrath"] = {
 		["Merathilis"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
@@ -1079,16 +1080,10 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, (success and arg12 or nil), arg13, arg14);
 
 		--Cache name->class
+		realm = (realm and realm ~= '') and gsub(realm,"[%s%-]","")
 		if name and name ~= '' then
 			CH.ClassNames[name:lower()] = englishClass
-			if realm and realm ~= '' then
-				CH.ClassNames[name.."-"..gsub(realm,"[%s%-]","")] = englishClass
-			else
-				local _, myRealm = UnitFullName("player")
-				if myRealm and myRealm ~= "" then
-					CH.ClassNames[name.."-"..gsub(myRealm,"[%s%-]","")] = englishClass
-				end
-			end
+			CH.ClassNames[(realm and name.."-"..realm) or name.."-"..PLAYER_REALM] = englishClass
 		end
 
 		local channelLength = strlen(arg4);
@@ -1299,13 +1294,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		else
 			local body;
 
-			local _, fontHeight = FCF_GetChatWindowInfo(self:GetID());
-
-			if ( fontHeight == 0 ) then
-				--fontHeight will be 0 if it's still at the default (14)
-				fontHeight = 14;
-			end
-
 			-- Add AFK/DND flags
 			local pflag = GetChatIcons(arg2);
 			local pluginIcon = CH:GetPluginIcon(arg2)
@@ -1397,7 +1385,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				playerLinkDisplayText = ("[%s]"):format(coloredName);
 			end
 
-			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
+			if ( type == "TEXT_EMOTE" and realm) then
+				playerLink = GetPlayerLink(arg2.."-"..realm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
+			elseif ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
 				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
 			else
 				playerLink = GetBNPlayerLink(arg2, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget);
@@ -1425,9 +1415,15 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				else
 					if ( type == "EMOTE" ) then
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
-					elseif ( type == "TEXT_EMOTE") then
+					elseif ( type == "TEXT_EMOTE" and realm ) then
+						if info.colorNameByClass then
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+						else
+							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
+						end
+					elseif ( type == "TEXT_EMOTE" ) then
 						body = gsub(message, arg2, pflag..playerLink, 1);
-					elseif (type == "GUILD_ITEM_LOOTED") then
+					elseif (type == "GUILD_ITEM_LOOTED" ) then
 						body = gsub(message, "$s", GetPlayerLink(arg2, playerLinkDisplayText));
 					else
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
@@ -1629,8 +1625,10 @@ function CH:ThrottleSound()
 	self.SoundPlayed = nil;
 end
 
+local protectLinks = {}
 function CH:CheckKeyword(message)
 	for itemLink in message:gmatch("|%x+|Hitem:.-|h.-|h|r") do
+		protectLinks[itemLink]=itemLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if itemLink == keyword then
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
@@ -1644,7 +1642,11 @@ function CH:CheckKeyword(message)
 		end
 	end
 
-	local classColorTable, tempWord, rebuiltString, lowerCaseWord
+	for itemLink, tempLink in pairs(protectLinks) do
+		message = message:gsub(itemLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
+	end
+
+	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
 	for word in message:gmatch("[^%s]+") do
 		lowerCaseWord = word:lower()
@@ -1664,13 +1666,15 @@ function CH:CheckKeyword(message)
 		end
 
 		if self.db.classColorMentionsChat then
-			if(CH.ClassNames[lowerCaseWord]) then
-				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
-				tempWord = word:gsub("%p", "")
-				word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
-			elseif(CH.ClassNames[word]) then
-				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[word]] or RAID_CLASS_COLORS[CH.ClassNames[word]];
-				word = word:gsub(word:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, word))
+			tempWord = word:gsub("^%p-([^%p]+)([%-]?[^%p]-)%p-$","%1%2")
+			lowerCaseWord = tempWord:lower()
+
+			classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
+			wordMatch = (CH.ClassNames[lowerCaseWord] and lowerCaseWord) or (CH.ClassNames[tempWord] and tempWord:lower())
+
+			if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+				word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 			end
 		end
 
@@ -1680,6 +1684,11 @@ function CH:CheckKeyword(message)
 		else
 			rebuiltString = format("%s %s", rebuiltString, word)
 		end
+	end
+
+	for itemLink, tempLink in pairs(protectLinks) do
+		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), itemLink)
+		protectLinks[itemLink] = nil
 	end
 
 	return rebuiltString

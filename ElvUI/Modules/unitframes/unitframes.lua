@@ -1294,10 +1294,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	local statusBarOrientation = statusBar:GetOrientation()
 	if isTransparent then
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Transparent")
+			statusBar.backdrop:SetTemplate("Transparent", nil, nil, nil, true)
 			statusBar.backdrop.ignoreUpdates = true
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Transparent")
+			statusBar:GetParent():SetTemplate("Transparent", nil, nil, nil, true)
 			statusBar:GetParent().ignoreUpdates = true
 		end
 
@@ -1329,10 +1329,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders)
+			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
 			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders)
+			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders, true)
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))

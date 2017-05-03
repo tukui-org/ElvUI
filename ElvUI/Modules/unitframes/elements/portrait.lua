@@ -18,7 +18,7 @@ function UF:Construct_Portrait(frame, type)
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame("PlayerModel", nil, frame)
-		portrait:CreateBackdrop('Default', nil, nil, self.thinBorders)
+		portrait:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate

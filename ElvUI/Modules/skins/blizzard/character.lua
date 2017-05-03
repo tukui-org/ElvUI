@@ -331,12 +331,11 @@ local function LoadSkin()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if tab and not tab.backdrop then
+				tab.Icon:SetAllPoints()
 				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
-				tab.Highlight:Point("TOPLEFT", 3, -4)
-				tab.Highlight:Point("BOTTOMRIGHT", -1, 0)
+				tab.Highlight:SetAllPoints()
 				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
-				tab.Hider:Point("TOPLEFT", 3, -4)
-				tab.Hider:Point("BOTTOMRIGHT", -1, 0)
+				tab.Hider:SetAllPoints()
 				tab.TabBg:Kill()
 
 				if i == 1 then
@@ -351,8 +350,6 @@ local function LoadSkin()
 					end
 				end
 				tab:CreateBackdrop("Default")
-				tab.backdrop:Point("TOPLEFT", 1, -2)
-				tab.backdrop:Point("BOTTOMRIGHT", 1, -2)
 			end
 		end
 	end
@@ -395,17 +392,18 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	local tooltip = ReputationParagonTooltip
-	local statusBar = ReputationParagonTooltipStatusBar.Bar
 	local reward = tooltip.ItemTooltip
 	local icon = reward.Icon
 	tooltip:SetTemplate("Transparent")
-	statusBar:StripTextures()
-	statusBar:SetStatusBarTexture(E["media"].normTex)
-	statusBar:CreateBackdrop("Transparent")
 	if icon then
 		S:HandleIcon(icon)
-		reward.IconBorder:SetTexture(nil)
-		reward.IconBorder:SetAlpha(0)
+		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(reward.IconBorder, "Hide", function(self)
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 	end
 	tooltip:HookScript("OnShow", function(self)
 		self:SetTemplate("Transparent")

@@ -838,6 +838,7 @@ P['unitframe'] = {
 	["auraBlacklistModifier"] = "SHIFT",
 	["thinBorders"] = false,
 	['colors'] = {
+		["borderColor"] = {r = 0, g = 0, b = 0},
 		['healthclass'] = false,
 		['forcehealthreaction'] = false,
 		['powerclass'] = false,

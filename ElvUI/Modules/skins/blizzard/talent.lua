@@ -302,14 +302,16 @@ local function LoadSkin()
 
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:StripTextures()
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:CreateBackdrop("Default")
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, -2, 2)
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, 2, -2)
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetOutside(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon)
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:ClearAllPoints()
 	PlayerTalentFramePVPTalents.XPBar.NextAvailable:SetPoint("LEFT", PlayerTalentFramePVPTalents.XPBar.Bar, "RIGHT", 3, -2)
 
 	--Next Available Icon
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+	hooksecurefunc(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, "SetTexCoord", function(self, x1)
+		if x1 == 0 then
+			self:SetTexCoord(unpack(E.TexCoords))
+		end
+	end);
 	-- This seems to break some icons at higher prestige level. ElvUI/issue#1853
 	-- PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
 

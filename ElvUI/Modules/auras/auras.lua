@@ -26,7 +26,6 @@ local IsAddOnLoaded = IsAddOnLoaded
 local Masque = LibStub("Masque", true)
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
 local MasqueGroupDebuffs = Masque and Masque:Group("ElvUI", "Debuffs")
-local StrataFixEnabled
 
 local DIRECTION_TO_POINT = {
 	DOWN_RIGHT = "TOPLEFT",
@@ -96,17 +95,10 @@ function A:UpdateTime(elapsed)
 	end
 end
 
-local function DelaydReSkinBuffs()
-	MasqueGroupBuffs:ReSkin()
-end
-
-local function DelaydReSkinDebuffs()
-	MasqueGroupDebuffs:ReSkin()
-end
-
 function A:CreateIcon(button)
 	local font = LSM:Fetch("font", self.db.font)
 
+	-- button:SetFrameLevel(4)
 	button.texture = button:CreateTexture(nil, "BORDER")
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
@@ -152,18 +144,16 @@ function A:CreateIcon(button)
 	if auraType == "HELPFUL" then
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
 			MasqueGroupBuffs:AddButton(button, ButtonData)
-			if StrataFixEnabled then
-				C_TimerAfter(0.01, DelaydReSkinBuffs) --Fix bug caused by StrataFix.
-			end
+			button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			MasqueGroupBuffs:ReSkin()
 		else
 			button:SetTemplate('Default')
 		end
 	elseif auraType == "HARMFUL" then
 		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 			MasqueGroupDebuffs:AddButton(button, ButtonData)
-			if StrataFixEnabled then
-				C_TimerAfter(0.01, DelaydReSkinDebuffs) --Fix bug caused by StrataFix.
-			end
+			button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			MasqueGroupDebuffs:ReSkin()
 		else
 			button:SetTemplate('Default')
 		end
@@ -360,19 +350,5 @@ function A:Initialize()
 		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
 end
-
---StrataFix causes the icon to appear above the border texture
---We need to call :ReSkin() when icons are created, but we only do it if StrataFix is enabled
-local function CheckForStrataFix(self, event)
-	if not E.private.auras.enable then return; end
-	if IsAddOnLoaded("StrataFix") then
-		StrataFixEnabled = true
-	end
-	self:UnregisterEvent(event)
-end
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", CheckForStrataFix)
 
 E:RegisterModule(A:GetName())
