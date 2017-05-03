@@ -981,6 +981,7 @@ L["Range Check"] = true
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = true;
 L["Reaction Castbars"] = true;
 L["Reactions"] = true;
+L["Ready Check Icon"] = true;
 L["Remaining"] = true;
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true;
 L["Remove a spell from the filter."] = true;

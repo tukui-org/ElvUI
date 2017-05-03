@@ -993,6 +993,7 @@ L["Range Check"] = "距離檢查"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "實時更新生命值會佔用更多的內存的和CPU, 只推薦治療角色開啟."
 L["Reaction Castbars"] = "聲望施法條"
 L["Reactions"] = "陣營聲望"
+L["Ready Check Icon"] = true;
 L["Remaining"] = "剩餘數值"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "從過濾器中移除一個技能. 當你看見有ID在過濾器中的技能名字時使用技能ID"
 L["Remove a spell from the filter."] = "從過濾器中移除一個技能."

@@ -991,6 +991,7 @@ L["Range Check"] = "Verificación de Rango"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Actualizar la salud rápidamente, consume más memoria y cpu. Recomendado sólo para sanadores."
 L["Reaction Castbars"] = true;
 L["Reactions"] = "Reacciones"
+L["Ready Check Icon"] = true;
 L["Remaining"] = "Restante"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true;
 L["Remove a spell from the filter."] = "Elimina un hechizo del filtro."

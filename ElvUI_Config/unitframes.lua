@@ -1671,6 +1671,60 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	return config
 end
 
+local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
+	local config = {
+		order = 700,
+		type = "group",
+		name = L["Ready Check Icon"],
+		get = function(info) return E.db.unitframe.units[groupName]["readycheckIcon"][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]["readycheckIcon"][ info[#info] ] = value; updateFunc(UF, groupName) end,
+		args = {
+			enable = {
+				order = 1,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			size = {
+				order = 2,
+				type = "range",
+				name = L["Size"],
+				min = 8, max = 60, step = 1,
+			},
+			attachTo = {
+				order = 3,
+				type = "select",
+				name = L["Attach To"],
+				values = {
+					["Health"] = L["Health"],
+					["Power"] = L["Power"],
+					["InfoPanel"] = L["Information Panel"],
+					["Frame"] = L["Frame"],
+				},
+			},
+			position = {
+				order = 4,
+				type = "select",
+				name = L["Position"],
+				values = positionValues,
+			},
+			xOffset = {
+				order = 5,
+				type = "range",
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 6,
+				type = "range",
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
 function UF:CreateCustomTextGroup(unit, objectName)
 	if not E.Options.args.unitframe.args[unit] then
 		return
@@ -4673,6 +4727,7 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 	},
 }
 
@@ -5083,6 +5138,7 @@ E.Options.args.unitframe.args['raid'] = {
 		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
 
@@ -5493,6 +5549,7 @@ E.Options.args.unitframe.args['raid40'] = {
 		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
 

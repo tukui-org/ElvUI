@@ -1040,6 +1040,7 @@ L["Range Check"] = "거리에 따른 투명도 적용"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "생명력 수치 업데이트를 평소보다 더 빠르게 하지만 메모리와 CPU점유율이 더 증가하는 기능입니다. 힐러일 경우에만 추천합니다."
 L["Reaction Castbars"] = true;
 L["Reactions"] = "관계"
+L["Ready Check Icon"] = true;
 L["Remaining"] = "남은 시간"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true;
 L["Remove a spell from the filter."] = "필터에서 주문을 제거합니다."

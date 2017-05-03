@@ -993,6 +993,7 @@ L["Range Check"] = "Entfernungcheck"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Schnelle Aktualisierung der Lebensleiste. Benutzt mehr Speicher und Prozessorleistung. Nur für Heiler zu empfehlen."
 L["Reaction Castbars"] = "Reaktion Zauberleiste"
 L["Reactions"] = "Reaktionen"
+L["Ready Check Icon"] = true;
 L["Remaining"] = "Verbleibend"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Entferne Zauber vom Filter. Benutze die Zauber ID, wenn du die ID siehst als Teil vom Zaubernamen im Filter."
 L["Remove a spell from the filter."] = "Entfernt einen Zauber aus dem Filter."

@@ -2314,6 +2314,14 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 8,
 			},
+			["readycheckIcon"] = {
+				["enable"] = true,
+				["size"] = 12,
+				["attachTo"] = "Health",
+				["position"] = "BOTTOM",
+				["xOffset"] = 0,
+				["yOffset"] = 2,
+			},
 		},
 		['raid'] = {
 			['enable'] = true,
@@ -2471,6 +2479,14 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 8,
 			},
+			["readycheckIcon"] = {
+				["enable"] = true,
+				["size"] = 12,
+				["attachTo"] = "Health",
+				["position"] = "BOTTOM",
+				["xOffset"] = 0,
+				["yOffset"] = 2,
+			},
 		},
 		['raid40'] = {
 			['enable'] = true,
@@ -2627,6 +2643,14 @@ P['unitframe'] = {
 				["attachToObject"] = "Frame",
 				['xOffset'] = 0,
 				['yOffset'] = 8,
+			},
+			["readycheckIcon"] = {
+				["enable"] = true,
+				["size"] = 12,
+				["attachTo"] = "Health",
+				["position"] = "BOTTOM",
+				["xOffset"] = 0,
+				["yOffset"] = 2,
 			},
 		},
 		['raidpet'] = {

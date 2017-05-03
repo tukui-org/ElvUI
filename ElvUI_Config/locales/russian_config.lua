@@ -991,6 +991,7 @@ L["Range Check"] = "Проверка дистанции"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Более частое обновление состояния здоровья, использует больше памяти и ресурсов процессора. Рекомендуется только для целителей."
 L["Reaction Castbars"] = "Полоса заклинаний по реакции"
 L["Reactions"] = "Отношение"
+L["Ready Check Icon"] = true;
 L["Remaining"] = "Оставшееся"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Удалить заклинание из фильтра. Используйте ID, если в фильтре имя удаляемого заклинания содержит ID."
 L["Remove a spell from the filter."] = "Удалить заклинание из фильтра."
