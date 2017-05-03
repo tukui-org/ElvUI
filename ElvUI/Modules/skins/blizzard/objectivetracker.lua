@@ -138,6 +138,16 @@ local function LoadSkin()
 		end
 	end)
 
+	local function SkinFindGroupButton(block, button)
+		block.rightButton = button
+		if button and not button.skinned then
+			S:HandleButton(button)
+			button:Size(16, 16)
+			button.skinned = true
+		end
+	end
+	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
+
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
 		if not line.ProgressBar.Bar.backdrop then
 			line.ProgressBar.Bar:Height(18)
