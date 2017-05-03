@@ -75,7 +75,30 @@ local function LoadSkin()
 	ObjectiveTrackerBlocksFrame.AchievementHeader.backdrop:Point("BOTTOMRIGHT", 0, 2)
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
 	]]
-	
+
+		hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		if not line.ProgressBar.Bar.backdrop then
+			line.ProgressBar.Bar:Height(18)
+			line.ProgressBar.Bar:CreateBackdrop("Transparent")
+			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			E:RegisterStatusBar(line.ProgressBar.Bar)
+			line.ProgressBar.Bar.BarFrame:Hide()
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.BarFrame2:Hide()
+			line.ProgressBar.Bar.BarFrame3:Hide()
+
+			line.ProgressBar.Bar.Icon:ClearAllPoints()
+			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
+			line.ProgressBar.Bar.Icon:SetMask("")
+			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			line.ProgressBar:CreateBackdrop("Default")
+			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+		end
+
+		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
+	end)
+
 	--Skin ObjectiveTrackerFrame item buttons
 	hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 		local item = block.itemButton
