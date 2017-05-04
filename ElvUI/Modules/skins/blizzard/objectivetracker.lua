@@ -76,7 +76,59 @@ local function LoadSkin()
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
 	]]
 
-		hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+	--Skin ObjectiveTrackerFrame item buttons
+	hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
+		local item = block.itemButton
+		if item and not item.skinned then
+			item:SetSize(25, 25)
+			item:SetTemplate("Transparent")
+			item:StyleButton()
+			item:SetNormalTexture(nil)
+			item.icon:SetTexCoord(unpack(E.TexCoords))
+			item.icon:SetInside()
+			item.Cooldown:SetInside()
+			item.Count:ClearAllPoints()
+			item.Count:SetPoint("TOPLEFT", 1, -1)
+			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
+			item.Count:SetShadowOffset(5, -5)
+			E:RegisterCooldown(item.Cooldown)
+			item.skinned = true
+		end
+	end)
+
+	--World Quest Tracker item buttons
+	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
+		local item = block.itemButton
+		if item and not item.skinned then
+			item:SetSize(25, 25)
+			item:SetTemplate("Transparent")
+			item:StyleButton()
+			item:SetNormalTexture(nil)
+			item.icon:SetTexCoord(unpack(E.TexCoords))
+			item.icon:SetInside()
+			item.Cooldown:SetInside()
+			item.Count:ClearAllPoints()
+			item.Count:SetPoint("TOPLEFT", 1, -1)
+			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
+			item.Count:SetShadowOffset(5, -5)
+			E:RegisterCooldown(item.Cooldown)
+			item.skinned = true
+		end
+	end)
+
+	--Objective Tracker Groupfinder button
+	local function SkinFindGroupButton(block, button)
+		block.rightButton = button
+		if button and not button.skinned then
+			S:HandleButton(button)
+			button:Size(16, 16)
+			button.skinned = true
+		end
+	end
+	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
+
+	--Quest Tracker ProgressBar
+	hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
 		if not line.ProgressBar.Bar.backdrop then
 			line.ProgressBar.Bar:Height(18)
 			line.ProgressBar.Bar:CreateBackdrop("Transparent")
@@ -99,26 +151,7 @@ local function LoadSkin()
 		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 
-	--Skin ObjectiveTrackerFrame item buttons
-	hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
-		local item = block.itemButton
-		if item and not item.skinned then
-			item:SetSize(25, 25)
-			item:SetTemplate("Transparent")
-			item:StyleButton()
-			item:SetNormalTexture(nil)
-			item.icon:SetTexCoord(unpack(E.TexCoords))
-			item.icon:SetInside()
-			item.Cooldown:SetInside()
-			item.Count:ClearAllPoints()
-			item.Count:SetPoint("TOPLEFT", 1, -1)
-			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
-			item.Count:SetShadowOffset(5, -5)
-			E:RegisterCooldown(item.Cooldown)
-			item.skinned = true
-		end
-	end)
-
+	--World Quest Tracker ProgressBar
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
 		if not line.ProgressBar.Bar.backdrop then
 			line.ProgressBar.Bar:Height(18)
@@ -142,35 +175,7 @@ local function LoadSkin()
 		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 
-	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
-		local item = block.itemButton
-		if item and not item.skinned then
-			item:SetSize(25, 25)
-			item:SetTemplate("Transparent")
-			item:StyleButton()
-			item:SetNormalTexture(nil)
-			item.icon:SetTexCoord(unpack(E.TexCoords))
-			item.icon:SetInside()
-			item.Cooldown:SetInside()
-			item.Count:ClearAllPoints()
-			item.Count:SetPoint("TOPLEFT", 1, -1)
-			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
-			item.Count:SetShadowOffset(5, -5)
-			E:RegisterCooldown(item.Cooldown)
-			item.skinned = true
-		end
-	end)
-
-	local function SkinFindGroupButton(block, button)
-		block.rightButton = button
-		if button and not button.skinned then
-			S:HandleButton(button)
-			button:Size(16, 16)
-			button.skinned = true
-		end
-	end
-	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
-
+	--Scenario Tracker ProgressBar
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
 		if not line.ProgressBar.Bar.backdrop then
 			line.ProgressBar.Bar:Height(18)
