@@ -116,17 +116,6 @@ local function LoadSkin()
 		end
 	end)
 
-	--Objective Tracker Groupfinder button
-	local function SkinFindGroupButton(block, button)
-		block.rightButton = button
-		if button and not button.skinned then
-			S:HandleButton(button)
-			button:Size(16, 16)
-			button.skinned = true
-		end
-	end
-	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
-
 	--Quest Tracker ProgressBar
 	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, block, line, questID)
 		local progressBar = self.usedProgressBars[block] and self.usedProgressBars[block][line];
