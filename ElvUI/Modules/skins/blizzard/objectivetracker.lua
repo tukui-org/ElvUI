@@ -130,15 +130,12 @@ local function LoadSkin()
 	--Quest Tracker ProgressBar
 	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, block, line, questID)
 		local progressBar = self.usedProgressBars[block] and self.usedProgressBars[block][line];
-		if progressBar and progressBar:IsShown() and not progressBar.skinned then
-			progressBar.Bar:StripTextures()
-			progressBar.Bar:Height(18)
+		if not progressBar.Bar.backdrop then
+			progressBar.Bar:CreateBackdrop("Transparent")
 			progressBar.Bar:SetStatusBarTexture(E["media"].normTex)
-			progressBar.Bar:CreateBackdrop('Transparent')
-			progressBar.Bar.backdrop:Point('TOPLEFT', Bar, -1, 1)
-			progressBar.Bar.backdrop:Point('BOTTOMRIGHT', Bar, 1, -1)
-
-			progressBar.skinned = true
+			E:RegisterStatusBar(progressBar.Bar)
+			progressBar.Bar:DisableDrawLayer("ARTWORK")
+			progressBar.Bar.Label:SetDrawLayer("OVERLAY")
 		end
 	end)
 
