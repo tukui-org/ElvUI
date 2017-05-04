@@ -128,27 +128,18 @@ local function LoadSkin()
 	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", SkinFindGroupButton)
 
 	--Quest Tracker ProgressBar
-	hooksecurefunc(QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
-		if not line.ProgressBar.Bar.backdrop then
-			line.ProgressBar.Bar:Height(18)
-			line.ProgressBar.Bar:CreateBackdrop("Transparent")
-			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
-			E:RegisterStatusBar(line.ProgressBar.Bar)
-			line.ProgressBar.Bar.BarFrame:Hide()
-			line.ProgressBar.Bar.IconBG:SetAlpha(0)
-			line.ProgressBar.Bar.BarFrame2:Hide()
-			line.ProgressBar.Bar.BarFrame3:Hide()
+	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, block, line, questID)
+		local progressBar = self.usedProgressBars[block] and self.usedProgressBars[block][line];
+		if progressBar and progressBar:IsShown() and not progressBar.skinned then
+			progressBar.Bar:StripTextures()
+			progressBar.Bar:Height(18)
+			progressBar.Bar:SetStatusBarTexture(E["media"].normTex)
+			progressBar.Bar:CreateBackdrop('Transparent')
+			progressBar.Bar.backdrop:Point('TOPLEFT', Bar, -1, 1)
+			progressBar.Bar.backdrop:Point('BOTTOMRIGHT', Bar, 1, -1)
 
-			line.ProgressBar.Bar.Icon:ClearAllPoints()
-			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
-			line.ProgressBar.Bar.Icon:SetMask("")
-			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
-
-			line.ProgressBar:CreateBackdrop("Default")
-			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+			progressBar.skinned = true
 		end
-
-		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
 
 	--World Quest Tracker ProgressBar
