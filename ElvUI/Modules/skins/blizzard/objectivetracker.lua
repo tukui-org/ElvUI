@@ -136,7 +136,7 @@ local function LoadSkin()
 			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
 			E:RegisterStatusBar(line.ProgressBar.Bar)
 			line.ProgressBar.Bar.BarFrame:Hide()
-			line.ProgressBar.Bar.IconBG:SetAlpha(0)
+			line.ProgressBar.Bar.IconBG:Kill() -- we must kill it, otherwise the IconBG will show on created bars
 			line.ProgressBar.Bar.BarFrame2:Hide()
 			line.ProgressBar.Bar.BarFrame3:Hide()
 
@@ -147,6 +147,13 @@ local function LoadSkin()
 
 			line.ProgressBar:CreateBackdrop("Default")
 			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+
+			--Sometimes the glow effect looks weird, so hide them
+			line.ProgressBar.Bar.BarGlow:Hide()
+			line.ProgressBar.Bar.Starburst:Hide()
+			line.ProgressBar.Bar.Sheen:Hide()
+			line.ProgressBar.FullBarFlare1.BarGlow:Hide()
+			line.ProgressBar.FullBarFlare2.BarGlow:Hide()
 		end
 
 		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
