@@ -136,7 +136,7 @@ local function LoadSkin()
 			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
 			E:RegisterStatusBar(line.ProgressBar.Bar)
 			line.ProgressBar.Bar.BarFrame:Hide()
-			line.ProgressBar.Bar.IconBG:Kill() -- we must kill it, otherwise the IconBG will show on created bars
+			line.ProgressBar.Bar.IconBG:SetAlpha(0)
 			line.ProgressBar.Bar.BarFrame2:Hide()
 			line.ProgressBar.Bar.BarFrame3:Hide()
 
