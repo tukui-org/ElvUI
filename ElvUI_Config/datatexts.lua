@@ -125,17 +125,17 @@ local function CreateCustomCurrencyOptions(currencyID)
 						DT:UpdateCustomCurrencySettings(currency.NAME, "USE_TOOLTIP", value)
 					end,
 				},
-				displayInTooltip = {
+				displayInMainTooltip = {
 					order = 6,
 					type = "toggle",
-					name = "Display in Tooltip",
-					desc = "If checked, this will be shown in the Currencies DataText tooltip",
-					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_TOOLTIP end,
+					name = L["Display In Main Tooltip"],
+					desc = L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."],
+					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_MAIN_TOOLTIP end,
 					set = function(info, value)
 						--Save new value
-						E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_TOOLTIP = value
+						E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_MAIN_TOOLTIP = value
 						--Update internal value
-						DT:UpdateCustomCurrencySettings(currency.NAME, "DISPLAY_IN_TOOLTIP", value)
+						DT:UpdateCustomCurrencySettings(currency.NAME, "DISPLAY_IN_MAIN_TOOLTIP", value)
 					end,
 				},
 			},
