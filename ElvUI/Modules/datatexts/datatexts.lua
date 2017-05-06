@@ -25,6 +25,8 @@ function DT:Initialize()
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
 	self:RegisterLDB()
+	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+
 	self:RegisterCustomCurrencyDT() --Register all the user created currency datatexts from the "CustomCurrency" DT.
 	self:LoadDataTexts()
 
@@ -42,54 +44,65 @@ DT.PointLocation = {
 }
 
 local hex = '|cffFFFFFF'
-function DT:RegisterLDB()
-	for name, obj in LDB:DataObjectIterator() do
-		local OnEnter = nil;
-		local OnLeave = nil;
-		local curFrame = nil;
-		if obj.OnTooltipShow then
-			function OnEnter(self)
-				DT:SetupTooltip(self)
-				obj.OnTooltipShow(DT.tooltip)
-				DT.tooltip:Show()
-			end
+function DT:SetupObjectLDB(name, obj) --self will now be the event
+	local OnEnter = nil;
+	local OnLeave = nil;
+	local OnClick = nil;
+	local curFrame = nil;
+	if obj.OnTooltipShow then
+		function OnEnter(self)
+			DT:SetupTooltip(self)
+			obj.OnTooltipShow(DT.tooltip)
+			DT.tooltip:Show()
 		end
+	end
 
-		if obj.OnEnter then
-			function OnEnter(self)
-				DT:SetupTooltip(self)
-				obj.OnEnter(self)
-				DT.tooltip:Show()
-			end
+	if obj.OnEnter then
+		function OnEnter(self)
+			DT:SetupTooltip(self)
+			obj.OnEnter(self)
+			DT.tooltip:Show()
 		end
+	end
 
-		if obj.OnLeave then
-			function OnLeave(self)
-				obj.OnLeave(self)
-				DT.tooltip:Hide()
-			end
+	if obj.OnLeave then
+		function OnLeave(self)
+			obj.OnLeave(self)
+			DT.tooltip:Hide()
 		end
+	end
 
-		local function OnClick(self, button)
+	if obj.OnClick then
+		function OnClick(self, button)
 			obj.OnClick(self, button)
 		end
+	end
 
-		local function textUpdate(_, name, _, value)
-			if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
-				curFrame.text:SetText(value ~= 'n/a' and value or name)
-			else
-				curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
-			end
+	local function textUpdate(_, name, _, value)
+		if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
+			curFrame.text:SetText(value ~= 'n/a' and value or name)
+		else
+			curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
 		end
+	end
 
-		local function OnEvent(self)
-			curFrame = self
-			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
-			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
-		end
+	local function OnEvent(self)
+		curFrame = self
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
+		LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
+	end
 
-		self:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	DT:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	
+	if DT.PanelLayoutOptions then
+		DT:PanelLayoutOptions() --Update config
+	end
+end
+
+function DT:RegisterLDB()
+	for name, obj in LDB:DataObjectIterator() do
+		self:SetupObjectLDB(name, obj)
 	end
 end
 
