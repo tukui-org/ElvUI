@@ -45,35 +45,28 @@ DT.PointLocation = {
 
 local hex = '|cffFFFFFF'
 function DT:SetupObjectLDB(name, obj) --self will now be the event
-	local OnEnter = nil;
-	local OnLeave = nil;
-	local OnClick = nil;
 	local curFrame = nil;
-	if obj.OnTooltipShow then
-		function OnEnter(self)
-			DT:SetupTooltip(self)
+
+	local function OnEnter(self)
+		DT:SetupTooltip(self)
+		if obj.OnTooltipShow then
 			obj.OnTooltipShow(DT.tooltip)
-			DT.tooltip:Show()
 		end
-	end
-
-	if obj.OnEnter then
-		function OnEnter(self)
-			DT:SetupTooltip(self)
+		if obj.OnEnter then
 			obj.OnEnter(self)
-			DT.tooltip:Show()
 		end
+		DT.tooltip:Show()
 	end
 
-	if obj.OnLeave then
-		function OnLeave(self)
+	local function OnLeave(self)
+		if obj.OnLeave then
 			obj.OnLeave(self)
-			DT.tooltip:Hide()
 		end
+		DT.tooltip:Hide()
 	end
 
-	if obj.OnClick then
-		function OnClick(self, button)
+	local function OnClick(self, button)
+		if obj.OnClick then
 			obj.OnClick(self, button)
 		end
 	end
