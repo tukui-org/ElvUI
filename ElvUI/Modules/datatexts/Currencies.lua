@@ -82,6 +82,23 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(Currencies["APEXIS_CRYSTAL"].NAME, select(2, GetCurrencyInfo(Currencies["APEXIS_CRYSTAL"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["DARKMOON_PRIZE_TICKET"].NAME, select(2, GetCurrencyInfo(Currencies["DARKMOON_PRIZE_TICKET"].ID)), 1, 1, 1)
 
+	--[[
+		If the "Display In Tooltip" box is checked (on by default), then also display custom
+		currencies in the tooltip.
+	]]
+	local count = 0
+	for currencyID, info in pairs(E.global.datatexts.customCurrencies) do
+		if info.DISPLAY_IN_TOOLTIP then
+			count = count + 1
+			if count == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine("Custom")
+			end
+			
+			DT.tooltip:AddDoubleLine(info.NAME, select(2, GetCurrencyInfo(info.ID)), 1, 1, 1)
+		end
+	end
+
 	DT.tooltip:Show()
 end
 
