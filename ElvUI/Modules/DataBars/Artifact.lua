@@ -21,6 +21,7 @@ local InCombatLockdown = InCombatLockdown
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
+local AP_NAME = format("%s|r", ARTIFACT_POWER)
 local ARTIFACT_POWER = ARTIFACT_POWER
 local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
@@ -202,7 +203,7 @@ local function GetAPFromTooltip(itemLink)
 		for i = 3, #mod.artifactBar.tooltipLines do
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
-			if (tooltipText) then
+			if (tooltipText and not strmatch(tooltipText, AP_NAME)) then
 				local digit1, digit2, digit3, ap
 				local value = strmatch(tooltipText, apStringValueMillionLocal)
 
