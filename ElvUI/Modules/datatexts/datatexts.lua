@@ -25,10 +25,12 @@ function DT:Initialize()
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
 	self:RegisterLDB()
+	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+
 	self:RegisterCustomCurrencyDT() --Register all the user created currency datatexts from the "CustomCurrency" DT.
 	self:LoadDataTexts()
 
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	--self:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'LoadDataTexts') -- is this needed??
 end
 
@@ -41,55 +43,75 @@ DT.PointLocation = {
 	[3] = 'right',
 }
 
+local hasEnteredWorld = false
+function DT:PLAYER_ENTERING_WORLD()
+	hasEnteredWorld = true
+	self:LoadDataTexts()
+end
+
+local function LoadDataTextsDelayed()
+	C_Timer.After(0.5, function() DT:LoadDataTexts() end)
+end
+
 local hex = '|cffFFFFFF'
-function DT:RegisterLDB()
-	for name, obj in LDB:DataObjectIterator() do
-		local OnEnter = nil;
-		local OnLeave = nil;
-		local curFrame = nil;
+function DT:SetupObjectLDB(name, obj) --self will now be the event
+	local curFrame = nil;
+
+	local function OnEnter(self)
+		DT:SetupTooltip(self)
 		if obj.OnTooltipShow then
-			function OnEnter(self)
-				DT:SetupTooltip(self)
-				obj.OnTooltipShow(DT.tooltip)
-				DT.tooltip:Show()
-			end
+			obj.OnTooltipShow(DT.tooltip)
 		end
-
 		if obj.OnEnter then
-			function OnEnter(self)
-				DT:SetupTooltip(self)
-				obj.OnEnter(self)
-				DT.tooltip:Show()
-			end
+			obj.OnEnter(self)
 		end
+		DT.tooltip:Show()
+	end
 
+	local function OnLeave(self)
 		if obj.OnLeave then
-			function OnLeave(self)
-				obj.OnLeave(self)
-				DT.tooltip:Hide()
-			end
+			obj.OnLeave(self)
 		end
+		DT.tooltip:Hide()
+	end
 
-		local function OnClick(self, button)
+	local function OnClick(self, button)
+		if obj.OnClick then
 			obj.OnClick(self, button)
 		end
+	end
 
-		local function textUpdate(_, name, _, value)
-			if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
-				curFrame.text:SetText(value ~= 'n/a' and value or name)
-			else
-				curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
-			end
+	local function textUpdate(_, name, _, value)
+		if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
+			curFrame.text:SetText(value ~= 'n/a' and value or name)
+		else
+			curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
 		end
+	end
 
-		local function OnEvent(self)
-			curFrame = self
-			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
-			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
-		end
+	local function OnEvent(self)
+		curFrame = self
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
+		LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
+	end
 
-		self:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	DT:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+
+	--Update config if it has been loaded
+	if DT.PanelLayoutOptions then
+		DT:PanelLayoutOptions()
+	end
+
+	--Force an update for objects that are created after we log in.
+	if hasEnteredWorld then
+		LoadDataTextsDelayed() --Has to be delayed in order to properly pick up initial text
+	end
+end
+
+function DT:RegisterLDB()
+	for name, obj in LDB:DataObjectIterator() do
+		self:SetupObjectLDB(name, obj)
 	end
 end
 
