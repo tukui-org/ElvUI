@@ -18,6 +18,7 @@ local GetSpellInfo = GetSpellInfo
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
+local IsArtifactPowerItem = IsArtifactPowerItem
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
@@ -178,7 +179,6 @@ local apValueMultiplier = {
 
 local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
 local apValueMultiplierLocal = (apValueMultiplier[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-asian clients
-local empoweringSpellName
 
 --AP item caches
 local apValueCache = {}
@@ -187,11 +187,10 @@ local apItemCache = {}
 --This function scans the tooltip of an item to determine whether or not it grants AP.
 --If it is found to grant AP, then the value is extracted and returned.
 local apLineIndex
-local function GetAPFromTooltip(itemLink)
+local function GetAPFromTooltip(itemLink, itemID)
 	local apValue = 0
 
-	local itemSpell = GetItemSpell(itemLink)
-	if itemSpell and itemSpell == empoweringSpellName then
+	if IsArtifactPowerItem(itemID) then
 		--Clear tooltip from previous item
 		mod.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before
@@ -247,13 +246,13 @@ function mod:TestAPExtraction(itemID)
 		return
 	end
 
-	local apValue = GetAPFromTooltip(itemLink)
+	local apValue = GetAPFromTooltip(itemLink, itemID)
 	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
 end
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
-local function GetAPForItem(itemLink)
+local function GetAPForItem(itemLink, itemID)
 	if (apItemCache[itemLink] == false) then
 		--Get out early if item has already been determined to not grant AP
 		return 0
@@ -264,7 +263,7 @@ local function GetAPForItem(itemLink)
 		return apValueCache[itemLink]
 	else
 		--Not cached, do a tooltip scan and cache the value
-		local apValue = GetAPFromTooltip(itemLink)
+		local apValue = GetAPFromTooltip(itemLink, itemID)
 		if apValue > 0 then
 			apValueCache[itemLink] = apValue
 		end
@@ -285,7 +284,7 @@ function mod:GetArtifactPowerInBags()
 			link = GetContainerItemLink(bag, slot)
 
 			if (ID and link) then
-				AP = GetAPForItem(link)
+				AP = GetAPForItem(link, ID)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
@@ -299,8 +298,6 @@ function mod:GetArtifactPowerInBags()
 end
 
 function mod:LoadArtifactBar()
-	empoweringSpellName = GetSpellInfo(227907)
-
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, self.ArtifactBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
