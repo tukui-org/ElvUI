@@ -88,11 +88,11 @@ function mod:UpdateArtifact(event, unit)
 
 		bar.text:SetText(text)
 	end
-	
+
 	if bar.mouseIsOver then -- Update tooltip if we used an AP item while hovering
-        bar:GetScript("OnLeave")(bar)
+		bar:GetScript("OnLeave")(bar)
 		bar:GetScript("OnEnter")(bar)
-    end
+	end
 end
 
 function mod:ArtifactBar_OnEnter()
@@ -218,7 +218,7 @@ local function GetAPFromTooltip(itemLink)
 						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
 					else
 						ap = tonumber(value) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
-					end 
+					end
 				else
 					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
 					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
@@ -300,13 +300,13 @@ function mod:GetArtifactPowerInBags()
 	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
 		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
 	end
-	
+
 	if (clickID) then
 		self.artifactBar.button:SetAttribute("type2", "item")
-        self.artifactBar.button:SetAttribute("item", "item:"..clickID)
+		self.artifactBar.button:SetAttribute("item", "item:"..clickID)
 	else
 		self.artifactBar.button:SetAttribute("type2", nil)
-        self.artifactBar.button:SetAttribute("item", nil)
+		self.artifactBar.button:SetAttribute("item", nil)
 	end
 
 	return self.artifactBar.BagArtifactPower
@@ -317,7 +317,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 	self.artifactBar.statusBar:SetFrameLevel(self.artifactBar:GetFrameLevel() + 2)
-	
+
 	self.artifactBar.button = CreateFrame("Button", nil, self.artifactBar, "SecureActionButtonTemplate")
 	self.artifactBar.button:SetAllPoints()
 	self.artifactBar.button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
