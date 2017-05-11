@@ -121,14 +121,6 @@ function mod:ArtifactBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ArtifactBar_OnClick()
-	if not ArtifactFrame or not ArtifactFrame:IsShown() then
-		ShowUIPanel(SocketInventoryItem(16))
-	elseif ArtifactFrame and ArtifactFrame:IsShown() then
-		HideUIPanel(ArtifactFrame)
-	end
-end
-
 function mod:UpdateArtifactDimensions()
 	self.artifactBar:Width(self.db.artifact.width)
 	self.artifactBar:Height(self.db.artifact.height)
