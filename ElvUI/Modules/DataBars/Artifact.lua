@@ -88,6 +88,11 @@ function mod:UpdateArtifact(event, unit)
 
 		bar.text:SetText(text)
 	end
+	
+	if bar.mouseIsOver then -- Update tooltip if we used an AP item while hovering
+        bar:GetScript("OnLeave")(bar)
+		bar:GetScript("OnEnter")(bar)
+    end
 end
 
 function mod:ArtifactBar_OnEnter()
@@ -112,6 +117,7 @@ function mod:ArtifactBar_OnEnter()
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(format(ARTIFACT_POWER_TOOLTIP_BODY, numPointsAvailableToSpend), nil, nil, nil, true)
 
+	self.mouseIsOver = true
 	GameTooltip:Show()
 end
 
@@ -277,7 +283,7 @@ function mod:GetArtifactPowerInBags()
 	end
 
 	self.artifactBar.BagArtifactPower = 0
-	local ID, link, AP
+	local ID, link, AP, clickID
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
 			ID = select(10, GetContainerItemInfo(bag, slot))
@@ -285,6 +291,7 @@ function mod:GetArtifactPowerInBags()
 
 			if (ID and link) then
 				AP = GetAPForItem(link)
+				if AP > 0 then clickID = ID end
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
@@ -293,12 +300,20 @@ function mod:GetArtifactPowerInBags()
 	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
 		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
 	end
+	
+	if (clickID) then
+		self.artifactBar:SetAttribute("type2", "item")
+        self.artifactBar:SetAttribute("item", "item:"..clickID)
+	else
+		self.artifactBar:SetAttribute("type2", nil)
+        self.artifactBar:SetAttribute("item", nil)
+	end
 
 	return self.artifactBar.BagArtifactPower
 end
 
 function mod:LoadArtifactBar()
-	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, self.ArtifactBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, nil, "SecureActionButtonTemplate", 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 	self.artifactBar.statusBar:SetFrameLevel(self.artifactBar:GetFrameLevel() + 2)
@@ -326,6 +341,16 @@ function mod:LoadArtifactBar()
 	for i = 1, 5 do
 		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
 	end
+
+	self.artifactBar:HookScript("OnClick", function(self, button)
+		if (button == "LeftButton") then
+			if not ArtifactFrame or not ArtifactFrame:IsShown() then
+				ShowUIPanel(SocketInventoryItem(16))
+			elseif ArtifactFrame and ArtifactFrame:IsShown() then
+				HideUIPanel(ArtifactFrame)
+			end
+		end
+	end)
 
 	self:UpdateArtifactDimensions()
 	E:CreateMover(self.artifactBar, "ArtifactBarMover", L["Artifact Bar"])
