@@ -15,7 +15,6 @@ function mod:OnLeave()
 	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
-	self.mouseIsOver = false
 	GameTooltip:Hide()
 end
 
@@ -24,12 +23,9 @@ function mod:CreateBar(name, onEnter, onClick, ...)
 	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', mod.OnLeave)
-	if onClick then
-		bar:SetScript("OnClick", onClick)
-	end
+	bar:SetScript("OnClick", onClick)
 	bar:SetFrameStrata('LOW')
 	bar:SetTemplate('Transparent')
-	bar:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	bar:Hide()
 
 	bar.statusBar = CreateFrame('StatusBar', nil, bar)
