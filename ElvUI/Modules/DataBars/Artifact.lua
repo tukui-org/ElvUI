@@ -302,21 +302,31 @@ function mod:GetArtifactPowerInBags()
 	end
 	
 	if (clickID) then
-		self.artifactBar:SetAttribute("type2", "item")
-        self.artifactBar:SetAttribute("item", "item:"..clickID)
+		self.artifactBar.button:SetAttribute("type2", "item")
+        self.artifactBar.button:SetAttribute("item", "item:"..clickID)
 	else
-		self.artifactBar:SetAttribute("type2", nil)
-        self.artifactBar:SetAttribute("item", nil)
+		self.artifactBar.button:SetAttribute("type2", nil)
+        self.artifactBar.button:SetAttribute("item", nil)
 	end
 
 	return self.artifactBar.BagArtifactPower
 end
 
 function mod:LoadArtifactBar()
-	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, nil, "SecureActionButtonTemplate", 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 	self.artifactBar.statusBar:SetFrameLevel(self.artifactBar:GetFrameLevel() + 2)
+	
+	self.artifactBar.button = CreateFrame("Button", nil, self.artifactBar, "SecureActionButtonTemplate")
+	self.artifactBar.button:SetAllPoints()
+	self.artifactBar.button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	self.artifactBar.button:SetScript("OnEnter", function()
+		self.ArtifactBar_OnEnter(self.artifactBar)
+	end)
+	self.artifactBar.button:SetScript("OnLeave", function()
+		self.OnLeave(self.artifactBar)
+	end)
 
 	self.artifactBar.eventFrame = CreateFrame("Frame")
 	self.artifactBar.eventFrame:Hide()
@@ -342,7 +352,7 @@ function mod:LoadArtifactBar()
 		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
 	end
 
-	self.artifactBar:HookScript("OnClick", function(self, button)
+	self.artifactBar.button:HookScript("OnClick", function(self, button)
 		if (button == "LeftButton") then
 			if not ArtifactFrame or not ArtifactFrame:IsShown() then
 				ShowUIPanel(SocketInventoryItem(16))
