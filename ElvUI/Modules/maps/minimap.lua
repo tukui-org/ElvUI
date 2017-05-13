@@ -587,4 +587,8 @@ function M:Initialize()
 	MinimapBackdrop:SetAllPoints(Minimap)
 end
 
-E:RegisterInitialModule(M:GetName())
+local function InitializeCallback()
+	M:Initialize()
+end
+
+E:RegisterInitialModule(M:GetName(), InitializeCallback)
