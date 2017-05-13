@@ -346,5 +346,8 @@ function AFK:Initialize()
 	self.isActive = false
 end
 
+local function InitializeCallback()
+	AFK:Initialize()
+end
 
-E:RegisterModule(AFK:GetName())
+E:RegisterModule(AFK:GetName(), InitializeCallback)

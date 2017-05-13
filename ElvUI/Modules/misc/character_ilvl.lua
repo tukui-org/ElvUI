@@ -110,4 +110,8 @@ function mod:Initialize()
 	self:RegisterEvent("INSPECT_READY", "Inspect_Update")
 end
 
---E:RegisterModule(mod:GetName())
+local function InitializeCallback()
+	mod:Initialize()
+end
+
+--E:RegisterModule(mod:GetName(), InitializeCallback)

@@ -754,4 +754,8 @@ end
 
 S:RegisterEvent('ADDON_LOADED')
 
-E:RegisterModule(S:GetName())
+local function InitializeCallback()
+	S:Initialize()
+end
+
+E:RegisterModule(S:GetName(), InitializeCallback)

@@ -408,4 +408,8 @@ function LO:CreateMinimapPanels()
 	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)
 end
 
-E:RegisterModule(LO:GetName())
+local function InitializeCallback()
+	LO:Initialize()
+end
+
+E:RegisterModule(LO:GetName(), InitializeCallback)

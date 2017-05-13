@@ -815,4 +815,8 @@ function TT:Initialize()
 	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar.Bar)
 end
 
-E:RegisterModule(TT:GetName())
+local function InitializeCallback()
+	TT:Initialize()
+end
+
+E:RegisterModule(TT:GetName(), InitializeCallback)
