@@ -1228,7 +1228,7 @@ function E:RegisterModule(name, loadFunc)
 		else
 			if self.ModuleCallbacks[name] then
 				--Don't allow a registered module name to be overwritten
-				E:Print("Invalid argument #1 to E:RegisterModule (module name is already registered, please use a unique name)")
+				E:Print("Invalid argument #1 to E:RegisterModule (module name:", name, "is already registered, please use a unique name)")
 				return
 			end
 
@@ -1252,7 +1252,7 @@ function E:RegisterInitialModule(name, loadFunc)
 	if (loadFunc and type(loadFunc) == "function") then --New method using callbacks
 		if self.InitialModuleCallbacks[name] then
 			--Don't allow a registered module name to be overwritten
-			E:Print("Invalid argument #1 to E:RegisterInitialModule (module name is already registered, please use a unique name)")
+			E:Print("Invalid argument #1 to E:RegisterInitialModule (module name:", name, "is already registered, please use a unique name)")
 			return
 		end
 
@@ -1268,6 +1268,13 @@ function E:RegisterInitialModule(name, loadFunc)
 end
 
 function E:InitializeInitialModules()
+	--Fire callbacks for any module using the new system
+	for index, moduleName in ipairs(self.InitialModuleCallbacks["CallPriority"]) do
+		self.InitialModuleCallbacks[moduleName] = nil;
+		self.InitialModuleCallbacks["CallPriority"][index] = nil
+		E.callbacks:Fire(moduleName)
+	end
+
 	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E['RegisteredInitialModules']) do
 		local module = self:GetModule(module, true)
@@ -1278,13 +1285,6 @@ function E:InitializeInitialModules()
 			end
 		end
 	end
-	
-	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.InitialModuleCallbacks["CallPriority"]) do
-		self.InitialModuleCallbacks[moduleName] = nil;
-		self.InitialModuleCallbacks["CallPriority"][index] = nil
-		E.callbacks:Fire(moduleName)
-	end
 end
 
 function E:RefreshModulesDB()
@@ -1294,6 +1294,13 @@ function E:RefreshModulesDB()
 end
 
 function E:InitializeModules()
+	--Fire callbacks for any module using the new system
+	for index, moduleName in ipairs(self.ModuleCallbacks["CallPriority"]) do
+		self.ModuleCallbacks[moduleName] = nil;
+		self.ModuleCallbacks["CallPriority"][index] = nil
+		E.callbacks:Fire(moduleName)
+	end
+
 	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E['RegisteredModules']) do
 		local module = self:GetModule(module)
@@ -1304,13 +1311,6 @@ function E:InitializeModules()
 				ScriptErrorsFrame_OnError(catch, false)
 			end
 		end
-	end
-	
-	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.ModuleCallbacks["CallPriority"]) do
-		self.ModuleCallbacks[moduleName] = nil;
-		self.ModuleCallbacks["CallPriority"][index] = nil
-		E.callbacks:Fire(moduleName)
 	end
 end
 
