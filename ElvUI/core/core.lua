@@ -1228,7 +1228,7 @@ function E:RegisterModule(name, loadFunc)
 		else
 			if self.ModuleCallbacks[name] then
 				--Don't allow a registered module name to be overwritten
-				E:Print("Invalid argument #1 to E:RegisterModule (module name is already registered, please use a unique name)")
+				E:Print("Invalid argument #1 to E:RegisterModule (module name:", name, "is already registered, please use a unique name)")
 				return
 			end
 
@@ -1252,7 +1252,7 @@ function E:RegisterInitialModule(name, loadFunc)
 	if (loadFunc and type(loadFunc) == "function") then --New method using callbacks
 		if self.InitialModuleCallbacks[name] then
 			--Don't allow a registered module name to be overwritten
-			E:Print("Invalid argument #1 to E:RegisterInitialModule (module name is already registered, please use a unique name)")
+			E:Print("Invalid argument #1 to E:RegisterInitialModule (module name:", name, "is already registered, please use a unique name)")
 			return
 		end
 
