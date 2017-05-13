@@ -172,8 +172,10 @@ E.ClassRole = {
 
 E.noop = function() end;
 
+local hexvaluecolor
 function E:Print(...)
-	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
+	hexvaluecolor = self["media"].hexvaluecolor or "|cff00b3ff"
+	print(hexvaluecolor..'ElvUI:|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -1259,7 +1261,7 @@ function E:RegisterInitialModule(name, loadFunc)
 		self.InitialModuleCallbacks["CallPriority"][#self.InitialModuleCallbacks["CallPriority"] + 1] = name
 
 		--Register loadFunc to be called when event is fired
-		E.RegisterCallback(E, name, loadFunc)
+		E:RegisterCallback(name, loadFunc, E:GetModule(name))
 	else
 		self['RegisteredInitialModules'][#self['RegisteredInitialModules'] + 1] = name
 	end

@@ -105,4 +105,4 @@ local function LoadSkin()
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
 end
 
-S:AddCallback("WorldMap", LoadSkin)
+S:AddCallback("SkinWorldMap", LoadSkin)

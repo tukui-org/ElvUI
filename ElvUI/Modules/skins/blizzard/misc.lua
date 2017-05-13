@@ -1106,4 +1106,4 @@ local function LoadSkin()
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 
-S:AddCallback("Misc", LoadSkin)
+S:AddCallback("SkinMisc", LoadSkin)

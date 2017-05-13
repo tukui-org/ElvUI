@@ -669,9 +669,9 @@ function S:AddCallbackForAddon(addonName, eventName, loadFunc, forceLoad, bypass
 		self.addonCallbacks[addonName] = {["CallPriority"] = {}}
 	end
 	
-	if self.addonCallbacks[addonName][eventName] then
+	if self.addonCallbacks[addonName][eventName] or E.ModuleCallbacks[eventName] or E.InitialModuleCallbacks[eventName] then
 		--Don't allow a registered callback to be overwritten
-		E:Print("Invalid argument #2 to S:AddCallbackForAddon (event name is already registered, please use a unique event name)")
+		E:Print("Invalid argument #2 to S:AddCallbackForAddon (event name:", eventName, "is already registered, please use a unique event name)")
 		return
 	end
 
@@ -698,9 +698,9 @@ function S:AddCallback(eventName, loadFunc)
 		return
 	end
 
-	if self.nonAddonCallbacks[eventName] then
+	if self.nonAddonCallbacks[eventName] or E.ModuleCallbacks[eventName] or E.InitialModuleCallbacks[eventName] then
 		--Don't allow a registered callback to be overwritten
-		E:Print("Invalid argument #1 to S:AddCallback (event name is already registered, please use a unique event name)")
+		E:Print("Invalid argument #1 to S:AddCallback (event name:", eventName, "is already registered, please use a unique event name)")
 		return
 	end
 

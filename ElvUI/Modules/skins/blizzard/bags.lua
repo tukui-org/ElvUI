@@ -228,4 +228,4 @@ local function LoadSkin()
 	SkinBags()
 end
 
-S:AddCallback("Bags", LoadSkin)
+S:AddCallback("SkinBags", LoadSkin)
