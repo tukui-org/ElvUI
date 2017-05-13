@@ -18,9 +18,11 @@ local GetSpellInfo = GetSpellInfo
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
+local IsArtifactPowerItem = IsArtifactPowerItem
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
+local AP_NAME = format("%s|r", ARTIFACT_POWER)
 local ARTIFACT_POWER = ARTIFACT_POWER
 local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
@@ -177,7 +179,6 @@ local apValueMultiplier = {
 
 local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
 local apValueMultiplierLocal = (apValueMultiplier[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-asian clients
-local empoweringSpellName
 
 --AP item caches
 local apValueCache = {}
@@ -189,8 +190,7 @@ local apLineIndex
 local function GetAPFromTooltip(itemLink)
 	local apValue = 0
 
-	local itemSpell = GetItemSpell(itemLink)
-	if itemSpell and itemSpell == empoweringSpellName then
+	if IsArtifactPowerItem(itemLink) then
 		--Clear tooltip from previous item
 		mod.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before
@@ -202,7 +202,7 @@ local function GetAPFromTooltip(itemLink)
 		for i = 3, #mod.artifactBar.tooltipLines do
 			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
 
-			if (tooltipText) then
+			if (tooltipText and not strmatch(tooltipText, AP_NAME)) then
 				local digit1, digit2, digit3, ap
 				local value = strmatch(tooltipText, apStringValueMillionLocal)
 
@@ -212,7 +212,7 @@ local function GetAPFromTooltip(itemLink)
 						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
 					else
 						ap = tonumber(value) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
-					end 
+					end
 				else
 					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
 					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
@@ -298,8 +298,6 @@ function mod:GetArtifactPowerInBags()
 end
 
 function mod:LoadArtifactBar()
-	empoweringSpellName = GetSpellInfo(227907)
-
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, self.ArtifactBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)

@@ -457,4 +457,8 @@ function PI:Initialize()
 	PI:CreateFrame()
 end
 
-E:RegisterModule(PI:GetName())
+local function InitializeCallback()
+	PI:Initialize()
+end
+
+E:RegisterModule(PI:GetName(), InitializeCallback)

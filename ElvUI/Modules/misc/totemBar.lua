@@ -129,4 +129,8 @@ function TOTEMS:Initialize()
 	self:ToggleEnable()
 end
 
-E:RegisterModule(TOTEMS:GetName())
+local function InitializeCallback()
+	TOTEMS:Initialize()
+end
+
+E:RegisterModule(TOTEMS:GetName(), InitializeCallback)

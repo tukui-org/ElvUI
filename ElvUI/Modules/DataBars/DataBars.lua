@@ -74,4 +74,8 @@ function mod:Initialize()
 	self:RegisterEvent("PLAYER_LEVEL_UP")
 end
 
-E:RegisterModule(mod:GetName())
+local function InitializeCallback()
+	mod:Initialize()
+end
+
+E:RegisterModule(mod:GetName(), InitializeCallback)

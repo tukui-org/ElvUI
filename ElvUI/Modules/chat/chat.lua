@@ -2173,4 +2173,8 @@ function CH:Initialize()
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
 end
 
-E:RegisterModule(CH:GetName())
+local function InitializeCallback()
+	CH:Initialize()
+end
+
+E:RegisterModule(CH:GetName(), InitializeCallback)
