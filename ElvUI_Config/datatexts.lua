@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 local datatexts = {}
 
 function DT:PanelLayoutOptions()
-	for name, _ in pairs(DT.RegisteredDataTexts) do
-		datatexts[name] = name
+	for name, data in pairs(DT.RegisteredDataTexts) do
+		datatexts[name] = data.localizedName or L[name]
 	end
 	datatexts[''] = NONE
 
