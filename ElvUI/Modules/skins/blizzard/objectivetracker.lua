@@ -128,59 +128,56 @@ local function LoadSkin()
 		end
 	end)
 
-	--World Quest Tracker ProgressBar
-	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
-		if not line.ProgressBar.Bar.backdrop then
-			line.ProgressBar.Bar:Height(18)
-			line.ProgressBar.Bar:CreateBackdrop("Transparent")
-			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
-			E:RegisterStatusBar(line.ProgressBar.Bar)
-			line.ProgressBar.Bar.BarFrame:Hide()
-			line.ProgressBar.Bar.IconBG:SetAlpha(0)
-			line.ProgressBar.Bar.BarFrame2:Hide()
-			line.ProgressBar.Bar.BarFrame3:Hide()
+	--World Quest Tracker/Bonus Objective Tracker ProgressBar
+	local function SkinProgressBars(line)
+		local progressBar = line.ProgressBar
+		local bar = progressBar.Bar
+		local icon = bar.Icon
+		local label = bar.Label
 
-			line.ProgressBar.Bar.Icon:ClearAllPoints()
-			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
-			line.ProgressBar.Bar.Icon:SetMask("")
-			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
+		if not progressBar.backdrop then
+			progressBar:CreateBackdrop("Default")
+			progressBar.backdrop:SetOutside(icon)
 
-			line.ProgressBar:CreateBackdrop("Default")
-			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
+			bar.BarFrame:Hide()
+			bar.BarFrame2:Hide()
+			bar.BarFrame3:Hide()
+			bar.BarGlow:Hide()
+			bar.Sheen:Hide()
+			bar.IconBG:SetAlpha(0)
+			bar:Height(18)
+			bar:CreateBackdrop("Transparent")
+			bar:SetStatusBarTexture(E["media"].normTex)
+			bar:SetBackdropColor(0, 0, 0, 0)
+			E:RegisterStatusBar(bar)
 
-			--Sometimes the glow effect looks weird, so hide them
-			line.ProgressBar.Bar.BarGlow:Hide()
-			line.ProgressBar.Bar.Starburst:Hide()
-			line.ProgressBar.Bar.Sheen:Hide()
-			line.ProgressBar.FullBarFlare1.BarGlow:Hide()
-			line.ProgressBar.FullBarFlare2.BarGlow:Hide()
+			label:ClearAllPoints()
+			label:SetPoint("CENTER", 0, -1)
+
+			icon:ClearAllPoints()
+			icon:SetPoint("LEFT", bar, "RIGHT", E.Border*3, 0)
+			icon:SetMask("")
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			local border = CreateFrame("Frame", "$parentBorder", bar)
+			border:SetAllPoints(icon)
+			border:SetTemplate("Transparent")
+			border:SetBackdropColor(0, 0, 0, 0)
+			bar.newIconBg = border
+
+			BonusObjectiveTrackerProgressBar_PlayFlareAnim = function() return end
 		end
 
-		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
+		progressBar.backdrop:SetShown(icon:IsShown())
+		bar.newIconBg:SetShown(icon:IsShown())
+	end
+
+	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		SkinProgressBars(line)
 	end)
 
-	--Bonus Objective Tracker ProgressBar
-	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
-		if not line.ProgressBar.Bar.backdrop then
-			line.ProgressBar.Bar:Height(18)
-			line.ProgressBar.Bar:CreateBackdrop("Transparent")
-			line.ProgressBar.Bar:SetStatusBarTexture(E["media"].normTex)
-			E:RegisterStatusBar(line.ProgressBar.Bar)
-			line.ProgressBar.Bar.BarFrame:Hide()
-			line.ProgressBar.Bar.IconBG:SetAlpha(0)
-			line.ProgressBar.Bar.BarFrame2:Hide()
-			line.ProgressBar.Bar.BarFrame3:Hide()
-
-			line.ProgressBar.Bar.Icon:ClearAllPoints()
-			line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", E.Border*3, 0)
-			line.ProgressBar.Bar.Icon:SetMask("")
-			line.ProgressBar.Bar.Icon:SetTexCoord(unpack(E.TexCoords))
-
-			line.ProgressBar:CreateBackdrop("Default")
-			line.ProgressBar.backdrop:SetOutside(line.ProgressBar.Bar.Icon)
-		end
-
-		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
+	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", function(_, _, line)
+		SkinProgressBars(line)
 	end)
 
 	--Scenario Tracker ProgressBar
