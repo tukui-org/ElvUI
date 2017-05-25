@@ -215,18 +215,18 @@ do
 	end
 
 	if(PlayerClass == 'MONK') then
-		ClassPowerID = SPELL_POWER_CHI
+		ClassPowerID = Enum.PowerType.Chi
 		ClassPowerType = "CHI"
 		RequireSpec = SPEC_MONK_WINDWALKER
 	elseif(PlayerClass == 'PALADIN') then
-		ClassPowerID = SPELL_POWER_HOLY_POWER
+		ClassPowerID = Enum.PowerType.HolyPower
 		ClassPowerType = "HOLY_POWER"
 		RequireSpec = SPEC_PALADIN_RETRIBUTION
 	elseif(PlayerClass == 'WARLOCK') then
-		ClassPowerID = SPELL_POWER_SOUL_SHARDS
+		ClassPowerID = Enum.PowerType.SoulShards
 		ClassPowerType = "SOUL_SHARDS"
 	elseif(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then
-		ClassPowerID = SPELL_POWER_COMBO_POINTS
+		ClassPowerID = Enum.PowerType.ComboPoints
 		ClassPowerType = 'COMBO_POINTS'
 
 		if(PlayerClass == 'DRUID') then
@@ -234,7 +234,7 @@ do
 			RequireSpell = 5221 -- Shred
 		end
 	elseif(PlayerClass == 'MAGE') then
-		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
+		ClassPowerID = Enum.PowerType.ArcaneCharges
 		ClassPowerType = 'ARCANE_CHARGES'
 		RequireSpec = SPEC_MAGE_ARCANE
 	end
