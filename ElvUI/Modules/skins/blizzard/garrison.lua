@@ -83,6 +83,16 @@ local function LoadSkin()
 	GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
 	GarrisonBuildingFrame.BuildingLevelTooltip:SetTemplate('Transparent')
 
+	-- Follower List
+	local FollowerList = GarrisonBuildingFrame.FollowerList
+	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
+
+	FollowerList:ClearAllPoints()
+	FollowerList:SetPoint("BOTTOMLEFT", 24, 34)
+
+	local scrollFrame = FollowerList.listScroll
+	S:HandleScrollBar(scrollFrame.scrollBar)
+
 	-- Capacitive display frame
 	GarrisonCapacitiveDisplayFrame:StripTextures(true)
 	GarrisonCapacitiveDisplayFrame:CreateBackdrop("Transparent")
