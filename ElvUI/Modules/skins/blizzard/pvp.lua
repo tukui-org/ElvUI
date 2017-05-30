@@ -6,22 +6,29 @@ local function LoadSkin()
 
 	PVPUIFrame:StripTextures()
 
-	for i=1, 2 do
+	for i = 1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
 	end
 
-	for i=1, 4 do
-		local button = _G["PVPQueueFrameCategoryButton"..i]
-		button:SetTemplate('Default')
-		button.Background:Kill()
-		button.Ring:Kill()
-		button.Icon:Size(45)
-		button.Icon:SetTexCoord(.15, .85, .15, .85)
-		button:CreateBackdrop("Default")
-		button.backdrop:SetOutside(button.Icon)
-		button.backdrop:SetFrameLevel(button:GetFrameLevel())
-		button.Icon:SetParent(button.backdrop)
-		button:StyleButton(nil, true)
+	for i = 1, 4 do
+		local bu = _G["PVPQueueFrameCategoryButton"..i]
+
+		bu.Ring:Kill()
+		bu.Background:Kill()
+
+		bu:SetTemplate()
+		bu:StyleButton(nil, true)
+
+		bu.Icon:SetTexCoord(.15, .85, .15, .85)
+		bu.Icon:Point("LEFT", bu, "LEFT")
+		bu.Icon:SetDrawLayer("OVERLAY")
+		bu.Icon:Size(45)
+		bu.Icon:ClearAllPoints()
+		bu.Icon:Point("LEFT", 10, 0)
+		bu.border = CreateFrame("Frame", nil, bu)
+		bu.border:SetTemplate("Default")
+		bu.border:SetOutside(bu.Icon)
+		bu.Icon:SetParent(bu.border)
 	end
 
 	-- Honor Frame
