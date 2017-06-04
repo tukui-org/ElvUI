@@ -194,7 +194,7 @@ function B:SetSearch(query)
 	local method = Search.Matches
 	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
-		if itemsearchquery == "rel" or itemsearchquery == "reli" or itemsearchquery == "relic" then
+		if query == "rel" or query == "reli" or query == "relic" then
 			allowPartialMatch = true
 		end
 		method = Search.TooltipPhrase
@@ -239,7 +239,7 @@ function B:SetGuildBankSearch(query)
 	local method = Search.Matches
 	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
-		if itemsearchquery == "rel" or itemsearchquery == "reli" or itemsearchquery == "relic" then
+		if query == "rel" or query == "reli" or query == "relic" then
 			allowPartialMatch = true
 		end
 		method = Search.TooltipPhrase
