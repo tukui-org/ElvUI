@@ -195,7 +195,7 @@ local apValueMultiplierTwo = {
 local apStringValueOneLocal = apStringValueOne[GetLocale()]
 local apStringValueTwoLocal = (apStringValueTwo[GetLocale()] or "") --Only Asian clients use a secondary higher multiplier
 local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
-local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()]) --Fallback to 1e6 which is used by all non-Asian clients
+local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()])
 
 --AP item caches
 local apValueCache = {}
