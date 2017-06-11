@@ -158,6 +158,7 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 local apStringValueOne = {
+	--1.000.000
 	["enUS"] = "(%d*[%p%s]?%d+) million",
 	["enGB"] = "(%d*[%p%s]?%d+) million",
 	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
@@ -180,6 +181,16 @@ local apValueMultiplierOne = {
 }
 
 local apStringValueTwo = {
+	--1.000.000
+	["enUS"] = "(%d*[%p%s]?%d+) million",
+	["enGB"] = "(%d*[%p%s]?%d+) million",
+	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
+	["esMX"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
+	["deDE"] = "(%d*[%p%s]?%d+) [[Million][Millionen]]?",
+	["esES"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
+	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
+	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
+	["ruRU"] = "(%d*[%p%s]?%d+) млн",
 	--100.000.000
 	["koKR"] = "(%d*[%p%s]?%d+)억",
 	["zhTW"] = "(%d*[%p%s]?%d+)億",
@@ -193,9 +204,9 @@ local apValueMultiplierTwo = {
 }
 
 local apStringValueOneLocal = apStringValueOne[GetLocale()]
-local apStringValueTwoLocal = (apStringValueTwo[GetLocale()] or "") --Only Asian clients use a secondary higher multiplier
+local apStringValueTwoLocal = apStringValueTwo[GetLocale()] --Only Asian clients use a secondary higher multiplier
 local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
-local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()])
+local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
 
 --AP item caches
 local apValueCache = {}
