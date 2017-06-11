@@ -157,7 +157,7 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
-local apStringValueMillion = {
+local apStringValueOne = {
 	["enUS"] = "(%d*[%p%s]?%d+) million",
 	["enGB"] = "(%d*[%p%s]?%d+) million",
 	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
@@ -167,18 +167,35 @@ local apStringValueMillion = {
 	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
 	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
 	["ruRU"] = "(%d*[%p%s]?%d+) млн",
+	--10.000, not 1.000.000
 	["koKR"] = "(%d*[%p%s]?%d+)만",
 	["zhTW"] = "(%d*[%p%s]?%d+)萬",
 	["zhCN"] = "(%d*[%p%s]?%d+) 万",
 }
-local apValueMultiplier = {
+
+local apValueMultiplierOne = {
 	["koKR"] = 1e4,
 	["zhTW"] = 1e4,
 	["zhCN"] = 1e4,
 }
 
-local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
-local apValueMultiplierLocal = (apValueMultiplier[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-asian clients
+local apStringValueTwo = {
+	--100.000.000
+	["koKR"] = "(%d*[%p%s]?%d+)억",
+	["zhTW"] = "(%d*[%p%s]?%d+)億",
+	["zhCN"] = "(%d*[%p%s]?%d+) 亿",
+}
+
+local apValueMultiplierTwo = {
+	["koKR"] = 1e8,
+	["zhTW"] = 1e8,
+	["zhCN"] = 1e8,
+}
+
+local apStringValueOneLocal = apStringValueOne[GetLocale()]
+local apStringValueTwoLocal = (apStringValueTwo[GetLocale()] or "") --Only Asian clients use a secondary higher multiplier
+local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
+local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()]) --Fallback to 1e6 which is used by all non-Asian clients
 
 --AP item caches
 local apValueCache = {}
@@ -204,18 +221,29 @@ local function GetAPFromTooltip(itemLink)
 
 			if (tooltipText and not strmatch(tooltipText, AP_NAME)) then
 				local digit1, digit2, digit3, ap
-				local value = strmatch(tooltipText, apStringValueMillionLocal)
+				local value = strmatch(tooltipText, apStringValueOneLocal)
 
 				if (value) then
 					digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
 					if (digit1 and digit2) then
-						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
+						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
 					else
-						ap = tonumber(value) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
+						ap = tonumber(value) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
 					end
 				else
-					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
-					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
+					value = strmatch(tooltipText, apStringValueTwoLocal)
+					if (value) then
+						--This should only match for Asian clients
+						digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
+						if (digit1 and digit2) then
+							ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierTwoLocal --Multiply by 100 million
+						else
+							ap = tonumber(value) * apValueMultiplierTwoLocal --Multiply by 100 million
+						end
+					else
+						digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
+						ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
+					end
 				end
 
 				if (ap) then
