@@ -209,8 +209,8 @@ local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --F
 local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
 
 --AP item caches
-local apValueCache = {}
-local apItemCache = {}
+mod.apValueCache = {}
+mod.apItemCache = {}
 
 --This function scans the tooltip of an item to determine whether or not it grants AP.
 --If it is found to grant AP, then the value is extracted and returned.
@@ -266,10 +266,10 @@ local function GetAPFromTooltip(itemLink)
 		end
 
 		if (not apFound) then
-			apItemCache[itemLink] = false --Cache item as not granting AP
+			mod.apItemCache[itemLink] = false --Cache item as not granting AP
 		end
 	else
-		apItemCache[itemLink] = false --Cache item as not granting AP
+		mod.apItemCache[itemLink] = false --Cache item as not granting AP
 	end
 
 	return apValue
@@ -291,20 +291,20 @@ end
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
-local function GetAPForItem(itemLink)
-	if (apItemCache[itemLink] == false) then
+function mod:GetAPForItem(itemLink)
+	if (mod.apItemCache[itemLink] == false) then
 		--Get out early if item has already been determined to not grant AP
 		return 0
 	end
 
 	--Check if item is cached and return value
-	if apValueCache[itemLink] then
-		return apValueCache[itemLink]
+	if mod.apValueCache[itemLink] then
+		return mod.apValueCache[itemLink]
 	else
 		--Not cached, do a tooltip scan and cache the value
 		local apValue = GetAPFromTooltip(itemLink)
 		if apValue > 0 then
-			apValueCache[itemLink] = apValue
+			mod.apValueCache[itemLink] = apValue
 		end
 		return apValue
 	end
@@ -323,7 +323,7 @@ function mod:GetArtifactPowerInBags()
 			link = GetContainerItemLink(bag, slot)
 
 			if (ID and link) then
-				AP = GetAPForItem(link)
+				AP = self:GetAPForItem(link)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
