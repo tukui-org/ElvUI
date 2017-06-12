@@ -4,10 +4,11 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, unpack, type = select, unpack, type
+local select, unpack, type, pairs = select, unpack, type, pairs
 local strlower, find, format = strlower, string.find, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles and C_ChatBubbles.GetAllChatBubbles
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
@@ -168,7 +169,8 @@ function M:SkinBubble(frame)
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
 	frame:SetFrameStrata("DIALOG") --Doesn't work currently in Legion due to a bug on Blizzards end
 	M.UpdateBubbleBorder(frame)
-	frame.isBubblePowered = true
+
+	frame.isSkinnedElvUI = true
 end
 
 function M:IsChatBubble(frame)
@@ -203,16 +205,24 @@ function M:LoadChatBubbles()
 		if (self.lastupdate < .1) then return end
 		self.lastupdate = 0
 
-		local count = WorldFrame:GetNumChildren()
-		if(count ~= numChildren) then
-			for i = numChildren + 1, count do
-				local frame = select(i, WorldFrame:GetChildren())
-				
-				if M:IsChatBubble(frame) then
-					M:SkinBubble(frame)
+		if E.wowbuild >= 24287 then --7.2.5
+			for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
+				if not chatBubble.isSkinnedElvUI then
+					M:SkinBubble(chatBubble)
 				end
 			end
-			numChildren = count
-		end
+		else
+			local count = WorldFrame:GetNumChildren()
+			if(count ~= numChildren) then
+				for i = numChildren + 1, count do
+					local frame = select(i, WorldFrame:GetChildren())
+					
+					if M:IsChatBubble(frame) then
+						M:SkinBubble(frame)
+					end
+				end
+				numChildren = count
+			end
+		end		
 	end)
 end

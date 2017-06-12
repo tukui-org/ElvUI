@@ -348,7 +348,7 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25);
 	bind:Hide();
 
-	self:HookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
+	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip) for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide(); end end);
 
 	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(self.button) end end)

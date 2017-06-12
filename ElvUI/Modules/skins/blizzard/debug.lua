@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
-
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
 	local noscalemult = E.mult * GetCVar('uiScale')
@@ -66,4 +64,7 @@ local function LoadSkin()
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
+--We need to fix the DebugTools code before it can be used on 7.2.5
+if E.wowbuild == 24015 then --7.2
+	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
+end
