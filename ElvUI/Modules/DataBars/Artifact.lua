@@ -215,7 +215,7 @@ local apItemCache = {}
 --This function scans the tooltip of an item to determine whether or not it grants AP.
 --If it is found to grant AP, then the value is extracted and returned.
 local apLineIndex
-local function GetAPFromTooltip(itemLink)
+function mod:GetAPFromTooltip(itemLink)
 	local apValue = 0
 
 	if IsArtifactPowerItem(itemLink) then
@@ -285,7 +285,7 @@ function mod:TestAPExtraction(itemID)
 		return
 	end
 
-	local apValue = GetAPFromTooltip(itemLink)
+	local apValue = mod:GetAPFromTooltip(itemLink)
 	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
 end
 
@@ -302,7 +302,7 @@ function mod:GetAPForItem(itemLink)
 		return apValueCache[itemLink]
 	else
 		--Not cached, do a tooltip scan and cache the value
-		local apValue = GetAPFromTooltip(itemLink)
+		local apValue = self:GetAPFromTooltip(itemLink)
 		if apValue > 0 then
 			apValueCache[itemLink] = apValue
 		end
