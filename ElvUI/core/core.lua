@@ -48,6 +48,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
+E.myClassID = select(3, UnitClass("player"));
 E.myspec = GetSpecialization()
 E.myrace = select(2, UnitRace("player"))
 E.myfaction = select(2, UnitFactionGroup('player'))
