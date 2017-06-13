@@ -158,4 +158,4 @@ local function OnEvent(self, event)
 	self.text:SetFormattedText("%s %s %s %s", GARRISON_ICON, numGarrisonResources, OIL_ICON, numOil)
 end
 
-DT:RegisterDatatext('Garrison', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter)
+DT:RegisterDatatext('Garrison', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter, nil, L["Garrison"])
