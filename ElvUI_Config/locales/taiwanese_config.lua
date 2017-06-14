@@ -462,6 +462,8 @@ L["Thin Border Theme"] = "細邊框主題"
 L["Toggle Tutorials"] = "教學開關"
 L["Top Panel"] = "頂部面板"
 L["When you go AFK display the AFK screen."] = "當你離開時顯示AFK界面"
+L["Hide in Instances"] = true
+L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "把該字體設置應用到所有ElvUI設置中去,但是某些設置並不會被改變."

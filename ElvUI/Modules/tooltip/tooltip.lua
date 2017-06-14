@@ -652,6 +652,7 @@ function TT:RepositionBNET(frame, _, anchor)
 end
 
 function TT:CheckBackdropColor()
+	if not GameTooltip:IsShown() then return end
 	local r, g, b = GameTooltip:GetBackdropColor()
 	r = E:Round(r, 1)
 	g = E:Round(g, 1)
