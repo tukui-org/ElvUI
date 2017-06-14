@@ -509,6 +509,8 @@ L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
+L["Hide in Instances"] = true;
+L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
