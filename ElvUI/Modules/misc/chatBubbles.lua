@@ -208,7 +208,7 @@ function M:UpdateChatBubbleInstanceToggle(value)
 			if value == false then
 				SetCVar('chatBubbles', 1)
 			end
-			if GetCVar('chatBubbles') == 0 then
+			if GetCVar('chatBubbles') == '0' then
 				M.BubbleFrame:SetScript('OnUpdate', nil)
 			else
 				M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
