@@ -419,6 +419,7 @@ L["General"] = true;
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide At Max Level"] = true;
 L["Hide Error Text"] = true;
+L["Hide in Instances"] = true;
 L["Hide In Vehicle"] = true;
 L["Hides the red error text at the top of the screen while in combat."] = true;
 L["Log Taints"] = true;
@@ -451,8 +452,6 @@ L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = true;
 L["Top Panel"] = true;
 L["When you go AFK display the AFK screen."] = true;
-L["Hide in Instances"] = true;
-L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;

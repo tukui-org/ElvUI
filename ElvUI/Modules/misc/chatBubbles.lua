@@ -174,16 +174,15 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
-function M:BubbleScript(elapsed)
-	local bub = M.BubbleFrame
-	if not bub then return end
-	if not bub.lastupdate then
-		bub.lastupdate = -2 -- wait 2 seconds before hooking frames
+local function ChatBubble_OnUpdate(self, elapsed)
+	if not M.BubbleFrame then return end
+	if not M.BubbleFrame.lastupdate then
+		M.BubbleFrame.lastupdate = -2 -- wait 2 seconds before hooking frames
 	end
 
-	bub.lastupdate = bub.lastupdate + elapsed
-	if (bub.lastupdate < .1) then return end
-	bub.lastupdate = 0
+	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
+	if (M.BubbleFrame.lastupdate < .1) then return end
+	M.BubbleFrame.lastupdate = 0
 
 	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
 		if not chatBubble.isSkinnedElvUI then
@@ -192,34 +191,26 @@ function M:BubbleScript(elapsed)
 	end
 end
 
-function M:BubbleSwitch(checked)
-	-- we call this from M.ForceCVars (inside of misc.lua) now (which also fires on PLAYER_ENTERING_WORLD)
-	if E.private.general.bubbles == false then
-		E.private.general.chatBubbles = 'disabled'
-		E.private.general.bubbles = nil
-	end
-
-	if not M.BubbleFrame then
-		M.BubbleFrame = CreateFrame('Frame')
-	end
-
+function M:UpdateChatBubbleInstanceToggle()
 	if E.private.general.chatBubbles == 'disabled' then
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 	else
-		if E.private.general.chatBubbleForceHide then
+		if E.private.general.chatBubbleHideInInstance then
 			local _, instanceType = IsInInstance()
 			if instanceType == "none" then
+				M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 				SetCVar('chatBubbles', 1)
-				M.BubbleFrame:SetScript('OnUpdate', M.BubbleScript)
 			else
-				SetCVar('chatBubbles', 0) -- rare 7.2.5 chatBubble work around LOL
 				M.BubbleFrame:SetScript('OnUpdate', nil)
+				SetCVar('chatBubbles', 0)
 			end
 		else
-			if checked == false then
-				SetCVar('chatBubbles', 1)
-			end
-			M.BubbleFrame:SetScript('OnUpdate', M.BubbleScript)
+			M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
+			SetCVar('chatBubbles', 1)
 		end
 	end
+end
+
+function M:LoadChatBubbles()
+	self.BubbleFrame = CreateFrame('Frame')
 end

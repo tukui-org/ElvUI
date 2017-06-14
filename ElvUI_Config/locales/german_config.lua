@@ -430,6 +430,7 @@ L["General"] = "Allgemein"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Höhe des Questfenster. Größe verändern um mehr Ziele zu sehen."
 L["Hide At Max Level"] = "Auf max. Level vestecken"
 L["Hide Error Text"] = "Fehlertext verstecken"
+L["Hide in Instances"] = true;
 L["Hide In Vehicle"] = "Im Fahrzeug verstecken"
 L["Hides the red error text at the top of the screen while in combat."] = "Den roten Fehlertext im oberen Teil des Bildschirms im Kampf verstecken"
 L["Log Taints"] = "Log Fehler"
@@ -462,8 +463,6 @@ L["Thin Border Theme"] = "Dünner Rahmen Theme"
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
-L["Hide in Instances"] = true;
-L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Wendet die Schrift und Schriftgröße überall im Interface an. Hinweis: Einige Schriftarten werden übersprungen, weil sie eine kleinere Schriftgröße als Standard haben."

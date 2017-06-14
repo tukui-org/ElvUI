@@ -248,10 +248,11 @@ function M:AutoInvite(event, leaderName)
 end
 
 function M:ForceCVars()
-	self:BubbleSwitch() -- Initialize ChatBubbles
 	if not GetCVarBool('lockActionBars') and E.private.actionbar.enable then
 		SetCVar('lockActionBars', 1)
 	end
+	
+	self:UpdateChatBubbleInstanceToggle()
 end
 
 function M:PLAYER_ENTERING_WORLD()
@@ -261,6 +262,7 @@ end
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
+	self:LoadChatBubbles()
 	self:LoadLoot()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')

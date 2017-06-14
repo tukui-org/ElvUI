@@ -430,6 +430,7 @@ L["General"] = "一般"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "任务框体的高度.增加大小以看到更多目标"
 L["Hide At Max Level"] = "在最高等级时隐藏"
 L["Hide Error Text"] = "隐藏错误文字"
+L["Hide in Instances"] = true;
 L["Hide In Vehicle"] = "骑乘时隐藏"
 L["Hides the red error text at the top of the screen while in combat."] = "战斗中隐藏屏幕顶部红字错误信息"
 L["Log Taints"] = "错误记录"
@@ -462,8 +463,6 @@ L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
-L["Hide in Instances"] = true;
-L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "把该字体设置应用到所有ElvUI设置中去,但是某些设置并不会被改变"

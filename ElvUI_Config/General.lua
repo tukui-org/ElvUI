@@ -592,13 +592,12 @@ E.Options.args.general = {
 						["THICKOUTLINE"] = "THICKOUTLINE",
 					},
 				},
-				forceHide = {
+				chatBubbleHideInInstance = {
 					type = "toggle",
 					order = 6,
 					name = L["Hide in Instances"],
-					desc = L["Force hide chat bubbles inside of Instances (including Garrison zone). NOTE: This will force Blizzard's option (Game Menu > Interface > Display > Player Chat Bubbles). Also, unchecking this will turn Chat Bubbles back on."],
-					get = function(info) return E.private.general.chatBubbleForceHide end,
-					set = function(info, value) E.private.general.chatBubbleForceHide = value; E:GetModule('Misc'):BubbleSwitch(value) end,
+					get = function(info) return E.private.general.chatBubbleHideInInstance end,
+					set = function(info, value) E.private.general.chatBubbleHideInInstance = value; E:GetModule('Misc'):UpdateChatBubbleInstanceToggle() end,
 					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 				},
 			},
