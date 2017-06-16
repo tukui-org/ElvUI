@@ -311,6 +311,7 @@ function UF:Construct_ClassBar(frame)
 	end
 
 	bars.PostUpdate = UF.UpdateClassBar
+	bars.UpdateColor = function() return end --We handle colors on our own in Configure_ClassBar
 	bars.UpdateTexture = function() return end --We don't use textures but statusbars, so prevent errors
 
 	bars:SetScript("OnShow", ToggleResourceBar)
@@ -319,7 +320,7 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
-function UF:UpdateClassBar(cur, max, hasMaxChanged)
+function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
