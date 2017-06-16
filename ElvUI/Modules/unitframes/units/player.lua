@@ -66,7 +66,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.PvP = UF:Construct_PvPIcon(frame)
+	frame.PvPIndicator = UF:Construct_PvPIcon(frame)
 	frame.CombatFade = true
 	frame.customTexts = {}
 
