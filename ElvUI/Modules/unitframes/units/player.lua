@@ -17,7 +17,7 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Target
 
 function UF:Construct_PlayerFrame(frame)
-	frame.Threat = self:Construct_Threat(frame)
+	frame.ThreatIndicator = self:Construct_Threat(frame)
 
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;

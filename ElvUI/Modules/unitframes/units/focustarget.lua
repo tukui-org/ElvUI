@@ -26,7 +26,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Range = UF:Construct_Range(frame)
-	frame.Threat = UF:Construct_Threat(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 
 	frame.customTexts = {}

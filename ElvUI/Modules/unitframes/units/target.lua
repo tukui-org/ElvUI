@@ -26,7 +26,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.Threat = self:Construct_Threat(frame)
+	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.Castbar = self:Construct_Castbar(frame, L["Target Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()

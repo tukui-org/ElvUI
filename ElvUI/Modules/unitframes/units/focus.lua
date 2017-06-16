@@ -33,7 +33,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
-	frame.Threat = UF:Construct_Threat(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 
 	frame.customTexts = {}
