@@ -68,10 +68,10 @@ end
 
 function UF:Configure_AltPower(frame)
 	if not frame.VARIABLES_SET then return end
-	local altpower = frame.AltPowerBar
+	local altpower = frame.AlternativePower
 
 	if frame.USE_POWERBAR then
-		frame:EnableElement('AltPowerBar')
+		frame:EnableElement('AlternativePower')
 		altpower.text:SetAlpha(1)
 		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING+frame.BORDER)
 		if not frame.USE_PORTRAIT_OVERLAY then
@@ -81,7 +81,7 @@ function UF:Configure_AltPower(frame)
 		end
 		altpower.Smooth = UF.db.smoothbars
 	else
-		frame:DisableElement('AltPowerBar')
+		frame:DisableElement('AlternativePower')
 		altpower.text:SetAlpha(0)
 		altpower:Hide()
 	end
