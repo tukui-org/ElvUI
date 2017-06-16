@@ -33,7 +33,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.Threat = self:Construct_Threat(frame)
-	frame.HealPrediction = self:Construct_HealComm(frame)
+	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)

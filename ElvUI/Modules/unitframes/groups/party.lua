@@ -66,7 +66,7 @@ function UF:Construct_PartyFrames()
 		self.Threat = UF:Construct_Threat(self)
 		self.RaidIcon = UF:Construct_RaidIcon(self)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
-		self.HealPrediction = UF:Construct_HealComm(self)
+		self.HealthPrediction = UF:Construct_HealComm(self)
 		self.customTexts = {}
 		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)

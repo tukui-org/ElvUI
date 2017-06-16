@@ -71,7 +71,7 @@ function UF:Construct_ArenaFrames(frame)
 
 		frame.Castbar = self:Construct_Castbar(frame)
 
-		frame.HealPrediction = UF:Construct_HealComm(frame)
+		frame.HealthPrediction = UF:Construct_HealComm(frame)
 		frame.Trinket = self:Construct_Trinket(frame)
 		frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
 		frame.Range = UF:Construct_Range(frame)
