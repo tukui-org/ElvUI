@@ -142,7 +142,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
 		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
-	if icons.forceShow then
+	if element.forceShow then
 		spellID = 47540
 		name, rank, texture = GetSpellInfo(spellID)
 		count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
@@ -186,7 +186,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		* show - indicates whether the aura button should be shown (boolean)
 		--]]
 		local show = true
-		if not icons.forceShow then
+		if not element.forceShow then
 			show = (element.CustomFilter or customFilter) (element, unit, button, name, rank, texture,
 				count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)

@@ -107,8 +107,8 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 	local parent = element.__owner
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
-	if power.frequentUpdates ~= power.__frequentUpdates then
-		power.__frequentUpdates = power.frequentUpdates
+	if element.frequentUpdates ~= element.__frequentUpdates then
+		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
 	end
 

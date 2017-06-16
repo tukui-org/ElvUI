@@ -77,13 +77,14 @@ The following options are listed by priority. The first check that returns true 
 
 local _, ns = ...
 local oUF = ns.oUF
+local updateFrequentUpdates
 
 local function UpdateColor(element, unit, cur, max)
 	local parent = element.__owner
 
-	if health.frequentUpdates ~= health.__frequentUpdates then
-		health.__frequentUpdates = health.frequentUpdates
-		updateFrequentUpdates(self)
+	if element.frequentUpdates ~= element.__frequentUpdates then
+		element.__frequentUpdates = element.frequentUpdates
+		updateFrequentUpdates(parent)
 	end
 
 	local r, g, b, t
