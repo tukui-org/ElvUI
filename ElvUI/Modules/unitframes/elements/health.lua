@@ -183,8 +183,8 @@ function UF:PostUpdateHealth(unit, min, max)
 		self:SetValue(min)
 	end
 
-	if parent.ResurrectIcon then
-		parent.ResurrectIcon:SetAlpha(min == 0 and 1 or 0)
+	if parent.ResurrectIndicator then
+		parent.ResurrectIndicator:SetAlpha(min == 0 and 1 or 0)
 	end
 
 	local r, g, b = self:GetStatusBarColor()
