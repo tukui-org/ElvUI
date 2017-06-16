@@ -597,7 +597,7 @@ E.Options.args.general = {
 					order = 6,
 					name = L["Hide in Instances"],
 					get = function(info) return E.private.general.chatBubbleHideInInstance end,
-					set = function(info, value) E.private.general.chatBubbleHideInInstance = value; E:GetModule('Misc'):UpdateChatBubbleInstanceToggle() end,
+					set = function(info, value) E.private.general.chatBubbleHideInInstance = value; E:GetModule('Misc'):UpdateChatBubbleInstanceToggle(value) end,
 					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 				},
 			},
