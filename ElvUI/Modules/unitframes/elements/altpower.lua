@@ -29,8 +29,12 @@ function UF:Construct_AltPowerBar(frame)
 	return altpower
 end
 
-function UF:AltPowerBarPostUpdate(min, cur, max)
-	local perc = floor((cur/max)*100)
+function UF:AltPowerBarPostUpdate(unit, cur, min, max)
+	local perc = 0
+	if cur and max then
+		perc = floor((cur/max)*100)
+	end
+
 	local parent = self:GetParent()
 
 	if perc < 35 then
@@ -41,15 +45,11 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 		self:SetStatusBarColor(1, 0, 0)
 	end
 
-	local unit = parent.unit
-
 	if unit == "player" and self.text then
-		local type = select(11, UnitAlternatePowerInfo(unit))
-
 		if perc > 0 then
-			self.text:SetFormattedText("%s: %d%%", type, perc)
+			self.text:SetFormattedText("%s: %d%%", self.powerName, perc)
 		else
-			self.text:SetFormattedText("%s: 0%%", type)
+			self.text:SetFormattedText("%s: 0%%", self.powerName)
 		end
 	elseif unit and unit:find("boss%d") and self.text then
 		self.text:SetTextColor(self:GetStatusBarColor())
