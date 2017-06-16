@@ -382,6 +382,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	end
 
 	runes.PostUpdateVisibility = UF.PostVisibilityRunes
+	runes.UpdateColor = function() return end --We handle colors on our own in Configure_ClassBar
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
 
