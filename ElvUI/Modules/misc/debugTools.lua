@@ -153,7 +153,4 @@ local function InitializeCallback()
 	D:Initialize()
 end
 
---We need to fix the DebugTools code before it can be used on 7.2.5
-if E.wowbuild == 24015 then --7.2
-	E:RegisterModule(D:GetName(), InitializeCallback)
-end
+--E:RegisterModule(D:GetName(), InitializeCallback)

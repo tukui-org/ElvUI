@@ -8,7 +8,7 @@ local select, unpack, type, pairs = select, unpack, type, pairs
 local strlower, find, format = strlower, string.find, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles and C_ChatBubbles.GetAllChatBubbles
+local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local IsInInstance, SetCVar, GetCVar = IsInInstance, SetCVar, GetCVar
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS

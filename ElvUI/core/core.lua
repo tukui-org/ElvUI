@@ -1282,10 +1282,7 @@ function E:InitializeInitialModules()
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 			if catch and GetCVarBool('scriptErrors') == true then
-				--We need to fix the DebugTools code before it can be used on 7.2.5
-				if E.wowbuild == 24015 then --7.2
-					ScriptErrorsFrame_OnError(catch, false)
-				end
+				ScriptErrorsFrame_OnError(catch, false)
 			end
 		end
 	end
@@ -1312,10 +1309,7 @@ function E:InitializeModules()
 			local _, catch = pcall(module.Initialize, module)
 
 			if catch and GetCVarBool('scriptErrors') == true then
-				--We need to fix the DebugTools code before it can be used on 7.2.5
-				if E.wowbuild == 24015 then --7.2
-					ScriptErrorsFrame_OnError(catch, false)
-				end
+				ScriptErrorsFrame_OnError(catch, false)
 			end
 		end
 	end

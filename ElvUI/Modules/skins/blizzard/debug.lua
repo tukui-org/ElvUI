@@ -64,7 +64,4 @@ local function LoadSkin()
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 end
 
---We need to fix the DebugTools code before it can be used on 7.2.5
-if E.wowbuild == 24015 then --7.2
-	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
-end
+--S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
