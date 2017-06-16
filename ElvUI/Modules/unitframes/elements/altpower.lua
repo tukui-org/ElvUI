@@ -30,11 +30,9 @@ function UF:Construct_AltPowerBar(frame)
 end
 
 function UF:AltPowerBarPostUpdate(unit, cur, min, max)
-	local perc = 0
-	if cur and max then
-		perc = floor((cur/max)*100)
-	end
+	if not cur then return; end
 
+	local perc = floor((cur/max)*100)
 	local parent = self:GetParent()
 
 	if perc < 35 then
