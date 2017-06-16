@@ -23,7 +23,7 @@ function UF:Construct_HealComm(frame)
 	healAbsorbBar:SetReverseFill(true)
 	healAbsorbBar:Hide()
 
-	return {
+	local HealthPrediction = {
 		myBar = mhpb,
 		otherBar = ohpb,
 		absorbBar = absorbBar,
@@ -31,6 +31,9 @@ function UF:Construct_HealComm(frame)
 		maxOverflow = 1,
 		PostUpdate = UF.UpdateHealComm
 	}
+	HealthPrediction.parent = frame
+	
+	return HealthPrediction
 end
 
 function UF:Configure_HealComm(frame)
