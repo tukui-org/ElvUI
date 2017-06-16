@@ -30,7 +30,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, L["Target Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-	frame.RaidIcon = UF:Construct_RaidIcon(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)

@@ -49,7 +49,7 @@ function UF:Construct_RaidFrames()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 
 	self.Threat = UF:Construct_Threat(self)
-	self.RaidIcon = UF:Construct_RaidIcon(self)
+	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Range = UF:Construct_Range(self)

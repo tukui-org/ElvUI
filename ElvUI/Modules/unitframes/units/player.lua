@@ -58,7 +58,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
 
-	frame.RaidIcon = UF:Construct_RaidIcon(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
