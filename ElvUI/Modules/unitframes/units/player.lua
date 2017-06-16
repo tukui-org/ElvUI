@@ -59,7 +59,7 @@ function UF:Construct_PlayerFrame(frame)
 	end
 
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
-	frame.Resting = self:Construct_RestingIndicator(frame)
+	frame.RestingIndicator = self:Construct_RestingIndicator(frame)
 	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
