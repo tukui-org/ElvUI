@@ -69,8 +69,8 @@ local function Update(self, event, unit, powerType)
 	element.powerName = powerName
 	element.powerTooltip = powerTooltip
 	if(barType) then
-		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
-		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
+		cur = UnitPower(unit, ALTERNATE_POWER_INDEX) or 0
+		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX) or 0
 		element:SetMinMaxValues(min, max)
 		element:SetValue(cur)
 	end
@@ -85,7 +85,7 @@ local function Update(self, event, unit, powerType)
 	* max  - the maximum value of the unit's alternative power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, min, max)
+		return element:PostUpdate(unit, cur, min or 0, max)
 	end
 end
 
