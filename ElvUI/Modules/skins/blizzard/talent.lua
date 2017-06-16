@@ -116,6 +116,7 @@ local function LoadSkin()
 			bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 			bu:CreateBackdrop("Default")
 			bu.backdrop:SetOutside(ic)
+			bu.knownSelection:SetAlpha(0)
 			ic:SetDrawLayer("OVERLAY")
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 

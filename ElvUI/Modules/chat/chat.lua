@@ -434,18 +434,20 @@ function CH:StyleChat(frame)
 			self.historyIndex = self.historyIndex - 1
 
 			if self.historyIndex < 1 then
-				self.historyIndex = #self.historyLines
+				self.historyIndex = 0
+				self:SetText("")
+				return
 			end
 		elseif key == "UP" then
 			self.historyIndex = self.historyIndex + 1
 
 			if self.historyIndex > #self.historyLines then
-				self.historyIndex = 1
+				self.historyIndex = #self.historyLines
 			end
 		else
 			return
 		end
-		self:SetText(self.historyLines[self.historyIndex])
+		self:SetText(self.historyLines[#self.historyLines - (self.historyIndex - 1)])
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
@@ -454,8 +456,6 @@ function CH:StyleChat(frame)
 	_G[format(editbox:GetName().."Right", id)]:Kill()
 	editbox:SetTemplate('Default', true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
-	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", OnTextChanged)
@@ -465,6 +465,9 @@ function CH:StyleChat(frame)
 	editbox.historyIndex = 0
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 	editbox:Hide()
+
+	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
+	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self.historyIndex = 0; self:Hide()  end)
 
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
@@ -1739,7 +1742,7 @@ function CH:ChatEdit_AddHistory(editBox, line)
 		end
 
 		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
-		if #ElvCharacterDB.ChatEditHistory > 5 then
+		if #ElvCharacterDB.ChatEditHistory > 20 then
 			tremove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end

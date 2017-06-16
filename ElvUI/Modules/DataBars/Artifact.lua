@@ -157,7 +157,8 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
-local apStringValueMillion = {
+local apStringValueOne = {
+	--1.000.000
 	["enUS"] = "(%d*[%p%s]?%d+) million",
 	["enGB"] = "(%d*[%p%s]?%d+) million",
 	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
@@ -167,18 +168,45 @@ local apStringValueMillion = {
 	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
 	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
 	["ruRU"] = "(%d*[%p%s]?%d+) млн",
+	--10.000, not 1.000.000
 	["koKR"] = "(%d*[%p%s]?%d+)만",
 	["zhTW"] = "(%d*[%p%s]?%d+)萬",
 	["zhCN"] = "(%d*[%p%s]?%d+) 万",
 }
-local apValueMultiplier = {
+
+local apValueMultiplierOne = {
 	["koKR"] = 1e4,
 	["zhTW"] = 1e4,
 	["zhCN"] = 1e4,
 }
 
-local apStringValueMillionLocal = apStringValueMillion[GetLocale()]
-local apValueMultiplierLocal = (apValueMultiplier[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-asian clients
+local apStringValueTwo = {
+	--1.000.000
+	["enUS"] = "(%d*[%p%s]?%d+) million",
+	["enGB"] = "(%d*[%p%s]?%d+) million",
+	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
+	["esMX"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
+	["deDE"] = "(%d*[%p%s]?%d+) [[Million][Millionen]]?",
+	["esES"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
+	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
+	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
+	["ruRU"] = "(%d*[%p%s]?%d+) млн",
+	--100.000.000
+	["koKR"] = "(%d*[%p%s]?%d+)억",
+	["zhTW"] = "(%d*[%p%s]?%d+)億",
+	["zhCN"] = "(%d*[%p%s]?%d+) 亿",
+}
+
+local apValueMultiplierTwo = {
+	["koKR"] = 1e8,
+	["zhTW"] = 1e8,
+	["zhCN"] = 1e8,
+}
+
+local apStringValueOneLocal = apStringValueOne[GetLocale()]
+local apStringValueTwoLocal = apStringValueTwo[GetLocale()] --Only Asian clients use a secondary higher multiplier
+local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
+local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
 
 --AP item caches
 local apValueCache = {}
@@ -187,7 +215,7 @@ local apItemCache = {}
 --This function scans the tooltip of an item to determine whether or not it grants AP.
 --If it is found to grant AP, then the value is extracted and returned.
 local apLineIndex
-local function GetAPFromTooltip(itemLink)
+function mod:GetAPFromTooltip(itemLink)
 	local apValue = 0
 
 	if IsArtifactPowerItem(itemLink) then
@@ -204,18 +232,29 @@ local function GetAPFromTooltip(itemLink)
 
 			if (tooltipText and not strmatch(tooltipText, AP_NAME)) then
 				local digit1, digit2, digit3, ap
-				local value = strmatch(tooltipText, apStringValueMillionLocal)
+				local value = strmatch(tooltipText, apStringValueOneLocal)
 
 				if (value) then
 					digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
 					if (digit1 and digit2) then
-						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
+						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
 					else
-						ap = tonumber(value) * apValueMultiplierLocal --Multiply by 1 million (or 10.000 for asian clients)
+						ap = tonumber(value) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
 					end
 				else
-					digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
-					ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
+					value = strmatch(tooltipText, apStringValueTwoLocal)
+					if (value) then
+						--This should only match for Asian clients
+						digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
+						if (digit1 and digit2) then
+							ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierTwoLocal --Multiply by 100 million
+						else
+							ap = tonumber(value) * apValueMultiplierTwoLocal --Multiply by 100 million
+						end
+					else
+						digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
+						ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
+					end
 				end
 
 				if (ap) then
@@ -246,13 +285,13 @@ function mod:TestAPExtraction(itemID)
 		return
 	end
 
-	local apValue = GetAPFromTooltip(itemLink)
+	local apValue = mod:GetAPFromTooltip(itemLink)
 	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
 end
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
-local function GetAPForItem(itemLink)
+function mod:GetAPForItem(itemLink)
 	if (apItemCache[itemLink] == false) then
 		--Get out early if item has already been determined to not grant AP
 		return 0
@@ -263,7 +302,7 @@ local function GetAPForItem(itemLink)
 		return apValueCache[itemLink]
 	else
 		--Not cached, do a tooltip scan and cache the value
-		local apValue = GetAPFromTooltip(itemLink)
+		local apValue = self:GetAPFromTooltip(itemLink)
 		if apValue > 0 then
 			apValueCache[itemLink] = apValue
 		end
@@ -284,7 +323,7 @@ function mod:GetArtifactPowerInBags()
 			link = GetContainerItemLink(bag, slot)
 
 			if (ID and link) then
-				AP = GetAPForItem(link)
+				AP = self:GetAPForItem(link)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end

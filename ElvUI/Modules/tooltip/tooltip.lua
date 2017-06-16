@@ -652,6 +652,7 @@ function TT:RepositionBNET(frame, _, anchor)
 end
 
 function TT:CheckBackdropColor()
+	if not GameTooltip:IsShown() then return end
 	local r, g, b = GameTooltip:GetBackdropColor()
 	r = E:Round(r, 1)
 	g = E:Round(g, 1)
@@ -765,20 +766,20 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
-	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
-	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
-	self:HookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
-	self:HookScript(GameTooltip, "OnUpdate", "CheckBackdropColor") --There has to be a more elegant way of doing this.
+	self:SecureHookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
+	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
+	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
+	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
+	self:SecureHookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
+	self:SecureHookScript(GameTooltip, "OnUpdate", "CheckBackdropColor") --There has to be a more elegant way of doing this.
 
-	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 	self:RegisterEvent("CURSOR_UPDATE", "CheckBackdropColor")
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
-		self:HookScript(tt, 'OnShow', 'SetStyle')
+		self:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
 	--World Quest Reward Icon

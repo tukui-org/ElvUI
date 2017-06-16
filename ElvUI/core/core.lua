@@ -48,6 +48,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
+E.myClassID = select(3, UnitClass("player"));
 E.myspec = GetSpecialization()
 E.myrace = select(2, UnitRace("player"))
 E.myfaction = select(2, UnitFactionGroup('player'))
@@ -1281,7 +1282,10 @@ function E:InitializeInitialModules()
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 			if catch and GetCVarBool('scriptErrors') == true then
-				ScriptErrorsFrame_OnError(catch, false)
+				--We need to fix the DebugTools code before it can be used on 7.2.5
+				if E.wowbuild == 24015 then --7.2
+					ScriptErrorsFrame_OnError(catch, false)
+				end
 			end
 		end
 	end
@@ -1308,7 +1312,10 @@ function E:InitializeModules()
 			local _, catch = pcall(module.Initialize, module)
 
 			if catch and GetCVarBool('scriptErrors') == true then
-				ScriptErrorsFrame_OnError(catch, false)
+				--We need to fix the DebugTools code before it can be used on 7.2.5
+				if E.wowbuild == 24015 then --7.2
+					ScriptErrorsFrame_OnError(catch, false)
+				end
 			end
 		end
 	end

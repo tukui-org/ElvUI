@@ -430,6 +430,7 @@ L["General"] = "一般設定"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "任務框體的高度.增加大小以看到更多目標"
 L["Hide At Max Level"] = "在最高等級時隱藏"
 L["Hide Error Text"] = "隱藏錯誤文字"
+L["Hide in Instances"] = true
 L["Hide In Vehicle"] = "騎乘時隱藏"
 L["Hides the red error text at the top of the screen while in combat."] = "戰鬥中隱藏螢幕頂部紅字錯誤信息."
 L["Log Taints"] = "錯誤記錄";

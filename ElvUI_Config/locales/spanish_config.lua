@@ -430,6 +430,7 @@ L["General"] = "General"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide At Max Level"] = true;
 L["Hide Error Text"] = "Ocultar Texto de Error"
+L["Hide in Instances"] = true;
 L["Hide In Vehicle"] = true;
 L["Hides the red error text at the top of the screen while in combat."] = "Oculta el texto rojo de error en la parte superior de la pantalla mientras estás en combate."
 L["Log Taints"] = "Registro Exhaustivo"
