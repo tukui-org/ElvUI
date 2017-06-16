@@ -9,16 +9,16 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_RaidRoleFrames(frame)
 	local anchor = CreateFrame('Frame', nil, frame.RaisedElementParent)
-	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.LeaderIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
 
 	anchor:Size(24, 12)
-	frame.Leader:Size(12)
+	frame.LeaderIndicator:Size(12)
 	frame.AssistantIndicator:Size(12)
 	frame.MasterLooter:Size(11)
 
-	frame.Leader.PostUpdate = UF.RaidRoleUpdate
+	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.MasterLooter.PostUpdate = UF.RaidRoleUpdate
 
@@ -30,8 +30,8 @@ function UF:Configure_RaidRoleIcons(frame)
 
 	if frame.db.raidRoleIcons.enable then
 		raidRoleFrameAnchor:Show()
-		if not frame:IsElementEnabled('Leader') then
-			frame:EnableElement('Leader')
+		if not frame:IsElementEnabled('LeaderIndicator') then
+			frame:EnableElement('LeaderIndicator')
 			frame:EnableElement('MasterLooter')
 			frame:EnableElement('AssistantIndicator')
 		end
@@ -42,9 +42,9 @@ function UF:Configure_RaidRoleIcons(frame)
 		else
 			raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -2, 0)
 		end
-	elseif frame:IsElementEnabled('Leader') then
+	elseif frame:IsElementEnabled('LeaderIndicator') then
 		raidRoleFrameAnchor:Hide()
-		frame:DisableElement('Leader')
+		frame:DisableElement('LeaderIndicator')
 		frame:DisableElement('MasterLooter')
 		frame:DisableElement('AssistantIndicator')
 	end
@@ -53,7 +53,7 @@ end
 function UF:RaidRoleUpdate()
 	local anchor = self:GetParent()
 	local frame = anchor:GetParent():GetParent()
-	local leader = frame.Leader
+	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
 	local masterLooter = frame.MasterLooter
 
