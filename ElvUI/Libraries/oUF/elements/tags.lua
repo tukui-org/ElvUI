@@ -1,8 +1,71 @@
---[[
 -- Credits: Vika, Cladhaire, Tekkub
-]]
+--[[
+# Element: Tags
 
-local parent, ns = ...
+Provides a system for text-based display of information by binding a tag string to a font string widget which in turn is
+tied to a unit frame.
+
+## Widget
+
+A FontString to hold a tag string. Unlike other elements, this widget must not have a preset name.
+
+## Notes
+
+A `Tag` is a Lua string consisting of a function name surrounded by square brackets. The tag will be replaced by the
+output of the function and displayed as text on the font string widget with that the tag has been registered. Literals
+can be pre- or appended by separating them with a `>` before or `<` after the function name. The literals will be only
+displayed when the function returns a non-nil value. I.e. `"[perhp<%]"` will display the current health as a percentage
+of the maximum health followed by the % sign.
+
+A `Tag String` is a Lua string consisting of one or multiple tags with optional literals between them. Each tag will be
+updated individually and the output will follow the tags order. Literals will be displayed in the output string
+regardless of whether the surrounding tag functions return a value. I.e. `"[curhp]/[maxhp]"` will resolve to something
+like `2453/5000`.
+
+A `Tag Function` is used to replace a single tag in a tag string by its output. A tag function receives only two
+arguments - the unit and the realUnit of the unit frame used to register the tag (see Options for further details). The
+tag function is called when the unit frame is shown or when a specified event has fired. It the tag is registered on an
+eventless frame (i.e. one holding the unit "targettarget"), then the tag function is called in a set time interval.
+
+A number of built-in tag functions exist. The layout can also define its own tag functions by adding them to the
+`oUF.Tags.Methods` table. The events upon which the function will be called are specified in a white-space separated
+list added to the `oUF.Tags.Events` table. Should an event fire without unit information, then it should also be listed
+in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NAME = true`.
+
+## Options
+
+.overrideUnit    - if specified on the font string widget, the frame's realUnit will be passed as the second argument to
+                   every tag function whose name is contained in the relevant tag string. Otherwise the second argument
+                   is always nil (boolean)
+.frequentUpdates - defines how often the correspondig tag function(s) should be called. This will override the events for
+                   the tag(s), if any. If the value is a number, it is taken as a time interval in seconds. If the value
+                   is a boolean, the time interval is set to 0.5 seconds (number or boolean)
+
+## Attributes
+
+.parent - the unit frame on which the tag has been registered
+
+## Examples
+
+    -- define the tag function
+    oUF.Tags.Methods['mylayout:threatname'] = function(unit, realUnit)
+        local color = _TAGS['threatcolor'](unit)
+        local name = _TAGS['name'](unit, realUnit)
+        return string.format('%s%s|r', color, name)
+    end
+
+    -- add the events
+    oUF.Tags.Events['mylayout:threatname'] = 'UNIT_NAME_UPDATE UNIT_THREAT_SITUATION_UPDATE'
+
+    -- create the text widget
+    local info = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+    info:SetPoint('LEFT')
+
+    -- register the tag on the text widget with oUF
+    self:Tag(info, '[mylayout:threatname]')
+--]]
+
+local _, ns = ...
 local oUF = ns.oUF
 
 local format = string.format
@@ -12,24 +75,28 @@ local _PATTERN = '%[..-%]+'
 
 local _ENV = {
 	Hex = function(r, g, b)
-		if type(r) == "table" then
-			if r.r then r, g, b = r.r, r.g, r.b else r, g, b = unpack(r) end
+		if(type(r) == 'table') then
+			if(r.r) then
+				r, g, b = r.r, r.g, r.b
+			else
+				r, g, b = unpack(r)
+			end
 		end
 		if not r or type(r) == 'string' then --wtf?
 			return '|cffFFFFFF'
 		end
-		return format("|cff%02x%02x%02x", r*255, g*255, b*255)
+		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
 	ColorGradient = oUF.ColorGradient,
 }
 local _PROXY = setmetatable(_ENV, {__index = _G})
 
 local tagStrings = {
-	["creature"] = [[function(u)
+	['creature'] = [[function(u)
 		return UnitCreatureFamily(u) or UnitCreatureType(u)
 	end]],
 
-	["dead"] = [[function(u)
+	['dead'] = [[function(u)
 		if(UnitIsDead(u)) then
 			return 'Dead'
 		elseif(UnitIsGhost(u)) then
@@ -37,26 +104,26 @@ local tagStrings = {
 		end
 	end]],
 
-	["difficulty"] = [[function(u)
-		if UnitCanAttack("player", u) then
+	['difficulty'] = [[function(u)
+		if UnitCanAttack('player', u) then
 			local l = UnitLevel(u)
 			return Hex(GetCreatureDifficultyColor((l > 0) and l or 999))
 		end
 	end]],
 
-	["leader"] = [[function(u)
+	['leader'] = [[function(u)
 		if(UnitIsGroupLeader(u)) then
 			return 'L'
 		end
 	end]],
 
-	["leaderlong"]  = [[function(u)
+	['leaderlong']  = [[function(u)
 		if(UnitIsGroupLeader(u)) then
 			return 'Leader'
 		end
 	end]],
 
-	["level"] = [[function(u)
+	['level'] = [[function(u)
 		local l = UnitLevel(u)
 		if(UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
 			l = UnitBattlePetLevel(u)
@@ -69,82 +136,82 @@ local tagStrings = {
 		end
 	end]],
 
-	["missinghp"] = [[function(u)
+	['missinghp'] = [[function(u)
 		local current = UnitHealthMax(u) - UnitHealth(u)
 		if(current > 0) then
 			return current
 		end
 	end]],
 
-	["missingpp"] = [[function(u)
+	['missingpp'] = [[function(u)
 		local current = UnitPowerMax(u) - UnitPower(u)
 		if(current > 0) then
 			return current
 		end
 	end]],
 
-	["name"] = [[function(u, r)
+	['name'] = [[function(u, r)
 		return UnitName(r or u)
 	end]],
 
-	["offline"] = [[function(u)
+	['offline'] = [[function(u)
 		if(not UnitIsConnected(u)) then
 			return 'Offline'
 		end
 	end]],
 
-	["perhp"] = [[function(u)
+	['perhp'] = [[function(u)
 		local m = UnitHealthMax(u)
 		if(m == 0) then
 			return 0
 		else
-			return math.floor(UnitHealth(u)/m*100+.5)
+			return math.floor(UnitHealth(u) / m * 100 + .5)
 		end
 	end]],
 
-	["perpp"] = [[function(u)
+	['perpp'] = [[function(u)
 		local m = UnitPowerMax(u)
 		if(m == 0) then
 			return 0
 		else
-			return math.floor(UnitPower(u)/m*100+.5)
+			return math.floor(UnitPower(u) / m * 100 + .5)
 		end
 	end]],
 
-	["plus"] = [[function(u)
+	['plus'] = [[function(u)
 		local c = UnitClassification(u)
 		if(c == 'elite' or c == 'rareelite') then
 			return '+'
 		end
 	end]],
 
-	["pvp"] = [[function(u)
+	['pvp'] = [[function(u)
 		if(UnitIsPVP(u)) then
 			return 'PvP'
 		end
 	end]],
 
-	["raidcolor"] = [[function(u)
+	['raidcolor'] = [[function(u)
 		local _, x = UnitClass(u)
 		if(x) then
 			return Hex(_COLORS.class[x])
 		end
 	end]],
 
-	["rare"] = [[function(u)
+	['rare'] = [[function(u)
 		local c = UnitClassification(u)
 		if(c == 'rare' or c == 'rareelite') then
 			return 'Rare'
 		end
 	end]],
 
-	["resting"] = [[function(u)
+	['resting'] = [[function(u)
 		if(u == 'player' and IsResting()) then
 			return 'zzz'
 		end
 	end]],
 
-	["sex"] = [[function(u)
+	['sex'] = [[function(u)
 		local s = UnitSex(u)
 		if(s == 2) then
 			return 'Male'
@@ -153,7 +220,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["smartclass"] = [[function(u)
+	['smartclass'] = [[function(u)
 		if(UnitIsPlayer(u)) then
 			return _TAGS['class'](u)
 		end
@@ -161,7 +228,7 @@ local tagStrings = {
 		return _TAGS['creature'](u)
 	end]],
 
-	["status"] = [[function(u)
+	['status'] = [[function(u)
 		if(UnitIsDead(u)) then
 			return 'Dead'
 		elseif(UnitIsGhost(u)) then
@@ -173,7 +240,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["threat"] = [[function(u)
+	['threat'] = [[function(u)
 		local s = UnitThreatSituation(u)
 		if(s == 1) then
 			return '++'
@@ -184,13 +251,13 @@ local tagStrings = {
 		end
 	end]],
 
-	["threatcolor"] = [[function(u)
+	['threatcolor'] = [[function(u)
 		return Hex(GetThreatStatusColor(UnitThreatSituation(u)))
 	end]],
 
-	["cpoints"] = [[function(u)
+	['cpoints'] = [[function(u)
 		local cp
-		if(UnitHasVehicleUI'player') then
+		if(UnitHasVehicleUI('player')) then
 			cp = GetComboPoints('vehicle', 'target')
 		else
 			cp = GetComboPoints('player', 'target')
@@ -216,7 +283,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["classification"] = [[function(u)
+	['classification'] = [[function(u)
 		local c = UnitClassification(u)
 		if(c == 'rare') then
 			return 'Rare'
@@ -231,7 +298,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["shortclassification"] = [[function(u)
+	['shortclassification'] = [[function(u)
 		local c = UnitClassification(u)
 		if(c == 'rare') then
 			return 'R'
@@ -246,10 +313,10 @@ local tagStrings = {
 		end
 	end]],
 
-	["group"] = [[function(unit)
+	['group'] = [[function(unit)
 		local name, server = UnitName(unit)
-		if(server and server ~= "") then
-			name = format("%s-%s", name, server)
+		if(server and server ~= '') then
+			name = string.format('%s-%s', name, server)
 		end
 
 		for i=1, GetNumGroupMembers() do
@@ -260,7 +327,7 @@ local tagStrings = {
 		end
 	end]],
 
-	["deficit:name"] = [[function(u)
+	['deficit:name'] = [[function(u)
 		local missinghp = _TAGS['missinghp'](u)
 		if(missinghp) then
 			return '-' .. missinghp
@@ -348,7 +415,6 @@ local tags = setmetatable(
 		faction = UnitFactionGroup,
 		race = UnitRace,
 	},
-
 	{
 		__index = function(self, key)
 			local tagFunc = tagStrings[key]
@@ -385,33 +451,33 @@ local tags = setmetatable(
 _ENV._TAGS = tags
 
 local tagEvents = {
-	["curhp"]               = "UNIT_HEALTH",
-	["dead"]                = "UNIT_HEALTH",
-	["leader"]              = "PARTY_LEADER_CHANGED",
-	["leaderlong"]          = "PARTY_LEADER_CHANGED",
-	["level"]               = "UNIT_LEVEL PLAYER_LEVEL_UP",
-	["maxhp"]               = "UNIT_MAXHEALTH",
-	["missinghp"]           = "UNIT_HEALTH UNIT_MAXHEALTH",
-	["name"]                = "UNIT_NAME_UPDATE",
-	["perhp"]               = "UNIT_HEALTH UNIT_MAXHEALTH",
-	["pvp"]                 = "UNIT_FACTION",
-	["resting"]             = "PLAYER_UPDATE_RESTING",
-	["smartlevel"]          = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED",
-	["threat"]              = "UNIT_THREAT_SITUATION_UPDATE",
-	["threatcolor"]         = "UNIT_THREAT_SITUATION_UPDATE",
-	['cpoints']             = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED',
-	['affix']				= 'UNIT_CLASSIFICATION_CHANGED',
-	['plus']				= 'UNIT_CLASSIFICATION_CHANGED',
+	['curhp']               = 'UNIT_HEALTH',
+	['dead']                = 'UNIT_HEALTH',
+	['leader']              = 'PARTY_LEADER_CHANGED',
+	['leaderlong']          = 'PARTY_LEADER_CHANGED',
+	['level']               = 'UNIT_LEVEL PLAYER_LEVEL_UP',
+	['maxhp']               = 'UNIT_MAXHEALTH',
+	['missinghp']           = 'UNIT_HEALTH UNIT_MAXHEALTH',
+	['name']                = 'UNIT_NAME_UPDATE',
+	['perhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
+	['pvp']                 = 'UNIT_FACTION',
+	['resting']             = 'PLAYER_UPDATE_RESTING',
+	['smartlevel']          = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED',
+	['threat']              = 'UNIT_THREAT_SITUATION_UPDATE',
+	['threatcolor']         = 'UNIT_THREAT_SITUATION_UPDATE',
+	['cpoints']             = 'UNIT_POWER_FREQUENT PLAYER_TARGET_CHANGED',
+	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
+	['plus']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['rare']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
-	["group"]               = "GROUP_ROSTER_UPDATE",
-	["curpp"]               = 'UNIT_POWER',
-	["maxpp"]               = 'UNIT_MAXPOWER',
-	["missingpp"]           = 'UNIT_MAXPOWER UNIT_POWER',
-	["perpp"]               = 'UNIT_MAXPOWER UNIT_POWER',
-	["offline"]             = "UNIT_HEALTH UNIT_CONNECTION",
-	["status"]              = "UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION",
+	['group']               = 'GROUP_ROSTER_UPDATE',
+	['curpp']               = 'UNIT_POWER',
+	['maxpp']               = 'UNIT_MAXPOWER',
+	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER',
+	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER',
+	['offline']             = 'UNIT_HEALTH UNIT_CONNECTION',
+	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION',
 	['curmana']             = 'UNIT_POWER UNIT_MAXPOWER',
 	['maxmana']             = 'UNIT_POWER UNIT_MAXPOWER',
 	['soulshards']          = 'UNIT_POWER',
@@ -425,20 +491,16 @@ local unitlessEvents = {
 	PLAYER_LEVEL_UP = true,
 	PLAYER_UPDATE_RESTING = true,
 	PLAYER_TARGET_CHANGED = true,
-
 	PARTY_LEADER_CHANGED = true,
-
 	GROUP_ROSTER_UPDATE = true,
-
-	UNIT_COMBO_POINTS = true
 }
 
 local events = {}
-local frame = CreateFrame"Frame"
+local frame = CreateFrame('Frame')
 frame:SetScript('OnEvent', function(self, event, unit)
 	local strings = events[event]
 	if(strings) then
-		for k, fontstring in next, strings do
+		for _, fontstring in next, strings do
 			if(fontstring:IsVisible() and (unitlessEvents[event] or fontstring.parent.unit == unit)) then
 				fontstring:UpdateTag()
 			end
@@ -446,21 +508,21 @@ frame:SetScript('OnEvent', function(self, event, unit)
 	end
 end)
 
-local OnUpdates = {}
+local onUpdates = {}
 local eventlessUnits = {}
 
-local createOnUpdate = function(timer)
-	local OnUpdate = OnUpdates[timer]
+local function createOnUpdate(timer)
+	local OnUpdate = onUpdates[timer]
 
 	if(not OnUpdate) then
 		local total = timer
-		local frame = CreateFrame'Frame'
+		local frame = CreateFrame('Frame')
 		local strings = eventlessUnits[timer]
 
 		frame:SetScript('OnUpdate', function(self, elapsed)
 			if(total >= timer) then
-				for k, fs in next, strings do
-					if(fs.parent:IsVisible() and UnitExists(fs.parent.unit)) then
+				for _, fs in next, strings do
+					if(fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
 						fs:UpdateTag()
 					end
 				end
@@ -471,52 +533,52 @@ local createOnUpdate = function(timer)
 			total = total + elapsed
 		end)
 
-		OnUpdates[timer] = frame
+		onUpdates[timer] = frame
 	end
 end
 
-local OnShow = function(self)
+local function onShow(self)
 	for _, fs in next, self.__tags do
 		fs:UpdateTag()
 	end
 end
 
-local getTagName = function(tag)
-	local s = (tag:match('>+()') or 2)
-	local e = tag:match('.*()<+')
-	e = (e and e - 1) or -2
+local function getTagName(tag)
+	local tagStart = (tag:match('>+()') or 2)
+	local tagEnd = tag:match('.*()<+')
+	tagEnd = (tagEnd and tagEnd - 1) or -2
 
-	return tag:sub(s, e), s, e
+	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
 end
 
-local RegisterEvent = function(fontstr, event)
+local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
 	frame:RegisterEvent(event)
 	tinsert(events[event], fontstr)
 end
 
-local RegisterEvents = function(fontstr, tagstr)
+local function registerEvents(fontstr, tagstr)
 	for tag in tagstr:gmatch(_PATTERN) do
 		tag = getTagName(tag)
 		local tagevents = tagEvents[tag]
 		if(tagevents) then
-			for event in tagevents:gmatch'%S+' do
-				RegisterEvent(fontstr, event)
+			for event in tagevents:gmatch('%S+') do
+				registerEvent(fontstr, event)
 			end
 		end
 	end
 end
 
-local UnregisterEvents = function(fontstr)
-	for event, data in pairs(events) do
-		for k, tagfsstr in pairs(data) do
+local function unregisterEvents(fontstr)
+	for event, data in next, events do
+		for i, tagfsstr in next, data do
 			if(tagfsstr == fontstr) then
 				if(#data == 1) then
 					frame:UnregisterEvent(event)
 				end
 
-				tremove(data, k)
+				table.remove(data, i)
 			end
 		end
 	end
@@ -545,13 +607,20 @@ local escapeSequences = {
 	["||t"] = "|t",
 }
 
-local Tag = function(self, fs, tagstr)
+--[[ Tags: frame:Tag(fs, tagstr)
+Used to register a tag on a unit frame.
+
+* self   - the unit frame on which to register the tag
+* fs     - the font string to display the tag (FontString)
+* tagstr - the tag string (string)
+--]]
+local function Tag(self, fs, tagstr)
 	if(not fs or not tagstr) then return end
 
 	if(not self.__tags) then
 		self.__tags = {}
 		self.__mousetags = {}
-		tinsert(self.__elements, OnShow)
+		table.insert(self.__elements, onShow)
 	else
 		-- Since people ignore everything that's good practice - unregister the tag
 		-- if it already exists.
@@ -605,39 +674,39 @@ local Tag = function(self, fs, tagstr)
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
 			if(not tagFunc) then
-				local tagName, s, e = getTagName(bracket)
+				local tagName, tagStart, tagEnd = getTagName(bracket)
 
 				local tag = tags[tagName]
 				if(tag) then
-					s = s - 2
-					e = e + 2
+					tagStart = tagStart - 2
+					tagEnd = tagEnd + 2
 
-					if(s ~= 0 and e ~= 0) then
-						local pre = bracket:sub(2, s)
-						local ap = bracket:sub(e, -2)
+					if(tagStart ~= 0 and tagEnd ~= 0) then
+						local prefix = bracket:sub(2, tagStart)
+						local suffix = bracket:sub(tagEnd, -2)
 
-						tagFunc = function(u,r)
-							local str = tag(u,r)
+						tagFunc = function(unit, realUnit)
+							local str = tag(unit, realUnit)
 							if(str) then
-								return pre..str..ap
+								return prefix .. str .. suffix
 							end
 						end
-					elseif(s ~= 0) then
-						local pre = bracket:sub(2, s)
+					elseif(tagStart ~= 0) then
+						local prefix = bracket:sub(2, tagStart)
 
-						tagFunc = function(u,r)
-							local str = tag(u,r)
+						tagFunc = function(unit, realUnit)
+							local str = tag(unit, realUnit)
 							if(str) then
-								return pre..str
+								return prefix .. str
 							end
 						end
-					elseif(e ~= 0) then
-						local ap = bracket:sub(e, -2)
+					elseif(tagEnd ~= 0) then
+						local suffix = bracket:sub(tagEnd, -2)
 
-						tagFunc = function(u,r)
-							local str = tag(u,r)
+						tagFunc = function(unit, realUnit)
+							local str = tag(unit, realUnit)
 							if(str) then
-								return str..ap
+								return str .. suffix
 							end
 						end
 					end
@@ -647,7 +716,7 @@ local Tag = function(self, fs, tagstr)
 			end
 
 			if(tagFunc) then
-				tinsert(args, tagFunc)
+				table.insert(args, tagFunc)
 			else
 				numTags = -1
 				func = function(self)
@@ -744,27 +813,33 @@ local Tag = function(self, fs, tagstr)
 
 		createOnUpdate(timer)
 	else
-		RegisterEvents(fs, tagstr)
+		registerEvents(fs, tagstr)
 	end
 
 	tinsert(self.__tags, fs)
 end
 
-local Untag = function(self, fs)
+--[[ Tags: frame:Untag(fs)
+Used to unregister a tag from a unit frame.
+
+* self - the unit frame from which to unregister the tag
+* fs   - the font string holding the tag (FontString)
+--]]
+local function Untag(self, fs)
 	if(not fs) then return end
 
-	UnregisterEvents(fs)
+	unregisterEvents(fs)
 	for _, timers in next, eventlessUnits do
-		for k, fontstr in next, timers do
+		for i, fontstr in next, timers do
 			if(fs == fontstr) then
-				tremove(timers, k)
+				table.remove(timers, i)
 			end
 		end
 	end
 
-	for k, fontstr in next, self.__tags do
+	for i, fontstr in next, self.__tags do
 		if(fontstr == fs) then
-			tremove(self.__tags, k)
+			table.remove(self.__tags, i)
 		end
 	end
 
@@ -777,5 +852,6 @@ oUF.Tags = {
 	SharedEvents = unitlessEvents,
 	OnUpdateThrottle = onUpdateDelay,
 }
+
 oUF:RegisterMetaFunction('Tag', Tag)
 oUF:RegisterMetaFunction('Untag', Untag)

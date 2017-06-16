@@ -1,11 +1,12 @@
-## Interface: 60000
+## Interface: 70200
 ## Title: oUF
-## Author: Haste
-## Version: 1.6.8
-## OptionalDeps: Clique
-## X-eMail: troeks@gmail.com
-## X-oUF: oUF
+## Author: Haste, lightspark, p3lim, Rainrider
+## Version: @project-version@
 ## Notes: Unit frame framework. Does nothing by itself.
-## Notes-ruRU: Каркас для модификации фреймов игроков. Сам по себе не делает ничего.
+## OptionalDeps: Clique
+## X-oUF: oUF
+
+## X-Curse-Project-ID: 21187
+## X-WoWI-ID: 9994
 
 oUF.xml
