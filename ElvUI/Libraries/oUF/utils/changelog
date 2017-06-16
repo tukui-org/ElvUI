@@ -29,11 +29,11 @@ local generateLog = function(prevTag, currentTag)
 	local sf = string.format
 
 	local out = {}
+	local i = 0
 
-	ti(out, sf('[b]Changes in %s:[/b]', currentTag))
-	ti(out, '[list]')
+	ti(out, sf('**Changes in %s:**\n', currentTag))
 
-	for line in io.popen(sf('git shortlog %s..%s', prevTag, currentTag)):lines() do
+	for line in io.popen(sf('git shortlog --no-merges %s..%s', prevTag, currentTag)):lines() do
 		if(line:sub(1, 6) == '      ') then
 			local offset = line:match('()     ', 7)
 			if(offset) then
@@ -42,22 +42,19 @@ local generateLog = function(prevTag, currentTag)
 				line = line:sub(7)
 			end
 
-			ti(out, sf('   [*] %s', line))
-		elseif(#line == 0) then
-			ti(out, '  [/list]')
-		else
-			ti(out, sf(' [*][i]%s[/i]', line))
-			ti(out, '  [list=1]')
+			i = i + 1
+			ti(out, sf('    %s. %s', i, line))
+		elseif(#line ~= 0) then
+			i = 0
+			ti(out, sf('- _%s_', line))
 		end
 	end
-
-	ti(out, '[/list]')
 
 	local p = assert(io.popen(sf('git diff --shortstat %s..%s', prevTag, currentTag)))
 	local stat = p:read'*a'
 	p:close()
 
-	ti(out, sf('[indent]%s[/indent]', stat:sub(2, -2)))
+	ti(out, sf('- %s\n', stat:sub(2, -2)))
 
 	return table.concat(out, '\n')
 end

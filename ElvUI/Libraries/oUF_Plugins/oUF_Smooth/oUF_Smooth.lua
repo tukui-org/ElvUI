@@ -32,8 +32,8 @@ local function hook(frame)
 	if frame.Power then
 		SmoothBar(frame.Power)
 	end
-	if frame.AltPowerBar then
-		SmoothBar(frame.AltPowerBar)
+	if frame.AlternativePower then
+		SmoothBar(frame.AlternativePower)
 	end
 end
 

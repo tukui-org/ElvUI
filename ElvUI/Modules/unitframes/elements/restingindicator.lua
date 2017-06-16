@@ -15,11 +15,11 @@ end
 
 function UF:Configure_RestingIndicator(frame)
 	if not frame.VARIABLES_SET then return end
-	local rIcon = frame.Resting
+	local rIcon = frame.RestingIndicator
 	local db = frame.db
 	if db.restIcon then
-		if not frame:IsElementEnabled('Resting') then
-			frame:EnableElement('Resting')
+		if not frame:IsElementEnabled('RestingIndicator') then
+			frame:EnableElement('RestingIndicator')
 		end
 
 		rIcon:ClearAllPoints()
@@ -32,8 +32,8 @@ function UF:Configure_RestingIndicator(frame)
 				rIcon:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
 			end
 		end
-	elseif frame:IsElementEnabled('Resting') then
-		frame:DisableElement('Resting')
+	elseif frame:IsElementEnabled('RestingIndicator') then
+		frame:DisableElement('RestingIndicator')
 		rIcon:Hide()
 	end
 end

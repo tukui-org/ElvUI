@@ -28,12 +28,12 @@ function UF:Construct_FocusFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, L["Focus Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-	frame.RaidIcon = UF:Construct_RaidIcon(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.HealPrediction = self:Construct_HealComm(frame)
+	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
-	frame.Threat = UF:Construct_Threat(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 
 	frame.customTexts = {}

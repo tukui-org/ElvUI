@@ -23,10 +23,10 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
 	frame.Buffs = self:Construct_Buffs(frame)
-	frame.RaidIcon = UF:Construct_RaidIcon(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Range = UF:Construct_Range(frame)
-	frame.Threat = UF:Construct_Threat(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 
 	frame.customTexts = {}

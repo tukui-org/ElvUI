@@ -115,10 +115,10 @@ function UF:Configure_ClassBar(frame, cur)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
+	if (frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes') then
 
 		--This fixes issue with ComboPoints showing as active when they are not.
-		if frame.ClassBar == "ClassIcons" and not cur then
+		if frame.ClassBar == "ClassPower" and not cur then
 			cur = 0
 		end
 
@@ -192,7 +192,7 @@ function UF:Configure_ClassBar(frame, cur)
 				end
 
 				--Fix missing backdrop colors on Combo Points when using Spaced style
-				if frame.ClassBar == "ClassIcons" then
+				if frame.ClassBar == "ClassPower" then
 					if frame.USE_MINI_CLASSBAR then
 						bars[i].bg:SetParent(bars[i].backdrop)
 					else
@@ -227,8 +227,8 @@ function UF:Configure_ClassBar(frame, cur)
 	end
 
 	if frame.USE_CLASSBAR then
-		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
-			frame:EnableElement("ClassIcons")
+		if frame.ClassPower and not frame:IsElementEnabled("ClassPower") then
+			frame:EnableElement("ClassPower")
 		end
 		if frame.AdditionalPower and not frame:IsElementEnabled("AdditionalPower") then
 			frame:EnableElement("AdditionalPower")
@@ -240,8 +240,8 @@ function UF:Configure_ClassBar(frame, cur)
 			frame:EnableElement("Stagger")
 		end
 	else
-		if frame.ClassIcons and frame:IsElementEnabled("ClassIcons") then
-			frame:DisableElement("ClassIcons")
+		if frame.ClassPower and frame:IsElementEnabled("ClassPower") then
+			frame:DisableElement("ClassPower")
 		end
 		if frame.AdditionalPower and frame:IsElementEnabled("AdditionalPower") then
 			frame:DisableElement("AdditionalPower")
@@ -265,7 +265,7 @@ local function ToggleResourceBar(bars, overrideVisibility)
 	local height
 	if db.classbar then
 		height = db.classbar.height
-	elseif frame.AltPowerBar then
+	elseif frame.AlternativePower then
 		height = db.power.height
 	end
 
@@ -394,7 +394,7 @@ function UF:PostVisibilityRunes(enabled, stateChanged)
 		frame.ClassBar = "Runes"
 		frame.MAX_CLASS_BAR = #self
 	else
-		frame.ClassBar = "ClassIcons"
+		frame.ClassBar = "ClassPower"
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
 	end
 
@@ -501,7 +501,7 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 	if enabled then
 		frame.ClassBar = 'AdditionalPower'
 	else
-		frame.ClassBar = 'ClassIcons'
+		frame.ClassBar = 'ClassPower'
 		self.text:SetText()
 	end
 
@@ -547,7 +547,7 @@ function UF:PostUpdateVisibilityStagger(event, unit, isShown, stateChanged)
 	if(isShown) then
 		frame.ClassBar = 'Stagger'
 	else
-		frame.ClassBar = 'ClassIcons'
+		frame.ClassBar = 'ClassPower'
 	end
 
 	--Only update when necessary

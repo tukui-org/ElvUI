@@ -200,7 +200,7 @@ function UF:Configure_Power(frame)
 end
 
 local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
-function UF:PostUpdatePower(unit, min, max)
+function UF:PostUpdatePower(unit, cur, min, max)
 	local parent = self.origParent or self:GetParent()
 
 	if parent.isForced then

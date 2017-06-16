@@ -24,7 +24,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
-	frame.Threat = self:Construct_Threat(frame)
+	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.customTexts = {}

@@ -41,9 +41,9 @@ function UF:Construct_BossFrames(frame)
 	frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 
 	frame.Castbar = self:Construct_Castbar(frame)
-	frame.RaidIcon = UF:Construct_RaidIcon(frame)
-	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
-	frame.ClassBar = "AltPowerBar"
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.AlternativePower = self:Construct_AltPowerBar(frame)
+	frame.ClassBar = "AlternativePower"
 	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
@@ -80,7 +80,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.CAN_HAVE_CLASSBAR = true
 		frame.MAX_CLASS_BAR = 0
 		frame.USE_CLASSBAR = true
-		frame.CLASSBAR_SHOWN = frame.AltPowerBar:IsShown()
+		frame.CLASSBAR_SHOWN = frame.AlternativePower:IsShown()
 		frame.CLASSBAR_DETACHED = false
 		frame.USE_MINI_CLASSBAR = false
 		frame.CLASSBAR_HEIGHT = frame.CLASSBAR_SHOWN and db.power.height or 0
@@ -128,7 +128,7 @@ function UF:Update_BossFrames(frame, db)
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)
 
-	--AltPowerBar
+	--AlternativePower
 	UF:Configure_AltPower(frame)
 
 	UF:Configure_DebuffHighlight(frame)
