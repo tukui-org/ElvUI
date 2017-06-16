@@ -16,10 +16,10 @@ function UF:Construct_CombatIndicator(frame)
 end
 
 function UF:Configure_CombatIndicator(frame)
-	if frame.db.combatIcon and not frame:IsElementEnabled('Combat') then
-		frame:EnableElement('Combat')
-	elseif not frame.db.combatIcon and frame:IsElementEnabled('Combat') then
-		frame:DisableElement('Combat')
-		frame.Combat:Hide()
+	if frame.db.combatIcon and not frame:IsElementEnabled('CombatIndicator') then
+		frame:EnableElement('CombatIndicator')
+	elseif not frame.db.combatIcon and frame:IsElementEnabled('CombatIndicator') then
+		frame:DisableElement('CombatIndicator')
+		frame.CombatIndicator:Hide()
 	end
 end
