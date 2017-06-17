@@ -117,7 +117,7 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, text, texture, startTime, endTime, _, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 	if(not name) then
 		return element:Hide()
 	end
@@ -135,7 +135,6 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	element.holdTime = 0
 	element.isTradeSkill = isTradeSkill
 
-	element:SetMinMaxValues(0, element.max)
 	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
 		element.duration = element.duration + (element.max * tradeskillCurrent);
 		element.max = max * tradeskillTotal;
@@ -143,10 +142,12 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 		if(unit == "player") then
 			tradeskillCurrent = tradeskillCurrent + 1;
 		end
-		element:SetValue(castbar.duration)
+
+		element:SetValue(element.duration)
 	else
 		element:SetValue(0)		
 	end
+	element:SetMinMaxValues(0, element.max)
 
 	if(element.Text) then element.Text:SetText(text) end
 	if(element.Icon) then element.Icon:SetTexture(texture) end
