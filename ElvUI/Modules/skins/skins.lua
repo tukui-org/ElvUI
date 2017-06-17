@@ -15,7 +15,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ScriptErrorsFrame_OnError
+-- GLOBALS: ScriptErrorsFrame
 
 E.Skins = S
 S.addonsToLoad = {}
@@ -738,10 +738,7 @@ function S:Initialize()
 			self.addonsToLoad[addon] = nil;
 			local _, catch = pcall(loadFunc)
 			if(catch and GetCVarBool('scriptErrors') == true) then
-				--We need to fix the DebugTools code before it can be used on 7.2.5
- 				if E.wowbuild < 24330 then --7.2
- 					ScriptErrorsFrame_OnError(catch, false)
- 				end
+				ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
@@ -749,10 +746,7 @@ function S:Initialize()
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
 		local _, catch = pcall(loadFunc)
 		if(catch and GetCVarBool('scriptErrors') == true) then
-			--We need to fix the DebugTools code before it can be used on 7.2.5
- 			if E.wowbuild < 24330 then --7.2
- 				ScriptErrorsFrame_OnError(catch, false)
- 			end
+			ScriptErrorsFrame:OnError(catch, false, false)
 		end
 	end
 	wipe(self.nonAddonsToLoad)

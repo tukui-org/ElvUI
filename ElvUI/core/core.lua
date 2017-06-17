@@ -39,7 +39,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame_OnError
+-- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
@@ -1282,10 +1282,7 @@ function E:InitializeInitialModules()
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 			if catch and GetCVarBool('scriptErrors') == true then
-				--We need to fix the DebugTools code before it can be used on 7.2.5
- 				if E.wowbuild < 24330 then --7.2
- 					ScriptErrorsFrame_OnError(catch, false)
- 				end
+				ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
@@ -1312,10 +1309,7 @@ function E:InitializeModules()
 			local _, catch = pcall(module.Initialize, module)
 
 			if catch and GetCVarBool('scriptErrors') == true then
-				--We need to fix the DebugTools code before it can be used on 7.2.5
- 				if E.wowbuild < 24330 then --7.2
- 					ScriptErrorsFrame_OnError(catch, false)
- 				end
+				ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end

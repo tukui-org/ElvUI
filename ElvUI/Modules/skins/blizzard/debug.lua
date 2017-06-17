@@ -7,11 +7,11 @@ local function LoadSkin()
 
 	ScriptErrorsFrame:SetParent(E.UIParent)
 	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(ScriptErrorsFrameScrollFrameScrollBar)
+	S:HandleScrollBar(ScriptErrorsFrameScrollBar)
 	S:HandleCloseButton(ScriptErrorsFrameClose)
-	ScriptErrorsFrameScrollFrameText:FontTemplate(nil, 13)
-	ScriptErrorsFrameScrollFrame:CreateBackdrop('Default')
-	ScriptErrorsFrameScrollFrame:SetFrameLevel(ScriptErrorsFrameScrollFrame:GetFrameLevel() + 2)
+	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
+	ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
+	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 	EventTraceFrame:SetTemplate("Transparent")
 	local texs = {
 		"TopLeft",
@@ -38,12 +38,12 @@ local function LoadSkin()
 	  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	}
 
-	S:HandleButton(ScriptErrorsFrame.reload)
-	S:HandleButton(ScriptErrorsFrame.close)
+	S:HandleButton(ScriptErrorsFrame.Reload)
+	S:HandleButton(ScriptErrorsFrame.Close)
 	S:HandleButton(ScriptErrorsFrame.firstButton)
 	S:HandleButton(ScriptErrorsFrame.lastButton)
-	S:HandleNextPrevButton(ScriptErrorsFrame.previous, nil, true)
-	S:HandleNextPrevButton(ScriptErrorsFrame.next)
+	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
+	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
 	FrameStackTooltip:HookScript("OnShow", function(self)
 		local noscalemult = E.mult * GetCVar('uiScale')
@@ -64,8 +64,4 @@ local function LoadSkin()
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 end
 
- --We need to fix the DebugTools code before it can be used on 7.2.5
- if E.wowbuild < 24330 then --7.2
- 	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
- end
- 
+S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)

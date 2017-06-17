@@ -6,57 +6,32 @@ E.DebugTools = D
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local ScriptErrorsFrame_Update = ScriptErrorsFrame_Update
 local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
-local ScriptErrorsFrame_OnError = ScriptErrorsFrame_OnError
 local StaticPopup_Hide = StaticPopup_Hide
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ScriptErrorsFrameScrollFrameText, ScriptErrorsFrame, ScriptErrorsFrameScrollFrame
+-- GLOBALS: ScriptErrorsFrame
 -- GLOBALS: UIParent, IsAddOnLoaded, LoadAddOn
 
 function D:ModifyErrorFrame()
-	ScriptErrorsFrameScrollFrameText.cursorOffset = 0
-	ScriptErrorsFrameScrollFrameText.cursorHeight = 0
-	ScriptErrorsFrameScrollFrameText:SetScript("OnEditFocusGained", nil)
+	ScriptErrorsFrame.ScrollFrame.Text.cursorOffset = 0
+	ScriptErrorsFrame.ScrollFrame.Text.cursorHeight = 0
+	ScriptErrorsFrame.ScrollFrame.Text:SetScript("OnEditFocusGained", nil)
 
-	--[[local Orig_ScriptErrorsFrame_Update = ScriptErrorsFrame_Update
-	ScriptErrorsFrame_Update = function(...)
-		if GetCVarBool('scriptErrors') ~= true then
-			Orig_ScriptErrorsFrame_Update(...)
-			return
-		end
-
-		-- Sometimes the locals table does not have an entry for an index, which can cause an argument #6 error
-		-- in Blizzard_DebugTools.lua:430 and then cause a C stack overflow, this will prevent that
-		local index = ScriptErrorsFrame.index
-		if( not index or not ScriptErrorsFrame.order[index] ) then
-			index = #(ScriptErrorsFrame.order)
-		end
-
-		if( index > 0 ) then
-			ScriptErrorsFrame.locals[index] = ScriptErrorsFrame.locals[index] or L["No locals to dump"]
-		end
-
-		Orig_ScriptErrorsFrame_Update(...)
-
-		-- Stop text highlighting again
-		ScriptErrorsFrameScrollFrameText:HighlightText(0, 0)
-	end]]
 	local function ScriptErrors_UnHighlightText()
-		ScriptErrorsFrameScrollFrameText:HighlightText(0, 0)
+		ScriptErrorsFrame.ScrollFrame.Text:HighlightText(0, 0)
 	end
-	hooksecurefunc('ScriptErrorsFrame_Update', ScriptErrors_UnHighlightText)
+	hooksecurefunc(ScriptErrorsFrame, 'Update', ScriptErrors_UnHighlightText)
 
 	-- Unhighlight text when focus is hit
 	local function UnHighlightText(self)
 		self:HighlightText(0, 0)
 	end
-	ScriptErrorsFrameScrollFrameText:HookScript("OnEscapePressed", UnHighlightText)
+	ScriptErrorsFrame.ScrollFrame.Text:HookScript("OnEscapePressed", UnHighlightText)
 
 	ScriptErrorsFrame:SetSize(500, 300)
-	ScriptErrorsFrameScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
+	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
 	local BUTTON_WIDTH = 75
 	local BUTTON_HEIGHT = 24
@@ -64,25 +39,25 @@ function D:ModifyErrorFrame()
 
 	-- Add a first button
 	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.previous, "BOTTOMLEFT", -BUTTON_SPACING, 0)
+	firstButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.PreviousError, "BOTTOMLEFT", -BUTTON_SPACING, 0)
 	firstButton:SetText("First")
 	firstButton:Height(BUTTON_HEIGHT)
 	firstButton:Width(BUTTON_WIDTH)
 	firstButton:SetScript("OnClick", function()
 		ScriptErrorsFrame.index = 1
-		ScriptErrorsFrame_Update()
+		ScriptErrorsFrame:Update()
 	end)
 	ScriptErrorsFrame.firstButton = firstButton
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	lastButton:Point("BOTTOMLEFT", ScriptErrorsFrame.next, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	lastButton:Point("BOTTOMLEFT", ScriptErrorsFrame.NextError, "BOTTOMRIGHT", BUTTON_SPACING, 0)
 	lastButton:Height(BUTTON_HEIGHT)
 	lastButton:Width(BUTTON_WIDTH)
 	lastButton:SetText("Last")
 	lastButton:SetScript("OnClick", function()
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)
-		ScriptErrorsFrame_Update()
+		ScriptErrorsFrame:Update()
 	end)
 	ScriptErrorsFrame.lastButton = lastButton
 end
@@ -104,16 +79,16 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	end
 end
 
-function D:ScriptErrorsFrame_OnError(_, keepHidden)
-	if keepHidden or self.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
+function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
+	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
-	self.MessagePrinted = true;
+	D.MessagePrinted = true;
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	ScriptErrorsFrame:SetParent(UIParent)
-	self.MessagePrinted = nil;
+	D.MessagePrinted = nil;
 end
 
 function D:PLAYER_REGEN_DISABLED()
@@ -122,7 +97,7 @@ end
 
 function D:TaintError(event, addonName, addonFunc)
 	if GetCVarBool('scriptErrors') ~= true or E.db.general.taintLog ~= true then return end
-	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
+	ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
 end
 
 function D:StaticPopup_Show(name)
@@ -140,8 +115,8 @@ function D:Initialize()
 	end
 
 	self:ModifyErrorFrame()
-	self:SecureHook('ScriptErrorsFrame_UpdateButtons')
-	self:SecureHook('ScriptErrorsFrame_OnError')
+	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
+	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)
 	self:SecureHook('StaticPopup_Show')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -153,7 +128,4 @@ local function InitializeCallback()
 	D:Initialize()
 end
 
---We need to fix the DebugTools code before it can be used on 7.2.5
-if E.wowbuild < 24330 then --7.2
-	E:RegisterModule(D:GetName(), InitializeCallback)
-end
+E:RegisterModule(D:GetName(), InitializeCallback)
