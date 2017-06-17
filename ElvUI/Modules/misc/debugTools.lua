@@ -80,15 +80,15 @@ function D:ScriptErrorsFrame_UpdateButtons()
 end
 
 function D:ScriptErrorsFrame_OnError(_, keepHidden)
-	if keepHidden or self.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
+	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
-	self.MessagePrinted = true;
+	D.MessagePrinted = true;
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	ScriptErrorsFrame:SetParent(UIParent)
-	self.MessagePrinted = nil;
+	D.MessagePrinted = nil;
 end
 
 function D:PLAYER_REGEN_DISABLED()
