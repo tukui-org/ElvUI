@@ -738,7 +738,7 @@ function S:Initialize()
 			self.addonsToLoad[addon] = nil;
 			local _, catch = pcall(loadFunc)
 			if(catch and GetCVarBool('scriptErrors') == true) then
-				ScriptErrorsFrame:OnError(catch, false)
+				ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
@@ -746,7 +746,7 @@ function S:Initialize()
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
 		local _, catch = pcall(loadFunc)
 		if(catch and GetCVarBool('scriptErrors') == true) then
-			ScriptErrorsFrame:OnError(catch, false)
+			ScriptErrorsFrame:OnError(catch, false, false)
 		end
 	end
 	wipe(self.nonAddonsToLoad)

@@ -97,7 +97,7 @@ end
 
 function D:TaintError(event, addonName, addonFunc)
 	if GetCVarBool('scriptErrors') ~= true or E.db.general.taintLog ~= true then return end
-	ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
+	ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
 end
 
 function D:StaticPopup_Show(name)
