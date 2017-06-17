@@ -50,7 +50,7 @@ function UF:Construct_RaidFrames()
 
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
-	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
+	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Range = UF:Construct_Range(self)
 	self.customTexts = {}

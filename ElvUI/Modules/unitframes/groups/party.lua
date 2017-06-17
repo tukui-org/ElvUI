@@ -65,7 +65,7 @@ function UF:Construct_PartyFrames()
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 		self.ThreatIndicator = UF:Construct_Threat(self)
 		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
-		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
+		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
 		self.customTexts = {}
 		self.Sparkle = CreateFrame("Frame", nil, self)
