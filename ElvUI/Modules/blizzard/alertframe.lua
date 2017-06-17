@@ -132,6 +132,14 @@ function B:GroupLootContainer_Update()
 	end
 end
 
+local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
+	if alertFrameSubSystem.alertFramePool then --queued alert system
+		alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
+	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
+		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
+	end
+end
+
 function B:AlertMovers()
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
@@ -139,12 +147,13 @@ function B:AlertMovers()
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
 	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
 	for i, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
-		if alertFrameSubSystem.alertFramePool then --queued alert system
-			alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
-		elseif not alertFrameSubSystem.anchorFrame then --simple alert system
-			alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
-		end
+		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end
+
+	--This should catch any alert systems that are created by other addons
+	hooksecurefunc(AlertFrame, "AddAlertFrameSubSystem", function(self, alertFrameSubSystem)
+		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
+	end)
 
 	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
 	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
