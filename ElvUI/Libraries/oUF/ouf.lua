@@ -748,6 +748,8 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 
 				walkObject(nameplate.unitFrame, unit)
+			else
+				Private.UpdateUnits(nameplate.unitFrame, unit)
 			end
 
 			nameplate.unitFrame:SetAttribute('unit', unit)
