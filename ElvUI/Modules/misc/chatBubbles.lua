@@ -9,7 +9,6 @@ local strlower, find, format = strlower, string.find, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
-local GetCVar = GetCVar
 local IsInInstance = IsInInstance
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -210,7 +209,7 @@ function M:UpdateChatBubbleInstanceToggle(value)
 			if value == false then
 				SetCVar('chatBubbles', 1, nil, "ELVUI_UPDATE")
 			end
-			if GetCVar('chatBubbles') == '0' then
+			if not GetCVarBool("chatBubbles") then
 				M.BubbleFrame:SetScript('OnUpdate', nil)
 			else
 				M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
@@ -226,6 +225,10 @@ function M:LoadChatBubbles()
 	hooksecurefunc("SetCVar", function(cvar, value, _, event)
 		if (cvar == "chatBubbles" and ((event and event ~= "ELVUI_UPDATE") or not event)) then
 			userDisabledChatBubbles = (value == "0" and true or false)
+			if not userDisabledChatBubbles and E.private.general.chatBubbleHideInInstance then
+				E.private.general.chatBubbleHideInInstance = false
+			end
+			self:UpdateChatBubbleInstanceToggle()
 		end
 	end)
 end
