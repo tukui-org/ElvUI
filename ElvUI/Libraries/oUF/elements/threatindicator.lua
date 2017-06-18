@@ -59,9 +59,11 @@ local function Update(self, event, unit)
 	local r, g, b
 	if(status and status > 0) then
 		r, g, b = GetThreatStatusColor(status)
-		if element:IsObjectType("Texture") then
+
+		if(element.SetVertexColor) then
 			element:SetVertexColor(r, g, b)
 		end
+
 		element:Show()
 	else
 		element:Hide()
