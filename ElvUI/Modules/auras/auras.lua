@@ -144,7 +144,9 @@ function A:CreateIcon(button)
 	if auraType == "HELPFUL" then
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
 			MasqueGroupBuffs:AddButton(button, ButtonData)
-			button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			if button.__MSQ_BaseFrame then
+				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			end
 			MasqueGroupBuffs:ReSkin()
 		else
 			button:SetTemplate('Default')
@@ -152,7 +154,9 @@ function A:CreateIcon(button)
 	elseif auraType == "HARMFUL" then
 		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 			MasqueGroupDebuffs:AddButton(button, ButtonData)
-			button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			if button.__MSQ_BaseFrame then
+				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
+			end
 			MasqueGroupDebuffs:ReSkin()
 		else
 			button:SetTemplate('Default')
