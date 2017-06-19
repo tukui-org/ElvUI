@@ -40,19 +40,24 @@ function UF:Configure_Range(frame)
 	end
 end
 
-UF.SpellRangeTable = {}
+local SpellRangeTable = {}
+
+local function AddTable(tbl)
+	SpellRangeTable[class] = SpellRangeTable[class] or {}
+	SpellRangeTable[class][tbl] = {}
+end
 
 local function AddSpell(tbl, spellID)
-	UF.SpellRangeTable[class] = UF.SpellRangeTable[class] or {}
-	UF.SpellRangeTable[class][tbl] = UF.SpellRangeTable[class][tbl] or {}
-	UF.SpellRangeTable[class][tbl][#UF.SpellRangeTable[class][tbl] + 1] = spellID
+	SpellRangeTable[class][tbl][#SpellRangeTable[class][tbl] + 1] = spellID
 end
 
 function UF:UpdateRangeCheckSpells()
 	for tbl, spells in pairs(E.global.unitframe.spellRangeCheck[class]) do
+		AddTable(tbl) --Create the table holding spells, even if it ends up being an empty table
 		for spellID in pairs(spells) do
-			if spellID then --We allow value to be false to disable this spell from being used
-				AddSpell(tbl, spellID)
+			local enabled = spells[spellID]
+			if enabled then --We will allow value to be false to disable this spell from being used
+				AddSpell(tbl, spellID, enabled)
 			end
 		end
 	end
@@ -81,8 +86,8 @@ local function friendlyIsInRange(unit)
 		return true
 	end
 
-	if UnitIsDeadOrGhost(unit) and #UF.SpellRangeTable[class].resSpells > 0 then
-		for _, spellID in ipairs(UF.SpellRangeTable[class].resSpells) do
+	if UnitIsDeadOrGhost(unit) and #SpellRangeTable[class].resSpells > 0 then
+		for _, spellID in ipairs(SpellRangeTable[class].resSpells) do
 			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true
 			end
@@ -91,11 +96,11 @@ local function friendlyIsInRange(unit)
 		return false
 	end
 
-	if #UF.SpellRangeTable[class].friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
+	if #SpellRangeTable[class].friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
 		unit = getUnit(unit)
 		return unit and UnitInRange(unit)
 	else
-		for _, spellID in ipairs(UF.SpellRangeTable[class].friendlySpells) do
+		for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
 			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true
 			end
@@ -110,12 +115,12 @@ local function petIsInRange(unit)
 		return true
 	end
 	
-	for _, spellID in ipairs(UF.SpellRangeTable[class].friendlySpells) do
+	for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
-	for _, spellID in ipairs(UF.SpellRangeTable[class].petSpells) do
+	for _, spellID in ipairs(SpellRangeTable[class].petSpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
@@ -129,7 +134,7 @@ local function enemyIsInRange(unit)
 		return true
 	end
 	
-	for _, spellID in ipairs(UF.SpellRangeTable[class].enemySpells) do
+	for _, spellID in ipairs(SpellRangeTable[class].enemySpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
@@ -139,7 +144,7 @@ local function enemyIsInRange(unit)
 end
 
 local function enemyIsInLongRange(unit)
-	for _, spellID in ipairs(UF.SpellRangeTable[class].longEnemySpells) do
+	for _, spellID in ipairs(SpellRangeTable[class].longEnemySpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
