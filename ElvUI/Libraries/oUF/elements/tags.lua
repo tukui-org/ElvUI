@@ -720,7 +720,7 @@ local function Tag(self, fs, tagstr)
 			else
 				numTags = -1
 				func = function(self)
-					return self:SetFormattedText('[invalid tag]')
+					return self:SetText(bracket)
 				end
 			end
 		end
