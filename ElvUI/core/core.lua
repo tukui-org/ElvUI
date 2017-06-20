@@ -577,16 +577,6 @@ function E:IsDispellableByMe(debuffType)
 	end
 end
 
-local SymbiosisName = GetSpellInfo(110309)
-local CleanseName = GetSpellInfo(4987)
-function E:SPELLS_CHANGED()
-	if GetSpellInfo(SymbiosisName) == CleanseName then
-		self.DispelClasses["DRUID"].Disease = true
-	else
-		self.DispelClasses["DRUID"].Disease = false
-	end
-end
-
 function E:CheckRole()
 	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
@@ -1519,9 +1509,6 @@ function E:Initialize()
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "ExitVehicleShowFrames")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
-	if self.myclass == "DRUID" then
-		self:RegisterEvent("SPELLS_CHANGED")
-	end
 
 	if self.db.general.kittys then
 		self:CreateKittys()
