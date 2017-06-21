@@ -81,8 +81,12 @@ local function getUnit(unit)
 	end
 end
 
-local function friendlyIsInRange(unit)	
-	if CheckInteractDistance(unit, 1) and UnitInPhase(unit) then --Inspect (28 yards) and same phase as you
+local function friendlyIsInRange(unit)
+	if not UnitInPhase(unit) then --Different phase
+		return false
+	end
+
+	if CheckInteractDistance(unit, 1) then --Inspect (28 yards)
 		return true
 	end
 
