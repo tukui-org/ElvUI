@@ -658,6 +658,57 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 -- Legion
+-- Tomb of Sargeras
+	-- Goroth
+		[233279] = Defaults(), -- Shattering Star
+		[230345] = Defaults(), -- Crashing Comet
+		[231363] = Defaults(), -- Burning Armor
+
+	-- Demonic Inquisition
+		[233430] = Defaults(), -- Ubearable Torment
+		[233983] = Defaults(), -- Echoing Anguish
+
+	-- Harjatan
+		[231770] = Defaults(), -- Drenched
+		[231998] = Defaults(), -- Jagged Abrasion
+
+	-- Sisters of the Moon
+		[236603] = Defaults(), -- Rapid Shot
+		[234996] = Defaults(), -- Umbra Suffusion
+		[234995] = Defaults(), -- Lunar Suffusion
+		[236519] = Defaults(), -- Moon Burn
+		[236697] = Defaults(), -- Deathly Screech
+		[236550] = Defaults(), -- Lunar Fire
+
+	-- Mistress Sassz'ine
+		[230959] = Defaults(), -- Concealing Murk
+		[232722] = Defaults(), -- Slicing Tornado
+		[232913] = Defaults(), -- Befouling Ink
+		[234621] = Defaults(), -- Devouring Maw
+		[230201] = Defaults(), -- Burden of Pain
+
+	-- The Desolate Host
+		[236072] = Defaults(), -- Wailing Souls
+		[236449] = Defaults(), -- Soulbind
+		[236515] = Defaults(), -- Shattering Scream
+		[235989] = Defaults(), -- Tormented Cries
+
+	-- Maiden of Vigilance
+		[235117] = Defaults(), -- Unstable Soul
+		[235534] = Defaults(), -- Creator's Grace
+		[235538] = Defaults(), -- Demon's Vigor
+		[234891] = Defaults(), -- Wrath of the Creators
+		[235569] = Defaults(), -- Hammer of Creation
+		[235573] = Defaults(), -- Hammer of Obliteration
+
+	-- Kil'jaeden
+		[238999] = Defaults(), -- Darkness of a Thousand Souls
+		[239155] = Defaults(), -- Gravity Squeeze
+		[234295] = Defaults(), -- Armageddon Rain
+		[240908] = Defaults(), -- Armageddon Blast
+		[239932] = Defaults(), -- Felclaws
+		[240911] = Defaults(), -- Armageddon Hail
+
 -- The Nighthold
 	-- Skorpyron
 		[204766] = Defaults(), -- Energy Surge
