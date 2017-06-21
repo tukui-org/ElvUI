@@ -93,8 +93,8 @@ end
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
 	local x, y = GetPlayerMapPosition("player")
-	x = E:Round(100 * x, 2)
-	y = E:Round(100 * y, 2)
+	x = x and E:Round(100 * x, 2) or 0
+	y = y and E:Round(100 * y, 2) or 0
 
 	if x ~= 0 and y ~= 0 then
 		CoordsHolder.playerCoords:SetText(PLAYER..":   "..x..", "..y)
