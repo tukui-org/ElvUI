@@ -1118,8 +1118,11 @@ function UF:PLAYER_ENTERING_WORLD()
 		self:Update_AllFrames()
 		hasEnteredWorld = true
 	else
-		--We need to update headers in case we zoned into an instance
-		UF:UpdateAllHeaders()
+		local _, instanceType = IsInInstance()
+		if instanceType ~= "none" then
+			--We need to update headers when we zone into an instance
+			UF:UpdateAllHeaders()
+		end
 	end
 end
 
