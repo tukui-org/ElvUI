@@ -193,7 +193,7 @@ local function LoadSkin()
 	EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
 	EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
 	EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
-	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton, nil, true)
 	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	local function SkinItemFlyouts()
