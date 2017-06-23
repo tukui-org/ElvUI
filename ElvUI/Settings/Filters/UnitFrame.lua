@@ -663,6 +663,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[233279] = Defaults(), -- Shattering Star
 		[230345] = Defaults(), -- Crashing Comet
 		[231363] = Defaults(), -- Burning Armor
+		[234264] = Defaults(), -- Melted Armor
+		[233062] = Defaults(), -- Infernal Burning
 
 	-- Demonic Inquisition
 		[233430] = Defaults(), -- Ubearable Torment
@@ -671,6 +673,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Harjatan
 		[231770] = Defaults(), -- Drenched
 		[231998] = Defaults(), -- Jagged Abrasion
+		[231729] = Defaults(), -- Aqueous Burst
+		[234128] = Defaults(), -- Driven Assault
 
 	-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
@@ -678,36 +682,66 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[234995] = Defaults(), -- Lunar Suffusion
 		[236519] = Defaults(), -- Moon Burn
 		[236697] = Defaults(), -- Deathly Screech
-		[236550] = Defaults(), -- Lunar Fire
+		[239264] = Defaults(), -- Lunar Flare (Tank)
+		[236712] = Defaults(), -- Lunar Beacon
+		[236304] = Defaults(), -- Incorporeal Shot
+		[236550] = Defaults(), -- Discorporate (Tank)
+		[236330] = Defaults(), -- Astral Vulnerability
+		[236541] = Defaults(), -- Twilight Glaive
+		[233263] = Defaults(), -- Embrace of the Eclipse
 
 	-- Mistress Sassz'ine
 		[230959] = Defaults(), -- Concealing Murk
 		[232722] = Defaults(), -- Slicing Tornado
 		[232913] = Defaults(), -- Befouling Ink
 		[234621] = Defaults(), -- Devouring Maw
-		[230201] = Defaults(), -- Burden of Pain
+		[230201] = Defaults(), -- Burden of Pain (Tank)
+		[230139] = Defaults(), -- Hydra Shot
+		[232754] = Defaults(), -- Hydra Acid 
+		[230384] = Defaults(), -- Consuming Hunger
+		[230358] = Defaults(), -- Thundering Shock 
 
 	-- The Desolate Host
 		[236072] = Defaults(), -- Wailing Souls
 		[236449] = Defaults(), -- Soulbind
 		[236515] = Defaults(), -- Shattering Scream
 		[235989] = Defaults(), -- Tormented Cries
+		[236241] = Defaults(), -- Soul Rot
+		[236361] = Defaults(), -- Spirit Chains
+		[235968] = Defaults(), -- Grasping Darkness
 
 	-- Maiden of Vigilance
-		[235117] = Defaults(), -- Unstable Soul
+		[235117] = Defaults(), -- Unstable Soul !needs review
+		[240209] = Defaults(), -- Unstable Soul !needs review
 		[235534] = Defaults(), -- Creator's Grace
 		[235538] = Defaults(), -- Demon's Vigor
 		[234891] = Defaults(), -- Wrath of the Creators
 		[235569] = Defaults(), -- Hammer of Creation
 		[235573] = Defaults(), -- Hammer of Obliteration
+		[235213] = Defaults(), -- Light Infusion
+		[235240] = Defaults(), -- Fel Infusion
+
+	-- Fallen Avatar
+		[239058] = Defaults(), -- Touch of Sargeras
+		[239739] = Defaults(), -- Dark Mark
+		[234059] = Defaults(), -- Unbound Chaos
+		[240213] = Defaults(), -- Chaos Flames
+		[236604] = Defaults(), -- Shadowy Blades
+		[236494] = Defaults(), -- Desolate (Tank)
 
 	-- Kil'jaeden
 		[238999] = Defaults(), -- Darkness of a Thousand Souls
+		[239216] = Defaults(), -- Darkness of a Thousand Souls (Dot)
 		[239155] = Defaults(), -- Gravity Squeeze
 		[234295] = Defaults(), -- Armageddon Rain
 		[240908] = Defaults(), -- Armageddon Blast
-		[239932] = Defaults(), -- Felclaws
+		[239932] = Defaults(), -- Felclaws (Tank)
 		[240911] = Defaults(), -- Armageddon Hail
+		[238505] = Defaults(), -- Focused Dreadflame
+		[238429] = Defaults(), -- Bursting Dreadflame
+		[236710] = Defaults(), -- Shadow Reflection: Erupting
+		[241822] = Defaults(), -- Choking Shadow
+		[236555] = Defaults(), -- Deceiver's Veil 
 
 -- The Nighthold
 	-- Skorpyron
