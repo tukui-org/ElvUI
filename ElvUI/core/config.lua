@@ -80,7 +80,9 @@ function E:ToggleConfigMode(override, configType)
 		ElvUIMoverPopupWindow:Show()
 		if IsAddOnLoaded("ElvUI_Config") then
 			LibStub("AceConfigDialog-3.0-ElvUI"):Close("ElvUI")
-			GameTooltip:Hide()
+			if not GameTooltip:IsForbidden() then
+				GameTooltip:Hide()
+			end
 		end
 		E.ConfigurationMode = true
 	else

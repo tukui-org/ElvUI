@@ -248,7 +248,11 @@ E.Options.args.tooltip = {
 					name = L["Height"],
 					type = 'range',
 					min = 1, max = 15, step = 1,
-					set = function(info, value) E.db.tooltip.healthBar.height = value; GameTooltipStatusBar:Height(value); end,
+					set = function(info, value) E.db.tooltip.healthBar.height = value;
+						if not GameTooltip:IsForbidden() then
+							GameTooltipStatusBar:Height(value);
+						end
+					end,
 				},
 				statusPosition = {
 					order = 2,
@@ -263,7 +267,16 @@ E.Options.args.tooltip = {
 					order = 3,
 					type = "toggle",
 					name = L["Text"],
-					set = function(info, value) E.db.tooltip.healthBar.text = value; if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end  end,
+					set = function(info, value)
+						E.db.tooltip.healthBar.text = value;
+						if not GameTooltip:IsForbidden() then
+							if value then
+								GameTooltipStatusBar.text:Show();
+							else
+								GameTooltipStatusBar.text:Hide()
+							end
+						end
+					end,
 				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
@@ -272,7 +285,9 @@ E.Options.args.tooltip = {
 					values = AceGUIWidgetLSMlists.font,
 					set = function(info, value)
 						E.db.tooltip.healthBar.font = value;
-						GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						if not GameTooltip:IsForbidden() then
+							GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						end
 					end,
 					disabled = function() return not E.db.tooltip.healthBar.text end,
 				},
@@ -283,7 +298,9 @@ E.Options.args.tooltip = {
 					min = 4, max = 500, step = 1,
 					set = function(info, value)
 						E.db.tooltip.healthBar.fontSize = value;
-						GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						if not GameTooltip:IsForbidden() then
+							GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						end
 					end,
 					disabled = function() return not E.db.tooltip.healthBar.text end,
 				},
@@ -299,7 +316,9 @@ E.Options.args.tooltip = {
 					},
 					set = function(info, value)
 						E.db.tooltip.healthBar.fontOutline = value;
-						GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						if not GameTooltip:IsForbidden() then
+							GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
+						end
 					end,
 					disabled = function() return not E.db.tooltip.healthBar.text end,
 				},

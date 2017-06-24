@@ -58,7 +58,7 @@ do
 		ElvUI_StaticPopup1Button1:Enable()
 
 		for _, object in pairs(self["massiveShakeObjects"]) do
-			if object and object:IsShown() then
+			if object and not object:IsForbidden() and object:IsShown() then
 				self:Shake(object)
 			end
 		end

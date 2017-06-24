@@ -63,7 +63,9 @@ end
 function AB:BindHide()
 	bind:ClearAllPoints();
 	bind:Hide();
-	GameTooltip:Hide();
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide();
+	end
 end
 
 function AB:BindListener(key)
@@ -77,7 +79,9 @@ function AB:BindListener(key)
 		end
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name));
 		self:BindUpdate(bind.button, bind.spellmacro);
-		if bind.spellmacro~="MACRO" then GameTooltip:Hide(); end
+		if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then 
+			GameTooltip:Hide();
+		end
 		return;
 	end
 
@@ -107,7 +111,9 @@ function AB:BindListener(key)
 	end
 	E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.button.name..".");
 	self:BindUpdate(bind.button, bind.spellmacro);
-	if bind.spellmacro~="MACRO" then GameTooltip:Hide(); end
+	if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then
+		GameTooltip:Hide();
+	end
 end
 
 function AB:BindUpdate(button, spellmacro)
