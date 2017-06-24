@@ -237,6 +237,7 @@ function TT:GetItemLvL(unit)
 end
 
 function TT:RemoveTrashLines(tt)
+	if tt:IsForbidden() then return end
 	for i=3, tt:NumLines() do
 		local tiptext = _G["GameTooltipTextLeft"..i]
 		local linetext = tiptext:GetText()
@@ -302,6 +303,7 @@ function TT:INSPECT_READY(_, GUID)
 end
 
 function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
+	if tt:IsForbidden() then return end
 	local canInspect = CanInspect(unit)
 	if(not canInspect or level < 10 or numTries > 1) then return end
 
@@ -594,6 +596,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:SetStyle(tt)
+	if tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates
 	local r, g, b = tt:GetBackdropColor()
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
@@ -606,6 +609,7 @@ function TT:MODIFIER_STATE_CHANGED(_, key)
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)
+	if tt:IsForbidden() then return end
 	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 	if id and self.db.spellID then
 		if caster then
