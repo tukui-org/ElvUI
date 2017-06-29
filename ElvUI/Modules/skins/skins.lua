@@ -532,9 +532,11 @@ function S:HandleFollowerPage(follower, hasItems)
 	end
 
 	local xpbar = follower.followerTab.XPBar
-	xpbar:StripTextures()
-	xpbar:SetStatusBarTexture(E["media"].normTex)
-	xpbar:CreateBackdrop("Transparent")
+	if not xpbar.backdrop then
+		xpbar:StripTextures()
+		xpbar:SetStatusBarTexture(E["media"].normTex)
+		xpbar:CreateBackdrop("Transparent")
+	end
 end
 
 function S:HandleShipFollowerPage(followerTab)
