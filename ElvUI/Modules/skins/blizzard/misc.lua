@@ -958,6 +958,7 @@ local function LoadSkin()
 	RaidButton:StripTextures()
 	local raidcheckbox = {
 		"KeepGroupsTogether",
+		"HorizontalGroups",
 		"DisplayIncomingHeals",
 		"DisplayPowerBar",
 		"DisplayAggroHighlight",
