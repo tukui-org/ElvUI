@@ -60,9 +60,9 @@ local function CheckBox_OnMouseUp(frame)
 		self:ToggleChecked()
 
 		if self.checked then
-			PlaySound("igMainMenuOptionCheckBoxOn")
+			-- PlaySound("igMainMenuOptionCheckBoxOn")
 		else -- for both nil and false (tristate)
-			PlaySound("igMainMenuOptionCheckBoxOff")
+			-- PlaySound("igMainMenuOptionCheckBoxOff")
 		end
 
 		self:Fire("OnValueChanged", self.checked)

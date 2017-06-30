@@ -24,7 +24,7 @@ Scripts
 -------------------------------------------------------------------------------]]
 local function Button_OnClick(frame, ...)
 	AceGUI:ClearFocus()
-	PlaySound("igMainMenuOption")
+	-- PlaySound("igMainMenuOption")
 	frame.obj:Fire("OnClick", ...)
 end
 
