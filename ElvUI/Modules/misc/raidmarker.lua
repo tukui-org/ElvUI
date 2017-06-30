@@ -17,6 +17,7 @@ local PlaySound = PlaySound
 local SetRaidTarget = SetRaidTarget
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UIErrorsFrame = UIErrorsFrame
+local U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: RaidMark_HotkeyPressed
@@ -77,7 +78,7 @@ function M:RaidMarkButton_OnLeave()
 end
 
 function M:RaidMarkButton_OnClick(arg1)
-	PlaySound("UChatScrollButton");
+	PlaySound(U_CHAT_SCROLL_BUTTON);
 	SetRaidTarget("target", (arg1~="RightButton") and self:GetID() or 0);
 	self:GetParent():Hide();
 end

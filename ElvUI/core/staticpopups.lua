@@ -18,6 +18,8 @@ local StaticPopup_Resize = StaticPopup_Resize
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
 local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local IG_MAINMENU_CLOSE = SOUNDKIT.IG_MAINMENU_CLOSE
+local IG_MAINMENU_OPEN = SOUNDKIT.IG_MAINMENU_OPEN
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 
@@ -392,7 +394,7 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
-	PlaySound("igMainMenuOpen");
+	PlaySound(IG_MAINMENU_OPEN);
 
 	local dialog = E.PopupDialogs[self.which];
 	local OnShow = dialog.OnShow;
@@ -510,7 +512,7 @@ function E:StaticPopup_OnKeyDown(key)
 end
 
 function E:StaticPopup_OnHide()
-	PlaySound("igMainMenuClose");
+	PlaySound(IG_MAINMENU_CLOSE);
 
 	E:StaticPopup_CollapseTable();
 

@@ -43,6 +43,8 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 local UnitClass = UnitClass
 local HUNTER_TRACKING = HUNTER_TRACKING
 local HUNTER_TRACKING_TEXT = HUNTER_TRACKING_TEXT
+local IG_MAINMENU_QUIT = SOUNDKIT.IG_MAINMENU_QUIT
+local IG_MINIMAP_OPEN = SOUNDKIT.IG_MINIMAP_OPEN
 local MINIMAP_TRACKING_NONE = MINIMAP_TRACKING_NONE
 local TOWNSFOLK = TOWNSFOLK
 local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
@@ -205,10 +207,10 @@ local menuList = {
 			end
 			CloseMenus();
 			CloseAllWindows()
-			PlaySound("igMainMenuOpen");
+			PlaySound(IG_MINIMAP_OPEN);
 			ShowUIPanel(GameMenuFrame);
 		else
-			PlaySound("igMainMenuQuit");
+			PlaySound(IG_MAINMENU_QUIT);
 			HideUIPanel(GameMenuFrame);
 			MainMenuMicroButton_SetNormal();
 		end
