@@ -45,6 +45,8 @@ local function LoadSkin()
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
+	
+	--[[Currently bugged in PTR 7.3.0 build 24484, has been reported.
 	S:HandleButton(WorldMapFrameSizeDownButton, true)
 	WorldMapFrameSizeDownButton:SetSize(16, 16)
 	WorldMapFrameSizeDownButton:Point("RIGHT", WorldMapFrameCloseButton, "LEFT", 4, 0)
@@ -61,7 +63,7 @@ local function LoadSkin()
 	WorldMapFrameSizeUpButton:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
 	WorldMapFrameSizeUpButton:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
 	WorldMapFrameSizeUpButton:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-
+	]]
 
 	local rewardFrames = {
 		['MoneyFrame'] = true,

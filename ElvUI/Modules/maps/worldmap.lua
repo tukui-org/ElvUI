@@ -50,8 +50,8 @@ function M:SetLargeWorldMap()
 		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
 
-	WorldMapFrameSizeUpButton:Hide()
-	WorldMapFrameSizeDownButton:Show()
+	-- WorldMapFrameSizeUpButton:Hide()
+	-- WorldMapFrameSizeDownButton:Show()
 
 	WorldMapFrame:ClearAllPoints()
 	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
@@ -61,18 +61,18 @@ end
 function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end
 
-	WorldMapFrameSizeUpButton:Show()
-	WorldMapFrameSizeDownButton:Hide()
+	-- WorldMapFrameSizeUpButton:Show()
+	-- WorldMapFrameSizeDownButton:Hide()
 end
 
 function M:PLAYER_REGEN_ENABLED()
-	WorldMapFrameSizeDownButton:Enable()
-	WorldMapFrameSizeUpButton:Enable()
+	-- WorldMapFrameSizeDownButton:Enable()
+	-- WorldMapFrameSizeUpButton:Enable()
 end
 
 function M:PLAYER_REGEN_DISABLED()
-	WorldMapFrameSizeDownButton:Disable()
-	WorldMapFrameSizeUpButton:Disable()
+	-- WorldMapFrameSizeDownButton:Disable()
+	-- WorldMapFrameSizeUpButton:Disable()
 end
 
 local inRestrictedArea = false
