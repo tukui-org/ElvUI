@@ -203,24 +203,9 @@ end
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = self:GetNamePlateForUnit(frame.unit);
-	if(parent) then
-		if frame:GetFrameLevel() < 100 then
-			frame:SetFrameLevel(parent:GetFrameLevel() + 100)
-		end
-
-		frame:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 1)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 2)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 2)
-	end
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		frame:SetFrameLevel(parent:GetFrameLevel() + 5)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
@@ -544,12 +529,20 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	end
 end
 
+local function FrameOnUpdate(self)
+	self.UnitFrame:SetFrameLevel(self:GetFrameLevel())
+	self.UnitFrame.Glow:SetFrameLevel(self:GetFrameLevel())
+	self.UnitFrame.Buffs:SetFrameLevel(self:GetFrameLevel() + 1)
+	self.UnitFrame.Debuffs:SetFrameLevel(self:GetFrameLevel() + 1)
+end
+
 function mod:NAME_PLATE_CREATED(_, frame)
-	frame.UnitFrame = CreateFrame("BUTTON", frame:GetName().."UnitFrame", UIParent);
+	frame.UnitFrame = CreateFrame("BUTTON", "ElvUI"..frame:GetName().."UnitFrame", UIParent);
 	frame.UnitFrame:EnableMouse(false);
 	frame.UnitFrame:SetAllPoints(frame)
 	frame.UnitFrame:SetFrameStrata("BACKGROUND")
 	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
+	frame:HookScript("OnUpdate", FrameOnUpdate)
 
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	frame.UnitFrame.PowerBar = self:ConstructElement_PowerBar(frame.UnitFrame)
@@ -564,6 +557,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 	frame.UnitFrame.Elite = self:ConstructElement_Elite(frame.UnitFrame)
 	frame.UnitFrame.DetectionModel = self:ConstructElement_Detection(frame.UnitFrame)
+	frame.UnitFrame.Highlight = self:ConstructElement_Highlight(frame.UnitFrame)
 end
 
 function mod:OnEvent(event, unit, ...)
@@ -626,6 +620,8 @@ function mod:OnEvent(event, unit, ...)
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
+	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
+		mod:UpdateElement_Highlight(self)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
@@ -686,9 +682,10 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
-	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
+	frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 end
 
 function mod:SetClassNameplateBar(frame)
