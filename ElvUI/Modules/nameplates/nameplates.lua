@@ -206,9 +206,24 @@ end
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = self:GetNamePlateForUnit(frame.unit);
+	if(parent) then
+		if frame:GetFrameLevel() < 100 then
+			frame:SetFrameLevel(parent:GetFrameLevel() + 100)
+		end
+
+		frame:SetFrameLevel(parent:GetFrameLevel() + 3)
+		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 1)
+		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 2)
+		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 2)
+	end
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
+		frame:SetFrameLevel(parent:GetFrameLevel() + 5)
+		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
+		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
@@ -537,20 +552,12 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	end
 end
 
-local function FrameOnUpdate(self)
-	self.UnitFrame:SetFrameLevel(self:GetFrameLevel())
-	self.UnitFrame.Glow:SetFrameLevel(self:GetFrameLevel())
-	self.UnitFrame.Buffs:SetFrameLevel(self:GetFrameLevel() + 1)
-	self.UnitFrame.Debuffs:SetFrameLevel(self:GetFrameLevel() + 1)
-end
-
 function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame = CreateFrame("BUTTON", "ElvUI"..frame:GetName().."UnitFrame", UIParent);
 	frame.UnitFrame:EnableMouse(false);
 	frame.UnitFrame:SetAllPoints(frame)
 	frame.UnitFrame:SetFrameStrata("BACKGROUND")
 	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
-	frame:HookScript("OnUpdate", FrameOnUpdate)
 
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	frame.UnitFrame.PowerBar = self:ConstructElement_PowerBar(frame.UnitFrame)
