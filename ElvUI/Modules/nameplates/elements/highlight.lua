@@ -12,15 +12,15 @@ local function HighlightUpdate(self)
 	if not UnitExists("mouseover") or not self.unit or not UnitIsUnit("mouseover", self.unit) then
 		self.Name.NameOnlyGlow:Hide()
 		self.Highlight:Hide()
-		self:SetScript("OnUpdate", nil)
+		self.Highlight.handler:SetScript("OnUpdate", nil)
 	end
 end
 
 function mod:UpdateElement_Highlight(frame)
-	if UnitIsUnit("mouseover", frame.unit) and not self.db.units[frame.UnitType].healthbar and not frame.isTarget then
+	if UnitIsUnit("mouseover", frame.unit) and not self.db.units[frame.UnitType].healthbar.enable and self.db.units[frame.UnitType].showName and not frame.isTarget then
 		frame.Name.NameOnlyGlow:Show()
 		frame.Highlight.handler:SetScript("OnUpdate", function() HighlightUpdate(frame) end)
-	elseif UnitIsUnit("mouseover", frame.unit) and not frame.isTarget then
+	elseif UnitIsUnit("mouseover", frame.unit) and self.db.units[frame.UnitType].healthbar.enable and not frame.isTarget then
 		frame.Highlight:ClearAllPoints()
 		frame.Highlight:SetPoint("TOPLEFT", frame.HealthBar, "TOPLEFT")
 		frame.Highlight:SetPoint("BOTTOMRIGHT", frame.HealthBar:GetStatusBarTexture(), "BOTTOMRIGHT")
