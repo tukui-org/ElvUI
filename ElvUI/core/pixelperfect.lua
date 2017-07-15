@@ -32,7 +32,7 @@ frame:SetScript("OnEvent", function(self, event)
 		end
 	end
 	self:UnregisterEvent(event)
-end
+end)
 
 function E:UIScale(event)
 	if IsMacClient() and self.global.screenheight and self.global.screenwidth and (self.screenheight ~= self.global.screenheight or self.screenwidth ~= self.global.screenwidth) then
