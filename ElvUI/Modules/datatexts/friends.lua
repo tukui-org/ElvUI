@@ -27,7 +27,7 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local ToggleFriendsFrame = ToggleFriendsFrame
-local EasyMenu = EasyMenu
+local L_EasyMenu = L_EasyMenu
 local IsShiftKeyDown = IsShiftKeyDown
 local GetRealmName = GetRealmName
 local GetCurrentMapAreaID = GetCurrentMapAreaID
@@ -58,7 +58,7 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	preferredIndex = 3
 }
 
-local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true,notCheckable=true},
 	{ text = INVITE, hasArrow = true,notCheckable=true, },
@@ -261,7 +261,7 @@ local function Click(self, btn)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleFriendsFrame()
 	end

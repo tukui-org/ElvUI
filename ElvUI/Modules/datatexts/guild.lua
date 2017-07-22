@@ -20,7 +20,7 @@ local SetItemRef = SetItemRef
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local EasyMenu = EasyMenu
+local L_EasyMenu = L_EasyMenu
 local IsShiftKeyDown = IsShiftKeyDown
 local GetGuildInfo = GetGuildInfo
 local ToggleGuildFrame = ToggleGuildFrame
@@ -168,7 +168,7 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = INVITE, hasArrow = true, notCheckable=true,},
@@ -213,7 +213,7 @@ local function Click(self, btn)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleGuildFrame()
 	end
