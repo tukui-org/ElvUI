@@ -678,12 +678,12 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 
 	-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
-		[234996] = Defaults(), -- Umbra Suffusion
-		[234995] = Defaults(), -- Lunar Suffusion
-		[236519] = Defaults(), -- Moon Burn
+		[236598] = Defaults(5), -- Rapid Shot 1
+		[234995] = Defaults(5), -- Rapid Shot 2
+		[236519] = Defaults(4), -- Moon Burn
 		[236697] = Defaults(), -- Deathly Screech
 		[239264] = Defaults(), -- Lunar Flare (Tank)
-		[236712] = Defaults(), -- Lunar Beacon
+		[236712] = Defaults(5), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
 		[236550] = Defaults(), -- Discorporate (Tank)
 		[236330] = Defaults(), -- Astral Vulnerability
