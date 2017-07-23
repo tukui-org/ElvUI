@@ -10,11 +10,15 @@ local strlower, find, format = strlower, string.find, string.format
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local IsInInstance = IsInInstance
+local hooksecurefunc = hooksecurefunc
+local RemoveExtraSpaces = RemoveExtraSpaces
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, WorldFrame, SetCVar
+-- GLOBALS: UIParent, WorldFrame, SetCVar, GetCVarBool
+
+local userDisabledChatBubbles
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
@@ -34,13 +38,13 @@ function M:UpdateBubbleBorder()
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
 		local text = self.text:GetText()
-		if text and text:match("[^%s]+") then
-			for word in text:gmatch("[^%s]+") do
-				tempWord = word:gsub("^%p-([^%p]+)([%-]?[^%p]-)%p-$","%1%2")
+		if text and text:match("%s-[^%s]+%s*") then
+			for word in text:gmatch("%s-[^%s]+%s*") do
+				tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
 				lowerCaseWord = tempWord:lower()
 
-				classMatch = CH.ClassNames[lowerCaseWord] or CH.ClassNames[tempWord]
-				wordMatch = (CH.ClassNames[lowerCaseWord] and lowerCaseWord) or (CH.ClassNames[tempWord] and tempWord:lower())
+				classMatch = CH.ClassNames[lowerCaseWord]
+				wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
 					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
@@ -51,12 +55,12 @@ function M:UpdateBubbleBorder()
 					rebuiltString = word
 					isFirstWord = true
 				else
-					rebuiltString = format("%s %s", rebuiltString, word)
+					rebuiltString = format("%s%s", rebuiltString, word)
 				end
 			end
 
 			if rebuiltString ~= nil then
-				self.text:SetText(rebuiltString)
+				self.text:SetText(RemoveExtraSpaces(rebuiltString))
 			end
 		end
 	end
@@ -191,7 +195,6 @@ local function ChatBubble_OnUpdate(self, elapsed)
 	end
 end
 
-local userDisabledChatBubbles = not GetCVarBool("chatBubbles")
 function M:UpdateChatBubbleInstanceToggle(value)
 	if E.private.general.chatBubbles == 'disabled' or userDisabledChatBubbles then
 		M.BubbleFrame:SetScript('OnUpdate', nil)
@@ -220,6 +223,7 @@ end
 
 function M:LoadChatBubbles()
 	self.BubbleFrame = CreateFrame('Frame')
+	userDisabledChatBubbles = not GetCVarBool("chatBubbles")
 
 	--Keep track of whether or not the user has disabled chat bubbles completely in Interface Options
 	hooksecurefunc("SetCVar", function(cvar, value, _, event)
