@@ -8,7 +8,8 @@ local unpack = unpack
 local ceil = math.ceil
 --WoW API / Variables
 local UnitIsUnit = UnitIsUnit
-local UIDROPDOWNMENU_MAXLEVELS = UIDROPDOWNMENU_MAXLEVELS
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -23,21 +24,17 @@ local function LoadSkin()
 		"AudioOptionsFrame",
 		"BNToastFrame",
 		"TicketStatusFrameButton",
-		"DropDownList1MenuBackdrop",
-		"DropDownList2MenuBackdrop",
-		"DropDownList1Backdrop",
-		"DropDownList2Backdrop",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
+		"DropDownList1Backdrop",
+		"DropDownList1MenuBackdrop",
 
 		--DropDownMenu library support
-		"Lib_DropDownList1MenuBackdrop",
-		"Lib_DropDownList2MenuBackdrop",
-		"Lib_DropDownList1Backdrop",
-		"Lib_DropDownList2Backdrop",
+		"L_DropDownList1Backdrop",
+		"L_DropDownList1MenuBackdrop"
 	}
 
 	QueueStatusFrame:StripTextures()
@@ -608,11 +605,19 @@ local function LoadSkin()
 	ChatConfigFrameHeader:ClearAllPoints()
 	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
-	--DROPDOWN MENU
-	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
-		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
-			_G["DropDownList"..i.."Backdrop"]:SetTemplate("Transparent")
-			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Transparent")
+	--DropDownMenu
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
+			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
+			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
+		end
+	end)
+
+	--LibUIDropDownMenu
+	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function(level, index)
+		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
+			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
+			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)
 
@@ -810,7 +815,6 @@ local function LoadSkin()
 		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
 		if idropdown then
 			S:HandleDropDownBox(idropdown)
-			DropDownList1:SetTemplate("Transparent")
 		else
 			print(interfacedropdown[i])
 		end
@@ -919,7 +923,6 @@ local function LoadSkin()
 		local odropdown = _G[optiondropdown[i]]
 		if odropdown then
 			S:HandleDropDownBox(odropdown,165)
-			DropDownList1:SetTemplate("Transparent")
 		else
 			print(optiondropdown[i])
 		end

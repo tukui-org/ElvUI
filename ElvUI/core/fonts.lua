@@ -30,7 +30,8 @@ function E:UpdateBlizzardFonts()
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.private.general.dmgfont)
 	local NUMBER     = self["media"].normFont
-	local NAMEFONT		 = LSM:Fetch('font', self.private.general.namefont)
+	local NAMEFONT   = LSM:Fetch('font', self.private.general.namefont)
+	local BUBBLE     = LSM:Fetch('font', self.private.general.chatBubbleFont)
 	local MONOCHROME = ''
 
 	CHAT_FONT_HEIGHTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
@@ -57,6 +58,7 @@ function E:UpdateBlizzardFonts()
 	if self.private.general.replaceBlizzFonts then
 		-- Base fonts
 		--SetFont(NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
+		SetFont(ChatBubbleFont,						BUBBLE, self.private.general.chatBubbleFontSize, self.private.general.chatBubbleFontOutline)
 		SetFont(GameTooltipHeader,                  NORMAL, self.db.general.fontSize)
 		SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, self.db.general.fontSize, "OUTLINE")
 		SetFont(SystemFont_Shadow_Large_Outline,	NUMBER, 20, "OUTLINE")

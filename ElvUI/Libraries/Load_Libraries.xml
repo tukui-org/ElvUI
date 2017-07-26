@@ -25,5 +25,5 @@
 	<Include file="LibCompress\lib.xml"/>
 	<Include file="LibBase64-1.0\lib.xml"/>
 	<Script file="LibAnim\LibAnim.lua"/>
-	<Include file="DropDownMenu\DropDownMenu.xml"/>
+	<Include file="LibUIDropDownMenu\LibUIDropDownMenu.xml"/>
 </Ui>

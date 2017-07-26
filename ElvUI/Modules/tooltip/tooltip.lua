@@ -115,9 +115,6 @@ local tooltips = {
 	WorldMapCompareTooltip1,
 	WorldMapCompareTooltip2,
 	WorldMapCompareTooltip3,
-	DropDownList1MenuBackdrop,
-	DropDownList2MenuBackdrop,
-	DropDownList3MenuBackdrop,
 }
 
 local classification = {
