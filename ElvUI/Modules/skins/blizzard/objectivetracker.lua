@@ -162,7 +162,7 @@ local function LoadSkin()
 
 			if icon then
 				icon:ClearAllPoints()
-				icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 2 or 5, 0)
+				icon:Point("LEFT", bar, "RIGHT", E.PixelMode and 2 or 5, 0)
 				icon:SetMask("")
 				icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -176,7 +176,7 @@ local function LoadSkin()
 			progressBar.isSkinned = true
 		end
 
-		if bar and icon and bar.newIconBg and progressBar.backdrop then
+		if bar and icon and progressBar.backdrop then
 			progressBar.backdrop:SetShown(icon:IsShown())
 		end
 	end
