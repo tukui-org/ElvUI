@@ -135,66 +135,49 @@ local function LoadSkin()
 		local icon = bar.Icon
 		local label = bar.Label
 
-		if not progressBar.IsSkinned then
+		if bar and not progressBar.IsSkinned then
 			progressBar:CreateBackdrop("Default")
 			progressBar.backdrop:SetOutside(icon)
 
-			if bar.BarFrame then
-				bar.BarFrame:Hide()
-			end
-			if bar.BarFrame2 then
-				bar.BarFrame2:Hide()
-			end
-			if bar.BarFrame3 then
-				bar.BarFrame3:Hide()
-			end
-			if bar.BarGlow then
-				bar.BarGlow:Hide()
-			end
-			if bar.Sheen then
-				bar.Sheen:Hide()
-			end
-			if bar.IconBG then
-				bar.IconBG:SetAlpha(0)
-			end
-			if (bar.BorderLeft or bar.BorderRight or bar.BorderMid) then
-				bar.BorderLeft:SetAlpha(0)
-				bar.BorderRight:SetAlpha(0)
-				bar.BorderMid:SetAlpha(0)
-			end
+			if bar.BarFrame then bar.BarFrame:Hide() end
+			if bar.BarFrame2 then bar.BarFrame2:Hide() end
+			if bar.BarFrame3 then bar.BarFrame3:Hide() end
+			if bar.BarGlow then bar.BarGlow:Hide() end
+			if bar.Sheen then bar.Sheen:Hide() end
+			if bar.IconBG then bar.IconBG:SetAlpha(0) end
+			if bar.BorderLeft then bar.BorderLeft:SetAlpha(0) end
+			if bar.BorderRight then bar.BorderRight:SetAlpha(0) end
+			if bar.BorderMid then bar.BorderMid:SetAlpha(0) end
 
-			if bar then
-				bar:Height(18)
-				bar:CreateBackdrop("Transparent")
-				bar:SetStatusBarTexture(E["media"].normTex)
-				bar:SetBackdropColor(0, 0, 0, 0)
-				E:RegisterStatusBar(bar)
-			end
+			bar:Height(18)
+			bar:CreateBackdrop("Transparent")
+			bar:SetStatusBarTexture(E["media"].normTex)
+			bar:SetBackdropColor(0, 0, 0, 0)
+			E:RegisterStatusBar(bar)
 
 			if label then
 				label:ClearAllPoints()
-				label:SetPoint("CENTER", bar, 0, 0)
+				label:Point("CENTER", bar, 0, -1)
 			end
 
 			if icon then
 				icon:ClearAllPoints()
-				icon:SetPoint("LEFT", bar, "RIGHT", E.Border*3, 0)
+				icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 2 or 5, 0)
 				icon:SetMask("")
 				icon:SetTexCoord(unpack(E.TexCoords))
 
-				local border = CreateFrame("Frame", "$parentBorder", bar)
-				border:SetAllPoints(icon)
-				border:SetTemplate("Transparent")
-				border:SetBackdropColor(0, 0, 0, 0)
-				bar.newIconBg = border
+				if not progressBar.backdrop then
+					progressBar:CreateBackdrop("Default")
+					progressBar.backdrop:SetOutside(icon)
+				end
 			end
 
-			bar.newIconBg:SetShown(icon:IsShown())
+			BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
+			progressBar.isSkinned = true
+		end
+
+		if bar and icon and bar.newIconBg and progressBar.backdrop then
 			progressBar.backdrop:SetShown(icon:IsShown())
-
-			BonusObjectiveTrackerProgressBar_PlayFlareAnim = function() return end
-
-			bar.IsSkinned = true
 		end
 	end
 
