@@ -13,6 +13,9 @@ local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_Timer_After = C_Timer.After
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
@@ -484,8 +487,12 @@ function mod:SetBaseNamePlateSize()
 	local self = mod
 	local baseWidth = self.db.clickableWidth
 	local baseHeight = self.db.clickableHeight
-	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
+
+	-- this wont taint like NamePlateDriverFrame.SetBaseNamePlateSize
+	C_NamePlate_SetNamePlateFriendlySize(baseWidth, baseHeight);
+	C_NamePlate_SetNamePlateEnemySize(baseWidth, baseHeight);
+	C_NamePlate_SetNamePlateSelfSize(baseWidth, baseHeight);
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
@@ -538,6 +545,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_Level(frame)
 	mod:UpdateElement_Elite(frame)
 	mod:UpdateElement_Detection(frame)
+	mod:UpdateElement_Highlight(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
@@ -545,7 +553,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 end
 
 function mod:NAME_PLATE_CREATED(_, frame)
-	frame.UnitFrame = CreateFrame("BUTTON", frame:GetName().."UnitFrame", UIParent);
+	frame.UnitFrame = CreateFrame("BUTTON", "ElvUI"..frame:GetName().."UnitFrame", UIParent);
 	frame.UnitFrame:EnableMouse(false);
 	frame.UnitFrame:SetAllPoints(frame)
 	frame.UnitFrame:SetFrameStrata("BACKGROUND")
@@ -564,6 +572,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 	frame.UnitFrame.Elite = self:ConstructElement_Elite(frame.UnitFrame)
 	frame.UnitFrame.DetectionModel = self:ConstructElement_Detection(frame.UnitFrame)
+	frame.UnitFrame.Highlight = self:ConstructElement_Highlight(frame.UnitFrame)
 end
 
 function mod:OnEvent(event, unit, ...)
@@ -626,6 +635,8 @@ function mod:OnEvent(event, unit, ...)
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
+	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
+		mod:UpdateElement_Highlight(self)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
@@ -686,9 +697,10 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
-	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
+	frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 end
 
 function mod:SetClassNameplateBar(frame)
@@ -886,7 +898,7 @@ function mod:Initialize()
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
-	self:SetBaseNamePlateSize() --This taints and prevents default nameplates in dungeons and raids
+	self:SetBaseNamePlateSize()
 
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)

@@ -26,20 +26,19 @@ local function LoadSkin()
 
 	--Custom dropdown to avoid using regular DropDownMenu code (taints)
 	local function BattlefieldMinimapTabDropDown_Initialize()
-		local checked;
 		local info = Lib_UIDropDownMenu_CreateInfo();
 
 		-- Show battlefield players
 		info.text = SHOW_BATTLEFIELDMINIMAP_PLAYERS;
 		info.func = BattlefieldMinimapTabDropDown_TogglePlayers;
-		info.checked = BattlefieldMinimapOptions.showPlayers;
+		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.showPlayers or false;
 		info.isNotRadio = true;
 		Lib_UIDropDownMenu_AddButton(info, LIB_UIDROPDOWNMENU_MENU_LEVEL);
 
 		-- Battlefield minimap lock
 		info.text = LOCK_BATTLEFIELDMINIMAP;
 		info.func = BattlefieldMinimapTabDropDown_ToggleLock;
-		info.checked = BattlefieldMinimapOptions.locked;
+		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked or false;
 		info.isNotRadio = true;
 		Lib_UIDropDownMenu_AddButton(info, LIB_UIDROPDOWNMENU_MENU_LEVEL);
 
@@ -66,24 +65,20 @@ local function LoadSkin()
 	end)
 
 	BattlefieldMinimap:SetScript("OnMouseDown", function(self, btn)
-		if btn == "LeftButton" then
-			if BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked then
-				return
-			else
-				BattlefieldMinimapTab:StartMoving()
-			end
+		if btn == "LeftButton" and (BattlefieldMinimapOptions and not BattlefieldMinimapOptions.locked) then
+			BattlefieldMinimapTab:StartMoving()
 		end
 	end)
 
 
 	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function(opacity)
-		local alpha = 1.0 - BattlefieldMinimapOptions.opacity or 0;
+		local alpha = 1.0 - (BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0);
 		BattlefieldMinimap.backdrop:SetAlpha(alpha)
 	end)
 
 	local oldAlpha
 	BattlefieldMinimap:HookScript('OnEnter', function()
-		oldAlpha = BattlefieldMinimapOptions.opacity or 0;
+		oldAlpha = BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0;
 		BattlefieldMinimap_UpdateOpacity(0)
 	end)
 
@@ -95,7 +90,7 @@ local function LoadSkin()
 	end)
 
 	BattlefieldMinimapCloseButton:HookScript('OnEnter', function()
-		oldAlpha = BattlefieldMinimapOptions.opacity or 0;
+		oldAlpha = BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0;
 		BattlefieldMinimap_UpdateOpacity(0)
 	end)
 
