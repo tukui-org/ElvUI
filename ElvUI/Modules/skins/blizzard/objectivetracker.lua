@@ -131,17 +131,28 @@ local function LoadSkin()
 		end
 	end)
 
+	--Color Tracker ProgressBar
+	local ColorProgressBar = function(self, percent)
+		if not (self.Bar and self.isSkinned and percent) then return end
+		local r, g, b = E:ColorGradient(percent/100, 0.8, 0, 0, 0.8, 0.8, 0, 0, 0.8, 0)
+		self.Bar:SetStatusBarColor(r, g, b)
+		if self.Bar.backdrop then
+			self.Bar.backdrop:SetBackdropColor(r*0.25, g*0.25, b*0.25)
+		end
+	end
+	hooksecurefunc("BonusObjectiveTrackerProgressBar_SetValue", ColorProgressBar)
+	hooksecurefunc("ObjectiveTrackerProgressBar_SetValue", ColorProgressBar)
+	--hooksecurefunc("ScenarioTrackerProgressBar_SetValue", ColorProgressBar)
+
 	--World Quest Tracker/Bonus Objective Tracker ProgressBar
 	local function SkinProgressBars(line)
-		local progressBar = line.ProgressBar
-		local bar = progressBar.Bar
+		local progressBar = line and line.ProgressBar
+		local bar = progressBar and progressBar.Bar
+		if not bar then return end
 		local icon = bar.Icon
 		local label = bar.Label
 
-		if bar and not progressBar.IsSkinned then
-			progressBar:CreateBackdrop("Default")
-			progressBar.backdrop:SetOutside(icon)
-
+		if not progressBar.isSkinned then
 			if bar.BarFrame then bar.BarFrame:Hide() end
 			if bar.BarFrame2 then bar.BarFrame2:Hide() end
 			if bar.BarFrame3 then bar.BarFrame3:Hide() end
@@ -153,14 +164,15 @@ local function LoadSkin()
 			if bar.BorderMid then bar.BorderMid:SetAlpha(0) end
 
 			bar:Height(18)
+			bar:StripTextures()
 			bar:CreateBackdrop("Transparent")
-			bar:SetStatusBarTexture(E["media"].normTex)
-			bar:SetBackdropColor(0, 0, 0, 0)
+			bar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(bar)
 
 			if label then
 				label:ClearAllPoints()
-				label:Point("CENTER", bar, 0, -1)
+				label:Point("CENTER", bar, 0, 0)
+				label:FontTemplate(E.media.normFont, 14, "OUTLINE")
 			end
 
 			if icon then
@@ -172,14 +184,13 @@ local function LoadSkin()
 				if not progressBar.backdrop then
 					progressBar:CreateBackdrop("Default")
 					progressBar.backdrop:SetOutside(icon)
+					progressBar.backdrop:SetShown(icon:IsShown())
 				end
 			end
 
 			BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
 			progressBar.isSkinned = true
-		end
-
-		if bar and icon and progressBar.backdrop then
+		elseif icon and progressBar.backdrop then
 			progressBar.backdrop:SetShown(icon:IsShown())
 		end
 	end
