@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+-- GLOBALS: ObjectiveTrackerBlocksFrame, ObjectiveTrackerFrame, BonusObjectiveTrackerProgressBar_PlayFlareAnim
+-- GLOBALS: SCENARIO_TRACKER_MODULE, BONUS_OBJECTIVE_TRACKER_MODULE, WORLD_QUEST_TRACKER_MODULE, QUEST_TRACKER_MODULE, DEFAULT_OBJECTIVE_TRACKER_MODULE
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
@@ -162,7 +165,7 @@ local function LoadSkin()
 
 			if icon then
 				icon:ClearAllPoints()
-				icon:Point("LEFT", bar, "RIGHT", E.PixelMode and 2 or 5, 0)
+				icon:Point("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
 				icon:SetMask("")
 				icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -212,6 +215,31 @@ local function LoadSkin()
 
 		line.ProgressBar.backdrop:SetShown(line.ProgressBar.Bar.Icon:IsShown())
 	end)
+
+	local function PositionFindGroupButton(block, button)
+		if button and button.GetPoint then
+			local a, b, c, d, e = button:GetPoint()
+			if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
+				-- this fires when there is a group button and a item button to the left of it
+				button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e);
+			elseif b == block and block.groupFinderButton and button == block.groupFinderButton then
+				-- this fires when there is a group button
+				button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1));
+			end
+		end
+	end
+	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton", PositionFindGroupButton)
+
+	local function SkinFindGroupButton(block, questID)
+		if block.hasGroupFinderButton and block.groupFinderButton then
+			if block.groupFinderButton and not block.groupFinderButton.skinned then
+				S:HandleButton(block.groupFinderButton)
+				block.groupFinderButton:Size(20)
+				block.groupFinderButton.skinned = true
+			end
+		end
+	end
+	hooksecurefunc("QuestObjectiveSetupBlockButton_FindGroup", SkinFindGroupButton)
 end
 
 S:AddCallback("ObjectiveTracker", LoadSkin)
