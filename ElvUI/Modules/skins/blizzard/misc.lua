@@ -22,7 +22,6 @@ local function LoadSkin()
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
-		"BNToastFrame",
 		"TicketStatusFrameButton",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
@@ -566,7 +565,7 @@ local function LoadSkin()
 	CombatConfigTab1:ClearAllPoints()
 	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
 
-   local cccheckbox = {
+	local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
 		"CombatConfigColorsHighlightingAbility",
 		"CombatConfigColorsHighlightingDamage",
