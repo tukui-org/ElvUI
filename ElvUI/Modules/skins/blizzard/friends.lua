@@ -333,7 +333,7 @@ local function LoadSkin()
 
 		icon:ClearAllPoints()
 		icon:Point("RIGHT", button, "RIGHT", -24, 0)
-		icon.SetPoint = function() return end
+		icon.SetPoint = E.noop
 	end
 end
 

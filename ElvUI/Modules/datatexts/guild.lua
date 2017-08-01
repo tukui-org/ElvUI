@@ -124,7 +124,6 @@ local eventHandlers = {
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
 	["PLAYER_ENTERING_WORLD"] = function()
-
 		if not GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
 			GuildRoster()
@@ -143,7 +142,6 @@ local eventHandlers = {
 			end
 		end
 	end,
-
 	["PLAYER_GUILD_UPDATE"] = function()
 		GuildRoster()
 	end,
@@ -151,8 +149,8 @@ local eventHandlers = {
 	["GUILD_MOTD"] = function (self, arg1)
 		guildMotD = arg1
 	end,
-	["ELVUI_FORCE_RUN"] = function() end,
-	["ELVUI_COLOR_UPDATE"] = function() end,
+	["ELVUI_FORCE_RUN"] = E.noop,
+	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
 
 
