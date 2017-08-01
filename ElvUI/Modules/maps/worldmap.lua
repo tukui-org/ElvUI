@@ -19,8 +19,9 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
--- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1, WORLD_MAP_MIN_ALPHA
+-- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
+-- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",

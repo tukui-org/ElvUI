@@ -89,19 +89,12 @@ local function updateSafeZone(self)
 	local width = self:GetWidth()
 	local _, _, _, ms = GetNetStats()
 
-	-- Guard against GetNetStats returning latencies of 0.
-	if(ms ~= 0) then
-		-- MADNESS!
-		local safeZonePercent = (width / self.max) * (ms / 1e5)
-		if(safeZonePercent > 1) then
-			safeZonePercent = 1
-		end
-
-		safeZone:SetWidth(width * safeZonePercent)
-		safeZone:Show()
-	else
-		safeZone:Hide()
+	local safeZoneRatio = (ms / 1e3) / self.max
+	if(safeZoneRatio > 1) then
+		safeZoneRatio = 1
 	end
+
+	safeZone:SetWidth(width * safeZoneRatio)
 end
 
 local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, castid)

@@ -1,5 +1,5 @@
-ElvUI License
-	Copyright ©2009-2015	The contents of this addon, excluding third-party resources, are
+ElvUI License	
+	Copyright ©2009-2017	The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 
 	The author of this addon hereby grants you the following rights:

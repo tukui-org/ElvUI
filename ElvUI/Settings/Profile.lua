@@ -80,7 +80,7 @@ P['general'] = {
 				['yOffset'] = -8,
 			},
 			['vehicleLeave'] = {
-				['size'] = 26,
+				['scale'] = 1,
 				['position'] = "BOTTOMLEFT",
 				['xOffset'] = 2,
 				['yOffset'] = 2,

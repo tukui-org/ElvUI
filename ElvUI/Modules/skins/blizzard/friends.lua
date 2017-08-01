@@ -322,6 +322,19 @@ local function LoadSkin()
 	S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonTank.CheckButton)
 	S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonHealer.CheckButton)
 	S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonDPS.CheckButton)
+
+	-- GameIcons
+	for i = 1, FRIENDS_TO_DISPLAY do
+		local button = _G["FriendsFrameFriendsScrollFrameButton"..i]
+		local icon = _G["FriendsFrameFriendsScrollFrameButton"..i.."GameIcon"]
+
+		icon:Size(22, 22)
+		icon:SetTexCoord(.15, .85, .15, .85)
+
+		icon:ClearAllPoints()
+		icon:Point("RIGHT", button, "RIGHT", -24, 0)
+		icon.SetPoint = E.noop
+	end
 end
 
 S:AddCallback("Friends", LoadSkin)
