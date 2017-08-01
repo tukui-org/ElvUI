@@ -133,10 +133,15 @@ function AB:PositionAndSizeBar(barName)
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db[barName].widthMult;
 	local heightMult = self.db[barName].heightMult;
-	local bar = self["handledBars"][barName]
+	local visibility = self.db[barName].visibility;
+	local bar = self["handledBars"][barName];
 
 	bar.db = self.db[barName]
 	bar.db.position = nil; --Depreciated
+
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
 
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;
@@ -261,7 +266,7 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		bar:Show()
-		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
+		RegisterStateDriver(bar, "visibility", visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", page);
 		bar:SetAttribute("page", page)
 
@@ -339,13 +344,13 @@ function AB:CreateBar(id)
 	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
 	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
-	
+
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
-	
+
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	local offset = E.Spacing
 	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
@@ -387,7 +392,7 @@ function AB:CreateBar(id)
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 			newstate = GetTempShapeshiftBarIndex() or newstate
 		end
-		
+
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
@@ -749,7 +754,7 @@ function AB:DisableBlizzard()
 	MultiBarBottomRight:SetParent(UIHider)
 	MultiBarLeft:SetParent(UIHider)
 	MultiBarRight:SetParent(UIHider)
-	
+
 	--Look into what this does
 	ArtifactWatchBar:SetParent(UIHider)
 	HonorWatchBar:SetParent(UIHider)
