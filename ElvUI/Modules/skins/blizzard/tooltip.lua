@@ -20,34 +20,7 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
-	local GameTooltip = _G['GameTooltip']
-	local GameTooltipStatusBar =  _G['GameTooltipStatusBar']
-
-	GameTooltipStatusBar:SetStatusBarTexture(E['media'].normTex)
-	E:RegisterStatusBar(GameTooltipStatusBar)
-	GameTooltipStatusBar:CreateBackdrop('Transparent')
-	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
-
 	S:HandleCloseButton(ItemRefCloseButton)
-
-	local tooltips = {
-		GameTooltip,
-		ItemRefTooltip,
-		ItemRefShoppingTooltip1,
-		ItemRefShoppingTooltip2,
-		ItemRefShoppingTooltip3,
-		AutoCompleteBox,
-		FriendsTooltip,
-		ShoppingTooltip1,
-		ShoppingTooltip2,
-		ShoppingTooltip3,
-		WorldMapTooltip,
-		WorldMapCompareTooltip1,
-		WorldMapCompareTooltip2,
-		WorldMapCompareTooltip3,
-	}
 
 	-- World Quest Reward Icon
 	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -63,7 +36,7 @@ local function LoadSkin()
 	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
 	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 
-	-- Tooltip Statusbars
+	-- Tooltip Progress Bars
 	local function SkinTooltipProgressBar(frame)
 		if not (frame and frame.Bar) then return end
 		frame.Bar:StripTextures()
@@ -75,7 +48,7 @@ local function LoadSkin()
 	SkinTooltipProgressBar(ReputationParagonTooltipStatusBar)
 	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar)
 
-	-- Color Tooltip Statusbars
+	-- Color Tooltip Progress Bars
 	local function ColorTooltipProgressBar(self, value)
 		local frame, tooltip, amount, max, r, g, b, _
 		if self.worldQuest and self.questID then
@@ -94,11 +67,41 @@ local function LoadSkin()
 	hooksecurefunc('TaskPOI_OnEnter', ColorTooltipProgressBar)
 	hooksecurefunc('ReputationParagonFrame_SetupParagonTooltip', ColorTooltipProgressBar)
 
+	-- Skin Blizzard Tooltips
+	local GameTooltip = _G['GameTooltip']
+	local GameTooltipStatusBar =  _G['GameTooltipStatusBar']
+	local tooltips = {
+		GameTooltip,
+		ItemRefTooltip,
+		ItemRefShoppingTooltip1,
+		ItemRefShoppingTooltip2,
+		ItemRefShoppingTooltip3,
+		AutoCompleteBox,
+		FriendsTooltip,
+		ShoppingTooltip1,
+		ShoppingTooltip2,
+		ShoppingTooltip3,
+		WorldMapTooltip,
+		WorldMapCompareTooltip1,
+		WorldMapCompareTooltip2,
+		WorldMapCompareTooltip3,
+	}
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
+	-- Skin GameTooltip Status Bar
+	GameTooltipStatusBar:SetStatusBarTexture(E['media'].normTex)
+	E:RegisterStatusBar(GameTooltipStatusBar)
+	GameTooltipStatusBar:CreateBackdrop('Transparent')
+	GameTooltipStatusBar:ClearAllPoints()
+	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+
+	-- Skin Additional GameTooltip Status Bars
 	TT:SecureHook('GameTooltip_ShowStatusBar', 'GameTooltip_ShowStatusBar')
+
+	-- Backdrop coloring
 	TT:SecureHookScript(GameTooltip, 'OnSizeChanged', 'CheckBackdropColor')
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor') --There has to be a more elegant way of doing this.
 	TT:RegisterEvent('CURSOR_UPDATE', 'CheckBackdropColor')
