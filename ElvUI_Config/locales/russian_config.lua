@@ -705,6 +705,7 @@ L["Tabard Frame"] = "Создание накидки"
 L["Talent Frame"] = "Таланты"
 L["TalkingHead"] = "Говорящая голова"
 L["Taxi Frame"] = "Такси"
+L["Tooltip"] = true
 L["Time Manager"] = "Секундомер"
 L["Trade Frame"] = "Обмен"
 L["TradeSkill Frame"] = "Профессия"

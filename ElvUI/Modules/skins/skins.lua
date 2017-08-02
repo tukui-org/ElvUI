@@ -36,6 +36,15 @@ function S:SetOriginalBackdrop()
 	self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 end
 
+function S:StatusBarColorGradient(bar, value, max, backdrop)
+    local current = (not max and value) or (value and max and max ~= 0 and value/max)
+    if not (bar and current) then return end
+    local r, g, b = E:ColorGradient(current, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
+    local bg = backdrop or bar.backdrop
+    if bg then bg:SetBackdropColor(r*0.25, g*0.25, b*0.25) end
+    bar:SetStatusBarColor(r, g, b)
+end
+
 function S:HandleButton(f, strip)
 	assert(f, "doesn't exist!")
 	if f.Left then f.Left:SetAlpha(0) end

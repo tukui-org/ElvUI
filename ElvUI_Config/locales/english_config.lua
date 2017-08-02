@@ -695,6 +695,7 @@ L["Tabard Frame"] = true;
 L["Talent Frame"] = true;
 L["TalkingHead"] = true;
 L["Taxi Frame"] = true;
+L["Tooltip"] = true;
 L["Time Manager"] = true;
 L["Trade Frame"] = true;
 L["TradeSkill Frame"] = true;

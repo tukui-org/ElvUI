@@ -707,6 +707,7 @@ L["Tabard Frame"] = "Wappenrockfenster"
 L["Talent Frame"] = "Talentfenster"
 L["TalkingHead"] = "Sprechender Kopf"
 L["Taxi Frame"] = "Flugroutenfenster"
+L["Tooltip"] = true
 L["Time Manager"] = "Zeitmanager"
 L["Trade Frame"] = "Handelsfenster"
 L["TradeSkill Frame"] = "Berufsfenster"

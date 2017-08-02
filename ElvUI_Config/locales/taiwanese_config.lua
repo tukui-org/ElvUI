@@ -706,6 +706,7 @@ L["Tabard Frame"] = "外袍"
 L["Talent Frame"] = "天賦"
 L["TalkingHead"] = "特寫框體"
 L["Taxi Frame"] = "載具"
+L["Tooltip"] = true
 L["Time Manager"] = "時間管理"
 L["Trade Frame"] = "交易"
 L["TradeSkill Frame"] = "專業技能"

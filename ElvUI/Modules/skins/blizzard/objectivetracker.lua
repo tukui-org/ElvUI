@@ -41,13 +41,9 @@ local function LoadSkin()
 		end
 	end)
 
-	local function ColorProgressBars(self, percent)
-		if not (self.Bar and self.isSkinned and percent) then return end
-		local r, g, b = E:ColorGradient(percent/100, 0.8, 0, 0, 0.8, 0.8, 0, 0, 0.8, 0)
-		self.Bar:SetStatusBarColor(r, g, b)
-		if self.Bar.backdrop then
-			self.Bar.backdrop:SetBackdropColor(r*0.25, g*0.25, b*0.25)
-		end
+	local function ColorProgressBars(self, value)
+		if not (self.Bar and self.isSkinned and value) then return end
+		S:StatusBarColorGradient(self.Bar, value, 100)
 	end
 
 	local function SkinItemButton(self, block)

@@ -204,6 +204,11 @@ E.Options.args.skins = {
 					name = L["Taxi Frame"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				tooltip = {
+					type = "toggle",
+					name = L["Tooltip"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
 				lfg = {
 					type = "toggle",
 					name = L["LFG Frame"],

@@ -754,6 +754,7 @@ L["Tabard Frame"] = "휘장 프레임"
 L["Talent Frame"] = "특성 창"
 L["TalkingHead"] = true;
 L["Taxi Frame"] = "그리폰/와이번 창"
+L["Tooltip"] = true
 L["Time Manager"] = "시계 창"
 L["Trade Frame"] = "거래창"
 L["TradeSkill Frame"] = "전문기술 창"

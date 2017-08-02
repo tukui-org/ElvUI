@@ -706,6 +706,7 @@ L["Tabard Frame"] = "Tabard"
 L["Talent Frame"] = "Fenêtre des talents"
 L["TalkingHead"] = true;
 L["Taxi Frame"] = "Trajets aériens"
+L["Tooltip"] = true
 L["Time Manager"] = "Chronomètre"
 L["Trade Frame"] = "Fenêtre d'échange"
 L["TradeSkill Frame"] = "Métiers"
