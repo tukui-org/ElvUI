@@ -817,8 +817,8 @@ function TT:Initialize()
 	-- Tooltip Statusbars
 	local function SkinTooltipProgressBar(frame)
 		if not (frame and frame.Bar) then return end
-		frame.Bar:CreateBackdrop("Transparent")
 		frame.Bar:StripTextures()
+		frame.Bar:CreateBackdrop("Transparent")
 		frame.Bar:SetStatusBarTexture(E["media"].normTex)
 		E:RegisterStatusBar(frame.Bar)
 		frame.isSkinned = true
@@ -830,26 +830,26 @@ function TT:Initialize()
 	local function ColorTooltipProgressBar(self, value)
 		local frame, tooltip, amount, max, r, g, b, _
 		if self.worldQuest and self.questID then
-	        frame = _G["WorldMapTaskTooltipStatusBar"]
-	        if not (frame and frame.Bar and frame.isSkinned) then return end
-	    elseif value then
-	    	tooltip = _G["ReputationParagonTooltip"]
-	    	frame = _G["ReputationParagonTooltipStatusBar"]
-	    	if not (frame and frame.Bar and frame.isSkinned and tooltip and tooltip.factionID == value) then return end
-	    end
-	    amount = frame and frame.Bar and frame.Bar.GetValue and frame.Bar:GetValue()
-        if not amount then return end
-        _, max = frame.Bar:GetMinMaxValues()
-        if max and max > 0 then
-	        r, g, b = E:ColorGradient(amount/max, 0.8, 0, 0, 0.8, 0.8, 0, 0, 0.8, 0)
-	        frame.Bar:SetStatusBarColor(r, g, b)
-	        if frame.Bar.backdrop then
-	            frame.Bar.backdrop:SetBackdropColor(r*0.25, g*0.25, b*0.25)
-	        end
-	    end
-    end
-    hooksecurefunc("TaskPOI_OnEnter", ColorTooltipProgressBar)
-    hooksecurefunc("ReputationParagonFrame_SetupParagonTooltip", ColorTooltipProgressBar)
+			frame = _G["WorldMapTaskTooltipStatusBar"]
+			if not (frame and frame.Bar and frame.isSkinned) then return end
+		elseif value then
+			tooltip = _G["ReputationParagonTooltip"]
+			frame = _G["ReputationParagonTooltipStatusBar"]
+			if not (frame and frame.Bar and frame.isSkinned and tooltip and tooltip.factionID == value) then return end
+		end
+		amount = frame and frame.Bar and frame.Bar.GetValue and frame.Bar:GetValue()
+		if not amount then return end
+		_, max = frame.Bar:GetMinMaxValues()
+		if max and max > 0 then
+			r, g, b = E:ColorGradient(amount/max, 0.8, 0, 0, 0.8, 0.8, 0, 0, 0.8, 0)
+			frame.Bar:SetStatusBarColor(r, g, b)
+			if frame.Bar.backdrop then
+				frame.Bar.backdrop:SetBackdropColor(r*0.25, g*0.25, b*0.25)
+			end
+		end
+	end
+	hooksecurefunc("TaskPOI_OnEnter", ColorTooltipProgressBar)
+	hooksecurefunc("ReputationParagonFrame_SetupParagonTooltip", ColorTooltipProgressBar)
 end
 
 local function InitializeCallback()
