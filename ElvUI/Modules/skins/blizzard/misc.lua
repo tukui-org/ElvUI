@@ -22,7 +22,6 @@ local function LoadSkin()
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
-		"TicketStatusFrameButton",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
@@ -52,7 +51,7 @@ local function LoadSkin()
 		"LanguageMenu",
 		"VoiceMacroMenu",
 	}
-	--
+
 	for i = 1, getn(ChatMenus) do
 		if _G[ChatMenus[i]] == _G["ChatMenu"] then
 			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
@@ -552,7 +551,7 @@ local function LoadSkin()
 		end
 	end)
 
--- >> Combat >> Tabs
+	-- >> Combat >> Tabs
 	for i = 1,#COMBAT_CONFIG_TABS do
 		local cctab = _G["CombatConfigTab"..i]
 		if cctab then
@@ -1064,20 +1063,6 @@ local function LoadSkin()
 	MacOptionsFrameCancel:ClearAllPoints()
 	MacOptionsFrameCancel:Point("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
 	MacOptionsFrameCancel:Width(MacOptionsFrameCancel:GetWidth() - 6)]]
-
-	ReportCheatingDialog:StripTextures()
-	ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(ReportCheatingDialogReportButton)
-	S:HandleButton(ReportCheatingDialogCancelButton)
-	ReportCheatingDialog:SetTemplate("Transparent")
-	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
-
-	ReportPlayerNameDialog:StripTextures()
-	ReportPlayerNameDialogCommentFrame:StripTextures()
-	S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
-	ReportPlayerNameDialog:SetTemplate("Transparent")
-	S:HandleButton(ReportPlayerNameDialogReportButton)
-	S:HandleButton(ReportPlayerNameDialogCancelButton)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()
