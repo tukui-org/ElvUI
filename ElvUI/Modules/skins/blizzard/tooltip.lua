@@ -48,24 +48,24 @@ local function LoadSkin()
 	SkinTooltipProgressBar(ReputationParagonTooltipStatusBar)
 	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar)
 
-	-- Color Tooltip Progress Bars
-	local function ColorTooltipProgressBar(self, value)
-		local frame, tooltip, amount, max, r, g, b, _
-		if self.worldQuest and self.questID then
-			frame = _G['WorldMapTaskTooltipStatusBar']
-			if not (frame and frame.Bar and frame.isSkinned) then return end
-		elseif value then
-			tooltip = _G['ReputationParagonTooltip']
-			frame = _G['ReputationParagonTooltipStatusBar']
-			if not (frame and frame.Bar and frame.isSkinned and tooltip and tooltip.factionID == value) then return end
+	-- Color GameTooltip QuestRewards Progress Bars
+	local function QuestRewardsBarColor(tooltip, questID, style)
+		if not tooltip or not questID then return end
+		local name, cur, max, sb, _ = tooltip.GetName and tooltip:GetName()
+		if name and name == 'WorldMapTooltip' then name = 'WorldMapTaskTooltip' end
+		sb = name and _G[name..'StatusBar']
+		if not sb or not sb.isSkinned then return end
+		if sb.Bar and sb.Bar.GetValue then
+			cur = sb.Bar:GetValue()
+			if cur then
+				if sb.Bar.GetMinMaxValues then
+					_, max = sb.Bar:GetMinMaxValues()
+				end
+				S:StatusBarColorGradient(sb.Bar, cur, max)
+			end
 		end
-		amount = frame and frame.Bar and frame.Bar.GetValue and frame.Bar:GetValue()
-		if not amount then return end
-		_, max = frame.Bar.GetMinMaxValues and frame.Bar:GetMinMaxValues()
-		S:StatusBarColorGradient(frame.Bar, amount, max)
 	end
-	hooksecurefunc('TaskPOI_OnEnter', ColorTooltipProgressBar)
-	hooksecurefunc('ReputationParagonFrame_SetupParagonTooltip', ColorTooltipProgressBar)
+	hooksecurefunc('GameTooltip_AddQuestRewardsToTooltip', QuestRewardsBarColor)
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G['GameTooltip']
