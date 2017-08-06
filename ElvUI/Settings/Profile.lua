@@ -265,6 +265,7 @@ P["nameplates"] = {
 			['enable'] = false,
 			["useStaticPosition"] = false,
 			["clickthrough"] = false,
+			["portrait"] = false,
 			["visibility"] = {
 				["showAlways"] = false,
 				["showInCombat"] = true,
@@ -331,6 +332,7 @@ P["nameplates"] = {
 			},
 		},
 		['HEALER'] = {
+			["portrait"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,
@@ -391,6 +393,7 @@ P["nameplates"] = {
 			},
 		},
 		['FRIENDLY_PLAYER'] = {
+			["portrait"] = false,
 			["minions"] = false,
 			['healthbar'] = {
 				['enable'] = false,
@@ -452,6 +455,7 @@ P["nameplates"] = {
 			},
 		},
 		['ENEMY_PLAYER'] = {
+			["portrait"] = false,
 			["minions"] = false,
 			["markHealers"] = true,
 			['healthbar'] = {
@@ -514,6 +518,7 @@ P["nameplates"] = {
 			},
 		},
 		['FRIENDLY_NPC'] = {
+			["portrait"] = false,
 			['healthbar'] = {
 				['enable'] = false,
 				['height'] = 10,
@@ -577,6 +582,7 @@ P["nameplates"] = {
 			},
 		},
 		['ENEMY_NPC'] = {
+			["portrait"] = false,
 			["minors"] = true,
 			['healthbar'] = {
 				['enable'] = true,

@@ -377,6 +377,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		end
 	end
 
+	self:ConfigureElement_Portrait(frame.UnitFrame)
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
 	self:ConfigureElement_NPCTitle(frame.UnitFrame)
@@ -548,6 +549,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_Elite(frame)
 	mod:UpdateElement_Detection(frame)
 	mod:UpdateElement_Highlight(frame)
+	mod:UpdateElement_Portrait(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
@@ -575,6 +577,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame.Elite = self:ConstructElement_Elite(frame.UnitFrame)
 	frame.UnitFrame.DetectionModel = self:ConstructElement_Detection(frame.UnitFrame)
 	frame.UnitFrame.Highlight = self:ConstructElement_Highlight(frame.UnitFrame)
+	frame.UnitFrame.Portrait = self:ConstructElement_Portrait(frame.UnitFrame)
 end
 
 function mod:OnEvent(event, unit, ...)
@@ -639,6 +642,8 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_All(self, unit, true)
 	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
 		mod:UpdateElement_Highlight(self)
+	elseif(event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or event == "UNIT_CONNECTION") then
+		mod:UpdateElement_Portrait(self)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
@@ -661,6 +666,12 @@ function mod:RegisterEvents(frame, unit)
 
 	frame:RegisterEvent("UNIT_NAME_UPDATE");
 	frame:RegisterUnitEvent("UNIT_LEVEL", unit, displayedUnit);
+
+	--if(self.db.units[frame.UnitType].portrait.enable) then
+		frame:RegisterUnitEvent("UNIT_PORTRAIT_UPDATE", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_MODEL_CHANGED", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_CONNECTION", unit, displayedUnit);	
+	--end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
 		if(frame.UnitType == "ENEMY_NPC") then
