@@ -2621,6 +2621,8 @@ E.Options.args.unitframe.args.player = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -2956,6 +2958,8 @@ E.Options.args.unitframe.args.target = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3123,6 +3127,8 @@ E.Options.args.unitframe.args.targettarget = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3244,6 +3250,8 @@ E.Options.args.unitframe.args.targettargettarget = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3371,6 +3379,8 @@ E.Options.args.unitframe.args.focus = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3494,6 +3504,8 @@ E.Options.args.unitframe.args.focustarget = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3621,6 +3633,8 @@ E.Options.args.unitframe.args.pet = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3769,6 +3783,8 @@ E.Options.args.unitframe.args.pettarget = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -3909,6 +3925,8 @@ E.Options.args.unitframe.args.boss = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
@@ -4073,6 +4091,8 @@ E.Options.args.unitframe.args.arena = {
 				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+				["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+				["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 			},
 		},
 		orientation = {
