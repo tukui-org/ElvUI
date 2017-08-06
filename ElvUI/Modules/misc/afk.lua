@@ -35,12 +35,12 @@ local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitFactionGroup = UnitFactionGroup
 local UnitIsAFK = UnitIsAFK
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local DND = DND
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {

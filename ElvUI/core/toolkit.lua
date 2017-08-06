@@ -8,7 +8,7 @@ local unpack, type, select, getmetatable, assert = unpack, type, select, getmeta
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 --Preload shit..
 E.mult = 1;
