@@ -40,7 +40,9 @@ local function UpdateFilterGroup()
 								['buffs'] = {},
 								['debuffs'] = {},
 							},
-							['actions'] = {},
+							['actions'] = {
+								['color'] = {},
+							},
 						},
 						UpdateFilterGroup();
 						NP:ConfigureAll()
@@ -94,7 +96,68 @@ local function UpdateFilterGroup()
 					type = "group",
 					name = L["Actions"],
 					order = 2,
-					args = {},
+					args = {
+						hide = {
+							name = L["Hide Frame"],
+							order = 0,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[(selectedNameplateFilter)].actions.hide
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[(selectedNameplateFilter)].actions.hide = value
+								NP:ConfigureAll()
+							end,
+						},
+						scale = {
+							name = L["Scale"],
+							order = 2,
+							type = "range",
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.scale or 1
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.scale = value
+								NP:ConfigureAll()
+							end,
+							min=0.35, max = 1.5, step = 0.01,
+						},
+						color = {
+							name = L["Color"],
+							type = "group",
+							guiInline = true,
+							order = 3,
+							args = {
+								enable = {
+									name = L["Enable"],
+									order = 0,
+									type = 'toggle',
+									get = function(info)
+										return E.global.nameplate.filters[(selectedNameplateFilter)].actions.color.enable
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[(selectedNameplateFilter)].actions.color.enable = value
+										NP:ConfigureAll()
+									end,
+								},
+								color = {
+									name = L["Color"],
+									type = 'color',
+									order = 1,
+									hasAlpha = true,
+									get = function(info)
+										local t = E.global.nameplate.filters[(selectedNameplateFilter)].actions.color.color
+										return t.r, t.g, t.b, t.a
+									end,
+									set = function(info, r, g, b, a)
+										local t = E.global.nameplate.filters[(selectedNameplateFilter)].actions.color.color
+										t.r, t.g, t.b, t.a = r, g, b, a
+										NP:ConfigureAll()
+									end,
+								},
+							},
+						},
+					},
 				},
 				triggers = {
 					type = "group",
@@ -1564,7 +1627,7 @@ E.Options.args.filters = {
 				filters['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
 				filters['AuraBar Colors'] = 'AuraBar Colors'
 				filters['Debuff Highlight'] = 'Debuff Highlight'
-				--filters['Nameplate'] = "Nameplate" temp disable...
+				--filters['Nameplate'] = "Nameplate" 
 				return filters
 			end,
 		},
