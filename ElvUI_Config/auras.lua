@@ -1,6 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local A = E:GetModule('Auras')
 
+local format = string.format
+
+-- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+
 local function GetAuraOptions(headerName)
 	local auraOptions = {
 		header = {

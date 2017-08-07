@@ -2,6 +2,14 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 local AB = E:GetModule('ActionBars')
 local group
 
+local _G = _G
+local pairs = pairs
+local SetCVar = SetCVar
+local GameTooltip = _G['GameTooltip']
+
+-- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS
+-- GLOBALS: LOCK_ACTIONBAR
+
 local points = {
 	["TOPLEFT"] = "TOPLEFT",
 	["TOPRIGHT"] = "TOPRIGHT",
@@ -194,7 +202,6 @@ local function BuildABConfig()
 	end
 
 	group['barPet'] = {
-		order = i,
 		name = L["Pet Bar"],
 		type = 'group',
 		order = 200,
@@ -317,7 +324,6 @@ local function BuildABConfig()
 		},
 	}
 	group['stanceBar'] = {
-		order = i,
 		name = L["Stance Bar"],
 		type = 'group',
 		order = 200,

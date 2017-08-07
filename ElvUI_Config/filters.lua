@@ -6,10 +6,20 @@ local selectedNameplateFilter;
 local selectedSpell;
 local selectedFilter;
 local filters;
+local type = type
 local tinsert = table.insert
+local pairs = pairs
 local tonumber = tonumber
+local tostring = tostring
 local format = string.format
+local match = string.match
 local UNKNOWN = UNKNOWN
+local NONE = NONE
+local GetSpellInfo = GetSpellInfo
+
+-- GLOBALS: MAX_PLAYER_LEVEL
+-- GLOBALS: selectedFolder
+--  what is selectedFolder?
 
 local function UpdateFilterGroup()
 	--Prevent errors when choosing a new filter, by doing a reset of the groups
@@ -578,7 +588,7 @@ local function UpdateFilterGroup()
 			},
 		}
 		
-		local spellID = selectedSpell and string.match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.DebuffHighlightColors[(spellID or selectedSpell)] == nil then
@@ -720,7 +730,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		local spellID = selectedSpell and string.match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.AuraBarColors[(spellID or selectedSpell)] == nil then
@@ -1510,7 +1520,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		local spellID = selectedSpell and string.match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or not E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)] then

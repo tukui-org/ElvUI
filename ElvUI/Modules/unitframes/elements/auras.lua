@@ -7,6 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local unpack, type = unpack, type
 local tsort = table.sort
 local format = format
+local ceil = math.ceil
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -638,7 +639,7 @@ function UF:UpdateBuffsPositionAndDebuffHeight()
 	end
 
 	if numDebuffs > 0 then
-		local numRows = math.ceil(numDebuffs/db.debuffs.perrow)
+		local numRows = ceil(numDebuffs/db.debuffs.perrow)
 		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
 		debuffs:Height(debuffs.size)
@@ -661,7 +662,7 @@ function UF:UpdateDebuffsPositionAndBuffHeight()
 	end
 
 	if numBuffs > 0 then
-		local numRows = math.ceil(numBuffs/db.buffs.perrow)
+		local numRows = ceil(numBuffs/db.buffs.perrow)
 		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
 		buffs:Height(buffs.size)
@@ -675,7 +676,7 @@ function UF:UpdateBuffsHeight()
 	local numBuffs = self.visibleBuffs
 
 	if numBuffs > 0 then
-		local numRows = math.ceil(numBuffs/db.buffs.perrow)
+		local numRows = ceil(numBuffs/db.buffs.perrow)
 		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
 		buffs:Height(buffs.size)
@@ -691,7 +692,7 @@ function UF:UpdateDebuffsHeight()
 	local numDebuffs = self.visibleDebuffs
 
 	if numDebuffs > 0 then
-		local numRows = math.ceil(numDebuffs/db.debuffs.perrow)
+		local numRows = ceil(numDebuffs/db.debuffs.perrow)
 		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
 		debuffs:Height(debuffs.size)

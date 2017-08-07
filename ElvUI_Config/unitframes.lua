@@ -4,10 +4,23 @@ local NP = E:GetModule("NamePlates")
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local _G = _G
+local select = select
+local pairs = pairs
 local tinsert = table.insert
 local twipe = table.wipe
+local IsAddOnLoaded = IsAddOnLoaded
+local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local DELETE = DELETE
+local SHOW = SHOW
+local HIDE = HIDE
+local NONE = NONE
+
+-- GLOBALS: MAX_BOSS_FRAMES
+-- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
+-- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
+-- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {

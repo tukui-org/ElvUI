@@ -2,6 +2,10 @@ local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, Gl
 local WM = E:GetModule("WorldMap")
 local MM = E:GetModule("Minimap")
 
+local SetCVar = SetCVar
+
+-- GLOBALS: WORLD_MAP_MIN_ALPHA
+
 E.Options.args.maps = {
 	type = "group",
 	name = L["Maps"],
