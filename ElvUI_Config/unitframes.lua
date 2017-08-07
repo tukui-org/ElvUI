@@ -6309,13 +6309,13 @@ if P.unitframe.colors.classResources[E.myclass] then
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Holy Power"],
+			name = HOLY_POWER,
 			order = ORDER,
 		}
 	elseif E.myclass == 'MAGE' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Arcane Charges"],
+			name = POWER_TYPE_ARCANE_CHARGES,
 			order = ORDER,
 		}
 	elseif E.myclass == 'ROGUE' then
@@ -6357,13 +6357,13 @@ if P.unitframe.colors.classResources[E.myclass] then
 	elseif E.myclass == 'WARLOCK' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Soul Shards"],
+			name = SOUL_SHARDS,
 			order = ORDER,
 		}
 	elseif E.myclass == 'DEATHKNIGHT' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Runes"],
+			name = RUNES,
 			order = ORDER,
 		}
 	end
