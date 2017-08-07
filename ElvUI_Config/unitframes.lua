@@ -12,15 +12,19 @@ local twipe = table.wipe
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local DELETE = DELETE
-local SHOW = SHOW
-local HIDE = HIDE
-local NONE = NONE
+local SHOW, HIDE, DELETE, NONE = SHOW, HIDE, DELETE, NONE
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
+
+-- The variables below aren't caught by mikk's Find Globals script
+local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
+local HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP = HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP
+local RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
+local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
+------------------------------
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {
@@ -2258,27 +2262,27 @@ E.Options.args.unitframe = {
 								PAIN = {
 									order = 7,
 									name = PAIN,
-									type = 'color',									
+									type = 'color',
 								},
 								FURY = {
-									order = 7,
-									name = FURY,
-									type = 'color',									
-								},								
-								LUNAR_POWER = {
 									order = 8,
+									name = FURY,
+									type = 'color',
+								},
+								LUNAR_POWER = {
+									order = 9,
 									name = LUNAR_POWER,
-									type = 'color'									
+									type = 'color'
 								},
 								INSANITY = {
-									order = 9,
+									order = 10,
 									name = INSANITY,
 									type = 'color'
 								},
 								MAELSTROM = {
-									order = 10,
+									order = 11,
 									name = MAELSTROM,
-									type = 'color'									
+									type = 'color'
 								},
 							},
 						},
