@@ -199,6 +199,12 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				desc = L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."],
 				min = 0, max = 3600, step = 1,
 			},
+			yOffset = {
+				order = 19,
+				type = 'range',
+				name = L["yOffset"],
+				min = -1000, max = 1000, step = 1,
+			},
 		},
 	}
 
