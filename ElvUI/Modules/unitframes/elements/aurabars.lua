@@ -116,9 +116,9 @@ function UF:Configure_AuraBars(frame)
 		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 2 or 1) * frame.BORDER)
 
 		if db.aurabar.anchorPoint == 'BELOW' then
-			yOffset = -spacing + border - db.aurabar.yOffset
+			yOffset = -spacing + border - (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
 		else
-			yOffset = spacing - border + db.aurabar.yOffset
+			yOffset = spacing - border + (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
 		end
 
 		local xOffset = (db.aurabar.attachTo == "FRAME" and frame.SPACING or 0)
