@@ -94,7 +94,7 @@ local function UpdateFilterGroup()
 		if not selectedNameplateFilter or E.global.nameplate.filters[(selectedNameplateFilter)] == nil then
 			E.Options.args.filters.args.nameplateGroup = nil
 			return
-		end		
+		end
 
 		E.Options.args.filters.args.nameplateGroup = {
 			type = "group",
@@ -198,7 +198,7 @@ local function UpdateFilterGroup()
 							set = function(info, value)
 								E.global.nameplate.filters[(selectedNameplateFilter)].triggers.name = value
 								NP:ConfigureAll()
-							end,					
+							end,
 						},
 						level = {
 							name = L["Current Level"],
@@ -226,7 +226,7 @@ local function UpdateFilterGroup()
 								E.global.nameplate.filters[(selectedNameplateFilter)].triggers.inCombat = value
 								NP:ConfigureAll()
 							end,
-						},				
+						},
 						outOfCombat = {
 							name = L["Out Of Combat"],
 							desc = L["If in or out of combat state, pass filter."],
@@ -239,13 +239,13 @@ local function UpdateFilterGroup()
 								E.global.nameplate.filters[(selectedNameplateFilter)].triggers.outOfCombat = value
 								NP:ConfigureAll()
 							end,
-						},										
+						},
 						buffs = {
 							name = L["Buffs"],
 							order = 10,
 							type = "group",
 							guiInline = true,
-							args = {	
+							args = {
 								addBuff = {
 									order = 1,
 									name = L["Add Buff"],
@@ -258,14 +258,14 @@ local function UpdateFilterGroup()
 											if spellName then
 												value = spellName
 											end
-										end			
+										end
 										if not E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 											E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs = {
 													mustHaveAll = false,
 													names = {},
 											}
 										end
-										E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true,							
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true,
 										UpdateFilterGroup();
 										UpdateFilterGroup();
 										NP:ConfigureAll()
@@ -283,7 +283,7 @@ local function UpdateFilterGroup()
 											if spellName then
 												value = spellName
 											end
-										end		
+										end
 
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 											E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil;
@@ -292,7 +292,7 @@ local function UpdateFilterGroup()
 										UpdateFilterGroup();
 										NP:ConfigureAll()
 									end,
-								},	
+								},
 								mustHaveAll = {
 									order = 3,
 									name = L["Must Have All"],
@@ -304,23 +304,23 @@ local function UpdateFilterGroup()
 									set = function(info, value)
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll = value
 										NP:ConfigureAll()
-									end,								
-								},	
+									end,
+								},
 								names = {
 									order = 4,
 									type = "group",
 									name = "",
 									guiInline = true,
 									args = {},
-								}																	
-							},				
+								}
+							},
 						},
 						debuffs = {
 							name = L["Debuffs"],
 							order = 11,
 							type = "group",
 							guiInline = true,
-							args = {	
+							args = {
 								addDebuff = {
 									order = 1,
 									name = L["Add Debuff"],
@@ -333,7 +333,7 @@ local function UpdateFilterGroup()
 											if spellName then
 												value = spellName
 											end
-										end			
+										end
 
 										if not E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 											E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs = {
@@ -342,7 +342,7 @@ local function UpdateFilterGroup()
 											}
 										end
 
-										E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true,							
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true,
 										UpdateFilterGroup();
 										UpdateFilterGroup();
 										NP:ConfigureAll()
@@ -360,7 +360,7 @@ local function UpdateFilterGroup()
 											if spellName then
 												value = spellName
 											end
-										end		
+										end
 
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 											E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil;
@@ -369,7 +369,7 @@ local function UpdateFilterGroup()
 										UpdateFilterGroup();
 										NP:ConfigureAll()
 									end,
-								},	
+								},
 								mustHaveAll = {
 									order = 3,
 									name = L["Must Have All"],
@@ -381,17 +381,17 @@ local function UpdateFilterGroup()
 									set = function(info, value)
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll = value
 										NP:ConfigureAll()
-									end,								
-								},		
+									end,
+								},
 								names = {
 									order = 4,
 									type = "group",
 									name = "",
 									guiInline = true,
 									args = {},
-								}						
-							},				
-						},						
+								}
+							},
+						},
 						nameplateType = {
 							name = L["Nameplate Type"],
 							order = 8,
@@ -428,7 +428,7 @@ local function UpdateFilterGroup()
 												E.global.nameplate.filters[(selectedNameplateFilter)].triggers.nameplateType.friendlyPlayer = value
 												NP:ConfigureAll()
 											end,
-										},						
+										},
 										friendlyNPC = {
 											name = L["Friendly NPC"],
 											order = 3,
@@ -440,7 +440,7 @@ local function UpdateFilterGroup()
 												E.global.nameplate.filters[(selectedNameplateFilter)].triggers.nameplateType.friendlyNPC = value
 												NP:ConfigureAll()
 											end,
-										},		
+										},
 										healer = {
 											name = L["Healer"],
 											order = 4,
@@ -452,7 +452,7 @@ local function UpdateFilterGroup()
 												E.global.nameplate.filters[(selectedNameplateFilter)].triggers.nameplateType.healer = value
 												NP:ConfigureAll()
 											end,
-										},		
+										},
 										enemyPlayer = {
 											name = L["Enemy Player"],
 											order = 5,
@@ -464,7 +464,7 @@ local function UpdateFilterGroup()
 												E.global.nameplate.filters[(selectedNameplateFilter)].triggers.nameplateType.enemyPlayer = value
 												NP:ConfigureAll()
 											end,
-										},			
+										},
 										enemyNPC = {
 											name = L["Enemy NPC"],
 											order = 6,
@@ -476,9 +476,9 @@ local function UpdateFilterGroup()
 												E.global.nameplate.filters[(selectedNameplateFilter)].triggers.nameplateType.enemyNPC = value
 												NP:ConfigureAll()
 											end,
-										},		
+										},
 									},
-								},																		
+								},
 							},
 						},
 					},
@@ -498,7 +498,7 @@ local function UpdateFilterGroup()
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = value
 						NP:ConfigureAll()
-					end,					
+					end,
 				}
 			end
 		end
@@ -515,10 +515,10 @@ local function UpdateFilterGroup()
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
 						NP:ConfigureAll()
-					end,					
+					end,
 				}
 			end
-		end		
+		end
 	elseif selectedFilter == 'Debuff Highlight' then
 		if not selectedFilter then
 			E.Options.args.filters.args.filterGroup = nil
@@ -587,7 +587,7 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
-		
+
 		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
@@ -1520,6 +1520,12 @@ local function UpdateFilterGroup()
 			},
 		}
 
+		--Disable and hide filter type option for default filters
+		if (E.DEFAULT_FILTER[selectedFilter]) then
+			E.Options.args.filters.args.filterGroup.args.filterType.disabled = true
+			E.Options.args.filters.args.filterGroup.args.filterType.hidden = true
+		end
+
 		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
@@ -1637,7 +1643,7 @@ E.Options.args.filters = {
 				filters['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
 				filters['AuraBar Colors'] = 'AuraBar Colors'
 				filters['Debuff Highlight'] = 'Debuff Highlight'
-				--filters['Nameplate'] = "Nameplate" 
+				--filters['Nameplate'] = "Nameplate"
 				return filters
 			end,
 		},

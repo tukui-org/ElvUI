@@ -171,6 +171,15 @@ E.ClassRole = {
 	},
 }
 
+E.DEFAULT_FILTER = {
+	["CCDebuffs"] = "Whitelist",
+	["TurtleBuffs"] = "Whitelist",
+	["PlayerBuffs"] = "Whitelist",
+	["Blacklist"] = "Blacklist",
+	["Whitelist"] = "Whitelist",
+	["RaidDebuffs"] = "Whitelist",
+}
+
 E.noop = function() end;
 
 local hexvaluecolor
@@ -252,7 +261,7 @@ function E:UpdateMedia()
 	end
 
 	self["media"].bordercolor = {border.r, border.g, border.b}
-	
+
 	--UnitFrame Border Color
 	border = E.db['unitframe'].colors.borderColor
 	if self:CheckClassColor(border.r, border.g, border.b) then
@@ -451,7 +460,7 @@ function E:UpdateFrameTemplates()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame in pairs(self["unitFrameElements"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			frame:SetTemplate(frame.template, frame.glossTex);
@@ -471,7 +480,7 @@ function E:UpdateBorderColors()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame and not frame.ignoreUpdates then
 			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
@@ -499,7 +508,7 @@ function E:UpdateBackdropColors()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame then
 			if frame.template == 'Default' or frame.template == nil then
@@ -1344,12 +1353,17 @@ function E:DBConversions()
 	if E.db.nameplate then
 		E.db.nameplate = nil
 	end
-	
+
 	if not E.db.thinBorderColorSet then
 		if E.PixelMode then
 			E.db.general.bordercolor = {r = 0, g = 0, b = 0}
 		end
 		E.db.thinBorderColorSet = true
+	end
+
+	--Make sure default filters use the correct filter type
+	for filter, filterType in pairs(E.DEFAULT_FILTER) do
+		E.global.unitframe.aurafilters[filter].type = filterType
 	end
 end
 
