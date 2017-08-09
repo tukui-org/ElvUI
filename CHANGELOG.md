@@ -3,7 +3,8 @@
 **New Additions:**  
 Added mouseover highlight to the nameplates.  
 Added movement speed datatext. (Rubgrsch)  
-Added a "Fluid Position" to Smart Aura Position settings. This will use the least amount of spacing needed. (Abeline)  
+Added a "Fluid Position" option to Smart Aura Position settings. This will use the least amount of spacing needed. (Abeline)  
+Added a "yOffset" option to Aura Bars on Player, Target and Focus unitframe. (Abeline)  
 
 
 **Bug Fixes:**  
@@ -20,6 +21,7 @@ Removed "Hide In Instance" option for chat bubbles.
 Changed the max font size for General Font to a softmax. You can manually input a value higher than the slider allows.  
 The ElvUI logo has been updated with design by RZ_Digital.  
 The default color in ElvUI has been changed to match the new logo.  
+Disabled "Text Toggle on NPC" by default, as it caused confusion for new players.  
 
 ___
 **Version 10.59 [ June 27th 2017 ]**  
