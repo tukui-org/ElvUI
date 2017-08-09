@@ -1354,13 +1354,6 @@ function E:DBConversions()
 		E.db.nameplate = nil
 	end
 
-	if not E.db.thinBorderColorSet then
-		if E.PixelMode then
-			E.db.general.bordercolor = {r = 0, g = 0, b = 0}
-		end
-		E.db.thinBorderColorSet = true
-	end
-
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
