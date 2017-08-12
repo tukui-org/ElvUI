@@ -634,13 +634,13 @@ local function Tag(self, fs, tagstr)
 	end
 
 	fs.parent = self
-	
+
 	for escapeSequence, replacement in pairs(escapeSequences) do
 		while tagstr:find(escapeSequence) do
 			tagstr = tagstr:gsub(escapeSequence, replacement)
 		end
 	end
-	
+
 	if tagstr:find('%[mouseover%]') then
 		tinsert(self.__mousetags, fs)
 		fs:SetAlpha(0)
@@ -657,14 +657,14 @@ local function Tag(self, fs, tagstr)
 				fs:SetAlpha(1)
 			end
 		end
-	end	
-	
+	end
+
 	local containsOnUpdate
 	for tag in tagstr:gmatch(_PATTERN) do
 		tag = getTagName(tag)
 		if not tagEvents[tag] then
 			containsOnUpdate = onUpdateDelay[tag] or 0.15;
-		end	
+		end
 	end
 
 	local func = tagPool[tagstr]
@@ -791,7 +791,7 @@ local function Tag(self, fs, tagstr)
 				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
 			end
 		end
-	
+
 		if numTags ~= -1 then
 			tagPool[tagstr] = func
 		end
