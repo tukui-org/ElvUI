@@ -661,8 +661,9 @@ local function Tag(self, fs, tagstr)
 	
 	local containsOnUpdate
 	for tag in tagstr:gmatch(_PATTERN) do
-		if not tagEvents[tag:sub(2, -2)] then
-			containsOnUpdate = onUpdateDelay[tag:sub(2, -2)] or 0.15;
+		tag = getTagName(tag)
+		if not tagEvents[tag] then
+			containsOnUpdate = onUpdateDelay[tag] or 0.15;
 		end	
 	end
 
