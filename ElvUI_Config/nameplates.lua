@@ -23,7 +23,24 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
---[[This has not been implemented (yet?)
+local function filterPriority(auraType, unit, value, remove)
+	if not auraType or not value then return end
+	local table = E.db.nameplates.units[unit][auraType]['filters']['priority']
+	for i, filter in ipairs(table) do
+		if value == filter then
+			if remove then
+				print("Removed", value)
+				tremove(table, i)
+				return
+			end
+			print("This filter has already been added", value)
+			return
+		end
+	end
+	print("Added", value)
+	tinsert(table, value)
+end
+
 local function UpdateFilterGroup()
 	if not selectedFilter or not E.global['nameplate']['filter'][selectedFilter] then
 		E.Options.args.nameplate.args.filters.args.filterGroup = nil
@@ -86,7 +103,6 @@ local function UpdateFilterGroup()
 		},
 	}
 end
-]]
 
 local ORDER = 100
 local function GetUnitSettings(unit, name)
@@ -358,30 +374,82 @@ local function GetUnitSettings(unit, name)
 								type = "toggle",
 								name = L["Personal Auras"],
 							},
-							boss = {
+							addPersonalFilter = {
 								order = 2,
+								name = L["Add into Priority"],
+								desc = "Add Personal Auras into the filter priority",
+								type = "execute",
+								func = function(info, value)
+									filterPriority('buffs', unit, 'PersonalAuras')
+								end,
+							},
+							spacer1 = {
+								order = 3,
+								type = "description",
+								name = " ",
+							},
+							boss = {
+								order = 4,
 								type = "toggle",
 								name = L["Boss Auras"],
 							},
+							addBossFilter = {
+								order = 5,
+								name = L["Add into Priority"],
+								desc = "Add Boss Auras into the filter priority",
+								type = "execute",
+								func = function(info, value)
+									filterPriority('buffs', unit, 'BossAuras')
+								end,
+							},
+							spacer2 = {
+								order = 6,
+								type = "description",
+								name = " ",
+							},
 							maxDuration = {
-								order = 3,
+								order = 7,
 								type = "range",
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							-- filter = {
-								-- order = 4,
-								-- type = "select",
-								-- name = L["Filter"],
-								-- values = function()
-									-- local filters = {}
-									-- filters[''] = NONE
-									-- for filter in pairs(E.global.unitframe['aurafilters']) do
-										-- filters[filter] = filter
-									-- end
-									-- return filters
-								-- end,
-							-- },
+							filter = {
+								order = 8,
+								type = "select",
+								name = L["Add filter into Priority"],
+								values = function()
+									local filters = {}
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+								set = function(info, value)
+									filterPriority('buffs', unit, value)
+								end
+							},
+							spacer3 = {
+								order = 9,
+								type = "description",
+								name = " ",
+							},
+							filterPriority = {
+								order = 10,
+								type = "multiselect",
+								name = L["Filter Priority"],
+								values = function()
+									return E.db.nameplates.units[unit].buffs['filters']['priority']
+								end,
+								get = function(info, value)
+									return E.db.nameplates.units[unit].buffs['filters']['priority'][value]
+								end,
+								set = function(info, value)
+									value = E.db.nameplates.units[unit].buffs['filters']['priority'][value]
+									if value then
+										filterPriority('buffs', unit, value, true)
+									end
+								end,
+							},
 						},
 					},
 				},
@@ -435,30 +503,82 @@ local function GetUnitSettings(unit, name)
 								type = "toggle",
 								name = L["Personal Auras"],
 							},
-							boss = {
+							addPersonalFilter = {
 								order = 2,
+								name = L["Add into Priority"],
+								desc = "Add Personal Auras into the filter priority",
+								type = "execute",
+								func = function(info, value)
+									filterPriority('debuffs', unit, 'PersonalAuras')
+								end,
+							},
+							spacer1 = {
+								order = 3,
+								type = "description",
+								name = " ",
+							},
+							boss = {
+								order = 4,
 								type = "toggle",
 								name = L["Boss Auras"],
 							},
+							addBossFilter = {
+								order = 5,
+								name = L["Add into Priority"],
+								desc = "Add Boss Auras into the filter priority",
+								type = "execute",
+								func = function(info, value)
+									filterPriority('debuffs', unit, 'BossAuras')
+								end,
+							},
+							spacer2 = {
+								order = 6,
+								type = "description",
+								name = " ",
+							},
 							maxDuration = {
-								order = 3,
+								order = 7,
 								type = "range",
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							-- filter = {
-								-- order = 4,
-								-- type = "select",
-								-- name = L["Filter"],
-								-- values = function()
-									-- local filters = {}
-									-- filters[''] = NONE
-									-- for filter in pairs(E.global.unitframe['aurafilters']) do
-										-- filters[filter] = filter
-									-- end
-									-- return filters
-								-- end,
-							-- },
+							filter = {
+								order = 8,
+								type = "select",
+								name = L["Add filter into Priority"],
+								values = function()
+									local filters = {}
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+								set = function(info, value)
+									filterPriority('debuffs', unit, value)
+								end
+							},
+							spacer3 = {
+								order = 9,
+								type = "description",
+								name = " ",
+							},
+							filterPriority = {
+								order = 10,
+								type = "multiselect",
+								name = L["Filter Priority"],
+								values = function()
+									return E.db.nameplates.units[unit].debuffs['filters']['priority']
+								end,
+								get = function(info, value)
+									return E.db.nameplates.units[unit].debuffs['filters']['priority'][value]
+								end,
+								set = function(info, value)
+									value = E.db.nameplates.units[unit].debuffs['filters']['priority'][value]
+									if value then
+										filterPriority('debuffs', unit, value, true)
+									end
+								end,
+							},
 						},
 					},
 				},
@@ -1283,7 +1403,6 @@ E.Options.args.nameplate = {
 		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
 		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
 		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
-		--[[Not implemented (yet?)
 		filters = {
 			type = "group",
 			order = -100,
@@ -1345,6 +1464,5 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		]]
 	},
 }

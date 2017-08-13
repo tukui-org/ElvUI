@@ -96,6 +96,24 @@ local auraSortMethodValues = {
 
 local CUSTOMTEXT_CONFIGS = {}
 
+local function filterPriority(auraType, groupName, value, remove)
+	if not auraType or not value then return end
+	local table = E.db.unitframe.units[groupName][auraType].priority
+	for i, filter in ipairs(table) do
+		if value == filter then
+			if remove then
+				print("Removed", value)
+				tremove(table, i)
+				return
+			end
+			print("This filter has already been added", value)
+			return
+		end
+	end
+	print("Added", value)
+	tinsert(table, value)
+end
+
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
@@ -253,26 +271,6 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			type = 'toggle',
 			name = L["Allow Self Buffs"],
 		}]]
-		config.args.filters.args.useFilter = {
-			order = 17,
-			name = L["Additional Filter"],
-			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-			type = 'select',
-			values = function()
-				filters = {}
-				filters[''] = NONE
-				for filter in pairs(E.global.unitframe['aurafilters']) do
-					filters[filter] = filter
-				end
-				return filters
-			end,
-		}
-		config.args.filters.args.additionalFilterAllowNonPersonal = {
-			order = 18,
-			type = 'toggle',
-			name = L["Additional Filter Override"],
-			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
-		}
 	else
 		config.args.filters.args.playerOnly = {
 			order = 10,
@@ -418,28 +416,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				}
 			},
 		}]]
-		config.args.filters.args.useFilter = {
-			order = 17,
-			name = L["Additional Filter"],
-			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-			type = 'select',
-			values = function()
-				filters = {}
-				filters[''] = NONE
-				for filter in pairs(E.global.unitframe['aurafilters']) do
-					filters[filter] = filter
-				end
-				return filters
-			end,
-		}
-		config.args.filters.args.additionalFilterAllowNonPersonal = {
-			order = 18,
-			type = 'toggle',
-			name = L["Additional Filter Override"],
-			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
-		}
 	end
-
 
 	config.args.filters.args.maxDuration = {
 		order = 16,
@@ -447,6 +424,50 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		name = L["Maximum Duration"],
 		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
 		min = 0, max = 3600, step = 1,
+	}
+	config.args.filters.args.priority = {
+		order = 17,
+		name = L["Add filter into Priority"],
+		type = 'select',
+		values = function()
+			filters = {}
+			for filter in pairs(E.global.unitframe['aurafilters']) do
+				filters[filter] = filter
+			end
+			return filters
+		end,
+		set = function(info, value)
+			filterPriority('aurabar', groupName, value)
+		end
+	}
+	config.args.filters.args.additionalFilterAllowNonPersonal = {
+		order = 18,
+		type = 'toggle',
+		name = L["Additional Filter Override"],
+		desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
+	}
+	config.args.filters.args.spacer1 = {
+		order = 19,
+		type = "description",
+		name = " ",
+	}
+	config.args.filters.args.filterPriority = {
+		order = 20,
+		type = "multiselect",
+		name = L["Filter Priority"],
+		values = function()
+			print('458', groupName)
+			return E.db.unitframe.units[groupName].aurabar.priority
+		end,
+		get = function(info, value)
+			return E.db.unitframe.units[groupName].aurabar.priority[value]
+		end,
+		set = function(info, value)
+			value = E.db.unitframe.units[groupName].aurabar.priority[value]
+			if value then
+				filterPriority('aurabar', groupName, value, true)
+			end
+		end,
 	}
 
 	return config
@@ -620,28 +641,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			name = L["Allow Boss Encounter Auras"],
 			desc = L["Allow auras considered to be part of a boss encounter."],
 		}
-
-		config.args.filters.args.useFilter = {
-			order = 16,
-			name = L["Additional Filter"],
-			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-			type = 'select',
-			values = function()
-				filters = {}
-				filters[''] = NONE
-				for filter in pairs(E.global.unitframe['aurafilters']) do
-					filters[filter] = filter
-				end
-				return filters
-			end,
-		}
-
-		config.args.filters.args.additionalFilterAllowNonPersonal = {
-			order = 17,
-			type = 'toggle',
-			name = L["Additional Filter Override"],
-			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
-		}
 	else
 		config.args.filters.args.playerOnly = {
 			order = 10,
@@ -763,7 +762,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				}
 			},
 		}
-
 		config.args.filters.args.bossAuras = {
 			order = 15,
 			type = 'group',
@@ -789,27 +787,52 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				}
 			},
 		}
-		config.args.filters.args.useFilter = {
-			order = 16,
-			name = L["Additional Filter"],
-			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-			type = 'select',
-			values = function()
-				filters = {}
-				filters[''] = NONE
-				for filter in pairs(E.global.unitframe['aurafilters']) do
-					filters[filter] = filter
-				end
-				return filters
-			end,
-		}
-		config.args.filters.args.additionalFilterAllowNonPersonal = {
-			order = 17,
-			type = 'toggle',
-			name = L["Additional Filter Override"],
-			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
-		}
 	end
+
+	config.args.filters.args.priority = {
+		order = 16,
+		name = L["Add filter into Priority"],
+		type = 'select',
+		values = function()
+			filters = {}
+			for filter in pairs(E.global.unitframe['aurafilters']) do
+				filters[filter] = filter
+			end
+			return filters
+		end,
+		set = function(info, value)
+			filterPriority(auraType, groupName, value)
+		end
+	}
+	config.args.filters.args.additionalFilterAllowNonPersonal = {
+		order = 17,
+		type = 'toggle',
+		name = L["Additional Filter Override"],
+		desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
+	}
+	config.args.filters.args.spacer1 = {
+		order = 18,
+		type = "description",
+		name = " ",
+	}
+	config.args.filters.args.filterPriority = {
+		order = 19,
+		type = "multiselect",
+		name = L["Filter Priority"],
+		values = function()
+			print('818', groupName)
+			return E.db.unitframe.units[groupName][auraType].priority
+		end,
+		get = function(info, value)
+			return E.db.unitframe.units[groupName][auraType].priority[value]
+		end,
+		set = function(info, value)
+			value = E.db.unitframe.units[groupName][auraType].priority[value]
+			if value then
+				filterPriority(auraType, groupName, value, true)
+			end
+		end,
+	}
 
 	return config
 end
