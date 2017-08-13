@@ -98,7 +98,7 @@ local function UpdateFilterGroup()
 				type = 'range',
 				name = L["Custom Scale"],
 				desc = L["Set the scale of the nameplate."],
-				min = 0.67, max = 2, step = 0.01,
+				min = 0.5, max = 2, step = 0.01,
 			},
 		},
 	}
