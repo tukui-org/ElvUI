@@ -313,9 +313,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -326,9 +324,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -378,9 +374,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -391,9 +385,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -444,9 +436,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -457,9 +447,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -511,9 +499,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -524,9 +510,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -575,9 +559,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -588,9 +570,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			['eliteIcon'] = {
@@ -644,9 +624,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'TurtleBuffs'
-					}
+					['priority'] = 'TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -657,9 +635,7 @@ P["nameplates"] = {
 					['personal'] = true,
 					['boss'] = true,
 					['maxDuration'] = 120,
-					['priority'] = {
-						'CCDebuffs',
-					}
+					['priority'] = 'CCDebuffs'
 				},
 			},
 			['eliteIcon'] = {
@@ -1037,7 +1013,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1058,7 +1034,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1109,7 +1085,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
 				['maxDuration'] = 120,
-				['priority'] = {},
+				['priority'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
@@ -1215,7 +1191,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1236,7 +1212,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1267,7 +1243,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				["additionalFilterAllowNonPersonal"] = false,
 				['maxDuration'] = 300,
-				['priority'] = {},
+				['priority'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
@@ -1349,7 +1325,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1370,7 +1346,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1447,7 +1423,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1468,7 +1444,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1549,7 +1525,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1570,7 +1546,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1601,7 +1577,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				["additionalFilterAllowNonPersonal"] = false,
 				['maxDuration'] = 120,
-				['priority'] = {},
+				['priority'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
@@ -1682,7 +1658,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1703,7 +1679,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1781,7 +1757,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1802,7 +1778,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1891,7 +1867,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1912,7 +1888,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1986,7 +1962,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 20,
 				['sizeOverride'] = 22,
@@ -2008,7 +1984,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = true, enemy = true},
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = -3,
 				['sizeOverride'] = 22,
@@ -2105,7 +2081,7 @@ P['unitframe'] = {
 				['useBlacklist'] = {friendly = false, enemy = false},
 				['useWhitelist'] = {friendly = false, enemy = false},
 				['noDuration'] = {friendly = false, enemy = false},
-				['priority'] = {'TurtleBuffs'},
+				['priority'] = 'TurtleBuffs',
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = false, enemy = false},
 				["additionalFilterAllowNonPersonal"] = false,
@@ -2127,7 +2103,7 @@ P['unitframe'] = {
 				['useBlacklist'] = {friendly = false, enemy = false},
 				['useWhitelist'] = {friendly = false, enemy = false},
 				['noDuration'] = {friendly = false, enemy = false},
-				['priority'] = {'CCDebuffs'},
+				['priority'] = 'CCDebuffs',
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['bossAuras'] = {friendly = false, enemy = false},
 				["additionalFilterAllowNonPersonal"] = false,
@@ -2241,7 +2217,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2263,7 +2239,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 				['sizeOverride'] = 52,
@@ -2435,7 +2411,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2457,7 +2433,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2600,7 +2576,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2622,7 +2598,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2751,7 +2727,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2773,7 +2749,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -2841,7 +2817,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 2,
 			},
@@ -2863,7 +2839,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 1,
 			},
@@ -2933,7 +2909,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 2,
 			},
@@ -2955,7 +2931,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = false,
 				["additionalFilterAllowNonPersonal"] = false,
-				['priority'] = {},
+				['priority'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 1,
 			},

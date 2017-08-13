@@ -9,6 +9,9 @@ local select = select
 local pairs = pairs
 local tinsert = table.insert
 local twipe = table.wipe
+local strsplit = strsplit
+local match = string.match
+local gsub = string.gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -98,20 +101,21 @@ local CUSTOMTEXT_CONFIGS = {}
 
 local function filterPriority(auraType, groupName, value, remove)
 	if not auraType or not value then return end
-	local table = E.db.unitframe.units[groupName][auraType].priority
-	for i, filter in ipairs(table) do
-		if value == filter then
-			if remove then
-				print("Removed", value)
-				tremove(table, i)
-				return
+	local str = E.db.unitframe.units[groupName][auraType].priority
+	if not str then return end
+	if match(str, value) then
+		if remove then
+			if match(str, value.."$") then
+				str = gsub(str, ";?"..value, "")
+			elseif match(str, value) then
+				str = gsub(str, value..";?", "")
 			end
-			print("This filter has already been added", value)
+			E.db.unitframe.units[groupName][auraType].priority = str
 			return
 		end
+		return
 	end
-	print("Added", value)
-	tinsert(table, value)
+	E.db.unitframe.units[groupName][auraType].priority = (str == '' and value) or (str..";"..value)
 end
 
 -----------------------------------------------------------------------
@@ -456,14 +460,21 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
-			print('458', groupName)
-			return E.db.unitframe.units[groupName].aurabar.priority
+			local str = E.db.unitframe.units[groupName].aurabar.priority
+			if str == "" then return nil end
+			return {strsplit(";",str)}
 		end,
 		get = function(info, value)
-			return E.db.unitframe.units[groupName].aurabar.priority[value]
+			local str = E.db.unitframe.units[groupName].aurabar.priority
+			if str == "" then return nil end
+			local tbl = {strsplit(";",str)}
+			return tbl[value]
 		end,
 		set = function(info, value)
-			value = E.db.unitframe.units[groupName].aurabar.priority[value]
+			local str = E.db.unitframe.units[groupName].aurabar.priority
+			if str == "" then return nil end
+			local tbl = {strsplit(";",str)}
+			value = match(str, tbl[value])
 			if value then
 				filterPriority('aurabar', groupName, value, true)
 			end
@@ -820,14 +831,21 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
-			print('818', groupName)
-			return E.db.unitframe.units[groupName][auraType].priority
+			local str = E.db.unitframe.units[groupName][auraType].priority
+			if str == "" then return nil end
+			return {strsplit(";",str)}
 		end,
 		get = function(info, value)
-			return E.db.unitframe.units[groupName][auraType].priority[value]
+			local str = E.db.unitframe.units[groupName][auraType].priority
+			if str == "" then return nil end
+			local tbl = {strsplit(";",str)}
+			return tbl[value]
 		end,
 		set = function(info, value)
-			value = E.db.unitframe.units[groupName][auraType].priority[value]
+			local str = E.db.unitframe.units[groupName][auraType].priority
+			if str == "" then return nil end
+			local tbl = {strsplit(";",str)}
+			value = match(str, tbl[value])
 			if value then
 				filterPriority(auraType, groupName, value, true)
 			end

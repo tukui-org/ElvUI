@@ -4,7 +4,7 @@ local NP = E:GetModule('NamePlates')
 local selectedFilter
 local filters
 
-local pairs, type = pairs, type
+local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL = LEVEL
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local NONE = NONE
@@ -25,20 +25,21 @@ local positionValues = {
 
 local function filterPriority(auraType, unit, value, remove)
 	if not auraType or not value then return end
-	local table = E.db.nameplates.units[unit][auraType]['filters']['priority']
-	for i, filter in ipairs(table) do
-		if value == filter then
-			if remove then
-				print("Removed", value)
-				tremove(table, i)
-				return
+	local str = E.db.nameplates.units[unit][auraType].filters.priority
+	if not str then return end
+	if match(str, value) then
+		if remove then
+			if match(str, value.."$") then
+				str = gsub(str, ";?"..value, "")
+			elseif match(str, value) then
+				str = gsub(str, value..";?", "")
 			end
-			print("This filter has already been added", value)
+			E.db.nameplates.units[unit][auraType].filters.priority = str
 			return
 		end
+		return
 	end
-	print("Added", value)
-	tinsert(table, value)
+	E.db.nameplates.units[unit][auraType].filters.priority = (str == '' and value) or (str..";"..value)
 end
 
 local function UpdateFilterGroup()
@@ -438,13 +439,21 @@ local function GetUnitSettings(unit, name)
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()
-									return E.db.nameplates.units[unit].buffs['filters']['priority']
+									local str = E.db.nameplates.units[unit].buffs.filters.priority
+									if str == "" then return nil end
+									return {strsplit(";",str)}
 								end,
 								get = function(info, value)
-									return E.db.nameplates.units[unit].buffs['filters']['priority'][value]
+									local str = E.db.nameplates.units[unit].buffs.filters.priority
+									if str == "" then return nil end
+									local tbl = {strsplit(";",str)}
+									return tbl[value]
 								end,
 								set = function(info, value)
-									value = E.db.nameplates.units[unit].buffs['filters']['priority'][value]
+									local str = E.db.nameplates.units[unit].buffs.filters.priority
+									if str == "" then return nil end
+									local tbl = {strsplit(";",str)}
+									value = match(str, tbl[value])
 									if value then
 										filterPriority('buffs', unit, value, true)
 									end
@@ -567,13 +576,21 @@ local function GetUnitSettings(unit, name)
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()
-									return E.db.nameplates.units[unit].debuffs['filters']['priority']
+									local str = E.db.nameplates.units[unit].debuffs.filters.priority
+									if str == "" then return nil end
+									return {strsplit(";",str)}
 								end,
 								get = function(info, value)
-									return E.db.nameplates.units[unit].debuffs['filters']['priority'][value]
+									local str = E.db.nameplates.units[unit].debuffs.filters.priority
+									if str == "" then return nil end
+									local tbl = {strsplit(";",str)}
+									return tbl[value]
 								end,
 								set = function(info, value)
-									value = E.db.nameplates.units[unit].debuffs['filters']['priority'][value]
+									local str = E.db.nameplates.units[unit].debuffs.filters.priority
+									if str == "" then return nil end
+									local tbl = {strsplit(";",str)}
+									value = match(str, tbl[value])
 									if value then
 										filterPriority('debuffs', unit, value, true)
 									end
