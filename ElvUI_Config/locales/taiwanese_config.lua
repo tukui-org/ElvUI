@@ -946,6 +946,7 @@ L["Max amount of overflow allowed to extend past the end of the health bar."] = 
 L["Max Bars"] = "最多"
 L["Max Overflow"] = true;
 L["Maximum Duration"] = "最大持續時間"
+L["Minimum Duration"] = true;
 L["Method to sort by."] = "排序方式"
 L["Middle Click - Set Focus"] = "滑鼠中鍵 - 設置焦點"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "滑鼠中鍵點擊單位框架設置焦點."

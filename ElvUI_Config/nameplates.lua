@@ -408,14 +408,20 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = " ",
 							},
-							maxDuration = {
+							minDuration = {
 								order = 7,
+								type = "range",
+								name = L["Minimum Duration"],
+								min = 0, max = 3000, step = 1,
+							},
+							maxDuration = {
+								order = 8,
 								type = "range",
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
 							filter = {
-								order = 8,
+								order = 9,
 								type = "select",
 								name = L["Add filter into Priority"],
 								values = function()
@@ -430,12 +436,12 @@ local function GetUnitSettings(unit, name)
 								end
 							},
 							spacer3 = {
-								order = 9,
+								order = 10,
 								type = "description",
 								name = " ",
 							},
 							filterPriority = {
-								order = 10,
+								order = 11,
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()
@@ -545,14 +551,20 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = " ",
 							},
-							maxDuration = {
+							minDuration = {
 								order = 7,
+								type = "range",
+								name = L["Minimum Duration"],
+								min = 0, max = 3000, step = 1,
+							},
+							maxDuration = {
+								order = 8,
 								type = "range",
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
 							filter = {
-								order = 8,
+								order = 9,
 								type = "select",
 								name = L["Add filter into Priority"],
 								values = function()
@@ -567,12 +579,12 @@ local function GetUnitSettings(unit, name)
 								end
 							},
 							spacer3 = {
-								order = 9,
+								order = 10,
 								type = "description",
 								name = " ",
 							},
 							filterPriority = {
-								order = 10,
+								order = 11,
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()

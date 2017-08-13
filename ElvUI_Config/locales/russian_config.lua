@@ -944,6 +944,7 @@ L["Max amount of overflow allowed to extend past the end of the health bar."] = 
 L["Max Bars"] = "Максимум полос"
 L["Max Overflow"] = "Макс. переполнение"
 L["Maximum Duration"] = "Максимальная длительность"
+L["Minimum Duration"] = true;
 L["Method to sort by."] = "Метод сортировки."
 L["Middle Click - Set Focus"] = "Средний клик - фокус"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "Нажатие средней кнопкой мыши на фрейм юнита запомнит его в фокус."

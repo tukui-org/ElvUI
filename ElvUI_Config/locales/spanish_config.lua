@@ -944,6 +944,7 @@ L["Max amount of overflow allowed to extend past the end of the health bar."] = 
 L["Max Bars"] = true;
 L["Max Overflow"] = true;
 L["Maximum Duration"] = true;
+L["Minimum Duration"] = true;
 L["Method to sort by."] = true;
 L["Middle Click - Set Focus"] = "Clic Intermedio - Establecer Foco"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "Hacer clic intermedio en el marco de unidad causará que tu foco sea la unidad."

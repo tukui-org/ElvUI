@@ -53,7 +53,7 @@ local durationOverride = {
 	[203981] = true, -- Soul fragments (Demon Hunter)
 }
 
-function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 	local filterCheck, primaryCheck, primaryBoss, primaryPersonal = false, false, true, true
 	local allowBoss, allowPlayer, allowFriend, allowDuration = false, false, false, false
 
@@ -65,7 +65,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal
 		allowBoss = showBoss and isBossDebuff
 		allowPlayer = showPersonal and (caster == 'player' or caster == 'vehicle')
 		allowFriend = frame.unit and UnitIsFriend('player', frame.unit)
-		allowDuration = (duration > 0 or durationOverride[spellID]) and duration <= maxDuration
+		allowDuration = (duration > 0 or durationOverride[spellID]) and (duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
 		primaryCheck = (allowBoss and primaryBoss) or (allowDuration and allowPlayer and primaryPersonal)
 	else
 		return nil
@@ -133,6 +133,7 @@ function mod:UpdateElement_Auras(frame)
 		maxAuras = #frame[buffType].icons;
 		showBoss = self.db.units[frame.UnitType][buffTypeLower].filters.boss
 		showPersonal = self.db.units[frame.UnitType][buffTypeLower].filters.personal
+		minDuration = self.db.units[frame.UnitType][buffTypeLower].filters.minDuration
 		maxDuration = self.db.units[frame.UnitType][buffTypeLower].filters.maxDuration
 		priority = self.db.units[frame.UnitType][buffTypeLower].filters.priority
 		runCheck = showBoss or showPersonal or priority ~= ''
@@ -140,7 +141,7 @@ function mod:UpdateElement_Auras(frame)
 		self:HideAuraIcons(frame[buffType])
 		if(self.db.units[frame.UnitType][buffTypeLower].enable and runCheck) then
 			while ( frameNum <= maxAuras ) do
-				showAura = mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, maxDuration, priority, UnitAura(frame.unit, index, filterType))
+				showAura = mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
 				if showAura == nil then -- something went wrong (unitaura name was nil)
 					break
 				elseif showAura == true then -- has aura and passes checks

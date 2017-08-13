@@ -993,6 +993,7 @@ L["Max amount of overflow allowed to extend past the end of the health bar."] = 
 L["Max Bars"] = "바 최대갯수"
 L["Max Overflow"] = true;
 L["Maximum Duration"] = "지속시간 제한"
+L["Minimum Duration"] = true;
 L["Method to sort by."] = true;
 L["Middle Click - Set Focus"] = "휠클릭으로 주시 설정"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "마우스 휠로 이 프레임을 클릭하면 유닛을 주시 대상으로 잡습니다."

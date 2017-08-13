@@ -312,6 +312,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -323,6 +324,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},
@@ -373,6 +375,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -384,6 +387,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},
@@ -435,6 +439,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -446,6 +451,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},
@@ -498,6 +504,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -509,6 +516,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},
@@ -558,6 +566,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -569,6 +578,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},
@@ -623,6 +633,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'TurtleBuffs'
 				},
@@ -634,6 +645,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['personal'] = true,
 					['boss'] = true,
+					['minDuration'] = 0,
 					['maxDuration'] = 120,
 					['priority'] = 'CCDebuffs'
 				},

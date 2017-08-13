@@ -1328,7 +1328,7 @@ local filterConversionUnits = {
 	"raid40",
 	"raidpet",
 	"tank",
-	"assist",
+	"assist"
 }
 
 --DATABASE CONVERSIONS
@@ -1379,7 +1379,7 @@ function E:DBConversions()
 	end
 
 	--Convert the old "Additional Filter" option to the new priority system
-	for unit in pairs(filterConversionUnits) do
+	for index, unit in ipairs(filterConversionUnits) do
 		local buffs = E.db.unitframe.units[unit].buffs
 		local debuffs = E.db.unitframe.units[unit].debuffs
 		local aurabar = E.db.unitframe.units[unit].aurabar
