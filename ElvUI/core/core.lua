@@ -1312,6 +1312,25 @@ function E:InitializeModules()
 	end
 end
 
+local filterConversionUnits = {
+	"player",
+	"target",
+	"targettarget",
+	"targettargettarget",
+	"focus",
+	"focustarget",
+	"pet",
+	"pettarget",
+	"boss",
+	"arena",
+	"party",
+	"raid",
+	"raid40",
+	"raidpet",
+	"tank",
+	"assist",
+}
+
 --DATABASE CONVERSIONS
 function E:DBConversions()
 	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
@@ -1358,6 +1377,30 @@ function E:DBConversions()
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
 	end
+
+	--Convert the old "Additional Filter" option to the new priority system
+	--[[
+	for unit in pairs(filterConversionUnits) do
+		local buffs = E.db.unitframe.units[unit].buffs
+		local debuffs = E.db.unitframe.units[unit].debuffs
+		local aurabar = E.db.unitframe.units[unit].aurabar
+
+		if (buffs and buffs.useFilter and buffs.useFilter ~= "") then
+			E.db.unitframe.units[unit].buffs.priority = {buffs.useFilter}
+			E.db.unitframe.units[unit].buffs.useFilter = nil
+		end
+
+		if (debuffs and debuffs.useFilter and debuffs.useFilter ~= "") then
+			E.db.unitframe.units[unit].debuffs.priority = {debuffs.useFilter}
+			E.db.unitframe.units[unit].debuffs.useFilter = nil
+		end
+
+		if (aurabar and aurabar.useFilter and aurabar.useFilter ~= "") then
+			E.db.unitframe.units[unit].aurabar.priority = {aurabar.useFilter}
+			E.db.unitframe.units[unit].aurabar.useFilter = nil
+		end
+	end
+	]]
 end
 
 local CPU_USAGE = {}
