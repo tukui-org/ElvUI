@@ -74,7 +74,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal
 	if primaryCheck ~= true then
 		local filters, filterType, spellList, spell, tbl
 		if priority ~= '' then
-			tbl = {strsplit(";",priority)}
+			tbl = {strsplit(",",priority)}
 			if next(tbl) then
 				for i, x in ipairs(tbl) do
 					filters = E.global.unitframe['aurafilters']

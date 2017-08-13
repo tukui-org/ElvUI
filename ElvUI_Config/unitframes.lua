@@ -106,16 +106,16 @@ local function filterPriority(auraType, groupName, value, remove)
 	if match(str, value) then
 		if remove then
 			if match(str, value.."$") then
-				str = gsub(str, ";?"..value, "")
+				str = gsub(str, ",?"..value, "")
 			elseif match(str, value) then
-				str = gsub(str, value..";?", "")
+				str = gsub(str, value..",?", "")
 			end
 			E.db.unitframe.units[groupName][auraType].priority = str
 			return
 		end
 		return
 	end
-	E.db.unitframe.units[groupName][auraType].priority = (str == '' and value) or (str..";"..value)
+	E.db.unitframe.units[groupName][auraType].priority = (str == '' and value) or (str..","..value)
 end
 
 -----------------------------------------------------------------------
@@ -462,18 +462,18 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		values = function()
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
-			return {strsplit(";",str)}
+			return {strsplit(",",str)}
 		end,
 		get = function(info, value)
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
-			local tbl = {strsplit(";",str)}
+			local tbl = {strsplit(",",str)}
 			return tbl[value]
 		end,
 		set = function(info, value)
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
-			local tbl = {strsplit(";",str)}
+			local tbl = {strsplit(",",str)}
 			value = match(str, tbl[value])
 			if value then
 				filterPriority('aurabar', groupName, value, true)
@@ -833,18 +833,18 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		values = function()
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
-			return {strsplit(";",str)}
+			return {strsplit(",",str)}
 		end,
 		get = function(info, value)
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
-			local tbl = {strsplit(";",str)}
+			local tbl = {strsplit(",",str)}
 			return tbl[value]
 		end,
 		set = function(info, value)
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
-			local tbl = {strsplit(";",str)}
+			local tbl = {strsplit(",",str)}
 			value = match(str, tbl[value])
 			if value then
 				filterPriority(auraType, groupName, value, true)

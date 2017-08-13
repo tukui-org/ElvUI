@@ -30,16 +30,16 @@ local function filterPriority(auraType, unit, value, remove)
 	if match(str, value) then
 		if remove then
 			if match(str, value.."$") then
-				str = gsub(str, ";?"..value, "")
+				str = gsub(str, ",?"..value, "")
 			elseif match(str, value) then
-				str = gsub(str, value..";?", "")
+				str = gsub(str, value..",?", "")
 			end
 			E.db.nameplates.units[unit][auraType].filters.priority = str
 			return
 		end
 		return
 	end
-	E.db.nameplates.units[unit][auraType].filters.priority = (str == '' and value) or (str..";"..value)
+	E.db.nameplates.units[unit][auraType].filters.priority = (str == '' and value) or (str..","..value)
 end
 
 local function UpdateFilterGroup()
@@ -441,18 +441,18 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
-									return {strsplit(";",str)}
+									return {strsplit(",",str)}
 								end,
 								get = function(info, value)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
-									local tbl = {strsplit(";",str)}
+									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end,
 								set = function(info, value)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
-									local tbl = {strsplit(";",str)}
+									local tbl = {strsplit(",",str)}
 									value = match(str, tbl[value])
 									if value then
 										filterPriority('buffs', unit, value, true)
@@ -578,18 +578,18 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
-									return {strsplit(";",str)}
+									return {strsplit(",",str)}
 								end,
 								get = function(info, value)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
-									local tbl = {strsplit(";",str)}
+									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end,
 								set = function(info, value)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
-									local tbl = {strsplit(";",str)}
+									local tbl = {strsplit(",",str)}
 									value = match(str, tbl[value])
 									if value then
 										filterPriority('debuffs', unit, value, true)
