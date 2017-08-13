@@ -52,9 +52,8 @@ end
 function UF:Configure_HealthBar(frame)
 	if not frame.VARIABLES_SET then return end
 	local db = frame.db
-	if not db or not db.health then return end
-
 	local health = frame.Health
+
 	health.Smooth = self.db.smoothbars
 
 	--Text
