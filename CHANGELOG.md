@@ -11,7 +11,8 @@ Added a "yOffset" option to Aura Bars on Player, Target and Focus unitframe. (Ab
 Fixed an error when entering combat while game is minimized.  
 Fixed scaling of the Leave Vehicle button on the minimap. (Hekili)  
 Fixed Bagbar buttons border size. (Rubgrsch)  
-Fixed error when switching profile with some UF disabled in one profile  
+Fixed error when switching profile while having player unitframe disabled. 
+Fixed issue which caused unitframe tags containing literals to use OnUpdate instead of their assigned events. (Martin)  
 
 **Misc. Changes:**  
 Updated a lot of skins.  
@@ -24,7 +25,8 @@ Changed the max font size for General Font to a softmax. You can manually input 
 The ElvUI logo has been updated with design by RZ_Digital.  
 The default color in ElvUI has been changed to match the new logo.  
 Disabled "Text Toggle on NPC" by default, as it caused confusion for new players.  
-Use OnUpdate instead of assigned events in oUF tags (Martin)  
+Restructured the UnitFrame sections of the ingame config. It now uses tabs instead of the often overlooked dropdown.  
+Added shortcut buttons to the ActionBars and UnitFrames main pages.  
 
 ___
 **Version 10.59 [ June 27th 2017 ]**  
