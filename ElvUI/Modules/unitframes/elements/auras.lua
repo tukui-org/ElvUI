@@ -7,6 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local unpack, type = unpack, type
 local tsort = table.sort
 local format = format
+local ceil = math.ceil
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -196,6 +197,22 @@ function UF:Configure_Auras(frame, auraType)
 		end
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 		frame.Debuffs.PostUpdate = nil
+	elseif position == "FLUID_BUFFS_ON_DEBUFFS" then
+		if db.debuffs.attachTo == "BUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+			db.debuffs.attachTo = "FRAME"
+			frame.Debuffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = UF.UpdateBuffsHeight
+		frame.Debuffs.PostUpdate = UF.UpdateBuffsPositionAndDebuffHeight
+	elseif position == "FLUID_DEBUFFS_ON_BUFFS" then
+		if db.buffs.attachTo == "DEBUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
+			db.buffs.attachTo = "FRAME"
+			frame.Buffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = UF.UpdateDebuffsPositionAndBuffHeight
+		frame.Debuffs.PostUpdate = UF.UpdateDebuffsHeight
 	else
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = nil
@@ -603,5 +620,83 @@ function UF:UpdateDebuffsHeaderPosition()
 	else
 		debuffs:ClearAllPoints()
 		debuffs:Point(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+	end
+end
+
+function UF:UpdateBuffsPositionAndDebuffHeight()
+	local parent = self:GetParent()
+	local db = parent.db
+	local buffs = parent.Buffs
+	local debuffs = parent.Debuffs
+	local numDebuffs = self.visibleDebuffs
+
+	if numDebuffs == 0 then
+		buffs:ClearAllPoints()
+		buffs:Point(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+	else
+		buffs:ClearAllPoints()
+		buffs:Point(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+	end
+
+	if numDebuffs > 0 then
+		local numRows = ceil(numDebuffs/db.debuffs.perrow)
+		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+	else
+		debuffs:Height(debuffs.size)
+	end
+end
+
+function UF:UpdateDebuffsPositionAndBuffHeight()
+	local parent = self:GetParent()
+	local db = parent.db
+	local debuffs = parent.Debuffs
+	local buffs = parent.Buffs
+	local numBuffs = self.visibleBuffs
+
+	if numBuffs == 0 then
+		debuffs:ClearAllPoints()
+		debuffs:Point(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+	else
+		debuffs:ClearAllPoints()
+		debuffs:Point(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+	end
+
+	if numBuffs > 0 then
+		local numRows = ceil(numBuffs/db.buffs.perrow)
+		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+	else
+		buffs:Height(buffs.size)
+	end
+end
+
+function UF:UpdateBuffsHeight()
+	local parent = self:GetParent()
+	local db = parent.db
+	local buffs = parent.Buffs
+	local numBuffs = self.visibleBuffs
+
+	if numBuffs > 0 then
+		local numRows = ceil(numBuffs/db.buffs.perrow)
+		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+	else
+		buffs:Height(buffs.size)
+		-- Any way to get rid of the last row as well?
+		-- Using buffs:SetHeight(0) makes frames anchored to this one disappear
+	end
+end
+
+function UF:UpdateDebuffsHeight()
+	local parent = self:GetParent()
+	local db = parent.db
+	local debuffs = parent.Debuffs
+	local numDebuffs = self.visibleDebuffs
+
+	if numDebuffs > 0 then
+		local numRows = ceil(numDebuffs/db.debuffs.perrow)
+		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+	else
+		debuffs:Height(debuffs.size)
+		-- Any way to get rid of the last row as well?
+		-- Using debuffs:SetHeight(0) makes frames anchored to this one disappear
 	end
 end

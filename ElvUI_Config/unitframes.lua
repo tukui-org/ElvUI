@@ -4,10 +4,27 @@ local NP = E:GetModule("NamePlates")
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local _G = _G
+local select = select
+local pairs = pairs
 local tinsert = table.insert
 local twipe = table.wipe
+local IsAddOnLoaded = IsAddOnLoaded
+local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local SHOW, HIDE, DELETE, NONE = SHOW, HIDE, DELETE, NONE
+
+-- GLOBALS: MAX_BOSS_FRAMES
+-- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
+-- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
+-- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
+
+-- The variables below aren't caught by mikk's Find Globals script
+local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
+local HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP = HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP
+local RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
+local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
+------------------------------
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {
@@ -186,6 +203,12 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				name = L["Uniform Threshold"],
 				desc = L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."],
 				min = 0, max = 3600, step = 1,
+			},
+			yOffset = {
+				order = 19,
+				type = 'range',
+				name = L["yOffset"],
+				min = -1000, max = 1000, step = 1,
 			},
 		},
 	}
@@ -2263,22 +2286,22 @@ E.Options.args.unitframe = {
 									type = 'color',
 								},
 								FURY = {
-									order = 7,
+									order = 8,
 									name = FURY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
-									order = 8,
+									order = 9,
 									name = LUNAR_POWER,
 									type = 'color'
 								},
 								INSANITY = {
-									order = 9,
+									order = 10,
 									name = INSANITY,
 									type = 'color'
 								},
 								MAELSTROM = {
-									order = 10,
+									order = 11,
 									name = MAELSTROM,
 									type = 'color'
 								},
@@ -3058,6 +3081,8 @@ E.Options.args.unitframe.args.target = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -3377,6 +3402,8 @@ E.Options.args.unitframe.args.targettargettarget = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -3517,6 +3544,8 @@ E.Options.args.unitframe.args.focus = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -3653,6 +3682,8 @@ E.Options.args.unitframe.args.focustarget = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -3793,6 +3824,8 @@ E.Options.args.unitframe.args.pet = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -3959,6 +3992,8 @@ E.Options.args.unitframe.args.pettarget = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -4112,6 +4147,8 @@ E.Options.args.unitframe.args.boss = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -4289,6 +4326,8 @@ E.Options.args.unitframe.args.arena = {
 						["DISABLED"] = L["Disabled"],
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
@@ -6594,13 +6633,13 @@ if P.unitframe.colors.classResources[E.myclass] then
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Holy Power"],
+			name = HOLY_POWER,
 			order = ORDER,
 		}
 	elseif E.myclass == 'MAGE' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Arcane Charges"],
+			name = POWER_TYPE_ARCANE_CHARGES,
 			order = ORDER,
 		}
 	elseif E.myclass == 'ROGUE' then
@@ -6642,13 +6681,13 @@ if P.unitframe.colors.classResources[E.myclass] then
 	elseif E.myclass == 'WARLOCK' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Soul Shards"],
+			name = SOUL_SHARDS,
 			order = ORDER,
 		}
 	elseif E.myclass == 'DEATHKNIGHT' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = L["Runes"],
+			name = RUNES,
 			order = ORDER,
 		}
 	end

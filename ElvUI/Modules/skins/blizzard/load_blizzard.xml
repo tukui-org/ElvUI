@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='achievement.lua'/>
 	<Script file='addonmanager.lua'/>
 	<Script file='AdventureMap.lua'/>
@@ -12,6 +12,7 @@
 	<Script file='bgscore.lua'/>
 	<Script file='binding.lua'/>
 	<Script file='blackmarket.lua'/>
+	<Script file='BNet.lua'/>
 	<Script file='calendar.lua'/>
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
@@ -57,6 +58,7 @@
 	<Script file='talent.lua'/>
 	<Script file='talkinghead.lua'/>
 	<Script file='taxi.lua'/>
+	<Script file='tooltip.lua'/>
 	<Script file='timemanager.lua'/>
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>

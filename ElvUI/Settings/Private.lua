@@ -87,6 +87,7 @@ V['skins'] = {
 		["greeting"] = true,
 		["worldmap"] = true,
 		["taxi"] = true,
+		["tooltip"] = true,
 		["quest"] = true,
 		["questChoice"] = false,
 		["petition"] = true,

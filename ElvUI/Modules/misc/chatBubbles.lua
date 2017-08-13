@@ -11,11 +11,11 @@ local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end

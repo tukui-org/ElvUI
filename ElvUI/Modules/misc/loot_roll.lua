@@ -26,7 +26,6 @@ local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local NEED = NEED
 local GREED = GREED
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -35,6 +34,7 @@ local PASS = PASS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame
 -- GLOBALS: MAX_PLAYER_LEVEL, UIParent, AlertFrame
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local pos = 'TOP';
 local cancelled_rolls = {}

@@ -2,6 +2,14 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 local AB = E:GetModule('ActionBars')
 local group
 
+local _G = _G
+local pairs = pairs
+local SetCVar = SetCVar
+local GameTooltip = _G['GameTooltip']
+
+-- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS
+-- GLOBALS: LOCK_ACTIONBAR
+
 local points = {
 	["TOPLEFT"] = "TOPLEFT",
 	["TOPRIGHT"] = "TOPRIGHT",
@@ -171,6 +179,9 @@ local function BuildABConfig()
 					width = 'full',
 					multiline = true,
 					set = function(info, value)
+						if value and value:match('[\n\r]') then
+							value = value:gsub('[\n\r]','')
+						end
 						E.db.actionbar['bar'..i]['visibility'] = value;
 						AB:UpdateButtonSettings()
 					end,
@@ -182,7 +193,7 @@ local function BuildABConfig()
 			group['bar'..i].args.enabled.set = function(info, value)
 				E.db.actionbar['bar'..i].enabled = value;
 				AB:PositionAndSizeBar("bar6")
-				
+
 				--Update Bar 1 paging when Bar 6 is enabled/disabled
 				AB:UpdateBar1Paging()
 				AB:PositionAndSizeBar("bar1")
@@ -191,7 +202,6 @@ local function BuildABConfig()
 	end
 
 	group['barPet'] = {
-		order = i,
 		name = L["Pet Bar"],
 		type = 'group',
 		order = 200,
@@ -236,7 +246,7 @@ local function BuildABConfig()
 				type = 'toggle',
 				name = L["Inherit Global Fade"],
 				desc = L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."],
-			},				
+			},
 			buttons = {
 				order = 7,
 				type = 'range',
@@ -295,7 +305,7 @@ local function BuildABConfig()
 				name = L["Alpha"],
 				isPercent = true,
 				min = 0, max = 1, step = 0.01,
-			},		
+			},
 			visibility = {
 				type = 'input',
 				order = 15,
@@ -304,6 +314,9 @@ local function BuildABConfig()
 				width = 'full',
 				multiline = true,
 				set = function(info, value)
+					if value and value:match('[\n\r]') then
+						value = value:gsub('[\n\r]','')
+					end
 					E.db.actionbar['barPet']['visibility'] = value;
 					AB:UpdateButtonSettings()
 				end,
@@ -311,7 +324,6 @@ local function BuildABConfig()
 		},
 	}
 	group['stanceBar'] = {
-		order = i,
 		name = L["Stance Bar"],
 		type = 'group',
 		order = 200,
@@ -369,7 +381,7 @@ local function BuildABConfig()
 				type = 'toggle',
 				name = L["Inherit Global Fade"],
 				desc = L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."],
-			},				
+			},
 			buttons = {
 				order = 8,
 				type = 'range',
@@ -428,7 +440,7 @@ local function BuildABConfig()
 				name = L["Alpha"],
 				isPercent = true,
 				min = 0, max = 1, step = 0.01,
-			},			
+			},
 			style = {
 				order = 16,
 				type = 'select',
@@ -498,7 +510,7 @@ E.Options.args.actionbar = {
 			set = function(info, value)
 				E.db.actionbar[ info[#info] ] = value;
 				AB:UpdateButtonSettings()
-				
+
 				--Make it work for PetBar too
 				SetCVar('lockActionBars', (value == true and 1 or 0))
 				LOCK_ACTIONBAR = (value == true and "1" or "0")
@@ -548,7 +560,7 @@ E.Options.args.actionbar = {
 			name = L["Global Fade Transparency"],
 			desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
 			min = 0, max = 1, step = 0.01,
-			isPercent = true,	
+			isPercent = true,
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB.fadeParent:SetAlpha(1-value) end,
 		},
 		colorGroup = {
@@ -578,7 +590,7 @@ E.Options.args.actionbar = {
 					order = 2,
 					name = L["Out of Power"],
 					desc = L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."],
-					
+
 				},
 				usableColor = {
 					type = 'color',

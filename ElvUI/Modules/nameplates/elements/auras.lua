@@ -47,6 +47,7 @@ end
 --Allow certain auras with a duration of 0
 local durationOverride = {
 	[146739] = true, --Absolute Corruption (Warlock)
+	[197637] = true, -- Starfall (Druid)
 	[203981] = true, --Soul fragments (Demon Hunter)
 }
 
