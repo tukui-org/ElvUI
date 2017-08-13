@@ -538,36 +538,10 @@ local function BuildABConfig()
 			},
 		},
 	}
-	group['extraActionButton'] = {
-		type = "group",
-		name = L["Boss Button"],
-		order = 5,
-		disabled = function() return not E.private.actionbar.enable end,
-		get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
-		args = {
-			alpha = {
-				order = 1,
-				type = 'range',
-				name = L["Alpha"],
-				desc = L["Change the alpha level of the frame."],
-				isPercent = true,
-				min = 0, max = 1, step = 0.01,
-				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
-			},
-			scale = {
-				order = 2,
-				type = "range",
-				name = L["Scale"],
-				isPercent = true,
-				min = 0.2, max = 2, step = 0.01,
-				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetScale() end,
-			},
-		},
-	}
 	for i=1, 6 do
 		local name = L["Bar "]..i
 		group['bar'..i] = {
-			order = 5+i,
+			order = 4+i,
 			name = name,
 			type = 'group',
 			guiInline = false,
@@ -745,6 +719,32 @@ local function BuildABConfig()
 			end
 		end
 	end
+	group['extraActionButton'] = {
+		type = "group",
+		name = L["Boss Button"],
+		order = 11,
+		disabled = function() return not E.private.actionbar.enable end,
+		get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
+		args = {
+			alpha = {
+				order = 1,
+				type = 'range',
+				name = L["Alpha"],
+				desc = L["Change the alpha level of the frame."],
+				isPercent = true,
+				min = 0, max = 1, step = 0.01,
+				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
+			},
+			scale = {
+				order = 2,
+				type = "range",
+				name = L["Scale"],
+				isPercent = true,
+				min = 0.2, max = 2, step = 0.01,
+				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetScale() end,
+			},
+		},
+	}
 end
 
 E.Options.args.actionbar = {
@@ -805,57 +805,57 @@ E.Options.args.actionbar = {
 			name = L["Micro Bar"],
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "microbar") end,
 		},
-		extraActionButtonShortcut = {
-			order = 10,
-			type = "execute",
-			name = L["Boss Button"],
-			func = function() ACD:SelectGroup("ElvUI", "actionbar", "extraActionButton") end,
-		},
 		bar1Shortcut = {
-			order = 11,
+			order = 10,
 			type = "execute",
 			name = L["Bar1"],
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar1") end,
+		},
+		bar2Shortcut = {
+			order = 11,
+			type = "execute",
+			name = L["Bar2"],
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar2") end,
 		},
 		spacer3 = {
 			order = 12,
 			type = "description",
 			name = " ",
 		},
-		bar2Shortcut = {
-			order = 13,
-			type = "execute",
-			name = L["Bar2"],
-			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar2") end,
-		},
 		bar3Shortcut = {
-			order = 14,
+			order = 13,
 			type = "execute",
 			name = L["Bar3"],
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar3") end,
 		},
 		bar4Shortcut = {
-			order = 15,
+			order = 14,
 			type = "execute",
 			name = L["Bar4"],
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar4") end,
+		},
+		bar5Shortcut = {
+			order = 15,
+			type = "execute",
+			name = L["Bar5"],
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar5") end,
 		},
 		spacer4 = {
 			order = 16,
 			type = "description",
 			name = " ",
 		},
-		bar5Shortcut = {
-			order = 17,
-			type = "execute",
-			name = L["Bar5"],
-			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar5") end,
-		},
 		bar6Shortcut = {
-			order = 18,
+			order = 17,
 			type = "execute",
 			name = L["Bar6"],
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar6") end,
+		},
+		extraActionButtonShortcut = {
+			order = 18,
+			type = "execute",
+			name = L["Boss Button"],
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "extraActionButton") end,
 		},
 	},
 }
