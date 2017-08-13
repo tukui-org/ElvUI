@@ -753,17 +753,17 @@ E.Options.args.nameplate = {
 	get = function(info) return E.db.nameplates[ info[#info] ] end,
 	set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["NAMEPLATE_DESC"],
-		},
 		enable = {
-			order = 2,
+			order = 1,
 			type = "toggle",
 			name = L["Enable"],
 			get = function(info) return E.private.nameplates[ info[#info] ] end,
 			set = function(info, value) E.private.nameplates[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+		},
+		intro = {
+			order = 2,
+			type = "description",
+			name = L["NAMEPLATE_DESC"],
 		},
 		header = {
 			order = 3,
@@ -778,57 +778,97 @@ E.Options.args.nameplate = {
 		generalShortcut = {
 			order = 5,
 			type = "execute",
-			name = L["General Options"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup") end,
+			name = L["General"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general") end,
 		},
-		playerShortcut = {
+		fontsShortcut = {
 			order = 6,
 			type = "execute",
-			name = L["Player Frame"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			name = L["Fonts"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "fontGroup") end,
 		},
-		healerShortcut = {
+		classBarShortcut = {
 			order = 7,
 			type = "execute",
-			name = L["Healer Frames"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+			name = L["Classbar"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
 		},
 		spacer2 = {
 			order = 8,
 			type = "description",
 			name = " ",
 		},
-		friendlyPlayerShortcut = {
+		threatShortcut = {
 			order = 9,
 			type = "execute",
-			name = L["Friendly Player Frames"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+			name = L["Threat"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
 		},
-		enemyPlayerShortcut = {
+		castBarShortcut = {
 			order = 10,
 			type = "execute",
-			name = L["Enemy Player Frames"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+			name = L["Cast Bar"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "castGroup") end,
 		},
-		friendlyNPCShortcut = {
+		reactionShortcut = {
 			order = 11,
 			type = "execute",
-			name = L["Friendly NPC Frames"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+			name = L["Reaction Colors"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
 		},
 		spacer3 = {
 			order = 12,
 			type = "description",
 			name = " ",
 		},
-		enemyNPCShortcut = {
+		playerShortcut = {
 			order = 13,
+			type = "execute",
+			name = L["Player Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+		},
+		healerShortcut = {
+			order = 14,
+			type = "execute",
+			name = L["Healer Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+		},
+		friendlyPlayerShortcut = {
+			order = 15,
+			type = "execute",
+			name = L["Friendly Player Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+		},
+		spacer4 = {
+			order = 16,
+			type = "description",
+			name = " ",
+		},
+		enemyPlayerShortcut = {
+			order = 17,
+			type = "execute",
+			name = L["Enemy Player Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+		},
+		friendlyNPCShortcut = {
+			order = 18,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+		},
+		enemyNPCShortcut = {
+			order = 19,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 		},
-		generalGroup = {
+		spacer5 = {
 			order = 20,
+			type = "description",
+			name = " ",
+		},
+		generalGroup = {
+			order = 21,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -879,7 +919,6 @@ E.Options.args.nameplate = {
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
-						
 						lowHealthThreshold = {
 							order = 5,
 							name = L["Low Health Threshold"],
@@ -1010,7 +1049,6 @@ E.Options.args.nameplate = {
 							},
 						},
 					},
-					
 				},
 				fontGroup = {
 					order = 100,

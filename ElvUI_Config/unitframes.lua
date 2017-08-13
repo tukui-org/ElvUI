@@ -1963,28 +1963,185 @@ E.Options.args.unitframe = {
 	get = function(info) return E.db.unitframe[ info[#info] ] end,
 	set = function(info, value) E.db.unitframe[ info[#info] ] = value end,
 	args = {
-		generalOptionsGroup = {
+		enable = {
+			order = 0,
+			type = "toggle",
+			name = L["Enable"],
+			get = function(info) return E.private.unitframe.enable end,
+			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
+		},
+		intro = {
 			order = 1,
+			type = "description",
+			name = L["UNITFRAME_DESC"],
+		},
+		header = {
+			order = 2,
+			type = "header",
+			name = L["Shortcuts"],
+		},
+		spacer1 = {
+			order = 3,
+			type = "description",
+			name = " ",
+		},
+		generalShortcut = {
+			order = 4,
+			type = "execute",
+			name = L["General"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "generalGroup") end,
+		},
+		colorsShortcut = {
+			order = 5,
+			type = "execute",
+			name = L["Colors"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+		},
+		blizzardShortcut = {
+			order = 6,
+			type = "execute",
+			name = L["Disabled Blizzard Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "disabledBlizzardFrames") end,
+		},
+		spacer2 = {
+			order = 7,
+			type = "description",
+			name = " ",
+		},
+		playerShortcut = {
+			order = 8,
+			type = "execute",
+			name = L["Player Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "player") end,
+		},
+		targetShortcut = {
+			order = 9,
+			type = "execute",
+			name = L["Target Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "target") end,
+		},
+		targettargetShortcut = {
+			order = 10,
+			type = "execute",
+			name = L["TargetTarget Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettarget") end,
+		},
+		spacer3 = {
+			order = 11,
+			type = "description",
+			name = " ",
+		},
+		targettargettargetShortcut = {
+			order = 12,
+			type = "execute",
+			name = L["TargetTargetTarget Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettargettarget") end,
+		},
+		focusShortcut = {
+			order = 13,
+			type = "execute",
+			name = L["Focus Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focus") end,
+		},
+		focustargetShortcut = {
+			order = 14,
+			type = "execute",
+			name = L["FocusTarget Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focustarget") end,
+		},
+		spacer4 = {
+			order = 15,
+			type = "description",
+			name = " ",
+		},
+		petShortcut = {
+			order = 16,
+			type = "execute",
+			name = L["Pet Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pet") end,
+		},
+		pettargetShortcut = {
+			order = 17,
+			type = "execute",
+			name = L["PetTarget Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pettarget") end,
+		},
+		arenaShortcut = {
+			order = 18,
+			type = "execute",
+			name = L["Arena Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "arena") end,
+		},
+		spacer5 = {
+			order = 19,
+			type = "description",
+			name = " ",
+		},
+		bossShortcut = {
+			order = 20,
+			type = "execute",
+			name = L["Boss Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "boss") end,
+		},
+		partyShortcut = {
+			order = 21,
+			type = "execute",
+			name = L["Party Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "party") end,
+		},
+		raidShortcut = {
+			order = 22,
+			type = "execute",
+			name = L["Raid Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid") end,
+		},
+		spacer6 = {
+			order = 23,
+			type = "description",
+			name = " ",
+		},
+		raid40Shortcut = {
+			order = 24,
+			type = "execute",
+			name = L["Raid-40 Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid40") end,
+		},
+		raidpetShortcut = {
+			order = 25,
+			type = "execute",
+			name = L["Raid Pet Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raidpet") end,
+		},
+		assistShortcut = {
+			order = 26,
+			type = "execute",
+			name = L["Assist Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "assist") end,
+		},
+		spacer7 = {
+			order = 27,
+			type = "description",
+			name = " ",
+		},
+		tankShortcut = {
+			order = 28,
+			type = "execute",
+			name = L["Tank Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "tank") end,
+		},
+		generalOptionsGroup = {
+			order = 29,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
-			guiInline = true,
 			args = {
 				generalGroup = {
 					order = 1,
 					type = 'group',
-					-- guiInline = true,
 					name = L["General"],
 					args = {
-						enable = {
-							order = 1,
-							type = "toggle",
-							name = L["Enable"],
-							get = function(info) return E.private.unitframe.enable end,
-							set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
-						},
 						thinBorders = {
-							order = 2,
+							order = 1,
 							name = L["Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
@@ -1992,14 +2149,14 @@ E.Options.args.unitframe = {
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						OORAlpha = {
-							order = 3,
+							order = 2,
 							name = L["OOR Alpha"],
 							desc = L["The alpha to set units that are out of range to."],
 							type = 'range',
 							min = 0, max = 1, step = 0.01,
 						},
 						debuffHighlighting = {
-							order = 4,
+							order = 3,
 							name = L["Debuff Highlighting"],
 							desc = L["Color the unit healthbar if there is a debuff that can be dispelled by you."],
 							type = 'select',
@@ -2010,20 +2167,20 @@ E.Options.args.unitframe = {
 							},
 						},
 						smartRaidFilter = {
-							order = 5,
+							order = 4,
 							name = L["Smart Raid Filter"],
 							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
 							type = 'toggle',
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:UpdateAllHeaders() end
 						},
 						targetOnMouseDown = {
-							order = 6,
+							order = 5,
 							name = L["Target On Mouse-Down"],
 							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
 							type = "toggle",
 						},
 						auraBlacklistModifier = {
-							order = 7,
+							order = 6,
 							type = "select",
 							name = L["Blacklist Modifier"],
 							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
@@ -2100,7 +2257,6 @@ E.Options.args.unitframe = {
 				allColorsGroup = {
 					order = 2,
 					type = 'group',
-					-- guiInline = true,
 					childGroups = "tree",
 					name = L["Colors"],
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
@@ -2125,7 +2281,6 @@ E.Options.args.unitframe = {
 						healthGroup = {
 							order = 2,
 							type = 'group',
-							-- guiInline = true,
 							name = HEALTH,
 							get = function(info)
 								local t = E.db.unitframe.colors[ info[#info] ]
@@ -2225,7 +2380,6 @@ E.Options.args.unitframe = {
 						powerGroup = {
 							order = 3,
 							type = 'group',
-							-- guiInline = true,
 							name = L["Powers"],
 							get = function(info)
 								local t = E.db.unitframe.colors.power[ info[#info] ]
@@ -2310,7 +2464,6 @@ E.Options.args.unitframe = {
 						reactionGroup = {
 							order = 4,
 							type = 'group',
-							-- guiInline = true,
 							name = L["Reactions"],
 							get = function(info)
 								local t = E.db.unitframe.colors.reaction[ info[#info] ]
@@ -2343,7 +2496,6 @@ E.Options.args.unitframe = {
 						castBars = {
 							order = 5,
 							type = 'group',
-							-- guiInline = true,
 							name = L["Castbar"],
 							get = function(info)
 								local t = E.db.unitframe.colors[ info[#info] ]
@@ -2395,7 +2547,6 @@ E.Options.args.unitframe = {
 						auraBars = {
 							order = 6,
 							type = 'group',
-							-- guiInline = true,
 							name = L["Aura Bars"],
 							args = {
 								transparentAurabars = {
@@ -2529,7 +2680,6 @@ E.Options.args.unitframe = {
 				disabledBlizzardFrames = {
 					order = 3,
 					type = "group",
-					-- guiInline = true,
 					name = L["Disabled Blizzard Frames"],
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
 					set = function(info, value) E.private["unitframe"].disabledBlizzardFrames[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
@@ -5024,7 +5174,7 @@ E.Options.args.unitframe.args.party = {
 }
 
 --Raid Frames
-E.Options.args.unitframe.args['raid'] = {
+E.Options.args.unitframe.args.raid = {
 	name = L["Raid Frames"],
 	type = 'group',
 	order = 1100,
@@ -5455,7 +5605,7 @@ E.Options.args.unitframe.args['raid'] = {
 }
 
 --Raid-40 Frames
-E.Options.args.unitframe.args['raid40'] = {
+E.Options.args.unitframe.args.raid40 = {
 	name = L["Raid-40 Frames"],
 	type = 'group',
 	order = 1100,
@@ -6580,7 +6730,6 @@ E.Options.args.unitframe.args.assist = {
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {
 	order = -10,
 	type = 'group',
-	-- guiInline = true,
 	name = L["Class Resources"],
 	get = function(info)
 		local t = E.db.unitframe.colors.classResources[ info[#info] ]
