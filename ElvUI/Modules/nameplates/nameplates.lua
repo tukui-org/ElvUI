@@ -385,7 +385,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:ConfigureElement_Detection(frame.UnitFrame)
 	self:ConfigureElement_Highlight(frame.UnitFrame)
 	self:RegisterEvents(frame.UnitFrame, unit)
-	self:UpdateElement_All(frame.UnitFrame, unit)
+	self:UpdateElement_All(frame.UnitFrame, unit, nil, true)
 
 	if (self.db.displayStyle == "TARGET" and not frame.UnitFrame.isTarget and frame.UnitFrame.UnitType ~= "PLAYER") then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
@@ -393,6 +393,8 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.UnitFrame:Show()
 	end
+
+	self:UpdateElement_Filters(frame.UnitFrame)
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
@@ -525,7 +527,28 @@ function mod:UpdateInVehicle(frame, noEvents)
 	end
 end
 
-function mod:UpdateElement_All(frame, unit, noTargetFrame)
+function mod:UpdateElement_Filters(frame)
+	local name = UnitName(frame.displayedUnit)
+	local filter = E.global.nameplate.filter[name]
+	if filter and filter.enable then
+		if self.db.units[frame.UnitType].healthbar.enable then
+			if filter.customColor then
+				frame.HealthBar:SetStatusBarColor(filter.color.r, filter.color.g, filter.color.b);
+				frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = filter.color.r, filter.color.g, filter.color.b;
+			end
+			if filter.customScale ~= 1 then
+				frame.ThreatScale = filter.customScale
+				self:SetFrameScale(frame, filter.customScale)
+			end
+		end
+		if filter.hide then
+			frame:Hide()
+		end
+	end
+
+end
+
+function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
@@ -553,6 +576,10 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
+	end
+
+	if(not filterIgnore) then
+		mod:UpdateElement_Filters(frame)
 	end
 end
 
@@ -602,15 +629,18 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_NPCTitle(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
+		mod:UpdateElement_Filters(self)
 	elseif(event == "UNIT_LEVEL") then
 		mod:UpdateElement_Level(self)
 	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
 		mod:Update_ThreatList(self)
 		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Filters(self)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Filters(self)
 		mod:UpdateVisibility()
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)

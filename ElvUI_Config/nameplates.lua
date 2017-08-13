@@ -54,7 +54,7 @@ local function UpdateFilterGroup()
 		guiInline = true,
 		order = -10,
 		get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilterAndHealers"); NP:UpdateAllPlates(); UpdateFilterGroup() end,
+		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup(); NP:ForEachPlate("UpdateAllFrame"); end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -90,8 +90,7 @@ local function UpdateFilterGroup()
 					if t then
 						t.r, t.g, t.b = r, g, b
 						UpdateFilterGroup()
-						NP:ForEachPlate("CheckFilterAndHealers")
-						NP:UpdateAllPlates()
+						NP:ForEachPlate("UpdateAllFrame")
 					end
 				end,
 			},
@@ -1457,7 +1456,7 @@ E.Options.args.nameplate = {
 							['color'] = {r = 104/255, g = 138/255, b = 217/255},
 						}
 						UpdateFilterGroup()
-						NP:UpdateAllPlates()
+						NP:ForEachPlate("UpdateAllFrame")
 					end,
 				},
 				deletename = {
@@ -1474,7 +1473,7 @@ E.Options.args.nameplate = {
 							E.Options.args.nameplate.args.filters.args.filterGroup = nil;
 						end
 						UpdateFilterGroup()
-						NP:UpdateAllPlates();
+						NP:ForEachPlate("UpdateAllFrame");
 					end,
 				},
 				selectFilter = {
