@@ -537,8 +537,12 @@ function mod:UpdateElement_Filters(frame)
 				frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = filter.color.r, filter.color.g, filter.color.b;
 			end
 			if filter.customScale ~= 1 then
-				frame.ThreatScale = filter.customScale
-				self:SetFrameScale(frame, filter.customScale)
+				local scale = filter.customScale
+				if frame.isTarget and self.db.useTargetScale then
+					scale = scale * self.db.targetScale
+				end
+				frame.ThreatScale = scale
+				self:SetFrameScale(frame, scale)
 			end
 		end
 		if filter.hide then
