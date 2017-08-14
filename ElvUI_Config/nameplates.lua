@@ -44,11 +44,11 @@ end
 
 local function UpdateFilterGroup()
 	if not selectedFilter or not E.global['nameplate']['filter'][selectedFilter] then
-		E.Options.args.nameplate.args.filters.args.filterGroup = nil
+		E.Options.args.nameplate.args.filter.args.filterGroup = nil
 		return
 	end
 
-	E.Options.args.nameplate.args.filters.args.filterGroup = {
+	E.Options.args.nameplate.args.filter.args.filterGroup = {
 		type = 'group',
 		name = selectedFilter,
 		guiInline = true,
@@ -1019,7 +1019,7 @@ E.Options.args.nameplate = {
 			order = 21,
 			type = "execute",
 			name = L["Filters"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filter") end,
 		},
 		generalGroup = {
 			order = 22,
@@ -1437,7 +1437,7 @@ E.Options.args.nameplate = {
 		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
 		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
 		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
-		filters = {
+		filter = {
 			type = "group",
 			order = -100,
 			name = L["Filters"],
@@ -1477,7 +1477,7 @@ E.Options.args.nameplate = {
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
 							E.global['nameplate']['filter'][value] = nil;
-							E.Options.args.nameplate.args.filters.args.filterGroup = nil;
+							E.Options.args.nameplate.args.filter.args.filterGroup = nil;
 						end
 						UpdateFilterGroup()
 						NP:ForEachPlate("UpdateAllFrame");
