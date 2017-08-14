@@ -1516,13 +1516,10 @@ E.Options.args.nameplate = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
+						E.global['nameplate']['filters'][value] = {}
 
-						E.global['nameplate']['filters'][value] = {
-
-						}
-
-						UpdateFilterGroup()
-						NP:ForEachPlate("UpdateAllFrame")
+						--UpdateFilterGroup()
+						--NP:ForEachPlate("UpdateAllFrame")
 					end,
 				},
 				deleteFilter = {
@@ -1539,8 +1536,9 @@ E.Options.args.nameplate = {
 							E.Options.args.nameplate.args.filters.args.triggerGroup = nil;
 							E.Options.args.nameplate.args.filters.args.actionGroup = nil;
 						end
-						UpdateFilterGroup()
-						NP:ForEachPlate("UpdateAllFrame");
+
+						--UpdateFilterGroup()
+						--NP:ForEachPlate("UpdateAllFrame");
 					end,
 				},
 				selectFilter = {
