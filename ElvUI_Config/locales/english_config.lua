@@ -67,6 +67,18 @@ Name Formats:
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
+L["Action"] = true;
+L["Trigger"] = true;
+L["NPC ID"] = true;
+L["Nameplate Type"] = true;
+L["In Combat"] = true;
+L["Not in Combat"] = true;
+L["Must have all Buffs"] = true;
+L["Must have all Debuffs"] = true;
+L["Add Buff"] = true;
+L["Add Debuff"] = true;
+L["Auras"] = true;
+
 --ActionBars
 L["Action Paging"] = true;
 L["ActionBars"] = true;
