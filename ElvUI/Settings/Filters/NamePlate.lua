@@ -36,7 +36,6 @@ G["nameplate"] = {
 			['color'] = {r = 255/255, g = 140/255, b = 200/255}
 		}
 	},
---[[ Nameplate Triggers (unfinished)
 	['filters'] = {
 		['TestFilter'] = {
 			['triggers'] = {
@@ -77,5 +76,4 @@ G["nameplate"] = {
 			},
 		},
 	}
-]]
 }
