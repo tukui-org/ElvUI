@@ -1499,5 +1499,324 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
+		filters = {
+			type = "group",
+			order = -99,
+			name = "NEW FILTERS", -- NON FUNCTIONAL RIGHT NOW
+			childGroups = "tab",
+			disabled = function() return not E.NamePlates; end,
+			args = {
+				createFilter = {
+					type = 'input',
+					order = 1,
+					name = L["Create Filter"],
+					get = function(info) return "" end,
+					set = function(info, value)
+						if E.global['nameplate']['filters'][value] then
+							E:Print(L["Filter already exists!"])
+							return
+						end
+
+						E.global['nameplate']['filters'][value] = {
+
+						}
+
+						UpdateFilterGroup()
+						NP:ForEachPlate("UpdateAllFrame")
+					end,
+				},
+				deleteFilter = {
+					type = 'input',
+					order = 2,
+					name = L["Delete Filter"],
+					get = function(info) return "" end,
+					set = function(info, value)
+						if G['nameplate']['filters'][value] then
+							E.global['nameplate']['filters'][value].enable = false;
+							E:Print(L["You can't remove a default name from the filter, disabling the name."])
+						else
+							E.global['nameplate']['filters'][value] = nil;
+							E.Options.args.nameplate.args.filters.args.triggerGroup = nil;
+							E.Options.args.nameplate.args.filters.args.actionGroup = nil;
+						end
+						UpdateFilterGroup()
+						NP:ForEachPlate("UpdateAllFrame");
+					end,
+				},
+				selectFilter = {
+					order = 3,
+					type = 'select',
+					name = L["Select Filter"],
+					get = function(info) return selectedFilter end,
+					set = function(info, value) selectedFilter = value; UpdateFilterGroup() end,
+					values = function()
+						filters = {}
+						for filter in pairs(E.global['nameplate']['filters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},
+				triggerGroup = {
+					order = -11,
+					type = "group",
+					name = L["Trigger"],
+					--get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
+					--set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup(); NP:ForEachPlate("UpdateAllFrame"); end,
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							desc = L["Use this filter."],
+						},
+						inCombat = {
+							type = 'toggle',
+							order = 2,
+							name = L["In Combat"],
+						},
+						noCombat = {
+							type = 'toggle',
+							order = 3,
+							name = L["Not in Combat"],
+						},
+						spacer1 = {
+							order = 4,
+							type = 'description',
+							name = '',
+						},
+						name = {
+							type = 'input',
+							order = 5,
+							name = L["Name"],
+							get = function(info, value)
+								return "Ironforge Gaurd"
+							end,
+							set = function(info, value)
+								--
+							end,
+						},
+						npcid = {
+							type = 'input',
+							order = 6,
+							name = L["NPC ID"],
+							get = function(info, value)
+								return 0
+							end,
+							set = function(info, value)
+								--
+							end,
+						},
+						levelGroup = {
+							order = 7,
+							type = 'group',
+							name = LEVEL,
+							args = {
+								enable = {
+									type = 'toggle',
+									order = 1,
+									name = L["Enable"],
+								},
+								matchLevel = {
+									type = 'toggle',
+									order = 2,
+									name = L["Match my level"],
+								},
+								spacer1 = {
+									order = 3,
+									type = 'description',
+									name = L["LEVEL_BOSS"],
+								},
+								minLevel = {
+									order = 4,
+									type = 'range',
+									name = L["Minimum Level"],
+									min = -1, max = 120, step = 1,
+									get = function(info, value)
+										return -1
+									end,
+									set = function(info, value)
+										--
+									end,
+								},
+								maxLevel = {
+									order = 5,
+									type = 'range',
+									name = L["Maximum Level"],
+									min = -1, max = 120, step = 1,
+									get = function(info, value)
+										return -1
+									end,
+									set = function(info, value)
+										--
+									end,
+								},
+								currentLevel = {
+									order = 6,
+									type = 'range',
+									name = L["Current Level"],
+									min = -1, max = 120, step = 1,
+									get = function(info, value)
+										return 80
+									end,
+									set = function(info, value)
+										--
+									end,
+								},
+							},
+						},
+						auras = {
+							order = 8,
+							type = 'group',
+							name = L["Auras"],
+							args = {
+								enable = {
+									type = 'toggle',
+									order = 1,
+									name = L["Enable"],
+								},
+								spacer1 = {
+									order = 2,
+									type = 'description',
+									name = '',
+								},
+								allBuff = {
+									type = 'toggle',
+									order = 3,
+									name = L["Must have all Buffs"],
+								},
+								allDebuff = {
+									type = 'toggle',
+									order = 4,
+									name = L["Must have all Debuffs"],
+								},
+								spacer2 = {
+									order = 5,
+									type = 'description',
+									name = '',
+								},
+								addBuff = {
+									type = 'input',
+									order = 6,
+									name = L["Add Buff"],
+									get = function(info, value)
+										return ""
+									end,
+									set = function(info, value)
+										--
+									end,
+								},
+								addDebuff = {
+									type = 'input',
+									order = 7,
+									name = L["Add Debuff"],
+									get = function(info, value)
+										return ""
+									end,
+									set = function(info, value)
+										--
+									end,
+								},
+							},
+						},
+						nameplateType = {
+							order = 9,
+							type = 'group',
+							name = TYPE,
+							args = {
+								enable = {
+									type = 'toggle',
+									order = 1,
+									name = L["Enable"],
+								},
+								spacer1 = {
+									order = 2,
+									type = 'description',
+									name = '',
+								},
+								healer = {
+									type = 'toggle',
+									order = 3,
+									name = L["HEALER"],
+								},
+								neutral = {
+									type = 'toggle',
+									order = 4,
+									name = L["Neutral"],
+								},
+								friendlyPlayer = {
+									type = 'toggle',
+									order = 5,
+									name = L["FRIENDLY_PLAYER"],
+								},
+								friendlyNPC = {
+									type = 'toggle',
+									order = 6,
+									name = L["FRIENDLY_NPC"],
+								},
+								enemyPlayer = {
+									type = 'toggle',
+									order = 7,
+									name = L["ENEMY_PLAYER"],
+								},
+								enemyNPC = {
+									type = 'toggle',
+									order = 8,
+									name = L["ENEMY_NPC"],
+								},
+							},
+						},
+					},
+				},
+				actionGroup = {
+					order = -10,
+					type = "group",
+					name = L["Action"],
+					--get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
+					--set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup(); NP:ForEachPlate("UpdateAllFrame"); end,
+					args = {
+						hide = {
+							type = 'toggle',
+							order = 2,
+							name = L["Hide"],
+							desc = L["Prevent any nameplate with this unit name from showing."],
+						},
+						customColor = {
+							type = 'toggle',
+							order = 3,
+							name = L["Custom Color"],
+							desc = L["Disable threat coloring for this plate and use the custom color."],
+						},
+						color = {
+							type = 'color',
+							order = 4,
+							name = L["Color"],
+							get = function(info)
+								--local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
+								--if t then
+									--return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255
+								--end
+								return 104/255, 138/255, 217/255, 1, 104/255, 138/255, 217/255, 1
+							end,
+							--[[set = function(info, r, g, b)
+								E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = {}
+								local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
+								if t then
+									t.r, t.g, t.b = r, g, b
+									UpdateFilterGroup()
+									NP:ForEachPlate("UpdateAllFrame")
+								end
+							end,]]
+						},
+						customScale = {
+							type = 'range',
+							name = L["Custom Scale"],
+							desc = L["Set the scale of the nameplate."],
+							min = 0.5, max = 2, step = 0.01,
+						},
+					},
+				},
+			},
+		},
 	},
 }
