@@ -67,6 +67,23 @@ Name Formats:
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
+L["Action"] = true;
+L["Trigger"] = true;
+L["NPC ID"] = true;
+L["Nameplate Type"] = true;
+L["In Combat"] = true;
+L["Not in Combat"] = true;
+L["Must have all Buffs"] = true;
+L["Must have all Debuffs"] = true;
+L["Add Buff"] = true;
+L["Add Debuff"] = true;
+L["Auras"] = true;
+L["Current Level"] = true;
+L["Minimum Level"] = true;
+L["Maximum Level"] = true;
+L["Match my level"] = true;
+L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
+
 --ActionBars
 L["Action Paging"] = true;
 L["ActionBars"] = true;
