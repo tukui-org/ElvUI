@@ -81,7 +81,7 @@ local function UpdateFilterGroup()
 				get = function(info)
 					local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
 					if t then
-						return t.r, t.g, t.b, t.a
+						return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255
 					end
 				end,
 				set = function(info, r, g, b)
@@ -1015,8 +1015,14 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		generalGroup = {
+		filtersShortcut = {
 			order = 21,
+			type = "execute",
+			name = L["Filters"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
+		},
+		generalGroup = {
+			order = 22,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -1455,6 +1461,7 @@ E.Options.args.nameplate = {
 							['customScale'] = 1,
 							['color'] = {r = 104/255, g = 138/255, b = 217/255},
 						}
+
 						UpdateFilterGroup()
 						NP:ForEachPlate("UpdateAllFrame")
 					end,
