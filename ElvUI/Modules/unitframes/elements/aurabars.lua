@@ -197,7 +197,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		allowDuration = duration and (duration > 0) and (duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration)
+		allowDuration = duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration)
 		noDuration = (not duration or duration == 0)
 	else
 		return nil

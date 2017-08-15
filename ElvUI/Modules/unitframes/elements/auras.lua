@@ -481,7 +481,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = duration and (duration > 0) and (duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration)
+		allowDuration = duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration)
 		noDuration = (not duration or duration == 0)
 	else
 		return nil

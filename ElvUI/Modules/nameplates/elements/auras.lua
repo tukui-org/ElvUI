@@ -60,7 +60,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = duration and (duration > 0 or durationOverride[spellID]) and (duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
+		allowDuration = duration and (duration > 0) and (maxDuration == 0 or durationOverride[spellID] or duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
 		noDuration = (not duration or duration == 0)
 	else
 		return nil
