@@ -2031,7 +2031,7 @@ E.Options.args.nameplate = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
-						if E.global.nameplate.filters[value] then
+						if G.nameplate.filters[value] then
 							E.global.nameplate.filters[value].triggers.enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
