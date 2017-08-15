@@ -28,19 +28,20 @@ local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
 end
 
+local function filterMatch(s,v)
+	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
+	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
+end
+
 local function filterPriority(auraType, unit, value, remove)
 	if not auraType or not value then return end
 	local str = E.db.nameplates.units[unit][auraType].filters.priority
 	local val = filterValue(value)
+	local found = filterMatch(str, val)
 	if not str then return end
-	if match(str, val) then
+	if found then
 		if remove then
-			if match(str, val.."$") then
-				str = gsub(str, ",?"..val, "")
-			elseif match(str, val) then
-				str = gsub(str, val..",?", "")
-			end
-			E.db.nameplates.units[unit][auraType].filters.priority = str
+			E.db.nameplates.units[unit][auraType].filters.priority = gsub(str, found, "")
 			return
 		end
 		return

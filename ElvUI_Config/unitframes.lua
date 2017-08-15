@@ -103,19 +103,20 @@ local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
 end
 
+local function filterMatch(s,v)
+	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
+	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
+end
+
 local function filterPriority(auraType, groupName, value, remove)
 	if not auraType or not value then return end
 	local str = E.db.unitframe.units[groupName][auraType].priority
 	local val = filterValue(value)
+	local found = filterMatch(str, val)
 	if not str then return end
-	if match(str, val) then
+	if found then
 		if remove then
-			if match(str, val.."$") then
-				str = gsub(str, ",?"..val, "")
-			elseif match(str, val) then
-				str = gsub(str, val..",?", "")
-			end
-			E.db.unitframe.units[groupName][auraType].priority = str
+			E.db.unitframe.units[groupName][auraType].priority = gsub(str, found, "")
 			return
 		end
 		return
@@ -244,15 +245,29 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		config.args.attachTo.values['PLAYER_AURABARS'] = L["Player Frame Aura Bars"]
 	end
 
-	config.args.filters.args.maxDuration = {
+	config.args.filters.args.minDuration = {
 		order = 16,
+		type = 'range',
+		name = L["Minimum Duration"],
+		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		min = 0, max = 3600, step = 1,
+	}
+	config.args.filters.args.maxDuration = {
+		order = 17,
 		type = 'range',
 		name = L["Maximum Duration"],
 		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
 		min = 0, max = 3600, step = 1,
 	}
+	config.args.filters.args.jumpToFilter = {
+		order = 18,
+		name = L["Filters Page"],
+		desc = L["Shortcut to global filters page"],
+		type = "execute",
+		func = function() ACD:SelectGroup("ElvUI", "filters") end,
+	}
 	config.args.filters.args.defaultPriority = {
-		order = 17,
+		order = 19,
 		name = L["Add default filter into Priority"],
 		type = 'select',
 		values = function()
@@ -267,7 +282,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		end
 	}
 	config.args.filters.args.priority = {
-		order = 18,
+		order = 20,
 		name = L["Add global filter into Priority"],
 		type = 'select',
 		values = function()
@@ -281,20 +296,13 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			filterPriority('aurabar', groupName, value)
 		end
 	}
-	config.args.filters.args.jumpToFilter = {
-		order = 19,
-		name = L["Filters Page"],
-		desc = L["Shortcut to global filters page"],
-		type = "execute",
-		func = function() ACD:SelectGroup("ElvUI", "filters") end,
-	}
 	config.args.filters.args.spacer1 = {
-		order = 20,
+		order = 21,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 21,
+		order = 22,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
@@ -451,8 +459,29 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		}
 	end
 
-	config.args.filters.args.defaultPriority = {
+	config.args.filters.args.minDuration = {
 		order = 16,
+		type = 'range',
+		name = L["Minimum Duration"],
+		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		min = 0, max = 3600, step = 1,
+	}
+	config.args.filters.args.maxDuration = {
+		order = 17,
+		type = 'range',
+		name = L["Maximum Duration"],
+		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		min = 0, max = 3600, step = 1,
+	}
+	config.args.filters.args.jumpToFilter = {
+		order = 18,
+		name = L["Filters Page"],
+		desc = L["Shortcut to global filters page"],
+		type = "execute",
+		func = function() ACD:SelectGroup("ElvUI", "filters") end,
+	}
+	config.args.filters.args.defaultPriority = {
+		order = 19,
 		name = L["Add default filter into Priority"],
 		type = 'select',
 		values = function()
@@ -467,7 +496,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		end
 	}
 	config.args.filters.args.priority = {
-		order = 17,
+		order = 20,
 		name = L["Add global filter into Priority"],
 		type = 'select',
 		values = function()
@@ -481,20 +510,13 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			filterPriority(auraType, groupName, value)
 		end
 	}
-	config.args.filters.args.jumpToFilter = {
-		order = 18,
-		name = L["Filters Page"],
-		desc = L["Shortcut to global filters page"],
-		type = "execute",
-		func = function() ACD:SelectGroup("ElvUI", "filters") end,
-	}
 	config.args.filters.args.spacer1 = {
-		order = 19,
+		order = 21,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 20,
+		order = 22,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()

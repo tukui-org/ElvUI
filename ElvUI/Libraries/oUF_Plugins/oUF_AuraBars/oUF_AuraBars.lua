@@ -232,10 +232,10 @@ local function Update(self, event, unit)
 		end
 	else
 		for index = 1, 40 do
-			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, helpOrHarm)
+			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff = UnitAura(unit, index, helpOrHarm)
 			if not name then break end
 			
-			if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
+			if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff) then
 				lastAuraIndex = lastAuraIndex + 1
 				auras[lastAuraIndex] = {}
 				auras[lastAuraIndex].spellID = spellID

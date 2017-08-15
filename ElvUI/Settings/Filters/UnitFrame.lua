@@ -22,30 +22,6 @@ local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
 end
 
-G.unitframe.defaultFiltersSelf = {
-	['Block Non-Personal'] = true,
-	['Block Blacklisted'] = true,
-	['Allow Whitelisted'] = true,
-	['Block Auras Without Duration'] = true,
-	['Block Non-Dispellable'] = true,
-	['Allow Boss Encounter'] = true,
-};
-
-G.unitframe.defaultFilters = {
-	['Friendly:Block Non-Personal'] = true,
-	['Friendly:Block Blacklisted'] = true,
-	['Friendly:Allow Whitelisted'] = true,
-	['Friendly:Block Auras Without Duration'] = true,
-	['Friendly:Block Non-Dispellable'] = true,
-	['Friendly:Allow Boss Encounter'] = true,
-	['Enemy:Block Non-Personal'] = true,
-	['Enemy:Block Blacklisted'] = true,
-	['Enemy:Allow Whitelisted'] = true,
-	['Enemy:Block Auras Without Duration'] = true,
-	['Enemy:Block Non-Dispellable'] = true,
-	['Enemy:Allow Boss Encounter'] = true,
-};
-
 G.unitframe.aurafilters = {};
 
 --[[
@@ -1124,3 +1100,21 @@ G.unitframe.AuraBarColors = {
 G.unitframe.DebuffHighlightColors = {
 	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
+
+G.unitframe.defaultFiltersSelf = {
+	['Boss'] = true,
+	['Personal'] = true,
+	['noDuration'] = true,
+	['Dispellable'] = true,
+};
+G.unitframe.defaultFilters = {}; --populates from G.unitframe.defaultFiltersSelf and then G.unitframe.aurafilters
+
+for name, table in pairs(G.unitframe.aurafilters) do
+	G.unitframe.defaultFilters['Friendly:'..name] = true;
+	G.unitframe.defaultFilters['Enemy:'..name] = true;
+end
+for name, table in pairs(G.unitframe.defaultFiltersSelf) do
+	G.unitframe.defaultFilters['Friendly:'..name] = true;
+	G.unitframe.defaultFilters['Enemy:'..name] = true;
+	G.unitframe.defaultFilters[name] = true;
+end

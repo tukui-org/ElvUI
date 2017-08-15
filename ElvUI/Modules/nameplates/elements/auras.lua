@@ -53,65 +53,55 @@ local durationOverride = {
 	[203981] = true, -- Soul fragments (Demon Hunter)
 }
 
-function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
-	local filterCheck, primaryCheck, primaryBoss, primaryPersonal = false, false, true, true
-	local allowBoss, allowPlayer, allowFriend, allowDuration = false, false, false, false
+function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false
 
 	if name then
-		if priority ~= '' then
-			if priority:match('PersonalAuras') then primaryPersonal = false end
-			if priority:match('BossAuras') then primaryBoss = false end
-		end
-		allowBoss = showBoss and isBossDebuff
-		allowPlayer = showPersonal and (caster == 'player' or caster == 'vehicle')
-		allowFriend = frame.unit and UnitIsFriend('player', frame.unit)
-		allowDuration = (duration > 0 or durationOverride[spellID]) and (duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
-		primaryCheck = (allowBoss and primaryBoss) or (allowDuration and allowPlayer and primaryPersonal)
+		isPlayer = (caster == 'player' or caster == 'vehicle')
+		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
+		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		allowDuration = duration and (duration > 0 or durationOverride[spellID]) and (duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
+		noDuration = (not duration or duration == 0)
 	else
 		return nil
 	end
 
-	if primaryCheck ~= true then
-		local filters, filterType, spellList, spell, tbl
-		if priority ~= '' then
-			tbl = {strsplit(",",priority)}
-			if next(tbl) then
-				for i, x in ipairs(tbl) do
-					filters = E.global.unitframe['aurafilters']
-					if filters[tbl[i]] then
-						filterType = filters[tbl[i]].type
-						spellList = filters[tbl[i]].spells
-						spell = spellList and (spellList[spellID] or spellList[name])
+	local filters, filterType, spellList, spell, tbl
+	if priority ~= '' then
+		tbl = {strsplit(",",priority)}
+		if next(tbl) then
+			for i, x in ipairs(tbl) do
+				filters = E.global.unitframe['aurafilters']
+				if filters[tbl[i]] then
+					filterType = filters[tbl[i]].type
+					spellList = filters[tbl[i]].spells
+					spell = spellList and (spellList[spellID] or spellList[name])
 
-						if filterType and filterType == 'Whitelist' then
-							if spell and spell.enable then
-								filterCheck = true
-								break -- STOP: allowing whistlisted spell
-							else
-								filterCheck = false
-								-- CONTINUE: no match
-							end
-						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
-							filterCheck = false
-							break -- STOP: blocking blacked spell
-						end
-					elseif tbl[i] == 'PersonalAuras' then
-						if allowDuration and allowPlayer then -- note: this CAN be disabled by the check box, regardless of being in priority
-							filterCheck = true
-							break -- STOP: allowing personal aura in priority
-						end
-					elseif tbl[i] == 'BossAuras' then
-						if allowBoss then -- note: same as personal auras, this CAN be disabled, regardless of being in priority
-							filterCheck = true
-							break -- STOP: allowing boss aura in priority
-						end
+					if filterType and filterType == 'Whitelist' and spell and spell.enable then
+						filterCheck = true
+						break -- STOP: allowing whistlisted spell
+					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
+						filterCheck = false
+						break -- STOP: blocking blacklisted spell
 					end
+				elseif tbl[i] == 'Personal' and isPlayer and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif tbl[i] == 'Boss' and isBossDebuff then
+					filterCheck = true
+					break -- STOP
+				elseif tbl[i] == 'noDuration' and noDuration then
+					filterCheck = false
+					break -- STOP
+				elseif tbl[i] == 'Dispellable' and canDispell then
+					filterCheck = true
+					break -- STOP
 				end
 			end
 		end
 	end
 
-	if primaryCheck == true or filterCheck == true then
+	if filterCheck == true then
 		mod:SetAura(frame[buffType].icons[frameNum], index, name, texture, count, duration, expiration)
 		return true
 	end
@@ -120,8 +110,8 @@ function mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal
 end
 
 function mod:UpdateElement_Auras(frame)
-	local hasBuffs, hasDebuffs, showAura, runCheck = false, false
-	local filterType, buffType, buffTypeLower, index, frameNum, maxAuras, showBoss, showPersonal, maxDuration, priority
+	local hasBuffs, hasDebuffs, showAura = false, false
+	local filterType, buffType, buffTypeLower, index, frameNum, maxAuras, minDuration, maxDuration, priority
 
 	--Auras
 	for i = 1, 2 do
@@ -131,17 +121,14 @@ function mod:UpdateElement_Auras(frame)
 		index = 1;
 		frameNum = 1;
 		maxAuras = #frame[buffType].icons;
-		showBoss = self.db.units[frame.UnitType][buffTypeLower].filters.boss
-		showPersonal = self.db.units[frame.UnitType][buffTypeLower].filters.personal
 		minDuration = self.db.units[frame.UnitType][buffTypeLower].filters.minDuration
 		maxDuration = self.db.units[frame.UnitType][buffTypeLower].filters.maxDuration
 		priority = self.db.units[frame.UnitType][buffTypeLower].filters.priority
-		runCheck = showBoss or showPersonal or priority ~= ''
 
 		self:HideAuraIcons(frame[buffType])
-		if(self.db.units[frame.UnitType][buffTypeLower].enable and runCheck) then
+		if(self.db.units[frame.UnitType][buffTypeLower].enable and priority ~= '') then
 			while ( frameNum <= maxAuras ) do
-				showAura = mod:AuraFilter(frame, frameNum, index, buffType, showBoss, showPersonal, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
+				showAura = mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
 				if showAura == nil then -- something went wrong (unitaura name was nil)
 					break
 				elseif showAura == true then -- has aura and passes checks
