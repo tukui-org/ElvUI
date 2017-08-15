@@ -67,7 +67,6 @@ Name Formats:
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
--- L["Add filter into Priority"] = true; -- REMOVE THIS
 L["Actions"] = true;
 L["Add a buff/debuff to the list."] = true;
 L["Add a buff/debuff to the list."] = true;
@@ -623,7 +622,6 @@ L["Non-Target Transparency"] = true;
 L["Only load nameplates for units within this range."] = true;
 L["Only Show Target"] = true;
 L["Personal Auras"] = true
-L["Add into Priority"] = true;
 L["Filter Priority"] = true;
 L["Player Nameplate"] = true;
 L["PLAYER"] = "Player"
