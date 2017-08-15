@@ -1104,7 +1104,7 @@ G.unitframe.DebuffHighlightColors = {
 G.unitframe.defaultFiltersSelf = {
 	['Boss'] = true,
 	['Personal'] = true,
-	['hasDuration'] = true,
+	['blockNoDuration'] = true,
 	['Dispellable'] = true,
 };
 G.unitframe.defaultFilters = {}; --populates from G.unitframe.defaultFiltersSelf and then G.unitframe.aurafilters

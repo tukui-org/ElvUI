@@ -523,7 +523,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 					elseif filterName == 'Boss' and isBossDebuff then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'hasDuration' and noDuration then
+					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
 						break -- STOP
 					elseif filterName == 'Dispellable' and canDispell then

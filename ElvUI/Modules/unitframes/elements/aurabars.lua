@@ -233,7 +233,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					elseif filterName == 'Boss' and isBossDebuff then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'hasDuration' and noDuration then
+					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
 						break -- STOP
 					elseif filterName == 'Dispellable' and canDispell then

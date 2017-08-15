@@ -9,7 +9,7 @@ G["nameplate"] = {
 	["defaultFilters"] = {
 		['Boss'] = true,
 		['Personal'] = true,
-		['hasDuration'] = true,
+		['blockNoDuration'] = true,
 		['Dispellable'] = true,
 	},
 	["filter"] = {
