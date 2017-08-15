@@ -1110,6 +1110,13 @@ E.Options.args.filters = {
 			type = 'input',
 			get = function(info) return "" end,
 			set = function(info, value)
+				if match(value, "^[%s%p]-$") then
+					return
+				end
+				if G.unitframe.defaultFiltersSelf[value] or G.unitframe.defaultFilters[value] or E.global.unitframe.aurafilters[value] then
+					E:Print(L["Filter already exists!"])
+					return
+				end
 				E.global.unitframe['aurafilters'][value] = {};
 				E.global.unitframe['aurafilters'][value]['spells'] = {};
 			end,
