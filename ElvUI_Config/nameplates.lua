@@ -24,16 +24,21 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
+local function filterValue(value)
+	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+end
+
 local function filterPriority(auraType, unit, value, remove)
 	if not auraType or not value then return end
 	local str = E.db.nameplates.units[unit][auraType].filters.priority
+	local val = filterValue(value)
 	if not str then return end
-	if match(str, value) then
+	if match(str, val) then
 		if remove then
-			if match(str, value.."$") then
-				str = gsub(str, ",?"..value, "")
-			elseif match(str, value) then
-				str = gsub(str, value..",?", "")
+			if match(str, val.."$") then
+				str = gsub(str, ",?"..val, "")
+			elseif match(str, val) then
+				str = gsub(str, val..",?", "")
 			end
 			E.db.nameplates.units[unit][auraType].filters.priority = str
 			return
@@ -959,7 +964,7 @@ local function GetUnitSettings(unit, name)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
-									value = match(str, tbl[value])
+									value = match(str, filterValue(tbl[value]))
 									if value then
 										filterPriority('buffs', unit, value, true)
 									end
@@ -1091,7 +1096,7 @@ local function GetUnitSettings(unit, name)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
-									value = match(str, tbl[value])
+									value = match(str, filterValue(tbl[value]))
 									if value then
 										filterPriority('debuffs', unit, value, true)
 									end

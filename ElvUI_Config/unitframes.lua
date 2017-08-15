@@ -99,16 +99,21 @@ local auraSortMethodValues = {
 
 local CUSTOMTEXT_CONFIGS = {}
 
+local function filterValue(value)
+	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+end
+
 local function filterPriority(auraType, groupName, value, remove)
 	if not auraType or not value then return end
 	local str = E.db.unitframe.units[groupName][auraType].priority
+	local val = filterValue(value)
 	if not str then return end
-	if match(str, value) then
+	if match(str, val) then
 		if remove then
-			if match(str, value.."$") then
-				str = gsub(str, ",?"..value, "")
-			elseif match(str, value) then
-				str = gsub(str, value..",?", "")
+			if match(str, val.."$") then
+				str = gsub(str, ",?"..val, "")
+			elseif match(str, val) then
+				str = gsub(str, val..",?", "")
 			end
 			E.db.unitframe.units[groupName][auraType].priority = str
 			return
@@ -239,189 +244,6 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		config.args.attachTo.values['PLAYER_AURABARS'] = L["Player Frame Aura Bars"]
 	end
 
-	if friendlyOnly then
-		config.args.filters.args.playerOnly = {
-			order = 10,
-			type = 'toggle',
-			name = L["Block Non-Personal Auras"],
-			desc = L["Don't display auras that are not yours."],
-		}
-		config.args.filters.args.useBlacklist = {
-			order = 11,
-			type = 'toggle',
-			name = L["Block Blacklisted Auras"],
-			desc = L["Don't display any auras found on the 'Blacklist' filter."],
-		}
-		config.args.filters.args.useWhitelist = {
-			order = 12,
-			type = 'toggle',
-			name = L["Allow Whitelisted Auras"],
-			desc = L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-		}
-		config.args.filters.args.noDuration = {
-			order = 13,
-			type = 'toggle',
-			name = L["Block Auras Without Duration"],
-			desc = L["Don't display auras that have no duration."],
-		}
-		config.args.filters.args.onlyDispellable = {
-			order = 14,
-			type = 'toggle',
-			name = L["Block Non-Dispellable Auras"],
-			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
-		}
-		--[[config.args.filters.args.selfBuffs = {
-			order = 15,
-			type = 'toggle',
-			name = L["Allow Self Buffs"],
-		}]]
-	else
-		config.args.filters.args.playerOnly = {
-			order = 10,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Non-Personal Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-		config.args.filters.args.useBlacklist = {
-			order = 11,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Blacklisted Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-		config.args.filters.args.useWhitelist = {
-			order = 12,
-			guiInline = true,
-			type = 'group',
-			name = L["Allow Whitelisted Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-		config.args.filters.args.noDuration = {
-			order = 13,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Auras Without Duration"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-		config.args.filters.args.onlyDispellable = {
-			order = 14,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Non-Dispellable Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-		--[[config.args.filters.args.selfBuffs = {
-			order = 15,
-			guiInline = true,
-			type = 'group',
-			name = L["Allow Self-Buffs"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Display self-buffs"],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Display self-buffs"],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}]]
-	end
-
 	config.args.filters.args.maxDuration = {
 		order = 16,
 		type = 'range',
@@ -429,9 +251,24 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
 		min = 0, max = 3600, step = 1,
 	}
-	config.args.filters.args.priority = {
+	config.args.filters.args.defaultPriority = {
 		order = 17,
-		name = L["Add filter into Priority"],
+		name = L["Add default filter into Priority"],
+		type = 'select',
+		values = function()
+			filters = {}
+			for filter, value in pairs(E.global.unitframe[(friendlyOnly and 'defaultFiltersSelf' or 'defaultFilters')]) do
+				filters[filter] = filter
+			end
+			return filters
+		end,
+		set = function(info, value)
+			filterPriority('aurabar', groupName, value)
+		end
+	}
+	config.args.filters.args.priority = {
+		order = 18,
+		name = L["Add global filter into Priority"],
 		type = 'select',
 		values = function()
 			filters = {}
@@ -444,19 +281,20 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			filterPriority('aurabar', groupName, value)
 		end
 	}
-	config.args.filters.args.additionalFilterAllowNonPersonal = {
-		order = 18,
-		type = 'toggle',
-		name = L["Additional Filter Override"],
-		desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
+	config.args.filters.args.jumpToFilter = {
+		order = 19,
+		name = L["Filters Page"],
+		desc = L["Shortcut to global filters page"],
+		type = "execute",
+		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
 	config.args.filters.args.spacer1 = {
-		order = 19,
+		order = 20,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 20,
+		order = 21,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
@@ -474,7 +312,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
-			value = match(str, tbl[value])
+			value = match(str, filterValue(tbl[value]))
 			if value then
 				filterPriority('aurabar', groupName, value, true)
 			end
@@ -613,196 +451,24 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		}
 	end
 
-	if friendlyUnitOnly then
-		config.args.filters.args.playerOnly = {
-			order = 10,
-			type = 'toggle',
-			name = L["Block Non-Personal Auras"],
-			desc = L["Don't display auras that are not yours."],
-		}
-		config.args.filters.args.useBlacklist = {
-			order = 11,
-			type = 'toggle',
-			name = L["Block Blacklisted Auras"],
-			desc = L["Don't display any auras found on the 'Blacklist' filter."],
-		}
-		config.args.filters.args.useWhitelist = {
-			order = 12,
-			type = 'toggle',
-			name = L["Allow Whitelisted Auras"],
-			desc = L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-		}
-		config.args.filters.args.noDuration = {
-			order = 13,
-			type = 'toggle',
-			name = L["Block Auras Without Duration"],
-			desc = L["Don't display auras that have no duration."],
-		}
-		config.args.filters.args.onlyDispellable = {
-			order = 14,
-			type = 'toggle',
-			name = L["Block Non-Dispellable Auras"],
-			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
-		}
-
-		config.args.filters.args.bossAuras = {
-			order = 15,
-			type = 'toggle',
-			disabled = true,
-			name = L["Allow Boss Encounter Auras"],
-			desc = L["Allow auras considered to be part of a boss encounter."],
-		}
-	else
-		config.args.filters.args.playerOnly = {
-			order = 10,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Non-Personal Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.friendly = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.enemy = value; updateFunc(UF, groupName, numUnits) end,
-				}
-			},
-		}
-		config.args.filters.args.useBlacklist = {
-			order = 11,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Blacklisted Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.friendly = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.enemy = value; updateFunc(UF, groupName, numUnits) end,
-				}
-			},
-		}
-		config.args.filters.args.useWhitelist = {
-			order = 12,
-			guiInline = true,
-			type = 'group',
-			name = L["Allow Whitelisted Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.friendly = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.enemy = value; updateFunc(UF, groupName, numUnits) end,
-				}
-			},
-		}
-		config.args.filters.args.noDuration = {
-			order = 13,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Auras Without Duration"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.friendly = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.enemy = value; updateFunc(UF, groupName, numUnits) end,
-				}
-			},
-		}
-		config.args.filters.args.onlyDispellable = {
-			order = 13,
-			guiInline = true,
-			type = 'group',
-			name = L["Block Non-Dispellable Auras"],
-			args = {
-				friendly = {
-					order = 2,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				enemy = {
-					order = 3,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy = value; updateFunc(UF, groupName, numUnits) end,
-				}
-			},
-		}
-		config.args.filters.args.bossAuras = {
-			order = 15,
-			type = 'group',
-			guiInline = true,
-			name = L["Allow Boss Encounter Auras"],
-			disabled = true,
-			args = {
-				friendly = {
-					order = 1,
-					type = 'toggle',
-					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Allow auras considered to be part of a boss encounter."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.friendly = value; updateFunc(UF, groupName) end,
-				},
-				enemy = {
-					order = 2,
-					type = 'toggle',
-					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Allow auras considered to be part of a boss encounter."],
-					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.enemy = value; updateFunc(UF, groupName) end,
-				}
-			},
-		}
-	end
-
-	config.args.filters.args.priority = {
+	config.args.filters.args.defaultPriority = {
 		order = 16,
-		name = L["Add filter into Priority"],
+		name = L["Add default filter into Priority"],
+		type = 'select',
+		values = function()
+			filters = {}
+			for filter, value in pairs(E.global.unitframe[(friendlyUnitOnly and 'defaultFiltersSelf' or 'defaultFilters')]) do
+				filters[filter] = filter
+			end
+			return filters
+		end,
+		set = function(info, value)
+			filterPriority(auraType, groupName, value)
+		end
+	}
+	config.args.filters.args.priority = {
+		order = 17,
+		name = L["Add global filter into Priority"],
 		type = 'select',
 		values = function()
 			filters = {}
@@ -815,19 +481,20 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			filterPriority(auraType, groupName, value)
 		end
 	}
-	config.args.filters.args.additionalFilterAllowNonPersonal = {
-		order = 17,
-		type = 'toggle',
-		name = L["Additional Filter Override"],
-		desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
+	config.args.filters.args.jumpToFilter = {
+		order = 18,
+		name = L["Filters Page"],
+		desc = L["Shortcut to global filters page"],
+		type = "execute",
+		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
 	config.args.filters.args.spacer1 = {
-		order = 18,
+		order = 19,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 19,
+		order = 20,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
@@ -845,7 +512,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
-			value = match(str, tbl[value])
+			value = match(str, filterValue(tbl[value]))
 			if value then
 				filterPriority(auraType, groupName, value, true)
 			end

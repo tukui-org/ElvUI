@@ -22,6 +22,30 @@ local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
 end
 
+G.unitframe.defaultFiltersSelf = {
+	['Block Non-Personal'] = true,
+	['Block Blacklisted'] = true,
+	['Allow Whitelisted'] = true,
+	['Block Auras Without Duration'] = true,
+	['Block Non-Dispellable'] = true,
+	['Allow Boss Encounter'] = true,
+};
+
+G.unitframe.defaultFilters = {
+	['Friendly:Block Non-Personal'] = true,
+	['Friendly:Block Blacklisted'] = true,
+	['Friendly:Allow Whitelisted'] = true,
+	['Friendly:Block Auras Without Duration'] = true,
+	['Friendly:Block Non-Dispellable'] = true,
+	['Friendly:Allow Boss Encounter'] = true,
+	['Enemy:Block Non-Personal'] = true,
+	['Enemy:Block Blacklisted'] = true,
+	['Enemy:Allow Whitelisted'] = true,
+	['Enemy:Block Auras Without Duration'] = true,
+	['Enemy:Block Non-Dispellable'] = true,
+	['Enemy:Allow Boss Encounter'] = true,
+};
+
 G.unitframe.aurafilters = {};
 
 --[[
