@@ -90,7 +90,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 				elseif tbl[i] == 'Boss' and isBossDebuff then
 					filterCheck = true
 					break -- STOP
-				elseif tbl[i] == 'noDuration' and noDuration then
+				elseif tbl[i] == 'hasDuration' and noDuration then
 					filterCheck = false
 					break -- STOP
 				elseif tbl[i] == 'Dispellable' and canDispell then
