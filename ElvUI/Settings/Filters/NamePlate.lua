@@ -6,6 +6,10 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
 G["nameplate"] = {
+	["defaultFilters"] = {
+		["PersonalAuras"] = true,
+		["BossAuras"] = true,
+	},
 	["filter"] = {
 		["Army of the Dead Ghoul"] = {
 			['enable'] = true,

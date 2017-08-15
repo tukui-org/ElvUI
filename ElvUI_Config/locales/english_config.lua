@@ -67,22 +67,36 @@ Name Formats:
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
-L["Action"] = true;
-L["Trigger"] = true;
-L["NPC ID"] = true;
-L["Nameplate Type"] = true;
-L["In Combat"] = true;
-L["Not in Combat"] = true;
-L["Must have all Buffs"] = true;
-L["Must have all Debuffs"] = true;
+-- L["Add filter into Priority"] = true; -- REMOVE THIS
+L["Actions"] = true;
+L["Add a buff/debuff to the list."] = true;
+L["Add a buff/debuff to the list."] = true;
 L["Add Buff"] = true;
 L["Add Debuff"] = true;
-L["Auras"] = true;
+L["Add default filter into Priority"] = true;
+L["Add global filter into Priority"] = true;
 L["Current Level"] = true;
-L["Minimum Level"] = true;
-L["Maximum Level"] = true;
-L["Match my level"] = true;
+L["Filters Page"] = true;
+L["Hide Frame"] = true;
+L["If in or out of combat state, pass filter."] = true;
+L["In Combat"] = true;
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
+L["Match my level"] = true;
+L["Maximum Level"] = true;
+L["Minimum Level"] = true;
+L["Must have all of the buffs/debuffs listed in order to pass filter."]= true;
+L["Must Have All"] = true;
+L["Name must but this in order to trigger, set to blank to turn off."] = true;
+L["Nameplate Type"] = true;
+L["NPC ID must but this in order to trigger, set to blank to turn off."] = true;
+L["NPC ID"] = true;
+L["Out Of Combat"] = true;
+L["Remove a buff/debuff from the list."] = true;
+L["Remove a buff/debuff from the list."] = true;
+L["Remove Buff"] = true;
+L["Remove Debuff"] = true;
+L["Shortcut to global filters page"] = true;
+L["Triggers"] = true;
 
 --ActionBars
 L["Action Paging"] = true;
@@ -610,7 +624,6 @@ L["Only load nameplates for units within this range."] = true;
 L["Only Show Target"] = true;
 L["Personal Auras"] = true
 L["Add into Priority"] = true;
-L["Add filter into Priority"] = true;
 L["Filter Priority"] = true;
 L["Player Nameplate"] = true;
 L["PLAYER"] = "Player"
