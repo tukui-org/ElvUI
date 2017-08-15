@@ -898,14 +898,14 @@ local function GetUnitSettings(unit, name)
 								type = "range",
 								name = L["Minimum Duration"],
 								desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
-								min = 0, max = 3000, step = 1,
+								min = 0, max = 10800, step = 1,
 							},
 							maxDuration = {
 								order = 2,
 								type = "range",
 								name = L["Maximum Duration"],
 								desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
-								min = 5, max = 3000, step = 1,
+								min = 0, max = 10800, step = 1,
 							},
 							jumpToFilter = {
 								order = 3,
@@ -1041,14 +1041,14 @@ local function GetUnitSettings(unit, name)
 								type = "range",
 								name = L["Minimum Duration"],
 								desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
-								min = 0, max = 3000, step = 1,
+								min = 0, max = 10800, step = 1,
 							},
 							maxDuration = {
 								order = 2,
 								type = "range",
 								name = L["Maximum Duration"],
 								desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
-								min = 5, max = 3000, step = 1,
+								min = 0, max = 10800, step = 1,
 							},
 							jumpToFilter = {
 								order = 3,
