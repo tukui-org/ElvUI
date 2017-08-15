@@ -1378,7 +1378,8 @@ function E:DBConversions()
 		E.global.unitframe.aurafilters[filter].type = filterType
 	end
 
-	--Convert the old "Additional Filter" option to the new priority system
+	--[[Convert the old "Additional Filter" option to the new priority system
+		--THIS NEEDS TO BE REWORKED TO CONVERT THE OLD SYSTEM TO THE NEW ONE
 	for index, unit in ipairs(filterConversionUnits) do
 		local buffs = E.db.unitframe.units[unit].buffs
 		local debuffs = E.db.unitframe.units[unit].debuffs
@@ -1398,7 +1399,7 @@ function E:DBConversions()
 			E.db.unitframe.units[unit].aurabar.priority = aurabar.useFilter
 			E.db.unitframe.units[unit].aurabar.useFilter = nil
 		end
-	end
+	end]]
 end
 
 local CPU_USAGE = {}
