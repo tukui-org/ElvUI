@@ -625,7 +625,6 @@ L["When enabled the nameplate will stay visible in a locked position."] = true;
 
 L["Actions"] = true;
 L["Add a buff/debuff to the list."] = true;
-L["Add a buff/debuff to the list."] = true;
 L["Add Buff"] = true;
 L["Add Debuff"] = true;
 L["Add default filter into Priority"] = true;
@@ -646,7 +645,6 @@ L["Nameplate Type"] = true;
 L["NPC ID must but this in order to trigger, set to blank to turn off."] = true;
 L["NPC ID"] = true;
 L["Out Of Combat"] = true;
-L["Remove a buff/debuff from the list."] = true;
 L["Remove a buff/debuff from the list."] = true;
 L["Remove Buff"] = true;
 L["Remove Debuff"] = true;
