@@ -905,13 +905,20 @@ local function GetUnitSettings(unit, name)
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							spacer1 = {
+							jumpToFilter = {
 								order = 3,
+								name = L["Filters Page"],
+								desc = L["Shortcut to global filters page"],
+								type = "execute",
+								func = function() ACD:SelectGroup("ElvUI", "filters") end,
+							},
+							spacer1 = {
+								order = 4,
 								type = "description",
 								name = " ",
 							},
 							defaultFilter = {
-								order = 4,
+								order = 5,
 								type = "select",
 								name = L["Add default filter into Priority"],
 								values = function()
@@ -926,7 +933,7 @@ local function GetUnitSettings(unit, name)
 								end
 							},
 							filter = {
-								order = 5,
+								order = 6,
 								type = "select",
 								name = L["Add global filter into Priority"],
 								values = function()
@@ -940,20 +947,22 @@ local function GetUnitSettings(unit, name)
 									filterPriority('buffs', unit, value)
 								end
 							},
-							jumpToFilter = {
-								order = 6,
-								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+							resetPriority = {
+								order = 7,
+								name = L["Reset Priority"],
+								desc = L["Reset filter priority to the default state."],
 								type = "execute",
-								func = function() ACD:SelectGroup("ElvUI", "filters") end,
+								func = function()
+									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
+								end,
 							},
 							spacer3 = {
-								order = 7,
+								order = 8,
 								type = "description",
 								name = " ",
 							},
 							filterPriority = {
-								order = 8,
+								order = 9,
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()
@@ -1037,13 +1046,20 @@ local function GetUnitSettings(unit, name)
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							spacer1 = {
+							jumpToFilter = {
 								order = 3,
+								name = L["Filters Page"],
+								desc = L["Shortcut to global filters page"],
+								type = "execute",
+								func = function() ACD:SelectGroup("ElvUI", "filters") end,
+							},
+							spacer1 = {
+								order = 4,
 								type = "description",
 								name = " ",
 							},
 							defaultFilter = {
-								order = 4,
+								order = 5,
 								type = "select",
 								name = L["Add default filter into Priority"],
 								values = function()
@@ -1058,7 +1074,7 @@ local function GetUnitSettings(unit, name)
 								end
 							},
 							filter = {
-								order = 5,
+								order = 6,
 								type = "select",
 								name = L["Add global filter into Priority"],
 								values = function()
@@ -1072,20 +1088,22 @@ local function GetUnitSettings(unit, name)
 									filterPriority('debuffs', unit, value)
 								end
 							},
-							jumpToFilter = {
-								order = 6,
-								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+							resetPriority = {
+								order = 7,
+								name = L["Reset Priority"],
+								desc = L["Reset filter priority to the default state."],
 								type = "execute",
-								func = function() ACD:SelectGroup("ElvUI", "filters") end,
+								func = function()
+									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
+								end,
 							},
 							spacer3 = {
-								order = 7,
+								order = 8,
 								type = "description",
 								name = " ",
 							},
 							filterPriority = {
-								order = 8,
+								order = 9,
 								type = "multiselect",
 								name = L["Filter Priority"],
 								values = function()

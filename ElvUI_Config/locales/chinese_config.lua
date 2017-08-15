@@ -661,6 +661,8 @@ L["Remove Buff"] = true;
 L["Remove Debuff"] = true;
 L["Shortcut to global filters page"] = true;
 L["Triggers"] = true;
+L["Reset Priority"] = true;
+L["Reset filter priority to the default state."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "选择导出格式"

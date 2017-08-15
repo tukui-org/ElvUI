@@ -296,13 +296,22 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			filterPriority('aurabar', groupName, value)
 		end
 	}
-	config.args.filters.args.spacer1 = {
+	config.args.filters.args.resetPriority = {
 		order = 21,
+		name = L["Reset Priority"],
+		desc = L["Reset filter priority to the default state."],
+		type = "execute",
+		func = function()
+			E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
+		end,
+	}
+	config.args.filters.args.spacer1 = {
+		order = 22,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 22,
+		order = 23,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
@@ -510,13 +519,22 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			filterPriority(auraType, groupName, value)
 		end
 	}
-	config.args.filters.args.spacer1 = {
+	config.args.filters.args.resetPriority = {
 		order = 21,
+		name = L["Reset Priority"],
+		desc = L["Reset filter priority to the default state."],
+		type = "execute",
+		func = function()
+			E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
+		end,
+	}
+	config.args.filters.args.spacer1 = {
+		order = 22,
 		type = "description",
 		name = " ",
 	}
 	config.args.filters.args.filterPriority = {
-		order = 22,
+		order = 23,
 		type = "multiselect",
 		name = L["Filter Priority"],
 		values = function()
