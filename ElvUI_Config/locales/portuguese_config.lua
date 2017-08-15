@@ -634,6 +634,36 @@ L["Use Target Scale"] = true;
 L["Use Threat Color"] = true;
 L["When enabled the nameplate will stay visible in a locked position."] = true;
 
+L["Actions"] = true;
+L["Add a buff/debuff to the list."] = true;
+L["Add a buff/debuff to the list."] = true;
+L["Add Buff"] = true;
+L["Add Debuff"] = true;
+L["Add default filter into Priority"] = true;
+L["Add global filter into Priority"] = true;
+L["Current Level"] = true;
+L["Filters Page"] = true;
+L["Hide Frame"] = true;
+L["If in or out of combat state, pass filter."] = true;
+L["In Combat"] = true;
+L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
+L["Match my level"] = true;
+L["Maximum Level"] = true;
+L["Minimum Level"] = true;
+L["Must have all of the buffs/debuffs listed in order to pass filter."]= true;
+L["Must Have All"] = true;
+L["Name must but this in order to trigger, set to blank to turn off."] = true;
+L["Nameplate Type"] = true;
+L["NPC ID must but this in order to trigger, set to blank to turn off."] = true;
+L["NPC ID"] = true;
+L["Out Of Combat"] = true;
+L["Remove a buff/debuff from the list."] = true;
+L["Remove a buff/debuff from the list."] = true;
+L["Remove Buff"] = true;
+L["Remove Debuff"] = true;
+L["Shortcut to global filters page"] = true;
+L["Triggers"] = true;
+
 --Profiles Export/Import
 L["Choose Export Format"] = true;
 L["Choose What To Export"] = true;
