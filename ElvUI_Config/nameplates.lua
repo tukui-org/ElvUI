@@ -215,6 +215,9 @@ local function UpdateFilterGroup()
 						type = 'input',
 						get = function(info) return "" end,
 						set = function(info, value)
+							if match(value, "^[%s%p]-$") then
+								return
+							end
 							if tonumber(value) then
 								local spellName = GetSpellInfo(value)
 								if spellName then
@@ -290,6 +293,9 @@ local function UpdateFilterGroup()
 						type = 'input',
 						get = function(info) return "" end,
 						set = function(info, value)
+							if match(value, "^[%s%p]-$") then
+								return
+							end
 							if tonumber(value) then
 								local spellName = GetSpellInfo(value)
 								if spellName then
@@ -1944,6 +1950,10 @@ E.Options.args.nameplate = {
 					name = L["Add Name"],
 					get = function(info) return "" end,
 					set = function(info, value)
+						if match(value, "^[%s%p]-$") then
+							return
+						end
+
 						if E.global['nameplate']['filter'][value] then
 							E:Print(L["Filter already exists!"])
 							return
@@ -2008,6 +2018,10 @@ E.Options.args.nameplate = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
+						if match(value, "^[%s%p]-$") then
+							return
+						end
+
 						if E.global['nameplate']['filters'][value] then
 							E:Print(L["Filter already exists!"])
 							return
