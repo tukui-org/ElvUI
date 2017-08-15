@@ -249,7 +249,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		order = 16,
 		type = 'range',
 		name = L["Minimum Duration"],
-		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
 		min = 0, max = 3600, step = 1,
 	}
 	config.args.filters.args.maxDuration = {
@@ -472,7 +472,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		order = 16,
 		type = 'range',
 		name = L["Minimum Duration"],
-		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
 		min = 0, max = 3600, step = 1,
 	}
 	config.args.filters.args.maxDuration = {

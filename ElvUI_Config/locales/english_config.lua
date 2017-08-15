@@ -881,6 +881,7 @@ L["Display the rested icon on the unitframe."] = true;
 L["Display the target of your current cast. Useful for mouseover casts."] = true;
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = true;
 L["Don't display any auras found on the 'Blacklist' filter."] = true;
+L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are not yours."] = true;
 L["Don't display auras that cannot be purged or dispelled by your class."] = true;

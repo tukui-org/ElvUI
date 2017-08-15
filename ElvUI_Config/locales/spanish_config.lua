@@ -891,6 +891,7 @@ L["Display the rested icon on the unitframe."] = "Muestra el icono de descansado
 L["Display the target of your current cast. Useful for mouseover casts."] = "Muestra el objetivo de tu hechizo actual. Es útil para hechizos por ratón."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Muestra las marcas de cada tick en la barra de lanzamiento para los hechizos canalizados. Esto se ajustará automáticamente con base en el hechizo y la celeridad."
 L["Don't display any auras found on the 'Blacklist' filter."] = "No mostrar auras encontradas en el filtro 'Lista Negra'."
+L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are not yours."] = "No mostrar auras que no sean tuyas."
 L["Don't display auras that cannot be purged or dispelled by your class."] = "No mostrar auras que no puedan ser purgadas o disipadas por tu clase."

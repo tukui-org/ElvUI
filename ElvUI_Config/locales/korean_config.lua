@@ -940,6 +940,7 @@ L["Display the rested icon on the unitframe."] = "휴식 아이콘을 표시할�
 L["Display the target of your current cast. Useful for mouseover casts."] = "현재 캐스팅중인 기술의 목표를 기술명에 표기합니다. 마우스오버로 기술을 시전할 때 대상을 파악하기 좋습니다."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "시전바에 시전되는 주문의 틱을 표시합니다. 영혼 흡수나 가속이 추가되는 주문에 따라 틱이 자동 조절됩니다."
 L["Don't display any auras found on the 'Blacklist' filter."] = "차단 목록에 등록되어 있는 효과들을 표시하지 않게 합니다."
+L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "이 값보다 긴 시간(초단위)의 효과들을 표시하지 않습니다.|n|n0으로 설정하면 이 기능을 사용하지 않습니다."
 L["Don't display auras that are not yours."] = "플레이어가 직접 건 것이 아닌 효과들을 표시하지 않게 합니다."
 L["Don't display auras that cannot be purged or dispelled by your class."] = "플레이어가 직접 끄거나 해제할 수 없는 종류의 효과들을 표시하지 않게 합니다."

@@ -892,6 +892,7 @@ L["Display the rested icon on the unitframe."] = "Afficher l'icône reposé sur 
 L["Display the target of your current cast. Useful for mouseover casts."] = "Afficher la cible de votre incantation en courts. UTile pour les incantations en survol de souris."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Affichage des marques de graduation (ticks) sur la barre de lancement de sort. Cela s'ajustera automatiquement pour les sorts comme Drain d'âme qui est basé sur la Hâte."
 L["Don't display any auras found on the 'Blacklist' filter."] = "Ne pas afficher les auras trouvés dans la 'Liste noire' du filtre."
+L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = true;
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "Ne pas afficher les auras qui dépassent cette durée (en secondes). Mettre 0 pour désactiver";
 L["Don't display auras that are not yours."] = "Ne pas afficher les auras qui ne sont pas les votres."
 L["Don't display auras that cannot be purged or dispelled by your class."] = "Ne pas afficher les auras qui ne peuvent pas être purgé ou dissipé votre classe." ;
