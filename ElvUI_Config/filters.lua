@@ -5,12 +5,13 @@ local selectedSpell;
 local selectedFilter;
 local filters;
 local type = type
-local tinsert = table.insert
 local pairs = pairs
 local tonumber = tonumber
 local tostring = tostring
-local format = string.format
+local gsub = string.gsub
 local match = string.match
+local format = string.format
+local tinsert = table.insert
 local UNKNOWN = UNKNOWN
 local NONE = NONE
 local GetSpellInfo = GetSpellInfo
@@ -18,6 +19,44 @@ local GetSpellInfo = GetSpellInfo
 -- GLOBALS: MAX_PLAYER_LEVEL
 -- GLOBALS: selectedFolder
 --  what is selectedFolder?
+
+local function filterValue(value)
+	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+end
+
+local function filterMatch(s,v)
+	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
+	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
+end
+
+local function removePriority(value)
+	if not value then return end
+	local x,y,z=E.db.unitframe.units,E.db.nameplates.units;
+	for n, t in pairs(x) do
+		if t and t.buffs and t.buffs.priority then
+			z = filterMatch(t.buffs.priority, filterValue(value))
+			if z then E.db.unitframe.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
+		end
+		if t and t.debuffs and t.debuffs.priority then
+			z = filterMatch(t.debuffs.priority, filterValue(value))
+			if z then E.db.unitframe.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
+		end
+		if t and t.aurabar and t.aurabar.priority then
+			z = filterMatch(t.aurabar.priority, filterValue(value))
+			if z then E.db.unitframe.units[n].aurabar.priority = gsub(t.aurabar.priority, z, "") end
+		end
+	end
+	for n, t in pairs(y) do
+		if t and t.buffs and t.buffs.priority then
+			z = filterMatch(t.buffs.priority, filterValue(value))
+			if z then E.db.nameplates.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
+		end
+		if t and t.debuffs and t.debuffs.priority then
+			z = filterMatch(t.debuffs.priority, filterValue(value))
+			if z then E.db.nameplates.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
+		end
+	end
+end
 
 local function UpdateFilterGroup()
 	--Prevent errors when choosing a new filter, by doing a reset of the groups
@@ -1128,10 +1167,11 @@ E.Options.args.filters = {
 			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 			get = function(info) return "" end,
 			set = function(info, value)
-				if G['unitframe']['aurafilters'][value] then
+				if G.unitframe.aurafilters[value] then
 					E:Print(L["You can't remove a pre-existing filter."])
 				else
 					E.global.unitframe['aurafilters'][value] = nil;
+					removePriority(value); --This will wipe a filter from the new aura system profile settings.
 					selectedFilter = nil;
 					selectedSpell = nil;
 					E.Options.args.filters.args.filterGroup = nil;

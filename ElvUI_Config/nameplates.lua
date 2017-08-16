@@ -35,18 +35,14 @@ end
 
 local function filterPriority(auraType, unit, value, remove)
 	if not auraType or not value then return end
-	local str = E.db.nameplates.units[unit][auraType].filters.priority
-	local val = filterValue(value)
-	local found = filterMatch(str, val)
-	if not str then return end
-	if found then
-		if remove then
-			E.db.nameplates.units[unit][auraType].filters.priority = gsub(str, found, "")
-			return
-		end
-		return
+	local filter = E.db.nameplates.units[unit] and E.db.nameplates.units[unit][auraType] and E.db.nameplates.units[unit][auraType].filters and E.db.nameplates.units[unit][auraType].filters.priority
+	if not filter then return end
+	local found = filterMatch(filter, filterValue(value))
+	if found and remove then
+		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
+	elseif not found and not remove then
+		E.db.nameplates.units[unit][auraType].filters.priority = (filter == '' and value) or (filter..","..value)
 	end
-	E.db.nameplates.units[unit][auraType].filters.priority = (str == '' and value) or (str..","..value)
 end
 
 local function UpdateFilterGroup()
@@ -982,10 +978,7 @@ local function GetUnitSettings(unit, name)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
-									value = match(str, filterValue(tbl[value]))
-									if value then
-										filterPriority('buffs', unit, value, true)
-									end
+									filterPriority('buffs', unit, tbl[value], true)
 								end,
 							},
 						},
@@ -1125,10 +1118,7 @@ local function GetUnitSettings(unit, name)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
-									value = match(str, filterValue(tbl[value]))
-									if value then
-										filterPriority('debuffs', unit, value, true)
-									end
+									filterPriority('debuffs', unit, tbl[value], true)
 								end,
 							},
 						},

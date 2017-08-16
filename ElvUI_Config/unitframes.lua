@@ -110,18 +110,14 @@ end
 
 local function filterPriority(auraType, groupName, value, remove)
 	if not auraType or not value then return end
-	local str = E.db.unitframe.units[groupName][auraType].priority
-	local val = filterValue(value)
-	local found = filterMatch(str, val)
-	if not str then return end
-	if found then
-		if remove then
-			E.db.unitframe.units[groupName][auraType].priority = gsub(str, found, "")
-			return
-		end
-		return
+	local filter = E.db.unitframe.units[groupName] and E.db.unitframe.units[groupName][auraType] and E.db.unitframe.units[groupName][auraType].priority
+	if not filter then return end
+	local found = filterMatch(filter, filterValue(value))
+	if found and remove then
+		E.db.unitframe.units[groupName][auraType].priority = gsub(filter, found, "")
+	elseif not found and not remove then
+		E.db.unitframe.units[groupName][auraType].priority = (filter == '' and value) or (filter..","..value)
 	end
-	E.db.unitframe.units[groupName][auraType].priority = (str == '' and value) or (str..","..value)
 end
 
 -----------------------------------------------------------------------
@@ -329,10 +325,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
-			value = match(str, filterValue(tbl[value]))
-			if value then
-				filterPriority('aurabar', groupName, value, true)
-			end
+			filterPriority('aurabar', groupName, tbl[value], true)
 		end,
 	}
 
@@ -552,10 +545,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
-			value = match(str, filterValue(tbl[value]))
-			if value then
-				filterPriority(auraType, groupName, value, true)
-			end
+			filterPriority(auraType, groupName, tbl[value], true)
 		end,
 	}
 
