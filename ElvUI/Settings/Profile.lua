@@ -312,7 +312,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -322,7 +322,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -371,7 +371,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -381,7 +381,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -431,7 +431,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -441,7 +441,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -492,7 +492,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -502,7 +502,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			["name"] = {
@@ -550,7 +550,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -560,7 +560,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			['eliteIcon'] = {
@@ -613,7 +613,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,TurtleBuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,TurtleBuffs'
 				},
 			},
 			['debuffs'] = {
@@ -623,7 +623,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 120,
-					['priority'] = 'Personal,Boss,CCDebuffs'
+					['priority'] = 'blockNoDuration,Personal,Boss,CCDebuffs'
 				},
 			},
 			['eliteIcon'] = {
@@ -1962,7 +1962,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 120,
-				['priority'] = 'Personal,Whitelist,TurtleBuffs',
+				['priority'] = 'blockNoDuration,Personal,Whitelist,TurtleBuffs',
 				['sizeOverride'] = 27,
 				['xOffset'] = 0,
 				['yOffset'] = 16,
@@ -1979,7 +1979,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 120,
-				['priority'] = 'Personal,Whitelist,CCDebuffs',
+				['priority'] = 'blockNoDuration,Personal,Whitelist,CCDebuffs',
 				['sizeOverride'] = 27,
 				['xOffset'] = 0,
 				['yOffset'] = -16,
