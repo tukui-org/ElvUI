@@ -33,25 +33,25 @@ local function removePriority(value)
 	if not value then return end
 	local x,y,z=E.db.unitframe.units,E.db.nameplates.units;
 	for n, t in pairs(x) do
-		if t and t.buffs and t.buffs.priority then
+		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= "" then
 			z = filterMatch(t.buffs.priority, filterValue(value))
 			if z then E.db.unitframe.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
 		end
-		if t and t.debuffs and t.debuffs.priority then
+		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= "" then
 			z = filterMatch(t.debuffs.priority, filterValue(value))
 			if z then E.db.unitframe.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
 		end
-		if t and t.aurabar and t.aurabar.priority then
+		if t and t.aurabar and t.aurabar.priority and t.aurabar.priority ~= "" then
 			z = filterMatch(t.aurabar.priority, filterValue(value))
 			if z then E.db.unitframe.units[n].aurabar.priority = gsub(t.aurabar.priority, z, "") end
 		end
 	end
 	for n, t in pairs(y) do
-		if t and t.buffs and t.buffs.priority then
+		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= "" then
 			z = filterMatch(t.buffs.priority, filterValue(value))
 			if z then E.db.nameplates.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
 		end
-		if t and t.debuffs and t.debuffs.priority then
+		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= "" then
 			z = filterMatch(t.debuffs.priority, filterValue(value))
 			if z then E.db.nameplates.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
 		end
