@@ -407,7 +407,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.buffs.yOffset = -6
 			E.db.unitframe.units.raid.buffs.clickThrough = true
 			E.db.unitframe.units.raid.buffs.perrow = 1
-			E.db.unitframe.units.raid.buffs.priority = 'Boss,TurtleBuffs' --Default='Personal,Boss,Blacklist,blockNoDuration'
 			E.db.unitframe.units.raid.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid.buffs.enable = true
 			E.db.unitframe.units.raid.growthDirection = "LEFT_UP"
@@ -425,7 +424,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.buffs.yOffset = -6
 			E.db.unitframe.units.party.buffs.clickThrough = true
 			E.db.unitframe.units.party.buffs.perrow = 1
-			E.db.unitframe.units.party.buffs.priority = 'Boss,TurtleBuffs' --Default='Personal,Boss,Blacklist,blockNoDuration'
 			E.db.unitframe.units.party.buffs.sizeOverride = 22
 			E.db.unitframe.units.party.buffs.enable = true
 			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
@@ -669,7 +667,6 @@ local function SetupAuras(style)
 		--PLAYER
 		E.db.unitframe.units.player.buffs.enable = true
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
-		E.db.unitframe.units.player.buffs.priority = "Personal,Whitelist,Blacklist" --Default='Personal,Whitelist,Blacklist,blockNoDuration'
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
 		E.db.unitframe.units.player.aurabar.enable = false
 		E:GetModule('UnitFrames'):CreateAndUpdateUF("player")

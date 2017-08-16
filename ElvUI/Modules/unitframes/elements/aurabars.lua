@@ -194,11 +194,11 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
 
 	if name then
+		noDuration = (not duration or duration == 0)
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		allowDuration = duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration)
-		noDuration = (not duration or duration == 0)
+		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 	else
 		return nil
 	end
@@ -220,7 +220,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 						spellList = filters[filterName].spells
 						spell = spellList and (spellList[spellID] or spellList[name])
 
-						if filterType and filterType == 'Whitelist' and spell and spell.enable then
+						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
 							filterCheck = true
 							break -- STOP: allowing whistlisted spell
 						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
@@ -230,13 +230,16 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					elseif filterName == 'Personal' and isPlayer and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'Boss' and isBossDebuff then
+					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
 						break -- STOP
-					elseif filterName == 'Dispellable' and canDispell then
+					elseif filterName == 'Dispellable' and canDispell and allowDuration then
 						filterCheck = true
 						break -- STOP
 					end

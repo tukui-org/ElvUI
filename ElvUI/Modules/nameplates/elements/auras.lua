@@ -46,22 +46,15 @@ function mod:HideAuraIcons(auras)
 	end
 end
 
---Allow certain auras with a duration of 0
-local durationOverride = {
-	[146739] = true, -- Absolute Corruption (Warlock)
-	[197637] = true, -- Starfall (Druid)
-	[203981] = true, -- Soul fragments (Demon Hunter)
-}
-
 function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false
 
 	if name then
+		noDuration = (not duration or duration == 0)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = duration and (duration > 0) and (maxDuration == 0 or durationOverride[spellID] or duration <= maxDuration) and (minDuration == 0 or duration >= minDuration)
-		noDuration = (not duration or duration == 0)
+		allowDuration = noDuration or (duration and (duration > 0) and (maxDuration == 0 or duration <= maxDuration) and (minDuration == 0 or duration >= minDuration))
 	else
 		return nil
 	end
@@ -77,7 +70,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 					spellList = filters[tbl[i]].spells
 					spell = spellList and (spellList[spellID] or spellList[name])
 
-					if filterType and filterType == 'Whitelist' and spell and spell.enable then
+					if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
 						filterCheck = true
 						break -- STOP: allowing whistlisted spell
 					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
@@ -87,13 +80,16 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 				elseif tbl[i] == 'Personal' and isPlayer and allowDuration then
 					filterCheck = true
 					break -- STOP
-				elseif tbl[i] == 'Boss' and isBossDebuff then
+				elseif tbl[i] == 'nonPersonal' and not isPlayer and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif tbl[i] == 'Boss' and isBossDebuff and allowDuration then
 					filterCheck = true
 					break -- STOP
 				elseif tbl[i] == 'blockNoDuration' and noDuration then
 					filterCheck = false
 					break -- STOP
-				elseif tbl[i] == 'Dispellable' and canDispell then
+				elseif tbl[i] == 'Dispellable' and canDispell and allowDuration then
 					filterCheck = true
 					break -- STOP
 				end
