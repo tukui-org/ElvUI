@@ -664,9 +664,9 @@ L["Shortcut to global filters page"] = "Schnellzugriff "
 L["Triggers"] = "Auslöser"
 L["Reset Priority"] = "Setze die Priorität zurück"
 L["Reset filter priority to the default state."] = "Setze die Filter Priorität auf Standard zurück."
-L["Style One"] = true;
-L["Style Two"] = true;
-L["Target Glow Color"] = true;
+L["Style One"] = "Stil 1"
+L["Style Two"] = "Stil 2"
+L["Target Glow Color"] = "Zielglühen Farbe"
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"
