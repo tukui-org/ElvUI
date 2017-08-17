@@ -4,10 +4,13 @@ local NP = E:GetModule('NamePlates')
 local selectedNameplateFilter
 local filters
 
+local tonumber = tonumber
+local GetSpellInfo = GetSpellInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL = LEVEL
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local NONE = NONE
+-- GLOBALS: MAX_PLAYER_LEVEL
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
@@ -1617,20 +1620,8 @@ E.Options.args.nameplate = {
 										['style2'] = L["Style Two"]
 									},
 								},
-								alwaysShowTargetHealth = {
-									order = 2,
-									type = "toggle",
-									name = L["Always Show Target Health"],
-									width = "double",
-								},
-								useTargetScale = {
-									order = 3,
-									type = "toggle",
-									name = L["Use Target Scale"],
-									desc = L["Enable/Disable the scaling of targetted nameplates."],
-								},
 								targetScale = {
-									order = 4,
+									order = 2,
 									type = "range",
 									isPercent = true,
 									name = L["Target Scale"],
@@ -1639,12 +1630,40 @@ E.Options.args.nameplate = {
 									disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 								},
 								nonTargetTransparency = {
-									order = 5,
+									order = 3,
 									type = "range",
 									isPercent = true,
 									name = L["Non-Target Transparency"],
 									desc = L["Set the transparency level of nameplates that are not the target nameplate."],
 									min = 0, max = 1, step = 0.01,
+								},
+								glowColor = {
+									name = L["Target Glow Color"],
+									type = 'color',
+									order = 4,
+									hasAlpha = true,
+									get = function(info)
+										local t = E.db.nameplates.glowColor
+										local d = P.nameplates.glowColor
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+									end,
+									set = function(info, r, g, b, a)
+										local t = E.db.nameplates.glowColor
+										t.r, t.g, t.b, t.a = r, g, b, a
+										NP:ConfigureAll()
+									end,
+								},
+								useTargetScale = {
+									order = 5,
+									type = "toggle",
+									name = L["Use Target Scale"],
+									desc = L["Enable/Disable the scaling of targetted nameplates."],
+								},
+								alwaysShowTargetHealth = {
+									order = 6,
+									type = "toggle",
+									name = L["Always Show Target Health"],
+									width = "double",
 								},
 							},
 						},

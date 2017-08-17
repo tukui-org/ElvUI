@@ -3,6 +3,9 @@ local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3
 
 --Cache global variables
 --Lua functions
+local select = select
+local next = next
+local strsplit = strsplit
 local pairs, type = pairs, type
 local twipe = table.wipe
 local format, match = string.format, string.match
@@ -38,6 +41,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
+local UnitGUID = UnitGUID
+local UnitLevel = UnitLevel
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 

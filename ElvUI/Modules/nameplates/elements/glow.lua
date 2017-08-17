@@ -12,9 +12,9 @@ local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
 	if(not frame.HealthBar:IsShown()) then return end
-	local scale, r, g, b, shouldShow = 0;
+	local scale, r, g, b, a, shouldShow = 1;
 	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
-		r, g, b = 1, 1, 1
+		r, g, b, a = self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a
 		shouldShow = true
 	else
 		-- Use color based on the type of unit (neutral, etc.)
@@ -22,9 +22,9 @@ function mod:UpdateElement_Glow(frame)
 		local perc = health/maxHealth
 		if perc <= self.db.lowHealthThreshold then
 			if perc <= self.db.lowHealthThreshold / 2 then
-				r, g, b = 1, 0, 0
+				r, g, b, a = 1, 0, 0, 1
 			else
-				r, g, b = 1, 1, 0
+				r, g, b, a = 1, 1, 0, 1
 			end
 
 			shouldShow = true
@@ -48,10 +48,10 @@ function mod:UpdateElement_Glow(frame)
 			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, -E:Scale(20*scale), E:Scale(10*scale))
 			frame.Glow2:SetPoint("BOTTOMRIGHT", frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
 		end
-		if ( (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b) ) then
-			frame.Glow:SetBackdropBorderColor(r, g, b);
-			frame.Glow2:SetVertexColor(r, g, b, 1);
-			frame.Glow.r, frame.Glow.g, frame.Glow.b = r, g, b;
+		if (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b or a ~= frame.Glow.a) then
+			frame.Glow:SetBackdropBorderColor(r, g, b, a);
+			frame.Glow2:SetVertexColor(r, g, b, a);
+			frame.Glow.r, frame.Glow.g, frame.Glow.b, frame.Glow.a = r, g, b, a;
 		end
 		frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
 	else

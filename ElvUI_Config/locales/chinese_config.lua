@@ -663,6 +663,9 @@ L["Shortcut to global filters page"] = true;
 L["Triggers"] = true;
 L["Reset Priority"] = true;
 L["Reset filter priority to the default state."] = true;
+L["Style One"] = true;
+L["Style Two"] = true;
+L["Target Glow Color"] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "选择导出格式"
