@@ -1484,8 +1484,8 @@ E.Options.args.nameplate = {
 		filtersShortcut = {
 			order = 21,
 			type = "execute",
-			name = L["Filters"],
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filter") end,
+			name = L["Style Filter"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
 		},
 		generalGroup = {
 			order = 22,
