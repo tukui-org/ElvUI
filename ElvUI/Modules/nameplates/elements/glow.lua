@@ -11,7 +11,12 @@ local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
-	if(not frame.HealthBar:IsShown()) then return end
+	if not frame.HealthBar:IsShown() then
+		if frame.Glow:IsShown() then frame.Glow:Hide() end
+		if frame.Glow2:IsShown() then frame.Glow2:Hide() end
+		return
+	end
+
 	local scale, r, g, b, a, shouldShow = 1;
 	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
 		r, g, b, a = self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a
