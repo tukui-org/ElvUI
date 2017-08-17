@@ -37,17 +37,19 @@ function mod:UpdateElement_Name(frame)
 			r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
 		else
 			r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
-		end	
-		
+		end
+
 		frame.Name:SetTextColor(r, g, b)
 	else
 		frame.Name:SetTextColor(1, 1, 1)
 	end
+
+	frame.Name.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
 end
 
 function mod:ConfigureElement_Name(frame)
 	local name = frame.Name
-	
+
 	name:SetJustifyH("LEFT")
 	name:SetJustifyV("BOTTOM")
 	name:ClearAllPoints()
@@ -59,7 +61,7 @@ function mod:ConfigureElement_Name(frame)
 		name:SetJustifyH("CENTER")
 		name:SetPoint("TOP", frame, "CENTER")
 	end
-	
+
 	name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
@@ -69,7 +71,6 @@ function mod:ConstructElement_Name(frame)
 
 	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
 	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
-	g:SetVertexColor(.3, .7, 1, 1)
 	g:Hide()
 	g:SetPoint("TOPLEFT", name, -20, 8)
 	g:SetPoint("BOTTOMRIGHT", name, 20, -8)
