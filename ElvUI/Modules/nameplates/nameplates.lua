@@ -587,7 +587,9 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			inCombat = UnitAffectingCombat("player")
-			if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
+			if not (tr.inCombat and tr.outOfCombat) then --ignore if both are checked (same as both unchecked)
+				if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
+			end
 
 			level = UnitLevel(frame.displayedUnit)
 			if tr.level and level then

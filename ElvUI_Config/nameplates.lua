@@ -1605,16 +1605,23 @@ E.Options.args.nameplate = {
 							get = function(info) return E.db.nameplates[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
 							args = {
-								alwaysShowTargetHealth = {
+								targetGlow = {
 									order = 1,
+									type = "select",
+									name = L["Use Target Glow"],
+									get = function(info) return E.db.nameplates.targetGlow end,
+									set = function(info, value) E.db.nameplates.targetGlow = value; NP:ConfigureAll() end,
+									values = {
+										['none'] = NONE,
+										['style1'] = L["Style One"],
+										['style2'] = L["Style Two"]
+									},
+								},
+								alwaysShowTargetHealth = {
+									order = 2,
 									type = "toggle",
 									name = L["Always Show Target Health"],
 									width = "double",
-								},
-								useTargetGlow = {
-									order = 2,
-									type = "toggle",
-									name = L["Use Target Glow"],
 								},
 								useTargetScale = {
 									order = 3,
@@ -1964,7 +1971,6 @@ E.Options.args.nameplate = {
 					name = L["Select Nameplate Filter"],
 					type = 'select',
 					order = 3,
-					--guiInline = true,
 					get = function(info) return selectedNameplateFilter end,
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()

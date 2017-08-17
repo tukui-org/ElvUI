@@ -12,8 +12,8 @@ local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
 	if(not frame.HealthBar:IsShown()) then return end
-	local r, g, b, shouldShow;
-	if (UnitIsUnit(frame.unit, "target") and self.db.useTargetGlow) then
+	local scale, r, g, b, shouldShow = 0;
+	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
 		r, g, b = 1, 1, 1
 		shouldShow = true
 	else
@@ -32,14 +32,31 @@ function mod:UpdateElement_Glow(frame)
 	end
 
 	if(shouldShow) then
-		frame.Glow:Show()
+		if self.db.targetGlow == "style1" then
+			frame.Glow:Show()
+			if frame.Glow2:IsShown() then frame.Glow2:Hide() end
+		elseif self.db.targetGlow == "none" or self.db.targetGlow == "style2" then
+			frame.Glow2:Show()
+			if frame.Glow:IsShown() then frame.Glow:Hide() end
+			if self.db.useTargetScale then
+				if self.db.targetScale >= 0.75 then
+					scale = self.db.targetScale
+				else
+					scale = 0.75
+				end
+			end
+			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, -E:Scale(20*scale), E:Scale(10*scale))
+			frame.Glow2:SetPoint("BOTTOMRIGHT", frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
+		end
 		if ( (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b) ) then
 			frame.Glow:SetBackdropBorderColor(r, g, b);
+			frame.Glow2:SetVertexColor(r, g, b, 1);
 			frame.Glow.r, frame.Glow.g, frame.Glow.b = r, g, b;
 		end
 		frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
-	elseif(frame.Glow:IsShown()) then
-		frame.Glow:Hide()
+	else
+		if frame.Glow:IsShown() then frame.Glow:Hide() end
+		if frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	end
 end
 
@@ -59,5 +76,11 @@ end
 function mod:ConstructElement_Glow(frame)
 	local f = CreateFrame("Frame", nil, frame)
 	f:Hide()
+
+	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	g:Hide()
+	frame.Glow2 = g
+
 	return f
 end
