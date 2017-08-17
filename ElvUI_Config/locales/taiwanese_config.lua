@@ -633,7 +633,7 @@ L["Use Target Glow"] = "目標外框高亮"
 L["Use Target Scale"] = "使用目標縮放"
 L["Use Threat Color"] = "使用仇恨顏色"
 L["When enabled the nameplate will stay visible in a locked position."] = true;
-
+L["Style Filter"] = true;
 L["Actions"] = true;
 L["Add a buff/debuff to the list."] = true;
 L["Add Buff"] = true;

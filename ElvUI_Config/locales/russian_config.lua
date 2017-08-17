@@ -632,7 +632,7 @@ L["Use Target Glow"] = "Использовать выделение цели"
 L["Use Target Scale"] = "Масштабирование цели"
 L["Use Threat Color"] = "Использовать цвет угрозы"
 L["When enabled the nameplate will stay visible in a locked position."] = "Если включено, то индикатор игрока будет оставаться видимым на фиксированной позиции."
-
+L["Style Filter"] = true;
 L["Actions"] = true;
 L["Add a buff/debuff to the list."] = true;
 L["Add Buff"] = true;

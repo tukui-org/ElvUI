@@ -527,29 +527,101 @@ function mod:UpdateInVehicle(frame, noEvents)
 	end
 end
 
-function mod:UpdateElement_Filters(frame)
-	local name = UnitName(frame.displayedUnit)
-	local filter = E.global.nameplate.filter[name]
-	if filter and filter.enable then
-		if self.db.units[frame.UnitType].healthbar.enable then
-			if filter.customColor then
-				frame.HealthBar:SetStatusBarColor(filter.color.r, filter.color.g, filter.color.b);
-				frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = filter.color.r, filter.color.g, filter.color.b;
-			end
-			if filter.customScale ~= 1 then
-				local scale = filter.customScale
-				if frame.isTarget and self.db.useTargetScale then
-					scale = scale * self.db.targetScale
-				end
-				frame.ThreatScale = scale
-				self:SetFrameScale(frame, scale)
-			end
+local function filterAura(names, icons, mustHaveAll)
+	local total, count = 0, 0
+	for q, w in pairs(names) do
+		if w == true then --only if they are turned on
+			total = total + 1 --keep track of the names
 		end
-		if filter.hide then
+		for z, n in pairs(icons) do
+			if mustHaveAll and icons[z]:IsShown() and n.name and n.name == q and w == true then
+				count = count + 1 --keep track of how many matches we have
+			elseif icons[z]:IsShown() and n.name and n.name == q and w == true then
+				return true
+	end end end
+	return (total == 0) or (mustHaveAll and total == count)
+end
+
+local function HidePlayerNamePlate()
+	mod.PlayerFrame__.UnitFrame:Hide()
+	mod.PlayerNamePlateAnchor:Hide()
+end
+
+function mod:FilterStyle(frame, actions)
+	if self.db.units[frame.UnitType].healthbar.enable then
+		if actions.color and actions.color.enable then
+			frame.HealthBar:SetStatusBarColor(actions.color.color.r, actions.color.color.g, actions.color.color.b);
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = actions.color.color.r, actions.color.color.g, actions.color.color.b;
+		end
+		if actions.scale and actions.scale ~= 1 then
+			local scale = actions.scale
+			if frame.isTarget and self.db.useTargetScale then
+				scale = scale * self.db.targetScale
+			end
+			frame.ThreatScale = scale
+			self:SetFrameScale(frame, scale)
+		end
+	end
+	if actions.hide then
+		if frame.UnitType == 'PLAYER' then
+			HidePlayerNamePlate()
+		else
 			frame:Hide()
 		end
 	end
+end
 
+function mod:UpdateElement_Filters(frame)
+	local ut, tr, name, guid, npcid, inCombat, level, mylevel, icons = false;
+	for n, x in pairs(E.global.nameplate.filters) do
+		if x.triggers and x.triggers.enable then
+			tr = x.triggers
+
+			name = UnitName(frame.displayedUnit)
+			if tr.name and tr.name ~= "" and tr.name ~= name then return end
+
+			guid = UnitGUID(frame.displayedUnit)
+			if guid then
+				npcid = select(6, strsplit('-', guid))
+				if tr.npcid and tr.npcid ~= "" and tr.npcid ~= npcid then return end
+			end
+
+			inCombat = UnitAffectingCombat("player")
+			if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
+
+			level = UnitLevel(frame.displayedUnit)
+			if tr.level and level then
+				if tr.mylevel then
+					mylevel = UnitLevel('player')
+					if tr.mylevel ~= mylevel then return end
+				end
+				if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
+				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
+				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
+			end
+
+			if tr.nameplateType and tr.nameplateType.enable then
+				if tr.nameplateType.friendlyPlayer	and frame.UnitType == 'FRIENDLY_PLAYER' then ut = true end
+				if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then ut = true end
+				if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then ut = true end
+				if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then ut = true end
+				if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then ut = true end
+				if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then ut = true end
+				if ut ~= true then return end
+			end
+
+			if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
+				icons = frame.Buffs and frame.Buffs.icons
+				if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll) then return end
+			end
+			if tr.debuffs and tr.debuffs.names and next(tr.debuffs.names) then
+				icons = frame.Debuffs and frame.Debuffs.icons
+				if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll) then return end
+			end
+
+			self:FilterStyle(frame, x.actions);
+		end
+	end
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
@@ -651,6 +723,8 @@ function mod:OnEvent(event, unit, ...)
 		if(self.IsPlayerFrame) then
 			mod:ClassBar_Update(self)
 		end
+		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Filters(self)
 	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
 		mod:CheckUnitType(self)
 	elseif(event == "RAID_TARGET_UPDATE") then
@@ -857,11 +931,6 @@ function mod:PLAYER_REGEN_ENABLED()
 		SetCVar("nameplateShowEnemies", 1);
 	end
 	self:UpdateVisibility()
-end
-
-local function HidePlayerNamePlate()
-	mod.PlayerFrame__.UnitFrame:Hide()
-	mod.PlayerNamePlateAnchor:Hide()
 end
 
 function mod:UpdateVisibility()

@@ -633,7 +633,7 @@ L["Use Target Glow"] = true;
 L["Use Target Scale"] = true;
 L["Use Threat Color"] = true;
 L["When enabled the nameplate will stay visible in a locked position."] = true;
-
+L["Style Filter"] = true;
 L["Actions"] = true;
 L["Add a buff/debuff to the list."] = true;
 L["Add Buff"] = true;
