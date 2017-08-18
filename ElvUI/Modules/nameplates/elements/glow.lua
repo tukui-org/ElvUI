@@ -11,11 +11,9 @@ local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
-	if not frame.HealthBar:IsShown() then
-		if frame.Glow:IsShown() then frame.Glow:Hide() end
-		if frame.Glow2:IsShown() then frame.Glow2:Hide() end
-		return
-	end
+	if frame.Glow:IsShown() then frame.Glow:Hide() end
+	if frame.Glow2:IsShown() then frame.Glow2:Hide() end
+	if not frame.HealthBar:IsShown() then return end
 
 	local scale, r, g, b, a, shouldShow = 1;
 	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
@@ -39,10 +37,8 @@ function mod:UpdateElement_Glow(frame)
 	if(shouldShow) then
 		if self.db.targetGlow == "style1" then
 			frame.Glow:Show()
-			if frame.Glow2:IsShown() then frame.Glow2:Hide() end
 		elseif self.db.targetGlow == "none" or self.db.targetGlow == "style2" then
 			frame.Glow2:Show()
-			if frame.Glow:IsShown() then frame.Glow:Hide() end
 			if self.db.useTargetScale then
 				if self.db.targetScale >= 0.75 then
 					scale = self.db.targetScale
@@ -59,9 +55,6 @@ function mod:UpdateElement_Glow(frame)
 			frame.Glow.r, frame.Glow.g, frame.Glow.b, frame.Glow.a = r, g, b, a;
 		end
 		frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
-	else
-		if frame.Glow:IsShown() then frame.Glow:Hide() end
-		if frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	end
 end
 
