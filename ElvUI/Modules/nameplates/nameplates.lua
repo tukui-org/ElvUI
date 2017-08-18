@@ -552,6 +552,7 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
+local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions)
 	if self.db.units[frame.UnitType].healthbar.enable then
 		if actions.color and actions.color.enable then
@@ -569,15 +570,32 @@ function mod:FilterStyle(frame, actions)
 	end
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
-			HidePlayerNamePlate()
+			filterVisibility = 0
+			if self.db.units.PLAYER.useStaticPosition then
+				HidePlayerNamePlate()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "0")
+				frame:Hide()
+			end
 		else
 			frame:Hide()
 		end
+	else
+		if frame.UnitType == 'PLAYER' then
+			filterVisibility = 1
+			if self.db.units.PLAYER.useStaticPosition then
+				self.PlayerNamePlateAnchor:Show()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "1")
+			end
+		end
+		frame:Show()
 	end
 end
 
 function mod:UpdateElement_Filters(frame)
 	local ut, tr, name, guid, npcid, inCombat, level, mylevel, icons = false;
+	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end
 	for n, x in pairs(E.global.nameplate.filters) do
 		if x.triggers and x.triggers.enable then
 			tr = x.triggers
@@ -785,7 +803,7 @@ function mod:RegisterEvents(frame, unit)
 	--if(self.db.units[frame.UnitType].portrait.enable) then
 		frame:RegisterUnitEvent("UNIT_PORTRAIT_UPDATE", unit, displayedUnit);
 		frame:RegisterUnitEvent("UNIT_MODEL_CHANGED", unit, displayedUnit);
-		frame:RegisterUnitEvent("UNIT_CONNECTION", unit, displayedUnit);	
+		frame:RegisterUnitEvent("UNIT_CONNECTION", unit, displayedUnit);
 	--end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
@@ -850,11 +868,13 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateOtherBottomInset", self.db.clampToScreen and "0.1" or "-1")
 
 	--Player nameplate
-	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
-	E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
-	E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
-	E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
-	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
+	if filterVisibility ~= 1 then --Forced shown, using filters visibility instead.
+		E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
+		E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
+		E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
+		E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
+		E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
+	end
 end
 
 local function CopySettings(from, to)
@@ -943,6 +963,7 @@ end
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
+		if filterVisibility ~= 2 then return end --Using filters visibility instead.
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.UnitFrame:Show()
 			self.PlayerNamePlateAnchor:Show()
@@ -951,7 +972,7 @@ function mod:UpdateVisibility()
 			local inCombat = UnitAffectingCombat("player")
 			local hasTarget = UnitExists("target")
 			local canAttack = UnitCanAttack("player", "target")
-			
+
 			if (curHP ~= maxHP) or (self.db.units.PLAYER.visibility.showInCombat and inCombat) or (self.db.units.PLAYER.visibility.showWithTarget and hasTarget and canAttack) then
 				frame.UnitFrame:Show()
 				self.PlayerNamePlateAnchor:Show()
