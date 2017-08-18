@@ -671,6 +671,7 @@ L["Reaction Type"] = "Reaktion Typ"
 L["Is Targeted"] = "Ist anvisiert"
 L["Not Targeted"] = "Nicht anvisiert"
 L["If unit is (or not) targeted, pass filter."] = "Wenn die Einheit anvisiert (oder nicht), bestehe den Filter."
+L["Texture"] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"

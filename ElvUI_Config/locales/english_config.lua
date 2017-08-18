@@ -659,6 +659,7 @@ L["Reaction Type"] = true;
 L["Is Targeted"] = true;
 L["Not Targeted"] = true;
 L["If unit is (or not) targeted, pass filter."] = true;
+L["Texture"] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = true;

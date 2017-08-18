@@ -694,7 +694,7 @@ local function UpdateFilterGroup()
 					args = {
 						enable = {
 							name = L["Enable"],
-							order = 0,
+							order = 1,
 							type = 'toggle',
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.enable
@@ -707,7 +707,7 @@ local function UpdateFilterGroup()
 						color = {
 							name = L["Color"],
 							type = 'color',
-							order = 1,
+							order = 2,
 							hasAlpha = true,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.color
@@ -716,6 +716,72 @@ local function UpdateFilterGroup()
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.color
 								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 3,
+							type = "description",
+							name = " ",
+						},
+						borderEnable = {
+							name = L["Enable"].." "..L["Border Color"],
+							order = 4,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderEnable
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderEnable = value
+								NP:ConfigureAll()
+							end,
+						},
+						borderColor = {
+							name = L["Border Color"],
+							type = 'color',
+							order = 5,
+							hasAlpha = true,
+							get = function(info)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
+								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+						},
+					},
+				},
+				texture = {
+					name = L["Texture"],
+					type = "group",
+					guiInline = true,
+					order = 4,
+					args = {
+						enable = {
+							name = L["Enable"],
+							order = 1,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.texture.enable
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.texture.enable = value
+								NP:ConfigureAll()
+							end,
+						},
+						texture = {
+							order = 2,
+							type = "select",
+							dialogControl = 'LSM30_Statusbar',
+							name = L["Texture"],
+							values = AceGUIWidgetLSMlists.statusbar,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.texture.texture
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.texture.texture = value
 								NP:ConfigureAll()
 							end,
 						},
@@ -2141,8 +2207,12 @@ E.Options.args.nameplate = {
 							},
 							['actions'] = {
 								['color'] = {
-									['color'] = {r = 104/255, g = 138/255, b = 217/255}
+									['color'] = {r=104/255, g=138/255, b=217/255, a=1},
+									['borderColor'] = {r=1, g=1, b=1, a=1}
 								},
+								['texture'] = {
+									['texture'] = "ElvUI Norm"
+								}
 							},
 						}
 

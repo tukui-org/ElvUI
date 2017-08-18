@@ -1,5 +1,6 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -238,7 +239,7 @@ function mod:SetTargetFrame(frame)
 			frame.Name:ClearAllPoints()
 			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
-			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = nil, nil, nil
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = nil, nil, nil, nil
 			frame.CastBar:Hide()
 			self:ConfigureElement_HealthBar(frame)
 			self:ConfigureElement_PowerBar(frame)
@@ -418,7 +419,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()
-	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b = nil, nil, nil
+	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b, frame.UnitFrame.HealthBar.a = nil, nil, nil,nil
 	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
@@ -581,8 +582,17 @@ function mod:FilterStyle(frame, actions)
 	end
 	if self.db.units[frame.UnitType].healthbar.enable then
 		if actions.color and actions.color.enable then
-			frame.HealthBar:SetStatusBarColor(actions.color.color.r, actions.color.color.g, actions.color.color.b);
-			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = actions.color.color.r, actions.color.color.g, actions.color.color.b;
+			frame.HealthBar:SetStatusBarColor(actions.color.color.r, actions.color.color.g, actions.color.color.b, actions.color.color.a);
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.color.r, actions.color.color.g, actions.color.color.b, actions.color.color.a;
+		end
+		if actions.color and actions.color.borderEnable and frame.HealthBar.backdrop then
+			frame.BorderChanged = true
+			frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a);
+		end
+		if actions.texture and actions.texture.enable then
+			frame.TextureChanged = true
+			frame.Highlight:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		end
 		if actions.scale and actions.scale ~= 1 then
 			local scale = actions.scale
@@ -596,7 +606,16 @@ function mod:FilterStyle(frame, actions)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local ut, rt, tr, name, guid, npcid, inCombat, isTarget, level, mylevel, reaction, icons;
+	local ut, rt, tr, name, guid, npcid, inCombat, level, mylevel, reaction, icons;
+	if frame.TextureChanged then
+		frame.TextureChanged = nil
+		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+	end
+	if frame.BorderChanged then
+		frame.BorderChanged = nil
+		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
 	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end
 	for n, x in pairs(E.global.nameplate.filters) do
 		if x.triggers and x.triggers.enable then
@@ -616,9 +635,8 @@ function mod:UpdateElement_Filters(frame)
 				if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
 			end
 
-			isTarget = UnitIsUnit(frame.displayedUnit, "target")
 			if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
-				if (tr.isTarget and not isTarget) or (tr.notTarget and isTarget) then return end
+				if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
 			end
 
 			level = UnitLevel(frame.displayedUnit)
