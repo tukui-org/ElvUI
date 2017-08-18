@@ -642,6 +642,10 @@ function mod:UpdateElement_Filters(frame)
 				end
 			end
 
+			if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
+				if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
+			end
+
 			level = UnitLevel(frame.displayedUnit)
 			if tr.level and level then
 				if tr.mylevel then
