@@ -55,6 +55,8 @@ G["nameplate"] = {
 				},
 				['inCombat'] = true, -- check for incombat to run
 				['outOfCombat'] = true, -- check for out of combat to run
+				['inCombatUnit'] = true, -- check if a unit is affecting combat
+				['outOfCombatUnit'] = true, -- check if a unit is not affecting combat
 			},
 			['actions'] = {
 				['color'] = {

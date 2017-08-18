@@ -635,19 +635,25 @@ function mod:UpdateElement_Filters(frame)
 				if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
 			end
 
-			if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
-				if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
+			if frame.displayedUnit ~= "player" then
+				inCombat = UnitAffectingCombat(frame.displayedUnit)
+				if not (tr.inCombatUnit and tr.outOfCombatUnit) then --ignore if both are checked (same as both unchecked)
+					if (tr.inCombatUnit and not inCombat) or (tr.outOfCombatUnit and inCombat) then return end
+				end
 			end
 
 			level = UnitLevel(frame.displayedUnit)
 			if tr.level and level then
 				if tr.mylevel then
-					mylevel = UnitLevel('player')
-					if tr.mylevel ~= mylevel then return end
+					if frame.displayedUnit ~= "player" then
+						mylevel = UnitLevel("player")
+						if level ~= mylevel then return end
+					end
+				else
+					if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
+					if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
+					if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
 				end
-				if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
-				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
-				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
 			end
 
 			if tr.nameplateType and tr.nameplateType.enable then ut = false
