@@ -251,7 +251,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = 'range',
 							name = L["Minimum Level"],
-							min = -1, max = MAX_PLAYER_LEVEL, step = 1,
+							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.minlevel or 0
@@ -265,7 +265,7 @@ local function UpdateFilterGroup()
 							order = 5,
 							type = 'range',
 							name = L["Maximum Level"],
-							min = -1, max = MAX_PLAYER_LEVEL, step = 1,
+							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.maxlevel or 0
@@ -279,7 +279,7 @@ local function UpdateFilterGroup()
 							name = L["Current Level"],
 							order = 6,
 							type = "range",
-							min = -1, max = MAX_PLAYER_LEVEL, step = 1,
+							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.curlevel or 0
@@ -298,8 +298,41 @@ local function UpdateFilterGroup()
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
-						addBuff = {
+						mustHaveAll = {
 							order = 1,
+							name = L["Must Have All"],
+							type = "toggle",
+							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						missingAll = {
+							order = 2,
+							name = L["Missing All"],
+							type = "toggle",
+							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 3,
+							type = 'description',
+							name = " ",
+						},
+						addBuff = {
+							order = 4,
 							name = L["Add Buff"],
 							desc = L["Add a buff/debuff to the list."],
 							type = 'input',
@@ -317,6 +350,7 @@ local function UpdateFilterGroup()
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs = {
 										mustHaveAll = false,
+										missingAll = false,
 										names = {},
 									}
 								end
@@ -327,7 +361,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeBuff = {
-							order = 2,
+							order = 5,
 							name = L["Remove Buff"],
 							desc = L["Remove a buff/debuff from the list."],
 							type = 'input',
@@ -348,21 +382,8 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						mustHaveAll = {
-							order = 3,
-							name = L["Must Have All"],
-							type = "toggle",
-							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll = value
-								NP:ConfigureAll()
-							end,
-						},
 						names = {
-							order = 4,
+							order = 6,
 							type = "group",
 							name = "",
 							guiInline = true,
@@ -377,8 +398,41 @@ local function UpdateFilterGroup()
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
-						addDebuff = {
+						mustHaveAll = {
 							order = 1,
+							name = L["Must Have All"],
+							type = "toggle",
+							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						missingAll = {
+							order = 2,
+							name = L["Missing All"],
+							type = "toggle",
+							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 3,
+							type = "description",
+							name = " ",
+						},
+						addDebuff = {
+							order = 4,
 							name = L["Add Debuff"],
 							desc = L["Add a buff/debuff to the list."],
 							type = 'input',
@@ -396,8 +450,9 @@ local function UpdateFilterGroup()
 
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs = {
-											mustHaveAll = false,
-											names = {},
+										mustHaveAll = false,
+										missingAll = false,
+										names = {},
 									}
 								end
 
@@ -408,7 +463,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeDebuff = {
-							order = 2,
+							order = 5,
 							name = L["Remove Debuff"],
 							desc = L["Remove a buff/debuff from the list."],
 							type = 'input',
@@ -429,21 +484,8 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						mustHaveAll = {
-							order = 3,
-							name = L["Must Have All"],
-							type = "toggle",
-							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll = value
-								NP:ConfigureAll()
-							end,
-						},
 						names = {
-							order = 4,
+							order = 6,
 							type = "group",
 							name = "",
 							guiInline = true,
