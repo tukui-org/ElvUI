@@ -29,6 +29,18 @@ G["nameplate"] = {
 					['enemyNPC'] = true,
 					['neutral'] = false
 				},
+				['reactionType'] = {
+					['enabled'] = false,
+					['reputation'] = false,
+					['hated'] = false,
+					['hostile'] = false,
+					['unfriendly'] = false,
+					['neutral'] = false,
+					['friendly'] = false,
+					['honored'] = false,
+					['revered'] = false,
+					['exalted'] = false
+				},
 				['buffs'] = {
 					['mustHaveAll'] = false,
 					['names'] = {

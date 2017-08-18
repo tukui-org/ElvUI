@@ -667,6 +667,10 @@ L["Reset filter priority to the default state."] = "Setze die Filter Priorität 
 L["Style One"] = "Stil 1"
 L["Style Two"] = "Stil 2"
 L["Target Glow Color"] = "Zielglühen Farbe"
+L["Reaction Type"] = true;
+L["Is Targeted"] = true;
+L["Not Targeted"] = true;
+L["If unit is (or not) targeted, pass filter."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"

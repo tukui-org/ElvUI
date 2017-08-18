@@ -666,6 +666,10 @@ L["Reset filter priority to the default state."] = true;
 L["Style One"] = true;
 L["Style Two"] = true;
 L["Target Glow Color"] = true;
+L["Reaction Type"] = true;
+L["Is Targeted"] = true;
+L["Not Targeted"] = true;
+L["If unit is (or not) targeted, pass filter."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "選擇導出格式"

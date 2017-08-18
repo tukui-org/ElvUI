@@ -7,9 +7,16 @@ local filters
 local tonumber = tonumber
 local GetSpellInfo = GetSpellInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
-local LEVEL = LEVEL
+local LEVEL, NONE, REPUTATION = LEVEL, NONE, REPUTATION
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
-local NONE = NONE
+local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
+local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
+local FACTION_STANDING_LABEL3 = FACTION_STANDING_LABEL3
+local FACTION_STANDING_LABEL4 = FACTION_STANDING_LABEL4
+local FACTION_STANDING_LABEL5 = FACTION_STANDING_LABEL5
+local FACTION_STANDING_LABEL6 = FACTION_STANDING_LABEL6
+local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
+local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
 -- GLOBALS: MAX_PLAYER_LEVEL
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
@@ -76,39 +83,8 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				inCombat = {
-					name = L["In Combat"],
-					desc = L["If in or out of combat state, pass filter."],
-					order = 1,
-					type = 'toggle',
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.inCombat
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.inCombat = value
-						NP:ConfigureAll()
-					end,
-				},
-				outOfCombat = {
-					name = L["Out Of Combat"],
-					desc = L["If in or out of combat state, pass filter."],
-					order = 2,
-					type = 'toggle',
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.outOfCombat
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.outOfCombat = value
-						NP:ConfigureAll()
-					end,
-				},
-				spacer1 = {
-					order = 3,
-					type = 'description',
-					name = '',
-				},
 				name = {
-					order = 4,
+					order = 1,
 					type = 'input',
 					name = L["Name"],
 					desc = L["Name must but this in order to trigger, set to blank to turn off."],
@@ -121,7 +97,7 @@ local function UpdateFilterGroup()
 					end,
 				},
 				npcid = {
-					order = 5,
+					order = 2,
 					type = 'input',
 					name = L["NPC ID"],
 					desc = L["NPC ID must but this in order to trigger, set to blank to turn off."],
@@ -133,13 +109,75 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				spacer1 = {
+					order = 3,
+					type = 'description',
+					name = '',
+				},
+				inCombat = {
+					name = L["In Combat"],
+					desc = L["If in or out of combat state, pass filter."],
+					order = 4,
+					type = 'toggle',
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.inCombat
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.inCombat = value
+						NP:ConfigureAll()
+					end,
+				},
+				outOfCombat = {
+					name = L["Out Of Combat"],
+					desc = L["If in or out of combat state, pass filter."],
+					order = 5,
+					type = 'toggle',
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.outOfCombat
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.outOfCombat = value
+						NP:ConfigureAll()
+					end,
+				},
 				spacer2 = {
 					order = 6,
 					type = 'description',
 					name = '',
 				},
-				levels = {
+				isTarget = {
+					name = L["Is Targeted"],
+					desc = L["If unit is (or not) targeted, pass filter."],
 					order = 7,
+					type = 'toggle',
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget = value
+						NP:ConfigureAll()
+					end,
+				},
+				notTarget = {
+					name = L["Not Targeted"],
+					desc = L["If unit is (or not) targeted, pass filter."],
+					order = 8,
+					type = 'toggle',
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget = value
+						NP:ConfigureAll()
+					end,
+				},
+				spacer3 = {
+					order = 9,
+					type = 'description',
+					name = '',
+				},
+				levels = {
+					order = 10,
 					type = 'group',
 					name = LEVEL,
 					guiInline = true,
@@ -216,7 +254,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 8,
+					order = 11,
 					type = "group",
 					guiInline = true,
 					args = {
@@ -294,7 +332,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 9,
+					order = 12,
 					type = "group",
 					guiInline = true,
 					args = {
@@ -374,7 +412,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Nameplate Type"],
-					order = 10,
+					order = 13,
 					type = "group",
 					guiInline = true,
 					args = {
@@ -466,6 +504,149 @@ local function UpdateFilterGroup()
 									end,
 									set = function(info, value)
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.player = value
+										NP:ConfigureAll()
+									end,
+								},
+							},
+						},
+					},
+				},
+				reactionType = {
+					name = L["Reaction Type"],
+					order = 14,
+					type = "group",
+					guiInline = true,
+					args = {
+						enable = {
+							name = L["Enable"],
+							order = 0,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable = value
+								NP:ConfigureAll()
+							end,
+						},
+						reputation = {
+							name = REPUTATION,
+							order = 0,
+							type = 'toggle',
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation = value
+								NP:ConfigureAll()
+							end,
+						},
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
+							order = 1,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							args = {
+								hated = {
+									name = FACTION_STANDING_LABEL1,
+									order = 1,
+									type = 'toggle',
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hated
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hated = value
+										NP:ConfigureAll()
+									end,
+								},
+								hostile = {
+									name = FACTION_STANDING_LABEL2,
+									order = 2,
+									type = 'toggle',
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hostile
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hostile = value
+										NP:ConfigureAll()
+									end,
+								},
+								unfriendly = {
+									name = FACTION_STANDING_LABEL3,
+									order = 3,
+									type = 'toggle',
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.unfriendly
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.unfriendly = value
+										NP:ConfigureAll()
+									end,
+								},
+								neutral = {
+									name = FACTION_STANDING_LABEL4,
+									order = 4,
+									type = 'toggle',
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.neutral
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.neutral = value
+										NP:ConfigureAll()
+									end,
+								},
+								friendly = {
+									name = FACTION_STANDING_LABEL5,
+									order = 5,
+									type = 'toggle',
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.friendly
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.friendly = value
+										NP:ConfigureAll()
+									end,
+								},
+								honored = {
+									name = FACTION_STANDING_LABEL6,
+									order = 6,
+									type = 'toggle',
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.honored
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.honored = value
+										NP:ConfigureAll()
+									end,
+								},
+								revered = {
+									name = FACTION_STANDING_LABEL7,
+									order = 7,
+									type = 'toggle',
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.revered
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.revered = value
+										NP:ConfigureAll()
+									end,
+								},
+								exalted = {
+									name = FACTION_STANDING_LABEL8,
+									order = 8,
+									type = 'toggle',
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.exalted
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.exalted = value
 										NP:ConfigureAll()
 									end,
 								},
@@ -1956,6 +2137,7 @@ E.Options.args.nameplate = {
 							['enable'] = true,
 							['triggers'] = {
 								['nameplateType'] = {},
+								['reactionType'] = {},
 							},
 							['actions'] = {
 								['color'] = {

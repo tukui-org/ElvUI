@@ -43,6 +43,7 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
+local UnitReaction = UnitReaction
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 
@@ -554,6 +555,30 @@ end
 
 local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions)
+	if actions.hide then
+		if frame.UnitType == 'PLAYER' then
+			filterVisibility = 0
+			if self.db.units.PLAYER.useStaticPosition then
+				HidePlayerNamePlate()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "0")
+				frame:Hide()
+			end
+		else
+			frame:Hide()
+		end
+		return --We hide it. Lets not do other things (no point)
+	else
+		if frame.UnitType == 'PLAYER' then
+			filterVisibility = 1
+			if self.db.units.PLAYER.useStaticPosition then
+				self.PlayerNamePlateAnchor:Show()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "1")
+			end
+		end
+		frame:Show()
+	end
 	if self.db.units[frame.UnitType].healthbar.enable then
 		if actions.color and actions.color.enable then
 			frame.HealthBar:SetStatusBarColor(actions.color.color.r, actions.color.color.g, actions.color.color.b);
@@ -568,33 +593,10 @@ function mod:FilterStyle(frame, actions)
 			self:SetFrameScale(frame, scale)
 		end
 	end
-	if actions.hide then
-		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 0
-			if self.db.units.PLAYER.useStaticPosition then
-				HidePlayerNamePlate()
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "0")
-				frame:Hide()
-			end
-		else
-			frame:Hide()
-		end
-	else
-		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 1
-			if self.db.units.PLAYER.useStaticPosition then
-				self.PlayerNamePlateAnchor:Show()
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "1")
-			end
-		end
-		frame:Show()
-	end
 end
 
 function mod:UpdateElement_Filters(frame)
-	local ut, tr, name, guid, npcid, inCombat, level, mylevel, icons = false;
+	local ut, rt, tr, name, guid, npcid, inCombat, isTarget, level, mylevel, reaction, icons;
 	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end
 	for n, x in pairs(E.global.nameplate.filters) do
 		if x.triggers and x.triggers.enable then
@@ -614,6 +616,11 @@ function mod:UpdateElement_Filters(frame)
 				if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
 			end
 
+			isTarget = UnitIsUnit(frame.displayedUnit, "target")
+			if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
+				if (tr.isTarget and not isTarget) or (tr.notTarget and isTarget) then return end
+			end
+
 			level = UnitLevel(frame.displayedUnit)
 			if tr.level and level then
 				if tr.mylevel then
@@ -625,14 +632,27 @@ function mod:UpdateElement_Filters(frame)
 				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
 			end
 
-			if tr.nameplateType and tr.nameplateType.enable then
+			if tr.nameplateType and tr.nameplateType.enable then ut = false
 				if tr.nameplateType.friendlyPlayer	and frame.UnitType == 'FRIENDLY_PLAYER' then ut = true end
-				if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then ut = true end
-				if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then ut = true end
-				if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then ut = true end
-				if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then ut = true end
-				if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then ut = true end
+				if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then	 ut = true end
+				if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then	 ut = true end
+				if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then		 ut = true end
+				if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then			 ut = true end
+				if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then			 ut = true end
 				if ut ~= true then return end
+			end
+
+			if tr.reactionType and tr.reactionType.enable then rt = false
+				reaction = (tr.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
+				if tr.reactionType.hated		and reaction == 1 then rt = true end
+				if tr.reactionType.hostile		and reaction == 2 then rt = true end
+				if tr.reactionType.unfriendly	and reaction == 3 then rt = true end
+				if tr.reactionType.neutral		and reaction == 4 then rt = true end
+				if tr.reactionType.friendly		and reaction == 5 then rt = true end
+				if tr.reactionType.honored		and reaction == 6 then rt = true end
+				if tr.reactionType.revered		and reaction == 7 then rt = true end
+				if tr.reactionType.exalted		and reaction == 8 then rt = true end
+				if rt ~= true then return end
 			end
 
 			if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
