@@ -3,10 +3,11 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
-	DressUpFrame:StripTextures(true)
+	DressUpFrame:StripTextures()
 	DressUpFrame:CreateBackdrop("Transparent")
-	DressUpFrame.backdrop:Point("TOPLEFT", 6, 0)
-	DressUpFrame.backdrop:Point("BOTTOMRIGHT", -32, 70)
+	DressUpFramePortrait:Hide()
+	DressUpFramePortraitFrame:Hide()
+	DressUpFrameInset:Hide()
 
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
@@ -15,9 +16,11 @@ local function LoadSkin()
 	DressUpFrameOutfitDropDown.SaveButton:SetPoint("RIGHT", DressUpFrameOutfitDropDown, 86, 4)
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
-	
-	S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
-	
+
+	S:HandleCloseButton(DressUpFrameCloseButton)
+	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
+	MaximizeMinimizeFrame:StripTextures()
+
 	-- Wardrobe edit frame
 	WardrobeOutfitFrame:StripTextures(true)
 	WardrobeOutfitFrame:SetTemplate("Transparent")
@@ -31,8 +34,6 @@ local function LoadSkin()
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
 	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
-
-	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 
 S:AddCallback("DressingRoom", LoadSkin)
