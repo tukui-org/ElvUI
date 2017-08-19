@@ -273,7 +273,7 @@ function S:HandleRotateButton(btn)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
--- Introduced in 7.3 (taken from Aurora)
+-- Introduced in 7.3
 function S:HandleMaxMinFrame(frame)
 	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
 
