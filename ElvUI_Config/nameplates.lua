@@ -303,7 +303,7 @@ local function UpdateFilterGroup()
 							name = L["Must Have All"],
 							type = "toggle",
 							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
 							end,
@@ -317,7 +317,7 @@ local function UpdateFilterGroup()
 							name = L["Missing All"],
 							type = "toggle",
 							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll
 							end,
@@ -403,7 +403,7 @@ local function UpdateFilterGroup()
 							name = L["Must Have All"],
 							type = "toggle",
 							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
 							end,
@@ -417,7 +417,7 @@ local function UpdateFilterGroup()
 							name = L["Missing All"],
 							type = "toggle",
 							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll
 							end,
@@ -748,9 +748,9 @@ local function UpdateFilterGroup()
 			disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 			args = {
 				hide = {
-					name = L["Hide Frame"],
 					order = 0,
 					type = 'toggle',
+					name = L["Hide Frame"],
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
 					end,
@@ -760,9 +760,10 @@ local function UpdateFilterGroup()
 					end,
 				},
 				scale = {
-					name = L["Scale"],
 					order = 2,
 					type = "range",
+					name = L["Scale"],
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.scale or 1
 					end,
@@ -773,10 +774,11 @@ local function UpdateFilterGroup()
 					min=0.35, max = 1.5, step = 0.01,
 				},
 				color = {
-					name = L["Color"],
-					type = "group",
-					guiInline = true,
 					order = 3,
+					type = "group",
+					name = L["Color"],
+					guiInline = true,
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
 						enable = {
 							name = L["Enable"],
@@ -840,10 +842,11 @@ local function UpdateFilterGroup()
 					},
 				},
 				texture = {
-					name = L["Texture"],
-					type = "group",
-					guiInline = true,
 					order = 4,
+					type = "group",
+					name = L["Texture"],
+					guiInline = true,
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
 						enable = {
 							name = L["Enable"],
