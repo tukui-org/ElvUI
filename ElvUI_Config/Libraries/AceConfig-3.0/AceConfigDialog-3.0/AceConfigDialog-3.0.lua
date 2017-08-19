@@ -1381,15 +1381,20 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 				--Common Init
 				if control then
 					if control.width ~= "fill" then
-						local width = GetOptionsMemberValue("width",v,options,path,appName)
-						if width == "double" then
-							control:SetWidth(width_multiplier * 2)
-						elseif width == "half" then
-							control:SetWidth(width_multiplier / 2)
-						elseif width == "full" then
-							control.width = "fill"
+						local customWidth = GetOptionsMemberValue("customWidth",v,options,path,appName)
+						if customWidth then
+							control:SetWidth(customWidth)
 						else
-							control:SetWidth(width_multiplier)
+							local width = GetOptionsMemberValue("width",v,options,path,appName)
+							if width == "double" then
+								control:SetWidth(width_multiplier * 2)
+							elseif width == "half" then
+								control:SetWidth(width_multiplier / 2)
+							elseif width == "full" then
+								control.width = "fill"
+							else
+								control:SetWidth(width_multiplier)
+							end
 						end
 					end
 					if control.SetDisabled then

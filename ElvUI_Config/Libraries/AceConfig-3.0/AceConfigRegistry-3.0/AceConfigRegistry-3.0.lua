@@ -90,6 +90,7 @@ local basekeys={
 	func=optmethodfalse,
 	arg={["*"]=true},
 	width=optstring,
+	customWidth=optnumber,
 }
 
 local typedkeys={

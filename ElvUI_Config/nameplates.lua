@@ -1944,17 +1944,11 @@ E.Options.args.nameplate = {
 							get = function(info) return E.db.nameplates[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
 							args = {
-								targetGlow = {
+								useTargetScale = {
 									order = 1,
-									type = "select",
-									name = L["Use Target Glow"],
-									get = function(info) return E.db.nameplates.targetGlow end,
-									set = function(info, value) E.db.nameplates.targetGlow = value; NP:ConfigureAll() end,
-									values = {
-										['none'] = NONE,
-										['style1'] = L["Style One"],
-										['style2'] = L["Style Two"]
-									},
+									type = "toggle",
+									name = L["Use Target Scale"],
+									desc = L["Enable/Disable the scaling of targetted nameplates."],
 								},
 								targetScale = {
 									order = 2,
@@ -1973,10 +1967,15 @@ E.Options.args.nameplate = {
 									desc = L["Set the transparency level of nameplates that are not the target nameplate."],
 									min = 0, max = 1, step = 0.01,
 								},
-								glowColor = {
-									name = L["Target Glow Color"],
-									type = 'color',
+								spacer1 = {
 									order = 4,
+									type = 'description',
+									name = ' ',
+								},
+								glowColor = {
+									name = L["Target Indicator"].." "..L["Color"],
+									type = 'color',
+									order = 5,
 									hasAlpha = true,
 									get = function(info)
 										local t = E.db.nameplates.glowColor
@@ -1989,17 +1988,30 @@ E.Options.args.nameplate = {
 										NP:ConfigureAll()
 									end,
 								},
-								useTargetScale = {
-									order = 5,
-									type = "toggle",
-									name = L["Use Target Scale"],
-									desc = L["Enable/Disable the scaling of targetted nameplates."],
+								targetGlow = {
+									order = 6,
+									type = "select",
+									customWidth = 225,
+									name = L["Target Indicator"],
+									get = function(info) return E.db.nameplates.targetGlow end,
+									set = function(info, value) E.db.nameplates.targetGlow = value; NP:ConfigureAll() end,
+									values = {
+										['none'] = NONE,
+										['style1'] = L["Border Glow"],
+										['style2'] = L["Background Glow"],
+										['style3'] = L["Top Arrow"],
+										['style4'] = L["Side Arrows"],
+										['style5'] = L["Border Glow"].." + "..L["Top Arrow"],
+										['style6'] = L["Background Glow"].." + "..L["Top Arrow"],
+										['style7'] = L["Border Glow"].." + "..L["Side Arrows"],
+										['style8'] = L["Background Glow"].." + "..L["Side Arrows"],
+									},
 								},
 								alwaysShowTargetHealth = {
-									order = 6,
+									order = 7,
 									type = "toggle",
 									name = L["Always Show Target Health"],
-									width = "double",
+									customWidth = 200,
 								},
 							},
 						},

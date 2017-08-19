@@ -11,7 +11,9 @@ local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
-	if frame.Glow:IsShown() then frame.Glow:Hide() end
+	if frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
+	if frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
+	if frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
 	if frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	if not frame.HealthBar:IsShown() then return end
 
@@ -35,9 +37,19 @@ function mod:UpdateElement_Glow(frame)
 	end
 
 	if(shouldShow) then
-		if self.db.targetGlow == "style1" then
+		--style1: border
+		--style2: background
+		--style3: top arrow only
+		--style4: side arrows only
+		--style5: border + top arrow
+		--style6: background + top arrow
+		--style7: border + side arrows
+		--style8: background + side arrows
+		if self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7" then -- original glow
 			frame.Glow:Show()
-		elseif self.db.targetGlow == "none" or self.db.targetGlow == "style2" then
+			frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
+		end
+		if self.db.targetGlow == "style2" or self.db.targetGlow == "style6" or self.db.targetGlow == "style8" then -- new background glow
 			frame.Glow2:Show()
 			if self.db.useTargetScale then
 				if self.db.targetScale >= 0.75 then
@@ -47,14 +59,26 @@ function mod:UpdateElement_Glow(frame)
 				end
 			end
 			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, -E:Scale(20*scale), E:Scale(10*scale))
-			frame.Glow2:SetPoint("BOTTOMRIGHT", frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
+			frame.Glow2:SetPoint("BOTTOMRIGHT", (frame.PowerBar:IsShown() and frame.PowerBar) or frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
+		end
+		if self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6" then -- top arrow
+			frame.TopArrow:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, E:Scale(2*scale))
+			frame.TopArrow:Show()
+		end
+		if self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8" then -- side arrows
+			frame.RightArrow:SetPoint("RIGHT", frame.HealthBar, "LEFT", E:Scale(2*scale), 0)
+			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(2*scale), 0)
+			frame.RightArrow:Show()
+			frame.LeftArrow:Show()
 		end
 		if (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b or a ~= frame.Glow.a) then
 			frame.Glow:SetBackdropBorderColor(r, g, b, a);
 			frame.Glow2:SetVertexColor(r, g, b, a);
+			frame.TopArrow:SetVertexColor(r, g, b, a);
+			frame.LeftArrow:SetVertexColor(r, g, b, a);
+			frame.RightArrow:SetVertexColor(r, g, b, a);
 			frame.Glow.r, frame.Glow.g, frame.Glow.b, frame.Glow.a = r, g, b, a;
 		end
-		frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
 	end
 end
 
@@ -75,10 +99,28 @@ function mod:ConstructElement_Glow(frame)
 	local f = CreateFrame("Frame", nil, frame)
 	f:Hide()
 
-	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
-	g:Hide()
-	frame.Glow2 = g
+	local glow = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	glow:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	glow:Hide()
+	frame.Glow2 = glow
+
+	local top = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	top:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
+	top:Size(45)
+	top:Hide()
+	frame.TopArrow = top
+
+	local left = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	left:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft.tga]])
+	left:Size(45)
+	left:Hide()
+	frame.LeftArrow = left
+
+	local right = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	right:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight.tga]])
+	right:Size(45)
+	right:Hide()
+	frame.RightArrow = right
 
 	return f
 end

@@ -796,9 +796,7 @@ local profileFormat = {
 	["profile"] = "E.db",
 	["private"] = "E.private",
 	["global"] = "E.global",
-	["filtersNP"] = "E.global",
-	["filtersUF"] = "E.global",
-	["filtersAll"] = "E.global",
+	["filters"] = "E.global",
 }
 
 local lineStructureTable = {}
