@@ -20,7 +20,6 @@ local function LoadSkin()
 	S:HandleMaxMinFrame(MaximizeMinimizeFrame)
 	S:HandleCloseButton(DressUpFrameCloseButton)
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
-	MaximizeMinimizeFrame:StripTextures()
 
 	-- Wardrobe edit frame
 	WardrobeOutfitFrame:StripTextures(true)

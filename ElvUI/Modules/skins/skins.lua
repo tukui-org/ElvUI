@@ -275,7 +275,10 @@ end
 
 -- Introduced in 7.3
 function S:HandleMaxMinFrame(frame)
+	assert(frame, "does not exist.")
+
 	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
+		if frame then frame:StripTextures() end
 
 		local button = frame[name]
 		button:SetSize(16, 16)
