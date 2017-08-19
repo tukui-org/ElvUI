@@ -273,6 +273,45 @@ function S:HandleRotateButton(btn)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
+-- Introduced in 7.3 (taken from Aurora)
+function S:HandleMaxMinFrame(frame)
+	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
+
+		local button = frame[name]
+		button:SetSize(17, 17)
+		button:SetNormalTexture("")
+		button:SetPushedTexture("")
+		button:SetHighlightTexture("")
+
+		button:ClearAllPoints()
+		button:SetPoint("CENTER")
+
+		if not button.backdrop then
+			button:CreateBackdrop("Default", true)
+			button.backdrop:Point("TOPLEFT", button, 1, -1)
+			button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
+			button:HookScript('OnEnter', S.SetModifiedBackdrop)
+			button:HookScript('OnLeave', S.SetOriginalBackdrop)
+		end
+
+		local hline = button:CreateTexture()
+		hline:SetColorTexture(1, 1, 1)
+		hline:SetSize(7, 1)
+
+		local vline = button:CreateTexture()
+		vline:SetColorTexture(1, 1, 1)
+		vline:SetSize(1, 7)
+
+		if name == "MaximizeButton" then
+			hline:SetPoint("TOP", 1, -4)
+			vline:SetPoint("RIGHT", -4, 1)
+		else
+			hline:SetPoint("BOTTOM", -1, 4)
+			vline:SetPoint("LEFT", 4, -1)
+		end
+	end
+end
+
 function S:HandleEditBox(frame)
 	frame:CreateBackdrop("Default")
 
