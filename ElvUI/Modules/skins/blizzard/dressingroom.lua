@@ -17,6 +17,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
 
+	S:HandleMaxMinFrame(MaximizeMinimizeFrame)
 	S:HandleCloseButton(DressUpFrameCloseButton)
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 	MaximizeMinimizeFrame:StripTextures()
