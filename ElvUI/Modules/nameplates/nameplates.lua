@@ -7,9 +7,12 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local select = select
 local next = next
 local unpack = unpack
+local ipairs = ipairs
 local strsplit = strsplit
 local pairs, type = pairs, type
 local twipe = table.wipe
+local tsort = table.sort
+local tinsert = table.insert
 local format, match = string.format, string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -555,7 +558,13 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
-local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
+local function filterSort(a,b)
+	if a[2] and b[2] then
+		return a[2]>b[2] --sort by priority
+	end
+end
+
+local filterList, filterVisibility = {} --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions)
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
@@ -618,83 +627,91 @@ function mod:UpdateElement_Filters(frame)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end
+	twipe(filterList)
 	for n, x in pairs(E.global.nameplate.filters) do
 		if x.triggers and x.triggers.enable then
-			tr = x.triggers
-
-			name = UnitName(frame.displayedUnit)
-			if tr.name and tr.name ~= "" and tr.name ~= name then return end
-
-			guid = UnitGUID(frame.displayedUnit)
-			if guid then
-				npcid = select(6, strsplit('-', guid))
-				if tr.npcid and tr.npcid ~= "" and tr.npcid ~= npcid then return end
-			end
-
-			inCombat = UnitAffectingCombat("player")
-			if not (tr.inCombat and tr.outOfCombat) then --ignore if both are checked (same as both unchecked)
-				if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
-			end
-
-			if frame.displayedUnit ~= "player" then
-				inCombat = UnitAffectingCombat(frame.displayedUnit)
-				if not (tr.inCombatUnit and tr.outOfCombatUnit) then --ignore if both are checked (same as both unchecked)
-					if (tr.inCombatUnit and not inCombat) or (tr.outOfCombatUnit and inCombat) then return end
-				end
-			end
-
-			if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
-				if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
-			end
-
-			level = UnitLevel(frame.displayedUnit)
-			if tr.level and level then
-				if tr.mylevel then
-					if frame.displayedUnit ~= "player" then
-						mylevel = UnitLevel("player")
-						if level ~= mylevel then return end
-					end
-				else
-					if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
-					if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
-					if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
-				end
-			end
-
-			if tr.nameplateType and tr.nameplateType.enable then ut = false
-				if tr.nameplateType.friendlyPlayer	and frame.UnitType == 'FRIENDLY_PLAYER' then ut = true end
-				if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then	 ut = true end
-				if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then	 ut = true end
-				if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then		 ut = true end
-				if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then			 ut = true end
-				if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then			 ut = true end
-				if ut ~= true then return end
-			end
-
-			if tr.reactionType and tr.reactionType.enable then rt = false
-				reaction = (tr.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
-				if tr.reactionType.hated		and reaction == 1 then rt = true end
-				if tr.reactionType.hostile		and reaction == 2 then rt = true end
-				if tr.reactionType.unfriendly	and reaction == 3 then rt = true end
-				if tr.reactionType.neutral		and reaction == 4 then rt = true end
-				if tr.reactionType.friendly		and reaction == 5 then rt = true end
-				if tr.reactionType.honored		and reaction == 6 then rt = true end
-				if tr.reactionType.revered		and reaction == 7 then rt = true end
-				if tr.reactionType.exalted		and reaction == 8 then rt = true end
-				if rt ~= true then return end
-			end
-
-			if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
-				icons = frame.Buffs and frame.Buffs.icons
-				if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll, tr.buffs.missingAll) then return end
-			end
-			if tr.debuffs and tr.debuffs.names and next(tr.debuffs.names) then
-				icons = frame.Debuffs and frame.Debuffs.icons
-				if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll, tr.debuffs.missingAll) then return end
-			end
-
-			self:FilterStyle(frame, x.actions);
+			tinsert(filterList, {n, x.triggers.priority or 1})
 		end
+	end
+	if not next(filterList) then return end --if all triggers are disabled just stop
+	tsort(filterList, filterSort) --sort by priority then name
+	for n, x in ipairs(filterList) do
+		x = E.global.nameplate.filters[filterList[n][1]];
+		if not x then return end
+		tr = x.triggers
+
+		name = UnitName(frame.displayedUnit)
+		if tr.name and tr.name ~= "" and tr.name ~= name then return end
+
+		guid = UnitGUID(frame.displayedUnit)
+		if guid then
+			npcid = select(6, strsplit('-', guid))
+			if tr.npcid and tr.npcid ~= "" and tr.npcid ~= npcid then return end
+		end
+
+		inCombat = UnitAffectingCombat("player")
+		if not (tr.inCombat and tr.outOfCombat) then --ignore if both are checked (same as both unchecked)
+			if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
+		end
+
+		if frame.displayedUnit ~= "player" then
+			inCombat = UnitAffectingCombat(frame.displayedUnit)
+			if not (tr.inCombatUnit and tr.outOfCombatUnit) then --ignore if both are checked (same as both unchecked)
+				if (tr.inCombatUnit and not inCombat) or (tr.outOfCombatUnit and inCombat) then return end
+			end
+		end
+
+		if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
+			if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
+		end
+
+		level = UnitLevel(frame.displayedUnit)
+		if tr.level and level then
+			if tr.mylevel then
+				if frame.displayedUnit ~= "player" then
+					mylevel = UnitLevel("player")
+					if level ~= mylevel then return end
+				end
+			else
+				if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
+				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
+				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
+			end
+		end
+
+		if tr.nameplateType and tr.nameplateType.enable then ut = false
+			if tr.nameplateType.friendlyPlayer	and frame.UnitType == 'FRIENDLY_PLAYER' then ut = true end
+			if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then	 ut = true end
+			if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then	 ut = true end
+			if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then		 ut = true end
+			if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then			 ut = true end
+			if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then			 ut = true end
+			if ut ~= true then return end
+		end
+
+		if tr.reactionType and tr.reactionType.enable then rt = false
+			reaction = (tr.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
+			if tr.reactionType.hated		and reaction == 1 then rt = true end
+			if tr.reactionType.hostile		and reaction == 2 then rt = true end
+			if tr.reactionType.unfriendly	and reaction == 3 then rt = true end
+			if tr.reactionType.neutral		and reaction == 4 then rt = true end
+			if tr.reactionType.friendly		and reaction == 5 then rt = true end
+			if tr.reactionType.honored		and reaction == 6 then rt = true end
+			if tr.reactionType.revered		and reaction == 7 then rt = true end
+			if tr.reactionType.exalted		and reaction == 8 then rt = true end
+			if rt ~= true then return end
+		end
+
+		if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
+			icons = frame.Buffs and frame.Buffs.icons
+			if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll, tr.buffs.missingAll) then return end
+		end
+		if tr.debuffs and tr.debuffs.names and next(tr.debuffs.names) then
+			icons = frame.Debuffs and frame.Debuffs.icons
+			if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll, tr.debuffs.missingAll) then return end
+		end
+
+		self:FilterStyle(frame, x.actions);
 	end
 end
 

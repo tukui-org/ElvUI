@@ -144,8 +144,22 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				combat = {
+				priority = {
+					name = L["Filter Priority"],
 					order = 6,
+					type = "range",
+					min = 1, max = 100, step = 1,
+					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.priority or 1
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.priority = value
+						NP:ConfigureAll()
+					end,
+				},
+				combat = {
+					order = 7,
 					type = 'group',
 					name = COMBAT,
 					guiInline = true,
@@ -211,7 +225,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 7,
+					order = 8,
 					type = 'group',
 					name = LEVEL,
 					guiInline = true,
@@ -293,7 +307,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 8,
+					order = 9,
 					type = "group",
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -393,7 +407,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 9,
+					order = 10,
 					type = "group",
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -495,7 +509,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Nameplate Type"],
-					order = 10,
+					order = 11,
 					type = "group",
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -597,7 +611,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 11,
+					order = 12,
 					type = "group",
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
