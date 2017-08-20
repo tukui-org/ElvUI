@@ -60,16 +60,18 @@ function mod:UpdateElement_Glow(frame)
 					scale = 0.75
 				end
 			end
-			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, -E:Scale(20*scale), E:Scale(10*scale))
-			frame.Glow2:SetPoint("BOTTOMRIGHT", (frame.PowerBar:IsShown() and frame.PowerBar) or frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
+			local powerBar = frame.PowerBar:IsShown() and frame.PowerBar;
+			local size = E.Border*(10+(powerBar and 3 or 0))*scale;
+			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, "TOPLEFT", -E:Scale(size*2), E:Scale(size))
+			frame.Glow2:SetPoint("BOTTOMRIGHT", powerBar or frame.HealthBar, "BOTTOMRIGHT", E:Scale(size*2), -E:Scale(size))
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
-			frame.TopArrow:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, E:Scale(2*scale))
+			frame.TopArrow:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, E:Scale(E.Border*2))
 			frame.TopArrow:Show()
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
-			frame.RightArrow:SetPoint("RIGHT", frame.HealthBar, "LEFT", E:Scale(2*scale), 0)
-			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(2*scale), 0)
+			frame.RightArrow:SetPoint("RIGHT", frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
+			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(E.Border*2), 0)
 			frame.RightArrow:Show()
 			frame.LeftArrow:Show()
 		end
