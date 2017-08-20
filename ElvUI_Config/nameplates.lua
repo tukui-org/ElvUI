@@ -7,7 +7,7 @@ local filters
 local tonumber = tonumber
 local GetSpellInfo = GetSpellInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
-local LEVEL, NONE, REPUTATION = LEVEL, NONE, REPUTATION
+local LEVEL, NONE, REPUTATION, COMBAT = LEVEL, NONE, REPUTATION, COMBAT
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -17,7 +17,7 @@ local FACTION_STANDING_LABEL5 = FACTION_STANDING_LABEL5
 local FACTION_STANDING_LABEL6 = FACTION_STANDING_LABEL6
 local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
 local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
--- GLOBALS: MAX_PLAYER_LEVEL
+-- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
@@ -339,10 +339,10 @@ local function UpdateFilterGroup()
 					args = {
 						mustHaveAll = {
 							order = 1,
-							name = L["Must Have All"],
+							name = L["Require All"],
 							type = "toggle",
-							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll) end,
+							desc = L["Require of the selected auras."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
 							end,
@@ -351,17 +351,17 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						missingAll = {
+						missing = {
 							order = 2,
-							name = L["Missing All"],
+							name = L["Missing"],
 							type = "toggle",
-							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll) end,
+							desc = L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missing
 							end,
 							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missingAll = value
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missing = value
 								NP:ConfigureAll()
 							end,
 						},
@@ -389,7 +389,7 @@ local function UpdateFilterGroup()
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs = {
 										mustHaveAll = false,
-										missingAll = false,
+										missing = false,
 										names = {},
 									}
 								end
@@ -441,10 +441,10 @@ local function UpdateFilterGroup()
 					args = {
 						mustHaveAll = {
 							order = 1,
-							name = L["Must Have All"],
+							name = L["Require All"],
 							type = "toggle",
-							desc = L["Must have all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll) end,
+							desc = L["Require of the selected auras."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
 							end,
@@ -453,17 +453,17 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						missingAll = {
+						missing = {
 							order = 2,
-							name = L["Missing All"],
+							name = L["Missing"],
 							type = "toggle",
-							desc = L["Must be missing all of the buffs/debuffs listed in order to pass filter."],
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or (E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll) end,
+							desc = L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missing
 							end,
 							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missingAll = value
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missing = value
 								NP:ConfigureAll()
 							end,
 						},
@@ -491,7 +491,7 @@ local function UpdateFilterGroup()
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs = {
 										mustHaveAll = false,
-										missingAll = false,
+										missing = false,
 										names = {},
 									}
 								end

@@ -48,14 +48,14 @@ G["nameplate"] = {
 				},
 				['buffs'] = {
 					['mustHaveAll'] = false,
-					['missingAll'] = false,
+					['missing'] = false,
 					['names'] = {
 						['Divine Protection'] = true
 					},
 				},
 				['debuffs'] = {
 					['mustHaveAll'] = false,
-					['missingAll'] = false,
+					['missing'] = false,
 					['names'] = {
 						['Forbearance'] = true,
 					},

@@ -540,19 +540,23 @@ function mod:UpdateInVehicle(frame, noEvents)
 	end
 end
 
-local function filterAura(names, icons, mustHaveAll, missingAll)
+local function filterAura(names, icons, mustHaveAll, missing)
 	local total, count = 0, 0
 	for q, w in pairs(names) do
 		if w == true then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
 		for z, n in pairs(icons) do
-			if (mustHaveAll or missingAll) and icons[z]:IsShown() and n.name and n.name == q and w == true then
+			if icons[z]:IsShown() and n.name and n.name == q and w == true then
 				count = count + 1 --keep track of how many matches we have
-			elseif icons[z]:IsShown() and n.name and n.name == q and w == true then
-				return true
-	end end end
-	return (total == 0) or (mustHaveAll and total == count) or (missingAll and total > count)
+			end
+		end
+	end
+	return (total == 0) -- no selected auras
+	or ((mustHaveAll and not missing) and total == count)			-- [x] Check for all [ ] Missing: total needs to match count
+	or ((not mustHaveAll and not missing) and count > 0)			-- [ ] Check for all [ ] Missing: count needs to be greater than zero
+	or ((not mustHaveAll and missing) and count == 0)				-- [ ] Check for all [x] Missing: count needs to be zero
+	or ((mustHaveAll and missing) and (total ~= count) and count > 0)	-- [x] Check for all [x] Missing: count needs to be greater than zero and not match total
 end
 
 local function HidePlayerNamePlate()
@@ -717,11 +721,11 @@ function mod:UpdateElement_Filters(frame)
 
 		if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
 			icons = frame.Buffs and frame.Buffs.icons
-			if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll, tr.buffs.missingAll) then return end
+			if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll, tr.buffs.missing) then return end
 		end
 		if tr.debuffs and tr.debuffs.names and next(tr.debuffs.names) then
 			icons = frame.Debuffs and frame.Debuffs.icons
-			if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll, tr.debuffs.missingAll) then return end
+			if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll, tr.debuffs.missing) then return end
 		end
 
 		self:FilterStyle(frame, x.actions);
