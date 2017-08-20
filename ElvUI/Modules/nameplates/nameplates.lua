@@ -6,6 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local select = select
 local next = next
+local unpack = unpack
 local strsplit = strsplit
 local pairs, type = pairs, type
 local twipe = table.wipe
