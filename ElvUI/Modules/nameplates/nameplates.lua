@@ -8,12 +8,14 @@ local select = select
 local next = next
 local unpack = unpack
 local ipairs = ipairs
+local tonumber = tonumber
 local strsplit = strsplit
 local pairs, type = pairs, type
 local twipe = table.wipe
 local tsort = table.sort
 local tinsert = table.insert
-local format, match = string.format, string.match
+local format = string.format
+local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
@@ -617,7 +619,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local ut, rt, tr, name, guid, npcid, inCombat, level, mylevel, reaction, icons;
+	local ut, rt, tr, tn, name, guid, npcid, inCombat, level, mylevel, reaction, icons;
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
 		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
@@ -641,13 +643,23 @@ function mod:UpdateElement_Filters(frame)
 		if not x then return end
 		tr = x.triggers
 
-		name = UnitName(frame.displayedUnit)
-		if tr.name and tr.name ~= "" and tr.name ~= name then return end
-
-		guid = UnitGUID(frame.displayedUnit)
-		if guid then
-			npcid = select(6, strsplit('-', guid))
-			if tr.npcid and tr.npcid ~= "" and tr.npcid ~= npcid then return end
+		if tr.names and next(tr.names) then tn = 0
+			for m, c in pairs(tr.names) do
+				if c == true then --only check names that are checked
+					tn = 1 --theres something on the list enabled
+					if tonumber(m) then
+						guid = UnitGUID(frame.displayedUnit)
+						if guid then
+							npcid = select(6, strsplit('-', guid))
+							if tonumber(m) == tonumber(npcid) then tn = 2;break end
+						end
+					else
+						name = UnitName(frame.displayedUnit)
+						if m and m ~= "" and m == name then tn = 2;break end
+					end
+				end
+			end
+			if tn == 1 then return end -- pass filter if: 0) all are unchecked  2) a checked one matches
 		end
 
 		inCombat = UnitAffectingCombat("player")

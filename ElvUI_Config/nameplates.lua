@@ -83,10 +83,29 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				priority = {
+					name = L["Filter Priority"],
+					order = 1,
+					type = "range",
+					min = 1, max = 100, step = 1,
+					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.priority or 1
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.priority = value
+						NP:ConfigureAll()
+					end,
+				},
+				spacer1 = {
+					order = 2,
+					type = 'description',
+					name = '',
+				},
 				isTarget = {
 					name = L["Is Targeted"],
 					desc = L["If unit is (or not) targeted, pass filter."],
-					order = 1,
+					order = 3,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					get = function(info)
@@ -100,7 +119,7 @@ local function UpdateFilterGroup()
 				notTarget = {
 					name = L["Not Targeted"],
 					desc = L["If unit is (or not) targeted, pass filter."],
-					order = 2,
+					order = 4,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					get = function(info)
@@ -111,52 +130,58 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				spacer1 = {
-					order = 3,
-					type = 'description',
-					name = '',
-				},
-				name = {
-					order = 4,
-					type = 'input',
+				names = {
 					name = L["Name"],
-					desc = L["Name must but this in order to trigger, set to blank to turn off."],
-					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.name or ""
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.name = value
-						NP:ConfigureAll()
-					end,
-				},
-				npcid = {
 					order = 5,
-					type = 'input',
-					name = L["NPC ID"],
-					desc = L["NPC ID must but this in order to trigger, set to blank to turn off."],
+					type = "group",
+					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.npcid or ""
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.npcid = value
-						NP:ConfigureAll()
-					end,
-				},
-				priority = {
-					name = L["Filter Priority"],
-					order = 6,
-					type = "range",
-					min = 1, max = 100, step = 1,
-					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.priority or 1
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.priority = value
-						NP:ConfigureAll()
-					end,
+					args = {
+						addName = {
+							order = 1,
+							name = L["Add Name or NPC ID"],
+							desc = L["Add a Name or NPC ID to the list."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.names = {}
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = true,
+								UpdateFilterGroup();
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						},
+						removeName = {
+							order = 2,
+							name = L["Remove Name or NPC ID"],
+							desc = L["Remove a Name or NPC ID from the list."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								if E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = nil;
+								end
+								UpdateFilterGroup();
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						},
+						names = {
+							order = 3,
+							type = "group",
+							name = "",
+							guiInline = true,
+							args = {},
+						}
+					},
 				},
 				combat = {
 					order = 7,
@@ -381,13 +406,15 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
 								if tonumber(value) then
 									local spellName = GetSpellInfo(value)
 									if spellName then
 										value = spellName
 									end
 								end
-
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil;
 								end
@@ -461,7 +488,6 @@ local function UpdateFilterGroup()
 										value = spellName
 									end
 								end
-
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs = {
 										mustHaveAll = false,
@@ -469,7 +495,6 @@ local function UpdateFilterGroup()
 										names = {},
 									}
 								end
-
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true,
 								UpdateFilterGroup();
 								UpdateFilterGroup();
@@ -489,7 +514,6 @@ local function UpdateFilterGroup()
 										value = spellName
 									end
 								end
-
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil;
 								end
@@ -921,6 +945,23 @@ local function UpdateFilterGroup()
 					end,
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
+		end
+
+		if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
+				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
+					name = name,
+					type = "toggle",
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name] = value
 						NP:ConfigureAll()
 					end,
 				}
@@ -2308,12 +2349,10 @@ E.Options.args.nameplate = {
 						if match(value, "^[%s%p]-$") then
 							return
 						end
-
 						if E.global['nameplate']['filters'][value] then
 							E:Print(L["Filter already exists!"])
 							return
 						end
-
 						E.global.nameplate.filters[value] = {
 							['enable'] = true,
 							['triggers'] = {
@@ -2330,7 +2369,6 @@ E.Options.args.nameplate = {
 								}
 							},
 						}
-
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
@@ -2342,6 +2380,9 @@ E.Options.args.nameplate = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
+						if match(value, "^[%s%p]-$") then
+							return
+						end
 						if G.nameplate.filters[value] then
 							E.global.nameplate.filters[value].triggers.enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
