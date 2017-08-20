@@ -17,10 +17,10 @@ function mod:UpdateElement_Glow(frame)
 	if frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	if not frame.HealthBar:IsShown() then return end
 
-	local scale, r, g, b, a, shouldShow = 1;
+	local scale, shouldShow, r, g, b, a = 1, 0;
 	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
 		r, g, b, a = self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a
-		shouldShow = true
+		shouldShow = 1
 	else
 		-- Use color based on the type of unit (neutral, etc.)
 		local health, maxHealth = UnitHealth(frame.unit), UnitHealthMax(frame.unit)
@@ -32,19 +32,21 @@ function mod:UpdateElement_Glow(frame)
 				r, g, b, a = 1, 1, 0, 1
 			end
 
-			shouldShow = true
+			shouldShow = 2
 		end
 	end
 
-	if(shouldShow) then
-		--style1: border
-		--style2: background
-		--style3: top arrow only
-		--style4: side arrows only
-		--style5: border + top arrow
-		--style6: background + top arrow
-		--style7: border + side arrows
-		--style8: background + side arrows
+	--[[
+		style1:'Border',
+		style2:'Background',
+		style3:'Top Arrow Only',
+		style4:'Side Arrows Only',
+		style5:'Border + Top Arrow',
+		style6:'Background + Top Arrow',
+		style7:'Border + Side Arrows',
+		style8:'Background + Side Arrows'
+	]]
+	if (shouldShow ~= 0) then
 		if self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7" then -- original glow
 			frame.Glow:Show()
 			frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
@@ -61,11 +63,11 @@ function mod:UpdateElement_Glow(frame)
 			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, -E:Scale(20*scale), E:Scale(10*scale))
 			frame.Glow2:SetPoint("BOTTOMRIGHT", (frame.PowerBar:IsShown() and frame.PowerBar) or frame.HealthBar, E:Scale(20*scale), -E:Scale(10*scale))
 		end
-		if self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6" then -- top arrow
+		if shouldShow ~= 2 and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
 			frame.TopArrow:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, E:Scale(2*scale))
 			frame.TopArrow:Show()
 		end
-		if self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8" then -- side arrows
+		if shouldShow ~= 2 and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
 			frame.RightArrow:SetPoint("RIGHT", frame.HealthBar, "LEFT", E:Scale(2*scale), 0)
 			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(2*scale), 0)
 			frame.RightArrow:Show()
