@@ -558,13 +558,7 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
-local function filterSort(a,b)
-	if a[2] and b[2] then
-		return a[2]>b[2] --sort by priority
-	end
-end
-
-local filterList, filterVisibility = {} --[[ 0=hide 1=show 2=noTrigger ]]
+local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions)
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
@@ -615,6 +609,13 @@ function mod:FilterStyle(frame, actions)
 	end
 end
 
+local filterList = {}
+local function filterSort(a,b)
+	if a[2] and b[2] then
+		return a[2]>b[2] --sort by priority
+	end
+end
+
 function mod:UpdateElement_Filters(frame)
 	local ut, rt, tr, name, guid, npcid, inCombat, level, mylevel, reaction, icons;
 	if frame.TextureChanged then
@@ -634,7 +635,7 @@ function mod:UpdateElement_Filters(frame)
 		end
 	end
 	if not next(filterList) then return end --if all triggers are disabled just stop
-	tsort(filterList, filterSort) --sort by priority then name
+	tsort(filterList, filterSort) --sort by priority
 	for n, x in ipairs(filterList) do
 		x = E.global.nameplate.filters[filterList[n][1]];
 		if not x then return end
