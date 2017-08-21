@@ -568,7 +568,7 @@ local function UpdateFilterGroup()
 							type = "group",
 							guiInline = true,
 							order = 1,
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
 							args = {
 								friendlyPlayer = {
 									name = L["FRIENDLY_PLAYER"],
