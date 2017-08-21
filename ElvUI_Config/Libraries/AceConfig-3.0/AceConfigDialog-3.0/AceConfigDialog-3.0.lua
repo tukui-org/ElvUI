@@ -1141,7 +1141,12 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 				elseif v.type == "toggle" then
 					control = gui:Create("CheckBox")
+					control.textWidth = GetOptionsMemberValue("textWidth",v,options,path,appName)
 					control:SetLabel(name)
+					if control.textWidth and control.frame and control.text then
+						local textWidth = control.text:GetWidth()+30
+						control.customWidth = (textWidth>=width_multiplier and textWidth<=width_multiplier*1.5) and textWidth
+					end
 					control:SetTriState(v.tristate)
 					local value = GetOptionsMemberValue("get",v, options, path, appName)
 					control:SetValue(value)
@@ -1410,8 +1415,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 				--Common Init
 				if control then
-					if control.width ~= "fill" then
-						local customWidth = GetOptionsMemberValue("customWidth",v,options,path,appName)
+					local customWidth = control.customWidth or GetOptionsMemberValue("customWidth",v,options,path,appName)
+					if control.width ~= "fill" or customWidth then
 						if customWidth then
 							control:SetWidth(customWidth)
 						else

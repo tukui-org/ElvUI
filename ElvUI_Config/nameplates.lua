@@ -82,6 +82,7 @@ local function UpdateAuraList()
 				end
 			end
 			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
+				textWidth = true,
 				name = spell,
 				type = "toggle",
 				order = -1,
@@ -110,6 +111,7 @@ local function UpdateAuraList()
 				end
 			end
 			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
+				textWidth = true,
 				name = spell,
 				type = "toggle",
 				order = -1,
