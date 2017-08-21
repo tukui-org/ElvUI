@@ -70,7 +70,8 @@ local function dragdrop_OnEnter(frame, ...)
 	end
 end
 local function dragdrop_OnClick(frame, ...)
-	if frame.obj.dragOnClick then
+	local button = ...
+	if frame.obj.dragOnClick and button == "RightButton" then
 		frame.obj.dragOnClick(frame, ...)
 		frame.obj.ActivateMultiControl(frame.obj, ...)
 	end
@@ -139,6 +140,7 @@ local function Constructor()
 	local frame = CreateFrame("Button", name, UIParent, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
 	frame:Hide()
 	frame:EnableMouse(true)
+	frame:RegisterForClicks("RightButtonUp")
 	frame:SetScript("OnClick", Button_OnClick)
 	frame:SetScript("OnEnter", Control_OnEnter)
 	frame:SetScript("OnLeave", Control_OnLeave)

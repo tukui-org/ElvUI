@@ -1313,13 +1313,8 @@ local function GetUnitSettings(unit, name)
 									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
 								end,
 							},
-							spacer3 = {
-								order = 8,
-								type = "description",
-								name = " ",
-							},
 							filterPriority = {
-								order = 9,
+								order = 8,
 								dragdrop = true,
 								type = "multiselect",
 								name = L["Filter Priority"],
@@ -1348,6 +1343,11 @@ local function GetUnitSettings(unit, name)
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end
+							},
+							spacer3 = {
+								order = 9,
+								type = "description",
+								name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
 							},
 						},
 					},
@@ -1462,13 +1462,8 @@ local function GetUnitSettings(unit, name)
 									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
 								end,
 							},
-							spacer3 = {
-								order = 8,
-								type = "description",
-								name = " ",
-							},
 							filterPriority = {
-								order = 9,
+								order = 8,
 								dragdrop = true,
 								type = "multiselect",
 								name = L["Filter Priority"],
@@ -1497,6 +1492,11 @@ local function GetUnitSettings(unit, name)
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end
+							},
+							spacer3 = {
+								order = 9,
+								type = "description",
+								name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
 							},
 						},
 					},

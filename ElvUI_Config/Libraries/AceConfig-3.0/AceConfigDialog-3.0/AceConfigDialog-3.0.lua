@@ -1296,7 +1296,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 							local text = values[value]
 							if dragdrop then
 								local button = gui:Create("Button-ElvUI")
-								button:SetText(text)
+								button:SetText(format("|cFF888888%d|r %s", i, text))
 								button:SetDisabled(disabled)
 								button:SetUserData("value", value)
 								button:SetUserData("text", text)

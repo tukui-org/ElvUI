@@ -313,13 +313,8 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
 		end,
 	}
-	config.args.filters.args.spacer1 = {
-		order = 22,
-		type = "description",
-		name = " ",
-	}
 	config.args.filters.args.filterPriority = {
-		order = 23,
+		order = 22,
 		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
@@ -348,6 +343,11 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
 		end
+	}
+	config.args.filters.args.spacer1 = {
+		order = 23,
+		type = "description",
+		name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
 	}
 
 	return config
@@ -542,13 +542,8 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
 		end,
 	}
-	config.args.filters.args.spacer1 = {
-		order = 22,
-		type = "description",
-		name = " ",
-	}
 	config.args.filters.args.filterPriority = {
-		order = 23,
+		order = 22,
 		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
@@ -577,6 +572,11 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
 		end
+	}
+	config.args.filters.args.spacer1 = {
+		order = 23,
+		type = "description",
+		name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
 	}
 
 	return config
