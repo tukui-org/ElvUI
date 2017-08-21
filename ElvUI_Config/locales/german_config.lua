@@ -680,7 +680,7 @@ L["Not Targeted"] = "Nicht anvisiert"
 L["If unit is (or not) targeted, pass filter."] = "Wenn die Einheit anvisiert (oder nicht), bestehe den Filter."
 L["Texture"] = "Textur"
 L["Unit"] = "Einheit"
-L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."] = "Mit rechts-klick auf einer Taste entfernst du den Filter von der Liste. Wenn du links-click gedrückt hälst kannst du eine Taste mit Drag&Drop in der Position verschieben."
+L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."] = "Mit Rechts-Klick auf einer Taste entfernst du den Filter von der Liste. Mit gedrücktem Links-Klick auf einer Taste, kannst du sie per Drag&Drop verschieben."
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"
