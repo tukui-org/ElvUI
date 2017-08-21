@@ -1167,6 +1167,9 @@ E.Options.args.filters = {
 			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 			get = function(info) return "" end,
 			set = function(info, value)
+				if match(value, "^[%s%p]-$") then
+					return
+				end
 				if G.unitframe.aurafilters[value] then
 					E:Print(L["You can't remove a pre-existing filter."])
 				else
