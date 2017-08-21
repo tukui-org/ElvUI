@@ -691,8 +691,8 @@ function mod:UpdateElement_Filters(frame)
 				end
 			else
 				if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
-				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
-				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
+				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel >= level then return end
+				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel <= level then return end
 			end
 		end
 
