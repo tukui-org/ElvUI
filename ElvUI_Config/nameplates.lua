@@ -67,6 +67,64 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 	end
 end
 
+local function UpdateAuraList()
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
+		local spell, spellName, notDisabled
+		for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
+			spell = name
+			if tonumber(spell) then
+				spellName = GetSpellInfo(spell)
+				notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
+				if spellName and notDisabled then
+					spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+				else
+					spell = format("%s (%d)", spellName, spell)
+				end
+			end
+			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
+				name = spell,
+				type = "toggle",
+				order = -1,
+				get = function(info)
+					return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name]
+				end,
+				set = function(info, value)
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = value
+					NP:ConfigureAll()
+				end,
+			}
+		end
+	end
+
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
+		local spell, spellName, notDisabled
+		for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
+			spell = name
+			if tonumber(spell) then
+				spellName = GetSpellInfo(spell)
+				notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
+				if spellName and notDisabled then
+					spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+				else
+					spell = format("%s (%d)", spellName, spell)
+				end
+			end
+			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
+				name = spell,
+				type = "toggle",
+				order = -1,
+				get = function(info)
+					return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name]
+				end,
+				set = function(info, value)
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
+					NP:ConfigureAll()
+				end,
+			}
+		end
+	end
+end
+
 local function UpdateFilterGroup()
 	if not selectedNameplateFilter or not E.global.nameplate.filters[selectedNameplateFilter] then
 		E.Options.args.nameplate.args.filters.args.header = nil
@@ -93,6 +151,7 @@ local function UpdateFilterGroup()
 					end,
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].triggers.enable = value
+						UpdateAuraList() --we need this to recolor the spellid based on wether or not the filter is disabled
 						NP:ConfigureAll()
 					end,
 				},
@@ -396,12 +455,6 @@ local function UpdateFilterGroup()
 								if match(value, "^[%s%p]-$") then
 									return
 								end
-								if tonumber(value) then
-									local spellName = GetSpellInfo(value)
-									if spellName then
-										value = spellName
-									end
-								end
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs = {
 										mustHaveAll = false,
@@ -424,12 +477,6 @@ local function UpdateFilterGroup()
 							set = function(info, value)
 								if match(value, "^[%s%p]-$") then
 									return
-								end
-								if tonumber(value) then
-									local spellName = GetSpellInfo(value)
-									if spellName then
-										value = spellName
-									end
 								end
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil;
@@ -497,12 +544,6 @@ local function UpdateFilterGroup()
 								if match(value, "^[%s%p]-$") then
 									return
 								end
-								if tonumber(value) then
-									local spellName = GetSpellInfo(value)
-									if spellName then
-										value = spellName
-									end
-								end
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs = {
 										mustHaveAll = false,
@@ -523,11 +564,8 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if tonumber(value) then
-									local spellName = GetSpellInfo(value)
-									if spellName then
-										value = spellName
-									end
+								if match(value, "^[%s%p]-$") then
+									return
 								end
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil;
@@ -933,40 +971,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
-				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
-					name = name,
-					type = "toggle",
-					order = -1,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = value
-						NP:ConfigureAll()
-					end,
-				}
-			end
-		end
-
-		if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
-				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
-					name = name,
-					type = "toggle",
-					order = -1,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
-						NP:ConfigureAll()
-					end,
-				}
-			end
-		end
-
+		UpdateAuraList()
 		if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
 				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
