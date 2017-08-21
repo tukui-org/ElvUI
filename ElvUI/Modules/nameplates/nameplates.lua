@@ -542,20 +542,20 @@ end
 
 local function filterAura(names, icons, mustHaveAll, missing)
 	local total, count = 0, 0
-	for q, w in pairs(names) do
-		if w == true then --only if they are turned on
+	for name, value in pairs(names) do
+		if value == true then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
-		for z, n in pairs(icons) do
-			if icons[z]:IsShown() and n.name and n.name == q and w == true then
+		for frameNum, icon in pairs(icons) do
+			if icons[frameNum]:IsShown() and icon.name and icon.name == name and value == true then
 				count = count + 1 --keep track of how many matches we have
 			end
 		end
 	end
 	return (total == 0) -- no selected auras
-	or ((mustHaveAll and not missing) and total == count)			-- [x] Check for all [ ] Missing: total needs to match count
-	or ((not mustHaveAll and not missing) and count > 0)			-- [ ] Check for all [ ] Missing: count needs to be greater than zero
-	or ((not mustHaveAll and missing) and count == 0)				-- [ ] Check for all [x] Missing: count needs to be zero
+	or ((mustHaveAll and not missing) and total == count)				-- [x] Check for all [ ] Missing: total needs to match count
+	or ((not mustHaveAll and not missing) and count > 0)				-- [ ] Check for all [ ] Missing: count needs to be greater than zero
+	or ((not mustHaveAll and missing) and count == 0)					-- [ ] Check for all [x] Missing: count needs to be zero
 	or ((mustHaveAll and missing) and (total ~= count) and count > 0)	-- [x] Check for all [x] Missing: count needs to be greater than zero and not match total
 end
 
@@ -623,7 +623,8 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local ut, rt, tr, tn, name, guid, npcid, inCombat, level, mylevel, reaction, icons;
+	local trigger, triggerByUnit, triggerByReactionType, triggerByNameOrSpellID, name, guid, npcid, inCombat, level, mylevel, reaction;
+
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
 		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
@@ -633,102 +634,175 @@ function mod:UpdateElement_Filters(frame)
 		frame.BorderChanged = nil
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
-	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end
+
+	if frame.UnitType == 'PLAYER' then
+		filterVisibility = 2
+	end
+
 	twipe(filterList)
-	for n, x in pairs(E.global.nameplate.filters) do
-		if x.triggers and x.triggers.enable then
-			tinsert(filterList, {n, x.triggers.priority or 1})
+
+	for filterName, filter in pairs(E.global.nameplate.filters) do
+		if filter.triggers and filter.triggers.enable then
+			tinsert(filterList, {filterName, filter.triggers.priority or 1})
 		end
 	end
-	if not next(filterList) then return end --if all triggers are disabled just stop
-	tsort(filterList, filterSort) --sort by priority
-	for n, x in ipairs(filterList) do
-		x = E.global.nameplate.filters[filterList[n][1]];
-		if not x then return end
-		tr = x.triggers
 
-		if tr.names and next(tr.names) then tn = 0
-			for m, c in pairs(tr.names) do
-				if c == true then --only check names that are checked
-					tn = 1 --theres something on the list enabled
-					if tonumber(m) then
+	if not next(filterList) then
+		return --if all triggers are disabled just stop
+	end
+
+	tsort(filterList, filterSort) --sort by priority
+
+	for filterName, filter in ipairs(filterList) do
+		filter = E.global.nameplate.filters[filterList[filterName][1]];
+		if not filter then
+			return
+		end
+		trigger = filter.triggers
+
+		if trigger.names and next(trigger.names) then
+			triggerByNameOrSpellID = 0
+			for unitName, value in pairs(trigger.names) do
+				if value == true then --only check names that are checked
+					triggerByNameOrSpellID = 1 --theres something on the list enabled
+					if tonumber(unitName) then
 						guid = UnitGUID(frame.displayedUnit)
 						if guid then
 							npcid = select(6, strsplit('-', guid))
-							if tonumber(m) == tonumber(npcid) then tn = 2;break end
+							if tonumber(unitName) == tonumber(npcid) then
+								triggerByNameOrSpellID = 2
+								break
+							end
 						end
 					else
 						name = UnitName(frame.displayedUnit)
-						if m and m ~= "" and m == name then tn = 2;break end
+						if unitName and unitName ~= "" and unitName == name then
+							triggerByNameOrSpellID = 2
+							break
+						end
 					end
 				end
 			end
-			if tn == 1 then return end -- pass filter if: 0) all are unchecked  2) a checked one matches
+			if triggerByNameOrSpellID == 1 then
+				return -- pass filter if: 0) all are unchecked  2) a checked one matches
+			end
 		end
 
 		inCombat = UnitAffectingCombat("player")
-		if not (tr.inCombat and tr.outOfCombat) then --ignore if both are checked (same as both unchecked)
-			if (tr.inCombat and not inCombat) or (tr.outOfCombat and inCombat) then return end
+		if not (trigger.inCombat and trigger.outOfCombat) then --ignore if both are checked (same as both unchecked)
+			if (trigger.inCombat and not inCombat) or (trigger.outOfCombat and inCombat) then
+				return
+			end
 		end
 
 		if frame.displayedUnit ~= "player" then
 			inCombat = UnitAffectingCombat(frame.displayedUnit)
-			if not (tr.inCombatUnit and tr.outOfCombatUnit) then --ignore if both are checked (same as both unchecked)
-				if (tr.inCombatUnit and not inCombat) or (tr.outOfCombatUnit and inCombat) then return end
+			if not (trigger.inCombatUnit and trigger.outOfCombatUnit) then --ignore if both are checked (same as both unchecked)
+				if (trigger.inCombatUnit and not inCombat) or (trigger.outOfCombatUnit and inCombat) then
+					return
+				end
 			end
 		end
 
-		if not (tr.isTarget and tr.notTarget) then --ignore if both are checked (same as both unchecked)
-			if (tr.isTarget and not frame.isTarget) or (tr.notTarget and frame.isTarget) then return end
+		if not (trigger.isTarget and trigger.notTarget) then --ignore if both are checked (same as both unchecked)
+			if (trigger.isTarget and not frame.isTarget) or (trigger.notTarget and frame.isTarget) then
+				return
+			end
 		end
 
 		level = UnitLevel(frame.displayedUnit)
-		if tr.level and level then
-			if tr.mylevel then
+		if trigger.level and level then
+			if trigger.mylevel then
 				if frame.displayedUnit ~= "player" then
 					mylevel = UnitLevel("player")
 					if level ~= mylevel then return end
 				end
 			else
-				if (tr.curlevel and tr.curlevel ~= 0) and tr.curlevel ~= level then return end
-				if (tr.minlevel and tr.minlevel ~= 0) and tr.minlevel > level then return end
-				if (tr.maxlevel and tr.maxlevel ~= 0) and tr.maxlevel < level then return end
+				if (trigger.curlevel and trigger.curlevel ~= 0) and trigger.curlevel ~= level then
+					return
+				end
+				if (trigger.minlevel and trigger.minlevel ~= 0) and trigger.minlevel > level then
+					return
+				end
+				if (trigger.maxlevel and trigger.maxlevel ~= 0) and trigger.maxlevel < level then
+					return
+				end
 			end
 		end
 
-		if tr.nameplateType and tr.nameplateType.enable then ut = false
-			if tr.nameplateType.friendlyPlayer	and frame.UnitType == 'FRIENDLY_PLAYER' then ut = true end
-			if tr.nameplateType.friendlyNPC		and frame.UnitType == 'FRIENDLY_NPC' then	 ut = true end
-			if tr.nameplateType.enemyPlayer		and frame.UnitType == 'ENEMY_PLAYER' then	 ut = true end
-			if tr.nameplateType.enemyNPC		and frame.UnitType == 'ENEMY_NPC' then		 ut = true end
-			if tr.nameplateType.healer			and frame.UnitType == 'HEALER' then			 ut = true end
-			if tr.nameplateType.player			and frame.UnitType == 'PLAYER' then			 ut = true end
-			if ut ~= true then return end
+		if trigger.nameplateType and trigger.nameplateType.enable then
+			triggerByUnit = false
+
+			if trigger.nameplateType.friendlyPlayer and frame.UnitType == 'FRIENDLY_PLAYER' then
+				triggerByUnit = true
+			end
+			if trigger.nameplateType.friendlyNPC and frame.UnitType == 'FRIENDLY_NPC' then
+				triggerByUnit = true
+			end
+			if trigger.nameplateType.enemyPlayer and frame.UnitType == 'ENEMY_PLAYER' then
+				triggerByUnit = true
+			end
+			if trigger.nameplateType.enemyNPC and frame.UnitType == 'ENEMY_NPC' then
+				triggerByUnit = true
+			end
+			if trigger.nameplateType.healer and frame.UnitType == 'HEALER' then
+				triggerByUnit = true
+			end
+			if trigger.nameplateType.player and frame.UnitType == 'PLAYER' then
+				triggerByUnit = true
+			end
+
+			if triggerByUnit ~= true then
+				return
+			end
 		end
 
-		if tr.reactionType and tr.reactionType.enable then rt = false
-			reaction = (tr.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
-			if tr.reactionType.hated		and reaction == 1 then rt = true end
-			if tr.reactionType.hostile		and reaction == 2 then rt = true end
-			if tr.reactionType.unfriendly	and reaction == 3 then rt = true end
-			if tr.reactionType.neutral		and reaction == 4 then rt = true end
-			if tr.reactionType.friendly		and reaction == 5 then rt = true end
-			if tr.reactionType.honored		and reaction == 6 then rt = true end
-			if tr.reactionType.revered		and reaction == 7 then rt = true end
-			if tr.reactionType.exalted		and reaction == 8 then rt = true end
-			if rt ~= true then return end
+		if trigger.reactionType and trigger.reactionType.enable then
+			reaction = (trigger.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
+			triggerByReactionType = false
+
+			if trigger.reactionType.hated and reaction == 1 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.hostile and reaction == 2 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.unfriendly and reaction == 3 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.neutral and reaction == 4 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.friendly and reaction == 5 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.honored and reaction == 6 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.revered and reaction == 7 then
+				triggerByReactionType = true
+			end
+			if trigger.reactionType.exalted and reaction == 8 then
+				triggerByReactionType = true
+			end
+
+			if triggerByReactionType ~= true then
+				return
+			end
 		end
 
-		if tr.buffs and tr.buffs.names and next(tr.buffs.names) then
-			icons = frame.Buffs and frame.Buffs.icons
-			if not filterAura(tr.buffs.names, icons, tr.buffs.mustHaveAll, tr.buffs.missing) then return end
+		if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+			if not filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing) then
+				return
+			end
 		end
-		if tr.debuffs and tr.debuffs.names and next(tr.debuffs.names) then
-			icons = frame.Debuffs and frame.Debuffs.icons
-			if not filterAura(tr.debuffs.names, icons, tr.debuffs.mustHaveAll, tr.debuffs.missing) then return end
+		if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+			if not filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing) then
+				return
+			end
 		end
 
-		self:FilterStyle(frame, x.actions);
+		self:FilterStyle(frame, filter.actions);
 	end
 end
 
