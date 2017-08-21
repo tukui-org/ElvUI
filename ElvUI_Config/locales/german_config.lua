@@ -650,10 +650,10 @@ L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
 L["Match my level"] = "Muss dem zum Level passen"
 L["Maximum Level"] = "Maximale Level"
 L["Minimum Level"] = "Minimale Level"
-L["Require All"] = true;
-L["Require of the selected auras."] = true;
-L["Missing"] = true;
-L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."] = true;
+L["Require All"] = "Benötigt alle"
+L["Require of the selected auras."] = "Benötigt die ausgewählten Auren."
+L["Missing"] = "Fehlend"
+L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."] = "Überprüft ob die Auren fehlen. Benutze mit [Benötigt alle] um zu überprüfen ob alle Auren fehlen."
 L["Nameplate Type"] = "Namensplaketten Type"
 L["NPC ID"] = true; -- No need to translate
 L["Add Name or NPC ID"] = "Füge Name oder NPC ID hinzu"
@@ -680,7 +680,7 @@ L["Not Targeted"] = "Nicht anvisiert"
 L["If unit is (or not) targeted, pass filter."] = "Wenn die Einheit anvisiert (oder nicht), bestehe den Filter."
 L["Texture"] = "Textur"
 L["Unit"] = "Einheit"
-L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
+L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Benutze Drag und Drop um die Filter Priorität zu arrangieren oder rechts klick um einen Filter zu entfernen."
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"
