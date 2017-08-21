@@ -204,8 +204,8 @@ local function UpdateFilterGroup()
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						inCombat = {
-							name = L["PLAYER"].." "..L["In Combat"],
-							desc = L["If in or out of combat state, pass filter."],
+							name = L["Player in Combat"],
+							desc = L["If enabled then the filter will only activate when you are in combat."],
 							order = 1,
 							type = 'toggle',
 							get = function(info)
@@ -217,8 +217,8 @@ local function UpdateFilterGroup()
 							end,
 						},
 						outOfCombat = {
-							name = L["PLAYER"].." "..L["Out Of Combat"],
-							desc = L["If in or out of combat state, pass filter."],
+							name = L["Player Out of Combat"],
+							desc = L["If enabled then the filter will only activate when you are out of combat."],
 							order = 2,
 							type = 'toggle',
 							get = function(info)
@@ -235,8 +235,8 @@ local function UpdateFilterGroup()
 							name = '',
 						},
 						inCombatUnit = {
-							name = L["Unit"].." "..L["In Combat"],
-							desc = L["If in or out of combat state, pass filter."],
+							name = L["Unit in Combat"],
+							desc = L["If enabled then the filter will only activate when the unit is in combat."],
 							order = 4,
 							type = 'toggle',
 							get = function(info)
@@ -248,8 +248,8 @@ local function UpdateFilterGroup()
 							end,
 						},
 						outOfCombatUnit = {
-							name = L["Unit"].." "..L["Out Of Combat"],
-							desc = L["If in or out of combat state, pass filter."],
+							name = L["Unit Out of Combat"],
+							desc = L["If enabled then the filter will only activate when the unit is out of combat."],
 							order = 5,
 							type = 'toggle',
 							get = function(info)
@@ -284,7 +284,8 @@ local function UpdateFilterGroup()
 						matchLevel = {
 							type = 'toggle',
 							order = 2,
-							name = L["Match my level"],
+							name = L["Match Player Level"],
+							desc = L["If enabled then the filter will only activate if the level of the unit matches your own."],
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.level end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel
@@ -303,6 +304,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = 'range',
 							name = L["Minimum Level"],
+							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."],
 							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info)
@@ -317,6 +319,7 @@ local function UpdateFilterGroup()
 							order = 5,
 							type = 'range',
 							name = L["Maximum Level"],
+							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."],
 							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info)
@@ -329,6 +332,7 @@ local function UpdateFilterGroup()
 						},
 						currentLevel = {
 							name = L["Current Level"],
+							desc = L["If enabled then the filter will only activate if the level of the unit matches this value."],
 							order = 6,
 							type = "range",
 							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
@@ -353,8 +357,8 @@ local function UpdateFilterGroup()
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
+							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle",
-							desc = L["Require of the selected auras."],
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
@@ -367,8 +371,8 @@ local function UpdateFilterGroup()
 						missing = {
 							order = 2,
 							name = L["Missing"],
+							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = "toggle",
-							desc = L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."],
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missing
@@ -385,8 +389,7 @@ local function UpdateFilterGroup()
 						},
 						addBuff = {
 							order = 4,
-							name = L["Add Buff"],
-							desc = L["Add a buff/debuff to the list."],
+							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
@@ -414,8 +417,8 @@ local function UpdateFilterGroup()
 						},
 						removeBuff = {
 							order = 5,
-							name = L["Remove Buff"],
-							desc = L["Remove a buff/debuff from the list."],
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
@@ -455,8 +458,8 @@ local function UpdateFilterGroup()
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
+							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle",
-							desc = L["Require of the selected auras."],
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
@@ -469,8 +472,8 @@ local function UpdateFilterGroup()
 						missing = {
 							order = 2,
 							name = L["Missing"],
+							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = "toggle",
-							desc = L["Checks if the auras are missing. Use with [Require all] to check if all auras are missing."],
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missing
@@ -487,8 +490,7 @@ local function UpdateFilterGroup()
 						},
 						addDebuff = {
 							order = 4,
-							name = L["Add Debuff"],
-							desc = L["Add a buff/debuff to the list."],
+							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
@@ -516,8 +518,8 @@ local function UpdateFilterGroup()
 						},
 						removeDebuff = {
 							order = 5,
-							name = L["Remove Debuff"],
-							desc = L["Remove a buff/debuff from the list."],
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
@@ -545,7 +547,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				nameplateType = {
-					name = L["Nameplate Type"],
+					name = L["Unit Type"],
 					order = 11,
 					type = "group",
 					guiInline = true,
@@ -571,7 +573,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
 							args = {
 								friendlyPlayer = {
-									name = L["FRIENDLY_PLAYER"],
+									name = L["Friendly Player"],
 									order = 1,
 									type = 'toggle',
 									get = function(info)
@@ -583,7 +585,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								friendlyNPC = {
-									name = L["FRIENDLY_NPC"],
+									name = L["Friendly NPC"],
 									order = 2,
 									type = 'toggle',
 									get = function(info)
@@ -595,7 +597,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								healer = {
-									name = L["HEALER"],
+									name = L["Healer"],
 									order = 3,
 									type = 'toggle',
 									get = function(info)
@@ -607,7 +609,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								enemyPlayer = {
-									name = L["ENEMY_PLAYER"],
+									name = L["Enemy Player"],
 									order = 4,
 									type = 'toggle',
 									get = function(info)
@@ -619,7 +621,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								enemyNPC = {
-									name = L["ENEMY_NPC"],
+									name = L["Enemy NPC"],
 									order = 5,
 									type = 'toggle',
 									get = function(info)
@@ -631,7 +633,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								player = {
-									name = L["PLAYER"],
+									name = L["Player"],
 									order = 6,
 									type = 'toggle',
 									get = function(info)
@@ -667,6 +669,7 @@ local function UpdateFilterGroup()
 						},
 						reputation = {
 							name = REPUTATION,
+							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 0,
 							type = 'toggle',
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
@@ -1315,9 +1318,9 @@ local function GetUnitSettings(unit, name)
 							},
 							filterPriority = {
 								order = 8,
-								dragdrop = true,
-								type = "multiselect",
 								name = L["Filter Priority"],
+								type = "multiselect",
+								dragdrop = true,
 								dragOnLeave = function() end, --keep this here
 								dragOnEnter = function(info, value)
 									carryFilterTo = info.obj.value
@@ -1347,7 +1350,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
 							},
 						},
 					},
@@ -1496,7 +1499,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
 							},
 						},
 					},

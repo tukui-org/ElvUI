@@ -679,7 +679,7 @@ L["Not Targeted"] = true;
 L["If unit is (or not) targeted, pass filter."] = true;
 L["Texture"] = true;
 L["Unit"] = true;
-L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."] = true;
+L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = true;

@@ -347,7 +347,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	config.args.filters.args.spacer1 = {
 		order = 23,
 		type = "description",
-		name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
+		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
 	}
 
 	return config
@@ -576,7 +576,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 	config.args.filters.args.spacer1 = {
 		order = 23,
 		type = "description",
-		name = L["Right clicking on a button will remove the filter from the list. Left click and drag button onto another to switch its position."],
+		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
 	}
 
 	return config
