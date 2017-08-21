@@ -7,6 +7,9 @@ local ElvUF = ns.oUF
 local _G = _G
 local select = select
 local pairs = pairs
+local ipairs = ipairs
+local tremove = table.remove
+local tconcat = table.concat
 local tinsert = table.insert
 local twipe = table.wipe
 local strsplit = strsplit
@@ -99,6 +102,7 @@ local auraSortMethodValues = {
 
 local CUSTOMTEXT_CONFIGS = {}
 
+local carryFilterFrom, carryFilterTo
 local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
 end
@@ -108,12 +112,20 @@ local function filterMatch(s,v)
 	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
 end
 
-local function filterPriority(auraType, groupName, value, remove)
+local function filterPriority(auraType, groupName, value, remove, movehere)
 	if not auraType or not value then return end
 	local filter = E.db.unitframe.units[groupName] and E.db.unitframe.units[groupName][auraType] and E.db.unitframe.units[groupName][auraType].priority
 	if not filter then return end
 	local found = filterMatch(filter, filterValue(value))
-	if found and remove then
+	if found and movehere then
+		local tbl, sv, sm = {strsplit(",",filter)}
+		for i in ipairs(tbl) do
+			if tbl[i] == value then sv = i elseif tbl[i] == movehere then sm = i end
+			if sv and sm then break end
+		end
+		tremove(tbl, sm);tinsert(tbl, sv, movehere);
+		E.db.unitframe.units[groupName][auraType].priority = tconcat(tbl,',')
+	elseif found and remove then
 		E.db.unitframe.units[groupName][auraType].priority = gsub(filter, found, "")
 	elseif not found and not remove then
 		E.db.unitframe.units[groupName][auraType].priority = (filter == '' and value) or (filter..","..value)
@@ -308,8 +320,23 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	}
 	config.args.filters.args.filterPriority = {
 		order = 23,
+		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
+		dragOnLeave = function() end, --keep this here
+		dragOnEnter = function(info, value)
+			carryFilterTo = info.obj.value
+		end,
+		dragOnMouseDown = function(info, value)
+			carryFilterFrom, carryFilterTo = info.obj.value, nil
+		end,
+		dragOnMouseUp = function(info, value)
+			filterPriority('aurabar', groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+			carryFilterFrom, carryFilterTo = nil, nil
+		end,
+		dragOnClick = function(info, value)
+			filterPriority('aurabar', groupName, carryFilterFrom, true)
+		end,
 		values = function()
 			local str = E.db.unitframe.units[groupName].aurabar.priority
 			if str == "" then return nil end
@@ -320,13 +347,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
-		end,
-		set = function(info, value)
-			local str = E.db.unitframe.units[groupName].aurabar.priority
-			if str == "" then return nil end
-			local tbl = {strsplit(",",str)}
-			filterPriority('aurabar', groupName, tbl[value], true)
-		end,
+		end
 	}
 
 	return config
@@ -528,8 +549,23 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 	}
 	config.args.filters.args.filterPriority = {
 		order = 23,
+		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
+		dragOnLeave = function() end, --keep this here
+		dragOnEnter = function(info, value)
+			carryFilterTo = info.obj.value
+		end,
+		dragOnMouseDown = function(info, value)
+			carryFilterFrom, carryFilterTo = info.obj.value, nil
+		end,
+		dragOnMouseUp = function(info, value)
+			filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+			carryFilterFrom, carryFilterTo = nil, nil
+		end,
+		dragOnClick = function(info, value)
+			filterPriority(auraType, groupName, carryFilterFrom, true)
+		end,
 		values = function()
 			local str = E.db.unitframe.units[groupName][auraType].priority
 			if str == "" then return nil end
@@ -540,13 +576,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
-		end,
-		set = function(info, value)
-			local str = E.db.unitframe.units[groupName][auraType].priority
-			if str == "" then return nil end
-			local tbl = {strsplit(",",str)}
-			filterPriority(auraType, groupName, tbl[value], true)
-		end,
+		end
 	}
 
 	return config

@@ -91,6 +91,12 @@ local basekeys={
 	arg={["*"]=true},
 	width=optstring,
 	customWidth=optnumber,
+	dragdrop=optmethodbool,
+		dragOnEnter=optmethodfalse,
+		dragOnLeave=optmethodfalse,
+		dragOnClick=optmethodfalse,
+		dragOnMouseUp=optmethodfalse,
+		dragOnMouseDown=optmethodfalse,
 }
 
 local typedkeys={
