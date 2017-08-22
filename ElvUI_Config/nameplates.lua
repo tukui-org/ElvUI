@@ -1352,6 +1352,10 @@ local function GetUnitSettings(unit, name)
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
+								end,
+								set = function(info, value)
+									E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = nil
+									-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles
 								end
 							},
 							spacer3 = {
@@ -1501,6 +1505,10 @@ local function GetUnitSettings(unit, name)
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
+								end,
+								set = function(info, value)
+									E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = nil
+									-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles
 								end
 							},
 							spacer3 = {

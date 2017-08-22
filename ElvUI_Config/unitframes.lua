@@ -342,6 +342,10 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
+		end,
+		set = function(info, value)
+			E.db.unitframe.units[groupName].aurabar[ info[#info] ] = nil
+			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles
 		end
 	}
 	config.args.filters.args.spacer1 = {
@@ -571,6 +575,10 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			if str == "" then return nil end
 			local tbl = {strsplit(",",str)}
 			return tbl[value]
+		end,
+		set = function(info, value)
+			E.db.unitframe.units[groupName][auraType][ info[#info] ] = nil
+			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles
 		end
 	}
 	config.args.filters.args.spacer1 = {
