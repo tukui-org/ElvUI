@@ -270,13 +270,14 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	config.args.filters.args.jumpToFilter = {
 		order = 18,
 		name = L["Filters Page"],
-		desc = L["Shortcut to global filters page"],
+		desc = L["Shortcut to 'Filters' section of the config."],
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
 	config.args.filters.args.defaultPriority = {
 		order = 19,
-		name = L["Add default filter into Priority"],
+		name = L["Add Special Filter"],
+		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
 			filters = {}
@@ -292,7 +293,8 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	}
 	config.args.filters.args.priority = {
 		order = 20,
-		name = L["Add global filter into Priority"],
+		name = L["Add Regular Filter"],
+		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 		type = 'select',
 		values = function()
 			filters = {}
@@ -506,13 +508,14 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 	config.args.filters.args.jumpToFilter = {
 		order = 18,
 		name = L["Filters Page"],
-		desc = L["Shortcut to global filters page"],
+		desc = L["Shortcut to 'Filters' section of the config."],
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
 	config.args.filters.args.defaultPriority = {
 		order = 19,
-		name = L["Add default filter into Priority"],
+		name = L["Add Special Filter"],
+		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
 			filters = {}
@@ -528,7 +531,8 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 	}
 	config.args.filters.args.priority = {
 		order = 20,
-		name = L["Add global filter into Priority"],
+		name = L["Add Regular Filter"],
+		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 		type = 'select',
 		values = function()
 			filters = {}
