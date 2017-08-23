@@ -1295,7 +1295,8 @@ local function GetUnitSettings(unit, name)
 							defaultFilter = {
 								order = 5,
 								type = "select",
-								name = L["Add default filter into Priority"],
+								name = L["Add Special Filter"],
+								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
 									local list = E.global.nameplate['defaultFilters']
@@ -1314,7 +1315,8 @@ local function GetUnitSettings(unit, name)
 							filter = {
 								order = 6,
 								type = "select",
-								name = L["Add global filter into Priority"],
+								name = L["Add Regular Filter"],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe['aurafilters']
@@ -1456,7 +1458,8 @@ local function GetUnitSettings(unit, name)
 							defaultFilter = {
 								order = 5,
 								type = "select",
-								name = L["Add default filter into Priority"],
+								name = L["Add Special Filter"],
+								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
 									local list = E.global.nameplate['defaultFilters']
@@ -1475,7 +1478,8 @@ local function GetUnitSettings(unit, name)
 							filter = {
 								order = 6,
 								type = "select",
-								name = L["Add global filter into Priority"],
+								name = L["Add Regular Filter"],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe['aurafilters']
