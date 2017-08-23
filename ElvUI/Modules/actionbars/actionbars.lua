@@ -592,7 +592,12 @@ end
 function AB:GetPage(bar, defaultPage, condition)
 	local page = self.db[bar]['paging'][E.myclass]
 	if not condition then condition = '' end
-	if not page then page = '' end
+	if not page then
+		page = ''
+	elseif page:match('[\n\r]') then
+		page = page:gsub('[\n\r]','')
+	end
+
 	if page then
 		condition = condition.." "..page
 	end
