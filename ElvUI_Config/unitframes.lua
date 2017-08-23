@@ -287,6 +287,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		end,
 		set = function(info, value)
 			filterPriority('aurabar', groupName, value)
+			updateFunc(UF, groupName)
 		end
 	}
 	config.args.filters.args.priority = {
@@ -302,6 +303,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		end,
 		set = function(info, value)
 			filterPriority('aurabar', groupName, value)
+			updateFunc(UF, groupName)
 		end
 	}
 	config.args.filters.args.resetPriority = {
@@ -346,6 +348,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		set = function(info, value)
 			E.db.unitframe.units[groupName].aurabar[ info[#info] ] = nil
 			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+			updateFunc(UF, groupName)
 		end
 	}
 	config.args.filters.args.spacer1 = {
@@ -520,6 +523,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		end,
 		set = function(info, value)
 			filterPriority(auraType, groupName, value)
+			updateFunc(UF, groupName, numUnits)
 		end
 	}
 	config.args.filters.args.priority = {
@@ -535,6 +539,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		end,
 		set = function(info, value)
 			filterPriority(auraType, groupName, value)
+			updateFunc(UF, groupName, numUnits)
 		end
 	}
 	config.args.filters.args.resetPriority = {
@@ -579,6 +584,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		set = function(info, value)
 			E.db.unitframe.units[groupName][auraType][ info[#info] ] = nil
 			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+			updateFunc(UF, groupName, numUnits)
 		end
 	}
 	config.args.filters.args.spacer1 = {
