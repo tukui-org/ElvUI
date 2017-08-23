@@ -893,6 +893,10 @@ local function UpdateFilterGroup()
 							hasAlpha = true,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.health end,
 							get = function(info)
+								if E.global.nameplate.filters[selectedNameplateFilter].actions.color.color then -- remove this before release, its only for converting tester profile settings to the new variable
+									E.global.nameplate.filters[selectedNameplateFilter].actions.color.color = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
+									E.global.nameplate.filters[selectedNameplateFilter].actions.color.color = nil
+								end
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
 								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
 							end,
@@ -2413,7 +2417,7 @@ E.Options.args.nameplate = {
 							},
 							['actions'] = {
 								['color'] = {
-									['color'] = {r=104/255, g=138/255, b=217/255, a=1},
+									['healthColor'] = {r=104/255, g=138/255, b=217/255, a=1},
 									['borderColor'] = {r=1, g=1, b=1, a=1}
 								},
 								['texture'] = {
