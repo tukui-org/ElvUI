@@ -536,6 +536,8 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 				end
 			end
 		end
+	else
+		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
 
 	return filterCheck
