@@ -5,6 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 
 local _G = _G
+local next = next
 local select = select
 local pairs = pairs
 local ipairs = ipairs
@@ -135,7 +136,6 @@ end
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
-local filters;
 local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	local config = {
 		order = 1100,
@@ -280,8 +280,13 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
-			filters = {}
-			for filter, value in pairs(E.global.unitframe[(friendlyOnly and 'defaultFiltersSelf' or 'defaultFilters')]) do
+			local filters = {}
+			local filterName = (friendlyOnly and 'defaultFiltersSelf') or 'defaultFilters'
+			local list = E.global.unitframe[filterName]
+			if not (list and next(list)) then
+				return filters
+			end
+			for filter in pairs(list) do
 				filters[filter] = filter
 			end
 			return filters
@@ -297,8 +302,12 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 		type = 'select',
 		values = function()
-			filters = {}
-			for filter in pairs(E.global.unitframe['aurafilters']) do
+			local filters = {}
+			local list = E.global.unitframe['aurafilters']
+			if not (list and next(list)) then
+				return filters
+			end
+			for filter in pairs(list) do
 				filters[filter] = filter
 			end
 			return filters
@@ -519,8 +528,13 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
-			filters = {}
-			for filter, value in pairs(E.global.unitframe[(friendlyUnitOnly and 'defaultFiltersSelf' or 'defaultFilters')]) do
+			local filters = {}
+			local filterName = (friendlyUnitOnly and 'defaultFiltersSelf') or 'defaultFilters'
+			local list = E.global.unitframe[filterName]
+			if not (list and next(list)) then
+				return filters
+			end
+			for filter in pairs(list) do
 				filters[filter] = filter
 			end
 			return filters
@@ -536,8 +550,12 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 		type = 'select',
 		values = function()
-			filters = {}
-			for filter in pairs(E.global.unitframe['aurafilters']) do
+			local filters = {}
+			local list = E.global.unitframe['aurafilters']
+			if not (list and next(list)) then
+				return filters
+			end
+			for filter in pairs(list) do
 				filters[filter] = filter
 			end
 			return filters

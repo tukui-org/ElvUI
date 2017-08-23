@@ -2,13 +2,14 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 
 local selectedNameplateFilter
-local filters
 
+local next = next
 local ipairs = ipairs
 local tremove = tremove
 local tinsert = tinsert
-local tconcat = table.concat
 local tonumber = tonumber
+local tconcat = table.concat
+local format = string.format
 local GetSpellInfo = GetSpellInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT = LEVEL, NONE, REPUTATION, COMBAT
@@ -1297,7 +1298,11 @@ local function GetUnitSettings(unit, name)
 								name = L["Add default filter into Priority"],
 								values = function()
 									local filters = {}
-									for filter, value in pairs(E.global.nameplate['defaultFilters']) do
+									local list = E.global.nameplate['defaultFilters']
+									if not (list and next(list)) then
+										return filters
+									end
+									for filter in pairs(list) do
 										filters[filter] = filter
 									end
 									return filters
@@ -1312,7 +1317,11 @@ local function GetUnitSettings(unit, name)
 								name = L["Add global filter into Priority"],
 								values = function()
 									local filters = {}
-									for filter in pairs(E.global.unitframe['aurafilters']) do
+									local list = E.global.unitframe['aurafilters']
+									if not (list and next(list)) then
+										return filters
+									end
+									for filter in pairs(list) do
 										filters[filter] = filter
 									end
 									return filters
@@ -1450,7 +1459,11 @@ local function GetUnitSettings(unit, name)
 								name = L["Add default filter into Priority"],
 								values = function()
 									local filters = {}
-									for filter, value in pairs(E.global.nameplate['defaultFilters']) do
+									local list = E.global.nameplate['defaultFilters']
+									if not (list and next(list)) then
+										return filters
+									end
+									for filter in pairs(list) do
 										filters[filter] = filter
 									end
 									return filters
@@ -1465,7 +1478,11 @@ local function GetUnitSettings(unit, name)
 								name = L["Add global filter into Priority"],
 								values = function()
 									local filters = {}
-									for filter in pairs(E.global.unitframe['aurafilters']) do
+									local list = E.global.unitframe['aurafilters']
+									if not (list and next(list)) then
+										return filters
+									end
+									for filter in pairs(list) do
 										filters[filter] = filter
 									end
 									return filters
