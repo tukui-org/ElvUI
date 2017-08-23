@@ -315,6 +315,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		type = "execute",
 		func = function()
 			E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
+			updateFunc(UF, groupName)
 		end,
 	}
 	config.args.filters.args.filterPriority = {
@@ -553,6 +554,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		type = "execute",
 		func = function()
 			E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
+			updateFunc(UF, groupName, numUnits)
 		end,
 	}
 	config.args.filters.args.filterPriority = {
