@@ -874,29 +874,30 @@ local function UpdateFilterGroup()
 					guiInline = true,
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
-						enable = {
-							name = L["Enable"],
+						health = {
+							name = L["Health"],
 							order = 1,
 							type = 'toggle',
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.enable
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.health
 							end,
 							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].actions.color.enable = value
+								E.global.nameplate.filters[selectedNameplateFilter].actions.color.health = value
 								NP:ConfigureAll()
 							end,
 						},
-						color = {
-							name = L["Color"],
+						healthColor = {
+							name = L["Health Color"],
 							type = 'color',
 							order = 2,
 							hasAlpha = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.health end,
 							get = function(info)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.color
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
 								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
 							end,
 							set = function(info, r, g, b, a)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.color
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end,
@@ -906,15 +907,15 @@ local function UpdateFilterGroup()
 							type = "description",
 							name = " ",
 						},
-						borderEnable = {
-							name = L["Enable"].." "..L["Border Color"],
+						border = {
+							name = L["Border"],
 							order = 4,
 							type = 'toggle',
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderEnable
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.border
 							end,
 							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderEnable = value
+								E.global.nameplate.filters[selectedNameplateFilter].actions.color.border = value
 								NP:ConfigureAll()
 							end,
 						},
@@ -923,6 +924,7 @@ local function UpdateFilterGroup()
 							type = 'color',
 							order = 5,
 							hasAlpha = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.border end,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
 								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
@@ -960,6 +962,7 @@ local function UpdateFilterGroup()
 							dialogControl = 'LSM30_Statusbar',
 							name = L["Texture"],
 							values = AceGUIWidgetLSMlists.statusbar,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.texture.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].actions.texture.texture
 							end,

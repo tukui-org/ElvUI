@@ -67,8 +67,8 @@ G["nameplate"] = {
 			},
 			['actions'] = {
 				['color'] = {
-					['enable'] = true,
-					['color'] = {r=1,g=1,b=1,a=1},
+					['health'] = true,
+					['healthColor'] = {r=1,g=1,b=1,a=1},
 					['borderColor'] = {r=1,g=1,b=1,a=1}
 				},
 				['texture'] = {

@@ -591,11 +591,11 @@ function mod:FilterStyle(frame, actions)
 		frame:Show()
 	end
 	if self.db.units[frame.UnitType].healthbar.enable then
-		if actions.color and actions.color.enable then
-			frame.HealthBar:SetStatusBarColor(actions.color.color.r, actions.color.color.g, actions.color.color.b, actions.color.color.a);
-			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.color.r, actions.color.color.g, actions.color.color.b, actions.color.color.a;
+		if actions.color and actions.color.health then
+			frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a;
 		end
-		if actions.color and actions.color.borderEnable and frame.HealthBar.backdrop then
+		if actions.color and actions.color.border and frame.HealthBar.backdrop then
 			frame.BorderChanged = true
 			frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a);
 		end
