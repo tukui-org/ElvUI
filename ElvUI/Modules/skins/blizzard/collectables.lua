@@ -65,6 +65,7 @@ local function LoadSkin()
 	S:HandleButton(PetJournalFindBattle)
 	PetJournalRightInset:StripTextures()
 	PetJournalLeftInset:StripTextures()
+	S:HandleItemButton(PetJournalSummonRandomFavoritePetButton, true)
 
 	for i = 1, 3 do
 		local f = _G["PetJournalLoadoutPet"..i.."HelpFrame"]
