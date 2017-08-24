@@ -2448,7 +2448,7 @@ E.Options.args.nameplate = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
-						E.global.nameplate.filters[value] = styleFilterDefaultOptions,
+						E.global.nameplate.filters[value] = styleFilterDefaultOptions;
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
