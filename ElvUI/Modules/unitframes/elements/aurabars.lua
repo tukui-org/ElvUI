@@ -246,6 +246,8 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 				end
 			end
 		end
+	else
+		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
 
 	return filterCheck

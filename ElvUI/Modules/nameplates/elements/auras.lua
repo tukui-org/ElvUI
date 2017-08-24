@@ -95,6 +95,8 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 				end
 			end
 		end
+	else
+		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
 
 	if filterCheck == true then
