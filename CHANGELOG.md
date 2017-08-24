@@ -13,6 +13,8 @@ Fixed scaling of the Leave Vehicle button on the minimap. (Hekili)
 Fixed Bagbar buttons border size. (Rubgrsch)  
 Fixed error when switching profile while having player unitframe disabled. 
 Fixed issue which caused unitframe tags containing literals to use OnUpdate instead of their assigned events. (Martin)  
+Fixed issue which could break actionbar paging when the code contained the new-line character (\n)  
+
 
 **Misc. Changes:**  
 Updated a lot of skins.  
