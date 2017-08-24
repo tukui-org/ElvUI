@@ -581,7 +581,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
 							args = {
 								friendlyPlayer = {
-									name = L["Friendly Player"],
+									name = L["FRIENDLY_PLAYER"],
 									order = 1,
 									type = 'toggle',
 									get = function(info)
@@ -593,7 +593,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								friendlyNPC = {
-									name = L["Friendly NPC"],
+									name = L["FRIENDLY_NPC"],
 									order = 2,
 									type = 'toggle',
 									get = function(info)
@@ -605,7 +605,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								healer = {
-									name = L["Healer"],
+									name = L["HEALER"],
 									order = 3,
 									type = 'toggle',
 									get = function(info)
@@ -617,7 +617,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								enemyPlayer = {
-									name = L["Enemy Player"],
+									name = L["ENEMY_PLAYER"],
 									order = 4,
 									type = 'toggle',
 									get = function(info)
@@ -629,7 +629,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								enemyNPC = {
-									name = L["Enemy NPC"],
+									name = L["ENEMY_NPC"],
 									order = 5,
 									type = 'toggle',
 									get = function(info)
@@ -641,7 +641,7 @@ local function UpdateFilterGroup()
 									end,
 								},
 								player = {
-									name = L["Player"],
+									name = L["PLAYER"],
 									order = 6,
 									type = 'toggle',
 									get = function(info)
@@ -2438,7 +2438,6 @@ E.Options.args.nameplate = {
 				addFilter = {
 					order = 1,
 					name = L["Add Nameplate Filter"],
-					desc = L["Add a nameplate filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -2457,7 +2456,6 @@ E.Options.args.nameplate = {
 				removeFilter = {
 					order = 2,
 					name = L["Remove Nameplate Filter"],
-					desc = L["Remove a nameplate filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
