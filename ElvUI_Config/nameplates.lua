@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
-local selectedNameplateFilter
-
-local next = next
 local ipairs = ipairs
 local tremove = tremove
 local tinsert = tinsert
@@ -24,7 +22,7 @@ local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
 local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
 -- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists
 
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local selectedNameplateFilter
 
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',
@@ -225,8 +223,7 @@ local function UpdateFilterGroup()
 								if not E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.names = {}
 								end
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = true,
-								UpdateFilterGroup();
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -244,7 +241,6 @@ local function UpdateFilterGroup()
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = nil;
 								end
-								UpdateFilterGroup();
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -465,8 +461,7 @@ local function UpdateFilterGroup()
 										names = {},
 									}
 								end
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true,
-								UpdateFilterGroup();
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -484,7 +479,6 @@ local function UpdateFilterGroup()
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil;
 								end
-								UpdateFilterGroup();
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -554,8 +548,7 @@ local function UpdateFilterGroup()
 										names = {},
 									}
 								end
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true,
-								UpdateFilterGroup();
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -573,7 +566,6 @@ local function UpdateFilterGroup()
 								if E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs then
 									E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil;
 								end
-								UpdateFilterGroup();
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
@@ -1300,9 +1292,7 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local filters = {}
 									local list = E.global.nameplate['defaultFilters']
-									if not (list and next(list)) then
-										return filters
-									end
+									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -1320,9 +1310,7 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe['aurafilters']
-									if not (list and next(list)) then
-										return filters
-									end
+									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -1463,9 +1451,7 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local filters = {}
 									local list = E.global.nameplate['defaultFilters']
-									if not (list and next(list)) then
-										return filters
-									end
+									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -1483,9 +1469,7 @@ local function GetUnitSettings(unit, name)
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe['aurafilters']
-									if not (list and next(list)) then
-										return filters
-									end
+									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -2479,7 +2463,9 @@ E.Options.args.nameplate = {
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()
 						local filters = {}
-						for filter in pairs(E.global.nameplate.filters) do
+						local list = E.global.nameplate.filters
+						if not list then return end
+						for filter in pairs(list) do
 							filters[filter] = filter
 						end
 						return filters

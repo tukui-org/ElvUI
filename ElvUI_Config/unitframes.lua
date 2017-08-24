@@ -5,7 +5,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 
 local _G = _G
-local next = next
 local select = select
 local pairs = pairs
 local ipairs = ipairs
@@ -283,9 +282,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			local filters = {}
 			local filterName = (friendlyOnly and 'defaultFiltersSelf') or 'defaultFilters'
 			local list = E.global.unitframe[filterName]
-			if not (list and next(list)) then
-				return filters
-			end
+			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
 			end
@@ -304,9 +301,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['aurafilters']
-			if not (list and next(list)) then
-				return filters
-			end
+			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
 			end
@@ -531,9 +526,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			local filters = {}
 			local filterName = (friendlyUnitOnly and 'defaultFiltersSelf') or 'defaultFilters'
 			local list = E.global.unitframe[filterName]
-			if not (list and next(list)) then
-				return filters
-			end
+			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
 			end
@@ -552,9 +545,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['aurafilters']
-			if not (list and next(list)) then
-				return filters
-			end
+			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
 			end

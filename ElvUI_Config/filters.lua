@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local selectedSpell;
-local selectedFilter;
-local filters;
 local type = type
 local pairs = pairs
 local tonumber = tonumber
@@ -19,6 +16,9 @@ local GetSpellInfo = GetSpellInfo
 -- GLOBALS: MAX_PLAYER_LEVEL
 -- GLOBALS: selectedFolder
 --  what is selectedFolder?
+
+local selectedSpell;
+local selectedFilter;
 
 local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
@@ -114,7 +114,9 @@ local function UpdateFilterGroup()
 					values = function()
 						local filters = {}
 						filters[''] = NONE
-						for filter in pairs(E.global.unitframe.DebuffHighlightColors) do
+						local list = E.global.unitframe.DebuffHighlightColors
+						if not list then return end
+						for filter in pairs(list) do
 							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -126,7 +128,6 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
-
 						return filters
 					end,
 				},
@@ -256,7 +257,9 @@ local function UpdateFilterGroup()
 					values = function()
 						local filters = {}
 						filters[''] = NONE
-						for filter in pairs(E.global.unitframe.AuraBarColors) do
+						local list = E.global.unitframe.AuraBarColors
+						if not list then return end
+						for filter in pairs(list) do
 							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -268,7 +271,6 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
-
 						return filters
 					end,
 				},
@@ -388,9 +390,10 @@ local function UpdateFilterGroup()
 					type = "select",
 					order = 3,
 					values = function()
-						local values = {};
-
-						for _, spell in pairs(E.global.unitframe.buffwatch.PET) do
+						local values = {}
+						local list = E.global.unitframe.buffwatch.PET
+						if not list then return end
+						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
 								values[spell.id] = name;
@@ -594,8 +597,10 @@ local function UpdateFilterGroup()
 					type = "select",
 					order = 3,
 					values = function()
-						local values = {};
-						for _, spell in pairs(E.global.unitframe.buffwatch[E.myclass]) do
+						local values = {}
+						local list = E.global.unitframe.buffwatch[E.myclass]
+						if not list then return end
+						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
 								values[spell.id] = name;
@@ -809,8 +814,10 @@ local function UpdateFilterGroup()
 					type = "select",
 					order = 3,
 					values = function()
-						local values = {};
-						for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+						local values = {}
+						local list = E.db.unitframe.filters.buffwatch
+						if not list then return end
+						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
 								values[spell.id] = name;
@@ -1046,7 +1053,9 @@ local function UpdateFilterGroup()
 					values = function()
 						local filters = {}
 						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
+						local list = E.global.unitframe['aurafilters'][selectedFilter]['spells']
+						if not list then return end
+						for filter in pairs(list) do
 							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -1058,7 +1067,6 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
-
 						return filters
 					end,
 				},
@@ -1188,9 +1196,11 @@ E.Options.args.filters = {
 			get = function(info) return selectedFilter end,
 			set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedSpell = nil; selectedFilter = value end; UpdateFilterGroup() end,
 			values = function()
-				filters = {}
+				local filters = {}
 				filters[''] = NONE
-				for filter in pairs(E.global.unitframe['aurafilters']) do
+				local list = E.global.unitframe['aurafilters']
+				if not list then return end
+				for filter in pairs(list) do
 					filters[filter] = filter
 				end
 
