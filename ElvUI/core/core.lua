@@ -1376,28 +1376,13 @@ function E:DBConversions()
 		E.global.unitframe.aurafilters[filter].type = filterType
 	end
 
-	--[[Convert the old "Additional Filter" option to the new priority system
-		--THIS NEEDS TO BE REWORKED TO CONVERT THE OLD SYSTEM TO THE NEW ONE
-	for index, unit in ipairs(filterConversionUnits) do
-		local buffs = E.db.unitframe.units[unit].buffs
-		local debuffs = E.db.unitframe.units[unit].debuffs
-		local aurabar = E.db.unitframe.units[unit].aurabar
-
-		if (buffs and buffs.useFilter and buffs.useFilter ~= "") then
-			E.db.unitframe.units[unit].buffs.priority = buffs.useFilter
-			E.db.unitframe.units[unit].buffs.useFilter = nil
+	--Prevent error for testers, remove this before release
+	for filter, content in pairs(E.global.nameplate.filters) do
+		if content.actions.color.color then
+			E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
+			E.global.nameplate.filters[filter].actions.color.color = nil
 		end
-
-		if (debuffs and debuffs.useFilter and debuffs.useFilter ~= "") then
-			E.db.unitframe.units[unit].debuffs.priority = debuffs.useFilter
-			E.db.unitframe.units[unit].debuffs.useFilter = nil
-		end
-
-		if (aurabar and aurabar.useFilter and aurabar.useFilter ~= "") then
-			E.db.unitframe.units[unit].aurabar.priority = aurabar.useFilter
-			E.db.unitframe.units[unit].aurabar.useFilter = nil
-		end
-	end]]
+	end
 end
 
 local CPU_USAGE = {}
