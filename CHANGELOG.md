@@ -1,7 +1,10 @@
 **Version 10.60 [  ]**
 
 **New Additions:**  
-Added mouseover highlight to the nameplates.  
+MAJOR: Added "Style Filters" to NamePlates, allowing you to perform various actions on specific units that match your chosen filter settings.  
+MAJOR: Added a new aura filtering system to NamePlates and UnitFrames. This new system is much more advanced and should allow you to set up the filters exactly how you want them.  
+Added enhanced target styles for NamePlates. A cool glow and arrows have been added, along with the ability to change their color.  
+Added mouseover highlight to the NamePlates.  
 Added movement speed datatext. (Rubgrsch)  
 Added a "Fluid Position" option to Smart Aura Position settings. This will use the least amount of spacing needed. (Abeline)  
 Added a "yOffset" option to Aura Bars on Player, Target and Focus unitframe. (Abeline)  
@@ -29,6 +32,7 @@ The default color in ElvUI has been changed to match the new logo.
 Disabled "Text Toggle on NPC" by default, as it caused confusion for new players.  
 Restructured the UnitFrame sections of the ingame config. It now uses tabs instead of the often overlooked dropdown.  
 Added shortcut buttons to the ActionBars and UnitFrames main pages.  
+Added Drag&Drop support to AceConfig buttons for our new aura filtering system.  
 
 ___
 **Version 10.59 [ June 27th 2017 ]**  
