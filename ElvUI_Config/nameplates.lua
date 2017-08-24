@@ -1327,6 +1327,7 @@ local function GetUnitSettings(unit, name)
 								type = "execute",
 								func = function()
 									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
+									NP:ConfigureAll()
 								end,
 							},
 							filterPriority = {
@@ -1360,8 +1361,8 @@ local function GetUnitSettings(unit, name)
 									return tbl[value]
 								end,
 								set = function(info, value)
-									E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = nil
-									-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+									E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+									NP:ConfigureAll()
 								end
 							},
 							spacer3 = {
@@ -1486,6 +1487,7 @@ local function GetUnitSettings(unit, name)
 								type = "execute",
 								func = function()
 									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
+									NP:ConfigureAll()
 								end,
 							},
 							filterPriority = {
@@ -1519,8 +1521,8 @@ local function GetUnitSettings(unit, name)
 									return tbl[value]
 								end,
 								set = function(info, value)
-									E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = nil
-									-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+									E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+									NP:ConfigureAll()
 								end
 							},
 							spacer3 = {

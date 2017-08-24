@@ -353,8 +353,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			return tbl[value]
 		end,
 		set = function(info, value)
-			E.db.unitframe.units[groupName].aurabar[ info[#info] ] = nil
-			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+			E.db.unitframe.units[groupName].aurabar[ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
 			updateFunc(UF, groupName)
 		end
 	}
@@ -597,8 +596,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			return tbl[value]
 		end,
 		set = function(info, value)
-			E.db.unitframe.units[groupName][auraType][ info[#info] ] = nil
-			-- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+			E.db.unitframe.units[groupName][auraType][ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
 			updateFunc(UF, groupName, numUnits)
 		end
 	}
