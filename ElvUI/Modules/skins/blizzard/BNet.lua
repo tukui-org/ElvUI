@@ -45,13 +45,6 @@ local function LoadSkin()
 	S:HandleButton(ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:SetTemplate("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
-
-	ReportPlayerNameDialog:StripTextures()
-	ReportPlayerNameDialogCommentFrame:StripTextures()
-	S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
-	ReportPlayerNameDialog:SetTemplate("Transparent")
-	S:HandleButton(ReportPlayerNameDialogReportButton)
-	S:HandleButton(ReportPlayerNameDialogCancelButton)
 end
 
 S:AddCallback("SkinBNet", LoadSkin)
