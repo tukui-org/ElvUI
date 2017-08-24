@@ -177,7 +177,6 @@ local function UpdateFilterGroup()
 				},
 				isTarget = {
 					name = L["Is Targeted"],
-					desc = L["If unit is (or not) targeted, pass filter."],
 					order = 3,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -191,7 +190,6 @@ local function UpdateFilterGroup()
 				},
 				notTarget = {
 					name = L["Not Targeted"],
-					desc = L["If unit is (or not) targeted, pass filter."],
 					order = 4,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,

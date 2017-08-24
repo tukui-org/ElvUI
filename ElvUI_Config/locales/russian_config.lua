@@ -606,7 +606,6 @@ L["Hide When Empty"] = "Скрывать пустые"
 L["Hide"] = "Скрыть" --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "После прерывания или отмены, полоса заклинаний будет оставаться видимой указаное количество секунд."
 L["Icon Base Height"] = "Базовая высота иконки"
-L["If unit is (or not) targeted, pass filter."] = true;
 L["In Combat"] = "В бою"
 L["Is Targeted"] = "Взят в цель"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
