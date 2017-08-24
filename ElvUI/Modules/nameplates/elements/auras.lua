@@ -124,7 +124,7 @@ function mod:UpdateElement_Auras(frame)
 		priority = self.db.units[frame.UnitType][buffTypeLower].filters.priority
 
 		self:HideAuraIcons(frame[buffType])
-		if(self.db.units[frame.UnitType][buffTypeLower].enable and priority ~= '') then
+		if(self.db.units[frame.UnitType][buffTypeLower].enable) then
 			while ( frameNum <= maxAuras ) do
 				showAura = mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
 				if showAura == nil then -- something went wrong (unitaura name was nil)
