@@ -1788,67 +1788,71 @@ local function GetUnitSettings(unit, name)
 	return group
 end
 
-local styleFilterDefaultOptions = {
-	["triggers"] = {
-		["enable"] = true,
-		["priority"] = 1,
-		["isTarget"] = false,
-		["notTarget"] = false,
-		["curlevel"] = 0,
-		["maxlevel"] = 0,
-		["minlevel"] = 0,
-		["level"] = 0,
-		["names"] = {},
-		["nameplateType"] = {
-			["enable"] = false,
-			["friendlyPlayer"] = false,
-			["friendlyNPC"] = false,
-			["healer"] = false,
-			["enemyPlayer"] = false,
-			["enemyNPC"] = false,
-			["neutral"] = false
-		},
-		["reactionType"] = {
-			["enabled"] = false,
-			["reputation"] = false,
-			["hated"] = false,
-			["hostile"] = false,
-			["unfriendly"] = false,
-			["neutral"] = false,
-			["friendly"] = false,
-			["honored"] = false,
-			["revered"] = false,
-			["exalted"] = false
-		},
-		["buffs"] = {
-			["mustHaveAll"] = false,
-			["missing"] = false,
+local function GetStyleFilterDefaultOptions()
+	local styleFilterDefaultOptions = {
+		["triggers"] = {
+			["enable"] = true,
+			["priority"] = 1,
+			["isTarget"] = false,
+			["notTarget"] = false,
+			["curlevel"] = 0,
+			["maxlevel"] = 0,
+			["minlevel"] = 0,
+			["level"] = 0,
 			["names"] = {},
+			["nameplateType"] = {
+				["enable"] = false,
+				["friendlyPlayer"] = false,
+				["friendlyNPC"] = false,
+				["healer"] = false,
+				["enemyPlayer"] = false,
+				["enemyNPC"] = false,
+				["neutral"] = false
+			},
+			["reactionType"] = {
+				["enabled"] = false,
+				["reputation"] = false,
+				["hated"] = false,
+				["hostile"] = false,
+				["unfriendly"] = false,
+				["neutral"] = false,
+				["friendly"] = false,
+				["honored"] = false,
+				["revered"] = false,
+				["exalted"] = false
+			},
+			["buffs"] = {
+				["mustHaveAll"] = false,
+				["missing"] = false,
+				["names"] = {},
+			},
+			["debuffs"] = {
+				["mustHaveAll"] = false,
+				["missing"] = false,
+				["names"] = {},
+			},
+			["inCombat"] = false,
+			["outOfCombat"] = false,
+			["inCombatUnit"] = false,
+			["outOfCombatUnit"] = false,
 		},
-		["debuffs"] = {
-			["mustHaveAll"] = false,
-			["missing"] = false,
-			["names"] = {},
+		["actions"] = {
+			["color"] = {
+				["health"] = false,
+				["healthColor"] = {r=1,g=1,b=1,a=1},
+				["borderColor"] = {r=1,g=1,b=1,a=1}
+			},
+			["texture"] = {
+				["enable"] = false,
+				["texture"] = "ElvUI Norm",
+			},
+			["hide"] = false,
+			["scale"] = 1.0,
 		},
-		["inCombat"] = false,
-		["outOfCombat"] = false,
-		["inCombatUnit"] = false,
-		["outOfCombatUnit"] = false,
-	},
-	["actions"] = {
-		["color"] = {
-			["health"] = false,
-			["healthColor"] = {r=1,g=1,b=1,a=1},
-			["borderColor"] = {r=1,g=1,b=1,a=1}
-		},
-		["texture"] = {
-			["enable"] = false,
-			["texture"] = "ElvUI Norm",
-		},
-		["hide"] = false,
-		["scale"] = 1.0,
-	},
-}
+	}
+	
+	return styleFilterDefaultOptions
+end
 
 E.Options.args.nameplate = {
 	type = "group",
@@ -2448,7 +2452,7 @@ E.Options.args.nameplate = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
-						E.global.nameplate.filters[value] = styleFilterDefaultOptions;
+						E.global.nameplate.filters[value] = GetStyleFilterDefaultOptions();
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
