@@ -547,7 +547,7 @@ local function filterAura(names, icons, mustHaveAll, missing)
 			total = total + 1 --keep track of the names
 		end
 		for frameNum, icon in pairs(icons) do
-			if icons[frameNum]:IsShown() and icon.name and icon.name == name and value == true then
+			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))) then
 				count = count + 1 --keep track of how many matches we have
 			end
 		end

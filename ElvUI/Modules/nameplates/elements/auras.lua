@@ -16,9 +16,10 @@ local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
 
 local auraCache = {}
 
-function mod:SetAura(aura, index, name, icon, count, duration, expirationTime)
+function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, spellID)
 	aura.icon:SetTexture(icon);
 	aura.name = name
+	aura.spellID = spellID
 	if ( count > 1 ) then
 		local countText = count;
 		if ( count >= 10 ) then
@@ -100,7 +101,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 	end
 
 	if filterCheck == true then
-		mod:SetAura(frame[buffType].icons[frameNum], index, name, texture, count, duration, expiration)
+		mod:SetAura(frame[buffType].icons[frameNum], index, name, texture, count, duration, expiration, spellID)
 		return true
 	end
 
