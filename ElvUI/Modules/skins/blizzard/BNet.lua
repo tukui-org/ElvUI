@@ -12,8 +12,14 @@ local _G = _G
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 
-	-- BNToastFrame
-	_G["BNToastFrame"]:SetTemplate("Transparent")
+	local skins = {
+		"BNToastFrame",
+		"TicketStatusFrameButton",
+	}
+
+	for i = 1, getn(skins) do
+		_G[skins[i]]:SetTemplate("Transparent")
+	end
 
 	-- BNetReportFrame
 	_G["BNetReportFrameCommentTopLeft"]:Hide()
@@ -32,6 +38,20 @@ local function LoadSkin()
 
 	S:HandleButton(_G["BNetReportFrameReportButton"])
 	S:HandleButton(_G["BNetReportFrameCancelButton"])
+
+	ReportCheatingDialog:StripTextures()
+	ReportCheatingDialogCommentFrame:StripTextures()
+	S:HandleButton(ReportCheatingDialogReportButton)
+	S:HandleButton(ReportCheatingDialogCancelButton)
+	ReportCheatingDialog:SetTemplate("Transparent")
+	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
+
+	ReportPlayerNameDialog:StripTextures()
+	ReportPlayerNameDialogCommentFrame:StripTextures()
+	S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
+	ReportPlayerNameDialog:SetTemplate("Transparent")
+	S:HandleButton(ReportPlayerNameDialogReportButton)
+	S:HandleButton(ReportPlayerNameDialogCancelButton)
 end
 
 S:AddCallback("SkinBNet", LoadSkin)

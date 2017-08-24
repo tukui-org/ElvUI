@@ -3,6 +3,15 @@ local DT = E:GetModule('DataTexts')
 
 local datatexts = {}
 
+local _G = _G
+local tonumber = tonumber
+local pairs = pairs
+local type = type
+local NONE = NONE
+local DELETE = DELETE
+local HideLeftChat = HideLeftChat
+local HideRightChat = HideRightChat
+
 function DT:PanelLayoutOptions()
 	for name, data in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = data.localizedName or L[name]

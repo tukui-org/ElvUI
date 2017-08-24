@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -33,10 +34,14 @@ function mod:UpdateElement_Highlight(frame)
 	end
 end
 
+function mod:ConfigureElement_Highlight(frame)
+	if not self.db.units[frame.UnitType].healthbar.enable then return end
+	frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
 function mod:ConstructElement_Highlight(frame)
-	local f = frame.HealthBar:CreateTexture(nil, "ARTWORK", nil, 1)
-	f.handler = CreateFrame("Frame")
-	f:SetTexture(E["media"].normTex)
+	local f = frame.HealthBar:CreateTexture("$parentHighlight", "ARTWORK", nil, 1)
+	f.handler = CreateFrame("Frame", nil, frame.HealthBar)
 	f:SetVertexColor(1, 1, 1, .3)
 	f:Hide()
 	return f

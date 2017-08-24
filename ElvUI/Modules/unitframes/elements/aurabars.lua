@@ -11,11 +11,11 @@ local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitIsFriend = UnitIsFriend
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't want to cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 function UF:Construct_AuraBars()
 	local bar = self.statusBar
@@ -116,9 +116,9 @@ function UF:Configure_AuraBars(frame)
 		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 2 or 1) * frame.BORDER)
 
 		if db.aurabar.anchorPoint == 'BELOW' then
-			yOffset = -spacing + border
+			yOffset = -spacing + border - (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
 		else
-			yOffset = spacing - border
+			yOffset = spacing - border + (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
 		end
 
 		local xOffset = (db.aurabar.attachTo == "FRAME" and frame.SPACING or 0)

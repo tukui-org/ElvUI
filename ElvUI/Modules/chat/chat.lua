@@ -81,6 +81,7 @@ local UnitName, UnitGUID = UnitName, UnitGUID
 local UnitRealmRelationship = UnitRealmRelationship
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 
 --Variables that are only used in ChatFrame_MessageEventHandler
@@ -121,6 +122,7 @@ local GlobalStrings = {
 -- GLOBALS: WIM, ChatTypeGroup, GeneralDockManagerOverflowButtonList, GeneralDockManagerScrollFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomAdditionalFilterButton, UISpecialFrames, ChatFontNormal
 -- GLOBALS: ChatFrame_AddMessageEventFilter, ChatFrame_GetMessageEventFilters
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local CreatedFrames = 0;
 local lines = {};
@@ -130,9 +132,6 @@ local chatFilters = {};
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
-
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 local DEFAULT_STRINGS = {
 	GUILD = L["G"],

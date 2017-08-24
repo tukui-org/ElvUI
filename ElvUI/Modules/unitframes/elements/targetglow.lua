@@ -9,9 +9,9 @@ local UnitIsUnit = UnitIsUnit
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 function UF:Construct_TargetGlow(frame)
 	frame:CreateShadow('Default')

@@ -355,7 +355,7 @@ if(not ElvDB.profiles["Minimalistic"]) then
 			["editBoxPosition"] = "ABOVE_CHAT",
 			["fadeTabsNoBackdrop"] = false,
 			["font"] = "Expressway",
-			["tapFontSize"] = 11,
+			["tabFontSize"] = 11,
 			["panelBackdrop"] = "HIDEBOTH",
 		},
 		["tooltip"] = {

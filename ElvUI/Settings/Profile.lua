@@ -28,7 +28,7 @@ P['general'] = {
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropfadecolor"] = { r = .06,g = .06,b = .06, a = 0.8 },
-	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
+	["valuecolor"] = {r = 254/255,g = 123/255,b = 44/255},
 
 	['minimap'] = {
 		['size'] = 176,
@@ -265,6 +265,7 @@ P["nameplates"] = {
 			['enable'] = false,
 			["useStaticPosition"] = false,
 			["clickthrough"] = false,
+			["portrait"] = false,
 			["visibility"] = {
 				["showAlways"] = false,
 				["showInCombat"] = true,
@@ -331,6 +332,7 @@ P["nameplates"] = {
 			},
 		},
 		['HEALER'] = {
+			["portrait"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,
@@ -391,6 +393,7 @@ P["nameplates"] = {
 			},
 		},
 		['FRIENDLY_PLAYER'] = {
+			["portrait"] = false,
 			["minions"] = false,
 			['healthbar'] = {
 				['enable'] = false,
@@ -452,6 +455,7 @@ P["nameplates"] = {
 			},
 		},
 		['ENEMY_PLAYER'] = {
+			["portrait"] = false,
 			["minions"] = false,
 			["markHealers"] = true,
 			['healthbar'] = {
@@ -514,6 +518,7 @@ P["nameplates"] = {
 			},
 		},
 		['FRIENDLY_NPC'] = {
+			["portrait"] = false,
 			['healthbar'] = {
 				['enable'] = false,
 				['height'] = 10,
@@ -577,6 +582,7 @@ P["nameplates"] = {
 			},
 		},
 		['ENEMY_NPC'] = {
+			["portrait"] = false,
 			["minors"] = true,
 			['healthbar'] = {
 				['enable'] = true,
@@ -1085,6 +1091,7 @@ P['unitframe'] = {
 				['height'] = 20,
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
+				["yOffset"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1124,7 +1131,7 @@ P['unitframe'] = {
 				['height'] = 10,
 				['offset'] = 0,
 				['position'] = 'LEFT',
-				['hideonnpc'] = true,
+				['hideonnpc'] = false,
 				['xOffset'] = 2,
 				['yOffset'] = 0,
 				['detachFromFrame'] = false,
@@ -1242,6 +1249,7 @@ P['unitframe'] = {
 				['height'] = 20,
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
+				["yOffset"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1575,6 +1583,7 @@ P['unitframe'] = {
 				['height'] = 20,
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
+				["yOffset"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,

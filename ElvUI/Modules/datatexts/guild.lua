@@ -26,7 +26,6 @@ local GetGuildInfo = GetGuildInfo
 local ToggleGuildFrame = ToggleGuildFrame
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetCurrentMapAreaID = GetCurrentMapAreaID
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GUILD_MOTD = GUILD_MOTD
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
@@ -35,6 +34,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}

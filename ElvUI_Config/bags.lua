@@ -1,6 +1,12 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
+local _G = _G
+local gsub = string.gsub
+local match = string.match
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
+local GameTooltip = _G['GameTooltip']
+
 E.Options.args.bags = {
 	type = 'group',
 	name = L["Bags"],
@@ -372,10 +378,10 @@ E.Options.args.bags = {
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = string.match(value, "item:(%d+)")
+								local itemID = match(value, "item:(%d+)")
 								E.db.bags.ignoredItems[(itemID or value)] = value
 							end,
 						},
@@ -392,10 +398,10 @@ E.Options.args.bags = {
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = string.match(value, "item:(%d+)")
+								local itemID = match(value, "item:(%d+)")
 								E.global.bags.ignoredItems[(itemID or value)] = value
 								
 								--Remove from profile list if we just added the same item to global list

@@ -8,11 +8,11 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local UnitClass = UnitClass
 local UnitName = UnitName
 local UnitReaction = UnitReaction
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_Name(frame)
 	local name = UnitName(frame.displayedUnit)
