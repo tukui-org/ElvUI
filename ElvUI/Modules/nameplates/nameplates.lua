@@ -733,22 +733,12 @@ function mod:UpdateElement_Filters(frame)
 		if trigger.nameplateType and trigger.nameplateType.enable then
 			triggerByUnit = false
 
-			if trigger.nameplateType.friendlyPlayer and frame.UnitType == 'FRIENDLY_PLAYER' then
-				triggerByUnit = true
-			end
-			if trigger.nameplateType.friendlyNPC and frame.UnitType == 'FRIENDLY_NPC' then
-				triggerByUnit = true
-			end
-			if trigger.nameplateType.enemyPlayer and frame.UnitType == 'ENEMY_PLAYER' then
-				triggerByUnit = true
-			end
-			if trigger.nameplateType.enemyNPC and frame.UnitType == 'ENEMY_NPC' then
-				triggerByUnit = true
-			end
-			if trigger.nameplateType.healer and frame.UnitType == 'HEALER' then
-				triggerByUnit = true
-			end
-			if trigger.nameplateType.player and frame.UnitType == 'PLAYER' then
+			if (trigger.nameplateType.friendlyPlayer and frame.UnitType=='FRIENDLY_PLAYER')
+			or (trigger.nameplateType.friendlyNPC	 and frame.UnitType=='FRIENDLY_NPC')
+			or (trigger.nameplateType.enemyPlayer	 and frame.UnitType=='ENEMY_PLAYER')
+			or (trigger.nameplateType.enemyNPC		 and frame.UnitType=='ENEMY_NPC')
+			or (trigger.nameplateType.healer		 and frame.UnitType=='HEALER')
+			or (trigger.nameplateType.player		 and frame.UnitType=='PLAYER') then
 				triggerByUnit = true
 			end
 
@@ -761,28 +751,14 @@ function mod:UpdateElement_Filters(frame)
 			reaction = (trigger.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
 			triggerByReactionType = false
 
-			if trigger.reactionType.hated and reaction == 1 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.hostile and reaction == 2 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.unfriendly and reaction == 3 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.neutral and reaction == 4 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.friendly and reaction == 5 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.honored and reaction == 6 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.revered and reaction == 7 then
-				triggerByReactionType = true
-			end
-			if trigger.reactionType.exalted and reaction == 8 then
+			if (reaction==1 and trigger.reactionType.hated)
+			or (reaction==2 and trigger.reactionType.hostile)
+			or (reaction==3 and trigger.reactionType.unfriendly)
+			or (reaction==4 and trigger.reactionType.neutral)
+			or (reaction==5 and trigger.reactionType.friendly)
+			or (reaction==6 and trigger.reactionType.honored)
+			or (reaction==7 and trigger.reactionType.revered)
+			or (reaction==8 and trigger.reactionType.exalted) then
 				triggerByReactionType = true
 			end
 
