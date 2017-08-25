@@ -664,28 +664,31 @@ function mod:UpdateElement_Filters(frame)
 			triggerFailed = false
 
 			if not triggerFailed and trigger.names and next(trigger.names) then
+				conditionMatched = 0
 				for unitName, value in pairs(trigger.names) do
 					if value == true then --only check names that are checked
-						conditionMatched = false
+						conditionMatched = 1
 						if tonumber(unitName) then
 							guid = UnitGUID(frame.displayedUnit)
 							if guid then
 								npcid = select(6, strsplit('-', guid))
 								if tonumber(unitName) == tonumber(npcid) then
-									conditionMatched = true
+									conditionMatched = 2
 									break
 								end
 							end
 						else
 							name = UnitName(frame.displayedUnit)
 							if unitName and unitName ~= "" and unitName == name then
-								conditionMatched = true
+								conditionMatched = 2
 								break
 							end
 						end
 					end
 				end
-				triggerFailed = not conditionMatched
+				if conditionMatched ~= 0 then
+					triggerFailed = (conditionMatched == 2)
+				end
 			end
 
 			--Try to match by player combat conditions
