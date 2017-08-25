@@ -19,6 +19,7 @@ local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitAura = UnitAura
 local UnitIsFriend = UnitIsFriend
+local UnitIsUnit = UnitIsUnit
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: DebuffTypeColor
@@ -475,12 +476,13 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 	db = db[self.type]
 
-	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
 
 	if name then
 		noDuration = (not duration or duration == 0)
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
+		isUnit = unit and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 	else
@@ -499,10 +501,10 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 			for i, x in ipairs(tbl) do
 				filterName = tbl[i]
 				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-				if friendCheck ~= false then -- false = initial value, nil = friendCheck fails, otherwise check if its a default filter
-					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.defaultFiltersSelf[friendCheck]) then
-						filterName = friendCheck -- this is for our default filters to handle Friendly and Enemy
-					end -- this is otherwise so set filterName if its a default filter
+				if friendCheck ~= false then -- false = initial value, nil = friendCheck fails, otherwise check if its a special filter
+					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
+						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					end -- this is otherwise so set filterName if its a special filter
 					filters = E.global.unitframe['aurafilters']
 					if filters[filterName] then
 						filterType = filters[filterName].type
@@ -524,6 +526,12 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'CastedByUnit' and isUnit and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'notCastedByUnit' and not isUnit and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then

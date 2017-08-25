@@ -1160,7 +1160,7 @@ E.Options.args.filters = {
 				if match(value, "^[%s%p]-$") then
 					return
 				end
-				if G.unitframe.defaultFiltersSelf[value] or G.unitframe.defaultFilters[value] or E.global.unitframe.aurafilters[value] then
+				if G.unitframe.specialFilters[value] or G.unitframe.populatedSpecialFilters[value] or E.global.unitframe.aurafilters[value] then
 					E:Print(L["Filter already exists!"])
 					return
 				end

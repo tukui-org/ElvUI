@@ -12,6 +12,7 @@ local next, ipairs = next, ipairs
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
 local UnitIsFriend = UnitIsFriend
+local UnitIsUnit = UnitIsUnit
 local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
 
 local auraCache = {}
@@ -48,10 +49,11 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
-	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false
 
 	if name then
 		noDuration = (not duration or duration == 0)
+		isUnit = frame.unit and UnitIsUnit(frame.unit, caster)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
@@ -85,6 +87,12 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 					filterCheck = true
 					break -- STOP
 				elseif tbl[i] == 'Boss' and isBossDebuff and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif tbl[i] == 'CastedByUnit' and isUnit and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif tbl[i] == 'notCastedByUnit' and not isUnit and allowDuration then
 					filterCheck = true
 					break -- STOP
 				elseif tbl[i] == 'blockNoDuration' and noDuration then

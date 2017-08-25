@@ -1361,14 +1361,14 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = " ",
 							},
-							defaultFilter = {
+							specialFilters = {
 								order = 5,
 								type = "select",
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['defaultFilters']
+									local list = E.global.nameplate['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -1377,6 +1377,7 @@ local function GetUnitSettings(unit, name)
 								end,
 								set = function(info, value)
 									filterPriority('buffs', unit, value)
+									NP:ConfigureAll()
 								end
 							},
 							filter = {
@@ -1395,6 +1396,7 @@ local function GetUnitSettings(unit, name)
 								end,
 								set = function(info, value)
 									filterPriority('buffs', unit, value)
+									NP:ConfigureAll()
 								end
 							},
 							resetPriority = {
@@ -1521,14 +1523,14 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = " ",
 							},
-							defaultFilter = {
+							specialFilters = {
 								order = 5,
 								type = "select",
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['defaultFilters']
+									local list = E.global.nameplate['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -1537,6 +1539,7 @@ local function GetUnitSettings(unit, name)
 								end,
 								set = function(info, value)
 									filterPriority('debuffs', unit, value)
+									NP:ConfigureAll()
 								end
 							},
 							filter = {
@@ -1555,6 +1558,7 @@ local function GetUnitSettings(unit, name)
 								end,
 								set = function(info, value)
 									filterPriority('debuffs', unit, value)
+									NP:ConfigureAll()
 								end
 							},
 							resetPriority = {

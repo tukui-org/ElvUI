@@ -1101,21 +1101,24 @@ G.unitframe.DebuffHighlightColors = {
 	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
 
-G.unitframe.defaultFiltersSelf = {
+G.unitframe.specialFilters = {
 	['Boss'] = true,
 	['Personal'] = true,
 	['nonPersonal'] = true,
+	['CastedByUnit'] = true,
+	['notCastedByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
 };
-G.unitframe.defaultFilters = {}; --populates from G.unitframe.defaultFiltersSelf and then G.unitframe.aurafilters
+
+G.unitframe.populatedSpecialFilters = {}; --populates from G.unitframe.specialFilters and then G.unitframe.aurafilters
 
 for name, table in pairs(G.unitframe.aurafilters) do
-	G.unitframe.defaultFilters['Friendly:'..name] = true;
-	G.unitframe.defaultFilters['Enemy:'..name] = true;
+	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
+	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
 end
-for name, table in pairs(G.unitframe.defaultFiltersSelf) do
-	G.unitframe.defaultFilters['Friendly:'..name] = true;
-	G.unitframe.defaultFilters['Enemy:'..name] = true;
-	G.unitframe.defaultFilters[name] = true;
+for name, table in pairs(G.unitframe.specialFilters) do
+	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
+	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
+	G.unitframe.populatedSpecialFilters[name] = true;
 end

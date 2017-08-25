@@ -14,6 +14,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitIsFriend = UnitIsFriend
+local UnitIsUnit = UnitIsUnit
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't want to cache, list them here for mikk's FindGlobals script
@@ -191,12 +192,13 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	if not self.db then return; end
 	local db = self.db.aurabar
 
-	local filterCheck, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
 
 	if name then
 		noDuration = (not duration or duration == 0)
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
+		isUnit = unit and UnitIsUnit(unit, unitCaster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 	else
@@ -210,10 +212,10 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			for i, x in ipairs(tbl) do
 				filterName = tbl[i]
 				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-				if friendCheck ~= false then -- false = initial value, nil = friendCheck fails, otherwise check if its a default filter
-					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.defaultFiltersSelf[friendCheck]) then
-						filterName = friendCheck -- this is for our default filters to handle Friendly and Enemy
-					end -- this is otherwise so set filterName if its a default filter
+				if friendCheck ~= false then -- false = initial value, nil = friendCheck fails, otherwise check if its a special filter
+					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
+						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					end -- this is otherwise so set filterName if its a special filter
 					filters = E.global.unitframe['aurafilters']
 					if filters[filterName] then
 						filterType = filters[filterName].type
@@ -234,6 +236,12 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'CastedByUnit' and isUnit and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'notCastedByUnit' and not isUnit and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then

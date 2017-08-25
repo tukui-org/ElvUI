@@ -6,10 +6,12 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
 G["nameplate"] = {
-	["defaultFilters"] = {
+	["specialFilters"] = {
 		['Boss'] = true,
 		['Personal'] = true,
 		['nonPersonal'] = true,
+		['CastedByUnit'] = true,
+		['notCastedByUnit'] = true,
 		['blockNoDuration'] = true,
 		['Dispellable'] = true,
 	},

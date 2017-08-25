@@ -273,15 +273,14 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
-	config.args.filters.args.defaultPriority = {
+	config.args.filters.args.specialPriority = {
 		order = 19,
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
 			local filters = {}
-			local filterName = (friendlyOnly and 'defaultFiltersSelf') or 'defaultFilters'
-			local list = E.global.unitframe[filterName]
+			local list = E.global.unitframe['populatedSpecialFilters']
 			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
@@ -516,15 +515,14 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
-	config.args.filters.args.defaultPriority = {
+	config.args.filters.args.specialPriority = {
 		order = 19,
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 		type = 'select',
 		values = function()
 			local filters = {}
-			local filterName = (friendlyUnitOnly and 'defaultFiltersSelf') or 'defaultFilters'
-			local list = E.global.unitframe[filterName]
+			local list = E.global.unitframe['populatedSpecialFilters']
 			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
