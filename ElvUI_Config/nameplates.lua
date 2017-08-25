@@ -680,7 +680,7 @@ local function UpdateFilterGroup()
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 0,
 							type = 'toggle',
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation
 							end,
@@ -694,13 +694,13 @@ local function UpdateFilterGroup()
 							type = "group",
 							guiInline = true,
 							order = 1,
-							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 							args = {
 								hated = {
 									name = FACTION_STANDING_LABEL1,
 									order = 1,
 									type = 'toggle',
-									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hated
 									end,
@@ -725,7 +725,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL3,
 									order = 3,
 									type = 'toggle',
-									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.unfriendly
 									end,
@@ -762,7 +762,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL6,
 									order = 6,
 									type = 'toggle',
-									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.honored
 									end,
@@ -775,7 +775,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL7,
 									order = 7,
 									type = 'toggle',
-									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.revered
 									end,
@@ -788,7 +788,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL8,
 									order = 8,
 									type = 'toggle',
-									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.exalted
 									end,
