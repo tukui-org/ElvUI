@@ -66,64 +66,175 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 	end
 end
 
-local function UpdateAuraList()
+local function UpdateStyleLists()
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
+		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
+			E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
+				order = 3,
+				type = "group",
+				name = "",
+				guiInline = true,
+				args = {},
+			}
+		else
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
+				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
+					name = name,
+					type = "toggle",
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
+		end
+	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
-		local spell, spellName, notDisabled
-		for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
-			spell = name
-			if tonumber(spell) then
-				spellName = GetSpellInfo(spell)
-				notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
-				if spellName and notDisabled then
-					spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
-				else
-					spell = format("%s (%d)", spellName, spell)
-				end
-			end
-			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
-				textWidth = true,
-				name = spell,
-				type = "toggle",
-				order = -1,
-				get = function(info)
-					return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name]
-				end,
-				set = function(info, value)
-					E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = value
-					NP:ConfigureAll()
-				end,
+		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
+			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
+				order = 6,
+				type = "group",
+				name = "",
+				guiInline = true,
+				args = {},
 			}
+		else
+			local spell, spellName, notDisabled
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
+				spell = name
+				if tonumber(spell) then
+					spellName = GetSpellInfo(spell)
+					notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
+					if spellName and notDisabled then
+						spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+					else
+						spell = format("%s (%d)", spellName, spell)
+					end
+				end
+				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
+					textWidth = true,
+					name = spell,
+					type = "toggle",
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
 		end
 	end
-
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
-		local spell, spellName, notDisabled
-		for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
-			spell = name
-			if tonumber(spell) then
-				spellName = GetSpellInfo(spell)
-				notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
-				if spellName and notDisabled then
-					spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
-				else
-					spell = format("%s (%d)", spellName, spell)
-				end
-			end
-			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
-				textWidth = true,
-				name = spell,
-				type = "toggle",
-				order = -1,
-				get = function(info)
-					return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name]
-				end,
-				set = function(info, value)
-					E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
-					NP:ConfigureAll()
-				end,
+		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
+			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
+				order = 6,
+				type = "group",
+				name = "",
+				guiInline = true,
+				args = {},
 			}
+		else
+			local spell, spellName, notDisabled
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
+				spell = name
+				if tonumber(spell) then
+					spellName = GetSpellInfo(spell)
+					notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
+					if spellName and notDisabled then
+						spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+					else
+						spell = format("%s (%d)", spellName, spell)
+					end
+				end
+				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
+					textWidth = true,
+					name = spell,
+					type = "toggle",
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
 		end
 	end
+end
+
+local function GetStyleFilterDefaultOptions()
+	local styleFilterDefaultOptions = {
+		["triggers"] = {
+			["enable"] = true,
+			["priority"] = 1,
+			["isTarget"] = false,
+			["notTarget"] = false,
+			["level"] = false,
+			["curlevel"] = 0,
+			["maxlevel"] = 0,
+			["minlevel"] = 0,
+			["names"] = {},
+			["nameplateType"] = {
+				["enable"] = false,
+				["friendlyPlayer"] = false,
+				["friendlyNPC"] = false,
+				["healer"] = false,
+				["enemyPlayer"] = false,
+				["enemyNPC"] = false,
+				["neutral"] = false
+			},
+			["reactionType"] = {
+				["enabled"] = false,
+				["reputation"] = false,
+				["hated"] = false,
+				["hostile"] = false,
+				["unfriendly"] = false,
+				["neutral"] = false,
+				["friendly"] = false,
+				["honored"] = false,
+				["revered"] = false,
+				["exalted"] = false
+			},
+			["buffs"] = {
+				["mustHaveAll"] = false,
+				["missing"] = false,
+				["names"] = {},
+			},
+			["debuffs"] = {
+				["mustHaveAll"] = false,
+				["missing"] = false,
+				["names"] = {},
+			},
+			["inCombat"] = false,
+			["outOfCombat"] = false,
+			["inCombatUnit"] = false,
+			["outOfCombatUnit"] = false,
+		},
+		["actions"] = {
+			["color"] = {
+				["health"] = false,
+				["healthColor"] = {r=1,g=1,b=1,a=1},
+				["borderColor"] = {r=1,g=1,b=1,a=1}
+			},
+			["texture"] = {
+				["enable"] = false,
+				["texture"] = "ElvUI Norm",
+			},
+			["hide"] = false,
+			["scale"] = 1.0,
+		},
+	}
+
+	return styleFilterDefaultOptions
 end
 
 local function UpdateFilterGroup()
@@ -152,7 +263,7 @@ local function UpdateFilterGroup()
 					end,
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].triggers.enable = value
-						UpdateAuraList() --we need this to recolor the spellid based on wether or not the filter is disabled
+						UpdateStyleLists() --we need this to recolor the spellid based on wether or not the filter is disabled
 						NP:ConfigureAll()
 					end,
 				},
@@ -170,14 +281,25 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				spacer1 = {
+				resetFilter = {
 					order = 2,
+					name = L["Clear Filter"],
+					desc = L["Return filter to its default state."],
+					type = "execute",
+					func = function()
+						E.global.nameplate.filters[selectedNameplateFilter] = GetStyleFilterDefaultOptions();
+						UpdateStyleLists();
+						NP:ConfigureAll()
+					end,
+				},
+				spacer1 = {
+					order = 3,
 					type = 'description',
 					name = '',
 				},
 				isTarget = {
 					name = L["Is Targeted"],
-					order = 3,
+					order = 4,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					get = function(info)
@@ -190,7 +312,7 @@ local function UpdateFilterGroup()
 				},
 				notTarget = {
 					name = L["Not Targeted"],
-					order = 4,
+					order = 5,
 					type = 'toggle',
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					get = function(info)
@@ -203,7 +325,7 @@ local function UpdateFilterGroup()
 				},
 				names = {
 					name = L["Name"],
-					order = 5,
+					order = 6,
 					type = "group",
 					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -944,23 +1066,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		UpdateAuraList()
-		if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
-				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
-					name = name,
-					type = "toggle",
-					order = -1,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name] = value
-						NP:ConfigureAll()
-					end,
-				}
-			end
-		end
+		UpdateStyleLists()
 	end
 end
 
@@ -1786,72 +1892,6 @@ local function GetUnitSettings(unit, name)
 
 	ORDER = ORDER + 100
 	return group
-end
-
-local function GetStyleFilterDefaultOptions()
-	local styleFilterDefaultOptions = {
-		["triggers"] = {
-			["enable"] = true,
-			["priority"] = 1,
-			["isTarget"] = false,
-			["notTarget"] = false,
-			["level"] = false,
-			["curlevel"] = 0,
-			["maxlevel"] = 0,
-			["minlevel"] = 0,
-			["names"] = {},
-			["nameplateType"] = {
-				["enable"] = false,
-				["friendlyPlayer"] = false,
-				["friendlyNPC"] = false,
-				["healer"] = false,
-				["enemyPlayer"] = false,
-				["enemyNPC"] = false,
-				["neutral"] = false
-			},
-			["reactionType"] = {
-				["enabled"] = false,
-				["reputation"] = false,
-				["hated"] = false,
-				["hostile"] = false,
-				["unfriendly"] = false,
-				["neutral"] = false,
-				["friendly"] = false,
-				["honored"] = false,
-				["revered"] = false,
-				["exalted"] = false
-			},
-			["buffs"] = {
-				["mustHaveAll"] = false,
-				["missing"] = false,
-				["names"] = {},
-			},
-			["debuffs"] = {
-				["mustHaveAll"] = false,
-				["missing"] = false,
-				["names"] = {},
-			},
-			["inCombat"] = false,
-			["outOfCombat"] = false,
-			["inCombatUnit"] = false,
-			["outOfCombatUnit"] = false,
-		},
-		["actions"] = {
-			["color"] = {
-				["health"] = false,
-				["healthColor"] = {r=1,g=1,b=1,a=1},
-				["borderColor"] = {r=1,g=1,b=1,a=1}
-			},
-			["texture"] = {
-				["enable"] = false,
-				["texture"] = "ElvUI Norm",
-			},
-			["hide"] = false,
-			["scale"] = 1.0,
-		},
-	}
-
-	return styleFilterDefaultOptions
 end
 
 E.Options.args.nameplate = {
