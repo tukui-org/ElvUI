@@ -1795,10 +1795,10 @@ local function GetStyleFilterDefaultOptions()
 			["priority"] = 1,
 			["isTarget"] = false,
 			["notTarget"] = false,
+			["level"] = false,
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
-			["level"] = 0,
 			["names"] = {},
 			["nameplateType"] = {
 				["enable"] = false,
@@ -1850,7 +1850,7 @@ local function GetStyleFilterDefaultOptions()
 			["scale"] = 1.0,
 		},
 	}
-	
+
 	return styleFilterDefaultOptions
 end
 
