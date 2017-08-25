@@ -40,34 +40,40 @@ local function BuildABConfig()
 				func = function() AB:ActivateBindMode(); E:ToggleConfig(); GameTooltip:Hide(); end,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			spacer = {
+			cooldownText = {
 				order = 2,
+				type = "execute",
+				name = L["Cooldown Text"],
+				func = function() ACD:SelectGroup("ElvUI", "general", "cooldown") end,
+			},
+			spacer = {
+				order = 3,
 				type = "description",
 				name = "",
 			},
 			macrotext = {
-				order = 3,
+				order = 4,
 				type = "toggle",
 				name = L["Macro Text"],
 				desc = L["Display macro names on action buttons."],
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			hotkeytext = {
-				order = 4,
+				order = 5,
 				type = "toggle",
 				name = L["Keybind Text"],
 				desc = L["Display bind names on action buttons."],
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			keyDown = {
-				order = 5,
+				order = 6,
 				type = 'toggle',
 				name = L["Key Down"],
 				desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			lockActionBars = {
-				order = 6,
+				order = 7,
 				type = "toggle",
 				name = LOCK_ACTIONBAR_TEXT,
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
@@ -81,7 +87,7 @@ local function BuildABConfig()
 				end,
 			},
 			hideCooldownBling = {
-				order = 7,
+				order = 8,
 				type = "toggle",
 				name = L["Hide Cooldown Bling"],
 				desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
@@ -94,7 +100,7 @@ local function BuildABConfig()
 				end,
 			},
 			useDrawSwipeOnCharges = {
-				order = 8,
+				order = 9,
 				type = "toggle",
 				name = L["Use Draw Swipe"],
 				desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
@@ -106,7 +112,7 @@ local function BuildABConfig()
 				end,
 			},
 			movementModifier = {
-				order = 9,
+				order = 10,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -119,7 +125,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 10,
+				order = 11,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
@@ -128,7 +134,7 @@ local function BuildABConfig()
 				set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB.fadeParent:SetAlpha(1-value) end,
 			},
 			colorGroup = {
-				order = 11,
+				order = 12,
 				type = "group",
 				name = L["Colors"],
 				guiInline = true,
@@ -171,7 +177,7 @@ local function BuildABConfig()
 				},
 			},
 			fontGroup = {
-				order = 12,
+				order = 13,
 				type = 'group',
 				guiInline = true,
 				disabled = function() return not E.private.actionbar.enable end,
@@ -220,7 +226,7 @@ local function BuildABConfig()
 				},
 			},
 			masque = {
-				order = 13,
+				order = 14,
 				type = "group",
 				guiInline = true,
 				name = L["Masque Support"],
