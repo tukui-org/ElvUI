@@ -1111,7 +1111,7 @@ G.unitframe.specialFilters = {
 	['Dispellable'] = true,
 };
 
-G.unitframe.populatedSpecialFilters = {}; --populates from G.unitframe.specialFilters and then G.unitframe.aurafilters
+G.unitframe.populatedSpecialFilters = {}; --populates from `G.unitframe.specialFilters` and `G.unitframe.aurafilters`
 
 for name, table in pairs(G.unitframe.aurafilters) do
 	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
