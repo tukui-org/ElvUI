@@ -664,9 +664,9 @@ function mod:UpdateElement_Filters(frame)
 			triggerFailed = false
 
 			if not triggerFailed and trigger.names and next(trigger.names) then
-				conditionMatched = false
 				for unitName, value in pairs(trigger.names) do
 					if value == true then --only check names that are checked
+						conditionMatched = false
 						if tonumber(unitName) then
 							guid = UnitGUID(frame.displayedUnit)
 							if guid then
