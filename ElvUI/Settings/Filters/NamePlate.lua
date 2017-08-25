@@ -84,7 +84,7 @@ G["nameplate"] = {
 	}
 }
 
-G.nameplate.populatedSpecialFilters = {}; --populates from G.nameplate.specialFilters and then G.nameplate.aurafilters
+G.nameplate.populatedSpecialFilters = {}; --populates from G.nameplate.specialFilters and then G.unitframe.aurafilters
 
 for name, table in pairs(G.unitframe.aurafilters) do --add the default unitframe filters too
 	G.nameplate.populatedSpecialFilters['Friendly:'..name] = true;
