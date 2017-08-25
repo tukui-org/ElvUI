@@ -627,7 +627,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, triggerFailed, conditionMatched, name, guid, npcid, inCombat, level, mylevel, reaction;
+	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction;
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
@@ -661,91 +661,91 @@ function mod:UpdateElement_Filters(frame)
 		filter = E.global.nameplate.filters[filterList[filterName][1]];
 		if filter then
 			trigger = filter.triggers
-			triggerFailed = false
+			failed = false
 
-			if not triggerFailed and trigger.names and next(trigger.names) then
-				conditionMatched = 0
+			if not failed and trigger.names and next(trigger.names) then
+				condition = 0
 				for unitName, value in pairs(trigger.names) do
 					if value == true then --only check names that are checked
-						conditionMatched = 1
+						condition = 1
 						if tonumber(unitName) then
 							guid = UnitGUID(frame.displayedUnit)
 							if guid then
 								npcid = select(6, strsplit('-', guid))
 								if tonumber(unitName) == tonumber(npcid) then
-									conditionMatched = 2
+									condition = 2
 									break
 								end
 							end
 						else
 							name = UnitName(frame.displayedUnit)
 							if unitName and unitName ~= "" and unitName == name then
-								conditionMatched = 2
+								condition = 2
 								break
 							end
 						end
 					end
 				end
-				if conditionMatched ~= 0 then
-					triggerFailed = (conditionMatched == 2)
+				if condition ~= 0 then
+					failed = (condition == 2)
 				end
 			end
 
 			--Try to match by player combat conditions
-			if not triggerFailed and (trigger.inCombat or trigger.outOfCombat) then
+			if not failed and (trigger.inCombat or trigger.outOfCombat) then
+				condition = false
 				inCombat = UnitAffectingCombat("player")
-				conditionMatched = false
 				if (trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat) then
-					conditionMatched = true
+					condition = true
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match by unit combat conditions
-			if not triggerFailed and (trigger.inCombatUnit or trigger.outOfCombatUnit) then
+			if not failed and (trigger.inCombatUnit or trigger.outOfCombatUnit) then
+				condition = false
 				inCombat = UnitAffectingCombat(frame.displayedUnit)
-				conditionMatched = false
 				if (trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat) then
-					conditionMatched = true
+					condition = true
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match by target conditions
-			if not triggerFailed and (trigger.isTarget or trigger.notTarget) then
-				conditionMatched = false
+			if not failed and (trigger.isTarget or trigger.notTarget) then
+				condition = false
 				if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
-					conditionMatched = true
+					condition = true
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match by level conditions
 			level = UnitLevel(frame.displayedUnit)
-			if not triggerFailed and trigger.level and level then
-				conditionMatched = false
+			if not failed and trigger.level and level then
+				condition = false
 				if trigger.mylevel then --My Level is set, ignore the sliders
 					if frame.displayedUnit ~= "player" then
 						mylevel = UnitLevel("player")
 						if level == mylevel then
-							conditionMatched = true
+							condition = true
 						end
 					else
-						conditionMatched = true -- of course, player level = player level.
+						condition = true -- of course, player level = player level.
 					end
 				else
 					if ((trigger.curlevel and trigger.curlevel ~= 0) and trigger.curlevel == level)
 					or ((trigger.minlevel and trigger.minlevel ~= 0) and trigger.minlevel <= level)
 					or ((trigger.maxlevel and trigger.maxlevel ~= 0) and trigger.maxlevel >= level) then
-						conditionMatched = true
+						condition = true
 					end
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match by unit type
-			if not triggerFailed and trigger.nameplateType and trigger.nameplateType.enable then
-				conditionMatched = false
+			if not failed and trigger.nameplateType and trigger.nameplateType.enable then
+				condition = false
 
 				if (trigger.nameplateType.friendlyPlayer and frame.UnitType=='FRIENDLY_PLAYER')
 				or (trigger.nameplateType.friendlyNPC	 and frame.UnitType=='FRIENDLY_NPC')
@@ -753,16 +753,16 @@ function mod:UpdateElement_Filters(frame)
 				or (trigger.nameplateType.enemyNPC		 and frame.UnitType=='ENEMY_NPC')
 				or (trigger.nameplateType.healer		 and frame.UnitType=='HEALER')
 				or (trigger.nameplateType.player		 and frame.UnitType=='PLAYER') then
-					conditionMatched = true
+					condition = true
 				end
 
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match by Reaction (or Reputation) type
-			if not triggerFailed and trigger.reactionType and trigger.reactionType.enable then
+			if not failed and trigger.reactionType and trigger.reactionType.enable then
 				reaction = (trigger.reactionType.reputation and UnitReaction(frame.displayedUnit, 'player')) or UnitReaction('player', frame.displayedUnit)
-				conditionMatched = false
+				condition = false
 
 				if (reaction==1 and trigger.reactionType.hated)
 				or (reaction==2 and trigger.reactionType.hostile)
@@ -772,31 +772,31 @@ function mod:UpdateElement_Filters(frame)
 				or (reaction==6 and trigger.reactionType.honored)
 				or (reaction==7 and trigger.reactionType.revered)
 				or (reaction==8 and trigger.reactionType.exalted) then
-					conditionMatched = true
+					condition = true
 				end
 
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match according to buff aura conditions
-			if not triggerFailed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-				conditionMatched = false
+			if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+				condition = false
 				if filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing) then
-					conditionMatched = true
+					condition = true
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
 			--Try to match according to debuff aura conditions
-			if not triggerFailed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-				conditionMatched = false
+			if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+				condition = false
 				if filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing) then
-					conditionMatched = true
+					condition = true
 				end
-				triggerFailed = not conditionMatched
+				failed = not condition
 			end
 
-			if not triggerFailed then --We got a match, pass to styling
+			if not failed then --We got a match, pass to styling
 				self:FilterStyle(frame, filter.actions);
 			end
 		end
