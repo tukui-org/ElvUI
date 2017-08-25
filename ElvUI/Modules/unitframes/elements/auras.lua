@@ -482,7 +482,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 		noDuration = (not duration or duration == 0)
 		isFriend = unit and UnitIsFriend('player', unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
-		isUnit = unit and UnitIsUnit(unit, caster)
+		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 	else
@@ -528,10 +528,10 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'CastByUnit' and isUnit and allowDuration then
+					elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'notCastByUnit' and not isUnit and allowDuration then
+					elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then

@@ -54,9 +54,9 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 
 	if name then
 		noDuration = (not duration or duration == 0)
-		isUnit = frame.unit and UnitIsUnit(frame.unit, caster)
-		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
+		isPlayer = (caster == 'player' or caster == 'vehicle')
+		isUnit = frame.unit and caster and UnitIsUnit(frame.unit, caster)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (maxDuration == 0 or duration <= maxDuration) and (minDuration == 0 or duration >= minDuration))
 	else
@@ -96,10 +96,10 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'CastByUnit' and isUnit and allowDuration then
+					elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'notCastByUnit' and not isUnit and allowDuration then
+					elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then
