@@ -8,6 +8,7 @@ local select, unpack = select, unpack
 local tinsert, tremove = table.insert, table.remove
 local strlower, strsplit = string.lower, strsplit
 local next, ipairs = next, ipairs
+local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
@@ -49,7 +50,7 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
 
 	if name then
 		noDuration = (not duration or duration == 0)
@@ -67,40 +68,47 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		tbl = {strsplit(",",priority)}
 		if next(tbl) then
 			for i, x in ipairs(tbl) do
-				filters = E.global.unitframe['aurafilters']
-				if filters[tbl[i]] then
-					filterType = filters[tbl[i]].type
-					spellList = filters[tbl[i]].spells
-					spell = spellList and (spellList[spellID] or spellList[name])
+				filterName = tbl[i]
+				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+				if friendCheck ~= false then -- false = initial value, nil = friendCheck doesnt match, otherwise check if its a special filter
+					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
+						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					end -- this is otherwise so set filterName if its a special filter
+					filters = E.global.unitframe['aurafilters']
+					if filters[filterName] then
+						filterType = filters[filterName].type
+						spellList = filters[filterName].spells
+						spell = spellList and (spellList[spellID] or spellList[name])
 
-					if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
+						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
+							filterCheck = true
+							break -- STOP: allowing whistlisted spell
+						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
+							filterCheck = false
+							break -- STOP: blocking blacklisted spell
+						end
+					elseif filterName == 'Personal' and isPlayer and allowDuration then
 						filterCheck = true
-						break -- STOP: allowing whistlisted spell
-					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
+						break -- STOP
+					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'CastByUnit' and isUnit and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'notCastByUnit' and not isUnit and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
-						break -- STOP: blocking blacklisted spell
+						break -- STOP
+					elseif filterName == 'Dispellable' and canDispell and allowDuration then
+						filterCheck = true
+						break -- STOP
 					end
-				elseif tbl[i] == 'Personal' and isPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif tbl[i] == 'nonPersonal' and not isPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif tbl[i] == 'Boss' and isBossDebuff and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif tbl[i] == 'CastedByUnit' and isUnit and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif tbl[i] == 'notCastedByUnit' and not isUnit and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif tbl[i] == 'blockNoDuration' and noDuration then
-					filterCheck = false
-					break -- STOP
-				elseif tbl[i] == 'Dispellable' and canDispell and allowDuration then
-					filterCheck = true
-					break -- STOP
 				end
 			end
 		end

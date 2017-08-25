@@ -10,8 +10,8 @@ G["nameplate"] = {
 		['Boss'] = true,
 		['Personal'] = true,
 		['nonPersonal'] = true,
-		['CastedByUnit'] = true,
-		['notCastedByUnit'] = true,
+		['CastByUnit'] = true,
+		['notCastByUnit'] = true,
 		['blockNoDuration'] = true,
 		['Dispellable'] = true,
 	},
@@ -83,3 +83,15 @@ G["nameplate"] = {
 		},
 	}
 }
+
+G.nameplate.populatedSpecialFilters = {}; --populates from G.nameplate.specialFilters and then G.nameplate.aurafilters
+
+for name, table in pairs(G.unitframe.aurafilters) do --add the default unitframe filters too
+	G.nameplate.populatedSpecialFilters['Friendly:'..name] = true;
+	G.nameplate.populatedSpecialFilters['Enemy:'..name] = true;
+end
+for name, table in pairs(G.nameplate.specialFilters) do
+	G.nameplate.populatedSpecialFilters['Friendly:'..name] = true;
+	G.nameplate.populatedSpecialFilters['Enemy:'..name] = true;
+	G.nameplate.populatedSpecialFilters[name] = true;
+end

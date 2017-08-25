@@ -501,7 +501,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 			for i, x in ipairs(tbl) do
 				filterName = tbl[i]
 				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-				if friendCheck ~= false then -- false = initial value, nil = friendCheck fails, otherwise check if its a special filter
+				if friendCheck ~= false then -- false = initial value, nil = friendCheck doesnt match, otherwise check if its a special filter
 					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
 						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
 					end -- this is otherwise so set filterName if its a special filter
@@ -513,7 +513,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
 							filterCheck = true
-							button.priority = spell.priority
+							button.priority = spell.priority -- this is the only difference from auarbars code
 							break -- STOP: allowing whistlisted spell
 						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
 							filterCheck = false
@@ -528,10 +528,10 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'CastedByUnit' and isUnit and allowDuration then
+					elseif filterName == 'CastByUnit' and isUnit and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'notCastedByUnit' and not isUnit and allowDuration then
+					elseif filterName == 'notCastByUnit' and not isUnit and allowDuration then
 						filterCheck = true
 						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then

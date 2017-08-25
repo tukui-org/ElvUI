@@ -1105,8 +1105,8 @@ G.unitframe.specialFilters = {
 	['Boss'] = true,
 	['Personal'] = true,
 	['nonPersonal'] = true,
-	['CastedByUnit'] = true,
-	['notCastedByUnit'] = true,
+	['CastByUnit'] = true,
+	['notCastByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
 };

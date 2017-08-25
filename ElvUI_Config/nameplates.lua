@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
+local next = next
 local ipairs = ipairs
 local tremove = tremove
 local tinsert = tinsert
@@ -1368,7 +1369,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['specialFilters']
+									local list = E.global.nameplate['populatedSpecialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -1530,7 +1531,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['specialFilters']
+									local list = E.global.nameplate['populatedSpecialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
