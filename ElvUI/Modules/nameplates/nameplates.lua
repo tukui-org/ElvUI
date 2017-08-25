@@ -553,10 +553,10 @@ local function filterAura(names, icons, mustHaveAll, missing)
 		end
 	end
 	return (total == 0) -- no selected auras
-	or ((mustHaveAll and not missing) and total == count)				-- [x] Check for all [ ] Missing: total needs to match count
-	or ((not mustHaveAll and not missing) and count > 0)				-- [ ] Check for all [ ] Missing: count needs to be greater than zero
-	or ((not mustHaveAll and missing) and count == 0)					-- [ ] Check for all [x] Missing: count needs to be zero
-	or ((mustHaveAll and missing) and (total ~= count) and count > 0)	-- [x] Check for all [x] Missing: count needs to be greater than zero and not match total
+	or ((mustHaveAll and not missing) and total == count)	-- [x] Check for all [ ] Missing: total needs to match count
+	or ((not mustHaveAll and not missing) and count > 0)	-- [ ] Check for all [ ] Missing: count needs to be greater than zero
+	or ((not mustHaveAll and missing) and count == 0)		-- [ ] Check for all [x] Missing: count needs to be zero
+	or ((mustHaveAll and missing) and total ~= count)		-- [x] Check for all [x] Missing: count must not match total
 end
 
 local function HidePlayerNamePlate()
