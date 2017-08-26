@@ -1160,6 +1160,10 @@ E.Options.args.filters = {
 				if match(value, "^[%s%p]-$") then
 					return
 				end
+				if match(value, ",") then
+					E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
+					value = gsub(value, ",", "")
+				end
 				if G.unitframe.specialFilters[value] or G.unitframe.populatedSpecialFilters[value] or E.global.unitframe.aurafilters[value] then
 					E:Print(L["Filter already exists!"])
 					return

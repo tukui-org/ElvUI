@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove = table.wipe, tinsert, tremove
-local floor = floor
+local floor, gsub, match = floor, string.gsub, string.match
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -1374,6 +1374,14 @@ function E:DBConversions()
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
+	end
+
+	--Remove commas from old aura filter names, we use these to split the new aura priority string
+	for filter, content in pairs(E.global.unitframe.aurafilters) do
+		if match(filter, ",") then
+			E.global.unitframe.aurafilters[filter] = nil
+			E.global.unitframe.aurafilters[gsub(filter, ",", "")] = content
+		end
 	end
 
 	--Prevent error for testers, remove this before release
