@@ -328,7 +328,6 @@ local function UpdateFilterGroup()
 					name = L["Name"],
 					order = 6,
 					type = "group",
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						addName = {
@@ -374,7 +373,6 @@ local function UpdateFilterGroup()
 					order = 7,
 					type = 'group',
 					name = COMBAT,
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						inCombat = {
@@ -440,7 +438,6 @@ local function UpdateFilterGroup()
 					order = 8,
 					type = 'group',
 					name = LEVEL,
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						enable = {
@@ -525,7 +522,6 @@ local function UpdateFilterGroup()
 					name = L["Buffs"],
 					order = 9,
 					type = "group",
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						mustHaveAll = {
@@ -603,7 +599,6 @@ local function UpdateFilterGroup()
 					name = L["Debuffs"],
 					order = 10,
 					type = "group",
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						mustHaveAll = {
@@ -681,7 +676,6 @@ local function UpdateFilterGroup()
 					name = L["Unit Type"],
 					order = 11,
 					type = "group",
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						enable = {
@@ -783,7 +777,6 @@ local function UpdateFilterGroup()
 					name = L["Reaction Type"],
 					order = 12,
 					type = "group",
-					guiInline = true,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						enable = {
