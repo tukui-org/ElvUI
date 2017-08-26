@@ -4,6 +4,10 @@ local mod = E:GetModule('NamePlates')
 --Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local UnitExists = UnitExists
+local UnitIsConnected = UnitIsConnected
+local UnitIsVisible = UnitIsVisible
+local SetPortraitTexture = SetPortraitTexture
 
 local attachTo = {
 	["TOPLEFT"] = "TOPRIGHT",
@@ -16,15 +20,16 @@ local attachTo = {
 	["BOTTOMRIGHT"] = "BOTTOMLEFT",
 }
 
-function mod:UpdateElement_Portrait(frame)
-	if not (self.db.units[frame.UnitType].portrait and self.db.units[frame.UnitType].portrait.enable) then
+function mod:UpdateElement_Portrait(frame, trigger)
+	if not (self.db.units[frame.UnitType].portrait and (self.db.units[frame.UnitType].portrait.enable or trigger)) then
 		return;
 	end
 
-	
+
 	if(not UnitExists(frame.unit) or not UnitIsConnected(frame.unit) or not UnitIsVisible(frame.unit)) then
 		--frame.Portrait:SetUnit("")
-		frame.Portrait.texture:SetTexture("")
+		--frame.Portrait.texture:SetTexture(nil) --this must be nil, "" will do nothing
+		frame.Portrait:Hide()
 	else
 		--frame.Portrait:SetUnit(frame.unit)
 		frame.Portrait:Show()
@@ -32,12 +37,11 @@ function mod:UpdateElement_Portrait(frame)
 	end
 end
 
-function mod:ConfigureElement_Portrait(frame, trigger)
-	if not (self.db.units[frame.UnitType].portrait and (self.db.units[frame.UnitType].portrait.enable or trigger)) then
+function mod:ConfigureElement_Portrait(frame)
+	if not (self.db.units[frame.UnitType].portrait) then
 		return;
 	end
 
-	frame.Portrait.placed = (self.db.units[frame.UnitType].portrait.enable or trigger)
 	frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
 	frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
 

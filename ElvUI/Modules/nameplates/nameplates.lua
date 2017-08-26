@@ -620,11 +620,8 @@ function mod:FilterStyle(frame, actions)
 	end
 
 	if actions.usePortrait then
-		if not frame.Portrait.placed then
-			self:ConfigureElement_Portrait(frame, true)
-		end
-		frame.Portrait:Show()
-		SetPortraitTexture(frame.Portrait.texture, frame.unit)		
+		frame.PortraitShown = true
+		self:UpdateElement_Portrait(frame, true)
 	end
 end
 
@@ -646,6 +643,11 @@ function mod:UpdateElement_Filters(frame)
 	if frame.BorderChanged then
 		frame.BorderChanged = nil
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+	if frame.PortraitShown then
+		frame.PortraitShown = nil
+		frame.Portrait:Hide() --This could have been forced so hide it
+		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
 	end
 
 	if frame.UnitType == 'PLAYER' then
