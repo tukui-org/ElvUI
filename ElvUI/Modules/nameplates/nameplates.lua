@@ -833,7 +833,6 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
 		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	end
-	mod:UpdateElement_Portrait(frame)
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
