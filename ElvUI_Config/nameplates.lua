@@ -172,7 +172,11 @@ local function UpdateStyleLists()
 	end
 end
 
-local function GetStyleFilterDefaultOptions()
+local function GetStyleFilterDefaultOptions(default)
+	if default and G.nameplate.filters[default] then
+		return E:CopyTable({}, G.nameplate.filters[default])
+	end
+
 	local styleFilterDefaultOptions = {
 		["triggers"] = {
 			["enable"] = true,
@@ -289,7 +293,7 @@ local function UpdateFilterGroup()
 					desc = L["Return filter to its default state."],
 					type = "execute",
 					func = function()
-						E.global.nameplate.filters[selectedNameplateFilter] = (G.nameplate.filters[selectedNameplateFilter] or GetStyleFilterDefaultOptions());
+						E.global.nameplate.filters[selectedNameplateFilter] = GetStyleFilterDefaultOptions(selectedNameplateFilter);
 						UpdateStyleLists();
 						NP:ConfigureAll()
 					end,
