@@ -661,7 +661,7 @@ function mod:UpdateElement_Filters(frame)
 		filter = E.global.nameplate.filters[filterList[filterName][1]];
 		if filter then
 			trigger = filter.triggers
-			failed = false
+			failed = nil
 
 			if not failed and trigger.names and next(trigger.names) then
 				condition = 0
@@ -687,7 +687,7 @@ function mod:UpdateElement_Filters(frame)
 					end
 				end
 				if condition ~= 0 then
-					failed = (condition == 2)
+					failed = (condition == 1)
 				end
 			end
 
@@ -796,7 +796,8 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
-			if not failed then --We got a match, pass to styling
+			--If failed is nil it means the filter is empty so we dont run FilterStyle
+			if failed == false then --The conditions didn't fail so pass to FilterStyle
 				self:FilterStyle(frame, filter.actions);
 			end
 		end
