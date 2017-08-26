@@ -618,6 +618,11 @@ function mod:FilterStyle(frame, actions)
 			self:SetFrameScale(frame, scale)
 		end
 	end
+
+	if actions.usePortrait then
+		frame.Portrait:Show()
+		SetPortraitTexture(frame.Portrait.texture, frame.unit)		
+	end
 end
 
 local filterList = {}

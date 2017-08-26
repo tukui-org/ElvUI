@@ -958,8 +958,20 @@ local function UpdateFilterGroup()
 					end,
 					min=0.35, max = 1.5, step = 0.01,
 				},
+				usePortrait = {
+					order = 0,
+					type = 'toggle',
+					name = L["Use Portrait"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait = value
+						NP:ConfigureAll()
+					end,
+				},				
 				color = {
-					order = 3,
+					order = 4,
 					type = "group",
 					name = L["Color"],
 					guiInline = true,
@@ -1029,7 +1041,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				texture = {
-					order = 4,
+					order = 5,
 					type = "group",
 					name = L["Texture"],
 					guiInline = true,
