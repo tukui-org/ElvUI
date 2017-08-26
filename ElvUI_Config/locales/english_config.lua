@@ -679,6 +679,7 @@ L["Unit Out of Combat"] = true;
 L["Unit Type"] = true;
 L["Use Class Color"] = true;
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
+L["Use Portrait"] = true;
 L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Glow"] = true;

@@ -690,6 +690,7 @@ L["Unit Out of Combat"] = true;
 L["Unit Type"] = true;
 L["Use Class Color"] = "使用职业颜色"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
+L["Use Portrait"] = true;
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "当另一个坦克更有效的坦住时姓名板使用被坦住的颜色"
 L["Use Target Glow"] = "目标外框高亮"
