@@ -15,7 +15,7 @@ Added Portrait option to NamePlates. This was also added as an action in style f
 Fixed an error when entering combat while game is minimized.  
 Fixed scaling of the Leave Vehicle button on the minimap. (Hekili)  
 Fixed Bagbar buttons border size. (Rubgrsch)  
-Fixed error when switching profile while having player unitframe disabled. 
+Fixed error when switching profile while having player unitframe disabled.  
 Fixed issue which caused unitframe tags containing literals to use OnUpdate instead of their assigned events. (Martin)  
 Fixed issue which could break actionbar paging when the code contained the new-line character (\n)  
 
