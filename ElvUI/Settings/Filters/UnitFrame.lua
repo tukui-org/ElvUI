@@ -460,6 +460,8 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[210294] = Defaults(), --Divine Favor
 		[221886] = Defaults(), --Divine Steed
 		[31821] = Defaults(), --Aura Mastery
+		[203538] = Defaults(), --Greater Blessing of Kings
+		[203539] = Defaults(), --Greater Blessing of Wisdom
 	--Priest
 		[81782] = Defaults(), --Power Word: Barrier
 		[47585] = Defaults(), --Dispersion
