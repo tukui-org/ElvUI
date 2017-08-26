@@ -967,7 +967,7 @@ local function UpdateFilterGroup()
 						E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait = value
 						NP:ConfigureAll()
 					end,
-				},				
+				},
 				color = {
 					order = 4,
 					type = "group",
@@ -1308,30 +1308,29 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].portrait[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].portrait[ info[#info] ] = value; NP:ConfigureAll() end,
-				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
-				args = {		
+				args = {
 					header = {
 						order = 0,
 						type = "header",
 						name = L["Portrait"],
-					},		
+					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
 						type = "toggle",
-					},		
+					},
 					width = {
 						order = 2,
 						name = L["Width"],
 						type = "range",
 						min = 5, max = 100, step = 1,
-					},	
+					},
 					height = {
 						order = 3,
 						name = L["Height"],
 						type = "range",
 						min = 5, max = 100, step = 1,
-					},																					
+					},
 				},
 			},
 			buffsGroup = {
