@@ -555,7 +555,7 @@ local function filterAura(names, icons, mustHaveAll, missing)
 	end
 
 	if total == 0 then
-		return false --No auras are checked, just pass false, we dont need to run the filter here.
+		return nil --If no auras are checked just pass nil, we dont need to run the filter here.
 	else
 		return ((mustHaveAll and not missing) and total == count)	-- [x] Check for all [ ] Missing: total needs to match count
 		or ((not mustHaveAll and not missing) and count > 0)		-- [ ] Check for all [ ] Missing: count needs to be greater than zero
@@ -786,20 +786,18 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match according to buff aura conditions
 			if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-				condition = false
-				if filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing) then
-					condition = true
+				condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing)
+				if condition == false then --Condition will be nil if none are selected, only fail if its false
+					failed = true
 				end
-				failed = not condition
 			end
 
 			--Try to match according to debuff aura conditions
 			if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-				condition = false
-				if filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing) then
-					condition = true
+				condition = filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing)
+				if condition == false then --Condition will be nil if none are selected, only fail if its false
+					failed = true
 				end
-				failed = not condition
 			end
 
 			--If failed is nil it means the filter is empty so we dont run FilterStyle
