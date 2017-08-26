@@ -231,6 +231,7 @@ local function GetStyleFilterDefaultOptions()
 				["texture"] = "ElvUI Norm",
 			},
 			["hide"] = false,
+			["usePortrait"] = false,
 			["scale"] = 1.0,
 		},
 	}
