@@ -620,6 +620,9 @@ function mod:FilterStyle(frame, actions)
 	end
 
 	if actions.usePortrait then
+		if not frame.Portrait.placed then
+			self:ConfigureElement_Portrait(frame, true)
+		end
 		frame.Portrait:Show()
 		SetPortraitTexture(frame.Portrait.texture, frame.unit)		
 	end

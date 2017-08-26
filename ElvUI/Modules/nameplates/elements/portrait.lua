@@ -32,11 +32,12 @@ function mod:UpdateElement_Portrait(frame)
 	end
 end
 
-function mod:ConfigureElement_Portrait(frame)
-	if not (self.db.units[frame.UnitType].portrait and self.db.units[frame.UnitType].portrait.enable) then
+function mod:ConfigureElement_Portrait(frame, trigger)
+	if not (self.db.units[frame.UnitType].portrait and (self.db.units[frame.UnitType].portrait.enable or trigger)) then
 		return;
 	end
 
+	frame.Portrait.placed = (self.db.units[frame.UnitType].portrait.enable or trigger)
 	frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
 	frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
 
