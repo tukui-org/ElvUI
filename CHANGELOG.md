@@ -8,6 +8,7 @@ Added mouseover highlight to the NamePlates.
 Added movement speed datatext. (Rubgrsch)  
 Added a "Fluid Position" option to Smart Aura Position settings. This will use the least amount of spacing needed. (Abeline)  
 Added a "yOffset" option to Aura Bars on Player, Target and Focus unitframe. (Abeline)  
+Added Portrait option to NamePlates. This was also added as an action in style filters.  
 
 
 **Bug Fixes:**  
