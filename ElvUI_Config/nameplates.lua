@@ -1292,8 +1292,40 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
+			portraitGroup = {
+				order = 5,
+				name = L["Portrait"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].portrait[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].portrait[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
+				args = {		
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Portrait"],
+					},		
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},		
+					width = {
+						order = 2,
+						name = L["Width"],
+						type = "range",
+						min = 5, max = 100, step = 1,
+					},	
+					height = {
+						order = 3,
+						name = L["Height"],
+						type = "range",
+						min = 5, max = 100, step = 1,
+					},																					
+				},
+			},
 			buffsGroup = {
-				order = 4,
+				order = 5,
 				name = L["Buffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
@@ -1455,7 +1487,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			debuffsGroup = {
-				order = 5,
+				order = 6,
 				name = L["Debuffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
@@ -1617,7 +1649,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			levelGroup = {
-				order = 6,
+				order = 7,
 				name = LEVEL,
 				type = "group",
 				args = {
@@ -1636,7 +1668,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			nameGroup = {
-				order = 7,
+				order = 8,
 				name = L["Name"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].name[ info[#info] ] end,

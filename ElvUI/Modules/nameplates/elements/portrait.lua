@@ -5,6 +5,17 @@ local mod = E:GetModule('NamePlates')
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
+local attachTo = {
+	["TOPLEFT"] = "TOPRIGHT",
+	["TOP"] = "BOTTOM",
+	["TOPRIGHT"] = "TOPLEFT",
+	["LEFT"] = "RIGHT",
+	["RIGHT"] = "LEFT",
+	["BOTTOM"] = "TOP",
+	["BOTTOMLEFT"] = "BOTTOMRIGHT",
+	["BOTTOMRIGHT"] = "BOTTOMLEFT",
+}
+
 function mod:UpdateElement_Portrait(frame)
 	if not (self.db.units[frame.UnitType].portrait and self.db.units[frame.UnitType].portrait.enable) then
 		return;
@@ -13,10 +24,11 @@ function mod:UpdateElement_Portrait(frame)
 	
 	if(not UnitExists(frame.unit) or not UnitIsConnected(frame.unit) or not UnitIsVisible(frame.unit)) then
 		--frame.Portrait:SetUnit("")
-		frame.Portrait:SetTexture("")
+		frame.Portrait.texture:SetTexture("")
 	else
 		--frame.Portrait:SetUnit(frame.unit)
-		SetPortraitTexture(frame.Portrait, frame.unit)
+		frame.Portrait:Show()
+		SetPortraitTexture(frame.Portrait.texture, frame.unit)
 	end
 end
 
@@ -25,22 +37,28 @@ function mod:ConfigureElement_Portrait(frame)
 		return;
 	end
 
+	frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
+	frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
+
 	frame.Portrait:ClearAllPoints()
-	frame.Portrait:Point("LEFT", frame.TopLevelFrame or frame, "RIGHT", 5, 0)
+	if(frame.PowerBar:IsShown()) then
+		frame.Portrait:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -6, 2)
+	elseif(frame.HealthBar:IsShown()) then
+		frame.Portrait:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
+	else
+		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
+	end
+
 end
 
 function mod:ConstructElement_Portrait(frame)
-	--[[local model = CreateFrame("PlayerModel", nil, frame)
-	model:Size(75, 75)
-	model:Point("BOTTOM", frame, "TOP", 0, 0)
-	model:SetFrameStrata("LOW") 
+	local frame = CreateFrame("Frame", nil, frame)
+	self:StyleFrame(frame)
+	frame.texture = frame:CreateTexture(nil, "OVERLAY")
+	frame.texture:SetAllPoints()
+	frame.texture:SetTexCoord(.18, .82, .18, .82)
 
+	frame:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -E.Border, 0)
 
-	return model]]
-
-	local texture = frame:CreateTexture(nil, "OVERLAY")
-	texture:Size(40, 40)
-	texture:Point("CENTER")
-	texture:SetTexCoord(.18, .82, .18, .82)
-	return texture
+	return frame
 end

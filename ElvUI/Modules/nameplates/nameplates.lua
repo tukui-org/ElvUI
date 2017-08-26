@@ -390,9 +390,9 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		end
 	end
 
-	self:ConfigureElement_Portrait(frame.UnitFrame)
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
+	self:ConfigureElement_Portrait(frame.UnitFrame)
 	self:ConfigureElement_NPCTitle(frame.UnitFrame)
 	self:ConfigureElement_Elite(frame.UnitFrame)
 	self:ConfigureElement_Detection(frame.UnitFrame)
@@ -427,6 +427,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame.Glow:Hide()
 	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b, frame.UnitFrame.HealthBar.a = nil, nil, nil,nil
 	frame.UnitFrame.HealthBar:Hide()
+	frame.UnitFrame.Portrait:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
 	frame.UnitFrame.AbsorbBar:Hide()
@@ -826,6 +827,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
 		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
 	end
+	mod:UpdateElement_Portrait(frame)
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
