@@ -595,7 +595,7 @@ function mod:FilterStyle(frame, actions)
 		end
 		frame:Show()
 	end
-	if self.db.units[frame.UnitType].healthbar.enable then
+	if self.db.units[frame.UnitType].healthbar.enable or frame.HealthBar:IsShown() then
 		if actions.color and actions.color.health then
 			frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a;
