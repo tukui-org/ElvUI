@@ -527,7 +527,7 @@ L["Y-Offset"] = "Y-Versatz"
 
 --Misc
 L["Enable"] = "Eingeschaltet"
-L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = true;
+L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = "Filtern ist es nicht erlaubt Kommas im Namen zu haben. Entferne Kommas vom Filter Namen."
 L["Install"] = "Installation"
 L["Run the installation process."] = "Startet den Installationsprozess."
 L["Toggle Anchors"] = "Ankerpunkte umschalten"
@@ -559,7 +559,7 @@ L["Cast Time Format"] = "Zauber Zeitformat"
 L["Channel Time Format"] = "Kanalisierung Zeitformat"
 L["Clamp nameplates to the top of the screen when outside of view."] = "Hält die Namensplaketten am oberen Bildschirmrand, wenn nicht in Sicht."
 L["Clamp Nameplates"] = "Namensplaketten halten"
-L["Clear Filter"] = true;
+L["Clear Filter"] = "Filter leeren"
 L["Clickable Height"] = "Klickbare Höhe"
 L["Clickable Width"] = "Klickbare Breite"
 L["Color Tanked"] = "Färbe angetankt"
