@@ -16,6 +16,70 @@ G["nameplate"] = {
 		['Dispellable'] = true,
 	},
 	['filters'] = {
+		['Boss'] = {
+			['triggers'] = {
+				['priority'] = 1,
+				['enable'] = true,
+				['isTarget'] = false,
+				['notTarget'] = false,
+				['level'] = true,
+				['curlevel'] = -1,
+				['maxlevel'] = 0,
+				['minlevel'] = 0,
+				['names'] = {},
+				['nameplateType'] = {
+					['enable'] = false,
+					['friendlyPlayer'] = false,
+					['friendlyNPC'] = false,
+					['healer'] = false,
+					['enemyPlayer'] = false,
+					['enemyNPC'] = true,
+					['neutral'] = false
+				},
+				['reactionType'] = {
+					['enabled'] = false,
+					['reputation'] = false,
+					['hated'] = false,
+					['hostile'] = false,
+					['unfriendly'] = false,
+					['neutral'] = false,
+					['friendly'] = false,
+					['honored'] = false,
+					['revered'] = false,
+					['exalted'] = false
+				},
+				['buffs'] = {
+					['mustHaveAll'] = false,
+					['missing'] = false,
+					['names'] = {
+					},
+				},
+				['debuffs'] = {
+					['mustHaveAll'] = false,
+					['missing'] = false,
+					['names'] = {
+					},
+				},
+				['inCombat'] = false, -- check for incombat to run
+				['outOfCombat'] = false, -- check for out of combat to run
+				['inCombatUnit'] = false, -- check if a unit is affecting combat
+				['outOfCombatUnit'] = false, -- check if a unit is not affecting combat
+			},
+			['actions'] = {
+				['color'] = {
+					['health'] = false,
+					['healthColor'] = {r=1,g=1,b=1,a=1},
+					['borderColor'] = {r=1,g=1,b=1,a=1}
+				},
+				['texture'] = {
+					['enable'] = false,
+					['texture'] = "ElvUI Norm",
+				},
+				['hide'] = false,
+				['usePortrait'] = true,
+				['scale'] = 1.15,
+			},
+		},		
 		['TestFilter'] = {
 			['triggers'] = {
 				['priority'] = 1,
@@ -78,6 +142,7 @@ G["nameplate"] = {
 					['texture'] = "ElvUI Norm",
 				},
 				['hide'] = true,
+				['usePortrait'] = false,
 				['scale'] = 1.0,
 			},
 		},
