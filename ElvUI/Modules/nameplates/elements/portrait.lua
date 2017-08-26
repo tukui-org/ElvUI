@@ -64,6 +64,7 @@ function mod:ConstructElement_Portrait(frame)
 	frame.texture:SetTexCoord(.18, .82, .18, .82)
 
 	frame:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -E.Border, 0)
+	frame:Hide()
 
 	return frame
 end

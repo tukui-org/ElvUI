@@ -1302,39 +1302,8 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
-			portraitGroup = {
-				order = 5,
-				name = L["Portrait"],
-				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].portrait[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].portrait[ info[#info] ] = value; NP:ConfigureAll() end,
-				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Portrait"],
-					},
-					enable = {
-						order = 1,
-						name = L["Enable"],
-						type = "toggle",
-					},
-					width = {
-						order = 2,
-						name = L["Width"],
-						type = "range",
-						min = 5, max = 100, step = 1,
-					},
-					height = {
-						order = 3,
-						name = L["Height"],
-						type = "range",
-						min = 5, max = 100, step = 1,
-					},
-				},
-			},
 			buffsGroup = {
-				order = 5,
+				order = 4,
 				name = L["Buffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
@@ -1496,7 +1465,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			debuffsGroup = {
-				order = 6,
+				order = 5,
 				name = L["Debuffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
@@ -1654,6 +1623,37 @@ local function GetUnitSettings(unit, name)
 								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
 							},
 						},
+					},
+				},
+			},
+			portraitGroup = {
+				order = 6,
+				name = L["Portrait"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].portrait[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].portrait[ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Portrait"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},
+					width = {
+						order = 2,
+						name = L["Width"],
+						type = "range",
+						min = 5, max = 100, step = 1,
+					},
+					height = {
+						order = 3,
+						name = L["Height"],
+						type = "range",
+						min = 5, max = 100, step = 1,
 					},
 				},
 			},
