@@ -787,16 +787,16 @@ function mod:UpdateElement_Filters(frame)
 			--Try to match according to buff aura conditions
 			if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 				condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing)
-				if condition == false then --Condition will be nil if none are selected, only fail if its false
-					failed = true
+				if condition ~= nil then --Condition will be nil if none are selected
+					failed = not condition
 				end
 			end
 
 			--Try to match according to debuff aura conditions
 			if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 				condition = filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing)
-				if condition == false then --Condition will be nil if none are selected, only fail if its false
-					failed = true
+				if condition ~= nil then --Condition will be nil if none are selected
+					failed = not condition
 				end
 			end
 
