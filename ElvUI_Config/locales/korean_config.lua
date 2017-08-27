@@ -759,6 +759,7 @@ L["When enabled the nameplate will stay visible in a locked position."] = true;
 L["You can't remove a default name from the filter, disabling the name."] = true;
 
 --Profiles Export/Import
+L["Aura Filters"] = true;
 L["Choose Export Format"] = true;
 L["Choose What To Export"] = true;
 L["Decode Text"] = true;
@@ -767,7 +768,6 @@ L["Error exporting profile!"] = true;
 L["Export Now"] = true;
 L["Export Profile"] = true;
 L["Exported"] = true;
-L["Aura Filters"] = true;
 L["Filters (All)"] = true;
 L["Filters (NamePlates)"] = true;
 L["Filters (UnitFrames)"] = true;
@@ -775,6 +775,7 @@ L["Global (Account Settings)"] = true;
 L["Import Now"] = true;
 L["Import Profile"] = true;
 L["Importing"] = true;
+L["NamePlate Style Filters"] = true;
 L["Plugin"] = true;
 L["Private (Character Settings)"] = true;
 L["Profile imported successfully!"] = true;

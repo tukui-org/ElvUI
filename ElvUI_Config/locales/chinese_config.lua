@@ -711,6 +711,7 @@ L["When enabled the nameplate will stay visible in a locked position."] = "启�
 L["You can't remove a default name from the filter, disabling the name."] = true;
 
 --Profiles Export/Import
+L["Aura Filters"] = true;
 L["Choose Export Format"] = "选择导出格式"
 L["Choose What To Export"] = "选择导出内容"
 L["Decode Text"] = "解码文字"
@@ -720,13 +721,13 @@ L["Export Now"] = "现在导出"
 L["Export Profile"] = "导出配置文件"
 L["Exported"] = "已导出"
 L["Filters (All)"] = "过滤器(全部)"
-L["Aura Filters"] = true;
 L["Filters (NamePlates)"] = "过滤器(姓名板)"
 L["Filters (UnitFrames)"] = "过滤器(框架)"
 L["Global (Account Settings)"] = "全局(账号设置)"
 L["Import Now"] = "现在导入"
 L["Import Profile"] = "导入配置文件"
 L["Importing"] = "正在导入"
+L["NamePlate Style Filters"] = true;
 L["Plugin"] = "插件"
 L["Private (Character Settings)"] = "个人(角色配置)"
 L["Profile imported successfully!"] = "配置文件导入成功"

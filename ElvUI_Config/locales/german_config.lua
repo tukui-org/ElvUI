@@ -712,6 +712,7 @@ L["When enabled the nameplate will stay visible in a locked position."] = "Wenn 
 L["You can't remove a default name from the filter, disabling the name."] = "Du kannst nicht einen Standard Namen vom Filter entfernen, deaktiviere den Namen."
 
 --Profiles Export/Import
+L["Aura Filters"] = "Auren Filter"
 L["Choose Export Format"] = "Wähle Export Format"
 L["Choose What To Export"] = "Wähle aus, was exportiert werden soll"
 L["Decode Text"] = "Entschlüsselter Text"
@@ -720,7 +721,6 @@ L["Error exporting profile!"] = "Fehler beim Exportieren des Profils!"
 L["Export Now"] = "Jetzt exportieren"
 L["Export Profile"] = "Exportiere Profil"
 L["Exported"] = "Exportiert"
-L["Aura Filters"] = "Auren Filter"
 L["Filters (All)"] = "Filter (Alle)"
 L["Filters (NamePlates)"] = "Filter (Namensplaketten)"
 L["Filters (UnitFrames)"] = "Filter (Einheitenfenster)"
@@ -728,6 +728,7 @@ L["Global (Account Settings)"] = "Globale (Account Einstellungen)"
 L["Import Now"] = "Jetzt importieren"
 L["Import Profile"] = "Importiere Profil"
 L["Importing"] = "Importiere"
+L["NamePlate Style Filters"] = true;
 L["Plugin"] = true; --no need to translate
 L["Private (Character Settings)"] = "Private (Charakter Einstellungen)"
 L["Profile imported successfully!"] = "Profil erfolgreich importiert!"

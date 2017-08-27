@@ -280,6 +280,13 @@ local function GetProfileData(profileType)
 		profileData["unitframe"]["buffwatch"] = {}
 		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
+	elseif profileType == "styleFilters" then
+		profileKey = "styleFilters"
+
+		profileData["nameplate"] = {}
+		profileData["nameplate"]["filters"] = {}
+		profileData["nameplate"]["filters"] = E:CopyTable(profileData["nameplate"]["filters"], ElvDB.global.nameplate.filters)
+		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 
 	return profileKey, profileData
@@ -431,6 +438,8 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 
 	elseif profileType == "filters" then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
+	elseif profileType == "styleFilters" then
+		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
 	end
 
 	--Update all ElvUI modules

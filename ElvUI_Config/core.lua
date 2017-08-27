@@ -183,12 +183,14 @@ local profileTypeItems = {
 	["private"] = L["Private (Character Settings)"],
 	["global"] = L["Global (Account Settings)"],
 	["filters"] = L["Aura Filters"],
+	["styleFilters"] = L["NamePlate Style Filters"],
 }
 local profileTypeListOrder = {
 	"profile",
 	"private",
 	"global",
 	"filters",
+	"styleFilters",
 }
 local exportTypeItems = {
 	["text"] = L["Text"],

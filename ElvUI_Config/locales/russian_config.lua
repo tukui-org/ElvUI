@@ -705,6 +705,7 @@ L["When enabled the nameplate will stay visible in a locked position."] = "Ес�
 L["You can't remove a default name from the filter, disabling the name."] = "Вы не можете удалить имя по умолчанию из фильтра, отключаю имя."
 
 --Profiles Export/Import
+L["Aura Filters"] = "Фильтры аур"
 L["Choose Export Format"] = "Выберите формат экспорта"
 L["Choose What To Export"] = "Выберите что экспортировать"
 L["Decode Text"] = "Декодировать"
@@ -713,7 +714,6 @@ L["Error exporting profile!"] = "Ошибка при экспорте профи
 L["Export Now"] = "Экспортировать"
 L["Export Profile"] = "Экспорт профиля"
 L["Exported"] = "Экспортировано"
-L["Aura Filters"] = "Фильтры аур"
 L["Filters (All)"] = "Фильтры (Все)"
 L["Filters (NamePlates)"] = "Фильтры (Индикаторы здоровья)"
 L["Filters (UnitFrames)"] = "Фильтры (Рамки юнитов)"
@@ -721,6 +721,7 @@ L["Global (Account Settings)"] = "Глобальные (настройки ак�
 L["Import Now"] = "Импортировать"
 L["Import Profile"] = "Импорт профиля"
 L["Importing"] = "Импортирую"
+L["NamePlate Style Filters"] = true;
 L["Plugin"] = "Плагин"
 L["Private (Character Settings)"] = "Private (Настройки персонажа)"
 L["Profile imported successfully!"] = "Профиль успешно импортирован!"
