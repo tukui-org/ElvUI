@@ -324,6 +324,7 @@ local function UpdateFilterGroup()
 				},
 				priority = {
 					name = L["Filter Priority"],
+					desc = L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."],
 					order = 1,
 					type = "range",
 					min = 1, max = 100, step = 1,
@@ -419,13 +420,14 @@ local function UpdateFilterGroup()
 				casting = {
 					order = 7,
 					type = 'group',
-					name = L['Casting'],
+					name = L["Casting"],
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
 						interruptible = {
 							type = 'toggle',
 							order = 1,
 							name = L["Interruptible"],
+							desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."],
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.interruptible
 							end,
@@ -467,7 +469,12 @@ local function UpdateFilterGroup()
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
-						}
+						},
+						description = {
+							order = 6,
+							type = "descriptiption",
+							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."],
+						},
 					}
 				},
 				combat = {
@@ -562,6 +569,7 @@ local function UpdateFilterGroup()
 							order = 3,
 							type = 'range',
 							name = L["Under Health Threshold"],
+							desc = L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0, max = 1, step = 0.01,
 							isPercent = true,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold end,
@@ -577,6 +585,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = 'range',
 							name = L["Over Health Threshold"],
+							desc = L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0, max = 1, step = 0.01,
 							isPercent = true,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold end,
