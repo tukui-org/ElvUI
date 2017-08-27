@@ -706,32 +706,34 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			--Try to match by casting spell name or spell id
-			if not failed and (trigger.casting and trigger.casting.spells and castbarShown) and next(trigger.casting.spells) then
-				spell = frame.CastBar.Name:GetText()
-				if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
-					condition = 0
-					for name, value in pairs(trigger.casting.spells) do
-						if value == true then --only check spell that are checked
-							condition = 1
-							if tonumber(name) then
-								name = GetSpellInfo(name)
-							end
-							if name and name == spell then
-								condition = 2
-								break
+			if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
+				condition = 0
+				for name, value in pairs(trigger.casting.spells) do
+					if value == true then --only check spell that are checked
+						condition = 1
+						if castbarShown then
+							spell = frame.CastBar.Name:GetText() --Make sure we can check spell name
+							if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
+								if tonumber(name) then
+									name = GetSpellInfo(name)
+								end
+								if name and name == spell then
+									condition = 2
+									break
+								end
 							end
 						end
 					end
-					if condition ~= 0 then
-						failed = (condition == 1)
-					end
+				end
+				if condition ~= 0 then --If we cant check spell name, we ignore this trigger when the castbar is shown
+					failed = (condition == 1)
 				end
 			end
 
 			--Try to match by casting interruptible
-			if not failed and (trigger.casting and trigger.casting.interruptible and castbarShown) then
+			if not failed and (trigger.casting and trigger.casting.interruptible) then
 				condition = false
-				if frame.CastBar.canInterrupt then
+				if castbarShown and frame.CastBar.canInterrupt then
 					condition = true
 				end
 				failed = not condition
