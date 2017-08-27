@@ -630,6 +630,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Gesundheit höher sein als dieser Wert um den Filter zu aktivieren. Setze auf 0 um zu deaktiveren."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Gesundheit niedriger sein als dieser Wert um den Filter zu aktivieren. Setze auf 0 um zu deaktiveren."
 L["In Combat"] = "Im Kampf"
+L["Interruptible"] = "Unterbrechbar"
 L["Is Targeted"] = "Ist anvisiert"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
 L["Load Distance"] = "Anzeige Distanz"
