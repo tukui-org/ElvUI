@@ -270,8 +270,11 @@ local function GetStyleFilterDefaultOptions(default)
 		["actions"] = {
 			["color"] = {
 				["health"] = false,
+				["border"] = false,
+				["name"] = false,
 				["healthColor"] = {r=1,g=1,b=1,a=1},
-				["borderColor"] = {r=1,g=1,b=1,a=1}
+				["borderColor"] = {r=1,g=1,b=1,a=1},
+				["nameColor"] = {r=1,g=1,b=1,a=1}
 			},
 			["texture"] = {
 				["enable"] = false,
@@ -1108,6 +1111,39 @@ local function UpdateFilterGroup()
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+						},
+						spacer2 = {
+							order = 6,
+							type = "description",
+							name = " ",
+						},
+						name = {
+							name = L["Name"],
+							order = 7,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.color.name
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.color.name = value
+								NP:ConfigureAll()
+							end,
+						},
+						nameColor = {
+							name = L["Name Color"],
+							type = 'color',
+							order = 8,
+							hasAlpha = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.name end,
+							get = function(info)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
+								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end,

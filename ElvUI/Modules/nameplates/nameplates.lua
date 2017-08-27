@@ -573,7 +573,10 @@ local function HidePlayerNamePlate()
 end
 
 local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
-function mod:FilterStyle(frame, actions)
+function mod:FilterStyle(frame, actions, castbarTriggered)
+	if castbarTriggered then
+		frame.castbarTriggered = castbarTriggered
+	end
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
 			filterVisibility = 0
@@ -598,7 +601,7 @@ function mod:FilterStyle(frame, actions)
 		end
 		frame:Show()
 	end
-	if self.db.units[frame.UnitType].healthbar.enable or frame.HealthBar:IsShown() then
+	if frame.HealthBar:IsShown() then
 		if actions.color and actions.color.health then
 			frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a;
@@ -621,6 +624,13 @@ function mod:FilterStyle(frame, actions)
 		end
 	end
 
+	if actions.color and actions.color.name then
+		local nameText = frame.Name:GetText()
+		if nameText and nameText ~= "" then
+			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
+		end
+	end
+
 	if actions.usePortrait then
 		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
@@ -637,6 +647,7 @@ end
 function mod:UpdateElement_Filters(frame)
 	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction, spell;
 	local castbarShown = frame.CastBar:IsShown()
+	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
@@ -727,6 +738,7 @@ function mod:UpdateElement_Filters(frame)
 				end
 				if condition ~= 0 then --If we cant check spell name, we ignore this trigger when the castbar is shown
 					failed = (condition == 1)
+					castbarTriggered = (condition == 2)
 				end
 			end
 
@@ -735,6 +747,7 @@ function mod:UpdateElement_Filters(frame)
 				condition = false
 				if castbarShown and frame.CastBar.canInterrupt then
 					condition = true
+					castbarTriggered = true
 				end
 				failed = not condition
 			end
@@ -844,7 +857,7 @@ function mod:UpdateElement_Filters(frame)
 
 			--If failed is nil it means the filter is empty so we dont run FilterStyle
 			if failed == false then --The conditions didn't fail so pass to FilterStyle
-				self:FilterStyle(frame, filter.actions);
+				self:FilterStyle(frame, filter.actions, castbarTriggered);
 			end
 		end
 	end
@@ -900,9 +913,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	frame.UnitFrame.PowerBar = self:ConstructElement_PowerBar(frame.UnitFrame)
-	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
 	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
 	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
+	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
 	frame.UnitFrame.NPCTitle = self:ConstructElement_NPCTitle(frame.UnitFrame)
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
 	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, "LEFT")

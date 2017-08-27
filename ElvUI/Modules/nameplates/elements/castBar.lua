@@ -326,7 +326,8 @@ function mod:ConstructElement_CastBar(parent)
 	frame:Hide()
 
 	hooksecurefunc(frame, "Hide", function(self)
-		if not parent.unit then return end
+		if not (parent.unit and parent.castbarTriggered) then return end
+		parent.castbarTriggered = nil
 		mod:UpdateElement_All(parent, parent.unit, true)
 		if parent.isTarget and mod.db.useTargetScale then
 			mod:SetFrameScale(parent, mod.db.targetScale)

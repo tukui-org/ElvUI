@@ -72,8 +72,11 @@ G["nameplate"] = {
 			['actions'] = {
 				['color'] = {
 					['health'] = false,
+					['border'] = false,
+					['name'] = false,
 					['healthColor'] = {r=1,g=1,b=1,a=1},
-					['borderColor'] = {r=1,g=1,b=1,a=1}
+					['borderColor'] = {r=1,g=1,b=1,a=1},
+					['nameColor'] = {r=1,g=1,b=1,a=1}
 				},
 				['texture'] = {
 					['enable'] = false,
@@ -142,8 +145,11 @@ G["nameplate"] = {
 			['actions'] = {
 				['color'] = {
 					['health'] = true,
+					['border'] = true,
+					['name'] = false,
 					['healthColor'] = {r=1,g=1,b=1,a=1},
-					['borderColor'] = {r=1,g=1,b=1,a=1}
+					['borderColor'] = {r=1,g=1,b=1,a=1},
+					['nameColor'] = {r=1,g=1,b=1,a=1}
 				},
 				['texture'] = {
 					['enable'] = false,

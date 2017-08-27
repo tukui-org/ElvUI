@@ -1392,6 +1392,10 @@ function E:DBConversions()
 				["spells"] = {},
 			}
 		end
+		if not content.actions.color.nameColor then
+			E.global.nameplate.filters[filter].actions.color.name = false
+			E.global.nameplate.filters[filter].actions.color.nameColor = {r=1,g=1,b=1,a=1}
+		end
 		if content.actions.color.color then
 			E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
 			E.global.nameplate.filters[filter].actions.color.color = nil
