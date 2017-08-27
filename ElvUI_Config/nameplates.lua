@@ -224,7 +224,7 @@ local function GetStyleFilterDefaultOptions(default)
 			["notTarget"] = false,
 			["level"] = false,
 			["casting"] = {
-				["enable"] = false,
+				["interruptible"] = false,
 				["spells"] = {},
 			},
 			["curlevel"] = 0,
