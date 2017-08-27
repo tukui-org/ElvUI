@@ -248,7 +248,7 @@ function mod:SetTargetFrame(frame)
 			frame.Name:ClearAllPoints()
 			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
-			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = nil, nil, nil, nil
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = nil, nil, nil
 			frame.CastBar:Hide()
 			self:ConfigureElement_HealthBar(frame)
 			self:ConfigureElement_PowerBar(frame)
@@ -426,10 +426,13 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	self:HideAuraIcons(frame.UnitFrame.Buffs)
 	self:HideAuraIcons(frame.UnitFrame.Debuffs)
 	frame.UnitFrame:UnregisterAllEvents()
+	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b = nil, nil, nil
+	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()
-	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b, frame.UnitFrame.HealthBar.a = nil, nil, nil,nil
-	frame.UnitFrame.HealthBar:Hide()
+	frame.UnitFrame.Name.r, frame.UnitFrame.Name.g, frame.UnitFrame.Name.b = nil, nil, nil
+	frame.UnitFrame.Name:ClearAllPoints()
+	frame.UnitFrame.Name:SetText("")
 	frame.UnitFrame.Portrait:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
@@ -438,8 +441,6 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame.PersonalHealPrediction:Hide()
 	frame.UnitFrame.Level:ClearAllPoints()
 	frame.UnitFrame.Level:SetText("")
-	frame.UnitFrame.Name:ClearAllPoints()
-	frame.UnitFrame.Name:SetText("")
 	frame.UnitFrame.NPCTitle:ClearAllPoints()
 	frame.UnitFrame.NPCTitle:SetText("")
 	frame.UnitFrame.Elite:Hide()
@@ -572,11 +573,27 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
+local function backdropColorLock(frame, backdrop, r, g, b, a)
+	backdrop:SetBackdropBorderColor(r, g, b, a)
+	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
+	if not backdrop.backdropColorLocked then
+		backdrop.backdropColorLocked = true
+		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(self, r, g, b, a)
+			if self:GetParent():GetParent().BorderChanged then --only call this for ones we lock
+				if r ~= self.r or g ~= self.g or b ~= self.b or a ~= self.a then
+					self:SetBackdropBorderColor(self.r, self.g, self.b, self.a)
+				end
+			end
+		end)
+	end
+end
+
 local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions, castbarTriggered)
 	if castbarTriggered then
 		frame.castbarTriggered = castbarTriggered
 	end
+
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
 			filterVisibility = 0
@@ -601,14 +618,16 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		end
 		frame:Show()
 	end
+
 	if frame.HealthBar:IsShown() then
 		if actions.color and actions.color.health then
+			frame.HealthColorChanged = true
 			frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
-			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b, frame.HealthBar.a = actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a;
 		end
 		if actions.color and actions.color.border and frame.HealthBar.backdrop then
 			frame.BorderChanged = true
-			frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a);
+			--Lets lock this to the values we want (needed for when the media border color changes)
+			backdropColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 		if actions.texture and actions.texture.enable then
 			frame.TextureChanged = true
@@ -616,6 +635,7 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		end
 		if actions.scale and actions.scale ~= 1 then
+			frame.ScaleChanged = true
 			local scale = actions.scale
 			if frame.isTarget and self.db.useTargetScale then
 				scale = scale * self.db.targetScale
@@ -625,6 +645,7 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 	end
 
 	if actions.color and actions.color.name then
+		frame.NameColorChanged = true
 		local nameText = frame.Name:GetText()
 		if nameText and nameText ~= "" then
 			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
@@ -645,7 +666,8 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction, spell;
+	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction, spell, health, maxHealth, percHealth;
+	local underHealthThreshold, overHealthThreshold;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 
@@ -654,9 +676,27 @@ function mod:UpdateElement_Filters(frame)
 		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	end
+	if frame.HealthColorChanged then
+		frame.HealthColorChanged = nil
+		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
+	end
 	if frame.BorderChanged then
 		frame.BorderChanged = nil
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+	if frame.ScaleChanged then
+		frame.ScaleChanged = nil
+		if self.db.useTargetScale then
+			if frame.isTarget then
+				self:SetFrameScale(frame, self.db.targetScale)
+			else
+				self:SetFrameScale(frame, frame.ThreatScale or 1)
+			end
+		end
+	end
+	if frame.NameColorChanged then
+		frame.NameColorChanged = nil
+		frame.Name:SetTextColor(frame.Name.r, frame.Name.g, frame.Name.b)
 	end
 	if frame.PortraitShown then
 		frame.PortraitShown = nil
@@ -752,6 +792,22 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
+			--Try to match by player health conditions
+			if trigger.healthThreshold then
+				underHealthThreshold = (trigger.underHealthThreshold and trigger.underHealthThreshold ~= 0)
+				overHealthThreshold = (trigger.overHealthThreshold and trigger.overHealthThreshold ~= 0)
+			end
+			if not failed and (underHealthThreshold or overHealthThreshold) then
+				condition = false
+				health, maxHealth = UnitHealth(frame.displayedUnit), UnitHealthMax(frame.displayedUnit)
+				percHealth = (maxHealth > 0 and health/maxHealth) or 0
+				if (underHealthThreshold and trigger.underHealthThreshold > percHealth)
+				or (overHealthThreshold and trigger.overHealthThreshold < percHealth) then
+					condition = true
+				end
+				failed = not condition
+			end
+
 			--Try to match by player combat conditions
 			if not failed and (trigger.inCombat or trigger.outOfCombat) then
 				condition = false
@@ -782,8 +838,10 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			--Try to match by level conditions
-			level = UnitLevel(frame.displayedUnit)
-			if not failed and trigger.level and level then
+			if trigger.level then
+				level = UnitLevel(frame.displayedUnit)
+			end
+			if not failed and level then
 				condition = false
 				if trigger.mylevel then --My Level is set, ignore the sliders
 					if frame.displayedUnit ~= "player" then
@@ -937,6 +995,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Health(self)
 		mod:UpdateElement_HealPrediction(self)
 		mod:UpdateElement_Glow(self)
+		mod:UpdateElement_Filters(self)
 		if unit == "vehicle" or unit == "player" then
 			mod:UpdateVisibility()
 		end
@@ -946,6 +1005,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_MaxHealth(self)
 		mod:UpdateElement_HealPrediction(self)
 		mod:UpdateElement_Glow(self)
+		mod:UpdateElement_Filters(self)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_NPCTitle(self)

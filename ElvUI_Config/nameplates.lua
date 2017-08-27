@@ -230,6 +230,9 @@ local function GetStyleFilterDefaultOptions(default)
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
+			["healthThreshold"] = false,
+			["underHealthThreshold"] = 0,
+			["overHealthThreshold"] = 0,
 			["names"] = {},
 			["nameplateType"] = {
 				["enable"] = false,
@@ -532,8 +535,63 @@ local function UpdateFilterGroup()
 						}
 					},
 				},
-				levels = {
+				health = {
 					order = 9,
+					type = 'group',
+					name = L["Health Threshold"],
+					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 2,
+							type = 'description',
+							name = " ",
+						},
+						underHealthThreshold = {
+							order = 3,
+							type = 'range',
+							name = L["Under Health Threshold"],
+							min = 0, max = 1, step = 0.01,
+							isPercent = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.underHealthThreshold or 0
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.underHealthThreshold = value
+								NP:ConfigureAll()
+							end,
+						},
+						overHealthThreshold = {
+							order = 4,
+							type = 'range',
+							name = L["Over Health Threshold"],
+							min = 0, max = 1, step = 0.01,
+							isPercent = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.overHealthThreshold or 0
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.overHealthThreshold = value
+								NP:ConfigureAll()
+							end,
+						},
+					},
+				},
+				levels = {
+					order = 10,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -618,7 +676,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 10,
+					order = 11,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -688,7 +746,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 11,
+					order = 12,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -758,7 +816,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 12,
+					order = 13,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -859,7 +917,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 13,
+					order = 14,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {

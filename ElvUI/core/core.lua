@@ -1392,6 +1392,11 @@ function E:DBConversions()
 				["spells"] = {},
 			}
 		end
+		if content.triggers.healthThreshold == nil then
+			E.global.nameplate.filters[filter].triggers.healthThreshold = false
+			E.global.nameplate.filters[filter].triggers.underHealthThreshold = 0
+			E.global.nameplate.filters[filter].triggers.overHealthThreshold = 0
+		end
 		if not content.actions.color.nameColor then
 			E.global.nameplate.filters[filter].actions.color.name = false
 			E.global.nameplate.filters[filter].actions.color.nameColor = {r=1,g=1,b=1,a=1}

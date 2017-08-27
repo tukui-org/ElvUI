@@ -21,10 +21,10 @@ function mod:UpdateElement_Glow(frame)
 	if (UnitIsUnit(frame.unit, "target") and self.db.targetGlow ~= "none") then
 		r, g, b, a = self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a
 		shouldShow = 1
-	else
+	elseif self.db.lowHealthThreshold > 0 then
 		-- Use color based on the type of unit (neutral, etc.)
 		local health, maxHealth = UnitHealth(frame.unit), UnitHealthMax(frame.unit)
-		local perc = health/maxHealth
+		local perc = (maxHealth > 0 and health/maxHealth) or 0
 		if perc <= self.db.lowHealthThreshold then
 			if perc <= self.db.lowHealthThreshold / 2 then
 				r, g, b, a = 1, 0, 0, 1
