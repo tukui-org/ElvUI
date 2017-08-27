@@ -1315,25 +1315,6 @@ function E:InitializeModules()
 	end
 end
 
-local filterConversionUnits = {
-	"player",
-	"target",
-	"targettarget",
-	"targettargettarget",
-	"focus",
-	"focustarget",
-	"pet",
-	"pettarget",
-	"boss",
-	"arena",
-	"party",
-	"raid",
-	"raid40",
-	"raidpet",
-	"tank",
-	"assist"
-}
-
 --DATABASE CONVERSIONS
 function E:DBConversions()
 	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
