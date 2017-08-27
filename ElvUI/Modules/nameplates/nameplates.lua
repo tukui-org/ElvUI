@@ -666,8 +666,8 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction, spell, health, maxHealth, percHealth;
-	local underHealthThreshold, overHealthThreshold;
+	local trigger, failed, condition, name, guid, npcid, inCombat, reaction, spell, health, maxHealth, percHealth;
+	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 
@@ -793,16 +793,13 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			--Try to match by player health conditions
-			if trigger.healthThreshold then
-				underHealthThreshold = (trigger.underHealthThreshold and trigger.underHealthThreshold ~= 0)
-				overHealthThreshold = (trigger.overHealthThreshold and trigger.overHealthThreshold ~= 0)
-			end
-			if not failed and (underHealthThreshold or overHealthThreshold) then
+			if not failed and trigger.healthThreshold then
 				condition = false
 				health, maxHealth = UnitHealth(frame.displayedUnit), UnitHealthMax(frame.displayedUnit)
 				percHealth = (maxHealth > 0 and health/maxHealth) or 0
-				if (underHealthThreshold and trigger.underHealthThreshold > percHealth)
-				or (overHealthThreshold and trigger.overHealthThreshold < percHealth) then
+				underHealthThreshold = (trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth))
+				overHealthThreshold = (trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth))
+				if underHealthThreshold or overHealthThreshold then
 					condition = true
 				end
 				failed = not condition
@@ -838,26 +835,16 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			--Try to match by level conditions
-			if trigger.level then
-				level = UnitLevel(frame.displayedUnit)
-			end
-			if not failed and level then
+			if not failed and trigger.level then
 				condition = false
-				if trigger.mylevel then --My Level is set, ignore the sliders
-					if frame.displayedUnit ~= "player" then
-						mylevel = UnitLevel("player")
-						if level == mylevel then
-							condition = true
-						end
-					else
-						condition = true -- of course, player level = player level.
-					end
-				else
-					if ((trigger.curlevel and trigger.curlevel ~= 0) and trigger.curlevel == level)
-					or ((trigger.minlevel and trigger.minlevel ~= 0) and trigger.minlevel <= level)
-					or ((trigger.maxlevel and trigger.maxlevel ~= 0) and trigger.maxlevel >= level) then
-						condition = true
-					end
+				myLevel = UnitLevel('player')
+				level = (frame.displayedUnit == 'player' and myLevel) or UnitLevel(frame.displayedUnit)
+				curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
+				minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
+				maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
+				matchMyLevel = trigger.mylevel and (level == myLevel)
+				if curLevel or minLevel or maxLevel or matchMyLevel then
+					condition = true
 				end
 				failed = not condition
 			end
