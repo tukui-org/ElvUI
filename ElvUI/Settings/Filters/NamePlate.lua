@@ -23,6 +23,10 @@ G["nameplate"] = {
 				['isTarget'] = false,
 				['notTarget'] = false,
 				['level'] = true,
+				["casting"] = {
+					["interruptible"] = false,
+					["spells"] = {},
+				},
 				['curlevel'] = -1,
 				['maxlevel'] = 0,
 				['minlevel'] = 0,
@@ -79,7 +83,7 @@ G["nameplate"] = {
 				['usePortrait'] = true,
 				['scale'] = 1.15,
 			},
-		},		
+		},
 		['TestFilter'] = {
 			['triggers'] = {
 				['priority'] = 1,
@@ -87,6 +91,10 @@ G["nameplate"] = {
 				['isTarget'] = false,
 				['notTarget'] = false,
 				['level'] = false,
+				["casting"] = {
+					["interruptible"] = false,
+					["spells"] = {},
+				},
 				['curlevel'] = 0,
 				['maxlevel'] = 0,
 				['minlevel'] = 0,

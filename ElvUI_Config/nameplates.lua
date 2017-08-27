@@ -69,15 +69,14 @@ end
 
 local function UpdateStyleLists()
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
-		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
-				order = 3,
-				type = "group",
-				name = "",
-				guiInline = true,
-				args = {},
-			}
-		else
+		E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
+			order = 3,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
 			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
 				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
 					name = name,
@@ -94,26 +93,65 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells then
+		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells = {
+			order = 5,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) then
+			local spell, spellName, notDisabled
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) do
+				spell = name
+				if tonumber(spell) then
+					spellName = GetSpellInfo(spell)
+					notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
+					if spellName then
+						if notDisabled then
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+						else
+							spell = format("%s (%d)", spellName, spell)
+						end
+					end
+				end
+				E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.args[name] = {
+					name = spell,
+					type = "toggle",
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
+		end
+	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
-		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
-				order = 6,
-				type = "group",
-				name = "",
-				guiInline = true,
-				args = {},
-			}
-		else
+		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
+			order = 6,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
 			local spell, spellName, notDisabled
 			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
 					notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
-					if spellName and notDisabled then
-						spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
-					else
-						spell = format("%s (%d)", spellName, spell)
+					if spellName then
+						if notDisabled then
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+						else
+							spell = format("%s (%d)", spellName, spell)
+						end
 					end
 				end
 				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
@@ -133,25 +171,26 @@ local function UpdateStyleLists()
 		end
 	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
-		if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
-				order = 6,
-				type = "group",
-				name = "",
-				guiInline = true,
-				args = {},
-			}
-		else
+		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
+			order = 6,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
 			local spell, spellName, notDisabled
 			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
 					notDisabled = E.global.nameplate.filters[selectedNameplateFilter].triggers.enable
-					if spellName and notDisabled then
-						spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
-					else
-						spell = format("%s (%d)", spellName, spell)
+					if spellName then
+						if notDisabled then
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+						else
+							spell = format("%s (%d)", spellName, spell)
+						end
 					end
 				end
 				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
@@ -184,6 +223,10 @@ local function GetStyleFilterDefaultOptions(default)
 			["isTarget"] = false,
 			["notTarget"] = false,
 			["level"] = false,
+			["casting"] = {
+				["enable"] = false,
+				["spells"] = {},
+			},
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
@@ -364,18 +407,65 @@ local function UpdateFilterGroup()
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
-						},
-						names = {
-							order = 3,
-							type = "group",
-							name = "",
-							guiInline = true,
-							args = {},
 						}
 					},
 				},
-				combat = {
+				casting = {
 					order = 7,
+					type = 'group',
+					name = L['Casting'],
+					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
+					args = {
+						interruptible = {
+							type = 'toggle',
+							order = 1,
+							name = L["Interruptible"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.interruptible
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.interruptible = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer2 = {
+							order = 2,
+							type = 'description',
+							name = '',
+						},
+						addSpell = {
+							order = 3,
+							name = L["Add Spell ID or Name"],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = true;
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						},
+						removeSpell = {
+							order = 4,
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = nil;
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						}
+					}
+				},
+				combat = {
+					order = 8,
 					type = 'group',
 					name = COMBAT,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -436,11 +526,11 @@ local function UpdateFilterGroup()
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.outOfCombatUnit = value
 								NP:ConfigureAll()
 							end,
-						},
+						}
 					},
 				},
 				levels = {
-					order = 8,
+					order = 9,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
@@ -525,7 +615,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 9,
+					order = 10,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -590,19 +680,12 @@ local function UpdateFilterGroup()
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
-						},
-						names = {
-							order = 6,
-							type = "group",
-							name = "",
-							guiInline = true,
-							args = {},
 						}
 					},
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 10,
+					order = 11,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -667,19 +750,12 @@ local function UpdateFilterGroup()
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
-						},
-						names = {
-							order = 6,
-							type = "group",
-							name = "",
-							guiInline = true,
-							args = {},
 						}
 					},
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 11,
+					order = 12,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -780,7 +856,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 12,
+					order = 13,
 					type = "group",
 					disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.enable end,
 					args = {

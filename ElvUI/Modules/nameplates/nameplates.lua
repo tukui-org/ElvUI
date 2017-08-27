@@ -51,8 +51,11 @@ local UnitPowerType = UnitPowerType
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
+local GetSpellInfo = GetSpellInfo
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
@@ -614,7 +617,6 @@ function mod:FilterStyle(frame, actions)
 			if frame.isTarget and self.db.useTargetScale then
 				scale = scale * self.db.targetScale
 			end
-			frame.ThreatScale = scale
 			self:SetFrameScale(frame, scale)
 		end
 	end
@@ -633,7 +635,8 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction;
+	local trigger, failed, condition, name, guid, npcid, inCombat, level, mylevel, reaction, spell;
+	local castbarShown = frame.CastBar:IsShown()
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
@@ -700,6 +703,38 @@ function mod:UpdateElement_Filters(frame)
 				if condition ~= 0 then
 					failed = (condition == 1)
 				end
+			end
+
+			--Try to match by casting spell name or spell id
+			if not failed and (trigger.casting and trigger.casting.spells and castbarShown) and next(trigger.casting.spells) then
+				spell = frame.CastBar.Name:GetText()
+				if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
+					condition = 0
+					for name, value in pairs(trigger.casting.spells) do
+						if value == true then --only check spell that are checked
+							condition = 1
+							if tonumber(name) then
+								name = GetSpellInfo(name)
+							end
+							if name and name == spell then
+								condition = 2
+								break
+							end
+						end
+					end
+					if condition ~= 0 then
+						failed = (condition == 1)
+					end
+				end
+			end
+
+			--Try to match by casting interruptible
+			if not failed and (trigger.casting and trigger.casting.interruptible and castbarShown) then
+				condition = false
+				if frame.CastBar.canInterrupt then
+					condition = true
+				end
+				failed = not condition
 			end
 
 			--Try to match by player combat conditions

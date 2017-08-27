@@ -1386,6 +1386,12 @@ function E:DBConversions()
 
 	--Prevent error for testers, remove this before release
 	for filter, content in pairs(E.global.nameplate.filters) do
+		if not content.triggers.casting then
+			E.global.nameplate.filters[filter].triggers.casting = {
+				["interruptible"] = false,
+				["spells"] = {},
+			}
+		end
 		if content.actions.color.color then
 			E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
 			E.global.nameplate.filters[filter].actions.color.color = nil

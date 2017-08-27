@@ -12,6 +12,7 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+local hooksecurefunc = hooksecurefunc
 
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
@@ -217,7 +218,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	else
 		frame.CastBar:SetStatusBarColor(self.db.castNoInterruptColor.r, self.db.castNoInterruptColor.g, self.db.castNoInterruptColor.b)
 	end
-	frame.CastBar.canInterrupt = nil
+
+	if frame.CastBar:IsShown() then --This is so we can trigger based on Cast Name or Interruptible
+		self:UpdateElement_Filters(frame)
+	else
+		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
+	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update(frame)
@@ -250,7 +256,6 @@ function mod:ConfigureElement_CastBar(frame)
 	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
-
 	castBar.Name:SetJustifyH("LEFT")
 	castBar.Name:SetJustifyV("TOP")
 	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
@@ -319,5 +324,14 @@ function mod:ConstructElement_CastBar(parent)
 	frame.Spark:SetBlendMode("ADD")
 	frame.Spark:SetSize(15, 15)
 	frame:Hide()
+
+	hooksecurefunc(frame, "Hide", function(self)
+		if not parent.unit then return end
+		mod:UpdateElement_All(parent, parent.unit, true)
+		if parent.isTarget and mod.db.useTargetScale then
+			mod:SetFrameScale(parent, mod.db.targetScale)
+		end
+	end)
+
 	return frame
 end
