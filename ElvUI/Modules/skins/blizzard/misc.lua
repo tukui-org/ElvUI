@@ -1064,20 +1064,6 @@ local function LoadSkin()
 	MacOptionsFrameCancel:Point("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
 	MacOptionsFrameCancel:Width(MacOptionsFrameCancel:GetWidth() - 6)]]
 
-	ReportCheatingDialog:StripTextures()
-	ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(ReportCheatingDialogReportButton)
-	S:HandleButton(ReportCheatingDialogCancelButton)
-	ReportCheatingDialog:SetTemplate("Transparent")
-	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
-
-	-- ReportPlayerNameDialog:StripTextures()
-	-- ReportPlayerNameDialogCommentFrame:StripTextures()
-	-- S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
-	-- ReportPlayerNameDialog:SetTemplate("Transparent")
-	-- S:HandleButton(ReportPlayerNameDialogReportButton)
-	-- S:HandleButton(ReportPlayerNameDialogCancelButton)
-
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
