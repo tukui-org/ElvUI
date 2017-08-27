@@ -202,7 +202,7 @@ local function SetupCVars()
 	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("nameplateShowFriendlyNPCs", 1)
-	
+
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
@@ -286,14 +286,14 @@ function E:SetupResolution(noDataReset)
 
 			E:CopyTable(E.db.actionbar, P.actionbar)
 
-			E.db.actionbar.bar1.heightMult = 2;
-			E.db.actionbar.bar2.enabled = true;
-			E.db.actionbar.bar3.enabled = false;
-			E.db.actionbar.bar5.enabled = false;
+			E.db.actionbar.bar1.heightMult = 2
+			E.db.actionbar.bar2.enabled = true
+			E.db.actionbar.bar3.enabled = false
+			E.db.actionbar.bar5.enabled = false
 		end
 
 		if not noDataReset then
-			E.db.auras.wrapAfter = 10;
+			E.db.auras.wrapAfter = 10
 		end
 
 		E.db.movers.ElvAB_2 = "CENTER,ElvUIParent,BOTTOM,0,56.18"
@@ -303,34 +303,34 @@ function E:SetupResolution(noDataReset)
 
 			E.db.unitframe.fontSize = 10
 
-			E.db.unitframe.units.player.width = 200;
-			E.db.unitframe.units.player.castbar.width = 200;
-			E.db.unitframe.units.player.classbar.fill = 'fill';
+			E.db.unitframe.units.player.width = 200
+			E.db.unitframe.units.player.castbar.width = 200
+			E.db.unitframe.units.player.classbar.fill = 'fill'
 			E.db.unitframe.units.player.health.text_format = "[healthcolor][health:current]"
 
-			E.db.unitframe.units.target.width = 200;
-			E.db.unitframe.units.target.castbar.width = 200;
+			E.db.unitframe.units.target.width = 200
+			E.db.unitframe.units.target.castbar.width = 200
 			E.db.unitframe.units.target.health.text_format = '[healthcolor][health:current]'
 
-			E.db.unitframe.units.pet.power.enable = false;
-			E.db.unitframe.units.pet.width = 200;
-			E.db.unitframe.units.pet.height = 26;
+			E.db.unitframe.units.pet.power.enable = false
+			E.db.unitframe.units.pet.width = 200
+			E.db.unitframe.units.pet.height = 26
 
-			E.db.unitframe.units.targettarget.debuffs.enable = false;
-			E.db.unitframe.units.targettarget.power.enable = false;
-			E.db.unitframe.units.targettarget.width = 200;
-			E.db.unitframe.units.targettarget.height = 26;
+			E.db.unitframe.units.targettarget.debuffs.enable = false
+			E.db.unitframe.units.targettarget.power.enable = false
+			E.db.unitframe.units.targettarget.width = 200
+			E.db.unitframe.units.targettarget.height = 26
 
-			E.db.unitframe.units.boss.width = 200;
-			E.db.unitframe.units.boss.castbar.width = 200;
-			E.db.unitframe.units.arena.width = 200;
-			E.db.unitframe.units.arena.castbar.width = 200;
+			E.db.unitframe.units.boss.width = 200
+			E.db.unitframe.units.boss.castbar.width = 200
+			E.db.unitframe.units.arena.width = 200
+			E.db.unitframe.units.arena.castbar.width = 200
 		end
 
 		local isPixel = E.private.general.pixelPerfect
-		local xOffset = isPixel and 103 or 106;
-		local yOffset = isPixel and 125 or 135;
-		local yOffsetSmall = isPixel and 76 or 80;
+		local xOffset = isPixel and 103 or 106
+		local yOffset = isPixel and 125 or 135
+		local yOffsetSmall = isPixel and 76 or 80
 
 		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,"..-xOffset..","..yOffset
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,"..xOffset..","..yOffsetSmall
@@ -338,19 +338,19 @@ function E:SetupResolution(noDataReset)
 		E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,"..-xOffset..","..yOffsetSmall
 		E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
 
-		E.db.lowresolutionset = true;
+		E.db.lowresolutionset = true
 	elseif not noDataReset then
 		E.db.chat.panelWidth = P.chat.panelWidth
 		E.db.chat.panelHeight = P.chat.panelHeight
-		
+
 		E.db.bags.bagWidth = P.bags.bagWidth
 		E.db.bags.bankWidth = P.bags.bankWidth
 
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-		E.db.auras.wrapAfter = P.auras.wrapAfter;
+		E.db.auras.wrapAfter = P.auras.wrapAfter
 
-		E.db.lowresolutionset = nil;
+		E.db.lowresolutionset = nil
 	end
 
 	if not noDataReset and E.private.theme then
@@ -394,45 +394,37 @@ function E:SetupLayout(layout, noDataReset)
 		end
 
 		if not noDataReset then
-			E.db.unitframe.units.raid.horizontalSpacing = 9;
-			E.db.unitframe.units.raid.rdebuffs.enable = false;
-			E.db.unitframe.units.raid.verticalSpacing = 9;
-			E.db.unitframe.units.raid.debuffs.sizeOverride = 16;
+			E.db.unitframe.units.raid.horizontalSpacing = 9
+			E.db.unitframe.units.raid.rdebuffs.enable = false
+			E.db.unitframe.units.raid.verticalSpacing = 9
+			E.db.unitframe.units.raid.debuffs.sizeOverride = 16
 			E.db.unitframe.units.raid.debuffs.enable = true
-			E.db.unitframe.units.raid.debuffs.anchorPoint = "TOPRIGHT";
-			E.db.unitframe.units.raid.debuffs.xOffset = -4;
-			E.db.unitframe.units.raid.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid.height = 45;
-			E.db.unitframe.units.raid.buffs.xOffset = 50;
-			E.db.unitframe.units.raid.buffs.yOffset = -6;
+			E.db.unitframe.units.raid.debuffs.anchorPoint = "TOPRIGHT"
+			E.db.unitframe.units.raid.debuffs.xOffset = -4
+			E.db.unitframe.units.raid.debuffs.yOffset = -7
+			E.db.unitframe.units.raid.height = 45
+			E.db.unitframe.units.raid.buffs.xOffset = 50
+			E.db.unitframe.units.raid.buffs.yOffset = -6
 			E.db.unitframe.units.raid.buffs.clickThrough = true
-			E.db.unitframe.units.raid.buffs.noDuration = false
-			E.db.unitframe.units.raid.buffs.playerOnly = false;
 			E.db.unitframe.units.raid.buffs.perrow = 1
-			E.db.unitframe.units.raid.buffs.useFilter = "TurtleBuffs"
 			E.db.unitframe.units.raid.buffs.sizeOverride = 22
-			E.db.unitframe.units.raid.buffs.useBlacklist = false
 			E.db.unitframe.units.raid.buffs.enable = true
 			E.db.unitframe.units.raid.growthDirection = "LEFT_UP"
 
 			E.db.unitframe.units.party.growthDirection = "LEFT_UP"
-			E.db.unitframe.units.party.horizontalSpacing = 9;
-			E.db.unitframe.units.party.verticalSpacing = 9;
-			E.db.unitframe.units.party.debuffs.sizeOverride = 16;
+			E.db.unitframe.units.party.horizontalSpacing = 9
+			E.db.unitframe.units.party.verticalSpacing = 9
+			E.db.unitframe.units.party.debuffs.sizeOverride = 16
 			E.db.unitframe.units.party.debuffs.enable = true
-			E.db.unitframe.units.party.debuffs.anchorPoint = "TOPRIGHT";
-			E.db.unitframe.units.party.debuffs.xOffset = -4;
-			E.db.unitframe.units.party.debuffs.yOffset = -7;
-			E.db.unitframe.units.party.height = 45;
-			E.db.unitframe.units.party.buffs.xOffset = 50;
-			E.db.unitframe.units.party.buffs.yOffset = -6;
+			E.db.unitframe.units.party.debuffs.anchorPoint = "TOPRIGHT"
+			E.db.unitframe.units.party.debuffs.xOffset = -4
+			E.db.unitframe.units.party.debuffs.yOffset = -7
+			E.db.unitframe.units.party.height = 45
+			E.db.unitframe.units.party.buffs.xOffset = 50
+			E.db.unitframe.units.party.buffs.yOffset = -6
 			E.db.unitframe.units.party.buffs.clickThrough = true
-			E.db.unitframe.units.party.buffs.noDuration = false
-			E.db.unitframe.units.party.buffs.playerOnly = false;
 			E.db.unitframe.units.party.buffs.perrow = 1
-			E.db.unitframe.units.party.buffs.useFilter = "TurtleBuffs"
 			E.db.unitframe.units.party.buffs.sizeOverride = 22
-			E.db.unitframe.units.party.buffs.useBlacklist = false
 			E.db.unitframe.units.party.buffs.enable = true
 			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
 			E.db.unitframe.units.party.health.text_format = "[healthcolor][health:deficit]"
@@ -451,8 +443,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.health.frequentUpdates = true
 			E.db.unitframe.units.raid40.health.frequentUpdates = true
 
-			E.db.unitframe.units.party.healPrediction = true;
-			E.db.unitframe.units.raid.healPrediction = true;
+			E.db.unitframe.units.party.healPrediction = true
+			E.db.unitframe.units.raid.healPrediction = true
 			E.db.unitframe.units.raid40.healPrediction = true
 			E.db.unitframe.units.player.castbar.insideInfoPanel = false
 			E.db.actionbar.bar2.enabled = true
@@ -539,28 +531,28 @@ function E:SetupLayout(layout, noDataReset)
 	end
 
 	if E.db.lowresolutionset and not noDataReset then
-		E.db.unitframe.units.player.width = 200;
+		E.db.unitframe.units.player.width = 200
 		if layout ~= 'healer' then
-			E.db.unitframe.units.player.castbar.width = 200;
+			E.db.unitframe.units.player.castbar.width = 200
 		end
-		E.db.unitframe.units.player.classbar.fill = 'fill';
+		E.db.unitframe.units.player.classbar.fill = 'fill'
 
-		E.db.unitframe.units.target.width = 200;
-		E.db.unitframe.units.target.castbar.width = 200;
+		E.db.unitframe.units.target.width = 200
+		E.db.unitframe.units.target.castbar.width = 200
 
-		E.db.unitframe.units.pet.power.enable = false;
-		E.db.unitframe.units.pet.width = 200;
-		E.db.unitframe.units.pet.height = 26;
+		E.db.unitframe.units.pet.power.enable = false
+		E.db.unitframe.units.pet.width = 200
+		E.db.unitframe.units.pet.height = 26
 
-		E.db.unitframe.units.targettarget.debuffs.enable = false;
-		E.db.unitframe.units.targettarget.power.enable = false;
-		E.db.unitframe.units.targettarget.width = 200;
-		E.db.unitframe.units.targettarget.height = 26;
+		E.db.unitframe.units.targettarget.debuffs.enable = false
+		E.db.unitframe.units.targettarget.power.enable = false
+		E.db.unitframe.units.targettarget.width = 200
+		E.db.unitframe.units.targettarget.height = 26
 
-		E.db.unitframe.units.boss.width = 200;
-		E.db.unitframe.units.boss.castbar.width = 200;
-		E.db.unitframe.units.arena.width = 200;
-		E.db.unitframe.units.arena.castbar.width = 200;
+		E.db.unitframe.units.boss.width = 200
+		E.db.unitframe.units.boss.castbar.width = 200
+		E.db.unitframe.units.arena.width = 200
+		E.db.unitframe.units.arena.castbar.width = 200
 	end
 
 	if(layout == 'dpsCaster' or layout == 'healer' or (layout == 'dpsMelee' and E.myclass == 'HUNTER')) then
@@ -606,7 +598,7 @@ function E:SetupLayout(layout, noDataReset)
 
 			E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
 		end
-		
+
 		if E.PixelMode then
 			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,"..yOffset
 		else
@@ -650,7 +642,7 @@ local function SetupAuras(style)
 		UF:Configure_Auras(frame, "Debuffs")
 		UF:Configure_AuraBars(frame)
 	end
-	
+
 	local frame = UF["target"]
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
@@ -673,16 +665,15 @@ local function SetupAuras(style)
 
 	if not style then
 		--PLAYER
-		E.db.unitframe.units.player.buffs.enable = true;
-		E.db.unitframe.units.player.buffs.attachTo = 'FRAME';
-		E.db.unitframe.units.player.buffs.noDuration = false;
-		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS';
-		E.db.unitframe.units.player.aurabar.enable = false;
+		E.db.unitframe.units.player.buffs.enable = true
+		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
+		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
+		E.db.unitframe.units.player.aurabar.enable = false
 		E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
 
 		--TARGET
-		E.db.unitframe.units.target.debuffs.enable = true;
-		E.db.unitframe.units.target.aurabar.enable = false;
+		E.db.unitframe.units.target.debuffs.enable = true
+		E.db.unitframe.units.target.aurabar.enable = false
 		E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
 	end
 
@@ -993,9 +984,9 @@ function E:Install()
 			f.Option1:Width(100)
 			f.Option2:Width(100)
 
-			f.Option1:ClearAllPoints();
-			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0);
-			f.Option2:ClearAllPoints();
+			f.Option1:ClearAllPoints()
+			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0)
+			f.Option2:ClearAllPoints()
 			f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 		end)
 		f.Option4:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)

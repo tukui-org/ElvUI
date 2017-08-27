@@ -1217,14 +1217,7 @@ end
 
 local ignoreSettings = {
 	['position'] = true,
-	['playerOnly'] = true,
-	["selfBuffs"] = true,
-	['useBlacklist'] = true,
-	['useWhitelist'] = true,
-	['noDuration'] = true,
-	['onlyDispellable'] = true,
-	['useFilter'] = true,
-	['bossAuras'] = true,
+	['priority'] = true,
 }
 
 local ignoreSettingsGroup = {

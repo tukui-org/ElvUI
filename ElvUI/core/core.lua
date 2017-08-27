@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove = table.wipe, tinsert, tremove
-local floor = floor
+local floor, gsub, match = floor, string.gsub, string.match
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -444,6 +444,11 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil;
 	end
+	
+	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
+		E:StaticPopup_Show("ELVUI_INFORM_NEW_CHANGES")
+		E.global.userInformedNewChanges1 = true
+	end
 end
 
 function E:ValueFuncCall()
@@ -796,9 +801,7 @@ local profileFormat = {
 	["profile"] = "E.db",
 	["private"] = "E.private",
 	["global"] = "E.global",
-	["filtersNP"] = "E.global",
-	["filtersUF"] = "E.global",
-	["filtersAll"] = "E.global",
+	["filters"] = "E.global",
 }
 
 local lineStructureTable = {}
@@ -1312,6 +1315,25 @@ function E:InitializeModules()
 	end
 end
 
+local filterConversionUnits = {
+	"player",
+	"target",
+	"targettarget",
+	"targettargettarget",
+	"focus",
+	"focustarget",
+	"pet",
+	"pettarget",
+	"boss",
+	"arena",
+	"party",
+	"raid",
+	"raid40",
+	"raidpet",
+	"tank",
+	"assist"
+}
+
 --DATABASE CONVERSIONS
 function E:DBConversions()
 	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
@@ -1357,6 +1379,41 @@ function E:DBConversions()
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
+	end
+
+	--Remove commas from old aura filter names, we use these to split the new aura priority string
+	for filter, content in pairs(E.global.unitframe.aurafilters) do
+		if match(filter, ",") then
+			E.global.unitframe.aurafilters[filter] = nil
+			E.global.unitframe.aurafilters[gsub(filter, ",", "")] = content
+		end
+	end
+
+	--Prevent error for testers, remove this before release
+	for filter, content in pairs(E.global.nameplate.filters) do
+		if filter == "TestFilter" then
+			E.global.nameplate.filters[filter] = nil --Remove it
+		else
+			if not content.triggers.casting then
+				E.global.nameplate.filters[filter].triggers.casting = {
+					["interruptible"] = false,
+					["spells"] = {},
+				}
+			end
+			if content.triggers.healthThreshold == nil then
+				E.global.nameplate.filters[filter].triggers.healthThreshold = false
+				E.global.nameplate.filters[filter].triggers.underHealthThreshold = 0
+				E.global.nameplate.filters[filter].triggers.overHealthThreshold = 0
+			end
+			if not content.actions.color.nameColor then
+				E.global.nameplate.filters[filter].actions.color.name = false
+				E.global.nameplate.filters[filter].actions.color.nameColor = {r=1,g=1,b=1,a=1}
+			end
+			if content.actions.color.color then
+				E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
+				E.global.nameplate.filters[filter].actions.color.color = nil
+			end
+		end
 	end
 end
 

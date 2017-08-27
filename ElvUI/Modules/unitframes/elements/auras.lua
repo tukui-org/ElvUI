@@ -5,6 +5,9 @@ local LSM = LibStub("LibSharedMedia-3.0");
 --Cache global variables
 --Lua functions
 local unpack, type = unpack, type
+local next, ipairs = next, ipairs
+local match = string.match
+local strsplit = strsplit
 local tsort = table.sort
 local format = format
 local ceil = math.ceil
@@ -16,6 +19,7 @@ local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitAura = UnitAura
 local UnitIsFriend = UnitIsFriend
+local UnitIsUnit = UnitIsUnit
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: DebuffTypeColor
@@ -466,131 +470,85 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 end
 
-function UF:CheckFilter(filterType, isFriend)
-	local FRIENDLY_CHECK, ENEMY_CHECK = false, false
-	if type(filterType) == 'boolean' then
-		FRIENDLY_CHECK = filterType
-		ENEMY_CHECK = filterType
-	elseif filterType then
-		FRIENDLY_CHECK = filterType.friendly
-		ENEMY_CHECK = filterType.enemy
-	end
-
-	if (FRIENDLY_CHECK and isFriend) or (ENEMY_CHECK and not isFriend) then
-		return true
-	end
-
-	return false
-end
-
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, _, spellID, canApplyAura, isBossAura)
+function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
 
 	db = db[self.type]
 
-	local returnValue = true
-	local passPlayerOnlyCheck = true
-	local anotherFilterExists = false
-	local playerOnlyFilter = false
-	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit)
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
 
-	icon.isPlayer = isPlayer
-	icon.owner = unitCaster
-	icon.name = name
-	icon.priority = 0
-
-	local turtleBuff = (E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[spellID] or E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name])
-	if turtleBuff and turtleBuff.enable then
-		icon.priority = turtleBuff.priority
+	if name then
+		noDuration = (not duration or duration == 0)
+		isFriend = unit and UnitIsFriend('player', unit)
+		isPlayer = (caster == 'player' or caster == 'vehicle')
+		isUnit = unit and caster and UnitIsUnit(unit, caster)
+		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+	else
+		return nil
 	end
 
-	if UF:CheckFilter(db.playerOnly, isFriend) then
-		if isPlayer then
-			returnValue = true;
-		else
-			returnValue = false;
-		end
+	button.isPlayer = isPlayer
+	button.owner = caster
+	button.name = name
+	button.priority = 0
 
-		--Only allow passPlayerOnlyCheck to be set to false (potentially) if override is not enabled
-		if not db.additionalFilterAllowNonPersonal then
-			passPlayerOnlyCheck = returnValue
-		end
-		playerOnlyFilter = true
-	end
+	local filters, filterType, spellList, spell, tbl
+	if db.priority ~= '' then
+		tbl = {strsplit(",",db.priority)}
+		if next(tbl) then
+			for i, x in ipairs(tbl) do
+				filterName = tbl[i]
+				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+				if friendCheck ~= false then -- false = initial value, nil = friendCheck doesnt match, otherwise check if its a special filter
+					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
+						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					end -- this is otherwise so set filterName if its a special filter
+					filters = E.global.unitframe['aurafilters']
+					if filters[filterName] then
+						filterType = filters[filterName].type
+						spellList = filters[filterName].spells
+						spell = spellList and (spellList[spellID] or spellList[name])
 
-	if UF:CheckFilter(db.onlyDispellable, isFriend) then
-		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) or dtype == nil then
-			returnValue = false;
-		end
-		anotherFilterExists = true
-	end
-
-
-	--[[if UF:CheckFilter(db.selfBuffs, isFriend) then
-		if SpellIsSelfBuff(spellID) then
-			returnValue = true;
-		end
-
-		anotherFilterExists = true
-	end]]
-
-	if UF:CheckFilter(db.noDuration, isFriend) then
-		if (duration == 0 or not duration) then
-			returnValue = false;
-		end
-
-		anotherFilterExists = true
-	end
-
-	--[[if UF:CheckFilter(db.bossAuras, isFriend) then
-		if(isBossAura) then
-			returnValue = true
-		elseif(not anotherFilterExists) then
-			returnValue = false
-		end
-	end]]
-
-	if UF:CheckFilter(db.useBlacklist, isFriend) then
-		local blackList = (E.global['unitframe']['aurafilters']['Blacklist'].spells[spellID] or E.global['unitframe']['aurafilters']['Blacklist'].spells[name])
-		if blackList and blackList.enable then
-			returnValue = false;
-		end
-
-		anotherFilterExists = true
-	end
-
-	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = (E.global['unitframe']['aurafilters']['Whitelist'].spells[spellID] or E.global['unitframe']['aurafilters']['Whitelist'].spells[name])
-		if whiteList and whiteList.enable then
-			returnValue = true;
-			icon.priority = whiteList.priority
-		elseif not anotherFilterExists and not playerOnlyFilter then
-			returnValue = false
-		end
-
-		anotherFilterExists = true
-	end
-
-	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
-		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
-		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
-		local spell = (spellList[spellID] or spellList[name])
-
-		if type == 'Whitelist' then
-			if spell and spell.enable and passPlayerOnlyCheck then
-				returnValue = true
-				icon.priority = spell.priority
-			elseif not anotherFilterExists then
-				returnValue = false
+						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
+							filterCheck = true
+							button.priority = spell.priority -- this is the only difference from auarbars code
+							break -- STOP: allowing whistlisted spell
+						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
+							filterCheck = false
+							break -- STOP: blocking blacklisted spell
+						end
+					elseif filterName == 'Personal' and isPlayer and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
+						filterCheck = true
+						break -- STOP
+					elseif filterName == 'blockNoDuration' and noDuration then
+						filterCheck = false
+						break -- STOP
+					elseif filterName == 'Dispellable' and canDispell and allowDuration then
+						filterCheck = true
+						break -- STOP
+					end
+				end
 			end
-		elseif type == 'Blacklist' and spell and spell.enable then
-			returnValue = false
 		end
+	else
+		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
 
-	return returnValue
+	return filterCheck
 end
 
 function UF:UpdateBuffsHeaderPosition()
