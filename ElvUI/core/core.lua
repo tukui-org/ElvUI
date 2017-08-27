@@ -802,6 +802,7 @@ local profileFormat = {
 	["private"] = "E.private",
 	["global"] = "E.global",
 	["filters"] = "E.global",
+	["styleFilters"] = "E.global",
 }
 
 local lineStructureTable = {}
