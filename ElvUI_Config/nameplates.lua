@@ -1630,7 +1630,6 @@ local function GetUnitSettings(unit, name)
 									return tbl[value]
 								end,
 								set = function(info, value)
-									E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
 									NP:ConfigureAll()
 								end
 							},
@@ -1792,7 +1791,6 @@ local function GetUnitSettings(unit, name)
 									return tbl[value]
 								end,
 								set = function(info, value)
-									E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
 									NP:ConfigureAll()
 								end
 							},
