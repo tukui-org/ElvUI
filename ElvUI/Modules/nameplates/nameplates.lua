@@ -573,11 +573,11 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
-local function backdropColorLock(frame, backdrop, r, g, b, a)
+local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
 	backdrop:SetBackdropBorderColor(r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
-	if not backdrop.backdropColorLocked then
-		backdrop.backdropColorLocked = true
+	if not backdrop.backdropBorderColorLocked then
+		backdrop.backdropBorderColorLocked = true
 		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(self, r, g, b, a)
 			if self:GetParent():GetParent().BorderChanged then --only call this for ones we lock
 				if r ~= self.r or g ~= self.g or b ~= self.b or a ~= self.a then
@@ -627,7 +627,7 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		if actions.color and actions.color.border and frame.HealthBar.backdrop then
 			frame.BorderChanged = true
 			--Lets lock this to the values we want (needed for when the media border color changes)
-			backdropColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+			backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 		if actions.texture and actions.texture.enable then
 			frame.TextureChanged = true
