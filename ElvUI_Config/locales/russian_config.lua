@@ -628,6 +628,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["In Combat"] = "В бою"
+L["Interruptible"] = true;
 L["Is Targeted"] = "Взят в цель"
 L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения.";
 L["Load Distance"] = "Дистанция показа"
