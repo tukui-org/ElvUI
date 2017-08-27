@@ -2744,7 +2744,7 @@ E.Options.args.nameplate = {
 						local list = E.global.nameplate.filters
 						if not list then return end
 						for filter in pairs(list) do
-							filters[filter] = filter
+							filters[filter] = format("|cFFffff00(%s)|r %s", (list[filter].triggers and list[filter].triggers.priority) or "?", filter)
 						end
 						return filters
 					end,
