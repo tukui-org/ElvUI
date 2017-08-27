@@ -444,6 +444,11 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil;
 	end
+	
+	if tonumber(E.version) == 10.60 and not E.global.userInformedNewChanges1 then
+		E:StaticPopup_Show("ELVUI_INFORM_NEW_CHANGES")
+		E.global.userInformedNewChanges1 = true
+	end
 end
 
 function E:ValueFuncCall()
