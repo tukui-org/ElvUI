@@ -1200,7 +1200,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 0,
-				['priority'] = 'Personal,Boss,Whitelist,Blacklist,RaidDebuffs,blockNoDuration,nonPersonal',
+				['priority'] = 'Personal,Boss,Whitelist,Blacklist,RaidDebuffs',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
