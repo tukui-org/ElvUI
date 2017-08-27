@@ -73,7 +73,7 @@ local function EditBox_OnEnterPressed(frame)
 	local value = frame:GetText()
 	local cancel = self:Fire("OnEnterPressed", value)
 	if not cancel then
-		PlaySound("igMainMenuOptionCheckBoxOn")
+		-- PlaySound("igMainMenuOptionCheckBoxOn")
 		HideButton(self)
 	end
 end

@@ -704,7 +704,7 @@ local function ActivateControl(widget, event, ...)
 		else
 			-- TODO: do something else.
 		end
-		PlaySound("igPlayerInviteDecline")
+		-- PlaySound("igPlayerInviteDecline")
 		del(info)
 		return true
 	elseif not validated then
@@ -722,7 +722,7 @@ local function ActivateControl(widget, event, ...)
 		else
 			-- TODO: do something else
 		end
-		PlaySound("igPlayerInviteDecline")
+		-- PlaySound("igPlayerInviteDecline")
 		del(info)
 		return true
 	else

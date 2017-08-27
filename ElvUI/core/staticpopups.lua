@@ -18,8 +18,15 @@ local StaticPopup_Resize = StaticPopup_Resize
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
 local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local IG_MAINMENU_CLOSE
+local IG_MAINMENU_OPEN
+if SOUNDKIT then
+	IG_MAINMENU_CLOSE = SOUNDKIT.IG_MAINMENU_CLOSE
+	IG_MAINMENU_OPEN = SOUNDKIT.IG_MAINMENU_OPEN
+end
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
+local PlaySoundKitID = PlaySoundKitID
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
@@ -437,7 +444,7 @@ E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
-	PlaySound("igMainMenuOpen");
+	PlaySound(PlaySoundKitID and "igMainMenuOpen" or IG_MAINMENU_OPEN);
 
 	local dialog = E.PopupDialogs[self.which];
 	local OnShow = dialog.OnShow;
@@ -555,7 +562,7 @@ function E:StaticPopup_OnKeyDown(key)
 end
 
 function E:StaticPopup_OnHide()
-	PlaySound("igMainMenuClose");
+	PlaySound(PlaySoundKitID and "igMainMenuClose" or IG_MAINMENU_CLOSE);
 
 	E:StaticPopup_CollapseTable();
 
