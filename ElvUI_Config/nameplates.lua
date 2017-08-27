@@ -2740,11 +2740,13 @@ E.Options.args.nameplate = {
 					get = function(info) return selectedNameplateFilter end,
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()
-						local filters = {}
+						local filters, priority, name = {}
 						local list = E.global.nameplate.filters
 						if not list then return end
-						for filter in pairs(list) do
-							filters[filter] = format("|cFFffff00(%s)|r %s", (list[filter].triggers and list[filter].triggers.priority) or "?", filter)
+						for filter, content in pairs(list) do
+							priority = (content.triggers and content.triggers.priority) or "?"
+							name = (content.triggers and content.triggers.enable and filter) or (content.triggers and format("|cFF666666%s|r", filter)) or filter
+							filters[filter] = format("|cFFffff00(%s)|r %s", priority, name)
 						end
 						return filters
 					end,
