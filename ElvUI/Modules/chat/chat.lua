@@ -82,7 +82,11 @@ local UnitRealmRelationship = UnitRealmRelationship
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
+local TELL_MESSAGE
+if SOUNDKIT then
+	TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
+end
+local PlaySoundKitID = PlaySoundKitID
 
 --Variables that are only used in ChatFrame_MessageEventHandler
 --Store them in a table as we would otherwise hit the "max 60 upvalues" limit
@@ -1462,7 +1466,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, type);
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
-				PlaySound(TELL_MESSAGE);
+				PlaySound(PlaySoundKitID and "TellMessage" or TELL_MESSAGE);
 			end
 			self.tellTimer = GetTime() + GlobalStrings.CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);

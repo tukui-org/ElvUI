@@ -65,7 +65,9 @@ local function LoadSkin()
 	S:HandleButton(PetJournalFindBattle)
 	PetJournalRightInset:StripTextures()
 	PetJournalLeftInset:StripTextures()
-	S:HandleItemButton(PetJournalSummonRandomFavoritePetButton, true)
+	if E.wowbuild >= 24904 then
+		S:HandleItemButton(PetJournalSummonRandomFavoritePetButton, true)
+	end
 
 	for i = 1, 3 do
 		local f = _G["PetJournalLoadoutPet"..i.."HelpFrame"]

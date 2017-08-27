@@ -59,8 +59,12 @@ local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFF
 local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
 local CONTAINER_WIDTH = CONTAINER_WIDTH
-local IG_CHARACTER_INFO_TAB = SOUNDKIT.IG_CHARACTER_INFO_TAB
-local IG_MAINMENU_OPTION = SOUNDKIT.IG_MAINMENU_OPTION
+local IG_CHARACTER_INFO_TAB
+local IG_MAINMENU_OPTION
+if SOUNDKIT then
+	IG_CHARACTER_INFO_TAB = SOUNDKIT.IG_CHARACTER_INFO_TAB
+	IG_MAINMENU_OPTION = SOUNDKIT.IG_MAINMENU_OPTION
+end
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -70,6 +74,7 @@ local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local PlaySoundKitID = PlaySoundKitID
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -1174,7 +1179,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
 		f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
 		f.reagentFrame.cover.purchaseButton:SetScript("OnClick", function()
-			PlaySound(IG_MAINMENU_OPTION);
+			PlaySound(PlaySoundKitID and "igMainMenuOption" or IG_MAINMENU_OPTION);
 			StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB");
 		end)
 
@@ -1205,7 +1210,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript("OnEnter", self.Tooltip_Show)
 		f.reagentToggle:SetScript("OnLeave", self.Tooltip_Hide)
 		f.reagentToggle:SetScript("OnClick", function()
-			PlaySound(IG_CHARACTER_INFO_TAB);
+			PlaySound(PlaySoundKitID and "igCharacterInfoTab" or IG_CHARACTER_INFO_TAB);
 			if f.holderFrame:IsShown() then
 				BankFrame.selectedTab = 2
 				f.holderFrame:Hide()
@@ -1270,7 +1275,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.depositButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.depositButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.depositButton:SetScript('OnClick', function()
-			PlaySound(IG_MAINMENU_OPTION);
+			PlaySound(PlaySoundKitID and "igMainMenuOption" or IG_MAINMENU_OPTION);
 			DepositReagentBank()
 		end)
 
@@ -1292,7 +1297,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function()
 			local numSlots = GetNumBankSlots()
-			PlaySound(IG_MAINMENU_OPTION);
+			PlaySound(PlaySoundKitID and "igMainMenuOption" or IG_MAINMENU_OPTION);
 			if numSlots >= 1 then
 				ToggleFrame(f.ContainerHolder)
 			else

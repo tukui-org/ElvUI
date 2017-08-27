@@ -3,11 +3,19 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
-	DressUpFrame:StripTextures()
+	
+	if E.wowbuild >= 24904 then
+		DressUpFrame:StripTextures()
+	else
+		DressUpFrame:StripTextures(true)
+	end
 	DressUpFrame:CreateBackdrop("Transparent")
-	DressUpFramePortrait:Hide()
-	DressUpFramePortraitFrame:Hide()
-	DressUpFrameInset:Hide()
+	
+	if E.wowbuild >= 24904 then
+		DressUpFramePortrait:Hide()
+		DressUpFramePortraitFrame:Hide()
+		DressUpFrameInset:Hide()
+	end
 
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
@@ -17,8 +25,12 @@ local function LoadSkin()
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
 
-	S:HandleMaxMinFrame(MaximizeMinimizeFrame)
-	S:HandleCloseButton(DressUpFrameCloseButton)
+	if E.wowbuild >= 24904 then
+		S:HandleMaxMinFrame(MaximizeMinimizeFrame)
+		S:HandleCloseButton(DressUpFrameCloseButton)
+	else
+		S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
+	end
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 
 	-- Wardrobe edit frame

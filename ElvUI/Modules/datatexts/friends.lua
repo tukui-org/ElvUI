@@ -97,15 +97,15 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, sc2String, d3String, wtcgString, appString, hotsString, owString, clntString, scString, dst2String  = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, L["App"], BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_CLNT, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2
+local wowString, scString, d3String, wtcgString, appString, hotsString, owString  = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, L["App"], BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
-local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC2, BNTableWTCG, BNTableApp, BNTableHOTS, BNTableOW, BNTableCLNT, BNTableSC, BNTableDST2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [sc2String] = BNTableSC2, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW, [clntString] = BNTableCLNT, [scString] = BNTableSC, [dst2String] = BNTableDST2}
+local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp, BNTableHOTS, BNTableOW = {}, {}, {}, {}, {}, {}, {}, {}, {}
+local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
@@ -149,14 +149,11 @@ local function BuildBNTable(total)
 	wipe(BNTable)
 	wipe(BNTableWoW)
 	wipe(BNTableD3)
-	wipe(BNTableSC2)
+	wipe(BNTableSC)
 	wipe(BNTableWTCG)
 	wipe(BNTableApp)
 	wipe(BNTableHOTS)
 	wipe(BNTableOW)
-	wipe(BNTableCLNT)
-	wipe(BNTableSC)
-	wipe(BNTableDST2)
 
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
 	local realmName, faction, race, class, zoneName, level
@@ -170,8 +167,8 @@ local function BuildBNTable(total)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
-			if client == sc2String then
-				BNTableSC2[#BNTableSC2 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			if client == scString then
+				BNTableSC[#BNTableSC + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == d3String then
 				BNTableD3[#BNTableD3 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == wtcgString then
@@ -182,12 +179,6 @@ local function BuildBNTable(total)
 				BNTableHOTS[#BNTableHOTS + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == owString then
 				BNTableOW[#BNTableOW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == clntString then
-				BNTableCLNT[#BNTableCLNT + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == scString then
-				BNTableSC[#BNTableSC + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == dst2String then
-				BNTableDST2[#BNTableDST2 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			else
 				BNTableWoW[#BNTableWoW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			end
@@ -196,15 +187,12 @@ local function BuildBNTable(total)
 
 	sort(BNTable, Sort)
 	sort(BNTableWoW, Sort)
-	sort(BNTableSC2, Sort)
+	sort(BNTableSC, Sort)
 	sort(BNTableD3, Sort)
 	sort(BNTableWTCG, Sort)
 	sort(BNTableApp, Sort)
 	sort(BNTableHOTS, Sort)
 	sort(BNTableOW, Sort)
-	sort(BNTableCLNT, Sort)
-	sort(BNTableSC, Sort)
-	sort(BNTableDST2, Sort)
 end
 
 local function OnEvent(self, event, ...)
