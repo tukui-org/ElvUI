@@ -942,6 +942,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		if frame.LeftArrow and frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
 		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
 		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
+		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
 	end
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)

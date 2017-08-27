@@ -15,6 +15,7 @@ function mod:UpdateElement_Glow(frame)
 	if frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
 	if frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
 	if frame.Glow2:IsShown() then frame.Glow2:Hide() end
+	if frame.Glow:IsShown() then frame.Glow:Hide() end
 	if not frame.HealthBar:IsShown() then return end
 
 	local scale, shouldShow, r, g, b, a = 1, 0;
