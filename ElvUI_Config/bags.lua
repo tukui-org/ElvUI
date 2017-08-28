@@ -58,7 +58,7 @@ E.Options.args.bags = {
 					values = {
 						['SMART'] = L["Smart"],
 						['FULL'] = L["Full"],
-						['SHORT'] = L["Short"],
+						['SHORT'] = SHORT,
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
@@ -130,7 +130,7 @@ E.Options.args.bags = {
 						countFontColor = {
 							order = 2,
 							type = 'color',
-							name = L["Color"],
+							name = COLOR,
 							get = function(info)
 								local t = E.db.bags[ info[#info] ]
 								local d = P.bags[info[#info]]
@@ -145,7 +145,7 @@ E.Options.args.bags = {
 						countFontSize = {
 							order = 3,
 							type = "range",
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.bags.countFontSize = value; B:UpdateCountDisplay() end,
 						},
@@ -155,7 +155,7 @@ E.Options.args.bags = {
 							name = L["Font Outline"],
 							set = function(info, value) E.db.bags.countFontOutline = value; B:UpdateCountDisplay() end,
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -197,7 +197,7 @@ E.Options.args.bags = {
 						itemLevelFontSize = {
 							order = 4,
 							type = "range",
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontSize = value; B:UpdateItemLevelDisplay() end,
@@ -209,7 +209,7 @@ E.Options.args.bags = {
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontOutline = value; B:UpdateItemLevelDisplay() end,
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',

@@ -136,7 +136,7 @@ local function BuildABConfig()
 			colorGroup = {
 				order = 12,
 				type = "group",
-				name = L["Colors"],
+				name = COLORS,
 				guiInline = true,
 				get = function(info)
 					local t = E.db.actionbar[ info[#info] ]
@@ -191,7 +191,7 @@ local function BuildABConfig()
 					},
 					fontSize = {
 						order = 5,
-						name = L["Font Size"],
+						name = FONT_SIZE,
 						type = "range",
 						min = 4, max = 212, step = 1,
 					},
@@ -201,7 +201,7 @@ local function BuildABConfig()
 						desc = L["Set the font outline."],
 						type = "select",
 						values = {
-							['NONE'] = L["None"],
+							['NONE'] = NONE,
 							['OUTLINE'] = 'OUTLINE',
 
 							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',

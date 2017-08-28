@@ -227,7 +227,7 @@ E.Options.args.datatexts = {
 							values = {
 								['SMART'] = L["Smart"],
 								['FULL'] = L["Full"],
-								['SHORT'] = L["Short"],
+								['SHORT'] = SHORT,
 								['SHORTINT'] = L["Short (Whole Numbers)"],
 								['CONDENSED'] = L["Condensed"],
 								['BLIZZARD'] = L["Blizzard Style"],
@@ -255,7 +255,7 @@ E.Options.args.datatexts = {
 						},
 						fontSize = {
 							order = 2,
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							type = "range",
 							min = 4, max = 212, step = 1,
 						},
@@ -265,7 +265,7 @@ E.Options.args.datatexts = {
 							desc = L["Set the font outline."],
 							type = "select",
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',

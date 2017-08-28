@@ -206,7 +206,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				values = auraBarsSortValues,
 			},
 			filters = {
-				name = L["Filters"],
+				name = FILTERS,
 				guiInline = true,
 				type = 'group',
 				order = 500,
@@ -423,7 +423,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			},
 			fontSize = {
 				order = 9,
-				name = L["Font Size"],
+				name = FONT_SIZE,
 				type = "range",
 				min = 6, max = 212, step = 1,
 			},
@@ -448,7 +448,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				values = auraSortMethodValues,
 			},
 			filters = {
-				name = L["Filters"],
+				name = FILTERS,
 				guiInline = true,
 				type = 'group',
 				order = 500,
@@ -996,7 +996,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			},
 			size = {
 				order = 4,
-				name = L["Font Size"],
+				name = FONT_SIZE,
 				type = "range",
 				min = 4, max = 212, step = 1,
 			},
@@ -1006,7 +1006,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				desc = L["Set the font outline."],
 				type = "select",
 				values = {
-					['NONE'] = L["None"],
+					['NONE'] = NONE,
 					['OUTLINE'] = 'OUTLINE',
 
 					['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -1546,7 +1546,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 			fontSize = {
 				order = 6,
 				type = 'range',
-				name = L["Font Size"],
+				name = FONT_SIZE,
 				min = 7, max = 212, step = 1,
 			},
 			fontOutline = {
@@ -1554,7 +1554,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				type = "select",
 				name = L["Font Outline"],
 				values = {
-					["NONE"] = L["None"],
+					["NONE"] = NONE,
 					["OUTLINE"] = "OUTLINE",
 					["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 					["THICKOUTLINE"] = "THICKOUTLINE",
@@ -1617,7 +1617,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 					color = {
 						order = 4,
 						type = "color",
-						name = L["Color"],
+						name = COLOR,
 						get = function(info)
 							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
 							local d = P.unitframe.units.raid.rdebuffs.duration.color
@@ -1670,7 +1670,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 					color = {
 						order = 4,
 						type = "color",
-						name = L["Color"],
+						name = COLOR,
 						get = function(info)
 							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
 							local d = P.unitframe.units[groupName].rdebuffs.stack.color
@@ -1787,7 +1787,7 @@ E.Options.args.unitframe = {
 		colorsShortcut = {
 			order = 5,
 			type = "execute",
-			name = L["Colors"],
+			name = COLORS,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
 		},
 		blizzardShortcut = {
@@ -2023,7 +2023,7 @@ E.Options.args.unitframe = {
 								},
 								fontSize = {
 									order = 5,
-									name = L["Font Size"],
+									name = FONT_SIZE,
 									desc = L["Set the font size for unitframes."],
 									type = "range",
 									min = 4, max = 212, step = 1,
@@ -2035,7 +2035,7 @@ E.Options.args.unitframe = {
 									desc = L["Set the font outline."],
 									type = "select",
 									values = {
-										['NONE'] = L["None"],
+										['NONE'] = NONE,
 										['OUTLINE'] = 'OUTLINE',
 
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -2051,7 +2051,7 @@ E.Options.args.unitframe = {
 					order = 2,
 					type = 'group',
 					childGroups = "tree",
-					name = L["Colors"],
+					name = COLORS,
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 					args = {
@@ -2658,7 +2658,7 @@ E.Options.args.unitframe.args.player = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 					},
@@ -3021,7 +3021,7 @@ E.Options.args.unitframe.args.target = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -3208,7 +3208,7 @@ E.Options.args.unitframe.args.targettarget = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 					},
@@ -3342,7 +3342,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -3484,7 +3484,7 @@ E.Options.args.unitframe.args.focus = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -3622,7 +3622,7 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -3764,7 +3764,7 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -3822,7 +3822,7 @@ E.Options.args.unitframe.args.pet = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -3932,7 +3932,7 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -4087,7 +4087,7 @@ E.Options.args.unitframe.args.boss = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -4266,7 +4266,7 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = L["Disabled"],
+						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -4654,7 +4654,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -5270,7 +5270,7 @@ E.Options.args.unitframe.args.raid = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -5701,7 +5701,7 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6111,7 +6111,7 @@ E.Options.args.unitframe.args.raidpet = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6298,7 +6298,7 @@ E.Options.args.unitframe.args.tank = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6492,7 +6492,7 @@ E.Options.args.unitframe.args.assist = {
 				},
 				fontSize = {
 					type = 'range',
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6606,7 +6606,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 		for i = 1, 6 do
 			E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
-				name = L["Harmony"]..' #'..i,
+				name = CHI_POWER..' #'..i,
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.MONK[i]

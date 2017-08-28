@@ -1177,7 +1177,7 @@ local function UpdateFilterGroup()
 				color = {
 					order = 4,
 					type = "group",
-					name = L["Color"],
+					name = COLOR,
 					guiInline = true,
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
@@ -1580,7 +1580,7 @@ local function GetUnitSettings(unit, name)
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					filtersGroup = {
-						name = L["Filters"],
+						name = FILTERS,
 						order = 4,
 						type = "group",
 						guiInline = true,
@@ -1741,7 +1741,7 @@ local function GetUnitSettings(unit, name)
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					filtersGroup = {
-						name = L["Filters"],
+						name = FILTERS,
 						order = 4,
 						type = "group",
 						guiInline = true,
@@ -2370,7 +2370,7 @@ E.Options.args.nameplate = {
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
 							values = {
-								["DISABLED"] = L["Disabled"],
+								["DISABLED"] = DISABLE,
 								["TOGGLE_ON"] = L["Toggle On While In Combat"],
 								["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
 							},
@@ -2385,7 +2385,7 @@ E.Options.args.nameplate = {
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
 							values = {
-								["DISABLED"] = L["Disabled"],
+								["DISABLED"] = DISABLE,
 								["TOGGLE_ON"] = L["Toggle On While In Combat"],
 								["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
 							},
@@ -2451,7 +2451,7 @@ E.Options.args.nameplate = {
 									name = ' ',
 								},
 								glowColor = {
-									name = L["Target Indicator"].." "..L["Color"],
+									name = L["Target Indicator"].." "..COLOR,
 									type = 'color',
 									order = 5,
 									hasAlpha = true,
@@ -2535,7 +2535,7 @@ E.Options.args.nameplate = {
 						},
 						fontSize = {
 							order = 5,
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							type = "range",
 							min = 4, max = 212, step = 1,
 						},
@@ -2545,7 +2545,7 @@ E.Options.args.nameplate = {
 							desc = L["Set the font outline."],
 							type = "select",
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
