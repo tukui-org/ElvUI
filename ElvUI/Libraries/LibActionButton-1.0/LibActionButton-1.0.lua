@@ -99,6 +99,9 @@ local Macro_MT = {__index = Macro}
 local Toy = setmetatable({}, {__index = Generic})
 local Toy_MT = {__index = Toy}
 
+local Currency = setmetatable({}, {__index = Generic})
+local Currency_MT = {__index = Currency}
+
 local Custom = setmetatable({}, {__index = Generic})
 local Custom_MT = {__index = Custom}
 
@@ -110,6 +113,7 @@ local type_meta_map = {
 	item   = Item_MT,
 	macro  = Macro_MT,
 	toy    = Toy_MT,
+	currency = Currency_MT,
 	custom = Custom_MT
 }
 
@@ -1614,6 +1618,24 @@ Toy.IsConsumableOrStackable = function(self) return nil end
 Toy.IsUnitInRange           = function(self, unit) return nil end
 Toy.SetTooltip              = function(self) return GameTooltip:SetToyByItemID(self._state_action) end
 Toy.GetSpellId              = function(self) return nil end
+
+-----------------------------------------------------------
+--- Currency Button
+Currency.HasAction					= function(self) return true end
+Currency.GetActionText				= function(self) return "" end
+Currency.GetTexture					= function(self) return select(3, GetCurrencyInfo(self._state_action)) end
+Currency.GetCharges					= function(self) return nil end
+Currency.GetCount					= function(self) return select(2, GetCurrencyInfo(self._state_action)) end
+Currency.GetCooldown				= function(self) return 0, 0, 0 end
+Currency.IsAttack					= function(self) return nil end
+Currency.IsEquipped					= function(self) return nil end
+Currency.IsCurrentlyActive       	= function(self) return nil end
+Currency.IsAutoRepeat            	= function(self) return nil end
+Currency.IsUsable                	= function(self) return nil end
+Currency.IsConsumableOrStackable 	= function(self) return nil end
+Currency.IsUnitInRange           	= function(self, unit) return nil end
+Currency.SetTooltip              	= function(self) return GameTooltip:SetCurrencyByID(self._state_action) end
+Currency.GetSpellId              	= function(self) return nil end
 
 -----------------------------------------------------------
 --- Custom Button
