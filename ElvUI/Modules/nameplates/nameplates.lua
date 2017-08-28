@@ -545,15 +545,14 @@ function mod:UpdateInVehicle(frame, noEvents)
 	end
 end
 
-local function filterAura(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+local function filterAura(names, icons, mustHaveAll, missing)
 	local total, count = 0, 0
 	for name, value in pairs(names) do
 		if value == true then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
 		for frameNum, icon in pairs(icons) do
-			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))) 
-				and (not minTimeLeft or (minTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) > minTimeLeft))) and (not maxTimeLeft or (maxTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) < maxTimeLeft))) then
+			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))) then
 				count = count + 1 --keep track of how many matches we have
 			end
 		end
@@ -887,7 +886,7 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match according to buff aura conditions
 			if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-				condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+				condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing)
 				if condition ~= nil then --Condition will be nil if none are selected
 					failed = not condition
 				end
@@ -895,7 +894,7 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match according to debuff aura conditions
 			if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-				condition = filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+				condition = filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing)
 				if condition ~= nil then --Condition will be nil if none are selected
 					failed = not condition
 				end
