@@ -823,7 +823,7 @@ local function UpdateFilterGroup()
 							order = 3,
 							type = 'range',
 							name = L["Minimum Time Left"],
-							desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."],
+							desc = L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."],
 							min = 0, max = 10800, step = 1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.minTimeLeft
@@ -837,7 +837,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = 'range',
 							name = L["Maximum Time Left"],
-							desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."],
+							desc = L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."],
 							min = 0, max = 10800, step = 1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.maxTimeLeft
