@@ -177,7 +177,7 @@ local function UpdateFilterGroup()
 					end,
 				},
 				color = {
-					name = L["Color"],
+					name = COLOR,
 					type = 'color',
 					order = 1,
 					hasAlpha = true,
@@ -292,7 +292,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				color = {
-					name = L["Color"],
+					name = COLOR,
 					type = 'color',
 					order = 1,
 					get = function(info)
@@ -467,7 +467,7 @@ local function UpdateFilterGroup()
 						},
 					},
 					color = {
-						name = L["Color"],
+						name = COLOR,
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -682,7 +682,7 @@ local function UpdateFilterGroup()
 						},
 					},
 					color = {
-						name = L["Color"],
+						name = COLOR,
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -903,7 +903,7 @@ local function UpdateFilterGroup()
 						},
 					},
 					color = {
-						name = L["Color"],
+						name = COLOR,
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -1147,7 +1147,7 @@ end
 
 E.Options.args.filters = {
 	type = 'group',
-	name = L["Filters"],
+	name = FILTERS,
 	order = -10, --Always Last Hehehe
 	args = {
 		createFilter = {

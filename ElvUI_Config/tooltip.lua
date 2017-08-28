@@ -80,7 +80,7 @@ E.Options.args.tooltip = {
 						["BAGS_ONLY"] = L["Bags Only"],
 						["BANK_ONLY"] = L["Bank Only"],
 						["BOTH"] = L["Both"],
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 					},
 				},
 				colorAlpha = {
@@ -109,7 +109,7 @@ E.Options.args.tooltip = {
 							name = L["Font Outline"],
 							type = "select",
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -296,7 +296,7 @@ E.Options.args.tooltip = {
 				},
 				fontSize = {
 					order = 5,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 4, max = 500, step = 1,
 					set = function(info, value)
@@ -312,7 +312,7 @@ E.Options.args.tooltip = {
 					name = L["Font Outline"],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',

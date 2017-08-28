@@ -433,7 +433,7 @@ E.Options.args.chat = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -457,7 +457,7 @@ E.Options.args.chat = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
