@@ -22,6 +22,7 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 	aura.icon:SetTexture(icon);
 	aura.name = name
 	aura.spellID = spellID
+	aura.expirationTime = expirationTime
 	if ( count > 1 ) then
 		local countText = count;
 		if ( count >= 10 ) then

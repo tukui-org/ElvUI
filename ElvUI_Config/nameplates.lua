@@ -259,11 +259,15 @@ local function GetStyleFilterDefaultOptions(default)
 				["mustHaveAll"] = false,
 				["missing"] = false,
 				["names"] = {},
+				["minTimeLeft"] = 0,
+				["maxTimeLeft"] = 0,
 			},
 			["debuffs"] = {
 				["mustHaveAll"] = false,
 				["missing"] = false,
 				["names"] = {},
+				["minTimeLeft"] = 0,
+				["maxTimeLeft"] = 0,
 			},
 			["inCombat"] = false,
 			["outOfCombat"] = false,
@@ -717,13 +721,41 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						spacer1 = {
+						minTimeLeft = {
 							order = 3,
+							type = 'range',
+							name = L["Minimum Time Left"],
+							desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."],
+							min = 0, max = 10800, step = 1,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.minTimeLeft
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.minTimeLeft = value
+								NP:ConfigureAll()
+							end,
+						},
+						maxTimeLeft = {
+							order = 4,
+							type = 'range',
+							name = L["Maximum Time Left"],
+							desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."],
+							min = 0, max = 10800, step = 1,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.maxTimeLeft
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.maxTimeLeft = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 5,
 							type = 'description',
 							name = " ",
 						},
 						addBuff = {
-							order = 4,
+							order = 6,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
@@ -737,7 +769,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeBuff = {
-							order = 5,
+							order = 7,
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
@@ -787,13 +819,41 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						spacer1 = {
+						minTimeLeft = {
 							order = 3,
+							type = 'range',
+							name = L["Minimum Time Left"],
+							desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."],
+							min = 0, max = 10800, step = 1,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.minTimeLeft
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.minTimeLeft = value
+								NP:ConfigureAll()
+							end,
+						},
+						maxTimeLeft = {
+							order = 4,
+							type = 'range',
+							name = L["Maximum Time Left"],
+							desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."],
+							min = 0, max = 10800, step = 1,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.maxTimeLeft
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.maxTimeLeft = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 5,
 							type = "description",
 							name = " ",
 						},
 						addDebuff = {
-							order = 4,
+							order = 6,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
@@ -807,7 +867,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeDebuff = {
-							order = 5,
+							order = 7,
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
