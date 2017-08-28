@@ -818,13 +818,13 @@ E.Options.args.actionbar = {
 		bar1Shortcut = {
 			order = 10,
 			type = "execute",
-			name = L["Bar1"],
+			name = L["Bar "]..1,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar1") end,
 		},
 		bar2Shortcut = {
 			order = 11,
 			type = "execute",
-			name = L["Bar2"],
+			name = L["Bar "]..2,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar2") end,
 		},
 		spacer3 = {
@@ -835,19 +835,19 @@ E.Options.args.actionbar = {
 		bar3Shortcut = {
 			order = 13,
 			type = "execute",
-			name = L["Bar3"],
+			name = L["Bar "]..3,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar3") end,
 		},
 		bar4Shortcut = {
 			order = 14,
 			type = "execute",
-			name = L["Bar4"],
+			name = L["Bar "]..4,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar4") end,
 		},
 		bar5Shortcut = {
 			order = 15,
 			type = "execute",
-			name = L["Bar5"],
+			name = L["Bar "]..5,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar5") end,
 		},
 		spacer4 = {
@@ -858,7 +858,7 @@ E.Options.args.actionbar = {
 		bar6Shortcut = {
 			order = 17,
 			type = "execute",
-			name = L["Bar6"],
+			name = L["Bar "]..6,
 			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar6") end,
 		},
 		extraActionButtonShortcut = {
