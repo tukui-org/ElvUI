@@ -1384,6 +1384,18 @@ function E:DBConversions()
 				}
 			end
 		end
+		if not content.triggers.role then
+			E.global.nameplate.filters[filter].triggers.role = {
+				["tank"] = false,
+				["healer"] = false,
+				["damager"] = false,
+			}
+		end
+		--[[if not content.triggers.class then
+			E.global.nameplate.filters[filter].triggers.class = {}
+		end]]
+
+		--older ones below here
 		if filter == "TestFilter" then
 			E.global.nameplate.filters[filter] = nil --Remove it
 		else

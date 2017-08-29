@@ -233,6 +233,11 @@ local function GetStyleFilterDefaultOptions(filter)
 				["interruptible"] = false,
 				["spells"] = {},
 			},
+			["role"] = {
+				["tank"] = false,
+				["healer"] = false,
+				["damager"] = false,
+			},
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
@@ -553,8 +558,59 @@ local function UpdateFilterGroup()
 						}
 					},
 				},
-				health = {
+				class = {
 					order = 9,
+					type = 'group',
+					name = CLASS,
+					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					args = {}
+				},
+				role = {
+					order = 10,
+					type = 'group',
+					name = ROLE,
+					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					args = {
+						tank = {
+							type = 'toggle',
+							order = 1,
+							name = TANK,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role.tank
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.role.tank = value
+								NP:ConfigureAll()
+							end,
+						},
+						healer = {
+							type = 'toggle',
+							order = 1,
+							name = HEALER,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role.healer
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.role.healer = value
+								NP:ConfigureAll()
+							end,
+						},
+						damager = {
+							type = 'toggle',
+							order = 1,
+							name = DAMAGER,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role.damager
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.role.damager = value
+								NP:ConfigureAll()
+							end,
+						},
+					}
+				},
+				health = {
+					order = 11,
 					type = 'group',
 					name = L["Health Threshold"],
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
@@ -611,7 +667,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 10,
+					order = 12,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
@@ -696,7 +752,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 11,
+					order = 13,
 					type = "group",
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -794,7 +850,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 12,
+					order = 14,
 					type = "group",
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -892,7 +948,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 13,
+					order = 15,
 					type = "group",
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
 					args = {
@@ -993,7 +1049,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 14,
+					order = 16,
 					type = "group",
 					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
 					args = {

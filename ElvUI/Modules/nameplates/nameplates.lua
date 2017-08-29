@@ -668,7 +668,7 @@ end
 
 function mod:UpdateElement_Filters(frame)
 	local trigger, failed, condition, name, guid, npcid, inCombat, reaction, spell, health, maxHealth, percHealth;
-	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel;
+	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 
@@ -830,6 +830,16 @@ function mod:UpdateElement_Filters(frame)
 			if not failed and (trigger.isTarget or trigger.notTarget) then
 				condition = false
 				if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by role conditions
+			if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
+				condition = false
+				myRole = E:GetPlayerRole()
+				if myRole and ((trigger.role.tank and myRole == "TANK") or (trigger.role.healer and myRole == "HEALER") or (trigger.role.damager and myRole == "DAMAGER")) then
 					condition = true
 				end
 				failed = not condition

@@ -26,6 +26,11 @@ G["nameplate"] = {
 					["interruptible"] = false,
 					["spells"] = {},
 				},
+				["role"] = {
+					["tank"] = false,
+					["healer"] = false,
+					["damager"] = false,
+				},
 				["curlevel"] = -1,
 				["maxlevel"] = 0,
 				["minlevel"] = 0,
