@@ -70,7 +70,7 @@ end
 local function UpdateStyleLists()
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
-			order = 3,
+			order = 50,
 			type = "group",
 			name = "",
 			guiInline = true,
@@ -95,7 +95,7 @@ local function UpdateStyleLists()
 	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells then
 		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells = {
-			order = 5,
+			order = 50,
 			type = "group",
 			name = "",
 			guiInline = true,
@@ -133,7 +133,7 @@ local function UpdateStyleLists()
 	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
-			order = 6,
+			order = 50,
 			type = "group",
 			name = "",
 			guiInline = true,
@@ -172,7 +172,7 @@ local function UpdateStyleLists()
 	end
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
-			order = 6,
+			order = 50,
 			type = "group",
 			name = "",
 			guiInline = true,

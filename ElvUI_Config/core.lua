@@ -41,6 +41,7 @@ E.Options.args = {
 		order = 2,
 		type = 'toggle',
 		name = L["Login Message"],
+		customWidth = 176,
 		get = function(info) return E.db.general.loginmessage end,
 		set = function(info, value) E.db.general.loginmessage = value end,
 	},
