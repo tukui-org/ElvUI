@@ -1,4 +1,4 @@
-**Version 10.60 [  ]**
+**Version 10.60 [ August 29th 2017 ]**
 
 **New Additions:**  
 MAJOR: Added "Style Filters" to NamePlates, allowing you to perform various actions on specific units that match your chosen filter settings.  
