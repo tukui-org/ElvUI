@@ -1,3 +1,17 @@
+**Version 10.61 [ August 29th 2017 ]**
+
+**New Additions:**  
+None  
+
+
+**Bug Fixes:**  
+Fixed issue which broke the Ace3 config of other addons.  
+
+
+**Misc. Changes:**  
+Reverted some changes to Profiles section of ElvUI.  
+
+___
 **Version 10.60 [ August 29th 2017 ]**
 
 **New Additions:**  
