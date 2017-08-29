@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove = table.wipe, tinsert, tremove
-local floor = floor
+local floor, gsub, match = floor, string.gsub, string.match
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -32,7 +32,6 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
@@ -44,6 +43,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 -- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 
 --Constants
@@ -171,6 +171,15 @@ E.ClassRole = {
 	},
 }
 
+E.DEFAULT_FILTER = {
+	["CCDebuffs"] = "Whitelist",
+	["TurtleBuffs"] = "Whitelist",
+	["PlayerBuffs"] = "Whitelist",
+	["Blacklist"] = "Blacklist",
+	["Whitelist"] = "Whitelist",
+	["RaidDebuffs"] = "Whitelist",
+}
+
 E.noop = function() end;
 
 local hexvaluecolor
@@ -252,7 +261,7 @@ function E:UpdateMedia()
 	end
 
 	self["media"].bordercolor = {border.r, border.g, border.b}
-	
+
 	--UnitFrame Border Color
 	border = E.db['unitframe'].colors.borderColor
 	if self:CheckClassColor(border.r, border.g, border.b) then
@@ -435,6 +444,11 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil;
 	end
+	
+	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
+		E:StaticPopup_Show("ELVUI_INFORM_NEW_CHANGES")
+		E.global.userInformedNewChanges1 = true
+	end
 end
 
 function E:ValueFuncCall()
@@ -451,7 +465,7 @@ function E:UpdateFrameTemplates()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame in pairs(self["unitFrameElements"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			frame:SetTemplate(frame.template, frame.glossTex);
@@ -471,7 +485,7 @@ function E:UpdateBorderColors()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame and not frame.ignoreUpdates then
 			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
@@ -499,7 +513,7 @@ function E:UpdateBackdropColors()
 			self["frames"][frame] = nil;
 		end
 	end
-	
+
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame then
 			if frame.template == 'Default' or frame.template == nil then
@@ -787,9 +801,8 @@ local profileFormat = {
 	["profile"] = "E.db",
 	["private"] = "E.private",
 	["global"] = "E.global",
-	["filtersNP"] = "E.global",
-	["filtersUF"] = "E.global",
-	["filtersAll"] = "E.global",
+	["filters"] = "E.global",
+	["styleFilters"] = "E.global",
 }
 
 local lineStructureTable = {}
@@ -907,11 +920,9 @@ function E:SendMessage()
 	end
 end
 
-local myName = E.myname.."-"..E.myrealm;
-myName = myName:gsub("%s+", "")
-
+local myRealm = gsub(E.myrealm,'[%s%-]','')
+local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
-
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
 
@@ -1346,12 +1357,45 @@ function E:DBConversions()
 	if E.db.nameplate then
 		E.db.nameplate = nil
 	end
-	
-	if not E.db.thinBorderColorSet then
-		if E.PixelMode then
-			E.db.general.bordercolor = {r = 0, g = 0, b = 0}
+
+	--Make sure default filters use the correct filter type
+	for filter, filterType in pairs(E.DEFAULT_FILTER) do
+		E.global.unitframe.aurafilters[filter].type = filterType
+	end
+
+	--Remove commas from old aura filter names, we use these to split the new aura priority string
+	for filter, content in pairs(E.global.unitframe.aurafilters) do
+		if match(filter, ",") then
+			E.global.unitframe.aurafilters[filter] = nil
+			E.global.unitframe.aurafilters[gsub(filter, ",", "")] = content
 		end
-		E.db.thinBorderColorSet = true
+	end
+
+	--Prevent error for testers, remove this before release
+	for filter, content in pairs(E.global.nameplate.filters) do
+		if filter == "TestFilter" then
+			E.global.nameplate.filters[filter] = nil --Remove it
+		else
+			if not content.triggers.casting then
+				E.global.nameplate.filters[filter].triggers.casting = {
+					["interruptible"] = false,
+					["spells"] = {},
+				}
+			end
+			if content.triggers.healthThreshold == nil then
+				E.global.nameplate.filters[filter].triggers.healthThreshold = false
+				E.global.nameplate.filters[filter].triggers.underHealthThreshold = 0
+				E.global.nameplate.filters[filter].triggers.overHealthThreshold = 0
+			end
+			if not content.actions.color.nameColor then
+				E.global.nameplate.filters[filter].actions.color.name = false
+				E.global.nameplate.filters[filter].actions.color.nameColor = {r=1,g=1,b=1,a=1}
+			end
+			if content.actions.color.color then
+				E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
+				E.global.nameplate.filters[filter].actions.color.color = nil
+			end
+		end
 	end
 end
 

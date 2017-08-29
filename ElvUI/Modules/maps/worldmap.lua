@@ -19,8 +19,9 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
--- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1, WORLD_MAP_MIN_ALPHA
+-- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
+-- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -50,8 +51,10 @@ function M:SetLargeWorldMap()
 		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
 
-	WorldMapFrameSizeUpButton:Hide()
-	WorldMapFrameSizeDownButton:Show()
+	if not (E.wowbuild >= 24904) then
+		WorldMapFrameSizeUpButton:Hide()
+		WorldMapFrameSizeDownButton:Show()
+	end
 
 	WorldMapFrame:ClearAllPoints()
 	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
@@ -60,19 +63,25 @@ end
 
 function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end
-
-	WorldMapFrameSizeUpButton:Show()
-	WorldMapFrameSizeDownButton:Hide()
+	if not (E.wowbuild >= 24904) then
+		WorldMapFrameSizeUpButton:Show()
+		WorldMapFrameSizeDownButton:Hide()
+	end
 end
 
 function M:PLAYER_REGEN_ENABLED()
-	WorldMapFrameSizeDownButton:Enable()
-	WorldMapFrameSizeUpButton:Enable()
+	if not (E.wowbuild >= 24904) then
+		WorldMapFrameSizeDownButton:Enable()
+		WorldMapFrameSizeUpButton:Enable()
+	end
+
 end
 
 function M:PLAYER_REGEN_DISABLED()
-	WorldMapFrameSizeDownButton:Disable()
-	WorldMapFrameSizeUpButton:Disable()
+	if not (E.wowbuild >= 24904) then
+		WorldMapFrameSizeDownButton:Disable()
+		WorldMapFrameSizeUpButton:Disable()
+	end
 end
 
 local inRestrictedArea = false

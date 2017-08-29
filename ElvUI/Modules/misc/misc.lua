@@ -251,12 +251,11 @@ function M:ForceCVars()
 	if not GetCVarBool('lockActionBars') and E.private.actionbar.enable then
 		SetCVar('lockActionBars', 1)
 	end
-	
-	self:UpdateChatBubbleInstanceToggle()
 end
 
 function M:PLAYER_ENTERING_WORLD()
 	self:ForceCVars()
+	self:ToggleChatBubbleScript()
 end
 
 function M:Initialize()

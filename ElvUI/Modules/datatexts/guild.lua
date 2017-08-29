@@ -20,13 +20,12 @@ local SetItemRef = SetItemRef
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local EasyMenu = EasyMenu
+local L_EasyMenu = L_EasyMenu
 local IsShiftKeyDown = IsShiftKeyDown
 local GetGuildInfo = GetGuildInfo
 local ToggleGuildFrame = ToggleGuildFrame
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetCurrentMapAreaID = GetCurrentMapAreaID
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GUILD_MOTD = GUILD_MOTD
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
@@ -35,6 +34,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -124,7 +124,6 @@ local eventHandlers = {
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
 	["PLAYER_ENTERING_WORLD"] = function()
-
 		if not GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
 			GuildRoster()
@@ -143,7 +142,6 @@ local eventHandlers = {
 			end
 		end
 	end,
-
 	["PLAYER_GUILD_UPDATE"] = function()
 		GuildRoster()
 	end,
@@ -151,8 +149,8 @@ local eventHandlers = {
 	["GUILD_MOTD"] = function (self, arg1)
 		guildMotD = arg1
 	end,
-	["ELVUI_FORCE_RUN"] = function() end,
-	["ELVUI_COLOR_UPDATE"] = function() end,
+	["ELVUI_FORCE_RUN"] = E.noop,
+	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
 
 
@@ -168,7 +166,7 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = INVITE, hasArrow = true, notCheckable=true,},
@@ -213,7 +211,7 @@ local function Click(self, btn)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleGuildFrame()
 	end

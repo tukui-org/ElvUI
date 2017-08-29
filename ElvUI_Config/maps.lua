@@ -2,6 +2,10 @@ local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, Gl
 local WM = E:GetModule("WorldMap")
 local MM = E:GetModule("Minimap")
 
+local SetCVar = SetCVar
+
+-- GLOBALS: WORLD_MAP_MIN_ALPHA
+
 E.Options.args.maps = {
 	type = "group",
 	name = L["Maps"],
@@ -187,7 +191,7 @@ E.Options.args.maps = {
 						locationFontSize = {
 						    order = 3,
 						    type = "range",
-						    name = L["Font Size"],
+						    name = FONT_SIZE,
 						    min = 6, max = 36, step = 1,
 						    set = function(info, value) E.db.general.minimap.locationFontSize = value; MM:Update_ZoneText() end,
 							disabled = function() return not E.private.general.minimap.enable end,
@@ -199,7 +203,7 @@ E.Options.args.maps = {
 						    set = function(info, value) E.db.general.minimap.locationFontOutline = value; MM:Update_ZoneText() end,
 							disabled = function() return not E.private.general.minimap.enable end,
 						    values = {
-						        ['NONE'] = L["None"],
+						        ['NONE'] = NONE,
 						        ['OUTLINE'] = 'OUTLINE',
 						        ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						        ['THICKOUTLINE'] = 'THICKOUTLINE',

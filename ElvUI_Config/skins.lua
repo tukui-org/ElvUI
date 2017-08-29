@@ -56,7 +56,7 @@ E.Options.args.skins = {
 				},
 				encounterjournal = {
 					type = "toggle",
-					name = L["Encounter Journal"],
+					name = ENCOUNTER_JOURNAL,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				calendar = {
@@ -86,7 +86,7 @@ E.Options.args.skins = {
 				},
 				gbank = {
 					type = "toggle",
-					name = L["Guild Bank"],
+					name = GUILD_BANK,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				archaeology = {
@@ -196,12 +196,17 @@ E.Options.args.skins = {
 				},
 				worldmap = {
 					type = "toggle",
-					name = L["World Map"],
+					name = WORLD_MAP,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				taxi = {
 					type = "toggle",
 					name = L["Taxi Frame"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				tooltip = {
+					type = "toggle",
+					name = L["Tooltip"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				lfg = {
@@ -226,7 +231,7 @@ E.Options.args.skins = {
 				},
 				dressingroom = {
 					type = "toggle",
-					name = L["Dressing Room"],
+					name = DRESSUP_FRAME,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				pvp = {
@@ -296,7 +301,7 @@ E.Options.args.skins = {
 				},
 				voidstorage = {
 					type = "toggle",
-					name = L["Void Storage"],
+					name = VOID_STORAGE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				itemUpgrade = {
@@ -331,7 +336,7 @@ E.Options.args.skins = {
 				},
 				artifact = {
 					type = "toggle",
-					name = L["Artifact"], -- Temp Name
+					name = ITEM_QUALITY6_DESC, -- Temp Name
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				talkinghead = {

@@ -8,7 +8,8 @@ local unpack = unpack
 local ceil = math.ceil
 --WoW API / Variables
 local UnitIsUnit = UnitIsUnit
-local UIDROPDOWNMENU_MAXLEVELS = UIDROPDOWNMENU_MAXLEVELS
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -21,23 +22,17 @@ local function LoadSkin()
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
-		"BNToastFrame",
-		"TicketStatusFrameButton",
-		"DropDownList1MenuBackdrop",
-		"DropDownList2MenuBackdrop",
-		"DropDownList1Backdrop",
-		"DropDownList2Backdrop",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
+		"DropDownList1Backdrop",
+		"DropDownList1MenuBackdrop",
 
 		--DropDownMenu library support
-		"Lib_DropDownList1MenuBackdrop",
-		"Lib_DropDownList2MenuBackdrop",
-		"Lib_DropDownList1Backdrop",
-		"Lib_DropDownList2Backdrop",
+		"L_DropDownList1Backdrop",
+		"L_DropDownList1MenuBackdrop"
 	}
 
 	QueueStatusFrame:StripTextures()
@@ -56,7 +51,7 @@ local function LoadSkin()
 		"LanguageMenu",
 		"VoiceMacroMenu",
 	}
-	--
+
 	for i = 1, getn(ChatMenus) do
 		if _G[ChatMenus[i]] == _G["ChatMenu"] then
 			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
@@ -556,7 +551,7 @@ local function LoadSkin()
 		end
 	end)
 
--- >> Combat >> Tabs
+	-- >> Combat >> Tabs
 	for i = 1,#COMBAT_CONFIG_TABS do
 		local cctab = _G["CombatConfigTab"..i]
 		if cctab then
@@ -569,7 +564,7 @@ local function LoadSkin()
 	CombatConfigTab1:ClearAllPoints()
 	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
 
-   local cccheckbox = {
+	local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
 		"CombatConfigColorsHighlightingAbility",
 		"CombatConfigColorsHighlightingDamage",
@@ -608,11 +603,19 @@ local function LoadSkin()
 	ChatConfigFrameHeader:ClearAllPoints()
 	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
-	--DROPDOWN MENU
-	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
-		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
-			_G["DropDownList"..i.."Backdrop"]:SetTemplate("Transparent")
-			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Transparent")
+	--DropDownMenu
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
+			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
+			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
+		end
+	end)
+
+	--LibUIDropDownMenu
+	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function(level, index)
+		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
+			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
+			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)
 
@@ -810,7 +813,6 @@ local function LoadSkin()
 		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
 		if idropdown then
 			S:HandleDropDownBox(idropdown)
-			DropDownList1:SetTemplate("Transparent")
 		else
 			print(interfacedropdown[i])
 		end
@@ -919,7 +921,6 @@ local function LoadSkin()
 		local odropdown = _G[optiondropdown[i]]
 		if odropdown then
 			S:HandleDropDownBox(odropdown,165)
-			DropDownList1:SetTemplate("Transparent")
 		else
 			print(optiondropdown[i])
 		end
@@ -1062,20 +1063,6 @@ local function LoadSkin()
 	MacOptionsFrameCancel:ClearAllPoints()
 	MacOptionsFrameCancel:Point("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
 	MacOptionsFrameCancel:Width(MacOptionsFrameCancel:GetWidth() - 6)]]
-
-	ReportCheatingDialog:StripTextures()
-	ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(ReportCheatingDialogReportButton)
-	S:HandleButton(ReportCheatingDialogCancelButton)
-	ReportCheatingDialog:SetTemplate("Transparent")
-	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
-
-	ReportPlayerNameDialog:StripTextures()
-	ReportPlayerNameDialogCommentFrame:StripTextures()
-	S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
-	ReportPlayerNameDialog:SetTemplate("Transparent")
-	S:HandleButton(ReportPlayerNameDialogReportButton)
-	S:HandleButton(ReportPlayerNameDialogCancelButton)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()

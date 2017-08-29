@@ -86,9 +86,9 @@ local function LoadSkin()
 		b:StripTextures(true)
 		S:HandleButton(b, true)
 	end
-	
+
 	--Navigation buttons
-    S:HandleButton(HelpBrowserNavHome)
+	S:HandleButton(HelpBrowserNavHome)
 	HelpBrowserNavHome:Size(26)
 	HelpBrowserNavHome:ClearAllPoints()
 	HelpBrowserNavHome:SetPoint("BOTTOMLEFT", HelpBrowser, "TOPLEFT", -5, 9)

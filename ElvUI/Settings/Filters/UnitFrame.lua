@@ -460,6 +460,8 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[210294] = Defaults(), --Divine Favor
 		[221886] = Defaults(), --Divine Steed
 		[31821] = Defaults(), --Aura Mastery
+		[203538] = Defaults(), --Greater Blessing of Kings
+		[203539] = Defaults(), --Greater Blessing of Wisdom
 	--Priest
 		[81782] = Defaults(), --Power Word: Barrier
 		[47585] = Defaults(), --Dispersion
@@ -657,51 +659,51 @@ G.unitframe.aurafilters['Whitelist'] = {
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
--- Legion
--- Tomb of Sargeras
-	-- Goroth
+	-- Legion
+	-- Tomb of Sargeras
+		-- Goroth
 		[233279] = Defaults(), -- Shattering Star
 		[230345] = Defaults(), -- Crashing Comet
 		[231363] = Defaults(), -- Burning Armor
 		[234264] = Defaults(), -- Melted Armor
 		[233062] = Defaults(), -- Infernal Burning
 
-	-- Demonic Inquisition
+		-- Demonic Inquisition
 		[233430] = Defaults(), -- Ubearable Torment
 		[233983] = Defaults(), -- Echoing Anguish
 
-	-- Harjatan
+		-- Harjatan
 		[231770] = Defaults(), -- Drenched
 		[231998] = Defaults(), -- Jagged Abrasion
 		[231729] = Defaults(), -- Aqueous Burst
 		[234128] = Defaults(), -- Driven Assault
 
-	-- Sisters of the Moon
+		-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
-		[234996] = Defaults(), -- Umbra Suffusion
-		[234995] = Defaults(), -- Lunar Suffusion
-		[236519] = Defaults(), -- Moon Burn
+		[236598] = Defaults(5), -- Rapid Shot 1
+		[234995] = Defaults(5), -- Rapid Shot 2
+		[236519] = Defaults(4), -- Moon Burn
 		[236697] = Defaults(), -- Deathly Screech
 		[239264] = Defaults(), -- Lunar Flare (Tank)
-		[236712] = Defaults(), -- Lunar Beacon
+		[236712] = Defaults(5), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
 		[236550] = Defaults(), -- Discorporate (Tank)
 		[236330] = Defaults(), -- Astral Vulnerability
 		[236541] = Defaults(), -- Twilight Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
-	-- Mistress Sassz'ine
+		-- Mistress Sassz'ine
 		[230959] = Defaults(), -- Concealing Murk
 		[232722] = Defaults(), -- Slicing Tornado
 		[232913] = Defaults(), -- Befouling Ink
 		[234621] = Defaults(), -- Devouring Maw
 		[230201] = Defaults(), -- Burden of Pain (Tank)
 		[230139] = Defaults(), -- Hydra Shot
-		[232754] = Defaults(), -- Hydra Acid 
+		[232754] = Defaults(), -- Hydra Acid
 		[230384] = Defaults(), -- Consuming Hunger
-		[230358] = Defaults(), -- Thundering Shock 
+		[230358] = Defaults(), -- Thundering Shock
 
-	-- The Desolate Host
+		-- The Desolate Host
 		[236072] = Defaults(), -- Wailing Souls
 		[236449] = Defaults(), -- Soulbind
 		[236515] = Defaults(), -- Shattering Scream
@@ -710,7 +712,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236361] = Defaults(), -- Spirit Chains
 		[235968] = Defaults(), -- Grasping Darkness
 
-	-- Maiden of Vigilance
+		-- Maiden of Vigilance
 		[235117] = Defaults(), -- Unstable Soul !needs review
 		[240209] = Defaults(), -- Unstable Soul !needs review
 		[235534] = Defaults(), -- Creator's Grace
@@ -721,7 +723,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[235213] = Defaults(), -- Light Infusion
 		[235240] = Defaults(), -- Fel Infusion
 
-	-- Fallen Avatar
+		-- Fallen Avatar
 		[239058] = Defaults(), -- Touch of Sargeras
 		[239739] = Defaults(), -- Dark Mark
 		[234059] = Defaults(), -- Unbound Chaos
@@ -729,7 +731,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236604] = Defaults(), -- Shadowy Blades
 		[236494] = Defaults(), -- Desolate (Tank)
 
-	-- Kil'jaeden
+		-- Kil'jaeden
 		[238999] = Defaults(), -- Darkness of a Thousand Souls
 		[239216] = Defaults(), -- Darkness of a Thousand Souls (Dot)
 		[239155] = Defaults(), -- Gravity Squeeze
@@ -741,10 +743,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[238429] = Defaults(), -- Bursting Dreadflame
 		[236710] = Defaults(), -- Shadow Reflection: Erupting
 		[241822] = Defaults(), -- Choking Shadow
-		[236555] = Defaults(), -- Deceiver's Veil 
+		[236555] = Defaults(), -- Deceiver's Veil
 
--- The Nighthold
-	-- Skorpyron
+	-- The Nighthold
+		-- Skorpyron
 		[204766] = Defaults(), -- Energy Surge
 		[214718] = Defaults(), -- Acidic Fragments
 		[211801] = Defaults(), -- Volatile Fragments
@@ -753,7 +755,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[211659] = Defaults(), -- Arcane Tether (Tank debuff)
 		[204483] = Defaults(), -- Focused Blast (Stun)
 
-	-- Chronomatic Anomaly
+		-- Chronomatic Anomaly
 		[206607] = Defaults(), -- Chronometric Particles (Tank stack debuff)
 		[206609] = Defaults(), -- Time Release (Heal buff/debuff)
 		[219966] = Defaults(), -- Time Release (Heal Absorb Red)
@@ -764,7 +766,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[207871] = Defaults(), -- Vortex (Mythic)
 		[212099] = Defaults(), -- Temporal Charge
 
-	-- Trilliax
+		-- Trilliax
 		[206488] = Defaults(), -- Arcane Seepage
 		[206641] = Defaults(), -- Arcane Spear (Tank)
 		[206798] = Defaults(), -- Toxic Slice
@@ -774,7 +776,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[208910] = Defaults(), -- Arcing Bonds
 		[206838] = Defaults(), -- Succulent Feast
 
-	-- Spellblade Aluriel
+		-- Spellblade Aluriel
 		[212492] = Defaults(), -- Annihilate (Tank)
 		[212494] = Defaults(), -- Annihilated (Main Tank debuff)
 		[212587] = Defaults(), -- Mark of Frost
@@ -790,7 +792,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[213278] = Defaults(), -- Burning Ground
 		[213504] = Defaults(), -- Arcane Fog
 
-	-- Tichondrius
+		-- Tichondrius
 		[206480] = Defaults(), -- Carrion Plague
 		[215988] = Defaults(), -- Carrion Nightmare
 		[208230] = Defaults(), -- Feast of Blood
@@ -804,11 +806,11 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[216726] = Defaults(), -- Ring of Shadows
 		[216040] = Defaults(), -- Burning Soul
 
-	-- Krosus
+		-- Krosus
 		[206677] = Defaults(), -- Searing Brand
 		[205344] = Defaults(), -- Orb of Destruction
 
-	-- High Botanist Tel'arn
+		-- High Botanist Tel'arn
 		[218503] = Defaults(), -- Recursive Strikes (Tank)
 		[219235] = Defaults(), -- Toxic Spores
 		[218809] = Defaults(), -- Call of Night
@@ -816,7 +818,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[218304] = Defaults(), -- Parasitic Fetter
 		[218780] = Defaults(), -- Plasma Explosion
 
-	-- Star Augur Etraeus
+		-- Star Augur Etraeus
 		[205984] = Defaults(), -- Gravitaional Pull
 		[214167] = Defaults(), -- Gravitaional Pull
 		[214335] = Defaults(), -- Gravitaional Pull
@@ -833,7 +835,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[207720] = Defaults(), -- Witness the Void
 		[216697] = Defaults(), -- Frigid Pulse
 
-	-- Grand Magistrix Elisande
+		-- Grand Magistrix Elisande
 		[209166] = Defaults(), -- Fast Time
 		[211887] = Defaults(), -- Ablated
 		[209615] = Defaults(), -- Ablation
@@ -846,7 +848,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[211261] = Defaults(), -- Permaliative Torment
 		[208659] = Defaults(), -- Arcanetic Ring
 
-	-- Gul'dan
+		-- Gul'dan
 		[210339] = Defaults(), -- Time Dilation
 		[180079] = Defaults(), -- Felfire Munitions
 		[206875] = Defaults(), -- Fel Obelisk (Tank)
@@ -856,8 +858,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[208802] = Defaults(), -- Soul Corrosion
 		[212686] = Defaults(), -- Flames of Sargeras
 
--- The Emerald Nightmare
-	-- Nythendra
+	-- The Emerald Nightmare
+		-- Nythendra
 		[204504] = Defaults(), -- Infested
 		[205043] = Defaults(), -- Infested mind
 		[203096] = Defaults(), -- Rot
@@ -865,7 +867,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[203045] = Defaults(), -- Infested Ground
 		[203646] = Defaults(), -- Burst of Corruption
 
-	-- Elerethe Renferal
+		-- Elerethe Renferal
 		[210228] = Defaults(), -- Dripping Fangs
 		[215307] = Defaults(), -- Web of Pain
 		[215300] = Defaults(), -- Web of Pain
@@ -875,14 +877,14 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[215489] = Defaults(), -- Venomous Pool
 		[218519] = Defaults(), -- Wind Burn (Mythic)
 
-	-- Il'gynoth, Heart of the Corruption
+		-- Il'gynoth, Heart of the Corruption
 		[208929] = Defaults(),  -- Spew Corruption
 		[210984] = Defaults(),  -- Eye of Fate
 		[209469] = Defaults(5), -- Touch of Corruption
 		[208697] = Defaults(),  -- Mind Flay
 		[215143] = Defaults(),  -- Cursed Blood
 
-	-- Ursoc
+		-- Ursoc
 		[198108] = Defaults(), -- Unbalanced
 		[197943] = Defaults(), -- Overwhelm
 		[204859] = Defaults(), -- Rend Flesh
@@ -890,7 +892,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[198006] = Defaults(), -- Focused Gaze
 		[197980] = Defaults(), -- Nightmarish Cacophony
 
-	-- Dragons of Nightmare
+		-- Dragons of Nightmare
 		[203102] = Defaults(),  -- Mark of Ysondre
 		[203121] = Defaults(),  -- Mark of Taerar
 		[203125] = Defaults(),  -- Mark of Emeriss
@@ -902,7 +904,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[203770] = Defaults(5), -- Defiled Vines
 		[203787] = Defaults(5), -- Volatile Infection
 
-	-- Cenarius
+		-- Cenarius
 		[210279] = Defaults(), -- Creeping Nightmares
 		[213162] = Defaults(), -- Nightmare Blast
 		[210315] = Defaults(), -- Nightmare Brambles
@@ -912,7 +914,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[211612] = Defaults(), -- Replenishing Roots
 		[216516] = Defaults(), -- Ancient Dream
 
-	-- Xavius
+		-- Xavius
 		[206005] = Defaults(), -- Dream Simulacrum
 		[206651] = Defaults(), -- Darkening Soul
 		[209158] = Defaults(), -- Blackening Soul
@@ -925,8 +927,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[211634] = Defaults(), -- The Infinite Dark
 		[208385] = Defaults(), -- Tainted Discharge
 
--- Trial of Valor
-	-- Odyn
+	-- Trial of Valor
+		-- Odyn
 		[227959] = Defaults(), -- Storm of Justice
 		[227807] = Defaults(), -- Storm of Justice
 		[227475] = Defaults(), -- Cleansing Flame
@@ -941,7 +943,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[227500] = Defaults(), -- Branded
 		[231297] = Defaults(), -- Runic Brand (Mythic Only)
 
-	-- Guarm
+		-- Guarm
 		[228228] = Defaults(), -- Flame Lick
 		[228248] = Defaults(), -- Frost Lick
 		[228253] = Defaults(), -- Shadow Lick
@@ -949,7 +951,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[227566] = Defaults(), -- Salty Spittle
 		[227570] = Defaults(), -- Dark Discharge
 
-	-- Helya
+		-- Helya
 		[228883] = Defaults(5), -- Unholy Reckoning (Trash)
 		[227903] = Defaults(), -- Orb of Corruption
 		[228058] = Defaults(), -- Orb of Corrosion
@@ -1100,3 +1102,25 @@ G.unitframe.AuraBarColors = {
 G.unitframe.DebuffHighlightColors = {
 	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
+
+G.unitframe.specialFilters = {
+	['Boss'] = true,
+	['Personal'] = true,
+	['nonPersonal'] = true,
+	['CastByUnit'] = true,
+	['notCastByUnit'] = true,
+	['blockNoDuration'] = true,
+	['Dispellable'] = true,
+};
+
+G.unitframe.populatedSpecialFilters = {}; --populates from `G.unitframe.specialFilters` and `G.unitframe.aurafilters`
+
+for name, table in pairs(G.unitframe.aurafilters) do
+	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
+	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
+end
+for name, table in pairs(G.unitframe.specialFilters) do
+	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
+	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
+	G.unitframe.populatedSpecialFilters[name] = true;
+end

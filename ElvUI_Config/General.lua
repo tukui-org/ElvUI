@@ -226,10 +226,10 @@ E.Options.args.general = {
 				},
 				fontSize = {
 					order = 2,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 					type = "range",
-					min = 4, max = 212, step = 1,
+					min = 4, softMax = 32, step = 1,
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 				},
 				font = {
@@ -336,7 +336,7 @@ E.Options.args.general = {
 				colorsHeader = {
 					order = 30,
 					type = "header",
-					name = L["Colors"],
+					name = COLORS,
 				},
 				bordercolor = {
 					type = "color",
@@ -556,7 +556,7 @@ E.Options.args.general = {
 						['backdrop'] = L["Skin Backdrop"],
 						['nobackdrop'] = L["Remove Backdrop"],
 						['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
-						['disabled'] = L["Disabled"]
+						['disabled'] = DISABLE
 					}
 				},
 				font = {
@@ -567,16 +567,14 @@ E.Options.args.general = {
 					values = AceGUIWidgetLSMlists.font,
 					get = function(info) return E.private.general.chatBubbleFont end,
 					set = function(info, value) E.private.general.chatBubbleFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 				},
 				fontSize = {
 					order = 4,
 					type = "range",
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					get = function(info) return E.private.general.chatBubbleFontSize end,
 					set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					min = 4, max = 212, step = 1,
-					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 				},
 				fontOutline = {
 					order = 5,
@@ -584,21 +582,12 @@ E.Options.args.general = {
 					name = L["Font Outline"],
 					get = function(info) return E.private.general.chatBubbleFontOutline end,
 					set = function(info, value) E.private.general.chatBubbleFontOutline = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 					values = {
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
 					},
-				},
-				chatBubbleHideInInstance = {
-					type = "toggle",
-					order = 6,
-					name = L["Hide in Instances"],
-					get = function(info) return E.private.general.chatBubbleHideInInstance end,
-					set = function(info, value) E.private.general.chatBubbleHideInInstance = value; E:GetModule('Misc'):UpdateChatBubbleInstanceToggle(value) end,
-					disabled = function() return E.private.general.chatBubbles == "disabled" end,
 				},
 			},
 		},
@@ -667,7 +656,7 @@ E.Options.args.general = {
 				},
 				threatTextSize = {
 					order = 43,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 					get = function(info) return E.db.general.threat.textSize end,

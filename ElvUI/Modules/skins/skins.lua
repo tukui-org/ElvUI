@@ -36,6 +36,15 @@ function S:SetOriginalBackdrop()
 	self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 end
 
+function S:StatusBarColorGradient(bar, value, max, backdrop)
+    local current = (not max and value) or (value and max and max ~= 0 and value/max)
+    if not (bar and current) then return end
+    local r, g, b = E:ColorGradient(current, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
+    local bg = backdrop or bar.backdrop
+    if bg then bg:SetBackdropColor(r*0.25, g*0.25, b*0.25) end
+    bar:SetStatusBarColor(r, g, b)
+end
+
 function S:HandleButton(f, strip)
 	assert(f, "doesn't exist!")
 	if f.Left then f.Left:SetAlpha(0) end
@@ -271,6 +280,38 @@ function S:HandleRotateButton(btn)
 	btn:GetNormalTexture():SetInside()
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+end
+
+-- Introduced in 7.3
+function S:HandleMaxMinFrame(frame)
+	assert(frame, "does not exist.")
+
+	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
+		if frame then frame:StripTextures() end
+
+		local button = frame[name]
+		button:SetSize(16, 16)
+		button:ClearAllPoints()
+		button:SetPoint("CENTER")
+
+		button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+		button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+		button:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+
+		if not button.backdrop then
+			button:CreateBackdrop("Default", true)
+			button.backdrop:Point("TOPLEFT", button, 1, -1)
+			button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
+			button:HookScript('OnEnter', S.SetModifiedBackdrop)
+			button:HookScript('OnLeave', S.SetOriginalBackdrop)
+		end
+
+		if name == "MaximizeButton" then
+			button:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+			button:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+			button:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+		end
+	end
 end
 
 function S:HandleEditBox(frame)

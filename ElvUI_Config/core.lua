@@ -12,6 +12,15 @@ local AC = LibStub("AceConfig-3.0-ElvUI")
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local ACR = LibStub("AceConfigRegistry-3.0-ElvUI")
 
+local _G = _G
+local UnitName = UnitName
+local UnitIsUnit = UnitIsUnit
+local UnitIsFriend = UnitIsFriend
+local UnitIsPlayer = UnitIsPlayer
+local UnitExists = UnitExists
+local GameTooltip_Hide = GameTooltip_Hide
+local GameFontHighlightSmall = _G['GameFontHighlightSmall']
+
 AC:RegisterOptionsTable("ElvUI", E.Options)
 ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
@@ -173,17 +182,15 @@ local profileTypeItems = {
 	["profile"] = L["Profile"],
 	["private"] = L["Private (Character Settings)"],
 	["global"] = L["Global (Account Settings)"],
-	["filtersNP"] = L["Filters (NamePlates)"],
-	["filtersUF"] = L["Filters (UnitFrames)"],
-	["filtersAll"] = L["Filters (All)"],
+	["filters"] = L["Aura Filters"],
+	["styleFilters"] = L["NamePlate Style Filters"],
 }
 local profileTypeListOrder = {
 	"profile",
 	"private",
 	"global",
-	"filtersNP",
-	"filtersUF",
-	"filtersAll",
+	"filters",
+	"styleFilters",
 }
 local exportTypeItems = {
 	["text"] = L["Text"],
@@ -423,6 +430,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		desc = L["Sends your current profile to your target."],
 		type = 'execute',
 		order = 91,
+		customWidth = 220,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -441,6 +449,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		desc = L["Sends your filter settings to your target."],
 		type = 'execute',
 		order = 92,
+		customWidth = 220,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -464,12 +473,14 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		name = L["Export Profile"],
 		type = 'execute',
 		order = 94,
+		customWidth = 220,
 		func = function() ExportImport_Open("export") end,
 	},
 	importProfile = {
 		name = L["Import Profile"],
 		type = 'execute',
 		order = 95,
+		customWidth = 220,
 		func = function() ExportImport_Open("import") end,
 	},
 }

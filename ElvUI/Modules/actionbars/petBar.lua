@@ -111,9 +111,14 @@ function AB:PositionAndSizeBarPet()
 	local numColumns = ceil(numButtons / buttonsPerRow);
 	local widthMult = self.db['barPet'].widthMult;
 	local heightMult = self.db['barPet'].heightMult;
+	local visibility = self.db['barPet'].visibility;
 
 	bar.db = self.db['barPet']
 	bar.db.position = nil; --Depreciated
+
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
 
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons;
@@ -136,7 +141,7 @@ function AB:PositionAndSizeBarPet()
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db["barPet"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	bar:Width(barWidth);
 	bar:Height(barHeight);
-	
+
 	if self.db['barPet'].enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(bar.db.alpha);
@@ -159,14 +164,14 @@ function AB:PositionAndSizeBarPet()
 	else
 		horizontalGrowth = "LEFT";
 	end
-	
+
 	bar.mouseover = self.db['barPet'].mouseover
 	if(bar.mouseover) then
 		bar:SetAlpha(0);
 	else
 		bar:SetAlpha(bar.db.alpha);
-	end	
-	
+	end
+
 	if(self.db['barPet'].inheritGlobalFade) then
 		bar:SetParent(self.fadeParent)
 	else
@@ -235,7 +240,7 @@ function AB:PositionAndSizeBarPet()
 		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar and true or nil);
 	end
 
-	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
+	RegisterStateDriver(bar, "show", visibility);
 
 	--Fix issue with mover not updating size when bar is hidden
 	bar:GetScript("OnSizeChanged")(bar)
@@ -289,8 +294,8 @@ function AB:CreateBarPet()
 	for i=1, NUM_PET_ACTION_SLOTS do
 		self:HookScript(_G["PetActionButton"..i], 'OnEnter', 'Button_OnEnter');
 		self:HookScript(_G["PetActionButton"..i], 'OnLeave', 'Button_OnLeave');
-	end	
-	
+	end
+
 	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet');

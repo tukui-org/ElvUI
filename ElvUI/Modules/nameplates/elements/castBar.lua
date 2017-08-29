@@ -12,6 +12,7 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+local hooksecurefunc = hooksecurefunc
 
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
@@ -217,7 +218,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	else
 		frame.CastBar:SetStatusBarColor(self.db.castNoInterruptColor.r, self.db.castNoInterruptColor.g, self.db.castNoInterruptColor.b)
 	end
-	frame.CastBar.canInterrupt = nil
+
+	if frame.CastBar:IsShown() then --This is so we can trigger based on Cast Name or Interruptible
+		self:UpdateElement_Filters(frame)
+	else
+		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
+	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update(frame)
@@ -250,7 +256,6 @@ function mod:ConfigureElement_CastBar(frame)
 	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
-
 	castBar.Name:SetJustifyH("LEFT")
 	castBar.Name:SetJustifyV("TOP")
 	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
@@ -278,9 +283,32 @@ function mod:ConfigureElement_CastBar(frame)
 end
 
 function mod:ConstructElement_CastBar(parent)
+	local function updateGlowPosition(castBar)
+		if not parent.Glow2 then return end
+		local scale = 1;
+		if mod.db.useTargetScale then
+			if mod.db.targetScale >= 0.75 then
+				scale = mod.db.targetScale
+			else
+				scale = 0.75
+			end
+		end
+		local powerBar = parent.PowerBar:IsShown() and parent.PowerBar;
+		local size = E.Border*(10+(powerBar and 3 or 0))*scale;
+		if castBar:IsShown() then
+			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(2+size*2), E:Scale(2+size))
+			parent.Glow2:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMRIGHT", E:Scale(4+size*2), -E:Scale(4+size))
+		else
+			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(size*2), E:Scale(size))
+			parent.Glow2:SetPoint("BOTTOMRIGHT", powerBar or parent.HealthBar, "BOTTOMRIGHT", E:Scale(size*2), -E:Scale(size))
+		end
+	end
+
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
 	self:StyleFrame(frame)
 	frame:SetScript("OnUpdate", mod.UpdateElement_CastBarOnUpdate)
+	frame:SetScript("OnShow", updateGlowPosition)
+	frame:SetScript("OnHide", updateGlowPosition)
 
 	frame.Icon = CreateFrame("Frame", nil, frame)
 	frame.Icon.texture = frame.Icon:CreateTexture(nil, "BORDER")
@@ -296,5 +324,15 @@ function mod:ConstructElement_CastBar(parent)
 	frame.Spark:SetBlendMode("ADD")
 	frame.Spark:SetSize(15, 15)
 	frame:Hide()
+
+	hooksecurefunc(frame, "Hide", function(self)
+		if not (parent.unit and parent.castbarTriggered) then return end
+		parent.castbarTriggered = nil
+		mod:UpdateElement_All(parent, parent.unit, true)
+		if parent.isTarget and mod.db.useTargetScale then
+			mod:SetFrameScale(parent, mod.db.targetScale)
+		end
+	end)
+
 	return frame
 end

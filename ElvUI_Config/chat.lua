@@ -1,6 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:GetModule('Chat')
 
+local _G = _G
+local gsub = string.gsub
+local strlower = string.lower
+local GameTooltip = _G['GameTooltip']
+
 E.Options.args.chat = {
 	type = "group",
 	name = L["Chat"],
@@ -428,7 +433,7 @@ E.Options.args.chat = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -452,7 +457,7 @@ E.Options.args.chat = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -496,7 +501,7 @@ E.Options.args.chat = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
-						if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+						if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 						E.global.chat.classColorMentionExcludedNames[strlower(value)] = value
 					end,
 				},

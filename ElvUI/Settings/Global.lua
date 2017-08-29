@@ -20,8 +20,6 @@ G['general'] = {
 
 G['classtimer'] = {}
 
-G["nameplate"] = {}
-
 G["chat"] = {
 	["classColorMentionExcludedNames"] = {},
 }

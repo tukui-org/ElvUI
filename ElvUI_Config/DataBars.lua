@@ -91,7 +91,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -100,7 +100,7 @@ E.Options.args.databars = {
 					type = "select",
 					name = L["Font Outline"],
 					values = {
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
@@ -195,7 +195,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -204,7 +204,7 @@ E.Options.args.databars = {
 					type = "select",
 					name = L["Font Outline"],
 					values = {
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
@@ -294,7 +294,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -303,7 +303,7 @@ E.Options.args.databars = {
 					type = "select",
 					name = L["Font Outline"],
 					values = {
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
@@ -399,7 +399,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -408,7 +408,7 @@ E.Options.args.databars = {
 					type = "select",
 					name = L["Font Outline"],
 					values = {
-						["NONE"] = L["None"],
+						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",

@@ -271,16 +271,8 @@ local function GetProfileData(profileType)
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 
-	elseif profileType == "filtersNP" then
-		profileKey = "filtersNP"
-
-		profileData["nameplate"] = {}
-		profileData["nameplate"]["filter"] = {}
-		profileData["nameplate"]["filter"] = E:CopyTable(profileData["nameplate"]["filter"], ElvDB.global.nameplate.filter)
-		profileData = E:RemoveTableDuplicates(profileData, G)
-
-	elseif profileType == "filtersUF" then
-		profileKey = "filtersUF"
+	elseif profileType == "filters" then
+		profileKey = "filters"
 
 		profileData["unitframe"] = {}
 		profileData["unitframe"]["aurafilters"] = {}
@@ -288,18 +280,12 @@ local function GetProfileData(profileType)
 		profileData["unitframe"]["buffwatch"] = {}
 		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
-
-	elseif profileType == "filtersAll" then
-		profileKey = "filtersAll"
+	elseif profileType == "styleFilters" then
+		profileKey = "styleFilters"
 
 		profileData["nameplate"] = {}
-		profileData["nameplate"]["filter"] = {}
-		profileData["nameplate"]["filter"] = E:CopyTable(profileData["nameplate"]["filter"], ElvDB.global.nameplate.filter)
-		profileData["unitframe"] = {}
-		profileData["unitframe"]["aurafilters"] = {}
-		profileData["unitframe"]["aurafilters"] = E:CopyTable(profileData["unitframe"]["aurafilters"], ElvDB.global.unitframe.aurafilters)
-		profileData["unitframe"]["buffwatch"] = {}
-		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
+		profileData["nameplate"]["filters"] = {}
+		profileData["nameplate"]["filters"] = E:CopyTable(profileData["nameplate"]["filters"], ElvDB.global.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 
@@ -450,15 +436,10 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
 
-	elseif profileType == "filtersNP" then
-		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
-
-	elseif profileType == "filtersUF" then
+	elseif profileType == "filters" then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
-
-	elseif profileType == "filtersAll" then
+	elseif profileType == "styleFilters" then
 		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
-		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	end
 
 	--Update all ElvUI modules

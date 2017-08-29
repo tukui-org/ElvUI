@@ -64,7 +64,6 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local DEAD = DEAD
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
@@ -79,10 +78,11 @@ local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
 local PVP = PVP
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local TARGET = TARGET
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
--- GLOBALS: ItemRefCloseButton, RightChatToggleButton, BNToastFrame, MMHolder, GameTooltipText
+-- GLOBALS: RightChatToggleButton, BNToastFrame, MMHolder, GameTooltipText
 -- GLOBALS: BNETMover, ItemRefTooltip, InspectFrame,  GameTooltipHeaderText, GameTooltipTextSmall
 -- GLOBALS: ShoppingTooltip1TextLeft1, ShoppingTooltip1TextLeft2, ShoppingTooltip1TextLeft3
 -- GLOBALS: ShoppingTooltip1TextLeft4, ShoppingTooltip1TextRight1, ShoppingTooltip1TextRight2
@@ -90,6 +90,7 @@ local TARGET = TARGET
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
 -- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
@@ -99,26 +100,6 @@ local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
 local keybindFrame
-
-local tooltips = {
-	GameTooltip,
-	ItemRefTooltip,
-	ItemRefShoppingTooltip1,
-	ItemRefShoppingTooltip2,
-	ItemRefShoppingTooltip3,
-	AutoCompleteBox,
-	FriendsTooltip,
-	ShoppingTooltip1,
-	ShoppingTooltip2,
-	ShoppingTooltip3,
-	WorldMapTooltip,
-	WorldMapCompareTooltip1,
-	WorldMapCompareTooltip2,
-	WorldMapCompareTooltip3,
-	DropDownList1MenuBackdrop,
-	DropDownList2MenuBackdrop,
-	DropDownList3MenuBackdrop,
-}
 
 local classification = {
 	worldboss = format("|cffAF5050 %s|r", BOSS),
@@ -746,13 +727,7 @@ function TT:Initialize()
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:Height(self.db.healthBar.height)
-	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(GameTooltipStatusBar)
-	GameTooltipStatusBar:CreateBackdrop('Transparent')
-	GameTooltipStatusBar:SetScript("OnValueChanged", self.OnValueChanged)
-	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	GameTooltipStatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
@@ -773,7 +748,6 @@ function TT:Initialize()
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"])
 
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
-	self:SecureHook('GameTooltip_ShowStatusBar')
 	self:SecureHook("SetItemRef")
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
@@ -782,50 +756,15 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
-	self:SecureHookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
-	self:SecureHookScript(GameTooltip, "OnUpdate", "CheckBackdropColor") --There has to be a more elegant way of doing this.
-
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
-	self:RegisterEvent("CURSOR_UPDATE", "CheckBackdropColor")
-	E.Skins:HandleCloseButton(ItemRefCloseButton)
-	for _, tt in pairs(tooltips) do
-		self:SecureHookScript(tt, 'OnShow', 'SetStyle')
-	end
-
-	--World Quest Reward Icon
-	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, "SetVertexColor", function(self, r, g, b)
-		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-		self:SetTexture("")
-	end)
-	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, "Hide", function(self)
-		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end)
-	WorldMapTooltip.ItemTooltip:CreateBackdrop()
-	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
-	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
-	WorldMapTooltip.ItemTooltip.Count:SetPoint("BOTTOMRIGHT", WorldMapTooltip.ItemTooltip.Icon, "BOTTOMRIGHT", 1, 0)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
-	
+
 	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
 	playerGUID = UnitGUID("player")
-
-	-- Tooltip Statusbars
-	local function SkinTooltipProgressBar(frame)
-		frame:CreateBackdrop("Transparent")
-		frame:DisableDrawLayer("BORDER")
-		frame:DisableDrawLayer("ARTWORK")
-		frame:SetStatusBarTexture(E["media"].normTex)
-		E:RegisterStatusBar(frame)
-		frame.Label:SetDrawLayer("OVERLAY")
-	end
-	SkinTooltipProgressBar(ReputationParagonTooltipStatusBar.Bar)
-	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar.Bar)
 end
 
 local function InitializeCallback()

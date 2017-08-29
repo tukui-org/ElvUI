@@ -1,6 +1,12 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
+local _G = _G
+local gsub = string.gsub
+local match = string.match
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
+local GameTooltip = _G['GameTooltip']
+
 E.Options.args.bags = {
 	type = 'group',
 	name = L["Bags"],
@@ -52,7 +58,7 @@ E.Options.args.bags = {
 					values = {
 						['SMART'] = L["Smart"],
 						['FULL'] = L["Full"],
-						['SHORT'] = L["Short"],
+						['SHORT'] = SHORT,
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
@@ -124,7 +130,7 @@ E.Options.args.bags = {
 						countFontColor = {
 							order = 2,
 							type = 'color',
-							name = L["Color"],
+							name = COLOR,
 							get = function(info)
 								local t = E.db.bags[ info[#info] ]
 								local d = P.bags[info[#info]]
@@ -139,7 +145,7 @@ E.Options.args.bags = {
 						countFontSize = {
 							order = 3,
 							type = "range",
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.bags.countFontSize = value; B:UpdateCountDisplay() end,
 						},
@@ -149,7 +155,7 @@ E.Options.args.bags = {
 							name = L["Font Outline"],
 							set = function(info, value) E.db.bags.countFontOutline = value; B:UpdateCountDisplay() end,
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -191,7 +197,7 @@ E.Options.args.bags = {
 						itemLevelFontSize = {
 							order = 4,
 							type = "range",
-							name = L["Font Size"],
+							name = FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontSize = value; B:UpdateItemLevelDisplay() end,
@@ -203,7 +209,7 @@ E.Options.args.bags = {
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontOutline = value; B:UpdateItemLevelDisplay() end,
 							values = {
-								['NONE'] = L["None"],
+								['NONE'] = NONE,
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -372,10 +378,10 @@ E.Options.args.bags = {
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = string.match(value, "item:(%d+)")
+								local itemID = match(value, "item:(%d+)")
 								E.db.bags.ignoredItems[(itemID or value)] = value
 							end,
 						},
@@ -392,10 +398,10 @@ E.Options.args.bags = {
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = string.match(value, "item:(%d+)")
+								local itemID = match(value, "item:(%d+)")
 								E.global.bags.ignoredItems[(itemID or value)] = value
 								
 								--Remove from profile list if we just added the same item to global list

@@ -1,7 +1,7 @@
-## Interface: 70200
+## Interface: 70300
 ## Author: Elv
-## Version: 1.04
-## Title: |cff1784d1ElvUI Config|r
+## Version: 1.05
+## Title: |cfffe7b2cElvUI Config|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1

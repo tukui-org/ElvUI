@@ -1,6 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local A = E:GetModule('Auras')
 
+local format = string.format
+
+-- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+
 local function GetAuraOptions(headerName)
 	local auraOptions = {
 		header = {
@@ -151,7 +155,7 @@ E.Options.args.auras = {
 				},
 				fontSize = {
 					order = 3,
-					name = L["Font Size"],
+					name = FONT_SIZE,
 					type = "range",
 					min = 4, max = 212, step = 1,
 				},
@@ -161,7 +165,7 @@ E.Options.args.auras = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L["None"],
+						['NONE'] = NONE,
 						['OUTLINE'] = 'OUTLINE',
 
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',

@@ -18,8 +18,15 @@ local StaticPopup_Resize = StaticPopup_Resize
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
 local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local IG_MAINMENU_CLOSE
+local IG_MAINMENU_OPEN
+if SOUNDKIT then
+	IG_MAINMENU_CLOSE = SOUNDKIT.IG_MAINMENU_CLOSE
+	IG_MAINMENU_OPEN = SOUNDKIT.IG_MAINMENU_OPEN
+end
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
+local PlaySoundKitID = PlaySoundKitID
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
@@ -389,10 +396,55 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
+	text = "There have been some major changes in this version of ElvUI. Style Filters have been introduced to NamePlates, and the Aura Filtering system for NamePlates and UnitFrames has been reworked. We recommend you read the following forum post for more information.",
+	OnShow = function(self)
+		self.editBox:SetAutoFocus(false)
+		self.editBox.width = self.editBox:GetWidth()
+		self.editBox:Width(300)
+		self.editBox:SetText("https://www.tukui.org/forum/viewtopic.php?f=8&t=286")
+		self.editBox:HighlightText()
+		self.button1:Disable()
+		self.HideOrig = self.Hide
+		self.Hide = E.noop
+		ChatEdit_FocusActiveWindow();
+	end,
+	OnHide = function(self)
+		self.editBox:Width(self.editBox.width or 50)
+		self.editBox.width = nil
+	end,
+	EditBoxOnTextChanged = function(self)
+		if(self:GetText() ~= "https://www.tukui.org/forum/viewtopic.php?f=8&t=286") then
+			self:SetText("https://www.tukui.org/forum/viewtopic.php?f=8&t=286")
+		end
+		self:HighlightText()
+		self:ClearFocus()
+		ChatEdit_FocusActiveWindow();
+	end,
+	OnEditFocusGained = function(self)
+		self:HighlightText()
+	end,
+	OnCancel = function(self, data, reason)
+		if ( reason == "timeout" ) then
+			self.button1:Enable();
+		end
+	end,
+	OnAccept = function(self)
+		self.Hide = self.HideOrig
+		self.HideOrig = nil
+		E:StaticPopup_Hide('ELVUI_INFORM_NEW_CHANGES')
+	end,
+	button1 = OKAY,
+	showAlert = 1,
+	timeout = 15,
+	hideOnEscape = 0,
+	hasEditBox = 1,
+}
+
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
-	PlaySound("igMainMenuOpen");
+	PlaySound(PlaySoundKitID and "igMainMenuOpen" or IG_MAINMENU_OPEN);
 
 	local dialog = E.PopupDialogs[self.which];
 	local OnShow = dialog.OnShow;
@@ -510,7 +562,7 @@ function E:StaticPopup_OnKeyDown(key)
 end
 
 function E:StaticPopup_OnHide()
-	PlaySound("igMainMenuClose");
+	PlaySound(PlaySoundKitID and "igMainMenuClose" or IG_MAINMENU_CLOSE);
 
 	E:StaticPopup_CollapseTable();
 
