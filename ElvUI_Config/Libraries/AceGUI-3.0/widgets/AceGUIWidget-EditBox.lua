@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox", 25
+local Type, Version = "EditBox", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -73,7 +73,7 @@ local function EditBox_OnEnterPressed(frame)
 	local value = frame:GetText()
 	local cancel = self:Fire("OnEnterPressed", value)
 	if not cancel then
-		-- PlaySound("igMainMenuOptionCheckBoxOn")
+		PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOn" or 856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 		HideButton(self)
 	end
 end
@@ -200,6 +200,10 @@ local methods = {
 		if not self.frame:IsShown() then
 			self.frame:SetScript("OnShow", Frame_OnShowFocus)
 		end
+	end,
+
+	["HighlightText"] = function(self, from, to)
+		self.editbox:HighlightText(from, to)
 	end
 }
 

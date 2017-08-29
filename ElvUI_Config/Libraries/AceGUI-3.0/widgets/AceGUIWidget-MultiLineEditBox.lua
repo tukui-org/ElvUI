@@ -1,4 +1,4 @@
-local Type, Version = "MultiLineEditBox", 27
+local Type, Version = "MultiLineEditBox", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -13,12 +13,6 @@ local _G = _G
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
 -- GLOBALS: ACCEPT, ChatFontNormal
-
-local wowMoP
-do
-	local _, _, _, interface = GetBuildInfo()
-	wowMoP = (interface >= 50000)
-end
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -251,7 +245,11 @@ local methods = {
 			self.frame:SetScript("OnShow", OnShowFocus)
 		end
 	end,
-	
+
+	["HighlightText"] = function(self, from, to)
+		self.editBox:HighlightText(from, to)
+	end,
+
 	["GetCursorPosition"] = function(self)
 		return self.editBox:GetCursorPosition()
 	end,
@@ -285,7 +283,7 @@ local function Constructor()
 	label:SetText(ACCEPT)
 	label:SetHeight(10)
 
-	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
+	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, "UIPanelButtonTemplate")
 	button:SetPoint("BOTTOMLEFT", 0, 4)
 	button:SetHeight(22)
 	button:SetWidth(label:GetStringWidth() + 24)

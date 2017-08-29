@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 Frame Container
 -------------------------------------------------------------------------------]]
-local Type, Version = "Frame", 24
+local Type, Version = "Frame", 26
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -21,8 +21,12 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 Scripts
 -------------------------------------------------------------------------------]]
 local function Button_OnClick(frame)
-	-- PlaySound("gsTitleOptionExit")
+	PlaySound(PlaySoundKitID and "gsTitleOptionExit" or 799) -- SOUNDKIT.GS_TITLE_OPTION_EXIT
 	frame.obj:Hide()
+end
+
+local function Frame_OnShow(frame)
+	frame.obj:Fire("OnShow")
 end
 
 local function Frame_OnClose(frame)
@@ -186,6 +190,7 @@ local function Constructor()
 	frame:SetBackdropColor(0, 0, 0, 1)
 	frame:SetMinResize(400, 200)
 	frame:SetToplevel(true)
+	frame:SetScript("OnShow", Frame_OnShow)
 	frame:SetScript("OnHide", Frame_OnClose)
 	frame:SetScript("OnMouseDown", Frame_OnMouseDown)
 

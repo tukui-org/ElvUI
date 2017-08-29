@@ -10,15 +10,15 @@
 -- @class file
 -- @name AceEvent-3.0
 -- @release $Id: AceEvent-3.0.lua 975 2010-10-23 11:26:18Z nevcairiel $
-local MAJOR, MINOR = "AceEvent-3.0", 3
+local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
+
+local MAJOR, MINOR = "AceEvent-3.0", 4
 local AceEvent = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceEvent then return end
 
 -- Lua APIs
 local pairs = pairs
-
-local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
 
 AceEvent.frame = AceEvent.frame or CreateFrame("Frame", "AceEvent30Frame") -- our event frame
 AceEvent.embeds = AceEvent.embeds or {} -- what objects embed this lib

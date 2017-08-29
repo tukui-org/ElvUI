@@ -2,7 +2,7 @@
 Slider Widget
 Graphical Slider, like, for Range values.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Slider", 21
+local Type, Version = "Slider", 22
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -108,7 +108,7 @@ local function EditBox_OnEnterPressed(frame)
 	end
 	
 	if value then
-		-- PlaySound("igMainMenuOptionCheckBoxOn")
+		PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOn" or 856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 		self.slider:SetValue(value)
 		self:Fire("OnMouseUp", value)
 	end
