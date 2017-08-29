@@ -430,7 +430,6 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		desc = L["Sends your current profile to your target."],
 		type = 'execute',
 		order = 91,
-		customWidth = 220,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -449,7 +448,6 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		desc = L["Sends your filter settings to your target."],
 		type = 'execute',
 		order = 92,
-		customWidth = 220,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -473,14 +471,12 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		name = L["Export Profile"],
 		type = 'execute',
 		order = 94,
-		customWidth = 220,
 		func = function() ExportImport_Open("export") end,
 	},
 	importProfile = {
 		name = L["Import Profile"],
 		type = 'execute',
 		order = 95,
-		customWidth = 220,
 		func = function() ExportImport_Open("import") end,
 	},
 }
