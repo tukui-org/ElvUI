@@ -275,7 +275,6 @@ options.new = {
 	name = "New",
 	type = "input",
 	order = 30,
-	customWidth = 220,
 	get = false,
 	set = function(info, value)
 		local db = info.handler.db
@@ -291,7 +290,6 @@ options.choose = {
 	name = "Existing Profiles",
 	type = "select",
 	order = 40,
-	customWidth = 220,
 	get = "GetCurrentProfile",
 	set = "SetProfile",
 	values = "ListProfiles",
@@ -319,7 +317,6 @@ for i = 1, numSpecs do
 		type = "select",
 		name = function() return lib.currentSpec == i and L_CURRENT:format(specName) or specName end,
 		order = 42 + i,
-		customWidth = 220,
 		get = function(info) return info.handler.db:GetDualSpecProfile(i) end,
 		set = function(info, value) info.handler.db:SetDualSpecProfile(value, i) end,
 		values = "ListProfiles",
@@ -353,16 +350,6 @@ function lib:EnhanceOptions(optionTable, target)
 	options.new.desc = optionTable.args.new.desc
 	options.choose.name = optionTable.args.choose.name
 	options.choose.desc = optionTable.args.choose.desc
-
-	if optionTable.args.copyfrom then
-		optionTable.args.copyfrom.customWidth = 220
-	end
-	if optionTable.args.reset then
-		optionTable.args.reset.customWidth = 220
-	end
-	if optionTable.args.delete then
-		optionTable.args.delete.customWidth = 220
-	end
 
 	-- add our new options
 	if not optionTable.plugins then
