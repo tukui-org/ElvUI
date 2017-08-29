@@ -1373,6 +1373,17 @@ function E:DBConversions()
 
 	--Prevent error for testers, remove this before release
 	for filter, content in pairs(E.global.nameplate.filters) do
+		if not E.db.nameplates.filters[filter] then --switch to profile based style filter enabling
+			E.global.nameplate.filters[filter].triggers.enable = nil --remove trigger enable from global filter
+			if P.nameplates.filters[filter] then --if its a default filter just copy the settings
+				E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter])
+			else --otherwise just use a default table and set enable to false
+				E.db.nameplates.filters[filter] = {}
+				E.db.nameplates.filters[filter].triggers = {
+					["enable"] = false,
+				}
+			end
+		end
 		if filter == "TestFilter" then
 			E.global.nameplate.filters[filter] = nil --Remove it
 		else

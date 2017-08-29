@@ -18,7 +18,6 @@ G["nameplate"] = {
 	["filters"] = {
 		["Boss"] = {
 			["triggers"] = {
-				["enable"] = true,
 				["priority"] = 1,
 				["isTarget"] = false,
 				["notTarget"] = false,

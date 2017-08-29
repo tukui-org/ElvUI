@@ -252,6 +252,13 @@ P["nameplates"] = {
 		["badScale"] = 1.2,
 		["useThreatColor"] = true,
 	},
+	["filters"] = {
+		["Boss"] = {
+			["triggers"] = {
+				["enable"] = true,
+			},
+		},
+	},
 
 	["clickableWidth"] = 150,
 	["clickableHeight"] = 50,

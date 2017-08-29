@@ -712,7 +712,7 @@ function mod:UpdateElement_Filters(frame)
 	twipe(filterList)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
-		if filter.triggers and filter.triggers.enable then
+		if filter.triggers and E.db.nameplates.filters[filterName].triggers.enable then
 			tinsert(filterList, {filterName, filter.triggers.priority or 1})
 		end
 	end
