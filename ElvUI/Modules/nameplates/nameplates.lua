@@ -345,8 +345,6 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
-	if type(unit) ~= "string" then return; end --Prevent weird issue where unit is sometimes a boolean o.O
-
 	local frame = frame or self:GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
 	frame.UnitFrame.displayedUnit = unit
@@ -1013,7 +1011,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
-	if ((unit and type(unit) == "string") and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
+	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
 	end
 
@@ -1142,7 +1140,7 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit)
 	end
 
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
