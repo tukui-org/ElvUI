@@ -77,8 +77,8 @@ end
 local specListOrder = 50 --start at 50
 local classTable, classIndexTable, classOrder
 local function UpdateClassSpec(classTag, coloredName, enabled)
-	specListOrder = specListOrder+(enabled ~= false and 1 or -1)
 	if not (classTable[classTag] and classTable[classTag].classID) then return end
+	specListOrder = specListOrder+(enabled ~= false and 1 or -1)
 	local classSpec = format("%s%s", classTag, "spec");
 	if (not enabled) and E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
 		E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = nil
