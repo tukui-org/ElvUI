@@ -418,6 +418,8 @@ local function GetStyleFilterDefaultOptions(filter)
 					["enable"] = (E.data.profiles[profile] == E.db and true) or false,
 				}
 			}
+		elseif E.data.profiles[profile] == E.db then
+			E.data.profiles[profile].nameplates.filters[filter].triggers.enable = true
 		end
 	end
 
