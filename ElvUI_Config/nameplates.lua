@@ -411,7 +411,7 @@ local function GetStyleFilterDefaultOptions(filter)
 		},
 	}
 
-	for profile, settings in pairs(E.data.profiles) do
+	for profile in pairs(E.data.profiles) do
 		if not E.data.profiles[profile].nameplates.filters[filter] then
 			E.data.profiles[profile].nameplates.filters[filter] = {
 				["triggers"] = {
@@ -2973,7 +2973,7 @@ E.Options.args.nameplate = {
 							E.db.nameplates.filters[value].triggers.enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
-							for profile, settings in pairs(E.data.profiles) do
+							for profile in pairs(E.data.profiles) do
 								if E.data.profiles[profile].nameplates.filters[value] then
 									E.data.profiles[profile].nameplates.filters[value] = nil;
 								end
