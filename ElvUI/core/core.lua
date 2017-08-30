@@ -1391,9 +1391,9 @@ function E:DBConversions()
 				["damager"] = false,
 			}
 		end
-		--[[if not content.triggers.class then
+		if not content.triggers.class then --this can stay empty we only will accept values that exist
 			E.global.nameplate.filters[filter].triggers.class = {}
-		end]]
+		end
 
 		--older ones below here
 		if filter == "TestFilter" then

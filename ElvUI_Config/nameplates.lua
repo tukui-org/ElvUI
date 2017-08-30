@@ -6,12 +6,18 @@ local next = next
 local ipairs = ipairs
 local tremove = tremove
 local tinsert = tinsert
+local tsort = table.sort
 local tonumber = tonumber
 local tconcat = table.concat
 local format = string.format
 local GetSpellInfo = GetSpellInfo
+local GetNumClasses = GetNumClasses
+local GetClassInfo = GetClassInfo
+local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
-local LEVEL, NONE, REPUTATION, COMBAT = LEVEL, NONE, REPUTATION, COMBAT
+local LEVEL, NONE, REPUTATION, COMBAT, FILTERS = LEVEL, NONE, REPUTATION, COMBAT, FILTERS
+local CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -21,7 +27,8 @@ local FACTION_STANDING_LABEL5 = FACTION_STANDING_LABEL5
 local FACTION_STANDING_LABEL6 = FACTION_STANDING_LABEL6
 local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
 local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
--- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+-- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists, CUSTOM_CLASS_COLORS
 
 local selectedNameplateFilter
 
@@ -64,6 +71,111 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
 	elseif not found and not remove then
 		E.db.nameplates.units[unit][auraType].filters.priority = (filter == '' and value) or (filter..","..value)
+	end
+end
+
+local specListOrder = 50 --start at 50
+local classTable, classIndexTable, classOrder
+local function UpdateClassSpec(classTag, coloredName, enabled)
+	specListOrder = specListOrder+(enabled ~= false and 1 or -1)
+	if not (classTable[classTag] and classTable[classTag].classID) then return end
+	local classSpec = format("%s%s", classTag, "spec");
+	if (not enabled) and E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
+		E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = nil
+		return --stop when we remove one
+	end
+	if not E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
+		E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = {
+			order = specListOrder,
+			type = "group",
+			name = classTable[classTag].name,
+			guiInline = true,
+			args = {},
+		}
+	end
+	local coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
+	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
+	for i=1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
+		local specID, name, description, iconID, role, isRecommended, isAllowed = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
+		local tagID = format("%s%s", classTag, specID)
+		if not E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec].args[tagID] then
+			E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec].args[tagID] = {
+				order = i,
+				name = format("|c%s%s|r", coloredName, name),
+				type = 'toggle',
+				get = function(info)
+					local tagTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag]
+					return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID]
+				end,
+				set = function(info, value)
+					--set this to nil if false to keep its population to only enabled ones
+					local tagTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag]
+					if not tagTrigger.specs then
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag].specs = {}
+					end
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag].specs[specID] = value or nil
+					if not next(E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag].specs) then
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag].specs = nil
+					end
+					NP:ConfigureAll()
+				end
+			}
+		end
+	end
+end
+
+local function UpdateClassSection()
+	if E.global.nameplate.filters[selectedNameplateFilter] then
+		if not classTable then
+			local classDisplayName, classTag, classID;
+			classTable, classIndexTable = {}, {}
+			for i=1, GetNumClasses() do
+				classDisplayName, classTag, classID = GetClassInfo(i)
+				if not classTable[classTag] then
+					classTable[classTag] = {}
+				end
+				classTable[classTag].name = classDisplayName
+				classTable[classTag].classID = classID
+			end
+			for classTag, content in pairs(classTable) do
+				tinsert(classIndexTable, classTag)
+			end
+			tsort(classIndexTable)
+		end
+		classOrder = 0
+		local coloredName;
+		for index, classTag in ipairs(classIndexTable) do
+			classOrder = classOrder + 1
+			coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
+			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
+			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
+			if classTrigger and classTrigger[classTag] and classTrigger[classTag].enabled then
+				UpdateClassSpec(classTag) --populate enabled class spec boxes
+			end
+			E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classTag] = {
+				order = classOrder,
+				name = format("|c%s%s|r", coloredName, classTable[classTag].name),
+				type = 'toggle',
+				get = function(info)
+					local tagTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag]
+					return tagTrigger and tagTrigger.enabled
+				end,
+				set = function(info, value)
+					local tagTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag]
+					if not tagTrigger then
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag] = {}
+					end
+					--set this to nil if false to keep its population to only enabled ones
+					if value then
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag].enabled = value
+					else
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.class[classTag] = nil
+					end
+					UpdateClassSpec(classTag, value)
+					NP:ConfigureAll()
+				end
+			}
+		end
 	end
 end
 
@@ -238,6 +350,7 @@ local function GetStyleFilterDefaultOptions(filter)
 				["healer"] = false,
 				["damager"] = false,
 			},
+			["class"] = {}, --this can stay empty we only will accept values that exist
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
@@ -1379,6 +1492,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
+		UpdateClassSection()
 		UpdateStyleLists()
 	end
 end

@@ -31,6 +31,7 @@ G["nameplate"] = {
 					["healer"] = false,
 					["damager"] = false,
 				},
+				["class"] = {}, --this can stay empty we only will accept values that exist
 				["curlevel"] = -1,
 				["maxlevel"] = 0,
 				["minlevel"] = 0,
