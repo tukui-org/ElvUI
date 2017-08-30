@@ -30,6 +30,9 @@ if(not ElvDB.profiles["Minimalistic"]) then
 			},
 			["fontSize"] = 11,
 		},
+		["nameplates"] = {
+			["filters"] = {},
+		},
 		["movers"] = {
 			["PetAB"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-50,-428",
 			["ElvUF_RaidMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,51,120",
