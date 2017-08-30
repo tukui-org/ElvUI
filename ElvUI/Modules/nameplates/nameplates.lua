@@ -345,6 +345,8 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
+	if type(unit) ~= "string" then return; end --Prevent weird issue where unit is sometimes a boolean o.O
+
 	local frame = frame or self:GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
 	frame.UnitFrame.displayedUnit = unit
