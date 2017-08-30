@@ -11,7 +11,7 @@
 -- @class file
 -- @name AceSerializer-3.0
 -- @release $Id: AceSerializer-3.0.lua 1038 2011-10-03 01:39:58Z mikk $
-local MAJOR,MINOR = "AceSerializer-3.0", 4
+local MAJOR,MINOR = "AceSerializer-3.0", 5
 local AceSerializer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceSerializer then return end
@@ -27,8 +27,8 @@ local tconcat = table.concat
 local inf = math.huge
 
 local serNaN  -- can't do this in 4.3, see ace3 ticket 268
-local serInf = tostring(inf)
-local serNegInf = tostring(-inf)
+local serInf, serInfMac = "1.#INF", "inf"
+local serNegInf, serNegInfMac = "-1.#INF", "-inf"
 
 
 -- Serialization functions
@@ -66,6 +66,10 @@ local function SerializeValue(v, res, nres)
 			-- translates just fine, transmit as-is
 			res[nres+1] = "^N"
 			res[nres+2] = str
+			nres=nres+2
+		elseif v == inf or v == -inf then
+			res[nres+1] = "^N"
+			res[nres+2] = v == inf and serInf or serNegInf
 			nres=nres+2
 		else
 			local m,e = frexp(v)
@@ -147,9 +151,9 @@ end
 local function DeserializeNumberHelper(number)
 	--[[ not in 4.3 if number == serNaN then
 		return 0/0
-	else]]if number == serNegInf then
+	else]]if number == serNegInf or number == serNegInfMac then
 		return -inf
-	elseif number == serInf then
+	elseif number == serInf or number == serInfMac then
 		return inf
 	else
 		return tonumber(number)

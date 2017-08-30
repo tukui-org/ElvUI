@@ -21,14 +21,18 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 ]]
 do
 	local Type = "Window"
-	local Version = 4
+	local Version = 6
+
+	local function frameOnShow(this)
+		this.obj:Fire("OnShow")
+	end
 
 	local function frameOnClose(this)
 		this.obj:Fire("OnClose")
 	end
 	
 	local function closeOnClick(this)
-		-- PlaySound("gsTitleOptionExit")
+		PlaySound(PlaySoundKitID and "gsTitleOptionExit" or 799) -- SOUNDKIT.GS_TITLE_OPTION_EXIT
 		this.obj:Hide()
 	end
 	
@@ -180,6 +184,7 @@ do
 		frame:SetFrameStrata("FULLSCREEN_DIALOG")
 		frame:SetScript("OnMouseDown", frameOnMouseDown)
 		
+		frame:SetScript("OnShow",frameOnShow)
 		frame:SetScript("OnHide",frameOnClose)
 		frame:SetMinResize(240,240)
 		frame:SetToplevel(true)

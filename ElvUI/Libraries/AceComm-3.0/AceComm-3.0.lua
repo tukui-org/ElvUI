@@ -17,14 +17,13 @@ TODO: Time out old data rotting around from dead senders? Not a HUGE deal since 
 
 ]]
 
-local MAJOR, MINOR = "AceComm-3.0", 9
+local CallbackHandler = LibStub("CallbackHandler-1.0")
+local CTL = assert(ChatThrottleLib, "AceComm-3.0 requires ChatThrottleLib")
 
+local MAJOR, MINOR = "AceComm-3.0", 10
 local AceComm,oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceComm then return end
-
-local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
-local CTL = assert(ChatThrottleLib, "AceComm-3.0 requires ChatThrottleLib")
 
 -- Lua APIs
 local type, next, pairs, tostring = type, next, pairs, tostring

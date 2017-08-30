@@ -136,7 +136,7 @@ end
 
 --- Retreive one or more space-separated arguments from a string. 
 -- Treats quoted strings and itemlinks as non-spaced.
--- @param string The raw argument string
+-- @param str The raw argument string
 -- @param numargs How many arguments to get (default 1)
 -- @param startpos Where in the string to start scanning (default  1)
 -- @return Returns arg1, arg2, ..., nextposition\\

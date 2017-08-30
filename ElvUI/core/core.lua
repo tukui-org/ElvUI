@@ -1318,46 +1318,6 @@ end
 
 --DATABASE CONVERSIONS
 function E:DBConversions()
-	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
-	if not E.db.actionbar.backdropSpacingConverted then
-		for i = 1, 10 do
-			if E.db.actionbar["bar"..i] then
-				E.db.actionbar["bar"..i].backdropSpacing = E.db.actionbar["bar"..i].buttonspacing
-			end
-		end
-		E.db.actionbar.barPet.backdropSpacing = E.db.actionbar.barPet.buttonspacing
-		E.db.actionbar.stanceBar.backdropSpacing = E.db.actionbar.stanceBar.buttonspacing
-
-		E.db.actionbar.backdropSpacingConverted = true
-	end
-
-	--Convert E.db.actionbar.showGrid to E.db.actionbar["barX"].showGrid
-	if E.db.actionbar.showGrid ~= nil then
-		local gridEnabled = E.db.actionbar.showGrid
-		for i = 1, 10 do
-			if E.db.actionbar["bar"..i] then
-				E.db.actionbar["bar"..i].showGrid = gridEnabled
-			end
-		end
-		E.db.actionbar.showGrid = nil
-	end
-
-	--Convert old WorldMapCoordinates from boolean to new table format
-	if type(E.global.general.WorldMapCoordinates) == "boolean" then
-		local enabledState = E.global.general.WorldMapCoordinates
-
-		--Remove boolean value
-		E.global.general.WorldMapCoordinates = nil
-
-		--Add old enabled state
-		E.global.general.WorldMapCoordinates.enable = enabledState
-	end
-
-	--Remove old nameplate settings, no need for them to take up space
-	if E.db.nameplate then
-		E.db.nameplate = nil
-	end
-
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
@@ -1371,8 +1331,38 @@ function E:DBConversions()
 		end
 	end
 
-	--Prevent error for testers, remove this before release
+	--Add missing nameplates table to Minimalistic profile
+	if ElvDB.profiles["Minimalistic"] and not ElvDB.profiles["Minimalistic"].nameplates then
+		ElvDB.profiles["Minimalistic"].nameplates = {
+			["filters"] = {},
+		}
+	end
+
+	--Prevent error for testers, remove this a week after release
 	for filter, content in pairs(E.global.nameplate.filters) do
+		if not E.db.nameplates.filters[filter] then --switch to profile based style filter enabling
+			E.global.nameplate.filters[filter].triggers.enable = nil --remove trigger enable from global filter
+			if P.nameplates.filters[filter] then --if its a default filter just copy the settings
+				E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter])
+			else --otherwise just use a default table and set enable to false
+				E.db.nameplates.filters[filter] = {}
+				E.db.nameplates.filters[filter].triggers = {
+					["enable"] = false,
+				}
+			end
+		end
+		if not content.triggers.role then
+			E.global.nameplate.filters[filter].triggers.role = {
+				["tank"] = false,
+				["healer"] = false,
+				["damager"] = false,
+			}
+		end
+		if not content.triggers.class then --this can stay empty we only will accept values that exist
+			E.global.nameplate.filters[filter].triggers.class = {}
+		end
+
+		--older ones below here
 		if filter == "TestFilter" then
 			E.global.nameplate.filters[filter] = nil --Remove it
 		else

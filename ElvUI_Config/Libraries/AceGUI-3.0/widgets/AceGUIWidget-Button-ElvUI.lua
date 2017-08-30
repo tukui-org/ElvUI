@@ -2,7 +2,7 @@
 Button Widget (Modified to change text color on SetDisabled method)
 Graphical Button.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Button-ElvUI", 1
+local Type, Version = "Button-ElvUI", 2
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -13,12 +13,6 @@ local pairs = pairs
 local _G = _G
 local PlaySound, CreateFrame, UIParent = PlaySound, CreateFrame, UIParent
 -- GLOBALS: GameTooltip, ElvUI
-
-local wowMoP
-do
-	local _, _, _, interface = GetBuildInfo()
-	wowMoP = (interface >= 50000)
-end
 
 --[[-----------------------------------------------------------------------------
 Scripts
@@ -79,7 +73,7 @@ end
 
 local function Button_OnClick(frame, ...)
 	AceGUI:ClearFocus()
-	-- PlaySound("igMainMenuOption")
+	PlaySound(PlaySoundKitID and "igMainMenuOption" or 852) -- SOUNDKIT.IG_MAINMENU_OPTION
 	frame.obj:Fire("OnClick", ...)
 end
 
@@ -137,7 +131,7 @@ Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
 	local name = "AceGUI30Button" .. AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Button", name, UIParent, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
+	local frame = CreateFrame("Button", name, UIParent, "UIPanelButtonTemplate")
 	frame:Hide()
 	frame:EnableMouse(true)
 	frame:RegisterForClicks("AnyUp")
@@ -147,7 +141,7 @@ local function Constructor()
 
 	-- dragdrop
 	if not dragdropButton then
-		dragdropButton = CreateFrame("Button", "ElvUIAceGUI30DragDropButton", UIParent, wowMoP and "UIPanelButtonTemplate" or "UIPanelButtonTemplate2")
+		dragdropButton = CreateFrame("Button", "ElvUIAceGUI30DragDropButton", UIParent, "UIPanelButtonTemplate")
 		dragdropButton:SetFrameStrata("TOOLTIP")
 		dragdropButton:SetFrameLevel(5)
 		dragdropButton:SetPoint('BOTTOM', GameTooltip, "BOTTOM", 0, 10)

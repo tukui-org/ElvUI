@@ -52,6 +52,8 @@ local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
 local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+local GetSpecializationInfo = GetSpecializationInfo
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 local FAILED = FAILED
@@ -668,9 +670,10 @@ end
 
 function mod:UpdateElement_Filters(frame)
 	local trigger, failed, condition, name, guid, npcid, inCombat, reaction, spell, health, maxHealth, percHealth;
-	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel;
+	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
+	local matchMyClass = false --Only check spec when we match the class condition
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
@@ -712,8 +715,10 @@ function mod:UpdateElement_Filters(frame)
 	twipe(filterList)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
-		if filter.triggers and filter.triggers.enable then
-			tinsert(filterList, {filterName, filter.triggers.priority or 1})
+		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
+			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
+				tinsert(filterList, {filterName, filter.triggers.priority or 1})
+			end
 		end
 	end
 
@@ -830,6 +835,36 @@ function mod:UpdateElement_Filters(frame)
 			if not failed and (trigger.isTarget or trigger.notTarget) then
 				condition = false
 				if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by class conditions
+			if not failed and trigger.class and next(trigger.class) then
+				condition = false
+				if trigger.class[E.myclass] and trigger.class[E.myclass].enabled then
+					condition = true
+					matchMyClass = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by spec conditions
+			if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
+				condition = false
+				mySpecID = GetSpecializationInfo(E.myspec)
+				if mySpecID and trigger.class[E.myclass].specs[mySpecID] then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by role conditions
+			if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
+				condition = false
+				myRole = E:GetPlayerRole()
+				if myRole and ((trigger.role.tank and myRole == "TANK") or (trigger.role.healer and myRole == "HEALER") or (trigger.role.damager and myRole == "DAMAGER")) then
 					condition = true
 				end
 				failed = not condition
@@ -1105,7 +1140,7 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit or frame.unit)
 	end
 
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
