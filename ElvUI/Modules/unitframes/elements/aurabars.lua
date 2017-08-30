@@ -235,6 +235,9 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
 						filterCheck = true
 						break -- STOP
+					elseif filterName == "blockNonPersonal" and not isPlayer then
+						filterCheck = false
+						break -- STOP
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP

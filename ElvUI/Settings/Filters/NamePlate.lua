@@ -10,6 +10,7 @@ G["nameplate"] = {
 		["Boss"] = true,
 		["Personal"] = true,
 		["nonPersonal"] = true,
+		["blockNonPersonal"] = true,
 		["CastByUnit"] = true,
 		["notCastByUnit"] = true,
 		["blockNoDuration"] = true,
