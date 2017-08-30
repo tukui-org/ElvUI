@@ -219,7 +219,7 @@ local function UpdateStyleLists()
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
-					notDisabled = E.db.nameplates.filters[selectedNameplateFilter].triggers.enable
+					notDisabled = (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
 							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
@@ -257,7 +257,7 @@ local function UpdateStyleLists()
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
-					notDisabled = E.db.nameplates.filters[selectedNameplateFilter].triggers.enable
+					notDisabled = (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
 							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
@@ -296,7 +296,7 @@ local function UpdateStyleLists()
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
-					notDisabled = E.db.nameplates.filters[selectedNameplateFilter].triggers.enable
+					notDisabled = (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
 							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
@@ -328,6 +328,12 @@ local function GetStyleFilterDefaultOptions(filter)
 		E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter]) --copy the profile options
 		return E:CopyTable({}, G.nameplate.filters[filter]) --return the copy of the global options
 	end
+
+	local styleFilterProfileOptions = {
+		["triggers"] = {
+			["enable"] = true
+		}
+	}
 
 	local styleFilterDefaultOptions = {
 		["triggers"] = {
@@ -411,17 +417,10 @@ local function GetStyleFilterDefaultOptions(filter)
 		},
 	}
 
-	for profile in pairs(E.data.profiles) do
-		if not E.data.profiles[profile].nameplates.filters[filter] then
-			E.data.profiles[profile].nameplates.filters[filter] = {
-				["triggers"] = {
-					["enable"] = (E.data.profiles[profile] == E.db and true) or false,
-				}
-			}
-		elseif E.data.profiles[profile] == E.db then
-			E.data.profiles[profile].nameplates.filters[filter].triggers.enable = true
-		end
-	end
+	if not E.db.nameplates then E.db.nameplates = {} end
+	if not E.db.nameplates.filters then E.db.nameplates.filters = {} end
+
+	E.db.nameplates.filters[filter] = styleFilterProfileOptions
 
 	return styleFilterDefaultOptions
 end
@@ -448,9 +447,13 @@ local function UpdateFilterGroup()
 					order = 0,
 					type = 'toggle',
 					get = function(info)
-						return E.db.nameplates.filters[selectedNameplateFilter].triggers.enable
+						return (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					set = function(info, value)
+						if not E.db.nameplates then E.db.nameplates = {} end
+						if not E.db.nameplates.filters then E.db.nameplates.filters = {} end
+						if not E.db.nameplates.filters[selectedNameplateFilter] then E.db.nameplates.filters[selectedNameplateFilter] = {} end
+						if not E.db.nameplates.filters[selectedNameplateFilter].triggers then E.db.nameplates.filters[selectedNameplateFilter].triggers = {} end
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable = value
 						UpdateStyleLists() --we need this to recolor the spellid based on wether or not the filter is disabled
 						NP:ConfigureAll()
@@ -462,7 +465,7 @@ local function UpdateFilterGroup()
 					order = 1,
 					type = "range",
 					min = 1, max = 100, step = 1,
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.priority or 1
 					end,
@@ -491,7 +494,7 @@ local function UpdateFilterGroup()
 					name = L["Is Targeted"],
 					order = 4,
 					type = 'toggle',
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget
 					end,
@@ -504,7 +507,7 @@ local function UpdateFilterGroup()
 					name = L["Not Targeted"],
 					order = 5,
 					type = 'toggle',
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget
 					end,
@@ -517,7 +520,7 @@ local function UpdateFilterGroup()
 					name = L["Name"],
 					order = 6,
 					type = "group",
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						addName = {
 							order = 1,
@@ -555,7 +558,7 @@ local function UpdateFilterGroup()
 					order = 7,
 					type = 'group',
 					name = L["Casting"],
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						interruptible = {
 							type = 'toggle',
@@ -615,7 +618,7 @@ local function UpdateFilterGroup()
 					order = 8,
 					type = 'group',
 					name = COMBAT,
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						inCombat = {
 							name = L["Player in Combat"],
@@ -680,14 +683,14 @@ local function UpdateFilterGroup()
 					order = 9,
 					type = 'group',
 					name = CLASS,
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
 				role = {
 					order = 10,
 					type = 'group',
 					name = ROLE,
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						tank = {
 							type = 'toggle',
@@ -731,7 +734,7 @@ local function UpdateFilterGroup()
 					order = 11,
 					type = 'group',
 					name = L["Health Threshold"],
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
 							type = 'toggle',
@@ -788,7 +791,7 @@ local function UpdateFilterGroup()
 					order = 12,
 					type = 'group',
 					name = LEVEL,
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
 							type = 'toggle',
@@ -872,14 +875,14 @@ local function UpdateFilterGroup()
 					name = L["Buffs"],
 					order = 13,
 					type = "group",
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
 							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle",
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.mustHaveAll
 							end,
@@ -893,7 +896,7 @@ local function UpdateFilterGroup()
 							name = L["Missing"],
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = "toggle",
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.missing
 							end,
@@ -970,14 +973,14 @@ local function UpdateFilterGroup()
 					name = L["Debuffs"],
 					order = 14,
 					type = "group",
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
 							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle",
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.mustHaveAll
 							end,
@@ -991,7 +994,7 @@ local function UpdateFilterGroup()
 							name = L["Missing"],
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = "toggle",
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.missing
 							end,
@@ -1068,7 +1071,7 @@ local function UpdateFilterGroup()
 					name = L["Unit Type"],
 					order = 15,
 					type = "group",
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
 							name = L["Enable"],
@@ -1087,7 +1090,7 @@ local function UpdateFilterGroup()
 							type = "group",
 							guiInline = true,
 							order = 1,
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType.enable end,
 							args = {
 								friendlyPlayer = {
 									name = L["FRIENDLY_PLAYER"],
@@ -1169,7 +1172,7 @@ local function UpdateFilterGroup()
 					name = L["Reaction Type"],
 					order = 16,
 					type = "group",
-					disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
 							name = L["Enable"],
@@ -1188,7 +1191,7 @@ local function UpdateFilterGroup()
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 0,
 							type = 'toggle',
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation
 							end,
@@ -1202,13 +1205,13 @@ local function UpdateFilterGroup()
 							type = "group",
 							guiInline = true,
 							order = 1,
-							disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 							args = {
 								hated = {
 									name = FACTION_STANDING_LABEL1,
 									order = 1,
 									type = 'toggle',
-									disabled = function() return not (E.db.nameplates.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not ((E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.hated
 									end,
@@ -1233,7 +1236,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL3,
 									order = 3,
 									type = 'toggle',
-									disabled = function() return not (E.db.nameplates.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not ((E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.unfriendly
 									end,
@@ -1270,7 +1273,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL6,
 									order = 6,
 									type = 'toggle',
-									disabled = function() return not (E.db.nameplates.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not ((E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.honored
 									end,
@@ -1283,7 +1286,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL7,
 									order = 7,
 									type = 'toggle',
-									disabled = function() return not (E.db.nameplates.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not ((E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.revered
 									end,
@@ -1296,7 +1299,7 @@ local function UpdateFilterGroup()
 									name = FACTION_STANDING_LABEL8,
 									order = 8,
 									type = 'toggle',
-									disabled = function() return not (E.db.nameplates.filters[selectedNameplateFilter].triggers.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
+									disabled = function() return not ((E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.reputation) end,
 									get = function(info)
 										return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.exalted
 									end,
@@ -1315,7 +1318,7 @@ local function UpdateFilterGroup()
 			type = "group",
 			name = L["Actions"],
 			order = 6,
-			disabled = function() return not E.db.nameplates.filters[selectedNameplateFilter].triggers.enable end,
+			disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 			args = {
 				hide = {
 					order = 0,
@@ -2976,7 +2979,7 @@ E.Options.args.nameplate = {
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
 							for profile in pairs(E.data.profiles) do
-								if E.data.profiles[profile].nameplates.filters[value] then
+								if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[value] then
 									E.data.profiles[profile].nameplates.filters[value] = nil;
 								end
 							end
