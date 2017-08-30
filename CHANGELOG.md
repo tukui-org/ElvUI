@@ -1,3 +1,25 @@
+**Version 10.62 [ August 30th 2017 ]**
+
+**New Additions:**  
+The enabled state of a Style Filter for nameplates is now stored in your profile instead of being global.  
+Added "Role" to Style Filter triggers. Your current role has to match this before a filter is activated. If no role is selected then it will ignore this trigger and try to activate.  
+Added "Class" to Style Filter triggers. You can select which classes and specs this filter should activate for. Your current class and spec has to match this before a filter is activated. If no spec is selected then it will only match class.  
+Added "blockNonPersonal" special filter for aura filtering. Combine this filter with a whitelist in order to only see your own spells from this whitelist.  
+
+
+**Bug Fixes:**  
+Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.    
+
+
+**Misc. Changes:**  
+Updated Ace3 libraries.  
+Values on the Artifact DataBar tooltip will now use the short format provided by ElvUI.  
+Changed various default settings for aura filtering in order to lessen the confusion for users.  
+Added Veiled Argunite to Currencies datatext.  
+Disabled the "Boss" Style Filter by default.  
+Updated LibActionButton.  
+
+___
 **Version 10.61 [ August 29th 2017 ]**
 
 **New Additions:**  
