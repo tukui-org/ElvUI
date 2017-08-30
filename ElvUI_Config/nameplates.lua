@@ -329,12 +329,6 @@ local function GetStyleFilterDefaultOptions(filter)
 		return E:CopyTable({}, G.nameplate.filters[filter]) --return the copy of the global options
 	end
 
-	local styleFilterProfileOptions = {
-		["triggers"] = {
-			["enable"] = true
-		}
-	}
-
 	local styleFilterDefaultOptions = {
 		["triggers"] = {
 			["priority"] = 1,
@@ -417,7 +411,16 @@ local function GetStyleFilterDefaultOptions(filter)
 		},
 	}
 
-	E.db.nameplates.filters[filter] = styleFilterProfileOptions
+	for profile, settings in pairs(E.data.profiles) do
+		if not E.data.profiles[profile].nameplates.filters[filter] then
+			E.data.profiles[profile].nameplates.filters[filter] = {
+				["triggers"] = {
+					["enable"] = (E.data.profiles[profile] == E.db and true) or false,
+				}
+			}
+		end
+	end
+
 	return styleFilterDefaultOptions
 end
 
@@ -2970,7 +2973,11 @@ E.Options.args.nameplate = {
 							E.db.nameplates.filters[value].triggers.enable = false;
 							E:Print(L["You can't remove a default name from the filter, disabling the name."])
 						else
-							E.db.nameplates.filters[value] = nil;
+							for profile, settings in pairs(E.data.profiles) do
+								if E.data.profiles[profile].nameplates.filters[value] then
+									E.data.profiles[profile].nameplates.filters[value] = nil;
+								end
+							end
 							E.global.nameplate.filters[value] = nil;
 							selectedNameplateFilter = nil;
 						end
@@ -2991,7 +2998,7 @@ E.Options.args.nameplate = {
 						if not list then return end
 						for filter, content in pairs(list) do
 							priority = (content.triggers and content.triggers.priority) or "?"
-							name = (content.triggers and profile[filter].triggers.enable and filter) or (content.triggers and format("|cFF666666%s|r", filter)) or filter
+							name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format("|cFF666666%s|r", filter)) or filter
 							filters[filter] = format("|cFFffff00(%s)|r %s", priority, name)
 						end
 						return filters
