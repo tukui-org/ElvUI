@@ -534,10 +534,10 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 					elseif filterName == 'Dispellable' and canDispell and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == 'blockNonPersonal' and not isPlayer then
+					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
 						break -- STOP
-					elseif filterName == 'blockNoDuration' and noDuration then
+					elseif filterName == 'blockNonPersonal' and not isPlayer then
 						filterCheck = false
 						break -- STOP
 					end
