@@ -64,18 +64,18 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		return nil
 	end
 
-	local filters, filterType, spellList, spell, tbl
+	local filter, filterType, spellList, spell, tbl
 	if priority ~= '' then
 		tbl = {strsplit(",",priority)}
 		if next(tbl) then
 			for i, x in ipairs(tbl) do
 				filterName = tbl[i]
-				filters = E.global.unitframe.aurafilters[filterName]
+				filter = E.global.unitframe.aurafilters[filterName]
 				friendCheck = (not (friendState and friendState[filterName])) or ((isFriend and friendState[filterName] == 1) or (not isFriend and friendState[filterName] == 0))
 				if friendCheck then
-					if filters and filters[filterName] then
-						filterType = filters[filterName].type
-						spellList = filters[filterName].spells
+					if filter then
+						filterType = filter.type
+						spellList = filter.spells
 						spell = spellList and (spellList[spellID] or spellList[name])
 
 						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
