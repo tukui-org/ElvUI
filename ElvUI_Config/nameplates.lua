@@ -17,7 +17,7 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS = LEVEL, NONE, REPUTATION, COMBAT, FILTERS
-local CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
+local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -71,6 +71,26 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
 	elseif not found and not remove then
 		E.db.nameplates.units[unit][auraType].filters.priority = (filter == '' and value) or (filter..","..value)
+	end
+end
+
+local function swapFilterFriendState(filter, filterName)
+	if not (filter and filterName) then return end
+	if not filter.friendState then
+		filter.friendState = {
+			[filterName] = 1
+		}
+	else
+		if filter.friendState[filterName] == nil then -- using filter on both
+			filter.friendState[filterName] = 1
+		elseif filter.friendState[filterName] == 1 then -- using filter as friendly only
+			filter.friendState[filterName] = 0
+		elseif filter.friendState[filterName] == 0 then -- using filter as enemy only
+			filter.friendState[filterName] = nil
+		end
+		if not next(filter.friendState) then
+			filter.friendState = nil
+		end
 	end
 end
 
@@ -1803,7 +1823,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['populatedSpecialFilters']
+									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -1840,6 +1860,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
+									E.db.nameplates.units[unit].buffs.filters.friendState = nil
 									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
 									NP:ConfigureAll()
 								end,
@@ -1862,6 +1883,15 @@ local function GetUnitSettings(unit, name)
 								end,
 								dragOnClick = function(info, value)
 									filterPriority('buffs', unit, carryFilterFrom, true)
+								end,
+								stateSwitchGetText = function(button, text, value)
+									local friendState = E.db.nameplates.units[unit].buffs.filters.friendState
+									local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
+									local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
+									return friend or enemy
+								end,
+								stateSwitchOnClick = function(info, value)
+									swapFilterFriendState(E.db.nameplates.units[unit].buffs.filters, carryFilterFrom)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
@@ -1964,7 +1994,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['populatedSpecialFilters']
+									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -2001,6 +2031,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
+									E.db.nameplates.units[unit].debuffs.filters.friendState = nil
 									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
 									NP:ConfigureAll()
 								end,
@@ -2023,6 +2054,15 @@ local function GetUnitSettings(unit, name)
 								end,
 								dragOnClick = function(info, value)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
+								end,
+								stateSwitchGetText = function(button, text, value)
+									local friendState = E.db.nameplates.units[unit].debuffs.filters.friendState
+									local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
+									local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
+									return friend or enemy
+								end,
+								stateSwitchOnClick = function(info, value)
+									swapFilterFriendState(E.db.nameplates.units[unit].debuffs.filters, carryFilterFrom)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority

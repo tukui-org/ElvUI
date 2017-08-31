@@ -9,6 +9,7 @@ local gsub = string.gsub
 local match = string.match
 local format = string.format
 local tinsert = table.insert
+local COLOR = COLOR
 local UNKNOWN = UNKNOWN
 local NONE = NONE
 local GetSpellInfo = GetSpellInfo
@@ -1164,7 +1165,7 @@ E.Options.args.filters = {
 					E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
 					value = gsub(value, ",", "")
 				end
-				if G.unitframe.specialFilters[value] or G.unitframe.populatedSpecialFilters[value] or E.global.unitframe.aurafilters[value] then
+				if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then
 					E:Print(L["Filter already exists!"])
 					return
 				end

@@ -1107,21 +1107,9 @@ G.unitframe.specialFilters = {
 	['Boss'] = true,
 	['Personal'] = true,
 	['nonPersonal'] = true,
-	["blockNonPersonal"] = true,
+	['blockNonPersonal'] = true,
 	['CastByUnit'] = true,
 	['notCastByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
 };
-
-G.unitframe.populatedSpecialFilters = {}; --populates from `G.unitframe.specialFilters` and `G.unitframe.aurafilters`
-
-for name, table in pairs(G.unitframe.aurafilters) do
-	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
-	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
-end
-for name, table in pairs(G.unitframe.specialFilters) do
-	G.unitframe.populatedSpecialFilters['Friendly:'..name] = true;
-	G.unitframe.populatedSpecialFilters['Enemy:'..name] = true;
-	G.unitframe.populatedSpecialFilters[name] = true;
-end

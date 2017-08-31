@@ -211,13 +211,10 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		if next(tbl) then
 			for i, x in ipairs(tbl) do
 				filterName = tbl[i]
-				friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-				if friendCheck ~= false then -- false = initial value, nil = friendCheck doesnt match, otherwise check if its a special filter
-					if friendCheck ~= nil and (G.unitframe.aurafilters[friendCheck] or G.unitframe.specialFilters[friendCheck]) then
-						filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
-					end -- this is otherwise so set filterName if its a special filter
-					filters = E.global.unitframe['aurafilters']
-					if filters[filterName] then
+				filters = E.global.unitframe.aurafilters[filterName]
+				friendCheck = (not (db.friendState and db.friendState[filterName])) or ((isFriend and db.friendState[filterName] == 1) or (not isFriend and db.friendState[filterName] == 0))
+				if friendCheck then
+					if filters and filters[filterName] then
 						filterType = filters[filterName].type
 						spellList = filters[filterName].spells
 						spell = spellList and (spellList[spellID] or spellList[name])
@@ -235,9 +232,6 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
 						filterCheck = true
 						break -- STOP
-					elseif filterName == "blockNonPersonal" and not isPlayer then
-						filterCheck = false
-						break -- STOP
 					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 						filterCheck = true
 						break -- STOP
@@ -247,11 +241,14 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					elseif filterName == 'notCastByUnit' and (unitCaster and not isUnit) and allowDuration then
 						filterCheck = true
 						break -- STOP
+					elseif filterName == 'Dispellable' and canDispell and allowDuration then
+						filterCheck = true
+						break -- STOP
 					elseif filterName == 'blockNoDuration' and noDuration then
 						filterCheck = false
 						break -- STOP
-					elseif filterName == 'Dispellable' and canDispell and allowDuration then
-						filterCheck = true
+					elseif filterName == 'blockNonPersonal' and not isPlayer then
+						filterCheck = false
 						break -- STOP
 					end
 				end

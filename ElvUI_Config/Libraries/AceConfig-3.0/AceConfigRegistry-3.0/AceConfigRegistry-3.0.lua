@@ -99,6 +99,8 @@ local basekeys={
 		dragOnClick=optmethodfalse,
 		dragOnMouseUp=optmethodfalse,
 		dragOnMouseDown=optmethodfalse,
+		stateSwitchOnClick=optmethodfalse,
+		stateSwitchGetText=optmethodfalse,
 }
 
 local typedkeys={

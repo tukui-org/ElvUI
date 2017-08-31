@@ -28,6 +28,8 @@ local pairs, next, select, type, unpack, wipe, ipairs = pairs, next, select, typ
 local rawset, tostring, tonumber = rawset, tostring, tonumber
 local math_min, math_max, math_floor = math.min, math.max, math.floor
 
+local OKAY = OKAY
+local PlaySoundKitID = PlaySoundKitID
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
 -- GLOBALS: NORMAL_FONT_COLOR, GameTooltip, StaticPopupDialogs, ACCEPT, CANCEL, StaticPopup_Show
@@ -1319,10 +1321,16 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 							local text = values[value]
 							if dragdrop then
 								local button = gui:Create("Button-ElvUI")
-								button:SetText(format("|cFF888888%d|r %s", i, text))
 								button:SetDisabled(disabled)
 								button:SetUserData("value", value)
 								button:SetUserData("text", text)
+								local state = v.stateSwitchGetText and v.stateSwitchGetText(button, text, value)
+								if state and state ~= "" then
+									button:SetText(format("|cFF888888%d|r %s %s", i, state, text))
+								else
+									button:SetText(format("|cFF888888%d|r %s", i, text))
+								end
+								button.stateSwitchOnClick = v.stateSwitchOnClick
 								button.dragOnMouseDown = v.dragOnMouseDown
 								button.dragOnMouseUp = v.dragOnMouseUp
 								button.dragOnEnter = v.dragOnEnter

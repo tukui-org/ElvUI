@@ -5,9 +5,11 @@ local _, ns = ...
 local ElvUF = ns.oUF
 
 local _G = _G
+local next = next
 local select = select
 local pairs = pairs
 local ipairs = ipairs
+local format = string.format
 local tremove = table.remove
 local tconcat = table.concat
 local tinsert = table.insert
@@ -18,7 +20,7 @@ local gsub = string.gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local SHOW, HIDE, DELETE, NONE = SHOW, HIDE, DELETE, NONE
+local FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
@@ -129,6 +131,26 @@ local function filterPriority(auraType, groupName, value, remove, movehere)
 		E.db.unitframe.units[groupName][auraType].priority = gsub(filter, found, "")
 	elseif not found and not remove then
 		E.db.unitframe.units[groupName][auraType].priority = (filter == '' and value) or (filter..","..value)
+	end
+end
+
+local function swapFilterFriendState(filter, filterName)
+	if not (filter and filterName) then return end
+	if not filter.friendState then
+		filter.friendState = {
+			[filterName] = 1
+		}
+	else
+		if filter.friendState[filterName] == nil then -- using filter on both
+			filter.friendState[filterName] = 1
+		elseif filter.friendState[filterName] == 1 then -- using filter as friendly only
+			filter.friendState[filterName] = 0
+		elseif filter.friendState[filterName] == 0 then -- using filter as enemy only
+			filter.friendState[filterName] = nil
+		end
+		if not next(filter.friendState) then
+			filter.friendState = nil
+		end
 	end
 end
 
@@ -280,7 +302,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		type = 'select',
 		values = function()
 			local filters = {}
-			local list = E.global.unitframe['populatedSpecialFilters']
+			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
@@ -317,6 +339,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		desc = L["Reset filter priority to the default state."],
 		type = "execute",
 		func = function()
+			E.db.unitframe.units[groupName].aurabar.friendState = nil
 			E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
 			updateFunc(UF, groupName)
 		end,
@@ -339,6 +362,15 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		end,
 		dragOnClick = function(info, value)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
+		end,
+		stateSwitchGetText = function(button, text, value)
+			local friendState = E.db.unitframe.units[groupName].aurabar.friendState
+			local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
+			local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
+			return friend or enemy
+		end,
+		stateSwitchOnClick = function(info, value)
+			swapFilterFriendState(E.db.unitframe.units[groupName].aurabar, carryFilterFrom)
 		end,
 		values = function()
 			local str = E.db.unitframe.units[groupName].aurabar.priority
@@ -522,7 +554,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		type = 'select',
 		values = function()
 			local filters = {}
-			local list = E.global.unitframe['populatedSpecialFilters']
+			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
 				filters[filter] = filter
@@ -559,6 +591,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		desc = L["Reset filter priority to the default state."],
 		type = "execute",
 		func = function()
+			E.db.unitframe.units[groupName][auraType].friendState = nil
 			E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
 			updateFunc(UF, groupName, numUnits)
 		end,
@@ -581,6 +614,15 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		end,
 		dragOnClick = function(info, value)
 			filterPriority(auraType, groupName, carryFilterFrom, true)
+		end,
+		stateSwitchGetText = function(button, text, value)
+			local friendState = E.db.unitframe.units[groupName][auraType].friendState
+			local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
+			local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
+			return friend or enemy
+		end,
+		stateSwitchOnClick = function(info, value)
+			swapFilterFriendState(E.db.unitframe.units[groupName][auraType], carryFilterFrom)
 		end,
 		values = function()
 			local str = E.db.unitframe.units[groupName][auraType].priority
