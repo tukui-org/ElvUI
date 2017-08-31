@@ -1011,6 +1011,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
+	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
+		unit = self.unit
+	end
 	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
 	end
