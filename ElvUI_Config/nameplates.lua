@@ -2569,20 +2569,29 @@ E.Options.args.nameplate = {
 								["TARGET"] = L["Only Show Target"],
 							},
 						},
-						showNPCTitles = {
+						showFriendlyInstancePlates = {
 							order = 3,
+							type = "toggle",
+							name = "Friendly In Instances",
+							set = function(info, value)
+								E.db.nameplates[ info[#info] ] = value;
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						showNPCTitles = {
+							order = 4,
 							type = "toggle",
 							name = L["Show NPC Titles"],
 							desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
 						},
 						clampToScreen = {
-							order = 4,
+							order = 5,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
 						lowHealthThreshold = {
-							order = 5,
+							order = 6,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
@@ -2590,7 +2599,7 @@ E.Options.args.nameplate = {
 							min = 0, max = 1, step = 0.01,
 						},
 						showEnemyCombat = {
-							order = 6,
+							order = 7,
 							type = "select",
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
@@ -2605,7 +2614,7 @@ E.Options.args.nameplate = {
 							end,
 						},
 						showFriendlyCombat = {
-							order = 7,
+							order = 8,
 							type = "select",
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
@@ -2617,14 +2626,14 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
 						},
 						loadDistance = {
-							order = 8,
+							order = 9,
 							type = "range",
 							name = L["Load Distance"],
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
 						},
 						clickableWidth = {
-							order = 9,
+							order = 10,
 							type = "range",
 							name = L["Clickable Width"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
@@ -2632,7 +2641,7 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						clickableHeight = {
-							order = 10,
+							order = 11,
 							type = "range",
 							name = L["Clickable Height"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
@@ -2640,7 +2649,7 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						targetedNamePlate = {
-							order = 11,
+							order = 12,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -2719,7 +2728,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 12,
+							order = 13,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],

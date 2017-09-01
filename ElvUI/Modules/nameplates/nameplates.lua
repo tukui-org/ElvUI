@@ -130,7 +130,7 @@ function mod:CheckArenaHealers()
 end
 
 local namePlateDriverEvents = {
-	--"NAME_PLATE_CREATED",		-- Leave this on always to prevent errors
+	--"NAME_PLATE_CREATED", -- Leave this on always to prevent errors
 	"FORBIDDEN_NAME_PLATE_CREATED",
 	"NAME_PLATE_UNIT_ADDED",
 	"FORBIDDEN_NAME_PLATE_UNIT_ADDED",
@@ -145,29 +145,32 @@ local namePlateDriverEvents = {
 	"UNIT_FACTION"
 }
 
-local showDebuffsOnFriendly;
 function mod:ToggleNamePlateDriverEvents(instanceType)
 	for _, event in pairs(namePlateDriverEvents) do
 		if instanceType == "none" then
 			NamePlateDriverFrame:UnregisterEvent(event)
-			E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
-			if showDebuffsOnFriendly ~= nil then
-				SetCVar("nameplateShowDebuffsOnFriendly", showDebuffsOnFriendly)
-			else
-				SetCVar("nameplateShowDebuffsOnFriendly", true)
-			end
 		else
 			NamePlateDriverFrame:RegisterEvent(event)
-			showDebuffsOnFriendly = GetCVar("nameplateShowDebuffsOnFriendly")
-			E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 		end
+	end
+
+	if instanceType == "none" then
+		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
+		SetCVar("nameplateShowDebuffsOnFriendly", true)
+	else
+		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 	end
 end
 
 function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
+
 	local inInstance, instanceType = IsInInstance()
-	self:ToggleNamePlateDriverEvents(instanceType) -- This only needs events inside of instances
+
+	if self.db.showFriendlyInstancePlates then -- this only needs eventing with the option enabled
+		self:ToggleNamePlateDriverEvents(instanceType)
+	end
+
 	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
@@ -183,6 +186,7 @@ function mod:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
+
 	if self.db.units.PLAYER.useStaticPosition then
 		mod:UpdateVisibility()
 	end
@@ -458,14 +462,6 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.unitFrame:Show()
 	end
-
-    if frame.UnitFrame and not frame.unitFrame.onShowHooked then
-    	self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
-    		self:Hide() --Hide Blizzard's Nameplate
-    	end)
-    	print('Hooked on NAME_PLATE_UNIT_ADDED')
-    	frame.unitFrame.onShowHooked = true
-    end
 
 	self:UpdateElement_Filters(frame.unitFrame)
 end
@@ -1406,6 +1402,23 @@ function mod:Initialize()
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
+
+	if not self.db.showFriendlyInstancePlates then
+		InterfaceOptionsNamesPanelUnitNameplates:Kill()
+		NamePlateDriverFrame:UnregisterAllEvents()
+		NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
+	else
+		InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesEnemies:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesShowAll:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesMakeLarger:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -20)
+		InterfaceOptionsNamesPanelUnitNameplatesFriends:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -50)
+	end
 
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
