@@ -220,7 +220,6 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 		[201940] = Defaults(), --Protector of the Pack
 		[201939] = Defaults(), --Protector of the Pack (Allies)
 		[192081] = Defaults(), --Ironfur
-		[192083] = Defaults(), --Mark of Ursol
 	--Hunter
 		[186265] = Defaults(), --Aspect of the Turtle
 		[53480] = Defaults(), --Roar of Sacrifice
