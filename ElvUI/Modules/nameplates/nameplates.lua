@@ -66,6 +66,7 @@ local INTERRUPTED = INTERRUPTED
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemies
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesPersonalResource
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy
@@ -1382,17 +1383,6 @@ function mod:Initialize()
 
 	self:UpdateCVars()
 
-	InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesEnemies:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesShowAll:Kill()
-	InterfaceOptionsNamesPanelUnitNameplatesMakeLarger:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -20)
-	InterfaceOptionsNamesPanelUnitNameplatesFriends:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -50)
-
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("NAME_PLATE_CREATED");
@@ -1409,15 +1399,16 @@ function mod:Initialize()
 		NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
 	else
 		InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
-		InterfaceOptionsNamesPanelUnitNameplatesEnemies:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Kill()
+		InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesShowAll:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesMakeLarger:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -20)
 		InterfaceOptionsNamesPanelUnitNameplatesFriends:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -50)
+		InterfaceOptionsNamesPanelUnitNameplatesEnemies:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -80)
 	end
 
 	--Best to just Hijack Blizzard's nameplate classbar
