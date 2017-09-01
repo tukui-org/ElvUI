@@ -36,6 +36,7 @@ local hooksecurefunc = hooksecurefunc
 local IsInInstance = IsInInstance
 local RegisterUnitWatch = RegisterUnitWatch
 local SetCVar = SetCVar
+local GetCVar = GetCVar
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -144,12 +145,21 @@ local namePlateDriverEvents = {
 	"UNIT_FACTION"
 }
 
+local showDebuffsOnFriendly;
 function mod:ToggleNamePlateDriverEvents(instanceType)
 	for _, event in pairs(namePlateDriverEvents) do
 		if instanceType == "none" then
 			NamePlateDriverFrame:UnregisterEvent(event)
+			self.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
+			if showDebuffsOnFriendly ~= nil then
+				SetCVar("nameplateShowDebuffsOnFriendly", showDebuffsOnFriendly)
+			else
+				SetCVar("nameplateShowDebuffsOnFriendly", true)
+			end
 		else
 			NamePlateDriverFrame:RegisterEvent(event)
+			showDebuffsOnFriendly = GetCVar("nameplateShowDebuffsOnFriendly")
+			E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 		end
 	end
 end
