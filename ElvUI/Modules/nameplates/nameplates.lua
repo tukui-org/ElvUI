@@ -150,7 +150,7 @@ function mod:ToggleNamePlateDriverEvents(instanceType)
 	for _, event in pairs(namePlateDriverEvents) do
 		if instanceType == "none" then
 			NamePlateDriverFrame:UnregisterEvent(event)
-			self.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
+			E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
 			if showDebuffsOnFriendly ~= nil then
 				SetCVar("nameplateShowDebuffsOnFriendly", showDebuffsOnFriendly)
 			else
