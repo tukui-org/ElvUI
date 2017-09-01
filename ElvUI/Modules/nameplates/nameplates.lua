@@ -61,6 +61,16 @@ local INTERRUPTED = INTERRUPTED
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemies
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesPersonalResource
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesShowAll
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesMakeLarger
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesFriends
 
 --Taken from Blizzard_TalentUI.lua
 local healerSpecIDs = {
@@ -118,9 +128,36 @@ function mod:CheckArenaHealers()
 	end
 end
 
+local namePlateDriverEvents = {
+	--"NAME_PLATE_CREATED",		-- Leave this on always to prevent errors
+	"FORBIDDEN_NAME_PLATE_CREATED",
+	"NAME_PLATE_UNIT_ADDED",
+	"FORBIDDEN_NAME_PLATE_UNIT_ADDED",	-- This can taint because of NameplateBuffButtonTemplate:OnEnter
+	"NAME_PLATE_UNIT_REMOVED",
+	"FORBIDDEN_NAME_PLATE_UNIT_REMOVED",
+	"PLAYER_TARGET_CHANGED",	-- This can taint because of NameplateBuffButtonTemplate:OnEnter
+	"DISPLAY_SIZE_CHANGED",
+	"UNIT_AURA",	-- This can taint because of NameplateBuffButtonTemplate:OnEnter
+	"VARIABLES_LOADED",
+	"CVAR_UPDATE",
+	"RAID_TARGET_UPDATE",
+	"UNIT_FACTION"
+}
+
+function mod:ToggleNamePlateDriverEvents(instanceType)
+	for _, event in pairs(namePlateDriverEvents) do
+		if instanceType == "none" then
+			NamePlateDriverFrame:UnregisterEvent(event)
+		else
+			NamePlateDriverFrame:RegisterEvent(event)
+		end
+	end
+end
+
 function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 	local inInstance, instanceType = IsInInstance()
+	self:ToggleNamePlateDriverEvents(instanceType) -- This only needs events inside of instances
 	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
@@ -411,6 +448,14 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.UnitFrame:Show()
 	end
+
+    if frame.UnitFrame and not frame.unitFrame.onShowHooked then
+    	self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
+    		self:Hide() --Hide Blizzard's Nameplate
+    	end)
+    	print('Hooked on NAME_PLATE_UNIT_ADDED')
+    	frame.unitFrame.onShowHooked = true
+    end
 
 	self:UpdateElement_Filters(frame.UnitFrame)
 end
@@ -1008,6 +1053,14 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame.DetectionModel = self:ConstructElement_Detection(frame.UnitFrame)
 	frame.UnitFrame.Highlight = self:ConstructElement_Highlight(frame.UnitFrame)
 	frame.UnitFrame.Portrait = self:ConstructElement_Portrait(frame.UnitFrame)
+
+    if frame.UnitFrame and not frame.unitFrame.onShowHooked then
+    	self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
+    		self:Hide() --Hide Blizzard's Nameplate
+    	end)
+    	--print('Hooked on NAME_PLATE_CREATED')
+    	frame.unitFrame.onShowHooked = true
+    end
 end
 
 function mod:OnEvent(event, unit, ...)
@@ -1322,14 +1375,17 @@ function mod:Initialize()
 	self.PlayerNamePlateAnchor:Hide()
 
 	self:UpdateCVars()
-	InterfaceOptionsNamesPanelUnitNameplates:Kill()
-	NamePlateDriverFrame:UnregisterAllEvents()
-	NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
 
-	--We need to re-register these in order for default nameplates to show in dungeons and raids
-	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_CREATED")
-	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_ADDED")
-	-- NamePlateDriverFrame:RegisterEvent("FORBIDDEN_NAME_PLATE_UNIT_REMOVED")
+	InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesEnemies:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesShowAll:Kill()
+	InterfaceOptionsNamesPanelUnitNameplatesMakeLarger:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -20)
+	InterfaceOptionsNamesPanelUnitNameplatesFriends:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -50)
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
