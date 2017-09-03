@@ -1,11 +1,6 @@
 local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-
-
 local _, ns = ...
 local oUF = ns.oUF or oUF
-
-local SymbiosisName = GetSpellInfo(110309)
-local CleanseName = GetSpellInfo(4987)
 
 local addon = {}
 ns.oUF_RaidDebuffs = addon
@@ -143,14 +138,6 @@ local function CheckSpec(self, event, levels)
 		else
 			DispellFilter.Magic = false	
 		end		
-	end
-end
-
-local function CheckSymbiosis()
-	if GetSpellInfo(SymbiosisName) == CleanseName then
-		DispellFilter.Disease = true
-	else
-		DispellFilter.Disease = false
 	end
 end
 
@@ -312,9 +299,6 @@ local function Enable(self)
 	--Need to run these always
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
-	if playerClass == "DRUID" then
-		self:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end
 end
 
 local function Disable(self)
@@ -324,9 +308,6 @@ local function Disable(self)
 	end
 	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
-	if playerClass == "DRUID" then
-		self:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end	
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
