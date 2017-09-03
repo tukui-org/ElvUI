@@ -54,7 +54,7 @@ local function filterMatch(s,v)
 	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
 end
 
-local function filterPriority(auraType, unit, value, remove, movehere)
+local function filterPriority(auraType, unit, value, remove, movehere, friendState)
 	if not auraType or not value then return end
 	local filter = E.db.nameplates.units[unit] and E.db.nameplates.units[unit][auraType] and E.db.nameplates.units[unit][auraType].filters and E.db.nameplates.units[unit][auraType].filters.priority
 	if not filter then return end
@@ -67,30 +67,34 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 		end
 		tremove(tbl, sm);tinsert(tbl, sv, movehere);
 		E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl,',')
+	elseif found and friendState then
+		local realValue = match(value, "^Friendly:([^,]*)") or match(value, "^Enemy:([^,]*)") or value
+		local friend = filterMatch(filter, filterValue("Friendly:"..realValue))
+		local enemy = filterMatch(filter, filterValue("Enemy:"..realValue))
+		local default = filterMatch(filter, filterValue(realValue))
+
+		local state =
+			(friend and (not enemy) and format("%s%s","Enemy:",realValue))					--[x] friend [ ] enemy: > enemy
+		or	((not enemy and not friend) and format("%s%s","Friendly:",realValue))			--[ ] friend [ ] enemy: > friendly
+		or	(enemy and (not friend) and default and format("%s%s","Friendly:",realValue))	--[ ] friend [x] enemy: (default exists) > friendly
+		or	(enemy and (not friend) and match(value, "^Enemy:") and realValue)				--[ ] friend [x] enemy: (no default) > realvalue
+		or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+
+		if state then
+			local stateFound = filterMatch(filter, filterValue(state))
+			if not stateFound then
+				local tbl, sv, sm = {strsplit(",",filter)}
+				for i in ipairs(tbl) do
+					if tbl[i] == value then sv = i;break end
+				end
+				tinsert(tbl, sv, state);tremove(tbl, sv+1)
+				E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl,',')
+			end
+		end
 	elseif found and remove then
 		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
 	elseif not found and not remove then
 		E.db.nameplates.units[unit][auraType].filters.priority = (filter == '' and value) or (filter..","..value)
-	end
-end
-
-local function swapFilterFriendState(filter, filterName)
-	if not (filter and filterName) then return end
-	if not filter.friendState then
-		filter.friendState = {
-			[filterName] = 1
-		}
-	else
-		if filter.friendState[filterName] == nil then -- using filter on both
-			filter.friendState[filterName] = 1
-		elseif filter.friendState[filterName] == 1 then -- using filter as friendly only
-			filter.friendState[filterName] = 0
-		elseif filter.friendState[filterName] == 0 then -- using filter as enemy only
-			filter.friendState[filterName] = nil
-		end
-		if not next(filter.friendState) then
-			filter.friendState = nil
-		end
 	end
 end
 
@@ -1860,7 +1864,6 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
-									E.db.nameplates.units[unit].buffs.filters.friendState = nil
 									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
 									NP:ConfigureAll()
 								end,
@@ -1885,13 +1888,11 @@ local function GetUnitSettings(unit, name)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(button, text, value)
-									local friendState = E.db.nameplates.units[unit].buffs.filters.friendState
-									local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
-									local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
-									return friend or enemy
+									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
 								end,
 								stateSwitchOnClick = function(info, value)
-									swapFilterFriendState(E.db.nameplates.units[unit].buffs.filters, carryFilterFrom)
+									filterPriority('buffs', unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
@@ -2031,7 +2032,6 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
-									E.db.nameplates.units[unit].debuffs.filters.friendState = nil
 									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
 									NP:ConfigureAll()
 								end,
@@ -2056,13 +2056,11 @@ local function GetUnitSettings(unit, name)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(button, text, value)
-									local friendState = E.db.nameplates.units[unit].debuffs.filters.friendState
-									local friend = friendState and (friendState[text] == 1) and format("|cFF33FF33%s|r", FRIEND)
-									local enemy = friendState and (friendState[text] == 0) and format("|cFFFF3333%s|r", ENEMY)
-									return friend or enemy
+									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
 								end,
 								stateSwitchOnClick = function(info, value)
-									swapFilterFriendState(E.db.nameplates.units[unit].debuffs.filters, carryFilterFrom)
+									filterPriority('debuffs', unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority

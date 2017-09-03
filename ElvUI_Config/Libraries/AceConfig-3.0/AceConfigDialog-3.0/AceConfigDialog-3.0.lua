@@ -1325,11 +1325,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								button:SetUserData("value", value)
 								button:SetUserData("text", text)
 								local state = v.stateSwitchGetText and v.stateSwitchGetText(button, text, value)
-								if state and state ~= "" then
-									button:SetText(format("|cFF888888%d|r %s %s", i, state, text))
-								else
-									button:SetText(format("|cFF888888%d|r %s", i, text))
-								end
+								button:SetText(format("|cFF888888%d|r %s", i, state or text))
 								button.stateSwitchOnClick = v.stateSwitchOnClick
 								button.dragOnMouseDown = v.dragOnMouseDown
 								button.dragOnMouseUp = v.dragOnMouseUp

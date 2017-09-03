@@ -1165,6 +1165,9 @@ E.Options.args.filters = {
 					E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
 					value = gsub(value, ",", "")
 				end
+				if match(value, "^Friendly:") or match(value, "^Enemy:") then
+					return --dont allow people to create Friendly: or Enemy: filters
+				end
 				if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then
 					E:Print(L["Filter already exists!"])
 					return

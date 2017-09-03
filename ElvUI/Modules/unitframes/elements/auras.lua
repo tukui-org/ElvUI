@@ -11,6 +11,7 @@ local strsplit = strsplit
 local tsort = table.sort
 local format = format
 local ceil = math.ceil
+local select = select
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -476,7 +477,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 	db = db[self.type]
 
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false, false
 
 	if name then
 		noDuration = (not duration or duration == 0)
@@ -494,53 +495,53 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 	button.name = name
 	button.priority = 0
 
-	local filter, filterType, spellList, spell, tbl
+	local filter, filterType, spellList, spell
 	if db.priority ~= '' then
-		tbl = {strsplit(",",db.priority)}
-		if next(tbl) then
-			for i, x in ipairs(tbl) do
-				filterName = tbl[i]
-				filter = E.global.unitframe.aurafilters[filterName]
-				friendCheck = (not (db.friendState and db.friendState[filterName])) or ((isFriend and db.friendState[filterName] == 1) or (not isFriend and db.friendState[filterName] == 0))
-				if friendCheck then
-					if filter then
-						filterType = filter.type
-						spellList = filter.spells
-						spell = spellList and (spellList[spellID] or spellList[name])
+		for i=1, select('#',strsplit(",",db.priority)) do
+			filterName = select(i, strsplit(",",db.priority))
+			filter = E.global.unitframe.aurafilters[filterName]
+			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+			if friendCheck ~= false then
+				if friendCheck ~= nil and G.unitframe.specialFilters[friendCheck] then
+					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+				end
+				if filter then
+					filterType = filter.type
+					spellList = filter.spells
+					spell = spellList and (spellList[spellID] or spellList[name])
 
-						if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
-							filterCheck = true
-							button.priority = spell.priority -- this is the only difference from auarbars code
-							break -- STOP: allowing whistlisted spell
-						elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
-							filterCheck = false
-							break -- STOP: blocking blacklisted spell
-						end
-					elseif filterName == 'Personal' and isPlayer and allowDuration then
+					if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
 						filterCheck = true
-						break -- STOP
-					elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
-						filterCheck = true
-						break -- STOP
-					elseif filterName == 'Boss' and isBossDebuff and allowDuration then
-						filterCheck = true
-						break -- STOP
-					elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
-						filterCheck = true
-						break -- STOP
-					elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
-						filterCheck = true
-						break -- STOP
-					elseif filterName == 'Dispellable' and canDispell and allowDuration then
-						filterCheck = true
-						break -- STOP
-					elseif filterName == 'blockNoDuration' and noDuration then
+						button.priority = spell.priority -- this is the only difference from auarbars code
+						break -- STOP: allowing whistlisted spell
+					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
 						filterCheck = false
-						break -- STOP
-					elseif filterName == 'blockNonPersonal' and not isPlayer then
-						filterCheck = false
-						break -- STOP
+						break -- STOP: blocking blacklisted spell
 					end
+				elseif filterName == 'Personal' and isPlayer and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'Dispellable' and canDispell and allowDuration then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'blockNoDuration' and noDuration then
+					filterCheck = false
+					break -- STOP
+				elseif filterName == 'blockNonPersonal' and not isPlayer then
+					filterCheck = false
+					break -- STOP
 				end
 			end
 		end
