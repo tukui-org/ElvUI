@@ -1207,7 +1207,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,nonPersonal', --Target Deuffs
+				['priority'] = 'Blacklist,Personal,nonPersonal', --Target Debuffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
