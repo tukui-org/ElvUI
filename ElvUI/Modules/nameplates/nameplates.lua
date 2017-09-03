@@ -441,6 +441,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame.Name.r, frame.UnitFrame.Name.g, frame.UnitFrame.Name.b = nil, nil, nil
 	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Name:SetText("")
+	frame.UnitFrame.Name.NameOnlyGlow:Hide()
+	frame.UnitFrame.Highlight:Hide()
 	frame.UnitFrame.Portrait:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
