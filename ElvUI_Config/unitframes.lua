@@ -2701,6 +2701,8 @@ E.Options.args.unitframe.args.player = {
 						["DISABLED"] = DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
 					},
 				},
 				orientation = {
