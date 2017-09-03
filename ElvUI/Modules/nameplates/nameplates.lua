@@ -237,10 +237,12 @@ function mod:SetTargetFrame(frame)
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		frame:SetFrameLevel(parent:GetFrameLevel() + 5)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		if(parent) then
+			frame:SetFrameLevel(parent:GetFrameLevel() + 5)
+			frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
+			frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+			frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		end
 
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
