@@ -12,6 +12,7 @@ G["nameplate"] = {
 				["priority"] = 1,
 				["isTarget"] = false,
 				["notTarget"] = false,
+				["questBoss"] = false,
 				["level"] = true,
 				["casting"] = {
 					["interruptible"] = false,

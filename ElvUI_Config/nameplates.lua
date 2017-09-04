@@ -364,6 +364,7 @@ local function GetStyleFilterDefaultOptions(filter)
 			["priority"] = 1,
 			["isTarget"] = false,
 			["notTarget"] = false,
+			["questBoss"] = false,
 			["level"] = false,
 			["casting"] = {
 				["interruptible"] = false,
@@ -540,9 +541,22 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				questBoss = {
+					name = "Quest Boss",
+					order = 6,
+					type = 'toggle',
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss = value
+						NP:ConfigureAll()
+					end,
+				},
 				names = {
 					name = L["Name"],
-					order = 6,
+					order = 7,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -579,7 +593,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				casting = {
-					order = 7,
+					order = 8,
 					type = 'group',
 					name = L["Casting"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -639,7 +653,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				combat = {
-					order = 8,
+					order = 9,
 					type = 'group',
 					name = COMBAT,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -704,14 +718,14 @@ local function UpdateFilterGroup()
 					},
 				},
 				class = {
-					order = 9,
+					order = 10,
 					type = 'group',
 					name = CLASS,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
 				role = {
-					order = 10,
+					order = 11,
 					type = 'group',
 					name = ROLE,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -755,7 +769,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 11,
+					order = 12,
 					type = 'group',
 					name = L["Health Threshold"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -812,7 +826,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -897,7 +911,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 13,
+					order = 14,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -995,7 +1009,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 14,
+					order = 15,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1093,7 +1107,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 15,
+					order = 16,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1194,7 +1208,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 16,
+					order = 17,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {

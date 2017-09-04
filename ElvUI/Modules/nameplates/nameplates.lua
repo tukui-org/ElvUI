@@ -51,6 +51,7 @@ local UnitPowerType = UnitPowerType
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
+local UnitIsQuestBoss = UnitIsQuestBoss
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
@@ -677,7 +678,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, reaction, spell, health, maxHealth, percHealth;
+	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
@@ -843,6 +844,16 @@ function mod:UpdateElement_Filters(frame)
 			if not failed and (trigger.isTarget or trigger.notTarget) then
 				condition = false
 				if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by target conditions
+			if not failed and trigger.questBoss then
+				condition = false
+				questBoss = UnitIsQuestBoss(frame.displayedUnit)
+				if questBoss then
 					condition = true
 				end
 				failed = not condition
