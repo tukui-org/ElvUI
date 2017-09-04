@@ -655,7 +655,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
-					['priority'] = 'Blacklist,blockNoDuration,Personal,CCDebuffs' --NamePlate EnemyNPC Debuffs
+					['priority'] = 'Blacklist,Personal,CCDebuffs' --NamePlate EnemyNPC Debuffs
 				},
 			},
 			['eliteIcon'] = {
