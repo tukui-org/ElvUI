@@ -643,7 +643,7 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		end
 		if actions.texture and actions.texture.enable then
 			frame.TextureChanged = true
-			frame.Highlight:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
 			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		end
 		if actions.scale and actions.scale ~= 1 then
@@ -686,7 +686,7 @@ function mod:UpdateElement_Filters(frame)
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
-		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	end
 	if frame.HealthColorChanged then
