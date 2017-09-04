@@ -1135,7 +1135,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:SetImageSize(width, height)
 						control:SetLabel(name)
 					else
-						control = gui:Create("Button")
+						local buttonElvUI = GetOptionsMemberValue("buttonElvUI",v, options, path, appName)
+						control = gui:Create(buttonElvUI and "Button-ElvUI" or "Button")
 						control:SetText(name)
 					end
 					control:SetCallback("OnClick",ActivateControl)
