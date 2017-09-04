@@ -10,7 +10,7 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 
 local function HighlightUpdate(self)
-	if not UnitExists("mouseover") or (self.unit and not UnitIsUnit("mouseover", self.unit)) then
+	if not UnitExists("mouseover") or not self.unit or not UnitIsUnit("mouseover", self.unit)) then
 		self.Name.NameOnlyGlow:Hide()
 		self.Highlight.texture:Hide()
 		self.Highlight:Hide()
