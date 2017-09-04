@@ -964,6 +964,21 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	},
 }
 
+--[[
+	RAID BUFFS
+	Buffs that are provided by NPCs in raid or other PvE content.
+	This can be buffs put on other enemies or on players.
+]]
+G.unitframe.aurafilters['RaidBuffs'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		--Mythic/Mythic+
+		[209859] = Defaults(),  -- Bolster
+		
+		--Raids
+	},
+}
+
 --Spells that we want to show the duration backwards
 E.ReverseTimer = {
 
