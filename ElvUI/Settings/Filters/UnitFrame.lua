@@ -969,7 +969,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	Buffs that are provided by NPCs in raid or other PvE content.
 	This can be buffs put on other enemies or on players.
 ]]
-G.unitframe.aurafilters['RaidBuffs'] = {
+G.unitframe.aurafilters['RaidBuffsElvUI'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mythic/Mythic+
