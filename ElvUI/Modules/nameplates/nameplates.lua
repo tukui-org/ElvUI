@@ -849,7 +849,7 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
-			--Try to match by target conditions
+			--Try to match if unit is a quest boss
 			if not failed and trigger.questBoss then
 				condition = false
 				questBoss = UnitIsQuestBoss(frame.displayedUnit)
