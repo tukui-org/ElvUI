@@ -2637,8 +2637,16 @@ E.Options.args.nameplate = {
 							min = 10, max = 75, step = 1,
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
-						targetedNamePlate = {
+						resetFilters = {
 							order = 11,
+							name = "Reset Aura Filters",
+							type = "execute",
+							func = function(info, value)
+								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
+							end,
+						},
+						targetedNamePlate = {
+							order = 12,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -2717,7 +2725,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 12,
+							order = 13,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
