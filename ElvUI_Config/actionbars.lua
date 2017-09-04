@@ -31,7 +31,7 @@ local function BuildABConfig()
 		type = "group",
 		name = L["General Options"],
 		childGroups = "tab",
-		disabled = function() return not E.ActionBars; end,
+		disabled = function() return not (E.ActionBars and E.private.actionbar.enable); end,
 		args = {
 			toggleKeybind = {
 				order = 1,

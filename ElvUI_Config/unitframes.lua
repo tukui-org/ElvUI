@@ -1967,6 +1967,7 @@ E.Options.args.unitframe = {
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
+			disabled = function() return not E.UnitFrames; end,
 			args = {
 				generalGroup = {
 					order = 1,
@@ -2578,6 +2579,7 @@ E.Options.args.unitframe.args.player = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['player'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -2966,6 +2968,7 @@ E.Options.args.unitframe.args.target = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['target'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['target'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3174,6 +3177,7 @@ E.Options.args.unitframe.args.targettarget = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['targettarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['targettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3308,6 +3312,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['targettargettarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['targettargettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettargettarget') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3444,6 +3449,7 @@ E.Options.args.unitframe.args.focus = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['focus'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['focus'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3588,6 +3594,7 @@ E.Options.args.unitframe.args.focustarget = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['focustarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['focustarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3724,6 +3731,7 @@ E.Options.args.unitframe.args.pet = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['pet'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['pet'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -3898,6 +3906,7 @@ E.Options.args.unitframe.args.pettarget = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['pettarget'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['pettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -4033,6 +4042,7 @@ E.Options.args.unitframe.args.boss = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['boss'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['boss'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -4195,6 +4205,7 @@ E.Options.args.unitframe.args.arena = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['arena'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['arena'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		generalGroup = {
 			order = 1,
@@ -4415,6 +4426,7 @@ E.Options.args.unitframe.args.party = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['party'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		configureToggle = {
 			order = 1,
@@ -5024,6 +5036,7 @@ E.Options.args.unitframe.args.raid = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['raid'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		configureToggle = {
 			order = 1,
@@ -5455,6 +5468,7 @@ E.Options.args.unitframe.args.raid40 = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['raid40'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['raid40'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		configureToggle = {
 			order = 1,
@@ -5886,6 +5900,7 @@ E.Options.args.unitframe.args.raidpet = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['raidpet'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['raidpet'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		configureToggle = {
 			order = 1,
@@ -6184,6 +6199,7 @@ E.Options.args.unitframe.args.tank = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['tank'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['tank'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		resetSettings = {
 			type = 'execute',
@@ -6383,6 +6399,7 @@ E.Options.args.unitframe.args.assist = {
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units['assist'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['assist'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
+	disabled = function() return not E.UnitFrames; end,
 	args = {
 		resetSettings = {
 			type = 'execute',
