@@ -645,7 +645,7 @@ P["nameplates"] = {
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
-					['priority'] = 'Blacklist,PlayerBuffs,TurtleBuffs,CastByUnit' --NamePlate EnemyNPC Buffs
+					['priority'] = 'Blacklist,blockNoDuration,PlayerBuffs,TurtleBuffs' --NamePlate EnemyNPC Buffs
 				},
 			},
 			['debuffs'] = {
