@@ -225,7 +225,7 @@ E.PopupDialogs["RESET_UF_AF"] = {
 }
 
 E.PopupDialogs["RESET_NP_AF"] = {
-	text = L["Accepting this will completely reset your UnitFrame Aura Filters to the defaults. Are you sure?"],
+	text = L["Accepting this will completely reset your NamePlate Aura Filters to the defaults. Are you sure?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
