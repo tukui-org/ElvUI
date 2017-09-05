@@ -1207,7 +1207,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,RaidDebuffs,CCDebuffs,Dispellable', --Target Debuffs
+				['priority'] = 'Blacklist,Personal,RaidDebuffs,CCDebuffs,Friendly:Dispellable', --Target Debuffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
