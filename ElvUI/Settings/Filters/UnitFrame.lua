@@ -962,6 +962,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[228519] = Defaults(), -- Anchor Slam
 		[202476] = Defaults(), -- Rabid
 		[232450] = Defaults(), -- Corrupted Axion
+	
+	-- Mythic Dungeons
+		[226303] = Defaults(), --Piercing Shards (Neltharion's Lair)
 	},
 }
 
