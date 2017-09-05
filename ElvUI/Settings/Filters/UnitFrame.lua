@@ -743,6 +743,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236710] = Defaults(), -- Shadow Reflection: Erupting
 		[241822] = Defaults(), -- Choking Shadow
 		[236555] = Defaults(), -- Deceiver's Veil
+		[234310] = Defaults(), -- Armageddon Rain
 
 	-- The Nighthold
 		-- Skorpyron
