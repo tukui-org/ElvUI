@@ -68,12 +68,12 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 	if priority ~= '' then
 		for i=1, select('#',strsplit(",",priority)) do
 			filterName = select(i, strsplit(",",priority))
-			filter = E.global.unitframe.aurafilters[filterName]
 			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
 			if friendCheck ~= false then
-				if friendCheck ~= nil and G.unitframe.specialFilters[friendCheck] then
+				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
 				end
+				filter = E.global.unitframe.aurafilters[filterName]
 				if filter then
 					filterType = filter.type
 					spellList = filter.spells

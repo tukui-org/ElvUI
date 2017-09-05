@@ -210,12 +210,12 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	if db.priority ~= '' then
 		for i=1, select('#',strsplit(",",db.priority)) do
 			filterName = select(i, strsplit(",",db.priority))
-			filter = E.global.unitframe.aurafilters[filterName]
 			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
 			if friendCheck ~= false then
-				if friendCheck ~= nil and G.unitframe.specialFilters[friendCheck] then
+				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
 				end
+				filter = E.global.unitframe.aurafilters[filterName]
 				if filter then
 					filterType = filter.type
 					spellList = filter.spells
