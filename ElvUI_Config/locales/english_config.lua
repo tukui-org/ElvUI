@@ -1,6 +1,6 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L = AceLocale:NewLocale("ElvUI", "enUS", true, false);
+local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 if not L then return; end
 
 -- *_DESC locales
@@ -663,6 +663,7 @@ L["Set Settings to Default"] = true;
 L["Set the transparency level of nameplates that are not the target nameplate."] = true;
 L["Set to either stack nameplates vertically or allow them to overlap."] = true;
 L["Shortcut to 'Filters' section of the config."] = true;
+L["Shortcut to global filters."] = true;
 L["Shortcuts"] = true;
 L["Show In Combat"] = true;
 L["Show NPC Titles"] = true;
@@ -884,6 +885,7 @@ L["Configure Auras"] = true;
 L["Copy From"] = true;
 L["Count Font Size"] = true;
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = true;
+L["Create Custom Text"] = true;
 L["Create Filter"] = true;
 L["Current - Max | Percent"] = true;
 L["Current - Max"] = true;

@@ -1826,7 +1826,7 @@ local function GetUnitSettings(unit, name)
 							jumpToFilter = {
 								order = 3,
 								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+								desc = L["Shortcut to global filters."],
 								type = "execute",
 								func = function() ACD:SelectGroup("ElvUI", "filters") end,
 							},
@@ -1994,7 +1994,7 @@ local function GetUnitSettings(unit, name)
 							jumpToFilter = {
 								order = 3,
 								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+								desc = L["Shortcut to global filters."],
 								type = "execute",
 								func = function() ACD:SelectGroup("ElvUI", "filters") end,
 							},
