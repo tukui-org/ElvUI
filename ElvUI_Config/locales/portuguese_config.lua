@@ -709,6 +709,7 @@ L["Unit Type"] = true;
 L["Use Class Color"] = true;
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
 L["Use Portrait"] = true;
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Glow"] = true;

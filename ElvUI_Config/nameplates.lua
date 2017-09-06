@@ -1927,7 +1927,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 							},
 						},
 					},
@@ -2095,7 +2095,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 							},
 						},
 					},

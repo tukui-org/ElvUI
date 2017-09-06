@@ -709,6 +709,7 @@ L["Unit Type"] = "單位類型"
 L["Use Class Color"] = "使用職業顏色"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式調整過濾器優先順序, 或者右鍵移除一個過濾器"
 L["Use Portrait"] = "使用頭像"
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "當另一個坦克更有效的坦住時姓名板使用被坦住的顏色"
 L["Use Target Glow"] = "目標外框高亮"

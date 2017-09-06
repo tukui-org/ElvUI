@@ -703,6 +703,7 @@ L["Unit Type"] = "Тип юнита"
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Portrait"] = "Отображать портрет"
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = "Фиксированная позиция"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Использовать этот цвет для юнитов, которых держит другой танк."
 L["Use Target Glow"] = "Использовать выделение цели"

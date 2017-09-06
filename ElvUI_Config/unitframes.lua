@@ -392,7 +392,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 	config.args.filters.args.spacer1 = {
 		order = 23,
 		type = "description",
-		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 	}
 
 	return config
@@ -641,7 +641,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 	config.args.filters.args.spacer1 = {
 		order = 23,
 		type = "description",
-		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 	}
 
 	return config
