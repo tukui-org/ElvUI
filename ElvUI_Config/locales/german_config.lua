@@ -396,8 +396,8 @@ L["This feature will allow you to transfer settings to other characters."] = "Di
 L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 
 --Filters
-L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
+L["Reset Filter"] = "Filter zurücksetzen"
+L["Shortcut to global filters."] = "Verknüpfung zum globalem Filter"
 
 --General
 L["Accept Invites"] = "Einladungen akzeptieren"
@@ -710,7 +710,7 @@ L["Unit Type"] = "Einheiten Typ"
 L["Use Class Color"] = "Benutze Klassenfarbe"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Benutze Drag und Drop um die Filter Priorität zu arrangieren oder rechts klick um einen Filter zu entfernen."
 L["Use Portrait"] = "Benutze Portrait"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Benutze Shift+Linksklick um zwischen freundlichem oder freindlichen Status umzuschalten. Normaler Status erlaubt den Filter alle Einheiten zu überprüfen. Freundlicher Status überprüft nur freundliche Einheiten. Feindliche überprüft nur feindliche Einheiten."
 L["Use Static Position"] = "Benutze statische Position"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
 L["Use Target Glow"] = "Benutze Ziel Leuchten"
