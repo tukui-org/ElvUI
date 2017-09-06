@@ -395,6 +395,10 @@ L["Share Filters"] = "Compartir Filtros"
 L["This feature will allow you to transfer settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
 L["You must be targeting a player."] = "Debes enfocar a un jugador."
 
+--Filters
+L["Reset Filter"] = true;
+L["Shortcut to global filters."] = true;
+
 --General
 L["Accept Invites"] = "Aceptar Invitaciones"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Ajusta la posición de la barra de amenaza a la izquierda o derecha de los paneles de texto de datos."

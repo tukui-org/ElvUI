@@ -395,6 +395,10 @@ L["Share Filters"] = "分享過濾器配置"
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["You must be targeting a player."] = "你必須以一名玩家為目標."
 
+--Filters
+L["Reset Filter"] = true;
+L["Shortcut to global filters."] = true;
+
 --General
 L["Accept Invites"] = "接受組隊邀請"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "調整仇恨條的位置於左側或右側資訊面板"

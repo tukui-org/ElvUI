@@ -384,6 +384,10 @@ L["Share Filters"] = true;
 L["This feature will allow you to transfer settings to other characters."] = true;
 L["You must be targeting a player."] = true;
 
+--Filters
+L["Reset Filter"] = true;
+L["Shortcut to global filters."] = true;
+
 --General
 L["Accept Invites"] = true;
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = true;
