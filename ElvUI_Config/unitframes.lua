@@ -1116,7 +1116,6 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 				type = 'input',
 				name = L["Create Custom Text"],
 				width = 'full',
-				desc = L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."],
 				get = function() return '' end,
 				set = function(info, textName)
 					for object, _ in pairs(E.db.unitframe.units[groupName]) do
