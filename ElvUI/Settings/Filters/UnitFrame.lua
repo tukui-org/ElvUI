@@ -961,6 +961,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	
 	-- Mythic Dungeons
 		[226303] = Defaults(), --Piercing Shards (Neltharion's Lair)
+		[227742] = Defaults(), --Garrote (Karazhan)
 	},
 }
 
