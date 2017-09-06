@@ -895,7 +895,6 @@ L["Combo Point"] = true;
 L["Configure Auras"] = "Configurar Auras"
 L["Copy From"] = "Copiar de"
 L["Count Font Size"] = "Tamanho da Fonte do Contador"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "Criar uma fonte personalizada. Assim que meter um nome você será capaz de seleciona-la da lista de elementos"
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Criar um filtro, uma vez criado o filtro pode ser definido dentro da seção dos bônus/penalidades de cada unidade."
 L["Create Filter"] = "Criar filtro"
 L["Current - Max | Percent"] = "Atual - Máximo | Porcentagem"

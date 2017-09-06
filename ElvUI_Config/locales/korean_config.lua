@@ -942,7 +942,6 @@ L["Combo Point"] = true;
 L["Configure Auras"] = "오라 설정"
 L["Copy From"] = "복사해오기"
 L["Count Font Size"] = "중첩수 글꼴 크기"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "유닛프레임에 새로운 문자 영역을 추가합니다. 빈칸에 새 문자영역 제목을 입력하고 Enter 키를 누르면 우측하단의 목록에서 선택할 수 있게 됩니다."
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "각 유닛의 버프/디버프에 필터를 생성합니다."
 L["Create Filter"] = "필터 생성"
 L["Current - Max | Percent"] = "현재값 - 최대값 | %"

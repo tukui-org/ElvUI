@@ -894,7 +894,6 @@ L["Combo Point"] = true;
 L["Configure Auras"] = "Configure les Auras"
 L["Copy From"] = "Copier depuis"
 L["Count Font Size"] = "Taille du texte du décompte" -- is  it count  when entering in the BattleGround? ;
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "Créer une chaîne de caractères personnalisée. Une fois que vous aurez entré un nom, vous serez en mesure de la sélectionner au sein de la liste déroulante."
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Créer un filtre, chaque filtre créé peut être configuré dans la section Amélioration / Affaiblissements de chaque unité."
 L["Create Filter"] = "Créer un filtre"
 L["Current - Max | Percent"] = "Actuel Max | Pourcentage"

@@ -1,6 +1,6 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
+local L = AceLocale:NewLocale("ElvUI", "enUS", true, false);
 if not L then return; end
 
 -- *_DESC locales
@@ -883,7 +883,6 @@ L["Combo Point"] = true;
 L["Configure Auras"] = true;
 L["Copy From"] = true;
 L["Count Font Size"] = true;
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = true;
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = true;
 L["Create Filter"] = true;
 L["Current - Max | Percent"] = true;
