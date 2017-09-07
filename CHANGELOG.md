@@ -1,3 +1,27 @@
+**Version 10.63 [ ]**
+
+**New Additions:**  
+Added quest boss trigger to nameplate Style Filters.  
+Added a new default filter named "RaidBuffsElvUI". Meant for buffs provided by NPCs in raids or other PvE content. Both for buffs put on enemies and players.  
+Added a "Reset Aura Filters" button for all Buffs, Debuffs and Aura Bars modules on both nameplates and unitframes. This will reset the Filter Priority list to the default state.  
+Added a "Reset Filter" button to all default filters in the Filters section of the config. This will completely reset the filter to its original state and remove any spells the user added.  
+
+
+**Bug Fixes:**  
+Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.  
+Fixed taint which prevented kicking someone from guild.  
+Fixed issue which caused "Fluid Position" option for Player unitframe to go missing. (Abeline)  
+Fixed rare error in nameplates when changing target.  
+Fixed issue which may have caused some nameplate elements to stay visible when nameplate was not.  
+Fixed issue which caused nameplate mouseover highlight to stay visible until you moused over another unit.  
+
+
+**Misc. Changes:**  
+Changed how we control state of filters used in filter priority lists. Now you use Shift+LeftClick to toggle between friendly, enemy and normal state on a filter.  
+Tweaked default settings for aura filter priority lists based on feedback from users.  
+Added skin for NewPetAlertFrame.  
+
+___
 **Version 10.62 [ August 30th 2017 ]**
 
 **New Additions:**  
