@@ -397,7 +397,6 @@ L["You must be targeting a player."] = "Debes enfocar a un jugador."
 
 --Filters
 L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
 
 --General
 L["Accept Invites"] = "Aceptar Invitaciones"

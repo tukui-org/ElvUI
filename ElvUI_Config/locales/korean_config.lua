@@ -444,7 +444,6 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 
 --Filters
 L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
 
 --General
 L["Accept Invites"] = "지인의 초대 자동수락"

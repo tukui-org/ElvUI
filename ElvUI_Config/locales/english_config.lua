@@ -386,7 +386,6 @@ L["You must be targeting a player."] = true;
 
 --Filters
 L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
 
 --General
 L["Accept Invites"] = true;
