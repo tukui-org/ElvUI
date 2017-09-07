@@ -69,6 +69,7 @@ local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 AB.RegisterCooldown = E.RegisterCooldown
 
+E.ActionBars = AB;
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["barDefaults"] = {
