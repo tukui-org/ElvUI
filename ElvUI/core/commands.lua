@@ -257,6 +257,7 @@ function E:LoadCommands()
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
-		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
+		local AB = E:GetModule("ActionBars")
+		self:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 end
