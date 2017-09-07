@@ -396,7 +396,6 @@ L["You must be targeting a player."] = "Целью должен быть игр�
 
 --Filters
 L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
 
 --General
 L["Accept Invites"] = "Принимать приглашения"

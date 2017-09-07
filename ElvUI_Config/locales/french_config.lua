@@ -397,7 +397,6 @@ L["You must be targeting a player."] = "Vous devez cibler un joueur."
 
 --Filters
 L["Reset Filter"] = true;
-L["Shortcut to global filters."] = true;
 
 --General
 L["Accept Invites"] = "Invitations automatiques"
