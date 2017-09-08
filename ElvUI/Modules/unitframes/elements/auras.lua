@@ -327,7 +327,7 @@ function UF:SortAuras()
 	end
 
 	--Look into possibly applying filter priorities for auras here.
-	
+
 	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
@@ -375,7 +375,7 @@ end
 function UF:PostUpdateAura(unit, button, index)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
 	local isFriend = UnitIsFriend('player', unit)
-	
+
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	local type = auras.type
@@ -502,7 +502,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
 			if friendCheck ~= false then
 				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 				end
 				filter = E.global.unitframe.aurafilters[filterName]
 				if filter then

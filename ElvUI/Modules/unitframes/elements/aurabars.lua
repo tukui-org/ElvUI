@@ -30,7 +30,7 @@ function UF:Construct_AuraBars()
 	bar:SetInside(self, inset, inset)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
-	
+
 	UF:Configure_FontString(bar.spelltime)
 	UF:Configure_FontString(bar.spellname)
 	UF:Update_FontString(bar.spelltime)
@@ -213,7 +213,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
 			if friendCheck ~= false then
 				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 				end
 				filter = E.global.unitframe.aurafilters[filterName]
 				if filter then

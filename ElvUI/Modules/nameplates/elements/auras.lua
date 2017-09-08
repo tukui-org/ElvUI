@@ -71,7 +71,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
 			if friendCheck ~= false then
 				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-					filterName = friendCheck -- this is for our special filters to handle Friendly and Enemy
+					filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 				end
 				filter = E.global.unitframe.aurafilters[filterName]
 				if filter then
