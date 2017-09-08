@@ -189,7 +189,7 @@ function UF.SortAuraBarName(a, b)
 	return a.name > b.name
 end
 
-function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff)
+function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer)
 	if not self.db then return; end
 	local db = self.db.aurabar
 
@@ -245,6 +245,12 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 					break -- STOP
 				elseif filterName == 'Dispellable' and canDispell and allowDuration then
 					filterCheck = true
+					break -- STOP
+				elseif filterName == 'CastByPlayers' and casterIsPlayer then
+					filterCheck = true
+					break -- STOP
+				elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
+					filterCheck = false
 					break -- STOP
 				elseif filterName == 'blockNoDuration' and noDuration then
 					filterCheck = false

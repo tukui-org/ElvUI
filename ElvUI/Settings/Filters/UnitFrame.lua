@@ -1128,4 +1128,6 @@ G.unitframe.specialFilters = {
 	['notCastByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
+	['CastByPlayers'] = true,
+	['blockCastByPlayers'] = true,
 };
