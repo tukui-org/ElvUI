@@ -729,6 +729,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240213] = Defaults(), -- Chaos Flames
 		[236604] = Defaults(), -- Shadowy Blades
 		[236494] = Defaults(), -- Desolate (Tank)
+		[240728] = Defaults(), -- Tainted Essence
 
 		-- Kil'jaeden
 		[238999] = Defaults(), -- Darkness of a Thousand Souls
