@@ -696,8 +696,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[230201] = Defaults(), -- Burden of Pain (Tank)
 		[230139] = Defaults(), -- Hydra Shot
 		[232754] = Defaults(), -- Hydra Acid
-		[230384] = Defaults(), -- Consuming Hunger
+		[230920] = Defaults(), -- Consuming Hunger
 		[230358] = Defaults(), -- Thundering Shock
+		[230362] = Defaults(), -- Thundering Shock
 
 		-- The Desolate Host
 		[236072] = Defaults(), -- Wailing Souls
