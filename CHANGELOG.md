@@ -1,4 +1,4 @@
-**Version 10.63 [ ]**
+**Version 10.63 [ September 9th 2017 ]**
 
 **New Additions:**  
 Added quest boss trigger to nameplate Style Filters.  
