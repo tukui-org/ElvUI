@@ -22,6 +22,7 @@ Changed how we control state of filters used in filter priority lists. Now you u
 Tweaked default settings for aura filter priority lists based on feedback from users.  
 Added skin for NewPetAlertFrame.  
 Removed caching of HandleModifiedItemClick to allow hooks to fire from other addons.  
+Fixed spell ID for Consuming Hunger in the RaidDebuffs filter.  
 
 ___
 **Version 10.62 [ August 30th 2017 ]**
