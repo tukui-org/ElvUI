@@ -21,6 +21,7 @@ Fixed issue which caused nameplate mouseover highlight to stay visible until you
 Changed how we control state of filters used in filter priority lists. Now you use Shift+LeftClick to toggle between friendly, enemy and normal state on a filter.  
 Tweaked default settings for aura filter priority lists based on feedback from users.  
 Added skin for NewPetAlertFrame.  
+Removed caching of HandleModifiedItemClick to allow hooks to fire from other addons.  
 
 ___
 **Version 10.62 [ August 30th 2017 ]**
