@@ -19,7 +19,6 @@ local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
 local GiveMasterLoot = GiveMasterLoot
-local HandleModifiedItemClick = HandleModifiedItemClick
 local IsFishingLoot = IsFishingLoot
 local IsModifiedClick = IsModifiedClick
 local L_ToggleDropDownMenu = L_ToggleDropDownMenu
@@ -39,7 +38,7 @@ local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, LootFrame, LootSlot, GroupLootDropDown, UISpecialFrames
 -- GLOBALS: UIParent, GameFontNormalLeft, MasterLooterFrame_Show, MASTER_LOOTER
--- GLOBALS: ASSIGN_LOOT, REQUEST_ROLL
+-- GLOBALS: ASSIGN_LOOT, REQUEST_ROLL, HandleModifiedItemClick
 
 --This function is copied from FrameXML and modified to use DropDownMenu library function calls
 --Using the regular DropDownMenu code causes taints in various places.
