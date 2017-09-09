@@ -396,6 +396,7 @@ L["This feature will allow you to transfer settings to other characters."] = "�
 L["You must be targeting a player."] = "你必须以一名玩家为目标"
 
 --Filters
+L["Reset Aura Filters"] = true; --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "重置过滤器"
 
 --General
@@ -658,6 +659,7 @@ L["Player in Combat"] = "玩家战斗中"
 L["Player Nameplate"] = "玩家姓名板"
 L["Player Out of Combat"] = "玩家战斗外"
 L["PLAYER"] = "玩家"
+L["Quest Boss"] = true;
 L["Reaction Colors"] = "声望颜色"
 L["Reaction Type"] = "声望类型"
 L["Remove a Name or NPC ID from the list."] = "从列表中移除姓名或NPC ID"

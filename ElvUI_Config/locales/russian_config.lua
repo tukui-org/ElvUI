@@ -395,6 +395,7 @@ L["This feature will allow you to transfer settings to other characters."] = "Э
 L["You must be targeting a player."] = "Целью должен быть игрок."
 
 --Filters
+L["Reset Aura Filters"] = "Сбросить фильтры аур" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true;
 
 --General
@@ -657,6 +658,7 @@ L["Player in Combat"] = "Игрок в бою"
 L["Player Nameplate"] = "Игрок"
 L["Player Out of Combat"] = "Игрок вне боя"
 L["PLAYER"] = "Игрок"
+L["Quest Boss"] = "Боссы заданий"
 L["Reaction Colors"] = "Цвета отношений"
 L["Reaction Type"] = "Тип реакции"
 L["Remove a Name or NPC ID from the list."] = "Удалить имя или ID НИПа из списка."

@@ -542,7 +542,7 @@ local function UpdateFilterGroup()
 					end,
 				},
 				questBoss = {
-					name = "Quest Boss",
+					name = L["Quest Boss"],
 					order = 6,
 					type = 'toggle',
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -2680,7 +2680,7 @@ E.Options.args.nameplate = {
 						},
 						resetFilters = {
 							order = 11,
-							name = "Reset Aura Filters",
+							name = L["Reset Aura Filters"],
 							type = "execute",
 							func = function(info, value)
 								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters

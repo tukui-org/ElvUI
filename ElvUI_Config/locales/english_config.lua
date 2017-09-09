@@ -386,6 +386,7 @@ L["You must be targeting a player."] = true;
 
 --Filters
 L["Reset Filter"] = true;
+L["Reset Aura Filters"] = true; --Used in Nameplates/UnitFrames general options
 
 --General
 L["Accept Invites"] = true;
@@ -647,6 +648,7 @@ L["Player in Combat"] = true;
 L["Player Nameplate"] = true;
 L["Player Out of Combat"] = true;
 L["PLAYER"] = "Player"
+L["Quest Boss"] = true;
 L["Reaction Colors"] = true;
 L["Reaction Type"] = true;
 L["Remove a Name or NPC ID from the list."] = true;

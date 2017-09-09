@@ -396,6 +396,7 @@ L["This feature will allow you to transfer settings to other characters."] = "Di
 L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 
 --Filters
+L["Reset Aura Filters"] = "Setze Aurafilter zurück" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "Filter zurücksetzen"
 
 --General
@@ -659,6 +660,7 @@ L["Player in Combat"] = "Spieler im Kampf"
 L["Player Nameplate"] = "Spieler Namensplaketten"
 L["Player Out of Combat"] = "Spieler nicht im Kampf"
 L["PLAYER"] = "Player"
+L["Quest Boss"] = true; --No need to translate
 L["Reaction Colors"] = "Reaktionsfarbe"
 L["Reaction Type"] = "Reaktion Typ"
 L["Remove a Name or NPC ID from the list."] = "Entferne einen Namen oder NPC ID von der Liste."

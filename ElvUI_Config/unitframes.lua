@@ -2064,7 +2064,7 @@ E.Options.args.unitframe = {
 						},
 						resetFilters = {
 							order = 7,
-							name = "Reset Aura Filters",
+							name = L["Reset Aura Filters"],
 							type = "execute",
 							func = function(info, value)
 								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
