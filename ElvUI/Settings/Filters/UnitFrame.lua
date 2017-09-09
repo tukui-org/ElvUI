@@ -710,8 +710,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[235968] = Defaults(), -- Grasping Darkness
 
 		-- Maiden of Vigilance
-		[235117] = Defaults(), -- Unstable Soul !needs review
-		[240209] = Defaults(), -- Unstable Soul !needs review
+		[235117] = Defaults(), -- Unstable Soul
+		[240209] = Defaults(), -- Unstable Soul
+		[243276] = Defaults(), -- Unstable Soul
+		[249912] = Defaults(), -- Unstable Soul
 		[235534] = Defaults(), -- Creator's Grace
 		[235538] = Defaults(), -- Demon's Vigor
 		[234891] = Defaults(), -- Wrath of the Creators
