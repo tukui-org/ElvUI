@@ -51,6 +51,7 @@ local UnitPowerType = UnitPowerType
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
+local UnitIsQuestBoss = UnitIsQuestBoss
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
@@ -237,10 +238,12 @@ function mod:SetTargetFrame(frame)
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		frame:SetFrameLevel(parent:GetFrameLevel() + 5)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		if(parent) then
+			frame:SetFrameLevel(parent:GetFrameLevel() + 5)
+			frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
+			frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+			frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		end
 
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
@@ -432,9 +435,15 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()
+	frame.UnitFrame.Glow2:Hide()
+	frame.UnitFrame.TopArrow:Hide()
+	frame.UnitFrame.LeftArrow:Hide()
+	frame.UnitFrame.RightArrow:Hide()
 	frame.UnitFrame.Name.r, frame.UnitFrame.Name.g, frame.UnitFrame.Name.b = nil, nil, nil
 	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Name:SetText("")
+	frame.UnitFrame.Name.NameOnlyGlow:Hide()
+	frame.UnitFrame.Highlight:Hide()
 	frame.UnitFrame.Portrait:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
@@ -634,7 +643,7 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		end
 		if actions.texture and actions.texture.enable then
 			frame.TextureChanged = true
-			frame.Highlight:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
 			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		end
 		if actions.scale and actions.scale ~= 1 then
@@ -669,7 +678,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, reaction, spell, health, maxHealth, percHealth;
+	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
@@ -677,7 +686,7 @@ function mod:UpdateElement_Filters(frame)
 
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
-		frame.Highlight:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	end
 	if frame.HealthColorChanged then
@@ -835,6 +844,16 @@ function mod:UpdateElement_Filters(frame)
 			if not failed and (trigger.isTarget or trigger.notTarget) then
 				condition = false
 				if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match if unit is a quest boss
+			if not failed and trigger.questBoss then
+				condition = false
+				questBoss = UnitIsQuestBoss(frame.displayedUnit)
+				if questBoss then
 					condition = true
 				end
 				failed = not condition
@@ -1011,6 +1030,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
+	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
+		unit = self.unit
+	end
 	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
 	end

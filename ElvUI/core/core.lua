@@ -171,14 +171,10 @@ E.ClassRole = {
 	},
 }
 
-E.DEFAULT_FILTER = {
-	["CCDebuffs"] = "Whitelist",
-	["TurtleBuffs"] = "Whitelist",
-	["PlayerBuffs"] = "Whitelist",
-	["Blacklist"] = "Blacklist",
-	["Whitelist"] = "Whitelist",
-	["RaidDebuffs"] = "Whitelist",
-}
+E.DEFAULT_FILTER = {}
+for filter, tbl in pairs(G.unitframe.aurafilters) do
+	E.DEFAULT_FILTER[filter] = tbl.type
+end
 
 E.noop = function() end;
 
@@ -1317,18 +1313,23 @@ function E:InitializeModules()
 end
 
 --DATABASE CONVERSIONS
+local function auraFilterStrip(name, content, value)
+	if match(name, value) then
+		E.global.unitframe.aurafilters[gsub(name, value, '')] = E:CopyTable({}, content)
+		E.global.unitframe.aurafilters[name] = nil
+	end
+end
 function E:DBConversions()
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
 	end
 
-	--Remove commas from old aura filter names, we use these to split the new aura priority string
-	for filter, content in pairs(E.global.unitframe.aurafilters) do
-		if match(filter, ",") then
-			E.global.unitframe.aurafilters[filter] = nil
-			E.global.unitframe.aurafilters[gsub(filter, ",", "")] = content
-		end
+	--Remove commas from aura filters
+	for name, content in pairs(E.global.unitframe.aurafilters) do
+		auraFilterStrip(name, content, ',')
+		auraFilterStrip(name, content, '^Friendly:')
+		auraFilterStrip(name, content, '^Enemy:')
 	end
 
 	--Add missing nameplates table to Minimalistic profile

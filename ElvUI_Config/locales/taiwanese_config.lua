@@ -395,6 +395,9 @@ L["Share Filters"] = "分享過濾器配置"
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["You must be targeting a player."] = "你必須以一名玩家為目標."
 
+--Filters
+L["Reset Filter"] = true;
+
 --General
 L["Accept Invites"] = "接受組隊邀請"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "調整仇恨條的位置於左側或右側資訊面板"
@@ -674,6 +677,7 @@ L["Set Settings to Default"] = "恢復默認設置"
 L["Set the transparency level of nameplates that are not the target nameplate."] = "設定未被選中目標的姓名板的透明度"
 L["Set to either stack nameplates vertically or allow them to overlap."] = "設置將姓名板垂直排列或者允許重疊"
 L["Shortcut to 'Filters' section of the config."] = "一個到'過濾器'功能表的快速鍵"
+L["Shortcut to global filters."] = true;
 L["Shortcuts"] = "快速鍵"
 L["Show In Combat"] = "戰鬥中顯示"
 L["Show NPC Titles"] = "顯示NPC頭銜"
@@ -704,6 +708,7 @@ L["Unit Type"] = "單位類型"
 L["Use Class Color"] = "使用職業顏色"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式調整過濾器優先順序, 或者右鍵移除一個過濾器"
 L["Use Portrait"] = "使用頭像"
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "當另一個坦克更有效的坦住時姓名板使用被坦住的顏色"
 L["Use Target Glow"] = "目標外框高亮"
@@ -894,8 +899,8 @@ L["Combo Point"] = "連擊點"
 L["Configure Auras"] = "設置光環"
 L["Copy From"] = "複製自"
 L["Count Font Size"] = "計數字體尺寸"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "輸入一個名稱創建自定義字體樣式之後, 你可以在組件的下拉菜單中選擇使用."
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "創造一個過濾器, 一旦創造, 每個單位的buff/debuff 都能使用."
+L["Create Custom Text"] = true;
 L["Create Filter"] = "創造過濾器"
 L["Current - Max | Percent"] = "目前值- 最大值| 百分比"
 L["Current - Max"] = "目前值 - 最大值"

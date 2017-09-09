@@ -255,8 +255,9 @@ function E:LoadCommands()
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand("estatus", "ShowStatusReport")
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
-	
-	if E.ActionBars then
-		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
+
+	if E.private.actionbar.enable then
+		local AB = E:GetModule("ActionBars")
+		self:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 end

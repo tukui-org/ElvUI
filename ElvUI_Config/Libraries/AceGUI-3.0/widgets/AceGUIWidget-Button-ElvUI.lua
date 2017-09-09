@@ -12,6 +12,8 @@ local pairs = pairs
 -- WoW APIs
 local _G = _G
 local PlaySound, CreateFrame, UIParent = PlaySound, CreateFrame, UIParent
+local IsShiftKeyDown = IsShiftKeyDown
+local PlaySoundKitID = PlaySoundKitID
 -- GLOBALS: GameTooltip, ElvUI
 
 --[[-----------------------------------------------------------------------------
@@ -67,6 +69,9 @@ local function dragdrop_OnClick(frame, ...)
 	local button = ...
 	if frame.obj.dragOnClick and button == "RightButton" then
 		frame.obj.dragOnClick(frame, ...)
+		frame.obj.ActivateMultiControl(frame.obj, ...)
+	elseif frame.obj.stateSwitchOnClick and (button == "LeftButton") and IsShiftKeyDown() then
+		frame.obj.stateSwitchOnClick(frame, ...)
 		frame.obj.ActivateMultiControl(frame.obj, ...)
 	end
 end

@@ -7,7 +7,7 @@ if not L then return end
 L["INCOMPATIBLE_ADDON"] = "Das Addon %s ist nicht mit dem ElvUI %s Modul kompatibel. Bitte deaktiviere entweder das Addon oder deaktiviere das ElvUI Modul."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "Willkommen zu %sElvUI|r Version %s%s|r, Tippe /ec um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter http://www.tukui.org"
+L["LOGIN_MSG"] = "Willkommen zu %sElvUI|r Version %s%s|r, Tippe /ec um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter https://www.tukui.org"
 
 --ActionBars
 L["Binding"] = "Belegung"
@@ -30,7 +30,7 @@ L["Remove Bar %d Action Page"] = "Entferne Leiste %d Aktion Seite"
 L["Trigger"] = "Auslöser"
 
 --Bags
-L["Bank"] = true;
+L["Bank"] = true; --No need to translate
 L["Deposit Reagents"] = "Reagenzien einlagern"
 L["Hold Control + Right Click:"] = "Halte Steuerung + Rechtsklick:"
 L["Hold Shift + Drag:"] = "Halte Shift + Ziehen:"
@@ -70,7 +70,7 @@ L["In Bags:"] = "In Tasche:"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
 L["AP"] = "AP"
-L["App"] = true;
+L["App"] = true; --No need to translate
 L["Arena"] = "Arena"
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Vermeidung Aufgliederung"
@@ -79,8 +79,8 @@ L["Building(s) Report:"] = "Gebäude Bericht:"
 L["Character: "] = "Charakter: "
 L["Chest"] = "Brust"
 L["Combat"] = "Kampf"
-L["Combat/Arena Time"] = true;
-L["Coords"] = true;
+L["Combat/Arena Time"] = "Kampf/Arena Zeit"
+L["Coords"] = "Koordinaten"
 L["copperabbrev"] = "|cffeda55fc|r" --Also used in Bags
 L["Deficit:"] = "Defizit:"
 L["Download"] = "Download"
@@ -89,8 +89,8 @@ L["Earned:"] = "Verdient:"
 L["Feet"] = "Füße"
 L["Friends List"] = "Freundesliste"
 L["Friends"] = "Freunde" --Also in Skins
-L["Garrison"] = true;
-L["Gold"] = true;
+L["Garrison"] = "Garnison"
+L["Gold"] = true; --No need to translate
 L["goldabbrev"] = "|cffffd700g|r" --Also used in gold datatext
 L["Hands"] = "Hände"
 L["Head"] = "Kopf"
@@ -115,12 +115,12 @@ L["Session:"] = "Sitzung:"
 L["Shoulder"] = "Schulter"
 L["silverabbrev"] = "|cffc7c7cfs|r" --Also used in Bags
 L["SP"] = "SP"
-L["Spell/Heal Power"] = true;
+L["Spell/Heal Power"] = "Zauber-/Heilungskraft"
 L["Spec"] = "Spec"
 L["Spent:"] = "Ausgegeben:"
 L["Stats For:"] = "Stats Für:"
-L["System"] = true;
-L["Talent/Loot Specialization"] = true;
+L["System"] = true; --No need to translate
+L["Talent/Loot Specialization"] = "Talent-/Lootspezialisierung"
 L["Total CPU:"] = "Gesamt CPU:"
 L["Total Memory:"] = "Gesamte Speichernutzung:"
 L["Total: "] = "Gesamt: "
@@ -298,7 +298,7 @@ Options:
 ]=]
 
 --Plugin Installer
-L["ElvUI Plugin Installation"] = true;
+L["ElvUI Plugin Installation"] = true; --No need to translate
 L["In Progress"] = "In Bearbeitung"
 L["List of installations in queue:"] = "Liste von Installationen in Warteschlange:"
 L["Pending"] = "Ausstehend"
@@ -326,6 +326,8 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "Eine Einstellung, die du geändert hast, betrifft nur einen Charakter. Diese Einstellung, die du verändert hast, wird die Benutzerprofile unbeeinflusst lassen. Eine Änderung dieser Einstellung erfordert, dass du dein Interface neu laden musst."
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "Wenn du aktzeptierst wird die Filter Priorität für alle Namensplaketten auf Standard zurückgesetzt. Bist du sicher?"
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "Wenn du aktzeptierst wird die Filter Priorität für alle Einheitenfenster auf Standard zurückgesetzt. Bist du sicher?"
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "Bist du sicher, dass du diese Schrifart auf alle ElvUI Elemente anwenden möchtest?"
 L["Are you sure you want to delete all your gray items?"] = "Bist du sicher, dass du alle grauen Gegenstände löschen willst?"
 L["Are you sure you want to disband the group?"] = "Bist du dir sicher, dass du die Gruppe auflösen willst?"

@@ -7,7 +7,7 @@ if not L then return end
 L["INCOMPATIBLE_ADDON"] = "%s 애드온의 기능이 ElvUI의 %s 모듈과 상충됩니다. 그 애드온을 쓰지 않거나 ElvUI의 기능을 사용해제하세요."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "%sElvUI|r 버전 %s%s|r 을 사용해 주셔서 감사합니다. /ec 를 입력하면 설정창을 열 수 있습니다. 궁금한 점이나 기술지원은 www.tukui.org 에서 해결하세요"
+L["LOGIN_MSG"] = "%sElvUI|r 버전 %s%s|r 을 사용해 주셔서 감사합니다. /ec 를 입력하면 설정창을 열 수 있습니다. 궁금한 점이나 기술지원은 https://www.tukui.org 에서 해결하세요"
 
 --ActionBars
 L["Binding"] = " "
@@ -326,6 +326,8 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "이 설정은 캐릭터별로 따로 저장되므로|n프로필에 영향을 주지도, 받지도 않습니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true;
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true;
 L["Are you sure you want to apply this font to all ElvUI elements?"] = true;
 L["Are you sure you want to delete all your gray items?"] = "모든 잡동사니를 버리겠습니까?"
 L["Are you sure you want to disband the group?"] = "현재 그룹을 해산하시겠습니까?"

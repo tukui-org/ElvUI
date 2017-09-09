@@ -17,7 +17,7 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS = LEVEL, NONE, REPUTATION, COMBAT, FILTERS
-local CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
+local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -54,7 +54,7 @@ local function filterMatch(s,v)
 	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
 end
 
-local function filterPriority(auraType, unit, value, remove, movehere)
+local function filterPriority(auraType, unit, value, remove, movehere, friendState)
 	if not auraType or not value then return end
 	local filter = E.db.nameplates.units[unit] and E.db.nameplates.units[unit][auraType] and E.db.nameplates.units[unit][auraType].filters and E.db.nameplates.units[unit][auraType].filters.priority
 	if not filter then return end
@@ -67,6 +67,30 @@ local function filterPriority(auraType, unit, value, remove, movehere)
 		end
 		tremove(tbl, sm);tinsert(tbl, sv, movehere);
 		E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl,',')
+	elseif found and friendState then
+		local realValue = match(value, "^Friendly:([^,]*)") or match(value, "^Enemy:([^,]*)") or value
+		local friend = filterMatch(filter, filterValue("Friendly:"..realValue))
+		local enemy = filterMatch(filter, filterValue("Enemy:"..realValue))
+		local default = filterMatch(filter, filterValue(realValue))
+
+		local state =
+			(friend and (not enemy) and format("%s%s","Enemy:",realValue))					--[x] friend [ ] enemy: > enemy
+		or	((not enemy and not friend) and format("%s%s","Friendly:",realValue))			--[ ] friend [ ] enemy: > friendly
+		or	(enemy and (not friend) and default and format("%s%s","Friendly:",realValue))	--[ ] friend [x] enemy: (default exists) > friendly
+		or	(enemy and (not friend) and match(value, "^Enemy:") and realValue)				--[ ] friend [x] enemy: (no default) > realvalue
+		or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+
+		if state then
+			local stateFound = filterMatch(filter, filterValue(state))
+			if not stateFound then
+				local tbl, sv, sm = {strsplit(",",filter)}
+				for i in ipairs(tbl) do
+					if tbl[i] == value then sv = i;break end
+				end
+				tinsert(tbl, sv, state);tremove(tbl, sv+1)
+				E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl,',')
+			end
+		end
 	elseif found and remove then
 		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
 	elseif not found and not remove then
@@ -340,6 +364,7 @@ local function GetStyleFilterDefaultOptions(filter)
 			["priority"] = 1,
 			["isTarget"] = false,
 			["notTarget"] = false,
+			["questBoss"] = false,
 			["level"] = false,
 			["casting"] = {
 				["interruptible"] = false,
@@ -516,9 +541,22 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				questBoss = {
+					name = "Quest Boss",
+					order = 6,
+					type = 'toggle',
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss = value
+						NP:ConfigureAll()
+					end,
+				},
 				names = {
 					name = L["Name"],
-					order = 6,
+					order = 7,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -555,7 +593,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				casting = {
-					order = 7,
+					order = 8,
 					type = 'group',
 					name = L["Casting"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -615,7 +653,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				combat = {
-					order = 8,
+					order = 9,
 					type = 'group',
 					name = COMBAT,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -680,14 +718,14 @@ local function UpdateFilterGroup()
 					},
 				},
 				class = {
-					order = 9,
+					order = 10,
 					type = 'group',
 					name = CLASS,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
 				role = {
-					order = 10,
+					order = 11,
 					type = 'group',
 					name = ROLE,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -731,7 +769,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 11,
+					order = 12,
 					type = 'group',
 					name = L["Health Threshold"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -788,7 +826,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -873,7 +911,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 13,
+					order = 14,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -971,7 +1009,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 14,
+					order = 15,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1069,7 +1107,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 15,
+					order = 16,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1170,7 +1208,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 16,
+					order = 17,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1520,6 +1558,7 @@ local function GetUnitSettings(unit, name)
 		childGroups = "tab",
 		get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+		disabled = function() return not E.NamePlates; end,
 		args = {
 			copySettings = {
 				order = -10,
@@ -1787,7 +1826,7 @@ local function GetUnitSettings(unit, name)
 							jumpToFilter = {
 								order = 3,
 								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+								desc = L["Shortcut to global filters."],
 								type = "execute",
 								func = function() ACD:SelectGroup("ElvUI", "filters") end,
 							},
@@ -1803,7 +1842,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['populatedSpecialFilters']
+									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -1863,6 +1902,13 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info, value)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
+								stateSwitchGetText = function(button, text, value)
+									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+								end,
+								stateSwitchOnClick = function(info, value)
+									filterPriority('buffs', unit, carryFilterFrom, nil, nil, true)
+								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
@@ -1881,7 +1927,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 							},
 						},
 					},
@@ -1948,7 +1994,7 @@ local function GetUnitSettings(unit, name)
 							jumpToFilter = {
 								order = 3,
 								name = L["Filters Page"],
-								desc = L["Shortcut to global filters page"],
+								desc = L["Shortcut to global filters."],
 								type = "execute",
 								func = function() ACD:SelectGroup("ElvUI", "filters") end,
 							},
@@ -1964,7 +2010,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.nameplate['populatedSpecialFilters']
+									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -2024,6 +2070,13 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info, value)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
+								stateSwitchGetText = function(button, text, value)
+									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+								end,
+								stateSwitchOnClick = function(info, value)
+									filterPriority('debuffs', unit, carryFilterFrom, nil, nil, true)
+								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
 									if str == "" then return nil end
@@ -2042,7 +2095,7 @@ local function GetUnitSettings(unit, name)
 							spacer3 = {
 								order = 9,
 								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."],
+								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
 							},
 						},
 					},
@@ -2395,19 +2448,25 @@ E.Options.args.nameplate = {
 			order = 5,
 			type = "execute",
 			name = L["General"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		fontsShortcut = {
 			order = 6,
 			type = "execute",
 			name = L["Fonts"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "fontGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		classBarShortcut = {
 			order = 7,
 			type = "execute",
 			name = L["Classbar"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
 			order = 8,
@@ -2418,19 +2477,25 @@ E.Options.args.nameplate = {
 			order = 9,
 			type = "execute",
 			name = L["Threat"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		castBarShortcut = {
 			order = 10,
 			type = "execute",
 			name = L["Cast Bar"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "castGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		reactionShortcut = {
 			order = 11,
 			type = "execute",
 			name = L["Reaction Colors"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
 			order = 12,
@@ -2441,19 +2506,25 @@ E.Options.args.nameplate = {
 			order = 13,
 			type = "execute",
 			name = L["Player Frame"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		healerShortcut = {
 			order = 14,
 			type = "execute",
 			name = L["Healer Frames"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyPlayerShortcut = {
 			order = 15,
 			type = "execute",
 			name = L["Friendly Player Frames"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
 			order = 16,
@@ -2464,19 +2535,25 @@ E.Options.args.nameplate = {
 			order = 17,
 			type = "execute",
 			name = L["Enemy Player Frames"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyNPCShortcut = {
 			order = 18,
 			type = "execute",
 			name = L["Friendly NPC Frames"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		enemyNPCShortcut = {
 			order = 19,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
 			order = 20,
@@ -2487,7 +2564,9 @@ E.Options.args.nameplate = {
 			order = 21,
 			type = "execute",
 			name = L["Style Filter"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
+			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
 			order = 22,
@@ -2599,8 +2678,16 @@ E.Options.args.nameplate = {
 							min = 10, max = 75, step = 1,
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
-						targetedNamePlate = {
+						resetFilters = {
 							order = 11,
+							name = "Reset Aura Filters",
+							type = "execute",
+							func = function(info, value)
+								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
+							end,
+						},
+						targetedNamePlate = {
+							order = 12,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -2679,7 +2766,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 12,
+							order = 13,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],

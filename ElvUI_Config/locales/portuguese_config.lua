@@ -395,6 +395,9 @@ L["Share Filters"] = "Compartilhar Filtros"
 L["This feature will allow you to transfer settings to other characters."] = "Este recurso permite enviar sus configurações a outros personagens."
 L["You must be targeting a player."] = "É necessário ter um jogador como alvo."
 
+--Filters
+L["Reset Filter"] = true;
+
 --General
 L["Accept Invites"] = "Aceitar Convites"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Ajustar a posição da barra de agro para os painéis de texto informativos da esquerda ou da direita."
@@ -674,6 +677,7 @@ L["Set Settings to Default"] = true;
 L["Set the transparency level of nameplates that are not the target nameplate."] = true;
 L["Set to either stack nameplates vertically or allow them to overlap."] = true;
 L["Shortcut to 'Filters' section of the config."] = true;
+L["Shortcut to global filters."] = true;
 L["Shortcuts"] = true;
 L["Show In Combat"] = true;
 L["Show NPC Titles"] = true;
@@ -704,6 +708,7 @@ L["Unit Type"] = true;
 L["Use Class Color"] = true;
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
 L["Use Portrait"] = true;
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Glow"] = true;
@@ -895,8 +900,8 @@ L["Combo Point"] = true;
 L["Configure Auras"] = "Configurar Auras"
 L["Copy From"] = "Copiar de"
 L["Count Font Size"] = "Tamanho da Fonte do Contador"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "Criar uma fonte personalizada. Assim que meter um nome você será capaz de seleciona-la da lista de elementos"
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Criar um filtro, uma vez criado o filtro pode ser definido dentro da seção dos bônus/penalidades de cada unidade."
+L["Create Custom Text"] = true;
 L["Create Filter"] = "Criar filtro"
 L["Current - Max | Percent"] = "Atual - Máximo | Porcentagem"
 L["Current - Max"] = "Atual - Máximo"

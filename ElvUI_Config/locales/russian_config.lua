@@ -394,6 +394,9 @@ L["Share Filters"] = "Передать фильтры"
 L["This feature will allow you to transfer settings to other characters."] = "Эта функция позволит Вам передавать свои настройки другим персонажам."
 L["You must be targeting a player."] = "Целью должен быть игрок."
 
+--Filters
+L["Reset Filter"] = true;
+
 --General
 L["Accept Invites"] = "Принимать приглашения"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Изменяет позицию полосы угрозы"
@@ -669,6 +672,7 @@ L["Set Settings to Default"] = "Сбросить настройки на умо�
 L["Set the transparency level of nameplates that are not the target nameplate."] = "Устанавливает степень прозрачности для индикаторов юнитов, не являющихся вашей целью."
 L["Set to either stack nameplates vertically or allow them to overlap."] = "Выстраивать индикаторы в столбик или позволить им накладываться друг на друга."
 L["Shortcut to 'Filters' section of the config."] = "Ярлык для секицц фильтров в настройках."
+L["Shortcut to global filters."] = true;
 L["Shortcuts"] = "Ярлыки"
 L["Show In Combat"] = "Показывать в бою"
 L["Show NPC Titles"] = "Титулы НИП"
@@ -698,6 +702,7 @@ L["Unit Type"] = "Тип юнита"
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Portrait"] = "Отображать портрет"
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = "Фиксированная позиция"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Использовать этот цвет для юнитов, которых держит другой танк."
 L["Use Target Glow"] = "Использовать выделение цели"
@@ -888,8 +893,8 @@ L["Combo Point"] = "Очко серии"
 L["Configure Auras"] = "Настроить Ауры"
 L["Copy From"] = "Скопировать из"
 L["Count Font Size"] = "Размер шрифта стаков"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "Создать свою текстовую строку. После ввода имени вы сможете выбрать её в выпадающем списке"
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Создает фильтр. После создания он может быть установлен в секции баффов/дебаффов любого юнита."
+L["Create Custom Text"] = true;
 L["Create Filter"] = "Создать фильтр"
 L["Current - Max | Percent"] = "Текущее - Макс. | Процент"
 L["Current - Max"] = "Текущее - Максимальное"

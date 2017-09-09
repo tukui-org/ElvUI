@@ -6,22 +6,13 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
 G["nameplate"] = {
-	["specialFilters"] = {
-		["Boss"] = true,
-		["Personal"] = true,
-		["nonPersonal"] = true,
-		["blockNonPersonal"] = true,
-		["CastByUnit"] = true,
-		["notCastByUnit"] = true,
-		["blockNoDuration"] = true,
-		["Dispellable"] = true,
-	},
 	["filters"] = {
 		["Boss"] = {
 			["triggers"] = {
 				["priority"] = 1,
 				["isTarget"] = false,
 				["notTarget"] = false,
+				["questBoss"] = false,
 				["level"] = true,
 				["casting"] = {
 					["interruptible"] = false,
@@ -100,15 +91,3 @@ G["nameplate"] = {
 		},
 	}
 }
-
-G.nameplate.populatedSpecialFilters = {}; --populates from `G.nameplate.specialFilters` and `G.unitframe.aurafilters`
-
-for name, table in pairs(G.unitframe.aurafilters) do --add the default unitframe filters too
-	G.nameplate.populatedSpecialFilters["Friendly:"..name] = true;
-	G.nameplate.populatedSpecialFilters["Enemy:"..name] = true;
-end
-for name, table in pairs(G.nameplate.specialFilters) do
-	G.nameplate.populatedSpecialFilters["Friendly:"..name] = true;
-	G.nameplate.populatedSpecialFilters["Enemy:"..name] = true;
-	G.nameplate.populatedSpecialFilters[name] = true;
-end

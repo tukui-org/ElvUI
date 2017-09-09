@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
---/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
 --Cache global variables
 --Lua functions
@@ -9,37 +8,37 @@ local pairs, select, unpack = pairs, select, unpack
 local ceil = math.ceil
 local format, gsub, split, strfind = string.format, string.gsub, string.split, strfind
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-local UnitHealth = UnitHealth
-local UnitHealthMax = UnitHealthMax
-local UnitCastingInfo = UnitCastingInfo
-local UnitChannelInfo = UnitChannelInfo
-local UnitAffectingCombat = UnitAffectingCombat
-local UnitExists = UnitExists
-local UnitOnTaxi = UnitOnTaxi
-local VehicleExit = VehicleExit
-local PetDismiss = PetDismiss
 local CanExitVehicle = CanExitVehicle
-local TaxiRequestEarlyLanding = TaxiRequestEarlyLanding
-local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
-local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
-local GameTooltip_Hide = GameTooltip_Hide
-local InCombatLockdown = InCombatLockdown
 local ClearOverrideBindings = ClearOverrideBindings
+local CreateFrame = CreateFrame
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
-local SetOverrideBindingClick = SetOverrideBindingClick
-local SetClampedTextureRotation = SetClampedTextureRotation
-local GetVehicleBarIndex = GetVehicleBarIndex
-local GetOverrideBarIndex = GetOverrideBarIndex
-local SetModifiedClick = SetModifiedClick
-local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
 local GetFlyoutID = GetFlyoutID
 local GetMouseFocus = GetMouseFocus
+local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
+local GetOverrideBarIndex = GetOverrideBarIndex
+local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar, HasVehicleActionBar = HasOverrideActionBar, HasVehicleActionBar
+local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
+local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
+local PetDismiss = PetDismiss
+local RegisterStateDriver = RegisterStateDriver
+local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
-local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
+local SetModifiedClick = SetModifiedClick
+local SetOverrideBindingClick = SetOverrideBindingClick
+local TaxiRequestEarlyLanding = TaxiRequestEarlyLanding
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local UnitExists = UnitExists
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitOnTaxi = UnitOnTaxi
+local UnregisterStateDriver = UnregisterStateDriver
+local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 
 --Global variables that we don't need to cache, list them here for mikk's FindGlobals script
@@ -57,10 +56,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 -- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 -- GLOBALS: InterfaceOptionsStatusTextPanelXP, ArtifactWatchBar, HonorWatchBar
 -- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd, UIParent
--- GLOBALS: VIEWABLE_ACTION_BAR_PAGES, SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2
--- GLOBALS: SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4
 
-local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -69,7 +65,6 @@ local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 AB.RegisterCooldown = E.RegisterCooldown
 
-E.ActionBars = AB
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
 AB["barDefaults"] = {
@@ -516,9 +511,9 @@ end
 
 function AB:UpdateBar1Paging()
 	if self.db.bar6.enabled then
-		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
+		AB.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	else
-		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
+		AB.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	end
 
 	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
@@ -1114,7 +1109,6 @@ function AB:Initialize()
 	self.fadeParent:RegisterEvent("PLAYER_FOCUS_CHANGED")
 	self.fadeParent:SetScript("OnEvent", self.FadeParent_OnEvent)
 
-
 	self:DisableBlizzard()
 
 	self:SetupExtraButton()
@@ -1138,7 +1132,7 @@ function AB:Initialize()
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 
-	if C_PetBattlesIsInBattle() then
+	if C_PetBattles_IsInBattle() then
 		self:RemoveBindings()
 	else
 		self:ReassignBindings()

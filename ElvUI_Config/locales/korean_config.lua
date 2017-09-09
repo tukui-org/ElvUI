@@ -442,6 +442,9 @@ L["Share Filters"] = "필터설정 전송"
 L["This feature will allow you to transfer settings to other characters."] = "전송 기능을 통해 대상에게 자신의 설정을 넘겨줄 수 있습니다."
 L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시도해야 합니다."
 
+--Filters
+L["Reset Filter"] = true;
+
 --General
 L["Accept Invites"] = "지인의 초대 자동수락"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "위협수치 바를 어느 패널의 정보문자 탭에 배치할지 결정합니다."
@@ -722,6 +725,7 @@ L["Set Settings to Default"] = true;
 L["Set the transparency level of nameplates that are not the target nameplate."] = true;
 L["Set to either stack nameplates vertically or allow them to overlap."] = true;
 L["Shortcut to 'Filters' section of the config."] = true;
+L["Shortcut to global filters."] = true;
 L["Shortcuts"] = true;
 L["Show In Combat"] = true;
 L["Show NPC Titles"] = true;
@@ -752,6 +756,7 @@ L["Unit Type"] = true;
 L["Use Class Color"] = true;
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true;
 L["Use Portrait"] = true;
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
 L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Glow"] = true;
@@ -942,8 +947,8 @@ L["Combo Point"] = true;
 L["Configure Auras"] = "오라 설정"
 L["Copy From"] = "복사해오기"
 L["Count Font Size"] = "중첩수 글꼴 크기"
-L["Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list."] = "유닛프레임에 새로운 문자 영역을 추가합니다. 빈칸에 새 문자영역 제목을 입력하고 Enter 키를 누르면 우측하단의 목록에서 선택할 수 있게 됩니다."
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "각 유닛의 버프/디버프에 필터를 생성합니다."
+L["Create Custom Text"] = true;
 L["Create Filter"] = "필터 생성"
 L["Current - Max | Percent"] = "현재값 - 최대값 | %"
 L["Current - Max"] = "현재값 - 최대값"

@@ -7,7 +7,7 @@ if not L then return end
 L["INCOMPATIBLE_ADDON"] = "插件 %s 不相容于 ElvUI 的 %s 模组, 请停用不相容的插件, 或停用模组."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "欢迎使用 %sElvUI|r %s%s|r 版, 请输入/ec进入设定介面. 如需技术支持,请至 http://www.tukui.org"
+L["LOGIN_MSG"] = "欢迎使用 %sElvUI|r %s%s|r 版, 请输入/ec进入设定介面. 如需技术支持,请至 https://www.tukui.org"
 
 --ActionBars
 L["Binding"] = "绑定"
@@ -326,6 +326,8 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "你所做的改动只会影响到使用这个插件的本角色, 你需要重新加载界面才能使改动生效."
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true;
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true;
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定要对所有ElvUI元素使用这个字体?"
 L["Are you sure you want to delete all your gray items?"] = "确定需要摧毁你的灰色物品?"
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"

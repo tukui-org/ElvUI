@@ -93,12 +93,15 @@ local basekeys={
 	width=optstring,
 	customWidth=optnumber,
 	textWidth=optmethodbool,
+	buttonElvUI=optmethodbool,
 	dragdrop=optmethodbool,
 		dragOnEnter=optmethodfalse,
 		dragOnLeave=optmethodfalse,
 		dragOnClick=optmethodfalse,
 		dragOnMouseUp=optmethodfalse,
 		dragOnMouseDown=optmethodfalse,
+		stateSwitchOnClick=optmethodfalse,
+		stateSwitchGetText=optmethodfalse,
 }
 
 local typedkeys={
