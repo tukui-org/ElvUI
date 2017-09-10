@@ -77,6 +77,7 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(Currencies["SEAL_OF_BROKEN_FATE"].NAME, select(2, GetCurrencyInfo(Currencies["SEAL_OF_BROKEN_FATE"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["NETHERSHARD"].NAME, select(2, GetCurrencyInfo(Currencies["NETHERSHARD"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["SHADOWY_COIN"].NAME, select(2, GetCurrencyInfo(Currencies["SHADOWY_COIN"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["VEILED_ARGUNITE"].NAME, select(2, GetCurrencyInfo(Currencies["VEILED_ARGUNITE"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 	
 	DT.tooltip:AddLine(OTHER)
