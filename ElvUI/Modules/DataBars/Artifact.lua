@@ -105,7 +105,7 @@ function mod:ArtifactBar_OnEnter()
 
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
-	local xpForNextPointZero = (xpForNextPoint <= 0 and 0) --use this to protect from division by zero
+	local xpForNextPointZero = (xpForNextPoint <= 0 and 100) --use this to protect from division by zero
 
 	GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xpForNextPointZero or (xp/xpForNextPoint * 100)), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', E:ShortValue(xpForNextPoint - xp), xpForNextPointZero or (remaining / xpForNextPoint * 100), xpForNextPointZero or (20 * remaining / xpForNextPoint), L["Bars"]), 1, 1, 1)
