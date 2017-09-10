@@ -692,6 +692,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236529] = Defaults(), -- Twilight Glaive
 		[236541] = Defaults(), -- Twilight Glaive
 		[237561] = Defaults(), -- Twilight Glaive
+		[237633] = Defaults(), -- Spectral Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
 		-- Mistress Sassz'ine
