@@ -1030,6 +1030,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
+	if not (unit and self.unit) then 
+		return
+	end
 	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
 		unit = self.unit
 	end
