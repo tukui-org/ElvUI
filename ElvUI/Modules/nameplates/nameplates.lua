@@ -1030,11 +1030,8 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
-	if not (unit and self.unit) then 
-		return
-	end
 	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
-		unit = self.unit
+		if self.unit then unit = self.unit else return end
 	end
 	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
@@ -1102,7 +1099,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
-	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
+	elseif(event == "UPDATE_MOUSEOVER_UNIT" and self.unit) then
 		mod:UpdateElement_Highlight(self)
 	elseif(event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or event == "UNIT_CONNECTION") then
 		mod:UpdateElement_Portrait(self)
