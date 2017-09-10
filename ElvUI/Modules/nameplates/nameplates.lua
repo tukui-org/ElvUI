@@ -1099,7 +1099,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
-	elseif(event == "UPDATE_MOUSEOVER_UNIT" and self.unit) then
+	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
 		mod:UpdateElement_Highlight(self)
 	elseif(event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or event == "UNIT_CONNECTION") then
 		mod:UpdateElement_Portrait(self)
