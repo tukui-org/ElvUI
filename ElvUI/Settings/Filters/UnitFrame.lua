@@ -683,9 +683,15 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[239264] = Defaults(), -- Lunar Flare (Tank)
 		[236712] = Defaults(5), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
+		[236305] = Defaults(), -- Incorporeal Shot
+		[236306] = Defaults(), -- Incorporeal Shot
+		[237570] = Defaults(), -- Incorporeal Shot
+		[248911] = Defaults(), -- Incorporeal Shot
 		[236550] = Defaults(), -- Discorporate (Tank)
 		[236330] = Defaults(), -- Astral Vulnerability
+		[236529] = Defaults(), -- Twilight Glaive
 		[236541] = Defaults(), -- Twilight Glaive
+		[237561] = Defaults(), -- Twilight Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
 		-- Mistress Sassz'ine
