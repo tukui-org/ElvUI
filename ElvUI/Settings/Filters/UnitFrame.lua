@@ -659,31 +659,36 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Tomb of Sargeras
 		-- Goroth
 		[233279] = Defaults(), -- Shattering Star
-		[230345] = Defaults(), -- Crashing Comet
+		[230345] = Defaults(), -- Crashing Comet (Dot)
+		[232249] = Defaults(), -- Crashing Comet
 		[231363] = Defaults(), -- Burning Armor
 		[234264] = Defaults(), -- Melted Armor
 		[233062] = Defaults(), -- Infernal Burning
+		[230348] = Defaults(), -- Fel Pool
 
 		-- Demonic Inquisition
 		[233430] = Defaults(), -- Ubearable Torment
 		[233983] = Defaults(), -- Echoing Anguish
+		[248713] = Defaults(), -- Soul Corruption
 
 		-- Harjatan
 		[231770] = Defaults(), -- Drenched
 		[231998] = Defaults(), -- Jagged Abrasion
 		[231729] = Defaults(), -- Aqueous Burst
 		[234128] = Defaults(), -- Driven Assault
+		[234016] = Defaults(), -- Driven Assault
 
 		-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
-		[236598] = Defaults(5), -- Rapid Shot 1
-		[234995] = Defaults(5), -- Rapid Shot 2
-		[236519] = Defaults(4), -- Moon Burn
+		[236596] = Defaults(), -- Rapid Shot 
+		[234995] = Defaults(), -- Lunar Suffusion
+		[234996] = Defaults(), -- Umbra Suffusion
+		[236519] = Defaults(), -- Moon Burn
 		[236697] = Defaults(), -- Deathly Screech
 		[239264] = Defaults(), -- Lunar Flare (Tank)
-		[236712] = Defaults(5), -- Lunar Beacon
+		[236712] = Defaults(), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
-		[236305] = Defaults(), -- Incorporeal Shot
+		[236305] = Defaults(), -- Incorporeal Shot -- (Heroic)
 		[236306] = Defaults(), -- Incorporeal Shot
 		[237570] = Defaults(), -- Incorporeal Shot
 		[248911] = Defaults(), -- Incorporeal Shot
@@ -691,7 +696,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236330] = Defaults(), -- Astral Vulnerability
 		[236529] = Defaults(), -- Twilight Glaive
 		[236541] = Defaults(), -- Twilight Glaive
-		[237561] = Defaults(), -- Twilight Glaive
+		[237561] = Defaults(), -- Twilight Glaive -- (Heroic)
 		[237633] = Defaults(), -- Spectral Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
