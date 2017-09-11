@@ -1663,6 +1663,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 4,
 						type = "color",
 						name = COLOR,
+						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
 							local d = P.unitframe.units.raid.rdebuffs.duration.color
@@ -1716,6 +1717,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 4,
 						type = "color",
 						name = COLOR,
+						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
 							local d = P.unitframe.units[groupName].rdebuffs.stack.color
