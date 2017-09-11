@@ -398,6 +398,7 @@ L["You must be targeting a player."] = "你必須以一名玩家為目標."
 --Filters
 L["Reset Aura Filters"] = true; --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true;
+L["Used as RaidDebuff Indicator"] = true;
 
 --General
 L["Accept Invites"] = "接受組隊邀請"
@@ -946,6 +947,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "不顯示你不能驅散的光環."
 L["Don't display auras that have no duration."] = "不限時沒有持續時間的光環."
 L["Down"] = "下"
+L["Dungeon & Raid Filter"] = true;
 L["Duration Reverse"] = "持續時間反轉"
 L["Duration Text"] = "持續時間文字"
 L["Duration"] = "持續時間"
@@ -1041,6 +1043,7 @@ L["Offset position for text."] = "偏移文本的位置."
 L["Offset"] = "偏移"
 L["Only Match SpellID"] = true;
 L["OOR Alpha"] = "超出距離透明度"
+L["Other Filter"] = true;
 L["Others"] = "他人的"
 L["Overlay the healthbar"] = "頭像重疊顯示於生命條上"
 L["Overlay"] = "重疊顯示"

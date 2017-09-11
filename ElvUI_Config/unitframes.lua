@@ -2019,6 +2019,11 @@ E.Options.args.unitframe = {
 					type = 'group',
 					name = L["General"],
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = L["General"],
+						},
 						thinBorders = {
 							order = 1,
 							name = L["Thin Borders"],
@@ -2149,6 +2154,11 @@ E.Options.args.unitframe = {
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = COLORS,
+						},
 						borderColor = {
 							order = 1,
 							type = "color",
@@ -2571,6 +2581,11 @@ E.Options.args.unitframe = {
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
 					set = function(info, value) E.private["unitframe"].disabledBlizzardFrames[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = L["Disabled Blizzard Frames"],
+						},
 						player = {
 							order = 1,
 							type = 'toggle',
@@ -2608,6 +2623,52 @@ E.Options.args.unitframe = {
 							order = 7,
 							type = 'toggle',
 							name = L["Raid Frames"],
+						},
+					},
+				},
+				raidDebuffIndicator = {
+					order = 4,
+					type = "group",
+					name = L["RaidDebuff Indicator"],
+					args = {
+						header = {
+							order = 1,
+							type = "header",
+							name = L["RaidDebuff Indicator"],
+						},
+						instanceFilter = {
+							order = 2,
+							type = "select",
+							name = L["Dungeon & Raid Filter"],
+							values = function()
+								local filters = {}
+								local list = E.global.unitframe['aurafilters']
+								if not list then return end
+								for filter in pairs(list) do
+									filters[filter] = filter
+								end
+								
+								return filters
+							end,
+							get = function(info) return E.global.unitframe.raidDebuffIndicator.instanceFilter end,
+							set = function(info, value) E.global.unitframe.raidDebuffIndicator.instanceFilter = value; UF:UpdateAllHeaders() end,
+						},
+						otherFilter = {
+							order = 3,
+							type = "select",
+							name = L["Other Filter"],
+							values = function()
+								local filters = {}
+								local list = E.global.unitframe['aurafilters']
+								if not list then return end
+								for filter in pairs(list) do
+									filters[filter] = filter
+								end
+								
+								return filters
+							end,
+							get = function(info) return E.global.unitframe.raidDebuffIndicator.otherFilter end,
+							set = function(info, value) E.global.unitframe.raidDebuffIndicator.otherFilter = value; UF:UpdateAllHeaders() end,
 						},
 					},
 				},

@@ -1065,6 +1065,7 @@ local function UpdateFilterGroup()
 							E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = {
 								['enable'] = true,
 								['priority'] = 0,
+								["stackThreshold"] = 0,
 							}
 						end
 						UpdateFilterGroup();
@@ -1175,6 +1176,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				enable = {
+					order = 1,
 					name = L["Enable"],
 					type = "toggle",
 					get = function()
@@ -1186,40 +1188,49 @@ local function UpdateFilterGroup()
 					end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
 				},
+				forDebuffIndicator = {
+					order = 2,
+					type = "group",
+					name = L["Used as RaidDebuff Indicator"],
+					guiInline = true,
+					args = {
+						priority = {
+							order = 1,
+							type = "range",
+							name = L["Priority"],
+							desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
+							min = 0, max = 99, step = 1,
+							get = function()
+								if selectedFolder or not selectedSpell then
+									return 0
+								else
+									return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].priority
+								end
+							end,
+							set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+						},
+						stackThreshold = {
+							order = 2,
+							type = "range",
+							name = L["Stack Threshold"],
+							desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
+							min = 0, max = 99, step = 1,
+							get = function()
+								if selectedFolder or not selectedSpell then
+									return 0
+								else
+									return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold
+								end
+							end,
+							set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+						},
+					},
+				},
 			},
 		}
 
 		if selectedFilter == "RaidDebuffs" or selectedFilter == "CCDebuffs" then
-			E.Options.args.filters.args.spellGroup.args.priority = {
-				name = L["Priority"],
-				type = "range",
-				get = function()
-					if selectedFolder or not selectedSpell then
-						return 0
-					else
-						return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].priority
-					end
-				end,
-				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-				min = 0, max = 99, step = 1,
-				desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
-			}
-			if selectedFilter == "RaidDebuffs" then
-				E.Options.args.filters.args.spellGroup.args.stackThreshold = {
-					name = L["Stack Threshold"],
-					type = "range",
-					get = function()
-						if selectedFolder or not selectedSpell then
-							return 0
-						else
-							return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold
-						end
-					end,
-					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-					min = 0, max = 99, step = 1,
-					desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
-				}
-			end
+			
 		end
 	end
 

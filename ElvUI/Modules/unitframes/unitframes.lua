@@ -932,6 +932,23 @@ function UF:LoadUnits()
 	self['headerstoload'] = nil
 end
 
+function UF:RegisterRaidDebuffIndicator()
+	local _, instanceType = IsInInstance();
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	if ORD then
+		ORD:ResetDebuffData()
+
+		local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
+		local other = E.global.unitframe.raidDebuffIndicator.otherFilter
+
+		if instanceType == "party" or instanceType == "raid" then
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters[instance].spells)
+		else
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters[other].spells)
+		end
+	end
+end
+
 function UF:UpdateAllHeaders(event)
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateAllHeaders')
@@ -942,21 +959,11 @@ function UF:UpdateAllHeaders(event)
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 
-	local _, instanceType = IsInInstance();
-	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
-	if ORD then
-		ORD:ResetDebuffData()
-
-		if instanceType == "party" or instanceType == "raid" then
-			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.RaidDebuffs.spells)
-		else
-			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.CCDebuffs.spells)
-		end
-	end
-
 	if E.private["unitframe"]["disabledBlizzardFrames"].party then
 		ElvUF:DisableBlizzard('party')
 	end
+
+	self:RegisterRaidDebuffIndicator()
 
 	local smartRaidFilterEnabled = self.db.smartRaidFilter
 	for group, header in pairs(self['headers']) do

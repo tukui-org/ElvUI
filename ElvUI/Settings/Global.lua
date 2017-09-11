@@ -35,6 +35,10 @@ G["datatexts"] = {
 G['unitframe'] = {
 	['aurafilters'] = {},
 	['buffwatch'] = {},
+	["raidDebuffIndicator"] = {
+		["instanceFilter"] = "RaidDebuffs",
+		["otherFilter"] = "CCDebuffs",
+	},
 	["spellRangeCheck"] = {
 		["PRIEST"] = {
 			["enemySpells"] = {

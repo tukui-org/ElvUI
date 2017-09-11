@@ -445,6 +445,7 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 --Filters
 L["Reset Aura Filters"] = true; --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true;
+L["Used as RaidDebuff Indicator"] = true;
 
 --General
 L["Accept Invites"] = "지인의 초대 자동수락"
@@ -994,6 +995,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "플레이어가 직접 끄거나 해제할 수 없는 종류의 효과들을 표시하지 않게 합니다."
 L["Don't display auras that have no duration."] = "지속시간이 무한인 효과들을 표시하지 않게 합니다.|n|n즉, 유효시간이 있는 효과들만 보이게 됩니다."
 L["Down"] = "아래로"
+L["Dungeon & Raid Filter"] = true;
 L["Duration Reverse"] = "총 지속시간이 짧은 순"
 L["Duration Text"] = true;
 L["Duration"] = "총 지속시간이 긴 순"
@@ -1089,6 +1091,7 @@ L["Offset position for text."] = "위치 기준점에서부터 얼마나 떨어�
 L["Offset"] = "생명력바와 겹쳐 표시"
 L["Only Match SpellID"] = true;
 L["OOR Alpha"] = "사거리 밖 투명도"
+L["Other Filter"] = true;
 L["Others"] = "다른 유저"
 L["Overlay the healthbar"] = "생명력바에 덮어 씌워 표시합니다."
 L["Overlay"] = "덮어씌우기"

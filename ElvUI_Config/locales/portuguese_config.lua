@@ -398,6 +398,7 @@ L["You must be targeting a player."] = "É necessário ter um jogador como alvo.
 --Filters
 L["Reset Aura Filters"] = true; --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true;
+L["Used as RaidDebuff Indicator"] = true;
 
 --General
 L["Accept Invites"] = "Aceitar Convites"
@@ -947,6 +948,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "Não mostra auras que não podem ser dissipadas pela sua classe."
 L["Don't display auras that have no duration."] = "Não mostra auras sem duração."
 L["Down"] = "Baixo"
+L["Dungeon & Raid Filter"] = true;
 L["Duration Reverse"] = "Duração Reversa"
 L["Duration Text"] = true;
 L["Duration"] = "Duração"
@@ -1042,6 +1044,7 @@ L["Offset position for text."] = "Deslocamento da posição do texto"
 L["Offset"] = "Distância"
 L["Only Match SpellID"] = true;
 L["OOR Alpha"] = "Transparência Fora de Alcance"
+L["Other Filter"] = true;
 L["Others"] = "Outros"
 L["Overlay the healthbar"] = "Sobrepor a barra de vida"
 L["Overlay"] = "Sobrepor"
