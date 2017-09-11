@@ -1130,67 +1130,6 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
 
-function UF:Initialize()
-	self.db = E.db["unitframe"]
-	self.thinBorders = self.db.thinBorders or E.PixelMode
-	if E.private["unitframe"].enable ~= true then return; end
-	E.UnitFrames = UF;
-
-	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
-	ElvUF_Parent:SetFrameStrata("LOW")
-	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
-
-	self:UpdateColors()
-	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
-		self:Construct_UF(frame, unit)
-	end)
-
-	self:LoadUnits()
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-
-	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
-	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
-		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
-	end
-
-	if E.private["unitframe"]["disabledBlizzardFrames"].target then
-		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
-		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
-	end]]
-
-	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then
-		self:DisableBlizzard()
-		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
-
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
-		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
-	else
-		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
-	end
-
-	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
-		E.RaidUtility.Initialize = E.noop
-	end
-
-	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
-		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-
-		if not IsAddOnLoaded('Blizzard_ArenaUI') then
-			self:RegisterEvent('ADDON_LOADED')
-		else
-			ElvUF:DisableBlizzard('arena')
-		end
-	end
-
-	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
-	if not ORD then return end
-	ORD.ShowDispelableDebuff = true
-	ORD.FilterDispellableDebuff = true
-	ORD.MatchBySpellName = false
-	
-	self:UpdateRangeCheckSpells()
-end
-
 function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]);
 
@@ -1357,6 +1296,67 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			backdropTex.multiplier = 0.25
 		end
 	end
+end
+
+function UF:Initialize()
+	self.db = E.db["unitframe"]
+	self.thinBorders = self.db.thinBorders or E.PixelMode
+	if E.private["unitframe"].enable ~= true then return; end
+	E.UnitFrames = UF;
+
+	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	ElvUF_Parent:SetFrameStrata("LOW")
+	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
+
+	self:UpdateColors()
+	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
+		self:Construct_UF(frame, unit)
+	end)
+
+	self:LoadUnits()
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
+		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].target then
+		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
+		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
+	end]]
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then
+		self:DisableBlizzard()
+		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+
+		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
+	else
+		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
+	end
+
+	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
+		E.RaidUtility.Initialize = E.noop
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
+		self:SecureHook('UnitFrameThreatIndicator_Initialize')
+
+		if not IsAddOnLoaded('Blizzard_ArenaUI') then
+			self:RegisterEvent('ADDON_LOADED')
+		else
+			ElvUF:DisableBlizzard('arena')
+		end
+	end
+
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	if not ORD then return end
+	ORD.ShowDispellableDebuff = true
+	ORD.FilterDispellableDebuff = true
+	ORD.MatchBySpellName = false
+	
+	self:UpdateRangeCheckSpells()
 end
 
 local function InitializeCallback()

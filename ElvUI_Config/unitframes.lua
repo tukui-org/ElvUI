@@ -1570,6 +1570,12 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				type = "toggle",
 				name = L["Show Dispellable Debuffs"],
 			},
+			onlyMatchSpellID = {
+				order = 4,
+				type = "toggle",
+				name = L["Only Match SpellID"],
+				desc = L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."],
+			},
 			size = {
 				order = 4,
 				type = 'range',

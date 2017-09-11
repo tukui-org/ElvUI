@@ -44,6 +44,7 @@ function UF:Configure_RaidDebuffs(frame)
 		end
 		
 		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
+		rdebuffs.onlyMatchSpellID = db.rdebuffs.onlyMatchSpellID
 		rdebuffs.forceShow = frame.forceShowAuras
 		rdebuffs:Size(db.rdebuffs.size)
 		rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset + frame.SPACING)
