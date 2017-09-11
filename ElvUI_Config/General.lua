@@ -192,9 +192,10 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.numberPrefixStyle end,
 					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
 					values = {
-						["METRIC"] = "k, M, G",
-						["ENGLISH"] = "K, M, B",
-						["CHINESE"] = "W, Y",
+						["METRIC"] = "Metric (k, M, G)",
+						["ENGLISH"] = "English (K, M, B)",
+						["CHINESE"] = "Chinese (W, Y)",
+						["KOREAN"] = "Korean (천, 만, 억)",
 					},
 				},
 				commandBarSetting = {
