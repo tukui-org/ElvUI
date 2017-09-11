@@ -398,7 +398,7 @@ L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 --Filters
 L["Reset Aura Filters"] = "Setze Aurafilter zurück" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "Filter zurücksetzen"
-L["Used as RaidDebuff Indicator"] = true;
+L["Used as RaidDebuff Indicator"] = "Verwendet als RaidDebuff Indikator"
 
 --General
 L["Accept Invites"] = "Einladungen akzeptieren"
@@ -948,7 +948,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "Zeige keine Auren die nicht von deiner Klasse entzaubert oder gereinigt werden kann."
 L["Don't display auras that have no duration."] = "Zeige keine Auren die keine Laufzeit haben."
 L["Down"] = "Hinunter"
-L["Dungeon & Raid Filter"] = true;
+L["Dungeon & Raid Filter"] = "Instanz & Schlachtzug Filter"
 L["Duration Reverse"] = "Dauer umkehren"
 L["Duration Text"] = "Dauer Text"
 L["Duration"] = "Dauer"
@@ -1042,9 +1042,9 @@ L["Number of Groups"] = "Nummer der Gruppen"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Versatz der Powerleiste zu der Lebensleiste. Setze es auf 0 um den Versatz zu deaktivieren."
 L["Offset position for text."] = "Versatz Positionen für Texte."
 L["Offset"] = "Versatz"
-L["Only Match SpellID"] = true;
+L["Only Match SpellID"] = "Nur SpellID entsprechen"
 L["OOR Alpha"] = "Außer Reichweite Alpha"
-L["Other Filter"] = true;
+L["Other Filter"] = "Anderer Filter"
 L["Others"] = "Andere"
 L["Overlay the healthbar"] = "Überblendung der Gesundheitsleiste"
 L["Overlay"] = "Überblenden"
@@ -1184,7 +1184,7 @@ L["Visibility"] = "Sichtbarkeit"
 L["What point to anchor to the frame you set to attach to."] = "Welchen Punkt für das verankern der Fenster möchtest du wählen."
 L["What to attach the buff anchor frame to."] = "Wo die Stärkungszauber angehängt werden sollen."
 L["What to attach the debuff anchor frame to."] = "Wo die Schwächungszauber angehängt werden sollen."
-L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = true;
+L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = "Wenn aktiviert werden nur Zauber angezeigt die dem Filter hinzugefügt wurden die der SpellID entsprechen und nicht dem Namen."
 L["When true, the header includes the player when not in a raid."] = "Wenn aktiv und sich der Spieler nicht in einem Raid befindet, dann wird das angezeigt."
 L["Whitelist"] = "Weiße Liste"
 L["Width"] = "Breite" --Also used in NamePlates module
