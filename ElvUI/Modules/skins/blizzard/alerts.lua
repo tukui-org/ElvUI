@@ -696,8 +696,9 @@ local function LoadSkin()
 	hooksecurefunc(DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
 	hooksecurefunc(NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
 
-	-- Pets
+	-- Pets/Mounts
 	hooksecurefunc(NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
+	hooksecurefunc(NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
 
 	--[[ STATIC SKINNING ]]--
 	--Bonus Roll Money
