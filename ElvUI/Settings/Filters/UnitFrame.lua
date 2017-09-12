@@ -702,7 +702,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 
 		-- Mistress Sassz'ine
 		[230959] = Defaults(), -- Concealing Murk
-		[232722] = Defaults(), -- Slicing Tornado
+		[232732] = Defaults(), -- Slicing Tornado
 		[232913] = Defaults(), -- Befouling Ink
 		[234621] = Defaults(), -- Devouring Maw
 		[230201] = Defaults(), -- Burden of Pain (Tank)
