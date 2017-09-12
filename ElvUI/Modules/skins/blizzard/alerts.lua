@@ -138,10 +138,10 @@ local function LoadSkin()
 
 		frame.glow:Kill()
 		frame.shine:Kill()
-		_G[frame:GetName().."EmblemBorder"]:Kill()
+		frame.EmblemBorder:Kill()
 
 		-- Icon border
-		local EmblemIcon = _G[frame:GetName().."EmblemIcon"]
+		local EmblemIcon = frame.EmblemIcon
 		if not EmblemIcon.b then
 			EmblemIcon.b = CreateFrame("Frame", nil, frame)
 			EmblemIcon.b:SetTemplate("Default")
