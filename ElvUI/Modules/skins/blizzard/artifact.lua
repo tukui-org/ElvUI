@@ -25,6 +25,7 @@ local function LoadSkin()
 	ArtifactRelicForgeFrame:CreateBackdrop("Transparent")
 	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
 	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
+	S:HandleCloseButton(ArtifactRelicForgeFrameCloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)
