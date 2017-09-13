@@ -104,6 +104,9 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 				elseif filterName == 'Dispellable' and canDispell and allowDuration then
 					filterCheck = true
 					break -- STOP
+				elseif filterName == 'CastByNPC' and not casterIsPlayer then
+					filterCheck = true
+					break -- STOP
 				elseif filterName == 'CastByPlayers' and casterIsPlayer then
 					filterCheck = true
 					break -- STOP

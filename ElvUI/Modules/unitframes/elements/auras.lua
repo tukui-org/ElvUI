@@ -536,6 +536,9 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 				elseif filterName == 'Dispellable' and canDispell and allowDuration then
 					filterCheck = true
 					break -- STOP
+				elseif filterName == 'CastByNPC' and not casterIsPlayer then
+					filterCheck = true
+					break -- STOP
 				elseif filterName == 'CastByPlayers' and casterIsPlayer then
 					filterCheck = true
 					break -- STOP

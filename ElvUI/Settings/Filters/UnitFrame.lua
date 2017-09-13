@@ -1145,6 +1145,7 @@ G.unitframe.specialFilters = {
 	['notCastByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
+	['CastByNPC'] = true,
 	['CastByPlayers'] = true,
 	['blockCastByPlayers'] = true,
 };
