@@ -1,3 +1,25 @@
+**Version 10.64 [ ]**
+
+**New Additions:**  
+Added Korean option for the "Numer Prefix Style" setting. This will allow unitframe tags to use the Korean number annotations.  
+Added "Match SpellID Only" option to individual RaidDebuff Indicator modules. If disabled it will allow it to match by spell name in addition to spell ID.  
+Added possibility of setting alpha of the stack and duration text colors on RaidDebuff Indicator modules.  
+Added global option to choose which filter is used for the RaidDebuff Indicator modules. This is found in UnitFrames->General Options->RaidDebuff Indicator.  
+Added new "CastByNPC" special filter for aura filtering.  
+
+
+**Bug Fixes:**  
+Attempt more fixes towards the unit errors on nameplates.  
+Fixed a divide by 0 error in Artifact DataBars.  
+
+
+**Misc. Changes:**  
+Added and updated spell IDs in the RaidDebuffs filter.  
+Added Veiled Argunite to the Currencies datatext tooltip.  
+Replaced more Blizzard font elements for panels where fonts were mixed.  
+Various skin fixes and tweaks.  
+
+___
 **Version 10.63 [ September 9th 2017 ]**
 
 **New Additions:**  
