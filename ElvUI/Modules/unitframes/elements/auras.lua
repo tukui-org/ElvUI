@@ -510,18 +510,18 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 					spellList = filter.spells
 					spell = spellList and (spellList[spellID] or spellList[name])
 
-					if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
+					if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
 						filterCheck = true
 						button.priority = spell.priority -- this is the only difference from auarbars code
 						break -- STOP: allowing whistlisted spell
-					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
+					elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
 						filterCheck = false
 						break -- STOP: blocking blacklisted spell
 					end
 				elseif filterName == 'Personal' and isPlayer and allowDuration then
 					filterCheck = true
 					break -- STOP
-				elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
+				elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
 					filterCheck = true
 					break -- STOP
 				elseif filterName == 'Boss' and isBossDebuff and allowDuration then
@@ -536,10 +536,10 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 				elseif filterName == 'Dispellable' and canDispell and allowDuration then
 					filterCheck = true
 					break -- STOP
-				elseif filterName == 'CastByNPC' and not casterIsPlayer then
+				elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
 					filterCheck = true
 					break -- STOP
-				elseif filterName == 'CastByPlayers' and casterIsPlayer then
+				elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
 					filterCheck = true
 					break -- STOP
 				elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
@@ -548,7 +548,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 				elseif filterName == 'blockNoDuration' and noDuration then
 					filterCheck = false
 					break -- STOP
-				elseif filterName == 'blockNonPersonal' and not isPlayer then
+				elseif filterName == 'blockNonPersonal' and (not isPlayer) then
 					filterCheck = false
 					break -- STOP
 				end
