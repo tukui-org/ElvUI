@@ -122,13 +122,41 @@ local function GetPoint(frame)
 	else
 		frame = GetMouseFocus()
 	end
-	
+
 	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
 	local frameName = frame.GetName and frame:GetName() or "nil"
 	local relativeToName = relativeTo.GetName and relativeTo:GetName() or "nil"
-	
+
 	print(frameName, point, relativeToName, relativePoint, xOffset, yOffset)
 end
 
 SLASH_GETPOINT1 = "/getpoint"
 SlashCmdList["GETPOINT"] = GetPoint
+
+SLASH_DEV1 = "/dev"
+SlashCmdList["DEV"] = function(msg)
+	if not IsAddOnLoaded("ElvUIDev") then
+		local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo("ElvUIDev")
+		if not loadable then
+			if reason == "MISSING" then
+				print("ElvUIDev addon is missing.")
+			elseif reason == "DISABLED" then
+				print("ElvUIDev addon is disabled.")
+			elseif reason == "DEMAND_LOADED" then
+				local loaded, reason = LoadAddOn("ElvUIDev")
+				if loaded then
+					ElvUIDev:ToggleFrame()
+				else
+					print("ElvUIDev addon cannot be loaded: %s.", string.lower(reason))
+				end
+			end
+		end
+	else
+		--local addon = self:GetAddOn("ElvUIDev")
+		if not ElvUIDev.frame:IsShown() then
+			ElvUIDev.frame:Show()
+		else
+			ElvUIDev.frame:Hide()
+		end
+	end
+end

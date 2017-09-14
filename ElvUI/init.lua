@@ -94,7 +94,7 @@ function AddOn:OnInitialize()
 	if IsAddOnLoaded("Tukui") then
 		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
 	end
-	
+
 	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
 	GameMenuButton:SetText(AddOnName)
 	GameMenuButton:SetScript("OnClick", function()
@@ -118,6 +118,8 @@ function AddOn:OnInitialize()
 		GameMenuButton:Point("TOP", GameMenuButtonWhatsNew, "BOTTOMLEFT", 0, -1)
 		GameMenuFrame:Size(530, 576)
 	end
+
+	self.loadedtime = GetTime()
 end
 
 function AddOn:PositionGameMenuButton()
@@ -193,7 +195,7 @@ function AddOn:ToggleConfig(msg)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-	
+
 	if not IsAddOnLoaded("ElvUI_Config") then
 		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
