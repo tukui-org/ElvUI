@@ -477,83 +477,24 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 	db = db[self.type]
 
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false, false
+	if not name then return nil end
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority = false, false, false, false, false, false, false
 
-	if name then
-		noDuration = (not duration or duration == 0)
-		isFriend = unit and UnitIsFriend('player', unit)
-		isPlayer = (caster == 'player' or caster == 'vehicle')
-		isUnit = unit and caster and UnitIsUnit(unit, caster)
-		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
-	else
-		return nil
-	end
+	isPlayer = (caster == 'player' or caster == 'vehicle')
 
 	button.isPlayer = isPlayer
 	button.owner = caster
 	button.name = name
 	button.priority = 0
 
-	local filter, filterType, spellList, spell
 	if db.priority ~= '' then
-		for i=1, select('#',strsplit(",",db.priority)) do
-			filterName = select(i, strsplit(",",db.priority))
-			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-			if friendCheck ~= false then
-				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-					filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
-				end
-				filter = E.global.unitframe.aurafilters[filterName]
-				if filter then
-					filterType = filter.type
-					spellList = filter.spells
-					spell = spellList and (spellList[spellID] or spellList[name])
-
-					if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
-						filterCheck = true
-						button.priority = spell.priority -- this is the only difference from auarbars code
-						break -- STOP: allowing whistlisted spell
-					elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
-						filterCheck = false
-						break -- STOP: blocking blacklisted spell
-					end
-				elseif filterName == 'Personal' and isPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'Boss' and isBossDebuff and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'Dispellable' and canDispell and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
-					filterCheck = false
-					break -- STOP
-				elseif filterName == 'blockNoDuration' and noDuration then
-					filterCheck = false
-					break -- STOP
-				elseif filterName == 'blockNonPersonal' and (not isPlayer) then
-					filterCheck = false
-					break -- STOP
-				end
-			end
-		end
+		noDuration = (not duration or duration == 0)
+		isFriend = unit and UnitIsFriend('player', unit)
+		isUnit = unit and caster and UnitIsUnit(unit, caster)
+		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
+		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
 		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
