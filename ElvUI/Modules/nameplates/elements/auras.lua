@@ -42,15 +42,6 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 		aura.cooldown:Hide();
 	end
 
-	if aura.cooldown.timer then
-		aura.cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.cooldownFont), self.db.cooldownFontSize, self.db.cooldownFontOutline)
-		aura.cooldown.timer.text:Point("TOPLEFT", 1, 1)
-	end
-
-	if aura.count then
-		aura.count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
-		aura.count:Point("BOTTOMRIGHT", 1, 1)
-	end
 	aura:Show();
 end
 
@@ -223,9 +214,14 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown.SizeOverride = 10
 	E:RegisterCooldown(aura.cooldown)
 
+	-- I assume we must create an own font string to get rid of this
+	-- aura.cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.cooldownFont), self.db.cooldownFontSize, self.db.cooldownFontOutline)
+	-- aura.cooldown.timer.text:Point("TOPLEFT", 1, 1)
+
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
-	aura.count:SetPoint("BOTTOMRIGHT")
-	aura.count:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	aura.count:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline) --It dont get updated correctly
+	-- aura.count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline) -- It dont get updated correctly
+	aura.count:Point("BOTTOMRIGHT", 1, 1)
 
 	return aura
 end
