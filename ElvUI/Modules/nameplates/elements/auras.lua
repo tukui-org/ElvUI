@@ -41,6 +41,16 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 	else
 		aura.cooldown:Hide();
 	end
+
+	if aura.cooldown.timer then
+		aura.cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.cooldownFont), self.db.cooldownFontSize, self.db.cooldownFontOutline)
+		aura.cooldown.timer.text:Point("TOPLEFT", 1, 1)
+	end
+
+	if aura.count then
+		aura.count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+		aura.count:Point("BOTTOMRIGHT", 1, 1)
+	end
 	aura:Show();
 end
 
