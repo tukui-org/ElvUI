@@ -156,7 +156,6 @@ function mod:UpdateElement_Auras(frame)
 			while ( frameNum <= maxAuras ) do
 				showAura = mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
 				if showAura == nil then -- something went wrong (unitaura name was nil)
-					break
 				elseif showAura == true then -- has aura and passes checks
 					if i == 1 then hasBuffs = true else hasDebuffs = true end
 					frameNum = frameNum + 1;
