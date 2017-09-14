@@ -62,7 +62,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (maxDuration == 0 or duration <= maxDuration) and (minDuration == 0 or duration >= minDuration))
 	else
-		return nil
+		return nil -- checking for an aura that is not there, pass nil to break while loop
 	end
 
 	local filter, filterType, spellList, spell
@@ -155,7 +155,8 @@ function mod:UpdateElement_Auras(frame)
 		if(self.db.units[frame.UnitType][buffTypeLower].enable) then
 			while ( frameNum <= maxAuras ) do
 				showAura = mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, UnitAura(frame.unit, index, filterType))
-				if showAura == nil then -- something went wrong (unitaura name was nil)
+				if showAura == nil then
+					break -- used to break the while loop when index is over the limit of auras we have (unitaura name will pass nil)
 				elseif showAura == true then -- has aura and passes checks
 					if i == 1 then hasBuffs = true else hasDebuffs = true end
 					frameNum = frameNum + 1;
