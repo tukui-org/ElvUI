@@ -2799,92 +2799,101 @@ E.Options.args.nameplate = {
 					type = 'group',
 					name = L["Fonts"],
 					args = {
-						general = {
-							type = "header",
+						name = {
+							type = "group",
 							order = 3,
 							name = L["Name"],
-						},
-						font = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 4,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						fontSize = {
-							order = 5,
-							name = FONT_SIZE,
-							type = "range",
-							min = 4, max = 212, step = 1,
-						},
-						fontOutline = {
-							order = 6,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = NONE,
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
+							guiInline = true,
+							args = {
+								font = {
+									type = "select", dialogControl = 'LSM30_Font',
+									order = 4,
+									name = L["Font"],
+									values = AceGUIWidgetLSMlists.font,
+								},
+								fontSize = {
+									order = 5,
+									name = FONT_SIZE,
+									type = "range",
+									min = 4, max = 212, step = 1,
+								},
+								fontOutline = {
+									order = 6,
+									name = L["Font Outline"],
+									desc = L["Set the font outline."],
+									type = "select",
+									values = {
+										['NONE'] = NONE,
+										['OUTLINE'] = 'OUTLINE',
+										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+										['THICKOUTLINE'] = 'THICKOUTLINE',
+									},
+								},
 							},
 						},
-						auras = {
-							type = "header",
+						duration = {
+							type = "group",
 							order = 7,
 							name = L["Duration"],
-						},
-						cooldownFont = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 8,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						cooldownFontSize = {
-							order = 9,
-							name = FONT_SIZE,
-							type = "range",
-							min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-						},
-						cooldownFontOutline = {
-							order = 10,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = NONE,
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
+							guiInline = true,
+							args = {
+								durationFont = {
+									type = "select", dialogControl = 'LSM30_Font',
+									order = 8,
+									name = L["Font"],
+									values = AceGUIWidgetLSMlists.font,
+								},
+								durationFontSize = {
+									order = 9,
+									name = FONT_SIZE,
+									type = "range",
+									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+								},
+								durationFontOutline = {
+									order = 10,
+									name = L["Font Outline"],
+									desc = L["Set the font outline."],
+									type = "select",
+									values = {
+										['NONE'] = NONE,
+										['OUTLINE'] = 'OUTLINE',
+										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+										['THICKOUTLINE'] = 'THICKOUTLINE',
+									},
+								},
+							}
 						},
 						stacks = {
-							type = "header",
+							type = "group",
 							order = 11,
 							name = L["Stack Counter"],
-						},
-						stackFont = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 12,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						stackFontSize = {
-							order = 13,
-							name = FONT_SIZE,
-							type = "range",
-							min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-						},
-						stackFontOutline = {
-							order = 14,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = NONE,
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
+							guiInline = true,
+							args = {
+								stackFont = {
+									type = "select", dialogControl = 'LSM30_Font',
+									order = 12,
+									name = L["Font"],
+									values = AceGUIWidgetLSMlists.font,
+								},
+								stackFontSize = {
+									order = 13,
+									name = FONT_SIZE,
+									type = "range",
+									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+								},
+								stackFontOutline = {
+									order = 14,
+									name = L["Font Outline"],
+									desc = L["Set the font outline."],
+									type = "select",
+									values = {
+										['NONE'] = NONE,
+										['OUTLINE'] = 'OUTLINE',
+										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+										['THICKOUTLINE'] = 'THICKOUTLINE',
+									},
+								},
+							}
 						},
 					},
 				},
