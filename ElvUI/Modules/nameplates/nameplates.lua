@@ -913,7 +913,7 @@ function mod:UpdateElement_Filters(frame)
 						end
 					end
 					condition = true;
-					if (not tContains(result, true) or (tContains(result, false) and trigger.talent.requireAll)) then
+					if (#results > 0 and (not tContains(result, true) or (tContains(result, false) and trigger.talent.requireAll))) then
 						condition = false;
 					end
 				end
