@@ -251,7 +251,7 @@ local function UpdateTalentSection()
 			},
 			requireAll = {
 				type = 'toggle',
-				order = 2,
+				order = 3,
 				name = L["Require All"],
 				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.requireAll end,
