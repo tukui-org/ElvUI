@@ -15,6 +15,8 @@ local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local GetTalentInfo = GetTalentInfo
+local GetPvpTalentInfo = GetPvpTalentInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS = LEVEL, NONE, REPUTATION, COMBAT, FILTERS
 local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
@@ -203,6 +205,77 @@ local function UpdateClassSection()
 	end
 end
 
+local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
+local function GetTalentString(tier, column)
+    local _, name, texture = GetTalentInfo(tier, column, 1);
+    return formatStr:format(texture, name);
+end
+
+local function GetPvpTalentString(tier, column)
+    local _, name, texture = GetPvpTalentInfo(tier, column, 1);
+    return formatStr:format(texture, name);
+end
+
+local function GenerateValues(tier, isPvP)
+    local values = {};
+
+    for i = 1, 3 do
+        values[i] = isPvP and GetPvpTalentString(tier, i) or GetTalentString(tier, i);
+    end
+
+    return values;
+end
+
+local function UpdateTalentSection()
+	if E.global.nameplate.filters[selectedNameplateFilter] then
+		local func = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and GetTalentInfo or GetPvpTalentInfo;
+		local maxTiers = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7 or 6;
+		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args = {
+			type = {
+				type = 'toggle',
+				order = 1,
+				name = L["Is PvP Talents"],
+				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp" end,
+				set = function(info, value)
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type = value and "pvp" or "normal";
+					UpdateTalentSection();
+				end
+			}
+		}
+
+		for i = 1, maxTiers do
+        	E.Options.args.nameplate.args.filters.args.triggers.args.talent.args["tier"..i] = {
+				type = 'group',
+           		order = i + 1,
+            	guiInline = true,
+            	name = L['Tier '..i],
+				args = {
+					missing = {
+						type = 'toggle',
+						order = 2,
+						name = L["Missing"],
+						desc = L["Match this trigger if the talent is not selected"],
+						get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing end,
+						set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing = value; UpdateTalentSection(); end,
+					},
+					column = {
+						type = 'select',
+						order = 1,
+						name = TALENT,
+						style = 'dropdown',
+						desc = L["Talent to match"],
+					
+     			       	get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column end,
+				    	set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column = value end,		
+		
+  			          	values = function() return GenerateValues(i, E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp") end,
+					},
+				}
+			}
+		end
+    end
+end
+
 local function UpdateStyleLists()
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
@@ -376,6 +449,37 @@ local function GetStyleFilterDefaultOptions(filter)
 				["damager"] = false,
 			},
 			["class"] = {}, --this can stay empty we only will accept values that exist
+			["talent"] = {
+				["type"] = "normal",
+				["tier1"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier2"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier3"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier4"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier5"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier6"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+				["tier7"] = {
+					["missing"] = false,
+					["column"] = 0,
+				},
+			},
 			["curlevel"] = 0,
 			["maxlevel"] = 0,
 			["minlevel"] = 0,
@@ -445,7 +549,9 @@ local function GetStyleFilterDefaultOptions(filter)
 	if not E.db.nameplates then E.db.nameplates = {} end
 	if not E.db.nameplates.filters then E.db.nameplates.filters = {} end
 
-	E.db.nameplates.filters[filter] = styleFilterProfileOptions
+	if (filter) then
+		E.db.nameplates.filters[filter] = styleFilterProfileOptions
+	end
 
 	return styleFilterDefaultOptions
 end
@@ -457,6 +563,9 @@ local function UpdateFilterGroup()
 		E.Options.args.nameplate.args.filters.args.triggers = nil
 	end
 	if selectedNameplateFilter and E.global.nameplate.filters[selectedNameplateFilter] then
+		if (not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent) then
+			E:CopyTable(E.global.nameplate.filters[selectedNameplateFilter].triggers.talent, GetStyleFilterDefaultOptions().triggers.talent);
+		end
 		E.Options.args.nameplate.args.filters.args.header = {
 			order = 4,
 			type = "header",
@@ -724,8 +833,15 @@ local function UpdateFilterGroup()
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
-				role = {
+				talent = {
 					order = 11,
+					type = 'group',
+					name = TALENT,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {}
+				},
+				role = {
+					order = 12,
 					type = 'group',
 					name = ROLE,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -769,7 +885,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = L["Health Threshold"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -826,7 +942,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 13,
+					order = 14,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -911,7 +1027,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 14,
+					order = 15,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1009,7 +1125,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 15,
+					order = 16,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1107,7 +1223,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 16,
+					order = 17,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1208,7 +1324,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 17,
+					order = 18,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1539,6 +1655,7 @@ local function UpdateFilterGroup()
 		}
 
 		UpdateClassSection()
+		UpdateTalentSection()
 		UpdateStyleLists()
 	end
 end
