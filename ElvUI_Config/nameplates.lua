@@ -235,7 +235,7 @@ local function UpdateTalentSection()
 			enabled = {
 				type = 'toggle',
 				order = 1,
-				name = L["Enabled"],
+				name = L["Enable"],
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled = value; UpdateTalentSection(); NP:ConfigureAll() end
 			},

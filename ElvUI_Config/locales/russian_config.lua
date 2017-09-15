@@ -634,6 +634,7 @@ L["If this threshold is used then the health of the unit needs to be higher than
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть ниже указанного, чтобы фильтр активировался."
 L["In Combat"] = "В бою"
 L["Interruptible"] = "Прерываемые"
+L["Is PvP Talents"] = "PvP талант"
 L["Is Targeted"] = "Взят в цель"
 L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения.";
 L["Load Distance"] = "Дистанция показа"
