@@ -57,6 +57,7 @@ local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
 local GetTalentInfo	= GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
+local GetInstanceInfo = GetInstanceInfo
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 local FAILED = FAILED
