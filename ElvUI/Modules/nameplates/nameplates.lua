@@ -683,7 +683,7 @@ end
 function mod:UpdateElement_Filters(frame)
 	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
-	local talentSelected, talentFunction, talentRows, instanceFailed, instanceName, instanceType;
+	local talentSelected, talentFunction, talentRows, instanceName, instanceType;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 	local matchMyClass = false --Only check spec when we match the class condition
@@ -893,33 +893,40 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
+			--Try to match by instance conditions
+			if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
+				condition = false
+				instanceName, instanceType = GetInstanceInfo()
+				if instanceType
+				and ((trigger.instanceType.none and instanceType == "none")
+				or (trigger.instanceType.scenario and instanceType == "scenario")
+				or (trigger.instanceType.party and instanceType == "party")
+				or (trigger.instanceType.raid and instanceType == "raid")
+				or (trigger.instanceType.arena and instanceType == "arena")
+				or (trigger.instanceType.pvp and instanceType == "pvp")) then
+					condition = true
+				end
+				failed = not condition
+			end
+
 			--Try to match by talent conditions
 			if not failed and trigger.talent.enabled then
-				condition, instanceFailed = false, false
+				condition = false
 
-				if trigger.talent.type == "pvp" then
-					instanceName, instanceType = GetInstanceInfo()
-					if (instanceType ~= "arena") and (instanceType ~= "pvp") then
-						instanceFailed = true -- if its a pvp trigger and we arent in pvp, fail it by not checking it
-					end
-				end
+				talentFunction = (trigger.talent.type == "pvp" and GetPvpTalentInfo) or GetTalentInfo
+				talentRows = (trigger.talent.type == "pvp" and 6) or 7
 
-				if not instanceFailed then
-					talentFunction = (trigger.talent.type == "pvp" and GetPvpTalentInfo) or GetTalentInfo
-					talentRows = (trigger.talent.type == "pvp" and 6) or 7
-
-					for i = 1, talentRows do
-						if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
-							talentSelected = select(4, talentFunction(i, trigger.talent["tier"..i].column, 1))
-							if (talentSelected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not talentSelected) then
-								condition = true
-								if not trigger.talent.requireAll then
-									break -- break when not using requireAll because we matched one
-								end
-							elseif trigger.talent.requireAll then
-								condition = false -- fail because requireAll failed
-								break -- break because requireAll failed
+				for i = 1, talentRows do
+					if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
+						talentSelected = select(4, talentFunction(i, trigger.talent["tier"..i].column, 1))
+						if (talentSelected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not talentSelected) then
+							condition = true
+							if not trigger.talent.requireAll then
+								break -- break when not using requireAll because we matched one
 							end
+						elseif trigger.talent.requireAll then
+							condition = false -- fail because requireAll failed
+							break -- break because requireAll failed
 						end
 					end
 				end

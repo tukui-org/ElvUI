@@ -92,6 +92,14 @@ G["nameplate"] = {
 					["revered"] = false,
 					["exalted"] = false
 				},
+				["instanceType"] = {
+					["none"] = false,
+					["scenario"] = false,
+					["party"] = false,
+					["raid"] = false,
+					["arena"] = false,
+					["pvp"] = false,
+				},
 				["buffs"] = {
 					["mustHaveAll"] = false,
 					["missing"] = false,

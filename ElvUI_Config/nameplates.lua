@@ -19,6 +19,7 @@ local GetTalentInfo = GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT
+local INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
@@ -242,7 +243,6 @@ local function UpdateTalentSection()
 				type = 'toggle',
 				order = 2,
 				name = L["Is PvP Talents"],
-				desc = L["Requires you to *also* be inside of the PVP instance, otherwise this will fail the trigger."],
 				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp" end,
 				set = function(info, value)
@@ -565,6 +565,14 @@ local function GetStyleFilterDefaultOptions(filter)
 				["honored"] = false,
 				["revered"] = false,
 				["exalted"] = false
+			},
+			["instanceType"] = {
+				["none"] = false,
+				["scenario"] = false,
+				["party"] = false,
+				["raid"] = false,
+				["arena"] = false,
+				["pvp"] = false,
 			},
 			["buffs"] = {
 				["mustHaveAll"] = false,
@@ -915,7 +923,7 @@ local function UpdateFilterGroup()
 						},
 						healer = {
 							type = 'toggle',
-							order = 1,
+							order = 2,
 							name = HEALER,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role.healer
@@ -927,7 +935,7 @@ local function UpdateFilterGroup()
 						},
 						damager = {
 							type = 'toggle',
-							order = 1,
+							order = 3,
 							name = DAMAGER,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role.damager
@@ -1520,6 +1528,86 @@ local function UpdateFilterGroup()
 							},
 						},
 					},
+				},
+				instanceType = {
+					order = 19,
+					type = 'group',
+					name = INSTANCE.." "..TYPE,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						none = {
+							type = 'toggle',
+							order = 1,
+							name = NONE,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.none
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.none = value
+								NP:ConfigureAll()
+							end,
+						},
+						scenario = {
+							type = 'toggle',
+							order = 2,
+							name = SCENARIOS,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.scenario
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.scenario = value
+								NP:ConfigureAll()
+							end,
+						},
+						party = {
+							type = 'toggle',
+							order = 3,
+							name = DUNGEONS,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party = value
+								NP:ConfigureAll()
+							end,
+						},
+						raid = {
+							type = 'toggle',
+							order = 4,
+							name = RAID,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid = value
+								NP:ConfigureAll()
+							end,
+						},
+						arena = {
+							type = 'toggle',
+							order = 5,
+							name = ARENA,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.arena
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.arena = value
+								NP:ConfigureAll()
+							end,
+						},
+						pvp = {
+							type = 'toggle',
+							order = 6,
+							name = BATTLEFIELDS,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.pvp
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.pvp = value
+								NP:ConfigureAll()
+							end,
+						},
+					}
 				},
 			},
 		}
