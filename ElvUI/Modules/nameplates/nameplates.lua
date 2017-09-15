@@ -57,6 +57,7 @@ local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
 local GetTalentInfo	= GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
+local GetInstanceInfo = GetInstanceInfo
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 local FAILED = FAILED
@@ -893,15 +894,15 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match by talent conditions
 			if not failed and trigger.talent then
-				condition = false;
-				local instanceType = select(2, GetInstanceInfo());
-				if (trigger.talent.type == "pvp" and instanceType ~= "arena" and instanceType ~= "pvp") then
+				condition = 0;
+				local instanceType = select(2, GetInstanceInfo())
+				if trigger.talent.type == "pvp" and instanceType ~= "arena" and instanceType ~= "pvp" then
 					condition = false;
 				else
 					local func = trigger.talent.type == "pvp" and GetPvpTalentInfo or GetTalentInfo;
 					local rows = trigger.talent.type == "pvp" and 6 or 7;
 					for i = 1, rows do
-						if (trigger.talent["tier"..i] and trigger.talent["tier"..i].column > 0) then
+						if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
 							local selected = select(4, func(i, trigger.talent["tier"..i].column, 1));
 							if trigger.talent["tier"..i].missing then
 								condition = not selected;

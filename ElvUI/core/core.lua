@@ -1339,6 +1339,21 @@ function E:DBConversions()
 		auraFilterStrip(name, content, '^Friendly:')
 		auraFilterStrip(name, content, '^Enemy:')
 	end
+
+	for _, filter in pairs(E.global.nameplate.filters) do
+		if (not filter.triggers.talent) then
+			filter.triggers.talent = {
+				['type'] = 'normal',
+			}
+			for i = 1, 7 do
+				filter.triggers.talent['tier'..i..'enabled'] = false;
+				filter.triggers.talent['tier'..i] = {
+					['column'] = 0;
+					['missing'] = false;
+				}
+			end
+		end
+	end
 end
 
 local CPU_USAGE = {}
