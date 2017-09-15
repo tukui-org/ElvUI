@@ -243,35 +243,61 @@ local function UpdateTalentSection()
 			}
 		}
 
+		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers = {
+			type = 'group',
+			order = 2,
+			name = L["Tiers"],
+			guiInline = true,
+			args = {}
+		}
+
+		local order = 1;
 		for i = 1, maxTiers do
-        	E.Options.args.nameplate.args.filters.args.triggers.args.talent.args["tier"..i] = {
-				type = 'group',
-           		order = i + 1,
-            	guiInline = true,
-            	name = L['Tier '..i],
-				args = {
-					missing = {
-						type = 'toggle',
-						order = 2,
-						name = L["Missing"],
-						desc = L["Match this trigger if the talent is not selected"],
-						get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing end,
-						set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing = value; UpdateTalentSection(); end,
-					},
-					column = {
-						type = 'select',
-						order = 1,
-						name = TALENT,
-						style = 'dropdown',
-						desc = L["Talent to match"],
-					
-     			       	get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column end,
-				    	set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column = value end,		
-		
-  			          	values = function() return GenerateValues(i, E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp") end,
-					},
-				}
+			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["tier"..i.."enabled"] = {
+				type = 'toggle',
+				order = order,
+				name = L["Tier"..i],
+				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] end,
+				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] = value; UpdateTalentSection() end
 			}
+			order = order + 1;
+			if (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled']) then
+				E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["tier"..i] = {
+					type = 'group',
+					order = order,
+					guiInline = true,
+					name = L['Tier '..i],
+					args = {
+						missing = {
+							type = 'toggle',
+							order = 2,
+							name = L["Missing"],
+							desc = L["Match this trigger if the talent is not selected"],
+							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing end,
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing = value; UpdateTalentSection(); end,
+						},
+						column = {
+							type = 'select',
+							order = 1,
+							name = TALENT,
+							style = 'dropdown',
+							desc = L["Talent to match"],
+						
+							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column end,
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column = value end,		
+			
+							values = function() return GenerateValues(i, E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp") end,
+						},
+					}
+				}
+				order = order + 1;
+			end
+			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["spacer"..i] = {
+				order = order,
+				type = 'description',
+				name = '',
+			}
+			order = order + 1
 		end
     end
 end
@@ -451,30 +477,37 @@ local function GetStyleFilterDefaultOptions(filter)
 			["class"] = {}, --this can stay empty we only will accept values that exist
 			["talent"] = {
 				["type"] = "normal",
+				["tier1enabled"] = false,
 				["tier1"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier2enabled"] = false,
 				["tier2"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier3enabled"] = false,
 				["tier3"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier4enabled"] = false,
 				["tier4"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier5enabled"] = false,
 				["tier5"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier6enabled"] = false,
 				["tier6"] = {
 					["missing"] = false,
 					["column"] = 0,
 				},
+				["tier7enabled"] = false,
 				["tier7"] = {
 					["missing"] = false,
 					["column"] = 0,
@@ -549,9 +582,7 @@ local function GetStyleFilterDefaultOptions(filter)
 	if not E.db.nameplates then E.db.nameplates = {} end
 	if not E.db.nameplates.filters then E.db.nameplates.filters = {} end
 
-	if (filter) then
-		E.db.nameplates.filters[filter] = styleFilterProfileOptions
-	end
+	E.db.nameplates.filters[filter] = styleFilterProfileOptions
 
 	return styleFilterDefaultOptions
 end
@@ -2913,102 +2944,30 @@ E.Options.args.nameplate = {
 					type = 'group',
 					name = L["Fonts"],
 					args = {
-						name = {
-							type = "group",
-							order = 3,
-							name = L["Name"],
-							guiInline = true,
-							args = {
-								font = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 4,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-								},
-								fontSize = {
-									order = 5,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 212, step = 1,
-								},
-								fontOutline = {
-									order = 6,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-								},
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 5,
+							name = FONT_SIZE,
+							type = "range",
+							min = 4, max = 212, step = 1,
+						},
+						fontOutline = {
+							order = 6,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = NONE,
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
 							},
 						},
-						--[[duration = {
-							type = "group",
-							order = 7,
-							name = L["Duration"],
-							guiInline = true,
-							args = {
-								durationFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 8,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-								},
-								durationFontSize = {
-									order = 9,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-								},
-								durationFontOutline = {
-									order = 10,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-								},
-							}
-						},
-						stacks = {
-							type = "group",
-							order = 11,
-							name = L["Stack Counter"],
-							guiInline = true,
-							args = {
-								stackFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 12,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-								},
-								stackFontSize = {
-									order = 13,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-								},
-								stackFontOutline = {
-									order = 14,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-								},
-							}
-						},--]]
 					},
 				},
 				classBarGroup = {
