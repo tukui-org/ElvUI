@@ -563,9 +563,6 @@ local function UpdateFilterGroup()
 		E.Options.args.nameplate.args.filters.args.triggers = nil
 	end
 	if selectedNameplateFilter and E.global.nameplate.filters[selectedNameplateFilter] then
-		if (not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent) then
-			E:CopyTable(E.global.nameplate.filters[selectedNameplateFilter].triggers.talent, GetStyleFilterDefaultOptions().triggers.talent);
-		end
 		E.Options.args.nameplate.args.filters.args.header = {
 			order = 4,
 			type = "header",
