@@ -1353,6 +1353,10 @@ function E:DBConversions()
 				}
 			end
 		end
+		if (not filter.triggers.talent.enabled) then
+			filter.triggers.talent.enabled = false;
+			filter.triggers.talent.requireAll = false;
+		end
 	end
 end
 
