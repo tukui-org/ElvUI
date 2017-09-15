@@ -566,7 +566,7 @@ local function filterAura(names, icons, mustHaveAll, missing, minTimeLeft, maxTi
 			total = total + 1 --keep track of the names
 		end
 		for frameNum, icon in pairs(icons) do
-			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))) 
+			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name)))
 				and (not minTimeLeft or (minTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) > minTimeLeft))) and (not maxTimeLeft or (maxTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) < maxTimeLeft))) then
 				count = count + 1 --keep track of how many matches we have
 			end
@@ -911,7 +911,7 @@ function mod:UpdateElement_Filters(frame)
 					for i = 1, talentRows do
 						if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
 							talentSelected = select(4, talentFunction(i, trigger.talent["tier"..i].column, 1))
-							if talentSelected or (trigger.talent["tier"..i].missing and not talentSelected) then
+							if (talentSelected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not talentSelected) then
 								condition = true
 								if not trigger.talent.requireAll then
 									break -- break when not using requireAll because we matched one

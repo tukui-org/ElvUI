@@ -207,46 +207,48 @@ end
 
 local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
 local function GetTalentString(tier, column)
-    local _, name, texture = GetTalentInfo(tier, column, 1);
-    return formatStr:format(texture, name);
+	local _, name, texture = GetTalentInfo(tier, column, 1);
+	return formatStr:format(texture, name);
 end
 
 local function GetPvpTalentString(tier, column)
-    local _, name, texture = GetPvpTalentInfo(tier, column, 1);
-    return formatStr:format(texture, name);
+	local _, name, texture = GetPvpTalentInfo(tier, column, 1);
+	return formatStr:format(texture, name);
 end
 
 local function GenerateValues(tier, isPvP)
-    local values = {};
+	local values = {};
 
-    for i = 1, 3 do
-        values[i] = isPvP and GetPvpTalentString(tier, i) or GetTalentString(tier, i);
-    end
+	for i = 1, 3 do
+		values[i] = isPvP and GetPvpTalentString(tier, i) or GetTalentString(tier, i);
+	end
 
-    return values;
+	return values;
 end
 
 local function UpdateTalentSection()
 	if E.global.nameplate.filters[selectedNameplateFilter] then
-		local func = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and GetTalentInfo or GetPvpTalentInfo;
-		local maxTiers = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7 or 6;
+		local func = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and GetTalentInfo) or GetPvpTalentInfo;
+		local maxTiers = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7) or 6;
 		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args = {
 			enabled = {
 				type = 'toggle',
 				order = 1,
 				name = L["Enabled"],
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
-				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled = value; UpdateTalentSection() end
+				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled = value; UpdateTalentSection(); NP:ConfigureAll() end
 			},
 			type = {
 				type = 'toggle',
 				order = 2,
 				name = L["Is PvP Talents"],
+				desc = L["Requires you to *also* be inside of the PVP instance, otherwise this will fail the trigger."],
 				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp" end,
 				set = function(info, value)
 					E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type = value and "pvp" or "normal";
 					UpdateTalentSection();
+					NP:ConfigureAll();
 				end
 			},
 			requireAll = {
@@ -258,17 +260,21 @@ local function UpdateTalentSection()
 				set = function(info, value)
 					E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.requireAll = value;
 					UpdateTalentSection();
+					NP:ConfigureAll();
 				end
 			}
 		}
 
-		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers = {
-			type = 'group',
-			order = 2,
-			name = L["Tiers"],
-			guiInline = true,
-			args = {}
-		}
+		if not E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers then
+			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers = {
+				type = 'group',
+				order = 4,
+				name = L["Tiers"],
+				guiInline = true,
+				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
+				args = {}
+			}
+		end
 
 		local order = 1;
 		for i = 1, maxTiers do
@@ -277,7 +283,7 @@ local function UpdateTalentSection()
 				order = order,
 				name = L["Tier"..i],
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] end,
-				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] = value; UpdateTalentSection() end
+				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] = value; UpdateTalentSection(); NP:ConfigureAll() end
 			}
 			order = order + 1;
 			if (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled']) then
@@ -293,7 +299,7 @@ local function UpdateTalentSection()
 							name = L["Missing"],
 							desc = L["Match this trigger if the talent is not selected"],
 							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing end,
-							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing = value; UpdateTalentSection(); end,
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].missing = value; UpdateTalentSection(); NP:ConfigureAll() end,
 						},
 						column = {
 							type = 'select',
@@ -301,10 +307,8 @@ local function UpdateTalentSection()
 							name = TALENT,
 							style = 'dropdown',
 							desc = L["Talent to match"],
-						
 							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column end,
-							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column = value end,		
-			
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i].column = value; NP:ConfigureAll() end,
 							values = function() return GenerateValues(i, E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp") end,
 						},
 					}
@@ -318,7 +322,7 @@ local function UpdateTalentSection()
 			}
 			order = order + 1
 		end
-    end
+	end
 end
 
 local function UpdateStyleLists()
