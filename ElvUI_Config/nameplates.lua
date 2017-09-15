@@ -231,13 +231,32 @@ local function UpdateTalentSection()
 		local func = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and GetTalentInfo or GetPvpTalentInfo;
 		local maxTiers = E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7 or 6;
 		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args = {
-			type = {
+			enabled = {
 				type = 'toggle',
 				order = 1,
+				name = L["Enabled"],
+				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
+				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled = value; UpdateTalentSection() end
+			},
+			type = {
+				type = 'toggle',
+				order = 2,
 				name = L["Is PvP Talents"],
+				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "pvp" end,
 				set = function(info, value)
 					E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type = value and "pvp" or "normal";
+					UpdateTalentSection();
+				end
+			},
+			requireAll = {
+				type = 'toggle',
+				order = 2,
+				name = L["Require All"],
+				disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
+				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.requireAll end,
+				set = function(info, value)
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.requireAll = value;
 					UpdateTalentSection();
 				end
 			}
@@ -477,6 +496,8 @@ local function GetStyleFilterDefaultOptions(filter)
 			["class"] = {}, --this can stay empty we only will accept values that exist
 			["talent"] = {
 				["type"] = "normal",
+				["enabled"] = false,
+				["requireAll"] = false,
 				["tier1enabled"] = false,
 				["tier1"] = {
 					["missing"] = false,

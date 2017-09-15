@@ -893,7 +893,7 @@ function mod:UpdateElement_Filters(frame)
 			end
 
 			--Try to match by talent conditions
-			if not failed and trigger.talent then
+			if not failed and trigger.talent.enabled then
 				condition = 0;
 				local instanceType = select(2, GetInstanceInfo())
 				if trigger.talent.type == "pvp" and instanceType ~= "arena" and instanceType ~= "pvp" then
@@ -901,18 +901,20 @@ function mod:UpdateElement_Filters(frame)
 				else
 					local func = trigger.talent.type == "pvp" and GetPvpTalentInfo or GetTalentInfo;
 					local rows = trigger.talent.type == "pvp" and 6 or 7;
+					local results = {};
 					for i = 1, rows do
 						if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
 							local selected = select(4, func(i, trigger.talent["tier"..i].column, 1));
 							if trigger.talent["tier"..i].missing then
-								condition = not selected;
+								tinsert(result, not selected);
 							else
-								condition = selected;
-							end
-							if (not condition) then
-								break;
+								tinsert(result, selected);
 							end
 						end
+					end
+					condition = true;
+					if (not tContains(result, true) or (tContains(result, false) and trigger.talent.requireAll)) then
+						condition = false;
 					end
 				end
 				failed = not condition;
