@@ -1561,7 +1561,7 @@ end
 function mod:UpdatePlateFonts()
 	self:ForEachPlate("UpdateFonts")
 	if self.PlayerFrame__ then
-		self:UpdateFonts(self.PlayerFrame__.UnitFrame)
+		self:UpdateFonts(self.PlayerFrame__.unitFrame)
 	end
 end
 
