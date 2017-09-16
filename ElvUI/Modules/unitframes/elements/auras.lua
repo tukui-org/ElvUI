@@ -418,37 +418,35 @@ function UF:PostUpdateAura(unit, button, index)
 		local getTime = GetTime()
 		if not button:GetScript('OnUpdate') then
 			button.expirationTime = button.expiration
-			button.expiration = button.expiration - getTime
+			button.expirationSaved = button.expiration - getTime
 			button.nextupdate = -1
 			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 		end
-		if (button.expirationTime ~= button.expiration) or (button.expiration ~= (button.expiration - getTime))  then
+		if (button.expirationTime ~= button.expiration) or (button.expirationSaved ~= (button.expiration - getTime))  then
 			button.expirationTime = button.expiration
-			button.expiration = button.expiration - getTime
+			button.expirationSaved = button.expiration - getTime
 			button.nextupdate = -1
 		end
 	end
 
 	if button.expiration and button.duration and (button.duration == 0 or button.expiration <= 0) then
 		button.expirationTime = nil
-		button.expiration = nil
-		button.priority = nil
-		button.duration = nil
+		button.expirationSaved = nil
 		button:SetScript('OnUpdate', nil)
-		if(button.text:GetFont()) then
+		if button.text:GetFont() then
 			button.text:SetText('')
 		end
 	end
 end
 
 function UF:UpdateAuraTimer(elapsed)
-	self.expiration = self.expiration - elapsed
+	self.expirationSaved = self.expirationSaved - elapsed
 	if self.nextupdate > 0 then
 		self.nextupdate = self.nextupdate - elapsed
 		return
 	end
 
-	if(self.expiration <= 0) then
+	if self.expirationSaved <= 0 then
 		self:SetScript('OnUpdate', nil)
 
 		if(self.text:GetFont()) then
@@ -459,7 +457,7 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, 4)
 	if self.text:GetFont() then
 		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
