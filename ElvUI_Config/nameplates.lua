@@ -3083,7 +3083,7 @@ E.Options.args.nameplate = {
 						lowHealthThreshold = {
 							order = 6,
 							name = L["Low Health Threshold"],
-							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
+							desc = L["Make the unitframe/ glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
 							isPercent = true,
 							min = 0, max = 1, step = 0.01,
@@ -3588,7 +3588,7 @@ E.Options.args.nameplate = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
-						E.global.nameplate.filters[value] = GetStyleFilterDefaultOptions(value);
+						E.global.nameplate.filters[value] = NP:InitMetatable({});
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
