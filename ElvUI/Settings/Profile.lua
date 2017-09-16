@@ -2178,7 +2178,7 @@ P['unitframe'] = {
 			},
 			['roleIcon'] = {
 				['enable'] = true,
-				['position'] = 'CENTER',
+				['position'] = 'TOPRIGHT',
 				["attachTo"] = "Health",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
