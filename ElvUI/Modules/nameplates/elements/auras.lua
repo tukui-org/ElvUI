@@ -113,7 +113,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 
 	if priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = frame.unit and UnitIsFriend('player', frame.unit) and not UnitCanAttack("player", frame.unit)
+		isFriend = frame.unit and UnitIsFriend('player', frame.unit) and not UnitCanAttack('player', frame.unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isUnit = frame.unit and caster and UnitIsUnit(frame.unit, caster)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
