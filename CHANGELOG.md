@@ -6,11 +6,17 @@ Added "Match SpellID Only" option to individual RaidDebuff Indicator modules. If
 Added possibility of setting alpha of the stack and duration text colors on RaidDebuff Indicator modules.  
 Added global option to choose which filter is used for the RaidDebuff Indicator modules. This is found in UnitFrames->General Options->RaidDebuff Indicator.  
 Added new "CastByNPC" special filter for aura filtering.  
+Added talent triggers for nameplate style filters.  
+Added instance type triggers to nameplate style filters.  
+Added instance difficulty triggers to nameplate style filters.  
+Added classification triggers to nameplate style filters.  
+Added toggle option for datatext backdrop. Disabling it will remove the backdrop completely and only show text.  
 
 
 **Bug Fixes:**  
 Attempt more fixes towards the unit errors on nameplates.  
 Fixed a divide by 0 error in Artifact DataBars.  
+Fixed issue which broke stealable border color on unitframe auras while in a duel.  
 
 
 **Misc. Changes:**  
@@ -18,6 +24,7 @@ Added and updated spell IDs in the RaidDebuffs filter.
 Added Veiled Argunite to the Currencies datatext tooltip.  
 Replaced more Blizzard font elements for panels where fonts were mixed.  
 Various skin fixes and tweaks.  
+Added stealable border color on nameplate auras.  
 
 ___
 **Version 10.63 [ September 9th 2017 ]**
