@@ -1352,6 +1352,41 @@ function E:DBConversions()
 			}
 		end
 
+		if filter.triggers.classification == nil then
+			filter.triggers.classification = {
+				["worldboss"] = false,
+				["rareelite"] = false,
+				["elite"] = false,
+				["rare"] = false,
+				["normal"] = false,
+				["trivial"] = false,
+				["minus"] = false,
+			}
+		end
+
+		if filter.triggers.instanceDifficulty == nil then
+			filter.triggers.instanceDifficulty = {
+				dungeon = {
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["mythic+"] = false,
+					["timewalking"] = false,
+				},
+				raid = {
+					["lfr"] = false,
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["timewalking"] = false,
+					["legacy10normal"] = false,
+					["legacy25normal"] = false,
+					["legacy10heroic"] = false,
+					["legacy25heroic"] = false,
+				},
+			}
+		end
+
 		if filter.triggers.talent == nil then
 			filter.triggers.talent = {
 				['enable'] = false,

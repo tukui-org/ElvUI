@@ -15,7 +15,7 @@ local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, ElvConfigToggle
+-- GLOBALS: GameTooltip
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
@@ -247,9 +247,6 @@ function DT:LoadDataTexts()
 
 	local inInstance, instanceType = IsInInstance()
 	local fontTemplate = LSM:Fetch("font", self.db.font)
-	if ElvConfigToggle then
-		ElvConfigToggle.text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
-	end
 	
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels

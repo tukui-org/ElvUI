@@ -52,6 +52,7 @@ local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
 local UnitIsQuestBoss = UnitIsQuestBoss
+local UnitClassification = UnitClassification
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
@@ -681,7 +682,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
+	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth, classification;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
 	local castbarShown = frame.CastBar:IsShown()
@@ -883,6 +884,23 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
+			--Try to match by classification conditions
+			if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
+				condition = false
+				classification = UnitClassification(frame.displayedUnit)
+				if classification
+				and ((trigger.classification.worldboss and classification == "worldboss")
+				or (trigger.classification.rareelite   and classification == "rareelite")
+				or (trigger.classification.elite	   and classification == "elite")
+				or (trigger.classification.rare		   and classification == "rare")
+				or (trigger.classification.normal	   and classification == "normal")
+				or (trigger.classification.trivial	   and classification == "trivial")
+				or (trigger.classification.minus	   and classification == "minus")) then
+					condition = true
+				end
+				failed = not condition
+			end
+
 			--Try to match by role conditions
 			if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
 				condition = false
@@ -898,12 +916,12 @@ function mod:UpdateElement_Filters(frame)
 				condition = false
 				instanceName, instanceType, instanceDifficulty = GetInstanceInfo()
 				if instanceType
-				and ((trigger.instanceType.none and instanceType == "none")
+				and ((trigger.instanceType.none	  and instanceType == "none")
 				or (trigger.instanceType.scenario and instanceType == "scenario")
-				or (trigger.instanceType.party and instanceType == "party")
-				or (trigger.instanceType.raid and instanceType == "raid")
-				or (trigger.instanceType.arena and instanceType == "arena")
-				or (trigger.instanceType.pvp and instanceType == "pvp")) then
+				or (trigger.instanceType.party	  and instanceType == "party")
+				or (trigger.instanceType.raid	  and instanceType == "raid")
+				or (trigger.instanceType.arena	  and instanceType == "arena")
+				or (trigger.instanceType.pvp	  and instanceType == "pvp")) then
 					condition = true
 				end
 				failed = not condition
@@ -911,31 +929,31 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match by instance difficulty
 			if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
-				 if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
+				if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
 					condition = false;
-					if ((trigger.instanceDifficulty.dungeon.normal and instanceDifficulty == 1) or
-						(trigger.instanceDifficulty.dungeon.heroic and instanceDifficulty == 2) or
-						(trigger.instanceDifficulty.dungeon.mythic and instanceDifficulty == 23) or
-						(trigger.instanceDifficulty.dungeon["mythic+"] and instanceDifficulty == 8) or
-						(trigger.instanceDifficulty.dungeon.timewalking and instanceDifficulty == 24)) then
+					if ((trigger.instanceDifficulty.dungeon.normal		and instanceDifficulty == 1)
+					or (trigger.instanceDifficulty.dungeon.heroic		and instanceDifficulty == 2)
+					or (trigger.instanceDifficulty.dungeon.mythic		and instanceDifficulty == 23)
+					or (trigger.instanceDifficulty.dungeon["mythic+"]	and instanceDifficulty == 8)
+					or (trigger.instanceDifficulty.dungeon.timewalking	and instanceDifficulty == 24)) then
 						condition = true
 					end
 					failed = not condition;
 				end
 
-				if trigger.instanceType.raid and instanceType == "raid" and 
-					(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking or
-					 trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.instanceDifficulty.raid.legacy25heroic) then
+				if trigger.instanceType.raid and instanceType == "raid" and
+					(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking
+					or trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.raid.legacy25heroic) then
 					condition = false;
-					if ((trigger.instanceDifficulty.raid.lfr and (instanceDifficulty == 7 or instanceDifficulty == 17)) or
-						(trigger.instanceDifficulty.raid.normal and instanceDifficulty == 14) or
-						(trigger.instanceDifficulty.raid.heroic and instanceDifficulty == 15) or
-						(trigger.instanceDifficulty.raid.mythic and instanceDifficulty == 16) or
-						(trigger.instanceDifficulty.raid.timewalking and instanceDifficulty == 24) or
-						(trigger.instanceDifficulty.raid.legacy10normal and instanceDifficulty == 3) or
-						(trigger.instanceDifficulty.raid.legacy25normal and instanceDifficulty == 4) or
-						(trigger.instanceDifficulty.raid.legacy10heroic and instanceDifficulty == 5) or
-						(trigger.instanceDifficulty.raid.legacy25heroic and instanceDifficulty == 6)) then
+					if ((trigger.instanceDifficulty.raid.lfr           and (instanceDifficulty == 7 or instanceDifficulty == 17))
+					or (trigger.instanceDifficulty.raid.normal         and instanceDifficulty == 14)
+					or (trigger.instanceDifficulty.raid.heroic         and instanceDifficulty == 15)
+					or (trigger.instanceDifficulty.raid.mythic         and instanceDifficulty == 16)
+					or (trigger.instanceDifficulty.raid.timewalking    and instanceDifficulty == 24)
+					or (trigger.instanceDifficulty.raid.legacy10normal and instanceDifficulty == 3)
+					or (trigger.instanceDifficulty.raid.legacy25normal and instanceDifficulty == 4)
+					or (trigger.instanceDifficulty.raid.legacy10heroic and instanceDifficulty == 5)
+					or (trigger.instanceDifficulty.raid.legacy25heroic and instanceDifficulty == 6)) then
 						condition = true
 					end
 					failed = not condition

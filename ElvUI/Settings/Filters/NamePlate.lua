@@ -23,6 +23,15 @@ G["nameplate"] = {
 					["healer"] = false,
 					["damager"] = false,
 				},
+				["classification"] = {
+					["worldboss"] = false,
+					["rareelite"] = false,
+					["elite"] = false,
+					["rare"] = false,
+					["normal"] = false,
+					["trivial"] = false,
+					["minus"] = false,
+				},
 				["class"] = {}, --this can stay empty we only will accept values that exist
 				["talent"] = {
 					["type"] = "normal",
@@ -99,6 +108,26 @@ G["nameplate"] = {
 					["raid"] = false,
 					["arena"] = false,
 					["pvp"] = false,
+				},
+				["instanceDifficulty"] = {
+					["dungeon"] = {
+						["normal"] = false,
+						["heroic"] = false,
+						["mythic"] = false,
+						["mythic+"] = false,
+						["timewalking"] = false,
+					},
+					["raid"] = {
+						["lfr"] = false,
+						["normal"] = false,
+						["heroic"] = false,
+						["mythic"] = false,
+						["timewalking"] = false,
+						["legacy10normal"] = false,
+						["legacy25normal"] = false,
+						["legacy10heroic"] = false,
+						["legacy25heroic"] = false,
+					}
 				},
 				["buffs"] = {
 					["mustHaveAll"] = false,
