@@ -129,6 +129,10 @@ G["nameplate"] = {
 						["legacy25heroic"] = false,
 					}
 				},
+				["cooldowns"] = {
+					["mustHaveAll"] = false,
+					["names"] = {},
+				},
 				["buffs"] = {
 					["mustHaveAll"] = false,
 					["missing"] = false,

@@ -32,6 +32,7 @@ local GetBattlefieldScore = GetBattlefieldScore
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetSpellCooldown = GetSpellCooldown
 local hooksecurefunc = hooksecurefunc
 local IsInInstance = IsInInstance
 local RegisterUnitWatch = RegisterUnitWatch
@@ -584,6 +585,29 @@ local function filterAura(names, icons, mustHaveAll, missing, minTimeLeft, maxTi
 	end
 end
 
+
+local function filterCooldown(names, mustHaveAll)
+	local total, count = 0, 0
+	local _, duration
+	for name, value in pairs(names) do
+		if value == "ONCD" or value == "OFFCD" then --only if they are turned on
+			total = total + 1 --keep track of the names
+		end
+
+		_, duration = GetSpellCooldown(name)
+		--1.5 is global cooldown
+		if (duration > 1.5 and value == "ONCD") or (duration <= 1.5 and value == "OFFCD") then
+			count = count + 1
+		end
+	end
+
+	if total == 0 then
+		return nil
+	else
+		return (mustHaveAll and total == count) or (not mustHaveAll and count > 0)
+	end
+end
+
 local function HidePlayerNamePlate()
 	mod.PlayerFrame__.UnitFrame:Hide()
 	mod.PlayerNamePlateAnchor:Hide()
@@ -1035,6 +1059,14 @@ function mod:UpdateElement_Filters(frame)
 				failed = not condition
 			end
 
+			--cooldown conditions
+			if not failed and trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
+				condition = filterCooldown(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
+				if condition ~= nil then --Condition will be nil if none are set to ONCD or OFFCD
+					failed = not condition
+				end
+			end
+
 			--Try to match according to buff aura conditions
 			if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 				condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
@@ -1199,6 +1231,8 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Highlight(self)
 	elseif(event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or event == "UNIT_CONNECTION") then
 		mod:UpdateElement_Portrait(self)
+	elseif(event == "SPELL_UPDATE_COOLDOWN") then
+		mod:UpdateElement_Filters(self)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
@@ -1269,6 +1303,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
 	frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+	frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 end
 
 function mod:SetClassNameplateBar(frame)

@@ -509,6 +509,50 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names then
+		E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names = {
+			order = 50,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) then
+			local spell, spellName, notDisabled
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) do
+				spell = name
+				if tonumber(spell) then
+					spellName = GetSpellInfo(spell)
+					notDisabled = (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					if spellName then
+						if notDisabled then
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+						else
+							spell = format("%s (%d)", spellName, spell)
+						end
+					end
+				end
+				E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.args[name] = {
+					name = spell,
+					type = "select",
+					values = {
+						["ONCD"] = L["On Cooldown"],
+						["OFFCD"] = L["Off Cooldown"],
+					},
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
+		end
+	end
+
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
 			order = 50,
@@ -548,6 +592,7 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
 			order = 50,
@@ -722,6 +767,10 @@ local function GetStyleFilterDefaultOptions(filter)
 					["legacy10heroic"] = false,
 					["legacy25heroic"] = false,
 				}
+			},
+			["cooldowns"] = {
+				["names"] = {},
+				["mustHaveAll"] = false,
 			},
 			["buffs"] = {
 				["mustHaveAll"] = false,
@@ -1332,6 +1381,62 @@ local function UpdateFilterGroup()
 						},
 					},
 				},
+				cooldowns = {
+					name = L["Cooldowns"],
+					order = 15,
+					type = "group",
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						mustHaveAll = {
+							order = 1,
+							name = L["Require All"],
+							desc = L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."],
+							type = "toggle",
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.mustHaveAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.mustHaveAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 5,
+							type = 'description',
+							name = " ",
+						},
+						addCooldown = {
+							order = 6,
+							name = L["Add Spell ID or Name"],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD";
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						},
+						removeCooldown = {
+							order = 7,
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = nil;
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						}
+					},
+				},				
 				buffs = {
 					name = L["Buffs"],
 					order = 15,
