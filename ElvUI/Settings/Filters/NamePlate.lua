@@ -24,6 +24,46 @@ G["nameplate"] = {
 					["damager"] = false,
 				},
 				["class"] = {}, --this can stay empty we only will accept values that exist
+				["talent"] = {
+					["type"] = "normal",
+					["enabled"] = false,
+					["requireAll"] = false,
+					["tier1enabled"] = false,
+					["tier1"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier2enabled"] = false,
+					["tier2"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier3enabled"] = false,
+					["tier3"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier4enabled"] = false,
+					["tier4"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier5enabled"] = false,
+					["tier5"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier6enabled"] = false,
+					["tier6"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+					["tier7enabled"] = false,
+					["tier7"] = {
+						["missing"] = false,
+						["column"] = 0,
+					},
+				},
 				["curlevel"] = -1,
 				["maxlevel"] = 0,
 				["minlevel"] = 0,
@@ -51,6 +91,14 @@ G["nameplate"] = {
 					["honored"] = false,
 					["revered"] = false,
 					["exalted"] = false
+				},
+				["instanceType"] = {
+					["none"] = false,
+					["scenario"] = false,
+					["party"] = false,
+					["raid"] = false,
+					["arena"] = false,
+					["pvp"] = false,
 				},
 				["buffs"] = {
 					["mustHaveAll"] = false,

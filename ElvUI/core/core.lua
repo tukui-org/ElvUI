@@ -1341,21 +1341,37 @@ function E:DBConversions()
 	end
 
 	for _, filter in pairs(E.global.nameplate.filters) do
-		if (not filter.triggers.talent) then
+		if filter.triggers.instanceType == nil then
+			filter.triggers.instanceType = {
+				["none"] = false,
+				["scenario"] = false,
+				["party"] = false,
+				["raid"] = false,
+				["arena"] = false,
+				["pvp"] = false,
+			}
+		end
+
+		if filter.triggers.talent == nil then
 			filter.triggers.talent = {
+				['enable'] = false,
+				['requireAll'] = false,
 				['type'] = 'normal',
 			}
 			for i = 1, 7 do
 				filter.triggers.talent['tier'..i..'enabled'] = false;
 				filter.triggers.talent['tier'..i] = {
-					['column'] = 0;
-					['missing'] = false;
+					['column'] = 0,
+					['missing'] = false,
 				}
 			end
 		end
-		if (not filter.triggers.talent.enabled) then
-			filter.triggers.talent.enabled = false;
-			filter.triggers.talent.requireAll = false;
+
+		-- this part was used in between using dev versions, so we can rip this part out later
+		-- i added these two inside of the check above for other users
+		if filter.triggers.talent.enabled == nil then
+			filter.triggers.talent.enabled = false
+			filter.triggers.talent.requireAll = false
 		end
 	end
 end

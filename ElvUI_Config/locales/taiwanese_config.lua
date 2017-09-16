@@ -635,6 +635,7 @@ L["If this threshold is used then the health of the unit needs to be higher than
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的血量需要比設定值更低才會將過濾器啟動. 設為0以禁用."
 L["In Combat"] = "戰鬥中"
 L["Interruptible"] = "可打斷"
+L["Is PvP Talents"] = true;
 L["Is Targeted"] = "目標"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
 L["Load Distance"] = "讀取距離"
