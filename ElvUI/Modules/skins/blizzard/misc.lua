@@ -758,6 +758,10 @@ local function LoadSkin()
 		"NamesPanelFriendlyMinions",
 		"NamesPanelEnemyPlayerNames",
 		"NamesPanelEnemyMinions",
+		-- Nameplates
+		"NamesPanelUnitNameplatesMakeLarger",
+		"NamesPanelUnitNameplatesEnemies",
+		"NamesPanelUnitNameplatesFriends",
 		-- Camera
 		"CameraPanelWaterCollision",
 		-- Mouse

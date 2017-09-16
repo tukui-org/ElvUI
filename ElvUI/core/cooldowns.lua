@@ -97,6 +97,11 @@ function E:CreateCooldownTimer(parent)
 	parent:SetScript('OnSizeChanged', function(_, ...) self:Cooldown_OnSizeChanged(timer, ...) end)
 
 	parent.timer = timer
+
+	if parent.FontOverride then
+		parent.FontOverride(parent) -- used to style nameplate aura cooldown text with `cooldownFontOverride`
+	end
+
 	return timer
 end
 

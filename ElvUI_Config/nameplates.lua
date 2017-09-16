@@ -509,6 +509,50 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
+	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names then
+		E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names = {
+			order = 50,
+			type = "group",
+			name = "",
+			guiInline = true,
+			args = {},
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) then
+			local spell, spellName, notDisabled
+			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) do
+				spell = name
+				if tonumber(spell) then
+					spellName = GetSpellInfo(spell)
+					notDisabled = (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					if spellName then
+						if notDisabled then
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+						else
+							spell = format("%s (%d)", spellName, spell)
+						end
+					end
+				end
+				E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.args[name] = {
+					name = spell,
+					type = "select",
+					values = {
+						["ONCD"] = L["On Cooldown"],
+						["OFFCD"] = L["Off Cooldown"],
+					},
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[name]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[name] = value
+						NP:ConfigureAll()
+					end,
+				}
+			end
+		end
+	end
+
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
 			order = 50,
@@ -548,6 +592,7 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
 			order = 50,
@@ -592,173 +637,14 @@ end
 local function GetStyleFilterDefaultOptions(filter)
 	if filter and G.nameplate.filters[filter] and P.nameplates.filters[filter] then
 		E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter]) --copy the profile options
-		return E:CopyTable({}, G.nameplate.filters[filter]) --return the copy of the global options
+		local newTable = E:CopyTable({}, G["nameplate"].StyleFilterDefaults)
+		return E:CopyTable(setmetatable({}, {__index = newTable}), G.nameplate.filters[filter])
 	end
 
 	local styleFilterProfileOptions = {
 		["triggers"] = {
 			["enable"] = true
 		}
-	}
-
-	local styleFilterDefaultOptions = {
-		["triggers"] = {
-			["priority"] = 1,
-			["isTarget"] = false,
-			["notTarget"] = false,
-			["questBoss"] = false,
-			["level"] = false,
-			["casting"] = {
-				["interruptible"] = false,
-				["spells"] = {},
-			},
-			["role"] = {
-				["tank"] = false,
-				["healer"] = false,
-				["damager"] = false,
-			},
-			["classification"] = {
-				["worldboss"] = false,
-				["rareelite"] = false,
-				["elite"] = false,
-				["rare"] = false,
-				["normal"] = false,
-				["trivial"] = false,
-				["minus"] = false,
-			},
-			["class"] = {}, --this can stay empty we only will accept values that exist
-			["talent"] = {
-				["type"] = "normal",
-				["enabled"] = false,
-				["requireAll"] = false,
-				["tier1enabled"] = false,
-				["tier1"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier2enabled"] = false,
-				["tier2"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier3enabled"] = false,
-				["tier3"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier4enabled"] = false,
-				["tier4"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier5enabled"] = false,
-				["tier5"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier6enabled"] = false,
-				["tier6"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-				["tier7enabled"] = false,
-				["tier7"] = {
-					["missing"] = false,
-					["column"] = 0,
-				},
-			},
-			["curlevel"] = 0,
-			["maxlevel"] = 0,
-			["minlevel"] = 0,
-			["healthThreshold"] = false,
-			["underHealthThreshold"] = 0,
-			["overHealthThreshold"] = 0,
-			["names"] = {},
-			["nameplateType"] = {
-				["enable"] = false,
-				["friendlyPlayer"] = false,
-				["friendlyNPC"] = false,
-				["healer"] = false,
-				["enemyPlayer"] = false,
-				["enemyNPC"] = false,
-				["neutral"] = false
-			},
-			["reactionType"] = {
-				["enabled"] = false,
-				["reputation"] = false,
-				["hated"] = false,
-				["hostile"] = false,
-				["unfriendly"] = false,
-				["neutral"] = false,
-				["friendly"] = false,
-				["honored"] = false,
-				["revered"] = false,
-				["exalted"] = false
-			},
-			["instanceType"] = {
-				["none"] = false,
-				["scenario"] = false,
-				["party"] = false,
-				["raid"] = false,
-				["arena"] = false,
-				["pvp"] = false,
-			},
-			["instanceDifficulty"] = {
-				["dungeon"] = {
-					["normal"] = false,
-					["heroic"] = false,
-					["mythic"] = false,
-					["mythic+"] = false,
-					["timewalking"] = false,
-				},
-				["raid"] = {
-					["lfr"] = false,
-					["normal"] = false,
-					["heroic"] = false,
-					["mythic"] = false,
-					["timewalking"] = false,
-					["legacy10normal"] = false,
-					["legacy25normal"] = false,
-					["legacy10heroic"] = false,
-					["legacy25heroic"] = false,
-				}
-			},
-			["buffs"] = {
-				["mustHaveAll"] = false,
-				["missing"] = false,
-				["names"] = {},
-				["minTimeLeft"] = 0,
-				["maxTimeLeft"] = 0,
-			},
-			["debuffs"] = {
-				["mustHaveAll"] = false,
-				["missing"] = false,
-				["names"] = {},
-				["minTimeLeft"] = 0,
-				["maxTimeLeft"] = 0,
-			},
-			["inCombat"] = false,
-			["outOfCombat"] = false,
-			["inCombatUnit"] = false,
-			["outOfCombatUnit"] = false,
-		},
-		["actions"] = {
-			["color"] = {
-				["health"] = false,
-				["border"] = false,
-				["name"] = false,
-				["healthColor"] = {r=1,g=1,b=1,a=1},
-				["borderColor"] = {r=1,g=1,b=1,a=1},
-				["nameColor"] = {r=1,g=1,b=1,a=1}
-			},
-			["texture"] = {
-				["enable"] = false,
-				["texture"] = "ElvUI Norm",
-			},
-			["hide"] = false,
-			["usePortrait"] = false,
-			["scale"] = 1.0,
-		},
 	}
 
 	if not E.db.nameplates then E.db.nameplates = {} end
@@ -768,7 +654,8 @@ local function GetStyleFilterDefaultOptions(filter)
 		E.db.nameplates.filters[filter] = styleFilterProfileOptions
 	end
 
-	return styleFilterDefaultOptions
+	local newTable = E:CopyTable({}, G["nameplate"].StyleFilterDefaults)
+	return setmetatable({}, {__index = newTable})
 end
 
 local function UpdateFilterGroup()
@@ -1332,6 +1219,62 @@ local function UpdateFilterGroup()
 						},
 					},
 				},
+				cooldowns = {
+					name = L["Cooldowns"],
+					order = 15,
+					type = "group",
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						mustHaveAll = {
+							order = 1,
+							name = L["Require All"],
+							desc = L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."],
+							type = "toggle",
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.mustHaveAll
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.mustHaveAll = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 5,
+							type = 'description',
+							name = " ",
+						},
+						addCooldown = {
+							order = 6,
+							name = L["Add Spell ID or Name"],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD";
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						},
+						removeCooldown = {
+							order = 7,
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if match(value, "^[%s%p]-$") then
+									return
+								end
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = nil;
+								UpdateFilterGroup();
+								NP:ConfigureAll()
+							end,
+						}
+					},
+				},				
 				buffs = {
 					name = L["Buffs"],
 					order = 15,
@@ -3116,20 +3059,29 @@ E.Options.args.nameplate = {
 								["TARGET"] = L["Only Show Target"],
 							},
 						},
-						showNPCTitles = {
+						showFriendlyInstancePlates = {
 							order = 3,
+							type = "toggle",
+							name = "Friendly In Instances",
+							set = function(info, value)
+								E.db.nameplates[ info[#info] ] = value;
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						showNPCTitles = {
+							order = 4,
 							type = "toggle",
 							name = L["Show NPC Titles"],
 							desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
 						},
 						clampToScreen = {
-							order = 4,
+							order = 5,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
 						lowHealthThreshold = {
-							order = 5,
+							order = 6,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
@@ -3137,7 +3089,7 @@ E.Options.args.nameplate = {
 							min = 0, max = 1, step = 0.01,
 						},
 						showEnemyCombat = {
-							order = 6,
+							order = 7,
 							type = "select",
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
@@ -3152,7 +3104,7 @@ E.Options.args.nameplate = {
 							end,
 						},
 						showFriendlyCombat = {
-							order = 7,
+							order = 8,
 							type = "select",
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
@@ -3164,14 +3116,14 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
 						},
 						loadDistance = {
-							order = 8,
+							order = 9,
 							type = "range",
 							name = L["Load Distance"],
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
 						},
 						clickableWidth = {
-							order = 9,
+							order = 10,
 							type = "range",
 							name = L["Clickable Width"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
@@ -3179,7 +3131,7 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						clickableHeight = {
-							order = 10,
+							order = 11,
 							type = "range",
 							name = L["Clickable Height"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
@@ -3187,7 +3139,7 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						resetFilters = {
-							order = 11,
+							order = 12,
 							name = L["Reset Aura Filters"],
 							type = "execute",
 							func = function(info, value)
@@ -3195,7 +3147,7 @@ E.Options.args.nameplate = {
 							end,
 						},
 						targetedNamePlate = {
-							order = 12,
+							order = 13,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -3274,7 +3226,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 13,
+							order = 14,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
@@ -3318,12 +3270,14 @@ E.Options.args.nameplate = {
 									order = 4,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontSize = {
 									order = 5,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 212, step = 1,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontOutline = {
 									order = 6,
@@ -3336,10 +3290,11 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							},
 						},
-						--[[duration = {
+						duration = {
 							type = "group",
 							order = 7,
 							name = L["Duration"],
@@ -3350,12 +3305,14 @@ E.Options.args.nameplate = {
 									order = 8,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontSize = {
 									order = 9,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontOutline = {
 									order = 10,
@@ -3368,6 +3325,7 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							}
 						},
@@ -3382,12 +3340,14 @@ E.Options.args.nameplate = {
 									order = 12,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								stackFontSize = {
 									order = 13,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								stackFontOutline = {
 									order = 14,
@@ -3400,9 +3360,10 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							}
-						},--]]
+						},
 					},
 				},
 				classBarGroup = {

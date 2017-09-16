@@ -11,6 +11,9 @@ Added instance type triggers to nameplate style filters.
 Added instance difficulty triggers to nameplate style filters.  
 Added classification triggers to nameplate style filters.  
 Added toggle option for datatext backdrop. Disabling it will remove the backdrop completely and only show text.  
+Added option to show the default friendly nameplates in instances. This option can be found in the General Options section of the NamePlates config.  
+Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
+Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
 
 
 **Bug Fixes:**  
@@ -25,6 +28,7 @@ Added Veiled Argunite to the Currencies datatext tooltip.
 Replaced more Blizzard font elements for panels where fonts were mixed.  
 Various skin fixes and tweaks.  
 Added stealable border color on nameplate auras.  
+Changed default position of role icons on unitframes so they don't overlap with name.  
 
 ___
 **Version 10.63 [ September 9th 2017 ]**

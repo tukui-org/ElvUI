@@ -16,6 +16,7 @@ local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
+local UnitCanAttack = UnitCanAttack
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't want to cache, list them here for mikk's FindGlobals script
@@ -245,7 +246,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 
 	if db.priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = unit and UnitIsFriend('player', unit)
+		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
 		isUnit = unit and unitCaster and UnitIsUnit(unit, unitCaster)
 		canDispell = (self.type == 'Buffs' and isStealable) or (self.type == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))

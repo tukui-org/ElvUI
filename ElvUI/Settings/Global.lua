@@ -32,6 +32,8 @@ G["datatexts"] = {
 	["customCurrencies"] = {},
 }
 
+G["nameplate"] = {}
+
 G['unitframe'] = {
 	['aurafilters'] = {},
 	['buffwatch'] = {},
