@@ -102,7 +102,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 	end
 end
 
-local specListOrder = 50 --start at 50
+local specListOrder = 50 -- start at 50
 local classTable, classIndexTable, classOrder
 local function UpdateClassSpec(classTag, enabled)
 	if not (classTable[classTag] and classTable[classTag].classID) then return end
@@ -2043,6 +2043,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
+		specListOrder = 50 -- reset this to 50
 		UpdateClassSection()
 		UpdateTalentSection()
 		UpdateInstanceDifficulty()
