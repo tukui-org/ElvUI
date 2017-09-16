@@ -3270,12 +3270,14 @@ E.Options.args.nameplate = {
 									order = 4,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontSize = {
 									order = 5,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 212, step = 1,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontOutline = {
 									order = 6,
@@ -3288,6 +3290,7 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							},
 						},
@@ -3302,12 +3305,14 @@ E.Options.args.nameplate = {
 									order = 8,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontSize = {
 									order = 9,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontOutline = {
 									order = 10,
@@ -3320,6 +3325,7 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							}
 						},
@@ -3334,12 +3340,14 @@ E.Options.args.nameplate = {
 									order = 12,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								stackFontSize = {
 									order = 13,
 									name = FONT_SIZE,
 									type = "range",
 									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								stackFontOutline = {
 									order = 14,
@@ -3352,6 +3360,7 @@ E.Options.args.nameplate = {
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 							}
 						},

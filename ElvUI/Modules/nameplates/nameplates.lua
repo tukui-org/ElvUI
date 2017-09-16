@@ -1506,6 +1506,65 @@ function mod:UpdateVisibility()
 	end
 end
 
+function mod:UpdateFonts(plate)
+	-- used by the gui to update the aura icon text like duration/stacks
+	if not plate then return end
+
+	--buff fonts
+	if plate.Buffs and plate.Buffs.db and plate.Buffs.db.numAuras then
+		for i=1, plate.Buffs.db.numAuras do
+			if plate.Buffs.icons[i] and plate.Buffs.icons[i].cooldown and plate.Buffs.icons[i].cooldown.timer and plate.Buffs.icons[i].cooldown.timer.text then
+				plate.Buffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
+			end
+			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
+				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+			end
+		end
+	end
+
+	--debuff fonts
+	if plate.Debuffs and plate.Debuffs.db and plate.Debuffs.db.numAuras then
+		for i=1, plate.Debuffs.db.numAuras do
+			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].cooldown and plate.Debuffs.icons[i].cooldown.timer and plate.Debuffs.icons[i].cooldown.timer.text then
+				plate.Debuffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
+			end
+			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
+				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+			end
+		end
+	end
+
+	--misc element fonts
+	if plate.Name then
+		plate.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.CastBar and plate.CastBar.Name then
+		plate.CastBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.CastBar and plate.CastBar.Time then
+		plate.CastBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.HealthBar and plate.HealthBar.text then
+		plate.HealthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.PowerBar and plate.PowerBar.text then
+		plate.PowerBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.Level then
+		plate.Level:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	if plate.NPCTitle then
+		plate.NPCTitle:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+end
+
+function mod:UpdatePlateFonts()
+	self:ForEachPlate("UpdateFonts")
+	if self.PlayerFrame__ then
+		self:UpdateFonts(self.PlayerFrame__.unitFrame)
+	end
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
