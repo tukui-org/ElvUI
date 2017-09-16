@@ -1119,15 +1119,15 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						elite = {
+						normal = {
 							type = 'toggle',
 							order = 3,
-							name = ELITE,
+							name = L["Normal"],
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal
 							end,
 							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite = value
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal = value
 								NP:ConfigureAll()
 							end,
 						},
@@ -1143,27 +1143,27 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						normal = {
-							type = 'toggle',
-							order = 5,
-							name = L["Normal"],
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal = value
-								NP:ConfigureAll()
-							end,
-						},
 						trivial = {
 							type = 'toggle',
-							order = 6,
+							order = 5,
 							name = L["Trivial"],
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.trivial
 							end,
 							set = function(info, value)
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.trivial = value
+								NP:ConfigureAll()
+							end,
+						},
+						elite = {
+							type = 'toggle',
+							order = 6,
+							name = ELITE,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite = value
 								NP:ConfigureAll()
 							end,
 						},
