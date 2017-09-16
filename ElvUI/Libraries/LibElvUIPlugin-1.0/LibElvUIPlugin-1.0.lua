@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 14
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 15
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -24,7 +24,7 @@ lib.index = 0
 lib.prefix = "ElvUIPluginVC"
 
 -- MULTI Language Support (Default Language: English)
-local MSG_OUTDATED = "Your version of %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
+local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
 local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
 local INFO_BY = "by"
@@ -33,7 +33,7 @@ local INFO_NEW = "Newest:"
 local LIBRARY = "Library"
 
 if GetLocale() == "deDE" then -- German Translation
-	MSG_OUTDATED = "Deine Version von %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
+	MSG_OUTDATED = "Deine Version von %s %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
 	HDR_CONFIG = "Plugins"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
 	INFO_BY = "von"
@@ -43,7 +43,7 @@ if GetLocale() == "deDE" then -- German Translation
 end
 
 if GetLocale() == "ruRU" then -- Russian Translations
-	MSG_OUTDATED = "Ваша версия %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
+	MSG_OUTDATED = "Ваша версия %s %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
 	HDR_CONFIG = "Плагины"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
 	INFO_BY = "от"
@@ -165,7 +165,7 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 							plugin.old = true
 							plugin.newversion = tonumber(version)
 							local Pname = GetAddOnMetadata(plugin.name, "Title")
-							E:Print(format(MSG_OUTDATED,Pname,plugin.newversion))
+							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 							E["pluginRecievedOutOfDateMessage"] = true
 						end
 					end
