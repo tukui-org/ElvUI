@@ -12,13 +12,14 @@ local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
+local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
 
 local auraCache = {}
 
-function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, spellID)
+function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, spellID, buffType, isStealable, isFriend)
 	aura.icon:SetTexture(icon);
 	aura.name = name
 	aura.spellID = spellID
@@ -40,6 +41,14 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 		aura.cooldown:Show();
 	else
 		aura.cooldown:Hide();
+	end
+
+	if buffType == "Buffs" then
+		if isStealable and not isFriend then
+			aura.backdrop:SetBackdropBorderColor(237/255, 234/255, 142/255)
+		else
+			aura.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end
 	end
 
 	aura:Show();
@@ -104,7 +113,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 
 	if priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = frame.unit and UnitIsFriend('player', frame.unit)
+		isFriend = frame.unit and UnitIsFriend('player', frame.unit) and not UnitCanAttack("player", frame.unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isUnit = frame.unit and caster and UnitIsUnit(frame.unit, caster)
 		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
@@ -115,7 +124,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 	end
 
 	if filterCheck == true then
-		mod:SetAura(frame[buffType].icons[frameNum], index, name, texture, count, duration, expiration, spellID)
+		mod:SetAura(frame[buffType].icons[frameNum], index, name, texture, count, duration, expiration, spellID, buffType, isStealable, isFriend)
 		return true
 	end
 

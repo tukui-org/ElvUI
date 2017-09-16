@@ -19,6 +19,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitAura = UnitAura
+local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
@@ -374,7 +375,7 @@ end
 
 function UF:PostUpdateAura(unit, button, index)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local isFriend = UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	local isFriend = UnitIsFriend('player', unit) and not UnitCanAttack("player", unit)
 
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
