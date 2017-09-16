@@ -375,7 +375,6 @@ end
 
 function UF:PostUpdateAura(unit, button, index)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
@@ -391,7 +390,7 @@ function UF:PostUpdateAura(unit, button, index)
 	end
 
 	if button.isDebuff then
-		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
+		if(not button.isFriend and not button.isPlayer) --[[and (not E.isDebuffWhiteList[name])]] then
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
 		else
@@ -404,7 +403,7 @@ function UF:PostUpdateAura(unit, button, index)
 			button.icon:SetDesaturated(false)
 		end
 	else
-		if (isStealable) and not isFriend then
+		if (isStealable) and not button.isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
 			button:SetBackdropBorderColor(unpack(E["media"].unitframeBorderColor))
@@ -482,15 +481,16 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority = false, false, false, false, false, false, false
 
 	isPlayer = (caster == 'player' or caster == 'vehicle')
+	isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
 	button.isPlayer = isPlayer
+	button.isFriend = isFriend
 	button.owner = caster
 	button.name = name
 	button.priority = 0
 
 	if db.priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
