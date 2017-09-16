@@ -1352,28 +1352,18 @@ function E:DBConversions()
 			}
 		end
 
-		if filter.triggers.talent == nil then
-			filter.triggers.talent = {
-				['enable'] = false,
-				['requireAll'] = false,
-				['type'] = 'normal',
+		if filter.triggers.classification == nil then
+			filter.triggers.classification = {
+				["worldboss"] = false,
+				["rareelite"] = false,
+				["elite"] = false,
+				["rare"] = false,
+				["normal"] = false,
+				["trivial"] = false,
+				["minus"] = false,
 			}
-			for i = 1, 7 do
-				filter.triggers.talent['tier'..i..'enabled'] = false;
-				filter.triggers.talent['tier'..i] = {
-					['column'] = 0,
-					['missing'] = false,
-				}
-			end
 		end
 
-		-- this part was used in between using dev versions, so we can rip this part out later
-		-- i added these two inside of the check above for other users
-		if filter.triggers.talent.enabled == nil then
-			filter.triggers.talent.enabled = false
-			filter.triggers.talent.requireAll = false
-		end
-		
 		if filter.triggers.instanceDifficulty == nil then
 			filter.triggers.instanceDifficulty = {
 				dungeon = {
@@ -1395,6 +1385,28 @@ function E:DBConversions()
 					["legacy25heroic"] = false,
 				},
 			}
+		end
+
+		if filter.triggers.talent == nil then
+			filter.triggers.talent = {
+				['enable'] = false,
+				['requireAll'] = false,
+				['type'] = 'normal',
+			}
+			for i = 1, 7 do
+				filter.triggers.talent['tier'..i..'enabled'] = false;
+				filter.triggers.talent['tier'..i] = {
+					['column'] = 0,
+					['missing'] = false,
+				}
+			end
+		end
+
+		-- this part was used in between using dev versions, so we can rip this part out later
+		-- i added these two inside of the check above for other users
+		if filter.triggers.talent.enabled == nil then
+			filter.triggers.talent.enabled = false
+			filter.triggers.talent.requireAll = false
 		end
 	end
 end

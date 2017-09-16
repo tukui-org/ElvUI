@@ -19,7 +19,7 @@ local GetTalentInfo = GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
-local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT
+local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
@@ -610,6 +610,15 @@ local function GetStyleFilterDefaultOptions(filter)
 				["healer"] = false,
 				["damager"] = false,
 			},
+			["classification"] = {
+				["worldboss"] = false,
+				["rareelite"] = false,
+				["elite"] = false,
+				["rare"] = false,
+				["normal"] = false,
+				["trivial"] = false,
+				["minus"] = false,
+			},
 			["class"] = {}, --this can stay empty we only will accept values that exist
 			["talent"] = {
 				["type"] = "normal",
@@ -1080,8 +1089,100 @@ local function UpdateFilterGroup()
 						},
 					}
 				},
-				health = {
+				classification = {
 					order = 13,
+					type = 'group',
+					name = L["Classification"],
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						worldboss = {
+							type = 'toggle',
+							order = 1,
+							name = L["World Boss"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.worldboss
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.worldboss = value
+								NP:ConfigureAll()
+							end,
+						},
+						rareelite = {
+							type = 'toggle',
+							order = 2,
+							name = L["Rare Elite"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.rareelite
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.rareelite = value
+								NP:ConfigureAll()
+							end,
+						},
+						elite = {
+							type = 'toggle',
+							order = 3,
+							name = ELITE,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.elite = value
+								NP:ConfigureAll()
+							end,
+						},
+						rare = {
+							type = 'toggle',
+							order = 4,
+							name = L["Rare"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.rare
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.rare = value
+								NP:ConfigureAll()
+							end,
+						},
+						normal = {
+							type = 'toggle',
+							order = 5,
+							name = L["Normal"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal = value
+								NP:ConfigureAll()
+							end,
+						},
+						trivial = {
+							type = 'toggle',
+							order = 6,
+							name = L["Trivial"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.trivial
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.trivial = value
+								NP:ConfigureAll()
+							end,
+						},
+						minus = {
+							type = 'toggle',
+							order = 7,
+							name = L["Minus"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.minus
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.minus = value
+								NP:ConfigureAll()
+							end,
+						},
+					}
+				},
+				health = {
+					order = 14,
 					type = 'group',
 					name = L["Health Threshold"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -1138,7 +1239,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 14,
+					order = 15,
 					type = 'group',
 					name = LEVEL,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -1223,7 +1324,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 15,
+					order = 16,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1321,7 +1422,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 16,
+					order = 17,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1419,7 +1520,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 17,
+					order = 18,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1520,7 +1621,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 18,
+					order = 19,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1663,7 +1764,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				instanceType = {
-					order = 19,
+					order = 20,
 					type = 'group',
 					name = INSTANCE.." "..TYPE,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,

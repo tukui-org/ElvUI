@@ -52,6 +52,7 @@ local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
 local UnitIsQuestBoss = UnitIsQuestBoss
+local UnitClassification = UnitClassification
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
@@ -681,7 +682,7 @@ local function filterSort(a,b)
 end
 
 function mod:UpdateElement_Filters(frame)
-	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
+	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth, classification;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
 	local castbarShown = frame.CastBar:IsShown()
@@ -878,6 +879,23 @@ function mod:UpdateElement_Filters(frame)
 				condition = false
 				mySpecID = GetSpecializationInfo(E.myspec)
 				if mySpecID and trigger.class[E.myclass].specs[mySpecID] then
+					condition = true
+				end
+				failed = not condition
+			end
+
+			--Try to match by classification conditions
+			if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
+				condition = false
+				classification = UnitClassification(frame.displayedUnit)
+				if classification and (
+					(trigger.classification.worldboss and classification == "worldboss") or
+					(trigger.classification.rareelite and classification == "rareelite") or
+					(trigger.classification.elite and classification == "elite") or
+					(trigger.classification.rare and classification == "rare") or
+					(trigger.classification.normal and classification == "normal") or
+					(trigger.classification.trivial and classification == "trivial") or
+					(trigger.classification.minus and classification == "minus")) then
 					condition = true
 				end
 				failed = not condition

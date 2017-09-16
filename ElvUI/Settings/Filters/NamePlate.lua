@@ -23,6 +23,15 @@ G["nameplate"] = {
 					["healer"] = false,
 					["damager"] = false,
 				},
+				["classification"] = {
+					["worldboss"] = false,
+					["rareelite"] = false,
+					["elite"] = false,
+					["rare"] = false,
+					["normal"] = false,
+					["trivial"] = false,
+					["minus"] = false,
+				},
 				["class"] = {}, --this can stay empty we only will accept values that exist
 				["talent"] = {
 					["type"] = "normal",
