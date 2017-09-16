@@ -925,7 +925,7 @@ function mod:UpdateElement_Filters(frame)
 
 				if trigger.instanceType.raid and instanceType == "raid" and 
 					(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking or
-					 trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.instanceDifficulty.raid.legacy25heroic) then
+					 trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.raid.legacy25heroic) then
 					condition = false;
 					if ((trigger.instanceDifficulty.raid.lfr and (instanceDifficulty == 7 or instanceDifficulty == 17)) or
 						(trigger.instanceDifficulty.raid.normal and instanceDifficulty == 14) or
