@@ -7,9 +7,10 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local unpack, type = unpack, type
 local next, ipairs = next, ipairs
 local match = string.match
+local find = string.find
+local format = string.format
 local strsplit = strsplit
 local tsort = table.sort
-local format = format
 local ceil = math.ceil
 local select = select
 --WoW API / Variables
@@ -168,8 +169,8 @@ function UF:Configure_Auras(frame, auraType)
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
 	auras:Height(auras.size * rows)
-	auras["growth-y"] = db[auraType].anchorPoint:find('TOP') and 'UP' or 'DOWN'
-	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (db[auraType].anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+	auras["growth-y"] = find(db[auraType].anchorPoint, 'TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (find(db[auraType].anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
 
 	--These are needed for SmartAuraPosition
@@ -388,12 +389,12 @@ function UF:PostUpdateAura(unit, button, index)
 	end
 
 	if button.isDebuff then
-		if(not button.isFriend and not button.isPlayer) --[[and (not E.isDebuffWhiteList[name])]] then
+		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
-			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
+			button.icon:SetDesaturated((unit and not find(unit, 'arena%d')) and true or false)
 		else
-			local color = DebuffTypeColor[button.dtype] or DebuffTypeColor.none
-			if (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+			local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none
+			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else
 				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -401,7 +402,7 @@ function UF:PostUpdateAura(unit, button, index)
 			button.icon:SetDesaturated(false)
 		end
 	else
-		if (button.isStealable) and not button.isFriend then
+		if button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
 			button:SetBackdropBorderColor(unpack(E["media"].unitframeBorderColor))
@@ -460,10 +461,10 @@ function UF:UpdateAuraTimer(elapsed)
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
 	if self.text:GetFont() then
-		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
 		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
-		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	end
 end
 
