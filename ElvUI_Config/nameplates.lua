@@ -338,7 +338,7 @@ local function UpdateInstanceDifficulty()
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.dungeonDifficulty = {
 			type = 'group',
 			name = L["Dungeon Difficulty"],
-			desc = L["Check these to only have the filter active in certain difficulties.  If none are checked, it is active in all difficulties."],
+			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
 			guiInline = true,
 			order = 10,
 			get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] end,
@@ -1108,7 +1108,7 @@ local function UpdateFilterGroup()
 						worldboss = {
 							type = 'toggle',
 							order = 1,
-							name = L["World Boss"],
+							name = RAID_INFO_WORLD_BOSS,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.worldboss
 							end,
@@ -1132,7 +1132,7 @@ local function UpdateFilterGroup()
 						normal = {
 							type = 'toggle',
 							order = 3,
-							name = L["Normal"],
+							name = PLAYER_DIFFICULTY1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.normal
 							end,
@@ -1144,7 +1144,7 @@ local function UpdateFilterGroup()
 						rare = {
 							type = 'toggle',
 							order = 4,
-							name = L["Rare"],
+							name = ITEM_QUALITY3_DESC,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification.rare
 							end,
