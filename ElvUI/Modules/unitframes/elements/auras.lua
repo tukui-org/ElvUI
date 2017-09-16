@@ -375,7 +375,7 @@ end
 
 function UF:PostUpdateAura(unit, button, index)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local isFriend = UnitIsFriend('player', unit) and not UnitCanAttack("player", unit)
+	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
@@ -490,7 +490,7 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 	if db.priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = unit and UnitIsFriend('player', unit)
+		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
