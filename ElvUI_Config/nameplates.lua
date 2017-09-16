@@ -3444,7 +3444,7 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
-						--[[duration = {
+						duration = {
 							type = "group",
 							order = 7,
 							name = L["Duration"],
@@ -3507,7 +3507,7 @@ E.Options.args.nameplate = {
 									},
 								},
 							}
-						},--]]
+						},
 					},
 				},
 				classBarGroup = {

@@ -196,6 +196,13 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
+local function cooldownFontOverride(cd)
+	if cd.timer and cd.timer.text then
+		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
+		cd.timer.text:Point("TOPLEFT", 1, 1)
+	end
+end
+
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura)
@@ -208,15 +215,11 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
+	aura.cooldown.FontOverride = cooldownFontOverride
 	E:RegisterCooldown(aura.cooldown)
 
-	-- I assume we must create an own font string to get rid of this
-	-- aura.cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.cooldownFont), self.db.cooldownFontSize, self.db.cooldownFontOutline)
-	-- aura.cooldown.timer.text:Point("TOPLEFT", 1, 1)
-
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
-	aura.count:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline) --It dont get updated correctly
-	-- aura.count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline) -- It dont get updated correctly
+	aura.count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 	aura.count:Point("BOTTOMRIGHT", 1, 1)
 
 	return aura
