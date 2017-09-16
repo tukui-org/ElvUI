@@ -787,6 +787,7 @@ P['datatexts'] = {
 	},
 	['battleground'] = true,
 	['panelTransparency'] = false,
+	['panelBackdrop'] = true,
 	["noCombatClick"] = false,
 	["noCombatHover"] = false,
 

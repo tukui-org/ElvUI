@@ -149,22 +149,29 @@ function LO:SetChatTabStyle()
 end
 
 function LO:SetDataPanelStyle()
-	if E.db.datatexts.panelTransparency then
-		LeftChatDataPanel:SetTemplate("Transparent")
-		LeftChatToggleButton:SetTemplate("Transparent")
-		LeftMiniPanel:SetTemplate("Transparent")
-		RightChatDataPanel:SetTemplate("Transparent")
-		RightChatToggleButton:SetTemplate("Transparent")
-		RightMiniPanel:SetTemplate("Transparent")
-		-- ElvConfigToggle:SetTemplate("Transparent")
+	if not E.db.datatexts.panelBackdrop then
+		LeftChatDataPanel:SetTemplate("NoBackdrop")
+		LeftChatToggleButton:SetTemplate("NoBackdrop")
+		RightChatDataPanel:SetTemplate("NoBackdrop")
+		RightChatToggleButton:SetTemplate("NoBackdrop")
 	else
-		LeftChatDataPanel:SetTemplate("Default", true)
-		LeftChatToggleButton:SetTemplate("Default", true)
-		LeftMiniPanel:SetTemplate("Default", true)
-		RightChatDataPanel:SetTemplate("Default", true)
-		RightChatToggleButton:SetTemplate("Default", true)
-		RightMiniPanel:SetTemplate("Default", true)
-		-- ElvConfigToggle:SetTemplate("Default", true)
+		if E.db.datatexts.panelTransparency then
+			LeftChatDataPanel:SetTemplate("Transparent")
+			LeftChatToggleButton:SetTemplate("Transparent")
+			LeftMiniPanel:SetTemplate("Transparent")
+			RightChatDataPanel:SetTemplate("Transparent")
+			RightChatToggleButton:SetTemplate("Transparent")
+			RightMiniPanel:SetTemplate("Transparent")
+			-- ElvConfigToggle:SetTemplate("Transparent")
+		else
+			LeftChatDataPanel:SetTemplate("Default", true)
+			LeftChatToggleButton:SetTemplate("Default", true)
+			LeftMiniPanel:SetTemplate("Default", true)
+			RightChatDataPanel:SetTemplate("Default", true)
+			RightChatToggleButton:SetTemplate("Default", true)
+			RightMiniPanel:SetTemplate("Default", true)
+			-- ElvConfigToggle:SetTemplate("Default", true)
+		end
 	end
 end
 
