@@ -636,6 +636,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Gesundheit höher sein als dieser Wert um den Filter zu aktivieren. Setze auf 0 um zu deaktiveren."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Gesundheit niedriger sein als dieser Wert um den Filter zu aktivieren. Setze auf 0 um zu deaktiveren."
 L["In Combat"] = "Im Kampf"
+L["Instance Type"] = true;
 L["Interruptible"] = "Unterbrechbar"
 L["Is PvP Talents"] = "Ist PvP Talent"
 L["Is Targeted"] = "Ist anvisiert"
@@ -696,6 +697,7 @@ L["Suramar Detection"] = "Surumar Aufspürung"
 L["Tagged NPC"] = "Ausgewählter NPC"
 L["Tanked Color"] = "Angetankte Farbe"
 L["Target Glow Color"] = "Zielglühen Farbe"
+L["Target Indicator Color"] = true;
 L["Target Indicator"] = "Ziel Indikator"
 L["Target Scale"] = "Ziel Skalierung"
 L["Target, Quest, Combat"] = "Ziel, Quest, Kampf"

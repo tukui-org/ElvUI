@@ -624,6 +624,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["In Combat"] = true;
+L["Instance Type"] = true;
 L["Interruptible"] = true;
 L["Is PvP Talents"] = true;
 L["Is Targeted"] = true;
@@ -684,6 +685,7 @@ L["Suramar Detection"] = true;
 L["Tagged NPC"] = true;
 L["Tanked Color"] = true;
 L["Target Glow Color"] = true;
+L["Target Indicator Color"] = true;
 L["Target Indicator"] = true;
 L["Target Scale"] = true;
 L["Target, Quest, Combat"] = true;

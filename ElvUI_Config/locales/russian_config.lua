@@ -634,6 +634,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть выше указанного, чтобы фильтр активировался."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть ниже указанного, чтобы фильтр активировался."
 L["In Combat"] = "В бою"
+L["Instance Type"] = true;
 L["Interruptible"] = "Прерываемые"
 L["Is PvP Talents"] = "PvP талант"
 L["Is Targeted"] = "Взят в цель"
@@ -689,6 +690,7 @@ L["Style Filter"] = "Фильтры стиля"
 L["Suramar Detection"] = "Сурамарское обнаружение"
 L["Tagged NPC"] = "Чужой НИП"
 L["Tanked Color"] = "Цвет танкуемого"
+L["Target Indicator Color"] = true;
 L["Target Indicator"] = "Индикатор цели"
 L["Target Scale"] = "Масштаб цели";
 L["Target, Quest, Combat"] = "Цель, Задание, Бой"

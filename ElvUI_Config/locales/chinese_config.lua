@@ -635,6 +635,7 @@ L["If this list is empty, and if 'Interruptible' is checked, then the filter wil
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更高才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更低才会将过滤器激活. 设为0以禁用."
 L["In Combat"] = "战斗中"
+L["Instance Type"] = true;
 L["Interruptible"] = "可打断"
 L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "目标"
@@ -695,6 +696,7 @@ L["Suramar Detection"] = "苏拉玛卫兵探测"
 L["Tagged NPC"] = "标记的NPC"
 L["Tanked Color"] = "坦克颜色"
 L["Target Glow Color"] = "目标高亮颜色"
+L["Target Indicator Color"] = true;
 L["Target Indicator"] = "目标指示器"
 L["Target Scale"] = "目标缩放"
 L["Target, Quest, Combat"] = "目标、任务、战斗"
