@@ -17,6 +17,7 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 local GetTalentInfo = GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
+local GetDifficultyInfo = GetDifficultyInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT
 local INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = INSTANCE, TYPE, PARTY, ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
@@ -332,9 +333,9 @@ local function UpdateInstanceDifficulty()
 			name = L["Dungeon Difficulty"],
 			desc = L["Check these to only have the filter active in certain difficulties.  If none are checked, it is active in all difficulties."],
 			guiInline = true,
-			order = 4,
+			order = 10,
 			get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] end,
-			set = function(info, value) 
+			set = function(info, value)
 				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] = value;
 				UpdateInstanceDifficulty();
 				NP:ConfigureAll();
@@ -377,9 +378,9 @@ local function UpdateInstanceDifficulty()
 			name = L["Raid Difficulty"],
 			desc = L["Check these to only have the filter active in certain difficulties.  If none are checked, it is active in all difficulties."],
 			guiInline = true,
-			order = 5,
+			order = 11,
 			get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] end,
-			set = function(info, value) 
+			set = function(info, value)
 				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] = value;
 				UpdateInstanceDifficulty();
 				NP:ConfigureAll();

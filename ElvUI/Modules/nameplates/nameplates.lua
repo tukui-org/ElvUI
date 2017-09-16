@@ -911,7 +911,7 @@ function mod:UpdateElement_Filters(frame)
 
 			--Try to match by instance difficulty
 			if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
-				 if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
+				if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
 					condition = false;
 					if ((trigger.instanceDifficulty.dungeon.normal and instanceDifficulty == 1) or
 						(trigger.instanceDifficulty.dungeon.heroic and instanceDifficulty == 2) or
@@ -923,7 +923,7 @@ function mod:UpdateElement_Filters(frame)
 					failed = not condition;
 				end
 
-				if trigger.instanceType.raid and instanceType == "raid" and 
+				if trigger.instanceType.raid and instanceType == "raid" and
 					(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking or
 					 trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.raid.legacy25heroic) then
 					condition = false;
