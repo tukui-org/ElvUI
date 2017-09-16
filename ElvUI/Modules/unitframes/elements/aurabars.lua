@@ -16,6 +16,7 @@ local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
+local UnitCanAttack = UnitCanAttack
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't want to cache, list them here for mikk's FindGlobals script
