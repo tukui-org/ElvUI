@@ -227,6 +227,7 @@ P["nameplates"] = {
 	["lowHealthThreshold"] = 0.4,
 	["showFriendlyCombat"] = "DISABLED",
 	["showEnemyCombat"] = "DISABLED",
+	["showFriendlyInstancePlates"] = false,
 	["showNPCTitles"] = true,
 	["clampToScreen"] = false,
 	["loadDistance"] = 40,
