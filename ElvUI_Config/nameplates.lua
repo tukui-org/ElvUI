@@ -337,7 +337,7 @@ local function UpdateInstanceDifficulty()
 	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party) then
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.dungeonDifficulty = {
 			type = 'group',
-			name = L["Dungeon Difficulty"],
+			name = DUNGEON_DIFFICULTY,
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
 			guiInline = true,
 			order = 10,
