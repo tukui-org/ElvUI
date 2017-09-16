@@ -104,15 +104,18 @@ end
 
 local specListOrder = 50 --start at 50
 local classTable, classIndexTable, classOrder
-local function UpdateClassSpec(classTag, coloredName, enabled)
+local function UpdateClassSpec(classTag, enabled)
 	if not (classTable[classTag] and classTable[classTag].classID) then return end
-	specListOrder = specListOrder+(enabled ~= false and 1 or -1)
 	local classSpec = format("%s%s", classTag, "spec");
-	if (not enabled) and E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
-		E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = nil
-		return --stop when we remove one
+	if (enabled == false) then
+		if E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
+			E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = nil
+			specListOrder = specListOrder-1
+		end
+		return -- stop when we remove one OR when we pass disable with clear filter
 	end
 	if not E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
+		specListOrder = specListOrder+1
 		E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] = {
 			order = specListOrder,
 			type = "group",
@@ -177,8 +180,12 @@ local function UpdateClassSection()
 			coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
-			if classTrigger and classTrigger[classTag] and classTrigger[classTag].enabled then
-				UpdateClassSpec(classTag) --populate enabled class spec boxes
+			if classTrigger then
+				if classTrigger[classTag] and classTrigger[classTag].enabled then
+					UpdateClassSpec(classTag) --populate enabled class spec boxes
+				else
+					UpdateClassSpec(classTag, false)
+				end
 			end
 			E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classTag] = {
 				order = classOrder,
@@ -820,7 +827,10 @@ local function UpdateFilterGroup()
 					type = "execute",
 					func = function()
 						E.global.nameplate.filters[selectedNameplateFilter] = GetStyleFilterDefaultOptions(selectedNameplateFilter);
-						UpdateStyleLists();
+						UpdateStyleLists()
+						UpdateClassSection()
+						UpdateTalentSection()
+						UpdateInstanceDifficulty()
 						NP:ConfigureAll()
 					end,
 				},
