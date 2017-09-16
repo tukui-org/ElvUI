@@ -1341,6 +1341,13 @@ function E:DBConversions()
 	end
 
 	for _, filter in pairs(E.global.nameplate.filters) do
+		if filter.triggers.cooldowns == nil then
+			filter.triggers.cooldowns = {
+				["names"] = {},
+				["mustHaveAll"] = false,
+			}
+		end
+
 		if filter.triggers.instanceType == nil then
 			filter.triggers.instanceType = {
 				["none"] = false,
