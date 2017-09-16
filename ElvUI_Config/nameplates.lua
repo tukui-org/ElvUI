@@ -262,7 +262,7 @@ local function UpdateTalentSection()
 					UpdateTalentSection();
 					NP:ConfigureAll();
 				end
-			}
+			},
 		}
 
 		if not E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers then
@@ -322,6 +322,118 @@ local function UpdateTalentSection()
 			}
 			order = order + 1
 		end
+	end
+end
+
+local function UpdateInstanceDifficulty()
+	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party) then
+		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.dungeonDifficulty = {
+			type = 'group',
+			name = L["Dungeon Difficulty"],
+			desc = L["Check these to only have the filter active in certain difficulties.  If none are checked, it is active in all difficulties."],
+			guiInline = true,
+			order = 4,
+			get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] end,
+			set = function(info, value) 
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] = value;
+				UpdateInstanceDifficulty();
+				NP:ConfigureAll();
+			end,
+			args = {
+				normal = {
+					type = 'toggle',
+					name = GetDifficultyInfo(1),
+					order = 1,
+				},
+				heroic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(2),
+					order = 2,
+				},
+				mythic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(23),
+					order = 3,
+				},
+				["mythic+"] = {
+					type = 'toggle',
+					name = GetDifficultyInfo(8),
+					order = 4,
+				},
+				["timewalking"] = {
+					type = 'toggle',
+					name = GetDifficultyInfo(24),
+					order = 5,
+				},
+			};
+		}
+	else
+		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.dungeonDifficulty = nil;
+	end
+
+	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid) then
+		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.raidDifficulty = {
+			type = 'group',
+			name = L["Raid Difficulty"],
+			desc = L["Check these to only have the filter active in certain difficulties.  If none are checked, it is active in all difficulties."],
+			guiInline = true,
+			order = 5,
+			get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] end,
+			set = function(info, value) 
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] = value;
+				UpdateInstanceDifficulty();
+				NP:ConfigureAll();
+			end,
+			args = {
+				lfr = {
+					type = 'toggle',
+					name = GetDifficultyInfo(17),
+					order = 1,
+				},
+				normal = {
+					type = 'toggle',
+					name = GetDifficultyInfo(14),
+					order = 2,
+				},
+				heroic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(15),
+					order = 3,
+				},
+				mythic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(16),
+					order = 4,
+				},
+				timewalking = {
+					type = 'toggle',
+					name = GetDifficultyInfo(24),
+					order = 5,
+				},
+				legacy10normal = {
+					type = 'toggle',
+					name = GetDifficultyInfo(3),
+					order = 6,
+				},
+				legacy25normal = {
+					type = 'toggle',
+					name = GetDifficultyInfo(4),
+					order = 7,
+				},
+				legacy10heroic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(5),
+					order = 8,
+				},
+				legacy25heroic = {
+					type = 'toggle',
+					name = GetDifficultyInfo(6),
+					order = 9,
+				}
+			};
+		}
+	else
+		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.raidDifficulty = nil;
 	end
 end
 
@@ -573,6 +685,26 @@ local function GetStyleFilterDefaultOptions(filter)
 				["raid"] = false,
 				["arena"] = false,
 				["pvp"] = false,
+			},
+			["instanceDifficulty"] = {
+				["dungeon"] = {
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["mythic+"] = false,
+					["timewalking"] = false,
+				},
+				["raid"] = {
+					["lfr"] = false,
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["timewalking"] = false,
+					["legacy10normal"] = false,
+					["legacy25normal"] = false,
+					["legacy10heroic"] = false,
+					["legacy25heroic"] = false,
+				}
 			},
 			["buffs"] = {
 				["mustHaveAll"] = false,
@@ -1568,24 +1700,26 @@ local function UpdateFilterGroup()
 							end,
 							set = function(info, value)
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party = value
+								UpdateInstanceDifficulty();
 								NP:ConfigureAll()
 							end,
 						},
 						raid = {
 							type = 'toggle',
-							order = 4,
+							order = 5,
 							name = RAID,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid
 							end,
 							set = function(info, value)
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid = value
+								UpdateInstanceDifficulty();
 								NP:ConfigureAll()
 							end,
 						},
 						arena = {
 							type = 'toggle',
-							order = 5,
+							order = 7,
 							name = ARENA,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.arena
@@ -1597,7 +1731,7 @@ local function UpdateFilterGroup()
 						},
 						pvp = {
 							type = 'toggle',
-							order = 6,
+							order = 8,
 							name = BATTLEFIELDS,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.pvp
@@ -1799,6 +1933,7 @@ local function UpdateFilterGroup()
 
 		UpdateClassSection()
 		UpdateTalentSection()
+		UpdateInstanceDifficulty()
 		UpdateStyleLists()
 	end
 end

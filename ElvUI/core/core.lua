@@ -1373,6 +1373,29 @@ function E:DBConversions()
 			filter.triggers.talent.enabled = false
 			filter.triggers.talent.requireAll = false
 		end
+		
+		if filter.triggers.instanceDifficulty == nil then
+			filter.triggers.instanceDifficulty = {
+				dungeon = {
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["mythic+"] = false,
+					["timewalking"] = false,
+				},
+				raid = {
+					["lfr"] = false,
+					["normal"] = false,
+					["heroic"] = false,
+					["mythic"] = false,
+					["timewalking"] = false,
+					["legacy10normal"] = false,
+					["legacy25normal"] = false,
+					["legacy10heroic"] = false,
+					["legacy25heroic"] = false,
+				},
+			}
+		end
 	end
 end
 

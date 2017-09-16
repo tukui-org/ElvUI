@@ -683,7 +683,7 @@ end
 function mod:UpdateElement_Filters(frame)
 	local trigger, failed, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth;
 	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
-	local talentSelected, talentFunction, talentRows, instanceName, instanceType;
+	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 	local matchMyClass = false --Only check spec when we match the class condition
@@ -896,7 +896,7 @@ function mod:UpdateElement_Filters(frame)
 			--Try to match by instance conditions
 			if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
 				condition = false
-				instanceName, instanceType = GetInstanceInfo()
+				instanceName, instanceType, instanceDifficulty = GetInstanceInfo()
 				if instanceType
 				and ((trigger.instanceType.none and instanceType == "none")
 				or (trigger.instanceType.scenario and instanceType == "scenario")
@@ -907,6 +907,39 @@ function mod:UpdateElement_Filters(frame)
 					condition = true
 				end
 				failed = not condition
+			end
+
+			--Try to match by instance difficulty
+			if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
+				 if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
+					condition = false;
+					if ((trigger.instanceDifficulty.dungeon.normal and instanceDifficulty == 1) or
+						(trigger.instanceDifficulty.dungeon.heroic and instanceDifficulty == 2) or
+						(trigger.instanceDifficulty.dungeon.mythic and instanceDifficulty == 23) or
+						(trigger.instanceDifficulty.dungeon["mythic+"] and instanceDifficulty == 8) or
+						(trigger.instanceDifficulty.dungeon.timewalking and instanceDifficulty == 24)) then
+						condition = true
+					end
+					failed = not condition;
+				end
+
+				if trigger.instanceType.raid and instanceType == "raid" and 
+					(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking or
+					 trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.instanceDifficulty.raid.legacy25heroic) then
+					condition = false;
+					if ((trigger.instanceDifficulty.raid.lfr and (instanceDifficulty == 7 or instanceDifficulty == 17)) or
+						(trigger.instanceDifficulty.raid.normal and instanceDifficulty == 14) or
+						(trigger.instanceDifficulty.raid.heroic and instanceDifficulty == 15) or
+						(trigger.instanceDifficulty.raid.mythic and instanceDifficulty == 16) or
+						(trigger.instanceDifficulty.raid.timewalking and instanceDifficulty == 24) or
+						(trigger.instanceDifficulty.raid.legacy10normal and instanceDifficulty == 3) or
+						(trigger.instanceDifficulty.raid.legacy25normal and instanceDifficulty == 4) or
+						(trigger.instanceDifficulty.raid.legacy10heroic and instanceDifficulty == 5) or
+						(trigger.instanceDifficulty.raid.legacy25heroic and instanceDifficulty == 6)) then
+						condition = true
+					end
+					failed = not condition
+				end
 			end
 
 			--Try to match by talent conditions
