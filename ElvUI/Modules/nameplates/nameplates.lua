@@ -731,10 +731,25 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 			--Lets lock this to the values we want (needed for when the media border color changes)
 			backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
+		if actions.flash and actions.flash.enable and frame.FlashTexture then
+			frame.FlashingHealth = true
+			if not (actions.texture and actions.texture.enable) then
+				frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+			end
+			frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
+			frame.FlashTexture:SetAlpha(actions.flash.color.a)
+			frame.FlashTexture:Show()
+			if not (frame.FlashTexture.anim and frame.FlashTexture.anim.playing) then
+				E:Flash(frame.FlashTexture, actions.flash.speed, true)
+			end
+		end
 		if actions.texture and actions.texture.enable then
 			frame.TextureChanged = true
 			frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
 			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			if frame.FlashingHealth then
+				frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			end
 		end
 		if actions.scale and actions.scale ~= 1 then
 			frame.ScaleChanged = true
@@ -797,6 +812,11 @@ function mod:UpdateElement_Filters(frame)
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 	local matchMyClass = false --Only check spec when we match the class condition
 
+	if frame.FlashingHealth then
+		frame.FlashingHealth = nil
+		E:StopFlash(frame.FlashTexture)
+		frame.FlashTexture:Hide()
+	end
 	if frame.TextureChanged then
 		frame.TextureChanged = nil
 		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))

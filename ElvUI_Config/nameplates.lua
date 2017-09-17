@@ -1997,6 +1997,57 @@ local function UpdateFilterGroup()
 						},
 					},
 				},
+				flashing = {
+					order = 30,
+					type = "group",
+					name = L["Flash"],
+					guiInline = true,
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+					args = {
+						enable = {
+							name = L["Enable"],
+							order = 1,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.flash.enable
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.flash.enable = value
+								NP:ConfigureAll()
+							end,
+						},
+						speed = {
+							order = 2,
+							type = "range",
+							name = SPEED,
+							disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.flash.speed or 0.5
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.flash.speed = value
+								NP:ConfigureAll()
+							end,
+							min=0.1, max = 1.0, step = 0.01,
+						},
+						color = {
+							name = COLOR,
+							type = 'color',
+							order = 3,
+							hasAlpha = true,
+							disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+							get = function(info)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
+								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+						},
+					},
+				},
 			},
 		}
 

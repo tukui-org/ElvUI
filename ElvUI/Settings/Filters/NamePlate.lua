@@ -180,6 +180,11 @@ E["StyleFilterDefaults"] = {
 			["enable"] = false,
 			["texture"] = "ElvUI Norm",
 		},
+		["flash"] = {
+			["enable"] = false,
+			["color"] = {r=1,g=1,b=1,a=1},
+			["speed"] = 0.5,
+		},
 		["hide"] = false,
 		["usePortrait"] = false,
 		["nameOnly"] = false,
