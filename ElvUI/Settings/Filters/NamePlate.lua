@@ -22,7 +22,7 @@ G["nameplate"]["filters"] = {
 	},
 }
 
-G["nameplate"]["StyleFilterDefaults"] = {
+E["StyleFilterDefaults"] = {
 	["triggers"] = {
 		["priority"] = 1,
 		["isTarget"] = false,

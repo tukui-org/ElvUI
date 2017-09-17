@@ -1672,18 +1672,17 @@ local function removeDefaults(db, defaults, blocker)
 end
 
 function mod:InitFilter(tbl)
-	-- Heh, is this going to work?
-	copyDefaults(tbl, G.nameplate.StyleFilterDefaults);
+	copyDefaults(tbl, E.StyleFilterDefaults);
 end
 
 function mod:PLAYER_LOGOUT()
 	for filterName, filterTable in pairs(E.global.nameplate.filters) do
 		if G.nameplate.filters[filterName] then
-			local defaultTable = E:CopyTable({}, G.nameplate.StyleFilterDefaults);
+			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults);
 			E:CopyTable(defaultTable, G.nameplate.filters[filterName]);
 			removeDefaults(filterTable, defaultTable);
 		else
-			removeDefaults(filterTable, G.nameplate.StyleFilterDefaults);
+			removeDefaults(filterTable, E.StyleFilterDefaults);
 		end
 	end
 end
