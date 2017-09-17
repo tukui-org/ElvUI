@@ -680,8 +680,8 @@ local function HidePlayerNamePlate()
 end
 
 local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
-	backdrop:SetBackdropBorderColor(r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
+	backdrop:SetBackdropBorderColor(r, g, b, a)
 	if not backdrop.backdropBorderColorLocked then
 		backdrop.backdropBorderColorLocked = true
 		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(self, r, g, b, a)
