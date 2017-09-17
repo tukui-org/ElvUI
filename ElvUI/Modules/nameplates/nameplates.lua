@@ -56,6 +56,7 @@ local UnitReaction = UnitReaction
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitClassification = UnitClassification
 local GetSpellInfo = GetSpellInfo
+local GetSpellCharges = GetSpellCharges
 local GetTime = GetTime
 local GetSpecializationInfo = GetSpecializationInfo
 local GetTalentInfo	= GetTalentInfo
@@ -640,20 +641,27 @@ end
 
 
 local function filterCooldown(names, mustHaveAll)
-	local total, count, duration = 0, 0
-	local _, gcd = GetSpellCooldown(61304) -- spellID 61304 is `Global Cooldown`
+	local total, count, duration, charges, _ = 0, 0
+	--local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
 		if value == "ONCD" or value == "OFFCD" then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
 
+		charges = GetSpellCharges(name)
 		_, duration = GetSpellCooldown(name)
-		if (duration > 0 and duration >= gcd and value == "ONCD") or (duration == 0 and value == "OFFCD") then
-			-- what about spell charges and spells that dont have the gcd lockout?
-			-- other things need to be looked into here sometime
-			-- there no GCD check on "offcd" because we cant properly check it without math
+
+		if ((not charges or charges == 0) and duration > 0 --[[and duration >= gcd]] and value == "ONCD")
+		or ((not charges or charges > 0) and duration == 0 and value == "OFFCD") then
 			count = count + 1
+			--[[ ~Simpy
+				1)	what about spells that dont have the GCD lockout?
+					there is no GCD check on "offcd" because we cant properly check it without math [duration - (GetTime() - start)]?
+				2)	spellID 61304 is `Global Cooldown` and maybe this is better than using 1.5
+				3)	actually im removing GCD stuff for now, lets just worry about real CDs until we can improve this later
+					other things need to be looked into here sometime..
+			]]
 		end
 	end
 
