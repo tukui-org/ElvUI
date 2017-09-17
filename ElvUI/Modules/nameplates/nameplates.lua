@@ -644,7 +644,7 @@ end
 
 local function filterCooldown(names, mustHaveAll)
 	local total, count, duration, charges, _ = 0, 0
-	--local _, gcd = GetSpellCooldown(61304)
+	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
 		if value == "ONCD" or value == "OFFCD" then --only if they are turned on
@@ -653,17 +653,13 @@ local function filterCooldown(names, mustHaveAll)
 
 		charges = GetSpellCharges(name)
 		_, duration = GetSpellCooldown(name)
-
-		if ((not charges or charges == 0) and duration > 0 --[[and duration >= gcd]] and value == "ONCD")
-		or (((not charges and duration == 0) or (charges and charges > 0)) and value == "OFFCD") then
+		
+		if (charges and charges == 0 and value == "ONCD") --charges exist and the current number of charges is 0 means that it is completely on cooldown.
+		or (charges and charges > 0 and value == "OFFCD") --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
+		or (charges == nil and (duration > gcd and value == "ONCD")) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
+		or (charges == nil and (duration <= gcd and value == "OFFCD")) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
 			count = count + 1
-			--[[ ~Simpy
-				1)	what about spells that dont have the GCD lockout?
-					there is no GCD check on "offcd" because we cant properly check it without math [duration - (GetTime() - start)]?
-				2)	spellID 61304 is `Global Cooldown` and maybe this is better than using 1.5
-				3)	actually im removing GCD stuff for now, lets just worry about real CDs until we can improve this later
-					other things need to be looked into here sometime..
-			]]
+			--print(((charges and charges == 0 and value == "ONCD") and name.." (charge) passes because it is on cd") or ((charges and charges > 0 and value == "OFFCD") and name.." (charge) passes because it is offcd") or ((charges == nil and (duration > gcd and value == "ONCD")) and name.."passes because it is on cd.") or ((charges == nil and (duration <= gcd and value == "OFFCD")) and name.." passes because it is off cd."))
 		end
 	end
 
