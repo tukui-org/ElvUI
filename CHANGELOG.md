@@ -15,6 +15,8 @@ Added option to show the default friendly nameplates in instances. This option c
 Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
 Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
 Added alpha action to nameplate style filters.  
+Added "name only" action to nameplate style filters.  
+Added flash action to nameplate style filters.  
 
 
 **Bug Fixes:**  
