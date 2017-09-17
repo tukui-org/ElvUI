@@ -1677,8 +1677,14 @@ function mod:InitFilter(tbl)
 end
 
 function mod:PLAYER_LOGOUT()
-	for _, filterTable in pairs(E.global.nameplate.filters) do
-		removeDefaults(filterTable, G.nameplate.StyleFilterDefaults);
+	for filterName, filterTable in pairs(E.global.nameplate.filters) do
+		if G.nameplate.filters[filterName] then
+			local defaultTable = E:CopyTable({}, G.nameplate.StyleFilterDefaults);
+			E:CopyTable(defaultTable, G.nameplate.filters[filterName]);
+			removeDefaults(filterTable, defaultTable);
+		else
+			removeDefaults(filterTable, G.nameplate.StyleFilterDefaults);
+		end
 	end
 end
 
