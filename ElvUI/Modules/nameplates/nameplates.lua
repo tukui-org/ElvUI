@@ -1056,10 +1056,6 @@ function mod:UpdateElement_Filters(frame)
 							break -- break because requireAll failed
 						end
 					end
-					condition = true;
-					if (not tContains(result, true) or (tContains(result, false) and trigger.talent.requireAll)) then
-						condition = false;
-					end
 				end
 
 				failed = not condition
