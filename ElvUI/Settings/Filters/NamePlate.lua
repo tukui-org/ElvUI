@@ -183,5 +183,6 @@ E["StyleFilterDefaults"] = {
 		["hide"] = false,
 		["usePortrait"] = false,
 		["scale"] = 1.0,
+		["alpha"] = 1.0,
 	},
 }

@@ -1790,7 +1790,7 @@ local function UpdateFilterGroup()
 			disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 			args = {
 				hide = {
-					order = 0,
+					order = 1,
 					type = 'toggle',
 					name = L["Hide Frame"],
 					get = function(info)
@@ -1801,8 +1801,25 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				scale = {
+				usePortrait = {
 					order = 2,
+					type = 'toggle',
+					name = L["Use Portrait"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait = value
+						NP:ConfigureAll()
+					end,
+				},
+				spacer1 = {
+					order = 3,
+					type = "description",
+					name = " ",
+				},
+				scale = {
+					order = 4,
 					type = "range",
 					name = L["Scale"],
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
@@ -1815,20 +1832,22 @@ local function UpdateFilterGroup()
 					end,
 					min=0.35, max = 1.5, step = 0.01,
 				},
-				usePortrait = {
-					order = 0,
-					type = 'toggle',
-					name = L["Use Portrait"],
+				alpha = {
+					order = 5,
+					type = "range",
+					name = L["Alpha"],
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.alpha or 1
 					end,
 					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].actions.usePortrait = value
+						E.global.nameplate.filters[selectedNameplateFilter].actions.alpha = value
 						NP:ConfigureAll()
 					end,
+					min=0, max = 1, step = 0.01,
 				},
 				color = {
-					order = 4,
+					order = 10,
 					type = "group",
 					name = COLOR,
 					guiInline = true,
@@ -1931,7 +1950,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				texture = {
-					order = 5,
+					order = 20,
 					type = "group",
 					name = L["Texture"],
 					guiInline = true,

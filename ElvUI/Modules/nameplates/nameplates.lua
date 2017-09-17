@@ -750,6 +750,11 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		end
 	end
 
+	if actions.alpha and actions.alpha ~= 1 then
+		frame.AlphaChanged = true
+		frame:SetAlpha(actions.alpha)
+	end
+
 	if actions.color and actions.color.name then
 		frame.NameColorChanged = true
 		local nameText = frame.Name:GetText()
@@ -791,6 +796,14 @@ function mod:UpdateElement_Filters(frame)
 	if frame.BorderChanged then
 		frame.BorderChanged = nil
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+	if frame.AlphaChanged then
+		frame.AlphaChanged = nil
+		if frame.isTarget and not UnitIsUnit(frame.unit, "player") then
+			frame:SetAlpha(1 - self.db.nonTargetTransparency)
+		else
+			frame:SetAlpha(1)
+		end
 	end
 	if frame.ScaleChanged then
 		frame.ScaleChanged = nil
