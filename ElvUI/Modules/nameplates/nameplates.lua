@@ -763,6 +763,23 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
 	end
+
+	if actions.nameOnly then
+		frame.NameOnlyChanged = true
+		--hide the bars
+		if frame.CastBar:IsShown() then frame.CastBar:Hide() end
+		if frame.PowerBar:IsShown() then frame.PowerBar:Hide() end
+		if frame.HealthBar:IsShown() then frame.HealthBar:Hide() end
+		--hide the target indicator
+		self:UpdateElement_Glow(frame)
+		--position the name and update its color
+		frame.Name:ClearAllPoints()
+		frame.Name:SetJustifyH("CENTER")
+		frame.Name:SetPoint("TOP", frame, "CENTER")
+		self:UpdateElement_Name(frame, true)
+		--position the portrait
+		self:ConfigureElement_Portrait(frame, true)
+	end
 end
 
 local filterList = {}
@@ -819,6 +836,28 @@ function mod:UpdateElement_Filters(frame)
 		frame.PortraitShown = nil
 		frame.Portrait:Hide() --This could have been forced so hide it
 		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
+	end
+	if frame.NameOnlyChanged then
+		frame.NameOnlyChanged = nil
+		if self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth) then
+			frame.HealthBar:Show()
+			self:UpdateElement_Glow(frame)
+		end
+		if self.db.units[frame.UnitType].powerbar.enable then
+			local curValue = UnitPower(frame.displayedUnit, frame.PowerType);
+			if not (curValue == 0 and self.db.units[frame.UnitType].powerbar.hideWhenEmpty) then
+				frame.PowerBar:Show()
+			end
+		end
+		if self.db.units[frame.UnitType].showName then
+			self:ConfigureElement_Name(frame)
+			self:UpdateElement_Name(frame)
+		else
+			frame.Name:SetText()
+		end
+		if self.db.units[frame.UnitType].portrait.enable then
+			self:ConfigureElement_Portrait(frame)
+		end
 	end
 
 	if frame.UnitType == 'PLAYER' then

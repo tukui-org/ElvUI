@@ -182,6 +182,7 @@ E["StyleFilterDefaults"] = {
 		},
 		["hide"] = false,
 		["usePortrait"] = false,
+		["nameOnly"] = false,
 		["scale"] = 1.0,
 		["alpha"] = 1.0,
 	},

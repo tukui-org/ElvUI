@@ -1813,13 +1813,25 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
-				spacer1 = {
+				nameOnly = {
+					name = L["Name Only"],
 					order = 3,
+					type = 'toggle',
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.nameOnly
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.nameOnly = value
+						NP:ConfigureAll()
+					end,
+				},
+				spacer1 = {
+					order = 4,
 					type = "description",
 					name = " ",
 				},
 				scale = {
-					order = 4,
+					order = 5,
 					type = "range",
 					name = L["Scale"],
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
@@ -1833,7 +1845,7 @@ local function UpdateFilterGroup()
 					min=0.35, max = 1.5, step = 0.01,
 				},
 				alpha = {
-					order = 5,
+					order = 6,
 					type = "range",
 					name = L["Alpha"],
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,

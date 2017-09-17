@@ -14,10 +14,13 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: UIParent
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
-function mod:UpdateElement_Name(frame)
+function mod:UpdateElement_Name(frame, triggered)
 	local name = UnitName(frame.displayedUnit)
-	if((not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name) then return end
-	if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end
+
+	if not triggered then
+		if((not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name) then return end
+		if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end
+	end
 
 	frame.Name:SetText(name)
 
@@ -29,7 +32,7 @@ function mod:UpdateElement_Name(frame)
 		if(class and color) then
 			r, g, b = color.r, color.g, color.b
 		end
-	elseif(not self.db.units[frame.UnitType].healthbar.enable and not frame.isTarget) then
+	elseif triggered or (not self.db.units[frame.UnitType].healthbar.enable and not frame.isTarget) then
 		local reactionType = UnitReaction(frame.unit, "player")
 		if(reactionType == 4) then
 			r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
@@ -42,9 +45,11 @@ function mod:UpdateElement_Name(frame)
 		r, g, b = 1, 1, 1
 	end
 
-	if ( r ~= frame.Name.r or g ~= frame.Name.g or b ~= frame.Name.b ) then
+	if triggered or ( r ~= frame.Name.r or g ~= frame.Name.g or b ~= frame.Name.b ) then
 		frame.Name:SetTextColor(r, g, b)
-		frame.Name.r, frame.Name.g, frame.Name.b = r, g, b
+		if not triggered then
+			frame.Name.r, frame.Name.g, frame.Name.b = r, g, b
+		end
 	end
 
 	frame.Name.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)

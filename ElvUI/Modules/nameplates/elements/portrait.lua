@@ -37,18 +37,17 @@ function mod:UpdateElement_Portrait(frame, trigger)
 	end
 end
 
-function mod:ConfigureElement_Portrait(frame)
-	if not (self.db.units[frame.UnitType].portrait) then
-		return;
+function mod:ConfigureElement_Portrait(frame, triggered)
+	if not triggered then
+		if not (self.db.units[frame.UnitType].portrait) then return end
+		frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
+		frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
 	end
 
-	frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
-	frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
-
 	frame.Portrait:ClearAllPoints()
-	if(frame.PowerBar:IsShown()) then
+	if not triggered and frame.PowerBar:IsShown() then
 		frame.Portrait:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -6, 2)
-	elseif(frame.HealthBar:IsShown()) then
+	elseif not triggered and frame.HealthBar:IsShown() then
 		frame.Portrait:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
 	else
 		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
