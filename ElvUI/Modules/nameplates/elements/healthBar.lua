@@ -254,6 +254,11 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.PersonalHealPrediction:SetStatusBarColor(0, 1, 0.5, 0.25)
 
+	--[[parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
+	parent.FlashTexture:SetAllPoints(frame)
+	parent.FlashTexture:SetTexture(1, 1, 0)
+	E:Flash(parent.FlashTexture, 0.5, true)]]
+
 	frame.text = frame:CreateFontString(nil, "OVERLAY")
 	frame.text:SetWordWrap(false)
 	frame.scale = CreateAnimationGroup(frame)
