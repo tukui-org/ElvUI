@@ -703,6 +703,7 @@ L["Targeted Nameplate"] = "Индиатор цели"
 L["Texture"] = "Текстура"
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "Эти фильтры не используют список заклинаний, в отличие от обычных фильтро. Вместо этого они используют WoW API и логические операции для определения отображения аур."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "Эти фильтры используют списки заклинаний для определения стоит ли блокироват ь ауру. Их можно изменить в разделе 'Фильтры' окна настроек."
+L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true;
 L["Threat"] = "Угроза"
 L["Time To Hold"] = "Время задержки"
 L["Toggle Off While In Combat"] = "Включать в бою"

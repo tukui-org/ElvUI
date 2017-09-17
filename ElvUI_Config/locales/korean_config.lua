@@ -757,6 +757,7 @@ L["Targeted Nameplate"] = true;
 L["Texture"] = true;
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = true;
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = true;
+L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true;
 L["Threat"] = "위협"
 L["Time To Hold"] = true;
 L["Toggle Off While In Combat"] = true;
