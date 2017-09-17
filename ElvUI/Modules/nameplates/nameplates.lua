@@ -65,6 +65,7 @@ local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+local setmetatable = setmetatable
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
@@ -639,16 +640,16 @@ end
 
 
 local function filterCooldown(names, mustHaveAll)
-	local total, count = 0, 0
-	local _, duration
+	local total, count, duration = 0, 0
+	local _, gcd = GetSpellCooldown(61304) -- spellID 61304 is `Global Cooldown`
+
 	for name, value in pairs(names) do
 		if value == "ONCD" or value == "OFFCD" then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
 
 		_, duration = GetSpellCooldown(name)
-		--1.5 is global cooldown
-		if (duration > 1.5 and value == "ONCD") or (duration <= 1.5 and value == "OFFCD") then
+		if (duration > gcd and value == "ONCD") or (duration <= gcd and value == "OFFCD") then
 			count = count + 1
 		end
 	end
