@@ -692,6 +692,9 @@ local function UpdateFilterGroup()
 					type = "execute",
 					func = function()
 						local filter = {};
+						if G.nameplate.filters[selectedNameplateFilter] then
+							filter = E:CopyTable(filter, G.nameplate.filters[selectedNameplateFilter]);
+						end
 						NP:InitFilter(filter);
 						E.global.nameplate.filters[selectedNameplateFilter] = filter;
 						UpdateStyleLists()
