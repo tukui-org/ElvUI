@@ -850,6 +850,7 @@ function mod:UpdateElement_Filters(frame)
 			end
 		end
 		if self.db.units[frame.UnitType].showName then
+			self:ConfigureElement_Level(frame)
 			self:ConfigureElement_Name(frame)
 			self:UpdateElement_Name(frame)
 		else
