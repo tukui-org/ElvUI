@@ -649,7 +649,10 @@ local function filterCooldown(names, mustHaveAll)
 		end
 
 		_, duration = GetSpellCooldown(name)
-		if (duration > gcd and value == "ONCD") or (duration <= gcd and value == "OFFCD") then
+		if (duration > 0 and duration >= gcd and value == "ONCD") or (duration == 0 and value == "OFFCD") then
+			-- what about spell charges and spells that dont have the gcd lockout?
+			-- other things need to be looked into here sometime
+			-- there no GCD check on "offcd" because we cant properly check it without math
 			count = count + 1
 		end
 	end
