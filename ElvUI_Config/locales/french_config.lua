@@ -623,6 +623,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = true;
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = true;
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = true;
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = true;
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = true;
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = true;
@@ -635,6 +636,7 @@ L["If enabled then the filter will only activate when you are out of combat."] =
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true;
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = true;
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true;
 L["In Combat"] = true;

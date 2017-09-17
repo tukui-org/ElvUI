@@ -623,6 +623,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "图标基础高度"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果选中则将会检查光环是否缺失而不是光环是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果选中则要求满足所有光环. 不启用则只要求任一光环存在即可激活."
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果选中则过滤器仅仅在单位等级大于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果选中则过滤器仅仅在单位等级小于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果选中则过滤器仅仅在单位等级符合该值的时候激活"
@@ -635,6 +636,7 @@ L["If enabled then the filter will only activate when you are out of combat."] =
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光环和一个数一起列出你需要用它来将其移出列表"
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = "如果列表为空, 并且'可打断'被选中, 那么过滤器会在任何可被打断的施法时激活"
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更高才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更低才会将过滤器激活. 设为0以禁用."
 L["In Combat"] = "战斗中"

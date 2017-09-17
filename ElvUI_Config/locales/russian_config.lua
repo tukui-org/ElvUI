@@ -622,6 +622,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "Базовая высота иконки"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "Если включено, то будет проверять отсутствие ауры вместо ее наличия."
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "Если включено, то для активации фильтра потребуется наличие всех аур. В противном случае наличия любой из списка."
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита больше либо равен этому числу."
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита меньше либо равен этому числу."
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита равен этому числу."
@@ -634,6 +635,7 @@ L["If enabled then the filter will only activate when you are out of combat."] =
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "Если аура добавлена номером, то для удаления потребуется номер."
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = 'Если список пуст и "Прерываемые" включено, то фильтр будет активирован при произнесении люблго прерываемого заклинания.'
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть выше указанного, чтобы фильтр активировался."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть ниже указанного, чтобы фильтр активировался."
 L["In Combat"] = "В бою"

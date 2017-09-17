@@ -623,6 +623,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "圖示基礎高度"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果選中則將會檢查光環是否缺失而不是光環是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果選中則要求滿足所有光環. 不啟用則只要求任一光環存在即可啟動."
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果選中則過濾器僅僅在單位等級大於等於該值的時候啟動"
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果選中則過濾器僅僅在單位等級小於等於該值的時候啟動"
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果選中則過濾器僅僅在單位等級符合該值的時候啟動"
@@ -635,6 +636,7 @@ L["If enabled then the filter will only activate when you are out of combat."] =
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光環和一個數一起列出你需要用它來將其移出列表"
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = "如果列表為空, 並且'可打斷'被選中, 那麼過濾器會在任何可被打斷的施法時啟動"
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的血量需要比設定值更高才會將過濾器啟動. 設為0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的血量需要比設定值更低才會將過濾器啟動. 設為0以禁用."
 L["In Combat"] = "戰鬥中"
