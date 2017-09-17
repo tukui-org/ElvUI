@@ -19,6 +19,8 @@ local GetTalentInfo = GetTalentInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
+local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS
+local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
@@ -632,30 +634,6 @@ local function UpdateStyleLists()
 			end
 		end
 	end
-end
-
-local function GetStyleFilterDefaultOptions(filter)
-	if filter and G.nameplate.filters[filter] and P.nameplates.filters[filter] then
-		E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter]) --copy the profile options
-		local newTable = E:CopyTable({}, G["nameplate"].StyleFilterDefaults)
-		return E:CopyTable(setmetatable({}, {__index = newTable}), G.nameplate.filters[filter])
-	end
-
-	local styleFilterProfileOptions = {
-		["triggers"] = {
-			["enable"] = true
-		}
-	}
-
-	if not E.db.nameplates then E.db.nameplates = {} end
-	if not E.db.nameplates.filters then E.db.nameplates.filters = {} end
-
-	if filter then
-		E.db.nameplates.filters[filter] = styleFilterProfileOptions
-	end
-
-	local newTable = E:CopyTable({}, G["nameplate"].StyleFilterDefaults)
-	return setmetatable({}, {__index = newTable})
 end
 
 local function UpdateFilterGroup()
@@ -3591,7 +3569,9 @@ E.Options.args.nameplate = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
-						E.global.nameplate.filters[value] = GetStyleFilterDefaultOptions(value);
+						local filter = {};
+						NP:InitFilter(filter);
+						E.global.nameplate.filters[value] = filter;
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,

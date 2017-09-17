@@ -66,6 +66,9 @@ local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+local setmetatable = setmetatable
+local rawget = rawget
+local rawset = rawset
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
