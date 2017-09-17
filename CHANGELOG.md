@@ -14,6 +14,7 @@ Added toggle option for datatext backdrop. Disabling it will remove the backdrop
 Added option to show the default friendly nameplates in instances. This option can be found in the General Options section of the NamePlates config.  
 Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
 Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
+Added alpha action to nameplate style filters.  
 
 
 **Bug Fixes:**  
