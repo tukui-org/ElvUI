@@ -713,7 +713,9 @@ local function UpdateFilterGroup()
 					desc = L["Return filter to its default state."],
 					type = "execute",
 					func = function()
-						E.global.nameplate.filters[selectedNameplateFilter] = GetStyleFilterDefaultOptions(selectedNameplateFilter);
+						local filter = {};
+						NP:InitFilter(filter);
+						E.global.nameplate.filters[selectedNameplateFilter] = filter;
 						UpdateStyleLists()
 						UpdateClassSection()
 						UpdateTalentSection()
