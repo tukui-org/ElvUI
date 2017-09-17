@@ -653,7 +653,7 @@ local function filterCooldown(names, mustHaveAll)
 		_, duration = GetSpellCooldown(name)
 
 		if ((not charges or charges == 0) and duration > 0 --[[and duration >= gcd]] and value == "ONCD")
-		or ((not charges or charges > 0) and duration == 0 and value == "OFFCD") then
+		or (((not charges and duration == 0) or (charges and charges > 0)) and value == "OFFCD") then
 			count = count + 1
 			--[[ ~Simpy
 				1)	what about spells that dont have the GCD lockout?
