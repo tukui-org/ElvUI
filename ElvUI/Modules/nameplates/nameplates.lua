@@ -1569,18 +1569,14 @@ function mod:UpdatePlateFonts()
 	end
 end
 
-function mod:InitMetatable(tbl)
-	setmetatable(tbl, { __index = G.nameplate.StyleFilterDefaults });
-	return tbl;
-end
-
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
 
 	--Add metatable to all our style filters so they can grab default values if missing
-	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:InitMetatable(filterTable);
+	for filter, filterTable in pairs(E.global.nameplate.filters) do
+		local newTable = E:CopyTable({}, G["nameplate"].StyleFilterDefaults)
+		E.global.nameplate.filters[filter] = E:CopyTable(setmetatable({}, {__index = newTable}), filterTable)
 	end
 
 	--We don't allow player nameplate health to be disabled
