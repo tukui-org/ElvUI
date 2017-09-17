@@ -3059,12 +3059,13 @@ E.Options.args.nameplate = {
 								["TARGET"] = L["Only Show Target"],
 							},
 						},
-						showFriendlyInstancePlates = {
+						hideBlizzardPlates = {
 							order = 3,
 							type = "toggle",
-							name = "Friendly In Instances",
+							name = L["Hide Blizzard Plates"],
+							desc = L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."],
 							set = function(info, value)
-								E.db.nameplates[ info[#info] ] = value;
+								E.db.nameplates.hideBlizzardPlates = value;
 								E:StaticPopup_Show("CONFIG_RL")
 							end,
 						},

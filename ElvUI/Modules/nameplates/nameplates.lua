@@ -174,7 +174,7 @@ function mod:PLAYER_ENTERING_WORLD()
 
 	local inInstance, instanceType = IsInInstance()
 
-	if self.db.showFriendlyInstancePlates then -- this only needs eventing with the option enabled
+	if not self.db.hideBlizzardPlates then
 		self:ToggleNamePlateDriverEvents(instanceType)
 	end
 
@@ -1616,7 +1616,7 @@ function mod:Initialize()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
 
-	if not self.db.showFriendlyInstancePlates then
+	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
 		NamePlateDriverFrame:UnregisterAllEvents()
 		NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
