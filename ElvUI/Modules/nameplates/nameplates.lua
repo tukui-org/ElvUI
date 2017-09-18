@@ -746,6 +746,7 @@ function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, Flashin
 		frame.Name:SetPoint("TOP", frame, "CENTER")
 		frame.Level:ClearAllPoints()
 		frame.Level:SetPoint("LEFT", frame.Name, "RIGHT")
+		frame.Level:SetJustifyH("LEFT")
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
 		end
