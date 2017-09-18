@@ -539,6 +539,7 @@ local function UpdateStyleLists()
 					name = spell,
 					type = "select",
 					values = {
+						["DISABLED"] = DISABLE,
 						["ONCD"] = L["On Cooldown"],
 						["OFFCD"] = L["Off Cooldown"],
 					},
