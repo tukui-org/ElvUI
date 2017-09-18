@@ -693,12 +693,15 @@ end
 
 function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged)
 	if HealthColorChanged then
+		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 	end
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
+		frame.BorderChanged = true
 		backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 	end
 	if FlashingHealth then
+		frame.FlashingHealth = true
 		if not TextureChanged then
 			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		end
@@ -708,6 +711,7 @@ function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, Flashin
 		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
 	end
 	if TextureChanged then
+		frame.TextureChanged = true
 		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		if FlashingHealth then
@@ -715,6 +719,7 @@ function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, Flashin
 		end
 	end
 	if ScaleChanged then
+		frame.ScaleChanged = true
 		local scale = actions.scale
 		if frame.isTarget and self.db.useTargetScale then
 			scale = scale * self.db.targetScale
@@ -722,18 +727,22 @@ function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, Flashin
 		self:SetFrameScale(frame, scale)
 	end
 	if AlphaChanged then
+		frame.AlphaChanged = true
 		frame:SetAlpha(actions.alpha / 100)
 	end
 	if NameColorChanged then
+		frame.NameColorChanged = true
 		local nameText = frame.Name:GetText()
 		if nameText and nameText ~= "" then
 			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
 		end
 	end
 	if PortraitShown then
+		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
 	end
 	if NameOnlyChanged then
+		frame.NameOnlyChanged = true
 		--hide the bars
 		if frame.CastBar:IsShown() then frame.CastBar:Hide() end
 		if frame.PowerBar:IsShown() then frame.PowerBar:Hide() end
@@ -857,18 +866,18 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 		frame:Show()
 	end
 
-	if frame.HealthBar:IsShown() then
-		if actions.color and actions.color.health then frame.HealthColorChanged = true end
-		if actions.color and actions.color.border and frame.HealthBar.backdrop then frame.BorderChanged = true end
-		if actions.flash and actions.flash.enable and frame.FlashTexture then frame.FlashingHealth = true end
-		if actions.texture and actions.texture.enable then frame.TextureChanged = true end
-		if actions.scale and actions.scale ~= 1 then frame.ScaleChanged = true end
-	end
-	if actions.alpha and actions.alpha ~= -1 then frame.AlphaChanged = true end
-	if actions.color and actions.color.name then frame.NameColorChanged = true end
-	if actions.usePortrait then frame.PortraitShown = true end
-	if actions.nameOnly then frame.NameOnlyChanged = true end
-	self:SetStyle(frame, actions, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
+	local healthBarShown = frame.HealthBar:IsShown()
+	self:SetStyle(frame, actions,
+		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
+		(healthBarShown and actions.color and actions.color.border and frame.HealthBar.backdrop), --BorderChanged
+		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
+		(healthBarShown and actions.texture and actions.texture.enable), --TextureChanged
+		(healthBarShown and actions.scale and actions.scale ~= 1), --ScaleChanged
+		(actions.alpha and actions.alpha ~= -1), --AlphaChanged
+		(actions.color and actions.color.name), --NameColorChanged
+		(actions.usePortrait), --PortraitShown
+		(actions.nameOnly) --NameOnlyChanged
+	)
 end
 
 local filterList = {}
