@@ -50,6 +50,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
+local UnitPower = UnitPower
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitReaction = UnitReaction
@@ -690,6 +691,138 @@ local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
 	end
 end
 
+function mod:SetStyle(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged)
+	if HealthColorChanged then
+		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+	end
+	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
+		backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+	end
+	if FlashingHealth then
+		if not TextureChanged then
+			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		end
+		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
+		frame.FlashTexture:SetAlpha(actions.flash.color.a)
+		frame.FlashTexture:Show()
+		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
+	end
+	if TextureChanged then
+		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
+		if FlashingHealth then
+			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+		end
+	end
+	if ScaleChanged then
+		local scale = actions.scale
+		if frame.isTarget and self.db.useTargetScale then
+			scale = scale * self.db.targetScale
+		end
+		self:SetFrameScale(frame, scale)
+	end
+	if AlphaChanged then
+		frame:SetAlpha(actions.alpha / 100)
+	end
+	if NameColorChanged then
+		local nameText = frame.Name:GetText()
+		if nameText and nameText ~= "" then
+			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
+		end
+	end
+	if PortraitShown then
+		self:UpdateElement_Portrait(frame, true)
+	end
+	if NameOnlyChanged then
+		--hide the bars
+		if frame.CastBar:IsShown() then frame.CastBar:Hide() end
+		if frame.PowerBar:IsShown() then frame.PowerBar:Hide() end
+		if frame.HealthBar:IsShown() then frame.HealthBar:Hide() end
+		--hide the target indicator
+		self:UpdateElement_Glow(frame)
+		--position the name and update its color
+		frame.Name:ClearAllPoints()
+		frame.Name:SetJustifyH("CENTER")
+		frame.Name:SetPoint("TOP", frame, "CENTER")
+		if not NameColorChanged then
+			self:UpdateElement_Name(frame, true)
+		end
+		--position the portrait
+		self:ConfigureElement_Portrait(frame, true)
+	end
+end
+
+function mod:ClearStyle(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged)
+	if HealthColorChanged then
+		frame.HealthColorChanged = nil
+		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
+	end
+	if BorderChanged then
+		frame.BorderChanged = nil
+		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+	if FlashingHealth then
+		frame.FlashingHealth = nil
+		E:StopFlash(frame.FlashTexture)
+		frame.FlashTexture:Hide()
+	end
+	if TextureChanged then
+		frame.TextureChanged = nil
+		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+	end
+	if ScaleChanged then
+		frame.ScaleChanged = nil
+		if self.db.useTargetScale then
+			if frame.isTarget then
+				self:SetFrameScale(frame, self.db.targetScale)
+			else
+				self:SetFrameScale(frame, frame.ThreatScale or 1)
+			end
+		end
+	end
+	if AlphaChanged then
+		frame.AlphaChanged = nil
+		if frame.isTarget then
+			frame:SetAlpha(1)
+		elseif not UnitIsUnit(frame.displayedUnit, "player") then
+			frame:SetAlpha(1 - self.db.nonTargetTransparency)
+		end
+	end
+	if NameColorChanged then
+		frame.NameColorChanged = nil
+		frame.Name:SetTextColor(frame.Name.r, frame.Name.g, frame.Name.b)
+	end
+	if PortraitShown then
+		frame.PortraitShown = nil
+		frame.Portrait:Hide() --This could have been forced so hide it
+		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
+	end
+	if NameOnlyChanged then
+		frame.NameOnlyChanged = nil
+		if self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
+			frame.HealthBar:Show()
+			self:UpdateElement_Glow(frame)
+			if self.db.units[frame.UnitType].powerbar.enable then
+				local curValue = UnitPower(frame.displayedUnit, frame.PowerType);
+				if not (curValue == 0 and self.db.units[frame.UnitType].powerbar.hideWhenEmpty) then
+					frame.PowerBar:Show()
+				end
+			end
+		end
+		if self.db.units[frame.UnitType].showName then
+			self:ConfigureElement_Level(frame)
+			self:ConfigureElement_Name(frame)
+			self:UpdateElement_Name(frame)
+		else
+			frame.Name:SetText()
+		end
+		if self.db.units[frame.UnitType].portrait.enable then
+			self:ConfigureElement_Portrait(frame)
+		end
+	end
+end
+
 local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
 function mod:FilterStyle(frame, actions, castbarTriggered)
 	if castbarTriggered then
@@ -722,79 +855,17 @@ function mod:FilterStyle(frame, actions, castbarTriggered)
 	end
 
 	if frame.HealthBar:IsShown() then
-		if actions.color and actions.color.health then
-			frame.HealthColorChanged = true
-			frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
-		end
-		if actions.color and actions.color.border and frame.HealthBar.backdrop then
-			frame.BorderChanged = true
-			--Lets lock this to the values we want (needed for when the media border color changes)
-			backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		end
-		if actions.flash and actions.flash.enable and frame.FlashTexture then
-			frame.FlashingHealth = true
-			if not (actions.texture and actions.texture.enable) then
-				frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
-			end
-			frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
-			frame.FlashTexture:SetAlpha(actions.flash.color.a)
-			frame.FlashTexture:Show()
-			if not (frame.FlashTexture.anim and frame.FlashTexture.anim.playing) then
-				E:Flash(frame.FlashTexture, actions.flash.speed, true)
-			end
-		end
-		if actions.texture and actions.texture.enable then
-			frame.TextureChanged = true
-			frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
-			frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
-			if frame.FlashingHealth then
-				frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
-			end
-		end
-		if actions.scale and actions.scale ~= 1 then
-			frame.ScaleChanged = true
-			local scale = actions.scale
-			if frame.isTarget and self.db.useTargetScale then
-				scale = scale * self.db.targetScale
-			end
-			self:SetFrameScale(frame, scale)
-		end
+		if actions.color and actions.color.health then frame.HealthColorChanged = true end
+		if actions.color and actions.color.border and frame.HealthBar.backdrop then frame.BorderChanged = true end
+		if actions.flash and actions.flash.enable and frame.FlashTexture then frame.FlashingHealth = true end
+		if actions.texture and actions.texture.enable then frame.TextureChanged = true end
+		if actions.scale and actions.scale ~= 1 then frame.ScaleChanged = true end
 	end
-
-	if actions.alpha and actions.alpha ~= 1 then
-		frame.AlphaChanged = true
-		frame:SetAlpha(actions.alpha)
-	end
-
-	if actions.color and actions.color.name then
-		frame.NameColorChanged = true
-		local nameText = frame.Name:GetText()
-		if nameText and nameText ~= "" then
-			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
-		end
-	end
-
-	if actions.usePortrait then
-		frame.PortraitShown = true
-		self:UpdateElement_Portrait(frame, true)
-	end
-
-	if actions.nameOnly then
-		frame.NameOnlyChanged = true
-		--hide the bars
-		if frame.CastBar:IsShown() then frame.CastBar:Hide() end
-		if frame.PowerBar:IsShown() then frame.PowerBar:Hide() end
-		if frame.HealthBar:IsShown() then frame.HealthBar:Hide() end
-		--hide the target indicator
-		self:UpdateElement_Glow(frame)
-		--position the name and update its color
-		frame.Name:ClearAllPoints()
-		frame.Name:SetJustifyH("CENTER")
-		frame.Name:SetPoint("TOP", frame, "CENTER")
-		self:UpdateElement_Name(frame, true)
-		--position the portrait
-		self:ConfigureElement_Portrait(frame, true)
-	end
+	if actions.alpha and actions.alpha ~= -1 then frame.AlphaChanged = true end
+	if actions.color and actions.color.name then frame.NameColorChanged = true end
+	if actions.usePortrait then frame.PortraitShown = true end
+	if actions.nameOnly then frame.NameOnlyChanged = true end
+	self:SetStyle(frame, actions, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
 end
 
 local filterList = {}
@@ -812,81 +883,13 @@ function mod:UpdateElement_Filters(frame)
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 	local matchMyClass = false --Only check spec when we match the class condition
 
-	if frame.FlashingHealth then
-		frame.FlashingHealth = nil
-		E:StopFlash(frame.FlashTexture)
-		frame.FlashTexture:Hide()
-	end
-	if frame.TextureChanged then
-		frame.TextureChanged = nil
-		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
-		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	end
-	if frame.HealthColorChanged then
-		frame.HealthColorChanged = nil
-		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
-	end
-	if frame.BorderChanged then
-		frame.BorderChanged = nil
-		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-	if frame.AlphaChanged then
-		frame.AlphaChanged = nil
-		if frame.isTarget and not UnitIsUnit(frame.unit, "player") then
-			frame:SetAlpha(1 - self.db.nonTargetTransparency)
-		else
-			frame:SetAlpha(1)
-		end
-	end
-	if frame.ScaleChanged then
-		frame.ScaleChanged = nil
-		if self.db.useTargetScale then
-			if frame.isTarget then
-				self:SetFrameScale(frame, self.db.targetScale)
-			else
-				self:SetFrameScale(frame, frame.ThreatScale or 1)
-			end
-		end
-	end
-	if frame.NameColorChanged then
-		frame.NameColorChanged = nil
-		frame.Name:SetTextColor(frame.Name.r, frame.Name.g, frame.Name.b)
-	end
-	if frame.PortraitShown then
-		frame.PortraitShown = nil
-		frame.Portrait:Hide() --This could have been forced so hide it
-		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
-	end
-	if frame.NameOnlyChanged then
-		frame.NameOnlyChanged = nil
-		if self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth) then
-			frame.HealthBar:Show()
-			self:UpdateElement_Glow(frame)
-		end
-		if self.db.units[frame.UnitType].powerbar.enable then
-			local curValue = UnitPower(frame.displayedUnit, frame.PowerType);
-			if not (curValue == 0 and self.db.units[frame.UnitType].powerbar.hideWhenEmpty) then
-				frame.PowerBar:Show()
-			end
-		end
-		if self.db.units[frame.UnitType].showName then
-			self:ConfigureElement_Level(frame)
-			self:ConfigureElement_Name(frame)
-			self:UpdateElement_Name(frame)
-		else
-			frame.Name:SetText()
-		end
-		if self.db.units[frame.UnitType].portrait.enable then
-			self:ConfigureElement_Portrait(frame)
-		end
-	end
-
 	if frame.UnitType == 'PLAYER' then
 		filterVisibility = 2
 	end
 
-	twipe(filterList)
+	self:ClearStyle(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
 
+	twipe(filterList)
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
@@ -894,11 +897,9 @@ function mod:UpdateElement_Filters(frame)
 			end
 		end
 	end
-
 	if not next(filterList) then
 		return --if all triggers are disabled just stop
 	end
-
 	tsort(filterList, filterSort) --sort by priority
 
 	for filterName, filter in ipairs(filterList) do

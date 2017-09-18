@@ -183,12 +183,12 @@ E["StyleFilterDefaults"] = {
 		["flash"] = {
 			["enable"] = false,
 			["color"] = {r=1,g=1,b=1,a=1},
-			["speed"] = 0.5,
+			["speed"] = 4,
 		},
 		["hide"] = false,
 		["usePortrait"] = false,
 		["nameOnly"] = false,
 		["scale"] = 1.0,
-		["alpha"] = 1.0,
+		["alpha"] = -1,
 	},
 }

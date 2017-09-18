@@ -45,14 +45,13 @@ function mod:ConfigureElement_Portrait(frame, triggered)
 	end
 
 	frame.Portrait:ClearAllPoints()
-	if not triggered and frame.PowerBar:IsShown() then
+	if frame.PowerBar:IsShown() then
 		frame.Portrait:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -6, 2)
-	elseif not triggered and frame.HealthBar:IsShown() then
+	elseif frame.HealthBar:IsShown() then
 		frame.Portrait:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
 	else
 		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
 	end
-
 end
 
 function mod:ConstructElement_Portrait(frame)

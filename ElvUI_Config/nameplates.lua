@@ -20,7 +20,7 @@ local GetPvpTalentInfo = GetPvpTalentInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS
-local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC
+local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
@@ -1850,13 +1850,13 @@ local function UpdateFilterGroup()
 					name = L["Alpha"],
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].actions.alpha or 1
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.alpha or -1
 					end,
 					set = function(info, value)
 						E.global.nameplate.filters[selectedNameplateFilter].actions.alpha = value
 						NP:ConfigureAll()
 					end,
-					min=0, max = 1, step = 0.01,
+					min=-1, max = 100, step = 1,
 				},
 				color = {
 					order = 10,
@@ -2022,13 +2022,13 @@ local function UpdateFilterGroup()
 							name = SPEED,
 							disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].actions.flash.speed or 0.5
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.flash.speed or 4
 							end,
 							set = function(info, value)
 								E.global.nameplate.filters[selectedNameplateFilter].actions.flash.speed = value
 								NP:ConfigureAll()
 							end,
-							min=0.1, max = 1.0, step = 0.01,
+							min=1, max = 10, step = 1,
 						},
 						color = {
 							name = COLOR,
