@@ -4,7 +4,7 @@ local L = AceLocale:NewLocale("ElvUI", "frFR");
 if not L then return; end
 
 --*_ADDON locales
-L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. Merci de sélectionner soit l'addon ou le module d'ElvUI pour le désactiver."
+L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. Merci de sélectionner soit l'addon, soit le module d'ElvUI, pour le désactiver."
 
 --*_MSG locales
 L["LOGIN_MSG"] = "Bienvenue sur %sElvUI|r version %s%s|r, tapez /ec afin d'accéder au menu de configuration en jeu. Si vous avez besoin d'un support technique, vous pouvez nous rejoindre sur https://www.tukui.org"
@@ -32,15 +32,15 @@ L["Trigger"] = "Déclencheur"
 --Bags
 L["Bank"] = "Banque";
 L["Deposit Reagents"] = "Déposer les composants";
-L["Hold Control + Right Click:"] = "Contrôle enfoncé + Clique droit"
+L["Hold Control + Right Click:"] = "Contrôle enfoncé + Clic droit"
 L["Hold Shift + Drag:"] = "Majuscule enfoncée + Déplacer"
-L["Purchase Bags"] = "Acheter des sacs";
+L["Purchase Bags"] = "Acheter des sacs"
 L["Purchase"] = "Acheter"
-L["Reagent Bank"] = "Banque de composants";
+L["Reagent Bank"] = "Banque de composants"
 L["Reset Position"] = "Réinitialiser la position"
-L["Show/Hide Reagents"] = "Afficher / Masquer les composants";
-L["Sort Tab"] = 'Organiser les onglets' --Not used, yet?
-L["Temporary Move"] = "Déplacer temporairement";
+L["Show/Hide Reagents"] = "Afficher / Masquer les composants"
+L["Sort Tab"] = "Organiser les onglets" --Not used, yet?
+L["Temporary Move"] = "Déplacer temporairement"
 L["Toggle Bags"] = "Afficher les sacs"
 L["Vendor Grays"] = "Vendre les objets gris"
 
@@ -62,74 +62,74 @@ L["whispers"] = "chuchote"
 L["yells"] = "crie"
 
 --DataBars
-L["Current Level:"] = true;
-L["Honor Remaining:"] = true;
-L["Honor XP:"] = true;
-L["In Bags:"] = true;
+L["Current Level:"] = "Niveau actuel :"
+L["Honor Remaining:"] = "Honneur restant :"
+L["Honor XP:"] = "Niveau d'honneur :"
+L["In Bags:"] = "En sac :"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Maintenir MAJ) Utilisation de la Mémoire."
 L["AP"] = "PA"
-L["App"] = "App";
-L["Arena"] = "Arène";
+L["App"] = "App"
+L["Arena"] = "Arène"
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Répartition de l'évitement"
 L["Bandwidth"] = "Bande passante"
-L["Building(s) Report:"] = "Rapport des bâtiments";
-L["Character: "] = "Personnage: "
+L["Building(s) Report:"] = "Rapport des bâtiments :"
+L["Character: "] = "Personnage : "
 L["Chest"] = "Torse"
-L["Combat"] = "Combat";
-L["Combat/Arena Time"] = true;
-L["Coords"] = true;
+L["Combat"] = "Combat"
+L["Combat/Arena Time"] = "Temps (Combat/Arène)";
+L["Coords"] = "Coordonnées"
 L["copperabbrev"] = "|cffeda55fc|r" --Also used in Bags
-L["Deficit:"] = "Déficit:"
+L["Deficit:"] = "Déficit :"
 L["Download"] = "Téléchargement"
 L["DPS"] = "DPS"
-L["Earned:"] = "Gagné:"
+L["Earned:"] = "Gagné :"
 L["Feet"] = "Pieds"
 L["Friends List"] = "Liste d'amis"
 L["Friends"] = "Amis" --Also in Skins
-L["Garrison"] = true;
-L["Gold"] = true;
+L["Garrison"] = "Fief"
+L["Gold"] = "Or"
 L["goldabbrev"] = "|cffffd700g|r" --Also used in Bags
 L["Hands"] = "Mains"
 L["Head"] = "Tête"
-L["Hold Shift + Right Click:"] = "Maintenir Majuscule + Clic droit";
-L["Home Latency:"] = "Latence du Domicile:"
-L["HP"] = "PdS"
+L["Hold Shift + Right Click:"] = "Maintenir Majuscule + Clic droit"
+L["Home Latency:"] = "Latence du Domicile :"
+L["HP"] = "PV"
 L["HPS"] = "HPS"
 L["Legs"] = "Jambes"
 L["lvl"] = "niveau"
 L["Main Hand"] = "Main droite"
-L["Mission(s) Report:"] = "Rapport de mission";
-L["Mitigation By Level: "] = "Réduction par niveau: "
-L["Naval Mission(s) Report:"] = "Rapport de mission naval";
+L["Mission(s) Report:"] = "Rapport de mission :"
+L["Mitigation By Level: "] = "Réduction par niveau : "
+L["Naval Mission(s) Report:"] = "Rapport de mission(s) navale(s) :"
 L["No Guild"] = "Pas de Guilde"
 L["Offhand"] = "Main gauche"
-L["Profit:"] = "Profit:"
-L["Reset Data: Hold Shift + Right Click"] = "RAZ des données: MAJ + Clic droit"
+L["Profit:"] = "Profit :"
+L["Reset Data: Hold Shift + Right Click"] = "RAZ des données : MAJ + Clic droit"
 L["Saved Raid(s)"] = "Raid(s) Sauvegardé(s)"
 L["Saved Dungeon(s)"] = "Donjon(s) Sauvegardé(s)";
-L["Server: "] = "Serveur: "
-L["Session:"] = "Session:"
+L["Server: "] = "Serveur : "
+L["Session:"] = "Session :"
 L["Shoulder"] = "Épaule"
 L["silverabbrev"] = "|cffc7c7cfs|r" --Also used in Bags
 L["SP"] = "PdS"
-L["Spell/Heal Power"] = true;
-L["Spec"] = "Spec"
-L["Spent:"] = "Dépensé: "
-L["Stats For:"] = "Stats pour:"
-L["System"] = true;
-L["Talent/Loot Specialization"] = true;
-L["Total CPU:"] = "Charge du CPU:"
-L["Total Memory:"] = "Mémoire totale:"
-L["Total: "] = "Total: "
-L["Unhittable:"] = "Intouchable:"
+L["Spell/Heal Power"] = "Puissance d'attaque / de soin";
+L["Spec"] = "Spécialisation"
+L["Spent:"] = "Dépensé :"
+L["Stats For:"] = "Statistiques pour :"
+L["System"] = "Système";
+L["Talent/Loot Specialization"] = "Spécialisation des talents / du butin"
+L["Total CPU:"] = "Charge du CPU :"
+L["Total Memory:"] = "Mémoire totale :"
+L["Total: "] = "Total : "
+L["Unhittable:"] = "Intouchable :"
 L["Waist"] = "Ceinture"
 L["Wrist"] = "Poignets"
-L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = '|cffFFFFFFClick Gauche:|r Changer de spécialisation des talents'
-L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = '|cffFFFFFFClick Droit:|r Changer la spécialisation de butin'
-L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true;
+L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFClick Gauche :|r Changer de spécialisation des talents"
+L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClick Droit :|r Changer la spécialisation de butin"
+L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Click Gauche :|r Voir la spécialisation des talents de l'interface"
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s a essayé d'appeler la fonction protégée '%s'."
@@ -357,14 +357,14 @@ L["Using the healer layout it is highly recommended you download the addon Cliqu
 L["Yes, Keep Changes!"] = "Oui, garder les changements!";
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = true;
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Vous venez de changer l'échelle de votre interface, alors que votre option d'échelle automatique est encore activée dans ElvUI. Cliquer sur accepter si vous voulez désactiver l'option d'échelle automatique."
-L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "Vous avez importé des paramètes qui requierent un rechargement de l'interface. Recharger maintenant ?";
-L["You must purchase a bank slot first!"] = "Vous devez d'abord acheter un emplacement de banque!"
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "Vous avez importé des paramètes qui requièrent un rechargement de l'interface. Recharger maintenant ?";
+L["You must purchase a bank slot first!"] = "Vous devez d'abord acheter un emplacement de banque !"
 
 --Tooltip
-L["Count"] = "Nombre:"
+L["Count"] = "Nombre :"
 L["Item Level:"] = "Niveau d'équipement";
 L["Talent Specialization:"] = "Spécialisation des talents";
-L["Targeted By:"] = "Ciblé par:"
+L["Targeted By:"] = "Ciblé par :"
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "Une fonction marqueur de raid est disponible en appuyant sur Échap -> Raccourcis, défilez en bas d'ElvUI et paramétrez le raccourcis pour le marqueur de raid."
