@@ -7,7 +7,7 @@ if not L then return; end
 L["AURAS_DESC"] = "Configure les icônes qui apparaissent près de la Minicarte."
 L["BAGS_DESC"] = "Ajuster les paramètres des sacs pour ElvUI."
 L["CHAT_DESC"] = "Ajuste les paramètres du chat pour ElvUI."
-L["DATATEXT_DESC"] = "Affiche à l'écran des textes d'informations."
+L["DATATEXT_DESC"] = "Configuration de l'affichage des textes d'informations."
 L["ELVUI_DESC"] = "ElvUI est une interface de remplacement complète pour World of Warcraft."
 L["NAMEPLATE_DESC"] = "Modifier la configuration des barre de noms des unités."
 L["UNITFRAME_DESC"] = "Modifier les options des cadres d'unités."
@@ -336,10 +336,10 @@ L["Testing:"] = "Testeurs :"
 --DataBars
 L["Current - Percent (Remaining)"] = "Actuel - Pourcentage (restant)";
 L["Current - Remaining"] = "Actuel - Restant"
-L["DataBars"] = "Textes dinformations"
+L["DataBars"] = "Barres d'expériences"
 L["Hide In Combat"] = "Cacher en combat";
 L["Hide Outside PvP"] = "Cacher en dehors du PVP"
-L["Setup on-screen display of information bars."] = "Configuration de l'affichage des textes d'informations";
+L["Setup on-screen display of information bars."] = "Configuration de l'affichage des différentes barres d'expérience"
 
 --DataTexts
 L["24-Hour Time"] = "Mode 24 Heures"
