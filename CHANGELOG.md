@@ -33,6 +33,8 @@ Various skin fixes and tweaks.
 Added stealable border color on nameplate auras.  
 Changed default position of role icons on unitframes so they don't overlap with name.  
 Moved "Reset Filter" button in the Filters section and added requirement of an additional click to execute.  
+Renamed "Number Prefix" option to "Unit Prefix Style".  
+Changed the default value for "Unit Prefix Style" from Metric to English.  
 
 ___
 **Version 10.63 [ September 9th 2017 ]**
