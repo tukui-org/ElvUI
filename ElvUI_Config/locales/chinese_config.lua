@@ -445,7 +445,6 @@ L["Loot"] = "拾取"
 L["Lowest Allowed UI Scale"] = "最低允许UI缩放"
 L["Multi-Monitor Support"] = "多显示器支持"
 L["Name Font"] = "名称字体"
-L["Number Prefix"] = "数值缩写"
 L["Objective Frame Height"] = "任务框架高度"
 L["Order Hall Command Bar"] = "职业大厅命令条"
 L["Party / Raid"] = "小队/团队"
@@ -467,6 +466,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
+L["Unit Prefix Style"] = true;
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
 
 --Media

@@ -492,7 +492,6 @@ L["Loot"] = "전리품 확인창"
 L["Lowest Allowed UI Scale"] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
-L["Number Prefix"] = true;
 L["Objective Frame Height"] = "퀘스트프레임 세로길이"
 L["Order Hall Command Bar"] = true;
 L["Party / Raid"] = "파티&레이드 채널로"
@@ -514,6 +513,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
+L["Unit Prefix Style"] = true;
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
 
 --Media

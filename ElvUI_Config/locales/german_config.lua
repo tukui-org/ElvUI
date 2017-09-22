@@ -445,7 +445,6 @@ L["Loot"] = "Beute"
 L["Lowest Allowed UI Scale"] = "Niedrigste erlaubte UI Skalierung"
 L["Multi-Monitor Support"] = "Multi-Monitor-Unterstützung"
 L["Name Font"] = "Schriftart von Spielernamen"
-L["Number Prefix"] = "Nummern-Präfix"
 L["Objective Frame Height"] = "Questfenster Höhe"
 L["Order Hall Command Bar"] = "Orderhallen Kommando Leiste"
 L["Party / Raid"] = "Gruppe / Schlachtzug"
@@ -467,6 +466,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "Dünner Rahmen Theme"
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"
+L["Unit Prefix Style"] = true;
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
 
 --Media

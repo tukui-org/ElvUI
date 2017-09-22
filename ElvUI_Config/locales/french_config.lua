@@ -445,7 +445,6 @@ L["Loot"] = "Butin"
 L["Lowest Allowed UI Scale"] = true;
 L["Multi-Monitor Support"] = "Support Multi-Moniteur";
 L["Name Font"] = "Nom de la police"
-L["Number Prefix"] = true;
 L["Objective Frame Height"] = "Hauteur du cadre d'objectif";
 L["Order Hall Command Bar"] = true;
 L["Party / Raid"] = "Groupe / Raid";
@@ -467,6 +466,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"
+L["Unit Prefix Style"] = true;
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial.";
 
 --Media
