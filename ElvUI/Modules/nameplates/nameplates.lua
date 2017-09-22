@@ -1168,7 +1168,7 @@ function mod:PassFilterStyle(frame, actions, castbarTriggered)
 
 	if actions.hide then
 		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 0
+			filterVisibility = 0 --force hide the plate
 			if self.db.units.PLAYER.useStaticPosition then
 				HidePlayerNamePlate()
 			else
@@ -1181,7 +1181,7 @@ function mod:PassFilterStyle(frame, actions, castbarTriggered)
 		return --We hide it. Lets not do other things (no point)
 	else
 		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 1
+			filterVisibility = 1 --force show the plate
 			if self.db.units.PLAYER.useStaticPosition then
 				self.PlayerNamePlateAnchor:Show()
 			else
@@ -1214,7 +1214,7 @@ end
 
 function mod:UpdateElement_Filters(frame)
 	if frame.UnitType == 'PLAYER' then
-		filterVisibility = 2
+		filterVisibility = 2 --reset the player plate visibility
 	end
 
 	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
@@ -1577,7 +1577,7 @@ end
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
-		if filterVisibility ~= 2 then return end --Using filters visibility instead.
+		if filterVisibility ~= 2 then return end --Using filters visibility instead (0=hide 1=show).
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.unitFrame:Show()
 			self.PlayerNamePlateAnchor:Show()
