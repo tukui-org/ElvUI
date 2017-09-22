@@ -20,7 +20,7 @@ P['general'] = {
 	['bonusObjectivePosition'] = "LEFT",
 	["talkingHeadFrameScale"] = 0.9,
 	['afk'] = true,
-	["numberPrefixStyle"] = "METRIC",
+	["numberPrefixStyle"] = "ENGLISH",
 
 	["fontSize"] = 12,
 	["font"] = "PT Sans Narrow",
