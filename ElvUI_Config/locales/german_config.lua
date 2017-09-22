@@ -466,7 +466,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "Dünner Rahmen Theme"
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"
-L["Unit Prefix Style"] = true;
+L["Unit Prefix Style"] = "Einheit Präfix Stil"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
 
 --Media
