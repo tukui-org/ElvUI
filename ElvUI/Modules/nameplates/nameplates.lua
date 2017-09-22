@@ -1160,7 +1160,7 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	end
 end
 
-local filterVisibility --[[ 0=hide 1=show 2=noTrigger ]]
+local filterVisibility --[[ 0=hide 1=show 2=noTrigger (we use this to handle visibility when the player plate is style triggered)]]
 function mod:PassFilterStyle(frame, actions, castbarTriggered)
 	if castbarTriggered then
 		frame.castbarTriggered = castbarTriggered
