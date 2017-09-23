@@ -52,6 +52,14 @@ function mod:ConfigureElement_Portrait(frame, triggered)
 	else
 		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
 	end
+
+	if (frame.TopLevelFrame ~= frame.Portrait) then
+		frame.TopLevelFrame = frame.Portrait
+
+		if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
+			mod:ConfigureElement_Detection(frame)
+		end
+	end
 end
 
 function mod:ConstructElement_Portrait(frame)

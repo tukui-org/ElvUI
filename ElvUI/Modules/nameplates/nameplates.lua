@@ -759,6 +759,13 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
 		end
+		if (frame.TopLevelFrame ~= frame.Name) then
+			frame.TopLevelFrame = frame.Name
+
+			if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
+				mod:ConfigureElement_Detection(frame)
+			end
+		end
 		--position the portrait
 		self:ConfigureElement_Portrait(frame, true)
 	end
