@@ -658,6 +658,7 @@ L["Minimum Time Left"] = "Минимум оставшегося времени"
 L["Minus"] = true;
 L["Missing"] = "Отсутствует"
 L["Name Color"] = "Цвет имени"
+L["Name Only"] = true;
 L["NamePlates"] = "Индикаторы здоровья"
 L["Non-Target Transparency"] = "Прозрачность не цели"
 L["Not Targeted"] = "Не взят в цель"

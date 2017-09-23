@@ -660,6 +660,7 @@ L["Minimum Time Left"] = "Minimale Zeit verbleibend"
 L["Minus"] = true; --No need to translate
 L["Missing"] = "Fehlend"
 L["Name Color"] = "Namen Farbe"
+L["Name Only"] = "Nur Name"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Transparency"] = "Transparenz nicht ausgewählter Ziele"
 L["Not Targeted"] = "Nicht anvisiert"

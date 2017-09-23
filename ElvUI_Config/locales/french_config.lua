@@ -659,6 +659,7 @@ L["Minimum Time Left"] = true;
 L["Minus"] = true;
 L["Missing"] = "Manquant";
 L["Name Color"] = "Couleur du nom"
+L["Name Only"] = true;
 L["NamePlates"] = "Noms"
 L["Non-Target Transparency"] = true;
 L["Not Targeted"] = "Non ciblé"

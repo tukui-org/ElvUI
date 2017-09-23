@@ -659,6 +659,7 @@ L["Minimum Time Left"] = "最低时间剩余"
 L["Minus"] = "次要目标"
 L["Missing"] = "缺失"
 L["Name Color"] = "姓名颜色"
+L["Name Only"] = true;
 L["NamePlates"] = "姓名板(血条)"
 L["Non-Target Transparency"] = "非目标透明度"
 L["Not Targeted"] = "非目标"
