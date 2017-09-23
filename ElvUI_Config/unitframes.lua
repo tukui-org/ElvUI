@@ -820,17 +820,47 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 
 	if hasTicks then
-		config.args.ticks = {
-			order = 11,
-			type = 'toggle',
-			name = L["Ticks"],
-			desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
-		}
 		config.args.displayTarget = {
-			order = 12,
+			order = 11,
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
+		}
+		config.args.ticks = {
+			order = 12,
+			type = "group",
+			guiInline = true,
+			name = L["Ticks"],
+			args = {
+				ticks = {
+					order = 1,
+					type = 'toggle',
+					name = L["Ticks"],
+					desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
+				},
+				tickColor = {
+					order = 2,
+					type = "color",
+					name = COLOR,
+					hasAlpha = true,
+					get = function(info)
+						local c = E.db.unitframe.units[groupName].castbar.tickColor
+						local d = P.unitframe.units[groupName].castbar.tickColor
+						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
+					end,
+					set = function(info, r, g, b, a)
+						local c = E.db.unitframe.units[groupName].castbar.tickColor
+						c.r, c.g, c.b, c.a = r, g, b, a
+						updateFunc(UF, groupName, numUnits)
+					end,
+				},
+				tickWidth = {
+					order = 3,
+					type = "range",
+					name = L["Width"],
+					min = 1, max = 20, step = 1,
+				},
+			},
 		}
 	end
 

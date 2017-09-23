@@ -17,6 +17,9 @@ Added font options for the duration and stack text on nameplate auras. These opt
 Added alpha action to nameplate style filters.  
 Added "name only" action to nameplate style filters.  
 Added flash action to nameplate style filters.  
+Added tick width option to player unitframe castbar.  
+Added tick color option to player unitframe castbar.  
+
 
 
 **Bug Fixes:**  
