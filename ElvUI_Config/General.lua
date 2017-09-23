@@ -196,6 +196,7 @@ E.Options.args.general = {
 						["ENGLISH"] = "English (K, M, B)",
 						["CHINESE"] = "Chinese (W, Y)",
 						["KOREAN"] = "Korean (천, 만, 억)",
+						["GERMAN"] = "German (Tsd, Mio, Mrd)"
 					},
 				},
 				commandBarSetting = {

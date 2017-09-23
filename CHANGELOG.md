@@ -20,6 +20,7 @@ Added flash action to nameplate style filters.
 Added tick width option to player unitframe castbar.  
 Added tick color option to player unitframe castbar.  
 Added "Auto Add New Spells" option to actionbar general options.  
+Added "German Number Prefix" to the "Unit Prefix Style".  
 
 
 
