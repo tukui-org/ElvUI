@@ -2876,6 +2876,7 @@ P["actionbar"] = {
 	["lockActionBars"] = true,
 	["hideCooldownBling"] = false,
 	["useDrawSwipeOnCharges"] = false,
+	["addNewSpells"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,

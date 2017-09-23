@@ -71,8 +71,10 @@ To disable leave the field blank, if you need more information visit http://www.
 L["Action Paging"] = true;
 L["ActionBars"] = true;
 L["Allow Masque to handle the skinning of this element."] = true;
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = true;
 L["Anchor Point"] = true; --also in unitframes
+L["Auto Add New Spells"] = true;
 L["Automatic"] = true;
 L["Backdrop Spacing"] = true;
 L["Backdrop"] = true;

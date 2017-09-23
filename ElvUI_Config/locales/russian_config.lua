@@ -71,8 +71,10 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
 L["Allow Masque to handle the skinning of this element."] = "Разрешить Masque обрабатывать этот элемент."
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
+L["Auto Add New Spells"] = true;
 L["Automatic"] = "Автоматически"
 L["Backdrop Spacing"] = "Отступ фона"
 L["Backdrop"] = "Фон"

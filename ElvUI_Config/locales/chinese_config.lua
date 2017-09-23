@@ -71,8 +71,10 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 L["Action Paging"] = "动作条翻页"
 L["ActionBars"] = "动作条"
 L["Allow Masque to handle the skinning of this element."] = "允许Masque来处理这个元素的皮肤"
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
+L["Auto Add New Spells"] = true;
 L["Automatic"] = "自动"
 L["Backdrop Spacing"] = "背景间距"
 L["Backdrop"] = "背景"

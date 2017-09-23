@@ -71,8 +71,10 @@ Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visi
 L["Action Paging"] = "Pagination d'action"
 L["ActionBars"] = "Barres d'actions"
 L["Allow Masque to handle the skinning of this element."] = "Autoriser Masque à gérer l'habillage de cet élement.";
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = "Transparence"
 L["Anchor Point"] = "Point d'ancrage" --also in unitframes
+L["Auto Add New Spells"] = true;
 L["Automatic"] = "Automatique"
 L["Backdrop Spacing"] = "Espacement du fond";
 L["Backdrop"] = "Fond"

@@ -71,8 +71,10 @@ Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
 L["ActionBars"] = "Aktionsleisten"
 L["Allow Masque to handle the skinning of this element."] = "Erlaubt Masque das Gestalten dieser Elememte."
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = "Alpha"
 L["Anchor Point"] = "Ankerpunkt" --also in unitframes
+L["Auto Add New Spells"] = true;
 L["Automatic"] = "Automatisch"
 L["Backdrop Spacing"] = "Hintergrund Abstand"
 L["Backdrop"] = "Hintergrund"

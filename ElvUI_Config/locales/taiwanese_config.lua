@@ -71,8 +71,10 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 L["Action Paging"] = "快捷列翻頁"
 L["ActionBars"] = "快捷列"
 L["Allow Masque to handle the skinning of this element."] = "允許 Masque 來處理此元件的皮膚"
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
+L["Auto Add New Spells"] = true;
 L["Automatic"] = "自動"
 L["Backdrop Spacing"] = "背景間距"
 L["Backdrop"] = "背景"
