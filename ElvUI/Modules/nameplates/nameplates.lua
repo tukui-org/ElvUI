@@ -525,10 +525,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.UnitType = nil
 	frame.unitFrame.TopLevelFrame = nil
 
-	if(self.ClassBar) then
-		if(unitType == "PLAYER") then
-			mod:ClassBar_Update(frame)
-		end
+	if self.ClassBar and (unitType == "PLAYER") then
+		mod:ClassBar_Update(frame)
 	end
 end
 
@@ -759,15 +757,11 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
 		end
-		if (frame.TopLevelFrame ~= frame.Name) then
-			frame.TopLevelFrame = frame.Name
-
-			if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
-				mod:ConfigureElement_Detection(frame)
-			end
-		end
 		--position the portrait
 		self:ConfigureElement_Portrait(frame, true)
+		--position suramar detection
+		frame.TopLevelFrame = (frame.Portrait:IsShown() and frame.Portrait) or nil
+		self:ConfigureElement_Detection(frame)
 	end
 end
 
@@ -819,6 +813,7 @@ function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, Flashing
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
+		frame.TopLevelFrame = nil --We can safely clear this here because it is set upon `UpdateElement_Auras` if needed
 		if self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
 			frame.HealthBar:Show()
 			self:UpdateElement_Glow(frame)
