@@ -768,7 +768,7 @@ function E:TableToLuaString(inTable)
 			if(type(v) == "number") then
 				ret = ret..v..",\n"
 			elseif(type(v) == "string") then
-				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\""):gsub("\124", "\124\124").."\",\n"
 			elseif(type(v) == "boolean") then
 				if(v) then
 					ret = ret.."true,\n"
@@ -854,7 +854,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				if type(v) == "number" then
 					returnString = returnString..v.."\n"
 				elseif type(v) == "string" then
-					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\"\n"
+					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\""):gsub("\124", "\124\124").."\"\n"
 				elseif type(v) == "boolean" then
 					if v then
 						returnString = returnString.."true\n"

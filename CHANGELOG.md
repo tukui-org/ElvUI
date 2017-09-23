@@ -27,6 +27,7 @@ Added "Auto Add New Spells" option to actionbar general options.
 Attempt more fixes towards the unit errors on nameplates.  
 Fixed a divide by 0 error in Artifact DataBars.  
 Fixed issue which broke stealable border color on unitframe auras while in a duel.  
+Fixed issue which broke item links and icons in the profile export when using table or plugin format.  
 
 
 **Misc. Changes:**  
