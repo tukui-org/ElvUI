@@ -316,7 +316,7 @@ L["Binds Saved"] = "储存绑定"
 L["Confused.. Try Again!"] = '请再试一次！'
 L["No gray items to delete."] = "没有要删除的灰色物品"
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = '法术"%s"已经被添加到单位框架的光环过滤器中.'
-L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "这个设置引起一个互相矛盾的锚点, '%s' 被依附于他自身. 请检查你的锚点设置. 设置 '%s' 依附到 '%s'.";
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "这个设置引起一个互相矛盾的锚点, '%s' 被依附于他自身. 请检查你的锚点设置. 设置 '%s' 依附到 '%s'."
 L["Vendored gray items for:"] = "已出售灰色物品:"
 L["You don't have enough money to repair."] = "没有足够的资金来修复."
 L["You must be at a vendor."] = "你必需以商人为目标."
@@ -326,8 +326,8 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "你所做的改动只会影响到使用这个插件的本角色, 你需要重新加载界面才能使改动生效."
-L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true;
-L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true;
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定要对所有ElvUI元素使用这个字体?"
 L["Are you sure you want to delete all your gray items?"] = "确定需要摧毁你的灰色物品?"
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"

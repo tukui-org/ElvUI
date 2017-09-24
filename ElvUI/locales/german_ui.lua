@@ -30,7 +30,7 @@ L["Remove Bar %d Action Page"] = "Entferne Leiste %d Aktion Seite"
 L["Trigger"] = "Auslöser"
 
 --Bags
-L["Bank"] = true; --No need to translate
+L["Bank"] = true --No need to translate
 L["Deposit Reagents"] = "Reagenzien einlagern"
 L["Hold Control + Right Click:"] = "Halte Steuerung + Rechtsklick:"
 L["Hold Shift + Drag:"] = "Halte Shift + Ziehen:"
@@ -70,7 +70,7 @@ L["In Bags:"] = "In Tasche:"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
 L["AP"] = "AP"
-L["App"] = true; --No need to translate
+L["App"] = true --No need to translate
 L["Arena"] = "Arena"
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Vermeidung Aufgliederung"
@@ -90,7 +90,7 @@ L["Feet"] = "Füße"
 L["Friends List"] = "Freundesliste"
 L["Friends"] = "Freunde" --Also in Skins
 L["Garrison"] = "Garnison"
-L["Gold"] = true; --No need to translate
+L["Gold"] = true --No need to translate
 L["goldabbrev"] = "|cffffd700g|r" --Also used in gold datatext
 L["Hands"] = "Hände"
 L["Head"] = "Kopf"
@@ -101,7 +101,7 @@ L["HPS"] = "HPS"
 L["Legs"] = "Beine"
 L["lvl"] = "lvl"
 L["Main Hand"] = "Waffenhand"
-L["Mission(s) Report:"] = "Missionsbericht";
+L["Mission(s) Report:"] = "Missionsbericht"
 L["Mitigation By Level: "] = "Milderung durch Stufe:"
 L["Naval Mission(s) Report:"] = "Marine Missionsbericht:"
 L["No Guild"] = "Keine Gilde"
@@ -119,7 +119,7 @@ L["Spell/Heal Power"] = "Zauber-/Heilungskraft"
 L["Spec"] = "Spec"
 L["Spent:"] = "Ausgegeben:"
 L["Stats For:"] = "Stats Für:"
-L["System"] = true; --No need to translate
+L["System"] = true --No need to translate
 L["Talent/Loot Specialization"] = "Talent-/Lootspezialisierung"
 L["Total CPU:"] = "Gesamt CPU:"
 L["Total Memory:"] = "Gesamte Speichernutzung:"
@@ -298,7 +298,7 @@ Options:
 ]=]
 
 --Plugin Installer
-L["ElvUI Plugin Installation"] = true; --No need to translate
+L["ElvUI Plugin Installation"] = true --No need to translate
 L["In Progress"] = "In Bearbeitung"
 L["List of installations in queue:"] = "Liste von Installationen in Warteschlange:"
 L["Pending"] = "Ausstehend"

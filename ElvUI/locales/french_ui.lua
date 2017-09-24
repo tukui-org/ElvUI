@@ -1,7 +1,7 @@
 -- French localization file for frFR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
-local L = AceLocale:NewLocale("ElvUI", "frFR");
-if not L then return; end
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local L = AceLocale:NewLocale("ElvUI", "frFR")
+if not L then return end
 
 --*_ADDON locales
 L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. Merci de sélectionner soit l'addon, soit le module d'ElvUI, pour le désactiver."
@@ -274,7 +274,7 @@ L["Player Castbar"] = "Barre d'incantation du joueur"
 L["Player Debuffs"] = "Affaiblissements du joueur"
 L["Player Frame"] = "Cadre du joueur" --Also used in UnitFrames
 L["Player Nameplate"] = "Barre du joueur"
-L["Player Powerbar"] = "Barre de pouvoir du joueur"  -- need review.
+L["Player Powerbar"] = "Barre de pouvoir du joueur"  --need review.
 L["Raid Frames"] = "Cadres de raid"
 L["Raid Pet Frames"] = "Cadres de raid des familiers"
 L["Raid-40 Frames"] = "Cadres de raid 40"
@@ -284,7 +284,7 @@ L["Stance Bar"] = "Barre de posture" --Also in ActionBars
 L["Talking Head Frame"] = "Cadre de dialogue flottant"
 L["Target Castbar"] = "Barre d'incantation de la cible"
 L["Target Frame"] = "Cadre de la cible" --Also used in UnitFrames
-L["Target Powerbar"] = "Barre de pouvoir de la cible"  -- need review.
+L["Target Powerbar"] = "Barre de pouvoir de la cible"  --need review.
 L["TargetTarget Frame"] = "Cadre de la cible de votre cible" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Cadre de la cible de la cible de la cible"
 L["Tooltip"] = "Infobulle"
@@ -316,7 +316,7 @@ L["Binds Saved"] = "Raccourcis sauvegardés"
 L["Confused.. Try Again!"] = "Confus... Essayez à nouveau !"
 L["No gray items to delete."] = "Aucun objet gris à détruire."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Le sort '%s' a bien été ajouté à la liste noire des filtres des cadres d'unités."
-L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Cette configuration a causé un conflit avec le point d'ancrage, où '%s' devrait y être rattaché. Veuillez vérifier les points d'ancrages. La configuration de '%s' sera attachée à '%s'.";
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Cette configuration a causé un conflit avec le point d'ancrage, où '%s' devrait y être rattaché. Veuillez vérifier les points d'ancrages. La configuration de '%s' sera attachée à '%s'."
 L["Vendored gray items for:"] = "Objets gris vendus pour :"
 L["You don't have enough money to repair."] = "Vous n'avez pas assez d'argent pour réparer votre équipement."
 L["You must be at a vendor."] = "Vous devez être chez un marchand."
