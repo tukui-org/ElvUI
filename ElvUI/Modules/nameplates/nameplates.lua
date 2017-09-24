@@ -1319,12 +1319,12 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Glow = self:ConstructElement_Glow(frame.unitFrame)
 	frame.unitFrame.Buffs = self:ConstructElement_Auras(frame.unitFrame, "LEFT")
 	frame.unitFrame.Debuffs = self:ConstructElement_Auras(frame.unitFrame, "RIGHT")
+	frame.unitFrame.Portrait = self:ConstructElement_Portrait(frame.unitFrame)
 	frame.unitFrame.HealerIcon = self:ConstructElement_HealerIcon(frame.unitFrame)
 	frame.unitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.unitFrame)
 	frame.unitFrame.Elite = self:ConstructElement_Elite(frame.unitFrame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
-	frame.unitFrame.Portrait = self:ConstructElement_Portrait(frame.unitFrame)
 
     if frame.UnitFrame and not frame.unitFrame.onShowHooked then
     	self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
