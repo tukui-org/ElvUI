@@ -44,7 +44,7 @@ The following search keywords can also be used:
     • naval : Naval equipment.
     • follower, followe, follow : Follower items.
     • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=];
+    • power, powe, pow : Items granting Artifact Power.]=]
 L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -65,16 +65,16 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:medium' -姓名显示限制于15字节内
 'name:long' - 姓名显示限制于20字节内
 
-空白则为禁用. 如需技术支援请至 http://www.tukui.org]=];
+空白则为禁用. 如需技术支援请至 http://www.tukui.org]=]
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
 L["ActionBars"] = "动作条"
 L["Allow Masque to handle the skinning of this element."] = "允许Masque来处理这个元素的皮肤"
-L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
-L["Auto Add New Spells"] = true;
+L["Auto Add New Spells"] = true
 L["Automatic"] = "自动"
 L["Backdrop Spacing"] = "背景间距"
 L["Backdrop"] = "背景"
@@ -360,11 +360,11 @@ L["Datatext Panel (Left)"] = "左侧信息框"
 L["Datatext Panel (Right)"] = "右侧信息框"
 L["DataTexts"] = "信息文字"
 L["Display data panels below the chat, used for datatexts."] = "在聊天框下显示用于信息的框架"
-L["Display In Main Tooltip"] = true;
+L["Display In Main Tooltip"] = true
 L["Display minimap panels below the minimap, used for datatexts."] = "显示小地图下方的信息框"
 L["Displayed Currency"] = "显示的金额"
 L["Gold Format"] = "金币格式"
-L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true;
+L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示服务器时间"
 L["left"] = "左"
 L["LeftChatDataPanel"] = "左聊天框"
@@ -468,7 +468,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
-L["Unit Prefix Style"] = true;
+L["Unit Prefix Style"] = true
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
 
 --Media
@@ -577,7 +577,7 @@ L["Control friendly nameplates toggling on or off when in combat."] = "控制战
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "决定屏幕上一个多大的光环才允许通过点击选定到目标框体上"
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制显示多少光环, 这也会影响光环大小"
 L["Controls which nameplates will be displayed."] = "控制何种姓名板被显示"
-L["Cooldowns"] = true;
+L["Cooldowns"] = true
 L["Copy settings from another unit."] = "从其他框架中复制设置"
 L["Copy Settings From"] = "复制设置"
 L["Current Level"] = "当前等级"
@@ -616,7 +616,7 @@ L["Healer Icon"] = "治疗图标"
 L["HEALER"] = "治疗"
 L["Health Color"] = "血量颜色"
 L["Health Threshold"] = "血量阈值"
-L["Hide Blizzard Plates"] = true;
+L["Hide Blizzard Plates"] = true
 L["Hide Delay"] = "隐藏延迟"
 L["Hide Frame"] = "隐藏框架"
 L["Hide Spell Name"] = "隐藏法术名字"
@@ -627,7 +627,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "图标基础高度"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果选中则将会检查光环是否缺失而不是光环是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果选中则要求满足所有光环. 不启用则只要求任一光环存在即可激活."
-L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果选中则过滤器仅仅在单位等级大于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果选中则过滤器仅仅在单位等级小于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果选中则过滤器仅仅在单位等级符合该值的时候激活"
@@ -637,16 +637,16 @@ L["If enabled then the filter will only activate when the unit is in combat."] =
 L["If enabled then the filter will only activate when the unit is out of combat."] = "如果选中则过滤器仅仅在单位不在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are in combat."] = "如果选中则过滤器仅仅在你在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are out of combat."] = "如果选中则过滤器仅仅在你不在战斗中的时候激活"
-L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
+L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光环和一个数一起列出你需要用它来将其移出列表"
-L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = "如果列表为空, 并且'可打断'被选中, 那么过滤器会在任何可被打断的施法时激活"
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更高才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更低才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["In Combat"] = "战斗中"
-L["Instance Type"] = true;
+L["Instance Type"] = true
 L["Interruptible"] = "可打断"
 L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "目标"
@@ -663,12 +663,12 @@ L["Minimum Time Left"] = "最低时间剩余"
 L["Minus"] = "次要目标"
 L["Missing"] = "缺失"
 L["Name Color"] = "姓名颜色"
-L["Name Only"] = true;
+L["Name Only"] = true
 L["NamePlates"] = "姓名板(血条)"
 L["Non-Target Transparency"] = "非目标透明度"
 L["Not Targeted"] = "非目标"
-L["Off Cooldown"] = true;
-L["On Cooldown"] = true;
+L["Off Cooldown"] = true
+L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = "仅仅读取在此范围内的姓名板"
 L["Only Show Target"] = "仅显示目标"
 L["Out Of Combat"] = "战斗外"
@@ -714,7 +714,7 @@ L["Suramar Detection"] = "苏拉玛卫兵探测"
 L["Tagged NPC"] = "标记的NPC"
 L["Tanked Color"] = "坦克颜色"
 L["Target Glow Color"] = "目标高亮颜色"
-L["Target Indicator Color"] = true;
+L["Target Indicator Color"] = true
 L["Target Indicator"] = "目标指示器"
 L["Target Scale"] = "目标缩放"
 L["Target, Quest, Combat"] = "目标、任务、战斗"
@@ -722,7 +722,7 @@ L["Targeted Nameplate"] = "目标姓名板"
 L["Texture"] = "材质"
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "这些过滤器不像常规过滤器那样使用一个法术列表, 而是使用魔兽API和部分代码逻辑来决定光环显示与否."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "这些过滤器使用一个法术列表来决定光环显示与否. 这些过滤器的内容可以在设置中的'过滤器'选项中更改."
-L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true;
+L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat"] = "仇恨"
 L["Time To Hold"] = "停留时间"
 L["Toggle Off While In Combat"] = "战斗时关闭"

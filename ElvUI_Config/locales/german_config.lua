@@ -44,7 +44,7 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • naval : Schiffsausrüstung.
     • follower, followe, follow : Anhänger Gegenstände.
     • relic, reli, rel : Artefakt Relikte.
-    • power, powe, pow : Gegenstände die Artefaktkraft gewähren.]=];
+    • power, powe, pow : Gegenstände die Artefaktkraft gewähren.]=]
 L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
 
 Beispiele:
@@ -65,7 +65,7 @@ Namensformate:
 'name:medium' - Name auf 15 Zeichen beschränkt
 'name:long' - Name auf 20 Zeichen beschränkt
 
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=];
+Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
 
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
@@ -176,7 +176,7 @@ L["Displays item level on equippable items."] = "Zeigt das Itemlevel für ausrü
 L["Enable/Disable the all-in-one bag."] = "Einschalten/Ausschalten der zusammengefassten Tasche."
 L["Enable/Disable the Bag-Bar."] = "Aktiviere/Deaktiviere die Taschenleiste."
 L["Full"] = "Voll"
-L["Global"] = true; -- no need to translate this
+L["Global"] = true -- no need to translate this
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "Hier kannst du Gegenstände oder Suchbedingungen vom Suchen ausschließen. Um ein Gegenstand zu entfernen, klicke einfach auf den Namen in der Liste."
 L["Icons and Text (Short)"] = "Symbole und Text (Kurz)"
 L["Icons and Text"] = "Symbole und Text"
@@ -513,7 +513,7 @@ L["LFG Queue"] = "LFG Warteschlange"
 L["Location Text"] = "Umgebungstext"
 L["Make the world map smaller."] = "Macht die Weltkarte kleiner."
 L["Map Opacity When Moving"] = "Deckkraft der Karte während der Bewegung"
-L["Maps"] = "Karten";
+L["Maps"] = "Karten"
 L["Minimap Buttons"] = "Minimap Tasten"
 L["Minimap Mouseover"] = "Minimap Mouseover"
 L["Open Ticket"] = "Offenes Ticket"
@@ -578,7 +578,7 @@ L["Control friendly nameplates toggling on or off when in combat."] = "Legt fest
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "Legt die Größe des Bereichs auf dem Bildschirm fest, welche die klicks durch die feindlichen Einheiten erlaubt."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Legt fest wieviele Auren angezeigt werden. Dieses beeinflusst auch die Größe der Auren."
 L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplaketten angezeigt werden."
-L["Cooldowns"] = true; --No need to translate
+L["Cooldowns"] = true --No need to translate
 L["Copy settings from another unit."] = "Kopiere Einstellungen von einer anderen Einheit."
 L["Copy Settings From"] = "Kopiere Einstellungen von"
 L["Current Level"] = "Aktuelles Level"
@@ -601,7 +601,7 @@ L["ENEMY_NPC"] = "Gegnerischer NPC"
 L["ENEMY_PLAYER"] = "Gegnerischer Spieler"
 L["Filter already exists!"] = "Filter existiert bereits!"
 L["Filter Priority"] = "Filter Priorität"
-L["Filter"] = true; --No need to translate
+L["Filter"] = true --No need to translate
 L["Filters Page"] = "Filter Seite"
 L["Friendly Combat Toggle"] = "Im Kampf für freundliche umschalten"
 L["Friendly NPC Frames"] = "Freundliche NPC Rahmen"
@@ -661,7 +661,7 @@ L["Maximum Level"] = "Maximale Level"
 L["Maximum Time Left"] = "Maximale Zeit verbleibend"
 L["Minimum Level"] = "Minimale Level"
 L["Minimum Time Left"] = "Minimale Zeit verbleibend"
-L["Minus"] = true; --No need to translate
+L["Minus"] = true --No need to translate
 L["Missing"] = "Fehlend"
 L["Name Color"] = "Namen Farbe"
 L["Name Only"] = "Nur Name"
@@ -683,7 +683,7 @@ L["Player Out of Combat"] = "Spieler nicht im Kampf"
 L["Player Power"] = true
 L["PLAYER"] = "Player"
 L["Power Threshold"] = true
-L["Quest Boss"] = true; --No need to translate
+L["Quest Boss"] = true --No need to translate
 L["Rare Elite"] = "Selten Elite"
 L["Reaction Colors"] = "Reaktionsfarbe"
 L["Reaction Type"] = "Reaktion Typ"
@@ -730,7 +730,7 @@ L["Toggle Off While In Combat"] = "Im Kampf ausblenden"
 L["Toggle On While In Combat"] = "Im Kampf einblenden"
 L["Top Arrow"] = "Oberer Pfeil"
 L["Triggers"] = "Auslöser"
-L["Trivial"] = true; --No need to translate
+L["Trivial"] = true --No need to translate
 L["Under Health Threshold"] = "Unter Gesundheit Schwellenwert"
 L["Under Power Threshold"] = true
 L["Unit in Combat"] = "Einheit im Kampf"
@@ -766,7 +766,7 @@ L["Import Now"] = "Jetzt importieren"
 L["Import Profile"] = "Importiere Profil"
 L["Importing"] = "Importiere"
 L["NamePlate Style Filters"] = "Namensplaketten Stil Filter"
-L["Plugin"] = true; --no need to translate
+L["Plugin"] = true --no need to translate
 L["Private (Character Settings)"] = "Private (Charakter Einstellungen)"
 L["Profile imported successfully!"] = "Profil erfolgreich importiert!"
 L["Profile Name"] = "Profil Name"
@@ -775,7 +775,7 @@ L["Table"] = "Tabelle"
 
 --Skins
 L["Achievement Frame"] = "Erfolgsfenster"
-L["AddOn Manager"] = true; --no need to translate
+L["AddOn Manager"] = true --no need to translate
 L["Alert Frames"] = "Alarmfenster"
 L["Archaeology Frame"] = "Archäologiefenster"
 L["Auction Frame"] = "Auktionsfenster"
@@ -1037,7 +1037,7 @@ L["If the unit is friendly to you."] = "Wenn die Einheit freundlich zu dir ist."
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = "Wenn du viele 3D Portraits aktiviert hast, wird es voraussichtlich enorm auf deine FPS auswirken. Deaktiviere bitte einige 3D Portraits sollte das der Fall sein."
 L["Ignore mouse events."] = "Ignoriere Maus Events."
 L["InfoPanel Border"] = "InfoPanel Rand"
-L["Information Panel"] = true; --no need to translate this
+L["Information Panel"] = true --no need to translate this
 L["Inset"] = "Einsatz"
 L["Inside Information Panel"] = "Im Information Panel"
 L["Interruptable"] = "Unterbrechbar"
@@ -1078,7 +1078,7 @@ L["Overlay"] = "Überblenden"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Überschreibe alle benutzerdefinierten Einstellungen für die Sichtbarkeit in bestimmten Situationen. Beispiel: Zeige nur Gruppe 1 und 2 in einer 10er-Instanz."
 L["Override the default class color setting."] = "Überschreibe die Standard Klassenfarben Einstellungen"
 L["Owners Name"] = "Name des Besitzers"
-L["Parent"] = true; --no need to translate this
+L["Parent"] = true --no need to translate this
 L["Party Pets"] = "Gruppenbegleiter"
 L["Party Targets"] = "Gruppenziele"
 L["Per Row"] = "Pro Reihe"
@@ -1098,7 +1098,7 @@ L["Powers"] = "Kräfte"
 L["Priority"] = "Priorität"
 L["Profile Specific"] = "Profilspezifisch"
 L["PvP & Prestige Icon"] = "PvP & Prestige Symbol"
-L["PvP Text"] = true; --no need to translate
+L["PvP Text"] = true --no need to translate
 L["PVP Trinket"] = "PVP Schmuck"
 L["Raid Icon"] = "Schlachtzugssymbol"
 L["Raid-Wide Sorting"] = "Raidweite Sortierung"

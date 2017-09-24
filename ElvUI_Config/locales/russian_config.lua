@@ -1,7 +1,7 @@
 -- Russian localization file for ruRU.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ruRU")
-if not L then return; end
+if not L then return end
 
 -- *_DESC locales
 L["AURAS_DESC"] = "Настройка иконок эффектов, находящихся у миникарты."
@@ -44,7 +44,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • naval : Оборудование флота.
     • follower, followe, follow : Предметы последователей.
     • relic, reli, rel : Реликвии артефактов.
-    • power, powe, pow : Предметы, дающие силу артефакта.]=];
+    • power, powe, pow : Предметы, дающие силу артефакта.]=]
 L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
 
 Примеры:
@@ -65,16 +65,16 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 "name:medium" - Имя с ограничением длины в 15 символов
 "name:long" - Имя с ограничением длины в 20 символов
 
-Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
+Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=]
 
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
 L["Allow Masque to handle the skinning of this element."] = "Разрешить Masque обрабатывать этот элемент."
-L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true;
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
 L["Alpha"] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
-L["Auto Add New Spells"] = true;
+L["Auto Add New Spells"] = true
 L["Automatic"] = "Автоматически"
 L["Backdrop Spacing"] = "Отступ фона"
 L["Backdrop"] = "Фон"
@@ -250,9 +250,9 @@ L["Custom Timestamp Color"] = "Свой цвет времени"
 L["Display LFG Icons in group chat."] = "Отображать иконки выбранных ролей в чате"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Отображать подсказку ссылки на при наведении на нее мыши. Действует на предметы, достижения, сохранения подземелий и тд."
 L["Enable the use of separate size options for the right chat panel."] = "Включить использование отдельных настроек ширины и высоты для правой панели чата."
-L["Exclude Name"] = "Исключить имя";
-L["Excluded names will not be class colored."] = "Исключенные имена не окрашиваются в цвет класса";
-L["Excluded Names"] = "Исключенные имена";
+L["Exclude Name"] = "Исключить имя"
+L["Excluded names will not be class colored."] = "Исключенные имена не окрашиваются в цвет класса"
+L["Excluded Names"] = "Исключенные имена"
 L["Fade Chat"] = "Затухание чата"
 L["Fade Tabs No Backdrop"] = "Затухание без фона"
 L["Fade the chat text when there is no activity."] = "Исчезновение строк чата при отсутствии аткивности"
@@ -398,8 +398,8 @@ L["You must be targeting a player."] = "Целью должен быть игр�
 
 --Filters
 L["Reset Aura Filters"] = "Сбросить фильтры аур" --Used in Nameplates/UnitFrames general options
-L["Reset Filter"] = true;
-L["Used as RaidDebuff Indicator"] = true;
+L["Reset Filter"] = true
+L["Used as RaidDebuff Indicator"] = true
 
 --General
 L["Accept Invites"] = "Принимать приглашения"
@@ -468,7 +468,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "Тонкие границы"
 L["Toggle Tutorials"] = "Показать помощь"
 L["Top Panel"] = "Верхняя панель"
-L["Unit Prefix Style"] = true;
+L["Unit Prefix Style"] = true
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
 
 --Media
@@ -566,7 +566,7 @@ L["Casting"] = "Заклинания"
 L["Channel Time Format"] = "Формат времени поддерживаемого"
 L["Clamp nameplates to the top of the screen when outside of view."] = "Собирать индикаторы на верхней границе экрана, когда их юнит вне поля зрения."
 L["Clamp Nameplates"] = "Собирать индикаторы"
-L["Classification"] = true;
+L["Classification"] = true
 L["Clear Filter"] = "Очистить фильтр"
 L["Clickable Height"] = "Кликабельная высота"
 L["Clickable Width"] = "Кликабельная ширина"
@@ -576,7 +576,7 @@ L["Control friendly nameplates toggling on or off when in combat."] = "Конт�
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "Определяет размер области экрана, клик на которой бдет считаться кликом по юниту."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контроллирует кол-во отображаемых эффектов. Также влияет на размер иконок."
 L["Controls which nameplates will be displayed."] = "Определяет, какие индикаторы быдут отображаться."
-L["Cooldowns"] = true;
+L["Cooldowns"] = true
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
 L["Current Level"] = "Текущий уровень"
@@ -615,7 +615,7 @@ L["Healer Icon"] = "Иконки лекарей"
 L["HEALER"] = "Лекарь"
 L["Health Color"] = "Цвет здоровья"
 L["Health Threshold"] = "Значение здоровья"
-L["Hide Blizzard Plates"] = true;
+L["Hide Blizzard Plates"] = true
 L["Hide Delay"] = "Задержка скрытия"
 L["Hide Frame"] = "Скрыть рамку"
 L["Hide Spell Name"] = "Скрыть название заклинания"
@@ -626,7 +626,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "Базовая высота иконки"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "Если включено, то будет проверять отсутствие ауры вместо ее наличия."
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "Если включено, то для активации фильтра потребуется наличие всех аур. В противном случае наличия любой из списка."
-L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true;
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита больше либо равен этому числу."
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита меньше либо равен этому числу."
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита равен этому числу."
@@ -636,20 +636,20 @@ L["If enabled then the filter will only activate when the unit is in combat."] =
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Если включено, фильтр будет активирован только когда юнит вне боя."
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
 L["If enabled then the filter will only activate when you are out of combat."] = "Если включено, фильтр будет активирован только когда вы вне боя."
-L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true;
+L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "Если аура добавлена номером, то для удаления потребуется номер."
-L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true;
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = 'Если список пуст и "Прерываемые" включено, то фильтр будет активирован при произнесении люблго прерываемого заклинания.'
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть выше указанного, чтобы фильтр активировался."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень здоровья .нита должен быть ниже указанного, чтобы фильтр активировался."
 L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["In Combat"] = "В бою"
-L["Instance Type"] = true;
+L["Instance Type"] = true
 L["Interruptible"] = "Прерываемые"
 L["Is PvP Talents"] = "PvP талант"
 L["Is Targeted"] = "Взят в цель"
-L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения.";
+L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения."
 L["Load Distance"] = "Дистанция показа"
 L["Low Health Threshold"] = "Пороговое значение здоровья"
 L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."] = "Меньшее значение = большему приоритету. Фильтры обрабатываются в порядке от 1 к 100."
@@ -659,15 +659,15 @@ L["Maximum Level"] = "Максимальный уровень"
 L["Maximum Time Left"] = "Максимум оставшегося времени"
 L["Minimum Level"] = "Минимальный уровень"
 L["Minimum Time Left"] = "Минимум оставшегося времени"
-L["Minus"] = true;
+L["Minus"] = true
 L["Missing"] = "Отсутствует"
 L["Name Color"] = "Цвет имени"
-L["Name Only"] = true;
+L["Name Only"] = true
 L["NamePlates"] = "Индикаторы здоровья"
 L["Non-Target Transparency"] = "Прозрачность не цели"
 L["Not Targeted"] = "Не взят в цель"
-L["Off Cooldown"] = true;
-L["On Cooldown"] = true;
+L["Off Cooldown"] = true
+L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = "Отображать индикаторы для юнитов на этом расстоянии и ближе."
 L["Only Show Target"] = "Только цель"
 L["Out Of Combat"] = "Вне боя"
@@ -682,7 +682,7 @@ L["Player Power"] = true
 L["PLAYER"] = "Игрок"
 L["Power Threshold"] = true
 L["Quest Boss"] = "Боссы заданий"
-L["Rare Elite"] = true;
+L["Rare Elite"] = true
 L["Reaction Colors"] = "Цвета отношений"
 L["Reaction Type"] = "Тип реакции"
 L["Remove a Name or NPC ID from the list."] = "Удалить имя или ID НИПа из списка."
@@ -698,7 +698,7 @@ L["Set Settings to Default"] = "Сбросить настройки на умо�
 L["Set the transparency level of nameplates that are not the target nameplate."] = "Устанавливает степень прозрачности для индикаторов юнитов, не являющихся вашей целью."
 L["Set to either stack nameplates vertically or allow them to overlap."] = "Выстраивать индикаторы в столбик или позволить им накладываться друг на друга."
 L["Shortcut to 'Filters' section of the config."] = "Ярлык для секицц фильтров в настройках."
-L["Shortcut to global filters."] = true;
+L["Shortcut to global filters."] = true
 L["Shortcuts"] = "Ярлыки"
 L["Show In Combat"] = "Показывать в бою"
 L["Show NPC Titles"] = "Титулы НИП"
@@ -708,22 +708,22 @@ L["Style Filter"] = "Фильтры стиля"
 L["Suramar Detection"] = "Сурамарское обнаружение"
 L["Tagged NPC"] = "Чужой НИП"
 L["Tanked Color"] = "Цвет танкуемого"
-L["Target Indicator Color"] = true;
+L["Target Indicator Color"] = true
 L["Target Indicator"] = "Индикатор цели"
-L["Target Scale"] = "Масштаб цели";
+L["Target Scale"] = "Масштаб цели"
 L["Target, Quest, Combat"] = "Цель, Задание, Бой"
 L["Targeted Nameplate"] = "Индиатор цели"
 L["Texture"] = "Текстура"
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "Эти фильтры не используют список заклинаний, в отличие от обычных фильтро. Вместо этого они используют WoW API и логические операции для определения отображения аур."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "Эти фильтры используют списки заклинаний для определения стоит ли блокироват ь ауру. Их можно изменить в разделе 'Фильтры' окна настроек."
-L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true;
+L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat"] = "Угроза"
 L["Time To Hold"] = "Время задержки"
 L["Toggle Off While In Combat"] = "Включать в бою"
 L["Toggle On While In Combat"] = "Отключить в бою"
 L["Top Arrow"] = "Стрелка сверху"
 L["Triggers"] = "Триггеры"
-L["Trivial"] = true;
+L["Trivial"] = true
 L["Under Health Threshold"] = "Менее значения здоровья"
 L["Under Power Threshold"] = true
 L["Unit in Combat"] = "Юнит в бою"
@@ -732,7 +732,7 @@ L["Unit Type"] = "Тип юнита"
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Portrait"] = "Отображать портрет"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true;
+L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
 L["Use Static Position"] = "Фиксированная позиция"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Использовать этот цвет для юнитов, которых держит другой танк."
 L["Use Target Glow"] = "Использовать выделение цели"
@@ -924,7 +924,7 @@ L["Configure Auras"] = "Настроить Ауры"
 L["Copy From"] = "Скопировать из"
 L["Count Font Size"] = "Размер шрифта стаков"
 L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "Создает фильтр. После создания он может быть установлен в секции баффов/дебаффов любого юнита."
-L["Create Custom Text"] = true;
+L["Create Custom Text"] = true
 L["Create Filter"] = "Создать фильтр"
 L["Current - Max | Percent"] = "Текущее - Макс. | Процент"
 L["Current - Max"] = "Текущее - Максимальное"
@@ -968,7 +968,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "Не отображать ауры, которые не могут быть развеяны вашим классом."
 L["Don't display auras that have no duration."] = "Не отображать ауры без длительности"
 L["Down"] = "Вниз"
-L["Dungeon & Raid Filter"] = true;
+L["Dungeon & Raid Filter"] = true
 L["Duration Reverse"] = "Длительность, обратное"
 L["Duration Text"] = "Текст длительности"
 L["Duration"] = "Длительность"
@@ -1062,9 +1062,9 @@ L["Number of Groups"] = "Количество групп"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Смещение полосы ресурсов относительно полосы здоровья. Установите на 0 для отключения."
 L["Offset position for text."] = "Отступ для текста."
 L["Offset"] = "Смещение"
-L["Only Match SpellID"] = true;
+L["Only Match SpellID"] = true
 L["OOR Alpha"] = "Прозрачность вне радиуса"
-L["Other Filter"] = true;
+L["Other Filter"] = true
 L["Others"] = "Чужое"
 L["Overlay the healthbar"] = "Отображение портрета на полосе здоровья."
 L["Overlay"] = "Наложение"
@@ -1204,7 +1204,7 @@ L["Visibility"] = "Видимость"
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
 L["What to attach the buff anchor frame to."] = "К чему прикреплять баффы."
 L["What to attach the debuff anchor frame to."] = "К чему прикреплять дебаффы."
-L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = true;
+L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = true
 L["When true, the header includes the player when not in a raid."] = "Отображать игрока в группе."
 L["Whitelist"] = "Белый список"
 L["Width"] = "Ширина" --Also used in NamePlates module
