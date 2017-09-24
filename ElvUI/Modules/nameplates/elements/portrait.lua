@@ -25,7 +25,6 @@ function mod:UpdateElement_Portrait(frame, trigger)
 		return;
 	end
 
-
 	if(not UnitExists(frame.unit) or not UnitIsConnected(frame.unit) or not UnitIsVisible(frame.unit)) then
 		--frame.Portrait:SetUnit("")
 		--frame.Portrait.texture:SetTexture(nil) --this must be nil, "" will do nothing
@@ -35,6 +34,8 @@ function mod:UpdateElement_Portrait(frame, trigger)
 		frame.Portrait:Show()
 		SetPortraitTexture(frame.Portrait.texture, frame.unit)
 	end
+
+	mod:UpdateElement_HealerIcon(frame) --Call here to update Healer Icon placement
 end
 
 function mod:ConfigureElement_Portrait(frame, triggered)
