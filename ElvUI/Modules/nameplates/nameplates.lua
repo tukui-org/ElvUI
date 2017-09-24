@@ -1331,11 +1331,17 @@ function mod:StyleFilterEvents_Configure()
 end
 
 function mod:UpdateElement_Filters(frame, event)
-	if frame.UnitType == 'PLAYER' then
-		filterVisibility = 2 --reset the player plate visibility
+	if not filterEvents[event] then return end
+
+	if not frame.StyleFilterWaitTime then
+		frame.StyleFilterWaitTime = GetTime()
+	elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
+		frame.StyleFilterWaitTime = nil
+	else
+		return --block calls faster than 0.1 second
 	end
 
-	if not filterEvents[event] then return end
+	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end --reset the player plate visibility
 
 	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
 
