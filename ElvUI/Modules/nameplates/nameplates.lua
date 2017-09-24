@@ -1176,6 +1176,11 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 		end
 	end
 
+	--Callback for Plugins
+	if self.CustomStyleConditions then
+		failed = self:CustomStyleConditions(frame, filter, trigger, failed)
+	end
+
 	--If failed is nil it means the filter is empty so we dont run FilterStyle
 	if failed == false then --The conditions didn't fail so pass to FilterStyle
 		self:PassFilterStyle(frame, filter.actions, castbarTriggered);
