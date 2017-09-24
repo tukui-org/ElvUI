@@ -1244,14 +1244,14 @@ function mod:StyleFilterEvents()
 	twipe(filterList)
 	twipe(filterEvents)
 
-	--fake events along with "UpdateElement_Cast"
-	filterEvents["UpdateElement_All"] = true
-	filterEvents["NAME_PLATE_UNIT_ADDED"] = true
-
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(filterList, {filterName, filter.triggers.priority or 1})
+
+				--fake events along with "UpdateElement_Cast"
+				filterEvents["UpdateElement_All"] = true
+				filterEvents["NAME_PLATE_UNIT_ADDED"] = true
 
 				if next(filter.triggers.casting.spells) then
 					for name, value in pairs(filter.triggers.casting.spells) do
