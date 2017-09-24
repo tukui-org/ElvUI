@@ -478,7 +478,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		frame.unitFrame:Show()
 	end
 
-	self:UpdateElement_Filters(frame.unitFrame)
+	self:UpdateElement_Filters(frame.unitFrame, "NAME_PLATE_UNIT_ADDED")
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
@@ -547,6 +547,7 @@ function mod:ConfigureAll()
 
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
+	self:ConfigureStyleFilterEvents()
 	self:TogglePlayerDisplayType()
 	self:SetNamePlateClickThrough()
 end
@@ -1226,25 +1227,92 @@ function mod:PassFilterStyle(frame, actions, castbarTriggered)
 	)
 end
 
-local filterList = {}
 local function filterSort(a,b)
 	if a[2] and b[2] then
 		return a[2]>b[2] --Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
 
-function mod:UpdateElement_Filters(frame)
-	if frame.UnitType == 'PLAYER' then
-		filterVisibility = 2 --reset the player plate visibility
-	end
-
-	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
-
+local filterList = {}
+local filterEvents = {}
+function mod:ConfigureStyleFilterEvents()
 	twipe(filterList)
+	twipe(filterEvents)
+
+	--fake events along with "UpdateElement_Cast"
+	filterEvents["UpdateElement_All"] = true
+	filterEvents["NAME_PLATE_UNIT_ADDED"] = true
+
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(filterList, {filterName, filter.triggers.priority or 1})
+
+				if next(filter.triggers.casting.spells) then
+					for name, value in pairs(filter.triggers.casting.spells) do
+						if value == true then
+							filterEvents["UpdateElement_Cast"] = true
+							break
+						end
+					end
+				elseif filter.triggers.casting.interruptible then
+					filterEvents["UpdateElement_Cast"] = true
+				end
+
+				if filter.triggers.healthThreshold then
+					filterEvents["UNIT_HEALTH"] = true
+					filterEvents["UNIT_MAXHEALTH"] = true
+					filterEvents["UNIT_HEALTH_FREQUENT"] = true
+				end
+
+				if filter.triggers.powerThreshold then
+					filterEvents["UNIT_POWER"] = true
+					filterEvents["UNIT_POWER_FREQUENT"] = true
+					filterEvents["UNIT_DISPLAYPOWER"] = true
+				end
+
+				if next(filter.triggers.names) then
+					for unitName, value in pairs(filter.triggers.names) do
+						if value == true then
+							filterEvents["UNIT_NAME_UPDATE"] = true
+							break
+						end
+					end
+				end
+
+				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
+					filterEvents["UNIT_THREAT_LIST_UPDATE"] = true
+				end
+
+				if filter.triggers.isTarget or filter.triggers.notTarget then
+					filterEvents["PLAYER_TARGET_CHANGED"] = true
+				end
+
+				if next(filter.triggers.cooldowns.names) then
+					for name, value in pairs(filter.triggers.cooldowns.names) do
+						if value == "ONCD" or value == "OFFCD" then
+							filterEvents["SPELL_UPDATE_COOLDOWN"] = true
+							break
+						end
+					end
+				end
+
+				if next(filter.triggers.buffs.names) then
+					for name, value in pairs(filter.triggers.buffs.names) do
+						if value == true then
+							filterEvents["UNIT_AURA"] = true
+							break
+						end
+					end
+				elseif next(filter.triggers.debuffs.names) then
+					for name, value in pairs(filter.triggers.debuffs.names) do
+						if value == true then
+							filterEvents["UNIT_AURA"] = true
+							break
+						end
+					end
+				end
+
 			end
 		end
 	end
@@ -1252,6 +1320,16 @@ function mod:UpdateElement_Filters(frame)
 		return --if all triggers are disabled just stop
 	end
 	tsort(filterList, filterSort) --sort by priority
+end
+
+function mod:UpdateElement_Filters(frame, event)
+	if frame.UnitType == 'PLAYER' then
+		filterVisibility = 2 --reset the player plate visibility
+	end
+
+	if not filterEvents[event] then return end
+
+	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
 
 	for filterNum, filter in ipairs(filterList) do
 		filter = E.global.nameplate.filters[filterList[filterNum][1]];
@@ -1299,7 +1377,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	end
 
 	if(not filterIgnore) then
-		mod:UpdateElement_Filters(frame)
+		mod:UpdateElement_Filters(frame, "UpdateElement_All")
 	end
 end
 
@@ -1347,7 +1425,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Health(self)
 		mod:UpdateElement_HealPrediction(self)
 		mod:UpdateElement_Glow(self)
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 		if unit == "vehicle" or unit == "player" then
 			mod:UpdateVisibility()
 		end
@@ -1357,23 +1435,23 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_MaxHealth(self)
 		mod:UpdateElement_HealPrediction(self)
 		mod:UpdateElement_Glow(self)
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_NPCTitle(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "UNIT_LEVEL") then
 		mod:UpdateElement_Level(self)
 	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
 		mod:Update_ThreatList(self)
 		mod:UpdateElement_HealthColor(self)
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 		mod:UpdateVisibility()
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
@@ -1381,7 +1459,7 @@ function mod:OnEvent(event, unit, ...)
 			mod:ClassBar_Update(self)
 		end
 		mod:UpdateElement_HealthColor(self)
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
 		mod:CheckUnitType(self)
 	elseif(event == "RAID_TARGET_UPDATE") then
@@ -1402,6 +1480,7 @@ function mod:OnEvent(event, unit, ...)
 		if arg1 == powerToken or event == "UNIT_DISPLAYPOWER" then
 			mod:UpdateElement_Power(self)
 		end
+		mod:UpdateElement_Filters(self, event)
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
@@ -1410,7 +1489,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or event == "UNIT_CONNECTION") then
 		mod:UpdateElement_Portrait(self)
 	elseif(event == "SPELL_UPDATE_COOLDOWN") then
-		mod:UpdateElement_Filters(self)
+		mod:UpdateElement_Filters(self, event)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
@@ -1799,6 +1878,8 @@ function mod:Initialize()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
 		self:InitFilter(filterTable);
 	end
+
+	self:ConfigureStyleFilterEvents()
 
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true

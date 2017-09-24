@@ -220,7 +220,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if frame.CastBar:IsShown() then --This is so we can trigger based on Cast Name or Interruptible
-		self:UpdateElement_Filters(frame)
+		self:UpdateElement_Filters(frame, "UpdateElement_Cast")
 	else
 		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
 	end
