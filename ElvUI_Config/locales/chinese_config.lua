@@ -737,6 +737,15 @@ L["Use Target Scale"] = "使用目标缩放"
 L["Use Threat Color"] = "使用仇恨颜色"
 L["When enabled the nameplate will stay visible in a locked position."] = "启用后姓名板将在锁定的位置持续可见"
 L["You can't remove a default name from the filter, disabling the name."] = "你不能从过滤器中移除一个默认名字. 已禁用."
+L["Player Health"] = true
+L["Enabling this will check your health amount."] = true
+L["Power Threshold"] = true
+L["Player Power"] = true
+L["Enabling this will check your power amount."] = true
+L["Under Power Threshold"] = true
+L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
+L["Over Power Threshold"] = true
+L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "光环过滤器"
