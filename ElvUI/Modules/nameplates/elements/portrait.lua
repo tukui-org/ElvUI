@@ -35,7 +35,7 @@ function mod:UpdateElement_Portrait(frame, trigger)
 		SetPortraitTexture(frame.Portrait.texture, frame.unit)
 	end
 
-	mod:UpdateElement_HealerIcon(frame) --Call here to update Healer Icon placement
+	mod:UpdateElement_HealerIcon(frame)
 end
 
 function mod:ConfigureElement_Portrait(frame, triggered)
