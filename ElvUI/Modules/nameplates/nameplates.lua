@@ -842,8 +842,8 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
 	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
 	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
-	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, unitPower;
-	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold;
+	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
+	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
@@ -916,7 +916,8 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	--Try to match by player health conditions
 	if not failed and trigger.healthThreshold then
 		condition = false
-		health, maxHealth = UnitHealth(frame.displayedUnit), UnitHealthMax(frame.displayedUnit)
+		healthUnit = (trigger.healthUsePlayer and "player") or frame.displayedUnit
+		health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
 		percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
 		underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
 		overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
@@ -929,8 +930,8 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	--Try to match by power conditions
 	if not failed and trigger.powerThreshold then
 		condition = false
-		unitPower = (trigger.powerUsePlayer and "player") or frame.displayedUnit
-		power, maxPower = UnitPower(unitPower, frame.PowerType), UnitPowerMax(unitPower, frame.PowerType)
+		powerUnit = (trigger.powerUsePlayer and "player") or frame.displayedUnit
+		power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
 		percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
 		underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
 		overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)

@@ -1080,13 +1080,27 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						spacer1 = {
+						usePlayer = {
+							type = 'toggle',
 							order = 2,
+							name = L["Player Health"],
+							desc = L["Enabling this will check your health amount."],
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.healthUsePlayer
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.healthUsePlayer = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer1 = {
+							order = 3,
 							type = 'description',
 							name = " ",
 						},
 						underHealthThreshold = {
-							order = 3,
+							order = 4,
 							type = 'range',
 							name = L["Under Health Threshold"],
 							desc = L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."],
@@ -1102,7 +1116,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						overHealthThreshold = {
-							order = 4,
+							order = 5,
 							type = 'range',
 							name = L["Over Health Threshold"],
 							desc = L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."],

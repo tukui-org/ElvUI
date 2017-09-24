@@ -92,6 +92,7 @@ E["StyleFilterDefaults"] = {
 		["maxlevel"] = 0,
 		["minlevel"] = 0,
 		["healthThreshold"] = false,
+		["healthUsePlayer"] = false,
 		["underHealthThreshold"] = 0,
 		["overHealthThreshold"] = 0,
 		["powerThreshold"] = false,
