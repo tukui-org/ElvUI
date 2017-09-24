@@ -547,7 +547,7 @@ function mod:ConfigureAll()
 
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
-	self:StyleFilterEvents()
+	self:StyleFilterEvents_Configure()
 	self:TogglePlayerDisplayType()
 	self:SetNamePlateClickThrough()
 end
@@ -1240,7 +1240,7 @@ end
 
 local filterList = {}
 local filterEvents = {}
-function mod:StyleFilterEvents()
+function mod:StyleFilterEvents_Configure()
 	twipe(filterList)
 	twipe(filterEvents)
 
@@ -1887,7 +1887,7 @@ function mod:Initialize()
 		self:InitFilter(filterTable);
 	end
 
-	self:StyleFilterEvents()
+	self:StyleFilterEvents_Configure()
 
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
