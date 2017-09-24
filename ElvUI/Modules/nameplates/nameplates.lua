@@ -1255,7 +1255,9 @@ function mod:ConfigureStyleFilterEvents()
 							break
 						end
 					end
-				elseif filter.triggers.casting.interruptible then
+				end
+
+				if filter.triggers.casting.interruptible then
 					filterEvents["UpdateElement_Cast"] = true
 				end
 
@@ -1304,7 +1306,9 @@ function mod:ConfigureStyleFilterEvents()
 							break
 						end
 					end
-				elseif next(filter.triggers.debuffs.names) then
+				end
+
+				if next(filter.triggers.debuffs.names) then
 					for name, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
 							filterEvents["UNIT_AURA"] = true
@@ -1312,14 +1316,13 @@ function mod:ConfigureStyleFilterEvents()
 						end
 					end
 				end
-
 			end
 		end
 	end
-	if not next(filterList) then
-		return --if all triggers are disabled just stop
+
+	if next(filterList) then
+		tsort(filterList, filterSort) --sort by priority
 	end
-	tsort(filterList, filterSort) --sort by priority
 end
 
 function mod:UpdateElement_Filters(frame, event)
