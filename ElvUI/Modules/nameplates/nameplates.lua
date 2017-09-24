@@ -50,6 +50,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
+local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
 local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
@@ -838,9 +839,12 @@ function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, Flashing
 end
 
 function mod:CheckStyleConditions(frame, filter, trigger, failed)
-	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, health, maxHealth, percHealth, classification;
-	local underHealthThreshold, overHealthThreshold, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
+	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
 	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
+	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
+	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, unitPower;
+	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold;
+
 	local castbarShown = frame.CastBar:IsShown()
 	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
 	local matchMyClass = false --Only check spec when we match the class condition
@@ -913,10 +917,24 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	if not failed and trigger.healthThreshold then
 		condition = false
 		health, maxHealth = UnitHealth(frame.displayedUnit), UnitHealthMax(frame.displayedUnit)
-		percHealth = (maxHealth > 0 and health/maxHealth) or 0
-		underHealthThreshold = (trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth))
-		overHealthThreshold = (trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth))
+		percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
+		underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
+		overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
 		if underHealthThreshold or overHealthThreshold then
+			condition = true
+		end
+		failed = not condition
+	end
+
+	--Try to match by power conditions
+	if not failed and trigger.powerThreshold then
+		condition = false
+		unitPower = (trigger.powerUsePlayer and "player") or frame.displayedUnit
+		power, maxPower = UnitPower(unitPower, frame.PowerType), UnitPowerMax(unitPower, frame.PowerType)
+		percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
+		underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
+		overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
+		if underPowerThreshold or overPowerThreshold then
 			condition = true
 		end
 		failed = not condition
