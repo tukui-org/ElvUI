@@ -545,9 +545,9 @@ function mod:ConfigureAll()
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
+	self:StyleFilterEvents_Configure()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
-	self:StyleFilterEvents_Configure()
 	self:TogglePlayerDisplayType()
 	self:SetNamePlateClickThrough()
 end
@@ -691,7 +691,21 @@ local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
 	end
 end
 
-function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged)
+function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+	if VisibilityChanged then
+		frame.VisibilityChanged = true
+		if frame.UnitType == "PLAYER" then
+			if self.db.units.PLAYER.useStaticPosition then
+				HidePlayerNamePlate()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "0")
+				frame:Hide()
+			end
+		else
+			frame:Hide()
+		end
+		return --We hide it. Lets not do other things (no point)
+	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
@@ -767,7 +781,19 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 	end
 end
 
-function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged)
+function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+	if VisibilityChanged then
+		frame.VisibilityChanged = nil
+		if frame.UnitType == "PLAYER" then
+			if self.db.units.PLAYER.useStaticPosition then
+				self.PlayerFrame__.unitFrame:Show()
+				self.PlayerNamePlateAnchor:Show()
+			else
+				E:LockCVar("nameplatePersonalShowAlways", "1")
+			end
+		end
+		frame:Show()
+	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
@@ -1187,35 +1213,9 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 	end
 end
 
-local filterVisibility --[[ 0=hide 1=show 2=noTrigger (we use this to handle visibility when the player plate is style triggered)]]
 function mod:PassFilterStyle(frame, actions, castbarTriggered)
 	if castbarTriggered then
 		frame.castbarTriggered = castbarTriggered
-	end
-
-	if actions.hide then
-		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 0 --force hide the plate
-			if self.db.units.PLAYER.useStaticPosition then
-				HidePlayerNamePlate()
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "0")
-				frame:Hide()
-			end
-		else
-			frame:Hide()
-		end
-		return --We hide it. Lets not do other things (no point)
-	else
-		if frame.UnitType == 'PLAYER' then
-			filterVisibility = 1 --force show the plate
-			if self.db.units.PLAYER.useStaticPosition then
-				self.PlayerNamePlateAnchor:Show()
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "1")
-			end
-		end
-		frame:Show()
 	end
 
 	local healthBarShown = frame.HealthBar:IsShown()
@@ -1228,7 +1228,8 @@ function mod:PassFilterStyle(frame, actions, castbarTriggered)
 		(actions.alpha and actions.alpha ~= -1), --AlphaChanged
 		(actions.color and actions.color.name), --NameColorChanged
 		(actions.usePortrait), --PortraitShown
-		(actions.nameOnly) --NameOnlyChanged
+		(actions.nameOnly), --NameOnlyChanged
+		(actions.hide) --VisibilityChanged
 	)
 end
 
@@ -1249,21 +1250,21 @@ function mod:StyleFilterEvents_Configure()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(filterList, {filterName, filter.triggers.priority or 1})
 
-				--fake events along with "UpdateElement_Cast"
-				filterEvents["UpdateElement_All"] = true
-				filterEvents["NAME_PLATE_UNIT_ADDED"] = true
+				--fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
+				filterEvents["UpdateElement_All"] = 1
+				filterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
 					for name, value in pairs(filter.triggers.casting.spells) do
 						if value == true then
-							filterEvents["UpdateElement_Cast"] = true
+							filterEvents["UpdateElement_Cast"] = 1
 							break
 						end
 					end
 				end
 
 				if filter.triggers.casting.interruptible then
-					filterEvents["UpdateElement_Cast"] = true
+					filterEvents["UpdateElement_Cast"] = 1
 				end
 
 				if filter.triggers.healthThreshold then
@@ -1333,17 +1334,17 @@ end
 function mod:UpdateElement_Filters(frame, event)
 	if not filterEvents[event] then return end
 
-	if not frame.StyleFilterWaitTime then
-		frame.StyleFilterWaitTime = GetTime()
-	elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
-		frame.StyleFilterWaitTime = nil
-	else
-		return --block calls faster than 0.1 second
+	if filterEvents[event] == true then
+		if not frame.StyleFilterWaitTime then
+			frame.StyleFilterWaitTime = GetTime()
+		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
+			frame.StyleFilterWaitTime = nil
+		else
+			return --block calls faster than 0.1 second
+		end
 	end
 
-	if frame.UnitType == 'PLAYER' then filterVisibility = 2 end --reset the player plate visibility
-
-	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged)
+	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 
 	for filterNum, filter in ipairs(filterList) do
 		filter = E.global.nameplate.filters[filterList[filterNum][1]];
@@ -1596,13 +1597,11 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateOtherBottomInset", self.db.clampToScreen and "0.1" or "-1")
 
 	--Player nameplate
-	if filterVisibility ~= 1 then --Forced shown, using filters visibility instead.
-		E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
-		E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
-		E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
-		E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
-		E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
-	end
+	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
+	E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
 end
 
 local function CopySettings(from, to)
@@ -1691,7 +1690,7 @@ end
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
-		if filterVisibility ~= 2 then return end --Using filters visibility instead (0=hide 1=show).
+		if frame.unitFrame.VisibilityChanged then return end
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.unitFrame:Show()
 			self.PlayerNamePlateAnchor:Show()
