@@ -792,6 +792,7 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 end
 
 function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
 		if frame.UnitType == "PLAYER" then
