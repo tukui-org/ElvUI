@@ -696,7 +696,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		frame.VisibilityChanged = true
 		if frame.UnitType == "PLAYER" then
 			if self.db.units.PLAYER.useStaticPosition then
-				HidePlayerNamePlate()
+				self.PlayerFrame__.unitFrame:Hide()
+				self.PlayerNamePlateAnchor:Hide()
 			else
 				E:LockCVar("nameplatePersonalShowAlways", "0")
 				frame:Hide()
@@ -1889,7 +1890,7 @@ local function removeDefaults(db, defaults, blocker)
 	end
 end
 
-function mod:InitFilter(tbl)
+function mod:StyleFilterInitializeFilters(tbl)
 	copyDefaults(tbl, E.StyleFilterDefaults);
 end
 
@@ -1911,7 +1912,7 @@ function mod:Initialize()
 
 	--Add metatable to all our style filters so they can grab default values if missing
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:InitFilter(filterTable);
+		self:StyleFilterInitializeFilters(filterTable);
 	end
 
 	self:StyleFilterConfigureEvents()
