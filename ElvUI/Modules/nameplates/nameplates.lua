@@ -1267,7 +1267,7 @@ function mod:StyleFilterEvents_Configure()
 				tinsert(filterList, {filterName, filter.triggers.priority or 1})
 
 				--fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
-				filterEvents["UpdateElement_All"] = 1
+				filterEvents["UpdateElement_All"] = true
 				filterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
