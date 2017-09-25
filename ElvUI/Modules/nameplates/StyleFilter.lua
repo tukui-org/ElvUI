@@ -184,6 +184,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
 		self:ConfigureElement_Portrait(frame, true)
+		if frame.RightArrow:IsShown() then
+			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
+		end
 	end
 	if NameOnlyChanged then
 		frame.StyleChanged = true
