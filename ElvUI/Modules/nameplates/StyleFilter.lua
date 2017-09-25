@@ -183,6 +183,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		frame.StyleChanged = true
 		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
+		self:ConfigureElement_Portrait(frame, true)
 	end
 	if NameOnlyChanged then
 		frame.StyleChanged = true
@@ -269,6 +270,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 		frame.PortraitShown = nil
 		frame.Portrait:Hide() --This could have been forced so hide it
 		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
+		self:ConfigureElement_Portrait(frame)
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
