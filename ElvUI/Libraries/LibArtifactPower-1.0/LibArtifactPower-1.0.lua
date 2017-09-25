@@ -1,4 +1,6 @@
-local MAJOR, MINOR = "LibElvUIArtifactPower-1.0", 1
+-- LibArtifactPower-1.0 by Infinitron
+
+local MAJOR, MINOR = "LibArtifactPower-1.0", 1
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
