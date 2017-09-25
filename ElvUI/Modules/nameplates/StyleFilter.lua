@@ -672,10 +672,9 @@ function mod:ClearStyledPlate(frame)
 	end
 end
 
-function mod:StyleFilterSort(a,b)
-	print(a,b)
-	if a[2] and b[2] then
-		return a[2]>b[2] --Sort by priority: 1=first, 2=second, 3=third, etc
+function mod:StyleFilterSort(place)
+	if self[2] and place[2] then
+		return self[2] > place[2] --Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
 
