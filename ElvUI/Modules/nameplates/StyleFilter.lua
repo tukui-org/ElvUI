@@ -95,8 +95,6 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-
-
 function mod:StyleFilterBorderColorLock(frame, backdrop, r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
 	backdrop:SetBackdropBorderColor(r, g, b, a)
