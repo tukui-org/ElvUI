@@ -1019,7 +1019,7 @@ function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
 
-	--Add metatable to all our style filters so they can grab default values if missing
+	--Add metatable to all our StyleFilters so they can grab default values if missing
 	for _, filterTable in pairs(E.global.nameplate.filters) do
 		self:StyleFilterInitializeFilters(filterTable);
 	end
@@ -1051,7 +1051,7 @@ function mod:Initialize()
 
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
-	self:RegisterEvent("PLAYER_LOGOUT");
+	self:RegisterEvent("PLAYER_LOGOUT"); -- used in the StyleFilter
 	self:RegisterEvent("NAME_PLATE_CREATED");
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
