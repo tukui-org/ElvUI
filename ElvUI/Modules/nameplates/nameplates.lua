@@ -545,7 +545,7 @@ function mod:ConfigureAll()
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
-	self:StyleFilterEvents_Configure()
+	self:StyleFilterConfigureEvents()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
 	self:TogglePlayerDisplayType()
@@ -618,7 +618,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 	end
 end
 
-local function filterAura(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+function mod:StyleFilterAuraCheck(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
 	for name, value in pairs(names) do
 		if value == true then --only if they are turned on
@@ -642,8 +642,7 @@ local function filterAura(names, icons, mustHaveAll, missing, minTimeLeft, maxTi
 	end
 end
 
-
-local function filterCooldown(names, mustHaveAll)
+function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	local total, count, duration, charges, _ = 0, 0
 	local _, gcd = GetSpellCooldown(61304)
 
@@ -676,11 +675,11 @@ local function HidePlayerNamePlate()
 	mod.PlayerNamePlateAnchor:Hide()
 end
 
-local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
+function mod:StyleFilterBorderColorLock(frame, backdrop, r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
 	backdrop:SetBackdropBorderColor(r, g, b, a)
-	if not backdrop.backdropBorderColorLocked then
-		backdrop.backdropBorderColorLocked = true
+	if not backdrop.StyleFilterBorderColorHooked then
+		backdrop.StyleFilterBorderColorHooked = true
 		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(self, r, g, b, a)
 			if self:GetParent():GetParent().BorderChanged then --only call this for ones we lock
 				if r ~= self.r or g ~= self.g or b ~= self.b or a ~= self.a then
@@ -691,7 +690,7 @@ local function backdropBorderColorLock(frame, backdrop, r, g, b, a)
 	end
 end
 
-function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
@@ -715,7 +714,7 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		self:StyleFilterBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 	end
 	if FlashingHealth then
 		frame.StyleChanged = true
@@ -791,7 +790,7 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 	end
 end
 
-function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
@@ -876,7 +875,7 @@ function mod:ClearStyleFilter(frame, HealthColorChanged, BorderChanged, Flashing
 	end
 end
 
-function mod:CheckStyleConditions(frame, filter, trigger, failed)
+function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
 	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
 	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
@@ -1191,7 +1190,7 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 
 	--Try to match according to cooldown conditions
 	if not failed and trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		condition = filterCooldown(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
+		condition = self:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
 		if condition ~= nil then --Condition will be nil if none are set to ONCD or OFFCD
 			failed = not condition
 		end
@@ -1199,7 +1198,7 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 
 	--Try to match according to buff aura conditions
 	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		condition = filterAura(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -1207,7 +1206,7 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 
 	--Try to match according to debuff aura conditions
 	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		condition = filterAura(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -1220,17 +1219,17 @@ function mod:CheckStyleConditions(frame, filter, trigger, failed)
 
 	--If failed is nil it means the filter is empty so we dont run FilterStyle
 	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		self:PassFilterStyle(frame, filter.actions, castbarTriggered);
+		self:StyleFilterPass(frame, filter.actions, castbarTriggered);
 	end
 end
 
-function mod:PassFilterStyle(frame, actions, castbarTriggered)
+function mod:StyleFilterPass(frame, actions, castbarTriggered)
 	if castbarTriggered then
 		frame.castbarTriggered = castbarTriggered
 	end
 
 	local healthBarShown = frame.HealthBar:IsShown()
-	self:SetStyleFilter(frame, actions,
+	self:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
 		(healthBarShown and actions.color and actions.color.border and frame.HealthBar.backdrop), --BorderChanged
 		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
@@ -1246,77 +1245,78 @@ end
 
 function mod:ClearStyledPlate(frame)
 	if frame.StyleChanged then
-		self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
 
-local function filterSort(a,b)
+function mod:StyleFilterSort(a,b)
+	print(a,b)
 	if a[2] and b[2] then
 		return a[2]>b[2] --Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
 
-local filterList = {}
-local filterEvents = {}
-function mod:StyleFilterEvents_Configure()
-	twipe(filterList)
-	twipe(filterEvents)
+mod.StyleFilterList = {}
+mod.StyleFilterEvents = {}
+function mod:StyleFilterConfigureEvents()
+	twipe(self.StyleFilterList)
+	twipe(self.StyleFilterEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
-				tinsert(filterList, {filterName, filter.triggers.priority or 1})
+				tinsert(self.StyleFilterList, {filterName, filter.triggers.priority or 1})
 
 				--fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
-				filterEvents["UpdateElement_All"] = true
-				filterEvents["NAME_PLATE_UNIT_ADDED"] = 1
+				self.StyleFilterEvents["UpdateElement_All"] = true
+				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
 					for name, value in pairs(filter.triggers.casting.spells) do
 						if value == true then
-							filterEvents["UpdateElement_Cast"] = 1
+							self.StyleFilterEvents["UpdateElement_Cast"] = 1
 							break
 						end
 					end
 				end
 
 				if filter.triggers.casting.interruptible then
-					filterEvents["UpdateElement_Cast"] = 1
+					self.StyleFilterEvents["UpdateElement_Cast"] = 1
 				end
 
 				if filter.triggers.healthThreshold then
-					filterEvents["UNIT_HEALTH"] = true
-					filterEvents["UNIT_MAXHEALTH"] = true
-					filterEvents["UNIT_HEALTH_FREQUENT"] = true
+					self.StyleFilterEvents["UNIT_HEALTH"] = true
+					self.StyleFilterEvents["UNIT_MAXHEALTH"] = true
+					self.StyleFilterEvents["UNIT_HEALTH_FREQUENT"] = true
 				end
 
 				if filter.triggers.powerThreshold then
-					filterEvents["UNIT_POWER"] = true
-					filterEvents["UNIT_POWER_FREQUENT"] = true
-					filterEvents["UNIT_DISPLAYPOWER"] = true
+					self.StyleFilterEvents["UNIT_POWER"] = true
+					self.StyleFilterEvents["UNIT_POWER_FREQUENT"] = true
+					self.StyleFilterEvents["UNIT_DISPLAYPOWER"] = true
 				end
 
 				if next(filter.triggers.names) then
 					for unitName, value in pairs(filter.triggers.names) do
 						if value == true then
-							filterEvents["UNIT_NAME_UPDATE"] = true
+							self.StyleFilterEvents["UNIT_NAME_UPDATE"] = true
 							break
 						end
 					end
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
-					filterEvents["UNIT_THREAT_LIST_UPDATE"] = true
+					self.StyleFilterEvents["UNIT_THREAT_LIST_UPDATE"] = true
 				end
 
 				if filter.triggers.isTarget or filter.triggers.notTarget then
-					filterEvents["PLAYER_TARGET_CHANGED"] = true
+					self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
 					for name, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
-							filterEvents["SPELL_UPDATE_COOLDOWN"] = true
+							self.StyleFilterEvents["SPELL_UPDATE_COOLDOWN"] = true
 							break
 						end
 					end
@@ -1325,7 +1325,7 @@ function mod:StyleFilterEvents_Configure()
 				if next(filter.triggers.buffs.names) then
 					for name, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
-							filterEvents["UNIT_AURA"] = true
+							self.StyleFilterEvents["UNIT_AURA"] = true
 							break
 						end
 					end
@@ -1334,7 +1334,7 @@ function mod:StyleFilterEvents_Configure()
 				if next(filter.triggers.debuffs.names) then
 					for name, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
-							filterEvents["UNIT_AURA"] = true
+							self.StyleFilterEvents["UNIT_AURA"] = true
 							break
 						end
 					end
@@ -1343,8 +1343,8 @@ function mod:StyleFilterEvents_Configure()
 		end
 	end
 
-	if next(filterList) then
-		tsort(filterList, filterSort) --sort by priority
+	if next(self.StyleFilterList) then
+		tsort(self.StyleFilterList, self.StyleFilterSort) --sort by priority
 	else
 		self:ForEachPlate("ClearStyledPlate")
 		if self.PlayerFrame__ then
@@ -1354,9 +1354,9 @@ function mod:StyleFilterEvents_Configure()
 end
 
 function mod:UpdateElement_Filters(frame, event)
-	if not filterEvents[event] then return end
+	if not self.StyleFilterEvents[event] then return end
 
-	if filterEvents[event] == true then
+	if self.StyleFilterEvents[event] == true then
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
@@ -1368,10 +1368,10 @@ function mod:UpdateElement_Filters(frame, event)
 
 	self:ClearStyledPlate(frame)
 
-	for filterNum, filter in ipairs(filterList) do
-		filter = E.global.nameplate.filters[filterList[filterNum][1]];
+	for filterNum, filter in ipairs(self.StyleFilterList) do
+		filter = E.global.nameplate.filters[self.StyleFilterList[filterNum][1]];
 		if filter then
-			self:CheckStyleConditions(frame, filter, filter.triggers, nil)
+			self:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
 		end
 	end
 end
@@ -1914,7 +1914,7 @@ function mod:Initialize()
 		self:InitFilter(filterTable);
 	end
 
-	self:StyleFilterEvents_Configure()
+	self:StyleFilterConfigureEvents()
 
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
