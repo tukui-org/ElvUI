@@ -1,47 +1,47 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local mod = E:GetModule('NamePlates');
+local LSM = LibStub("LibSharedMedia-3.0");
 
-local type = type
-local pairs = pairs
 local ipairs = ipairs
-local tonumber = tonumber
-local unpack = unpack
 local next = next
-local select = select
+local pairs = pairs
 local rawget = rawget
 local rawset = rawset
+local select = select
 local setmetatable = setmetatable
+local tonumber = tonumber
+local type = type
+local unpack = unpack
 
 local strsplit = string.split
-local twipe = table.wipe
-local tsort = table.sort
 local tinsert = table.insert
+local tsort = table.sort
+local twipe = table.wipe
 local hooksecurefunc = hooksecurefunc
-
-local GetTime = GetTime
-local UnitLevel = UnitLevel
-local UnitReaction = UnitReaction
-local UnitIsUnit = UnitIsUnit
-local UnitPower = UnitPower
-local UnitHealth = UnitHealth
-local UnitHealthMax = UnitHealthMax
-local UnitGUID = UnitGUID
-local UnitName = UnitName
-local UnitClassification = UnitClassification
-local GetSpellInfo = GetSpellInfo
-local UnitIsQuestBoss = UnitIsQuestBoss
-local GetSpecializationInfo = GetSpecializationInfo
-local UnitPowerMax = UnitPowerMax
-local UnitAffectingCombat = UnitAffectingCombat
-local GetTalentInfo = GetTalentInfo
-local GetPvpTalentInfo = GetPvpTalentInfo
-local GetInstanceInfo = GetInstanceInfo
-local GetSpellCooldown = GetSpellCooldown
-local GetSpellCharges = GetSpellCharges
 
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+
+local GetInstanceInfo = GetInstanceInfo
+local GetPvpTalentInfo = GetPvpTalentInfo
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpellCharges = GetSpellCharges
+local GetSpellCooldown = GetSpellCooldown
+local GetSpellInfo = GetSpellInfo
+local GetTalentInfo = GetTalentInfo
+local GetTime = GetTime
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitClassification = UnitClassification
+local UnitGUID = UnitGUID
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitIsQuestBoss = UnitIsQuestBoss
+local UnitIsUnit = UnitIsUnit
+local UnitLevel = UnitLevel
+local UnitName = UnitName
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitReaction = UnitReaction
 
 function mod:StyleFilterAuraCheck(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
