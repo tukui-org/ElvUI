@@ -693,6 +693,7 @@ end
 
 function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
+		frame.StyleChanged = true
 		frame.VisibilityChanged = true
 		if frame.UnitType == "PLAYER" then
 			if self.db.units.PLAYER.useStaticPosition then
@@ -707,14 +708,17 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		return --We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
+		frame.StyleChanged = true
 		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 	end
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
+		frame.StyleChanged = true
 		frame.BorderChanged = true
 		backdropBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 	end
 	if FlashingHealth then
+		frame.StyleChanged = true
 		frame.FlashingHealth = true
 		if not TextureChanged then
 			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
@@ -725,6 +729,7 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
 	end
 	if TextureChanged then
+		frame.StyleChanged = true
 		frame.TextureChanged = true
 		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
 		frame.HealthBar:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
@@ -733,6 +738,7 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		end
 	end
 	if ScaleChanged then
+		frame.StyleChanged = true
 		frame.ScaleChanged = true
 		local scale = actions.scale
 		if frame.isTarget and self.db.useTargetScale then
@@ -741,10 +747,12 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		self:SetFrameScale(frame, scale)
 	end
 	if AlphaChanged then
+		frame.StyleChanged = true
 		frame.AlphaChanged = true
 		frame:SetAlpha(actions.alpha / 100)
 	end
 	if NameColorChanged then
+		frame.StyleChanged = true
 		frame.NameColorChanged = true
 		local nameText = frame.Name:GetText()
 		if nameText and nameText ~= "" then
@@ -752,10 +760,12 @@ function mod:SetStyleFilter(frame, actions, HealthColorChanged, BorderChanged, F
 		end
 	end
 	if PortraitShown then
+		frame.StyleChanged = true
 		frame.PortraitShown = true
 		self:UpdateElement_Portrait(frame, true)
 	end
 	if NameOnlyChanged then
+		frame.StyleChanged = true
 		frame.NameOnlyChanged = true
 		--hide the bars
 		if frame.CastBar:IsShown() then frame.CastBar:Hide() end
@@ -1233,6 +1243,12 @@ function mod:PassFilterStyle(frame, actions, castbarTriggered)
 	)
 end
 
+function mod:ClearStyledPlate(frame)
+	if frame.StyleChanged then
+		self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+	end
+end
+
 local function filterSort(a,b)
 	if a[2] and b[2] then
 		return a[2]>b[2] --Sort by priority: 1=first, 2=second, 3=third, etc
@@ -1328,6 +1344,11 @@ function mod:StyleFilterEvents_Configure()
 
 	if next(filterList) then
 		tsort(filterList, filterSort) --sort by priority
+	else
+		self:ForEachPlate("ClearStyledPlate")
+		if self.PlayerFrame__ then
+			self:ClearStyledPlate(self.PlayerFrame__.unitFrame)
+		end
 	end
 end
 
@@ -1344,7 +1365,7 @@ function mod:UpdateElement_Filters(frame, event)
 		end
 	end
 
-	self:ClearStyleFilter(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+	self:ClearStyledPlate(frame)
 
 	for filterNum, filter in ipairs(filterList) do
 		filter = E.global.nameplate.filters[filterList[filterNum][1]];
