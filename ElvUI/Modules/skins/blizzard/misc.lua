@@ -1099,6 +1099,26 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
+
+	--New Table Attribute Display (/fstack -> then Alt)
+	TableAttributeDisplay:StripTextures()
+	TableAttributeDisplay:SetTemplate("Transparent")
+	S:HandleScrollBar(TableAttributeDisplayScrollBar)
+	S:HandleCloseButton(TableAttributeDisplay.CloseButton)
+	-- S:HandleButton(TableAttributeDisplay.OpenParentButton) --they need some love
+	-- S:HandleButton(TableAttributeDisplay.DuplicateButton) --they need some love
+	TableAttributeDisplay.DuplicateButton:ClearAllPoints()
+	TableAttributeDisplay.DuplicateButton:SetPoint("LEFT", TableAttributeDisplay.NavigateForwardButton, "RIGHT")
+	S:HandleCheckBox(TableAttributeDisplay.VisibilityButton)
+	S:HandleCheckBox(TableAttributeDisplay.HighlightButton)
+	S:HandleCheckBox(TableAttributeDisplay.DynamicUpdateButton)
+	TableAttributeDisplay.NavigateBackwardButton:ClearAllPoints()
+	TableAttributeDisplay.NavigateBackwardButton:SetPoint("LEFT", TableAttributeDisplay.OpenParentButton, "RIGHT")
+	TableAttributeDisplay.NavigateForwardButton:ClearAllPoints()
+	TableAttributeDisplay.NavigateForwardButton:SetPoint("LEFT", TableAttributeDisplay.NavigateBackwardButton, "RIGHT", 2, 0)
+	S:HandleNextPrevButton(TableAttributeDisplay.NavigateBackwardButton, nil, true)
+	S:HandleNextPrevButton(TableAttributeDisplay.NavigateForwardButton)
+	S:HandleEditBox(TableAttributeDisplay.FilterBox)
 end
 
 S:AddCallback("SkinMisc", LoadSkin)
