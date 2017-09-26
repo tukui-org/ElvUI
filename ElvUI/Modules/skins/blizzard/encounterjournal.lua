@@ -47,9 +47,8 @@ local function LoadSkin()
 	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 0, 0)
 
 	--Skin the tab text
-	local instanceSelect = EncounterJournal.instanceSelect
-	for i = 1, #instanceSelect.Tabs do
-		local tab = instanceSelect.Tabs[i]
+	for i = 1, #InstanceSelect.Tabs do
+		local tab = InstanceSelect.Tabs[i]
 		local text = tab:GetFontString()
 
 		text:FontTemplate()
