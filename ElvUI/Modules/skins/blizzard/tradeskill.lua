@@ -8,7 +8,7 @@ local unpack = unpack
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
-	
+
 	-- MainFrame
 	TradeSkillFramePortrait:Kill()
 	TradeSkillFrame:StripTextures(true)
@@ -17,6 +17,7 @@ local function LoadSkin()
 	TradeSkillFrame.RankFrame:StripTextures()
 	TradeSkillFrame.RankFrame:CreateBackdrop("Default")
 	TradeSkillFrame.RankFrame:SetStatusBarTexture(E["media"].normTex)
+	TradeSkillFrame.RankFrame.RankText:FontTemplate()
 	E:RegisterStatusBar(TradeSkillFrame.RankFrame)
 	TradeSkillFrame.FilterButton:StripTextures(true)
 	TradeSkillFrame.FilterButton:CreateBackdrop('Default', true)
