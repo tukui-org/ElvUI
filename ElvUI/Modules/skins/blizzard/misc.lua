@@ -1100,7 +1100,15 @@ local function LoadSkin()
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 
-	--New Table Attribute Display (/fstack -> then Ctrl for NA? [or Alt for EU?])
+	--New Table Attribute Display (/fstack -> then Ctrl)
+	local function dynamicScrollButtonVisibility(button, frame)
+		if not button.dynamicVisibility then
+			button:HookScript("OnShow", function(self) frame:Show() end)
+			button:HookScript("OnHide", function(self) frame:Hide() end)
+			button.dynamicVisibility = true
+		end
+	end
+
 	local function SkinTableAttributeDisplay(frame)
 		frame:StripTextures()
 		frame:SetTemplate("Transparent")
@@ -1151,6 +1159,7 @@ local function LoadSkin()
 				s.trackbg:Point("TOPRIGHT", s.ScrollUpButton, "BOTTOMRIGHT", 0, -1)
 				s.trackbg:Point("BOTTOMLEFT", s.ScrollDownButton, "TOPLEFT", 0, 1)
 				s.trackbg:SetTemplate("Transparent")
+				dynamicScrollButtonVisibility(s.ScrollUpButton, s.trackbg) -- UpButton handles the TrackBG visibility
 			end
 
 			local t = frame.LinesScrollFrame.ScrollBar:GetThumbTexture()
@@ -1165,6 +1174,7 @@ local function LoadSkin()
 					if s.trackbg then
 						s.thumbbg:SetFrameLevel(s.trackbg:GetFrameLevel()+1)
 					end
+					dynamicScrollButtonVisibility(s.ScrollDownButton, s.thumbbg) -- DownButton handles the ThumbBG visibility
 				end
 			end
 		end
