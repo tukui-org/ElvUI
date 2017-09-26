@@ -19,6 +19,7 @@ local function LoadSkin()
 		"StaticPopup2",
 		"StaticPopup3",
 		"StaticPopup4",
+		"CinematicFrameCloseDialog",
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
@@ -36,6 +37,8 @@ local function LoadSkin()
 	}
 
 	QueueStatusFrame:StripTextures()
+	S:HandleButton(CinematicFrameCloseDialogConfirmButton)
+	S:HandleButton(CinematicFrameCloseDialogResumeButton)
 
 	for i = 1, getn(skins) do
 		_G[skins[i]]:SetTemplate("Transparent")
