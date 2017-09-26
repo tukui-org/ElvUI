@@ -1,9 +1,13 @@
 -- LibArtifactPower-1.0 by Infinitron
 
-local MAJOR, MINOR = "LibArtifactPower-1.0-ElvUI", 1
+local MAJOR, MINOR = "LibArtifactPower-1.0", 1
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
+
+local libAD = LibStub("LibArtifactData-1.0")
+
+if not libAD then return end
 
 lib.ArtifactPowerSpells = {
 	[216876] = 10,
@@ -298,10 +302,12 @@ function lib:DoesItemGrantArtifactPower(itemID)
     return spellID and lib.ArtifactPowerSpells[spellID];
 end
 
-function lib:GetArtifactPowerGrantedByItem(itemID, multiplier)
+function lib:GetArtifactPowerGrantedByItem(itemID)
     local _, _, spellID = GetItemSpell(itemID);
 
     if (spellID and lib.ArtifactPowerSpells[spellID]) then
+        local _, multiplier = libAD:GetArtifactKnowledge();
+
         return lib.ArtifactPowerSpells[spellID] * multiplier;
     end
 end

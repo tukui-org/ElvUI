@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 local LSM = LibStub("LibSharedMedia-3.0")
-local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
+local LAP = LibStub("LibArtifactPower-1.0")
 
 --Cache global variables
 --Lua functions
@@ -172,9 +172,9 @@ end
 
 function mod:GetAPForItem(itemID)
 	if (LAP:DoesItemGrantArtifactPower(itemID)) then
-		return LAP:GetArtifactPowerGrantedByItem(itemID, 1 --[[Temporary multiplier of 1 until we add our own method of getting it]])
+		return LAP:GetArtifactPowerGrantedByItem(itemID)
 	end
-
+	
 	return 0
 end
 
