@@ -172,9 +172,9 @@ end
 
 function mod:GetAPForItem(itemID)
 	if (LAP:DoesItemGrantArtifactPower(itemID)) then
-		return LAP:GetArtifactPowerGrantedByItem(itemID)
+		return LAP:GetArtifactPowerGrantedByItem(itemID, 1 --[[Temporary multiplier of 1 until we add our own method of getting it]])
 	end
-	
+
 	return 0
 end
 
