@@ -177,16 +177,16 @@ end
 
 local apItemCache = {}
 
-function mod:GetAPForItem(itemID, itemLink)
+function mod:GetAPForItem(itemLink)
 
 	--Return cached item if possible
 	if (apItemCache[itemLink] ~= nil) then
 		return apItemCache[itemLink]
 	end
 
-	if (LAP:DoesItemGrantArtifactPower(itemID)) then
+	if (LAP:DoesItemGrantArtifactPower(itemLink)) then
 		local knowledgeLevel = self:GetKnowledgeLevelFromItemLink(itemLink)
-		local apValue = LAP:GetArtifactPowerGrantedByItem(itemID, knowledgeLevel)
+		local apValue = LAP:GetArtifactPowerGrantedByItem(itemLink, knowledgeLevel)
 
 		--Cache item
 		apItemCache[itemLink] = apValue
@@ -199,13 +199,13 @@ end
 
 function mod:GetArtifactPowerInBags()
 	self.artifactBar.BagArtifactPower = 0
-	local itemLink, itemID, AP, _
+	local itemLink, AP
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			_,_,_,_,_,_, itemLink, _,_, itemID = GetContainerItemInfo(bag, slot)
+			itemLink = select(7, GetContainerItemInfo(bag, slot))
 
-			if (itemID) then
-				AP = self:GetAPForItem(itemID, itemLink)
+			if (itemLink) then
+				AP = self:GetAPForItem(itemLink)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
