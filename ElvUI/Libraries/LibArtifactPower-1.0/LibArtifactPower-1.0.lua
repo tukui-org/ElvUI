@@ -355,15 +355,15 @@ lib.ArtifactKnowledgeLevels = {
 }
 
 function lib:DoesItemGrantArtifactPower(itemID)
-    local _, _, spellID = GetItemSpell(itemID)
+	local _, _, spellID = GetItemSpell(itemID)
 
-    return spellID and lib.ArtifactPowerSpells[spellID];
+	return spellID and lib.ArtifactPowerSpells[spellID];
 end
 
 function lib:GetArtifactPowerGrantedByItem(itemID, knowledgeLevel)
-    local _, _, spellID = GetItemSpell(itemID);
+	local _, _, spellID = GetItemSpell(itemID);
 
-    if (spellID and lib.ArtifactPowerSpells[spellID]) then
+	if (spellID and lib.ArtifactPowerSpells[spellID]) then
 		local multiplier, _ = 1, nil
 
 		if (knowledgeLevel and lib.ArtifactKnowledgeLevels[knowledgeLevel]) then
@@ -372,20 +372,20 @@ function lib:GetArtifactPowerGrantedByItem(itemID, knowledgeLevel)
 			_, multiplier = libAD:GetArtifactKnowledge();
 		end
 
-        return lib.ArtifactPowerSpells[spellID] * multiplier;
-    end
+		return lib.ArtifactPowerSpells[spellID] * multiplier;
+	end
 end
 
 function lib:GetBaseArtifactPowerGrantedByItem(itemID)
-    local _, _, spellID = GetItemSpell(itemID);
+	local _, _, spellID = GetItemSpell(itemID);
 
-    if (spellID and lib.ArtifactPowerSpells[spellID]) then
-        return lib.ArtifactPowerSpells[spellID]
-    end
+	if (spellID and lib.ArtifactPowerSpells[spellID]) then
+		return lib.ArtifactPowerSpells[spellID]
+	end
 end
 
 function lib:GetMultiplierForKnowledgeLevel(knowledgeLevel)
-    if (knowledgeLevel and lib.ArtifactKnowledgeLevels[knowledgeLevel]) then
-        return lib.ArtifactKnowledgeLevels[knowledgeLevel]
-    end
+	if (knowledgeLevel and lib.ArtifactKnowledgeLevels[knowledgeLevel]) then
+		return lib.ArtifactKnowledgeLevels[knowledgeLevel]
+	end
 end
