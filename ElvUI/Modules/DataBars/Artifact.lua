@@ -1,15 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 local LSM = LibStub("LibSharedMedia-3.0")
-local LAP = LibStub("LibArtifactPower-1.0")
+local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
 
 --Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, select, pcall = tonumber, select, pcall
-local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
+local format, gsub, strmatch, strfind, split = string.format, string.gsub, string.match, string.find, string.split
 --WoW API / Variables
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_ArtifactUI_GetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemLink = GetContainerItemLink
@@ -19,7 +18,6 @@ local GetSpellInfo = GetSpellInfo
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsArtifactPowerItem = IsArtifactPowerItem
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
@@ -170,23 +168,44 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
-function mod:GetAPForItem(itemID)
-	if (LAP:DoesItemGrantArtifactPower(itemID)) then
-		return LAP:GetArtifactPowerGrantedByItem(itemID)
+function mod:GetKnowledgeLevelFromItemLink(itemLink)
+	local upgradeID = select(15, split(":", itemLink))
+	local knowledgeLevel = tonumber(upgradeID) - 1 --Don't ask why, that's just how it is.
+
+	return knowledgeLevel
+end
+
+local apItemCache = {}
+
+function mod:GetAPForItem(itemID, itemLink)
+
+	--Return cached item if possible
+	if (apItemCache[itemLink] ~= nil) then
+		return apItemCache[itemLink]
 	end
-	
+
+	if (LAP:DoesItemGrantArtifactPower(itemID)) then
+		local knowledgeLevel = self:GetKnowledgeLevelFromItemLink(itemLink)
+		local apValue = LAP:GetArtifactPowerGrantedByItem(itemID, knowledgeLevel)
+
+		--Cache item
+		apItemCache[itemLink] = apValue
+
+		return apValue
+	end
+
 	return 0
 end
 
 function mod:GetArtifactPowerInBags()
 	self.artifactBar.BagArtifactPower = 0
-	local ID, AP
+	local itemLink, itemID, AP, _
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			ID = select(10, GetContainerItemInfo(bag, slot))
+			_,_,_,_,_,_, itemLink, _,_, itemID = GetContainerItemInfo(bag, slot)
 
-			if (ID) then
-				AP = self:GetAPForItem(ID)
+			if (itemID) then
+				AP = self:GetAPForItem(itemID, itemLink)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
