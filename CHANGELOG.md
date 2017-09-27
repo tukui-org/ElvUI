@@ -21,6 +21,8 @@ Added tick width option to player unitframe castbar.
 Added tick color option to player unitframe castbar.  
 Added "Auto Add New Spells" option to actionbar general options.  
 Added "German Number Prefix" to the "Unit Prefix Style".  
+Added Power Threshold trigger to nameplate style filters.  
+Added ability to match players own health in the "Health Threshold" trigger for nameplate style filters.  
 
 
 
@@ -29,6 +31,12 @@ Attempt more fixes towards the unit errors on nameplates.
 Fixed a divide by 0 error in Artifact DataBars.  
 Fixed issue which broke stealable border color on unitframe auras while in a duel.  
 Fixed issue which broke item links and icons in the profile export when using table or plugin format.  
+Fixed issue with AP calculation on items in bags. We no longer use tooltip scanning. We have come up with a much better and accurate way of handling it.  
+Fixed issue with position of detection icon on nameplates when using "Name Only".  
+Fixed issue with healer icon position when portrait is enabled on nameplates.  
+Fixed issue which caused the "Hide" action on nameplate style filters to incorrectly show hidden nameplates if "Hide" was disabled.  
+Fixed issue with portrait position on nameplates when healthbar is disabled but forced to be shown on targeted nameplate.  
+
 
 
 **Misc. Changes:**  
@@ -41,6 +49,12 @@ Changed default position of role icons on unitframes so they don't overlap with 
 Moved "Reset Filter" button in the Filters section and added requirement of an additional click to execute.  
 Renamed "Number Prefix" option to "Unit Prefix Style".  
 Changed the default value for "Unit Prefix Style" from Metric to English.  
+Optimized handling of events for the nameplate style filters to reduce performance impact.  
+Added new library LibArtifactPower-1.0 by Infinitron. We will use this to improve AP calculations.  
+Added possibility of hooking into style filter conditions.  
+Fixed a few font elements on Blizzard panels that were not getting replaced with chosen ElvUI font.  
+Added skin for the CinematicFrameCloseDialog frame.  
+Added skin for the TableAttributeDisplay frame.  
 
 ___
 **Version 10.63 [ September 9th 2017 ]**
