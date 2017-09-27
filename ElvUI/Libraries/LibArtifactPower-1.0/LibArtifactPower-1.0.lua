@@ -1,13 +1,11 @@
 -- LibArtifactPower-1.0 by Infinitron
 
-local MAJOR, MINOR = "LibArtifactPower-1.0", 1
+local MAJOR, MINOR = "LibArtifactPower-1.0-ElvUI", 1
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
 
-local libAD = LibStub("LibArtifactData-1.0")
-
-if not libAD then return end
+local libAD = LibStub("LibArtifactData-1.0", true)
 
 lib.ArtifactPowerSpells = {
 	[216876] = 10,
@@ -296,18 +294,98 @@ lib.ArtifactPowerSpells = {
 	[255188] = 75,
 };
 
+--Knowledge level->multiplier
+lib.ArtifactKnowledgeLevels = {
+	[0] = 1,
+	[1] = 1.25,
+	[2] = 1.5,
+	[3] = 1.9,
+	[4] = 2.4,
+	[5] = 3,
+	[6] = 3.75,
+	[7] = 4.75,
+	[8] = 6,
+	[9] = 7.5,
+	[10] = 9.5,
+	[11] = 12,
+	[12] = 15,
+	[13] = 18.8,
+	[14] = 23.5,
+	[15] = 29.5,
+	[16] = 37,
+	[17] = 46.5,
+	[18] = 58,
+	[19] = 73,
+	[20] = 91,
+	[21] = 114,
+	[22] = 143,
+	[23] = 179,
+	[24] = 224,
+	[25] = 250,
+	[26] = 1001,
+	[27] = 1301,
+	[28] = 1701,
+	[29] = 2201,
+	[30] = 2901,
+	[31] = 3801,
+	[32] = 4901,
+	[33] = 6401,
+	[34] = 8301,
+	[35] = 10801,
+	[36] = 14001,
+	[37] = 18201,
+	[38] = 23701,
+	[39] = 30801,
+	[40] = 40001,
+	[41] = 160001,
+	[42] = 208001,
+	[43] = 270401,
+	[44] = 351501,
+	[45] = 457001,
+	[46] = 594001,
+	[47] = 772501,
+	[48] = 1004000,
+	[49] = 1305000,
+	[50] = 1696500,
+	[51] = 2205500,
+	[52] = 2867500,
+	[53] = 3727500,
+	[54] = 4846000,
+	[55] = 6300000,
+}
+
 function lib:DoesItemGrantArtifactPower(itemID)
     local _, _, spellID = GetItemSpell(itemID)
 
     return spellID and lib.ArtifactPowerSpells[spellID];
 end
 
-function lib:GetArtifactPowerGrantedByItem(itemID)
+function lib:GetArtifactPowerGrantedByItem(itemID, knowledgeLevel)
     local _, _, spellID = GetItemSpell(itemID);
 
     if (spellID and lib.ArtifactPowerSpells[spellID]) then
-        local _, multiplier = libAD:GetArtifactKnowledge();
+		local multiplier, _ = 1, nil
+
+		if (knowledgeLevel and lib.ArtifactKnowledgeLevels[knowledgeLevel]) then
+			multiplier = lib.ArtifactKnowledgeLevels[knowledgeLevel]
+		elseif libAD then
+			_, multiplier = libAD:GetArtifactKnowledge();
+		end
 
         return lib.ArtifactPowerSpells[spellID] * multiplier;
+    end
+end
+
+function lib:GetBaseArtifactPowerGrantedByItem(itemID)
+    local _, _, spellID = GetItemSpell(itemID);
+
+    if (spellID and lib.ArtifactPowerSpells[spellID]) then
+        return lib.ArtifactPowerSpells[spellID]
+    end
+end
+
+function lib:GetMultiplierForKnowledgeLevel(knowledgeLevel)
+    if (knowledgeLevel and lib.ArtifactKnowledgeLevels[knowledgeLevel]) then
+        return lib.ArtifactKnowledgeLevels[knowledgeLevel]
     end
 end
