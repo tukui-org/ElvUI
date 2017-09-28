@@ -4,8 +4,8 @@ local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
-local tinsert = table.insert
+local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
+local tinsert, twipe, tsort = table.insert, table.wipe, table.sort
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -18,6 +18,10 @@ local UnitIsGroupAssistant = UnitIsGroupAssistant
 local InitiateRolePoll = InitiateRolePoll
 local DoReadyCheck = DoReadyCheck
 local ToggleFriendsFrame = ToggleFriendsFrame
+local GetNumGroupMembers = GetNumGroupMembers
+local GetTexCoordsForRole = GetTexCoordsForRole
+local GetRaidRosterInfo = GetRaidRosterInfo
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton
@@ -26,10 +30,10 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, CLOSE
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLockedModeToggle, RaidUtility_CloseButton
--- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll, RoleIcons
 
 E.RaidUtility = RU
-local PANEL_HEIGHT = 100
+local PANEL_HEIGHT = 130
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -97,6 +101,60 @@ function RU:ToggleRaidUtil(event)
 
 	if event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED", 'ToggleRaidUtil')
+	end
+end
+
+-- Credits oRA3 for the RoleIcons
+local function sortColoredNames(a, b)
+	return a:sub(11) < b:sub(11)
+end
+
+local function onEnter(self)
+	local roster = {}
+
+	for i = 1, NUM_RAID_GROUPS do
+		roster[i] = {}
+	end
+
+	local role = self.role
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
+	for i = 1, GetNumGroupMembers() do
+		local name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
+		if name and groupRole == role then
+			local color = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			local coloredName = ("|cff%02x%02x%02x%s"):format(color.r * 255, color.g * 255, color.b * 255, name:gsub("%-.+", "*"))
+			tinsert(roster[group], coloredName)
+		end
+	end
+	for group, list in ipairs(roster) do
+		tsort(list, sortColoredNames)
+		for _, name in ipairs(list) do
+			GameTooltip:AddLine(("[%d] %s"):format(group, name), 1, 1, 1)
+		end
+		twipe(list)
+	end
+	GameTooltip:Show()
+end
+
+local count = {}
+local function UpdateIcons()
+	if not IsInRaid() then
+		RoleIcons:Hide()
+	else
+		RoleIcons:Show()
+	end
+
+	twipe(count)
+	for i = 1, GetNumGroupMembers() do
+		local role = UnitGroupRolesAssigned("raid"..i)
+		if role and role ~= "NONE" then
+			count[role] = (count[role] or 0) + 1
+		end
+	end
+
+	for role, icon in next, RoleIcons.icons do
+		icon.count:SetText(count[role] or 0)
 	end
 end
 
@@ -175,8 +233,43 @@ function RU:Initialize()
 	RaidUtility_CloseButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = false end)
 	RaidUtilityPanel:SetFrameRef("RaidUtility_CloseButton", RaidUtility_CloseButton)
 
+	--Role Icons
+	RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
+	RoleIcons:SetPoint("TOP", RaidUtilityPanel, "TOP", -30, -2)
+	RoleIcons:SetSize(30, 30)
+	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
+	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
+	RoleIcons:SetScript("OnEvent", function()
+		UpdateIcons()
+	end)
+
+	RoleIcons.icons = {}
+
+	for i, role in ipairs({"TANK", "HEALER", "DAMAGER"}) do
+		local frame = CreateFrame("Frame", nil, RoleIcons)
+		frame:SetPoint("LEFT", 30 * (i - 1) - 2 * (i - 1), 0)
+		frame:SetSize(30, 30)
+
+		local texture = frame:CreateTexture(nil, "OVERLAY")
+		texture:SetTexture(337499) -- UI-LFG-ICON-ROLES
+		texture:SetTexCoord(GetTexCoordsForRole(role))
+		texture:SetAllPoints()
+		frame.texture = texture
+
+		local count = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+		count:SetPoint("BOTTOMRIGHT", -2, 2)
+		count:SetText(0)
+		frame.count = count
+
+		frame.role = role
+		frame:SetScript("OnEnter", onEnter)
+		frame:SetScript("OnLeave", GameTooltip_Hide)
+
+		RoleIcons.icons[role] = frame
+	end
+
 	--Disband Raid button
-	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L["Disband Group"], nil)
+	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -35, L["Disband Group"], nil)
 	DisbandRaidButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			E:StaticPopup_Show("DISBAND_RAID")
