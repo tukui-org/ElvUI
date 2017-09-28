@@ -22,6 +22,9 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetTexCoordsForRole = GetTexCoordsForRole
 local GetRaidRosterInfo = GetRaidRosterInfo
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local GameTooltip = GameTooltip
+local GameTooltip_Hide = GameTooltip_Hide
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton
@@ -30,10 +33,11 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, CLOSE
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLockedModeToggle, RaidUtility_CloseButton
--- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll, RoleIcons
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
+-- GLOBALS: RaidUtilityRoleIcons, NUM_RAID_GROUPS, CUSTOM_CLASS_COLORS
 
 E.RaidUtility = RU
-local PANEL_HEIGHT = 130
+local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -109,51 +113,70 @@ local function sortColoredNames(a, b)
 	return a:sub(11) < b:sub(11)
 end
 
+local roleIconRoster = {}
 local function onEnter(self)
-	local roster = {}
+	twipe(roleIconRoster)
 
 	for i = 1, NUM_RAID_GROUPS do
-		roster[i] = {}
+		roleIconRoster[i] = {}
 	end
 
 	local role = self.role
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+	local point = RaidUtility_ShowButton:GetPoint()
+	local bottom = point and find(point, "BOTTOM")
+
+	GameTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	GameTooltip:Point(bottom and "BOTTOM" or "TOP", self, bottom and "TOP" or "BOTTOM", 0, bottom and 6 or -3)
 	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
+
 	for i = 1, GetNumGroupMembers() do
 		local name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
 		if name and groupRole == role then
 			local color = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			local coloredName = ("|cff%02x%02x%02x%s"):format(color.r * 255, color.g * 255, color.b * 255, name:gsub("%-.+", "*"))
-			tinsert(roster[group], coloredName)
+			tinsert(roleIconRoster[group], coloredName)
 		end
 	end
-	for group, list in ipairs(roster) do
+	for group, list in ipairs(roleIconRoster) do
 		tsort(list, sortColoredNames)
 		for _, name in ipairs(list) do
 			GameTooltip:AddLine(("[%d] %s"):format(group, name), 1, 1, 1)
 		end
-		twipe(list)
+		roleIconRoster[group] = nil
 	end
 	GameTooltip:Show()
 end
 
 local count = {}
 local function UpdateIcons()
-	if not IsInRaid() then
-		RoleIcons:Hide()
+	local raid = IsInRaid()
+	local party = IsInGroup()
+
+	if not (raid or party) then
+		RaidUtilityRoleIcons:Hide()
+		RaidUtilityPanel:Height(PANEL_HEIGHT)
+		return
 	else
-		RoleIcons:Show()
+		RaidUtilityRoleIcons:Show()
+		RaidUtilityPanel:Height(PANEL_HEIGHT+30)
 	end
 
 	twipe(count)
 	for i = 1, GetNumGroupMembers() do
-		local role = UnitGroupRolesAssigned("raid"..i)
+		local role = UnitGroupRolesAssigned((raid and "raid" or "party")..i)
 		if role and role ~= "NONE" then
 			count[role] = (count[role] or 0) + 1
 		end
 	end
 
-	for role, icon in next, RoleIcons.icons do
+	if not raid and party then -- only need this party (we believe)
+		local myRole = E:GetPlayerRole()
+		if myRole then
+			count[myRole] = (count[myRole] or 0) + 1
+		end
+	end
+
+	for role, icon in next, RaidUtilityRoleIcons.icons do
 		icon.count:SetText(count[role] or 0)
 	end
 end
@@ -178,18 +201,29 @@ function RU:Initialize()
 	RaidUtility_ShowButton:SetAttribute("_onclick", ([=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
 		local closeButton = raidUtil:GetFrameRef("RaidUtility_CloseButton")
-		self:Hide();
-		raidUtil:Show();
+		local disbandButton = raidUtil:GetFrameRef("DisbandRaidButton")
+		local roleIcons = raidUtil:GetFrameRef("RaidUtilityRoleIcons")
 
-		local point = self:GetPoint();
+		self:Hide()
+		raidUtil:Show()
+
+		local point = self:GetPoint()
 		local raidUtilPoint, closeButtonPoint, yOffset
+		local roleIconsPoint, roleIconOffset, disbandOffset
+
 		if string.find(point, "BOTTOM") then
 			raidUtilPoint = "BOTTOM"
 			closeButtonPoint = "TOP"
+			roleIconsPoint = "BOTTOM"
+			roleIconOffset = 2
+			disbandOffset = -5
 			yOffset = 1
 		else
 			raidUtilPoint = "TOP"
 			closeButtonPoint = "BOTTOM"
+			roleIconsPoint = "TOP"
+			roleIconOffset = -2
+			disbandOffset = -35
 			yOffset = -1
 		end
 
@@ -199,6 +233,16 @@ function RU:Initialize()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
+
+		disbandButton:ClearAllPoints()
+		if roleIcons:IsShown() then
+			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, disbandOffset)
+
+			roleIcons:ClearAllPoints()
+			roleIcons:SetPoint(roleIconsPoint, raidUtil, roleIconsPoint, -30, roleIconOffset)
+		else
+			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, -5)
+		end
 	]=]):format(-E.Border + E.Spacing*3))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = true end)
 	RaidUtility_ShowButton:SetMovable(true)
@@ -234,7 +278,8 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameRef("RaidUtility_CloseButton", RaidUtility_CloseButton)
 
 	--Role Icons
-	RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
+	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
+	RaidUtilityPanel:SetFrameRef("RaidUtilityRoleIcons", RaidUtilityRoleIcons)
 	RoleIcons:SetPoint("TOP", RaidUtilityPanel, "TOP", -30, -2)
 	RoleIcons:SetSize(30, 30)
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -269,7 +314,8 @@ function RU:Initialize()
 	end
 
 	--Disband Raid button
-	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -35, L["Disband Group"], nil)
+	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L["Disband Group"], nil)
+	RaidUtilityPanel:SetFrameRef("DisbandRaidButton", DisbandRaidButton)
 	DisbandRaidButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			E:StaticPopup_Show("DISBAND_RAID")
