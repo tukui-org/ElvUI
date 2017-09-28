@@ -25,6 +25,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
+local UIParent = UIParent
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton
