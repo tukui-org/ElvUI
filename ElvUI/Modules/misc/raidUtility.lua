@@ -149,16 +149,16 @@ local function onEnter(self)
 end
 
 local count = {}
-local function UpdateIcons()
+local function UpdateIcons(self, event)
 	local raid = IsInRaid()
-	local party = IsInGroup()
+	local party --= IsInGroup() --We could have this in party :thinking:
 
 	if not (raid or party) then
-		RaidUtilityRoleIcons:Hide()
+		self:Hide()
 		RaidUtilityPanel:Height(PANEL_HEIGHT)
 		return
 	else
-		RaidUtilityRoleIcons:Show()
+		self:Show()
 		RaidUtilityPanel:Height(PANEL_HEIGHT+30)
 	end
 
@@ -285,9 +285,7 @@ function RU:Initialize()
 	RoleIcons:SetSize(30, 30)
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
 	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
-	RoleIcons:SetScript("OnEvent", function()
-		UpdateIcons()
-	end)
+	RoleIcons:SetScript("OnEvent", UpdateIcons)
 
 	RoleIcons.icons = {}
 
