@@ -230,7 +230,8 @@ function RU:Initialize()
 
 		yOffset = yOffset * (tonumber(%d))
 
-		raidUtil:Height(roleIcons:GetAttribute("PANEL_HEIGHT"))
+		local iconHeight = roleIcons:GetAttribute("PANEL_HEIGHT")
+		raidUtil:SetHeight(iconHeight or 100) --has a fallback
 
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
