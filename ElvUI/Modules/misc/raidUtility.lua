@@ -155,11 +155,11 @@ local function UpdateIcons(self, event)
 
 	if not (raid or party) then
 		self:Hide()
-		RaidUtilityPanel:Height(PANEL_HEIGHT)
+		self.panel_height = PANEL_HEIGHT
 		return
 	else
 		self:Show()
-		RaidUtilityPanel:Height(PANEL_HEIGHT+30)
+		self.panel_height = PANEL_HEIGHT+30
 	end
 
 	twipe(count)
@@ -229,6 +229,8 @@ function RU:Initialize()
 		end
 
 		yOffset = yOffset * (tonumber(%d))
+
+		raidUtil:Height(roleIcons.panel_height)
 
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
