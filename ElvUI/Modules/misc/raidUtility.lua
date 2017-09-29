@@ -126,7 +126,7 @@ local function onEnter(self)
 	local point = RaidUtility_ShowButton:GetPoint()
 	local bottom = point and find(point, "BOTTOM")
 
-	GameTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	GameTooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 	GameTooltip:Point(bottom and "BOTTOM" or "TOP", self, bottom and "TOP" or "BOTTOM", 0, bottom and 6 or -3)
 	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
 
@@ -138,6 +138,7 @@ local function onEnter(self)
 			tinsert(roleIconRoster[group], coloredName)
 		end
 	end
+
 	for group, list in ipairs(roleIconRoster) do
 		tsort(list, sortColoredNames)
 		for _, name in ipairs(list) do
@@ -145,6 +146,7 @@ local function onEnter(self)
 		end
 		roleIconRoster[group] = nil
 	end
+
 	GameTooltip:Show()
 end
 
@@ -304,7 +306,7 @@ function RU:Initialize()
 		frame:SetSize(30, 30)
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
-		texture:SetTexture(337499) -- UI-LFG-ICON-ROLES
+		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES")
 		texture:SetTexCoord(GetTexCoordsForRole(role))
 		texture:SetAllPoints()
 		frame.texture = texture
