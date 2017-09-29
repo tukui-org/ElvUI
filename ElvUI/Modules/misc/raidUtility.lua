@@ -186,7 +186,7 @@ function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
 
 	--Create main frame
-	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate, SecureHandlerAttributeTemplate")
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
@@ -194,6 +194,11 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
+	RaidUtilityPanel:SetAttribute("_onattributechanged", [=[
+		if name == "panel_height" and value then
+			self:SetHeight(value)
+		end
+	]=])
 	E.FrameLocks['RaidUtilityPanel'] = true
 
 	--Show Button
