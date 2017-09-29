@@ -123,11 +123,16 @@ local function onEnter(self)
 	end
 
 	local role = self.role
-	local point = RaidUtility_ShowButton:GetPoint()
+	local point = E:GetScreenQuadrant(RaidUtility_ShowButton)
 	local bottom = point and find(point, "BOTTOM")
+	local left = point and find(point, "LEFT")
+
+	local anchor1 = (bottom and left and "BOTTOMLEFT") or (bottom and "BOTTOMRIGHT") or (left and "TOPLEFT") or "TOPRIGHT"
+	local anchor2 = (bottom and left and "BOTTOMRIGHT") or (bottom and "BOTTOMLEFT") or (left and "TOPRIGHT") or "TOPLEFT"
+	local anchorX = left and 2 or -2
 
 	GameTooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
-	GameTooltip:Point(bottom and "BOTTOM" or "TOP", self, bottom and "TOP" or "BOTTOM", 0, bottom and 6 or -3)
+	GameTooltip:Point(anchor1, self, anchor2, anchorX, 0)
 	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
 
 	for i = 1, GetNumGroupMembers() do
@@ -150,27 +155,14 @@ local function onEnter(self)
 	GameTooltip:Show()
 end
 
-local function RaidUtility_UpdateIconArea()
-	local roleIconsPoint, roleIconOffset, disbandOffset
-	local point = RaidUtility_ShowButton:GetPoint()
-	if find(point, "BOTTOM") then
-		roleIconsPoint = "BOTTOM"
-		roleIconOffset = 2
-		disbandOffset = -5
+local function RaidUtility_PositionRoleIcons()
+	local point = E:GetScreenQuadrant(RaidUtility_ShowButton)
+	local left = point and find(point, "LEFT")
+	RaidUtilityRoleIcons:ClearAllPoints()
+	if left then
+		RaidUtilityRoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
 	else
-		roleIconsPoint = "TOP"
-		roleIconOffset = -2
-		disbandOffset = -35
-	end
-
-	DisbandRaidButton:ClearAllPoints()
-	if RaidUtilityRoleIcons:IsShown() then
-		DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, disbandOffset)
-
-		RaidUtilityRoleIcons:ClearAllPoints()
-		RaidUtilityRoleIcons:SetPoint(roleIconsPoint, RaidUtilityPanel, roleIconsPoint, -30, roleIconOffset)
-	else
-		DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, -5)
+		RaidUtilityRoleIcons:SetPoint("RIGHT", RaidUtilityPanel, "LEFT", 1, 0)
 	end
 end
 
@@ -182,17 +174,10 @@ local function UpdateIcons(self, event)
 
 	if not (raid or party) then
 		self:Hide()
-		if not combat then
-			RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
-		end
-		RaidUtility_UpdateIconArea()
 		return
 	else
 		self:Show()
-		if not combat then
-			RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
-		end
-		RaidUtility_UpdateIconArea()
+		RaidUtility_PositionRoleIcons()
 	end
 
 	twipe(count)
@@ -219,7 +204,7 @@ function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
 
 	--Create main frame
-	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate, SecureHandlerAttributeTemplate")
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
@@ -227,11 +212,6 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
-	RaidUtilityPanel:SetAttribute("_onattributechanged", [=[
-		if name == "panel_height" and value then
-			self:SetHeight(value)
-		end
-	]=])
 	E.FrameLocks['RaidUtilityPanel'] = true
 
 	--Show Button
@@ -266,7 +246,7 @@ function RU:Initialize()
 	]=]):format(-E.Border + E.Spacing*3))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function()
 		RaidUtilityPanel.toggled = true
-		RaidUtility_UpdateIconArea()
+		RaidUtility_PositionRoleIcons()
 	end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
@@ -302,8 +282,9 @@ function RU:Initialize()
 
 	--Role Icons
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
-	RoleIcons:SetPoint("TOP", RaidUtilityPanel, "TOP", -30, -2)
-	RoleIcons:SetSize(30, 30)
+	RoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
+	RoleIcons:SetSize(36, 96)
+	RoleIcons:SetTemplate("Transparent")
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
 	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
 	RoleIcons:SetScript("OnEvent", UpdateIcons)
@@ -312,11 +293,11 @@ function RU:Initialize()
 
 	for i, role in ipairs({"TANK", "HEALER", "DAMAGER"}) do
 		local frame = CreateFrame("Frame", nil, RoleIcons)
-		frame:SetPoint("LEFT", 30 * (i - 1) - 2 * (i - 1), 0)
+		frame:SetPoint("BOTTOM", 0, (i==1 and 2) or (33 * (i - 1) - 2 * (i - 1)))
 		frame:SetSize(30, 30)
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
-		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES")
+		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES") --(337499)
 		texture:SetTexCoord(GetTexCoordsForRole(role))
 		texture:SetAllPoints()
 		frame.texture = texture
