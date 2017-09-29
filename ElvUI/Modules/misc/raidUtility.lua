@@ -202,8 +202,8 @@ function RU:Initialize()
 	RaidUtility_ShowButton:SetAttribute("_onclick", ([=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
 		local closeButton = raidUtil:GetFrameRef("RaidUtility_CloseButton")
-		local disbandButton = raidUtil:GetFrameRef("DisbandRaidButton")
-		local roleIcons = raidUtil:GetFrameRef("RaidUtilityRoleIcons")
+		local disbandButton = self:GetFrameRef("DisbandRaidButton")
+		local roleIcons = self:GetFrameRef("RaidUtilityRoleIcons")
 
 		self:Hide()
 		raidUtil:Show()
@@ -283,7 +283,7 @@ function RU:Initialize()
 
 	--Role Icons
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
-	RaidUtilityPanel:SetFrameRef("RaidUtilityRoleIcons", RaidUtilityRoleIcons)
+	RaidUtility_ShowButton:SetFrameRef("RaidUtilityRoleIcons", RaidUtilityRoleIcons)
 	RoleIcons:SetPoint("TOP", RaidUtilityPanel, "TOP", -30, -2)
 	RoleIcons:SetSize(30, 30)
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -317,7 +317,7 @@ function RU:Initialize()
 
 	--Disband Raid button
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L["Disband Group"], nil)
-	RaidUtilityPanel:SetFrameRef("DisbandRaidButton", DisbandRaidButton)
+	RaidUtility_ShowButton:SetFrameRef("DisbandRaidButton", DisbandRaidButton)
 	DisbandRaidButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			E:StaticPopup_Show("DISBAND_RAID")
