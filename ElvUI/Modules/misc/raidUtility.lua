@@ -150,6 +150,30 @@ local function onEnter(self)
 	GameTooltip:Show()
 end
 
+local function RaidUtility_UpdateIconArea()
+	local roleIconsPoint, roleIconOffset, disbandOffset
+	local point = RaidUtility_ShowButton:GetPoint()
+	if find(point, "BOTTOM") then
+		roleIconsPoint = "BOTTOM"
+		roleIconOffset = 2
+		disbandOffset = -5
+	else
+		roleIconsPoint = "TOP"
+		roleIconOffset = -2
+		disbandOffset = -35
+	end
+
+	DisbandRaidButton:ClearAllPoints()
+	if RaidUtilityRoleIcons:IsShown() then
+		DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, disbandOffset)
+
+		RaidUtilityRoleIcons:ClearAllPoints()
+		RaidUtilityRoleIcons:SetPoint(roleIconsPoint, RaidUtilityPanel, roleIconsPoint, -30, roleIconOffset)
+	else
+		DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, -5)
+	end
+end
+
 local count = {}
 local function UpdateIcons(self, event)
 	local raid = IsInRaid()
@@ -158,10 +182,12 @@ local function UpdateIcons(self, event)
 	if not (raid or party) then
 		self:Hide()
 		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
+		RaidUtility_UpdateIconArea()
 		return
 	else
 		self:Show()
 		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
+		RaidUtility_UpdateIconArea()
 	end
 
 	twipe(count)
@@ -235,28 +261,7 @@ function RU:Initialize()
 	]=]):format(-E.Border + E.Spacing*3))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function()
 		RaidUtilityPanel.toggled = true
-
-		local roleIconsPoint, roleIconOffset, disbandOffset
-		local point = RaidUtility_ShowButton:GetPoint()
-		if find(point, "BOTTOM") then
-			roleIconsPoint = "BOTTOM"
-			roleIconOffset = 2
-			disbandOffset = -5
-		else
-			roleIconsPoint = "TOP"
-			roleIconOffset = -2
-			disbandOffset = -35
-		end
-
-		DisbandRaidButton:ClearAllPoints()
-		if RaidUtilityRoleIcons:IsShown() then
-			DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, disbandOffset)
-
-			RaidUtilityRoleIcons:ClearAllPoints()
-			RaidUtilityRoleIcons:SetPoint(roleIconsPoint, RaidUtilityPanel, roleIconsPoint, -30, roleIconOffset)
-		else
-			DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, -5)
-		end
+		RaidUtility_UpdateIconArea()
 	end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
