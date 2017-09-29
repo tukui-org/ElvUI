@@ -226,9 +226,6 @@ function RU:Initialize()
 
 		yOffset = yOffset * (tonumber(%d))
 
-		local iconHeight = raidUtil:GetAttribute("PANEL_HEIGHT")
-		raidUtil:SetHeight(iconHeight or 100) --has a fallback
-
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
