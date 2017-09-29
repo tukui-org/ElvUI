@@ -299,12 +299,15 @@ function RU:Initialize()
 			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 2)
 		end
 		frame:SetSize(30, 30)
+		frame:CreateBackdrop('Default')
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
 		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES") --(337499)
-		texture:SetTexCoord(GetTexCoordsForRole(role))
+		local texA, texB, texC, texD = GetTexCoordsForRole(role)
+		texture:SetTexCoord(texA+0.002, texB-0.0025, texC-0.002, texD-0.015)
 		texture:SetAllPoints()
 		frame.texture = texture
+		frame.backdrop:SetOutside(texture, -3, -3)
 
 		local count = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 		count:SetPoint("BOTTOMRIGHT", -2, 2)
