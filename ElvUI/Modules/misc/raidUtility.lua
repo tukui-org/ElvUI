@@ -283,7 +283,7 @@ function RU:Initialize()
 	--Role Icons
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
 	RoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
-	RoleIcons:SetSize(36, 96)
+	RoleIcons:SetSize(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate("Transparent")
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
 	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
@@ -291,9 +291,14 @@ function RU:Initialize()
 
 	RoleIcons.icons = {}
 
-	for i, role in ipairs({"TANK", "HEALER", "DAMAGER"}) do
-		local frame = CreateFrame("Frame", nil, RoleIcons)
-		frame:SetPoint("BOTTOM", 0, (i==1 and 2) or (33 * (i - 1) - 2 * (i - 1)))
+	local roles = {"TANK", "HEALER", "DAMAGER"}
+	for i, role in ipairs(roles) do
+		local frame = CreateFrame("Frame", "$parent_"..role, RoleIcons)
+		if i == 1 then
+			frame:Point("BOTTOM", 0, 3)
+		else
+			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 2)
+		end
 		frame:SetSize(30, 30)
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
