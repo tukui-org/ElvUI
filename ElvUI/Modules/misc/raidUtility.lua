@@ -294,23 +294,30 @@ function RU:Initialize()
 	for i, role in ipairs(roles) do
 		local frame = CreateFrame("Frame", "$parent_"..role, RoleIcons)
 		if i == 1 then
-			frame:Point("BOTTOM", 0, 3)
+			frame:Point("BOTTOM", 0, 4)
 		else
-			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 2)
+			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 4)
 		end
-		frame:SetSize(30, 30)
-		frame:CreateBackdrop('Default')
+
+		frame:SetSize(28, 28)
+		--frame:SetTemplate("Default")
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
 		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES") --(337499)
 		local texA, texB, texC, texD = GetTexCoordsForRole(role)
-		texture:SetTexCoord(texA+0.002, texB-0.0025, texC-0.002, texD-0.015)
-		texture:SetAllPoints()
+		texture:SetTexCoord(texA, texB, texC, texD)
+		--[[if E.PixelMode then
+			texture:SetTexCoord(texA+0.0015, texB-0.005, texC-0.005, texD-0.01)
+		else
+			texture:SetTexCoord(texA+0.01, texB-0.01, texC+0.001, texD-0.015)
+		end]]
+		local texturePlace = --[[(E.PixelMode and 4) or]] 2
+		texture:Point("TOPLEFT", frame, "TOPLEFT", -texturePlace, texturePlace)
+		texture:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", texturePlace, -texturePlace)
 		frame.texture = texture
-		frame.backdrop:SetOutside(texture, -3, -3)
 
 		local count = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-		count:SetPoint("BOTTOMRIGHT", -2, 2)
+		count:Point("BOTTOMRIGHT", -2, 2)
 		count:SetText(0)
 		frame.count = count
 
