@@ -178,15 +178,20 @@ local count = {}
 local function UpdateIcons(self, event)
 	local raid = IsInRaid()
 	local party --= IsInGroup() --We could have this in party :thinking:
+	local combat = InCombatLockdown()
 
 	if not (raid or party) then
 		self:Hide()
-		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
+		if not combat then
+			RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
+		end
 		RaidUtility_UpdateIconArea()
 		return
 	else
 		self:Show()
-		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
+		if not combat then
+			RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
+		end
 		RaidUtility_UpdateIconArea()
 	end
 
