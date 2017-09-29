@@ -38,6 +38,7 @@ local UIParent = UIParent
 -- GLOBALS: RaidUtilityRoleIcons, NUM_RAID_GROUPS, CUSTOM_CLASS_COLORS
 
 E.RaidUtility = RU
+local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -154,9 +155,11 @@ local function UpdateIcons(self, event)
 
 	if not (raid or party) then
 		self:Hide()
+		self:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
 		return
 	else
 		self:Show()
+		self:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
 	end
 
 	twipe(count)
@@ -186,7 +189,7 @@ function RU:Initialize()
 	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
-	RaidUtilityPanel:Height(100)
+	RaidUtilityPanel:Height(PANEL_HEIGHT)
 	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
@@ -227,6 +230,8 @@ function RU:Initialize()
 
 		yOffset = yOffset * (tonumber(%d))
 
+		raidUtil:Height(roleIcons:GetAttribute("PANEL_HEIGHT"))
+
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
@@ -234,13 +239,11 @@ function RU:Initialize()
 
 		disbandButton:ClearAllPoints()
 		if roleIcons:IsShown() then
-			raidUtil:Height(130)
 			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, disbandOffset)
 
 			roleIcons:ClearAllPoints()
 			roleIcons:SetPoint(roleIconsPoint, raidUtil, roleIconsPoint, -30, roleIconOffset)
 		else
-			raidUtil:Height(100)
 			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, -5)
 		end
 	]=]):format(-E.Border + E.Spacing*3))
