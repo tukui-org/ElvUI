@@ -155,11 +155,11 @@ local function UpdateIcons(self, event)
 
 	if not (raid or party) then
 		self:Hide()
-		self:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
+		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT)
 		return
 	else
 		self:Show()
-		self:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
+		RaidUtilityPanel:SetAttribute("PANEL_HEIGHT", PANEL_HEIGHT+30)
 	end
 
 	twipe(count)
@@ -202,53 +202,58 @@ function RU:Initialize()
 	RaidUtility_ShowButton:SetAttribute("_onclick", ([=[
 		local raidUtil = self:GetFrameRef("RaidUtilityPanel")
 		local closeButton = raidUtil:GetFrameRef("RaidUtility_CloseButton")
-		local disbandButton = self:GetFrameRef("DisbandRaidButton")
-		local roleIcons = self:GetFrameRef("RaidUtilityRoleIcons")
 
 		self:Hide()
 		raidUtil:Show()
 
 		local point = self:GetPoint()
 		local raidUtilPoint, closeButtonPoint, yOffset
-		local roleIconsPoint, roleIconOffset, disbandOffset
 
 		if string.find(point, "BOTTOM") then
 			raidUtilPoint = "BOTTOM"
 			closeButtonPoint = "TOP"
-			roleIconsPoint = "BOTTOM"
-			roleIconOffset = 2
-			disbandOffset = -5
 			yOffset = 1
 		else
 			raidUtilPoint = "TOP"
 			closeButtonPoint = "BOTTOM"
-			roleIconsPoint = "TOP"
-			roleIconOffset = -2
-			disbandOffset = -35
 			yOffset = -1
 		end
 
 		yOffset = yOffset * (tonumber(%d))
 
-		local iconHeight = roleIcons:GetAttribute("PANEL_HEIGHT")
+		local iconHeight = raidUtil:GetAttribute("PANEL_HEIGHT")
 		raidUtil:SetHeight(iconHeight or 100) --has a fallback
 
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
-
-		disbandButton:ClearAllPoints()
-		if roleIcons:IsShown() then
-			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, disbandOffset)
-
-			roleIcons:ClearAllPoints()
-			roleIcons:SetPoint(roleIconsPoint, raidUtil, roleIconsPoint, -30, roleIconOffset)
-		else
-			disbandButton:SetPoint("TOP", raidUtil, "TOP", 0, -5)
-		end
 	]=]):format(-E.Border + E.Spacing*3))
-	RaidUtility_ShowButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = true end)
+	RaidUtility_ShowButton:SetScript("OnMouseUp", function()
+		RaidUtilityPanel.toggled = true
+
+		local roleIconsPoint, roleIconOffset, disbandOffset
+		local point = RaidUtility_ShowButton:GetPoint()
+		if find(point, "BOTTOM") then
+			roleIconsPoint = "BOTTOM"
+			roleIconOffset = 2
+			disbandOffset = -5
+		else
+			roleIconsPoint = "TOP"
+			roleIconOffset = -2
+			disbandOffset = -35
+		end
+
+		DisbandRaidButton:ClearAllPoints()
+		if RaidUtilityRoleIcons:IsShown() then
+			DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, disbandOffset)
+
+			RaidUtilityRoleIcons:ClearAllPoints()
+			RaidUtilityRoleIcons:SetPoint(roleIconsPoint, RaidUtilityPanel, roleIconsPoint, -30, roleIconOffset)
+		else
+			DisbandRaidButton:SetPoint("TOP", RaidUtilityPanel, "TOP", 0, -5)
+		end
+	end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
 	RaidUtility_ShowButton:SetClampRectInsets(0, 0, -1, 1)
@@ -283,7 +288,6 @@ function RU:Initialize()
 
 	--Role Icons
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
-	RaidUtility_ShowButton:SetFrameRef("RaidUtilityRoleIcons", RaidUtilityRoleIcons)
 	RoleIcons:SetPoint("TOP", RaidUtilityPanel, "TOP", -30, -2)
 	RoleIcons:SetSize(30, 30)
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -317,7 +321,6 @@ function RU:Initialize()
 
 	--Disband Raid button
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L["Disband Group"], nil)
-	RaidUtility_ShowButton:SetFrameRef("DisbandRaidButton", DisbandRaidButton)
 	DisbandRaidButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			E:StaticPopup_Show("DISBAND_RAID")
