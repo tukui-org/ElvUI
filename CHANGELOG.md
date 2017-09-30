@@ -23,7 +23,7 @@ Added "Auto Add New Spells" option to actionbar general options.
 Added "German Number Prefix" to the "Unit Prefix Style".  
 Added Power Threshold trigger to nameplate style filters.  
 Added ability to match players own health in the "Health Threshold" trigger for nameplate style filters.  
-Added Role icons to the RaidUtility frame if we are in Raid. #122  
+Added role icons to the RaidUtility frame when in a raid.  
 
 
 
