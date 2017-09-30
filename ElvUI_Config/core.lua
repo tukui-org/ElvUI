@@ -126,7 +126,7 @@ local DEVELOPERS = {
 	"Omega1970",
 	"Hydrazine",
 	"Blazeflack",
-	"Merathilis",
+	"|cffff7d0aMerathilis|r",
 	"|cFF8866ccSimpy|r"
 }
 
