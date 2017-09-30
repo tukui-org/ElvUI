@@ -233,35 +233,35 @@ local rolePaths = {
 	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
 }
 
-local specialChat_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
-local specialChat_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
-local specialChat_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
+local chatLogos_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
+local chatLogos_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
+local chatLogos_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
 local specialChatIcons = {
 	["Illidan"] = {
-		["Affinichi"] = specialChat_Bathrobe,
-		["Uplift"] = specialChat_Bathrobe,
-		["Affinitii"] = specialChat_Bathrobe,
-		["Affinity"] = specialChat_Bathrobe
+		["Affinichi"] = chatLogos_Bathrobe,
+		["Uplift"] = chatLogos_Bathrobe,
+		["Affinitii"] = chatLogos_Bathrobe,
+		["Affinity"] = chatLogos_Bathrobe
 	},
 	["Spirestone"] = {
-		["Elv"] = specialChat_ElvUI,
-		["Tirain"] = specialChat_MrHankey,
-		["Sinth"] = specialChat_MrHankey,
+		["Elv"] = chatLogos_ElvUI,
+		["Tirain"] = chatLogos_MrHankey,
+		["Sinth"] = chatLogos_MrHankey,
 	},
 	["Silvermoon"] = {
-		["Blazii"] = specialChat_ElvUI,
-		["Chazii"] = specialChat_ElvUI,
+		["Blazii"] = chatLogos_ElvUI,
+		["Chazii"] = chatLogos_ElvUI,
 	},
 	["Shattrath"] = {
-		["Merathilis"] = specialChat_ElvUI,
+		["Merathilis"] = chatLogos_ElvUI,
 	},
 	["Cenarius"] = {
-		["Simpy"] = specialChat_ElvUI,
-		["Imsojelly"] = specialChat_ElvUI,
-		["Cutepally"] = specialChat_ElvUI,
+		["Simpy"] = chatLogos_ElvUI,
+		["Imsojelly"] = chatLogos_ElvUI,
+		["Cutepally"] = chatLogos_ElvUI,
 	},
 	["Kil'jaeden"] = {
-		["Elvz"] = specialChat_ElvUI,
+		["Elvz"] = chatLogos_ElvUI,
 	},
 }
 
