@@ -134,11 +134,12 @@ local function onEnter(self)
 	GameTooltip:Point(anchor1, self, anchor2, anchorX, 0)
 	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
 
+	local name, group, class, groupRole, color, coloredName, _
 	for i = 1, GetNumGroupMembers() do
-		local name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
+		name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
 		if name and groupRole == role then
-			local color = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
-			local coloredName = ("|cff%02x%02x%02x%s"):format(color.r * 255, color.g * 255, color.b * 255, name:gsub("%-.+", "*"))
+			color = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			coloredName = ("|cff%02x%02x%02x%s"):format(color.r * 255, color.g * 255, color.b * 255, name:gsub("%-.+", "*"))
 			tinsert(roleIconRoster[group], coloredName)
 		end
 	end
@@ -179,8 +180,10 @@ local function UpdateIcons(self, event)
 	end
 
 	twipe(count)
+
+	local role
 	for i = 1, GetNumGroupMembers() do
-		local role = UnitGroupRolesAssigned((raid and "raid" or "party")..i)
+		role = UnitGroupRolesAssigned((raid and "raid" or "party")..i)
 		if role and role ~= "NONE" then
 			count[role] = (count[role] or 0) + 1
 		end
