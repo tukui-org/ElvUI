@@ -169,7 +169,6 @@ local count = {}
 local function UpdateIcons(self, event)
 	local raid = IsInRaid()
 	local party --= IsInGroup() --We could have this in party :thinking:
-	local combat = InCombatLockdown()
 
 	if not (raid or party) then
 		self:Hide()
