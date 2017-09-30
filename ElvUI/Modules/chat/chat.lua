@@ -233,27 +233,35 @@ local rolePaths = {
 	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
 }
 
+local specialChat_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
+local specialChat_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
+local specialChat_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
 local specialChatIcons = {
 	["Illidan"] = {
-		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Uplift"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
+		["Affinichi"] = specialChat_Bathrobe,
+		["Uplift"] = specialChat_Bathrobe,
+		["Affinitii"] = specialChat_Bathrobe,
+		["Affinity"] = specialChat_Bathrobe
 	},
 	["Spirestone"] = {
-		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
-		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
+		["Elv"] = specialChat_ElvUI,
+		["Tirain"] = specialChat_MrHankey,
+		["Sinth"] = specialChat_MrHankey,
 	},
 	["Silvermoon"] = {
-		["Blazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Chazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Blazii"] = specialChat_ElvUI,
+		["Chazii"] = specialChat_ElvUI,
 	},
 	["Shattrath"] = {
-		["Merathilis"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Merathilis"] = specialChat_ElvUI,
+	},
+	["Cenarius"] = {
+		["Simpy"] = specialChat_ElvUI,
+		["Imsojelly"] = specialChat_ElvUI,
+		["Cutepally"] = specialChat_ElvUI,
 	},
 	["Kil'jaeden"] = {
-		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Elvz"] = specialChat_ElvUI,
 	},
 }
 
