@@ -1021,7 +1021,7 @@ function mod:Initialize()
 
 	--Add metatable to all our StyleFilters so they can grab default values if missing
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:StyleFilterInitializeFilters(filterTable);
+		self:StyleFilterInitializeFilter(filterTable);
 	end
 
 	self:StyleFilterConfigureEvents()
