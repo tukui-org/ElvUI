@@ -1,4 +1,18 @@
-**Version 10.64 [ ]**
+**Version 10.65 [  ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**  
+
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.64 [ October 1st 2017 ]**
 
 **New Additions:**  
 Added Korean option for the "Numer Prefix Style" setting. This will allow unitframe tags to use the Korean number annotations.  
@@ -11,7 +25,7 @@ Added instance type triggers to nameplate style filters.
 Added instance difficulty triggers to nameplate style filters.  
 Added classification triggers to nameplate style filters.  
 Added toggle option for datatext backdrop. Disabling it will remove the backdrop completely and only show text.  
-Added option to show the default friendly nameplates in instances. This option can be found in the General Options section of the NamePlates config.  
+Added option to hide Blizzard nameplates. If enabled then you will no longer see nameplates with the default Blizzard appearance. This option can be found in the NamePlate General Options.   
 Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
 Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
 Added alpha action to nameplate style filters.  
