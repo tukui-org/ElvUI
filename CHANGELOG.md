@@ -1,4 +1,4 @@
-**Version 10.65 [  ]**
+**Version 10.66 [  ]**
 
 **New Additions:**  
 
@@ -10,6 +10,20 @@
 
 **Misc. Changes:**  
 
+
+___
+**Version 10.65 [ October 1st 2017 ]**
+
+**New Additions:**  
+None  
+
+
+**Bug Fixes:**  
+Fixed issue creating new style filters.  
+
+
+**Misc. Changes:**  
+None  
 
 ___
 **Version 10.64 [ October 1st 2017 ]**
