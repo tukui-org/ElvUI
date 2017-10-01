@@ -7,9 +7,10 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local unpack, type = unpack, type
 local next, ipairs = next, ipairs
 local match = string.match
+local find = string.find
+local format = string.format
 local strsplit = strsplit
 local tsort = table.sort
-local format = format
 local ceil = math.ceil
 local select = select
 --WoW API / Variables
@@ -18,7 +19,7 @@ local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local UnitAura = UnitAura
+local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
@@ -167,8 +168,8 @@ function UF:Configure_Auras(frame, auraType)
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
 	auras:Height(auras.size * rows)
-	auras["growth-y"] = db[auraType].anchorPoint:find('TOP') and 'UP' or 'DOWN'
-	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (db[auraType].anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+	auras["growth-y"] = find(db[auraType].anchorPoint, 'TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (find(db[auraType].anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
 
 	--These are needed for SmartAuraPosition
@@ -373,9 +374,6 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 end
 
 function UF:PostUpdateAura(unit, button, index)
-	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local isFriend = UnitIsFriend('player', unit)
-
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	local type = auras.type
@@ -390,12 +388,12 @@ function UF:PostUpdateAura(unit, button, index)
 	end
 
 	if button.isDebuff then
-		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
+		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
-			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
+			button.icon:SetDesaturated((unit and not find(unit, 'arena%d')) and true or false)
 		else
-			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+			local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none
+			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else
 				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -403,7 +401,7 @@ function UF:PostUpdateAura(unit, button, index)
 			button.icon:SetDesaturated(false)
 		end
 	else
-		if (isStealable) and not isFriend then
+		if button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
 			button:SetBackdropBorderColor(unpack(E["media"].unitframeBorderColor))
@@ -415,43 +413,39 @@ function UF:PostUpdateAura(unit, button, index)
 		button:SetSize(size, size)
 	end
 
-	button.spell = name
-	button.isStealable = isStealable
-	button.duration = duration
-
-	if expiration and duration ~= 0 then
+	if button.expiration and button.duration and (button.duration ~= 0) then
+		local getTime = GetTime()
 		if not button:GetScript('OnUpdate') then
-			button.expirationTime = expiration
-			button.expiration = expiration - GetTime()
+			button.expirationTime = button.expiration
+			button.expirationSaved = button.expiration - getTime
 			button.nextupdate = -1
 			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 		end
-		if (button.expirationTime ~= expiration) or (button.expiration ~= (expiration - GetTime()))  then
-			button.expirationTime = expiration
-			button.expiration = expiration - GetTime()
+		if (button.expirationTime ~= button.expiration) or (button.expirationSaved ~= (button.expiration - getTime))  then
+			button.expirationTime = button.expiration
+			button.expirationSaved = button.expiration - getTime
 			button.nextupdate = -1
 		end
 	end
-	if duration == 0 or expiration == 0 then
+
+	if button.expiration and button.duration and (button.duration == 0 or button.expiration <= 0) then
 		button.expirationTime = nil
-		button.expiration = nil
-		button.priority = nil
-		button.duration = nil
+		button.expirationSaved = nil
 		button:SetScript('OnUpdate', nil)
-		if(button.text:GetFont()) then
+		if button.text:GetFont() then
 			button.text:SetText('')
 		end
 	end
 end
 
 function UF:UpdateAuraTimer(elapsed)
-	self.expiration = self.expiration - elapsed
+	self.expirationSaved = self.expirationSaved - elapsed
 	if self.nextupdate > 0 then
 		self.nextupdate = self.nextupdate - elapsed
 		return
 	end
 
-	if(self.expiration <= 0) then
+	if self.expirationSaved <= 0 then
 		self:SetScript('OnUpdate', nil)
 
 		if(self.text:GetFont()) then
@@ -462,12 +456,12 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, 4)
 	if self.text:GetFont() then
-		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
 		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
-		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	end
 end
 
@@ -477,80 +471,30 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 
 	db = db[self.type]
 
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, friendCheck, filterName = false, false, false, false, false, false, false, false, false
+	if not name then return nil end
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority = false, false, false, false, false, false, false
 
-	if name then
+	isPlayer = (caster == 'player' or caster == 'vehicle')
+	isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+
+	button.isPlayer = isPlayer
+	button.isFriend = isFriend
+	button.isStealable = isStealable
+	button.dtype = dispelType
+	button.duration = duration
+	button.expiration = expiration
+	button.name = name
+	button.owner = caster --what uses this?
+	button.spell = name --what uses this? (SortAurasByName?)
+	button.priority = 0
+
+	if db.priority ~= '' then
 		noDuration = (not duration or duration == 0)
-		isFriend = unit and UnitIsFriend('player', unit)
-		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
-	else
-		return nil
-	end
-
-	button.isPlayer = isPlayer
-	button.owner = caster
-	button.name = name
-	button.priority = 0
-
-	local filter, filterType, spellList, spell
-	if db.priority ~= '' then
-		for i=1, select('#',strsplit(",",db.priority)) do
-			filterName = select(i, strsplit(",",db.priority))
-			friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
-			if friendCheck ~= false then
-				if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-					filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
-				end
-				filter = E.global.unitframe.aurafilters[filterName]
-				if filter then
-					filterType = filter.type
-					spellList = filter.spells
-					spell = spellList and (spellList[spellID] or spellList[name])
-
-					if filterType and filterType == 'Whitelist' and spell and spell.enable and allowDuration then
-						filterCheck = true
-						button.priority = spell.priority -- this is the only difference from auarbars code
-						break -- STOP: allowing whistlisted spell
-					elseif filterType and filterType == 'Blacklist' and spell and spell.enable then
-						filterCheck = false
-						break -- STOP: blocking blacklisted spell
-					end
-				elseif filterName == 'Personal' and isPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'nonPersonal' and not isPlayer and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'Boss' and isBossDebuff and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'Dispellable' and canDispell and allowDuration then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'CastByPlayers' and casterIsPlayer then
-					filterCheck = true
-					break -- STOP
-				elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
-					filterCheck = false
-					break -- STOP
-				elseif filterName == 'blockNoDuration' and noDuration then
-					filterCheck = false
-					break -- STOP
-				elseif filterName == 'blockNonPersonal' and not isPlayer then
-					filterCheck = false
-					break -- STOP
-				end
-			end
-		end
+		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
+		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
 		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end

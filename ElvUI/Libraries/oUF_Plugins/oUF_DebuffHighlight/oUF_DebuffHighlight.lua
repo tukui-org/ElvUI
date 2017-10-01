@@ -19,8 +19,6 @@ local blackList = {
 	[GetSpellInfo(136180)] = true, --Keen Eyesight
 }
 
-local SymbiosisName = GetSpellInfo(110309)
-local CleanseName = GetSpellInfo(4987)
 local dispellist = CanDispel[playerClass] or {}
 local origColors = {}
 local origBorderColors = {}
@@ -89,14 +87,6 @@ local function CheckSpec(self, event, levels)
 	end
 end
 
-local function CheckSymbiosis()
-	if GetSpellInfo(SymbiosisName) == CleanseName then
-		dispellist.Disease = true
-	else
-		dispellist.Disease = false
-	end
-end
- 
 local function Update(object, event, unit)
 	if unit ~= object.unit then return; end
 
@@ -143,19 +133,12 @@ local function Enable(object)
 	end
  
 	object:RegisterEvent("UNIT_AURA", Update)
-	if playerClass == "DRUID" then
-		object:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end
 
 	return true
 end
 
 local function Disable(object)
 	object:UnregisterEvent("UNIT_AURA", Update)
-
-	if playerClass == "DRUID" then
-		object:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end
 
 	if object.DBHGlow then
 		object.DBHGlow:Hide()

@@ -44,7 +44,7 @@ The following search keywords can also be used:
     • naval : Naval equipment.
     • follower, followe, follow : Follower items.
     • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=];
+    • power, powe, pow : Items granting Artifact Power.]=]
 L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -65,14 +65,16 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:medium' -姓名显示限制于15字节内
 'name:long' - 姓名显示限制于20字节内
 
-空白则为禁用. 如需技术支援请至 http://www.tukui.org]=];
+空白则为禁用. 如需技术支援请至 http://www.tukui.org]=]
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
 L["ActionBars"] = "动作条"
 L["Allow Masque to handle the skinning of this element."] = "允许Masque来处理这个元素的皮肤"
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
+L["Auto Add New Spells"] = true
 L["Automatic"] = "自动"
 L["Backdrop Spacing"] = "背景间距"
 L["Backdrop"] = "背景"
@@ -82,7 +84,7 @@ L["Buttons Per Row"] = "每行按钮数"
 L["Buttons"] = "按钮数"
 L["Change the alpha level of the frame."] = "改变框架透明度"
 L["Color of the actionbutton when not usable."] = "动作条按键不可用时的颜色"
-L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."] = "当能量不足时(如法力,怒力等)动作条按键的颜色"
+L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."] = "当能量不足时(如法力,怒气等)动作条按键的颜色"
 L["Color of the actionbutton when out of range."] = "当超出距离时动作条按键的颜色"
 L["Color of the actionbutton when usable."] = "动作条按键可用时的颜色"
 L["Color when the text is about to expire"] = "即将冷却完毕的数字颜色"
@@ -275,8 +277,8 @@ L["Number of repeat characters while in combat before the chat editbox is automa
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "聊天框滚动到底部所需要的滚动时间(秒)"
 L["Panel Backdrop"] = "聊天框背景"
 L["Panel Height"] = "聊天框高度"
-L["Panel Texture (Left)"] = "聊天框材质 (左)"
-L["Panel Texture (Right)"] = "聊天框材质 (右)"
+L["Panel Texture (Left)"] = "聊天框材质(左)"
+L["Panel Texture (Right)"] = "聊天框材质(右)"
 L["Panel Width"] = "聊天框宽度"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = '对话编辑框位置,如果底部的信息文字被禁用的话,将会强制显示在聊天框顶部.'
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "单位时间(秒)内屏蔽重复对话信息, 0为禁用此功能"
@@ -358,11 +360,11 @@ L["Datatext Panel (Left)"] = "左侧信息框"
 L["Datatext Panel (Right)"] = "右侧信息框"
 L["DataTexts"] = "信息文字"
 L["Display data panels below the chat, used for datatexts."] = "在聊天框下显示用于信息的框架"
-L["Display In Main Tooltip"] = true;
+L["Display In Main Tooltip"] = true
 L["Display minimap panels below the minimap, used for datatexts."] = "显示小地图下方的信息框"
 L["Displayed Currency"] = "显示的金额"
 L["Gold Format"] = "金币格式"
-L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true;
+L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示服务器时间"
 L["left"] = "左"
 L["LeftChatDataPanel"] = "左聊天框"
@@ -396,7 +398,9 @@ L["This feature will allow you to transfer settings to other characters."] = "�
 L["You must be targeting a player."] = "你必须以一名玩家为目标"
 
 --Filters
+L["Reset Aura Filters"] = "重置光环过滤器" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "重置过滤器"
+L["Used as RaidDebuff Indicator"] = "作为团队减益指示器"
 
 --General
 L["Accept Invites"] = "自动接受邀请"
@@ -443,7 +447,6 @@ L["Loot"] = "拾取"
 L["Lowest Allowed UI Scale"] = "最低允许UI缩放"
 L["Multi-Monitor Support"] = "多显示器支持"
 L["Name Font"] = "名称字体"
-L["Number Prefix"] = "数值缩写"
 L["Objective Frame Height"] = "任务框架高度"
 L["Order Hall Command Bar"] = "职业大厅命令条"
 L["Party / Raid"] = "小队/团队"
@@ -465,6 +468,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
+L["Unit Prefix Style"] = true
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
 
 --Media
@@ -563,6 +567,7 @@ L["Casting"] = "施法"
 L["Channel Time Format"] = "引导法术时间格式"
 L["Clamp nameplates to the top of the screen when outside of view."] = "当姓名板在屏幕外面时将他们紧靠在屏幕上方"
 L["Clamp Nameplates"] = "紧靠姓名板"
+L["Classification"] = "分类"
 L["Clear Filter"] = "清空过滤器"
 L["Clickable Height"] = "可点击高度"
 L["Clickable Width"] = "可点击宽度"
@@ -572,6 +577,7 @@ L["Control friendly nameplates toggling on or off when in combat."] = "控制战
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "决定屏幕上一个多大的光环才允许通过点击选定到目标框体上"
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制显示多少光环, 这也会影响光环大小"
 L["Controls which nameplates will be displayed."] = "控制何种姓名板被显示"
+L["Cooldowns"] = true
 L["Copy settings from another unit."] = "从其他框架中复制设置"
 L["Copy Settings From"] = "复制设置"
 L["Current Level"] = "当前等级"
@@ -584,6 +590,8 @@ L["Display NPC Titles whenever healthbars arent displayed and names are."] = "�
 L["Display Style"] = "显示样式"
 L["Elite Icon"] = "精英标志"
 L["Enable/Disable the scaling of targetted nameplates."] = "启用/禁用目标姓名板的缩放"
+L["Enabling this will check your health amount."] = true
+L["Enabling this will check your power amount."] = true
 L["Enemy Combat Toggle"] = "敌对战斗开关"
 L["Enemy NPC Frames"] = "敌对NPC框架"
 L["Enemy Player Frames"] = "敌对玩家框架"
@@ -608,6 +616,7 @@ L["Healer Icon"] = "治疗图标"
 L["HEALER"] = "治疗"
 L["Health Color"] = "血量颜色"
 L["Health Threshold"] = "血量阈值"
+L["Hide Blizzard Plates"] = true
 L["Hide Delay"] = "隐藏延迟"
 L["Hide Frame"] = "隐藏框架"
 L["Hide Spell Name"] = "隐藏法术名字"
@@ -618,6 +627,7 @@ L["How many seconds the castbar should stay visible after the cast failed or was
 L["Icon Base Height"] = "图标基础高度"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果选中则将会检查光环是否缺失而不是光环是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果选中则要求满足所有光环. 不启用则只要求任一光环存在即可激活."
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true
 L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果选中则过滤器仅仅在单位等级大于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果选中则过滤器仅仅在单位等级小于等于该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果选中则过滤器仅仅在单位等级符合该值的时候激活"
@@ -627,14 +637,20 @@ L["If enabled then the filter will only activate when the unit is in combat."] =
 L["If enabled then the filter will only activate when the unit is out of combat."] = "如果选中则过滤器仅仅在单位不在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are in combat."] = "如果选中则过滤器仅仅在你在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are out of combat."] = "如果选中则过滤器仅仅在你不在战斗中的时候激活"
+L["If enabled then you will no longer see nameplates that use the default Blizzard appearance. This will prevent raid icons from showing on those units."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光环和一个数一起列出你需要用它来将其移出列表"
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = "如果列表为空, 并且'可打断'被选中, 那么过滤器会在任何可被打断的施法时激活"
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更高才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的血量需要比设定值更低才会将过滤器激活. 设为0以禁用."
+L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true
+L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["In Combat"] = "战斗中"
+L["Instance Type"] = true
 L["Interruptible"] = "可打断"
+L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "目标"
-L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable.";
+L["LEVEL_BOSS"] = "对首领请设置为-1, 或者设为0以禁用."
 L["Load Distance"] = "读取距离"
 L["Low Health Threshold"] = "低生命值阈值"
 L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."] = "更低的数值意味着更高的优先级. 过滤器将按照1至100的顺序进行."
@@ -644,20 +660,30 @@ L["Maximum Level"] = "最高等级"
 L["Maximum Time Left"] = "最高时间剩余"
 L["Minimum Level"] = "最低等级"
 L["Minimum Time Left"] = "最低时间剩余"
+L["Minus"] = "次要目标"
 L["Missing"] = "缺失"
 L["Name Color"] = "姓名颜色"
+L["Name Only"] = true
 L["NamePlates"] = "姓名板(血条)"
 L["Non-Target Transparency"] = "非目标透明度"
 L["Not Targeted"] = "非目标"
+L["Off Cooldown"] = true
+L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = "仅仅读取在此范围内的姓名板"
 L["Only Show Target"] = "仅显示目标"
 L["Out Of Combat"] = "战斗外"
 L["Over Health Threshold"] = "高于血量阈值"
+L["Over Power Threshold"] = true
 L["Personal Auras"] = "个人光环"
+L["Player Health"] = true
 L["Player in Combat"] = "玩家战斗中"
 L["Player Nameplate"] = "玩家姓名板"
 L["Player Out of Combat"] = "玩家战斗外"
+L["Player Power"] = true
 L["PLAYER"] = "玩家"
+L["Power Threshold"] = true
+L["Quest Boss"] = "任务怪物"
+L["Rare Elite"] = "稀有精英"
 L["Reaction Colors"] = "声望颜色"
 L["Reaction Type"] = "声望类型"
 L["Remove a Name or NPC ID from the list."] = "从列表中移除姓名或NPC ID"
@@ -688,6 +714,7 @@ L["Suramar Detection"] = "苏拉玛卫兵探测"
 L["Tagged NPC"] = "标记的NPC"
 L["Tanked Color"] = "坦克颜色"
 L["Target Glow Color"] = "目标高亮颜色"
+L["Target Indicator Color"] = true
 L["Target Indicator"] = "目标指示器"
 L["Target Scale"] = "目标缩放"
 L["Target, Quest, Combat"] = "目标、任务、战斗"
@@ -695,13 +722,16 @@ L["Targeted Nameplate"] = "目标姓名板"
 L["Texture"] = "材质"
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "这些过滤器不像常规过滤器那样使用一个法术列表, 而是使用魔兽API和部分代码逻辑来决定光环显示与否."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "这些过滤器使用一个法术列表来决定光环显示与否. 这些过滤器的内容可以在设置中的'过滤器'选项中更改."
+L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat"] = "仇恨"
 L["Time To Hold"] = "停留时间"
 L["Toggle Off While In Combat"] = "战斗时关闭"
 L["Toggle On While In Combat"] = "战斗时启用"
 L["Top Arrow"] = "顶部箭头"
 L["Triggers"] = "触发器"
+L["Trivial"] = "低等级(灰色)"
 L["Under Health Threshold"] = "低于血量阈值"
+L["Under Power Threshold"] = true
 L["Unit in Combat"] = "单位战斗中"
 L["Unit Out of Combat"] = "单位战斗外"
 L["Unit Type"] = "单位类型"
@@ -944,6 +974,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Don't display auras that cannot be purged or dispelled by your class."] = "不显示你不能驱散的光环"
 L["Don't display auras that have no duration."] = "不显示没有持续时间的光环"
 L["Down"] = "下"
+L["Dungeon & Raid Filter"] = "地下城与团队副本过滤器"
 L["Duration Reverse"] = "持续时间反转"
 L["Duration Text"] = "持续时间文字"
 L["Duration"] = "持续时间"
@@ -1037,7 +1068,9 @@ L["Number of Groups"] = "每队单位数量"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "偏移能量条与生命条的位置, 设为0代表停用"
 L["Offset position for text."] = "偏移文本的位置"
 L["Offset"] = "偏移"
+L["Only Match SpellID"] = "仅匹配法术ID"
 L["OOR Alpha"] = "超出距离透明度"
+L["Other Filter"] = "其他过滤器"
 L["Others"] = "他人的"
 L["Overlay the healthbar"] = "头像重叠与生命条上"
 L["Overlay"] = "重叠显示"
@@ -1177,6 +1210,7 @@ L["Visibility"] = "可见性"
 L["What point to anchor to the frame you set to attach to."] = "框架的定位对齐方向"
 L["What to attach the buff anchor frame to."] = "buff定位附加到的框架"
 L["What to attach the debuff anchor frame to."] = "debuff定位附加到的框架"
+L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = "启用后将只显示通过法术ID添加到过滤器中的法术, 而不包括通过名字添加的."
 L["When true, the header includes the player when not in a raid."] = "若启用,队伍中将显示玩家"
 L["Whitelist"] = "白名单"
 L["Width"] = "宽"

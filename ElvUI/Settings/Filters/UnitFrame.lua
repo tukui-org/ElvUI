@@ -659,38 +659,50 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Tomb of Sargeras
 		-- Goroth
 		[233279] = Defaults(), -- Shattering Star
-		[230345] = Defaults(), -- Crashing Comet
+		[230345] = Defaults(), -- Crashing Comet (Dot)
+		[232249] = Defaults(), -- Crashing Comet
 		[231363] = Defaults(), -- Burning Armor
 		[234264] = Defaults(), -- Melted Armor
 		[233062] = Defaults(), -- Infernal Burning
+		[230348] = Defaults(), -- Fel Pool
 
 		-- Demonic Inquisition
 		[233430] = Defaults(), -- Ubearable Torment
 		[233983] = Defaults(), -- Echoing Anguish
+		[248713] = Defaults(), -- Soul Corruption
 
 		-- Harjatan
 		[231770] = Defaults(), -- Drenched
 		[231998] = Defaults(), -- Jagged Abrasion
 		[231729] = Defaults(), -- Aqueous Burst
 		[234128] = Defaults(), -- Driven Assault
+		[234016] = Defaults(), -- Driven Assault
 
 		-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
-		[236598] = Defaults(5), -- Rapid Shot 1
-		[234995] = Defaults(5), -- Rapid Shot 2
-		[236519] = Defaults(4), -- Moon Burn
+		[236596] = Defaults(), -- Rapid Shot 
+		[234995] = Defaults(), -- Lunar Suffusion
+		[234996] = Defaults(), -- Umbra Suffusion
+		[236519] = Defaults(), -- Moon Burn
 		[236697] = Defaults(), -- Deathly Screech
 		[239264] = Defaults(), -- Lunar Flare (Tank)
-		[236712] = Defaults(5), -- Lunar Beacon
+		[236712] = Defaults(), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
+		[236305] = Defaults(), -- Incorporeal Shot -- (Heroic)
+		[236306] = Defaults(), -- Incorporeal Shot
+		[237570] = Defaults(), -- Incorporeal Shot
+		[248911] = Defaults(), -- Incorporeal Shot
 		[236550] = Defaults(), -- Discorporate (Tank)
 		[236330] = Defaults(), -- Astral Vulnerability
+		[236529] = Defaults(), -- Twilight Glaive
 		[236541] = Defaults(), -- Twilight Glaive
+		[237561] = Defaults(), -- Twilight Glaive -- (Heroic)
+		[237633] = Defaults(), -- Spectral Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
 		-- Mistress Sassz'ine
 		[230959] = Defaults(), -- Concealing Murk
-		[232722] = Defaults(), -- Slicing Tornado
+		[232732] = Defaults(), -- Slicing Tornado
 		[232913] = Defaults(), -- Befouling Ink
 		[234621] = Defaults(), -- Devouring Maw
 		[230201] = Defaults(), -- Burden of Pain (Tank)
@@ -710,8 +722,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[235968] = Defaults(), -- Grasping Darkness
 
 		-- Maiden of Vigilance
-		[235117] = Defaults(), -- Unstable Soul !needs review
-		[240209] = Defaults(), -- Unstable Soul !needs review
+		[235117] = Defaults(), -- Unstable Soul
+		[240209] = Defaults(), -- Unstable Soul
+		[243276] = Defaults(), -- Unstable Soul
+		[249912] = Defaults(), -- Unstable Soul
 		[235534] = Defaults(), -- Creator's Grace
 		[235538] = Defaults(), -- Demon's Vigor
 		[234891] = Defaults(), -- Wrath of the Creators
@@ -727,6 +741,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240213] = Defaults(), -- Chaos Flames
 		[236604] = Defaults(), -- Shadowy Blades
 		[236494] = Defaults(), -- Desolate (Tank)
+		[240728] = Defaults(), -- Tainted Essence
 
 		-- Kil'jaeden
 		[238999] = Defaults(), -- Darkness of a Thousand Souls
@@ -959,10 +974,17 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[228519] = Defaults(), -- Anchor Slam
 		[202476] = Defaults(), -- Rabid
 		[232450] = Defaults(), -- Corrupted Axion
-	
+
 	-- Mythic Dungeons
-		[226303] = Defaults(), --Piercing Shards (Neltharion's Lair)
-		[227742] = Defaults(), --Garrote (Karazhan)
+		[226303] = Defaults(), -- Piercing Shards (Neltharion's Lair)
+		[227742] = Defaults(), -- Garrote (Karazhan)
+		[240443] = Defaults(), -- Bursting
+		[209858] = Defaults(), -- Necrotic
+		[226512] = Defaults(), -- Sanguine
+		[240559] = Defaults(), -- Grievous
+		[240443] = Defaults(), -- Bursting
+		[196376] = Defaults(), -- Grievous Tear
+		[200227] = Defaults(), -- Tangled Web
 	},
 }
 
@@ -975,7 +997,9 @@ G.unitframe.aurafilters['RaidBuffsElvUI'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mythic/Mythic+
-		[209859] = Defaults(),  -- Bolster
+		[209859] = Defaults(), -- Bolster
+		[178658] = Defaults(), -- Raging
+		[226510] = Defaults(), -- Sanguine
 		
 		--Raids
 	},
@@ -1129,6 +1153,7 @@ G.unitframe.specialFilters = {
 	['notCastByUnit'] = true,
 	['blockNoDuration'] = true,
 	['Dispellable'] = true,
+	['CastByNPC'] = true,
 	['CastByPlayers'] = true,
 	['blockCastByPlayers'] = true,
 };

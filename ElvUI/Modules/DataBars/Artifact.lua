@@ -1,14 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 local LSM = LibStub("LibSharedMedia-3.0")
+local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
 
 --Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, select, pcall = tonumber, select, pcall
-local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
+local format, gsub, strmatch, strfind, split = string.format, string.gsub, string.match, string.find, string.split
 --WoW API / Variables
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_ArtifactUI_GetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemLink = GetContainerItemLink
@@ -18,7 +18,6 @@ local GetSpellInfo = GetSpellInfo
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsArtifactPowerItem = IsArtifactPowerItem
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
@@ -56,6 +55,11 @@ function mod:UpdateArtifact(event, unit)
 		local text = ''
 		local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI_GetEquippedArtifactInfo();
 		local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
+
+		--Damn fishing artifacts and its inconsistent returns
+		if xpForNextPoint <= 0 then
+			xpForNextPoint = xp
+		end
 
 		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
 		bar.statusBar:SetValue(xp)
@@ -102,6 +106,11 @@ function mod:ArtifactBar_OnEnter()
 	
 	GameTooltip:AddDoubleLine(ARTIFACT_POWER, artifactName, nil, nil, nil, 0.90, 0.80,	0.50)
 	GameTooltip:AddLine(' ')
+
+	--Damn fishing artifacts and its inconsistent returns
+	if xpForNextPoint <= 0 then
+		xpForNextPoint = xp
+	end
 
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
@@ -159,180 +168,47 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
-local apStringValueOne = {
-	--1.000.000
-	["enUS"] = "(%d*[%p%s]?%d+) million",
-	["enGB"] = "(%d*[%p%s]?%d+) million",
-	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
-	["esMX"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
-	["deDE"] = "(%d*[%p%s]?%d+) [[Million][Millionen]]?",
-	["esES"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
-	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
-	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
-	["ruRU"] = "(%d*[%p%s]?%d+) млн",
-	--10.000, not 1.000.000
-	["koKR"] = "(%d*[%p%s]?%d+)만",
-	["zhTW"] = "(%d*[%p%s]?%d+)萬",
-	["zhCN"] = "(%d*[%p%s]?%d+) 万",
-}
+function mod:GetKnowledgeLevelFromItemLink(itemLink)
+	local upgradeID = select(15, split(":", itemLink))
+	local knowledgeLevel = tonumber(upgradeID) - 1 --Don't ask why, that's just how it is.
 
-local apValueMultiplierOne = {
-	["koKR"] = 1e4,
-	["zhTW"] = 1e4,
-	["zhCN"] = 1e4,
-}
+	return knowledgeLevel
+end
 
-local apStringValueTwo = {
-	--1.000.000
-	["enUS"] = "(%d*[%p%s]?%d+) million",
-	["enGB"] = "(%d*[%p%s]?%d+) million",
-	["ptBR"] = "(%d*[%p%s]?%d+) [[milhão][milhões]]?",
-	["esMX"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
-	["deDE"] = "(%d*[%p%s]?%d+) [[Million][Millionen]]?",
-	["esES"] = "(%d*[%p%s]?%d+) [[millón][millones]]?",
-	["frFR"] = "(%d*[%p%s]?%d+) [[million][millions]]?",
-	["itIT"] = "(%d*[%p%s]?%d+) [[milione][milioni]]?",
-	["ruRU"] = "(%d*[%p%s]?%d+) млн",
-	--100.000.000
-	["koKR"] = "(%d*[%p%s]?%d+)억",
-	["zhTW"] = "(%d*[%p%s]?%d+)億",
-	["zhCN"] = "(%d*[%p%s]?%d+) 亿",
-}
-
-local apValueMultiplierTwo = {
-	["koKR"] = 1e8,
-	["zhTW"] = 1e8,
-	["zhCN"] = 1e8,
-}
-
-local apStringValueOneLocal = apStringValueOne[GetLocale()]
-local apStringValueTwoLocal = apStringValueTwo[GetLocale()] --Only Asian clients use a secondary higher multiplier
-local apValueMultiplierOneLocal = (apValueMultiplierOne[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
-local apValueMultiplierTwoLocal = (apValueMultiplierTwo[GetLocale()] or 1e6) --Fallback to 1e6 which is used by all non-Asian clients
-
---AP item caches
-local apValueCache = {}
 local apItemCache = {}
 
---This function scans the tooltip of an item to determine whether or not it grants AP.
---If it is found to grant AP, then the value is extracted and returned.
-local apLineIndex
-function mod:GetAPFromTooltip(itemLink)
-	local apValue = 0
-
-	if IsArtifactPowerItem(itemLink) then
-		--Clear tooltip from previous item
-		mod.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
-		--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before
-		-- gaining Artifact Knowledge level. For those items it would display a value higher
-		-- than what you would actually get.
-		mod.artifactBar.tooltip:SetHyperlink(itemLink)
-
-		local apFound
-		for i = 3, #mod.artifactBar.tooltipLines do
-			local tooltipText = mod.artifactBar.tooltipLines[i]:GetText()
-
-			if (tooltipText and not strmatch(tooltipText, AP_NAME)) then
-				local digit1, digit2, digit3, ap
-				local value = strmatch(tooltipText, apStringValueOneLocal)
-
-				if (value) then
-					digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
-					if (digit1 and digit2) then
-						ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
-					else
-						ap = tonumber(value) * apValueMultiplierOneLocal --Multiply by 1 million (or 10.000 for asian clients)
-					end
-				else
-					value = strmatch(tooltipText, apStringValueTwoLocal)
-					if (value) then
-						--This should only match for Asian clients
-						digit1, digit2 = strmatch(value, "(%d+)[%p%s](%d+)")
-						if (digit1 and digit2) then
-							ap = tonumber(format("%s.%s", digit1, digit2)) * apValueMultiplierTwoLocal --Multiply by 100 million
-						else
-							ap = tonumber(value) * apValueMultiplierTwoLocal --Multiply by 100 million
-						end
-					else
-						digit1, digit2, digit3 = strmatch(tooltipText,"(%d+)[%p%s]?(%d+)[%p%s]?(%d*)")
-						ap = tonumber(format("%s%s%s", digit1 or "", digit2 or "", (digit2 and digit3) and digit3 or ""))
-					end
-				end
-
-				if (ap) then
-					apValue = ap
-					apFound = true
-					break
-				end
-			end
-		end
-
-		if (not apFound) then
-			apItemCache[itemLink] = false --Cache item as not granting AP
-		end
-	else
-		apItemCache[itemLink] = false --Cache item as not granting AP
-	end
-
-	return apValue
-end
-
---This can be used to test if the tooltip scanning works as expected
---/run ElvUI[1].DataBars:TestAPExtraction(147203)
---/run ElvUI[1].DataBars:TestAPExtraction(140307)
-function mod:TestAPExtraction(itemID)
-	local itemLink = select(2, GetItemInfo(itemID))
-	if not itemLink then --WoW client hasn't seen this item before, so run again a little later when info has been received
-		C_Timer.After(2, function() mod:TestAPExtraction(itemID) end)
-		return
-	end
-
-	local apValue = mod:GetAPFromTooltip(itemLink)
-	E:Print("AP value from", itemLink, "is:", apValue, "("..BreakUpLargeNumbers(apValue, true)..")")
-end
-
---This function is responsible for retrieving the AP value from an itemLink.
---It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
 function mod:GetAPForItem(itemLink)
-	if (apItemCache[itemLink] == false) then
-		--Get out early if item has already been determined to not grant AP
-		return 0
+
+	--Return cached item if possible
+	if (apItemCache[itemLink] ~= nil) then
+		return apItemCache[itemLink]
 	end
 
-	--Check if item is cached and return value
-	if apValueCache[itemLink] then
-		return apValueCache[itemLink]
-	else
-		--Not cached, do a tooltip scan and cache the value
-		local apValue = self:GetAPFromTooltip(itemLink)
-		if apValue > 0 then
-			apValueCache[itemLink] = apValue
-		end
+	if (LAP:DoesItemGrantArtifactPower(itemLink)) then
+		local knowledgeLevel = self:GetKnowledgeLevelFromItemLink(itemLink)
+		local apValue = LAP:GetArtifactPowerGrantedByItem(itemLink, knowledgeLevel)
+
+		--Cache item
+		apItemCache[itemLink] = apValue
+
 		return apValue
 	end
+
+	return 0
 end
 
 function mod:GetArtifactPowerInBags()
-	if InCombatLockdown() then
-		return self.artifactBar.LastKnownAP
-	end
-
 	self.artifactBar.BagArtifactPower = 0
-	local ID, link, AP
+	local itemLink, AP
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			ID = select(10, GetContainerItemInfo(bag, slot))
-			link = GetContainerItemLink(bag, slot)
+			itemLink = select(7, GetContainerItemInfo(bag, slot))
 
-			if (ID and link) then
-				AP = self:GetAPForItem(link)
+			if (itemLink) then
+				AP = self:GetAPForItem(itemLink)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
 		end
-	end
-
-	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
-		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
 	end
 
 	return self.artifactBar.BagArtifactPower

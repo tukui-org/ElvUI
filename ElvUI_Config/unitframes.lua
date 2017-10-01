@@ -820,17 +820,47 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 
 	if hasTicks then
-		config.args.ticks = {
-			order = 11,
-			type = 'toggle',
-			name = L["Ticks"],
-			desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
-		}
 		config.args.displayTarget = {
-			order = 12,
+			order = 11,
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
+		}
+		config.args.ticks = {
+			order = 12,
+			type = "group",
+			guiInline = true,
+			name = L["Ticks"],
+			args = {
+				ticks = {
+					order = 1,
+					type = 'toggle',
+					name = L["Ticks"],
+					desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
+				},
+				tickColor = {
+					order = 2,
+					type = "color",
+					name = COLOR,
+					hasAlpha = true,
+					get = function(info)
+						local c = E.db.unitframe.units[groupName].castbar.tickColor
+						local d = P.unitframe.units[groupName].castbar.tickColor
+						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
+					end,
+					set = function(info, r, g, b, a)
+						local c = E.db.unitframe.units[groupName].castbar.tickColor
+						c.r, c.g, c.b, c.a = r, g, b, a
+						updateFunc(UF, groupName, numUnits)
+					end,
+				},
+				tickWidth = {
+					order = 3,
+					type = "range",
+					name = L["Width"],
+					min = 1, max = 20, step = 1,
+				},
+			},
 		}
 	end
 
@@ -1570,6 +1600,12 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				type = "toggle",
 				name = L["Show Dispellable Debuffs"],
 			},
+			onlyMatchSpellID = {
+				order = 4,
+				type = "toggle",
+				name = L["Only Match SpellID"],
+				desc = L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."],
+			},
 			size = {
 				order = 4,
 				type = 'range',
@@ -1657,14 +1693,15 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 4,
 						type = "color",
 						name = COLOR,
+						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
 							local d = P.unitframe.units.raid.rdebuffs.duration.color
-							return c.r, c.g, c.b, c.a, d.r, d.g, d.b
+							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
 						end,
-						set = function(info, r, g, b)
+						set = function(info, r, g, b, a)
 							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
-							c.r, c.g, c.b = r, g, b
+							c.r, c.g, c.b, c.a = r, g, b, a
 							UF:CreateAndUpdateHeaderGroup('raid')
 						end,
 					},
@@ -1710,14 +1747,15 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 4,
 						type = "color",
 						name = COLOR,
+						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
 							local d = P.unitframe.units[groupName].rdebuffs.stack.color
-							return c.r, c.g, c.b, c.a, d.r, d.g, d.b
+							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
 						end,
-						set = function(info, r, g, b)
+						set = function(info, r, g, b, a)
 							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
-							c.r, c.g, c.b = r, g, b
+							c.r, c.g, c.b, c.a = r, g, b, a
 							updateFunc(UF, groupName)
 						end,
 					},
@@ -2011,6 +2049,11 @@ E.Options.args.unitframe = {
 					type = 'group',
 					name = L["General"],
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = L["General"],
+						},
 						thinBorders = {
 							order = 1,
 							name = L["Thin Borders"],
@@ -2064,7 +2107,7 @@ E.Options.args.unitframe = {
 						},
 						resetFilters = {
 							order = 7,
-							name = "Reset Aura Filters",
+							name = L["Reset Aura Filters"],
 							type = "execute",
 							func = function(info, value)
 								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
@@ -2141,6 +2184,11 @@ E.Options.args.unitframe = {
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = COLORS,
+						},
 						borderColor = {
 							order = 1,
 							type = "color",
@@ -2563,6 +2611,11 @@ E.Options.args.unitframe = {
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
 					set = function(info, value) E.private["unitframe"].disabledBlizzardFrames[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = L["Disabled Blizzard Frames"],
+						},
 						player = {
 							order = 1,
 							type = 'toggle',
@@ -2600,6 +2653,52 @@ E.Options.args.unitframe = {
 							order = 7,
 							type = 'toggle',
 							name = L["Raid Frames"],
+						},
+					},
+				},
+				raidDebuffIndicator = {
+					order = 4,
+					type = "group",
+					name = L["RaidDebuff Indicator"],
+					args = {
+						header = {
+							order = 1,
+							type = "header",
+							name = L["RaidDebuff Indicator"],
+						},
+						instanceFilter = {
+							order = 2,
+							type = "select",
+							name = L["Dungeon & Raid Filter"],
+							values = function()
+								local filters = {}
+								local list = E.global.unitframe['aurafilters']
+								if not list then return end
+								for filter in pairs(list) do
+									filters[filter] = filter
+								end
+								
+								return filters
+							end,
+							get = function(info) return E.global.unitframe.raidDebuffIndicator.instanceFilter end,
+							set = function(info, value) E.global.unitframe.raidDebuffIndicator.instanceFilter = value; UF:UpdateAllHeaders() end,
+						},
+						otherFilter = {
+							order = 3,
+							type = "select",
+							name = L["Other Filter"],
+							values = function()
+								local filters = {}
+								local list = E.global.unitframe['aurafilters']
+								if not list then return end
+								for filter in pairs(list) do
+									filters[filter] = filter
+								end
+								
+								return filters
+							end,
+							get = function(info) return E.global.unitframe.raidDebuffIndicator.otherFilter end,
+							set = function(info, value) E.global.unitframe.raidDebuffIndicator.otherFilter = value; UF:UpdateAllHeaders() end,
 						},
 					},
 				},

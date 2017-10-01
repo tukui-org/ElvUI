@@ -20,7 +20,7 @@ P['general'] = {
 	['bonusObjectivePosition'] = "LEFT",
 	["talkingHeadFrameScale"] = 0.9,
 	['afk'] = true,
-	["numberPrefixStyle"] = "METRIC",
+	["numberPrefixStyle"] = "ENGLISH",
 
 	["fontSize"] = 12,
 	["font"] = "PT Sans Narrow",
@@ -213,6 +213,12 @@ P["nameplates"] = {
 	['font'] = 'Homespun',
 	['fontSize'] = 8,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	["durationFont"] = "Homespun",
+	["durationFontSize"] = 8,
+	["durationFontOutline"] = "MONOCHROMEOUTLINE",
+	["stackFont"] = "Homespun",
+	["stackFontSize"] = 8,
+	["stackFontOutline"] = "MONOCHROMEOUTLINE",
 	['useTargetScale'] = true,
 	['targetScale'] = 1.15,
 	['nonTargetTransparency'] = 0.35,
@@ -221,6 +227,7 @@ P["nameplates"] = {
 	["lowHealthThreshold"] = 0.4,
 	["showFriendlyCombat"] = "DISABLED",
 	["showEnemyCombat"] = "DISABLED",
+	["hideBlizzardPlates"] = false,
 	["showNPCTitles"] = true,
 	["clampToScreen"] = false,
 	["loadDistance"] = 40,
@@ -781,6 +788,7 @@ P['datatexts'] = {
 	},
 	['battleground'] = true,
 	['panelTransparency'] = false,
+	['panelBackdrop'] = true,
 	["noCombatClick"] = false,
 	["noCombatHover"] = false,
 
@@ -1065,6 +1073,8 @@ P['unitframe'] = {
 				["iconPosition"] = "LEFT",
 				["iconXOffset"] = -10,
 				["iconYOffset"] = 0,
+				["tickWidth"] = 1,
+				["tickColor"] = {r = 0, g = 0, b = 0, a = 0.8},
 			},
 			['classbar'] = {
 				['enable'] = true,
@@ -1490,7 +1500,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,PlayerBuffs,CastByUnit,Dispellable', --Focus Buffs
+				['priority'] = 'Blacklist,Personal,PlayerBuffs,CastByUnit,Dispellable,RaidBuffsElvUI', --Focus Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1608,7 +1618,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit', --FocusTarget Buffs
+				['priority'] = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit,RaidBuffsElvUI', --FocusTarget Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1797,7 +1807,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,PlayerBuffs,CastByUnit,Whitelist', --PetTarget Buffs
+				['priority'] = 'Blacklist,PlayerBuffs,CastByUnit,Whitelist,RaidBuffsElvUI', --PetTarget Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1882,7 +1892,7 @@ P['unitframe'] = {
 				['clickThrough'] = false,
 				['minDuration'] = 0,
 				['maxDuration'] = 0,
-				['priority'] = 'Blacklist,CastByUnit,Whitelist', --Boss Buffs
+				['priority'] = 'Blacklist,CastByUnit,Whitelist,RaidBuffsElvUI', --Boss Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 20,
 				['sizeOverride'] = 22,
@@ -2148,6 +2158,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = false,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2158,18 +2169,18 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['roleIcon'] = {
 				['enable'] = true,
-				['position'] = 'CENTER',
+				['position'] = 'TOPRIGHT',
 				["attachTo"] = "Health",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
@@ -2331,6 +2342,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2341,13 +2353,13 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['roleIcon'] = {
@@ -2480,6 +2492,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = false,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2490,13 +2503,13 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['roleIcon'] = {
@@ -2626,6 +2639,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2636,13 +2650,13 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['raidicon'] = {
@@ -2707,6 +2721,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2717,13 +2732,13 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['targetsGroup'] = {
@@ -2789,6 +2804,7 @@ P['unitframe'] = {
 			['rdebuffs'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
+				["onlyMatchSpellID"] = true,
 				['fontSize'] = 10,
 				["font"] = "Homespun",
 				["fontOutline"] = "MONOCHROMEOUTLINE",
@@ -2799,13 +2815,13 @@ P['unitframe'] = {
 					['position'] = "CENTER",
 					['xOffset'] = 0,
 					['yOffset'] = 0,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 				['stack'] = {
 					['position'] = "BOTTOMRIGHT",
 					['xOffset'] = 0,
 					['yOffset'] = 2,
-					['color'] = {r = 1, g = 0.9, b = 0}
+					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
 			['targetsGroup'] = {
@@ -2860,6 +2876,7 @@ P["actionbar"] = {
 	["lockActionBars"] = true,
 	["hideCooldownBling"] = false,
 	["useDrawSwipeOnCharges"] = false,
+	["addNewSpells"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,

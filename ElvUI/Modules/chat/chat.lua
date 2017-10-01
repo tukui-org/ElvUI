@@ -233,27 +233,35 @@ local rolePaths = {
 	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
 }
 
+local chatLogos_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
+local chatLogos_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
+local chatLogos_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
 local specialChatIcons = {
 	["Illidan"] = {
-		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Uplift"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
-		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
+		["Affinichi"] = chatLogos_Bathrobe,
+		["Uplift"] = chatLogos_Bathrobe,
+		["Affinitii"] = chatLogos_Bathrobe,
+		["Affinity"] = chatLogos_Bathrobe
 	},
 	["Spirestone"] = {
-		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
-		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
+		["Elv"] = chatLogos_ElvUI,
+		["Tirain"] = chatLogos_MrHankey,
+		["Sinth"] = chatLogos_MrHankey,
 	},
 	["Silvermoon"] = {
-		["Blazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Chazii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Blazii"] = chatLogos_ElvUI,
+		["Chazii"] = chatLogos_ElvUI,
 	},
 	["Shattrath"] = {
-		["Merathilis"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Merathilis"] = chatLogos_ElvUI,
+	},
+	["Cenarius"] = {
+		["Simpy"] = chatLogos_ElvUI,
+		["Imsojelly"] = chatLogos_ElvUI,
+		["Cutepally"] = chatLogos_ElvUI,
 	},
 	["Kil'jaeden"] = {
-		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Elvz"] = chatLogos_ElvUI,
 	},
 }
 
@@ -668,14 +676,15 @@ function CH:UpdateAnchors()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
 		if not frame then break; end
-		if(not E.db.datatexts.leftChatPanel and (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")) then
+		if not E.db.datatexts.leftChatPanel then
+			local noBackdrop = (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")
 			frame:ClearAllPoints()
 			if(E.db.chat.editBoxPosition == 'BELOW_CHAT') then
-				frame:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT")
-				frame:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 0, -LeftChatTab:GetHeight())
+				frame:Point("TOPLEFT", ChatFrame1, "BOTTOMLEFT", noBackdrop and -1 or -4, noBackdrop and -1 or -4)
+				frame:Point("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", noBackdrop and 10 or 7, -LeftChatTab:GetHeight()-(noBackdrop and 1 or 4))
 			else
-				frame:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
-				frame:SetPoint("TOPRIGHT", ChatFrame1, "TOPRIGHT", 0, LeftChatTab:GetHeight())
+				frame:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", noBackdrop and -1 or -1, noBackdrop and 1 or 4)
+				frame:Point("TOPRIGHT", ChatFrame1, "TOPRIGHT", noBackdrop and 10 or 4, LeftChatTab:GetHeight()+(noBackdrop and 1 or 4))
 			end
 		else
 			if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then

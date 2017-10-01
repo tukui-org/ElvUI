@@ -12,13 +12,21 @@ function mod:UpdateElement_HealerIcon(frame)
 	end
 
 	local icon = frame.HealerIcon;
-	local name = UnitName(frame.unit)
+	local name = UnitName(frame.unit);
+	local healthShown = frame.HealthBar:IsShown();
+	local portraitShown = frame.Portrait:IsShown();
+
 	icon:ClearAllPoints()
-	if(frame.HealthBar:IsShown()) then
-		icon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
+	if healthShown and portraitShown then
+		icon:SetPoint("RIGHT", frame.Portrait, "LEFT", -6, 0);
+	elseif healthShown then
+		icon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0);
+	elseif portraitShown then
+		icon:SetPoint("BOTTOM", frame.Portrait, "TOP", 0, 3);
 	else
-		icon:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
+		icon:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3);
 	end
+
 	if mod.Healers[name] and frame.UnitType == "ENEMY_PLAYER" then
 		icon:Show();
 	else

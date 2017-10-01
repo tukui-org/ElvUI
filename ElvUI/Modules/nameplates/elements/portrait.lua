@@ -25,7 +25,6 @@ function mod:UpdateElement_Portrait(frame, trigger)
 		return;
 	end
 
-
 	if(not UnitExists(frame.unit) or not UnitIsConnected(frame.unit) or not UnitIsVisible(frame.unit)) then
 		--frame.Portrait:SetUnit("")
 		--frame.Portrait.texture:SetTexture(nil) --this must be nil, "" will do nothing
@@ -35,25 +34,25 @@ function mod:UpdateElement_Portrait(frame, trigger)
 		frame.Portrait:Show()
 		SetPortraitTexture(frame.Portrait.texture, frame.unit)
 	end
+
+	mod:UpdateElement_HealerIcon(frame)
 end
 
-function mod:ConfigureElement_Portrait(frame)
-	if not (self.db.units[frame.UnitType].portrait) then
-		return;
+function mod:ConfigureElement_Portrait(frame, triggered)
+	if not triggered then
+		if not (self.db.units[frame.UnitType].portrait) then return end
+		frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
+		frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
 	end
 
-	frame.Portrait:SetWidth(self.db.units[frame.UnitType].portrait.width)
-	frame.Portrait:SetHeight(self.db.units[frame.UnitType].portrait.height)
-
 	frame.Portrait:ClearAllPoints()
-	if(frame.PowerBar:IsShown()) then
+	if frame.PowerBar:IsShown() then
 		frame.Portrait:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -6, 2)
-	elseif(frame.HealthBar:IsShown()) then
+	elseif frame.HealthBar:IsShown() then
 		frame.Portrait:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
 	else
 		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
 	end
-
 end
 
 function mod:ConstructElement_Portrait(frame)

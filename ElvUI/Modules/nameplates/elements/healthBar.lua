@@ -205,6 +205,7 @@ function mod:UpdateElement_Health(frame)
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
 
 	frame.HealthBar:SetValue(health)
+	frame.FlashTexture:Point("TOPRIGHT", frame.HealthBar:GetStatusBarTexture(), "TOPRIGHT") --idk why this fixes this
 
 	if self.db.units[frame.UnitType].healthbar.text.enable then
 		frame.HealthBar.text:SetText(E:GetFormattedText(self.db.units[frame.UnitType].healthbar.text.format, health, maxHealth))
@@ -253,6 +254,12 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.PersonalHealPrediction = CreateFrame("StatusBar", "$parentPersonalHealPrediction", frame)
 	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.PersonalHealPrediction:SetStatusBarColor(0, 1, 0.5, 0.25)
+
+	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
+	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))
+	parent.FlashTexture:Point("BOTTOMLEFT", frame:GetStatusBarTexture(), "BOTTOMLEFT")
+	parent.FlashTexture:Point("TOPRIGHT", frame:GetStatusBarTexture(), "TOPRIGHT")
+	parent.FlashTexture:Hide()
 
 	frame.text = frame:CreateFontString(nil, "OVERLAY")
 	frame.text:SetWordWrap(false)

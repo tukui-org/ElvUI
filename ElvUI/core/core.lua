@@ -768,7 +768,7 @@ function E:TableToLuaString(inTable)
 			if(type(v) == "number") then
 				ret = ret..v..",\n"
 			elseif(type(v) == "string") then
-				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\""):gsub("\124", "\124\124").."\",\n"
 			elseif(type(v) == "boolean") then
 				if(v) then
 					ret = ret.."true,\n"
@@ -854,7 +854,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				if type(v) == "number" then
 					returnString = returnString..v.."\n"
 				elseif type(v) == "string" then
-					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\"\n"
+					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\""):gsub("\124", "\124\124").."\"\n"
 				elseif type(v) == "boolean" then
 					if v then
 						returnString = returnString.."true\n"
@@ -1319,17 +1319,11 @@ local function auraFilterStrip(name, content, value)
 		E.global.unitframe.aurafilters[name] = nil
 	end
 end
+
 function E:DBConversions()
 	--Make sure default filters use the correct filter type
 	for filter, filterType in pairs(E.DEFAULT_FILTER) do
 		E.global.unitframe.aurafilters[filter].type = filterType
-	end
-
-	--Remove commas from aura filters
-	for name, content in pairs(E.global.unitframe.aurafilters) do
-		auraFilterStrip(name, content, ',')
-		auraFilterStrip(name, content, '^Friendly:')
-		auraFilterStrip(name, content, '^Enemy:')
 	end
 
 	--Add missing nameplates table to Minimalistic profile
@@ -1339,54 +1333,11 @@ function E:DBConversions()
 		}
 	end
 
-	--Prevent error for testers, remove this a week after release
-	for filter, content in pairs(E.global.nameplate.filters) do
-		if not E.db.nameplates.filters[filter] then --switch to profile based style filter enabling
-			E.global.nameplate.filters[filter].triggers.enable = nil --remove trigger enable from global filter
-			if P.nameplates.filters[filter] then --if its a default filter just copy the settings
-				E.db.nameplates.filters[filter] = E:CopyTable({}, P.nameplates.filters[filter])
-			else --otherwise just use a default table and set enable to false
-				E.db.nameplates.filters[filter] = {}
-				E.db.nameplates.filters[filter].triggers = {
-					["enable"] = false,
-				}
-			end
-		end
-		if not content.triggers.role then
-			E.global.nameplate.filters[filter].triggers.role = {
-				["tank"] = false,
-				["healer"] = false,
-				["damager"] = false,
-			}
-		end
-		if not content.triggers.class then --this can stay empty we only will accept values that exist
-			E.global.nameplate.filters[filter].triggers.class = {}
-		end
-
-		--older ones below here
-		if filter == "TestFilter" then
-			E.global.nameplate.filters[filter] = nil --Remove it
-		else
-			if not content.triggers.casting then
-				E.global.nameplate.filters[filter].triggers.casting = {
-					["interruptible"] = false,
-					["spells"] = {},
-				}
-			end
-			if content.triggers.healthThreshold == nil then
-				E.global.nameplate.filters[filter].triggers.healthThreshold = false
-				E.global.nameplate.filters[filter].triggers.underHealthThreshold = 0
-				E.global.nameplate.filters[filter].triggers.overHealthThreshold = 0
-			end
-			if not content.actions.color.nameColor then
-				E.global.nameplate.filters[filter].actions.color.name = false
-				E.global.nameplate.filters[filter].actions.color.nameColor = {r=1,g=1,b=1,a=1}
-			end
-			if content.actions.color.color then
-				E.global.nameplate.filters[filter].actions.color.healthColor = E.global.nameplate.filters[filter].actions.color.color
-				E.global.nameplate.filters[filter].actions.color.color = nil
-			end
-		end
+	--Remove commas from aura filters
+	for name, content in pairs(E.global.unitframe.aurafilters) do
+		auraFilterStrip(name, content, ',')
+		auraFilterStrip(name, content, '^Friendly:')
+		auraFilterStrip(name, content, '^Enemy:')
 	end
 end
 

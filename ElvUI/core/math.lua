@@ -32,6 +32,26 @@ function E:ShortValue(v)
 		else
 			return format("%d", v)
 		end
+	elseif E.db.general.numberPrefixStyle == "KOREAN" then
+		if abs(v) >= 1e8 then
+			return format("%.1f억", v / 1e8)
+		elseif abs(v) >= 1e4 then
+			return format("%.1f만", v / 1e4)
+		elseif abs(v) >= 1e3 then
+			return format("%.1f천", v / 1e3)
+		else
+			return format("%d", v)
+		end
+	elseif E.db.general.numberPrefixStyle == "GERMAN" then
+		if abs(v) >= 1e9 then
+			return format("%.1fMrd", v / 1e9)
+		elseif abs(v) >= 1e6 then
+			return format("%.1fMio", v / 1e6)
+		elseif abs(v) >= 1e3 then
+			return format("%.1fTsd", v / 1e3)
+		else
+			return format("%d", v)
+		end
 	else
 		if abs(v) >= 1e9 then
 			return format("%.1fB", v / 1e9)

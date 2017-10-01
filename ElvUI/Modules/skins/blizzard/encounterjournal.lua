@@ -46,6 +46,15 @@ local function LoadSkin()
 	InstanceSelect.LootJournalTab:ClearAllPoints()
 	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 0, 0)
 
+	--Skin the tab text
+	for i = 1, #InstanceSelect.Tabs do
+		local tab = InstanceSelect.Tabs[i]
+		local text = tab:GetFontString()
+
+		text:FontTemplate()
+		text:SetPoint("CENTER")
+	end
+
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
 	EncounterJournalEncounterFrameInfoBG:Kill()

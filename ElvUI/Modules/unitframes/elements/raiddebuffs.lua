@@ -44,6 +44,7 @@ function UF:Configure_RaidDebuffs(frame)
 		end
 		
 		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
+		rdebuffs.onlyMatchSpellID = db.rdebuffs.onlyMatchSpellID
 		rdebuffs.forceShow = frame.forceShowAuras
 		rdebuffs:Size(db.rdebuffs.size)
 		rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset + frame.SPACING)
@@ -51,12 +52,12 @@ function UF:Configure_RaidDebuffs(frame)
 		rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 		rdebuffs.count:ClearAllPoints()
 		rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
-		rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+		rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b, stackColor.a)
 
 		rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 		rdebuffs.time:ClearAllPoints()
 		rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
-		rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
+		rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b, durationColor.a)
 	elseif frame:IsElementEnabled('RaidDebuffs') then
 		frame:DisableElement('RaidDebuffs')
 		rdebuffs:Hide()

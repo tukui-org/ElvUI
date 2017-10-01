@@ -45,15 +45,6 @@ local function LoadSkin()
 	S:HandleButton(ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:SetTemplate("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
-	
-	if not (E.wowbuild >= 24904) then
-		ReportPlayerNameDialog:StripTextures()
-		ReportPlayerNameDialogCommentFrame:StripTextures()
-		S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
-		ReportPlayerNameDialog:SetTemplate("Transparent")
-		S:HandleButton(ReportPlayerNameDialogReportButton)
-		S:HandleButton(ReportPlayerNameDialogCancelButton)
-	end
 end
 
 S:AddCallback("SkinBNet", LoadSkin)

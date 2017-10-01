@@ -124,27 +124,30 @@ local DEVELOPERS = {
 	"Haste",
 	"Nightcracker",
 	"Omega1970",
-	"Hydrazine"
+	"Hydrazine",
+	"Blazeflack",
+	"|cffff7d0aMerathilis|r",
+	"|cFF8866ccSimpy|r"
 }
 
 local TESTERS = {
 	"Tukui Community",
 	"|cffF76ADBSarah|r - For Sarahing",
 	"Affinity",
+	"Azilroka",
 	"Modarch",
 	"Bladesdruid",
 	"Tirain",
 	"Phima",
 	"Veiled",
-	"Blazeflack",
 	"Repooc",
 	"Darth Predator",
-	'Alex',
-	'Nidra',
-	'Kurhyus',
-	'BuG',
-	'Yachanay',
-	'Catok'
+	"Alex",
+	"Nidra",
+	"Kurhyus",
+	"BuG",
+	"Yachanay",
+	"Catok"
 }
 
 tsort(DONATORS, function(a,b) return a < b end) --Alphabetize

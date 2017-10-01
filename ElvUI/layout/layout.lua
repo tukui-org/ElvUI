@@ -10,7 +10,7 @@ local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
 -- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
--- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, ElvConfigToggle
+-- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -149,14 +149,18 @@ function LO:SetChatTabStyle()
 end
 
 function LO:SetDataPanelStyle()
-	if E.db.datatexts.panelTransparency then
+	if not E.db.datatexts.panelBackdrop then
+		LeftChatDataPanel:SetTemplate("NoBackdrop")
+		LeftChatToggleButton:SetTemplate("NoBackdrop")
+		RightChatDataPanel:SetTemplate("NoBackdrop")
+		RightChatToggleButton:SetTemplate("NoBackdrop")
+	elseif E.db.datatexts.panelTransparency then
 		LeftChatDataPanel:SetTemplate("Transparent")
 		LeftChatToggleButton:SetTemplate("Transparent")
 		LeftMiniPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetTemplate("Transparent")
 		RightChatToggleButton:SetTemplate("Transparent")
 		RightMiniPanel:SetTemplate("Transparent")
-		-- ElvConfigToggle:SetTemplate("Transparent")
 	else
 		LeftChatDataPanel:SetTemplate("Default", true)
 		LeftChatToggleButton:SetTemplate("Default", true)
@@ -164,7 +168,6 @@ function LO:SetDataPanelStyle()
 		RightChatDataPanel:SetTemplate("Default", true)
 		RightChatToggleButton:SetTemplate("Default", true)
 		RightMiniPanel:SetTemplate("Default", true)
-		-- ElvConfigToggle:SetTemplate("Default", true)
 	end
 end
 

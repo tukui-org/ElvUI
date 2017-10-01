@@ -71,7 +71,7 @@ function mod:UpdateElement_Glow(frame)
 			frame.TopArrow:Show()
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
-			frame.RightArrow:SetPoint("RIGHT", frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
+			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
 			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(E.Border*2), 0)
 			frame.RightArrow:Show()
 			frame.LeftArrow:Show()

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
-	
+
 	ArtifactFrame:StripTextures()
 	ArtifactFrame:CreateBackdrop("Transparent")
 	ArtifactFrame.BorderFrame:StripTextures()
@@ -12,13 +12,20 @@ local function LoadSkin()
 	for i = 1, 2 do
 		S:HandleTab(_G["ArtifactFrameTab" .. i])
 	end
-	
+
 	ArtifactFrameTab1:ClearAllPoints()
 	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 
 	ArtifactFrame.ForgeBadgeFrame.ItemIcon:Hide()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
+
+	-- Netherlight Crucible
+	ArtifactRelicForgeFrame:StripTextures()
+	ArtifactRelicForgeFrame:CreateBackdrop("Transparent")
+	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
+	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
+	S:HandleCloseButton(ArtifactRelicForgeFrameCloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)

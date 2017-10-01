@@ -13,7 +13,7 @@ local debuff_data = {}
 addon.DebuffData = debuff_data
 
 
-addon.ShowDispelableDebuff = true
+addon.ShowDispellableDebuff = true
 addon.FilterDispellableDebuff = true
 addon.MatchBySpellName = false
 
@@ -246,7 +246,7 @@ local function Update(self, event, unit)
 		if (not name) then break end
 		
 		--we coudln't dispell if the unit its charmed, or its not friendly
-		if addon.ShowDispelableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
+		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
 		
 			if addon.FilterDispellableDebuff then						
 				DispellPriority[debuffType] = (DispellPriority[debuffType] or 0) + addon.priority --Make Dispell buffs on top of Boss Debuffs
@@ -263,7 +263,18 @@ local function Update(self, event, unit)
 			end
 		end
 
-		priority = debuff_data[addon.MatchBySpellName and name or spellId] and debuff_data[addon.MatchBySpellName and name or spellId].priority
+		local debuff
+		if self.RaidDebuffs.onlyMatchSpellID then
+			debuff = debuff_data[spellId]
+		else
+			if debuff_data[spellId] then
+				debuff = debuff_data[spellId]
+			else
+				debuff = debuff_data[name]
+			end
+		end
+
+		priority = debuff and debuff.priority
 		if priority and not blackList[spellId] and (priority > _priority) then
 			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
 		end

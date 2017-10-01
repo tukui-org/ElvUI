@@ -187,14 +187,16 @@ E.Options.args.general = {
 				numberPrefixStyle = {
 					order = 23,
 					type = "select",
-					name = L["Number Prefix"],
+					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
 					get = function(info) return E.db.general.numberPrefixStyle end,
 					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
 					values = {
-						["METRIC"] = "k, M, G",
-						["ENGLISH"] = "K, M, B",
-						["CHINESE"] = "W, Y",
+						["METRIC"] = "Metric (k, M, G)",
+						["ENGLISH"] = "English (K, M, B)",
+						["CHINESE"] = "Chinese (W, Y)",
+						["KOREAN"] = "Korean (천, 만, 억)",
+						["GERMAN"] = "German (Tsd, Mio, Mrd)"
 					},
 				},
 				commandBarSetting = {

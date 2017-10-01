@@ -205,6 +205,14 @@ function UF:Configure_Castbar(frame)
 
 	--Adjust tick heights
 	castbar.tickHeight = castbar:GetHeight()
+	--Set tick width and color
+	castbar.tickWidth = db.castbar.tickWidth
+	castbar.tickColor = db.castbar.tickColor
+
+	for i = 1, #ticks do
+		ticks[i]:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
+		ticks[i]:Width(castbar.tickWidth)
+	end
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
@@ -282,8 +290,8 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
 			ticks[i]:SetTexture(E["media"].normTex)
 			E:RegisterStatusBar(ticks[i])
-			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
-			ticks[i]:Width(1)
+			ticks[i]:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
+			ticks[i]:Width(frame.tickWidth)
 		end
 
 		ticks[i]:Height(frame.tickHeight)
