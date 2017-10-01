@@ -1500,7 +1500,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,PlayerBuffs,CastByUnit,Dispellable', --Focus Buffs
+				['priority'] = 'Blacklist,Personal,PlayerBuffs,CastByUnit,Dispellable,RaidBuffsElvUI', --Focus Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1618,7 +1618,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit', --FocusTarget Buffs
+				['priority'] = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit,RaidBuffsElvUI', --FocusTarget Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1807,7 +1807,7 @@ P['unitframe'] = {
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
 				['maxDuration'] = 300,
-				['priority'] = 'Blacklist,PlayerBuffs,CastByUnit,Whitelist', --PetTarget Buffs
+				['priority'] = 'Blacklist,PlayerBuffs,CastByUnit,Whitelist,RaidBuffsElvUI', --PetTarget Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
@@ -1892,7 +1892,7 @@ P['unitframe'] = {
 				['clickThrough'] = false,
 				['minDuration'] = 0,
 				['maxDuration'] = 0,
-				['priority'] = 'Blacklist,CastByUnit,Whitelist', --Boss Buffs
+				['priority'] = 'Blacklist,CastByUnit,Whitelist,RaidBuffsElvUI', --Boss Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 20,
 				['sizeOverride'] = 22,
