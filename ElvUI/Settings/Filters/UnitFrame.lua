@@ -976,9 +976,15 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[232450] = Defaults(), -- Corrupted Axion
 
 	-- Mythic Dungeons
-		[226303] = Defaults(), --Piercing Shards (Neltharion's Lair)
-		[227742] = Defaults(), --Garrote (Karazhan)
-		[240443] = Defaults(), --Bursting
+		[226303] = Defaults(), -- Piercing Shards (Neltharion's Lair)
+		[227742] = Defaults(), -- Garrote (Karazhan)
+		[240443] = Defaults(), -- Bursting
+		[209858] = Defaults(), -- Necrotic
+		[226512] = Defaults(), -- Sanguine
+		[240559] = Defaults(), -- Grievous
+		[240443] = Defaults(), -- Bursting
+		[196376] = Defaults(), -- Grievous Tear
+		[200227] = Defaults(), -- Tangled Web
 	},
 }
 
@@ -991,7 +997,9 @@ G.unitframe.aurafilters['RaidBuffsElvUI'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mythic/Mythic+
-		[209859] = Defaults(),  -- Bolster
+		[209859] = Defaults(), -- Bolster
+		[178658] = Defaults(), -- Raging
+		[226510] = Defaults(), -- Sanguine
 		
 		--Raids
 	},
