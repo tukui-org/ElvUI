@@ -37,6 +37,7 @@ Fixed issue with position of detection icon on nameplates when using "Name Only"
 Fixed issue with healer icon position when portrait is enabled on nameplates.  
 Fixed issue which caused the "Hide" action on nameplate style filters to incorrectly show hidden nameplates if "Hide" was disabled.  
 Fixed issue with portrait position on nameplates when healthbar is disabled but forced to be shown on targeted nameplate.  
+Fixed issue with chat editbox position when backdrop was enabled/disabled.  
 
 
 
@@ -56,6 +57,7 @@ Added possibility of hooking into style filter conditions.
 Fixed a few font elements on Blizzard panels that were not getting replaced with chosen ElvUI font.  
 Added skin for the CinematicFrameCloseDialog frame.  
 Added skin for the TableAttributeDisplay frame.  
+Added some additional spells to the RaidDebuffs and RaidBuffsElvUI filters for M+ dungeons.  
 
 ___
 **Version 10.63 [ September 9th 2017 ]**
