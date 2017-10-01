@@ -905,6 +905,6 @@ function mod:PLAYER_LOGOUT()
 	end
 end
 
-function mod:StyleFilterInitializeFilters(tbl)
+function mod:StyleFilterInitializeFilter(tbl)
 	copyDefaults(tbl, E.StyleFilterDefaults);
 end
