@@ -107,10 +107,10 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 L["Action Paging"] = "페이지 자동전환 조건"
 L["ActionBars"] = "행동단축바"
 L["Allow Masque to handle the skinning of this element."] = true
-L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "새로 습득한 주문을 빈 액션 바 슬롯에 자동으로 배치할지 여부를 결정합니다."
 L["Alpha"] = "투명도"
 L["Anchor Point"] = "첫 번째 요소 위치"
-L["Auto Add New Spells"] = true
+L["Auto Add New Spells"] = "새로운 주문 자동 추가"
 L["Automatic"] = "자동"
 L["Backdrop Spacing"] = true
 L["Backdrop"] = "배경"
