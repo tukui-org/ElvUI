@@ -300,7 +300,7 @@ function mod:SetTargetFrame(frame)
 			self:ConfigureElement_Name(frame)
 			self:ConfigureElement_NPCTitle(frame)
 			self:RegisterEvents(frame, frame.unit)
-			self:UpdateElement_All(frame, frame.unit, true)
+			self:UpdateElement_All(frame, frame.unit, true, true)
 		end
 
 		if(targetExists) then

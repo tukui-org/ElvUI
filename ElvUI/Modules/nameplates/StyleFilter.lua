@@ -692,7 +692,7 @@ function mod:StyleFilterConfigureEvents()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(self.StyleFilterList, {filterName, filter.triggers.priority or 1})
 
-				--fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
+				-- fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
 				self.StyleFilterEvents["UpdateElement_All"] = true
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
@@ -708,6 +708,9 @@ function mod:StyleFilterConfigureEvents()
 				if filter.triggers.casting.interruptible then
 					self.StyleFilterEvents["UpdateElement_Cast"] = 1
 				end
+
+				-- real events
+				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
 
 				if filter.triggers.healthThreshold then
 					self.StyleFilterEvents["UNIT_HEALTH"] = true
@@ -732,10 +735,6 @@ function mod:StyleFilterConfigureEvents()
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
 					self.StyleFilterEvents["UNIT_THREAT_LIST_UPDATE"] = true
-				end
-
-				if filter.triggers.isTarget or filter.triggers.notTarget then
-					self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
