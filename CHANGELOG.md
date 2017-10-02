@@ -1,4 +1,4 @@
-**Version 10.66 [  ]**
+**Version 10.67 [  ]**
 
 **New Additions:**  
 
@@ -10,6 +10,20 @@
 
 **Misc. Changes:**  
 
+
+___
+**Version 10.66 [ October 2nd 2017 ]**
+
+**New Additions:**  
+None
+
+
+**Bug Fixes:**  
+Fixed error in castbar element.
+
+
+**Misc. Changes:**  
+None
 
 ___
 **Version 10.65 [ October 1st 2017 ]**
