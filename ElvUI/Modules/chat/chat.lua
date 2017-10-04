@@ -1997,7 +1997,7 @@ function CH:ON_FCF_SavePositionAndDimensions(_, noLoop)
 	end
 end
 
-function CH:SocialQueueLeader(playerName, leaderName)
+function CH:SocialQueueIsLeader(playerName, leaderName)
 	if leaderName == playerName then
 		return true
 	end
@@ -2059,7 +2059,7 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 
 		if firstQueue.queueData.lfgListID then
 			id, activityID, name, comment, voiceChat, iLvl, honorLevel, age, numBNetFriends, numCharFriends, numGuildMates, isDelisted, leaderName, numMembers, isAutoAccept = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
-			isLeader = self:SocialQueueLeader(playerName, leaderName)
+			isLeader = self:SocialQueueIsLeader(playerName, leaderName)
 		end
 
 		-- ignore groups created by the addon World Quest Group Finder
