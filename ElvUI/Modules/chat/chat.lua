@@ -2003,6 +2003,7 @@ function CH:ON_FCF_SavePositionAndDimensions(_, noLoop)
 end
 
 function CH:SocialQueueMessage(guid, message)
+	if not (guid and message) then return end
 	if TUTORIAL_POPUP then
 		PlaySound(TUTORIAL_POPUP, 'Master') --SOUNDKIT.UI_71_SOCIAL_QUEUEING_TOAST
 	end
