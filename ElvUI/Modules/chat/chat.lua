@@ -8,7 +8,7 @@ local _G = _G
 local time, difftime = time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type, assert = pairs, unpack, select, tostring, pcall, next, tonumber, type, assert
 local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
-local random, trim = math.random, trim
+local random, strtrim = math.random, strtrim
 local len, gsub, find, sub, gmatch, format, split = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
@@ -2023,7 +2023,7 @@ end
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
 	PlaySound(SOUNDKIT_TUTORIAL_POPUP) --SOUNDKIT_SOCIAL_QUEUEING_TOAST appears to be no sound
-	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), trim(message)))
+	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
 end
 
 function CH:SocialQueueEvent(event, guid, numAddedItems)
