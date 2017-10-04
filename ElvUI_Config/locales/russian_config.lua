@@ -234,6 +234,8 @@ L["Wrap After"] = "Размер ряда"
 L["Your Auras First"] = "Сначала свои"
 
 --Chat
+L["Quick Join Messages"] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "Над чатом"
 L["Adjust the height of your right chat panel."] = "Настроить высоту правой панели чата"
 L["Adjust the width of your right chat panel."] = "Настроить ширину правой панели чата."

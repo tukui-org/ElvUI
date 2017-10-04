@@ -233,6 +233,8 @@ L["Wrap After"] = true
 L["Your Auras First"] = true
 
 --Chat
+L["Quick Join Messages"] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = true
 L["Adjust the height of your right chat panel."] = true
 L["Adjust the width of your right chat panel."] = true

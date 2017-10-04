@@ -235,6 +235,8 @@ L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["Your Auras First"] = "Deine Auren zuerst"
 
 --Chat
+L["Quick Join Messages"] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "Über dem Chat"
 L["Adjust the height of your right chat panel."] = "Passe die Höhe des rechten Chatfensters an."
 L["Adjust the width of your right chat panel."] = "Passe die Breite des rechten Chatfensters an."

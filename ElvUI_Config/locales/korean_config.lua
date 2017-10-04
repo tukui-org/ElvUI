@@ -281,6 +281,8 @@ L["Wrap After"] = "한 줄에 표시할 오라 수"
 L["Your Auras First"] = "내가 걸은 효과 먼저"
 
 --Chat
+L["Quick Join Messages"] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "채팅창 위에 배치"
 L["Adjust the height of your right chat panel."] = "우측 패널의 세로길이를 결정합니다."
 L["Adjust the width of your right chat panel."] = "우측 패널의 가로길이를 결정합니다."

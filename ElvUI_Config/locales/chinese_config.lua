@@ -235,6 +235,8 @@ L["Wrap After"] = "每行行数"
 L["Your Auras First"] = "自身光环优先"
 
 --Chat
+L["Quick Join Messages"] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = '聊天框上方'
 L["Adjust the height of your right chat panel."] = "调整右聊天框的高度"
 L["Adjust the width of your right chat panel."] = "调整右聊天框的宽度"
