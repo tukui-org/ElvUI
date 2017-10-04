@@ -931,7 +931,7 @@ function ItemRefTooltip:SetHyperlink(data, ...)
 		end
 	elseif strsub(data, 1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local currentLink = (data):sub(5)
+		local currentLink = strsub(data, 5)
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
