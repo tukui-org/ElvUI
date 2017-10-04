@@ -2009,7 +2009,7 @@ function CH:SocialQueueLeader(playerName, leaderName)
 			if AccountName == playerName then
 				playerName = CharacterName
 				if RealmName ~= E.myrealm then
-					playerName = format('%s%s%s', playerName, '-', gsub(RealmName,'[%s%-]',''))
+					playerName = format('%s-%s', playerName, gsub(RealmName,'[%s%-]',''))
 				end
 				break
 			end
