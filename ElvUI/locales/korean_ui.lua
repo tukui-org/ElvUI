@@ -51,6 +51,8 @@ L["G"] = "길드"
 L["I"] = "인스"
 L["IL"] = "인스장"
 L["Invalid Target"] = "잘못된 대상"
+L["is looking for members"] = true
+L["joined a group"] = true
 L["O"] = "관리자"
 L["P"] = "파티"
 L["PL"] = "파장"
@@ -60,8 +62,6 @@ L["RW"] = "경보"
 L["says"] = "일반"
 L["whispers"] = "귓"
 L["yells"] = "외침"
-L["is looking for members"] = true
-L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = true

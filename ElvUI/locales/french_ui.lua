@@ -51,6 +51,8 @@ L["G"] = "G"
 L["I"] = "I"
 L["IL"] = "IL"
 L["Invalid Target"] = "Cible incorrecte"
+L["is looking for members"] = true
+L["joined a group"] = true
 L["O"] = "O"
 L["P"] = "Gr"
 L["PL"] = "CdG"
@@ -60,8 +62,6 @@ L["RW"] = "RW"
 L["says"] = "dit"
 L["whispers"] = "chuchote"
 L["yells"] = "crie"
-L["is looking for members"] = true
-L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "Niveau actuel :"

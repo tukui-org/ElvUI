@@ -51,6 +51,8 @@ L["G"] = true
 L["I"] = true
 L["IL"] = true
 L["Invalid Target"] = true
+L["is looking for members"] = true
+L["joined a group"] = true
 L["O"] = true
 L["P"] = true
 L["PL"] = true
@@ -60,8 +62,6 @@ L["RW"] = true
 L["says"] = true
 L["whispers"] = true
 L["yells"] = true
-L["is looking for members"] = true
-L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = true

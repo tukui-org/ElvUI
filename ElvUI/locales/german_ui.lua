@@ -50,7 +50,9 @@ L["DND"] = "DND" --Also used in datatexts and tooltip
 L["G"] = "G"
 L["I"] = "I"
 L["IL"] = "IL"
+L["is looking for members"] = "sucht nach Mitgliedern"
 L["Invalid Target"] = "Ungültiges Ziel"
+L["joined a group"] = "ist einer Gruppe beigetreten"
 L["O"] = "O"
 L["P"] = "P"
 L["PL"] = "PL"
@@ -60,8 +62,6 @@ L["RW"] = "RW"
 L["says"] = "sagen"
 L["whispers"] = "flüstern"
 L["yells"] = "schreien"
-L["is looking for members"] = true
-L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "Derzeitiges Level:"

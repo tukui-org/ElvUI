@@ -51,6 +51,8 @@ L["G"] = "Г"
 L["I"] = "П"
 L["IL"] = "ЛП"
 L["Invalid Target"] = "Неверная цель"
+L["is looking for members"] = true
+L["joined a group"] = true
 L["O"] = "Оф"
 L["P"] = "Гр"
 L["PL"] = "Лидер гр."
@@ -60,8 +62,6 @@ L["RW"] = "Объявление"
 L["says"] = "говорит"
 L["whispers"] = "шепчет"
 L["yells"] = "кричит"
-L["is looking for members"] = true
-L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "Текущий уровень:"
