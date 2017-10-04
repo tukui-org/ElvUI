@@ -1997,6 +1997,28 @@ function CH:ON_FCF_SavePositionAndDimensions(_, noLoop)
 	end
 end
 
+function CH:SocialQueueLeader(playerName, leaderName)
+	if leaderName == playerName then
+		return true
+	end
+
+	for i = 1, BNGetNumFriends() do
+		local _, AccountName, _, _, CharacterName, AccountID, _, IsOnline = BNGetFriendInfo(i)
+		if IsOnline then
+			local _, CharacterName, _, RealmName = BNGetGameAccountInfo(AccountID)
+			if AccountName == playerName then
+				playerName = CharacterName
+				if RealmName ~= E.myrealm then
+					playerName = format('%s%s%s', playerName, '-', gsub(RealmName,'[%s%-]',''))
+				end
+				break
+			end
+		end
+	end
+
+	return leaderName == playerName
+end
+
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
 	PlaySound(SOUNDKIT_TUTORIAL_POPUP, 'Master') --SOUNDKIT.UI_71_SOCIAL_QUEUEING_TOAST
@@ -2009,9 +2031,11 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 
 	local coloredName, players = UNKNOWN, C_SocialQueue_GetGroupMembers(guid)
 	local members = players and SocialQueueUtil_SortGroupMembers(players)
+	local playerName, nameColor
+
 	if members then
 		local firstMember, numMembers, extraCount = members[1], #members, ''
-		local playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
+		playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
 		if numMembers > 1 then
 			extraCount = format(' +%s', numMembers - 1)
 		end
@@ -2027,13 +2051,15 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	firstQueue = queues and queues[1]
 	isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
-	local isLeader, output, outputCount, queueName, queueCount
+	local output, outputCount, queueName, queueCount
 	if isLFGList and firstQueue and firstQueue.eligible then
 		local id, activityID, name, comment, voiceChat, iLvl, honorLevel, age, numBNetFriends, numCharFriends, numGuildMates, isDelisted, leaderName, numMembers, isAutoAccept
 		local fullName, shortName, categoryID, groupID, iLevel, filters, minLevel, maxPlayers, displayType, orderIndex, useHonorLevel, showQuickJoin
+		local isLeader
 
 		if firstQueue.queueData.lfgListID then
 			id, activityID, name, comment, voiceChat, iLvl, honorLevel, age, numBNetFriends, numCharFriends, numGuildMates, isDelisted, leaderName, numMembers, isAutoAccept = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+			isLeader = self:SocialQueueLeader(playerName, leaderName)
 		end
 
 		-- ignore groups created by the addon World Quest Group Finder
