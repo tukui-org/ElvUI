@@ -60,6 +60,8 @@ L["RW"] = "Объявление"
 L["says"] = "говорит"
 L["whispers"] = "шепчет"
 L["yells"] = "кричит"
+L["is looking for members"] = true
+L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "Текущий уровень:"

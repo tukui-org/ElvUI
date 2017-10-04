@@ -60,6 +60,8 @@ L["RW"] = "RW"
 L["says"] = "sagen"
 L["whispers"] = "flüstern"
 L["yells"] = "schreien"
+L["is looking for members"] = true
+L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "Derzeitiges Level:"

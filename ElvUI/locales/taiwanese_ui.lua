@@ -60,6 +60,8 @@ L["RW"] = "團隊警告"
 L["says"] = "說"
 L["whispers"] = "密語"
 L["yells"] = "大喊"
+L["is looking for members"] = true
+L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = "目前等級"

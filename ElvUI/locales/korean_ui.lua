@@ -60,6 +60,8 @@ L["RW"] = "경보"
 L["says"] = "일반"
 L["whispers"] = "귓"
 L["yells"] = "외침"
+L["is looking for members"] = true
+L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = true

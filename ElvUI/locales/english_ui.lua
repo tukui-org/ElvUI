@@ -60,6 +60,8 @@ L["RW"] = true
 L["says"] = true
 L["whispers"] = true
 L["yells"] = true
+L["is looking for members"] = true
+L["joined a group"] = true
 
 --DataBars
 L["Current Level:"] = true
