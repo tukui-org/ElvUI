@@ -235,8 +235,6 @@ L["Wrap After"] = "Retour à la ligne après"
 L["Your Auras First"] = "Vos Auras en premier"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "En-dessus du Chat"
 L["Adjust the height of your right chat panel."] = "Ajuste la hauteur de la fenêtre de discussion de droite."
 L["Adjust the width of your right chat panel."] = "Ajuste la largeur de la fenêtre de discussion de droite."
@@ -283,6 +281,7 @@ L["Panel Texture (Left)"] = "Texture de la fenêtre de discussion (Gauche)"
 L["Panel Texture (Right)"] = "Texture de la fenêtre de discussion (Droite)"
 L["Panel Width"] = "Largeur de la fenêtre de discussion"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "Postion du cadre d'écriture de la fenêtre de Chat. Si les Texte d'informations sont désactivés, elle apparaitra au dessus du Chat."
+L["Quick Join Messages"] = true
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Empêche l'affichage du même message plus d'une fois dans la fenêtre de discussion durant un laps de temps. Définir sur 0 pour désactiver."
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = true
 L["Right Only"] = "Droite seulement"
@@ -294,6 +293,7 @@ L["Separate Panel Sizes"] = "Séparer la taille des fenêtres de discussion."
 L["Set the font outline."] = "Configure le contour extérieur de la police." --Also used in UnitFrames section
 L["Short Channels"] = "Raccourcis canaux"
 L["Shorten the channel names in chat."] = "Minimise le nom des canaux de discussion."
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "Afficher les deux"
 L["Spam Interval"] = "Intervalle contre le Spam"
 L["Sticky Chat"] = "Fenêtre de chat adhésive"

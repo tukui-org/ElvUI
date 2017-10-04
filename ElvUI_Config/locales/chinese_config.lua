@@ -235,8 +235,6 @@ L["Wrap After"] = "每行行数"
 L["Your Auras First"] = "自身光环优先"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = '聊天框上方'
 L["Adjust the height of your right chat panel."] = "调整右聊天框的高度"
 L["Adjust the width of your right chat panel."] = "调整右聊天框的宽度"
@@ -284,6 +282,7 @@ L["Panel Texture (Right)"] = "聊天框材质(右)"
 L["Panel Width"] = "聊天框宽度"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = '对话编辑框位置,如果底部的信息文字被禁用的话,将会强制显示在聊天框顶部.'
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "单位时间(秒)内屏蔽重复对话信息, 0为禁用此功能"
+L["Quick Join Messages"] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = "开启该选项使你在查看聊天历史记录时需要按住Alt+上下键,如果关闭则直接按上下键即可"
 L["Right Only"] = "仅显示右边"
 L["Right Panel Height"] = "右面板高度"
@@ -294,6 +293,7 @@ L["Separate Panel Sizes"] = "分离框体大小"
 L["Set the font outline."] = "设定字体的描边"
 L["Short Channels"] = "隐藏频道名称"
 L["Shorten the channel names in chat."] = "在对话窗口中隐藏频道名称"
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "全部显示"
 L["Spam Interval"] = "垃圾间隔"
 L["Sticky Chat"] = "记忆对话频道"

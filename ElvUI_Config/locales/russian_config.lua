@@ -234,8 +234,6 @@ L["Wrap After"] = "Размер ряда"
 L["Your Auras First"] = "Сначала свои"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "Над чатом"
 L["Adjust the height of your right chat panel."] = "Настроить высоту правой панели чата"
 L["Adjust the width of your right chat panel."] = "Настроить ширину правой панели чата."
@@ -283,6 +281,7 @@ L["Panel Texture (Right)"] = "Текстура правой панели"
 L["Panel Width"] = "Ширина панели"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "Позиция поля ввода для чата. Если инфо-тексты отключены, оно всегда будет над чатом."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Предотвращает появление одинаковых сообщения в чате чаще указанного количества секунд. Установите на нуль для отключения."
+L["Quick Join Messages"] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = "Требовать зажатой клавиши Alt для перемещения курсора или переключения между предыдущими отправленными сообщениями."
 L["Right Only"] = "Только правый"
 L["Right Panel Height"] = "Высота правого чата"
@@ -293,6 +292,7 @@ L["Separate Panel Sizes"] = "Разные размеры панелей"
 L["Set the font outline."] = "Устанавливает границу шрифта."
 L["Short Channels"] = "Короткие каналы"
 L["Shorten the channel names in chat."] = "Сокращать названия каналов чата."
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "Показать оба"
 L["Spam Interval"] = "Интервал спама"
 L["Sticky Chat"] = "Клейкий чат"

@@ -233,8 +233,6 @@ L["Wrap After"] = true
 L["Your Auras First"] = true
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = true
 L["Adjust the height of your right chat panel."] = true
 L["Adjust the width of your right chat panel."] = true
@@ -280,6 +278,7 @@ L["Panel Height"] = true
 L["Panel Texture (Left)"] = true
 L["Panel Texture (Right)"] = true
 L["Panel Width"] = true
+L["Quick Join Messages"] = true
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = true
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = true
@@ -292,6 +291,7 @@ L["Separate Panel Sizes"] = true
 L["Set the font outline."] = true --Also used in UnitFrames section
 L["Short Channels"] = true
 L["Shorten the channel names in chat."] = true
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = true
 L["Spam Interval"] = true
 L["Sticky Chat"] = true

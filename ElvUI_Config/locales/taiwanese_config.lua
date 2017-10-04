@@ -235,8 +235,6 @@ L["Wrap After"] = "每行光環數"
 L["Your Auras First"] = "自身光環優先"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "對話框上方"
 L["Adjust the height of your right chat panel."] = "調整右側聊天框的高度"
 L["Adjust the width of your right chat panel."] = "調整右側聊天框的寬度"
@@ -284,6 +282,7 @@ L["Panel Texture (Right)"] = "對話框材質(右)"
 L["Panel Width"] = "對話框寛度"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "對話編輯框位置,如果底部的信息文字被禁用的話,將會強制顯示在對話框頂部."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "單位時間(秒) 內屏蔽重複對話信息, 設定為0 禁用此功能."
+L["Quick Join Messages"] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = "開啟該選項使你在查看聊天歷史記錄時需要按住Alt+上下鍵,如果關閉則直接按上下鍵即可"
 L["Right Only"] = "僅顯示右框背景"
 L["Right Panel Height"] = "右面板高度"
@@ -294,6 +293,7 @@ L["Separate Panel Sizes"] = "分離框體大小"
 L["Set the font outline."] = "字體描邊設定."
 L["Short Channels"] = "隱藏頻道名稱"
 L["Shorten the channel names in chat."] = "在對話視窗中隱藏頻道名稱."
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "全部顯示"
 L["Spam Interval"] = "洗頻訊息間隔"
 L["Sticky Chat"] = "記憶對話頻道"

@@ -281,8 +281,6 @@ L["Wrap After"] = "한 줄에 표시할 오라 수"
 L["Your Auras First"] = "내가 걸은 효과 먼저"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "채팅창 위에 배치"
 L["Adjust the height of your right chat panel."] = "우측 패널의 세로길이를 결정합니다."
 L["Adjust the width of your right chat panel."] = "우측 패널의 가로길이를 결정합니다."
@@ -328,6 +326,7 @@ L["Panel Texture (Right)"] = "패널 텍스쳐 (오른쪽)"
 L["Panel Width"] = "패널 가로길이"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "대화 입력창의 위치를 결정합니다. 만약 정보문자 항목에서 패널에 정보문자를 표시하지 않게 해놨다면 위치가 채팅창 위로 고정됩니다."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "같은 내용의 메시지는 이 값만큼 정해진 시간 내에선 한번만 보여줍니다.|n|n0으로 설정하면 이 기능을 끕니다."
+L["Quick Join Messages"] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = true
 L["Right Only"] = "우측 배경만 표시"
 L["Right Panel Height"] = "우측 패널 세로길이"
@@ -338,6 +337,7 @@ L["Separate Panel Sizes"] = "좌우패널 크기 따로설정"
 L["Set the font outline."] = "글꼴의 외곽선을 결정합니다."
 L["Short Channels"] = "채널명 요약"
 L["Shorten the channel names in chat."] = "채팅창의 채널명을 간추려 표시합니다."
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "둘 다 배경 표시"
 L["Spam Interval"] = "중복메시지 제한 기간"
 L["Sticky Chat"] = "채널 고정"

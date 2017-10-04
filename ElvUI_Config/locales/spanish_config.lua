@@ -235,8 +235,6 @@ L["Wrap After"] = "Auras por Fila/Columna"
 L["Your Auras First"] = "Tus Auras Primero"
 
 --Chat
-L["Quick Join Messages"] = true
-L["Show clickable Quick Join messages inside of the chat."] = true
 L["Above Chat"] = "Arriba del Chat"
 L["Adjust the height of your right chat panel."] = true
 L["Adjust the width of your right chat panel."] = true
@@ -284,6 +282,7 @@ L["Panel Texture (Right)"] = "Textura del Panel Derecho"
 L["Panel Width"] = "Anchura del Panel"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "Posición del Cuadro de Edición del Chat. Si los textos de datos se deshabilitan éste se colocará arriba del chat."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Previene que los mismos mensajes se muestren más de una vez en el chat dentro de un cierto número de segundos. Establécelo a cero para desactivar."
+L["Quick Join Messages"] = true
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = true
 L["Right Only"] = "Sólo el Derecho"
 L["Right Panel Height"] = true
@@ -294,6 +293,7 @@ L["Separate Panel Sizes"] = true
 L["Set the font outline."] = "Establece el contorno de fuente."
 L["Short Channels"] = "Recortar Canales"
 L["Shorten the channel names in chat."] = "Recorta los nombre de canal en el chat."
+L["Show clickable Quick Join messages inside of the chat."] = true
 L["Show Both"] = "Mostrar Ambos"
 L["Spam Interval"] = "Intervalo de Spam"
 L["Sticky Chat"] = "Chat Pegajoso"
