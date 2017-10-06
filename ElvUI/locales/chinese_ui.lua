@@ -229,6 +229,7 @@ L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
 L["Toggle Chat Frame"] = "开关聊天框架"
 L["Toggle Configuration"] = "设置开关"
+L["AP:"] = true -- Artifact Power
 L["XP:"] = "经验:"
 L["You don't have permission to mark targets."] = "你没有标记目标的权限"
 

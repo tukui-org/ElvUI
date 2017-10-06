@@ -229,6 +229,7 @@ L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
+L["AP:"] = true -- Artifact Power
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
 

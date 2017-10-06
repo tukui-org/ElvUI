@@ -229,6 +229,7 @@ L["Remaining:"] = "Restant :"
 L["Rested:"] = "Reposé :"
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua
+L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP :"
 L["You don't have permission to mark targets."] = "Vous n'avez pas la permission de marquer les cibles."
 

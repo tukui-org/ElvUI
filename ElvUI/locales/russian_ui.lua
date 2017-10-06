@@ -229,6 +229,7 @@ L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
+L["AP:"] = true -- Artifact Power
 L["XP:"] = "Опыт:"
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
 

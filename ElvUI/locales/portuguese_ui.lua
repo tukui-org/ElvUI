@@ -229,6 +229,7 @@ L["Remaining:"] = "Restante:"
 L["Rested:"] = "Descansado:"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Bat-papo"
 L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
+L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Você não tem permissão para marcar alvos."
 

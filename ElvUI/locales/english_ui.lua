@@ -230,6 +230,7 @@ L["Remaining:"] = true
 L["Rested:"] = true
 L["Toggle Chat Frame"] = true --layout\layout.lua
 L["Toggle Configuration"] = true --layout\layout.lua
+L["AP:"] = true -- Artifact Power
 L["XP:"] = true
 L["You don't have permission to mark targets."] = true
 

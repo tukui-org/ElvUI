@@ -115,7 +115,7 @@ function mod:ArtifactBar_OnEnter()
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
 
-	GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', E:ShortValue(xpForNextPoint - xp), remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %d %s)', E:ShortValue(apInBags), apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	if (numPointsAvailableToSpend > 0) then
