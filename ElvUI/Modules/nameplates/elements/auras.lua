@@ -200,6 +200,7 @@ local function cooldownFontOverride(cd)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
 
+		cd.timer.text:ClearAllPoints()
 		if mod.db.durationPosition == "TOPLEFT" then
 			cd.timer.text:Point("TOPLEFT", 1, 1)
 		elseif mod.db.durationPosition == "BOTTOMLEFT" then
@@ -264,6 +265,12 @@ function mod:UpdateAuraIcons(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
 		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
+
+		-- update stacks and cooldown font on NAME_PLATE_UNIT_ADDED
+		if auras.icons[i].count then
+			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+		end
+		cooldownFontOverride(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
