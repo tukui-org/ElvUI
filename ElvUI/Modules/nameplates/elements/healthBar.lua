@@ -121,7 +121,7 @@ function mod:UpdateElement_HealthColor(frame)
 	end
 end
 
-local function UpdateFillBar(frame, previousTexture, bar, amount)
+function mod:UpdateFillBar(frame, previousTexture, bar, amount)
 	if ( amount == 0 ) then
 		bar:Hide();
 		return previousTexture;
@@ -189,9 +189,9 @@ function mod:UpdateElement_HealPrediction(frame)
 	frame.AbsorbBar:Show()
 
 	local previousTexture = frame.HealthBar:GetStatusBarTexture();
-	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.PersonalHealPrediction , myIncomingHeal);
-	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.HealPrediction, allIncomingHeal);
-	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, totalAbsorb);
+	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.PersonalHealPrediction , myIncomingHeal);
+	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.HealPrediction, allIncomingHeal);
+	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, totalAbsorb);
 end
 
 
