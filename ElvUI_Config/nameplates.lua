@@ -3479,6 +3479,17 @@ E.Options.args.nameplate = {
 									},
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
+								durationPosition = {
+									order = 11,
+									name = L["Position"],
+									type = "select",
+									values = {
+										["CENTER"] = L["Center"],
+										["TOPLEFT"] = "TOPLEFT",
+										["BOTTOMLEFT"] = "BOTTOMLEFT",
+										["TOPRIGHT"] = "TOPRIGHT",
+									},
+								},
 							}
 						},
 						stacks = {

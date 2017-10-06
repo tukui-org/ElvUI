@@ -199,7 +199,16 @@ end
 local function cooldownFontOverride(cd)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
-		cd.timer.text:Point("TOPLEFT", 1, 1)
+
+		if mod.db.durationPosition == "TOPLEFT" then
+			cd.timer.text:Point("TOPLEFT", 1, 1)
+		elseif mod.db.durationPosition == "BOTTOMLEFT" then
+			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
+		elseif mod.db.durationPosition == "TOPRIGHT" then
+			cd.timer.text:Point("TOPRIGHT", 1, 1)
+		else
+			cd.timer.text:Point("CENTER", 0, 0)
+		end
 	end
 end
 

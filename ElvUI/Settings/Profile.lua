@@ -216,6 +216,7 @@ P["nameplates"] = {
 	["durationFont"] = "Homespun",
 	["durationFontSize"] = 8,
 	["durationFontOutline"] = "MONOCHROMEOUTLINE",
+	["durationPosition"] = "CENTER",
 	["stackFont"] = "Homespun",
 	["stackFontSize"] = 8,
 	["stackFontOutline"] = "MONOCHROMEOUTLINE",
