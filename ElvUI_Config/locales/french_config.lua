@@ -475,7 +475,7 @@ L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
-L["Applies the primary texture to all statusbars."] = "true"
+L["Applies the primary texture to all statusbars."] = "Appliquer les textures à toutes les barres de statut"
 L["Apply Font To All"] = "Appliquer la police partout"
 L["Apply Texture To All"] = "Appliquer la texture partout"
 L["Backdrop color of transparent frames"] = "Couleur de fond pour les cadres estompés."
