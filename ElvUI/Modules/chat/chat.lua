@@ -2078,13 +2078,16 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	elseif firstQueue then
 		output, outputCount, queueName, queueCount = '', '', '', 0
 		for id, queue in pairs(queues) do
-			if not queue.eligible then return end
-			queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
-			if output == '' then
-				output = queueName:gsub('\n.+','') -- grab only the first queue name
-				queueCount = queueCount + select(2, queueName:gsub('\n','')) -- collect additional on single queue
-			else
-				queueCount = queueCount + 1 + select(2, queueName:gsub('\n','')) -- collect additional on additional queues
+			if type(queue) == 'table' and queue.eligible then
+				queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
+				if queueName ~= '' then
+					if output == '' then
+						output = queueName:gsub('\n.+','') -- grab only the first queue name
+						queueCount = queueCount + select(2, queueName:gsub('\n','')) -- collect additional on single queue
+					else
+						queueCount = queueCount + 1 + select(2, queueName:gsub('\n','')) -- collect additional on additional queues
+					end
+				end
 			end
 		end
 		if output ~= '' then
