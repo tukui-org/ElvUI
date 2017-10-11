@@ -246,6 +246,9 @@ local chatLogos_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\
 local chatLogos_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
 local chatLogos_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
 local specialChatIcons = {
+	["Area52"] = {
+		["Illidelv"] = chatLogos_ElvUI,
+	},
 	["Illidan"] = {
 		["Affinichi"] = chatLogos_Bathrobe,
 		["Uplift"] = chatLogos_Bathrobe,
