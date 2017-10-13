@@ -2066,8 +2066,8 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 			isLeader = self:SocialQueueIsLeader(playerName, leaderName)
 		end
 
-		-- ignore groups created by the addon World Quest Group Finder
-		if comment and find(comment, 'World Quest Group Finder') then return end
+		-- ignore groups created by the addon World Quest Group Finder/World Quest Tracker/World Quest Assistant/HandyNotes_Argus to reduce spam
+		if comment and (find(comment, "World Quest Group Finder") or find(comment, "World Quest Tracker") or find(comment, "World Quest Assistant") or find(comment, "HandyNotes_Argus")) then return end
 
 		if activityID or firstQueue.queueData.activityID then
 			fullName, shortName, categoryID, groupID, iLevel, filters, minLevel, maxPlayers, displayType, orderIndex, useHonorLevel, showQuickJoin = C_LFGList_GetActivityInfo(activityID or firstQueue.queueData.activityID)
