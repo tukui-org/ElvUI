@@ -72,7 +72,6 @@ L["In Bags:"] = "В сумках:"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
 L["AP"] = "Сила Ат."
-L["App"] = true --don't need translation in ru, ppl understand it as is
 L["Arena"] = "Арена"
 L["AVD: "] = "Защита: "
 L["Avoidance Breakdown"] = "Распределение защиты"
@@ -105,6 +104,7 @@ L["lvl"] = "ур."
 L["Main Hand"] = "Правая рука"
 L["Mission(s) Report:"] = "Отчет миссий:"
 L["Mitigation By Level: "] = "Снижение на уровне: "
+L["Mobile"] = true
 L["Naval Mission(s) Report:"] = "Отчет морских миссий:"
 L["No Guild"] = "Нет гильдии"
 L["Offhand"] = "Левая рука"

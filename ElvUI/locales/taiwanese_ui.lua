@@ -72,7 +72,6 @@ L["In Bags:"] = "背包內:"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 記憶體使用量"
 L["AP"] = "攻擊強度"
-L["App"] = true
 L["Arena"] = "競技場"
 L["AVD: "] = "免傷: "
 L["Avoidance Breakdown"] = "免傷統計"
@@ -105,6 +104,7 @@ L["lvl"] = "等級"
 L["Main Hand"] = "主手"
 L["Mission(s) Report:"] = "任務報告"
 L["Mitigation By Level: "] = "等級減傷: "
+L["Mobile"] = true
 L["Naval Mission(s) Report:"] = "海軍任務報告"
 L["No Guild"] = "沒有公會"
 L["Offhand"] = "副手"

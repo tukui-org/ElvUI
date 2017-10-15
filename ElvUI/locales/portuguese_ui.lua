@@ -72,7 +72,6 @@ L["In Bags:"] = true
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Segurar Shift) Memória em Uso"
 L["AP"] = "PA"
-L["App"] = true
 L["Arena"] = true
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Separação de Anulação"
@@ -105,6 +104,7 @@ L["lvl"] = "nível"
 L["Main Hand"] = "Mão Principal"
 L["Mission(s) Report:"] = true
 L["Mitigation By Level: "] = "Mitigação por nível"
+L["Mobile"] = true
 L["Naval Mission(s) Report:"] = true
 L["No Guild"] = "Sem Guilda"
 L["Offhand"] = "Mão Secundária"

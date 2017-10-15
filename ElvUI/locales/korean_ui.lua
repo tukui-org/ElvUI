@@ -72,7 +72,6 @@ L["In Bags:"] = true
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
 L["AP"] = "전투력"
-L["App"] = "런쳐"
 L["Arena"] = "투기장"
 L["AVD: "] = "방어율: "
 L["Avoidance Breakdown"] = "방어율 목록"
@@ -105,6 +104,7 @@ L["lvl"] = "레벨"
 L["Main Hand"] = "주장비"
 L["Mission(s) Report:"] = true
 L["Mitigation By Level: "] = "레벨별 데미지 경감률"
+L["Mobile"] = true
 L["Naval Mission(s) Report:"] = true
 L["No Guild"] = "길드 없음"
 L["Offhand"] = "보조장비"
