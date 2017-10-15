@@ -40,6 +40,14 @@ local function LoadSkin()
 	S:HandleButton(CinematicFrameCloseDialogConfirmButton)
 	S:HandleButton(CinematicFrameCloseDialogResumeButton)
 
+	-- This must be checked, otherwise it will return a nil error.
+	if MovieFrame.CloseDialog then
+		MovieFrame.CloseDialog:StripTextures()
+		MovieFrame.CloseDialog:SetTemplate("Transparent")
+		S:HandleButton(MovieFrame.CloseDialog.ConfirmButton)
+		S:HandleButton(MovieFrame.CloseDialog.ResumeButton)
+	end
+
 	for i = 1, getn(skins) do
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
