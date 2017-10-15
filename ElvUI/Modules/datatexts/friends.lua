@@ -97,7 +97,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, bs2apString, hotsString, owString, dst2String = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, L["Mobile"], BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2 -- use BNET_CLIENT_CLNT as mobile for now
+local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, bsapString, hotsString, owString, dst2String = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, L["Mobile"], BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -105,7 +105,7 @@ local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp, BNTableBSAp, BNTableCLNT, BNTableHOTS, BNTableOW, BNTableSC2, BNTableDST2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [sc2String] = BNTableSC2, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW, [clntString] = BNTableCLNT, [dst2String] = BNTableDST2, [bs2apString] = BNTableBSAp}
+local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [sc2String] = BNTableSC2, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW, [clntString] = BNTableCLNT, [dst2String] = BNTableDST2, [bsapString] = BNTableBSAp}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
