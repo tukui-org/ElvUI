@@ -42,11 +42,13 @@ local function LoadSkin()
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(self)
 		if self and self.closeDialog and not self.closeDialog.template then
-			local closeDialog = self.closeDialog:GetName()
-			_G[closeDialog]:StripTextures()
-			_G[closeDialog]:SetTemplate('Transparent')
-			S:HandleButton(_G[closeDialog..'ConfirmButton'])
-			S:HandleButton(_G[closeDialog..'ResumeButton'])
+			self.closeDialog:StripTextures()
+			self.closeDialog:SetTemplate('Transparent')
+			local dialogName = self.closeDialog.GetName and self.closeDialog:GetName()
+			local closeButton = self.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			local resumeButton = self.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+			if closeButton then S:HandleButton(closeButton) end
+			if resumeButton then S:HandleButton(resumeButton) end
 		end
 	end)
 
