@@ -19,7 +19,6 @@ local function LoadSkin()
 		"StaticPopup2",
 		"StaticPopup3",
 		"StaticPopup4",
-		"CinematicFrameCloseDialog",
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
@@ -37,9 +36,23 @@ local function LoadSkin()
 	}
 
 	QueueStatusFrame:StripTextures()
-	S:HandleButton(CinematicFrameCloseDialogConfirmButton)
-	S:HandleButton(CinematicFrameCloseDialogResumeButton)
 
+	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
+	-- we can just hook onto this function so that we can get the correct `self`
+	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
+	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(self)
+		if self and self.closeDialog and not self.closeDialog.template then
+			local closeDialog = self.closeDialog:GetName()
+			_G[closeDialog]:StripTextures()
+			_G[closeDialog]:SetTemplate('Transparent')
+			S:HandleButton(_G[closeDialog..'ConfirmButton'])
+			S:HandleButton(_G[closeDialog..'ResumeButton'])
+		end
+	end)
+
+	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
+	-- cant be hooked directly so we can just use this
+	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
 	hooksecurefunc('MovieFrame_PlayMovie', function(self, movieID)
 		if self and self.CloseDialog and not self.CloseDialog.template then
 			self.CloseDialog:StripTextures()
