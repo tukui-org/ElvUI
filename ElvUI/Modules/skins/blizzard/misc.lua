@@ -10,6 +10,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
+local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
 

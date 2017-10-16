@@ -257,7 +257,7 @@ local function LoadSkin()
 	end)
 
 	--Makes the skin work, but only after /reload ui :o   (found in chatconfingframe.xml)
-	CreateChatChannelList(self, GetChannelList())
+	CreateChatChannelList(ChatConfigChannelSettings, GetChannelList())
 	ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchAndClassColorTemplate", CHANNELS)
 	ChatConfig_UpdateCheckboxes(ChatConfigChannelSettingsLeft)
 	ChatConfigBackgroundFrame:SetScript("OnShow", function(self)
