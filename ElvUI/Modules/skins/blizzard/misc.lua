@@ -4,10 +4,12 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local getn = getn
+local pairs = pairs
 local unpack = unpack
-local ceil = math.ceil
 --WoW API / Variables
-local UnitIsUnit = UnitIsUnit
+local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
 

@@ -3,11 +3,18 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-
+local _G = _G
+local getn = getn
+local pairs = pairs
+local print = print
+local ceil = math.ceil
 --WoW API / Variables
-
+local UnitIsUnit = UnitIsUnit
+local InCombatLockdown = InCombatLockdown
+local GetChannelList = GetChannelList
+local IsMacClient = IsMacClient
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: 
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BlizzardOptions ~= true then return end
