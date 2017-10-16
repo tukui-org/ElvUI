@@ -262,4 +262,4 @@ local function LoadSecondarySkin()
 	GuildInviteFrameWarningText:Kill()
 end
 
-S:AddCallback("Guild", LoadSecondarySkin)
+S:AddCallback("GuildInvite", LoadSecondarySkin)
