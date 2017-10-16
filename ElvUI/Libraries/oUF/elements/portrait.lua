@@ -36,7 +36,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local function Update(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
 
 	local element = self.Portrait
 
@@ -49,27 +49,31 @@ local function Update(self, event, unit)
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local modelUpdated = false
-	if(element:IsObjectType('PlayerModel')) then
-		local guid = UnitGUID(unit)
-		if(not UnitExists(unit) or not UnitIsConnected(unit) or not UnitIsVisible(unit)) then
-			element:SetCamDistanceScale(0.25)
-			element:SetPortraitZoom(0)
-			element:SetPosition(0, 0, 0.5)
-			element:ClearModel()
-			element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
-			element.guid = nil
-			modelUpdated = true
-		elseif(element.guid ~= guid or event == 'UNIT_MODEL_CHANGED') then
-			element:SetCamDistanceScale(1)
-			element:SetPortraitZoom(1)
-			element:SetPosition(0, 0, 0)
-			element:ClearModel()
-			element:SetUnit(unit)
-			element.guid = guid
-			modelUpdated = true
+	local guid = UnitGUID(unit)
+	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
+	if(event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable) then
+		if(element:IsObjectType('PlayerModel')) then
+			if(not isAvailable) then
+				element:SetCamDistanceScale(0.25)
+				element:SetPortraitZoom(0)
+				element:SetPosition(0, 0, 0.25)
+				element:ClearModel()
+				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
+				modelUpdated = true
+			else
+				element:SetCamDistanceScale(1)
+				element:SetPortraitZoom(1)
+				element:SetPosition(0, 0, 0)
+				element:ClearModel()
+				element:SetUnit(unit)
+				modelUpdated = true
+			end
+		else
+			SetPortraitTexture(element, unit)
 		end
-	else
-		SetPortraitTexture(element, unit)
+
+		element.guid = guid
+		element.state = isAvailable
 	end
 
 	--[[ Callback: Portrait:PostUpdate(unit)
@@ -104,8 +108,8 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		self:RegisterEvent('UNIT_MODEL_CHANGED', Path)
+		self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 
 		-- The quest log uses PARTY_MEMBER_{ENABLE,DISABLE} to handle updating of
@@ -129,8 +133,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
+		self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		self:UnregisterEvent('PARTY_MEMBER_ENABLE', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 	end
