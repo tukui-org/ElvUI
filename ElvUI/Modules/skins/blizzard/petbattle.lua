@@ -13,6 +13,7 @@ local PET_BATTLE_PAD_INDEX = PET_BATTLE_PAD_INDEX
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
+
 	local f = PetBattleFrame
 	local bf = f.BottomFrame
 	local infoBars = {
@@ -126,7 +127,6 @@ local function LoadSkin()
 		end
 	end)
 
-
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
 		if self.PetType then
@@ -220,7 +220,6 @@ local function LoadSkin()
 	SkinPetTooltip(FloatingBattlePetTooltip)
 	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
 
-
 	-- TOOLTIP DEFAULT POSITION
 	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
 		local t = PetBattlePrimaryAbilityTooltip
@@ -233,7 +232,6 @@ local function LoadSkin()
 		t:ClearAllPoints()
 		t:Point(point, E.UIParent, point, x, y)
 	end)
-
 
 	local extraInfoBars = {
 		f.Ally2,
@@ -340,7 +338,6 @@ local function LoadSkin()
 		bf.PetSelectionFrame:ClearAllPoints()
 		bf.PetSelectionFrame:Point("BOTTOM", bf.xpBar, "TOP", 0, 8)
 	end)
-
 
 	local function SkinPetButton(self)
 		if not self.backdrop then

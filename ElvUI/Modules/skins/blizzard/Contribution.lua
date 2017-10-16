@@ -22,7 +22,7 @@ local function LoadSkin()
 	ContributionBuffTooltip.Border:SetAlpha(0)
 	ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
-	
+
 	--Contribution Tooltip
 	ContributionTooltip:StripTextures()
 	ContributionTooltip:CreateBackdrop("Transparent")

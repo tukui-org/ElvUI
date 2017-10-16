@@ -8,7 +8,7 @@ local unpack, pairs = unpack, pairs
 local CreateFrame = CreateFrame
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true then return; end
+	if E.private.skins.blizzard.enable ~= true then return end
 
 	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
 		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
@@ -189,7 +189,6 @@ local function LoadSkin()
 	MissionPage.StartMissionButton.FlashAnim:Stop()
 	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
 
-
 	-- Landing page
 	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
 	GarrisonLandingPage:CreateBackdrop("Transparent")
@@ -247,8 +246,7 @@ local function LoadSkin()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 	-- HandleShipFollowerPage(ShipFollowerList.followerTab)
 
-
-	-- Needs Review: ShipYard
+	-- ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")

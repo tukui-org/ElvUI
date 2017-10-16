@@ -8,6 +8,7 @@ local select, unpack = select, unpack
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
+
 	S:HandleCloseButton(SpellBookFrameCloseButton)
 	SpellBookFrame:SetTemplate("Transparent")
 

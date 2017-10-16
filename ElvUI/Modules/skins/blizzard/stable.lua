@@ -21,11 +21,11 @@ local function LoadSkin()
 	S:HandleRotateButton(PetStableModelRotateLeftButton)
 
 	for i = 1, NUM_PET_ACTIVE_SLOTS do
-	   S:HandleItemButton(_G['PetStableActivePet' .. i], true)
+		S:HandleItemButton(_G['PetStableActivePet' .. i], true)
 	end
 
 	for i = 1, NUM_PET_STABLE_SLOTS do
-	   S:HandleItemButton(_G['PetStableStabledPet' .. i], true)
+		S:HandleItemButton(_G['PetStableStabledPet' .. i], true)
 	end
 
 	PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))

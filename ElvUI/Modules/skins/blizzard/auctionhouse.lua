@@ -10,6 +10,7 @@ local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
+
 	S:HandleCloseButton(AuctionFrameCloseButton)
 	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
 	AuctionFrame:StripTextures(true)

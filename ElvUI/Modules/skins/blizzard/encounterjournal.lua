@@ -84,7 +84,6 @@ local function LoadSkin()
 	EncounterInfo.bossesScroll.backdrop:Point("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
 
-
 	local scrollFrames = {
 		EncounterInfo.overviewScroll,
 		EncounterInfo.lootScroll,
@@ -354,12 +353,12 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
-	
+
 	-- Search
 	EncounterJournalSearchResults:StripTextures()
 	EncounterJournalSearchResults:SetTemplate("Default")
 	EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
-	
+
 	S:HandleCloseButton(EncounterJournalSearchResultsCloseButton)
 	S:HandleScrollBar(EncounterJournalSearchResultsScrollFrameScrollBar)
 end

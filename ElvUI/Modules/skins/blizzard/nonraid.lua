@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.nonraid ~= true then return end
+
 	local StripAllTextures = {
 		"RaidInfoFrame",
 		"RaidInfoInstanceLabel",
@@ -33,6 +34,7 @@ local function LoadSkin()
 	for i = 1, #buttons do
 		S:HandleButton(_G[buttons[i]])
 	end
+
 	RaidInfoScrollFrame:StripTextures()
 	RaidInfoFrame:CreateBackdrop("Transparent")
 	RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")

@@ -11,6 +11,7 @@ local MAX_BUY_GUILDBANK_TABS = MAX_BUY_GUILDBANK_TABS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
+
 	GuildControlUI:StripTextures()
 	GuildControlUIHbar:StripTextures()
 	GuildControlUI:SetTemplate("Transparent")
@@ -103,7 +104,6 @@ local function LoadSkin()
 			frame.bg3:SetAllPoints(frame.backdrop)
 		end
 	end
-
 
 	local once = false
 	hooksecurefunc("GuildControlUI_BankTabPermissions_Update", function()

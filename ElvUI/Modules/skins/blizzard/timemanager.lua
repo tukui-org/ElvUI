@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.timemanager ~= true then return end
+
 	TimeManagerFrame:StripTextures()
 	TimeManagerFrame:SetTemplate("Transparent")
 
@@ -15,7 +16,6 @@ local function LoadSkin()
 	S:HandleEditBox(TimeManagerAlarmMessageEditBox)
 
 	S:HandleCheckBox(TimeManagerAlarmEnabledButton)
-
 
 	S:HandleCheckBox(TimeManagerMilitaryTimeCheck)
 	S:HandleCheckBox(TimeManagerLocalTimeCheck)

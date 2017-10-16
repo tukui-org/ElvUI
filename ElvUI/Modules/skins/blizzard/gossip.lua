@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
+
 	ItemTextFrame:StripTextures(true)
 	ItemTextScrollFrame:StripTextures()
 	GossipFrame:SetTemplate("Transparent")
@@ -28,7 +29,6 @@ local function LoadSkin()
 	}
 
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
-
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
@@ -57,7 +57,6 @@ local function LoadSkin()
 		_G[buttons[i]]:StripTextures()
 		S:HandleButton(_G[buttons[i]])
 	end
-
 
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
 

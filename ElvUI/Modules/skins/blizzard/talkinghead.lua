@@ -3,12 +3,12 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talkinghead ~= true then return end
-	
+
 	TalkingHeadFrame:StripTextures()
 	TalkingHeadFrame.MainFrame:StripTextures()
 	TalkingHeadFrame.PortraitFrame:StripTextures()
 	TalkingHeadFrame.MainFrame.Model.PortraitBg:Hide()
-	
+
 	S:HandleCloseButton(TalkingHeadFrame.MainFrame.CloseButton)
 end
 

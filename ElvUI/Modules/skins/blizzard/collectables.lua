@@ -13,6 +13,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
+
 	-- global
 	CollectionsJournal:StripTextures()
 	CollectionsJournal:SetTemplate('Transparent')

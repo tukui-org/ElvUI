@@ -120,6 +120,7 @@ V['skins'] = {
 		["AdventureMap"] = true,
 		["Obliterum"] = true,
 		["Contribution"] = true,
+		["BlizzardOptions"] = true,
 	},
 }
 

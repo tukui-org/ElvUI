@@ -41,7 +41,6 @@ local function LoadSkin()
 			self.Anim:Stop()
 		end
 	end)
-
 end
 
 S:AddCallback("LossControl", LoadSkin)

@@ -37,6 +37,7 @@ local function LoadSkin()
 		"MainHandSlot",
 		"SecondaryHandSlot",
 	}
+
 	for _, slot in pairs(slots) do
 		local icon = _G["Character"..slot.."IconTexture"]
 		local cooldown = _G["Character"..slot.."Cooldown"]

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
+
 	BattlefieldMinimap:SetClampedToScreen(true)
 	BattlefieldMinimapCorner:Kill()
 	BattlefieldMinimapBackground:Kill()
@@ -70,7 +71,6 @@ local function LoadSkin()
 		end
 	end)
 
-
 	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function(opacity)
 		local alpha = 1.0 - (BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0);
 		BattlefieldMinimap.backdrop:SetAlpha(alpha)
@@ -100,7 +100,6 @@ local function LoadSkin()
 			oldAlpha = nil;
 		end
 	end)
-
 end
 
 S:AddCallbackForAddon("Blizzard_BattlefieldMinimap", "BattlefieldMinimap", LoadSkin)

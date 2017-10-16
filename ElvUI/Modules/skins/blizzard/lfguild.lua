@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
+
 	local checkbox = {
 		"LookingForGuildPvPButton",
 		"LookingForGuildWeekendsButton",
@@ -12,11 +13,11 @@ local function LoadSkin()
 		"LookingForGuildQuestButton",
 		"LookingForGuildDungeonButton",
 	}
+
 	-- skin checkboxes
 	for _, v in pairs(checkbox) do
 		S:HandleCheckBox(_G[v])
 	end
-
 
 	-- have to skin these checkboxes seperate for some reason o_O
 	S:HandleCheckBox(LookingForGuildTankButton.checkButton)

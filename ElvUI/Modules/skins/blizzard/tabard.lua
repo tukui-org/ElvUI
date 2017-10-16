@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tabard ~= true then return end
+
 	TabardFrame:StripTextures(true)
 	TabardFrame:SetTemplate("Transparent")
 	TabardModel:CreateBackdrop("Default")
@@ -36,7 +37,6 @@ local function LoadSkin()
 		_G[custom]:StripTextures()
 		S:HandleNextPrevButton(_G[custom.."LeftButton"])
 		S:HandleNextPrevButton(_G[custom.."RightButton"])
-
 
 		if i > 1 then
 			_G[custom]:ClearAllPoints()

@@ -45,6 +45,17 @@ local function LoadSkin()
 	S:HandleButton(ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:SetTemplate("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
+
+	BattleTagInviteFrame:StripTextures()
+	BattleTagInviteFrame:SetTemplate('Transparent')
+	--S:HandleEditBox(BattleTagInviteFrameScrollFrame)
+
+	for i=1, BattleTagInviteFrame:GetNumChildren() do
+		local child = select(i, BattleTagInviteFrame:GetChildren())
+		if child:GetObjectType() == 'Button' then
+			S:HandleButton(child)
+		end
+	end
 end
 
 S:AddCallback("SkinBNet", LoadSkin)

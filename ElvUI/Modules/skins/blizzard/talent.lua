@@ -350,6 +350,7 @@ local function LoadSkin()
 			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
 		end
 	end
+
 	--Apply color to chosen talents
 	hooksecurefunc("PVPTalentFrame_Update", function(self)
 		for i = 1, MAX_PVP_TALENT_TIERS do

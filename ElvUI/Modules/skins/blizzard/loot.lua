@@ -21,6 +21,7 @@ local LOOT = LOOT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
+
 	-- Needs Review
 	--[[local frame = MissingLootFrame
 

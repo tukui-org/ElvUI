@@ -7,12 +7,14 @@ local _G = _G
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
+
 	ItemSocketingFrame:StripTextures()
 	ItemSocketingFrame:SetTemplate("Transparent")
 	ItemSocketingFrameInset:Kill()
 	ItemSocketingScrollFrame:StripTextures()
 	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
+
 	for i = 1, MAX_NUM_SOCKETS  do
 		local button = _G[("ItemSocketingSocket%d"):format(i)]
 		local button_bracket = _G[("ItemSocketingSocket%dBracketFrame"):format(i)]

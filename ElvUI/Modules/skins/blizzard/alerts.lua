@@ -12,6 +12,7 @@ local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
+
 	local function forceAlpha(self, alpha, isForced)
 		if alpha ~= 1 and isForced ~= true then
 			self:SetAlpha(1, true)
