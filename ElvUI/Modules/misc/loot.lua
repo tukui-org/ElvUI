@@ -375,9 +375,6 @@ function M:LoadLoot()
 	self:RegisterEvent("UPDATE_MASTER_LOOT_LIST")
 
 	E:CreateMover(lootFrameHolder, "LootFrameMover", L["Loot Frame"])
-	if(GetCVar("lootUnderMouse") == "1") then
-		E:DisableMover("LootFrameMover")
-	end
 	
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()
