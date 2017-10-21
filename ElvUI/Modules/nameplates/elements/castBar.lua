@@ -249,8 +249,8 @@ function mod:ConfigureElement_CastBar(frame)
 		castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", E.Border + E.Spacing*3, 0)
 		castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", E.Border + E.Spacing*3, 0)
 	elseif(self.db.units[frame.UnitType].castbar.iconPosition == "LEFT") then
-		castBar.Icon:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -E.Border + -E.Spacing*3, 0)
-		castBar.Icon:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMLEFT", -E.Border + -E.Spacing*3, 0)
+		castBar.Icon:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -E.Border - E.Spacing*3, 0)
+		castBar.Icon:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMLEFT", -E.Border - E.Spacing*3, 0)
 	end
 
 	if(self.db.units[frame.UnitType].powerbar.enable) then
