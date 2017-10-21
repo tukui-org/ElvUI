@@ -34,7 +34,7 @@ function mod:UpdateReputation(event)
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max = 0, threshold
 		value = currentValue % threshold
-		if hasRewardPending then 
+		if hasRewardPending then
 			value = value + threshold
 		end
 	end
@@ -118,7 +118,7 @@ function mod:ReputationBar_OnEnter()
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max = 0, threshold
 		value = currentValue % threshold
-		if hasRewardPending then 
+		if hasRewardPending then
 			value = value + threshold
 		end
 	end
