@@ -22,7 +22,6 @@ local CLASS, DEFAULT = CLASS, DEFAULT
 -- GLOBALS: ColorPPCopyColorSwatch, ColorPPBoxLabelA, ColorPPOldColorSwatch
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
-local initialized = nil
 local colorBuffer = {}
 local editingText
 
@@ -123,20 +122,20 @@ function B:EnhanceColorPicker()
 		if ColorPickerFrame.hasOpacity then
 			ColorPPBoxA:Show()
 			ColorPPBoxLabelA:Show()
-			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxA:SetFocus()  end)
+			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxA:SetFocus() end)
 			UpdateAlphaText()
 			self:Width(405)
 		else
 			ColorPPBoxA:Hide()
 			ColorPPBoxLabelA:Hide()
-			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus()  end)
+			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus() end)
 			self:Width(345)
 		end
 	end)
 
 	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 	--this little script will make you have to press ok for you to notice any changes.
-	ColorPickerFrame:SetScript('OnColorSelect', function(s, r, g, b)
+	ColorPickerFrame:SetScript('OnColorSelect', function(self, r, g, b)
 		ColorSwatch:SetColorTexture(r, g, b)
 		if not editingText then
 			UpdateColorTexts(r, g, b)
@@ -338,9 +337,9 @@ function B:EnhanceColorPicker()
 
 	-- define the order of tab cursor movement
 	ColorPPBoxR:SetScript("OnTabPressed", function(self) ColorPPBoxG:SetFocus() end)
-	ColorPPBoxG:SetScript("OnTabPressed", function(self) ColorPPBoxB:SetFocus()  end)
-	ColorPPBoxB:SetScript("OnTabPressed", function(self) ColorPPBoxH:SetFocus()  end)
-	ColorPPBoxA:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus()  end)
+	ColorPPBoxG:SetScript("OnTabPressed", function(self) ColorPPBoxB:SetFocus() end)
+	ColorPPBoxB:SetScript("OnTabPressed", function(self) ColorPPBoxH:SetFocus() end)
+	ColorPPBoxA:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus() end)
 
 	-- make the color picker movable.
 	local mover = CreateFrame('Frame', nil, ColorPickerFrame)
