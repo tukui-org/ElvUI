@@ -626,6 +626,7 @@ L["Hide When Empty"] = "Скрывать пустые"
 L["Hide"] = "Скрыть" --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "После прерывания или отмены, полоса заклинаний будет оставаться видимой указаное количество секунд."
 L["Icon Base Height"] = "Базовая высота иконки"
+L["Icon Position"] = true
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "Если включено, то будет проверять отсутствие ауры вместо ее наличия."
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "Если включено, то для активации фильтра потребуется наличие всех аур. В противном случае наличия любой из списка."
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = "Если включено, то для активации фильтра потребуется наличие всех кулдаунов. В противном случае наличия любой из списка."

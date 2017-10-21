@@ -627,6 +627,7 @@ L["Hide When Empty"] = "空白時隱藏"
 L["Hide"] = "隱藏"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "在施法失敗或被打斷時施法條保持可見的秒數"
 L["Icon Base Height"] = "圖示基礎高度"
+L["Icon Position"] = true
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果選中則將會檢查光環是否缺失而不是光環是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果選中則要求滿足所有光環. 不啟用則只要求任一光環存在即可啟動."
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true

@@ -324,6 +324,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -387,6 +388,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -452,6 +454,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -516,6 +519,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -578,6 +582,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -645,6 +650,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,

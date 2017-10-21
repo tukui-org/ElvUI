@@ -628,6 +628,7 @@ L["Hide When Empty"] = "Verstecke wenn leer"
 L["Hide"] = "Verstecken" --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "Wieviele Sekunden die Zauberleiste sichtbar bleibt, nachdem ein Zauber abgebrochen oder unterbrochen wurde."
 L["Icon Base Height"] = "Symbol Grundhöhe"
+L["Icon Position"] = "Symbol Position"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "Wenn aktiviert, wird überprüft ob Auren fehlen anstatt vorhanden zu sein auf der Einheit."
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "Wenn aktiviert, benötigt es alle Auren um den Filter zu aktivieren. Andererseits benötigt es nur eine von den Auren um den Filter zu aktivieren."
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = "Wenn aktiviert, benötigt es alle Cooldowns um den Filter zu aktivieren. Ansonsten benötigt es einen Cooldown um zu aktiveren."

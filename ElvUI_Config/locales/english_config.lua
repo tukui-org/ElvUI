@@ -616,6 +616,7 @@ L["Hide When Empty"] = true
 L["Hide"] = true --Also used in DataTexts
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = true
 L["Icon Base Height"] = true
+L["Icon Position"] = true
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = true
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = true
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true
