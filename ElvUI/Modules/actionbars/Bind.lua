@@ -79,7 +79,7 @@ function AB:BindListener(key)
 		end
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name));
 		self:BindUpdate(bind.button, bind.spellmacro);
-		if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then 
+		if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then
 			GameTooltip:Hide();
 		end
 		return;
