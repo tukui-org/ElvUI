@@ -243,7 +243,6 @@ local function OnEnter(self, _, noUpdate)
 	if standingID ~= 8 then -- Not Max Rep
 		barMax = barMax - barMin
 		barValue = barValue - barMin
-		barMin = 0
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 

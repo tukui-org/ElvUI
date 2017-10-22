@@ -18,13 +18,13 @@ local Currencies = {
 	["ANCIENT_MANA"] = {ID = 1155, NAME = GetCurrencyInfo(1155), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1155)), 16, 16)},
 	["CURIOUS_COIN"] = {ID = 1275, NAME = GetCurrencyInfo(1275), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1275)), 16, 16)},
 	["ORDER_RESOURCES"] = {ID = 1220, NAME = GetCurrencyInfo(1220), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1220)), 16, 16)},
-	["LEGIONFALL_WAR_SUPPLIES"] = {ID = 1342, NAME = GetCurrencyInfo(1342), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1342)), 16, 16)}, 
+	["LEGIONFALL_WAR_SUPPLIES"] = {ID = 1342, NAME = GetCurrencyInfo(1342), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1342)), 16, 16)},
 	["SIGHTLESS_EYE"] = {ID = 1149, NAME = GetCurrencyInfo(1149), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1149)), 16, 16)},
 	["SEAL_OF_BROKEN_FATE"] = {ID = 1273, NAME = GetCurrencyInfo(1273), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1273)), 16, 16)},
 	["NETHERSHARD"] = {ID = 1226, NAME = GetCurrencyInfo(1226), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1226)), 16, 16)},
 	["SHADOWY_COIN"] = {ID = 1154, NAME = GetCurrencyInfo(1154), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1154)), 16, 16)},
 	["VEILED_ARGUNITE"] = {ID = 1508, NAME = GetCurrencyInfo(1508), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1508)), 16, 16)},
-	-- Other 
+	-- Other
 	["APEXIS_CRYSTAL"] = {ID = 823, NAME = GetCurrencyInfo(823), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(823)), 16, 16)},
 	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(515)), 16, 16)},
 }
@@ -64,10 +64,10 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	DT.tooltip:AddDoubleLine(L["Gold"]..":", E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins), nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
-	
+
 	DT.tooltip:AddLine(EXPANSION_NAME6) --"Legion"
 	DT.tooltip:AddDoubleLine(Currencies["ANCIENT_MANA"].NAME, select(2, GetCurrencyInfo(Currencies["ANCIENT_MANA"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["CURIOUS_COIN"].NAME, select(2, GetCurrencyInfo(Currencies["CURIOUS_COIN"].ID)), 1, 1, 1)
@@ -79,7 +79,7 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(Currencies["SHADOWY_COIN"].NAME, select(2, GetCurrencyInfo(Currencies["SHADOWY_COIN"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["VEILED_ARGUNITE"].NAME, select(2, GetCurrencyInfo(Currencies["VEILED_ARGUNITE"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
-	
+
 	DT.tooltip:AddLine(OTHER)
 	DT.tooltip:AddDoubleLine(Currencies["APEXIS_CRYSTAL"].NAME, select(2, GetCurrencyInfo(Currencies["APEXIS_CRYSTAL"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["DARKMOON_PRIZE_TICKET"].NAME, select(2, GetCurrencyInfo(Currencies["DARKMOON_PRIZE_TICKET"].ID)), 1, 1, 1)
@@ -89,14 +89,14 @@ local function OnEnter(self)
 		currencies in the tooltip.
 	]]
 	local shouldAddHeader = true
-	for currencyID, info in pairs(E.global.datatexts.customCurrencies) do
+	for _, info in pairs(E.global.datatexts.customCurrencies) do
 		if info.DISPLAY_IN_MAIN_TOOLTIP then
 			if shouldAddHeader then
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(L["Custom Currency"])
 				shouldAddHeader = false
 			end
-			
+
 			DT.tooltip:AddDoubleLine(info.NAME, select(2, GetCurrencyInfo(info.ID)), 1, 1, 1)
 		end
 	end
