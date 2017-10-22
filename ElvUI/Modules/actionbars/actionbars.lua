@@ -63,6 +63,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
+local UIHider
+
 AB.RegisterCooldown = E.RegisterCooldown
 
 AB["handledBars"] = {} --List of all bars
@@ -758,7 +760,7 @@ end
 
 function AB:DisableBlizzard()
 	-- Hidden parent frame
-	local UIHider = CreateFrame("Frame")
+	UIHider = CreateFrame("Frame")
 	UIHider:Hide()
 
 	MultiBarBottomLeft:SetParent(UIHider)

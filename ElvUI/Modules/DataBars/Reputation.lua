@@ -15,6 +15,7 @@ local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionI
 local InCombatLockdown = InCombatLockdown
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
+local ToggleCharacter = ToggleCharacter
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
