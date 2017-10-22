@@ -2049,7 +2049,7 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 	if isLFGList and firstQueue and firstQueue.eligible then
-		local activityID, name, comment, leaderName, fullName, isLeader
+		local activityID, name, comment, leaderName, fullName, isLeader, _
 
 		if firstQueue.queueData.lfgListID then
 			_, activityID, name, comment, _, _, _, _, _, _, _, _, leaderName = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
