@@ -382,7 +382,7 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
-	local frame = frame or self:GetNamePlateForUnit(unit);
+	frame = frame or self:GetNamePlateForUnit(unit);
 	frame.unitFrame.unit = unit
 	frame.unitFrame.displayedUnit = unit
 	self:UpdateInVehicle(frame, true)
@@ -453,7 +453,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
-	local frame = frame or self:GetNamePlateForUnit(unit);
+	frame = frame or self:GetNamePlateForUnit(unit);
 	frame.unitFrame.unit = nil
 
 	local unitType = frame.unitFrame.UnitType
@@ -551,7 +551,6 @@ function mod:ForEachPlate(functionToRun, ...)
 end
 
 function mod:SetBaseNamePlateSize()
-	local self = mod
 	local baseWidth = self.db.clickableWidth
 	local baseHeight = self.db.clickableHeight
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
@@ -659,13 +658,13 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
 
-    if frame.UnitFrame and not frame.unitFrame.onShowHooked then
-    	self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
-    		self:Hide() --Hide Blizzard's Nameplate
-    	end)
-    	--print('Hooked on NAME_PLATE_CREATED')
-    	frame.unitFrame.onShowHooked = true
-    end
+	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
+		self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
+			self:Hide() --Hide Blizzard's Nameplate
+		end)
+		--print('Hooked on NAME_PLATE_CREATED')
+		frame.unitFrame.onShowHooked = true
+	end
 end
 
 function mod:OnEvent(event, unit, ...)

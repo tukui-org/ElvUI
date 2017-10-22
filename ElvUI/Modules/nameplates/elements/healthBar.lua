@@ -169,12 +169,6 @@ function mod:UpdateElement_HealPrediction(frame)
 		end
 	end
 
-	if(myCurrentHealAbsorb > allIncomingHeal) then
-		myCurrentHealAbsorb = myCurrentHealAbsorb - allIncomingHeal
-	else
-		myCurrentHealAbsorb = 0
-	end
-
 	frame.PersonalHealPrediction:SetMinMaxValues(0, maxHealth)
 	frame.PersonalHealPrediction:SetValue(myIncomingHeal)
 	frame.PersonalHealPrediction:Show()
@@ -236,7 +230,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 	absorbBar:Hide()
 
 	healthBar.text:SetAllPoints(healthBar)
-	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
+	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
 function mod:ConstructElement_HealthBar(parent)
