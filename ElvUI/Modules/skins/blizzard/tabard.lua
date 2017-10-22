@@ -49,13 +49,13 @@ local function LoadSkin()
 
 	TabardCharacterModelRotateLeftButton:Point("BOTTOMLEFT", 4, 4)
 	TabardCharacterModelRotateRightButton:Point("TOPLEFT", TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
-	hooksecurefunc(TabardCharacterModelRotateLeftButton, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+	hooksecurefunc(TabardCharacterModelRotateLeftButton, "SetPoint", function(self, point, _, _, xOffset, yOffset)
 		if point ~= "BOTTOMLEFT" or xOffset ~= 4 or yOffset ~= 4 then
 			self:SetPoint("BOTTOMLEFT", 4, 4)
 		end
 	end)
 
-	hooksecurefunc(TabardCharacterModelRotateRightButton, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+	hooksecurefunc(TabardCharacterModelRotateRightButton, "SetPoint", function(self, point, _, _, xOffset, yOffset)
 		if point ~= "TOPLEFT" or xOffset ~= 4 or yOffset ~= 0 then
 			self:SetPoint("TOPLEFT", TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
 		end

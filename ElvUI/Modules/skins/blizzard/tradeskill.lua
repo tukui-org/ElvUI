@@ -71,7 +71,7 @@ local function LoadSkin()
 			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
 			local Icon = Button.Icon
 			local Count = Button.Count
-			
+
 			Icon:SetTexCoord(unpack(E.TexCoords))
 			Icon:SetDrawLayer("OVERLAY")
 			if not Icon.backdrop then
@@ -80,11 +80,11 @@ local function LoadSkin()
 				Icon.backdrop:SetTemplate("Default")
 				Icon.backdrop:SetOutside(Icon)
 			end
-			
+
 			Icon:SetParent(Icon.backdrop)
 			Count:SetParent(Icon.backdrop)
 			Count:SetDrawLayer("OVERLAY")
-			
+
 			Button.NameFrame:Kill()
 		end
 	end)

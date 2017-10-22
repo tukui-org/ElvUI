@@ -223,7 +223,7 @@ local function LoadSkin()
 	--Boss selection buttons
 	local function SkinBosses()
 		local bossIndex = 1;
-		local name, description, bossID, _, link = EJ_GetEncounterInfoByIndex(bossIndex);
+		local _, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
 		local bossButton;
 
 		while bossID do
@@ -236,7 +236,7 @@ local function LoadSkin()
 			end
 
 			bossIndex = bossIndex + 1;
-			name, description, bossID, _, link = EJ_GetEncounterInfoByIndex(bossIndex);
+			_, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
 		end
 	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
@@ -274,7 +274,7 @@ local function LoadSkin()
 	end
 
 	--Overview Info (From Aurora)
-	local function SkinOverviewInfo(self, role, index)
+	local function SkinOverviewInfo(self, _, index)
 		local header = self.overviews[index]
 		if not header.isSkinned then
 
@@ -297,7 +297,7 @@ local function LoadSkin()
 	hooksecurefunc("EncounterJournal_SetUpOverview", SkinOverviewInfo)
 
 	--Overview Info Bullets (From Aurora)
-	local function SkinOverviewInfoBullets(object, description)
+	local function SkinOverviewInfoBullets(object)
 		local parent = object:GetParent()
 
 		if parent.Bullets then

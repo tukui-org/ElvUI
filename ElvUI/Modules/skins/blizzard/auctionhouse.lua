@@ -102,7 +102,7 @@ local function LoadSkin()
 	AuctionsItemButton:StyleButton()
 	AuctionsItemButton:SetTemplate("Default", true)
 
-	AuctionsItemButton:HookScript('OnEvent', function(self, event, ...)
+	AuctionsItemButton:HookScript('OnEvent', function(self, event)
 		self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
 			local Quality = select(4, GetAuctionSellItemInfo())

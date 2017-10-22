@@ -114,7 +114,6 @@ local function LoadSkin()
 		for i=1, numTabs do
 			local tab = _G["GuildControlBankTab"..i.."Owned"]
 			local icon = tab.tabIcon
-			local editbox = tab.editBox
 
 			icon:SetTexCoord(unpack(E.TexCoords))
 

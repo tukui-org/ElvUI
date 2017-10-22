@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local ipairs = ipairs
 --WoW API / Variables
 
 local function LoadSkin()

@@ -171,10 +171,10 @@ local function LoadSkin()
 
 	-- ConquestBar
 	local conquestBar = ConquestFrame.XPBar
-	local bar = conquestBar.Bar
-	local text = conquestBar.Bar.OverlayFrame.Text
-	local nextAvailable = conquestBar.NextAvailable
-	local icon = nextAvailable.Icon
+	bar = conquestBar.Bar
+	text = conquestBar.Bar.OverlayFrame.Text
+	nextAvailable = conquestBar.NextAvailable
+	icon = nextAvailable.Icon
 
 	conquestBar:StripTextures()
 
@@ -236,7 +236,7 @@ local function LoadSecondarySkin()
 	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
-	hooksecurefunc("PVPReadyDialog_Display", function(self, index, displayName, isRated, queueType, gameType, role)
+	hooksecurefunc("PVPReadyDialog_Display", function(self, _, _, _, queueType, _, role)
 		if role == "DAMAGER" then
 			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 		elseif role == "TANK" then

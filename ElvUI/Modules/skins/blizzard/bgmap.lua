@@ -71,7 +71,7 @@ local function LoadSkin()
 		end
 	end)
 
-	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function(opacity)
+	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function()
 		local alpha = 1.0 - (BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0);
 		BattlefieldMinimap.backdrop:SetAlpha(alpha)
 	end)

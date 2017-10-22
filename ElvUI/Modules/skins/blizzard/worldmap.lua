@@ -77,7 +77,7 @@ local function LoadSkin()
 	end
 
 	-- The Icon Border should be in QualityColor
-	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
+	hooksecurefunc('QuestInfo_GetRewardButton', function(_, index)
 		local button = MapQuestInfoRewardsFrame.RewardButtons[index]
 		if(button) then
 			HandleReward(button)

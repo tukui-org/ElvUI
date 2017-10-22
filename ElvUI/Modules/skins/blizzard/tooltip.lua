@@ -49,7 +49,7 @@ local function LoadSkin()
 	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar)
 
 	-- Color GameTooltip QuestRewards Progress Bars
-	local function QuestRewardsBarColor(tooltip, questID, style)
+	local function QuestRewardsBarColor(tooltip, questID)
 		if not tooltip or not questID then return end
 		local name, cur, max, sb, _ = tooltip.GetName and tooltip:GetName()
 		if name and name == 'WorldMapTooltip' then name = 'WorldMapTaskTooltip' end
