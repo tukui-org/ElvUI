@@ -4,9 +4,8 @@ local AB = E:GetModule('ActionBars');
 --Cache global variables
 --Lua functions
 local _G = _G
-local type = type
 local ceil = math.ceil;
-local format, lower, find = format, string.lower, string.find
+local format, find = format, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
@@ -59,7 +58,7 @@ function AB:StyleShapeShift()
 
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
-			
+
 			if self.db.stanceBar.style == 'darkenInactive' then
 				_,_, texture = GetSpellInfo(name)
 			end
@@ -184,7 +183,7 @@ function AB:PositionAndSizeBarShapeShift()
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db["stanceBar"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	bar:Width(barWidth);
 	bar:Height(barHeight);
-	
+
 	if self.db['stanceBar'].enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(bar.db.alpha);
@@ -207,12 +206,12 @@ function AB:PositionAndSizeBarShapeShift()
 	else
 		horizontalGrowth = "LEFT";
 	end
-	
+
 	if(self.db['stanceBar'].inheritGlobalFade) then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
-	end	
+	end
 
 	local button, lastButton, lastColumnButton;
 	local firstButtonSpacing = (self.db["stanceBar"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
@@ -298,7 +297,7 @@ function AB:AdjustMaxStanceButtons(event)
 				MasqueGroup:AddButton(bar.buttons[i])
 			end
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
-			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');			
+			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 			initialCreate = true;
 		end
 

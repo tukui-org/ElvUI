@@ -46,7 +46,7 @@ local function InitializeTalkingHead()
 	TalkingHeadFrame:SetPoint("BOTTOM", 0, 265)
 
 	E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"])
-	
+
 	--Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
 	--We do this to prevent alerts from anchoring to this frame when it is shown.
 	for index, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
