@@ -98,6 +98,7 @@ P['general'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',
 		['textSize'] = 12,
+		["textOutline"] = "NONE",
 	},
 	['totems'] = {
 		['enable'] = true,
