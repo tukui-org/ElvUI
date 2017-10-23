@@ -1183,7 +1183,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = "해당 유닛이 적대적일 때 표시할 오라 형태를 결정합니다."
 L["Set the type of auras to show when a unit is friendly."] = "해당 유닛이 우호적일 때 표시할 오라 형태를 결정합니다."
 L["Sets the font instance's horizontal text alignment style."] = "문자의 가로 정렬 방법을 결정합니다."
-L["Show a incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "생명력바에 예상 치유량을 표시합니다."
+L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "생명력바에 예상 치유량을 표시합니다."
 L["Show Aura From Other Players"] = "다른 유저가 걸어준 버프도 표시"
 L["Show Auras"] = "오라아이콘 표시"
 L["Show Dispellable Debuffs"] = true
