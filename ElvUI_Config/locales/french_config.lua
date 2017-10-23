@@ -1135,7 +1135,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = "Définir le type d'auras à afficher quand l'unité est hostile."
 L["Set the type of auras to show when a unit is friendly."] = "Définir le type d'auras à afficher quand l'unité est amical."
 L["Sets the font instance's horizontal text alignment style."] = "Réglages de l'alignement horizontal du texte de la police d'écriture."
-L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
+L["Show a incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
 L["Show Aura From Other Players"] = "N'importe quelle unité"
 L["Show Auras"] = "Afficher les auras"
 L["Show Dispellable Debuffs"] = "Voir les affaiblissements dissipables"

@@ -1129,7 +1129,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = "Устанавливает тип аур для отображения, когда юнит враг."
 L["Set the type of auras to show when a unit is friendly."] = "Устанавливает тип аур для отображения, когда юнит друг."
 L["Sets the font instance's horizontal text alignment style."] = "Устанавливает выравнивание текста по горизонтали"
-L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Отображать объем входящего исцеления на рамках. Также отображает немного иначе окрашенную полосу для избыточного исцеления."
+L["Show a incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Отображать объем входящего исцеления на рамках. Также отображает немного иначе окрашенную полосу для избыточного исцеления."
 L["Show Aura From Other Players"] = "Отображать чужие"
 L["Show Auras"] = "Показать ауры"
 L["Show Dispellable Debuffs"] = "Показывать развеиваемые дебаффы"
