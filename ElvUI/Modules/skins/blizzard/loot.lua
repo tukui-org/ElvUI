@@ -167,7 +167,7 @@ local function LoadSkin()
 		local button = _G["LootButton"..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if(button and button:IsShown()) then
-			local texture, isQuestItem, questId, isActive;
+			local texture, _, isQuestItem, questId, isActive;
 			if (LootFrame.AutoLootTable) then
 				local entry = LootFrame.AutoLootTable[slot];
 				if( entry.hide ) then

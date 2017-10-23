@@ -169,6 +169,12 @@ function mod:UpdateElement_HealPrediction(frame)
 		end
 	end
 
+	if(myCurrentHealAbsorb > allIncomingHeal) then
+		myCurrentHealAbsorb = myCurrentHealAbsorb - allIncomingHeal
+	else
+		myCurrentHealAbsorb = 0
+	end
+
 	frame.PersonalHealPrediction:SetMinMaxValues(0, maxHealth)
 	frame.PersonalHealPrediction:SetValue(myIncomingHeal)
 	frame.PersonalHealPrediction:Show()

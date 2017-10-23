@@ -303,7 +303,7 @@ end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
-	local talentSelected, talentFunction, talentRows, instanceType, instanceDifficulty;
+	local talentSelected, talentFunction, talentRows, _, instanceType, instanceDifficulty;
 	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
 	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
