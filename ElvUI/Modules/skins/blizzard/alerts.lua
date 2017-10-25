@@ -7,8 +7,6 @@ local _G = _G
 local unpack, select = unpack, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
-local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
@@ -262,7 +260,7 @@ local function LoadSkin()
 				if region:GetObjectType() == "Texture" then
 					if region:GetAtlas() == "Garr_MissionToast" then
 						region:Kill()
-					end 
+					end
 				end
 			end
 			--Create Backdrop
@@ -425,7 +423,7 @@ local function LoadSkin()
 
 			frame.isSkinned = true
 		end
-		
+
 		local color = ITEM_QUALITY_COLORS[quality]
 		if color then
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)

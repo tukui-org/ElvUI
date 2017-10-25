@@ -7,7 +7,7 @@ local S = E:GetModule('Skins')
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: 
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AdventureMap ~= true then return end

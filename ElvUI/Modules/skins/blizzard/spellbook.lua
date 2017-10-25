@@ -117,7 +117,7 @@ local function LoadSkin()
 			end
 		end)
 
-		local point, relatedTo, point2, x, y = tab:GetPoint()
+		local point, relatedTo, point2, _, y = tab:GetPoint()
 		tab:Point(point, relatedTo, point2, 1, y)
 
 		tab.isSkinned = true
@@ -163,7 +163,7 @@ local function LoadSkin()
 	end
 
 	for _, button in pairs(professionbuttons) do
-		local button = _G[button]
+		button = _G[button]
 		button:StripTextures()
 		button:SetTemplate("Transparent")
 		button.iconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -187,7 +187,7 @@ local function LoadSkin()
 	}
 
 	for _, statusbar in pairs(professionstatusbars) do
-		local statusbar = _G[statusbar]
+		statusbar = _G[statusbar]
 		statusbar:StripTextures()
 		statusbar:SetStatusBarTexture(E["media"].normTex)
 		E:RegisterStatusBar(statusbar)

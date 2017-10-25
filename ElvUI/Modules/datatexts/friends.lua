@@ -322,7 +322,7 @@ local function OnEnter(self)
 	end
 
 	if numBNetOnline > 0 then
-		local status = 0
+		local status
 		for client, BNTable in pairs(tableList) do
 			if #BNTable > 0 then
 				DT.tooltip:AddLine(' ')
@@ -339,7 +339,7 @@ local function OnEnter(self)
 								levelc = RAID_CLASS_COLORS["PRIEST"]
 								classc = RAID_CLASS_COLORS["PRIEST"]
 							end
-							
+
 							--Sometimes the friend list is fubar with level 0 unknown friends
 							if not classc then
 								classc = RAID_CLASS_COLORS["PRIEST"]

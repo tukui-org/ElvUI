@@ -7,7 +7,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local select, unpack = select, unpack
 local tinsert, tremove = table.insert, table.remove
 local strlower, strsplit = string.lower, strsplit
-local next, ipairs = next, ipairs
 local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -61,7 +60,7 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell = false, false
+	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
 		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
@@ -107,9 +106,9 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 	end
 end
 
-function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, _, texture, count, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false, false
+	local isFriend, filterCheck, isUnit, isPlayer, canDispell, allowDuration, noDuration = false
 
 	if priority ~= '' then
 		noDuration = (not duration or duration == 0)

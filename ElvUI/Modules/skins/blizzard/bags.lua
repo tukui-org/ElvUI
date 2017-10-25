@@ -181,7 +181,7 @@ local function LoadSkin()
 
 		if not button.isBag then
 			local container = button:GetParent():GetID();
-			local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(container, button:GetID())
+			local _, _, _, _, _, _, itemLink = GetContainerItemInfo(container, button:GetID())
 			local isQuestItem, questId = GetContainerItemQuestInfo(container, button:GetID())
 			button.type = nil
 			button.ilink = itemLink

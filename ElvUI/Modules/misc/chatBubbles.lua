@@ -4,8 +4,8 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, unpack, type, pairs = select, unpack, type, pairs
-local strlower, find, format = strlower, string.find, string.format
+local select, unpack, pairs = select, unpack, pairs
+local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles

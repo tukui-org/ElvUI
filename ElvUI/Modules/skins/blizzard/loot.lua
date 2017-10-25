@@ -6,11 +6,7 @@ local LBG = LibStub("LibButtonGlow-1.0", true)
 --Lua functions
 local _G = _G
 local unpack, select = unpack, select
-local ceil = ceil
 --WoW API / Variables
-local GetNumMissingLootItems = GetNumMissingLootItems
-local GetMissingLootItemInfo = GetMissingLootItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local GetLootSlotInfo = GetLootSlotInfo
 local UnitName = UnitName
@@ -21,34 +17,6 @@ local LOOT = LOOT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
-
-	-- Needs Review
-	--[[local frame = MissingLootFrame
-
-	frame:StripTextures()
-	frame:CreateBackdrop("Default")
-
-	S:HandleCloseButton(MissingLootFramePassButton)
-
-	local function SkinButton()
-		local numItems = GetNumMissingLootItems()
-
-		for i = 1, numItems do
-			local slot = _G["MissingLootFrameItem"..i]
-			local icon = slot.icon
-
-			S:HandleItemButton(slot, true)
-
-			local texture, name, count, quality = GetMissingLootItemInfo(i);
-			local color = (GetItemQualityColor(quality)) or (unpack(E.media.bordercolor))
-			icon:SetTexture(texture)
-			frame:SetBackdropBorderColor(color)
-		end
-
-		local numRows = ceil(numItems / 2);
-		MissingLootFrame:Height(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
-	end
-	hooksecurefunc("MissingLootFrame_Show", SkinButton)]]
 
 	-- Loot history frame
 	LootHistoryFrame:StripTextures()
@@ -199,7 +167,7 @@ local function LoadSkin()
 		local button = _G["LootButton"..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if(button and button:IsShown()) then
-			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive;
+			local texture, _, isQuestItem, questId, isActive;
 			if (LootFrame.AutoLootTable) then
 				local entry = LootFrame.AutoLootTable[slot];
 				if( entry.hide ) then
@@ -207,16 +175,12 @@ local function LoadSkin()
 					return;
 				else
 					texture = entry.texture;
-					item = entry.item;
-					quantity = entry.quantity;
-					quality = entry.quality;
-					locked = entry.locked;
 					isQuestItem = entry.isQuestItem;
 					questId = entry.questId;
 					isActive = entry.isActive;
 				end
 			else
-				texture, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
+				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
 			end
 
 			if(texture) then

@@ -181,7 +181,7 @@ local function LoadSkin(event)
 	AchievementFrame.searchResults:StripTextures()
 	AchievementFrame.searchResults:SetTemplate("Default")
 	AchievementFrame.searchPreviewContainer:StripTextures()
-	
+
 	S:HandleCloseButton(AchievementFrame.searchResults.closeButton)
 	S:HandleScrollBar(AchievementFrameScrollFrameScrollBar)
 
@@ -274,7 +274,7 @@ local function LoadSkin(event)
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderRight"]:Kill()
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderMiddle"]:Kill()
 
-		local frame = "AchievementFrameComparisonStatsContainerButton"..i
+		frame = "AchievementFrameComparisonStatsContainerButton"..i
 		_G[frame]:StripTextures()
 		_G[frame]:StyleButton()
 
@@ -318,7 +318,7 @@ local function LoadSkin(event)
 		local numCriteria = GetAchievementNumCriteria(id)
 		local textStrings, metas = 0, 0
 		for i = 1, numCriteria do
-			local criteriaString, criteriaType, completed, quantity, reqQuantity, charName, flags, assetID, quantityString = GetAchievementCriteriaInfo(id, i)
+			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
 
 			if ( criteriaType == CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
 				metas = metas + 1;

@@ -122,9 +122,9 @@ local function OnEnter(self, _, noUpdate)
 	if (talentTreeIDs) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
 		local completeTalentID = C_Garrison_GetCompleteTalent(LE_GARRISON_TYPE_7_0);
-		for treeIndex, treeID in ipairs(talentTreeIDs) do
+		for _, treeID in ipairs(talentTreeIDs) do
 			local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID);
-			for talentIndex, talent in ipairs(tree) do
+			for _, talent in ipairs(tree) do
 				local showTalent = false;
 				if (talent.isBeingResearched) then
 					showTalent = true;

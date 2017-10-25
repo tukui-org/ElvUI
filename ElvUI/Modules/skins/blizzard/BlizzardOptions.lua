@@ -242,7 +242,7 @@ local function LoadSkin()
 
 	-- >> Chat >> Channel Settings      /!\ I don't know why, but the skin works only after /reload ui, not at first login =(
 	ChatConfigChannelSettingsLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
-	ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self, event)
+	ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self)
 		ChatConfigChannelSettingsLeft:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		for i = 1,#ChatConfigChannelSettingsLeft.checkBoxTable do
 			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:StripTextures()
@@ -397,7 +397,7 @@ local function LoadSkin()
 	ChatConfigFrameHeader:ClearAllPoints()
 	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
-	local frames = {
+	frames = {
 		"VideoOptionsFrameCategoryFrame",
 		"VideoOptionsFramePanelContainer",
 		"InterfaceOptionsFrameCategories",

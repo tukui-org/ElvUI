@@ -50,14 +50,14 @@ local function OnEvent(self)
 	lastPanel = self
 
 	local specIndex = GetSpecialization();
-	if not specIndex then 
+	if not specIndex then
 		self.text:SetText('N/A')
-		return 
+		return
 	end
 
 	active = GetActiveSpecGroup()
 
-	local talent, loot = '', ''
+	local talent, loot = '', 'N/A'
 	local i = GetSpecialization(false, false, active)
 	if i then
 		i = select(4, GetSpecializationInfo(i))
@@ -74,18 +74,12 @@ local function OnEvent(self)
 			local _, _, _, texture = GetSpecializationInfo(specIndex);
 			if texture then
 				loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
-			else
-				loot = 'N/A'
 			end
-		else
-			loot = 'N/A'
 		end
 	else
 		local _, _, _, texture = GetSpecializationInfoByID(specialization);
 		if texture then
 			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
-		else
-			loot = 'N/A'
 		end
 	end
 
@@ -134,7 +128,7 @@ local function OnClick(self, button)
 		if not PlayerTalentFrame then
 			LoadAddOn("Blizzard_TalentUI")
 		end
-		if IsShiftKeyDown() then 
+		if IsShiftKeyDown() then
 			if not PlayerTalentFrame:IsShown() then
 				ShowUIPanel(PlayerTalentFrame)
 			else

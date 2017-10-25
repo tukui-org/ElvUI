@@ -37,20 +37,20 @@ function mod:UpdateElement_NPCTitle(frame)
 			r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
 		else
 			r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
-		end	
+		end
 
 		frame.NPCTitle:SetTextColor(r - 0.1, g - 0.1, b - 0.1)
 	else
 		frame.NPCTitle:SetText("")
 	end
 end
- 
+
 function mod:ConfigureElement_NPCTitle(frame)
 	local title = frame.NPCTitle
-	
+
 	title:SetJustifyH("CENTER")
 	title:SetPoint("TOP", frame.Name, "BOTTOM", 0, -2)
-	
+
 	title:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 

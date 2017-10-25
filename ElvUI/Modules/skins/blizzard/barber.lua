@@ -19,7 +19,7 @@ local function LoadSkin()
 	for i = 1, #BarberShopFrame.Selector do
 		local selector = BarberShopFrame.Selector[i]
 		local previousSelector = BarberShopFrame.Selector[i-1]
-		
+
 		if selector then
 			selector:StripTextures()
 

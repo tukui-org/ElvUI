@@ -81,7 +81,7 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 		RegisterNewDT(currencyID)
 	else
 		--We called this in DT:Initialize, so load all the stored currency datatexts
-		for currencyID, info in pairs(E.global.datatexts.customCurrencies) do
+		for _, info in pairs(E.global.datatexts.customCurrencies) do
 			CustomCurrencies[info.NAME] = {NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE, USE_TOOLTIP = info.USE_TOOLTIP, SHOW_MAX = info.SHOW_MAX, DISPLAY_IN_MAIN_TOOLTIP = info.DISPLAY_IN_MAIN_TOOLTIP}
 			DT:RegisterDatatext(info.NAME, {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.NAME)
 			--Get the currency index for this currency, so we can use it for a tooltip

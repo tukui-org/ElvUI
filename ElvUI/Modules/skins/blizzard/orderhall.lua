@@ -1,12 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
---Lua functions
-local _G = _G
-local ipairs, unpack = ipairs, unpack
---WoW API / Variables
-
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: CUSTOM_CLASS_COLORS, RAID_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame
 -- GLOBALS: OrderHallMissionFrameMissions, OrderHallMissionFrameMissionsListScrollFrame

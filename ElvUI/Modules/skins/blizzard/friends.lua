@@ -265,12 +265,12 @@ local function LoadSkin()
 	--View Friends BN Frame
 	FriendsFriendsFrame:CreateBackdrop("Transparent")
 
-	local StripAllTextures = {
+	StripAllTextures = {
 		"FriendsFriendsFrame",
 		"FriendsFriendsList",
 	}
 
-	local buttons = {
+	buttons = {
 		"FriendsFriendsSendRequestButton",
 		"FriendsFriendsCloseButton",
 	}

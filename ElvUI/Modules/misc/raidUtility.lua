@@ -403,7 +403,7 @@ function RU:Initialize()
 	end
 
 	--Reskin Stuff
-	for i, button in pairs(buttons) do
+	for _, button in pairs(buttons) do
 		local f = _G[button]
 		f.BottomLeft:SetAlpha(0)
 		f.BottomRight:SetAlpha(0)

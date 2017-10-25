@@ -8,7 +8,7 @@ local function LoadSkin()
 	ArtifactFrame:CreateBackdrop("Transparent")
 	ArtifactFrame.BorderFrame:StripTextures()
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
-	
+
 	for i = 1, 2 do
 		S:HandleTab(_G["ArtifactFrameTab" .. i])
 	end

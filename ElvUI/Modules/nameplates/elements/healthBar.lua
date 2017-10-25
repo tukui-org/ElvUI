@@ -236,7 +236,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 	absorbBar:Hide()
 
 	healthBar.text:SetAllPoints(healthBar)
-	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
+	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
 function mod:ConstructElement_HealthBar(parent)

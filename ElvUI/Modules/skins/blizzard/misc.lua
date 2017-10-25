@@ -105,7 +105,7 @@ local function LoadSkin()
 	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
 	-- cant be hooked directly so we can just use this
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
-	hooksecurefunc('MovieFrame_PlayMovie', function(self, movieID)
+	hooksecurefunc('MovieFrame_PlayMovie', function(self)
 		if self and self.CloseDialog and not self.CloseDialog.template then
 			self.CloseDialog:StripTextures()
 			self.CloseDialog:SetTemplate('Transparent')
@@ -173,11 +173,11 @@ local function LoadSkin()
 
 		-- Quality IconBorder
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(self, r, g, b)
- 			self:GetParent():SetBackdropBorderColor(r, g, b)
- 			self:SetTexture("")
- 		end)
- 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
- 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			self:GetParent():SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
@@ -229,7 +229,7 @@ local function LoadSkin()
 	end)]]
 
 	--DropDownMenu
-	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function()
 		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
@@ -237,7 +237,7 @@ local function LoadSkin()
 	end)
 
 	--LibUIDropDownMenu
-	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function(level, index)
+	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
 		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
 			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
 			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")

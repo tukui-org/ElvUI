@@ -46,7 +46,7 @@ local function LoadSkin()
 	LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
-		local proposalExists, id, typeID, subtypeID, name, texture, role, hasResponded, totalEncounters, completedEncounters, numMembers, isLeader = GetLFGProposal();
+		local _, _, _, _, _, _, role = GetLFGProposal()
 		if LFGDungeonReadyDialogRoleIcon:IsShown() then
 			if role == "DAMAGER" then
 				LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
