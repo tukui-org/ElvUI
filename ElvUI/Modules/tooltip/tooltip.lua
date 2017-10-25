@@ -647,14 +647,14 @@ function TT:CheckBackdropColor()
 	if GameTooltip:IsForbidden() then return end
 	if not GameTooltip:IsShown() then return end
 	local r, g, b = GameTooltip:GetBackdropColor()
-	r = E:Round(r, 1)
-	g = E:Round(g, 1)
-	b = E:Round(b, 1)
-	local red, green, blue = unpack(E.media.backdropfadecolor)
-	local alpha = self.db.colorAlpha
-
-	if(r ~= red or g ~= green or b ~= blue) then
-		GameTooltip:SetBackdropColor(red, green, blue, alpha)
+	if (r and g and b) then
+		r = E:Round(r, 1)
+		g = E:Round(g, 1)
+		b = E:Round(b, 1)
+		local red, green, blue = unpack(E.media.backdropfadecolor)
+		if (r ~= red or g ~= green or b ~= blue) then
+			GameTooltip:SetBackdropColor(red, green, blue, self.db.colorAlpha)
+		end
 	end
 end
 
