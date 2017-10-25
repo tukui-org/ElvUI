@@ -226,7 +226,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
-		self:ClassBar_Update(frame)
+		self:ClassBar_Update()
 	end
 end
 

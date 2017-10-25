@@ -187,7 +187,7 @@ function mod:UpdateElement_Auras(frame)
 		frame.TopOffset = TopOffset
 
 		if (self.db.classbar.enable and self.db.classbar.position ~= "BELOW") then
-			mod:ClassBar_Update(frame)
+			mod:ClassBar_Update()
 		end
 
 		if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then

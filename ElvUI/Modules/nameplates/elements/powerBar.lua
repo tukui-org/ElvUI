@@ -40,7 +40,7 @@ function mod:UpdateElement_Power(frame)
 	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
-		self:ClassBar_Update(frame)
+		self:ClassBar_Update()
 	end
 
 	if (self.db.units[frame.UnitType].castbar.enable) then
