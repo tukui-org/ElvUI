@@ -414,6 +414,9 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		self.PlayerNamePlateAnchor:SetParent(frame)
 		self.PlayerNamePlateAnchor:SetAllPoints(frame.unitFrame)
 		self.PlayerNamePlateAnchor:Show()
+		frame.unitFrame.IsPlayerFrame = true
+	else
+		frame.unitFrame.IsPlayerFrame = nil
 	end
 
 	if(self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
