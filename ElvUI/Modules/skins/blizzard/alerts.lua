@@ -7,6 +7,10 @@ local _G = _G
 local unpack, select = unpack, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetItemInfo = GetItemInfo
+local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
@@ -701,7 +705,7 @@ local function LoadSkin()
 
 	--[[ STATIC SKINNING ]]--
 	--Bonus Roll Money
-	frame = BonusRollMoneyWonFrame
+	local frame = BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
 	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 	frame.Background:Kill()
