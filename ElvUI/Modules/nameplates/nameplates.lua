@@ -1087,8 +1087,15 @@ function mod:Initialize()
 		self.ClassBar:SetScale(1.35)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
-	--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
-	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function() mod:ClassBar_Update() end)
+
+	if not self.db.hideBlizzardPlates then
+		--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
+		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function(_, bar)
+			if bar == self.ClassBar then
+				mod:ClassBar_Update()
+			end
+		end)
+	end
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
