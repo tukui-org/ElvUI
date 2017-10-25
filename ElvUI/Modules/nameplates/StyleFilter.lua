@@ -792,8 +792,9 @@ function mod:UpdateElement_Filters(frame, event)
 
 	self:ClearStyledPlate(frame)
 
+	local filter
 	for filterNum in ipairs(self.StyleFilterList) do
-		local filter = E.global.nameplate.filters[self.StyleFilterList[filterNum][1]];
+		filter = E.global.nameplate.filters[self.StyleFilterList[filterNum][1]];
 		if filter then
 			self:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
 		end
