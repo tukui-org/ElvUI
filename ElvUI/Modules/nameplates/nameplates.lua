@@ -176,8 +176,9 @@ function mod:PLAYER_ENTERING_WORLD()
 	end
 end
 
-function mod:ClassBar_Update(frame)
+function mod:ClassBar_Update()
 	if(not self.ClassBar) then return end
+	local frame
 
 	if(self.db.classbar.enable) then
 		local targetFrame = self:GetNamePlateForUnit("target")
@@ -328,7 +329,7 @@ function mod:SetTargetFrame(frame)
 		end
 	end
 
-	mod:ClassBar_Update(frame)
+	mod:ClassBar_Update()
 
 	if (self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER") then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
@@ -498,7 +499,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.TopLevelFrame = nil
 
 	if self.ClassBar and (unitType == "PLAYER") then
-		mod:ClassBar_Update(frame)
+		mod:ClassBar_Update()
 	end
 end
 
@@ -711,7 +712,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
-			mod:ClassBar_Update(self)
+			mod:ClassBar_Update()
 		end
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
@@ -728,7 +729,7 @@ function mod:OnEvent(event, unit, ...)
 		self.PowerType = powerType
 		if(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT") then
 			if mod.ClassBar and arg1 == powerToken then
-				mod:ClassBar_Update(self)
+				mod:ClassBar_Update()
 			end
 		end
 
@@ -1084,6 +1085,8 @@ function mod:Initialize()
 		self.ClassBar:SetScale(1.35)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
+	--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
+	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function() mod:ClassBar_Update() end)
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
