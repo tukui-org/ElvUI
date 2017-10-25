@@ -1,15 +1,30 @@
 **Version 10.68 [  ]**
 
 **New Additions:**  
-
+Added option to show Quick Join messages as clickable links in chat.  
+Added option to change duration text position on nameplate auras.  
+Added option to change castbar icon position on nameplates.  
+Added font outline option for the Threat Bar.  
 
 
 **Bug Fixes:**  
-
+Fixed issue with nameplate scale not following Style Filter settings on target change.  
+Fixed issue with placement of microbar within its mover frame.  
+Fixed issue which caused player unitframe to bug out when entering invasion point while in a Warframe.  
+Fixed error when setting text color on custom buff indicators.  
+Fixed issue preventing you from inviting people on remote chat in Guild datatext.  
+Fixed issue which caused classbar to disappear from target nameplate.  
 
 
 **Misc. Changes:**  
-
+Added Beacon of Virtue to Buff Indicator filter.  
+Changed default fonts on NamePlates to PT Sans Narrow.  
+Changed "XP" to "AP" on the Artifact DataBar.  
+Added more game clients to the Friends datatext.  
+Skinned the "Skip Cinematic" popup frames.  
+Added a separate skin setting for Blizzard Interface Options.  
+Changed Loot Frame mover to always be visible when movers are toggled.  
+Code clean-up by Rubgrsch.  
 
 ___
 **Version 10.67 [ October 2nd 2017 ]**
