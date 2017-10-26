@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trade ~= true then return end
+
 	TradeFrame:StripTextures(true)
 	TradeFrame:CreateBackdrop("Transparent")
 	TradeFrame.backdrop:SetAllPoints()

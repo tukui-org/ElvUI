@@ -67,9 +67,7 @@ function AB:MainMenuMicroButton_SetPushed()
 	MainMenuBarPerformanceBar:Point("TOPLEFT", MainMenuMicroButton, "TOPLEFT", 8, -37);
 end
 
-function AB:UpdateMicroButtonsParent(parent)
-	if parent ~= ElvUI_MicroBar then parent = ElvUI_MicroBar end
-
+function AB:UpdateMicroButtonsParent()
 	for i=1, #MICRO_BUTTONS do
 		_G[MICRO_BUTTONS[i]]:SetParent(ElvUI_MicroBar);
 	end
@@ -114,10 +112,9 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end
 
-	AB.MicroWidth = ((_G["CharacterMicroButton"]:GetWidth() - 3) * self.db.microbar.buttonsPerRow)+1
-	AB.MicroHeight = ((_G["CharacterMicroButton"]:GetHeight() - 26) * numRows)-(numRows-1)
-	ElvUI_MicroBar:Width(AB.MicroWidth)
-	ElvUI_MicroBar:Height(AB.MicroHeight)
+	AB.MicroWidth = ((_G["CharacterMicroButton"]:GetWidth() - 3) * self.db.microbar.buttonsPerRow)-1
+	AB.MicroHeight = (((_G["CharacterMicroButton"]:GetHeight() - 26) * numRows)-numRows)-1
+	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
 
 	if self.db.microbar.enabled then
 		ElvUI_MicroBar:Show()

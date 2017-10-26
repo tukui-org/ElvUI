@@ -12,6 +12,7 @@
 	<Script file='bgscore.lua'/>
 	<Script file='binding.lua'/>
 	<Script file='blackmarket.lua'/>
+	<Script file='BlizzardOptions.lua'/>
 	<Script file='BNet.lua'/>
 	<Script file='calendar.lua'/>
 	<Script file='character.lua'/>

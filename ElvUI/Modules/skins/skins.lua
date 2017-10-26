@@ -151,14 +151,14 @@ function S:HandleScrollBar(frame, thumbTrim)
 				S:HandleNextPrevButton(frame.ScrollDownButton, true)
 				frame.ScrollDownButton:Size(frame.ScrollDownButton:GetWidth() + 7, frame.ScrollDownButton:GetHeight() + 7)
 			end
-			
+
 			if not frame.trackbg then
 				frame.trackbg = CreateFrame("Frame", nil, frame)
 				frame.trackbg:Point("TOPLEFT", frame.ScrollUpButton, "BOTTOMLEFT", 0, -1)
 				frame.trackbg:Point("BOTTOMRIGHT", frame.ScrollDownButton, "TOPRIGHT", 0, 1)
 				frame.trackbg:SetTemplate("Transparent")
 			end
-			
+
 			if frame.thumbTexture then
 				if not thumbTrim then thumbTrim = 3 end
 				frame.thumbTexture:SetTexture(nil)
@@ -210,7 +210,7 @@ function S:HandleTab(tab)
 end
 
 function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
-	local inverseDirection = inverseDirection or btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
+	inverseDirection = inverseDirection or btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
 
 	btn:StripTextures()
 	btn:SetNormalTexture(nil)
@@ -711,7 +711,7 @@ function S:AddCallbackForAddon(addonName, eventName, loadFunc, forceLoad, bypass
 	if not self.addonCallbacks[addonName] then
 		self.addonCallbacks[addonName] = {["CallPriority"] = {}}
 	end
-	
+
 	if self.addonCallbacks[addonName][eventName] or E.ModuleCallbacks[eventName] or E.InitialModuleCallbacks[eventName] then
 		--Don't allow a registered callback to be overwritten
 		E:Print("Invalid argument #2 to S:AddCallbackForAddon (event name:", eventName, "is already registered, please use a unique event name)")

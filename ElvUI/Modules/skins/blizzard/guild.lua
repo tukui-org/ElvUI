@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
-local format = string.format
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
+
 	GuildFrame:StripTextures(true)
 	GuildFrame:SetTemplate("Transparent")
 	--GuildLevelFrame:Kill()
@@ -101,11 +100,9 @@ local function LoadSkin()
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
 	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)
 
-
 	--Roster
 	S:HandleScrollBar(GuildRosterContainerScrollBar, 5)
 	S:HandleCheckBox(GuildRosterShowOfflineButton)
-
 
 	for i=1, 4 do
 		_G["GuildRosterColumnButton"..i]:StripTextures(true)
@@ -246,3 +243,21 @@ local function LoadSkin()
 end
 
 S:AddCallbackForAddon("Blizzard_GuildUI", "Guild", LoadSkin)
+
+local function LoadSecondarySkin()
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
+
+	GuildInviteFrame:StripTextures()
+	GuildInviteFrame:SetTemplate('Transparent')
+	GuildInviteFrame.Points:ClearAllPoints()
+	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
+	S:HandleButton(GuildInviteFrameJoinButton)
+	S:HandleButton(GuildInviteFrameDeclineButton)
+	GuildInviteFrame:Height(225)
+	GuildInviteFrame:HookScript("OnEvent", function()
+		GuildInviteFrame:Height(225)
+	end)
+	GuildInviteFrameWarningText:Kill()
+end
+
+S:AddCallback("GuildInvite", LoadSecondarySkin)

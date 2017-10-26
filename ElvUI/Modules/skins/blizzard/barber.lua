@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.barber ~= true then return end
+
 	local buttons = {
 		"BarberShopFrameOkayButton",
 		"BarberShopFrameCancelButton",
@@ -15,12 +16,10 @@ local function LoadSkin()
 		S:HandleButton(_G[buttons[i]])
 	end
 
-
-	
 	for i = 1, #BarberShopFrame.Selector do
 		local selector = BarberShopFrame.Selector[i]
 		local previousSelector = BarberShopFrame.Selector[i-1]
-		
+
 		if selector then
 			selector:StripTextures()
 

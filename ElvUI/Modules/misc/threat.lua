@@ -147,7 +147,7 @@ function THREAT:Initialize()
 	self.bar:CreateBackdrop('Default')
 
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
-	self.bar.text:FontTemplate(nil, self.db.textSize)
+	self.bar.text:FontTemplate(nil, self.db.textSize, self.db.textOutline)
 	self.bar.text:Point('CENTER', self.bar, 'CENTER')
 
 	self:UpdatePosition()

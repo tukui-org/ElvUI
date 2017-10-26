@@ -40,7 +40,7 @@ function mod:UpdateElement_Power(frame)
 	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
-		self:ClassBar_Update(frame)
+		self:ClassBar_Update()
 	end
 
 	if (self.db.units[frame.UnitType].castbar.enable) then
@@ -54,7 +54,7 @@ function mod:ConfigureElement_PowerBar(frame)
 	powerBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)
 	powerBar:SetHeight(self.db.units[frame.UnitType].powerbar.height)
 	powerBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	
+
 	powerBar.text:SetAllPoints(powerBar)
 	powerBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
@@ -62,7 +62,7 @@ end
 function mod:ConstructElement_PowerBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentPowerBar", parent)
 	self:StyleFrame(frame)
-	
+
 	frame.text = frame:CreateFontString(nil, "OVERLAY")
 	frame.text:SetWordWrap(false)
 

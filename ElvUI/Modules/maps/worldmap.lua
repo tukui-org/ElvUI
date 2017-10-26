@@ -51,11 +51,6 @@ function M:SetLargeWorldMap()
 		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
 
-	if not (E.wowbuild >= 24904) then
-		WorldMapFrameSizeUpButton:Hide()
-		WorldMapFrameSizeDownButton:Show()
-	end
-
 	WorldMapFrame:ClearAllPoints()
 	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
 	WorldMapFrame:SetSize(1002, 668)
@@ -63,25 +58,14 @@ end
 
 function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end
-	if not (E.wowbuild >= 24904) then
-		WorldMapFrameSizeUpButton:Show()
-		WorldMapFrameSizeDownButton:Hide()
-	end
 end
 
 function M:PLAYER_REGEN_ENABLED()
-	if not (E.wowbuild >= 24904) then
-		WorldMapFrameSizeDownButton:Enable()
-		WorldMapFrameSizeUpButton:Enable()
-	end
 
 end
 
 function M:PLAYER_REGEN_DISABLED()
-	if not (E.wowbuild >= 24904) then
-		WorldMapFrameSizeDownButton:Disable()
-		WorldMapFrameSizeUpButton:Disable()
-	end
+
 end
 
 local inRestrictedArea = false
@@ -115,7 +99,7 @@ function M:UpdateCoords()
 	local width = WorldMapDetailFrame:GetWidth()
 	local height = WorldMapDetailFrame:GetHeight()
 	local centerX, centerY = WorldMapDetailFrame:GetCenter()
-	local x, y = GetCursorPosition()
+	x, y = GetCursorPosition()
 	local adjustedX = (x / scale - (centerX - (width/2))) / width
 	local adjustedY = (centerY + (height/2) - y / scale) / height
 

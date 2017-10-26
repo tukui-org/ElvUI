@@ -20,16 +20,15 @@ end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
+
 	S:HandleScrollBar(QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(QuestRewardScrollFrameScrollBar)
-
 
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)
 	QuestProgressScrollFrame:StripTextures()
 
 	QuestGreetingScrollFrame:StripTextures()
 	S:HandleScrollBar(QuestGreetingScrollFrameScrollBar)
-
 
 	QuestInfoSkillPointFrame:StripTextures()
 	QuestInfoSkillPointFrame:StyleButton()
@@ -73,12 +72,12 @@ local function LoadSkin()
 		self.spellTex:Height(self:GetHeight() + 217)
 	end)
 
-	hooksecurefunc("QuestInfo_Display", function(template, parentFrame)
+	hooksecurefunc("QuestInfo_Display", function()
 		for i = 1, #QuestInfoRewardsFrame.RewardButtons do
 			local questItem = QuestInfoRewardsFrame.RewardButtons[i]
 			if not questItem:IsShown() then break end
 
-			local point, relativeTo, relativePoint, x, y = questItem:GetPoint()
+			local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 			if point and relativeTo and relativePoint then
 				if i == 1 then
 					questItem:Point(point, relativeTo, relativePoint, 0, y)
@@ -174,7 +173,7 @@ local function LoadSkin()
 	--QuestLogDetailScrollFrame:StripTextures()
 	--S:HandleCloseButton(QuestLogDetailFrameCloseButton)
 
-	hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, portrait, text, name, x, y)
+	hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
 		QuestNPCModel:ClearAllPoints();
 		QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
 	end)

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.binding ~= true then return end
+
 	local buttons = {
 		"defaultsButton",
 		"unbindButton",
@@ -30,7 +31,6 @@ local function LoadSkin()
 	KeyBindingFrame.bindingsContainer:StripTextures()
 	KeyBindingFrame.bindingsContainer:SetTemplate("Transparent")
 
-
 	for i = 1, KEY_BINDINGS_DISPLAYED  do
 		local button1 = _G["KeyBindingFrameKeyBinding"..i.."Key1Button"]
 		local button2 = _G["KeyBindingFrameKeyBinding"..i.."Key2Button"]
@@ -44,7 +44,6 @@ local function LoadSkin()
 	KeyBindingFrame.okayButton:Point("BOTTOMLEFT", KeyBindingFrame.unbindButton, "BOTTOMRIGHT", 3, 0)
 	KeyBindingFrame.cancelButton:Point("BOTTOMLEFT", KeyBindingFrame.okayButton, "BOTTOMRIGHT", 3, 0)
 	KeyBindingFrame.unbindButton:Point("BOTTOMRIGHT", KeyBindingFrame, "BOTTOMRIGHT", -211, 16)
-
 end
 
 S:AddCallbackForAddon("Blizzard_BindingUI", "Binding", LoadSkin)

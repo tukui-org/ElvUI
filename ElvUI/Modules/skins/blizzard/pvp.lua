@@ -171,10 +171,10 @@ local function LoadSkin()
 
 	-- ConquestBar
 	local conquestBar = ConquestFrame.XPBar
-	local bar = conquestBar.Bar
-	local text = conquestBar.Bar.OverlayFrame.Text
-	local nextAvailable = conquestBar.NextAvailable
-	local icon = nextAvailable.Icon
+	bar = conquestBar.Bar
+	text = conquestBar.Bar.OverlayFrame.Text
+	nextAvailable = conquestBar.NextAvailable
+	icon = nextAvailable.Icon
 
 	conquestBar:StripTextures()
 
@@ -221,4 +221,36 @@ local function LoadSkin()
 	ConquestTooltip:SetTemplate("Transparent")
 	PVPRewardTooltip:SetTemplate("Transparent")
 end
+
 S:AddCallbackForAddon('Blizzard_PVPUI', "PvPUI", LoadSkin)
+
+local function LoadSecondarySkin()
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
+
+	--PVP QUEUE FRAME
+	PVPReadyDialog:StripTextures()
+	PVPReadyDialog:SetTemplate("Transparent")
+	S:HandleButton(PVPReadyDialogEnterBattleButton)
+	S:HandleButton(PVPReadyDialogLeaveQueueButton)
+	S:HandleCloseButton(PVPReadyDialogCloseButton)
+	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
+
+	hooksecurefunc("PVPReadyDialog_Display", function(self, _, _, _, queueType, _, role)
+		if role == "DAMAGER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		end
+
+		if queueType == "ARENA" then
+			self:Height(100)
+		end
+
+		self.background:Hide()
+	end)
+end
+
+S:AddCallback("PVP", LoadSecondarySkin)

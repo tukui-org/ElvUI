@@ -2365,6 +2365,15 @@ local function GetUnitSettings(unit, name)
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
+					iconPosition = {
+						order = 8,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+						},
+					},
 				},
 			},
 			buffsGroup = {
@@ -3478,6 +3487,17 @@ E.Options.args.nameplate = {
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
+								},
+								durationPosition = {
+									order = 11,
+									name = L["Position"],
+									type = "select",
+									values = {
+										["CENTER"] = L["Center"],
+										["TOPLEFT"] = "TOPLEFT",
+										["BOTTOMLEFT"] = "BOTTOMLEFT",
+										["TOPRIGHT"] = "TOPRIGHT",
+									},
 								},
 							}
 						},

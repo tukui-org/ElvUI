@@ -15,6 +15,7 @@ local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionI
 local InCombatLockdown = InCombatLockdown
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
+local ToggleCharacter = ToggleCharacter
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
@@ -34,7 +35,7 @@ function mod:UpdateReputation(event)
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max = 0, threshold
 		value = currentValue % threshold
-		if hasRewardPending then 
+		if hasRewardPending then
 			value = value + threshold
 		end
 	end
@@ -118,7 +119,7 @@ function mod:ReputationBar_OnEnter()
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max = 0, threshold
 		value = currentValue % threshold
-		if hasRewardPending then 
+		if hasRewardPending then
 			value = value + threshold
 		end
 	end

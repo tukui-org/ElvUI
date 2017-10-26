@@ -847,7 +847,8 @@ local function UpdateFilterGroup()
 							end
 						end,
 						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
+							E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor = E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor or {}
+							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor
 							t.r, t.g, t.b = r, g, b
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')

@@ -226,7 +226,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
-		self:ClassBar_Update(frame)
+		self:ClassBar_Update()
 	end
 end
 
@@ -244,8 +244,15 @@ function mod:ConfigureElement_CastBar(frame)
 	end
 	castBar:SetHeight(self.db.units[frame.UnitType].castbar.height)
 
-	castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", E.Border + E.Spacing*3, 0)
-	castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", E.Border + E.Spacing*3, 0)
+	castBar.Icon:ClearAllPoints()
+	if(self.db.units[frame.UnitType].castbar.iconPosition == "RIGHT") then
+		castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", E.Border + E.Spacing*3, 0)
+		castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", E.Border + E.Spacing*3, 0)
+	elseif(self.db.units[frame.UnitType].castbar.iconPosition == "LEFT") then
+		castBar.Icon:SetPoint("TOPRIGHT", frame.HealthBar, "TOPLEFT", -E.Border - E.Spacing*3, 0)
+		castBar.Icon:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMLEFT", -E.Border - E.Spacing*3, 0)
+	end
+
 	if(self.db.units[frame.UnitType].powerbar.enable) then
 		castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + self.db.units[frame.UnitType].powerbar.height + mod.mult + E.Border + E.Spacing*3)
 	else

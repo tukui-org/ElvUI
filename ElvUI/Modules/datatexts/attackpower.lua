@@ -79,11 +79,10 @@ local function OnEnter(self)
 		local SpellPowerByAttackPower = GetOverrideSpellPowerByAP()
 		local OverrideAPBySpellPower = GetOverrideAPBySpellPower()
 		local damageBonus = BreakUpLargeNumbers(max((base+posBuff+negBuff), 0)/ATTACK_POWER_MAGIC_NUMBER);
-		local spellPower = 0;
 		if (OverrideAPBySpellPower ~= nil) then
 			local holySchool = 2;
 			-- Start at 2 to skip physical damage
-			spellPower = GetSpellBonusDamage(holySchool);
+			local spellPower = GetSpellBonusDamage(holySchool);
 			for i=(holySchool+1), MAX_SPELL_SCHOOLS do
 				spellPower = min(spellPower, GetSpellBonusDamage(i));
 			end

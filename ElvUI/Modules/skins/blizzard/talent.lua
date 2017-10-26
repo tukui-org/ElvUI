@@ -95,7 +95,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()
-		local point, relatedTo, point2, x, y = PlayerSpecTab1:GetPoint()
+		local point, relatedTo, point2, _, y = PlayerSpecTab1:GetPoint()
 		PlayerSpecTab1:Point(point, relatedTo, point2, E.PixelMode and -1 or 1, y)
 	end)
 
@@ -224,7 +224,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 	end
 
-	local buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
+	buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
 
 	for _, name in pairs(buttons) do
 		for i = 1, 4 do
@@ -350,6 +350,7 @@ local function LoadSkin()
 			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
 		end
 	end
+
 	--Apply color to chosen talents
 	hooksecurefunc("PVPTalentFrame_Update", function(self)
 		for i = 1, MAX_PVP_TALENT_TIERS do

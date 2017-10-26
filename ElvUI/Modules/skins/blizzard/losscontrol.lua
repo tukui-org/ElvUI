@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local LSM = LibStub("LibSharedMedia-3.0")
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.losscontrol ~= true then return end
@@ -17,7 +16,7 @@ local function LoadSkin()
 	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
 
 	local font = E["media"].normFont
-	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(self, ...)
+	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(self)
 		self.Icon:ClearAllPoints()
 		self.Icon:Point("CENTER", self, "CENTER", 0, 0)
 
@@ -41,7 +40,6 @@ local function LoadSkin()
 			self.Anim:Stop()
 		end
 	end)
-
 end
 
 S:AddCallback("LossControl", LoadSkin)

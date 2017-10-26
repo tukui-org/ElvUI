@@ -68,7 +68,7 @@ function mod:StyleFilterAuraCheck(names, icons, mustHaveAll, missing, minTimeLef
 end
 
 function mod:StyleFilterCooldownCheck(names, mustHaveAll)
-	local total, count, duration, charges, _ = 0, 0
+	local total, count, duration, charges = 0, 0
 	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
@@ -303,7 +303,7 @@ end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
-	local talentSelected, talentFunction, talentRows, instanceName, instanceType, instanceDifficulty;
+	local talentSelected, talentFunction, talentRows, _, instanceType, instanceDifficulty;
 	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
 	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
 	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
@@ -493,7 +493,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by instance conditions
 	if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
 		condition = false
-		instanceName, instanceType, instanceDifficulty = GetInstanceInfo()
+		_, instanceType, instanceDifficulty = GetInstanceInfo()
 		if instanceType
 		and ((trigger.instanceType.none	  and instanceType == "none")
 		or (trigger.instanceType.scenario and instanceType == "scenario")
@@ -692,12 +692,12 @@ function mod:StyleFilterConfigureEvents()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(self.StyleFilterList, {filterName, filter.triggers.priority or 1})
 
-				--fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
+				-- fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
 				self.StyleFilterEvents["UpdateElement_All"] = true
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
-					for name, value in pairs(filter.triggers.casting.spells) do
+					for _, value in pairs(filter.triggers.casting.spells) do
 						if value == true then
 							self.StyleFilterEvents["UpdateElement_Cast"] = 1
 							break
@@ -708,6 +708,9 @@ function mod:StyleFilterConfigureEvents()
 				if filter.triggers.casting.interruptible then
 					self.StyleFilterEvents["UpdateElement_Cast"] = 1
 				end
+
+				-- real events
+				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
 
 				if filter.triggers.healthThreshold then
 					self.StyleFilterEvents["UNIT_HEALTH"] = true
@@ -722,7 +725,7 @@ function mod:StyleFilterConfigureEvents()
 				end
 
 				if next(filter.triggers.names) then
-					for unitName, value in pairs(filter.triggers.names) do
+					for _, value in pairs(filter.triggers.names) do
 						if value == true then
 							self.StyleFilterEvents["UNIT_NAME_UPDATE"] = true
 							break
@@ -734,12 +737,8 @@ function mod:StyleFilterConfigureEvents()
 					self.StyleFilterEvents["UNIT_THREAT_LIST_UPDATE"] = true
 				end
 
-				if filter.triggers.isTarget or filter.triggers.notTarget then
-					self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
-				end
-
 				if next(filter.triggers.cooldowns.names) then
-					for name, value in pairs(filter.triggers.cooldowns.names) do
+					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
 							self.StyleFilterEvents["SPELL_UPDATE_COOLDOWN"] = true
 							break
@@ -748,7 +747,7 @@ function mod:StyleFilterConfigureEvents()
 				end
 
 				if next(filter.triggers.buffs.names) then
-					for name, value in pairs(filter.triggers.buffs.names) do
+					for _, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
 							self.StyleFilterEvents["UNIT_AURA"] = true
 							break
@@ -757,7 +756,7 @@ function mod:StyleFilterConfigureEvents()
 				end
 
 				if next(filter.triggers.debuffs.names) then
-					for name, value in pairs(filter.triggers.debuffs.names) do
+					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
 							self.StyleFilterEvents["UNIT_AURA"] = true
 							break
@@ -793,7 +792,8 @@ function mod:UpdateElement_Filters(frame, event)
 
 	self:ClearStyledPlate(frame)
 
-	for filterNum, filter in ipairs(self.StyleFilterList) do
+	local filter
+	for filterNum in ipairs(self.StyleFilterList) do
 		filter = E.global.nameplate.filters[self.StyleFilterList[filterNum][1]];
 		if filter then
 			self:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)

@@ -52,7 +52,7 @@ local function OnEvent(self, event, ...)
 
 		-- only use events from the player
 		local id = select(4, ...)
-		local overKill = 0
+		local overKill
 
 		if id == playerID or id == petID then
 			if timeStamp == 0 then timeStamp = select(1, ...) end

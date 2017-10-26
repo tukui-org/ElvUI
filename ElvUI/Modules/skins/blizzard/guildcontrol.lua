@@ -11,6 +11,7 @@ local MAX_BUY_GUILDBANK_TABS = MAX_BUY_GUILDBANK_TABS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
+
 	GuildControlUI:StripTextures()
 	GuildControlUIHbar:StripTextures()
 	GuildControlUI:SetTemplate("Transparent")
@@ -104,7 +105,6 @@ local function LoadSkin()
 		end
 	end
 
-
 	local once = false
 	hooksecurefunc("GuildControlUI_BankTabPermissions_Update", function()
 		local numTabs = GetNumGuildBankTabs()
@@ -114,7 +114,6 @@ local function LoadSkin()
 		for i=1, numTabs do
 			local tab = _G["GuildControlBankTab"..i.."Owned"]
 			local icon = tab.tabIcon
-			local editbox = tab.editBox
 
 			icon:SetTexCoord(unpack(E.TexCoords))
 

@@ -65,7 +65,7 @@ local function LoadSkin()
 		end
 	end
 
-	local function SkinProgressBars(self, block, line)
+	local function SkinProgressBars(self, _, line)
 		local progressBar = line and line.ProgressBar
 		local bar = progressBar and progressBar.Bar
 		if not bar then return end
@@ -130,7 +130,7 @@ local function LoadSkin()
 		end
 	end
 
-	local function SkinFindGroupButton(block, questID)
+	local function SkinFindGroupButton(block)
 		if block.hasGroupFinderButton and block.groupFinderButton then
 			if block.groupFinderButton and not block.groupFinderButton.skinned then
 				S:HandleButton(block.groupFinderButton)

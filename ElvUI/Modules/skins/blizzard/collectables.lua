@@ -13,6 +13,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
+
 	-- global
 	CollectionsJournal:StripTextures()
 	CollectionsJournal:SetTemplate('Transparent')
@@ -65,9 +66,7 @@ local function LoadSkin()
 	S:HandleButton(PetJournalFindBattle)
 	PetJournalRightInset:StripTextures()
 	PetJournalLeftInset:StripTextures()
-	if E.wowbuild >= 24904 then
-		S:HandleItemButton(PetJournalSummonRandomFavoritePetButton, true)
-	end
+	S:HandleItemButton(PetJournalSummonRandomFavoritePetButton, true)
 
 	for i = 1, 3 do
 		local f = _G["PetJournalLoadoutPet"..i.."HelpFrame"]
@@ -107,7 +106,7 @@ local function LoadSkin()
 			if not index then break; end
 			local b = _G["PetJournalListScrollFrameButton"..i]
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
-			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal_GetPetInfoByIndex(index, isWild);
+			local petID = C_PetJournal_GetPetInfoByIndex(index, isWild);
 
 			if b.selectedTexture:IsShown() then
 				t:SetTextColor(1,1,0)
@@ -115,7 +114,7 @@ local function LoadSkin()
 				t:SetTextColor(1,1,1)
 			end
 			if petID ~= nil then
-				local health, maxHealth, attack, speed, rarity = C_PetJournal_GetPetStats(petID);
+				local _, _, _, _, rarity = C_PetJournal_GetPetStats(petID);
 				if rarity then
 					local color = ITEM_QUALITY_COLORS[rarity-1]
 					b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
@@ -311,7 +310,7 @@ local function LoadSkin()
 			button.name:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end)
-	
+
 	-- Appearances Tab
 	local function SkinTab(tab)
 		S:HandleTab(tab)
@@ -379,7 +378,7 @@ local function LoadSkin()
 			if (not itemFrame.collected) then
 				alpha = 0.4
 			end
-			
+
 			if (not quality or quality < 2) then --Not collected or item is white or grey
 				itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
 			else
@@ -418,7 +417,7 @@ local function LoadSkin()
 
 	WardrobeTransmogFrame:StripTextures()
 	WardrobeTransmogFrame.Inset:StripTextures()
-	
+
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
 		WardrobeTransmogFrame.Model.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.Model.SlotButtons[i]:GetFrameLevel() + 2)

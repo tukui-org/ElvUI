@@ -98,6 +98,7 @@ P['general'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',
 		['textSize'] = 12,
+		["textOutline"] = "NONE",
 	},
 	['totems'] = {
 		['enable'] = true,
@@ -210,15 +211,16 @@ P['bags'] = {
 --NamePlate
 P["nameplates"] = {
 	["statusbar"] = "ElvUI Norm",
-	['font'] = 'Homespun',
-	['fontSize'] = 8,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
-	["durationFont"] = "Homespun",
-	["durationFontSize"] = 8,
-	["durationFontOutline"] = "MONOCHROMEOUTLINE",
-	["stackFont"] = "Homespun",
-	["stackFontSize"] = 8,
-	["stackFontOutline"] = "MONOCHROMEOUTLINE",
+	['font'] = "PT Sans Narrow",
+	['fontSize'] = 11,
+	['fontOutline'] = "OUTLINE",
+	["durationFont"] = "PT Sans Narrow",
+	["durationFontSize"] = 10,
+	["durationFontOutline"] = "OUTLINE",
+	["durationPosition"] = "CENTER",
+	["stackFont"] = "PT Sans Narrow",
+	["stackFontSize"] = 9,
+	["stackFontOutline"] = "OUTLINE",
 	['useTargetScale'] = true,
 	['targetScale'] = 1.15,
 	['nonTargetTransparency'] = 0.35,
@@ -323,6 +325,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -386,6 +389,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -451,6 +455,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -515,6 +520,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -577,6 +583,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -644,6 +651,7 @@ P["nameplates"] = {
 				["castTimeFormat"] = "CURRENT",
 				["channelTimeFormat"] = "CURRENT",
 				["timeToHold"] = 0,
+				["iconPosition"] = "RIGHT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -753,7 +761,7 @@ P['chat'] = {
 	["customTimeColor"] = {r = 0.7, g = 0.7, b = 0.7},
 	["numScrollMessages"] = 3,
 	["autoClosePetBattleLog"] = true,
-
+	['socialQueueMessages'] = false,
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',

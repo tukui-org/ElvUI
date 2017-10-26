@@ -8,11 +8,11 @@ local unpack, pairs = unpack, pairs
 local CreateFrame = CreateFrame
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true then return; end
+	if E.private.skins.blizzard.enable ~= true then return end
 
 	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
 		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
+		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, _, numRewards)
 			if self.numRewardsStyled == nil then
 				self.numRewardsStyled = 0
 			end
@@ -47,7 +47,7 @@ local function LoadSkin()
 			end
 		end)
 
-		hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward, missionComplete)
+		hooksecurefunc("GarrisonMissionPage_SetReward", function(frame)
 			frame.BG:SetTexture()
 			if not frame.backdrop then
 				S:HandleIcon(frame.Icon)
@@ -163,7 +163,7 @@ local function LoadSkin()
 	GarrisonMissionFrame.GarrCorners:Hide()
 
 	-- Follower list
-	local FollowerList = GarrisonMissionFrame.FollowerList
+	FollowerList = GarrisonMissionFrame.FollowerList
 	FollowerList:DisableDrawLayer("BORDER")
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
@@ -189,7 +189,6 @@ local function LoadSkin()
 	MissionPage.StartMissionButton.FlashAnim:Stop()
 	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
 
-
 	-- Landing page
 	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
 	GarrisonLandingPage:CreateBackdrop("Transparent")
@@ -203,7 +202,7 @@ local function LoadSkin()
 	-- Landing page: Report
 	local Report = GarrisonLandingPage.Report
 	Report.List:StripTextures(true)
-	local scrollFrame = Report.List.listScroll
+	scrollFrame = Report.List.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 	local buttons = scrollFrame.buttons
 	for i = 1, #buttons do
@@ -220,10 +219,10 @@ local function LoadSkin()
 	end
 
 	-- Landing page: Follower list
-	local FollowerList = GarrisonLandingPage.FollowerList
+	FollowerList = GarrisonLandingPage.FollowerList
 	FollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
-	local scrollFrame = FollowerList.listScroll
+	scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
@@ -233,7 +232,6 @@ local function LoadSkin()
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
 		local ability = self.Abilities[index]
 		if not ability.styled then
-			local icon = ability.Icon
 			S:HandleIcon(ability.Icon, ability)
 			ability.styled = true
 		end
@@ -243,12 +241,11 @@ local function LoadSkin()
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(ShipFollowerList.SearchBox)
-	local scrollFrame = ShipFollowerList.listScroll
+	scrollFrame = ShipFollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 	-- HandleShipFollowerPage(ShipFollowerList.followerTab)
 
-
-	-- Needs Review: ShipYard
+	-- ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")
@@ -259,15 +256,15 @@ local function LoadSkin()
 	S:HandleTab(GarrisonShipyardFrameTab2)
 
 	-- ShipYard: Naval Map
-	local MissionTab = GarrisonShipyardFrame.MissionTab
-	local MissionList = MissionTab.MissionList
+	MissionTab = GarrisonShipyardFrame.MissionTab
+	MissionList = MissionTab.MissionList
 	MissionList:CreateBackdrop("Transparent")
 	MissionList.backdrop:SetOutside(MissionList.MapTexture)
 	MissionList.CompleteDialog.BorderFrame:StripTextures()
 	MissionList.CompleteDialog.BorderFrame:SetTemplate("Transparent")
 
 	-- ShipYard: Mission
-	local MissionPage = MissionTab.MissionPage
+	MissionPage = MissionTab.MissionPage
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage.CloseButton:GetFrameLevel() + 2)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
@@ -282,8 +279,8 @@ local function LoadSkin()
 	S:HandleButton(GarrisonMissionFrameHelpBoxButton)
 
 	-- ShipYard: Follower List
-	local FollowerList = GarrisonShipyardFrame.FollowerList
-	local scrollFrame = FollowerList.listScroll
+	FollowerList = GarrisonShipyardFrame.FollowerList
+	scrollFrame = FollowerList.listScroll
 	FollowerList:StripTextures()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 	S:HandleEditBox(FollowerList.SearchBox)

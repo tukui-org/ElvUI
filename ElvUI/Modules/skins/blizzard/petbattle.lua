@@ -13,6 +13,7 @@ local PET_BATTLE_PAD_INDEX = PET_BATTLE_PAD_INDEX
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
+
 	local f = PetBattleFrame
 	local bf = f.BottomFrame
 	local infoBars = {
@@ -116,7 +117,7 @@ local function LoadSkin()
 			return
 		end
 
-		for i, infoBar in pairs(infoBars) do
+		for _, infoBar in pairs(infoBars) do
 			infoBar.FirstAttack:Show()
 			if infoBar.SpeedIcon:IsShown() then
 				infoBar.FirstAttack:SetVertexColor(0,1,0,1)
@@ -125,7 +126,6 @@ local function LoadSkin()
 			end
 		end
 	end)
-
 
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
@@ -143,7 +143,7 @@ local function LoadSkin()
 
 		local nextFrame = 1
 		for i=1, C_PetBattles_GetNumAuras(self.petOwner, self.petIndex) do
-			local auraID, instanceID, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(self.petOwner, self.petIndex, i)
+			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(self.petOwner, self.petIndex, i)
 			if (isBuff and self.displayBuffs) or (not isBuff and self.displayDebuffs) then
 				local frame = self.frames[nextFrame]
 
@@ -220,7 +220,6 @@ local function LoadSkin()
 	SkinPetTooltip(FloatingBattlePetTooltip)
 	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
 
-
 	-- TOOLTIP DEFAULT POSITION
 	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
 		local t = PetBattlePrimaryAbilityTooltip
@@ -234,7 +233,6 @@ local function LoadSkin()
 		t:Point(point, E.UIParent, point, x, y)
 	end)
 
-
 	local extraInfoBars = {
 		f.Ally2,
 		f.Ally3,
@@ -242,7 +240,7 @@ local function LoadSkin()
 		f.Enemy3
 	}
 
-	for index, infoBar in pairs(extraInfoBars) do
+	for _, infoBar in pairs(extraInfoBars) do
 		infoBar.BorderAlive:SetAlpha(0)
 		infoBar.HealthBarBG:SetAlpha(0)
 		infoBar.HealthDivider:SetAlpha(0)
@@ -296,7 +294,7 @@ local function LoadSkin()
 	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
 	bf.TurnTimer.SkipButton:ClearAllPoints()
 	bf.TurnTimer.SkipButton:Point("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
-	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(self, point, _, anchorPoint, xOffset, yOffset)
 		if point ~= "BOTTOM" or anchorPoint ~= "TOP" or xOffset ~= 0 or yOffset ~= (E.PixelMode and -1 or 1) then
 			bf.TurnTimer.SkipButton:ClearAllPoints()
 			bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
@@ -340,7 +338,6 @@ local function LoadSkin()
 		bf.PetSelectionFrame:ClearAllPoints()
 		bf.PetSelectionFrame:Point("BOTTOM", bf.xpBar, "TOP", 0, 8)
 	end)
-
 
 	local function SkinPetButton(self)
 		if not self.backdrop then

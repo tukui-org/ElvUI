@@ -9,7 +9,6 @@ local select, unpack = select, unpack
 local floor = math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local C_TimerAfter = C_Timer.After
 local RegisterStateDriver = RegisterStateDriver
 local RegisterAttributeDriver = RegisterAttributeDriver
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -17,7 +16,6 @@ local UnitAura = UnitAura
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
-local IsAddOnLoaded = IsAddOnLoaded
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap, MMHolder

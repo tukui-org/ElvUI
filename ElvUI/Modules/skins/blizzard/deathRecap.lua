@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.deathRecap ~= true then return end
+
 	DeathRecapFrame:StripTextures()
 	S:HandleCloseButton(DeathRecapFrame.CloseXButton)
 	DeathRecapFrame:SetTemplate("Transparent")

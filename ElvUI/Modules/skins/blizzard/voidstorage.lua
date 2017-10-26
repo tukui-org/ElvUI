@@ -1,13 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
---WoW API / Variables
-local LE_ITEM_QUALITY_COMMON = LE_ITEM_QUALITY_COMMON
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.voidstorage ~= true then return end
+
 	local StripAllTextures = {
 		"VoidStorageBorderFrame",
 		"VoidStorageDepositFrame",
@@ -21,7 +17,6 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-
 
 	for i=1, 2 do
 		local tab = VoidStorageFrame["Page"..i]

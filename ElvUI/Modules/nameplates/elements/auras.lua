@@ -7,7 +7,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local select, unpack = select, unpack
 local tinsert, tremove = table.insert, table.remove
 local strlower, strsplit = string.lower, strsplit
-local next, ipairs = next, ipairs
 local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -61,7 +60,7 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell = false, false
+	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
 		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
@@ -107,9 +106,9 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 	end
 end
 
-function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, _, texture, count, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false, false
+	local isFriend, filterCheck, isUnit, isPlayer, canDispell, allowDuration, noDuration = false
 
 	if priority ~= '' then
 		noDuration = (not duration or duration == 0)
@@ -187,7 +186,7 @@ function mod:UpdateElement_Auras(frame)
 		frame.TopOffset = TopOffset
 
 		if (self.db.classbar.enable and self.db.classbar.position ~= "BELOW") then
-			mod:ClassBar_Update(frame)
+			mod:ClassBar_Update()
 		end
 
 		if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
@@ -199,7 +198,17 @@ end
 local function cooldownFontOverride(cd)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
-		cd.timer.text:Point("TOPLEFT", 1, 1)
+
+		cd.timer.text:ClearAllPoints()
+		if mod.db.durationPosition == "TOPLEFT" then
+			cd.timer.text:Point("TOPLEFT", 1, 1)
+		elseif mod.db.durationPosition == "BOTTOMLEFT" then
+			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
+		elseif mod.db.durationPosition == "TOPRIGHT" then
+			cd.timer.text:Point("TOPRIGHT", 1, 1)
+		else
+			cd.timer.text:Point("CENTER", 0, 0)
+		end
 	end
 end
 
@@ -255,6 +264,12 @@ function mod:UpdateAuraIcons(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
 		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
+
+		-- update stacks and cooldown font on NAME_PLATE_UNIT_ADDED
+		if auras.icons[i].count then
+			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+		end
+		cooldownFontOverride(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then

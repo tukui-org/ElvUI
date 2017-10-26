@@ -76,12 +76,12 @@ local PlaySoundKitID = PlaySoundKitID
 --This function is copied from FrameXML and modified to use DropDownMenu library function calls
 --Using the regular DropDownMenu code causes taints in various places.
 local function MiniMapTrackingDropDown_Initialize(self, level)
-	local name, texture, active, category, nested, numTracking;
+	local name, texture, category, nested, numTracking;
 	local count = GetNumTrackingTypes();
 	local info;
 	local _, class = UnitClass("player");
-	
-	if (level == 1) then 
+
+	if (level == 1) then
 		info = L_UIDropDownMenu_CreateInfo();
 		info.text=MINIMAP_TRACKING_NONE;
 		info.checked = MiniMapTrackingDropDown_IsNoTrackingActive;
@@ -91,17 +91,17 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 		info.isNotRadio = true;
 		info.keepShownOnClick = true;
 		L_UIDropDownMenu_AddButton(info, level);
-		
+
 		if (class == "HUNTER") then --only show hunter dropdown for hunters
 			numTracking = 0;
 			-- make sure there are at least two options in dropdown
 			for id=1, count do
-				name, texture, active, category, nested = GetTrackingInfo(id);
+				_, _, _, category, nested = GetTrackingInfo(id);
 				if (nested == HUNTER_TRACKING and category == "spell") then
 					numTracking = numTracking + 1;
 				end
 			end
-			if (numTracking > 1) then 
+			if (numTracking > 1) then
 				info.text = HUNTER_TRACKING_TEXT;
 				info.func =  nil;
 				info.notCheckable = true;
@@ -111,7 +111,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 				L_UIDropDownMenu_AddButton(info, level)
 			end
 		end
-		
+
 		info.text = TOWNSFOLK_TRACKING_TEXT;
 		info.func =  nil;
 		info.notCheckable = true;
@@ -122,7 +122,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 	end
 
 	for id=1, count do
-		name, texture, active, category, nested  = GetTrackingInfo(id);
+		name, texture, _, category, nested  = GetTrackingInfo(id);
 		info = L_UIDropDownMenu_CreateInfo();
 		info.text = name;
 		info.checked = MiniMapTrackingDropDownButton_IsActive;
@@ -142,9 +142,9 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 			info.tCoordTop = 0;
 			info.tCoordBottom = 1;
 		end
-		if (level == 1 and 
+		if (level == 1 and
 			(nested < 0 or -- this tracking shouldn't be nested
-			(nested == HUNTER_TRACKING and class ~= "HUNTER") or 
+			(nested == HUNTER_TRACKING and class ~= "HUNTER") or
 			(numTracking == 1 and category == "spell"))) then -- this is a hunter tracking ability, but you only have one
 			L_UIDropDownMenu_AddButton(info, level);
 		elseif (level == 2 and (nested == TOWNSFOLK or (nested == HUNTER_TRACKING and class == "HUNTER")) and nested == L_UIDROPDOWNMENU_MENU_VALUE) then

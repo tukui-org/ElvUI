@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.macro ~= true then return end
+
 	S:HandleCloseButton(MacroFrameCloseButton)
 	S:HandleScrollBar(MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(MacroFrameScrollFrameScrollBar)
@@ -34,7 +35,6 @@ local function LoadSkin()
 	end
 	MacroFrameTab1:Point("TOPLEFT", MacroFrame, "TOPLEFT", 85, -39)
 	MacroFrameTab2:Point("LEFT", MacroFrameTab1, "RIGHT", 4, 0)
-
 
 	-- General
 	MacroFrame:StripTextures()

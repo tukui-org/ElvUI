@@ -543,7 +543,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[196098] = Defaults(), --Soul Harvest
 		[221705] = Defaults(), --Casting Circle
 		[111400] = Defaults(), --Burning Rush
-		[212295] = Defaults(), --Planeswalker
+		[196674] = Defaults(), --Planeswalker
 	--Warrior
 		[118038] = Defaults(), --Die by the Sword
 		[184364] = Defaults(), --Enraged Regeneration
@@ -680,7 +680,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 
 		-- Sisters of the Moon
 		[236603] = Defaults(), -- Rapid Shot
-		[236596] = Defaults(), -- Rapid Shot 
+		[236596] = Defaults(), -- Rapid Shot
 		[234995] = Defaults(), -- Lunar Suffusion
 		[234996] = Defaults(), -- Umbra Suffusion
 		[236519] = Defaults(), -- Moon Burn
@@ -978,7 +978,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Mythic Dungeons
 		[226303] = Defaults(), -- Piercing Shards (Neltharion's Lair)
 		[227742] = Defaults(), -- Garrote (Karazhan)
-		[240443] = Defaults(), -- Bursting
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
@@ -1000,7 +999,7 @@ G.unitframe.aurafilters['RaidBuffsElvUI'] = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-		
+
 		--Raids
 	},
 }
@@ -1049,6 +1048,7 @@ G.unitframe.buffwatch = {
 	PALADIN = {
 		[53563] = ClassBuff(53563, "TOPRIGHT", {0.7, 0.3, 0.7}),         -- Beacon of Light
 		[156910] = ClassBuff(156910, "TOPRIGHT", {0.7, 0.3, 0.7}),       -- Beacon of Faith
+		[200025] = ClassBuff(200025, "TOPRIGHT", {0.7, 0.3, 0.7}),       -- Beacon of Virtue
 		[1022] = ClassBuff(1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true),    -- Hand of Protection
 		[1044] = ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),  -- Hand of Freedom
 		[6940] = ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice

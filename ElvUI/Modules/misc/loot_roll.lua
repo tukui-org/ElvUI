@@ -204,7 +204,7 @@ function M:CreateRollFrame()
 end
 
 local function GetFrame()
-	for i,f in ipairs(M.RollBars) do
+	for _,f in ipairs(M.RollBars) do
 		if not f.rollID then return f end
 	end
 

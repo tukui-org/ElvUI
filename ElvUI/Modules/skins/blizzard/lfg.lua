@@ -13,6 +13,7 @@ local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+
 	PVEFrame:StripTextures()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
@@ -45,7 +46,7 @@ local function LoadSkin()
 	LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
-		local proposalExists, id, typeID, subtypeID, name, texture, role, hasResponded, totalEncounters, completedEncounters, numMembers, isLeader = GetLFGProposal();
+		local _, _, _, _, _, _, role = GetLFGProposal()
 		if LFGDungeonReadyDialogRoleIcon:IsShown() then
 			if role == "DAMAGER" then
 				LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
@@ -335,7 +336,6 @@ local function LoadSkin()
 
 	ScenarioQueueFrameFindGroupButton:StripTextures()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)
-
 
 	S:HandleDropDownBox(ScenarioQueueFrameTypeDropDown)
 
@@ -631,6 +631,7 @@ S:AddCallback("LFG", LoadSkin)
 
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()

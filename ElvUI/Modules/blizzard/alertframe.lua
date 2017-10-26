@@ -5,8 +5,6 @@ local B = E:GetModule('Blizzard');
 --Lua functions
 local _G = _G
 local pairs = pairs
---WoW API / Variables
-local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: AlertFrame, AlertFrameMover, MissingLootFrame, GroupLootContainer
@@ -24,9 +22,8 @@ AlertFrameHolder:Height(20)
 AlertFrameHolder:Point("TOP", E.UIParent, "TOP", 0, -18)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
-local FORCE_POSITION = false;
 
-function E:PostAlertMove(screenQuadrant)
+function E:PostAlertMove()
 	local _, y = AlertFrameMover:GetCenter();
 	local screenHeight = E.UIParent:GetTop();
 	if y > (screenHeight / 2) then
@@ -146,7 +143,7 @@ function B:AlertMovers()
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
 	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
-	for i, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
+	for _, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
 		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end
 
@@ -157,7 +154,7 @@ function B:AlertMovers()
 
 	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
 	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
-	
+
 	--[[ Code you can use for alert testing
 		--Queued Alerts:
 		/run AchievementAlertSystem:AddAlert(5192)
@@ -166,7 +163,7 @@ function B:AlertMovers()
 		/run LootUpgradeAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, nil, nil, false)
 		/run MoneyWonAlertSystem:AddAlert(815)
 		/run NewRecipeLearnedAlertSystem:AddAlert(204)
-		
+
 		--Simple Alerts
 		/run GuildChallengeAlertSystem:AddAlert(3, 2, 5)
 		/run InvasionAlertSystem:AddAlert(1)

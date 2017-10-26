@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local ipairs = ipairs
 --WoW API / Variables
 
 local function LoadSkin()
@@ -22,7 +21,7 @@ local function LoadSkin()
 	ContributionBuffTooltip.Border:SetAlpha(0)
 	ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
-	
+
 	--Contribution Tooltip
 	ContributionTooltip:StripTextures()
 	ContributionTooltip:CreateBackdrop("Transparent")

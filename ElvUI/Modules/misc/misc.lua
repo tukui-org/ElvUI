@@ -133,7 +133,7 @@ local function AttemptAutoRepair(playerOverride)
 end
 
 local function VendorGrays()
-	E:GetModule('Bags'):VendorGrays(nil, true)
+	E:GetModule('Bags'):VendorGrays()
 end
 
 function M:UI_ERROR_MESSAGE(event, messageType)

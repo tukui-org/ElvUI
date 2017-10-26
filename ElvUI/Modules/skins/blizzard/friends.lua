@@ -34,6 +34,7 @@ end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.friends ~= true then return end
+
 	S:HandleScrollBar(FriendsFrameFriendsScrollFrameScrollBar, 5)
 	S:HandleScrollBar(WhoListScrollFrameScrollBar, 5)
 	S:HandleScrollBar(ChannelRosterScrollFrameScrollBar, 5)
@@ -192,7 +193,6 @@ local function LoadSkin()
 	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
 
-
 	--Pending invites
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
 	local function SkinFriendRequest(frame)
@@ -265,12 +265,12 @@ local function LoadSkin()
 	--View Friends BN Frame
 	FriendsFriendsFrame:CreateBackdrop("Transparent")
 
-	local StripAllTextures = {
+	StripAllTextures = {
 		"FriendsFriendsFrame",
 		"FriendsFriendsList",
 	}
 
-	local buttons = {
+	buttons = {
 		"FriendsFriendsSendRequestButton",
 		"FriendsFriendsCloseButton",
 	}

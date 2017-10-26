@@ -5,8 +5,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local unpack = unpack
 --WoW API / Variables
-local GetInventoryItemQuality = GetInventoryItemQuality
-local GetItemQualityColor = GetItemQualityColor
 local GetPrestigeInfo = GetPrestigeInfo
 local UnitPrestige = UnitPrestige
 local UnitLevel = UnitLevel
@@ -17,6 +15,7 @@ local LE_EXPANSION_LEVEL_CURRENT = LE_EXPANSION_LEVEL_CURRENT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
+
 	InspectFrame:StripTextures(true)
 	InspectFrameInset:StripTextures(true)
 	InspectFrame:SetTemplate('Transparent')
@@ -120,7 +119,7 @@ local function LoadSkin()
 	}
 	for _, slot in pairs(slots) do
 		local icon = _G["Inspect"..slot.."IconTexture"]
-		local slot = _G["Inspect"..slot]
+		slot = _G["Inspect"..slot]
 		slot:StripTextures()
 		slot:StyleButton(false)
 		icon:SetTexCoord(unpack(E.TexCoords))

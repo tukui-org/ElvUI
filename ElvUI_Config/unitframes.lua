@@ -2809,7 +2809,7 @@ E.Options.args.unitframe.args.player = {
 				healPrediction = {
 					order = 8,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
@@ -3180,7 +3180,7 @@ E.Options.args.unitframe.args.target = {
 				healPrediction = {
 					order = 9,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
@@ -3653,7 +3653,7 @@ E.Options.args.unitframe.args.focus = {
 				healPrediction = {
 					order = 9,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
@@ -3935,7 +3935,7 @@ E.Options.args.unitframe.args.pet = {
 				healPrediction = {
 					order = 9,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
@@ -4412,7 +4412,7 @@ E.Options.args.unitframe.args.arena = {
 				healPrediction = {
 					order = 9,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
@@ -4622,7 +4622,7 @@ E.Options.args.unitframe.args.party = {
 				healPrediction = {
 					order = 5,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				threatStyle = {
@@ -5232,7 +5232,7 @@ E.Options.args.unitframe.args.raid = {
 				healPrediction = {
 					order = 5,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				threatStyle = {
@@ -5664,7 +5664,7 @@ E.Options.args.unitframe.args.raid40 = {
 				healPrediction = {
 					order = 5,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				threatStyle = {
@@ -6088,7 +6088,7 @@ E.Options.args.unitframe.args.raidpet = {
 				healPrediction = {
 					order = 4,
 					name = L["Heal Prediction"],
-					desc = L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				threatStyle = {

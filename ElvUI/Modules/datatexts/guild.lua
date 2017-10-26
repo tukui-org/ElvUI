@@ -200,7 +200,7 @@ local function Click(self, btn)
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
-				elseif not info[11] then
+				elseif not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
 					grouped = ""
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
@@ -243,7 +243,6 @@ local function OnEnter(self, _, noUpdate)
 	if standingID ~= 8 then -- Not Max Rep
 		barMax = barMax - barMin
 		barValue = barValue - barMin
-		barMin = 0
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 

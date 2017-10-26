@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if(not E.private.skins.blizzard.questChoice) then return end
+	if E.private.skins.blizzard.questChoice ~= true then return end
+
 	for i = 1, 4 do
 		local option = QuestChoiceFrame["Option"..i]
 		local rewards = option.Rewards

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.merchant ~= true then return end
+
 	local frames = {
 		"MerchantBuyBackItem",
 		"MerchantFrame",
@@ -57,7 +58,6 @@ local function LoadSkin()
 
 		_G["MerchantItem"..i.."MoneyFrame"]:ClearAllPoints()
 		_G["MerchantItem"..i.."MoneyFrame"]:Point("BOTTOMLEFT", button, "BOTTOMRIGHT", 3, 0)
-
 	end
 
 	-- Skin buyback item frame + icon
@@ -74,7 +74,6 @@ local function LoadSkin()
 	hooksecurefunc(MerchantBuyBackItemItemButton.IconBorder, 'Hide', function(self)
 		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
-
 
 	MerchantRepairItemButton:StyleButton(false)
 	MerchantRepairItemButton:SetTemplate("Default", true)

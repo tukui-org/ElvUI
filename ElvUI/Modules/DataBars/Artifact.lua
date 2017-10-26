@@ -6,22 +6,18 @@ local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
 --Cache global variables
 --Lua functions
 local _G = _G
-local tonumber, select, pcall = tonumber, select, pcall
-local format, gsub, strmatch, strfind, split = string.format, string.gsub, string.match, string.find, string.split
+local tonumber, select = tonumber, select
+local format, split = string.format, string.split
 --WoW API / Variables
 local C_ArtifactUI_GetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
-local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumSlots = GetContainerNumSlots
-local GetItemSpell = GetItemSpell
-local GetSpellInfo = GetSpellInfo
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
-local AP_NAME = format("%s|r", ARTIFACT_POWER)
 local ARTIFACT_POWER = ARTIFACT_POWER
 local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
@@ -103,8 +99,8 @@ function mod:ArtifactBar_OnEnter()
 
 	local _, _, artifactName, _, totalXP, pointsSpent, _, _, _, _, _, _, artifactTier = C_ArtifactUI_GetEquippedArtifactInfo();
 	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
-	
-	GameTooltip:AddDoubleLine(ARTIFACT_POWER, artifactName, nil, nil, nil, 0.90, 0.80,	0.50)
+
+	GameTooltip:AddDoubleLine(ARTIFACT_POWER, artifactName, nil, nil, nil, 0.90, 0.80, 0.50)
 	GameTooltip:AddLine(' ')
 
 	--Damn fishing artifacts and its inconsistent returns
@@ -115,7 +111,7 @@ function mod:ArtifactBar_OnEnter()
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
 
-	GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', E:ShortValue(xpForNextPoint - xp), remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %d %s)', E:ShortValue(apInBags), apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	if (numPointsAvailableToSpend > 0) then
