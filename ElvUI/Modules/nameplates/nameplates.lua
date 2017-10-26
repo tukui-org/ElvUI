@@ -839,6 +839,10 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateOtherTopInset", self.db.clampToScreen and "0.08" or "-1")
 	E:LockCVar("nameplateOtherBottomInset", self.db.clampToScreen and "0.1" or "-1")
 
+	--This one prevents classbar from being shown on friendly blizzard plates
+	-- we do this because it will otherwise break enemy nameplates after targeting a friendly one
+	E:LockCVar("nameplateResourceOnTarget", 0)
+
 	--Player nameplate
 	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
 	E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
