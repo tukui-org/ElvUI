@@ -1,4 +1,4 @@
-**Version 10.68 [  ]**
+**Version 10.68 [ October 26th 2017 ]**
 
 **New Additions:**  
 Added option to show Quick Join messages as clickable links in chat.  
@@ -14,6 +14,7 @@ Fixed issue which caused player unitframe to bug out when entering invasion poin
 Fixed error when setting text color on custom buff indicators.  
 Fixed issue preventing you from inviting people on remote chat in Guild datatext.  
 Fixed issue which caused classbar to disappear from target nameplate.  
+Fixed issue which caused enemy nameplates to break after having targeted a friendly unit in an instance and have the classbar appear above that nameplate.  
 
 
 **Misc. Changes:**  
