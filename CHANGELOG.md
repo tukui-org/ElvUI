@@ -25,6 +25,7 @@ Skinned the "Skip Cinematic" popup frames.
 Added a separate skin setting for Blizzard Interface Options.  
 Changed Loot Frame mover to always be visible when movers are toggled.  
 Code clean-up by Rubgrsch.  
+Updated some aura filters.  
 
 ___
 **Version 10.67 [ October 2nd 2017 ]**
