@@ -8,9 +8,7 @@ local tostring = tostring
 local gsub = string.gsub
 local match = string.match
 local format = string.format
-local tinsert = table.insert
 local COLOR = COLOR
-local UNKNOWN = UNKNOWN
 local NONE = NONE
 local GetSpellInfo = GetSpellInfo
 
@@ -116,7 +114,6 @@ local function UpdateFilterGroup()
 						local list = E.global.unitframe.DebuffHighlightColors
 						if not list then return end
 						for filter in pairs(list) do
-							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
 								if spellName then
@@ -156,7 +153,7 @@ local function UpdateFilterGroup()
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					func = function(info, value)
+					func = function(info)
 						E.global.unitframe.DebuffHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 						selectedSpell = nil
 						UpdateFilterGroup()
@@ -287,7 +284,6 @@ local function UpdateFilterGroup()
 						local list = E.global.unitframe.AuraBarColors
 						if not list then return end
 						for filter in pairs(list) do
-							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
 								if spellName then
@@ -327,7 +323,7 @@ local function UpdateFilterGroup()
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					func = function(info, value)
+					func = function(info)
 						E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
 						selectedSpell = nil
 						UpdateFilterGroup()
@@ -379,7 +375,7 @@ local function UpdateFilterGroup()
 					type = 'execute',
 					order = 2,
 					name = L["Restore Defaults"],
-					func = function(info, value)
+					func = function(info)
 						E.global.unitframe.AuraBarColors[(spellID or selectedSpell)] = false;
 						UF:CreateAndUpdateUF('player')
 						UF:CreateAndUpdateUF('target')
@@ -494,7 +490,7 @@ local function UpdateFilterGroup()
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					func = function(info, value)
+					func = function(info)
 						E.global.unitframe.buffwatch.PET = E:CopyTable({}, G.unitframe.buffwatch.PET)
 						selectedSpell = nil
 						UpdateFilterGroup()
@@ -738,7 +734,7 @@ local function UpdateFilterGroup()
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					func = function(info, value)
+					func = function(info)
 						E.global.unitframe.buffwatch[E.myclass] = E:CopyTable({}, G.unitframe.buffwatch[E.myclass])
 						selectedSpell = nil
 						UpdateFilterGroup()
@@ -990,7 +986,7 @@ local function UpdateFilterGroup()
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					func = function(info, value)
+					func = function(info)
 						E.db.unitframe.filters.buffwatch = {}
 						selectedSpell = nil
 						UpdateFilterGroup()
@@ -1225,7 +1221,6 @@ local function UpdateFilterGroup()
 						local list = E.global.unitframe['aurafilters'][selectedFilter]['spells']
 						if not list then return end
 						for filter in pairs(list) do
-							local spellString
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
 								if spellName then
