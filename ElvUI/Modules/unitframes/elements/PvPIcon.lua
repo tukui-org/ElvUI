@@ -28,7 +28,7 @@ function UF:Configure_PVPIcon(frame)
 	local scale = frame.db.pvpIcon.scale or 1
 	PvPIndicator:Size(30 * scale)
 	PvPIndicator.Prestige:Size(50 * scale, 52 * scale)
-	
+
 	if frame.db.pvpIcon.enable and not frame:IsElementEnabled('PvPIndicator') then
 		frame:EnableElement('PvPIndicator')
 	elseif not frame.db.pvpIcon.enable and frame:IsElementEnabled('PvPIndicator') then

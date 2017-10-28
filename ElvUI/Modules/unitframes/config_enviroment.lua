@@ -75,7 +75,7 @@ local function createConfigEnv()
 		_COLORS = ElvUF.colors
 	}, {
 		__index = _G,
-		__newindex = function(tbl, key, value) _G[key] = value end,
+		__newindex = function(_, key, value) _G[key] = value end,
 	})
 
 	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']

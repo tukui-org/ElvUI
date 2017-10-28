@@ -480,7 +480,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self[unit]:SetID(i)
 		end
 
-		local frameName = E:StringTitle(group)
+		frameName = E:StringTitle(group)
 		frameName = frameName:gsub('t(arget)', 'T%1')
 		self[unit].Update = function()
 			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])
@@ -1112,7 +1112,7 @@ function ElvUF:DisableBlizzard(unit)
 	end
 end
 
-function UF:ADDON_LOADED(event, addon)
+function UF:ADDON_LOADED(_, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return; end
 	ElvUF:DisableBlizzard('arena')
 	self:UnregisterEvent("ADDON_LOADED");
@@ -1362,7 +1362,7 @@ function UF:Initialize()
 	ORD.ShowDispellableDebuff = true
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = false
-	
+
 	self:UpdateRangeCheckSpells()
 end
 

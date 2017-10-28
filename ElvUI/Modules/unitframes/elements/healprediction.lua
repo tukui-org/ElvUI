@@ -32,7 +32,7 @@ function UF:Construct_HealComm(frame)
 		PostUpdate = UF.UpdateHealComm
 	}
 	HealthPrediction.parent = frame
-	
+
 	return HealthPrediction
 end
 
@@ -69,7 +69,7 @@ function UF:Configure_HealComm(frame)
 		healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
 		healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
 		healPrediction.healAbsorbBar:SetStatusBarColor(c.healAbsorbs.r, c.healAbsorbs.g, c.healAbsorbs.b, c.healAbsorbs.a)
-	
+
 		healPrediction.maxOverflow = (1 + (c.maxOverflow or 0))
 	else
 		if frame:IsElementEnabled('HealthPrediction') then
@@ -114,7 +114,7 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	return bar:GetStatusBarTexture();
 end
 
-function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, healAbsorb)
+function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, healAbsorb)
 	local frame = self.parent
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
