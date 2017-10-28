@@ -4,7 +4,7 @@ local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, tonumber, select, pairs = unpack, tonumber, select, pairs
+local unpack, select = unpack, select
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor = math.floor
 local find, format, sub = string.find, string.format, string.sub
@@ -25,7 +25,6 @@ local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetScreenWidth = GetScreenWidth
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -78,7 +77,6 @@ local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
 local PVP = PVP
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local TARGET = TARGET
-local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
@@ -93,7 +91,6 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
 local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }

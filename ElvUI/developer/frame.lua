@@ -134,9 +134,9 @@ SLASH_GETPOINT1 = "/getpoint"
 SlashCmdList["GETPOINT"] = GetPoint
 
 SLASH_DEV1 = "/dev"
-SlashCmdList["DEV"] = function(msg)
+SlashCmdList["DEV"] = function()
 	if not IsAddOnLoaded("ElvUIDev") then
-		local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo("ElvUIDev")
+		local _, _, _, loadable, reason = GetAddOnInfo("ElvUIDev")
 		if not loadable then
 			if reason == "MISSING" then
 				print("ElvUIDev addon is missing.")
