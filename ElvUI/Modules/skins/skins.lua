@@ -5,7 +5,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Lua functions
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
-local tinsert, wipe = table.insert, table.wipe
+local tinsert, wipe, next = table.insert, table.wipe, next
 --WoW API / Variables
 local SquareButton_SetIcon = SquareButton_SetIcon
 local CreateFrame = CreateFrame

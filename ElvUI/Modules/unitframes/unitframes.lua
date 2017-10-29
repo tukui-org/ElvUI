@@ -32,7 +32,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
 -- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
--- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles
+-- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles, PartyMemberBackground
 
 
 local _, ns = ...

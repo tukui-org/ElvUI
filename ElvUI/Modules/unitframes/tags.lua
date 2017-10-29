@@ -66,7 +66,7 @@ local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: Hex, PowerBarColor
+-- GLOBALS: Hex, PowerBarColor, _TAGS
 
 ------------------------------------------------------------------------
 --	Tags

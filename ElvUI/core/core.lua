@@ -7,7 +7,7 @@ local Masque = LibStub("Masque", true)
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
-local twipe, tinsert, tremove = table.wipe, tinsert, tremove
+local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match = floor, string.gsub, string.match
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
@@ -42,7 +42,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 -- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 
 --Constants

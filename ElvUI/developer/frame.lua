@@ -2,14 +2,19 @@
 --Lua functions
 local _G = _G
 local print, tostring, select = print, tostring, select
+local strlower = strlower
 local format = format
 --WoW API / Variables
 local GetMouseFocus = GetMouseFocus
 local FrameStackTooltip_Toggle = FrameStackTooltip_Toggle
+local IsAddOnLoaded = IsAddOnLoaded
+local GetAddOnInfo = GetAddOnInfo
+local LoadAddOn = LoadAddOn
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME, ChatFrame1
 -- GLOBALS: FrameStackTooltip, UIParentLoadAddOn, CopyChatFrame, ElvUI
+-- GLOBALS: SLASH_GETPOINT1, SLASH_DEV1, ElvUIDev
 
 --[[
 	Command to grab frame information when mouseing over a frame
@@ -147,7 +152,7 @@ SlashCmdList["DEV"] = function()
 				if loaded then
 					ElvUIDev:ToggleFrame()
 				else
-					print("ElvUIDev addon cannot be loaded: %s.", string.lower(reason))
+					print("ElvUIDev addon cannot be loaded: %s.", strlower(reason))
 				end
 			end
 		end
