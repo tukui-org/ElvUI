@@ -981,6 +981,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
+		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
 		[200227] = Defaults(), -- Tangled Web
 	},
