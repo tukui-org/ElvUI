@@ -84,7 +84,7 @@ function E:UIScale(event)
 		self.eyefinity = width;
 	end
 
-	self.mult = 768/match(self.resolution, "%d+x(%d+)")/scale;
+	self.mult = 768/self.screenheight/scale
 	self.Spacing = self.PixelMode and 0 or self.mult
 	self.Border = (self.PixelMode and self.mult or self.mult*2)
 
