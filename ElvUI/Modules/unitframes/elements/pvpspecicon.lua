@@ -20,7 +20,7 @@ end
 function UF:Configure_PVPSpecIcon(frame)
 	if not frame.VARIABLES_SET then return end
 	local specIcon = frame.PVPSpecIcon
-	
+
 	specIcon.bg:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then
 		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.SPACING, -frame.SPACING)
@@ -35,7 +35,7 @@ function UF:Configure_PVPSpecIcon(frame)
 			specIcon.bg:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
 		else
 			specIcon.bg:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
-		end	
+		end
 	end
 	if frame.db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
 		frame:EnableElement('PVPSpecIcon')

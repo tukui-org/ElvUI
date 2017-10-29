@@ -57,7 +57,7 @@ local function Width(frame, width)
 		end
 		assert(width,'Width not set properly.')
 	end]]
-	
+
 	frame:SetWidth(E:Scale(width))
 end
 
@@ -84,7 +84,7 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-	
+
 	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
@@ -98,7 +98,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-	
+
 	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
@@ -122,11 +122,11 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if(ignoreUpdates) then
 	   f.ignoreUpdates = ignoreUpdates
 	end
-	
+
 	if(forcePixelMode) then
 		f.forcePixelMode = forcePixelMode
 	end
-	
+
 	if (isUnitFrameElement) then
 		f.isUnitFrameElement = isUnitFrameElement
 	end
@@ -172,7 +172,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				f.iborder = border
 
 				if f.oborder then return end
-				local border = CreateFrame("Frame", nil, f)
+				border = CreateFrame("Frame", nil, f)
 				border:SetOutside(f, E.mult, E.mult)
 				border:SetFrameLevel(f:GetFrameLevel() + 1)
 				border:SetBackdrop({
@@ -218,7 +218,7 @@ end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	if not t then t = "Default" end
-	
+
 	local b = CreateFrame("Frame", nil, f)
 	if(f.forcePixelMode or forcePixelMode) then
 		b:SetOutside(nil, E.mult, E.mult)

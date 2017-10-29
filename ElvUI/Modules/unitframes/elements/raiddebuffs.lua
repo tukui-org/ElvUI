@@ -42,7 +42,7 @@ function UF:Configure_RaidDebuffs(frame)
 		if not frame:IsElementEnabled('RaidDebuffs') then
 			frame:EnableElement('RaidDebuffs')
 		end
-		
+
 		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
 		rdebuffs.onlyMatchSpellID = db.rdebuffs.onlyMatchSpellID
 		rdebuffs.forceShow = frame.forceShowAuras

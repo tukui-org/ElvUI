@@ -1,5 +1,5 @@
 --Plugins pass their info using the table like:
---[[ 
+--[[
 	addon = {
 		Title = "Your Own Title",
 		Name = "AddOnName",
@@ -105,7 +105,7 @@ local function SetPage(PageNum, PrevPage)
 	ResetAll()
 	f.Status.anim.progress:SetChange(PageNum)
 	f.Status.anim.progress:Play()
-	
+
 	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	f.Status:SetStatusBarColor(r, g, b)
 
@@ -123,7 +123,7 @@ local function SetPage(PageNum, PrevPage)
 
 	f.Pages[f.CurrentPage]()
 	f.Status.text:SetFormattedText("%d / %d", f.CurrentPage, f.MaxPage)
-	if f.StepTitles then 
+	if f.StepTitles then
 		for i = 1, #f.side.Lines do
 			local b = f.side.Lines[i]
 			local color
@@ -377,13 +377,13 @@ function PI:CreateFrame()
 	end
 
 	f:Hide()
-	
+
 	f:SetScript("OnHide", function() PI:CloseInstall() end)
 end
 
 function PI:Queue(addon)
 	local addonIsQueued = false
-	for k, v in pairs(self.Installs) do
+	for _, v in pairs(self.Installs) do
 		if v.Name == addon.Name then
 			addonIsQueued = true
 		end

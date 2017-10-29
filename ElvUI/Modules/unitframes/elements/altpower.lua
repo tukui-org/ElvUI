@@ -3,11 +3,9 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 --Lua functions
-local select = select
 local floor = math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
@@ -25,11 +23,11 @@ function UF:Construct_AltPowerBar(frame)
 
 	altpower:SetScript("OnShow", UF.ToggleResourceBar)
 	altpower:SetScript("OnHide", UF.ToggleResourceBar)
-	
+
 	return altpower
 end
 
-function UF:AltPowerBarPostUpdate(unit, cur, min, max)
+function UF:AltPowerBarPostUpdate(unit, cur, _, max)
 	if not self.barType then return end
 	local perc = (cur and max and max > 0) and floor((cur/max)*100) or 0
 	local parent = self:GetParent()

@@ -22,7 +22,6 @@ local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetMapNameByID = GetMapNameByID
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
-local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
@@ -440,7 +439,7 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil;
 	end
-	
+
 	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
 		E:StaticPopup_Show("ELVUI_INFORM_NEW_CHANGES")
 		E.global.userInformedNewChanges1 = true
@@ -691,13 +690,6 @@ function E:CopyTable(currentTable, defaultTable)
 	return currentTable
 end
 
-local function IsTableEmpty(tbl)
-	for _, _ in pairs(tbl) do
-		return false
-	end
-	return true
-end
-
 function E:RemoveEmptySubTables(tbl)
 	if type(tbl) ~= "table" then
 		E:Print("Bad argument #1 to 'RemoveEmptySubTables' (table expected)")
@@ -706,7 +698,7 @@ function E:RemoveEmptySubTables(tbl)
 
 	for k, v in pairs(tbl) do
 		if type(v) == "table" then
-			if IsTableEmpty(v) then
+			if next(v) == nil then
 				tbl[k] = nil
 			else
 				self:RemoveEmptySubTables(v)
@@ -1096,7 +1088,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 		return
 	end
 
-	local object = _G[object] or object
+	object = _G[object] or object
 	--If already doing pokemon
 	if C_PetBattles_IsInBattle() then
 		object:SetParent(E.HiddenFrame)
@@ -1113,7 +1105,7 @@ function E:UnregisterPetBattleHideFrames(object)
 		return
 	end
 
-	local object = _G[object] or object
+	object = _G[object] or object
 	--Check if object was registered to begin with
 	if not E.FrameLocks[object] then
 		return
@@ -1157,7 +1149,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 		return
 	end
 
-	local object = _G[object] or object
+	object = _G[object] or object
 	--Entering/Exiting vehicles will often happen in combat.
 	--For this reason we cannot allow protected objects.
 	if object.IsProtected and object:IsProtected() then
@@ -1180,7 +1172,7 @@ function E:UnregisterObjectForVehicleLock(object)
 		return
 	end
 
-	local object = _G[object] or object
+	object = _G[object] or object
 	--Check if object was registered to begin with
 	if not E.VehicleLocks[object] then
 		return
@@ -1275,7 +1267,7 @@ function E:InitializeInitialModules()
 
 	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E['RegisteredInitialModules']) do
-		local module = self:GetModule(module, true)
+		module = self:GetModule(module, true)
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 			if catch and GetCVarBool('scriptErrors') == true then
@@ -1301,7 +1293,7 @@ function E:InitializeModules()
 
 	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E['RegisteredModules']) do
-		local module = self:GetModule(module)
+		module = self:GetModule(module)
 		if module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 
@@ -1390,7 +1382,7 @@ function E:GetTopCPUFunc(msg)
 	if module == "all" then
 		for _, registeredModule in pairs(self['RegisteredModules']) do
 			mod = self:GetModule(registeredModule, true) or self
-			for name, func in pairs(mod) do
+			for name in pairs(mod) do
 				if type(mod[name]) == "function" and name ~= "GetModule" then
 					CPU_USAGE[registeredModule..":"..name] = GetFunctionCPUUsage(mod[name], true)
 				end
@@ -1398,7 +1390,7 @@ function E:GetTopCPUFunc(msg)
 		end
 	else
 		mod = self:GetModule(module, true) or self
-		for name, func in pairs(mod) do
+		for name in pairs(mod) do
 			if type(mod[name]) == "function" and name ~= "GetModule" then
 				CPU_USAGE[module..":"..name] = GetFunctionCPUUsage(mod[name], true)
 			end

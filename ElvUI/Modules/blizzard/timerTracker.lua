@@ -36,7 +36,7 @@ local function SkinIt(bar)
 	end
 end
 
-function B:START_TIMER(event)
+function B:START_TIMER()
 	for _, b in pairs(TimerTracker.timerList) do
 		if b["bar"] and not b["bar"].skinned then
 			SkinIt(b["bar"])

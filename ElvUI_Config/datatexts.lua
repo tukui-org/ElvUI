@@ -34,7 +34,7 @@ function DT:PanelLayoutOptions()
 				name = L[pointLoc] or pointLoc,
 				order = order,
 			}
-			for option, value in pairs(tab) do
+			for option in pairs(tab) do
 				table[pointLoc].args[option] = {
 					type = 'select',
 					name = L[option] or option:upper(),

@@ -95,7 +95,7 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function mod:StyleFilterBorderColorLock(frame, backdrop, r, g, b, a)
+function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
 	backdrop:SetBackdropBorderColor(r, g, b, a)
 	if not backdrop.StyleFilterBorderColorHooked then
@@ -135,7 +135,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		self:StyleFilterBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		self:StyleFilterBorderColorLock(frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 	end
 	if FlashingHealth then
 		frame.StyleChanged = true
@@ -828,7 +828,7 @@ local function copyDefaults(dest, src)
 				end
 			else
 				-- Values are not tables, so this is just a simple return
-				local mt = {__index = function(t,k) return k~=nil and v or nil end}
+				local mt = {__index = function(_,k) return k~=nil and v or nil end}
 				setmetatable(dest, mt)
 			end
 		elseif type(v) == "table" then

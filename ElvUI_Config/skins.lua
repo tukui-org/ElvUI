@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local S = E:GetModule('Skins')
 
 E.Options.args.skins = {
 	type = "group",

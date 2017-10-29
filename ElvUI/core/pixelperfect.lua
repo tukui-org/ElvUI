@@ -94,7 +94,7 @@ function E:UIScale(event)
 			SetCVar("uiScale", scale);
 			WorldMapFrame.hasTaint = true;
 		end
-		
+
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
 		if (scale < 0.64) then
 			UIParent:SetScale(scale)

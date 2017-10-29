@@ -642,7 +642,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
-function S:ADDON_LOADED(event, addon)
+function S:ADDON_LOADED(_, addon)
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method

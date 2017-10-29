@@ -38,18 +38,6 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local selectedNameplateFilter
 
-local positionValues = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	CENTER = 'CENTER',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
-};
-
 local carryFilterFrom, carryFilterTo
 local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
@@ -89,7 +77,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 		if state then
 			local stateFound = filterMatch(filter, filterValue(state))
 			if not stateFound then
-				local tbl, sv, sm = {strsplit(",",filter)}
+				local tbl, sv = {strsplit(",",filter)}
 				for i in ipairs(tbl) do
 					if tbl[i] == value then sv = i;break end
 				end
@@ -129,7 +117,7 @@ local function UpdateClassSpec(classTag, enabled)
 	local coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
 	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 	for i=1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
-		local specID, name, description, iconID, role, isRecommended, isAllowed = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
+		local specID, name = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
 		local tagID = format("%s%s", classTag, specID)
 		if not E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec].args[tagID] then
 			E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec].args[tagID] = {
@@ -170,14 +158,14 @@ local function UpdateClassSection()
 				classTable[classTag].name = classDisplayName
 				classTable[classTag].classID = classID
 			end
-			for classTag, content in pairs(classTable) do
+			for classTag in pairs(classTable) do
 				tinsert(classIndexTable, classTag)
 			end
 			tsort(classIndexTable)
 		end
 		classOrder = 0
 		local coloredName;
-		for index, classTag in ipairs(classIndexTable) do
+		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder + 1
 			coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
@@ -239,7 +227,6 @@ end
 
 local function UpdateTalentSection()
 	if E.global.nameplate.filters[selectedNameplateFilter] then
-		local func = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and GetTalentInfo) or GetPvpTalentInfo;
 		local maxTiers = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7) or 6;
 		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args = {
 			enabled = {
@@ -2179,7 +2166,7 @@ local function GetUnitSettings(unit, name)
 				name = L["Default Settings"],
 				desc = L["Set Settings to Default"],
 				type = "execute",
-				func = function(info, value)
+				func = function(info)
 					NP:ResetSettings(unit)
 					NP:ConfigureAll()
 				end,
@@ -2500,24 +2487,24 @@ local function GetUnitSettings(unit, name)
 								type = "multiselect",
 								dragdrop = true,
 								dragOnLeave = function() end, --keep this here
-								dragOnEnter = function(info, value)
+								dragOnEnter = function(info)
 									carryFilterTo = info.obj.value
 								end,
-								dragOnMouseDown = function(info, value)
+								dragOnMouseDown = function(info)
 									carryFilterFrom, carryFilterTo = info.obj.value, nil
 								end,
-								dragOnMouseUp = function(info, value)
+								dragOnMouseUp = function(info)
 									filterPriority('buffs', unit, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
 									carryFilterFrom, carryFilterTo = nil, nil
 								end,
-								dragOnClick = function(info, value)
+								dragOnClick = function(info)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(button, text, value)
+								stateSwitchGetText = function(_, text)
 									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
 								end,
-								stateSwitchOnClick = function(info, value)
+								stateSwitchOnClick = function()
 									filterPriority('buffs', unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
@@ -2525,13 +2512,13 @@ local function GetUnitSettings(unit, name)
 									if str == "" then return nil end
 									return {strsplit(",",str)}
 								end,
-								get = function(info, value)
+								get = function(_, value)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
 									if str == "" then return nil end
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end,
-								set = function(info, value)
+								set = function()
 									NP:ConfigureAll()
 								end
 							},
@@ -2668,24 +2655,24 @@ local function GetUnitSettings(unit, name)
 								type = "multiselect",
 								name = L["Filter Priority"],
 								dragOnLeave = function() end, --keep this here
-								dragOnEnter = function(info, value)
+								dragOnEnter = function(info)
 									carryFilterTo = info.obj.value
 								end,
-								dragOnMouseDown = function(info, value)
+								dragOnMouseDown = function(info)
 									carryFilterFrom, carryFilterTo = info.obj.value, nil
 								end,
-								dragOnMouseUp = function(info, value)
+								dragOnMouseUp = function(info)
 									filterPriority('debuffs', unit, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
 									carryFilterFrom, carryFilterTo = nil, nil
 								end,
-								dragOnClick = function(info, value)
+								dragOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(button, text, value)
+								stateSwitchGetText = function(_, text)
 									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
 								end,
-								stateSwitchOnClick = function(info, value)
+								stateSwitchOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
@@ -2699,7 +2686,7 @@ local function GetUnitSettings(unit, name)
 									local tbl = {strsplit(",",str)}
 									return tbl[value]
 								end,
-								set = function(info, value)
+								set = function(info)
 									NP:ConfigureAll()
 								end
 							},
@@ -3303,7 +3290,7 @@ E.Options.args.nameplate = {
 							order = 12,
 							name = L["Reset Aura Filters"],
 							type = "execute",
-							func = function(info, value)
+							func = function(info)
 								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
 							end,
 						},
@@ -3799,7 +3786,7 @@ E.Options.args.nameplate = {
 					get = function(info) return selectedNameplateFilter end,
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()
-						local filters, priority, name, profile = {}
+						local filters, priority, name = {}
 						local list = E.global.nameplate.filters
 						local profile = E.db.nameplates.filters
 						if not list then return end

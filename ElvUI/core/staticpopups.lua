@@ -176,7 +176,7 @@ E.PopupDialogs["CONFIG_RL"] = {
 	text = L["One or more of the changes you have made require a ReloadUI."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() ReloadUI() end,
+	OnAccept = ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -186,7 +186,7 @@ E.PopupDialogs["GLOBAL_RL"] = {
 	text = L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() ReloadUI() end,
+	OnAccept = ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -196,7 +196,7 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	text = L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() ReloadUI() end,
+	OnAccept = ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -247,8 +247,8 @@ E.PopupDialogs["KEYBIND_MODE"] = {
 	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
 	button1 = L["Save"],
 	button2 = L["Discard"],
-	OnAccept = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(true) end,
-	OnCancel = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(false) end,
+	OnAccept = function() E:GetModule('ActionBars'):DeactivateBindMode(true) end,
+	OnCancel = function() E:GetModule('ActionBars'):DeactivateBindMode(false) end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -258,7 +258,7 @@ E.PopupDialogs["DELETE_GRAYS"] = {
 	text = L["Are you sure you want to delete all your gray items?"],
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function() local B = E:GetModule('Bags'); B:VendorGrays(true) end,
+	OnAccept = function() E:GetModule('Bags'):VendorGrays(true) end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs["DELETE_GRAYS"].Money);
 	end,
@@ -272,9 +272,7 @@ E.PopupDialogs["BUY_BANK_SLOT"] = {
 	text = CONFIRM_BUY_BANK_SLOT,
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function()
-		PurchaseSlot()
-	end,
+	OnAccept = PurchaseSlot,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, GetBankSlotCost())
 	end,
@@ -465,7 +463,7 @@ E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
 	OnEditFocusGained = function(self)
 		self:HighlightText()
 	end,
-	OnCancel = function(self, data, reason)
+	OnCancel = function(self, _, reason)
 		if ( reason == "timeout" ) then
 			self.button1:Enable();
 		end
@@ -823,10 +821,8 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 	end
 
-	-- Pick a free dialog to use
-	local dialog = nil;
-	-- Find an open dialog of the requested type
-	dialog = E:StaticPopup_FindVisible(which, data);
+	-- Pick a free dialog to use, find an open dialog of the requested type
+	local dialog = E:StaticPopup_FindVisible(which, data);
 	if ( dialog ) then
 		if ( not info.noCancelOnReuse ) then
 			local OnCancel = info.OnCancel;

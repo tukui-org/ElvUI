@@ -643,7 +643,7 @@ local function SetupAuras(style)
 		UF:Configure_AuraBars(frame)
 	end
 
-	local frame = UF["target"]
+	frame = UF["target"]
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
@@ -653,7 +653,7 @@ local function SetupAuras(style)
 		UF:Configure_AuraBars(frame)
 	end
 
-	local frame = UF["focus"]
+	frame = UF["focus"]
 	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
 	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
@@ -817,7 +817,7 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
 		InstallOption1Button:SetText(L["Aura Bars & Icons"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
+		InstallOption2Button:SetScript('OnClick', SetupAuras)
 		InstallOption2Button:SetText(L["Icons Only"])
 	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Installation Complete"])

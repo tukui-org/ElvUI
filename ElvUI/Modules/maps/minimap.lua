@@ -187,17 +187,17 @@ local menuList = {
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},
 	{text = ACHIEVEMENT_BUTTON,
-	func = function() ToggleAchievementFrame() end},
+	func = ToggleAchievementFrame},
 	{text = SOCIAL_BUTTON,
-	func = function() ToggleFriendsFrame() end},
+	func = ToggleFriendsFrame},
 	{text = L["Calendar"],
 	func = function() GameTimeFrame:Click() end},
 	{text = GARRISON_LANDING_PAGE_TITLE,
 	func = function() GarrisonLandingPageMinimapButton_OnClick() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
-	func = function() ToggleGuildFrame() end},
+	func = ToggleGuildFrame},
 	{text = LFG_TITLE,
-	func = function() ToggleLFDParentFrame(); end},
+	func = ToggleLFDParentFrame},
 	{text = ENCOUNTER_JOURNAL,
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},
 	{text = MAINMENU_BUTTON,
@@ -225,7 +225,7 @@ local menuList = {
 --if(C_StorePublic.IsEnabled()) then
 	tinsert(menuList, {text = BLIZZARD_STORE, func = function() StoreMicroButton:Click() end})
 --end
-tinsert(menuList, 	{text = HELP_BUTTON, func = function() ToggleHelpFrame() end})
+tinsert(menuList, 	{text = HELP_BUTTON, func = ToggleHelpFrame})
 
 function M:GetLocTextColor()
 	local pvpType = GetZonePVPInfo()
@@ -246,7 +246,7 @@ function M:GetLocTextColor()
 	end
 end
 
-function M:ADDON_LOADED(event, addon)
+function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_TimeManager" then
 		TimeManagerClockButton:Kill()
 	elseif addon == "Blizzard_FeedbackUI" then
