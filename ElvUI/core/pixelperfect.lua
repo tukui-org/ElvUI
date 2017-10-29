@@ -8,6 +8,7 @@ local match = string.match
 local IsMacClient = IsMacClient
 local GetCVar, SetCVar = GetCVar, SetCVar
 local GetScreenHeight, GetScreenWidth = GetScreenHeight, GetScreenWidth
+local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent, WorldMapFrame
@@ -92,7 +93,6 @@ function E:UIScale(event)
 		if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
 			SetCVar("useUiScale", 1);
 			SetCVar("uiScale", scale);
-			WorldMapFrame.hasTaint = true;
 		end
 
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
@@ -125,7 +125,6 @@ function E:UIScale(event)
 			if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
 				uiParentWidth = width
 				uiParentHeight = height
-				frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 			else
 				self.UIParent:SetSize(width, height);
 				self.UIParent.origHeight = self.UIParent:GetHeight()
@@ -138,9 +137,8 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			if InCombatLockdown() then
-				uiParentWidth = width
-				uiParentHeight = height
-				frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+				uiParentWidth = UIParent:GetWidth();
+				uiParentHeight = UIParent:GetHeight();
 			else
 				self.UIParent:SetSize(UIParent:GetSize());
 				self.UIParent.origHeight = self.UIParent:GetHeight()
