@@ -14,6 +14,7 @@ local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local BNFeaturesEnabled = BNFeaturesEnabled
 local BNConnected = BNConnected
+local RaiseFrameLevel = RaiseFrameLevel
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: FRIENDS_TO_DISPLAY
 
@@ -202,6 +203,7 @@ local function LoadSkin()
 	ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
 	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
+	RaiseFrameLevel(ScrollOfResurrectionSelectionFrameTargetEditBox)
 
 	--Pending invites
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
