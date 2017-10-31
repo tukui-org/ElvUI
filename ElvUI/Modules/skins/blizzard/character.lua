@@ -331,7 +331,7 @@ local function LoadSkin()
 	end
 
 	--Icon selection frame
-	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton", nil)
+	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do
