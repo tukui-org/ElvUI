@@ -224,6 +224,16 @@ local function LoadSkin()
 	SkinPetTooltip(FloatingBattlePetTooltip)
 	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
 
+	-- BATTLEPET RARITY COLOR
+	hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
+		local quality = rarity and ITEM_QUALITY_COLORS[rarity]
+		if quality and rarity > 1 then
+			BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+		else
+			BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end)
+
 	-- TOOLTIP DEFAULT POSITION
 	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
 		local t = PetBattlePrimaryAbilityTooltip
