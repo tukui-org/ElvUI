@@ -28,14 +28,14 @@ local function LoadSkin()
 		for i=1, GuildControlGetNumRanks() do
 			local rankFrame = _G["GuildControlUIRankOrderFrameRank"..i]
 			if rankFrame then
-				S:HandleButton(rankFrame.downButton)
-				S:HandleButton(rankFrame.upButton)
-				S:HandleButton(rankFrame.deleteButton)
-
 				if not rankFrame.nameBox.backdrop then
+					S:HandleButton(rankFrame.downButton)
+					S:HandleButton(rankFrame.upButton)
+					S:HandleButton(rankFrame.deleteButton)
 					S:HandleEditBox(rankFrame.nameBox)
 				end
 
+				rankFrame.nameBox.backdrop:ClearAllPoints()
 				rankFrame.nameBox.backdrop:Point("TOPLEFT", -2, -4)
 				rankFrame.nameBox.backdrop:Point("BOTTOMRIGHT", -4, 4)
 			end
@@ -43,7 +43,7 @@ local function LoadSkin()
 	end
 	hooksecurefunc("GuildControlUI_RankOrder_Update", SkinGuildRanks)
 	GuildControlUIRankOrderFrameNewButton:HookScript("OnClick", function()
-		E.Delay(1, SkinGuildRanks)
+		E:Delay(1, SkinGuildRanks)
 	end)
 
 	S:HandleDropDownBox(GuildControlUINavigationDropDown)
