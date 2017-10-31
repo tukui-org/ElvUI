@@ -110,6 +110,23 @@ function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
 	end
 end
 
+function mod:StyleFilterSetUpAnimGroup(FlashTexture)
+	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
+	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
+	FlashTexture.anim.fadein:SetFromAlpha(0)
+	FlashTexture.anim.fadein:SetToAlpha(1)
+	FlashTexture.anim.fadein:SetOrder(2)
+
+	FlashTexture.anim.fadeout = FlashTexture.anim:CreateAnimation("ALPHA", "FadeOut")
+	FlashTexture.anim.fadeout:SetFromAlpha(1)
+	FlashTexture.anim.fadeout:SetToAlpha(0)
+	FlashTexture.anim.fadeout:SetOrder(1)
+
+	FlashTexture.anim:SetScript("OnFinished", function(flash, requested)
+		if not requested then flash:Play() end
+	end)
+end
+
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
@@ -144,7 +161,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
-		frame.FlashTexture:SetAlpha(actions.flash.color.a)
+		if not frame.FlashTexture.anim then
+			self:StyleFilterSetUpAnimGroup(frame.FlashTexture)
+		end
+		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
+		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
 		frame.FlashTexture:Show()
 		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
 	end
