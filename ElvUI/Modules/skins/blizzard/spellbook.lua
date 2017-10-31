@@ -102,14 +102,17 @@ local function LoadSkin()
 
 	-- needs review
 	local function SkinTab(tab)
+		-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
+		-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
+		local normTex = tab:GetNormalTexture()
+		if normTex then
+			normTex:SetTexCoord(unpack(E.TexCoords))
+			normTex:SetInside()
+		end
+
 		if tab.isSkinned then return; end
 
 		tab:StripTextures()
-		-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
-		if tab:GetNormalTexture() then
-			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			tab:GetNormalTexture():SetInside()
-		end
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
