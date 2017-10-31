@@ -8,8 +8,6 @@ local pairs, unpack, select = pairs, unpack, select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local GetAuctionSellItemInfo = GetAuctionSellItemInfo
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NUM_BIDS_TO_DISPLAY, NUM_BROWSE_TO_DISPLAY, NUM_AUCTIONS_TO_DISPLAY, NUM_FILTERS_TO_DISPLAY
 
@@ -108,15 +106,19 @@ local function LoadSkin()
 	AuctionsItemButton:StyleButton()
 	AuctionsItemButton:SetTemplate("Default", true)
 
-	AuctionsItemButton:HookScript('OnEvent', function(self, event)
-		self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+	hooksecurefunc(AuctionsItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)
+		self:GetParent():SetBackdropBorderColor(r, g, b)
+		self:SetTexture("")
+	end)
+
+	hooksecurefunc(AuctionsItemButton.IconBorder, 'Hide', function(self)
+		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end)
+
+	AuctionsItemButton:HookScript('OnEvent', function(self, event, ...)
 		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
-			local Quality = select(4, GetAuctionSellItemInfo())
 			self:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			self:GetNormalTexture():SetInside()
-			if Quality and Quality > 1 and BAG_ITEM_QUALITY_COLORS[Quality] then
-				self:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[Quality].r, BAG_ITEM_QUALITY_COLORS[Quality].g, BAG_ITEM_QUALITY_COLORS[Quality].b)
-			end
 		end
 	end)
 
