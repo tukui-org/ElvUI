@@ -32,8 +32,8 @@ local function LoadSkin()
 
 	WorldMapFrame.BorderFrame:CreateBackdrop("Transparent")
 	WorldMapFrame.BorderFrame.Inset:CreateBackdrop("Default")
-	WorldMapFrame.BorderFrame.Inset.backdrop:Point("TOPLEFT", WorldMapFrame.BorderFrame.Inset, "TOPLEFT", 3, -3)
-	WorldMapFrame.BorderFrame.Inset.backdrop:Point("BOTTOMRIGHT", WorldMapFrame.BorderFrame.Inset, "BOTTOMRIGHT", -3, 2)
+	WorldMapFrame.BorderFrame.Inset.backdrop:Point("TOPLEFT", WorldMapFrame.BorderFrame.Inset, "TOPLEFT", 1, -3)
+	WorldMapFrame.BorderFrame.Inset.backdrop:Point("BOTTOMRIGHT", WorldMapFrame.BorderFrame.Inset, "BOTTOMRIGHT", -1, 1)
 
 	S:HandleScrollBar(QuestScrollFrameScrollBar)
 
@@ -98,6 +98,18 @@ local function LoadSkin()
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
 
 	WorldMapFrame.UIElementsFrame.BountyBoard.BountyName:FontTemplate(nil, 14, "OUTLINE")
+	WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:Size(22,20)
+	WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:Size(22,20)
+
+	WorldMapFrameAreaLabel:FontTemplate(nil,30)
+	WorldMapFrameAreaLabel:SetShadowOffset(2,-2)
+	WorldMapFrameAreaLabel:SetTextColor(0.9,0.8,0.6)
+	WorldMapFrameAreaDescription:FontTemplate(nil,20)
+	WorldMapFrameAreaDescription:SetShadowOffset(2,-2)
+	WorldMapFrameAreaPetLevels:FontTemplate(nil,20)
+	WorldMapFrameAreaPetLevels:SetShadowOffset(2,-2)
+	WorldMapZoneInfo:FontTemplate(nil,25)
+	WorldMapZoneInfo:SetShadowOffset(2,-2)
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)
