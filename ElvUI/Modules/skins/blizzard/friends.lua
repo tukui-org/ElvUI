@@ -8,15 +8,12 @@ local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local MAX_DISPLAY_CHANNEL_BUTTONS = MAX_DISPLAY_CHANNEL_BUTTONS
-local FriendsFrameBroadcastInput_UpdateDisplay = FriendsFrameBroadcastInput_UpdateDisplay
-local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
-local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local BNFeaturesEnabled = BNFeaturesEnabled
-local BNConnected = BNConnected
 local RaiseFrameLevel = RaiseFrameLevel
+local BNConnected = BNConnected
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: FRIENDS_TO_DISPLAY
+-- GLOBALS: FriendsFrameBroadcastInput_UpdateDisplay, FriendsFrame_CheckBattlenetStatus
+-- GLOBALS: WhoFrameColumn_SetWidth, FRIENDS_TO_DISPLAY, MAX_DISPLAY_CHANNEL_BUTTONS
 
 --Tab Regions
 local tabs = {

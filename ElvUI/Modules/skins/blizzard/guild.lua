@@ -6,8 +6,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
 --WoW API / Variables
-local CanViewOfficerNote = CanViewOfficerNote
 local CreateFrame = CreateFrame
+local CanViewOfficerNote = CanViewOfficerNote
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GUILD_DETAIL_NORM_HEIGHT, GUILD_DETAIL_OFFICER_HEIGHT

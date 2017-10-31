@@ -15,12 +15,10 @@ local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 local IsFishingLoot = IsFishingLoot
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS
 local LOOT, ITEMS = LOOT, ITEMS
 local hooksecurefunc = hooksecurefunc
-local SquareButton_SetIcon = SquareButton_SetIcon
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: LOOTFRAME_NUMBUTTONS, SquareButton_SetIcon
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end

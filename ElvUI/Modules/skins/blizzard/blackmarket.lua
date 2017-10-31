@@ -7,11 +7,10 @@ local select, type, unpack = select, type, unpack
 --WoW API / Variables
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
 local C_BlackMarket_GetNumItems = C_BlackMarket.GetNumItems
 local C_BlackMarket_GetItemInfoByIndex = C_BlackMarket.GetItemInfoByIndex
 local hooksecurefunc = hooksecurefunc
--- GLOBALS: BLACK_MARKET_TITLE
+-- GLOBALS: HybridScrollFrame_GetOffset, BLACK_MARKET_TITLE
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)

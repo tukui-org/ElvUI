@@ -7,7 +7,6 @@ local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe, next = table.insert, table.wipe, next
 --WoW API / Variables
-local SquareButton_SetIcon = SquareButton_SetIcon
 local CreateFrame = CreateFrame
 local SetDesaturation = SetDesaturation
 local hooksecurefunc = hooksecurefunc
@@ -15,7 +14,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ScriptErrorsFrame
+-- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame
 
 E.Skins = S
 S.addonsToLoad = {}

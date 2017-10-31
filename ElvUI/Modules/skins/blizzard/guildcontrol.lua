@@ -8,10 +8,9 @@ local unpack = unpack
 --WoW API / Variables
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GetNumGuildBankTabs = GetNumGuildBankTabs
-local MAX_BUY_GUILDBANK_TABS = MAX_BUY_GUILDBANK_TABS
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUM_RANK_FLAGS
+-- GLOBALS: NUM_RANK_FLAGS, MAX_BUY_GUILDBANK_TABS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end

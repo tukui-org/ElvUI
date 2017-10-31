@@ -8,13 +8,12 @@ local pairs, unpack = pairs, unpack
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
-local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
-local PET_BATTLE_PAD_INDEX = PET_BATTLE_PAD_INDEX
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NumberFont_Outline_Huge, LE_BATTLE_PET_WEATHER, NUM_BATTLE_PET_ABILITIES
+-- GLOBALS: PET_TYPE_SUFFIX, PET_BATTLE_PAD_INDEX
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end

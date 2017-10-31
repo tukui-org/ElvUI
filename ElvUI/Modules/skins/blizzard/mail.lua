@@ -6,10 +6,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 --WoW API / Variables
-local ATTACHMENTS_MAX_SEND = ATTACHMENTS_MAX_SEND
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: INBOXITEMS_TO_DISPLAY
+-- GLOBALS: INBOXITEMS_TO_DISPLAY, ATTACHMENTS_MAX_SEND
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end

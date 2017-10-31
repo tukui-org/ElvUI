@@ -7,10 +7,9 @@ local _G = _G
 local unpack, select, pairs = unpack, select, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local SquareButton_SetIcon = SquareButton_SetIcon
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LibStub
+-- GLOBALS: SquareButton_SetIcon, LibStub
 
 local RegisterAsWidget, RegisterAsContainer
 local function SetModifiedBackdrop(self)
