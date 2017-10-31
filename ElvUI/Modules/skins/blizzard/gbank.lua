@@ -25,6 +25,8 @@ local function LoadSkin()
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
+			child:Point("TOPRIGHT", 0, 0)
+			child:SetFrameLevel(child:GetFrameLevel()+1)
 		end
 	end
 
