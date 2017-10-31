@@ -365,7 +365,8 @@ local function LoadSkin()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	LFRBrowseFrameRoleInsetBg:Hide()
 	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
-	LFRBrowseFrameColumnHeader1:Width(88) --Fix the columns being slightly off
+	LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
+	LFRBrowseFrameColumnHeader2:Width(38)
 
 	for i = 1, 14 do
 		if i ~= 6 and i ~= 8 then
