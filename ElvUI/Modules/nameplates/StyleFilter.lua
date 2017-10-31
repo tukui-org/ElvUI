@@ -110,7 +110,7 @@ function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
 	end
 end
 
-function mod:StyleFilterSetUpAnimGroup(FlashTexture)
+function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
 	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
 	FlashTexture.anim.fadein:SetFromAlpha(0)
@@ -162,7 +162,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
 		if not frame.FlashTexture.anim then
-			self:StyleFilterSetUpAnimGroup(frame.FlashTexture)
+			self:StyleFilterSetUpFlashAnim(frame.FlashTexture)
 		end
 		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
 		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
