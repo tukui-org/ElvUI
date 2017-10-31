@@ -261,6 +261,15 @@ local function LoadSkin()
 	S:HandleButton(SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
 
+	-- StackSplit
+	StackSplitFrame:GetRegions():Hide()
+
+	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
+	StackSplitFrame.bg1:SetTemplate("Transparent")
+	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
+	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
+	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
+
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	local function SkinNavBarButtons(self)
 		if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then

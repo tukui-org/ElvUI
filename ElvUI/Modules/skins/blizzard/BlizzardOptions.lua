@@ -89,8 +89,6 @@ local function LoadSkin()
 	ReadyCheckFrameText:ClearAllPoints()
 	ReadyCheckFrameText:Point("TOP", 0, -12)
 
-	-- others
-	StackSplitFrame:GetRegions():Hide()
 	ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript("OnShow", function(self)
 		-- bug fix, don't show it if player is initiator
@@ -98,12 +96,6 @@ local function LoadSkin()
 			self:Hide()
 		end
 	end)
-
-	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
-	StackSplitFrame.bg1:SetTemplate("Transparent")
-	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
-	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
-	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
 
 	RolePollPopup:SetTemplate("Transparent")
 
