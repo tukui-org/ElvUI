@@ -5,11 +5,18 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local unpack = unpack
+--WoW API / Variables
+local C_Timer_After = C_Timer.After
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 
 	-- MainFrame
+	local TradeSkillFrame = _G["TradeSkillFrame"]
 	TradeSkillFramePortrait:Kill()
 	TradeSkillFrame:StripTextures(true)
 	TradeSkillFrame:SetTemplate("Transparent")
@@ -118,7 +125,7 @@ local function LoadSkin()
 	TradeSkillFrame.RecipeList.scrollBar = CreateFrame("Slider", nil, TradeSkillFrame.RecipeList, "HybridScrollBarTemplateFixed")
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 	TradeSkillFrame.RecipeList.scrollBar:SetFrameLevel(TradeSkillFrame.RecipeList.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer.After(0.25, function()
+	C_Timer_After(0.25, function()
 		--Scroll back to top
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(1)
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(0)

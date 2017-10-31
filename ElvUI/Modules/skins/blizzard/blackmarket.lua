@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
 local select, type, unpack = select, type, unpack
 --WoW API / Variables
 local GetItemInfo = GetItemInfo
@@ -22,6 +23,7 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
 
+	local BlackMarketFrame = _G["BlackMarketFrame"]
 	BlackMarketFrame:StripTextures()
 	BlackMarketFrame:SetTemplate('Transparent')
 	BlackMarketFrame.Inset:StripTextures()

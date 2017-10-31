@@ -5,15 +5,23 @@ local LBG = LibStub("LibButtonGlow-1.0", true)
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
+local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local lower = string.lower
+local min = math.min
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
+local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
+	local PVEFrame = _G["PVEFrame"]
 	PVEFrame:StripTextures()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
@@ -136,7 +144,7 @@ local function LoadSkin()
 		checkButton:Point("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList.GetAvailableRoles();
+		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles();
 
 		local avail1, avail2;
 		if ( availTank ) then
@@ -445,6 +453,7 @@ local function LoadSkin()
 
 
 	--LFGListFrame
+	local LFGListFrame = _G["LFGListFrame"]
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
@@ -544,8 +553,8 @@ local function LoadSkin()
 		end
 
 		local text = self.SearchBox:GetText()
-		local matchingActivities = C_LFGList.GetAvailableActivities(self.categoryID, nil, self.filters, text)
-		local numResults = math.min(#matchingActivities, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
+		local matchingActivities = C_LFGList_GetAvailableActivities(self.categoryID, nil, self.filters, text)
+		local numResults = min(#matchingActivities, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
 
 		for i = 2, numResults do
 			local button = self.AutoCompleteFrame.Results[i]
@@ -632,6 +641,7 @@ S:AddCallback("LFG", LoadSkin)
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
+	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()

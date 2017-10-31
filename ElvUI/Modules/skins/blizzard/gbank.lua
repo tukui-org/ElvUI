@@ -3,7 +3,13 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
+local _G = _G
+local select, unpack = select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end

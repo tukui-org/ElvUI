@@ -4,12 +4,20 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local select, unpack = select, unpack
+local pairs, select, unpack = pairs, select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
 
 	S:HandleCloseButton(SpellBookFrameCloseButton)
+
+	local SpellBookFrame = _G["SpellBookFrame"]
 	SpellBookFrame:SetTemplate("Transparent")
 
 	local StripAllTextures = {

@@ -1,9 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs, unpack, select = pairs, unpack, select
+--WoW API / Variables
+local CreateFrame = CreateFrame
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, ARCHAEOLOGY_MAX_RACES, UIPARENT_MANAGED_FRAME_POSITIONS
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.archaeology ~= true then return end
 
+	local ArchaeologyFrame = _G["ArchaeologyFrame"]
 	ArchaeologyFrame:StripTextures()
 	ArchaeologyFrameInset:StripTextures()
 	ArchaeologyFrame:CreateBackdrop("Transparent")

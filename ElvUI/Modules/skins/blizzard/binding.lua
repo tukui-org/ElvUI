@@ -1,6 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: KEY_BINDINGS_DISPLAYED
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.binding ~= true then return end
 
@@ -11,14 +20,15 @@ local function LoadSkin()
 		"cancelButton",
 	}
 
+	local KeyBindingFrame = _G["KeyBindingFrame"]
 	for _, v in pairs(buttons) do
 		KeyBindingFrame[v]:StripTextures()
 		KeyBindingFrame[v]:SetTemplate("Default", true)
 	end
 
 	KeyBindingFrame.header:StripTextures()
-	KeyBindingFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(KeyBindingFrameScrollFrameScrollBar)
+	_G["KeyBindingFrameScrollFrame"]:StripTextures()
+	S:HandleScrollBar(_G["KeyBindingFrameScrollFrameScrollBar"])
 
 	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
 	KeyBindingFrame.header:ClearAllPoints()
@@ -26,8 +36,8 @@ local function LoadSkin()
 	KeyBindingFrame:StripTextures()
 	KeyBindingFrame:SetTemplate("Transparent")
 
-	KeyBindingFrameCategoryList:StripTextures()
-	KeyBindingFrameCategoryList:SetTemplate("Transparent")
+	_G["KeyBindingFrameCategoryList"]:StripTextures()
+	_G["KeyBindingFrameCategoryList"]:SetTemplate("Transparent")
 	KeyBindingFrame.bindingsContainer:StripTextures()
 	KeyBindingFrame.bindingsContainer:SetTemplate("Transparent")
 

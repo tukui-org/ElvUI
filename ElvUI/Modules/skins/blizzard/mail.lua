@@ -7,13 +7,16 @@ local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local ATTACHMENTS_MAX_SEND = ATTACHMENTS_MAX_SEND
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 
+	local MailFrame = _G["MailFrame"]
 	MailFrame:StripTextures(true)
 	MailFrame:SetTemplate("Transparent")
-	--MailFrame:Width(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]

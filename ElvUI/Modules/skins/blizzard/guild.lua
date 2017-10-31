@@ -1,9 +1,21 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local next, pairs, select, unpack = next, pairs, select, unpack
+--WoW API / Variables
+local CanViewOfficerNote = CanViewOfficerNote
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
 
+	local GuildFrame = _G["GuildFrame"]
 	GuildFrame:StripTextures(true)
 	GuildFrame:SetTemplate("Transparent")
 	--GuildLevelFrame:Kill()
@@ -160,6 +172,7 @@ local function LoadSkin()
 		_G["GuildInfoFrameTab"..i]:StripTextures()
 	end
 
+	local GuildInfoFrameInfo = _G["GuildInfoFrameInfo"]
 	local backdrop1 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
 	backdrop1:SetTemplate("Transparent")
 	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)

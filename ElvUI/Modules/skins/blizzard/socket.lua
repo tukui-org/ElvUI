@@ -4,10 +4,18 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local unpack = unpack
+--WoW API / Variables
+local GetNumSockets = GetNumSockets
+local GetSocketTypes = GetSocketTypes
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: MAX_NUM_SOCKETS, GEM_TYPE_INFO
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
 
+	local ItemSocketingFrame = _G["ItemSocketingFrame"]
 	ItemSocketingFrame:StripTextures()
 	ItemSocketingFrame:SetTemplate("Transparent")
 	ItemSocketingFrameInset:Kill()

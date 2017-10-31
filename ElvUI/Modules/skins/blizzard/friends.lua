@@ -4,8 +4,13 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 local MAX_DISPLAY_CHANNEL_BUTTONS = MAX_DISPLAY_CHANNEL_BUTTONS
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 --Tab Regions
 local tabs = {

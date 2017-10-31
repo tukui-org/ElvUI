@@ -1,9 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.questChoice ~= true then return end
 
+	local QuestChoiceFrame = _G["QuestChoiceFrame"]
 	for i = 1, 4 do
 		local option = QuestChoiceFrame["Option"..i]
 		local rewards = option.Rewards

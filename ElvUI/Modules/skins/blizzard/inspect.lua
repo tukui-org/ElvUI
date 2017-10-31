@@ -3,19 +3,22 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
+local _G = _G
+local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local GetPrestigeInfo = GetPrestigeInfo
 local UnitPrestige = UnitPrestige
 local UnitLevel = UnitLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local LE_EXPANSION_LEVEL_CURRENT = LE_EXPANSION_LEVEL_CURRENT
-
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: INSPECTED_UNIT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
 
+	local InspectFrame = _G["InspectFrame"]
 	InspectFrame:StripTextures(true)
 	InspectFrameInset:StripTextures(true)
 	InspectFrame:SetTemplate('Transparent')

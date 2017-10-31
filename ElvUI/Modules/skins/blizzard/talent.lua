@@ -4,10 +4,24 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+local GetNumSpecializations = GetNumSpecializations
+local GetPrestigeInfo = GetPrestigeInfo
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpecializationSpells = GetSpecializationSpells
+local GetSpellTexture = GetSpellTexture
+local UnitPrestige = UnitPrestige
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
 
+	local PlayerTalentFrame = _G["PlayerTalentFrame"]
 	local objects = {
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,

@@ -1,9 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tabard ~= true then return end
 
+	local TabardFrame = _G["TabardFrame"]
 	TabardFrame:StripTextures(true)
 	TabardFrame:SetTemplate("Transparent")
 	TabardModel:CreateBackdrop("Default")

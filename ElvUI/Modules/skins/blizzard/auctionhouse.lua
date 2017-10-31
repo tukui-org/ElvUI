@@ -3,8 +3,11 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack, select = unpack, select
+local _G = _G
+local pairs, unpack, select = pairs, unpack, select
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
@@ -13,6 +16,7 @@ local function LoadSkin()
 
 	S:HandleCloseButton(AuctionFrameCloseButton)
 	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
+	local AuctionFrame = _G["AuctionFrame"]
 	AuctionFrame:StripTextures(true)
 	AuctionFrame:SetTemplate("Transparent")
 

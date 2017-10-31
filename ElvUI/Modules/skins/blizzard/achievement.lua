@@ -4,7 +4,15 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
+local pairs, select, unpack = pairs, select, unpack
+--WoW API / Variables
+local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
+local GetAchievementNumCriteria = GetAchievementNumCriteria
+local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B
+-- GLOBALS: ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS, CRITERIA_TYPE_ACHIEVEMENT
 
 local function LoadSkin(event)
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end
@@ -144,6 +152,7 @@ local function LoadSkin(event)
 		end
 	end
 
+	local AchievementFrame = _G["AchievementFrame"]
 	AchievementFrame:CreateBackdrop("Transparent")
 	AchievementFrame.backdrop:Point("TOPLEFT", 0, 6)
 	AchievementFrame.backdrop:Point("BOTTOMRIGHT")

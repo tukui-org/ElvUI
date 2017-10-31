@@ -1,10 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
 
-	PVPUIFrame:StripTextures()
+	_G["PVPUIFrame"]:StripTextures()
 
 	for i = 1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
@@ -34,6 +44,7 @@ local function LoadSkin()
 	-- Honor Frame
 	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
 
+	local HonorFrame = _G["HonorFrame"]
 	HonorFrame.Inset:StripTextures()
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
@@ -132,6 +143,7 @@ local function LoadSkin()
 	end)
 
 	-- Conquest Frame
+	local ConquestFrame = _G["ConquestFrame"]
 	ConquestFrame.Inset:StripTextures()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
@@ -210,6 +222,7 @@ local function LoadSkin()
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
 	-- WarGames Frame
+	local WarGamesFrame = _G["WarGamesFrame"]
 	WarGamesFrame:StripTextures()
 	WarGamesFrame.RightInset:StripTextures()
 	S:HandleButton(WarGameStartButton, true)

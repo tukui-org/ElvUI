@@ -5,6 +5,15 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local unpack, pairs, select = unpack, pairs, select
+--WoW API / Variables
+local GetCurrencyListSize = GetCurrencyListSize
+local GetNumFactions = GetNumFactions
+local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
+local UnitLevel = UnitLevel
+local UnitSex = UnitSex
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end

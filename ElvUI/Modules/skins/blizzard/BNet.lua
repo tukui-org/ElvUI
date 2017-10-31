@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local select = select
+local getn = getn
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -46,6 +48,7 @@ local function LoadSkin()
 	ReportCheatingDialog:SetTemplate("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
 
+	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
 	--S:HandleEditBox(BattleTagInviteFrameScrollFrame)
