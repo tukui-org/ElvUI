@@ -13,7 +13,6 @@ local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 local GetChannelList = GetChannelList
 local IsMacClient = IsMacClient
-local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: CHAT_CONFIG_CHANNEL_LIST, CHAT_CONFIG_CHAT_LEFT, CHANNELS, COMBAT_CONFIG_TABS
 -- GLOBALS: COMBAT_CONFIG_UNIT_COLORS, CHAT_CONFIG_CHAT_CREATURE_LEFT
