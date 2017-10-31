@@ -351,13 +351,17 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 		self.Icon:SetParent(self.backdrop)
 		self.Icon:SetDrawLayer('BORDER')
-		self.checked = true -- avoid create a check
-		self:StyleButton()
+		self:StyleButton(nil, nil, true)
 		self.SelectedHighlight:SetAlpha(0)
 		self.pushed:SetInside(self.backdrop)
 		self.hover:SetInside(self.backdrop)
 		self:SetFrameStrata('LOW')
 		self.backdrop:SetFrameStrata('LOW')
+		if self == bf.SwitchPetButton then
+			local spbc = self:GetCheckedTexture()
+			spbc:SetColorTexture(1, 1, 1, 0.3)
+			spbc:SetInside(self.backdrop)
+		end
 	end
 
 	hooksecurefunc("PetBattleFrame_UpdateActionBarLayout", function(self)
