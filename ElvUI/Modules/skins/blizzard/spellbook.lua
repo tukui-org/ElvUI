@@ -182,6 +182,12 @@ local function LoadSkin()
 		button.iconTexture:SetInside()
 		button.highlightTexture:SetInside()
 
+		if button == _G[professionbuttons[2]] then
+			button:Point("TOPLEFT", _G[professionbuttons[1]], "BOTTOMLEFT", 0, -2)
+		elseif button == _G[professionbuttons[4]] then
+			button:Point("TOPLEFT", _G[professionbuttons[3]], "BOTTOMLEFT", 0, -2)
+		end
+
 		hooksecurefunc(button.highlightTexture, "SetTexture", function(self, texture)
 			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
 				self:SetColorTexture(1, 1, 1, 0.3)
