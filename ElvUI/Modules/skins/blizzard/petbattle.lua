@@ -12,6 +12,7 @@ local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
 local PET_BATTLE_PAD_INDEX = PET_BATTLE_PAD_INDEX
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NumberFont_Outline_Huge, LE_BATTLE_PET_WEATHER, NUM_BATTLE_PET_ABILITIES
 
