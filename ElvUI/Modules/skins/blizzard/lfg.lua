@@ -11,6 +11,7 @@ local min = math.min
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
+local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
