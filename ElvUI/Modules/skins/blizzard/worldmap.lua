@@ -7,6 +7,7 @@ local _G = _G
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local SquareButton_SetIcon = SquareButton_SetIcon
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 

@@ -8,8 +8,15 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local L_UIDropDownMenu_Initialize = L_UIDropDownMenu_Initialize
+local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
+local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
+local L_ToggleDropDownMenu = L_ToggleDropDownMenu
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: UIParent, SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
+-- GLOBALS: BattlefieldMinimapTabDropDown_TogglePlayers, BattlefieldMinimapTabDropDown_ToggleLock
+-- GLOBALS: BattlefieldMinimapTabDropDown_ShowOpacity, BattlefieldMinimap_UpdateOpacity
+-- GLOBALS: L_UIDROPDOWNMENU_MENU_LEVEL
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end

@@ -6,14 +6,20 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, pairs, select = unpack, pairs, select
 --WoW API / Variables
+local GetItemLevelColor = GetItemLevelColor
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpecializationRole = GetSpecializationRole
 local GetCurrencyListSize = GetCurrencyListSize
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitLevel = UnitLevel
 local UnitSex = UnitSex
+local PaperDollFrame_SetItemLevel = PaperDollFrame_SetItemLevel
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
+-- GLOBALS: MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
@@ -325,7 +331,7 @@ local function LoadSkin()
 	end
 
 	--Icon selection frame
-	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton", frameNameOverride)
+	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton", nil)
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do

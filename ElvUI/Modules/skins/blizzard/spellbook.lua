@@ -9,6 +9,7 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local SpellBookFrame_UpdateSkillLineTabs = SpellBookFrame_UpdateSkillLineTabs
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
 

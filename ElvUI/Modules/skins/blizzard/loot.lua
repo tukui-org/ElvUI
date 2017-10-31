@@ -16,8 +16,9 @@ local UnitName = UnitName
 local IsFishingLoot = IsFishingLoot
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS
-local LOOT = LOOT
+local LOOT, ITEMS = LOOT, ITEMS
 local hooksecurefunc = hooksecurefunc
+local SquareButton_SetIcon = SquareButton_SetIcon
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 

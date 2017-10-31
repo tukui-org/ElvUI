@@ -8,7 +8,7 @@ local unpack = unpack
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: NUM_PET_ACTIVE_SLOTS, NUM_PET_STABLE_SLOTS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end

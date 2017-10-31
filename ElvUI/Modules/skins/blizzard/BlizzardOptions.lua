@@ -14,7 +14,10 @@ local InCombatLockdown = InCombatLockdown
 local GetChannelList = GetChannelList
 local IsMacClient = IsMacClient
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: CHAT_CONFIG_CHANNEL_LIST, CHAT_CONFIG_CHAT_LEFT, CHANNELS, COMBAT_CONFIG_TABS
+-- GLOBALS: COMBAT_CONFIG_UNIT_COLORS, CHAT_CONFIG_CHAT_CREATURE_LEFT
+-- GLOBALS: CHAT_CONFIG_OTHER_COMBAT, CHAT_CONFIG_OTHER_PVP, CHAT_CONFIG_OTHER_SYSTEM
+-- GLOBALS: COMBAT_CONFIG_MESSAGESOURCES_BY, COMBAT_CONFIG_MESSAGESOURCES_TO
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BlizzardOptions ~= true then return end

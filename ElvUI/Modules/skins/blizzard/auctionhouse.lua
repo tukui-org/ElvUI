@@ -10,6 +10,8 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: NUM_BIDS_TO_DISPLAY, NUM_BROWSE_TO_DISPLAY, NUM_AUCTIONS_TO_DISPLAY, NUM_FILTERS_TO_DISPLAY
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end

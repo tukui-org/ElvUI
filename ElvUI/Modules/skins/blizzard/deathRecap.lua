@@ -6,9 +6,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select, unpack = select, unpack
 --WoW API / Variables
-
+local CLOSE = CLOSE
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CLOSE
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.deathRecap ~= true then return end

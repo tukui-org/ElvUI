@@ -9,7 +9,7 @@ local select, unpack = select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: NUM_GUILDBANK_ICONS_SHOWN, MAX_GUILDBANK_TABS, NUM_GUILDBANK_COLUMNS, NUM_SLOTS_PER_GUILDBANK_GROUP
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end

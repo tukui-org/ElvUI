@@ -7,8 +7,9 @@ local _G = _G
 local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CUSTOM_CLASS_COLORS, RAID_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame
+-- GLOBALS: CUSTOM_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end

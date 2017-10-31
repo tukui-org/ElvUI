@@ -10,7 +10,7 @@ local CanViewOfficerNote = CanViewOfficerNote
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: GUILD_DETAIL_NORM_HEIGHT, GUILD_DETAIL_OFFICER_HEIGHT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end

@@ -13,6 +13,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B
 -- GLOBALS: ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS, CRITERIA_TYPE_ACHIEVEMENT
+-- GLOBALS: AchievementButton_GetCriteria, AchievementButton_GetMeta
 
 local function LoadSkin(event)
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end

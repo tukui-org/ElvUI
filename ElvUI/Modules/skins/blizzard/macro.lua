@@ -10,7 +10,7 @@ local format = format
 local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: MAX_ACCOUNT_MACROS, NUM_MACRO_ICONS_SHOWN
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.macro ~= true then return end
