@@ -350,8 +350,8 @@ local function LoadSkin()
 				tab.TabBg:Kill()
 
 				if i == 1 then
-					for i=1, tab:GetNumRegions() do
-						local region = select(i, tab:GetRegions())
+					for x=1, tab:GetNumRegions() do
+						local region = select(x, tab:GetRegions())
 						region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 						hooksecurefunc(region, "SetTexCoord", function(self, x1)
 							if x1 ~= 0.16001 then
