@@ -154,17 +154,27 @@ local function LoadSkin()
 
 	for i=1, 6 do
 		local button = _G["QuestProgressItem"..i]
-		local texture = _G["QuestProgressItem"..i.."IconTexture"]
+		local icon = _G["QuestProgressItem"..i.."IconTexture"]
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:Point("TOPLEFT", 2, -2)
+		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
+		button:Width(button:GetWidth() -4)
 		button:StripTextures()
-		button:StyleButton()
-		button:Width(_G["QuestProgressItem"..i]:GetWidth() - 4)
-		button:SetFrameLevel(button:GetFrameLevel() + 2)
-		texture:SetTexCoord(unpack(E.TexCoords))
-		texture:SetDrawLayer("OVERLAY")
-		texture:Point("TOPLEFT", 2, -2)
-		texture:Size(texture:GetWidth() - 2, texture:GetHeight() - 2)
-		_G["QuestProgressItem"..i.."Count"]:SetDrawLayer("OVERLAY")
-		button:SetTemplate("Default")
+		button:SetFrameLevel(button:GetFrameLevel() +1)
+
+		local frame = CreateFrame("Frame", nil, button)
+		frame:SetFrameLevel(button:GetFrameLevel() -1)
+		frame:SetTemplate("Transparent", nil, true)
+		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		frame:SetBackdropColor(0, 0, 0, 0)
+		frame:SetOutside(icon)
+		button.backdrop = frame
+
+		local hover = button:CreateTexture()
+		hover:SetColorTexture(1, 1, 1, 0.3)
+		hover:SetAllPoints(icon)
+		button:SetHighlightTexture(hover)
+		button.hover = hover
 	end
 
 	QuestNPCModel:StripTextures()
