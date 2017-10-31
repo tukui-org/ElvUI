@@ -1,12 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: CUSTOM_CLASS_COLORS, RAID_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame
--- GLOBALS: OrderHallMissionFrameMissions, OrderHallMissionFrameMissionsListScrollFrame
--- GLOBALS: OrderHallMissionFrameMissionsListScrollFrameScrollBar, OrderHallTalentFrame
--- GLOBALS: OrderHallMissionFrameFollowersListScrollFrameScrollBar, OrderHallMissionFrameFollowers
--- GLOBALS: ClassHallTalentInset, OrderHallTalentFrameCloseButton, AdventureMapQuestChoiceDialog
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
@@ -14,6 +16,7 @@ local function LoadSkin()
 	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 
 	-- CommandBar
+	local OrderHallCommandBar = _G["OrderHallCommandBar"]
 	OrderHallCommandBar:StripTextures()
 	OrderHallCommandBar:SetTemplate("Transparent")
 	OrderHallCommandBar.ClassIcon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
@@ -29,7 +32,7 @@ local function LoadSkin()
 	OrderHallMissionFrame:CreateBackdrop("Transparent")
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
-	S:HandleCloseButton(OrderHallMissionTutorialFrame.GlowBox.CloseButton)
+	S:HandleCloseButton(_G["OrderHallMissionTutorialFrame"].GlowBox.CloseButton)
 
 	for i = 1, 3 do
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
@@ -47,8 +50,11 @@ local function LoadSkin()
 	end
 
 	-- Followers
+	local Follower = _G["OrderHallMissionFrameFollowers"]
 	local FollowerList = OrderHallMissionFrame.FollowerList
 	local FollowerTab = OrderHallMissionFrame.FollowerTab
+	Follower:StripTextures()
+	Follower:SetTemplate("Transparent")
 	FollowerList:StripTextures()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
@@ -73,7 +79,7 @@ local function LoadSkin()
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
 	MissionList.listScroll:StripTextures()
-	S:HandleButton(OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
+	S:HandleButton(_G["OrderHallMissionFrameMissions"].CombatAllyUI.InProgress.Unassign)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	S:HandleButton(MissionPage.StartMissionButton)
 	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
@@ -81,7 +87,7 @@ local function LoadSkin()
 	S:HandleButton(OrderHallMissionFrame.MissionComplete.NextMissionButton)
 
 	-- TalentFrame
-	local TalentFrame = OrderHallTalentFrame
+	local TalentFrame = _G["OrderHallTalentFrame"]
 	TalentFrame:StripTextures()
 	TalentFrame.LeftInset:StripTextures()
 	TalentFrame:SetTemplate("Transparent")
