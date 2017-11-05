@@ -135,8 +135,10 @@ local function LoadSkin()
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
 		if self.PetType then
 			local petType = C_PetBattles_GetPetType(self.petOwner, self.petIndex)
-			if self.PetTypeFrame then
+			if self.PetTypeFrame and GetLocale() == "enGB" or GetLocale() == "enUS" then
 				self.PetTypeFrame.text:SetText(PET_TYPE_SUFFIX[petType])
+			else
+				self.PetTypeFrame.text:SetText("")
 			end
 		end
 	end)
