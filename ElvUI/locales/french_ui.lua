@@ -300,6 +300,18 @@ Options:
   Ctrl + clic droit - Réinitialiser la position par défaut.
 ]=]
 
+--PetBattle Types
+L["Humanoid"] = true
+L["Dragon"] = true
+L["Flying"] = true
+L["Undead"] = true
+L["Critter"] = true
+L["Magical"] = true
+L["Elementar"] = true
+L["Beast"] = true
+L["Water"] = true
+L["Mechanical"] = true
+
 --Plugin Installer
 L["ElvUI Plugin Installation"] = "Installation des plugins ElvUI"
 L["In Progress"] = "En cours"

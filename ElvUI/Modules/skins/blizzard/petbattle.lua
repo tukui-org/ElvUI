@@ -131,6 +131,20 @@ local function LoadSkin()
 		end
 	end)
 
+	-- This is not tranlated via the API, so translate it.
+	PET_TYPE_SUFFIX = {
+		[1] = L["Humanoid"],
+		[2] = L["Dragon"],
+		[3] = L["Flying"],
+		[4] = L["Undead"],
+		[5] = L["Critter"],
+		[6] = L["Magical"],
+		[7] = L["Elementar"],
+		[8] = L["Beast"],
+		[9] = L["Water"],
+		[10] = L["Mechanical"],
+	}
+
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
 		if self.PetType then

@@ -543,7 +543,6 @@ function CH:StyleChat(frame)
 		else
 			self:SetAlpha(0)
 		end
-
 	end)
 
 	CreatedFrames = id
