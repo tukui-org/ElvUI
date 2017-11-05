@@ -300,18 +300,6 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, �
   Ctrl + 右键 - 重置定位开关位置
 ]=]
 
---PetBattle Types
-L["Humanoid"] = true
-L["Dragon"] = true
-L["Flying"] = true
-L["Undead"] = true
-L["Critter"] = true
-L["Magical"] = true
-L["Elementar"] = true
-L["Beast"] = true
-L["Water"] = true
-L["Mechanical"] = true
-
 --Plugin Installer
 L["ElvUI Plugin Installation"] = "ElvUI插件安装"
 L["In Progress"] = "正在进行中"

@@ -300,18 +300,6 @@ Options:
   Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
 ]=]
 
---PetBattle Types
-L["Humanoid"] = "Humanoid"
-L["Dragon"] = "Drachen"
-L["Flying"] = "Fliegend"
-L["Undead"] = "Untot"
-L["Critter"] = "Kreatur"
-L["Magical"] = "Magisch"
-L["Elementar"] = "Elementar"
-L["Beast"] = "Biest"
-L["Water"] = "Wasser"
-L["Mechanical"] = "Mechanisch"
-
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true --No need to translate
 L["In Progress"] = "In Bearbeitung"
