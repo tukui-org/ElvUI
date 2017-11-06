@@ -61,7 +61,7 @@ local function LoadSkin()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self, true)
+		S:HandleFollowerPage(self, true, true)
 	end)
 	FollowerTab:StripTextures()
 	FollowerTab.Class:SetSize(50, 43)
@@ -71,6 +71,7 @@ local function LoadSkin()
 
 	-- Missions
 	local MissionTab = OrderHallMissionFrame.MissionTab
+	local MissionComplete = OrderHallMissionFrame.MissionComplete
 	local MissionList = MissionTab.MissionList
 	local MissionPage = MissionTab.MissionPage
 	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
@@ -85,7 +86,7 @@ local function LoadSkin()
 	S:HandleButton(MissionPage.StartMissionButton)
 	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
 	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
-	S:HandleButton(OrderHallMissionFrame.MissionComplete.NextMissionButton)
+	S:HandleButton(MissionComplete.NextMissionButton)
 
 	-- TalentFrame
 	local TalentFrame = _G["OrderHallTalentFrame"]

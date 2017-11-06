@@ -540,7 +540,7 @@ function S:HandleSliderFrame(frame)
 	end
 end
 
-function S:HandleFollowerPage(follower, hasItems)
+function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	local abilities = follower.followerTab.AbilitiesFrame.Abilities
 	if follower.numAbilitiesStyled == nil then
 		follower.numAbilitiesStyled = 1
@@ -576,6 +576,27 @@ function S:HandleFollowerPage(follower, hasItems)
 		xpbar:StripTextures()
 		xpbar:SetStatusBarTexture(E["media"].normTex)
 		xpbar:CreateBackdrop("Transparent")
+	end
+
+	-- only OrderHall
+	if hasEquipment then
+		local btn
+		local equipment = follower.followerTab.AbilitiesFrame.Equipment
+		if not equipment.backdrop then
+			for i = 1, #follower.followerTab.AbilitiesFrame.Equipment do
+				btn = follower.followerTab.AbilitiesFrame.Equipment[i]
+				btn.Border:SetTexture(nil)
+				btn.BG:SetTexture(nil)
+				btn.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				btn:SetScale(0.8)
+				if not btn.backdop then
+					btn:CreateBackdrop("Default")
+					btn.backdrop:SetPoint("TOPLEFT", btn.Icon, "TOPLEFT", -2, 2)
+					btn.backdrop:SetPoint("BOTTOMRIGHT", btn.Icon, "BOTTOMRIGHT", 2, -2)
+				end
+			end
+		end
+		btn = nil
 	end
 end
 
