@@ -117,7 +117,9 @@ function mod:UpdateElement_HealthColor(frame)
 
 	if(not frame.isTarget or not self.db.useTargetScale) then
 		frame.ThreatScale = scale
-		self:SetFrameScale(frame, scale)
+		if not frame.ScaleChanged then
+			self:SetFrameScale(frame, scale)
+		end
 	end
 end
 

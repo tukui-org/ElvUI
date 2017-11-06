@@ -270,12 +270,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		if self.db.useTargetScale then
-			if frame.isTarget then
-				self:SetFrameScale(frame, self.db.targetScale)
-			else
-				self:SetFrameScale(frame, frame.ThreatScale or 1)
-			end
+		if frame.isTarget and self.db.useTargetScale then
+			self:SetFrameScale(frame, self.db.targetScale)
+		else
+			self:SetFrameScale(frame, frame.ThreatScale or 1)
 		end
 	end
 	if AlphaChanged then
