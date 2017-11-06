@@ -89,7 +89,6 @@ L["DPS"] = "DPS"
 L["Earned:"] = "Ganada:"
 L["Feet"] = "Pies"
 L["Friends List"] = "Lista de Amigos"
-L["Friends"] = "Amigos"
 L["Garrison"] = true
 L["Gold"] = "Oro"
 L["goldabbrev"] = "|cffffd700g|r"

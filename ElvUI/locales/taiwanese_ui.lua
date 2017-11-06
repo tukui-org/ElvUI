@@ -89,7 +89,6 @@ L["DPS"] = "傷害輸出"
 L["Earned:"] = "賺取:"
 L["Feet"] = "腳部"
 L["Friends List"] = "好友列表"
-L["Friends"] = "好友" --Also in Skins
 L["Garrison"] = "要塞"
 L["Gold"] = "金錢"
 L["goldabbrev"] = "|cffffd700金|r" --Also used in Bags

@@ -384,9 +384,9 @@ local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
 local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
 local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
 function E:FormatMoney(amount, style, textonly)
-	local coppername = textonly and L.copperabbrev or ICON_COPPER
-	local silvername = textonly and L.silverabbrev or ICON_SILVER
-	local goldname = textonly and L.goldabbrev or ICON_GOLD
+	local coppername = textonly and L["copperabbrev"] or ICON_COPPER
+	local silvername = textonly and L["silverabbrev"] or ICON_SILVER
+	local goldname = textonly and L["goldabbrev"] or ICON_GOLD
 
 	local value = abs(amount)
 	local gold = floor(value / 10000)

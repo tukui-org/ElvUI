@@ -89,7 +89,6 @@ L["DPS"] = "DPS"
 L["Earned:"] = "Gagné :"
 L["Feet"] = "Pieds"
 L["Friends List"] = "Liste d'amis"
-L["Friends"] = "Amis" --Also in Skins
 L["Garrison"] = "Fief"
 L["Gold"] = "Or"
 L["goldabbrev"] = "|cffffd700g|r" --Also used in Bags

@@ -89,7 +89,6 @@ L["DPS"] = "УВС"
 L["Earned:"] = "Заработано"
 L["Feet"] = "Ступни"
 L["Friends List"] = "Список друзей"
-L["Friends"] = "Друзья" --Also in Skins
 L["Garrison"] = "Гарнизон"
 L["Gold"] = "Золото"
 L["goldabbrev"] = "|cffffd700з|r" --Also used in Bags
