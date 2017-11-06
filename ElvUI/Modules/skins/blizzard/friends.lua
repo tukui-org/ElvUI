@@ -308,6 +308,7 @@ local function LoadSkin()
 
 	RecruitAFriendFrame:StripTextures()
 	RecruitAFriendFrame:SetTemplate("Transparent")
+	RecruitAFriendFrame.MoreDetails.Text:FontTemplate()
 	S:HandleCloseButton(RecruitAFriendFrameCloseButton)
 	S:HandleButton(RecruitAFriendFrameSendButton)
 	S:HandleEditBox(RecruitAFriendNameEditBox)
