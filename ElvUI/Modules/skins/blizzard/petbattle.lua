@@ -14,7 +14,7 @@ local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NumberFont_Outline_Huge, LE_BATTLE_PET_WEATHER, NUM_BATTLE_PET_ABILITIES
--- GLOBALS: PET_TYPE_SUFFIX, PET_BATTLE_PAD_INDEX
+-- GLOBALS: PET_BATTLE_PAD_INDEX
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end

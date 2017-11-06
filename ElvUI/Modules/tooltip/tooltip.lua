@@ -73,7 +73,6 @@ local INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL
 local LEVEL = LEVEL
 local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
 local PVP = PVP
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local TARGET = TARGET
@@ -422,7 +421,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(isPetWild or isPetCompanion) then
 				level = UnitBattlePetLevel(unit)
 
-				local petType = PET_TYPE_SUFFIX[UnitBattlePetType(unit)]
+				local petType = _G["BATTLE_PET_NAME_"..UnitBattlePetType(unit)]
 				if creatureType then
 					creatureType = format("%s %s", creatureType, petType)
 				else
