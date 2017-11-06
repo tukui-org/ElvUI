@@ -230,7 +230,7 @@ local function LoadSkin()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self)
+		S:HandleFollowerPage(self, true, true)
 	end)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
