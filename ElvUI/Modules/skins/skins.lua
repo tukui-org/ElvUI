@@ -588,7 +588,6 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				btn.Border:SetTexture(nil)
 				btn.BG:SetTexture(nil)
 				btn.Icon:SetTexCoord(unpack(E.TexCoords))
-				btn:SetScale(0.8)
 				if not btn.backdop then
 					btn:CreateBackdrop("Default")
 					btn.backdrop:SetPoint("TOPLEFT", btn.Icon, "TOPLEFT", -2, 2)
