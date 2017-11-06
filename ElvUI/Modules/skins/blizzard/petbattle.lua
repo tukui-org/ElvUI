@@ -9,6 +9,7 @@ local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local CreateFrame = CreateFrame
+local GetLocale = GetLocale
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -17,6 +18,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
+	local locale = GetLocale()
 
 	local f = PetBattleFrame
 	local bf = f.BottomFrame
@@ -134,11 +136,13 @@ local function LoadSkin()
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
 		if self.PetType then
-			local petType = C_PetBattles_GetPetType(self.petOwner, self.petIndex)
-			if self.PetTypeFrame and GetLocale() == "enGB" or GetLocale() == "enUS" then
-				self.PetTypeFrame.text:SetText(PET_TYPE_SUFFIX[petType])
-			else
-				self.PetTypeFrame.text:SetText("")
+			local suffix, petType = ''
+			if locale == "enGB" or locale == "enUS" then
+				petType = C_PetBattles_GetPetType(self.petOwner, self.petIndex)
+				suffix = (petType and PET_TYPE_SUFFIX[petType]) or ''
+			end
+			if self.PetTypeFrame then
+				self.PetTypeFrame.text:SetText(suffix)
 			end
 		end
 	end)
