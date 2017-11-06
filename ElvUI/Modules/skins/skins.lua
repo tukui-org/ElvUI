@@ -583,8 +583,8 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		local btn
 		local equipment = follower.followerTab.AbilitiesFrame.Equipment
 		if not equipment.backdrop then
-			for i = 1, #follower.followerTab.AbilitiesFrame.Equipment do
-				btn = follower.followerTab.AbilitiesFrame.Equipment[i]
+			for i = 1, #equipment do
+				btn = equipment[i]
 				btn.Border:SetTexture(nil)
 				btn.BG:SetTexture(nil)
 				btn.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
