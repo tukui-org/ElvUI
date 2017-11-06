@@ -93,7 +93,7 @@ local function LoadSkin()
 
 			if label then
 				label:ClearAllPoints()
-				label:Point("CENTER", bar, 0, 0)
+				label:Point("CENTER", bar, 0, 1)
 				label:FontTemplate(E.media.normFont, 14, "OUTLINE")
 			end
 
