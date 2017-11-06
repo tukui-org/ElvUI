@@ -89,7 +89,6 @@ L["DPS"] = "DPS"
 L["Earned:"] = "Verdient:"
 L["Feet"] = "Füße"
 L["Friends List"] = "Freundesliste"
-L["Friends"] = "Freunde" --Also in Skins
 L["Garrison"] = "Garnison"
 L["Gold"] = true --No need to translate
 L["goldabbrev"] = "|cffffd700g|r" --Also used in gold datatext

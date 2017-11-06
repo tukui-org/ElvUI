@@ -226,7 +226,7 @@ local function OnEvent(self, event, ...)
 	-- force update when showing tooltip
 	dataValid = false
 
-	self.text:SetFormattedText(displayString, L["Friends"], onlineFriends + numBNetOnline)
+	self.text:SetFormattedText(displayString, FRIENDS, onlineFriends + numBNetOnline)
 	lastPanel = self
 end
 
@@ -374,4 +374,4 @@ end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 DT:RegisterDatatext('Friends', {'PLAYER_ENTERING_WORLD', "BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "BN_FRIEND_TOON_ONLINE",
-"BN_FRIEND_TOON_OFFLINE", "BN_TOON_NAME_UPDATED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, L["Friends"])
+"BN_FRIEND_TOON_OFFLINE", "BN_TOON_NAME_UPDATED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, FRIENDS)

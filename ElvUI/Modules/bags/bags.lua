@@ -8,7 +8,7 @@ local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert = table.insert
 local floor, ceil = math.floor, math.ceil
-local len, sub, find = string.len, string.sub, string.find
+local format, len, sub, find = string.format, string.len, string.sub, string.find
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -1065,7 +1065,7 @@ function B:VendorGrays(delete)
 
 	if c>0 and not delete then
 		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
-		E:Print(L["Vendored gray items for:"].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
+		E:Print(format("%s |cffffffff%d%s |cffffffff%d%s |cffffffff%d%s.",L["Vendored gray items for:"],g,L["goldabbrev"],s,L["silverabbrev"],c,L["copperabbrev"]))
 	end
 end
 
