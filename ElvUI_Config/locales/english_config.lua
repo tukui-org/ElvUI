@@ -775,6 +775,7 @@ L["Character Frame"] = true
 L["Contribution"] = true
 L["Debug Tools"] = true
 L["Gossip Frame"] = true
+L["Guild Control Frame"] = true
 L["Guild Registrar"] = true
 L["Help Frame"] = true
 L["Item Upgrade"] = true

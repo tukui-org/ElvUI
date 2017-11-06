@@ -834,6 +834,7 @@ L["Character Frame"] = "캐릭터 창"
 L["Contribution"] = true
 L["Debug Tools"] = "오류 확인 창"
 L["Gossip Frame"] = "NPC 대화 창"
+L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Registrar"] = "길드 등록"
 L["Help Frame"] = "도움말"
 L["Item Upgrade"] = "아이템 강화 창"

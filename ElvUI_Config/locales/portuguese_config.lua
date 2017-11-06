@@ -787,6 +787,7 @@ L["Contribution"] = true
 L["Debug Tools"] = "Ferramentas de Depuração"
 L["Gossip Frame"] = "Fofocas"
 L["Guild Bank"] = "Banco da Guilda"
+L["Guild Control Frame"] = "Controle da Guilda"
 L["Guild Registrar"] = "Registrar Guilda"
 L["Help Frame"] = "Ajuda"
 L["Item Upgrade"] = "Aprimorar Item"

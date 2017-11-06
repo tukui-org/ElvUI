@@ -785,6 +785,7 @@ L["Character Frame"] = "Personaje"
 L["Contribution"] = true
 L["Debug Tools"] = "Herramientas de Depuración"
 L["Gossip Frame"] = "Actualidad"
+L["Guild Control Frame"] = "Control de Hermandad"
 L["Guild Registrar"] = "Registrar Hermandad"
 L["Help Frame"] = "Ayuda"
 L["Item Upgrade"] = "Mejora de Objeto"
