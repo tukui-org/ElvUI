@@ -185,10 +185,14 @@ local function LoadSkin()
 		local weather = C_PetBattles_GetAuraInfo(LE_BATTLE_PET_WEATHER, PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			self.Icon:Hide()
+			self.BackgroundArt:ClearAllPoints()
+			self.BackgroundArt:Point("TOP", self, "TOP", 0, 14)
+			self.BackgroundArt:Size(200, 100)
 			self.Name:Hide()
 			self.DurationShadow:Hide()
 			self.Label:Hide()
-			self.Duration:Point("CENTER", self, 0, 8)
+			self.Duration:ClearAllPoints()
+			self.Duration:Point("TOP", self, "TOP", 0, 10)
 			self:ClearAllPoints()
 			self:Point("TOP", E.UIParent, 0, -15)
 		end
@@ -198,8 +202,10 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 	end)
 
-	f.TopVersusText:ClearAllPoints()
-	f.TopVersusText:Point("TOP", f, "TOP", 0, -42)
+	f:HookScript("OnEvent", function()
+		f.TopVersusText:ClearAllPoints()
+		f.TopVersusText:Point("TOP", f, "TOP", 0, -35)
+	end)
 
 	-- TOOLTIPS SKINNING
 	local function SkinPetTooltip(tt)
