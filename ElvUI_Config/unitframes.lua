@@ -32,11 +32,6 @@ local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES,
 ------------------------------
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
-local fillValues = {
-	['fill'] = L["Filled"],
-	['spaced'] = L["Spaced"],
-	['inset'] = L["Inset"]
-};
 
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',
@@ -48,7 +43,14 @@ local positionValues = {
 	CENTER = 'CENTER',
 	TOP = 'TOP',
 	BOTTOM = 'BOTTOM',
-};
+}
+
+local orientationValues = {
+	--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+	["LEFT"] = L["Left"],
+	["MIDDLE"] = L["Middle"],
+	["RIGHT"] = L["Right"],
+}
 
 local threatValues = {
 	['GLOW'] = L["Glow"],
@@ -63,7 +65,7 @@ local threatValues = {
 	['ICONRIGHT'] = L["Icon: RIGHT"],
 	['ICONTOP'] = L["Icon: TOP"],
 	['ICONBOTTOM'] = L["Icon: BOTTOM"],
-	['NONE'] = NONE
+	['NONE'] = NONE,
 }
 
 local petAnchors = {
@@ -75,28 +77,38 @@ local petAnchors = {
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
 	TOP = 'TOP',
 	BOTTOM = 'BOTTOM',
-};
-
-local auraBarsSortValues = {
-	['TIME_REMAINING'] = L["Time Remaining"],
-	['TIME_REMAINING_REVERSE'] = L["Time Remaining Reverse"],
-	['TIME_DURATION'] = L["Duration"],
-	['TIME_DURATION_REVERSE'] = L["Duration Reverse"],
-	['NAME'] = NAME,
-	['NONE'] = NONE,
 }
 
-local auraSortValues = {
-	['TIME_REMAINING'] = L["Time Remaining"],
-	['DURATION'] = L["Duration"],
-	['NAME'] = NAME,
-	['INDEX'] = L["Index"],
-	["PLAYER"] = PLAYER,
+local attachToValues = {
+	["Health"] = L["Health"],
+	["Power"] = L["Power"],
+	["InfoPanel"] = L["Information Panel"],
+	["Frame"] = L["Frame"],
 }
 
-local auraSortMethodValues = {
-	['ASCENDING'] = L["Ascending"],
-	['DESCENDING'] = L["Descending"]
+local growthDirectionValues = {
+	DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
+	DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
+	UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
+	UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
+	RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
+	RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
+	LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
+	LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
+}
+
+local smartAuraPositionValues = {
+	["DISABLED"] = DISABLE,
+	["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+	["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+	["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
+	["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
+}
+
+local colorOverrideValues = {
+	['USE_DEFAULT'] = L["Use Default"],
+	['FORCE_ON'] = L["Force On"],
+	['FORCE_OFF'] = L["Force Off"],
 }
 
 local CUSTOMTEXT_CONFIGS = {}
@@ -226,7 +238,14 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				type = 'select',
 				order = 9,
 				name = L["Sort Method"],
-				values = auraBarsSortValues,
+				values = {
+					['TIME_REMAINING'] = L["Time Remaining"],
+					['TIME_REMAINING_REVERSE'] = L["Time Remaining Reverse"],
+					['TIME_DURATION'] = L["Duration"],
+					['TIME_DURATION_REVERSE'] = L["Duration Reverse"],
+					['NAME'] = NAME,
+					['NONE'] = NONE,
+				},
 			},
 			filters = {
 				name = FILTERS,
@@ -468,14 +487,23 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				name = L["Sort By"],
 				desc = L["Method to sort by."],
 				type = 'select',
-				values = auraSortValues,
+				values = {
+					['TIME_REMAINING'] = L["Time Remaining"],
+					['DURATION'] = L["Duration"],
+					['NAME'] = NAME,
+					['INDEX'] = L["Index"],
+					["PLAYER"] = PLAYER,
+				},
 			},
 			sortDirection = {
 				order = 16,
 				name = L["Sort Direction"],
 				desc = L["Ascending or Descending order."],
 				type = 'select',
-				values = auraSortMethodValues,
+				values = {
+					['ASCENDING'] = L["Ascending"],
+					['DESCENDING'] = L["Descending"],
+				},
 			},
 			filters = {
 				name = FILTERS,
@@ -938,12 +966,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = 'select',
 				order = 5,
 				name = L["Attach Text To"],
-				values = {
-					['Health'] = L["Health"],
-					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Panel"],
-					['Frame'] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 			text_format = {
 				order = 100,
@@ -1075,7 +1098,6 @@ local function CreateCustomTextGroup(unit, objectName)
 				values = {
 					['NONE'] = NONE,
 					['OUTLINE'] = 'OUTLINE',
-
 					['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 					['THICKOUTLINE'] = 'THICKOUTLINE',
 				},
@@ -1107,12 +1129,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				type = 'select',
 				order = 9,
 				name = L["Attach Text To"],
-				values = {
-					['Health'] = L["Health"],
-					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Panel"],
-					['Frame'] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 			text_format = {
 				order = 100,
@@ -1220,12 +1237,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 5,
 				name = L["Attach Text To"],
-				values = {
-					['Health'] = L["Health"],
-					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Panel"],
-					['Frame'] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 			text_format = {
 				order = 100,
@@ -1343,7 +1355,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'select',
 				order = 3,
 				name = L["Style"],
-				values = fillValues,
+				values = {
+					['fill'] = L["Filled"],
+					['spaced'] = L["Spaced"],
+					['inset'] = L["Inset"]
+				},
 				set = function(info, value)
 					E.db.unitframe.units[groupName]['power'][ info[#info] ] = value;
 
@@ -1426,12 +1442,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'select',
 				order = 10,
 				name = L["Attach Text To"],
-				values = {
-					['Health'] = L["Health"],
-					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Panel"],
-					['Frame'] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 		},
 	}
@@ -1540,12 +1551,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 4,
 				name = L["Attach To"],
-				values = {
-					['Health'] = L["Health"],
-					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Panel"],
-					['Frame'] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 			size = {
 				type = 'range',
@@ -1659,17 +1665,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 1,
 						type = "select",
 						name = L["Position"],
-						values = {
-							["TOP"] = "TOP",
-							["LEFT"] = "LEFT",
-							["RIGHT"] = "RIGHT",
-							["BOTTOM"] = "BOTTOM",
-							["CENTER"] = "CENTER",
-							["TOPLEFT"] = "TOPLEFT",
-							["TOPRIGHT"] = "TOPRIGHT",
-							["BOTTOMLEFT"] = "BOTTOMLEFT",
-							["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-						},
+						values = positionValues,
 					},
 					xOffset = {
 						order = 2,
@@ -1713,17 +1709,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 1,
 						type = "select",
 						name = L["Position"],
-						values = {
-							["TOP"] = "TOP",
-							["LEFT"] = "LEFT",
-							["RIGHT"] = "RIGHT",
-							["BOTTOM"] = "BOTTOM",
-							["CENTER"] = "CENTER",
-							["TOPLEFT"] = "TOPLEFT",
-							["TOPRIGHT"] = "TOPRIGHT",
-							["BOTTOMLEFT"] = "BOTTOMLEFT",
-							["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-						},
+						values = positionValues,
 					},
 					xOffset = {
 						order = 2,
@@ -1789,12 +1775,7 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 				order = 4,
 				type = "select",
 				name = L["Attach To"],
-				values = {
-					["Health"] = L["Health"],
-					["Power"] = L["Power"],
-					["InfoPanel"] = L["Information Panel"],
-					["Frame"] = L["Frame"],
-				},
+				values = attachToValues,
 			},
 			position = {
 				order = 5,
@@ -2160,7 +2141,6 @@ E.Options.args.unitframe = {
 									values = {
 										['NONE'] = NONE,
 										['OUTLINE'] = 'OUTLINE',
-
 										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 										['THICKOUTLINE'] = 'THICKOUTLINE',
 									},
@@ -2837,36 +2817,21 @@ E.Options.args.unitframe.args.player = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 14,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 15,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3203,36 +3168,21 @@ E.Options.args.unitframe.args.target = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 14,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 15,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3402,23 +3352,14 @@ E.Options.args.unitframe.args.targettarget = {
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 13,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3526,36 +3467,21 @@ E.Options.args.unitframe.args.targettargettarget = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 12,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 13,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3669,36 +3595,21 @@ E.Options.args.unitframe.args.focus = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 13,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 14,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3808,36 +3719,21 @@ E.Options.args.unitframe.args.focustarget = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 12,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 13,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -3951,36 +3847,21 @@ E.Options.args.unitframe.args.pet = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 13,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 14,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -4120,36 +4001,21 @@ E.Options.args.unitframe.args.pettarget = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 12,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 13,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -4276,36 +4142,21 @@ E.Options.args.unitframe.args.boss = {
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 14,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 15,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				targetGlow = {
 					order = 16,
@@ -4445,24 +4296,14 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				smartAuraPosition = {
 					order = 15,
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-					values = {
-						["DISABLED"] = DISABLE,
-						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-						["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-						["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
-					},
+					values = smartAuraPositionValues,
 				},
 				orientation = {
 					order = 16,
@@ -4623,23 +4464,14 @@ E.Options.args.unitframe.args.party = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				orientation = {
 					order = 8,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				targetGlow = {
 					order = 9,
@@ -4678,16 +4510,7 @@ E.Options.args.unitframe.args.party = {
 							name = L["Growth Direction"],
 							desc = L["Growth direction from the first unitframe."],
 							type = 'select',
-							values = {
-								DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
-								DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
-								UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
-								UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
-								RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
-								RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
-								LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
-								LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-							},
+							values = growthDirectionValues,
 						},
 						numGroups = {
 							order = 7,
@@ -4890,12 +4713,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 4,
 					name = L["Attach To"],
-					values = {
-						['Health'] = L["Health"],
-						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Panel"],
-						['Frame'] = L["Frame"],
-					},
+					values = attachToValues,
 				},
 				xOffset = {
 					order = 5,
@@ -5233,23 +5051,14 @@ E.Options.args.unitframe.args.raid = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				orientation = {
 					order = 8,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				targetGlow = {
 					order = 9,
@@ -5288,16 +5097,7 @@ E.Options.args.unitframe.args.raid = {
 							name = L["Growth Direction"],
 							desc = L["Growth direction from the first unitframe."],
 							type = 'select',
-							values = {
-								DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
-								DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
-								UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
-								UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
-								RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
-								RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
-								LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
-								LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-							},
+							values = growthDirectionValues,
 						},
 						numGroups = {
 							order = 7,
@@ -5507,12 +5307,7 @@ E.Options.args.unitframe.args.raid = {
 					type = 'select',
 					order = 4,
 					name = L["Attach To"],
-					values = {
-						['Health'] = L["Health"],
-						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Panel"],
-						['Frame'] = L["Frame"],
-					},
+					values = attachToValues,
 				},
 				xOffset = {
 					order = 5,
@@ -5665,23 +5460,14 @@ E.Options.args.unitframe.args.raid40 = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				orientation = {
 					order = 8,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				targetGlow = {
 					order = 9,
@@ -5720,16 +5506,7 @@ E.Options.args.unitframe.args.raid40 = {
 							name = L["Growth Direction"],
 							desc = L["Growth direction from the first unitframe."],
 							type = 'select',
-							values = {
-								DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
-								DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
-								UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
-								UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
-								RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
-								RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
-								LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
-								LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-							},
+							values = growthDirectionValues,
 						},
 						numGroups = {
 							order = 7,
@@ -5939,12 +5716,7 @@ E.Options.args.unitframe.args.raid40 = {
 					type = 'select',
 					order = 4,
 					name = L["Attach To"],
-					values = {
-						['Health'] = L["Health"],
-						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Panel"],
-						['Frame'] = L["Frame"],
-					},
+					values = attachToValues,
 				},
 				xOffset = {
 					order = 5,
@@ -6089,23 +5861,14 @@ E.Options.args.unitframe.args.raidpet = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 				orientation = {
 					order = 7,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				positionsGroup = {
 					order = 100,
@@ -6139,16 +5902,7 @@ E.Options.args.unitframe.args.raidpet = {
 							name = L["Growth Direction"],
 							desc = L["Growth direction from the first unitframe."],
 							type = 'select',
-							values = {
-								DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
-								DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
-								UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
-								UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
-								RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
-								RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
-								LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
-								LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-							},
+							values = growthDirectionValues,
 						},
 						numGroups = {
 							order = 7,
@@ -6375,23 +6129,14 @@ E.Options.args.unitframe.args.tank = {
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 8,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -6450,11 +6195,7 @@ E.Options.args.unitframe.args.tank = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -6575,23 +6316,14 @@ E.Options.args.unitframe.args.assist = {
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
-					values = {
-						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-						["LEFT"] = L["Left"],
-						["MIDDLE"] = L["Middle"],
-						["RIGHT"] = L["Right"],
-					},
+					values = orientationValues,
 				},
 				colorOverride = {
 					order = 8,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
@@ -6650,11 +6382,7 @@ E.Options.args.unitframe.args.assist = {
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
-					values = {
-						['USE_DEFAULT'] = L["Use Default"],
-						['FORCE_ON'] = L["Force On"],
-						['FORCE_OFF'] = L["Force Off"],
-					},
+					values = colorOverrideValues,
 				},
 			},
 		},
