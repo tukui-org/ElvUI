@@ -202,10 +202,8 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 	end)
 
-	f:HookScript("OnEvent", function()
-		f.TopVersusText:ClearAllPoints()
-		f.TopVersusText:Point("TOP", f, "TOP", 0, -35)
-	end)
+	f.TopVersusText:ClearAllPoints()
+	f.TopVersusText:Point("TOP", f, "TOP", 0, -35)
 
 	-- TOOLTIPS SKINNING
 	local function SkinPetTooltip(tt)
