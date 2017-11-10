@@ -454,6 +454,7 @@ E.Options.args.bags = {
 					width = "full",
 					name = "",
 					get = function(info) return L["SEARCH_SYNTAX_DESC"]; end,
+					set = E.noop,
 				},
 			},
 		},
