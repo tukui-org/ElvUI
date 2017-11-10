@@ -306,31 +306,6 @@ local function LoadSkin()
 		end
 	end
 
-	-- PVP Talents
-	PlayerTalentFramePVPTalents.XPBar:StripTextures()
-	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:ClearAllPoints()
-	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:SetPoint("TOP", PlayerTalentFramePVPTalents.XPBar.PrestigeReward, "BOTTOM", 0, 0)
-	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
-
-	--Honor progress bar
-	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
-	PlayerTalentFramePVPTalents.XPBar.Bar.Spark:SetAlpha(0)
-
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:StripTextures()
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:CreateBackdrop("Default")
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetOutside(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon)
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:ClearAllPoints()
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:SetPoint("LEFT", PlayerTalentFramePVPTalents.XPBar.Bar, "RIGHT", 3, -2)
-
-	--Next Available Icon
-	hooksecurefunc(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, "SetTexCoord", function(self, x1)
-		if x1 == 0 then
-			self:SetTexCoord(unpack(E.TexCoords))
-		end
-	end);
-	-- This seems to break some icons at higher prestige level. ElvUI/issue#1853
-	-- PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
-
 	--Skin talent rows and buttons
 	for i = 1, MAX_PVP_TALENT_TIERS do
 		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]

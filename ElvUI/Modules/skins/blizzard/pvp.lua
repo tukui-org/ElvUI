@@ -110,32 +110,6 @@ local function LoadSkin()
 	HonorFrame.RoleInset.DPSIcon.bg:Size(80)
 	HonorFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
 
-	-- HonorBar
-	local honorBar = HonorFrame.XPBar
-	local bar = honorBar.Bar
-	local text = honorBar.Bar.OverlayFrame.Text
-	local nextAvailable = honorBar.NextAvailable
-	local icon = nextAvailable.Icon
-
-	honorBar:StripTextures()
-
-	bar:CreateBackdrop("Default")
-	bar.Spark:SetAlpha(0)
-
-	text:ClearAllPoints()
-	text:Point("CENTER", bar)
-
-	nextAvailable:StripTextures()
-	nextAvailable:CreateBackdrop("Default")
-	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
-	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
-	nextAvailable:ClearAllPoints()
-	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
-
-	icon:SetDrawLayer("ARTWORK")
-	icon:SetTexCoord(unpack(E.TexCoords))
-	icon.SetTexCoord = E.noop
-
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
 			self.bg:SetDesaturated(true)
@@ -180,32 +154,6 @@ local function LoadSkin()
 	ConquestFrame.RoleInset.DPSIcon.bg:Point('CENTER')
 	ConquestFrame.RoleInset.DPSIcon.bg:Size(80)
 	ConquestFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
-
-	-- ConquestBar
-	local conquestBar = ConquestFrame.XPBar
-	bar = conquestBar.Bar
-	text = conquestBar.Bar.OverlayFrame.Text
-	nextAvailable = conquestBar.NextAvailable
-	icon = nextAvailable.Icon
-
-	conquestBar:StripTextures()
-
-	bar:CreateBackdrop("Default")
-	bar.Spark:SetAlpha(0)
-
-	text:ClearAllPoints()
-	text:Point("CENTER", bar)
-
-	nextAvailable:StripTextures()
-	nextAvailable:CreateBackdrop("Default")
-	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
-	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
-	nextAvailable:ClearAllPoints()
-	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
-
-	icon:SetDrawLayer("ARTWORK")
-	icon:SetTexCoord(unpack(E.TexCoords))
-	icon.SetTexCoord = E.noop
 
 	local function handleButton(button)
 		button:StripTextures()
@@ -263,6 +211,51 @@ local function LoadSecondarySkin()
 		end
 
 		self.background:Hide()
+	end)
+
+	-- HonorXPBar Skin
+	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(self)
+		self:StripTextures() --XPBar
+
+		if self.Bar and not self.Bar.backdrop then
+			self.Bar:CreateBackdrop("Default")
+			if self.Bar.Spark then
+				self.Bar.Spark:SetAlpha(0)
+			end
+			if self.Bar.OverlayFrame and self.Bar.OverlayFrame.Text then
+				self.Bar.OverlayFrame.Text:ClearAllPoints()
+				self.Bar.OverlayFrame.Text:Point("CENTER", self.Bar)
+			end
+		end
+
+		if self.PrestigeReward and self.PrestigeReward.Accept then
+			self.PrestigeReward.Accept:ClearAllPoints()
+			self.PrestigeReward.Accept:SetPoint("TOP", self.PrestigeReward, "BOTTOM", 0, 0)
+			if not self.PrestigeReward.Accept.template then
+				S:HandleButton(self.PrestigeReward.Accept)
+			end
+		end
+
+		if self.NextAvailable then
+			if self.Bar then
+				self.NextAvailable:ClearAllPoints()
+				self.NextAvailable:SetPoint("LEFT", self.Bar, "RIGHT", 0, -2)
+			end
+
+			if not self.NextAvailable.backdrop then
+				self.NextAvailable:StripTextures()
+				self.NextAvailable:CreateBackdrop("Default")
+				if self.NextAvailable.Icon then
+					self.NextAvailable.backdrop:SetPoint("TOPLEFT", self.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					self.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", self.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+				end
+			end
+
+			if self.NextAvailable.Icon then
+				self.NextAvailable.Icon:SetDrawLayer("ARTWORK")
+				self.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+			end
+		end
 	end)
 end
 
