@@ -213,50 +213,8 @@ local function LoadSecondarySkin()
 		self.background:Hide()
 	end)
 
-	-- HonorXPBar Skin
-	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(self)
-		self:StripTextures() --XPBar
-
-		if self.Bar and not self.Bar.backdrop then
-			self.Bar:CreateBackdrop("Default")
-			if self.Bar.Spark then
-				self.Bar.Spark:SetAlpha(0)
-			end
-			if self.Bar.OverlayFrame and self.Bar.OverlayFrame.Text then
-				self.Bar.OverlayFrame.Text:ClearAllPoints()
-				self.Bar.OverlayFrame.Text:Point("CENTER", self.Bar)
-			end
-		end
-
-		if self.PrestigeReward and self.PrestigeReward.Accept then
-			self.PrestigeReward.Accept:ClearAllPoints()
-			self.PrestigeReward.Accept:SetPoint("TOP", self.PrestigeReward, "BOTTOM", 0, 0)
-			if not self.PrestigeReward.Accept.template then
-				S:HandleButton(self.PrestigeReward.Accept)
-			end
-		end
-
-		if self.NextAvailable then
-			if self.Bar then
-				self.NextAvailable:ClearAllPoints()
-				self.NextAvailable:SetPoint("LEFT", self.Bar, "RIGHT", 0, -2)
-			end
-
-			if not self.NextAvailable.backdrop then
-				self.NextAvailable:StripTextures()
-				self.NextAvailable:CreateBackdrop("Default")
-				if self.NextAvailable.Icon then
-					self.NextAvailable.backdrop:SetPoint("TOPLEFT", self.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					self.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", self.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
-				end
-			end
-
-			if self.NextAvailable.Icon then
-				self.NextAvailable.Icon:SetDrawLayer("ARTWORK")
-				self.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
-			end
-		end
-	end)
+	S:SkinPVPHonorXPBar('HonorFrame')
+	S:SkinPVPHonorXPBar('ConquestFrame')
 end
 
 S:AddCallback("PVP", LoadSecondarySkin)

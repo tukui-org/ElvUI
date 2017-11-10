@@ -387,6 +387,8 @@ local function LoadSkin()
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
 	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
+
+	S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)

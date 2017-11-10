@@ -26,6 +26,8 @@ local function LoadSkin()
 	for i = 1, 3 do
 		S:HandleTab(_G["WorldStateScoreFrameTab"..i])
 	end
+
+	S:SkinPVPHonorXPBar('WorldStateScoreFrame')
 end
 
 S:AddCallback("WorldStateScore", LoadSkin)
