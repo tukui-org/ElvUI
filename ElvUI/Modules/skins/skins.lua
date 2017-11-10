@@ -43,47 +43,47 @@ function S:SkinPVPHonorXPBar(frame)
 	if S.PVPHonorXPBarSkinned then return end
 	S.PVPHonorXPBarSkinned = true
 
-	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(self)
-		if not S.PVPHonorXPBarFrames[self:GetParent():GetName()] then return end
-		self:StripTextures() --XPBar
+	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(XPBar)
+		if not S.PVPHonorXPBarFrames[XPBar:GetParent():GetName()] then return end
+		XPBar:StripTextures() --XPBar
 
-		if self.Bar and not self.Bar.backdrop then
-			self.Bar:CreateBackdrop("Default")
-			if self.Bar.Spark then
-				self.Bar.Spark:SetAlpha(0)
+		if XPBar.Bar and not XPBar.Bar.backdrop then
+			XPBar.Bar:CreateBackdrop("Default")
+			if XPBar.Bar.Spark then
+				XPBar.Bar.Spark:SetAlpha(0)
 			end
-			if self.Bar.OverlayFrame and self.Bar.OverlayFrame.Text then
-				self.Bar.OverlayFrame.Text:ClearAllPoints()
-				self.Bar.OverlayFrame.Text:Point("CENTER", self.Bar)
-			end
-		end
-
-		if self.PrestigeReward and self.PrestigeReward.Accept then
-			self.PrestigeReward.Accept:ClearAllPoints()
-			self.PrestigeReward.Accept:SetPoint("TOP", self.PrestigeReward, "BOTTOM", 0, 0)
-			if not self.PrestigeReward.Accept.template then
-				S:HandleButton(self.PrestigeReward.Accept)
+			if XPBar.Bar.OverlayFrame and XPBar.Bar.OverlayFrame.Text then
+				XPBar.Bar.OverlayFrame.Text:ClearAllPoints()
+				XPBar.Bar.OverlayFrame.Text:Point("CENTER", XPBar.Bar)
 			end
 		end
 
-		if self.NextAvailable then
-			if self.Bar then
-				self.NextAvailable:ClearAllPoints()
-				self.NextAvailable:SetPoint("LEFT", self.Bar, "RIGHT", 0, -2)
+		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
+			XPBar.PrestigeReward.Accept:ClearAllPoints()
+			XPBar.PrestigeReward.Accept:SetPoint("TOP", XPBar.PrestigeReward, "BOTTOM", 0, 0)
+			if not XPBar.PrestigeReward.Accept.template then
+				S:HandleButton(XPBar.PrestigeReward.Accept)
+			end
+		end
+
+		if XPBar.NextAvailable then
+			if XPBar.Bar then
+				XPBar.NextAvailable:ClearAllPoints()
+				XPBar.NextAvailable:SetPoint("LEFT", XPBar.Bar, "RIGHT", 0, -2)
 			end
 
-			if not self.NextAvailable.backdrop then
-				self.NextAvailable:StripTextures()
-				self.NextAvailable:CreateBackdrop("Default")
-				if self.NextAvailable.Icon then
-					self.NextAvailable.backdrop:SetPoint("TOPLEFT", self.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					self.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", self.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+			if not XPBar.NextAvailable.backdrop then
+				XPBar.NextAvailable:StripTextures()
+				XPBar.NextAvailable:CreateBackdrop("Default")
+				if XPBar.NextAvailable.Icon then
+					XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
 				end
 			end
 
-			if self.NextAvailable.Icon then
-				self.NextAvailable.Icon:SetDrawLayer("ARTWORK")
-				self.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+			if XPBar.NextAvailable.Icon then
+				XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
+				XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
 	end)
