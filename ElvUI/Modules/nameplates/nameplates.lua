@@ -739,7 +739,7 @@ function mod:OnEvent(event, unit, ...)
 			mod:UpdateElement_Power(self)
 		end
 		mod:UpdateElement_Filters(self, event)
-	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
+	elseif(event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_EXITING_VEHICLE" or event == "UNIT_PET")then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
 	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
@@ -813,6 +813,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
+	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
@@ -1065,6 +1066,7 @@ function mod:Initialize()
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
+	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
 
 	if self.db.hideBlizzardPlates then
