@@ -546,6 +546,37 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
+	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button, id)
+		if not button.DeclineButton.template then
+			S:HandleButton(button.DeclineButton)
+			button.DeclineButton.Icon:Hide()
+			if not button.DeclineButton.text then
+				button.DeclineButton.text = button.DeclineButton:CreateFontString(nil, 'OVERLAY')
+				button.DeclineButton.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+				button.DeclineButton.text:SetText('x')
+				button.DeclineButton.text:SetJustifyH('CENTER')
+				button.DeclineButton.text:Point('CENTER', button.DeclineButton, 'CENTER')
+			end
+		end
+		if not button.InviteButton.template then
+			S:HandleButton(button.InviteButton)
+		end
+	end)
+
+	hooksecurefunc("LFGListSearchEntry_Update", function(button)
+		if not button.CancelButton.template then
+			S:HandleButton(button.CancelButton)
+			button.CancelButton.Icon:Hide()
+			if not button.CancelButton.text then
+				button.CancelButton.text = button.CancelButton:CreateFontString(nil, 'OVERLAY')
+				button.CancelButton.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+				button.CancelButton.text:SetText('x')
+				button.CancelButton.text:SetJustifyH('CENTER')
+				button.CancelButton.text:Point('CENTER', button.CancelButton, 'CENTER')
+			end
+		end
+	end)
+
 	hooksecurefunc("LFGListSearchPanel_UpdateAutoComplete", function(self)
 		for i = 1, LFGListFrame.SearchPanel.AutoCompleteFrame:GetNumChildren() do
 			local child = select(i, LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren())
