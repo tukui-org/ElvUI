@@ -3038,6 +3038,7 @@ P["actionbar"] = {
 		['alpha'] = 1,
 		['inheritGlobalFade'] = false,
 		["usePositionOverride"] = true,
+		['visibility'] = "[vehicleui] hide; [petbattle] hide;show",
 	},
 	['extraActionButton'] = {
 		['alpha'] = 1,

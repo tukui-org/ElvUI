@@ -284,9 +284,15 @@ end
 function AB:AdjustMaxStanceButtons(event)
 	if InCombatLockdown() then return; end
 
+	local visibility = self.db.stanceBar.visibility;
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
+
 	for i=1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
+
 	local initialCreate = false;
 	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
@@ -321,7 +327,7 @@ function AB:AdjustMaxStanceButtons(event)
 			bar:Hide()
 		else
 			bar:Show()
-			RegisterStateDriver(bar, "show", '[petbattle] hide;show');
+			RegisterStateDriver(bar, "show", visibility);
 		end
 	end
 end
