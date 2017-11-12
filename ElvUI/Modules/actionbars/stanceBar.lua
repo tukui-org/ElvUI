@@ -320,7 +320,9 @@ function AB:AdjustMaxStanceButtons(event)
 
 	if numButtons == 0 then
 		UnregisterStateDriver(bar, "show");
+		bar:Hide()
 	else
+		bar:Show()
 		RegisterStateDriver(bar, "show", visibility);
 	end
 end
