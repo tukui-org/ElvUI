@@ -8,7 +8,7 @@ local _G = _G
 local time, difftime = time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type, assert = pairs, unpack, select, tostring, pcall, next, tonumber, type, assert
 local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
-local random, strtrim = math.random, strtrim
+local strtrim, strmatch = strtrim, strmatch
 local len, gsub, find, sub, gmatch, format, split = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
@@ -1066,6 +1066,15 @@ function CH:GetBNFriendColor(name, id)
 	end
 end
 
+function CH:GetSavedName(arg12, arg2)
+	if not arg12 or arg12 == '' then return arg2 end
+	if strmatch(arg12, '^|c.+|r$') or (not tonumber(arg12) and not strmatch(arg12, '^Player%-')) then return arg12 end
+end
+
+function CH:GetColorName(event,...)
+	local arg2, arg12 = select(02,...), select(12,...)
+	return CH:GetSavedName(arg12, arg2) or GetColoredName(event, ...)
+end
 
 local PluginIconsCalls = {}
 function CH:AddPluginIcons(func)
@@ -1121,9 +1130,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		arg2 = E.NameReplacements[arg2] or arg2
 
-		--Check if arg12 is a valid GUID (sometimes it gets stored as hexadecimal in ElvUI chat history)
-		local success, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, (success and arg12 or nil), arg13, arg14);
+		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
+		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 
 		--Cache name->class
 		realm = (realm and realm ~= '') and gsub(realm,"[%s%-]","")
@@ -1826,43 +1834,59 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local temp, data = {}
-	for id, _ in pairs(ElvCharacterDB.ChatLog) do
-		tinsert(temp, tonumber(id))
-	end
-
-	tsort(temp, function(a, b)
-		return a < b
-	end)
-
-	for i = 1, #temp do
-		data = ElvCharacterDB.ChatLog[tostring(temp[i])]
-
-		if type(data) == "table" and data[20] ~= nil then
-			local event = data[20]
-
-			if event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
-				--Sender info is stored as |Kf#|k0000000000|k, which is a unique identifier for the current session only
-				--We need to update it in case the WoW client has been closed between the time the message was saved and now
-				local bnetIDAccount = data[13] --Unique identifier which persists between sessions (integer)
-				local _, presenceName = BNGetFriendInfoByID(bnetIDAccount)
-				if presenceName then
-					data[2] = presenceName --Update sender with correct name
+	local data, chat, d = ElvCharacterDB.ChatHistoryLog
+	for _, frame in pairs(CHAT_FRAMES) do
+		chat = _G[frame]
+		if not CH.defaultLanguage then
+			CH.defaultLanguage = GetDefaultLanguage()
+		end
+		if not chat.defaultLanguage then
+			chat.defaultLanguage = CH.defaultLanguage
+		end
+		if not chat.alternativeDefaultLanguage then
+			chat.alternativeDefaultLanguage = CH.defaultLanguage
+		end
+		if data and next(data) then
+			for i=1, #data do
+				d = data[i]
+				if type(d) == 'table' then
+					CH.timeOverride = d[51]
+					for _, messageType in pairs(chat.messageTypeList) do
+						if gsub(strsub(d[50],10),'_INFORM','') == messageType then
+							CH.ChatFrame_MessageEventHandler(chat,d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[52],unpack(d,13))
+						end
+					end
 				end
 			end
-
-			CH.timeOverride = temp[i]
-			CH.ChatFrame_MessageEventHandler(DEFAULT_CHAT_FRAME, event, unpack(data))
 		end
 	end
 end
 
-local function GetTimeForSavedMessage()
-	local randomTime = select(2, ("."):split(GetTime() or "0."..random(1, 999), 2)) or 0
-	return time().."."..randomTime
+tremove(ChatTypeGroup['GUILD'], 2)
+function CH:DelayGuildMOTD()
+	local delay, delayFrame, chat = 0, CreateFrame('Frame')
+	tinsert(ChatTypeGroup['GUILD'], 2, 'GUILD_MOTD')
+	delayFrame:SetScript('OnUpdate', function(df, elapsed)
+		delay = delay + elapsed
+		if delay < 5 then return end
+		local msg = GetGuildRosterMOTD()
+		for _, frame in pairs(CHAT_FRAMES) do
+			chat = _G[frame]
+			if chat and chat:IsEventRegistered('CHAT_MSG_GUILD') then
+				if msg and strlen(msg) > 0 then
+					ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
+				end
+				chat:RegisterEvent('GUILD_MOTD')
+			end
+		end
+		df:SetScript('OnUpdate', nil)
+	end)
 end
 
 function CH:SaveChatHistory(event, ...)
+	if not self.db.chatHistory then return end
+	local data = ElvCharacterDB.ChatHistoryLog
+
 	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		self:ChatThrottleHandler(event, ...)
 
@@ -1881,22 +1905,16 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if #temp > 0 then
-		temp[20] = event
-		local timeForMessage = GetTimeForSavedMessage()
-		ElvCharacterDB.ChatLog[timeForMessage] = temp
+		temp[50] = event
+		temp[51] = time()
+		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13]) or CH:GetColorName(event, ...)
 
-		local c, k = 0
-		for id in pairs(ElvCharacterDB.ChatLog) do
-			c = c + 1
-			if (not k) or k > id then
-				k = id
-			end
-		end
-
-		if c > 128 then
-			ElvCharacterDB.ChatLog[k] = nil
+		tinsert(data, temp)
+		while #data >= 128 do
+			tremove(data, 1)
 		end
 	end
+	temp = nil -- Destory!
 end
 
 function CH:ChatFrame_AddMessageEventFilter (event, filter)
@@ -1936,29 +1954,6 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 	frame.oldAlpha = alpha or 1;
 end
 
-local stopScript = false
-hooksecurefunc(DEFAULT_CHAT_FRAME, "RegisterEvent", function(self, event)
-	if event == "GUILD_MOTD" and not stopScript then
-		self:UnregisterEvent("GUILD_MOTD")
-	end
-end)
-
-local cachedMsg = GetGuildRosterMOTD()
-if cachedMsg == "" then cachedMsg = nil end
-function CH:DelayGMOTD()
-	E:Delay(5, function()
-		stopScript = true
-		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
-		local msg = cachedMsg or GetGuildRosterMOTD()
-		if msg == "" then msg = nil end
-
-		if msg then
-			ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
-		end
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	end)
-end
-
 function CH:CheckLFGRoles()
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
 	local unit = isInRaid and "raid" or "party"
@@ -1977,7 +1972,7 @@ function CH:CheckLFGRoles()
 			name, realm = UnitName(unit..i)
 
 			if(role and name) then
-				name = (realm and realm ~= '') and name..'-'..realm or name ..'-'..PLAYER_REALM
+				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM;
 				lfgRoles[name] = rolePaths[role]
 			end
 		end
@@ -2092,36 +2087,52 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	end
 end
 
+local FindURL_Events = {
+	"CHAT_MSG_WHISPER",
+	"CHAT_MSG_WHISPER_INFORM",
+	"CHAT_MSG_BN_WHISPER",
+	"CHAT_MSG_BN_WHISPER_INFORM",
+	"CHAT_MSG_BN_INLINE_TOAST_BROADCAST",
+	"CHAT_MSG_GUILD_ACHIEVEMENT",
+	"CHAT_MSG_GUILD",
+	"CHAT_MSG_OFFICER",
+	"CHAT_MSG_PARTY",
+	"CHAT_MSG_PARTY_LEADER",
+	"CHAT_MSG_RAID",
+	"CHAT_MSG_RAID_LEADER",
+	"CHAT_MSG_RAID_WARNING",
+	"CHAT_MSG_INSTANCE_CHAT",
+	"CHAT_MSG_INSTANCE_CHAT_LEADER",
+	"CHAT_MSG_CHANNEL",
+	"CHAT_MSG_SAY",
+	"CHAT_MSG_YELL",
+	"CHAT_MSG_EMOTE",
+	"CHAT_MSG_AFK",
+	"CHAT_MSG_DND",
+}
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
 	end
+	if ElvCharacterDB.ChatLog then
+		ElvCharacterDB.ChatLog = nil --Depreciated
+	end
 
 	self.db = E.db.chat
 
-	if E.private.chat.enable ~= true then
-		stopScript = true
-		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
-
-		local msg = GetGuildRosterMOTD()
-		if msg == "" then msg = nil end
-		if msg then
-			ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
-		end
-
-		return
-	end
+	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
+	if E.private.chat.enable ~= true then return end
 
 	if not ElvCharacterDB.ChatEditHistory then
 		ElvCharacterDB.ChatEditHistory = {};
 	end
 
-	if not ElvCharacterDB.ChatLog or not self.db.chatHistory then
-		ElvCharacterDB.ChatLog = {};
+	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
+		ElvCharacterDB.ChatHistoryLog = {};
 	end
 
 	self:UpdateChatKeywords()
-
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
@@ -2136,9 +2147,10 @@ function CH:Initialize()
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'DelayGMOTD')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
+	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
+	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
 
 	self:SetupChat()
@@ -2146,27 +2158,6 @@ function CH:Initialize()
 	if not E.db.chat.lockPositions then
 		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
 	end
-
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
-	self:RegisterEvent("SOCIAL_QUEUE_UPDATE", "SocialQueueEvent")
-	self:RegisterEvent("CHAT_MSG_INSTANCE_CHAT", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_INSTANCE_CHAT_LEADER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_BN_WHISPER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_CHANNEL", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_EMOTE", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_GUILD", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_GUILD_ACHIEVEMENT", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_OFFICER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_PARTY", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_PARTY_LEADER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_RAID", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_RAID_LEADER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_RAID_WARNING", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_SAY", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_WHISPER", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", "SaveChatHistory")
-	self:RegisterEvent("CHAT_MSG_YELL", "SaveChatHistory")
 
 	--First get all pre-existing filters and copy them to our version of chatFilters using ChatFrame_GetMessageEventFilters
 	for name, _ in pairs(ChatTypeGroup) do
@@ -2200,25 +2191,6 @@ function CH:Initialize()
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
-
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_INSTANCE_CHAT", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_INSTANCE_CHAT_LEADER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
-
-
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
 	GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
@@ -2234,6 +2206,13 @@ function CH:Initialize()
 		self.SoundPlayed = nil;
 	end
 
+	for _, event in pairs(FindURL_Events) do
+		ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
+		local nType = strsub(event, 10)
+		if nType ~= 'AFK' and nType ~= 'DND' then
+			self:RegisterEvent(event, 'SaveChatHistory')
+		end
+	end
 
 	local S = E:GetModule('Skins')
 	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
