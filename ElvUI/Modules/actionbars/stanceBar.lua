@@ -18,7 +18,6 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 local GetBindingKey = GetBindingKey
-local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -293,7 +292,6 @@ function AB:AdjustMaxStanceButtons(event)
 		bar.buttons[i]:Hide()
 	end
 
-	local initialCreate = false;
 	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
@@ -304,7 +302,6 @@ function AB:AdjustMaxStanceButtons(event)
 			end
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
-			initialCreate = true;
 		end
 
 		if ( i <= numButtons ) then
@@ -321,14 +318,10 @@ function AB:AdjustMaxStanceButtons(event)
 		self:StyleShapeShift()
 	end
 
-	if not C_PetBattlesIsInBattle() or initialCreate then
-		if numButtons == 0 then
-			UnregisterStateDriver(bar, "show");
-			bar:Hide()
-		else
-			bar:Show()
-			RegisterStateDriver(bar, "show", visibility);
-		end
+	if numButtons == 0 then
+		UnregisterStateDriver(bar, "show");
+	else
+		RegisterStateDriver(bar, "show", visibility);
 	end
 end
 
