@@ -546,17 +546,23 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
-	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button, id)
+	local function handleLFGListCancelDeclineButton(button)
+		S:HandleButton(button)
+		if button.Icon then
+			button.Icon:Hide()
+		end
+		if not button.text then
+			button.text = button:CreateFontString(nil, 'OVERLAY')
+			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			button.text:SetText('x')
+			button.text:SetJustifyH('CENTER')
+			button.text:Point('CENTER', button, 'CENTER')
+		end
+	end
+
+	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
 		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton)
-			button.DeclineButton.Icon:Hide()
-			if not button.DeclineButton.text then
-				button.DeclineButton.text = button.DeclineButton:CreateFontString(nil, 'OVERLAY')
-				button.DeclineButton.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-				button.DeclineButton.text:SetText('x')
-				button.DeclineButton.text:SetJustifyH('CENTER')
-				button.DeclineButton.text:Point('CENTER', button.DeclineButton, 'CENTER')
-			end
+			handleLFGListCancelDeclineButton(button.DeclineButton)
 		end
 		if not button.InviteButton.template then
 			S:HandleButton(button.InviteButton)
@@ -565,15 +571,7 @@ local function LoadSkin()
 
 	hooksecurefunc("LFGListSearchEntry_Update", function(button)
 		if not button.CancelButton.template then
-			S:HandleButton(button.CancelButton)
-			button.CancelButton.Icon:Hide()
-			if not button.CancelButton.text then
-				button.CancelButton.text = button.CancelButton:CreateFontString(nil, 'OVERLAY')
-				button.CancelButton.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-				button.CancelButton.text:SetText('x')
-				button.CancelButton.text:SetJustifyH('CENTER')
-				button.CancelButton.text:Point('CENTER', button.CancelButton, 'CENTER')
-			end
+			handleLFGListCancelDeclineButton(button.CancelButton)
 		end
 	end)
 
