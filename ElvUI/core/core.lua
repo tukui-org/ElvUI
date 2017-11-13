@@ -1324,6 +1324,12 @@ function E:DBConversions()
 		}
 	end
 
+	--Combat Icon options update
+	if E.db.unitframe.units.player.combatIcon ~= nil then
+		E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
+		E.db.unitframe.units.player.combatIcon = nil
+	end
+
 	--Remove commas from aura filters
 	for name, content in pairs(E.global.unitframe.aurafilters) do
 		auraFilterStrip(name, content, ',')
