@@ -12,6 +12,7 @@ local strtrim, strmatch = strtrim, strmatch
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
+local IsAltKeyDown = IsAltKeyDown
 local BetterDate = BetterDate
 local BNet_GetClientEmbeddedTexture = BNet_GetClientEmbeddedTexture
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
@@ -285,6 +286,8 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 	if delta < 0 then
 		if IsShiftKeyDown() then
 			frame:ScrollToBottom()
+		elseif IsAltKeyDown() then
+			frame:ScrollDown()
 		else
 			for i = 1, numScrollMessages do
 				frame:ScrollDown()
@@ -293,6 +296,8 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 	elseif delta > 0 then
 		if IsShiftKeyDown() then
 			frame:ScrollToTop()
+		elseif IsAltKeyDown() then
+			frame:ScrollUp()
 		else
 			for i = 1, numScrollMessages do
 				frame:ScrollUp()
