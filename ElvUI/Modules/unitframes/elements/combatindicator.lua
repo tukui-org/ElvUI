@@ -17,7 +17,7 @@ function UF:Configure_CombatIndicator(frame)
 	Icon:ClearAllPoints()
 	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 	Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
-	Icon:Size(19 * (db.scale or 1))
+	Icon:Size(20 * (db.scale or 1))
 
 	if db.enable and not frame:IsElementEnabled('CombatIndicator') then
 		frame:EnableElement('CombatIndicator')
