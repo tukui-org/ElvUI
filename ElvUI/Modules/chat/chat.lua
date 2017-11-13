@@ -1423,7 +1423,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			--ElvUI: Get class colored name for BattleNet friend
 			if ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
-				coloredName = CH:GetSavedName(arg12) or CH:GetBNFriendColor(arg2, arg13) or arg2
+				coloredName = CH:GetSavedName(arg12) or CH:GetBNFriendColor(arg2, arg13)
 			end
 
 			local playerLink;
