@@ -44,6 +44,7 @@ local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_StartAlertFlash = FCF_StartAlertFlash
 local FlashClientIcon = FlashClientIcon
 local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
+local GetDefaultLanguage = GetDefaultLanguage
 local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
 local GetBNPlayerLink = GetBNPlayerLink
