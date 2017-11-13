@@ -331,8 +331,7 @@ function CH:InsertEmotions(msg)
 end
 
 function CH:GetSmileyReplacementText(msg)
-	if not msg then return end
-	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
+	if not msg or not self.db.emotionIcons or find(msg, '/run') or find(msg, '/dump') or find(msg, '/script') then return msg end
 	local outstr = "";
 	local origlen = strlen(msg);
 	local startpos = 1;
@@ -580,12 +579,12 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
-	for i=1, 8 do
-		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_"..i..":0|t", "{"..strlower(_G["RAID_TARGET_"..i]).."}")
-	end
-	text = gsub(text, "|TInterface(.-)|t", "")
+	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x)
+		x = _G["RAID_TARGET_"..x];return "{"..strlower(x).."}"
+	end)
 
-	return text
+	text = gsub(text, "|H.-|h(.-)|h", "%1")
+	return gsub(text, "|T.-|t", "")
 end
 
 local function colorizeLine(text, r, g, b)
@@ -628,7 +627,7 @@ function CH:CopyChat(frame)
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
 		local lineCt = self:GetLines(frame)
-		local text = tconcat(lines, "\n", 1, lineCt)
+		local text = tconcat(lines, " \n", 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		CopyChatFrameEditBox:SetText(text)
 	else
@@ -895,20 +894,26 @@ function CH:FindURL(event, msg, ...)
 		return false, msg, ...
 	end
 
+	local text, tag = msg, strmatch(msg, '{(.-)}')
+	if tag and ICON_TAG_LIST[strlower(tag)] then
+		text = gsub(gsub(text, "(%S)({.-})", '%1 %2'), "({.-})(%S)", '%1 %2')
+	end
+
+	text = gsub(gsub(text, "(%S)(|c.-|H.-|h.-|h|r)", '%1 %2'), "(|c.-|H.-|h.-|h|r)(%S)", '%1 %2')
 	-- http://example.com
-	local newMsg, found = gsub(msg, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
+	local newMsg, found = gsub(text, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	-- www.example.com
-	newMsg, found = gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
+	newMsg, found = gsub(text, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	-- example@example.com
-	newMsg, found = gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
+	newMsg, found = gsub(text, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	-- IP address with port 1.1.1.1:1
-	newMsg, found = gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?", CH:PrintURL("%1.%2.%3.%4%5"))
+	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?", CH:PrintURL("%1.%2.%3.%4%5"))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 	-- IP address 1.1.1.1
-	newMsg, found = gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:PrintURL("%1.%2.%3.%4"))
+	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:PrintURL("%1.%2.%3.%4"))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
 
 	msg = CH:CheckKeyword(msg)
@@ -1135,7 +1140,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 
 		--Cache name->class
-		realm = (realm and realm ~= '') and gsub(realm,"[%s%-]","")
+		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if name and name ~= '' then
 			CH.ClassNames[name:lower()] = englishClass
 			local className = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
@@ -1252,9 +1257,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
 				end
 			end
-			self:AddMessage(arg1:format(GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			local message = arg1:format(GetPlayerLink(arg2, ("[%s]"):format(coloredName)));
+			local message = format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName)));
 			if (C_SocialIsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1);
 				if (achieveID) then
@@ -1606,7 +1611,7 @@ function CH:SetupChat()
 end
 
 local function PrepareMessage(author, message)
-	return format("%s%s", author:upper(), message)
+	return format("%s%s", strupper(author), message)
 end
 
 function CH:ChatThrottleHandler(event, ...)
@@ -1783,7 +1788,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 end
 
 function CH:ChatEdit_AddHistory(editBox, line)
-	if line:find("/rl") then return; end
+	if find(line, "/rl") then return end
 
 	if ( strlen(line) > 0 ) then
 		for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
@@ -1802,7 +1807,7 @@ end
 function CH:UpdateChatKeywords()
 	twipe(CH.Keywords)
 	local keywords = self.db.keywords
-	keywords = keywords:gsub(',%s', ',')
+	keywords = gsub(keywords,',%s',',')
 
 	for i=1, #{split(',', keywords)} do
 		local stringValue = select(i, split(',', keywords));
@@ -1819,8 +1824,11 @@ function CH:PET_BATTLE_CLOSE()
 
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if frame and _G[frameName.."Tab"]:GetText():match(GlobalStrings.PET_BATTLE_COMBAT_LOG) then
-			FCF_Close(frame)
+		if frame then
+			local text = _G[frameName.."Tab"]:GetText()
+			if strmatch(text, GlobalStrings.PET_BATTLE_COMBAT_LOG) then
+				FCF_Close(frame)
+			end
 		end
 	end
 end
