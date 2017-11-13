@@ -9,7 +9,7 @@ local time, difftime = time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type, assert = pairs, unpack, select, tostring, pcall, next, tonumber, type, assert
 local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
 local strtrim, strmatch = strtrim, strmatch
-local len, gsub, find, sub, gmatch, format, split = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, string.split
+local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
 local BetterDate = BetterDate
@@ -334,7 +334,7 @@ function CH:GetSmileyReplacementText(msg)
 	if not msg then return end
 	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
 	local outstr = "";
-	local origlen = len(msg);
+	local origlen = strlen(msg);
 	local startpos = 1;
 	local endpos;
 
@@ -344,13 +344,13 @@ function CH:GetSmileyReplacementText(msg)
 		if(pos ~= nil) then
 			endpos = pos;
 		end
-		outstr = outstr .. CH:InsertEmotions(sub(msg,startpos,endpos)); --run replacement on this bit
+		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
 			endpos = find(msg,"|h]|r",startpos,-1) or find(msg,"|h",startpos,-1);
 			endpos = endpos or origlen;
 			if(startpos < endpos) then
-				outstr = outstr .. sub(msg,startpos,endpos); --don't run replacement on this bit
+				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
 				startpos = endpos + 1;
 			end
 		end
@@ -410,10 +410,10 @@ function CH:StyleChat(frame)
 
 		if InCombatLockdown() then
 			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
-			if (len(text) > MIN_REPEAT_CHARACTERS) then
+			if (strlen(text) > MIN_REPEAT_CHARACTERS) then
 			local repeatChar = true;
 			for i=1, MIN_REPEAT_CHARACTERS, 1 do
-				if ( sub(text,(0-i), (0-i)) ~= sub(text,(-1-i),(-1-i)) ) then
+				if ( strsub(text,(0-i), (0-i)) ~= strsub(text,(-1-i),(-1-i)) ) then
 					repeatChar = false;
 					break;
 				end
@@ -425,8 +425,8 @@ function CH:StyleChat(frame)
 			end
 		end
 
-		if text:len() < 5 then
-			if text:sub(1, 4) == "/tt " then
+		if strlen(text) < 5 then
+			if strsub(text, 1, 4) == "/tt " then
 				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
 				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
@@ -435,8 +435,8 @@ function CH:StyleChat(frame)
 				ChatFrame_SendTell((unitname or L["Invalid Target"]), ChatFrame1)
 			end
 
-			if text:sub(1, 4) == "/gr " then
-				self:SetText(CH:GetGroupDistribution() .. text:sub(5));
+			if strsub(text, 1, 4) == "/gr " then
+				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5));
 				ChatEdit_ParseText(self, 0)
 			end
 		end
@@ -881,7 +881,7 @@ end
 
 function CH:FindURL(event, msg, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
-		if (msg:sub(1,3) == "OQ,") then return false, msg, ... end
+		if (strsub(msg,1,3) == "OQ,") then return false, msg, ... end
 		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
 		end
