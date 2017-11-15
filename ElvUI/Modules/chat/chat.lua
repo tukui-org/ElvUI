@@ -1849,6 +1849,8 @@ end
 
 function CH:DisplayChatHistory()
 	local data, chat, d = ElvCharacterDB.ChatHistoryLog
+	local guid = UnitGUID("player")
+	if not GetPlayerInfoByGUID(guid) then E:Delay(0.1, CH.DisplayChatHistory) return end
 	for _, frame in pairs(CHAT_FRAMES) do
 		chat = _G[frame]
 		if not CH.defaultLanguage then
