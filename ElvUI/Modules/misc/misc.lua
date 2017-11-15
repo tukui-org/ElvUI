@@ -62,7 +62,7 @@ end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
 	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
-	if not (event == "SPELL_INTERRUPT" and (sourceGUID == UnitGUID('player') or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
+	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.

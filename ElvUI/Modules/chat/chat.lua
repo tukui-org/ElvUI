@@ -77,7 +77,7 @@ local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitName, UnitGUID = UnitName, UnitGUID
+local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
@@ -1256,7 +1256,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
 			-- Append [Share] hyperlink
-			if (arg12 == UnitGUID("player") and C_SocialIsSocialEnabled()) then
+			if (arg12 == E.myguid and C_SocialIsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1);
 				if (achieveID) then
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
@@ -1849,8 +1849,10 @@ end
 
 function CH:DisplayChatHistory()
 	local data, chat, d = ElvCharacterDB.ChatHistoryLog
-	local guid = UnitGUID("player")
-	if not GetPlayerInfoByGUID(guid) then E:Delay(0.1, CH.DisplayChatHistory) return end
+	if not GetPlayerInfoByGUID(E.myguid) then
+		E:Delay(0.1, CH.DisplayChatHistory)
+		return
+	end
 	for _, frame in pairs(CHAT_FRAMES) do
 		chat = _G[frame]
 		if not CH.defaultLanguage then

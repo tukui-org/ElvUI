@@ -90,7 +90,6 @@ local TARGET = TARGET
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
@@ -285,7 +284,7 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	if(not canInspect or level < 10 or numTries > 1) then return end
 
 	local GUID = UnitGUID(unit)
-	if(GUID == playerGUID) then
+	if(GUID == E.myguid) then
 		tt:AddDoubleLine(L["Talent Specialization:"], self:GetTalentSpec(unit, true), nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)
 	elseif(inspectCache[GUID]) then
@@ -758,9 +757,6 @@ function TT:Initialize()
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
-
-	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
-	playerGUID = UnitGUID("player")
 end
 
 local function InitializeCallback()

@@ -48,18 +48,17 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 --Constants
 E.myclass = select(2, UnitClass("player"));
 E.myClassID = select(3, UnitClass("player"));
-E.myspec = GetSpecialization()
-E.myrace = select(2, UnitRace("player"))
-E.myfaction = select(2, UnitFactionGroup('player'))
+E.myspec = GetSpecialization();
+E.myrace = select(2, UnitRace("player"));
+E.myfaction = select(2, UnitFactionGroup('player'));
 E.myname = UnitName("player");
-E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
-E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution") --only used for now in our install.lua line 779
-E.screenwidth, E.screenheight = GetPhysicalScreenSize()
-E.isMacClient = IsMacClient()
-E.LSM = LSM
+E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
+E.screenwidth, E.screenheight = GetPhysicalScreenSize();
+E.isMacClient = IsMacClient();
+E.LSM = LSM;
 
 --Tables
 E["media"] = {};
@@ -1445,6 +1444,7 @@ function E:Initialize()
 	twipe(self.global)
 	twipe(self.private)
 
+	self.myguid = UnitGUID("player")
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
