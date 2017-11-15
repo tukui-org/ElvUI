@@ -1850,13 +1850,12 @@ end
 function CH:DisplayChatHistory()
 	local data, chat, d = ElvCharacterDB.ChatHistoryLog
 
-	CH.SoundPlayed = true;
-
 	if not GetPlayerInfoByGUID(E.myguid) then
 		E:Delay(0.1, CH.DisplayChatHistory)
 		return
 	end
 
+	CH.SoundPlayed = true;
 	for _, frame in pairs(CHAT_FRAMES) do
 		chat = _G[frame]
 		if not CH.defaultLanguage then
@@ -1882,7 +1881,6 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
-
 	CH.SoundPlayed = nil;
 end
 
