@@ -1850,7 +1850,7 @@ end
 function CH:DisplayChatHistory()
 	local data, chat, d = ElvCharacterDB.ChatHistoryLog
 
-	self.SoundPlayed = true;
+	CH.SoundPlayed = true;
 
 	if not GetPlayerInfoByGUID(E.myguid) then
 		E:Delay(0.1, CH.DisplayChatHistory)
@@ -1883,7 +1883,7 @@ function CH:DisplayChatHistory()
 		end
 	end
 
-	self.SoundPlayed = nil;
+	CH.SoundPlayed = nil;
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
