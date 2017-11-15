@@ -471,15 +471,16 @@ function UF:AuraFilter(unit, button, name, _, _, _, dispelType, duration, expira
 	button.spell = name --what uses this? (SortAurasByName?)
 	button.priority = 0
 
+	noDuration = (not duration or duration == 0)
+	allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+
 	if db.priority ~= '' then
-		noDuration = (not duration or duration == 0)
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
-		filterCheck = true -- Allow all auras to be shown when the filter list is empty
+		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
 
 	return filterCheck
