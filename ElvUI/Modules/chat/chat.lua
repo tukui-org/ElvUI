@@ -45,7 +45,6 @@ local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_StartAlertFlash = FCF_StartAlertFlash
 local FlashClientIcon = FlashClientIcon
 local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
-local GetDefaultLanguage = GetDefaultLanguage
 local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
 local GetBNPlayerLink = GetBNPlayerLink
@@ -1848,7 +1847,7 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local data, chat, d = ElvCharacterDB.ChatHistoryLog
+	local data, d = ElvCharacterDB.ChatHistoryLog
 
 	if not GetPlayerInfoByGUID(E.myguid) then
 		E:Delay(0.1, CH.DisplayChatHistory)
@@ -1856,25 +1855,15 @@ function CH:DisplayChatHistory()
 	end
 
 	CH.SoundPlayed = true;
-	for _, frame in pairs(CHAT_FRAMES) do
-		chat = _G[frame]
-		if not CH.defaultLanguage then
-			CH.defaultLanguage = GetDefaultLanguage()
-		end
-		if not chat.defaultLanguage then
-			chat.defaultLanguage = CH.defaultLanguage
-		end
-		if not chat.alternativeDefaultLanguage then
-			chat.alternativeDefaultLanguage = CH.defaultLanguage
-		end
+	for _, chat in pairs(CHAT_FRAMES) do
 		if data and next(data) then
 			for i=1, #data do
 				d = data[i]
 				if type(d) == 'table' then
 					CH.timeOverride = d[51]
-					for _, messageType in pairs(chat.messageTypeList) do
+					for _, messageType in pairs(_G[chat].messageTypeList) do
 						if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-							CH.ChatFrame_MessageEventHandler(chat,d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[52],unpack(d,13))
+							CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[52],unpack(d,13))
 						end
 					end
 				end
