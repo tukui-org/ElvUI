@@ -1849,10 +1849,14 @@ end
 
 function CH:DisplayChatHistory()
 	local data, chat, d = ElvCharacterDB.ChatHistoryLog
+
+	self.SoundPlayed = true;
+
 	if not GetPlayerInfoByGUID(E.myguid) then
 		E:Delay(0.1, CH.DisplayChatHistory)
 		return
 	end
+
 	for _, frame in pairs(CHAT_FRAMES) do
 		chat = _G[frame]
 		if not CH.defaultLanguage then
@@ -1878,6 +1882,8 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
+
+	self.SoundPlayed = nil;
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
@@ -2219,9 +2225,7 @@ function CH:Initialize()
 	end)
 
 	if self.db.chatHistory then
-		self.SoundPlayed = true;
 		self:DisplayChatHistory()
-		self.SoundPlayed = nil;
 	end
 
 	for _, event in pairs(FindURL_Events) do
