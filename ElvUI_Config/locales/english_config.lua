@@ -918,6 +918,7 @@ L["Custom Texts"] = true
 L["Debuff Highlighting"] = true
 L["Debuffs"] = true
 L["Decimal Threshold"] = true
+L["Default Color"] = true
 L["Deficit"] = true
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = true
 L["Delete Filter"] = true

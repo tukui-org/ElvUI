@@ -929,6 +929,7 @@ L["Custom Texts"] = "Textes personnalisés"
 L["Debuff Highlighting"] = "Surbrillance des affaiblissements" --can we traduct "highlighting" by "surbrillance" ? Yes :)
 L["Debuffs"] = "Affaiblissements"
 L["Decimal Threshold"] = "Seuil décimal"
+L["Default Color"] = true
 L["Deficit"] = "Déficit"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Supprimer un filtre créé. Vous ne pouvez pas supprimer un filtre préexistant mais seulement ceux que vous avez personnalisé."
 L["Delete Filter"] = "Supprimer un filtre"

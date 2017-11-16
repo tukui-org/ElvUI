@@ -930,6 +930,7 @@ L["Custom Texts"] = "Textos Personalizados"
 L["Debuff Highlighting"] = "Destacar Penalidades"
 L["Debuffs"] = "Penalidades"
 L["Decimal Threshold"] = true
+L["Default Color"] = true
 L["Deficit"] = "Défice"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Excluir um filtro criado, você não pode excluir filtros pré-existentes, apenas aqueles personalizados."
 L["Delete Filter"] = "Apagar Filtro"

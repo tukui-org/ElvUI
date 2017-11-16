@@ -2989,7 +2989,7 @@ E.Options.args.unitframe.args.player = {
 				color = {
 					order = 4,
 					type = "color",
-					name = L["Color"],
+					name = COLOR,
 					hasAlpha = true,
 					disabled = function()
 						return E.db.unitframe.units['player']['RestIcon'].defaultColor
@@ -3073,7 +3073,7 @@ E.Options.args.unitframe.args.player = {
 				color = {
 					order = 4,
 					type = "color",
-					name = L["Color"],
+					name = COLOR,
 					hasAlpha = true,
 					disabled = function()
 						return E.db.unitframe.units['player']['CombatIcon'].defaultColor

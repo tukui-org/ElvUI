@@ -929,6 +929,7 @@ L["Custom Texts"] = "自定義字體"
 L["Debuff Highlighting"] = "減益光環加亮顯示"
 L["Debuffs"] = "減益光環"
 L["Decimal Threshold"] = "小數閾值"
+L["Default Color"] = true
 L["Deficit"] = "虧損值"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "刪除一個創造的過濾器, 你不能刪除內建的過濾器, 只能刪除你自已添加的."
 L["Delete Filter"] = "刪除過濾器"

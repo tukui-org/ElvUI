@@ -928,6 +928,7 @@ L["Custom Texts"] = "Texto Personalizado"
 L["Debuff Highlighting"] = "Resaltado de Perjuicio"
 L["Debuffs"] = "Perjuicios"
 L["Decimal Threshold"] = true
+L["Default Color"] = true
 L["Deficit"] = "Déficit"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Borra el filtro creado, no puedes borrar filtro pre-existentes, sólo los personalizados."
 L["Delete Filter"] = "Borrar Filtro"

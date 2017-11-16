@@ -977,6 +977,7 @@ L["Custom Texts"] = "사용자지정 문자"
 L["Debuff Highlighting"] = "해제가능한 디버프 강조"
 L["Debuffs"] = "디버프"
 L["Decimal Threshold"] = "소수점표시 기준"
+L["Default Color"] = true
 L["Deficit"] = "부족"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "생성된 필터를 제거합니다. 단, 추가로 생성한 필터만 제거가 가능합니다."
 L["Delete Filter"] = "필터 삭제"
