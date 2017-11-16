@@ -837,6 +837,7 @@ L["Tooltip Font Settings"] = "Шрифты подсказок"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "В рейдовой группе отображать выбравших в цель юнит, для которого показана подсказка"
 
 --UnitFrames
+L["Default Color"] = true
 L["%s and then %s"] = "%s, а затем %s"
 L["2D"] = '2D'
 L["3D"] = '3D'

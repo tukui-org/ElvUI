@@ -2794,34 +2794,28 @@ E.Options.args.unitframe.args.player = {
 					get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
 					set = function(info, value) E.db.unitframe.units['player']['power'].hideonnpc = value; UF:CreateAndUpdateUF('player') end,
 				},
-				restIcon = {
-					order = 10,
-					name = L["Rest Icon"],
-					desc = L["Display the rested icon on the unitframe."],
-					type = 'toggle',
-				},
 				threatStyle = {
 					type = 'select',
-					order = 11,
+					order = 10,
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
 				smartAuraPosition = {
-					order = 12,
+					order = 11,
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = smartAuraPositionValues,
 				},
 				orientation = {
-					order = 13,
+					order = 12,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
 				colorOverride = {
-					order = 14,
+					order = 13,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
@@ -2967,6 +2961,79 @@ E.Options.args.unitframe.args.player = {
 							min = 2, max = 128, step = 1,
 						},
 					},
+				},
+			},
+		},
+		RestIcon = {
+			order = 430,
+			type = 'group',
+			name = L["Rest Icon"],
+			get = function(info) return E.db.unitframe.units['player']['RestIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['RestIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_RestingIndicator(ElvUF_Player); end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Rest Icon"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				defaultColor = {
+					order = 3,
+					type = "toggle",
+					name = L["Default Color"],
+				},
+				color = {
+					order = 4,
+					type = "color",
+					name = L["Color"],
+					hasAlpha = true,
+					disabled = function()
+						return E.db.unitframe.units['player']['RestIcon'].defaultColor
+					end,
+					get = function()
+						local c = E.db.unitframe.units['player']['RestIcon'].color
+						local d = P.unitframe.units['player']['RestIcon'].color
+						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
+					end,
+					set = function(_, r, g, b, a)
+						local c = E.db.unitframe.units['player']['RestIcon'].color
+						c.r, c.g, c.b, c.a = r, g, b, a
+						UF:CreateAndUpdateUF('player');
+						UF:TestingDisplay_RestingIndicator(ElvUF_Player);
+					end,
+				},
+				size = {
+					order = 5,
+					type = "range",
+					name = L["Size"],
+					min = 10, max = 60, step = 1,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				spacer2 = {
+					order = 8,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 9,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
 				},
 			},
 		},

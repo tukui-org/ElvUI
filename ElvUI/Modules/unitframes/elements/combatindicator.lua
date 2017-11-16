@@ -49,6 +49,7 @@ function UF:TestingDisplay_CombatIndicator(frame)
 end
 
 function UF:Configure_CombatIndicator(frame)
+	if not frame.VARIABLES_SET then return end
 	local Icon = frame.CombatIndicator
 	local db = frame.db.CombatIcon
 
@@ -59,8 +60,10 @@ function UF:Configure_CombatIndicator(frame)
 
 	if db.defaultColor then
 		Icon:SetVertexColor(1, 1, 1, 1)
+		Icon:SetDesaturated(false)
 	else
 		Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
+		Icon:SetDesaturated(true)
 	end
 
 	if db.texture == "DEFAULT" then

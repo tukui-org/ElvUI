@@ -832,6 +832,7 @@ L["Tooltip Font Settings"] = true
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = true
 
 --UnitFrames
+L["Default Color"] = true
 L["%s and then %s"] = true
 L["2D"] = true
 L["3D"] = true

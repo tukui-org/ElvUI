@@ -891,6 +891,7 @@ L["Tooltip Font Settings"] = true
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "누구를 대상으로 잡고 있는지, 누가 이 유닛을 대상으로 잡았는지에 대한 정보를 툴팁에 추가합니다."
 
 --UnitFrames
+L["Default Color"] = true
 L["%s and then %s"] = "%s 이후 %s"
 L["2D"] = "이미지"
 L["3D"] = "3d 모델"
