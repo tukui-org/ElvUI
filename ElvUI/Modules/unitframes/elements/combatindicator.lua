@@ -5,7 +5,7 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 
 --WoW API / Variables
-local C_TimerNewTimer = C_Timer.NewTimer
+local C_Timer_NewTimer = C_Timer.NewTimer
 local UnitAffectingCombat = UnitAffectingCombat
 
 local CombatTextures = {
@@ -45,7 +45,7 @@ function UF:TestingDisplay_CombatIndicator(frame)
 
 	Icon:Show()
 	TestingFrame = Icon
-	TestingTimer = C_TimerNewTimer(10, TestingFunc)
+	TestingTimer = C_Timer_NewTimer(10, TestingFunc)
 end
 
 function UF:Configure_CombatIndicator(frame)

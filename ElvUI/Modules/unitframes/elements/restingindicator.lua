@@ -5,7 +5,7 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 
 --WoW API / Variables
-local C_TimerNewTimer = C_Timer.NewTimer
+local C_Timer_NewTimer = C_Timer.NewTimer
 local IsResting = IsResting
 
 function UF:Construct_RestingIndicator(frame)
@@ -36,7 +36,7 @@ function UF:TestingDisplay_RestingIndicator(frame)
 
 	Icon:Show()
 	TestingFrame = Icon
-	TestingTimer = C_TimerNewTimer(10, TestingFunc)
+	TestingTimer = C_Timer_NewTimer(10, TestingFunc)
 end
 
 function UF:Configure_RestingIndicator(frame)
