@@ -2975,7 +2975,7 @@ E.Options.args.unitframe.args.player = {
 			type = 'group',
 			name = L["Combat Icon"],
 			get = function(info) return E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_CombatIndicator(ElvUF_Player.CombatIndicator); end,
+			set = function(info, value) E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_CombatIndicator(ElvUF_Player); end,
 			args = {
 				header = {
 					order = 1,
@@ -3009,7 +3009,7 @@ E.Options.args.unitframe.args.player = {
 						local c = E.db.unitframe.units['player']['CombatIcon'].color
 						c.r, c.g, c.b, c.a = r, g, b, a
 						UF:CreateAndUpdateUF('player');
-						UF:TestingDisplay_CombatIndicator(ElvUF_Player.CombatIndicator);
+						UF:TestingDisplay_CombatIndicator(ElvUF_Player);
 					end,
 				},
 				size = {

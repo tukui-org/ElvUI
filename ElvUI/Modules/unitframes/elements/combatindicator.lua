@@ -31,12 +31,20 @@ local function TestingFunc()
 end
 
 function UF:TestingDisplay_CombatIndicator(frame)
+	local Icon = frame.CombatIndicator
+	local db = frame.db.CombatIcon
+
 	if TestingTimer then
 		TestingTimer:Cancel()
 	end
 
-	frame:Show()
-	TestingFrame = frame
+	if not db.enable then
+		Icon:Hide()
+		return
+	end
+
+	Icon:Show()
+	TestingFrame = Icon
 	TestingTimer = C_TimerNewTimer(10, TestingFunc)
 end
 
