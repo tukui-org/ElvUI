@@ -78,14 +78,8 @@ local function LoadSkin()
 
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop("Default")
-	InspectModelFrame.backdrop:SetPoint("TOPLEFT", -3, 4)
-	InspectModelFrame.backdrop:SetPoint("BOTTOMRIGHT", 4, 0)
-
-	-- Background Texture
-	InspectModelFrameBackgroundTopLeft:SetPoint("TOPLEFT", InspectModelFrame.backdrop, "TOPLEFT", 2, -2)
-	InspectModelFrameBackgroundTopRight:SetPoint("TOPRIGHT", InspectModelFrame.backdrop, "TOPRIGHT", -2, -2)
-	InspectModelFrameBackgroundBotLeft:SetPoint("BOTTOMLEFT", InspectModelFrame.backdrop, "BOTTOMLEFT", 2, -50)
-	InspectModelFrameBackgroundBotRight:SetPoint("BOTTOMRIGHT", InspectModelFrame.backdrop, "BOTTOMRIGHT", -2, -50)
+	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	InspectModelFrameBorderTopLeft:Kill()
 	InspectModelFrameBorderTopRight:Kill()

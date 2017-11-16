@@ -271,6 +271,9 @@ local function LoadSkin()
 	end
 	--Re-add the overlay texture which was removed right above
 	CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
+	CharacterModelFrame:CreateBackdrop("Default")
+	CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	local function StatsPane(type)
 		CharacterStatsPane[type]:StripTextures()
