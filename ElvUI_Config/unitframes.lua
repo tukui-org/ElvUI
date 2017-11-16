@@ -3035,6 +3035,17 @@ E.Options.args.unitframe.args.player = {
 					name = L["Anchor Point"],
 					values = positionValues,
 				},
+				customTexture = {
+					type = 'input',
+					order = 10,
+					customWidth = 250,
+					name = L["Custom Texture"],
+					set = function(_, value)
+						E.db.unitframe.units['player']['RestIcon'].customTexture = (value and (not value:match("^%s-$")) and value) or nil
+						UF:CreateAndUpdateUF('player');
+						UF:TestingDisplay_RestingIndicator(ElvUF_Player);
+					end
+				},
 			},
 		},
 		CombatIcon = {

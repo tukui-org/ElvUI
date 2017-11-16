@@ -7,6 +7,7 @@ local UF = E:GetModule('UnitFrames');
 --WoW API / Variables
 local C_Timer_NewTimer = C_Timer.NewTimer
 local IsResting = IsResting
+local StateIcon = [[Interface\CharacterFrame\UI-StateIcon]]
 
 function UF:Construct_RestingIndicator(frame)
 	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
@@ -55,6 +56,14 @@ function UF:Configure_RestingIndicator(frame)
 		else
 			Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
 			Icon:SetDesaturated(true)
+		end
+
+		if db.customTexture then
+			Icon:SetTexture(db.customTexture)
+			Icon:SetTexCoord(0, 1, 0, 1)
+		else
+			Icon:SetTexture(StateIcon)
+			Icon:SetTexCoord(0, .5, 0, .421875)
 		end
 
 		Icon:Size(db.size)
