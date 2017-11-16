@@ -935,15 +935,15 @@ function mod:PLAYER_REGEN_ENABLED()
 	self:UpdateVisibility()
 end
 
-local playerFrameHideTimer
+local playerNamePlateHideTimer
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
 		if frame.unitFrame.VisibilityChanged then
 			return
 		end
-		if playerFrameHideTimer then
-			playerFrameHideTimer:Cancel()
+		if playerNamePlateHideTimer then
+			playerNamePlateHideTimer:Cancel()
 		end
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.unitFrame:Show()
@@ -959,7 +959,7 @@ function mod:UpdateVisibility()
 				self.PlayerNamePlateAnchor:Show()
 			elseif frame.unitFrame:IsShown() then
 				if (self.db.units.PLAYER.visibility.hideDelay > 0) then
-					playerFrameHideTimer = C_Timer_NewTimer(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
+					playerNamePlateHideTimer = C_Timer_NewTimer(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
 				else
 					HidePlayerNamePlate()
 				end
