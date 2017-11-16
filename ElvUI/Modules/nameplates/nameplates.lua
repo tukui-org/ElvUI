@@ -18,7 +18,7 @@ local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFri
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
-local C_Timer_After = C_Timer.After
+local C_Timer_NewTimer = C_Timer.NewTimer
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
@@ -935,10 +935,16 @@ function mod:PLAYER_REGEN_ENABLED()
 	self:UpdateVisibility()
 end
 
+local playerFrameHideTimer
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
-		if frame.unitFrame.VisibilityChanged then return end
+		if frame.unitFrame.VisibilityChanged then
+			return
+		end
+		if playerFrameHideTimer then
+			playerFrameHideTimer:Cancel()
+		end
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.unitFrame:Show()
 			self.PlayerNamePlateAnchor:Show()
@@ -953,7 +959,7 @@ function mod:UpdateVisibility()
 				self.PlayerNamePlateAnchor:Show()
 			elseif frame.unitFrame:IsShown() then
 				if (self.db.units.PLAYER.visibility.hideDelay > 0) then
-					C_Timer_After(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
+					playerFrameHideTimer = C_Timer_NewTimer(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
 				else
 					HidePlayerNamePlate()
 				end
