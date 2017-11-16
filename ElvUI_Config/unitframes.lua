@@ -3113,6 +3113,7 @@ E.Options.args.unitframe.args.player = {
 					type = "select",
 					name = L["Texture"],
 					values = {
+						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
 						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
 						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
@@ -3121,6 +3122,20 @@ E.Options.args.unitframe.args.player = {
 						["ARTHAS"] =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
 						["SKULL"] = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
 					},
+				},
+				customTexture = {
+					type = 'input',
+					order = 11,
+					customWidth = 250,
+					name = L["Custom Texture"],
+					disabled = function()
+						return E.db.unitframe.units['player']['CombatIcon'].texture ~= "CUSTOM"
+					end,
+					set = function(_, value)
+						E.db.unitframe.units['player']['CombatIcon'].customTexture = (value and (not value:match("^%s-$")) and value) or nil
+						UF:CreateAndUpdateUF('player');
+						UF:TestingDisplay_CombatIndicator(ElvUF_Player);
+					end
 				},
 			},
 		},
