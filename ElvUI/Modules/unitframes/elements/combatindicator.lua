@@ -5,9 +5,30 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 
 --WoW API / Variables
+local C_TimerNewTimer = C_Timer.NewTimer
+local UnitAffectingCombat = UnitAffectingCombat
 
 function UF:Construct_CombatIndicator(frame)
 	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
+end
+
+local TestingTimer
+local TestingFrame
+local function TestingFunc()
+	local inCombat = UnitAffectingCombat('player')
+	if TestingFrame and not inCombat then
+		TestingFrame:Hide()
+	end
+end
+
+function UF:TestingDisplay_CombatIndicator(frame)
+	if TestingTimer then
+		TestingTimer:Cancel()
+	end
+
+	frame:Show()
+	TestingFrame = frame
+	TestingTimer = C_TimerNewTimer(10, TestingFunc)
 end
 
 function UF:Configure_CombatIndicator(frame)

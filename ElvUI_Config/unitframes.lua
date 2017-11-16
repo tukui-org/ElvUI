@@ -2975,7 +2975,7 @@ E.Options.args.unitframe.args.player = {
 			type = 'group',
 			name = L["Combat Icon"],
 			get = function(info) return E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			set = function(info, value) E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_CombatIndicator(ElvUF_Player.CombatIndicator); end,
 			args = {
 				header = {
 					order = 1,
