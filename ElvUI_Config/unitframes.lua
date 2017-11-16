@@ -2800,28 +2800,34 @@ E.Options.args.unitframe.args.player = {
 					desc = L["Display the rested icon on the unitframe."],
 					type = 'toggle',
 				},
+				combatIcon = {
+					order = 11,
+					name = L["Combat Icon"],
+					desc = L["Display the combat icon on the unitframe."],
+					type = 'toggle',
+				},
 				threatStyle = {
 					type = 'select',
-					order = 11,
+					order = 12,
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
 				smartAuraPosition = {
-					order = 12,
+					order = 13,
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = smartAuraPositionValues,
 				},
 				orientation = {
-					order = 13,
+					order = 14,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
 				colorOverride = {
-					order = 14,
+					order = 15,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
@@ -2967,71 +2973,6 @@ E.Options.args.unitframe.args.player = {
 							min = 2, max = 128, step = 1,
 						},
 					},
-				},
-			},
-		},
-		CombatIcon = {
-			order = 440,
-			type = 'group',
-			name = L["Combat Icon"],
-			get = function(info) return E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['CombatIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Combat Icon"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				color = {
-					order = 3,
-					type = "color",
-					name = L["Color"],
-					hasAlpha = true,
-					get = function()
-						local c = E.db.unitframe.units['player']['CombatIcon'].color
-						local d = P.unitframe.units['player']['CombatIcon'].color
-						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(_, r, g, b, a)
-						local c = E.db.unitframe.units['player']['CombatIcon'].color
-						c.r, c.g, c.b, c.a = r, g, b, a
-						UF:CreateAndUpdateUF('player')
-					end,
-				},
-				scale = {
-					order = 4,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 3, step = 0.01,
-				},
-				spacer2 = {
-					order = 5,
-					type = "description",
-					name = " ",
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				anchorPoint = {
-					order = 8,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
 				},
 			},
 		},

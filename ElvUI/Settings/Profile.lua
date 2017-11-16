@@ -965,6 +965,7 @@ P['unitframe'] = {
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = true,
+			["combatIcon"] = true,
 			['threatStyle'] = 'GLOW',
 			["smartAuraPosition"] = "DISABLED",
 			["colorOverride"] = "USE_DEFAULT",
@@ -1013,14 +1014,6 @@ P['unitframe'] = {
 				['text_format'] = '||cFFB04F4F[pvptimer][mouseover]||r',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-			},
-			["CombatIcon"] = {
-				["enable"] = true,
-				["color"] = {r = 0.69, g = 0.31, b = 0.31, a = 1.00},
-				["anchorPoint"] = "CENTER",
-				["xOffset"] = 0,
-				["yOffset"] = 0,
-				["scale"] = 1,
 			},
 			["pvpIcon"] = {
 				["enable"] = false,
