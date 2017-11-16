@@ -1020,7 +1020,7 @@ P['unitframe'] = {
 				["anchorPoint"] = "CENTER",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
-				["scale"] = 1,
+				["size"] = 20,
 			},
 			["pvpIcon"] = {
 				["enable"] = false,

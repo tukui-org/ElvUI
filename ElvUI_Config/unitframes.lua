@@ -3003,12 +3003,11 @@ E.Options.args.unitframe.args.player = {
 						UF:CreateAndUpdateUF('player')
 					end,
 				},
-				scale = {
+				size = {
 					order = 4,
 					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 3, step = 0.01,
+					name = L["Size"],
+					min = 10, max = 60, step = 1,
 				},
 				spacer2 = {
 					order = 5,
