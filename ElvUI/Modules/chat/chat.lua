@@ -1036,39 +1036,16 @@ function CH:ShortChannel()
 end
 
 function CH:GetBNFriendColor(name, id)
-	local _, class
-	_, _, _, _, _, _, _, class = BNGetGameAccountInfo(id)
+	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
+	local _, characterName, _, realmName, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
 
-	if(not class or class == "") then
-		local accountName, bnetIDGameAccount
-		for i=1, BNGetNumFriends() do
-			_, accountName, _, _, _, bnetIDGameAccount = BNGetFriendInfo(i)
-			if (bnetIDGameAccount) and (accountName and accountName == name) then
-				_, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
+	local CLASS = class and class ~= '' and gsub(strupper(class),'%s','')
+	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
+	local REALM = realmName and realmName ~= '' and gsub(realmName,'[%s%-]','')
+	local TOON = characterName and COLOR and format('|c%s%s|r', COLOR.colorStr, (REALM and REALM ~= PLAYER_REALM and characterName..'-'..REALM) or characterName)
+	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
 
-				if(class) then
-					break;
-				end
-			end
-		end
-	end
-
-	if(class) then
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-	end
-
-	if(not class or not (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])) then
-		return name
-	end
-
-	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] then
-		return "|c"..CUSTOM_CLASS_COLORS[class].colorStr..name.."|r"
-	elseif RAID_CLASS_COLORS[class] then
-		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
-	else
-		return name
-	end
+	return TOON or TAG or name
 end
 
 function CH:GetSavedName(arg12, arg2)
