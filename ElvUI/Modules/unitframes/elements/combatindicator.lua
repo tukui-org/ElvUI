@@ -56,7 +56,6 @@ function UF:Configure_CombatIndicator(frame)
 
 	Icon:ClearAllPoints()
 	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
-	Icon:SetTexture((db.texture == "CUSTOM" and db.customTexture) or CombatTextures[db.texture] or CombatTextures.DEFAULT)
 	Icon:Size(db.size)
 
 	if db.defaultColor then
@@ -67,10 +66,15 @@ function UF:Configure_CombatIndicator(frame)
 		Icon:SetDesaturated(true)
 	end
 
-	if db.texture == "DEFAULT" then
-		Icon:SetTexCoord(.5, 1, 0, .49)
+	if db.texture == "CUSTOM" and db.customTexture then
+		Icon:SetTexture(db.customTexture)
+		Icon:SetTexCoord(0, 1, 0, 1)
+	elseif db.texture ~= "DEFAULT" and CombatTextures[db.texture] then
+		Icon:SetTexture(CombatTextures[db.texture])
+		Icon:SetTexCoord(0, 1, 0, 1)
 	else
-		Icon:SetTexCoord(0,1,0,1)
+		Icon:SetTexture(CombatTextures.DEFAULT)
+		Icon:SetTexCoord(.5, 1, 0, .49)
 	end
 
 	if db.enable and not frame:IsElementEnabled('CombatIndicator') then
