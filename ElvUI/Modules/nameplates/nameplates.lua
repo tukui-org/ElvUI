@@ -932,7 +932,10 @@ function mod:PLAYER_REGEN_ENABLED()
 	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 1);
 	end
-	self:UpdateVisibility()
+
+	if self.db.units.PLAYER.useStaticPosition then
+		self:UpdateVisibility()
+	end
 end
 
 local playerNamePlateHideTimer
