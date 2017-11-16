@@ -102,10 +102,7 @@ local GlobalStrings = {
 	["AFK"] = AFK,
 	["BN_INLINE_TOAST_BROADCAST"] = BN_INLINE_TOAST_BROADCAST,
 	["BN_INLINE_TOAST_BROADCAST_INFORM"] = BN_INLINE_TOAST_BROADCAST_INFORM,
-	["BN_INLINE_TOAST_CONVERSATION"] = BN_INLINE_TOAST_CONVERSATION,
 	["BN_INLINE_TOAST_FRIEND_PENDING"] = BN_INLINE_TOAST_FRIEND_PENDING,
-	["CHAT_BN_CONVERSATION_GET_LINK"] = CHAT_BN_CONVERSATION_GET_LINK,
-	["CHAT_BN_CONVERSATION_LIST"] = CHAT_BN_CONVERSATION_LIST,
 	["CHAT_FILTERED"] = CHAT_FILTERED,
 	["CHAT_IGNORED"] = CHAT_IGNORED,
 	["CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE"] = CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE,
@@ -116,8 +113,6 @@ local GlobalStrings = {
 	["ERR_CHAT_PLAYER_NOT_FOUND_S"] = ERR_CHAT_PLAYER_NOT_FOUND_S,
 	["ERR_FRIEND_OFFLINE_S"] = ERR_FRIEND_OFFLINE_S,
 	["ERR_FRIEND_ONLINE_SS"] = ERR_FRIEND_ONLINE_SS,
-	["MAX_WOW_CHAT_CHANNELS"] = MAX_WOW_CHAT_CHANNELS,
-	["PET_BATTLE_COMBAT_LOG"] = PET_BATTLE_COMBAT_LOG,
 	["PLAYER_LIST_DELIMITER"] = PLAYER_LIST_DELIMITER,
 	["RAID_WARNING"] = RAID_WARNING,
 }
@@ -1511,7 +1506,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L["yells"], "%1")
 				body = body:gsub("<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
 				body = body:gsub("<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
 				body = body:gsub("^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID);
@@ -1830,7 +1824,7 @@ function CH:PET_BATTLE_CLOSE()
 		local frame = _G[frameName]
 		if frame then
 			local text = _G[frameName.."Tab"]:GetText()
-			if strmatch(text, GlobalStrings.PET_BATTLE_COMBAT_LOG) then
+			if strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
 				FCF_Close(frame)
 			end
 		end
