@@ -1039,6 +1039,11 @@ function CH:GetBNFriendColor(name, id)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
 	local _, characterName, _, realmName, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
 
+	if class then --other non-english locales require this
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k;break end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k;break end end
+	end
+
 	local CLASS = class and class ~= '' and gsub(strupper(class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
 	local REALM = realmName and realmName ~= '' and gsub(realmName,'[%s%-]','')
