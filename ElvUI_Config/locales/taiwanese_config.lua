@@ -926,6 +926,7 @@ L["Current"] = "目前值"
 L["Custom Dead Backdrop"] = "自定義死亡背景"
 L["Custom Health Backdrop"] = "自訂生命條背景"
 L["Custom Texts"] = "自定義字體"
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = "減益光環加亮顯示"
 L["Debuffs"] = "減益光環"
 L["Decimal Threshold"] = "小數閾值"

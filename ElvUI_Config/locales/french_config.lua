@@ -926,6 +926,7 @@ L["Current"] = "Actuel"
 L["Custom Dead Backdrop"] = "Fond 'mort' personnalisé"
 L["Custom Health Backdrop"] = "Fond de vie personnalisé"
 L["Custom Texts"] = "Textes personnalisés"
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Surbrillance des affaiblissements" --can we traduct "highlighting" by "surbrillance" ? Yes :)
 L["Debuffs"] = "Affaiblissements"
 L["Decimal Threshold"] = "Seuil décimal"

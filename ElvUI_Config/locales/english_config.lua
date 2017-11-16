@@ -915,6 +915,7 @@ L["Current"] = true
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = true
 L["Custom Texts"] = true
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = true
 L["Debuffs"] = true
 L["Decimal Threshold"] = true

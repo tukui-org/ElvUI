@@ -920,6 +920,7 @@ L["Current"] = "Текущее"
 L["Custom Dead Backdrop"] = "Свой фон мертвого"
 L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
 L["Custom Texts"] = "Свой текст"
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Подсветка дебаффов"
 L["Debuffs"] = "Дебаффы"
 L["Decimal Threshold"] = "Десятые доли после..."

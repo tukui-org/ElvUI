@@ -925,6 +925,7 @@ L["Current"] = "Actual"
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = "Fondo de Salud Personalizado"
 L["Custom Texts"] = "Texto Personalizado"
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Resaltado de Perjuicio"
 L["Debuffs"] = "Perjuicios"
 L["Decimal Threshold"] = true

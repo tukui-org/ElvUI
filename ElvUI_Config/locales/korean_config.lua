@@ -974,6 +974,7 @@ L["Current"] = "현재값"
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = "고정 배경색 사용"
 L["Custom Texts"] = "사용자지정 문자"
+L["Custom Texture"] = true
 L["Debuff Highlighting"] = "해제가능한 디버프 강조"
 L["Debuffs"] = "디버프"
 L["Decimal Threshold"] = "소수점표시 기준"
