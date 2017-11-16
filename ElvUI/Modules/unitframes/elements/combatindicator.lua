@@ -56,7 +56,7 @@ function UF:Configure_CombatIndicator(frame)
 
 	Icon:ClearAllPoints()
 	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
-	Icon:SetTexture(CombatTextures[db.texture])
+	Icon:SetTexture((db.texture == "CUSTOM" and db.customTexture) or CombatTextures[db.texture])
 	Icon:Size(db.size)
 
 	if db.defaultColor then
