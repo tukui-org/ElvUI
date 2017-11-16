@@ -13,6 +13,7 @@ local CombatTextures = {
 	["PLATINUM"] = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
 	["ATTACK"] = [[Interface\CURSOR\Attack]],
 	["ALERT"] = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+	["ALERT2"] = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]],
 	["ARTHAS"] = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
 	["SKULL"] = [[Interface\LootFrame\LootPanel-Icon]],
 }

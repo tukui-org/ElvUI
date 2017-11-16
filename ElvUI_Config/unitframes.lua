@@ -3117,6 +3117,7 @@ E.Options.args.unitframe.args.player = {
 						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
 						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
 						["ALERT"] = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
+						["ALERT2"] = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14|t]],
 						["ARTHAS"] =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
 						["SKULL"] = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
 					},

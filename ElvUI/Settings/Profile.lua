@@ -1025,7 +1025,7 @@ P['unitframe'] = {
 			["CombatIcon"] = {
 				["enable"] = true,
 				["defaultColor"] = true,
-				["color"] = {r = 0.69, g = 0.31, b = 0.31, a = 1.00},
+				["color"] = {r = 1, g = 0.2, b = 0.2, a = 1},
 				["anchorPoint"] = "CENTER",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
