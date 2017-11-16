@@ -8,6 +8,15 @@ local UF = E:GetModule('UnitFrames');
 local C_TimerNewTimer = C_Timer.NewTimer
 local UnitAffectingCombat = UnitAffectingCombat
 
+local CombatTextures = {
+	["DEFAULT"] = [[Interface\CharacterFrame\UI-StateIcon]],
+	["PLATINUM"] = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
+	["ATTACK"] = [[Interface\CURSOR\Attack]],
+	["ALERT"] = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+	["ARTHAS"] = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
+	["SKULL"] = [[Interface\LootFrame\LootPanel-Icon]],
+}
+
 function UF:Construct_CombatIndicator(frame)
 	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 end
@@ -37,8 +46,20 @@ function UF:Configure_CombatIndicator(frame)
 
 	Icon:ClearAllPoints()
 	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
-	Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
+	Icon:SetTexture(CombatTextures[db.texture])
 	Icon:Size(db.size)
+
+	if db.defaultColor then
+		Icon:SetVertexColor(1, 1, 1, 1)
+	else
+		Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
+	end
+
+	if db.texture == "DEFAULT" then
+		Icon:SetTexCoord(.5, 1, 0, .49)
+	else
+		Icon:SetTexCoord(0,1,0,1)
+	end
 
 	if db.enable and not frame:IsElementEnabled('CombatIndicator') then
 		frame:EnableElement('CombatIndicator')

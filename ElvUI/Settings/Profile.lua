@@ -1016,11 +1016,13 @@ P['unitframe'] = {
 			},
 			["CombatIcon"] = {
 				["enable"] = true,
+				["defaultColor"] = false,
 				["color"] = {r = 0.69, g = 0.31, b = 0.31, a = 1.00},
 				["anchorPoint"] = "CENTER",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
 				["size"] = 20,
+				["texture"] = "DEFAULT",
 			},
 			["pvpIcon"] = {
 				["enable"] = false,

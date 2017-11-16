@@ -2987,11 +2987,19 @@ E.Options.args.unitframe.args.player = {
 					type = "toggle",
 					name = L["Enable"],
 				},
-				color = {
+				defaultColor = {
 					order = 3,
+					type = "toggle",
+					name = L["Default Color"],
+				},
+				color = {
+					order = 4,
 					type = "color",
 					name = L["Color"],
 					hasAlpha = true,
+					disabled = function()
+						return E.db.unitframe.units['player']['CombatIcon'].defaultColor
+					end,
 					get = function()
 						local c = E.db.unitframe.units['player']['CombatIcon'].color
 						local d = P.unitframe.units['player']['CombatIcon'].color
@@ -3000,19 +3008,15 @@ E.Options.args.unitframe.args.player = {
 					set = function(_, r, g, b, a)
 						local c = E.db.unitframe.units['player']['CombatIcon'].color
 						c.r, c.g, c.b, c.a = r, g, b, a
-						UF:CreateAndUpdateUF('player')
+						UF:CreateAndUpdateUF('player');
+						UF:TestingDisplay_CombatIndicator(ElvUF_Player.CombatIndicator);
 					end,
 				},
 				size = {
-					order = 4,
+					order = 5,
 					type = "range",
 					name = L["Size"],
 					min = 10, max = 60, step = 1,
-				},
-				spacer2 = {
-					order = 5,
-					type = "description",
-					name = " ",
 				},
 				xOffset = {
 					order = 6,
@@ -3026,11 +3030,29 @@ E.Options.args.unitframe.args.player = {
 					name = L["Y-Offset"],
 					min = -100, max = 100, step = 1,
 				},
-				anchorPoint = {
+				spacer2 = {
 					order = 8,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 9,
 					type = "select",
 					name = L["Anchor Point"],
 					values = positionValues,
+				},
+				texture = {
+					order = 10,
+					type = "select",
+					name = L["Texture"],
+					values = {
+						["DEFAULT"] = DEFAULT,
+						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
+						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
+						["ALERT"] = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
+						["ARTHAS"] =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
+						["SKULL"] = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
+					},
 				},
 			},
 		},
