@@ -11,6 +11,7 @@ local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match = floor, string.gsub, string.match
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
+local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
@@ -43,7 +44,6 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 -- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
-
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
