@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 --Cache global variables
 --Lua functions
-local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
 local lower, split = string.lower, string.split
 --WoW API / Variables

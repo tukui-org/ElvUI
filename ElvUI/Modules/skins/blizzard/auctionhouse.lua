@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack, select = pairs, unpack, select
+local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -115,7 +115,7 @@ local function LoadSkin()
 		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
-	AuctionsItemButton:HookScript('OnEvent', function(self, event, ...)
+	AuctionsItemButton:HookScript('OnEvent', function(self, event)
 		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
 			self:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			self:GetNormalTexture():SetInside()

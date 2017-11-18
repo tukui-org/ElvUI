@@ -3,8 +3,6 @@ local mod = E:NewModule("DataBars", 'AceEvent-3.0')
 E.DataBars = mod
 
 --Cache global variables
---Lua functions
-local _G = _G
 --WoW API / Variables
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE

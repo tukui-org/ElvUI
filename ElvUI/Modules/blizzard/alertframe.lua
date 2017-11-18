@@ -3,7 +3,6 @@ local B = E:GetModule('Blizzard');
 
 --Cache global variables
 --Lua functions
-local _G = _G
 local pairs = pairs
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script

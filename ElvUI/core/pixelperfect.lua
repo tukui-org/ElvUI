@@ -3,7 +3,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 --Cache global variables
 --Lua functions
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
-local match = string.match
 --WoW API / Variables
 local IsMacClient = IsMacClient
 local GetCVar, SetCVar = GetCVar, SetCVar
