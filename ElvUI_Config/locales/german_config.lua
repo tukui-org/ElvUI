@@ -844,7 +844,6 @@ L["Tooltip Font Settings"] = "Tooltip Schrifteinstellung"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Zeige ob jemand aus deiner Gruppe/Schlachtzug die Tooltip-Einheit ins Ziel genommen hat."
 
 --UnitFrames
-L["Default Color"] = true
 L["%s and then %s"] = "%s und dann %s"
 L["2D"] = "2D"
 L["3D"] = "3D"

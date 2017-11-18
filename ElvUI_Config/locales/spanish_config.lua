@@ -842,7 +842,6 @@ L["Tooltip Font Settings"] = true
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Cuando estás en una banda muestra si alguien en tu banda tiene marcado como objetivo a la unidad actual de la descripción emergente."
 
 --UnitFrames
-L["Default Color"] = true
 L["%s and then %s"] = "%s y entonces %s"
 L["2D"] = "2D"
 L["3D"] = "3D"

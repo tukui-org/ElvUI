@@ -843,7 +843,6 @@ L["Tooltip Font Settings"] = "提示文字設置"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "顯示團隊中目標與你目前浮動提示目標相同的隊友."
 
 --UnitFrames
-L["Default Color"] = true
 L["%s and then %s"] = "%s 與 %s"
 L["2D"] = "2D"
 L["3D"] = "3D"
