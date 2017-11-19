@@ -1994,13 +1994,12 @@ end
 
 local socialQueueCache = {}
 function CH:RecentSocialQueue(TIME, MSG)
-	local previousMessage, fiveMinutes = false
+	local previousMessage = false
 
 	if next(socialQueueCache) then
 		for guid, tbl in pairs(socialQueueCache) do
 			-- !dont break this loop! its used to keep the cache updated
-			fiveMinutes = difftime(TIME, tbl[1]) >= 300
-			if fiveMinutes then
+			if TIME and (difftime(TIME, tbl[1]) >= 300) then
 				socialQueueCache[guid] = nil --remove any older than 5m
 			elseif MSG and MSG == tbl[2] then
 				previousMessage = true --dont show any of the same message within 5m
