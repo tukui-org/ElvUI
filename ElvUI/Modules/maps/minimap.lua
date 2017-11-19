@@ -43,16 +43,9 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 local UnitClass = UnitClass
 local HUNTER_TRACKING = HUNTER_TRACKING
 local HUNTER_TRACKING_TEXT = HUNTER_TRACKING_TEXT
-local IG_MAINMENU_QUIT
-local IG_MINIMAP_OPEN
-if SOUNDKIT then
-	IG_MAINMENU_QUIT = SOUNDKIT.IG_MAINMENU_QUIT
-	IG_MINIMAP_OPEN = SOUNDKIT.IG_MINIMAP_OPEN
-end
 local MINIMAP_TRACKING_NONE = MINIMAP_TRACKING_NONE
 local TOWNSFOLK = TOWNSFOLK
 local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
-local PlaySoundKitID = PlaySoundKitID
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
@@ -212,10 +205,10 @@ local menuList = {
 			end
 			CloseMenus();
 			CloseAllWindows()
-			PlaySound(PlaySoundKitID and "igMainMenuOpen" or IG_MINIMAP_OPEN);
+			PlaySound(850) --IG_MAINMENU_OPEN
 			ShowUIPanel(GameMenuFrame);
 		else
-			PlaySound(PlaySoundKitID and "igMainMenuQuit" or IG_MAINMENU_QUIT);
+			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(GameMenuFrame);
 			MainMenuMicroButton_SetNormal();
 		end

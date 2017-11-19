@@ -92,9 +92,6 @@ local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
-local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE --3081
-local SOUNDKIT_TUTORIAL_POPUP = SOUNDKIT.TUTORIAL_POPUP --7355
---local SOUNDKIT_SOCIAL_QUEUEING_TOAST = SOUNDKIT.UI_71_SOCIAL_QUEUEING_TOAST --79739
 
 --Variables that are only used in ChatFrame_MessageEventHandler
 --Store them in a table as we would otherwise hit the "max 60 upvalues" limit
@@ -1495,7 +1492,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, type);
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
-				PlaySound(SOUNDKIT_TELL_MESSAGE);
+				PlaySound(3081) --TELL_MESSAGE
 			end
 			self.tellTimer = GetTime() + GlobalStrings.CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
@@ -1997,7 +1994,7 @@ end
 
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
-	PlaySound(SOUNDKIT_TUTORIAL_POPUP) --SOUNDKIT_SOCIAL_QUEUEING_TOAST appears to be no sound
+	PlaySound(7355) --TUTORIAL_POPUP; SOCIAL_QUEUEING_TOAST appears to be no sound
 	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
 end
 
