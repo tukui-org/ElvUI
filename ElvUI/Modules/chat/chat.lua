@@ -1992,8 +1992,12 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 	return leaderName == playerName
 end
 
+local lastQueueString
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
+	local queueString = format("%s:%s", guid, message)
+	if lastQueueString == queueString then return end
+	lastQueueString = queueString --store last queue to attempt preventing duplicates
 	PlaySound(7355) --TUTORIAL_POPUP; SOCIAL_QUEUEING_TOAST appears to be no sound
 	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
 end
