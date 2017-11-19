@@ -2004,6 +2004,7 @@ function CH:RecentSocialQueue(TIME, MSG)
 				socialQueueCache[guid] = nil --remove any older than 5m
 			elseif MSG and MSG == tbl[2] then
 				previousMessage = true --dont show any of the same message within 5m
+				-- see note for `message` in `SocialQueueMessage` about `MSG` content
 			end
 		end
 	end
@@ -2013,6 +2014,8 @@ end
 
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
+	-- `guid` is something like `Party-1147-000011202574` and appears to update each time for solo requeue, otherwise on new group creation.
+	-- `message` is something like `|cff82c5ff|Kf58|k000000000000|k|r queued for: |cff00CCFFRandom Legion Heroic|r `
 
 	-- prevent duplicate messages within 5 minutes
 	local TIME = time()
