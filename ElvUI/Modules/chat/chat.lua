@@ -1995,19 +1995,17 @@ end
 local socialQueueCache = {}
 function CH:RecentSocialQueue(TIME, MSG)
 	local previousMessage = false
-
 	if next(socialQueueCache) then
 		for guid, tbl in pairs(socialQueueCache) do
 			-- !dont break this loop! its used to keep the cache updated
 			if TIME and (difftime(TIME, tbl[1]) >= 300) then
 				socialQueueCache[guid] = nil --remove any older than 5m
-			elseif MSG and MSG == tbl[2] then
+			elseif MSG and (MSG == tbl[2]) then
 				previousMessage = true --dont show any of the same message within 5m
 				-- see note for `message` in `SocialQueueMessage` about `MSG` content
 			end
 		end
 	end
-
 	return previousMessage
 end
 
@@ -2021,7 +2019,9 @@ function CH:SocialQueueMessage(guid, message)
 	if self:RecentSocialQueue(TIME, message) then return end
 	socialQueueCache[guid] = {TIME, message}
 
-	PlaySound(7355) --TUTORIAL_POPUP; SOCIAL_QUEUEING_TOAST appears to be no sound
+	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
+	PlaySound(7355) --TUTORIAL_POPUP
+
 	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
 end
 
