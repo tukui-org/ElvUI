@@ -1992,12 +1992,33 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 	return leaderName == playerName
 end
 
-local lastQueueString
+local socialQueueCache = {}
+function CH:RecentSocialQueue(TIME, MSG)
+	local previousMessage, fiveMinutes = false
+
+	if next(socialQueueCache) then
+		for guid, tbl in pairs(socialQueueCache) do
+			-- !dont break this loop! its used to keep the cache updated
+			fiveMinutes = difftime(TIME, tbl[1]) >= 300
+			if fiveMinutes then
+				socialQueueCache[guid] = nil --remove any older than 5m
+			elseif MSG and MSG == tbl[2] then
+				previousMessage = true --dont show any of the same message within 5m
+			end
+		end
+	end
+
+	return previousMessage
+end
+
 function CH:SocialQueueMessage(guid, message)
 	if not (guid and message) then return end
-	local queueString = format("%s:%s", guid, message)
-	if lastQueueString == queueString then return end
-	lastQueueString = queueString --store last queue to attempt preventing duplicates
+
+	-- prevent duplicate messages within 5 minutes
+	local TIME = time()
+	if self:RecentSocialQueue(TIME, message) then return end
+	socialQueueCache[guid] = {TIME, message}
+
 	PlaySound(7355) --TUTORIAL_POPUP; SOCIAL_QUEUEING_TOAST appears to be no sound
 	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
 end
