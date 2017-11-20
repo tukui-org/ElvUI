@@ -1993,7 +1993,7 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 end
 
 local socialQueueCache = {}
-function CH:RecentSocialQueue(TIME, MSG)
+local function RecentSocialQueue(TIME, MSG)
 	local previousMessage = false
 	if next(socialQueueCache) then
 		for guid, tbl in pairs(socialQueueCache) do
@@ -2016,7 +2016,7 @@ function CH:SocialQueueMessage(guid, message)
 
 	-- prevent duplicate messages within 5 minutes
 	local TIME = time()
-	if self:RecentSocialQueue(TIME, message) then return end
+	if RecentSocialQueue(TIME, message) then return end
 	socialQueueCache[guid] = {TIME, message}
 
 	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
