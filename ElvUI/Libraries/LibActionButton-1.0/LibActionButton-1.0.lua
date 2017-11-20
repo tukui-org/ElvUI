@@ -698,6 +698,8 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SHOWGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_HIDEGRID")
+	lib.eventFrame:RegisterEvent("PET_BAR_SHOWGRID")
+	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	--lib.eventFrame:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
 	--lib.eventFrame:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
@@ -759,10 +761,10 @@ function OnEvent(frame, event, arg1, ...)
 		ForAllButtons(Update)
 	elseif event == "ACTIONBAR_PAGE_CHANGED" or event == "UPDATE_BONUS_ACTIONBAR" then
 		-- TODO: Are these even needed?
-	elseif event == "ACTIONBAR_SHOWGRID" then
-		ShowGrid()
-	elseif event == "ACTIONBAR_HIDEGRID" then
-		HideGrid()
+	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
+		ShowGrid(event)
+	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
+		HideGrid(event)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
@@ -944,7 +946,16 @@ function OnUpdate(_, elapsed)
 end
 
 local gridCounter = 0
-function ShowGrid()
+local isPetGrid = false
+function ShowGrid(event)
+	if event == "PET_BAR_SHOWGRID" then
+		isPetGrid = true
+	elseif isPetGrid then
+		return
+		-- when PET_BAR_SHOWGRID fires then ACTIONBAR_SHOWGRID fires
+		-- ACTIONBAR_HIDEGRID will not get called but PET_BAR_HIDEGRID does
+		-- LIKELY A BLIZZARD ISSUE.
+	end
 	gridCounter = gridCounter + 1
 	if gridCounter >= 1 then
 		for button in next, ButtonRegistry do
@@ -955,7 +966,12 @@ function ShowGrid()
 	end
 end
 
-function HideGrid()
+function HideGrid(event)
+	if event == "PET_BAR_HIDEGRID" then
+		isPetGrid = false
+	elseif isPetGrid then
+		return --see comment above related to `isPetGrid`
+	end
 	if gridCounter > 0 then
 		gridCounter = gridCounter - 1
 	end
