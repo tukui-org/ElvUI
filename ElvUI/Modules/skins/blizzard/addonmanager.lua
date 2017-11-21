@@ -17,6 +17,14 @@ local function LoadSkin()
 	local AddonList = _G["AddonList"]
 	AddonList:StripTextures()
 	AddonList:SetTemplate("Transparent")
+
+	--Original Size: 500, 478
+	AddonList:SetSize(550, 478)
+
+	--Original Size: 449,99, 382
+	--Adjusting the ScrollFrame will also positon the ScrollBar.
+	AddonListScrollFrame:SetSize(499, 382)
+
 	AddonListInset:StripTextures()
 
 	S:HandleButton(AddonListEnableAllButton, true)
