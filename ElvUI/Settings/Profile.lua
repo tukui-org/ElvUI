@@ -211,9 +211,12 @@ P['bags'] = {
 --NamePlate
 P["nameplates"] = {
 	["statusbar"] = "ElvUI Norm",
-	['font'] = "PT Sans Narrow",
-	['fontSize'] = 11,
-	['fontOutline'] = "OUTLINE",
+	["font"] = "PT Sans Narrow",
+	["fontSize"] = 11,
+	["fontOutline"] = "OUTLINE",
+	["healthFont"] = "PT Sans Narrow",
+	["healthFontSize"] = 11,
+	["healthFontOutline"] = "OUTLINE",
 	["durationFont"] = "PT Sans Narrow",
 	["durationFontSize"] = 10,
 	["durationFontOutline"] = "OUTLINE",

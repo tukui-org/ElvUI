@@ -2994,20 +2994,20 @@ E.Options.args.nameplate = {
 							args = {
 								font = {
 									type = "select", dialogControl = 'LSM30_Font',
-									order = 4,
+									order = 1,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontSize = {
-									order = 5,
+									order = 2,
 									name = FONT_SIZE,
 									type = "range",
-									min = 4, max = 212, step = 1,
+									min = 4, max = 60, step = 1,
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								fontOutline = {
-									order = 6,
+									order = 3,
 									name = L["Font Outline"],
 									desc = L["Set the font outline."],
 									type = "select",
@@ -3021,28 +3021,63 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
+						health = {
+							type = "group",
+							order = 4,
+							name = L["Health"],
+							guiInline = true,
+							args = {
+								healthFont = {
+									type = "select", dialogControl = 'LSM30_Font',
+									order = 1,
+									name = L["Font"],
+									values = AceGUIWidgetLSMlists.font,
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
+								},
+								healthFontSize = {
+									order = 2,
+									name = FONT_SIZE,
+									type = "range",
+									min = 4, max = 36, step = 1, -- max 20 cause otherwise it looks weird
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
+								},
+								healthFontOutline = {
+									order = 3,
+									name = L["Font Outline"],
+									desc = L["Set the font outline."],
+									type = "select",
+									values = {
+										['NONE'] = NONE,
+										['OUTLINE'] = 'OUTLINE',
+										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+										['THICKOUTLINE'] = 'THICKOUTLINE',
+									},
+									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
+								},
+							}
+						},
 						duration = {
 							type = "group",
-							order = 7,
+							order = 5,
 							name = L["Duration"],
 							guiInline = true,
 							args = {
 								durationFont = {
 									type = "select", dialogControl = 'LSM30_Font',
-									order = 8,
+									order = 1,
 									name = L["Font"],
 									values = AceGUIWidgetLSMlists.font,
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontSize = {
-									order = 9,
+									order = 2,
 									name = FONT_SIZE,
 									type = "range",
-									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+									min = 4, max = 20, step = 1,
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationFontOutline = {
-									order = 10,
+									order = 3,
 									name = L["Font Outline"],
 									desc = L["Set the font outline."],
 									type = "select",
@@ -3055,7 +3090,7 @@ E.Options.args.nameplate = {
 									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
 								},
 								durationPosition = {
-									order = 11,
+									order = 4,
 									name = L["Position"],
 									type = "select",
 									values = {
@@ -3069,7 +3104,7 @@ E.Options.args.nameplate = {
 						},
 						stacks = {
 							type = "group",
-							order = 11,
+							order = 6,
 							name = L["Stack Counter"],
 							guiInline = true,
 							args = {

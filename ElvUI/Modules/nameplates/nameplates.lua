@@ -1012,7 +1012,7 @@ function mod:UpdateFonts(plate)
 		plate.CastBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 	if plate.HealthBar and plate.HealthBar.text then
-		plate.HealthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		plate.HealthBar.text:SetFont(LSM:Fetch("font", self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
 	end
 	if plate.PowerBar and plate.PowerBar.text then
 		plate.PowerBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
