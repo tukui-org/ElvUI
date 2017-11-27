@@ -546,6 +546,54 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
+local function MouseIsOver(frame)
+	local s = frame:GetParent():GetEffectiveScale()
+	local x, y = GetCursorPosition()
+	x = x / s
+	y = y / s
+
+	local left = frame:GetLeft()
+	local right = frame:GetRight()
+	local top = frame:GetTop()
+	local bottom = frame:GetBottom()
+
+	if(not left) then
+		return
+	end
+
+	if((x > left and x < right) and (y > bottom and y < top)) then 
+		return 1
+	else
+		return
+	end
+end
+
+local function borderManipulation(...)
+	for l = 1, select('#', ...) do
+		local obj = select(l, ...)
+		if(obj:GetObjectType() == 'FontString' and MouseIsOver(obj)) then
+			return obj:GetText()
+		end
+	end
+end
+
+local eb = ChatFrame1EditBox
+local _SetItemRef = SetItemRef
+function SetItemRef(link, text, button, ...)
+	if(link:sub(1, 5) ~= 'yCopy') then return _SetItemRef(link, text, button, ...) end
+
+	local text = borderManipulation(SELECTED_CHAT_FRAME.FontStringContainer:GetRegions())
+	if(text) then 
+		text = text:gsub('|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
+		text = text:gsub('|H.-|h(.-)|h', '%1')
+
+		eb:Insert(text)
+		eb:Show()
+		eb:HighlightText()
+		eb:SetFocus()
+	end
+end
+
 function CH:AddMessage(msg, ...)
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
@@ -560,6 +608,12 @@ function CH:AddMessage(msg, ...)
 			msg = format("[%s] %s", timeStamp, msg)
 		end
 		CH.timeOverride = nil;
+	end
+
+	if (CH.db.copyChatLines) then
+		if(type(msg) == 'string') then
+			msg = format('|HyCopy|h%s|h|r %s', [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
+		end
 	end
 
 	self.OldAddMessage(self, msg, ...)
