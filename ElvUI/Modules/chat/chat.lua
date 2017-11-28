@@ -927,6 +927,20 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
+local function SetChatEditBoxMessage(message)
+	local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+	local editBoxShown = ChatFrameEditBox:IsShown()
+	local editBoxText = ChatFrameEditBox:GetText()
+	if not editBoxShown then
+		ChatEdit_ActivateChat(ChatFrameEditBox)
+	end
+	if editBoxText and editBoxText ~= "" then
+		ChatFrameEditBox:SetText('')
+	end
+	ChatFrameEditBox:Insert(message)
+	ChatFrameEditBox:HighlightText()
+end
+
 local function HyperLinkedCPL(data)
 	if strsub(data, 1, 3) == "cpl" then
 		local chatID = strsub(data, 5)
@@ -937,19 +951,9 @@ local function HyperLinkedCPL(data)
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
 			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
 			if message and message ~= "" then
-				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-				local editBoxShown = ChatFrameEditBox:IsShown()
-				local editBoxText = ChatFrameEditBox:GetText()
-				if not editBoxShown then
-					ChatEdit_ActivateChat(ChatFrameEditBox)
-				end
-				if editBoxText and editBoxText ~= "" then
-					ChatFrameEditBox:SetText('')
-				end
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
-				ChatFrameEditBox:Insert(message)
-				ChatFrameEditBox:HighlightText()
+				SetChatEditBoxMessage(message)
 			end
 		end
 		return
@@ -972,13 +976,10 @@ end
 
 local function HyperLinkedURL(data)
 	if strsub(data, 1, 3) == "url" then
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 		local currentLink = strsub(data, 5)
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
+		if currentLink and currentLink ~= "" then
+			SetChatEditBoxMessage(currentLink)
 		end
-		ChatFrameEditBox:Insert(currentLink)
-		ChatFrameEditBox:HighlightText()
 		return
 	end
 end
