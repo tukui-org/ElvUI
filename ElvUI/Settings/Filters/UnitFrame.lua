@@ -656,7 +656,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	-- Legion
-
 	-- Antorus, the Burning Throne
 		-- Garothi Worldbreaker
 		[244761] = Defaults(), -- Annihilation
