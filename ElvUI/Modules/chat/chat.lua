@@ -935,8 +935,13 @@ local function HyperLinkedCPL(data)
 			local message = chat:GetMessageInfo((numLines - lineIndex) + 1)
 			if message then
 				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-				if (not ChatFrameEditBox:IsShown()) then
+				local editBoxShown = ChatFrameEditBox:IsShown()
+				local editBoxText = ChatFrameEditBox:GetText()
+				if not editBoxShown then
 					ChatEdit_ActivateChat(ChatFrameEditBox)
+				end
+				if editBoxText and editBoxText ~= "" then
+					ChatFrameEditBox:SetText('')
 				end
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
