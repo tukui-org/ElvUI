@@ -929,6 +929,7 @@ local function HyperLinkedCPL(data)
 	if strsub(data, 1, 3) == "cpl" then
 		local chatID = strsub(data, 5)
 		local chat = _G[format("ChatFrame%d", chatID)]
+		if not chat then return end
 		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(GetCursorPosition())
 		if lineIndex then
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
