@@ -931,9 +931,9 @@ local function HyperLinkedCPL(data)
 		local chat = _G[format("ChatFrame%d", chatID)]
 		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(GetCursorPosition())
 		if lineIndex then
-			local numLines = chat:GetNumMessages()
-			local message = chat:GetMessageInfo((numLines - lineIndex) + 1)
-			if message then
+			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
+			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
+			if message and message ~= "" then
 				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 				local editBoxShown = ChatFrameEditBox:IsShown()
 				local editBoxText = ChatFrameEditBox:GetText()
