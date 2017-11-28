@@ -58,6 +58,7 @@ local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
+local GetCursorPosition = GetCursorPosition
 local GMChatFrame_IsGM = GMChatFrame_IsGM
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -562,6 +563,10 @@ function CH:AddMessage(msg, ...)
 		CH.timeOverride = nil;
 	end
 
+	if CH.db.copyChatLines then
+		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
+	end
+
 	self.OldAddMessage(self, msg, ...)
 end
 
@@ -575,12 +580,16 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
+	--this is for stripping the copyChatLines texture from the front of messages (including the space added with it)
+	text = gsub(text, "|h|TInterface\\AddOns\\ElvUI\\media\\textures\\ArrowRight:14|t|h ", "|h|h")
+
+	--converts raid icons into {star} etc
 	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x)
 		x = _G["RAID_TARGET_"..x];return "{"..strlower(x).."}"
 	end)
 
-	text = gsub(text, "|H.-|h(.-)|h", "%1")
-	return gsub(text, "|T.-|t", "")
+	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text
+	return gsub(text, "|T.-|t", "") --finally, strip any other texture out completely
 end
 
 local function colorizeLine(text, r, g, b)
@@ -918,8 +927,43 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local SetHyperlink = ItemRefTooltip.SetHyperlink
-function ItemRefTooltip:SetHyperlink(data, ...)
+local function SetChatEditBoxMessage(message)
+	local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+	local editBoxShown = ChatFrameEditBox:IsShown()
+	local editBoxText = ChatFrameEditBox:GetText()
+	if not editBoxShown then
+		ChatEdit_ActivateChat(ChatFrameEditBox)
+	end
+	if editBoxText and editBoxText ~= "" then
+		ChatFrameEditBox:SetText('')
+	end
+	ChatFrameEditBox:Insert(message)
+	ChatFrameEditBox:HighlightText()
+end
+
+local function HyperLinkedCPL(data)
+	if strsub(data, 1, 3) == "cpl" then
+		local chatID = strsub(data, 5)
+		local chat = _G[format("ChatFrame%d", chatID)]
+		if not chat then return end
+		local scale = chat:GetEffectiveScale() --blizzard does this with `scale = UIParent:GetScale()`
+		local cursorX, cursorY = GetCursorPosition()
+		cursorX, cursorY = (cursorX / scale), (cursorY / scale)
+		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(cursorX, cursorY)
+		if lineIndex then
+			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
+			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
+			if message and message ~= "" then
+				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
+				message = strtrim(removeIconFromLine(message))
+				SetChatEditBoxMessage(message)
+			end
+		end
+		return
+	end
+end
+
+local function HyperLinkedSQU(data)
 	if strsub(data, 1, 3) == "squ" then
 		if not QuickJoinFrame:IsShown() then
 			ToggleQuickJoinPanel()
@@ -929,43 +973,30 @@ function ItemRefTooltip:SetHyperlink(data, ...)
 			QuickJoinFrame:SelectGroup(guid)
 			QuickJoinFrame:ScrollToGroup(guid)
 		end
-	elseif strsub(data, 1, 3) == "url" then
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+		return
+	end
+end
+
+local function HyperLinkedURL(data)
+	if strsub(data, 1, 3) == "url" then
 		local currentLink = strsub(data, 5)
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
+		if currentLink and currentLink ~= "" then
+			SetChatEditBoxMessage(currentLink)
 		end
-		ChatFrameEditBox:Insert(currentLink)
-		ChatFrameEditBox:HighlightText()
+		return
+	end
+end
+
+local SetHyperlink = ItemRefTooltip.SetHyperlink
+function ItemRefTooltip:SetHyperlink(data, ...)
+	if strsub(data, 1, 3) == "cpl" then
+		HyperLinkedCPL(data)
+	elseif strsub(data, 1, 3) == "squ" then
+		HyperLinkedSQU(data)
+	elseif strsub(data, 1, 3) == "url" then
+		HyperLinkedURL(data)
 	else
 		SetHyperlink(self, data, ...)
-	end
-end
-
-local function WIM_SQULink(link)
-	if strsub(link, 1, 3) == "squ" then
-		if not QuickJoinFrame:IsShown() then
-			ToggleQuickJoinPanel()
-		end
-		local guid = strsub(link, 5)
-		if guid and guid ~= '' then
-			QuickJoinFrame:SelectGroup(guid)
-			QuickJoinFrame:ScrollToGroup(guid)
-		end
-		return
-	end
-end
-
-local function WIM_URLLink(link)
-	if strsub(link, 1, 3) == "url" then
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local currentLink = strsub(link, 5)
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
-		end
-		ChatFrameEditBox:Insert(currentLink)
-		ChatFrameEditBox:HighlightText()
-		return
 	end
 end
 
@@ -2149,8 +2180,9 @@ function CH:Initialize()
 
 	if WIM then
 		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
-		WIM.RegisterItemRefHandler('url', WIM_URLLink)
-		WIM.RegisterItemRefHandler('squ', WIM_SQULink)
+		WIM.RegisterItemRefHandler('url', HyperLinkedURL)
+		WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
+		WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
 	end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')

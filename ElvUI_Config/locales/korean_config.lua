@@ -282,6 +282,7 @@ L["Your Auras First"] = "내가 걸은 효과 먼저"
 
 --Chat
 L["Above Chat"] = "채팅창 위에 배치"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = "우측 패널의 세로길이를 결정합니다."
 L["Adjust the width of your right chat panel."] = "우측 패널의 가로길이를 결정합니다."
 L["Alerts"] = "알림"
@@ -293,6 +294,7 @@ L["Below Chat"] = "채팅창 아래에 배치"
 L["Chat EditBox Position"] = "대화입력창 위치"
 L["Chat History"] = "이전 채팅내역 기억"
 L["Class Color Mentions"] = true
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = true
 L["Display LFG Icons in group chat."] = "말한 사람에게 역할 아이콘이 설정되어 있는 경우 이름에 같이 표시할지 여부를 결정합니다."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "각종 링크에 커서를 갖다 댄(마우스오버) 동안에 링크에 대한 툴팁을 표시합니다."

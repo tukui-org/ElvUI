@@ -234,6 +234,7 @@ L["Your Auras First"] = true
 
 --Chat
 L["Above Chat"] = true
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = true
 L["Adjust the width of your right chat panel."] = true
 L["Alerts"] = true
@@ -245,6 +246,7 @@ L["Below Chat"] = true
 L["Chat EditBox Position"] = true
 L["Chat History"] = true
 L["Class Color Mentions"] = true
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = true
 L["Display LFG Icons in group chat."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = true

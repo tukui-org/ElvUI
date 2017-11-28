@@ -236,6 +236,7 @@ L["Your Auras First"] = "自身光环优先"
 
 --Chat
 L["Above Chat"] = "聊天框上方"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = "调整右聊天框的高度"
 L["Adjust the width of your right chat panel."] = "调整右聊天框的宽度"
 L["Alerts"] = "提醒"
@@ -247,6 +248,7 @@ L["Below Chat"] = "聊天框下方"
 L["Chat EditBox Position"] = "聊天输入框位置"
 L["Chat History"] = "聊天历史"
 L["Class Color Mentions"] = "职业颜色提示"
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = "自定义时间戳颜色"
 L["Display LFG Icons in group chat."] = "在小队聊天中显示随机队列图标"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在链接上时显示鼠标提示"
