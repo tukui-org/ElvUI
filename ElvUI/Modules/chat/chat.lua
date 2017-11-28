@@ -561,7 +561,7 @@ local function MouseIsOver(frame)
 		return
 	end
 
-	if((x > left and x < right) and (y > bottom and y < top)) then 
+	if((x > left and x < right) and (y > bottom and y < top)) then
 		return 1
 	else
 		return
@@ -569,8 +569,8 @@ local function MouseIsOver(frame)
 end
 
 local function borderManipulation(...)
-	for l = 1, select('#', ...) do
-		local obj = select(l, ...)
+	for i = 1, select('#', ...) do
+		local obj = select(i, ...)
 		if(obj:GetObjectType() == 'FontString' and MouseIsOver(obj)) then
 			return obj:GetText()
 		end

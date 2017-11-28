@@ -236,6 +236,7 @@ L["Your Auras First"] = "Vos Auras en premier"
 
 --Chat
 L["Above Chat"] = "En-dessus du Chat"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = "Ajuste la hauteur de la fenêtre de discussion de droite."
 L["Adjust the width of your right chat panel."] = "Ajuste la largeur de la fenêtre de discussion de droite."
 L["Alerts"] = "Alertes"
@@ -247,6 +248,7 @@ L["Below Chat"] = "En-dessous du Chat"
 L["Chat EditBox Position"] = "Position de la fenêtre de saisie du Chat"
 L["Chat History"] = "historique de la discussion"
 L["Class Color Mentions"] = "Colorer les mentions suivant la classe"
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = "Couleur personnalisée pour les heures"
 L["Display LFG Icons in group chat."] = "Afficher l'icône RDG dans la discussion de groupe."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Afficher une infobulle pendant le survol d'un lien d'objet, sort, etc..."

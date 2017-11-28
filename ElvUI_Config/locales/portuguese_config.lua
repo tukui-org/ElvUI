@@ -236,6 +236,7 @@ L["Your Auras First"] = "Suas auras primeiro"
 
 --Chat
 L["Above Chat"] = "Acima do Bate-papo"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = true
 L["Adjust the width of your right chat panel."] = true
 L["Alerts"] = true
@@ -247,6 +248,7 @@ L["Below Chat"] = "Abaixo do Bate-papo"
 L["Chat EditBox Position"] = "Posição da caixa de edição do bate-papo"
 L["Chat History"] = "Histórico do bate-papo"
 L["Class Color Mentions"] = true
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = true
 L["Display LFG Icons in group chat."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Exibir a tooltip de um hyperlink quando pairar por cima deste."

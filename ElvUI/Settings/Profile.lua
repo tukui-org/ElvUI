@@ -768,7 +768,7 @@ P['chat'] = {
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',
-	["copyChatLines"] = true,
+	["copyChatLines"] = false,
 }
 
 --Datatexts

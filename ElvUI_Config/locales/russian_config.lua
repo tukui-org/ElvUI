@@ -235,6 +235,7 @@ L["Your Auras First"] = "Сначала свои"
 
 --Chat
 L["Above Chat"] = "Над чатом"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = "Настроить высоту правой панели чата"
 L["Adjust the width of your right chat panel."] = "Настроить ширину правой панели чата."
 L["Alerts"] = "Оповещения"
@@ -246,6 +247,7 @@ L["Below Chat"] = "Под чатом"
 L["Chat EditBox Position"] = "Позиция поля ввода"
 L["Chat History"] = "История чата"
 L["Class Color Mentions"] = "Упоминания цветом класса"
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = "Свой цвет времени"
 L["Display LFG Icons in group chat."] = "Отображать иконки выбранных ролей в чате"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Отображать подсказку ссылки на при наведении на нее мыши. Действует на предметы, достижения, сохранения подземелий и тд."
