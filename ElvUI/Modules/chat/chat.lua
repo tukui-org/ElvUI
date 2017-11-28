@@ -925,48 +925,7 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local SetHyperlink = ItemRefTooltip.SetHyperlink
-function ItemRefTooltip:SetHyperlink(data, ...)
-	if strsub(data, 1, 3) == "cpl" then
-		local chatID = strsub(data, 5)
-		local chat = _G[format("ChatFrame%d", chatID)]
-		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(GetCursorPosition())
-		if lineIndex then
-			local numLines = chat:GetNumMessages()
-			local message = chat:GetMessageInfo((numLines - lineIndex) + 1)
-			if message then
-				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-				if (not ChatFrameEditBox:IsShown()) then
-					ChatEdit_ActivateChat(ChatFrameEditBox)
-				end
-				message = removeIconFromLine(message)
-				ChatFrameEditBox:Insert(message)
-				ChatFrameEditBox:HighlightText()
-			end
-		end
-	elseif strsub(data, 1, 3) == "squ" then
-		if not QuickJoinFrame:IsShown() then
-			ToggleQuickJoinPanel()
-		end
-		local guid = strsub(data, 5)
-		if guid and guid ~= '' then
-			QuickJoinFrame:SelectGroup(guid)
-			QuickJoinFrame:ScrollToGroup(guid)
-		end
-	elseif strsub(data, 1, 3) == "url" then
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local currentLink = strsub(data, 5)
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
-		end
-		ChatFrameEditBox:Insert(currentLink)
-		ChatFrameEditBox:HighlightText()
-	else
-		SetHyperlink(self, data, ...)
-	end
-end
-
-local function WIM_CPLLink(data)
+local function HyperLinkedCPL(data)
 	if strsub(data, 1, 3) == "cpl" then
 		local chatID = strsub(data, 5)
 		local chat = _G[format("ChatFrame%d", chatID)]
@@ -988,12 +947,12 @@ local function WIM_CPLLink(data)
 	end
 end
 
-local function WIM_SQULink(link)
-	if strsub(link, 1, 3) == "squ" then
+local function HyperLinkedSQU(data)
+	if strsub(data, 1, 3) == "squ" then
 		if not QuickJoinFrame:IsShown() then
 			ToggleQuickJoinPanel()
 		end
-		local guid = strsub(link, 5)
+		local guid = strsub(data, 5)
 		if guid and guid ~= '' then
 			QuickJoinFrame:SelectGroup(guid)
 			QuickJoinFrame:ScrollToGroup(guid)
@@ -1002,16 +961,29 @@ local function WIM_SQULink(link)
 	end
 end
 
-local function WIM_URLLink(link)
-	if strsub(link, 1, 3) == "url" then
+local function HyperLinkedURL(data)
+	if strsub(data, 1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local currentLink = strsub(link, 5)
+		local currentLink = strsub(data, 5)
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
 		ChatFrameEditBox:Insert(currentLink)
 		ChatFrameEditBox:HighlightText()
 		return
+	end
+end
+
+local SetHyperlink = ItemRefTooltip.SetHyperlink
+function ItemRefTooltip:SetHyperlink(data, ...)
+	if strsub(data, 1, 3) == "cpl" then
+		HyperLinkedCPL(data)
+	elseif strsub(data, 1, 3) == "squ" then
+		HyperLinkedSQU(data)
+	elseif strsub(data, 1, 3) == "url" then
+		HyperLinkedURL(data)
+	else
+		SetHyperlink(self, data, ...)
 	end
 end
 
@@ -2195,9 +2167,9 @@ function CH:Initialize()
 
 	if WIM then
 		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
-		WIM.RegisterItemRefHandler('url', WIM_URLLink)
-		WIM.RegisterItemRefHandler('squ', WIM_SQULink)
-		WIM.RegisterItemRefHandler('cpl', WIM_CPLLink)
+		WIM.RegisterItemRefHandler('url', HyperLinkedURL)
+		WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
+		WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
 	end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
