@@ -938,6 +938,7 @@ local function HyperLinkedCPL(data)
 				if (not ChatFrameEditBox:IsShown()) then
 					ChatEdit_ActivateChat(ChatFrameEditBox)
 				end
+				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
 				ChatFrameEditBox:Insert(message)
 				ChatFrameEditBox:HighlightText()
