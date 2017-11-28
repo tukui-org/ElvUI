@@ -656,6 +656,115 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	-- Legion
+
+	-- Antorus, the Burning Throne
+		-- Garothi Worldbreaker
+		[244761] = Defaults(), -- Annihilation
+		[246369] = Defaults(), -- Searing Barrage
+		[246848] = Defaults(), -- Luring Destruction
+		[246220] = Defaults(), -- Fel Bombardment
+		[247159] = Defaults(), -- Luring Destruction
+		[244122] = Defaults(), -- Carnage
+
+		-- Felhounds of Sargeras
+		[245022] = Defaults(), -- Burning Remnant
+		[251445] = Defaults(), -- Smouldering
+		[251448] = Defaults(), -- Burning Maw
+		[244086] = Defaults(), -- Molten Touch
+		[244091] = Defaults(), -- Singed
+		[244768] = Defaults(), -- Desolate Gaze
+		[244767] = Defaults(), -- Desolate Path
+		[244471] = Defaults(), -- Enflame Corruption
+		[248815] = Defaults(), -- Enflamed
+		[244517] = Defaults(), -- Lingering Flames
+		[245098] = Defaults(), -- Decay
+		[251447] = Defaults(), -- Corrupting Maw
+		[244131] = Defaults(), -- Consuming Sphere
+		[245024] = Defaults(), -- Consumed
+		[244071] = Defaults(), -- Weight of Darkness
+		[244578] = Defaults(), -- Siphon Corruption
+		[248819] = Defaults(), -- Siphoned
+
+		-- Antoran High Command
+		[245121] = Defaults(), -- Entropic Blast
+		[244748] = Defaults(), -- Shocked
+		[244824] = Defaults(), -- Warp Field
+		[244892] = Defaults(), -- Exploit Weakness
+		[244172] = Defaults(), -- Psychic Assault
+		[244388] = Defaults(), -- Psychic Scarring
+		[244420] = Defaults(), -- Chaos Pulse
+
+		-- Portal Keeper Hasabel
+		[244016] = Defaults(), -- Reality Tear
+		[245157] = Defaults(), -- Everburning Light
+		[245075] = Defaults(), -- Hungering Gloom
+		[245240] = Defaults(), -- Oppressive Gloom
+		[244709] = Defaults(), -- Fiery Detonation
+		[246208] = Defaults(), -- Acidic Web
+		[246075] = Defaults(), -- Catastrophic Implosion
+		[244826] = Defaults(), -- Fel Miasma
+		[246316] = Defaults(), -- Poison Essence
+		[244849] = Defaults(), -- Caustic Slime
+		[245118] = Defaults(), -- Cloying Shadows
+		[245050] = Defaults(), -- Delusions
+		[245040] = Defaults(), -- Corrupt
+		[244926] = Defaults(), -- Felsilk Wrap
+		[244607] = Defaults(), -- Flames of Xoroth
+
+		-- Eonar the Life-Binder
+		[248326] = Defaults(), -- Rain of Fel
+		[248861] = Defaults(), -- Spear of Doom
+		[249016] = Defaults(), -- Feedback - Targeted
+		[249015] = Defaults(), -- Feedback - Burning Embers
+		[249014] = Defaults(), -- Feedback - Foul Steps
+		[249017] = Defaults(), -- Feedback - Arcane Singularity
+
+		-- Imonar the Soulhunter
+		[248424] = Defaults(), -- Gathering Power
+		[247552] = Defaults(), -- Sleep Canister
+		[247565] = Defaults(), -- Slumber Gas
+		[250224] = Defaults(), -- Shocked
+		[248252] = Defaults(), -- Infernal Rockets
+		[247687] = Defaults(), -- Sever
+		[247716] = Defaults(), -- Charged Blasts
+		[250255] = Defaults(), -- Empowered Shock Lance
+		[247641] = Defaults(), -- Stasis Trap
+
+		-- Kin'garoth
+		[233062] = Defaults(), -- Infernal Burning
+		[230345] = Defaults(), -- Crashing Comet
+		[244312] = Defaults(), -- Forging Strike
+		[246840] = Defaults(), -- Ruiner
+		[248061] = Defaults(), -- Purging Protocol
+		[246706] = Defaults(), -- Demolish
+
+		-- Varimathras
+		[244042] = Defaults(), -- Marked Prey
+		[243961] = Defaults(), -- Misery
+		[248732] = Defaults(), -- Echoes of Doom
+		[244093] = Defaults(), -- Necrotic Embrace
+
+		-- The Coven of Shivarra
+		[244899] = Defaults(), -- Fiery Strike
+		[245518] = Defaults(), -- Flashfreeze
+		[245586] = Defaults(), -- Chilled Blood
+		[246763] = Defaults(), -- Fury of Golganneth
+		[245674] = Defaults(), -- Flames of Khaz'goroth
+		[245910] = Defaults(), -- Spectral Army of Norgannon
+
+		-- Aggramar
+		[244291] = Defaults(), -- Foe Breaker
+		[245995] = Defaults(), -- Scorching Blaze
+		[246014] = Defaults(), -- Searing Tempest
+		[244912] = Defaults(), -- Blazing Eruption
+		[247135] = Defaults(), -- Scorched Earth
+		[247091] = Defaults(), -- Catalyzed
+		[245631] = Defaults(), -- Unchecked Flame
+		[245916] = Defaults(), -- Molten Remnants
+
+		-- Argus the Unmaker
+		-- [] = Defaults(), --
+
 	-- Tomb of Sargeras
 		-- Goroth
 		[233279] = Defaults(), -- Shattering Star
