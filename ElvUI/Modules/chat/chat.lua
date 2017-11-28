@@ -564,7 +564,7 @@ function CH:AddMessage(msg, ...)
 	end
 
 	if CH.db.copyChatLines then
-		msg = format('|Hcpl:%s|h%s|h|r %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
+		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
 	end
 
 	self.OldAddMessage(self, msg, ...)
@@ -580,7 +580,7 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
-	text = gsub(text, "|TInterface\\AddOns\\ElvUI\\media\\textures\\ArrowRight:14|t|h|r ", "|h|r")
+	text = gsub(text, "|h|TInterface\\AddOns\\ElvUI\\media\\textures\\ArrowRight:14|t|h ", "|h|h")
 
 	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x)
 		x = _G["RAID_TARGET_"..x];return "{"..strlower(x).."}"
