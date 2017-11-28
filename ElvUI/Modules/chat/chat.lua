@@ -58,6 +58,7 @@ local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
+local GetCursorPosition = GetCursorPosition
 local GMChatFrame_IsGM = GMChatFrame_IsGM
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -546,54 +547,6 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
-local function MouseIsOver(frame)
-	local s = frame:GetParent():GetEffectiveScale()
-	local x, y = GetCursorPosition()
-	x = x / s
-	y = y / s
-
-	local left = frame:GetLeft()
-	local right = frame:GetRight()
-	local top = frame:GetTop()
-	local bottom = frame:GetBottom()
-
-	if(not left) then
-		return
-	end
-
-	if((x > left and x < right) and (y > bottom and y < top)) then
-		return 1
-	else
-		return
-	end
-end
-
-local function borderManipulation(...)
-	for i = 1, select('#', ...) do
-		local obj = select(i, ...)
-		if(obj:GetObjectType() == 'FontString' and MouseIsOver(obj)) then
-			return obj:GetText()
-		end
-	end
-end
-
-local eb = ChatFrame1EditBox
-local _SetItemRef = SetItemRef
-function SetItemRef(link, text, button, ...)
-	if(link:sub(1, 5) ~= 'yCopy') then return _SetItemRef(link, text, button, ...) end
-
-	local text = borderManipulation(SELECTED_CHAT_FRAME.FontStringContainer:GetRegions())
-	if(text) then 
-		text = text:gsub('|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
-		text = text:gsub('|H.-|h(.-)|h', '%1')
-
-		eb:Insert(text)
-		eb:Show()
-		eb:HighlightText()
-		eb:SetFocus()
-	end
-end
-
 function CH:AddMessage(msg, ...)
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
@@ -610,10 +563,8 @@ function CH:AddMessage(msg, ...)
 		CH.timeOverride = nil;
 	end
 
-	if (CH.db.copyChatLines) then
-		if(type(msg) == 'string') then
-			msg = format('|HyCopy|h%s|h|r %s', [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
-		end
+	if CH.db.copyChatLines then
+		msg = format('|Hcpl:%s|h%s|h|r %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
 	end
 
 	self.OldAddMessage(self, msg, ...)
@@ -629,6 +580,8 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
+	text = gsub(text, "|TInterface\\AddOns\\ElvUI\\media\\textures\\ArrowRight:14|t|h|r ", "|h|r")
+
 	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x)
 		x = _G["RAID_TARGET_"..x];return "{"..strlower(x).."}"
 	end)
@@ -974,7 +927,24 @@ end
 
 local SetHyperlink = ItemRefTooltip.SetHyperlink
 function ItemRefTooltip:SetHyperlink(data, ...)
-	if strsub(data, 1, 3) == "squ" then
+	if strsub(data, 1, 3) == "cpl" then
+		local chatID = strsub(data, 5)
+		local chat = _G[format("ChatFrame%d", chatID)]
+		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(GetCursorPosition())
+		if lineIndex then
+			local numLines = chat:GetNumMessages()
+			local message = chat:GetMessageInfo((numLines - lineIndex) + 1)
+			if message then
+				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+				if (not ChatFrameEditBox:IsShown()) then
+					ChatEdit_ActivateChat(ChatFrameEditBox)
+				end
+				message = removeIconFromLine(message)
+				ChatFrameEditBox:Insert(message)
+				ChatFrameEditBox:HighlightText()
+			end
+		end
+	elseif strsub(data, 1, 3) == "squ" then
 		if not QuickJoinFrame:IsShown() then
 			ToggleQuickJoinPanel()
 		end
@@ -993,6 +963,28 @@ function ItemRefTooltip:SetHyperlink(data, ...)
 		ChatFrameEditBox:HighlightText()
 	else
 		SetHyperlink(self, data, ...)
+	end
+end
+
+local function WIM_CPLLink(data)
+	if strsub(data, 1, 3) == "cpl" then
+		local chatID = strsub(data, 5)
+		local chat = _G[format("ChatFrame%d", chatID)]
+		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(GetCursorPosition())
+		if lineIndex then
+			local numLines = chat:GetNumMessages()
+			local message = chat:GetMessageInfo((numLines - lineIndex) + 1)
+			if message then
+				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+				if (not ChatFrameEditBox:IsShown()) then
+					ChatEdit_ActivateChat(ChatFrameEditBox)
+				end
+				message = strtrim(removeIconFromLine(message))
+				ChatFrameEditBox:Insert(message)
+				ChatFrameEditBox:HighlightText()
+			end
+		end
+		return
 	end
 end
 
@@ -2205,6 +2197,7 @@ function CH:Initialize()
 		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
 		WIM.RegisterItemRefHandler('url', WIM_URLLink)
 		WIM.RegisterItemRefHandler('squ', WIM_SQULink)
+		WIM.RegisterItemRefHandler('cpl', WIM_CPLLink)
 	end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
