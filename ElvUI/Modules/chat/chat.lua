@@ -580,16 +580,10 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
-	--this is for stripping the copyChatLines texture from the front of messages (including the space added with it)
-	text = gsub(text, "|h|TInterface\\AddOns\\ElvUI\\media\\textures\\ArrowRight:14|t|h ", "|h|h")
-
-	--converts raid icons into {star} etc
-	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x)
-		x = _G["RAID_TARGET_"..x];return "{"..strlower(x).."}"
-	end)
-
-	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text
-	return gsub(text, "|T.-|t", "") --finally, strip any other texture out completely
+	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x) x = x and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end) --converts raid icons into {star} etc, if possible.
+	text = gsub(text, "(%s?)|T.-|t(%s?)", function(x,y) return (x and x ~= "" and x) or (y and y ~= "" and y) or "" end) --strip any other texture out but keep a single space from the side(s).
+	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text.
+	return text
 end
 
 local function colorizeLine(text, r, g, b)
