@@ -580,8 +580,8 @@ function CH:UpdateSettings()
 end
 
 local function removeIconFromLine(text)
-	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x) x = x and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end) --converts raid icons into {star} etc, if possible.
-	text = gsub(text, "(%s?)|T.-|t(%s?)", function(x,y) return (x ~= "" and x) or (y ~= "" and y) or "" end) --strip any other texture out but keep a single space from the side(s).
+	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end) --converts raid icons into {star} etc, if possible.
+	text = gsub(text, "(%s?)|T.-|t(%s?)", function(x,y) return (x~="" and x) or (y~="" and y) or "" end) --strip any other texture out but keep a single space from the side(s).
 	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text.
 	return text
 end
