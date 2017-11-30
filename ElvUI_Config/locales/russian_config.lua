@@ -235,7 +235,7 @@ L["Your Auras First"] = "Сначала свои"
 
 --Chat
 L["Above Chat"] = "Над чатом"
-L["Adds an arrow infront of the chat lines to copy the entire line."] = true
+L["Adds an arrow infront of the chat lines to copy the entire line."] = "Добавляет стрелку в начале строк чата, позволяющую скопировать всю строку."
 L["Adjust the height of your right chat panel."] = "Настроить высоту правой панели чата"
 L["Adjust the width of your right chat panel."] = "Настроить ширину правой панели чата."
 L["Alerts"] = "Оповещения"
@@ -247,7 +247,7 @@ L["Below Chat"] = "Под чатом"
 L["Chat EditBox Position"] = "Позиция поля ввода"
 L["Chat History"] = "История чата"
 L["Class Color Mentions"] = "Упоминания цветом класса"
-L["Copy Chat Lines"] = true
+L["Copy Chat Lines"] = "Копирование строк чата"
 L["Custom Timestamp Color"] = "Свой цвет времени"
 L["Display LFG Icons in group chat."] = "Отображать иконки выбранных ролей в чате"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Отображать подсказку ссылки на при наведении на нее мыши. Действует на предметы, достижения, сохранения подземелий и тд."
@@ -921,7 +921,7 @@ L["Current"] = "Текущее"
 L["Custom Dead Backdrop"] = "Свой фон мертвого"
 L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
 L["Custom Texts"] = "Свой текст"
-L["Custom Texture"] = true
+L["Custom Texture"] = "Своя текстура"
 L["Debuff Highlighting"] = "Подсветка дебаффов"
 L["Debuffs"] = "Дебаффы"
 L["Decimal Threshold"] = "Десятые доли после..."
