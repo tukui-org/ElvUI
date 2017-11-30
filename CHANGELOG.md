@@ -1,3 +1,52 @@
+**Version 10.70 [  ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**  
+
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.69 [ December Xth 2017 ]**
+
+**New Additions:**  
+Added visibility settings to the Stance Bar. By default it will hide in vehicles and pet battles.  
+Added options for Combat Icon on the player unitframe.  
+Added options for Resting Icon on the player unitframe.  
+Added options for Health font on NamePlates.  
+Added option to copy a single chat line by clicking a texture on the left side of it.  
+Added raid debuffs for the new Antorus, the Burning Throne raid.  This requires testing and feedback by users.  
+
+
+**Bug Fixes:**  
+Fixed issue with Style Filter scale action.  
+Fixed pet type in the pet battle UI for non-English clients.  
+Fixed pet type in tooltip for non-English clients.  
+Fixed issue with nameplates not updating correctly when leaving a Warframe vehicle.  
+Fixed issue with chat history showing incorrect name on messages from BNet friends.  
+Fixed issue which caused auras to not respect the Max Duration setting when priority list was empty.  
+Fixed issue which may have caused weird behaviour with player nameplate hide delay.  
+Fixed issue which caused some Quick Join messages in chat to be duplicated.  
+
+
+**Misc. Changes:**  
+Various tweaks/updates to a lot of the skins.  
+Various code clean-up by Rubgrsch.  
+Tweaked pixel perfect code.  
+Made sure Style Filters can handle alpha with flash action.  
+Moved datatext gold format option into the "Currencies" tab.  
+Raid icons will now be displayed as text in the Copy Chat window so they can be copied correctly.  
+Chat History now supports multiple chat windows and will display the chat history in the correct chat window according to chat settings.  
+Holding down the Alt key while scrolling in the chat will now scroll by 1 line.  
+Changed Ace3 skin to no longer add border on SimpleGroup widgets.  
+The Quest Choice skin is now enabled by default.  
+
+___
 **Version 10.68 [ October 26th 2017 ]**
 
 **New Additions:**  
