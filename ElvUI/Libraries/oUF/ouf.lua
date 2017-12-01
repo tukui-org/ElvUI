@@ -285,8 +285,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 
 			-- No need to enable this for *target frames.
 			if(not (unit:match('target') or suffix == 'target')) then
-				-- BUG: Blizzard has changed the way vehicles work for Antoran High Command
-				object:SetAttribute('toggleForVehicle', false)
+				object:SetAttribute('toggleForVehicle', true)
 			end
 
 			-- Other boss and target units are handled by :HandleUnit().
