@@ -32,6 +32,7 @@ Fixed issue with chat history showing incorrect name on messages from BNet frien
 Fixed issue which caused auras to not respect the Max Duration setting when priority list was empty.  
 Fixed issue which may have caused weird behaviour with player nameplate hide delay.  
 Fixed issue which caused some Quick Join messages in chat to be duplicated.  
+Fixed issue which made it impossible to target raid members in vehicles in the new raid instance. This is a temporary workaround until Blizzard fixes the issue. Until then you need to use Raid-Pet Frames if you need to see vehicles (Malygos, Ulduar etc.).  
 
 
 **Misc. Changes:**  
