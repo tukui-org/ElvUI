@@ -282,11 +282,8 @@ local function OnEnter(self)
 		local status
 		for client, Table in pairs(tableList) do
 			if #Table > 0 then
-				if client == bsapString then
-					client = L["Mobile"]
-				end
 				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(battleNetString..' ('..client..')')
+				DT.tooltip:AddLine(format("%s (%s)", battleNetString, (client == bsapString and L["Mobile"]) or client))
 				for i = 1, #Table do
 					info = Table[i]
 					if info[7] then
