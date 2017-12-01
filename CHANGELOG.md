@@ -12,7 +12,7 @@
 
 
 ___
-**Version 10.69 [ December Xth 2017 ]**
+**Version 10.69 [ December 1st 2017 ]**
 
 **New Additions:**  
 Added visibility settings to the Stance Bar. By default it will hide in vehicles and pet battles.  
