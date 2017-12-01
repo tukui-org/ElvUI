@@ -89,7 +89,7 @@ local function whisperClick(self, name, battleNet)
 	if battleNet then
 		ChatFrame_SendSmartTell(name)
 	else
-		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )
+		SetItemRef( "player:"..name, format("|Hplayer:%1$s|h[%1$s]|h",name), "LeftButton" )
 	end
 end
 
@@ -104,8 +104,8 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
-local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp, BNTableBSAp, BNTableCLNT, BNTableHOTS, BNTableOW, BNTableSC2, BNTableDST2 = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [sc2String] = BNTableSC2, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW, [clntString] = BNTableCLNT, [dst2String] = BNTableDST2, [bsapString] = BNTableBSAp}
+local friendTable, BNTable = {}, {}
+local tableList = {[wowString] = {}, [d3String] = {}, [scString] = {}, [sc2String] = {}, [wtcgString] = {}, [appString] = {}, [hotsString] = {}, [owString] = {}, [clntString] = {}, [dst2String] = {}, [bsapString] = {}}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
@@ -137,29 +137,18 @@ local function BuildFriendTable(total)
 	sort(friendTable, SortAlphabeticName)
 end
 
---Sort alphabetic by accountName or characterName
+--Sort alphabetic by battleTag
 local function Sort(a, b)
-	if a[2] and b[2] and a[3] and b[3] then
-		if a[2] == b[2] then return a[3] < b[3] end
-		return a[2] < b[2]
+	if a[3] and b[3] then
+		return a[3] < b[3]
 	end
 end
 
 local function BuildBNTable(total)
+	for _,v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
-	wipe(BNTableWoW)
-	wipe(BNTableD3)
-	wipe(BNTableSC)
-	wipe(BNTableWTCG)
-	wipe(BNTableApp)
-	wipe(BNTableHOTS)
-	wipe(BNTableOW)
-	wipe(BNTableCLNT)
-	wipe(BNTableSC2)
-	wipe(BNTableDST2)
-	wipe(BNTableBSAp)
 
-	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
+	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, Table
 	local realmName, faction, race, class, zoneName, level
 	for i = 1, total do
 		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
@@ -171,47 +160,16 @@ local function BuildBNTable(total)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
-			if client == scString then
-				BNTableSC[#BNTableSC + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == sc2String then
-				BNTableSC2[#BNTableSC2 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == d3String then
-				BNTableD3[#BNTableD3 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == wtcgString then
-				BNTableWTCG[#BNTableWTCG + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == appString then
-				BNTableApp[#BNTableApp + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == hotsString then
-				BNTableHOTS[#BNTableHOTS + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == owString then
-				BNTableOW[#BNTableOW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == dst2String then
-				BNTableDST2[#BNTableDST2 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == wowString then
-				BNTableWoW[#BNTableWoW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-			elseif client == clntString then
-				BNTableCLNT[#BNTableCLNT + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level } --Unknown
-			else
-				BNTableBSAp[#BNTableBSAp + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level } --Mobile App
-			end
+			Table = tableList[client]
+			Table[#Table+1] = BNTable[i]
 		end
 	end
 
 	sort(BNTable, Sort)
-	sort(BNTableWoW, Sort)
-	sort(BNTableSC, Sort)
-	sort(BNTableSC2, Sort)
-	sort(BNTableD3, Sort)
-	sort(BNTableWTCG, Sort)
-	sort(BNTableApp, Sort)
-	sort(BNTableHOTS, Sort)
-	sort(BNTableOW, Sort)
-	sort(BNTableDST2, Sort)
-	sort(BNTableCLNT, Sort)
-	sort(BNTableBSAp, Sort)
+	for _,v in pairs(tableList) do sort(v, Sort) end
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event, message)
 	local _, onlineFriends = GetNumFriends()
 	local _, numBNetOnline = BNGetNumFriends()
 
@@ -219,7 +177,6 @@ local function OnEvent(self, event, ...)
 	-- when this is the case, we invalidate our buffered table and update the
 	-- datatext information
 	if event == "CHAT_MSG_SYSTEM" then
-		local message = select(1, ...)
 		if not (find(message, friendOnline) or find(message, friendOffline)) then return end
 	end
 
@@ -323,18 +280,18 @@ local function OnEnter(self)
 
 	if numBNetOnline > 0 then
 		local status
-		for client, BNTable in pairs(tableList) do
-			if #BNTable > 0 then
+		for client, Table in pairs(tableList) do
+			if #Table > 0 then
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(battleNetString..' ('..client..')')
-				for i = 1, #BNTable do
-					info = BNTable[i]
-					if info[6] then
-						if info[5] == wowString then
-							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
-							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]]
-							if info[15] ~= '' then
-								levelc = GetQuestDifficultyColor(info[15])
+				for i = 1, #Table do
+					info = Table[i]
+					if info[7] then
+						if info[6] == wowString then
+							if (info[8] == true) then status = 1 elseif (info[9] == true) then status = 2 else status = 3 end
+							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
+							if info[16] ~= '' then
+								levelc = GetQuestDifficultyColor(info[16])
 							else
 								levelc = RAID_CLASS_COLORS["PRIEST"]
 								classc = RAID_CLASS_COLORS["PRIEST"]
@@ -345,15 +302,15 @@ local function OnEnter(self)
 								classc = RAID_CLASS_COLORS["PRIEST"]
 							end
 
-							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
-							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
+							if UnitInParty(info[5]) or UnitInRaid(info[5]) then grouped = 1 else grouped = 2 end
+							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
-								if E:GetZoneText(GetCurrentMapAreaID()) == info[14] then zonec = activezone else zonec = inactivezone end
-								if GetRealmName() == info[10] then realmc = activezone else realmc = inactivezone end
-								DT.tooltip:AddDoubleLine(info[14], info[10], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+								if E:GetZoneText(GetCurrentMapAreaID()) == info[15] then zonec = activezone else zonec = inactivezone end
+								if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
+								DT.tooltip:AddDoubleLine(info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 							end
 						else
-							DT.tooltip:AddDoubleLine(info[3], info[2], .9, .9, .9, .9, .9, .9)
+							DT.tooltip:AddDoubleLine(info[4], info[2], .9, .9, .9, .9, .9, .9)
 						end
 					end
 				end
