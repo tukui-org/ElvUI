@@ -97,7 +97,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, bsapString, hotsString, owString, dst2String = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, L["Mobile"], BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2
+local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, bsapString, hotsString, owString, dst2String = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, 'BSAp', BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -282,6 +282,9 @@ local function OnEnter(self)
 		local status
 		for client, Table in pairs(tableList) do
 			if #Table > 0 then
+				if client == bsapString then
+					client = L["Mobile"]
+				end
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(battleNetString..' ('..client..')')
 				for i = 1, #Table do
