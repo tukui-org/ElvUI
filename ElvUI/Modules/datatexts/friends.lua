@@ -97,7 +97,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, bsapString, hotsString, owString, dst2String = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, 'BSAp', BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2
+local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, hotsString, owString, dst2String, bsapString = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2, 'BSAp'
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -148,7 +148,7 @@ local function BuildBNTable(total)
 	for _,v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
 
-	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, Table
+	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
 	local realmName, faction, race, class, zoneName, level
 	for i = 1, total do
 		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
@@ -160,8 +160,12 @@ local function BuildBNTable(total)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
-			Table = tableList[client]
-			Table[#Table+1] = BNTable[i]
+			if tableList[client] then
+				tableList[client][#tableList[client]+1] = BNTable[i]
+			else --if for some reason the client doesnt exist in `tableList` lets just add it and keep track
+				tableList[client] = {}
+				tableList[client][1] = BNTable[i]
+			end
 		end
 	end
 
