@@ -94,7 +94,7 @@ local function GetAuraOptions(headerName)
 			},
 		},
 	}
-	
+
 	return auraOptions
 end
 

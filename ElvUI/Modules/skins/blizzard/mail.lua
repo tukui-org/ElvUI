@@ -6,14 +6,16 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 --WoW API / Variables
-local ATTACHMENTS_MAX_SEND = ATTACHMENTS_MAX_SEND
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: INBOXITEMS_TO_DISPLAY, ATTACHMENTS_MAX_SEND
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 
+	local MailFrame = _G["MailFrame"]
 	MailFrame:StripTextures(true)
 	MailFrame:SetTemplate("Transparent")
-	--MailFrame:Width(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
@@ -63,8 +65,9 @@ local function LoadSkin()
 	S:HandleEditBox(SendMailMoneyCopper)
 	SendMailMoneyBg:Kill()
 	SendMailMoneyInset:StripTextures()
-	SendMailNameEditBox.backdrop:Point("BOTTOMRIGHT", 2, 4)
-	SendMailSubjectEditBox.backdrop:Point("BOTTOMRIGHT", 2, 0)
+	SendMailSubjectEditBox:Point("TOPLEFT", SendMailNameEditBox, "BOTTOMLEFT", 0, -10)
+	SendMailSubjectEditBox:SetHeight(18)
+	SendMailNameEditBox:SetHeight(18)
 	SendMailFrame:StripTextures()
 
 	local function MailFrameSkin()
@@ -115,9 +118,12 @@ local function LoadSkin()
 
 	S:HandleScrollBar(OpenMailScrollFrameScrollBar)
 
-	SendMailBodyEditBox:SetTextColor(1, 1, 1)
-	OpenMailBodyText:SetTextColor(1, 1, 1)
+	InboxPrevPageButton:Point("BOTTOMLEFT", 30, 100)
+	InboxNextPageButton:Point("BOTTOMRIGHT", -80, 100)
+	InvoiceTextFontNormal:SetFont(E.media.normFont, 13)
+	MailTextFontNormal:SetFont(E.media.normFont, 13)
 	InvoiceTextFontNormal:SetTextColor(1, 1, 1)
+	MailTextFontNormal:SetTextColor(1, 1, 1)
 	OpenMailArithmeticLine:Kill()
 
 	OpenMailLetterButton:StripTextures()

@@ -2,10 +2,15 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
+local select, type, unpack = select, type, unpack
 --WoW API / Variables
-local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local C_BlackMarket_GetNumItems = C_BlackMarket.GetNumItems
 local C_BlackMarket_GetItemInfoByIndex = C_BlackMarket.GetItemInfoByIndex
+local hooksecurefunc = hooksecurefunc
+-- GLOBALS: HybridScrollFrame_GetOffset, BLACK_MARKET_TITLE
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)
@@ -18,13 +23,10 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
 
+	local BlackMarketFrame = _G["BlackMarketFrame"]
 	BlackMarketFrame:StripTextures()
-	BlackMarketFrame:CreateBackdrop('Transparent')
-	BlackMarketFrame.backdrop:SetAllPoints()
-
+	BlackMarketFrame:SetTemplate('Transparent')
 	BlackMarketFrame.Inset:StripTextures()
-	BlackMarketFrame.Inset:CreateBackdrop()
-	BlackMarketFrame.Inset.backdrop:SetAllPoints()
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
 	S:HandleScrollBar(BlackMarketScrollFrameScrollBar, 4)
@@ -69,12 +71,8 @@ local function LoadSkin()
 	end)
 
 	BlackMarketFrame.HotDeal:StripTextures()
-	S:HandleItemButton(BlackMarketFrame.HotDeal.Item)
-	BlackMarketFrame.HotDeal.Item.hover:SetAllPoints()
-	BlackMarketFrame.HotDeal.Item.pushed:SetAllPoints()
-
-	--S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
-	--S:HandleEditBox(BlackMarketHotItemBidPriceGold)
+	BlackMarketFrame.HotDeal.Item.IconTexture:SetTexCoord(unpack(E.TexCoords))
+	BlackMarketFrame.HotDeal.Item.IconBorder:SetAlpha(0)
 
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())
@@ -83,6 +81,14 @@ local function LoadSkin()
 			region:Point('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end
 	end
+
+	hooksecurefunc("BlackMarketFrame_UpdateHotItem", function(self)
+		local hotDeal = self.HotDeal
+		if hotDeal:IsShown() and hotDeal.itemLink then
+			local _, _, quality = GetItemInfo(hotDeal.itemLink)
+			hotDeal.Name:SetTextColor(GetItemQualityColor(quality))
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_BlackMarketUI", "BlackMarket", LoadSkin)

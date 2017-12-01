@@ -3,11 +3,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 --Cache global variables
 --Lua functions
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
-local match = string.match
 --WoW API / Variables
 local IsMacClient = IsMacClient
 local GetCVar, SetCVar = GetCVar, SetCVar
 local GetScreenHeight, GetScreenWidth = GetScreenHeight, GetScreenWidth
+local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent, WorldMapFrame
@@ -83,7 +83,7 @@ function E:UIScale(event)
 		self.eyefinity = width;
 	end
 
-	self.mult = 768/match(self.resolution, "%d+x(%d+)")/scale;
+	self.mult = 768/self.screenheight/scale
 	self.Spacing = self.PixelMode and 0 or self.mult
 	self.Border = (self.PixelMode and self.mult or self.mult*2)
 
@@ -92,9 +92,8 @@ function E:UIScale(event)
 		if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
 			SetCVar("useUiScale", 1);
 			SetCVar("uiScale", scale);
-			WorldMapFrame.hasTaint = true;
 		end
-		
+
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
 		if (scale < 0.64) then
 			UIParent:SetScale(scale)
@@ -125,7 +124,6 @@ function E:UIScale(event)
 			if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
 				uiParentWidth = width
 				uiParentHeight = height
-				frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 			else
 				self.UIParent:SetSize(width, height);
 				self.UIParent.origHeight = self.UIParent:GetHeight()
@@ -138,9 +136,8 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			if InCombatLockdown() then
-				uiParentWidth = width
-				uiParentHeight = height
-				frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+				uiParentWidth = UIParent:GetWidth();
+				uiParentHeight = UIParent:GetHeight();
 			else
 				self.UIParent:SetSize(UIParent:GetSize());
 				self.UIParent.origHeight = self.UIParent:GetHeight()

@@ -5,9 +5,8 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Lua functions
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
-local tinsert, wipe = table.insert, table.wipe
+local tinsert, wipe, next = table.insert, table.wipe, next
 --WoW API / Variables
-local SquareButton_SetIcon = SquareButton_SetIcon
 local CreateFrame = CreateFrame
 local SetDesaturation = SetDesaturation
 local hooksecurefunc = hooksecurefunc
@@ -15,7 +14,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ScriptErrorsFrame
+-- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame
 
 E.Skins = S
 S.addonsToLoad = {}
@@ -34,6 +33,60 @@ end
 function S:SetOriginalBackdrop()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+end
+
+S.PVPHonorXPBarFrames = {}
+S.PVPHonorXPBarSkinned = false
+function S:SkinPVPHonorXPBar(frame)
+	S.PVPHonorXPBarFrames[frame] = true
+
+	if S.PVPHonorXPBarSkinned then return end
+	S.PVPHonorXPBarSkinned = true
+
+	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(XPBar)
+		if not S.PVPHonorXPBarFrames[XPBar:GetParent():GetName()] then return end
+		XPBar:StripTextures() --XPBar
+
+		if XPBar.Bar and not XPBar.Bar.backdrop then
+			XPBar.Bar:CreateBackdrop("Default")
+			if XPBar.Bar.Spark then
+				XPBar.Bar.Spark:SetAlpha(0)
+			end
+			if XPBar.Bar.OverlayFrame and XPBar.Bar.OverlayFrame.Text then
+				XPBar.Bar.OverlayFrame.Text:ClearAllPoints()
+				XPBar.Bar.OverlayFrame.Text:Point("CENTER", XPBar.Bar)
+			end
+		end
+
+		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
+			XPBar.PrestigeReward.Accept:ClearAllPoints()
+			XPBar.PrestigeReward.Accept:SetPoint("TOP", XPBar.PrestigeReward, "BOTTOM", 0, 0)
+			if not XPBar.PrestigeReward.Accept.template then
+				S:HandleButton(XPBar.PrestigeReward.Accept)
+			end
+		end
+
+		if XPBar.NextAvailable then
+			if XPBar.Bar then
+				XPBar.NextAvailable:ClearAllPoints()
+				XPBar.NextAvailable:SetPoint("LEFT", XPBar.Bar, "RIGHT", 0, -2)
+			end
+
+			if not XPBar.NextAvailable.backdrop then
+				XPBar.NextAvailable:StripTextures()
+				XPBar.NextAvailable:CreateBackdrop("Default")
+				if XPBar.NextAvailable.Icon then
+					XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+				end
+			end
+
+			if XPBar.NextAvailable.Icon then
+				XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
+				XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+			end
+		end
+	end)
 end
 
 function S:StatusBarColorGradient(bar, value, max, backdrop)
@@ -126,7 +179,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
-						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
 					end
 				end
 			end
@@ -169,7 +222,7 @@ function S:HandleScrollBar(frame, thumbTrim)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
-						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
 					end
 				end
 			end
@@ -541,7 +594,7 @@ function S:HandleSliderFrame(frame)
 	end
 end
 
-function S:HandleFollowerPage(follower, hasItems)
+function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	local abilities = follower.followerTab.AbilitiesFrame.Abilities
 	if follower.numAbilitiesStyled == nil then
 		follower.numAbilitiesStyled = 1
@@ -577,6 +630,26 @@ function S:HandleFollowerPage(follower, hasItems)
 		xpbar:StripTextures()
 		xpbar:SetStatusBarTexture(E["media"].normTex)
 		xpbar:CreateBackdrop("Transparent")
+	end
+
+	-- only OrderHall
+	if hasEquipment then
+		local btn
+		local equipment = follower.followerTab.AbilitiesFrame.Equipment
+		if not equipment.backdrop then
+			for i = 1, #equipment do
+				btn = equipment[i]
+				btn.Border:SetTexture(nil)
+				btn.BG:SetTexture(nil)
+				btn.Icon:SetTexCoord(unpack(E.TexCoords))
+				if not btn.backdop then
+					btn:CreateBackdrop("Default")
+					btn.backdrop:SetPoint("TOPLEFT", btn.Icon, "TOPLEFT", -2, 2)
+					btn.backdrop:SetPoint("BOTTOMRIGHT", btn.Icon, "BOTTOMRIGHT", 2, -2)
+				end
+			end
+		end
+		btn = nil
 	end
 end
 
@@ -642,7 +715,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
-function S:ADDON_LOADED(event, addon)
+function S:ADDON_LOADED(_, addon)
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method

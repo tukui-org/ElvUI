@@ -581,6 +581,8 @@ function AB:UpdateButtonSettings()
 	for i=1, 6 do
 		self:PositionAndSizeBar('bar'..i)
 	end
+
+	self:AdjustMaxStanceButtons()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
 end

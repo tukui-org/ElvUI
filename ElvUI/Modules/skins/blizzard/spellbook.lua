@@ -4,12 +4,20 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local select, unpack = select, unpack
+local pairs, select, unpack = pairs, select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: SpellBookFrame_UpdateSkillLineTabs, SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
 
 	S:HandleCloseButton(SpellBookFrameCloseButton)
+
+	local SpellBookFrame = _G["SpellBookFrame"]
 	SpellBookFrame:SetTemplate("Transparent")
 
 	local StripAllTextures = {
@@ -93,14 +101,17 @@ local function LoadSkin()
 
 	-- needs review
 	local function SkinTab(tab)
+		-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
+		-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
+		local normTex = tab:GetNormalTexture()
+		if normTex then
+			normTex:SetTexCoord(unpack(E.TexCoords))
+			normTex:SetInside()
+		end
+
 		if tab.isSkinned then return; end
 
 		tab:StripTextures()
-		-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
-		if tab:GetNormalTexture() then
-			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			tab:GetNormalTexture():SetInside()
-		end
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
@@ -169,6 +180,12 @@ local function LoadSkin()
 		button.iconTexture:SetTexCoord(unpack(E.TexCoords))
 		button.iconTexture:SetInside()
 		button.highlightTexture:SetInside()
+
+		if button == _G[professionbuttons[2]] then
+			button:Point("TOPLEFT", _G[professionbuttons[1]], "BOTTOMLEFT", 0, -2)
+		elseif button == _G[professionbuttons[4]] then
+			button:Point("TOPLEFT", _G[professionbuttons[3]], "BOTTOMLEFT", 0, -2)
+		end
 
 		hooksecurefunc(button.highlightTexture, "SetTexture", function(self, texture)
 			if texture == "Interface\\Buttons\\ButtonHilight-Square" then

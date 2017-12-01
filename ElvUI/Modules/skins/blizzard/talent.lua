@@ -4,10 +4,25 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+local GetNumSpecializations = GetNumSpecializations
+local GetPrestigeInfo = GetPrestigeInfo
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpecializationSpells = GetSpecializationSpells
+local GetSpellTexture = GetSpellTexture
+local UnitPrestige = UnitPrestige
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
+-- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
 
+	local PlayerTalentFrame = _G["PlayerTalentFrame"]
 	local objects = {
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
@@ -291,31 +306,6 @@ local function LoadSkin()
 		end
 	end
 
-	-- PVP Talents
-	PlayerTalentFramePVPTalents.XPBar:StripTextures()
-	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:ClearAllPoints()
-	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:SetPoint("TOP", PlayerTalentFramePVPTalents.XPBar.PrestigeReward, "BOTTOM", 0, 0)
-	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
-
-	--Honor progress bar
-	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
-	PlayerTalentFramePVPTalents.XPBar.Bar.Spark:SetAlpha(0)
-
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:StripTextures()
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:CreateBackdrop("Default")
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetOutside(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon)
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:ClearAllPoints()
-	PlayerTalentFramePVPTalents.XPBar.NextAvailable:SetPoint("LEFT", PlayerTalentFramePVPTalents.XPBar.Bar, "RIGHT", 3, -2)
-
-	--Next Available Icon
-	hooksecurefunc(PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, "SetTexCoord", function(self, x1)
-		if x1 == 0 then
-			self:SetTexCoord(unpack(E.TexCoords))
-		end
-	end);
-	-- This seems to break some icons at higher prestige level. ElvUI/issue#1853
-	-- PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
-
 	--Skin talent rows and buttons
 	for i = 1, MAX_PVP_TALENT_TIERS do
 		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
@@ -397,6 +387,8 @@ local function LoadSkin()
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
 	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
+
+	S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)

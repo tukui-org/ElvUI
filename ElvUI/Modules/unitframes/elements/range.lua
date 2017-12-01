@@ -6,7 +6,6 @@ local _,class = UnitClass("player")
 --Cache global variables
 --Lua functions
 local pairs, ipairs = pairs, ipairs
-local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 --WoW API / Variables
 local CheckInteractDistance = CheckInteractDistance
 local UnitCanAttack = UnitCanAttack
@@ -110,7 +109,7 @@ local function friendlyIsInRange(unit)
 			end
 		end
 	end
-	
+
 	return false
 end
 
@@ -118,7 +117,7 @@ local function petIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
 		return true
 	end
-	
+
 	for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
@@ -129,7 +128,7 @@ local function petIsInRange(unit)
 			return true
 		end
 	end
-	
+
 	return false
 end
 
@@ -137,13 +136,13 @@ local function enemyIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
 		return true
 	end
-	
+
 	for _, spellID in ipairs(SpellRangeTable[class].enemySpells) do
 		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
-	
+
 	return false
 end
 
@@ -153,11 +152,11 @@ local function enemyIsInLongRange(unit)
 			return true
 		end
 	end
-	
+
 	return false
 end
 
-function UF:UpdateRange(event)
+function UF:UpdateRange()
 	local range = self.Range
 	local unit = self.unit
 	if(unit) then
@@ -183,6 +182,6 @@ function UF:UpdateRange(event)
 			end
 		end
 	else
-		self:SetAlpha(range.insideAlpha)	
+		self:SetAlpha(range.insideAlpha)
 	end
 end

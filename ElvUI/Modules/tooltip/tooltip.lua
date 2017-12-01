@@ -4,7 +4,7 @@ local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, tonumber, select, pairs = unpack, tonumber, select, pairs
+local unpack, select = unpack, select
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor = math.floor
 local find, format, sub = string.find, string.format, string.sub
@@ -25,7 +25,6 @@ local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetScreenWidth = GetScreenWidth
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -74,11 +73,9 @@ local INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL
 local LEVEL = LEVEL
 local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
 local PVP = PVP
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local TARGET = TARGET
-local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
@@ -93,8 +90,6 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
-local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
@@ -289,7 +284,7 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	if(not canInspect or level < 10 or numTries > 1) then return end
 
 	local GUID = UnitGUID(unit)
-	if(GUID == playerGUID) then
+	if(GUID == E.myguid) then
 		tt:AddDoubleLine(L["Talent Specialization:"], self:GetTalentSpec(unit, true), nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)
 	elseif(inspectCache[GUID]) then
@@ -425,7 +420,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(isPetWild or isPetCompanion) then
 				level = UnitBattlePetLevel(unit)
 
-				local petType = PET_TYPE_SUFFIX[UnitBattlePetType(unit)]
+				local petType = _G["BATTLE_PET_NAME_"..UnitBattlePetType(unit)]
 				if creatureType then
 					creatureType = format("%s %s", creatureType, petType)
 				else
@@ -762,9 +757,6 @@ function TT:Initialize()
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
-
-	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
-	playerGUID = UnitGUID("player")
 end
 
 local function InitializeCallback()

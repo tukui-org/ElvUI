@@ -5,11 +5,18 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local unpack = unpack
+--WoW API / Variables
+local C_Timer_After = C_Timer.After
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 
 	-- MainFrame
+	local TradeSkillFrame = _G["TradeSkillFrame"]
 	TradeSkillFramePortrait:Kill()
 	TradeSkillFrame:StripTextures(true)
 	TradeSkillFrame:SetTemplate("Transparent")
@@ -28,6 +35,18 @@ local function LoadSkin()
 	TradeSkillFrame.LinkToButton:CreateBackdrop("Default")
 	TradeSkillFrame.LinkToButton:Size(17, 14)
 	TradeSkillFrame.LinkToButton:SetPoint("BOTTOMRIGHT", TradeSkillFrame.FilterButton, "TOPRIGHT", -2, 4)
+	TradeSkillFrame.bg1 = CreateFrame("Frame", nil, TradeSkillFrame)
+	TradeSkillFrame.bg1:SetTemplate("Transparent")
+	TradeSkillFrame.bg1:Point("TOPLEFT", 4, -81)
+	TradeSkillFrame.bg1:Point("BOTTOMRIGHT", -340, 4)
+	TradeSkillFrame.bg1:SetBackdropColor(.1, .1, .1, 1/2)
+	TradeSkillFrame.bg1:SetFrameLevel(TradeSkillFrame.bg1:GetFrameLevel() - 1)
+	TradeSkillFrame.bg2 = CreateFrame("Frame", nil, TradeSkillFrame)
+	TradeSkillFrame.bg2:SetTemplate("Transparent")
+	TradeSkillFrame.bg2:SetBackdropColor(0, 0, 0, 1/2)
+	TradeSkillFrame.bg2:Point("TOPLEFT", TradeSkillFrame.bg1, "TOPRIGHT", 1, 0)
+	TradeSkillFrame.bg2:Point("BOTTOMRIGHT", TradeSkillFrame, "BOTTOMRIGHT", -4, 4)
+	TradeSkillFrame.bg2:SetFrameLevel(TradeSkillFrame.bg2:GetFrameLevel() - 1)
 
 	S:HandleEditBox(TradeSkillFrame.SearchBox)
 	S:HandleCloseButton(TradeSkillFrameCloseButton)
@@ -118,7 +137,7 @@ local function LoadSkin()
 	TradeSkillFrame.RecipeList.scrollBar = CreateFrame("Slider", nil, TradeSkillFrame.RecipeList, "HybridScrollBarTemplateFixed")
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 	TradeSkillFrame.RecipeList.scrollBar:SetFrameLevel(TradeSkillFrame.RecipeList.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer.After(0.25, function()
+	C_Timer_After(0.25, function()
 		--Scroll back to top
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(1)
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(0)

@@ -201,7 +201,7 @@ function DT:AssignPanelToDataText(panel, data)
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
 				panel:RegisterUnitEvent(event, 'player')
 			elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-				panel:RegisterUnitEvent(event, UnitGUID("player"), UnitGUID("pet"))
+				panel:RegisterUnitEvent(event, E.myguid, UnitGUID("pet"))
 			else
 				panel:RegisterEvent(event)
 			end

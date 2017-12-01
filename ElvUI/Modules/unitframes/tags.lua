@@ -66,7 +66,7 @@ local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: Hex, PowerBarColor
+-- GLOBALS: Hex, PowerBarColor, _TAGS
 
 ------------------------------------------------------------------------
 --	Tags
@@ -76,9 +76,8 @@ local function UnitName(unit)
 	local name, realm = _G.UnitName(unit);
 	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
 		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
-	else
-		return name, realm
 	end
+	return name, realm
 end
 
 ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER UNIT_MAXPOWER"
@@ -155,7 +154,7 @@ ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
-		local tPath, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
+		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
 
 		if not r then
 			r, g, b = 1, 1, 1
@@ -266,12 +265,12 @@ ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	if (status) then
 		return status
 	end
-		
+
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
 	if absorb == 0 then
 		return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 	end
-	
+
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end
@@ -480,7 +479,7 @@ end
 
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
-	local r, g, b = 0.55, 0.57, 0.61
+	local r, g, b
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		local level = UnitBattlePetLevel(unit)
 
@@ -730,7 +729,7 @@ local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function GetClassPower(class)
 	local min, max, r, g, b = 0, 0, 0, 0, 0
-	
+
 	local spec = GetSpecialization()
 	if class == 'PALADIN' and spec == SPEC_PALADIN_RETRIBUTION then
 		min = UnitPower('player', SPELL_POWER_HOLY_POWER);
@@ -1044,9 +1043,7 @@ end
 
 ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)
-	local guildName = GetGuildInfo(unit)
-
-	return guildName or ""
+	return GetGuildInfo(unit) or ""
 end
 
 ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'

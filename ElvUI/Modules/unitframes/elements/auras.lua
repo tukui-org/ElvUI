@@ -4,15 +4,12 @@ local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
-local unpack, type = unpack, type
-local next, ipairs = next, ipairs
-local match = string.match
+local unpack = unpack
 local find = string.find
 local format = string.format
 local strsplit = strsplit
 local tsort = table.sort
 local ceil = math.ceil
-local select = select
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -225,20 +222,6 @@ function UF:Configure_Auras(frame, auraType)
 	end
 end
 
-local function SortAurasByPriority(a, b)
-	if (a and b) then
-		if a.isPlayer and not b.isPlayer then
-			return true
-		elseif not a.isPlayer and b.isPlayer then
-			return false
-		end
-
-		if (a.priority and b.priority) then
-			return a.priority > b.priority
-		end
-	end
-end
-
 local function SortAurasByTime(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
@@ -373,7 +356,7 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 	end
 end
 
-function UF:PostUpdateAura(unit, button, index)
+function UF:PostUpdateAura(unit, button)
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	local type = auras.type
@@ -465,14 +448,14 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 end
 
-function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+function UF:AuraFilter(unit, button, name, _, _, _, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
 
 	db = db[self.type]
 
 	if not name then return nil end
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority = false, false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority
 
 	isPlayer = (caster == 'player' or caster == 'vehicle')
 	isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
@@ -488,15 +471,16 @@ function UF:AuraFilter(unit, button, name, rank, texture, count, dispelType, dur
 	button.spell = name --what uses this? (SortAurasByName?)
 	button.priority = 0
 
+	noDuration = (not duration or duration == 0)
+	allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+
 	if db.priority ~= '' then
-		noDuration = (not duration or duration == 0)
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
 		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
-		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
-		filterCheck = true -- Allow all auras to be shown when the filter list is empty
+		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
 
 	return filterCheck

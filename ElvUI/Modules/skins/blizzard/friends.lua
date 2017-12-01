@@ -4,8 +4,16 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
-local MAX_DISPLAY_CHANNEL_BUTTONS = MAX_DISPLAY_CHANNEL_BUTTONS
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+local BNFeaturesEnabled = BNFeaturesEnabled
+local RaiseFrameLevel = RaiseFrameLevel
+local BNConnected = BNConnected
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: FriendsFrameBroadcastInput_UpdateDisplay, FriendsFrame_CheckBattlenetStatus
+-- GLOBALS: WhoFrameColumn_SetWidth, FRIENDS_TO_DISPLAY, MAX_DISPLAY_CHANNEL_BUTTONS
 
 --Tab Regions
 local tabs = {
@@ -192,6 +200,7 @@ local function LoadSkin()
 	ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
 	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
+	RaiseFrameLevel(ScrollOfResurrectionSelectionFrameTargetEditBox)
 
 	--Pending invites
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
@@ -299,6 +308,7 @@ local function LoadSkin()
 
 	RecruitAFriendFrame:StripTextures()
 	RecruitAFriendFrame:SetTemplate("Transparent")
+	RecruitAFriendFrame.MoreDetails.Text:FontTemplate()
 	S:HandleCloseButton(RecruitAFriendFrameCloseButton)
 	S:HandleButton(RecruitAFriendFrameSendButton)
 	S:HandleEditBox(RecruitAFriendNameEditBox)

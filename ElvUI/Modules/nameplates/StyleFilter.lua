@@ -95,7 +95,7 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function mod:StyleFilterBorderColorLock(frame, backdrop, r, g, b, a)
+function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
 	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
 	backdrop:SetBackdropBorderColor(r, g, b, a)
 	if not backdrop.StyleFilterBorderColorHooked then
@@ -108,6 +108,23 @@ function mod:StyleFilterBorderColorLock(frame, backdrop, r, g, b, a)
 			end
 		end)
 	end
+end
+
+function mod:StyleFilterSetUpFlashAnim(FlashTexture)
+	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
+	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
+	FlashTexture.anim.fadein:SetFromAlpha(0)
+	FlashTexture.anim.fadein:SetToAlpha(1)
+	FlashTexture.anim.fadein:SetOrder(2)
+
+	FlashTexture.anim.fadeout = FlashTexture.anim:CreateAnimation("ALPHA", "FadeOut")
+	FlashTexture.anim.fadeout:SetFromAlpha(1)
+	FlashTexture.anim.fadeout:SetToAlpha(0)
+	FlashTexture.anim.fadeout:SetOrder(1)
+
+	FlashTexture.anim:SetScript("OnFinished", function(flash, requested)
+		if not requested then flash:Play() end
+	end)
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
@@ -135,7 +152,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		self:StyleFilterBorderColorLock(frame, frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		self:StyleFilterBorderColorLock(frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 	end
 	if FlashingHealth then
 		frame.StyleChanged = true
@@ -144,7 +161,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
-		frame.FlashTexture:SetAlpha(actions.flash.color.a)
+		if not frame.FlashTexture.anim then
+			self:StyleFilterSetUpFlashAnim(frame.FlashTexture)
+		end
+		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
+		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
 		frame.FlashTexture:Show()
 		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
 	end
@@ -249,12 +270,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		if self.db.useTargetScale then
-			if frame.isTarget then
-				self:SetFrameScale(frame, self.db.targetScale)
-			else
-				self:SetFrameScale(frame, frame.ThreatScale or 1)
-			end
+		if frame.isTarget and self.db.useTargetScale then
+			self:SetFrameScale(frame, self.db.targetScale)
+		else
+			self:SetFrameScale(frame, frame.ThreatScale or 1)
 		end
 	end
 	if AlphaChanged then
@@ -828,7 +847,7 @@ local function copyDefaults(dest, src)
 				end
 			else
 				-- Values are not tables, so this is just a simple return
-				local mt = {__index = function(t,k) return k~=nil and v or nil end}
+				local mt = {__index = function(_,k) return k~=nil and v or nil end}
 				setmetatable(dest, mt)
 			end
 		elseif type(v) == "table" then

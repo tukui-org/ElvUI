@@ -1,9 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
 
+	local DressUpFrame = _G["DressUpFrame"]
 	DressUpFrame:StripTextures()
 	DressUpFrame:CreateBackdrop("Transparent")
 
@@ -24,9 +33,11 @@ local function LoadSkin()
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 
 	-- Wardrobe edit frame
+	local WardrobeOutfitFrame = _G["WardrobeOutfitFrame"]
 	WardrobeOutfitFrame:StripTextures(true)
 	WardrobeOutfitFrame:SetTemplate("Transparent")
 
+	local WardrobeOutfitEditFrame = _G["WardrobeOutfitEditFrame"]
 	WardrobeOutfitEditFrame:StripTextures(true)
 	WardrobeOutfitEditFrame:SetTemplate("Transparent")
 	WardrobeOutfitEditFrame.EditBox:StripTextures()

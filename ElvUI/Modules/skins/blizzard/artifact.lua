@@ -1,9 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
 
+	local ArtifactFrame = _G["ArtifactFrame"]
 	ArtifactFrame:StripTextures()
 	ArtifactFrame:CreateBackdrop("Transparent")
 	ArtifactFrame.BorderFrame:StripTextures()
@@ -13,6 +23,7 @@ local function LoadSkin()
 		S:HandleTab(_G["ArtifactFrameTab" .. i])
 	end
 
+	local ArtifactFrameTab1 = _G["ArtifactFrameTab1"]
 	ArtifactFrameTab1:ClearAllPoints()
 	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 
@@ -21,11 +32,12 @@ local function LoadSkin()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 
 	-- Netherlight Crucible
+	local ArtifactRelicForgeFrame = _G["ArtifactRelicForgeFrame"]
 	ArtifactRelicForgeFrame:StripTextures()
 	ArtifactRelicForgeFrame:CreateBackdrop("Transparent")
 	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
 	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
-	S:HandleCloseButton(ArtifactRelicForgeFrameCloseButton)
+	S:HandleCloseButton(_G["ArtifactRelicForgeFrameCloseButton"])
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)

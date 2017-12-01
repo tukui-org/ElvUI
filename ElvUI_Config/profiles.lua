@@ -1,4 +1,4 @@
---Contains preset profiles.. 
+--Contains preset profiles..
 if(not ElvDB.profiles["Minimalistic"]) then
 	ElvDB.profiles["Minimalistic"] = {
 		["currentTutorial"] = 2,

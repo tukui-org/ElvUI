@@ -11,6 +11,7 @@ local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local C_Timer_After = C_Timer.After
 
 --Return short value of a number
 function E:ShortValue(v)
@@ -287,28 +288,34 @@ function E:Delay(delay, func, ...)
 	if(type(delay)~="number" or type(func)~="function") then
 		return false
 	end
-	if(waitFrame == nil) then
-		waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
-		waitFrame:SetScript("onUpdate",function (_,elapse)
-			local count = #waitTable
-			local i = 1
-			while(i<=count) do
-				local waitRecord = tremove(waitTable,i)
-				local d = tremove(waitRecord,1)
-				local f = tremove(waitRecord,1)
-				local p = tremove(waitRecord,1)
-				if(d>elapse) then
-				  tinsert(waitTable,i,{d-elapse,f,p})
-				  i = i + 1
-				else
-				  count = count - 1
-				  f(unpack(p))
+	local extend = {...}
+	if not next(extend) then
+		C_Timer_After(delay, func)
+		return true
+	else
+		if(waitFrame == nil) then
+			waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
+			waitFrame:SetScript("onUpdate",function (_,elapse)
+				local count = #waitTable
+				local i = 1
+				while(i<=count) do
+					local waitRecord = tremove(waitTable,i)
+					local d = tremove(waitRecord,1)
+					local f = tremove(waitRecord,1)
+					local p = tremove(waitRecord,1)
+					if(d>elapse) then
+					  tinsert(waitTable,i,{d-elapse,f,p})
+					  i = i + 1
+					else
+					  count = count - 1
+					  f(unpack(p))
+					end
 				end
-			end
-		end)
+			end)
+		end
+		tinsert(waitTable,{delay,func,extend})
+		return true
 	end
-	tinsert(waitTable,{delay,func,{...}})
-	return true
 end
 
 function E:StringTitle(str)
@@ -384,9 +391,9 @@ local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
 local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
 local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
 function E:FormatMoney(amount, style, textonly)
-	local coppername = textonly and L.copperabbrev or ICON_COPPER
-	local silvername = textonly and L.silverabbrev or ICON_SILVER
-	local goldname = textonly and L.goldabbrev or ICON_GOLD
+	local coppername = textonly and L["copperabbrev"] or ICON_COPPER
+	local silvername = textonly and L["silverabbrev"] or ICON_SILVER
+	local goldname = textonly and L["goldabbrev"] or ICON_GOLD
 
 	local value = abs(amount)
 	local gold = floor(value / 10000)

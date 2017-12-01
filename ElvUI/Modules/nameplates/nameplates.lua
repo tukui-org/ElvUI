@@ -18,7 +18,7 @@ local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFri
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
-local C_Timer_After = C_Timer.After
+local C_Timer_NewTimer = C_Timer.NewTimer
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
@@ -739,7 +739,7 @@ function mod:OnEvent(event, unit, ...)
 			mod:UpdateElement_Power(self)
 		end
 		mod:UpdateElement_Filters(self, event)
-	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
+	elseif(event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_EXITING_VEHICLE" or event == "UNIT_PET")then
 		mod:UpdateInVehicle(self)
 		mod:UpdateElement_All(self, unit, true)
 	elseif(event == "UPDATE_MOUSEOVER_UNIT") then
@@ -813,6 +813,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
 	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
+	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
@@ -931,13 +932,22 @@ function mod:PLAYER_REGEN_ENABLED()
 	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 1);
 	end
-	self:UpdateVisibility()
+
+	if self.db.units.PLAYER.useStaticPosition then
+		self:UpdateVisibility()
+	end
 end
 
+local playerNamePlateHideTimer
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
 	if self.db.units.PLAYER.useStaticPosition then
-		if frame.unitFrame.VisibilityChanged then return end
+		if frame.unitFrame.VisibilityChanged then
+			return
+		end
+		if playerNamePlateHideTimer then
+			playerNamePlateHideTimer:Cancel()
+		end
 		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.unitFrame:Show()
 			self.PlayerNamePlateAnchor:Show()
@@ -952,7 +962,7 @@ function mod:UpdateVisibility()
 				self.PlayerNamePlateAnchor:Show()
 			elseif frame.unitFrame:IsShown() then
 				if (self.db.units.PLAYER.visibility.hideDelay > 0) then
-					C_Timer_After(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
+					playerNamePlateHideTimer = C_Timer_NewTimer(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
 				else
 					HidePlayerNamePlate()
 				end
@@ -1002,7 +1012,7 @@ function mod:UpdateFonts(plate)
 		plate.CastBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 	if plate.HealthBar and plate.HealthBar.text then
-		plate.HealthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		plate.HealthBar.text:SetFont(LSM:Fetch("font", self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
 	end
 	if plate.PowerBar and plate.PowerBar.text then
 		plate.PowerBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
@@ -1065,6 +1075,7 @@ function mod:Initialize()
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
+	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
 
 	if self.db.hideBlizzardPlates then

@@ -5,11 +5,16 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: AJ_MAX_NUM_SUGGESTIONS, EJ_GetEncounterInfoByIndex
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
-	local EJ = EncounterJournal
+	local EJ = _G["EncounterJournal"]
 	EJ:StripTextures(true)
 	EJ.inset:StripTextures(true)
 	EJ:CreateBackdrop("Transparent")

@@ -8,17 +8,23 @@ local _G = _G
 local unpack, select = unpack, select
 --WoW API / Variables
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
+local CreateFrame = CreateFrame
 local GetLootSlotInfo = GetLootSlotInfo
+local UnitIsDead = UnitIsDead
+local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 local IsFishingLoot = IsFishingLoot
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS
-local LOOT = LOOT
+local LOOT, ITEMS = LOOT, ITEMS
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: LOOTFRAME_NUMBUTTONS, SquareButton_SetIcon
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 
 	-- Loot history frame
+	local LootHistoryFrame = _G["LootHistoryFrame"]
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
@@ -56,6 +62,7 @@ local function LoadSkin()
 	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
 
 	-- Master Loot
+	local MasterLooterFrame = _G["MasterLooterFrame"]
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:SetTemplate()
 
@@ -91,6 +98,7 @@ local function LoadSkin()
 	end)
 
 	-- Bonus Roll Frame
+	local BonusRollFrame = _G["BonusRollFrame"]
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 
@@ -119,6 +127,7 @@ local function LoadSkin()
 		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
 	end)
 
+	local LootFrame = _G["LootFrame"]
 	LootFrame:StripTextures()
 	LootFrameInset:StripTextures()
 	LootFrame:Height(LootFrame:GetHeight() - 30)

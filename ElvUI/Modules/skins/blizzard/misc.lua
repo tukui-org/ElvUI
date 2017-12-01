@@ -12,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -183,32 +183,23 @@ local function LoadSkin()
 
 	-- skin return to graveyard button
 	do
-		S:HandleButton(GhostFrame)
-		GhostFrame:SetBackdropColor(0,0,0,0)
-		GhostFrame:SetBackdropBorderColor(0,0,0,0)
-
-		local function forceBackdropColor(self, r, g, b, a)
-			if r ~= 0 or g ~= 0 or b ~= 0 or a ~= 0 then
-				GhostFrame:SetBackdropColor(0,0,0,0)
-				GhostFrame:SetBackdropBorderColor(0,0,0,0)
-			end
-		end
-
-		hooksecurefunc(GhostFrame, "SetBackdropColor", forceBackdropColor)
-		hooksecurefunc(GhostFrame, "SetBackdropBorderColor", forceBackdropColor)
-
+		GhostFrameMiddle:SetAlpha(0)
+		GhostFrameRight:SetAlpha(0)
+		GhostFrameLeft:SetAlpha(0)
+		GhostFrame:StripTextures()
 		GhostFrame:ClearAllPoints()
-		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -270)
-		S:HandleButton(GhostFrameContentsFrame)
-		GhostFrameContentsFrameIcon:SetTexture(nil)
-		local x = CreateFrame("Frame", nil, GhostFrame)
-		x:SetFrameStrata("MEDIUM")
-		x:SetTemplate("Default")
-		x:SetOutside(GhostFrameContentsFrameIcon)
-		local tex = x:CreateTexture(nil, "OVERLAY")
-		tex:SetTexture("Interface\\Icons\\spell_holy_guardianspirit")
-		tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		tex:SetInside()
+		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -150)
+		GhostFrameContentsFrame:SetTemplate("Transparent")
+		GhostFrameContentsFrameText:Point("TOPLEFT", 53, 0)
+		GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
+		GhostFrameContentsFrameIcon:Point("RIGHT", GhostFrameContentsFrameText, "LEFT", -12, 0)
+		local b = CreateFrame("Frame", nil, GhostFrameContentsFrameIcon:GetParent())
+		local p = E.PixelMode and 1 or 2
+		b:Point("TOPLEFT", GhostFrameContentsFrameIcon, -p, p)
+		b:Point("BOTTOMRIGHT", GhostFrameContentsFrameIcon, p, -p)
+		GhostFrameContentsFrameIcon:SetSize(37,38)
+		GhostFrameContentsFrameIcon:SetParent(b)
+		b:SetTemplate("Default")
 	end
 
 	OpacityFrame:StripTextures()
@@ -247,7 +238,7 @@ local function LoadSkin()
 	--[[local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
 			local button = _G["WatchFrameItem"..i]
-			if not button.skinned then
+			if button and not button.skinned then
 				button:CreateBackdrop('Default')
 				button.backdrop:SetAllPoints()
 				button:StyleButton()
@@ -259,8 +250,8 @@ local function LoadSkin()
 			end
 		end
 	end
-
-	WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)]]
+	hooksecurefunc("QuestPOIUpdateIcons", SkinWatchFrameItems)]]
+	--WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()
@@ -268,6 +259,15 @@ local function LoadSkin()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	S:HandleButton(SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
+
+	-- StackSplit
+	StackSplitFrame:GetRegions():Hide()
+
+	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
+	StackSplitFrame.bg1:SetTemplate("Transparent")
+	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
+	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
+	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	local function SkinNavBarButtons(self)

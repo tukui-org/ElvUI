@@ -1,12 +1,30 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: MAX_ADDONS_DISPLAYED
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.addonManager ~= true then return end
 
 	--Addon List (From AddOnSkins)
+	local AddonList = _G["AddonList"]
 	AddonList:StripTextures()
 	AddonList:SetTemplate("Transparent")
+
+	--Original Size: 500, 478
+	AddonList:SetSize(550, 478)
+
+	--Original Size: 449,99, 382
+	--Adjusting the ScrollFrame will also positon the ScrollBar.
+	AddonListScrollFrame:SetSize(499, 382)
+
 	AddonListInset:StripTextures()
 
 	S:HandleButton(AddonListEnableAllButton, true)

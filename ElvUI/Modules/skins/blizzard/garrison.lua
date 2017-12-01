@@ -3,9 +3,13 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack, pairs = unpack, pairs
+local _G = _G
+local unpack, pairs, select = unpack, pairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: SquareButton_SetIcon
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true then return end
@@ -226,7 +230,7 @@ local function LoadSkin()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self)
+		S:HandleFollowerPage(self, nil, true)
 	end)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)

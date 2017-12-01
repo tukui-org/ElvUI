@@ -85,7 +85,7 @@ local function LootClick(frame)
 	elseif IsShiftKeyDown() then ChatEdit_InsertLink(frame.link) end
 end
 
-local function OnEvent(frame, event, rollID)
+local function OnEvent(frame, _, rollID)
 	cancelled_rolls[rollID] = true
 	if frame.rollID ~= rollID then return end
 
@@ -218,7 +218,7 @@ local function GetFrame()
 	return f
 end
 
-function M:START_LOOT_ROLL(event, rollID, time)
+function M:START_LOOT_ROLL(_, rollID, time)
 	if cancelled_rolls[rollID] then return end
 	local f = GetFrame()
 	f.rollID = rollID
@@ -280,7 +280,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	end
 end
 
-function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
+function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 	local rollID = C_LootHistoryGetItem(itemIdx);
 	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
 

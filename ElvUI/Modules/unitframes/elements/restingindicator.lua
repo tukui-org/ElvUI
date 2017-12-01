@@ -5,35 +5,75 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 
 --WoW API / Variables
+local C_Timer_NewTimer = C_Timer.NewTimer
+local IsResting = IsResting
+local StateIcon = [[Interface\CharacterFrame\UI-StateIcon]]
 
 function UF:Construct_RestingIndicator(frame)
-	local resting = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
-	resting:Size(22)
+	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
+end
 
-	return resting
+local TestingTimer
+local TestingFrame
+local function TestingFunc()
+	local isResting = IsResting()
+	if TestingFrame and not isResting then
+		TestingFrame:Hide()
+	end
+end
+
+function UF:TestingDisplay_RestingIndicator(frame)
+	local Icon = frame.RestingIndicator
+	local db = frame.db.RestIcon
+
+	if TestingTimer then
+		TestingTimer:Cancel()
+	end
+
+	if not db.enable then
+		Icon:Hide()
+		return
+	end
+
+	Icon:Show()
+	TestingFrame = Icon
+	TestingTimer = C_Timer_NewTimer(10, TestingFunc)
 end
 
 function UF:Configure_RestingIndicator(frame)
 	if not frame.VARIABLES_SET then return end
-	local rIcon = frame.RestingIndicator
-	local db = frame.db
-	if db.restIcon then
+	local Icon = frame.RestingIndicator
+	local db = frame.db.RestIcon
+
+	if db.enable then
 		if not frame:IsElementEnabled('RestingIndicator') then
 			frame:EnableElement('RestingIndicator')
 		end
 
-		rIcon:ClearAllPoints()
-		if frame.ORIENTATION == "RIGHT" then
-			rIcon:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
+		if db.defaultColor then
+			Icon:SetVertexColor(1, 1, 1, 1)
+			Icon:SetDesaturated(false)
 		else
-			if frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY then
-				rIcon:Point("CENTER", frame.Portrait, "TOPLEFT", -3, 6)
-			else
-				rIcon:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
-			end
+			Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
+			Icon:SetDesaturated(true)
+		end
+
+		if db.customTexture then
+			Icon:SetTexture(db.customTexture)
+			Icon:SetTexCoord(0, 1, 0, 1)
+		else
+			Icon:SetTexture(StateIcon)
+			Icon:SetTexCoord(0, .5, 0, .421875)
+		end
+
+		Icon:Size(db.size)
+		Icon:ClearAllPoints()
+		if frame.ORIENTATION ~= "RIGHT" and (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) then
+			Icon:Point("CENTER", frame.Portrait, db.anchorPoint, db.xOffset, db.yOffset)
+		else
+			Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 		end
 	elseif frame:IsElementEnabled('RestingIndicator') then
 		frame:DisableElement('RestingIndicator')
-		rIcon:Hide()
 	end
 end

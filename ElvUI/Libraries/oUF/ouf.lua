@@ -1,6 +1,6 @@
 local parent, ns = ...
 local global = GetAddOnMetadata(parent, 'X-oUF')
-local _VERSION = GetAddOnMetadata(parent, 'version')
+local _VERSION = '@project-version@'
 if(_VERSION:find('project%-version')) then
 	_VERSION = 'devel'
 end
@@ -561,7 +561,8 @@ do
 
 				frame:SetAttribute('*type1', 'target')
 				frame:SetAttribute('*type2', 'togglemenu')
-				frame:SetAttribute('toggleForVehicle', true)
+				-- BUG: Blizzard has changed the way vehicles work for Antoran High Command
+				frame:SetAttribute('toggleForVehicle', false)
 				frame:SetAttribute('oUF-guessUnit', unit)
 			end
 

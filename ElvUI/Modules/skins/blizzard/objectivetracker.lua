@@ -4,7 +4,9 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local unpack = unpack
+--WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ObjectiveTrackerBlocksFrame, ObjectiveTrackerFrame, BonusObjectiveTrackerProgressBar_PlayFlareAnim
 -- GLOBALS: SCENARIO_TRACKER_MODULE, BONUS_OBJECTIVE_TRACKER_MODULE, WORLD_QUEST_TRACKER_MODULE, QUEST_TRACKER_MODULE, DEFAULT_OBJECTIVE_TRACKER_MODULE
 
@@ -91,7 +93,7 @@ local function LoadSkin()
 
 			if label then
 				label:ClearAllPoints()
-				label:Point("CENTER", bar, 0, 0)
+				label:Point("CENTER", bar, 0, 1)
 				label:FontTemplate(E.media.normFont, 14, "OUTLINE")
 			end
 

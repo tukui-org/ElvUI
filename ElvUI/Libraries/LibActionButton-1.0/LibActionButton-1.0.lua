@@ -1,18 +1,18 @@
 --[[
-Copyright (c) 2010-2016, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
+Copyright (c) 2010-2017, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, 
+    * Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-      this list of conditions and the following disclaimer in the documentation 
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    * Neither the name of the developer nor the names of its contributors 
-      may be used to endorse or promote products derived from this software without 
+    * Neither the name of the developer nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
       specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -28,8 +28,9 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
+
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 10
+local MINOR_VERSION = 11
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -122,6 +123,13 @@ local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
+
+local function GameTooltip_GetOwnerForbidden()
+	if GameTooltip:IsForbidden() then
+		return nil
+	end
+	return GameTooltip:GetOwner()
+end
 
 local DefaultConfig = {
 	outOfRangeColoring = "button",
@@ -576,6 +584,7 @@ function Generic:OnEnter()
 end
 
 function Generic:OnLeave()
+	if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
 	self:SetScript('OnUpdate', nil)
 end
@@ -698,6 +707,8 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SHOWGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_HIDEGRID")
+	lib.eventFrame:RegisterEvent("PET_BAR_SHOWGRID")
+	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	--lib.eventFrame:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
 	--lib.eventFrame:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
@@ -744,8 +755,8 @@ end
 
 function OnEvent(frame, event, arg1, ...)
 	if (event == "UNIT_INVENTORY_CHANGED" and arg1 == "player") or event == "LEARNED_SPELL_IN_TAB" then
-		local tooltipOwner = GameTooltip:GetOwner()
-		if ButtonRegistry[tooltipOwner] then
+		local tooltipOwner = GameTooltip_GetOwnerForbidden()
+		if tooltipOwner and ButtonRegistry[tooltipOwner] then
 			tooltipOwner:SetTooltip()
 		end
 	elseif event == "ACTIONBAR_SLOT_CHANGED" then
@@ -759,10 +770,10 @@ function OnEvent(frame, event, arg1, ...)
 		ForAllButtons(Update)
 	elseif event == "ACTIONBAR_PAGE_CHANGED" or event == "UPDATE_BONUS_ACTIONBAR" then
 		-- TODO: Are these even needed?
-	elseif event == "ACTIONBAR_SHOWGRID" then
-		ShowGrid()
-	elseif event == "ACTIONBAR_HIDEGRID" then
-		HideGrid()
+	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
+		ShowGrid(event)
+	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
+		HideGrid(event)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
@@ -786,21 +797,21 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "ACTIONBAR_UPDATE_COOLDOWN" then
 		for button in next, ActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip:GetOwner() == button then
+			if GameTooltip_GetOwnerForbidden() == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "SPELL_UPDATE_COOLDOWN" then
 		for button in next, NonActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip:GetOwner() == button then
+			if GameTooltip_GetOwnerForbidden() == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "LOSS_OF_CONTROL_ADDED" then
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
-			if GameTooltip:GetOwner() == button then
+			if GameTooltip_GetOwnerForbidden() == button then
 				UpdateTooltip(button)
 			end
 		end
@@ -944,7 +955,16 @@ function OnUpdate(_, elapsed)
 end
 
 local gridCounter = 0
-function ShowGrid()
+local isPetGrid = false
+function ShowGrid(event)
+	if event == "PET_BAR_SHOWGRID" then
+		isPetGrid = true
+	elseif isPetGrid then
+		return
+		-- when PET_BAR_SHOWGRID fires then ACTIONBAR_SHOWGRID fires
+		-- ACTIONBAR_HIDEGRID will not get called but PET_BAR_HIDEGRID does
+		-- LIKELY A BLIZZARD ISSUE.
+	end
 	gridCounter = gridCounter + 1
 	if gridCounter >= 1 then
 		for button in next, ButtonRegistry do
@@ -955,7 +975,12 @@ function ShowGrid()
 	end
 end
 
-function HideGrid()
+function HideGrid(event)
+	if event == "PET_BAR_HIDEGRID" then
+		isPetGrid = false
+	elseif isPetGrid then
+		return --see comment above related to `isPetGrid`
+	end
 	if gridCounter > 0 then
 		gridCounter = gridCounter - 1
 	end
@@ -1155,7 +1180,7 @@ function Update(self)
 
 	UpdateNewAction(self)
 
-	if GameTooltip:GetOwner() == self then
+	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
 	end
 
@@ -1331,6 +1356,7 @@ function UpdateFlash(self)
 end
 
 function UpdateTooltip(self)
+	if GameTooltip:IsForbidden() then return end
 	if (GetCVar("UberTooltips") == "1") then
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else

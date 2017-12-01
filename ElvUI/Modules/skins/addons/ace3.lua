@@ -7,10 +7,9 @@ local _G = _G
 local unpack, select, pairs = unpack, select, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local SquareButton_SetIcon = SquareButton_SetIcon
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LibStub
+-- GLOBALS: SquareButton_SetIcon, LibStub
 
 local RegisterAsWidget, RegisterAsContainer
 local function SetModifiedBackdrop(self)
@@ -266,7 +265,7 @@ function S:SkinAce3()
 		if TYPE == "ScrollFrame" then
 			local frame = widget.scrollbar
 			SkinScrollBar(frame)
-		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "SimpleGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" or TYPE == "Window" then
+		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" or TYPE == "Window" then
 			local frame = widget.content:GetParent()
 			if TYPE == "Frame" then
 				frame:StripTextures()
@@ -341,6 +340,10 @@ function S:SkinAce3()
 			if widget.scrollbar then
 				SkinScrollBar(widget.scrollbar)
 			end
+		elseif TYPE == "SimpleGroup" then
+			local frame = widget.content:GetParent()
+			frame:SetTemplate("Transparent", nil, true) --ignore border updates
+			frame:SetBackdropBorderColor(0,0,0,0) --Make border completely transparent
 		end
 
 		return oldRegisterAsContainer(self, widget)

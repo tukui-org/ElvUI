@@ -14,7 +14,10 @@ local InCombatLockdown = InCombatLockdown
 local GetChannelList = GetChannelList
 local IsMacClient = IsMacClient
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: CHAT_CONFIG_CHANNEL_LIST, CHAT_CONFIG_CHAT_LEFT, CHANNELS, COMBAT_CONFIG_TABS
+-- GLOBALS: COMBAT_CONFIG_UNIT_COLORS, CHAT_CONFIG_CHAT_CREATURE_LEFT
+-- GLOBALS: CHAT_CONFIG_OTHER_COMBAT, CHAT_CONFIG_OTHER_PVP, CHAT_CONFIG_OTHER_SYSTEM
+-- GLOBALS: COMBAT_CONFIG_MESSAGESOURCES_BY, COMBAT_CONFIG_MESSAGESOURCES_TO
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BlizzardOptions ~= true then return end
@@ -79,14 +82,14 @@ local function LoadSkin()
 
 	ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	ReadyCheckFrameYesButton:Point("RIGHT", ReadyCheckFrame, "CENTER", -1, 0)
-	ReadyCheckFrameNoButton:Point("LEFT", ReadyCheckFrameYesButton, "RIGHT", 3, 0)
+	ReadyCheckFrameYesButton:ClearAllPoints()
+	ReadyCheckFrameNoButton:ClearAllPoints()
+	ReadyCheckFrameYesButton:Point("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
+	ReadyCheckFrameNoButton:Point("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
 	ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	ReadyCheckFrameText:ClearAllPoints()
-	ReadyCheckFrameText:Point("TOP", 0, -12)
+	ReadyCheckFrameText:Point("TOP", 0, -15)
 
-	-- others
-	StackSplitFrame:GetRegions():Hide()
 	ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript("OnShow", function(self)
 		-- bug fix, don't show it if player is initiator

@@ -211,9 +211,12 @@ P['bags'] = {
 --NamePlate
 P["nameplates"] = {
 	["statusbar"] = "ElvUI Norm",
-	['font'] = "PT Sans Narrow",
-	['fontSize'] = 11,
-	['fontOutline'] = "OUTLINE",
+	["font"] = "PT Sans Narrow",
+	["fontSize"] = 11,
+	["fontOutline"] = "OUTLINE",
+	["healthFont"] = "PT Sans Narrow",
+	["healthFontSize"] = 11,
+	["healthFontOutline"] = "OUTLINE",
 	["durationFont"] = "PT Sans Narrow",
 	["durationFontSize"] = 10,
 	["durationFontOutline"] = "OUTLINE",
@@ -765,6 +768,7 @@ P['chat'] = {
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',
+	["copyChatLines"] = false,
 }
 
 --Datatexts
@@ -964,8 +968,6 @@ P['unitframe'] = {
 			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
-			['restIcon'] = true,
-			["combatIcon"] = true,
 			['threatStyle'] = 'GLOW',
 			["smartAuraPosition"] = "DISABLED",
 			["colorOverride"] = "USE_DEFAULT",
@@ -1014,6 +1016,25 @@ P['unitframe'] = {
 				['text_format'] = '||cFFB04F4F[pvptimer][mouseover]||r',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			["RestIcon"] = {
+				["enable"] = true,
+				["defaultColor"] = true,
+				["color"] = {r = 1, g = 1, b = 1, a = 1},
+				["anchorPoint"] = "TOPLEFT",
+				["xOffset"] = -3,
+				["yOffset"] = 6,
+				["size"] = 22,
+			},
+			["CombatIcon"] = {
+				["enable"] = true,
+				["defaultColor"] = true,
+				["color"] = {r = 1, g = 0.2, b = 0.2, a = 1},
+				["anchorPoint"] = "CENTER",
+				["xOffset"] = 0,
+				["yOffset"] = 0,
+				["size"] = 20,
+				["texture"] = "DEFAULT",
 			},
 			["pvpIcon"] = {
 				["enable"] = false,
@@ -3038,6 +3059,7 @@ P["actionbar"] = {
 		['alpha'] = 1,
 		['inheritGlobalFade'] = false,
 		["usePositionOverride"] = true,
+		['visibility'] = "[vehicleui] hide; [petbattle] hide;show",
 	},
 	['extraActionButton'] = {
 		['alpha'] = 1,

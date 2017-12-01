@@ -315,11 +315,11 @@ function B:EnhanceColorPicker()
 		if i == 5 then
 			box:SetScript("OnEscapePressed", function(self)	self:ClearFocus() UpdateAlphaText() end)
 			box:SetScript("OnEnterPressed", function(self) self:ClearFocus() UpdateAlphaText() end)
-			box:SetScript("OnTextChanged", function(self) UpdateAlpha(self) end)
+			box:SetScript("OnTextChanged", UpdateAlpha)
 		else
 			box:SetScript("OnEscapePressed", function(self)	self:ClearFocus() UpdateColorTexts() end)
 			box:SetScript("OnEnterPressed", function(self) self:ClearFocus() UpdateColorTexts() end)
-			box:SetScript("OnTextChanged", function(self) UpdateColor(self) end)
+			box:SetScript("OnTextChanged", UpdateColor)
 		end
 
 		box:SetScript("OnEditFocusGained", function(self) self:SetCursorPosition(0) self:HighlightText() end)

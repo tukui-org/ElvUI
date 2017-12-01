@@ -4,7 +4,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
-local _G = _G
 local format = format
 --WoW API / Variables
 local CanPrestige = CanPrestige

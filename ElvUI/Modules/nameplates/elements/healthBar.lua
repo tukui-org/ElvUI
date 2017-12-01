@@ -117,7 +117,9 @@ function mod:UpdateElement_HealthColor(frame)
 
 	if(not frame.isTarget or not self.db.useTargetScale) then
 		frame.ThreatScale = scale
-		self:SetFrameScale(frame, scale)
+		if not frame.ScaleChanged then
+			self:SetFrameScale(frame, scale)
+		end
 	end
 end
 
@@ -236,7 +238,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 	absorbBar:Hide()
 
 	healthBar.text:SetAllPoints(healthBar)
-	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	healthBar.text:SetFont(LSM:Fetch("font", self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
 end
 
 function mod:ConstructElement_HealthBar(parent)

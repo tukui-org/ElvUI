@@ -403,7 +403,7 @@ E.Options.args.bags = {
 								--Store by itemID if possible
 								local itemID = match(value, "item:(%d+)")
 								E.global.bags.ignoredItems[(itemID or value)] = value
-								
+
 								--Remove from profile list if we just added the same item to global list
 								if E.db.bags.ignoredItems[(itemID or value)] then
 									E.db.bags.ignoredItems[(itemID or value)] = nil
@@ -454,7 +454,7 @@ E.Options.args.bags = {
 					width = "full",
 					name = "",
 					get = function(info) return L["SEARCH_SYNTAX_DESC"]; end,
-					set = function(info, value) value = L["SEARCH_SYNTAX_DESC"]; end,
+					set = E.noop,
 				},
 			},
 		},

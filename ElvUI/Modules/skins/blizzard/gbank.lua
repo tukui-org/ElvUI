@@ -3,7 +3,13 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
+local _G = _G
+local select, unpack = select, unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: NUM_GUILDBANK_ICONS_SHOWN, MAX_GUILDBANK_TABS, NUM_GUILDBANK_COLUMNS, NUM_SLOTS_PER_GUILDBANK_GROUP
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end
@@ -19,6 +25,8 @@ local function LoadSkin()
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
+			child:Point("TOPRIGHT", 0, 0)
+			child:SetFrameLevel(child:GetFrameLevel()+1)
 		end
 	end
 

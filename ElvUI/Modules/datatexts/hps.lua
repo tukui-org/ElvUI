@@ -40,7 +40,7 @@ local function OnEvent(self, event, ...)
 	lastPanel = self
 
 	if event == 'PLAYER_ENTERING_WORLD' then
-		playerID = UnitGUID('player')
+		playerID = E.myguid
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then

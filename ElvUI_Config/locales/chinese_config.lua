@@ -8,11 +8,11 @@ L["AURAS_DESC"] = "小地图旁的光环图标设置"
 L["BAGS_DESC"] = "调整ElvUI背包设置"
 L["CHAT_DESC"] = "聊天框设置"
 L["DATATEXT_DESC"] = "设定屏幕所显示的部分信息文字"
-L["ELVUI_DESC"] = "ElvUI为一套功能完整, 可用来替换WoW原始介面的套件"
+L["ELVUI_DESC"] = "ElvUI为一套功能完整, 可用来替换WoW原始界面的套件"
 L["NAMEPLATE_DESC"] = "修改姓名版设定"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
 L["ACTIONBARS_DESC"] = "修改动作条设定"
-L["PANEL_DESC"] = "调整左、右聊天框的大小, 此设定将会影响对话与背包框架的大小"
+L["PANEL_DESC"] = "调整左、右聊天框的大小, 此设定将会影响聊天与背包框架的大小"
 L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
@@ -53,25 +53,25 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 [powercolor][power:current]
 
 生命条 / 能量条 格式:
-'current' - 当前数值
-'percent' - 百分比数值
-'current-max' - 当前数值 - 最大数值. 当当前数值等于最大数值时只显示最大数值
-'current-percent' - 当前数值 - 百分比. 当百分比为1时只显示当前数值
-'current-max-percent' - 当前数值 - 最大值 - 百分比, 当当前数值不等于最大值时显示
-'deficit' - 赤字. 当没有赤字时不显示
+'current' - 当前值
+'percent' - 百分比
+'current-max' - 当前值 - 最大值. 当当前值等于最大值时只显示最大值
+'current-percent' - 当前值 - 百分比. 当百分比为100%时只显示当前值
+'current-max-percent' - 当前值 - 最大值 - 百分比. 当当前值不等于最大值时显示
+'deficit' - 失去值. 没有失去值时不显示
 
 姓名格式:
 'name:short' - 姓名显示限制于10字节内
 'name:medium' -姓名显示限制于15字节内
 'name:long' - 姓名显示限制于20字节内
 
-空白则为禁用. 如需技术支援请至 http://www.tukui.org]=]
+空白则为禁用. 如需技术支持请至http://www.tukui.org]=]
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
 L["ActionBars"] = "动作条"
 L["Allow Masque to handle the skinning of this element."] = "允许Masque来处理这个元素的皮肤"
-L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "允许新学会的技能自动添加到动作条空位里"
+L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "允许新学会的技能自动添加到动作条空位"
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
 L["Auto Add New Spells"] = "自动添加新技能"
@@ -163,21 +163,21 @@ L["Bottom to Top"] = '底部到顶部'
 L["Button Size (Bag)"] = '背包格子尺寸'
 L["Button Size (Bank)"] = '银行背包格子尺寸'
 L["Clear Search On Close"] = "关闭时清除搜索"
-L["Condensed"] = "巨集"
+L["Condensed"] = "紧凑"
 L["Currency Format"] = "货币格式"
 L["Descending"] = "降序"
-L["Direction the bag sorting will use to allocate the items."] = '整理背包时物品排序方向.'
+L["Direction the bag sorting will use to allocate the items."] = "整理背包时物品排序方向"
 L["Disable Bag Sort"] = "禁用背包排序"
 L["Disable Bank Sort"] = "禁用银行排序"
 L["Display Item Level"] = "显示物品等级"
 L["Display the junk icon on all grey items that can be vendored."] = "为所有能够卖店的灰色物品显示垃圾图标"
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "在WoW认为可以提升你角色的物品上显示升级图标"
-L["Displays item level on equippable items."] = "显示所有可装备物品的物品等级"
-L["Enable/Disable the all-in-one bag."] = "开/关整合背包"
+L["Displays item level on equippable items."] = "显示可装备物品的物品等级"
+L["Enable/Disable the all-in-one bag."] = "启用/禁用整合背包"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用背包条"
 L["Full"] = "满"
 L["Global"] = "全局"
-L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "你可以在这里添加你想在排序中排除的物品或者匹配语法.想要移除一个物品即需要在列表中点击他们的名字"
+L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "你可以在这里添加你想在排序中排除的物品或者匹配语法.在列表中点击他们的名字来移除一个物品"
 L["Icons and Text (Short)"] = "图标和文字(短)"
 L["Icons and Text"] = "图标和文字"
 L["Ignored Items and Search Syntax (Global)"] = "被忽略的物品和搜索语法(全局)"
@@ -201,7 +201,7 @@ L["The direction that the bag frames be (Horizontal or Vertical)."] = "此方向
 L["The direction that the bag frames will grow from the anchor."] = "背包框架将从此方向开始排列"
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "背包底部的货币显示格式(你需要在货币页中勾选显示)"
 L["The display format of the money text that is shown at the top of the main bag."] = "在主背包上方显示的金钱文字的格式"
-L["The frame is not shown unless you mouse over the frame."] = "只在鼠标移经动作列时显示"
+L["The frame is not shown unless you mouse over the frame."] = "只在鼠标移到框架上时显示"
 L["The minimum item level required for it to be shown."] = "显示的最低物品等级"
 L["The size of the individual buttons on the bag frame."] = '背包框架单个格子的尺寸'
 L["The size of the individual buttons on the bank frame."] = '银行框架单个格子的尺寸'
@@ -235,7 +235,8 @@ L["Wrap After"] = "每行行数"
 L["Your Auras First"] = "自身光环优先"
 
 --Chat
-L["Above Chat"] = '聊天框上方'
+L["Above Chat"] = "聊天框上方"
+L["Adds an arrow infront of the chat lines to copy the entire line."] = true
 L["Adjust the height of your right chat panel."] = "调整右聊天框的高度"
 L["Adjust the width of your right chat panel."] = "调整右聊天框的宽度"
 L["Alerts"] = "提醒"
@@ -243,10 +244,11 @@ L["Allowed Combat Repeat"] = "战斗连续按键修复"
 L["Attempt to create URL links inside the chat."] = "在聊天框中创建超链接"
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "锁定左右聊天框架的位置.禁用此选项将允许你移动聊天框架到任意位置"
 L["Auto-Close Pet Battle Log"] = "自动关闭宠物对战日志"
-L["Below Chat"] = '聊天框下方'
-L["Chat EditBox Position"] = '对话輸入框位置'
-L["Chat History"] = '聊天历史'
+L["Below Chat"] = "聊天框下方"
+L["Chat EditBox Position"] = "聊天输入框位置"
+L["Chat History"] = "聊天历史"
 L["Class Color Mentions"] = "职业颜色提示"
+L["Copy Chat Lines"] = true
 L["Custom Timestamp Color"] = "自定义时间戳颜色"
 L["Display LFG Icons in group chat."] = "在小队聊天中显示随机队列图标"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在链接上时显示鼠标提示"
@@ -254,9 +256,9 @@ L["Enable the use of separate size options for the right chat panel."] = "为左
 L["Exclude Name"] = "排除名字"
 L["Excluded names will not be class colored."] = "排除的名字将不会使用职业颜色"
 L["Excluded Names"] = "排除的名字"
-L["Fade Chat"] = '对话内容渐隐'
+L["Fade Chat"] = "聊天内容渐隐"
 L["Fade Tabs No Backdrop"] = "隐藏拖出的聊天框"
-L["Fade the chat text when there is no activity."] = '渐隐聊天框内长期不活动的文字'
+L["Fade the chat text when there is no activity."] = "隐藏聊天框内长期不活动的文字"
 L["Fade Undocked Tabs"] = "隐藏分离的聊天框"
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = "当你把一个聊天框拖出聊天背景框的时候会自动隐藏掉,注意这个聊天框并没有被删除,关闭该选项你可以重新找到它"
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "当你把一个聊天框设置为分离状态时会自动隐藏掉,注意这个聊天框并没有被删除,关闭该选项你可以重新找到它"
@@ -268,9 +270,9 @@ L["Keyword Alert"] = "关键字警报"
 L["Keywords"] = "关键字"
 L["Left Only"] = "仅显示左边"
 L["LFG Icons"] = "随机队列图标"
-L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "如果在对话信息中发现如下文字会自动上色该文字. 如果你需要添加多个词必须用逗号分开. 搜索你的名字可使用 %MYNAME%.\n\n例如:\n%MYNAME%, ElvUI, RBGs, Tank"
+L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "如果在聊天信息中发现如下文字会自动上色该文字. 如果你需要添加多个词必须用逗号分开. 搜索你的名字可使用 %MYNAME%.\n\n例如:\n%MYNAME%, ElvUI, RBGs, Tank"
 L["Lock Positions"] = '锁定位置'
-L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = '记录对话历史,当你重载,登录和退出时会恢复你最后一次会话'
+L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "记录聊天历史,当你重载,登录和退出时会恢复你最后一次会话"
 L["No Alert In Combat"] = "战斗中不警报"
 L["Number of messages you scroll for each step."] = "每次滚动的聊天信息数目"
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = "当你在战斗中按下技能键时,有可能你的输入框还处于打开状态,这个功能可以在你按下技能键并且在输入框中输入下列个数字符串却没有放出技能时帮你自动关闭输入框"
@@ -280,8 +282,8 @@ L["Panel Height"] = "聊天框高度"
 L["Panel Texture (Left)"] = "聊天框材质(左)"
 L["Panel Texture (Right)"] = "聊天框材质(右)"
 L["Panel Width"] = "聊天框宽度"
-L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = '对话编辑框位置,如果底部的信息文字被禁用的话,将会强制显示在聊天框顶部.'
-L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "单位时间(秒)内屏蔽重复对话信息, 0为禁用此功能"
+L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = '聊天输入框位置,如果底部的信息文字被禁用的话,将会强制显示在聊天框顶部.'
+L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "屏蔽设定时间(秒)内的重复聊天信息, 0为禁用此功能"
 L["Quick Join Messages"] = "快速加入消息"
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = "开启该选项使你在查看聊天历史记录时需要按住Alt+上下键,如果关闭则直接按上下键即可"
 L["Right Only"] = "仅显示右边"
@@ -292,11 +294,11 @@ L["Scroll Messages"] = "滚动信息数目"
 L["Separate Panel Sizes"] = "分离框体大小"
 L["Set the font outline."] = "设定字体的描边"
 L["Short Channels"] = "隐藏频道名称"
-L["Shorten the channel names in chat."] = "在对话窗口中隐藏频道名称"
+L["Shorten the channel names in chat."] = "在聊天窗口中隐藏频道名称"
 L["Show clickable Quick Join messages inside of the chat."] = "在聊天栏里显示可点击的快速加入信息"
 L["Show Both"] = "全部显示"
 L["Spam Interval"] = "垃圾间隔"
-L["Sticky Chat"] = "记忆对话频道"
+L["Sticky Chat"] = "记忆聊天频道"
 L["Tab Font Outline"] = "标题栏字体描边"
 L["Tab Font Size"] = "标题栏字体尺寸"
 L["Tab Font"] = "标题栏字体"
@@ -306,9 +308,9 @@ L["Timestamp Color"] = "时间戳颜色"
 L["Toggle showing of the left and right chat panels."] = "显示/隐藏左右聊天框"
 L["Toggle the chat tab panel backdrop."] = "显示/隐藏聊天框架标签面板背景"
 L["URL Links"] = "网址链接"
-L["Use Alt Key"] = "对话历史Alt键"
+L["Use Alt Key"] = "聊天历史Alt键"
 L["Use class color for the names of players when they are mentioned."] = "当玩家名字被提及时使用职业颜色"
-L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "当你开始输入消息时此选项的启用将会让你保留最后一次对话的频道, 如果关闭将始终使用说话频道"
+L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "当你开始输入消息时此选项的启用将会让你保留最后一次聊天的频道, 如果关闭将始终使用说话频道"
 L["Whisper Alert"] = "密语警报"
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
@@ -319,16 +321,16 @@ Please Note:
 
 Example: Interface\AddOns\ElvUI\media\textures\copy
 
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[若要设定聊天框背景, 请将你希望设定为背景的档案置放于 WoW 目录底下的「Textures」资料夹中, 并指定该档名.
+Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[若要设定聊天框背景, 请你指定位于WoW目录下的「Textures」文件夹中的材质文件名.
 
 请注意：
-- 影像尺寸建议为 256 x 128
-- 在此资料夹新增档案后, 请务必重新启动游戏.
-- 档案必须为 tga 格式.
+- 图片尺寸建议为256x128
+- 在添加文件后你必须完全重新启动游戏
+- 文件必须为tga格式
 
-范例：Interface\AddOns\ElvUI\media\textures\copy
+举例：Interface\AddOns\ElvUI\media\textures\copy
 
-对多数玩家来说, 较简易的方式是将 tga 档放入 WoW 资料夹中, 然后在此处输入档案名称.]=]
+对多数玩家来说, 较简易的方式是将tga文件放入WoW文件夹中, 然后在此处输入文件名.]=]
 
 --Credits
 L["Coding:"] = "编码:"
@@ -338,7 +340,7 @@ L["ELVUI_CREDITS"] = "我想透过这个特别方式, 向那些协助测试、�
 L["Testing:"] = "测试:"
 
 --DataBars
-L["Current - Percent (Remaining)"] = "当前值 - 百分百(剩余)"
+L["Current - Percent (Remaining)"] = "当前值 - 百分比(剩余)"
 L["Current - Remaining"] = "当前值 - 剩余值"
 L["DataBars"] = "数据条"
 L["Hide In Combat"] = "战斗中隐藏"
@@ -362,11 +364,11 @@ L["Datatext Panel (Left)"] = "左侧信息框"
 L["Datatext Panel (Right)"] = "右侧信息框"
 L["DataTexts"] = "信息文字"
 L["Display data panels below the chat, used for datatexts."] = "在聊天框下显示用于信息的框架"
-L["Display In Main Tooltip"] = true
+L["Display In Main Tooltip"] = "在货币信息文字中显示"
 L["Display minimap panels below the minimap, used for datatexts."] = "显示小地图下方的信息框"
 L["Displayed Currency"] = "显示的金额"
 L["Gold Format"] = "金币格式"
-L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
+L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = "启用后这个货币将在'货币'信息文字中显示"
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示服务器时间"
 L["left"] = "左"
 L["LeftChatDataPanel"] = "左聊天框"
@@ -409,14 +411,14 @@ L["Accept Invites"] = "自动接受邀请"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "调整仇恨条的位置于左侧或右侧信息面板"
 L["AFK Mode"] = "离开模式"
 L["Announce Interrupts"] = "打断通告"
-L["Announce when you interrupt a spell to the specified chat channel."] = "在指定对话频道通知打断信息"
+L["Announce when you interrupt a spell to the specified chat channel."] = "在指定聊天频道通知打断信息"
 L["Attempt to support eyefinity/nvidia surround."] = "尝试支持eyefinity/nvidia surround"
 L["Auto Greed/DE"] = "自动贪婪/分解"
 L["Auto Repair"] = "自动修理"
 L["Auto Scale"] = "自动缩放"
 L["Automatically accept invites from guild/friends."] = "自动接受工会或好友的邀请"
 L["Automatically repair using the following method when visiting a merchant."] = "使用以下方式来自动修理装备"
-L["Automatically scale the User Interface based on your screen resolution"] = "依据屏幕分辨率度自动缩放介面"
+L["Automatically scale the User Interface based on your screen resolution"] = "依据屏幕分辨率度自动缩放界面"
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "当你满级时, 自动选择贪婪或分解绿色物品"
 L["Automatically vendor gray items when visiting a vendor."] = "当访问商人时自动出售灰色物品"
 L["Bonus Reward Position"] = "额外奖励位置"
@@ -429,7 +431,7 @@ L["Disables the tutorial button found on some frames."] = "禁用部分框体上
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = '显示跨越屏幕底部的面板,仅仅是用于装饰.'
 L["Display a panel across the top of the screen. This is for cosmetic only."] = '显示跨越屏幕顶部的面板,仅仅是用于装饰.'
 L["Display battleground messages in the middle of the screen."] = "屏幕中间显示战场信息"
-L["Display emotion icons in chat."] = "在对话中显示表情图标"
+L["Display emotion icons in chat."] = "在聊天中显示表情图标"
 L["Emotion Icons"] = "表情图标"
 L["Enable + Adjust Movers"] = "启用并移动其他框架"
 L["Enable/Disable the loot frame."] = "开/关物品掉落框架"
@@ -462,9 +464,9 @@ L["Reverse Fill Direction"] = "翻转填充方向"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "发送ADDON_ACTION_BLOCKED错误至Lua错误框, 这些错误并不重要, 不会影响你的游戏体验. 并且很多这类错误无法被修复. 请只将影响游戏体验的错误发送给我们"
 L["Skin Backdrop (No Borders)"] = "美化背景(无边框)"
 L["Skin Backdrop"] = "美化背景"
-L["Skin the blizzard chat bubbles."] = "美化暴雪对话泡泡"
+L["Skin the blizzard chat bubbles."] = "美化暴雪聊天泡泡"
 L["Talking Head Scale"] = "剧情对话框缩放"
-L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重新开启游戏或重新登录才能使用此功能.|r"
+L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重启游戏或重新登录才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "细边框主题会改变所有的外观,使用细边框主题会略微提升性能"
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "在ElvUI中数值单位的缩写. 该选项主要应用在单位框体"
 L["Thin Border Theme"] = "细边框主题"
@@ -486,19 +488,19 @@ L["Color some texts use."] = "数值(非文字)使用的颜色"
 L["CombatText Font"] = "战斗文字字体"
 L["Default Font"] = "预设字体"
 L["Fonts"] = "字体"
-L["Main backdrop color of the UI."] = "介面背景主色"
+L["Main backdrop color of the UI."] = "界面背景主色"
 L["Main border color of the UI."] = "界面边框主色"
 L["Media"] = "材质"
 L["Primary Texture"] = "主要材质"
 L["Replace Blizzard Fonts"] = "替代暴雪字体"
 L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."] = "用ElvUI字体设置代替暴雪原有字体设置,如果禁用有可能导致你的UI出问题,默认开启开选项"
 L["Secondary Texture"] = "次要材质"
-L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "设定介面上所有字体的大小, 但不包含本身有独立设定的字体(如单位框架字体、信息文字字体等...)"
+L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "设定界面上所有字体的大小, 但不包含本身有独立设定的字体(如单位框架字体、信息文字字体等)"
 L["Textures"] = "材质"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "战斗信息将使用此字体, |cffFF0000警告:需重启游戏或重新登陆才可使此变更生效.|r"
 L["The font that the core of the UI will use."] = "核心UI所使用的字体"
 L["The texture that will be used mainly for statusbars."] = "此材质主用于状态列上"
-L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于对话窗口及下拉选单等物件的材质"
+L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于聊天窗口及下拉选单等物件的材质"
 L["Value Color"] = "数值颜色"
 
 --Maps
@@ -536,7 +538,7 @@ L["Filters are not allowed to have commas in their name. Stripping commas from f
 L["Install"] = "安装"
 L["Run the installation process."] = "执行安装程序"
 L["Toggle Anchors"] = "切换定位开关"
-L["Unlock various elements of the UI to be repositioned."] = "解锁介面上的各种框架来更改位置"
+L["Unlock various elements of the UI to be repositioned."] = "解锁界面上的各种框架来更改位置"
 L["Version"] = "版本"
 
 --NamePlates
@@ -627,7 +629,7 @@ L["Hide When Empty"] = "空白时隐藏"
 L["Hide"] = "隐藏"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "在施法失败或被打断时施法条保持可见的秒数"
 L["Icon Base Height"] = "图标基础高度"
-L["Icon Position"] = true
+L["Icon Position"] = "图标位置"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "启用后将会检查光环是否缺失而不是光环是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "启用后要求满足所有光环. 否则只要求任一光环存在即可激活."
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = "启用后要求满足所有冷却. 否则只要求任一冷却存在即可激活"
@@ -660,9 +662,9 @@ L["Lower numbers mean a higher priority. Filters are processed in order from 1 t
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "姓名板在此设定值下会变黄色, 在设定值一半以下会变红色"
 L["Match Player Level"] = "符合玩家等级"
 L["Maximum Level"] = "最高等级"
-L["Maximum Time Left"] = "最高时间剩余"
+L["Maximum Time Left"] = "最大时间剩余"
 L["Minimum Level"] = "最低等级"
-L["Minimum Time Left"] = "最低时间剩余"
+L["Minimum Time Left"] = "最小时间剩余"
 L["Minus"] = "次要目标"
 L["Missing"] = "缺失"
 L["Name Color"] = "姓名颜色"
@@ -776,33 +778,22 @@ L["Profile"] = "配置文件"
 L["Table"] = "表"
 
 --Skins
-L["Achievement Frame"] = "成就"
 L["AddOn Manager"] = "插件管理"
 L["Alert Frames"] = "警报"
 L["Archaeology Frame"] = "考古学框架"
-L["Auction Frame"] = "拍卖"
-L["Barbershop Frame"] = "理发师"
 L["BG Map"] = "战场地图"
 L["BG Score"] = "战场记分"
-L["Black Market AH"] = "黑市"
 L["Calendar Frame"] = "日历框架"
 L["Character Frame"] = "角色"
 L["Contribution"] = "捐献"
-L["Death Recap"] = "死亡回放"
 L["Debug Tools"] = "除错工具"
 L["Gossip Frame"] = "闲谈"
 L["Guild Control Frame"] = "公会控制"
-L["Guild Frame"] = "公会"
 L["Guild Registrar"] = "公会注册"
 L["Help Frame"] = "帮助"
-L["Inspect Frame"] = "观察"
 L["Item Upgrade"] = "装备升级"
-L["KeyBinding Frame"] = "键位设置"
 L["LF Guild Frame"] = "寻求公会"
-L["LFG Frame"] = "地下城"
 L["Loot Frames"] = "拾取"
-L["Loss Control"] = "失去控制"
-L["Macro Frame"] = "宏"
 L["Mail Frame"] = "邮箱"
 L["Merchant Frame"] = "商人"
 L["Mirror Timers"] = "镜像计时器"
@@ -817,17 +808,10 @@ L["Quest Frames"] = "任务"
 L["Raid Frame"] = "团队"
 L["Skins"] = "美化外观"
 L["Socket Frame"] = "珠宝插槽"
-L["Spellbook"] = "技能书"
 L["Stable"] = "兽栏"
 L["Tabard Frame"] = "战袍"
-L["Talent Frame"] = "天赋"
 L["TalkingHead"] = "剧情对话框"
-L["Taxi Frame"] = "载具"
-L["Time Manager"] = "时间管理"
-L["Trade Frame"] = "交易"
-L["TradeSkill Frame"] = "专业技能"
 L["Trainer Frame"] = "训练师"
-L["Transmogrify Frame"] = "幻化"
 
 --Tooltip
 L["Always Hide"] = "总是隐藏"
@@ -852,7 +836,7 @@ L["Inspect Info"] = "更多信息"
 L["Item Count"] = '物品数量'
 L["Never Hide"] = "从不隐藏"
 L["Player Titles"] = "玩家头衔"
-L["Should tooltip be anchored to mouse cursor"] = "提示锚定于鼠标"
+L["Should tooltip be anchored to mouse cursor"] = "提示显示在鼠标处"
 L["Spell/Item IDs"] = '技能/物品ID'
 L["Target Info"] = "目标信息"
 L["Text Font Size"] = "字体大小"
@@ -943,9 +927,11 @@ L["Current"] = "当前值"
 L["Custom Dead Backdrop"] = "自定义死亡背景"
 L["Custom Health Backdrop"] = "自定义生命条背景"
 L["Custom Texts"] = "自定义字体"
+L["Custom Texture"] = "自定义材质"
 L["Debuff Highlighting"] = "减益光环加亮显示"
 L["Debuffs"] = "减益光环"
 L["Decimal Threshold"] = "小数阈值"
+L["Default Color"] = "默认颜色"
 L["Deficit"] = "亏损值"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "删除一个创造的过滤器, 你不能删除内建的过滤器, 只能删除你自已添加的"
 L["Delete Filter"] = "删除过滤器"
@@ -1008,7 +994,7 @@ L["Glow"] = "闪烁"
 L["Good"] = "安全"
 L["Group By"] = "队伍排列方式"
 L["Grouping & Sorting"] = "分组与排序"
-L["Groups Per Row/Column"] = "每行/列的组数"
+L["Groups Per Row/Column"] = "每行/列的队伍数"
 L["Growth direction from the first unitframe."] = "增长方向从第一个头像框架开始"
 L["Growth Direction"] = "增长方向"
 L["Heal Absorbs"] = "治疗吸收盾"
@@ -1059,7 +1045,7 @@ L["Method to sort by."] = "排序方式"
 L["Middle Click - Set Focus"] = "鼠标中键 - 设置焦点"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "鼠标中键点击单位框架设置焦点"
 L["Middle"] = "中间"
-L["Minimum Duration"] = "最低持续时间"
+L["Minimum Duration"] = "最小持续时间"
 L["Model Rotation"] = "模型旋转"
 L["Mouseover"] = "鼠标滑过显示"
 L["Name"] = "姓名"
@@ -1067,7 +1053,7 @@ L["Neutral"] = "中立"
 L["Non-Interruptable"] = "不可打断颜色"
 L["Not valid spell id"] = "不正确的技能ID"
 L["Num Rows"] = "行数"
-L["Number of Groups"] = "每队单位数量"
+L["Number of Groups"] = "队伍数目"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "偏移能量条与生命条的位置, 设为0代表停用"
 L["Offset position for text."] = "偏移文本的位置"
 L["Offset"] = "偏移"

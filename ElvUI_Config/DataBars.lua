@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars')
 
-local databars = {}
-
 E.Options.args.databars = {
 	type = "group",
 	name = L["DataBars"],
@@ -432,6 +430,6 @@ E.Options.args.databars = {
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
 			},
-		},	
+		},
 	},
 }

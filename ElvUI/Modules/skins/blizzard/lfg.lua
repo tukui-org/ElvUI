@@ -5,15 +5,25 @@ local LBG = LibStub("LibButtonGlow-1.0", true)
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
+local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local lower = string.lower
+local min = math.min
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
+local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
+local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
+-- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
+	local PVEFrame = _G["PVEFrame"]
 	PVEFrame:StripTextures()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
@@ -136,7 +146,7 @@ local function LoadSkin()
 		checkButton:Point("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList.GetAvailableRoles();
+		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles();
 
 		local avail1, avail2;
 		if ( availTank ) then
@@ -355,7 +365,8 @@ local function LoadSkin()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	LFRBrowseFrameRoleInsetBg:Hide()
 	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
-	LFRBrowseFrameColumnHeader1:Width(88) --Fix the columns being slightly off
+	LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
+	LFRBrowseFrameColumnHeader2:Width(38)
 
 	for i = 1, 14 do
 		if i ~= 6 and i ~= 8 then
@@ -445,6 +456,7 @@ local function LoadSkin()
 
 
 	--LFGListFrame
+	local LFGListFrame = _G["LFGListFrame"]
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
@@ -534,6 +546,35 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
+	local function handleLFGListCancelDeclineButton(button)
+		S:HandleButton(button)
+		if button.Icon then
+			button.Icon:Hide()
+		end
+		if not button.text then
+			button.text = button:CreateFontString(nil, 'OVERLAY')
+			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			button.text:SetText('x')
+			button.text:SetJustifyH('CENTER')
+			button.text:Point('CENTER', button, 'CENTER')
+		end
+	end
+
+	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
+		if not button.DeclineButton.template then
+			handleLFGListCancelDeclineButton(button.DeclineButton)
+		end
+		if not button.InviteButton.template then
+			S:HandleButton(button.InviteButton)
+		end
+	end)
+
+	hooksecurefunc("LFGListSearchEntry_Update", function(button)
+		if not button.CancelButton.template then
+			handleLFGListCancelDeclineButton(button.CancelButton)
+		end
+	end)
+
 	hooksecurefunc("LFGListSearchPanel_UpdateAutoComplete", function(self)
 		for i = 1, LFGListFrame.SearchPanel.AutoCompleteFrame:GetNumChildren() do
 			local child = select(i, LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren())
@@ -544,8 +585,8 @@ local function LoadSkin()
 		end
 
 		local text = self.SearchBox:GetText()
-		local matchingActivities = C_LFGList.GetAvailableActivities(self.categoryID, nil, self.filters, text)
-		local numResults = math.min(#matchingActivities, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
+		local matchingActivities = C_LFGList_GetAvailableActivities(self.categoryID, nil, self.filters, text)
+		local numResults = min(#matchingActivities, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
 
 		for i = 2, numResults do
 			local button = self.AutoCompleteFrame.Results[i]
@@ -567,6 +608,7 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint("TOPRIGHT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMRIGHT", -4, -8)
 
 	--ApplicationViewer (Custom Groups)
+	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
 	LFGListFrame.ApplicationViewer.InfoBackground:SetTexCoord(unpack(E.TexCoords))
 	S:HandleCheckBox(LFGListFrame.ApplicationViewer.AutoAcceptButton)
 
@@ -578,10 +620,14 @@ local function LoadSkin()
 	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.NameColumnHeader:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
+	LFGListFrame.ApplicationViewer.NameColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.RoleColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RoleColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.RoleColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader.Label:FontTemplate()
+	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
 	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24,24)
@@ -632,6 +678,7 @@ S:AddCallback("LFG", LoadSkin)
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
+	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()

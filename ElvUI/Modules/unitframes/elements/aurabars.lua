@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 --Lua functions
-local next, ipairs = next, ipairs
 local match = string.match
 local strsplit = strsplit
 local tostring = tostring
@@ -191,7 +190,7 @@ function UF.SortAuraBarName(a, b)
 end
 
 function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell = false, false
+	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
 		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
@@ -237,12 +236,12 @@ function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 	end
 end
 
-function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer)
+function UF:AuraBarFilter(unit, name, _, _, _, debuffType, duration, _, unitCaster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not self.db then return; end
 	local db = self.db.aurabar
 
 	if not name then return nil end
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration = false, false, false, false, false, false, false
+	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration
 
 	if db.priority ~= '' then
 		noDuration = (not duration or duration == 0)

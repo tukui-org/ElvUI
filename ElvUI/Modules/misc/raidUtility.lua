@@ -167,7 +167,7 @@ local function RaidUtility_PositionRoleIcons()
 end
 
 local count = {}
-local function UpdateIcons(self, event)
+local function UpdateIcons(self)
 	local raid = IsInRaid()
 	local party --= IsInGroup() --We could have this in party :thinking:
 

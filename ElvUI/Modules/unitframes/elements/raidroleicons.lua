@@ -35,7 +35,7 @@ function UF:Configure_RaidRoleIcons(frame)
 			frame:EnableElement('MasterLooterIndicator')
 			frame:EnableElement('AssistantIndicator')
 		end
-		
+
 		raidRoleFrameAnchor:ClearAllPoints()
 		if frame.db.raidRoleIcons.position == 'TOPLEFT' then
 			raidRoleFrameAnchor:Point('LEFT', frame.Health, 'TOPLEFT', 2, 0)

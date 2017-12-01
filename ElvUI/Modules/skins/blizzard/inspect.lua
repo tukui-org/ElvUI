@@ -3,19 +3,20 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
+local _G = _G
+local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local GetPrestigeInfo = GetPrestigeInfo
 local UnitPrestige = UnitPrestige
 local UnitLevel = UnitLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
-local LE_EXPANSION_LEVEL_CURRENT = LE_EXPANSION_LEVEL_CURRENT
-
--- GLOBALS: INSPECTED_UNIT
+local hooksecurefunc = hooksecurefunc
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: INSPECTED_UNIT, LE_EXPANSION_LEVEL_CURRENT, MAX_PLAYER_LEVEL_TABLE
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
 
+	local InspectFrame = _G["InspectFrame"]
 	InspectFrame:StripTextures(true)
 	InspectFrameInset:StripTextures(true)
 	InspectFrame:SetTemplate('Transparent')
@@ -77,14 +78,8 @@ local function LoadSkin()
 
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop("Default")
-	InspectModelFrame.backdrop:SetPoint("TOPLEFT", -3, 4)
-	InspectModelFrame.backdrop:SetPoint("BOTTOMRIGHT", 4, 0)
-
-	-- Background Texture
-	InspectModelFrameBackgroundTopLeft:SetPoint("TOPLEFT", InspectModelFrame.backdrop, "TOPLEFT", 2, -2)
-	InspectModelFrameBackgroundTopRight:SetPoint("TOPRIGHT", InspectModelFrame.backdrop, "TOPRIGHT", -2, -2)
-	InspectModelFrameBackgroundBotLeft:SetPoint("BOTTOMLEFT", InspectModelFrame.backdrop, "BOTTOMLEFT", 2, -50)
-	InspectModelFrameBackgroundBotRight:SetPoint("BOTTOMRIGHT", InspectModelFrame.backdrop, "BOTTOMRIGHT", -2, -50)
+	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	InspectModelFrameBorderTopLeft:Kill()
 	InspectModelFrameBorderTopRight:Kill()

@@ -1,6 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs, unpack = pairs, unpack
+--WoW API / Variables
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trainer ~= true then return end
 
@@ -25,6 +34,7 @@ local function LoadSkin()
 		"ClassTrainerScrollFrameScrollBarMiddle",
 	}
 
+	local ClassTrainerFrame = _G["ClassTrainerFrame"]
 	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
 		local button = _G["ClassTrainerScrollFrameButton"..i]
 		button:StripTextures()
