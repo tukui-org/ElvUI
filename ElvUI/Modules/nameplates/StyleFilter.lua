@@ -43,16 +43,47 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
 
-function mod:StyleFilterAuraCheck(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
-	local total, count = 0, 0
+local C_Timer_After = C_Timer.After
+
+function mod:StyleFilterAuraCheck(frame, names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow, updateIn = 0, 0
 	for name, value in pairs(names) do
 		if value == true then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
-		for frameNum, icon in pairs(icons) do
-			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name)))
-				and (not minTimeLeft or (minTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) > minTimeLeft))) and (not maxTimeLeft or (maxTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) < maxTimeLeft))) then
-				count = count + 1 --keep track of how many matches we have
+		for _, icon in pairs(icons) do
+			isSpell = (icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))
+			if isSpell and icon:IsShown() and (value == true) then
+				hasMinTime = minTimeLeft and minTimeLeft ~= 0
+				hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+				timeLeft = (hasMinTime or hasMaxTime) and icon.expirationTime and (icon.expirationTime - GetTime())
+				minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+				maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+				if timeLeft then
+					if hasMinTime and not icon.hasMinTimer then
+						updateIn = timeLeft-minTimeLeft
+						if updateIn > 0 then
+		                    C_Timer_After(updateIn+0.01, function()
+		                        mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
+		                        icon.hasMinTimer = nil
+		                    end)
+		                    icon.hasMinTimer = true
+						end
+	                end
+					if hasMaxTime and not icon.hasMaxTimer then
+						updateIn = timeLeft-maxTimeLeft
+						if updateIn > 0 then
+		                    C_Timer_After(updateIn+0.01, function()
+		                        mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
+		                        icon.hasMaxTimer = nil
+		                    end)
+		                    icon.hasMaxTimer = true
+						end
+	                end
+				end
+				if minTimeAllow and maxTimeAllow then
+					count = count + 1 --keep track of how many matches we have
+				end
 			end
 		end
 	end
@@ -643,7 +674,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to buff aura conditions
 	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		condition = self:StyleFilterAuraCheck(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -651,7 +682,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to debuff aura conditions
 	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		condition = self:StyleFilterAuraCheck(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -713,6 +744,7 @@ function mod:StyleFilterConfigureEvents()
 
 				-- fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
 				self.StyleFilterEvents["UpdateElement_All"] = true
+				self.StyleFilterEvents["Delayed_Aura_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
