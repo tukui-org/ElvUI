@@ -97,15 +97,14 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, scString, sc2String, d3String, wtcgString, appString, clntString, hotsString, owString, dst2String, bsapString = BNET_CLIENT_WOW, BNET_CLIENT_SC, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_APP, BNET_CLIENT_CLNT, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_DESTINY2, 'BSAp'
+local wowString, bsapString = BNET_CLIENT_WOW, 'BSAp'
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
-local friendTable, BNTable = {}, {}
-local tableList = {[wowString] = {}, [d3String] = {}, [scString] = {}, [sc2String] = {}, [wtcgString] = {}, [appString] = {}, [hotsString] = {}, [owString] = {}, [clntString] = {}, [dst2String] = {}, [bsapString] = {}}
+local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
@@ -145,7 +144,7 @@ local function Sort(a, b)
 end
 
 local function BuildBNTable(total)
-	for _,v in pairs(tableList) do wipe(v) end
+	wipe(tableList)
 	wipe(BNTable)
 
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
@@ -162,7 +161,7 @@ local function BuildBNTable(total)
 
 			if tableList[client] then
 				tableList[client][#tableList[client]+1] = BNTable[i]
-			else --if for some reason the client doesnt exist in `tableList` lets just add it and keep track
+			else
 				tableList[client] = {}
 				tableList[client][1] = BNTable[i]
 			end
