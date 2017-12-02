@@ -750,6 +750,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[246763] = Defaults(), -- Fury of Golganneth
 		[245674] = Defaults(), -- Flames of Khaz'goroth
 		[245910] = Defaults(), -- Spectral Army of Norgannon
+		[253520] = Defaults(), -- Fulminating Pulse
 
 		-- Aggramar
 		[244291] = Defaults(), -- Foe Breaker
@@ -762,7 +763,16 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[245916] = Defaults(), -- Molten Remnants
 
 		-- Argus the Unmaker
-		-- [] = Defaults(), --
+		[251815] = Defaults(), -- Edge of Obliteration
+		[248499] = Defaults(), -- Sweeping Scythe
+		[250669] = Defaults(), -- Soulburst
+		[251570] = Defaults(), -- Soulbomb
+		[248396] = Defaults(), -- Soulblight
+		[258039] = Defaults(), -- Deadly Scythe
+		[252729] = Defaults(), -- Cosmic Ray
+		[256899] = Defaults(), -- Soul Detonation
+		[252634] = Defaults(), -- Cosmic Smash
+		[252616] = Defaults(), -- Cosmic Beacon
 
 	-- Tomb of Sargeras
 		-- Goroth
