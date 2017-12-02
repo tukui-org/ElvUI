@@ -156,7 +156,7 @@ local function Sort(a, b)
 end
 
 local function BuildBNTable(total)
-	wipe(tableList)
+	for _,v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
 
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
