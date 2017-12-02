@@ -318,7 +318,7 @@ function AB:AdjustMaxStanceButtons(event)
 		self:StyleShapeShift()
 	end
 
-	RegisterStateDriver(bar, "show", (numButtons == 0 and "hide") or visibility);
+	RegisterStateDriver(bar, "visibility", (numButtons == 0 and "hide") or visibility);
 end
 
 function AB:UpdateStanceBindings()
@@ -339,17 +339,9 @@ function AB:CreateBarShapeShift()
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};
-	bar:SetAttribute("_onstate-show", [[
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end
-	]]);
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');
