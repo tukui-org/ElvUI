@@ -750,6 +750,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[246763] = Defaults(), -- Fury of Golganneth
 		[245674] = Defaults(), -- Flames of Khaz'goroth
 		[245910] = Defaults(), -- Spectral Army of Norgannon
+		[253520] = Defaults(), -- Fulminating Pulse
 
 		-- Aggramar
 		[244291] = Defaults(), -- Foe Breaker
