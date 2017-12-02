@@ -97,7 +97,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, bsapString = BNET_CLIENT_WOW, 'BSAp'
+local wowString = BNET_CLIENT_WOW
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -108,6 +108,18 @@ local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
+
+local clientTags = {
+	[BNET_CLIENT_WOW] = "WoW",
+	[BNET_CLIENT_SC2] = "SC2",
+	[BNET_CLIENT_D3] = "D3",
+	[BNET_CLIENT_WTCG] = "HS",
+	[BNET_CLIENT_HEROES] = "HotS",
+	[BNET_CLIENT_OVERWATCH] = "OW",
+	[BNET_CLIENT_SC] = "SC",
+	[BNET_CLIENT_DESTINY2] = "Dst2",
+	["BSAp"] = L["Mobile"],
+}
 
 local function SortAlphabeticName(a, b)
 	if a[1] and b[1] then
@@ -286,7 +298,7 @@ local function OnEnter(self)
 		for client, Table in pairs(tableList) do
 			if #Table > 0 then
 				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(format("%s (%s)", battleNetString, (client == bsapString and L["Mobile"]) or client))
+				DT.tooltip:AddLine(format("%s (%s)", battleNetString, clientTags[client] or client))
 				for i = 1, #Table do
 					info = Table[i]
 					if info[7] then
