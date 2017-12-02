@@ -318,12 +318,7 @@ function AB:AdjustMaxStanceButtons(event)
 		self:StyleShapeShift()
 	end
 
-	if numButtons == 0 then
-		UnregisterStateDriver(bar, "show");
-		bar:Hide(); --this keeps the stanceBar backdrop hidden on toons without a stanceBar
-	else
-		RegisterStateDriver(bar, "show", visibility);
-	end
+	RegisterStateDriver(bar, "show", (numButtons == 0 and "hide") or visibility);
 end
 
 function AB:UpdateStanceBindings()
