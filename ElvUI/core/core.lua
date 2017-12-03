@@ -1193,7 +1193,7 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
 		for object, functions in pairs(EventRegister[event]) do
 			for _, func in ipairs(functions) do
 				--Call the functions that are registered with this object, and pass the object and other arguments back
-				EventRegister[event][object][func](object, ...)
+				EventRegister[event][object][func](object, event, ...)
 			end
 		end
 	end
@@ -1204,7 +1204,7 @@ end)
 -- If the specified object has already been registered for the specified event
 -- then it will just add the specified func to a table of functions that should be called.
 -- When a registered event is triggered, then the registered function is called with
--- the object as first parameter, and then all the parameters for the event itself.
+-- the object as first parameter, then event, and then all the parameters for the event itself.
 -- @param event The event you want to register.
 -- @param object The object you want to register the event for.
 -- @param func The function you want executed for this object.
