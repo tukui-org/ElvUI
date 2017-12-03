@@ -2218,6 +2218,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -2402,6 +2403,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -2552,6 +2554,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,

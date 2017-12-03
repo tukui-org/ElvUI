@@ -4922,6 +4922,11 @@ E.Options.args.unitframe.args.party = {
 					type = "toggle",
 					name = L["Show For DPS"],
 				},
+				combatHide = {
+					order = 11,
+					type = "toggle",
+					name = L["Hide In Combat"],
+				},
 			},
 		},
 		raidRoleIcons = {
@@ -5516,6 +5521,11 @@ E.Options.args.unitframe.args.raid = {
 					type = "toggle",
 					name = L["Show For DPS"],
 				},
+				combatHide = {
+					order = 11,
+					type = "toggle",
+					name = L["Hide In Combat"],
+				},
 			},
 		},
 		raidRoleIcons = {
@@ -5924,6 +5934,11 @@ E.Options.args.unitframe.args.raid40 = {
 					order = 10,
 					type = "toggle",
 					name = L["Show For DPS"],
+				},
+				combatHide = {
+					order = 11,
+					type = "toggle",
+					name = L["Hide In Combat"],
 				},
 			},
 		},
