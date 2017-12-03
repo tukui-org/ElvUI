@@ -476,10 +476,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by target conditions
-	if not failed and (trigger.isTarget or trigger.notTarget or trigger.targetMe or trigger.notTargetMe) then
+	--Try to match by player target conditions
+	if not failed and (trigger.isTarget or trigger.notTarget) then
 		condition = false
-		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) or (trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe) then
+		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+			condition = true
+		end
+		failed = not condition
+	end
+
+	--Try to match by unit target conditions
+	if not failed and (trigger.targetMe or trigger.notTargetMe) then
+		condition = false
+		if (trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe) then
 			condition = true
 		end
 		failed = not condition
