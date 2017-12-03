@@ -140,7 +140,7 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
+	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent, 'SecureHandlerStateTemplate')
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 
 	E.FrameLocks["ElvUI_MicroBar"] = true;
