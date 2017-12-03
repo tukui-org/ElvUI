@@ -1186,6 +1186,65 @@ function E:UnregisterObjectForVehicleLock(object)
 	E.VehicleLocks[object] = nil
 end
 
+local EventRegister = {}
+local EventFrame = CreateFrame("Frame")
+EventFrame:SetScript("OnEvent", function(self, event, ...)
+	if EventRegister[event] then
+		for object, functions in pairs(EventRegister[event]) do
+			for _, func in ipairs(functions) do
+				--Call the functions that are registered with this object, and pass the object and other arguments back
+				EventRegister[event][object][func](object, ...)
+			end
+		end
+	end
+end)
+
+function E:RegisterEventForObject(event, object, func)
+	if not event or not object or not func then
+		E:Print("Error. Usage: RegisterEventForObject(event, object, func)")
+		return
+	end
+
+	if not EventRegister[event] then --Check if event has already been registered
+		EventRegister[event] = {}
+		EventFrame:RegisterEvent(event)
+	else
+		if not EventRegister[event][object] then --Check if this object has already been registered
+			EventRegister[event][object] = {func}
+		else
+			tinsert(EventRegister[event][object], func) --Add func that should be called for this object on this event
+		end
+	end
+end
+
+function E:UnregisterEventForObject(event, object, func)
+	if not event or not object or not func then
+		E:Print("Error. Usage: UnregisterEventForObject(event, object, func)")
+		return
+	end
+
+	--Find the specified function for the specified object and remove it from the register
+	if EventRegister[event] and EventRegister[event][object] then
+		for _, registeredFunc in ipairs(EventRegister[event][object]) do
+			if func == registeredFunc then
+				tremove(EventRegister[event][object], registeredFunc)
+				break
+			end
+		end
+
+		--If this object no longer has any functions registered then remove it from the register
+		if #EventRegister[event][object] == 0 then
+			EventRegister[event][object] = nil
+		end
+		
+		--If this event no longer has any objects registered then unregister it and remove it from the register
+		if not next(EventRegister[event]) then
+			EventFrame:UnregisterEvent(event)
+			EventRegister[event] = nil
+		end
+	end
+end
+
 function E:ResetAllUI()
 	self:ResetMovers()
 
