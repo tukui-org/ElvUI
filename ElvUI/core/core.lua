@@ -1199,6 +1199,15 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 
+--- Registers specified event and adds specified func to be called for the specified object.
+-- Unless all parameters are supplied it will not register.
+-- If the specified object has already been registered for the specified event
+-- then it will just add the specified func to a table of functions that should be called.
+-- When a registered event is triggered, then the registered function is called with
+-- the object as first parameter, and then all the parameters for the event itself.
+-- @param event The event you want to register.
+-- @param object The object you want to register the event for.
+-- @param func The function you want executed for this object.
 function E:RegisterEventForObject(event, object, func)
 	if not event or not object or not func then
 		E:Print("Error. Usage: RegisterEventForObject(event, object, func)")
@@ -1217,6 +1226,11 @@ function E:RegisterEventForObject(event, object, func)
 	end
 end
 
+--- Unregisters specified function for the specified object on the specified event.
+-- Unless all parameters are supplied it will not unregister.
+-- @param event The event you want to unregister an object from.
+-- @param object The object you want to unregister a func from.
+-- @param func The function you want unregistered for the object.
 function E:UnregisterEventForObject(event, object, func)
 	if not event or not object or not func then
 		E:Print("Error. Usage: UnregisterEventForObject(event, object, func)")
