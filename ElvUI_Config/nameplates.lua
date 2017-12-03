@@ -739,6 +739,20 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				notTargetMe = {
+					name = L["Is Not Targeting Player"],
+					desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
+					order = 6,
+					type = 'toggle',
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe = value
+						NP:ConfigureAll()
+					end,
+				},
 				names = {
 					name = L["Name"],
 					order = 7,
