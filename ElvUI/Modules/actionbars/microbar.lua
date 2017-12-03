@@ -8,6 +8,7 @@ local assert = assert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
+local RegisterStateDriver = RegisterStateDriver
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_MicroBar, MainMenuBarPerformanceBar, MainMenuMicroButton
@@ -116,12 +117,19 @@ function AB:UpdateMicroPositionDimensions()
 	AB.MicroHeight = (((_G["CharacterMicroButton"]:GetHeight() - 26) * numRows)-numRows)-1
 	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
 
-	if self.db.microbar.enabled then
-		ElvUI_MicroBar:Show()
-		if ElvUI_MicroBar.mover then E:EnableMover(ElvUI_MicroBar.mover:GetName()) end
-	else
-		ElvUI_MicroBar:Hide()
-		if ElvUI_MicroBar.mover then E:DisableMover(ElvUI_MicroBar.mover:GetName()) end
+	local visibility = self.db.microbar.visibility
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
+
+	RegisterStateDriver(ElvUI_MicroBar, "visibility", (self.db.microbar.enabled and visibility) or "hide");
+
+	if ElvUI_MicroBar.mover then
+		if self.db.microbar.enabled then
+			E:EnableMover(ElvUI_MicroBar.mover:GetName())
+		else
+			E:DisableMover(ElvUI_MicroBar.mover:GetName())
+		end
 	end
 end
 

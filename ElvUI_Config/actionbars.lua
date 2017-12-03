@@ -564,6 +564,21 @@ local function BuildABConfig()
 				desc = L["The amount of buttons to display per row."],
 				min = 1, max = #MICRO_BUTTONS, step = 1,
 			},
+			visibility = {
+				type = 'input',
+				order = 5,
+				name = L["Visibility State"],
+				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
+				width = 'full',
+				multiline = true,
+				set = function(info, value)
+					if value and value:match('[\n\r]') then
+						value = value:gsub('[\n\r]','')
+					end
+					E.db.actionbar['microbar']['visibility'] = value;
+					AB:UpdateMicroPositionDimensions()
+				end,
+			},
 		},
 	}
 	for i=1, 6 do
