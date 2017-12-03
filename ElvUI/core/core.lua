@@ -1193,7 +1193,7 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
 		for object, functions in pairs(EventRegister[event]) do
 			for _, func in ipairs(functions) do
 				--Call the functions that are registered with this object, and pass the object and other arguments back
-				EventRegister[event][object][func](object, event, ...)
+				func(object, event, ...)
 			end
 		end
 	end
