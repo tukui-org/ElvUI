@@ -16,7 +16,6 @@ local GetShapeshiftFormInfo = GetShapeshiftFormInfo
 local CooldownFrame_Set = CooldownFrame_Set
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
 local GetBindingKey = GetBindingKey
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
