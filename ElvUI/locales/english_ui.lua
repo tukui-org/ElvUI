@@ -108,6 +108,7 @@ L["Naval Mission(s) Report:"] = true
 L["No Guild"] = true
 L["Offhand"] = true
 L["Profit:"] = true
+L["Reset Counters: Hold Shift + Left Click"] = true
 L["Reset Data: Hold Shift + Right Click"] = true
 L["Saved Raid(s)"] = true
 L["Saved Dungeon(s)"] = true
