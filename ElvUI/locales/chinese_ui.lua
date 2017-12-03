@@ -108,6 +108,7 @@ L["Naval Mission(s) Report:"] = "海军任务报告:"
 L["No Guild"] = "没有公会"
 L["Offhand"] = "副手"
 L["Profit:"] = "利润:"
+L["Reset Counters: Hold Shift + Left Click"] = true
 L["Reset Data: Hold Shift + Right Click"] = "重置数据: 按住 Shift + 右键点击"
 L["Saved Raid(s)"] = "已有进度的副本"
 L["Saved Dungeon(s)"] = "已有进度的地下城"

@@ -108,6 +108,7 @@ L["Naval Mission(s) Report:"] = "Informe de Misión(es) Navales"
 L["No Guild"] = "Sin Hermandad"
 L["Offhand"] = "Mano Izquierda"
 L["Profit:"] = "Ganancia:"
+L["Reset Counters: Hold Shift + Left Click"] = true
 L["Reset Data: Hold Shift + Right Click"] = "Restablecer Datos: Mantén Shift + Clic Derecho"
 L["Saved Raid(s)"] = "Banda(s) Guardada(s)"
 L["Saved Dungeon(s)"] = true
