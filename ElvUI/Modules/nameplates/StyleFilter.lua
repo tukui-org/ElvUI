@@ -45,8 +45,21 @@ local UnitReaction = UnitReaction
 
 local C_Timer_After = C_Timer.After
 
+function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTimeLeft)
+	if icon and not icon[varTimerName] then
+		local updateIn = timeLeft-mTimeLeft
+		if updateIn > 0 then
+            C_Timer_After(updateIn+0.01, function()
+                mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
+                icon[varTimerName] = nil
+            end)
+            icon[varTimerName] = true
+		end
+    end
+end
+
 function mod:StyleFilterAuraCheck(frame, names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
-	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow, updateIn = 0, 0
+	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow = 0, 0
 	for name, value in pairs(names) do
 		if value == true then --only if they are turned on
 			total = total + 1 --keep track of the names
@@ -59,27 +72,9 @@ function mod:StyleFilterAuraCheck(frame, names, icons, mustHaveAll, missing, min
 				timeLeft = (hasMinTime or hasMaxTime) and icon.expirationTime and (icon.expirationTime - GetTime())
 				minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 				maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
-				if timeLeft then
-					if hasMinTime and not icon.hasMinTimer then
-						updateIn = timeLeft-minTimeLeft
-						if updateIn > 0 then
-		                    C_Timer_After(updateIn+0.01, function()
-		                        mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
-		                        icon.hasMinTimer = nil
-		                    end)
-		                    icon.hasMinTimer = true
-						end
-	                end
-					if hasMaxTime and not icon.hasMaxTimer then
-						updateIn = timeLeft-maxTimeLeft
-						if updateIn > 0 then
-		                    C_Timer_After(updateIn+0.01, function()
-		                        mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
-		                        icon.hasMaxTimer = nil
-		                    end)
-		                    icon.hasMaxTimer = true
-						end
-	                end
+				if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+					if hasMinTime then self:StyleFilterAuraWaitTimer(frame, icon, 'hasMinTimer', timeLeft, minTimeLeft) end
+					if hasMaxTime then self:StyleFilterAuraWaitTimer(frame, icon, 'hasMaxTimer', timeLeft, maxTimeLeft) end
 				end
 				if minTimeAllow and maxTimeAllow then
 					count = count + 1 --keep track of how many matches we have
