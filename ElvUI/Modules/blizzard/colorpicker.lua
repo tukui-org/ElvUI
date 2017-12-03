@@ -146,7 +146,7 @@ function B:EnhanceColorPicker()
 	end)
 
 	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
-	--this little script will make you have to press ok for you to notice any changes.
+	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
 	ColorPickerFrame:SetScript('OnColorSelect', function(self, r, g, b)
 		ColorSwatch:SetColorTexture(r, g, b)
 		if not editingText then
