@@ -697,65 +697,9 @@ local function UpdateFilterGroup()
 					type = 'description',
 					name = '',
 				},
-				isTarget = {
-					name = L["Is Targeted"],
-					desc = L["If enabled then the filter will only activate when you are targeting the unit."],
-					order = 4,
-					type = 'toggle',
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget = value
-						NP:ConfigureAll()
-					end,
-				},
-				notTarget = {
-					name = L["Not Targeted"],
-					desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
-					order = 5,
-					type = 'toggle',
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget = value
-						NP:ConfigureAll()
-					end,
-				},
-				targetMe = {
-					name = L["Is Targeting Player"],
-					desc = L["If enabled then the filter will only activate when the unit is targeting you."],
-					order = 6,
-					type = 'toggle',
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe = value
-						NP:ConfigureAll()
-					end,
-				},
-				notTargetMe = {
-					name = L["Is Not Targeting Player"],
-					desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
-					order = 6,
-					type = 'toggle',
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe = value
-						NP:ConfigureAll()
-					end,
-				},
 				names = {
 					name = L["Name"],
-					order = 7,
+					order = 6,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -790,6 +734,75 @@ local function UpdateFilterGroup()
 							end,
 						}
 					},
+				},
+				targeting = {
+					name = L["Targeting"],
+					order = 7,
+					type = "group",
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						isTarget = {
+							name = L["Is Targeted"],
+							desc = L["If enabled then the filter will only activate when you are targeting the unit."],
+							order = 1,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget = value
+								NP:ConfigureAll()
+							end,
+						},
+						notTarget = {
+							name = L["Not Targeted"],
+							desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
+							order = 2,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer2 = {
+							order = 3,
+							type = 'description',
+							name = '',
+						},
+						targetMe = {
+							name = L["Is Targeting Player"],
+							desc = L["If enabled then the filter will only activate when the unit is targeting you."],
+							order = 4,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe = value
+								NP:ConfigureAll()
+							end,
+						},
+						notTargetMe = {
+							name = L["Is Not Targeting Player"],
+							desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
+							order = 5,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe = value
+								NP:ConfigureAll()
+							end,
+						},
+					}
 				},
 				casting = {
 					order = 8,
