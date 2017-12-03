@@ -2900,7 +2900,7 @@ P["actionbar"] = {
 		['mouseover'] = false,
 		['buttonsPerRow'] = 11,
 		['alpha'] = 1,
-		['visibility'] = "[petbattle] hide; show",
+		['visibility'] = "show",
 	},
 
 	['globalFadeAlpha'] = 0,
