@@ -524,6 +524,11 @@ function B:UpdateAllSlots()
 			self.Bags[bagID]:UpdateBagSlots(bagID);
 		end
 	end
+	
+	--Refresh search in case we moved items around
+	if B:IsSearching() then
+		B:SetSearch(SEARCH_STRING);
+	end	
 end
 
 function B:SetSlotAlphaForBag(f)
@@ -1233,6 +1238,8 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
+				f:UnregisterEvent("BAG_UPDATE")--Unregister it to prevent unnecessary updates
+				f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
 				B:CommandDecorator(B.SortBags, 'bank')();
 			else
 				SortReagentBankBags()
@@ -1368,7 +1375,11 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:GetDisabledTexture():SetDesaturated(1)
 		f.sortButton:StyleButton(nil, true)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
-		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bags')(); end)
+		f.sortButton:SetScript('OnClick', function()
+			f:UnregisterEvent("BAG_UPDATE")--Unregister it to prevent unnecessary updates
+			f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
+			B:CommandDecorator(B.SortBags, 'bags')();
+		end)
 		if E.db.bags.disableBagSort then
 			f.sortButton:Disable()
 		end

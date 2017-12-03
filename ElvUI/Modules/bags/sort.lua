@@ -714,6 +714,17 @@ function B:StartStacking()
 	end
 end
 
+local function RegisterUpdateDelayed()
+	for _, bagFrame in pairs(B.BagFrames) do
+		if bagFrame.registerUpdate then
+			--call update and re-register BAG_UPDATE event
+			bagFrame.registerUpdate = nil
+			bagFrame:UpdateAllSlots()
+			bagFrame:RegisterEvent("BAG_UPDATE")
+		end
+	end
+end
+
 function B:StopStacking(message)
 	twipe(moves)
 	twipe(moveTracker)
@@ -721,7 +732,13 @@ function B:StopStacking(message)
 
 	self.SortUpdateTimer:Hide()
 	if message then
-		E:Print(message)
+		if message == "DoMovesFinished" then
+			--Add a delayed update call, as BAG_UPDATE fires slightly delayed
+			-- and we don't want the last few unneeded updates to be catched
+			C_Timer.After(0.6, RegisterUpdateDelayed)
+		else
+			E:Print(message)
+		end
 	end
 end
 
@@ -859,7 +876,7 @@ function B:DoMoves()
 			end
 		end
 	end
-	B:StopStacking()
+	B:StopStacking("DoMovesFinished")
 end
 
 function B:GetGroup(id)
