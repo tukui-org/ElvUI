@@ -83,7 +83,9 @@ local __buttons = {}
 -- end
 
 function AB:UpdateMicroPositionDimensions()
-	if not ElvUI_MicroBar then return; end
+	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+	if not ElvUI_MicroBar then return end
+
 	local numRows = 1
 	local prevButton = ElvUI_MicroBar
 	for i=1, (#MICRO_BUTTONS) do
