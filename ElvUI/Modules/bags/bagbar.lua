@@ -39,8 +39,7 @@ function B:SkinBag(bag)
 end
 
 function B:SizeAndPositionBagBar()
-	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
-	if not ElvUIBags then return end
+	if not ElvUIBags then return; end
 
 	local buttonSpacing = E.db.bags.bagBar.spacing
 	local backdropSpacing = E.db.bags.bagBar.backdropSpacing
@@ -113,7 +112,7 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
-	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent, 'SecureHandlerStateTemplate')
+	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:Point('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {}
 	ElvUIBags:CreateBackdrop()

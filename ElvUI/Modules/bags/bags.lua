@@ -932,8 +932,6 @@ function B:OnEvent(event, ...)
 		B:UpdateReagentSlot(...)
 	elseif (event == "QUEST_ACCEPTED" or event == "QUEST_REMOVED") and self:IsShown() then
 		self:UpdateAllSlots()
-	elseif (event == "PLAYER_REGEN_ENABLED") then
-		self:SizeAndPositionBagBar()
 	end
 end
 
