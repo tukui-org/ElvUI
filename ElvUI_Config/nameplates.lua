@@ -723,9 +723,22 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 				},
+				targetMe = {
+					name = L["Is Targeting Me"],
+					order = 6,
+					type = 'toggle',
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe = value
+						NP:ConfigureAll()
+					end,
+				},
 				names = {
 					name = L["Name"],
-					order = 6,
+					order = 7,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -762,7 +775,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				casting = {
-					order = 7,
+					order = 8,
 					type = 'group',
 					name = L["Casting"],
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -822,7 +835,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				combat = {
-					order = 8,
+					order = 9,
 					type = 'group',
 					name = COMBAT,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
@@ -861,21 +874,21 @@ local function UpdateFilterGroup()
 					},
 				},
 				class = {
-					order = 9,
+					order = 10,
 					type = 'group',
 					name = CLASS,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
 				talent = {
-					order = 10,
+					order = 11,
 					type = 'group',
 					name = TALENT,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {}
 				},
 				role = {
-					order = 11,
+					order = 12,
 					type = 'group',
 					name = ROLE,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]] end,
@@ -900,7 +913,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				classification = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = L["Classification"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.classification[info[#info]] end,
@@ -958,7 +971,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 13,
+					order = 14,
 					type = 'group',
 					name = L["Health Threshold"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
@@ -1005,7 +1018,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				power = {
-					order = 14,
+					order = 15,
 					type = 'group',
 					name = L["Power Threshold"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
@@ -1052,7 +1065,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				levels = {
-					order = 15,
+					order = 16,
 					type = 'group',
 					name = LEVEL,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
@@ -1107,7 +1120,7 @@ local function UpdateFilterGroup()
 				},
 				cooldowns = {
 					name = L["Cooldowns"],
-					order = 16,
+					order = 17,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1163,7 +1176,7 @@ local function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 17,
+					order = 18,
 					type = "group",
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs[info[#info]] = value; NP:ConfigureAll() end,
@@ -1233,7 +1246,7 @@ local function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 18,
+					order = 19,
 					type = "group",
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs[info[#info]] = value; NP:ConfigureAll() end,
@@ -1304,7 +1317,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 19,
+					order = 20,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1365,7 +1378,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 20,
+					order = 21,
 					type = "group",
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType[info[#info]] = value; NP:ConfigureAll() end,
@@ -1440,7 +1453,7 @@ local function UpdateFilterGroup()
 					},
 				},
 				instanceType = {
-					order = 21,
+					order = 22,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType[info[#info]] end,

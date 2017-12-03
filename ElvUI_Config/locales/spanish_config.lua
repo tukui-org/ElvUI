@@ -671,6 +671,7 @@ L["Name Only"] = true
 L["NamePlates"] = "Placas de Nombre"
 L["Non-Target Transparency"] = true
 L["Not Targeted"] = true
+L["Is Targeting Me"] = true
 L["Off Cooldown"] = true
 L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = true

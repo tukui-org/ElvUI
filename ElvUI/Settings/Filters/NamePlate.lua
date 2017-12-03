@@ -25,6 +25,7 @@ G["nameplate"]["filters"] = {
 E["StyleFilterDefaults"] = {
 	["triggers"] = {
 		["priority"] = 1,
+		["targetMe"] = false,
 		["isTarget"] = false,
 		["notTarget"] = false,
 		["questBoss"] = false,

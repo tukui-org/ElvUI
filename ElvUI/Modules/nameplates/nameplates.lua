@@ -496,6 +496,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.DetectionModel:Hide()
 	frame.unitFrame:Hide()
 	frame.unitFrame.isTarget = nil
+	frame.unitFrame.isTargetingMe = nil
 	frame.unitFrame.displayedUnit = nil
 	frame.ThreatData = nil
 	frame.unitFrame.UnitType = nil
@@ -711,6 +712,9 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
 		mod:UpdateVisibility()
+	elseif(event == "UNIT_TARGET") then
+		self.isTargetingMe = UnitIsUnit(unit..'target', 'player')
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
@@ -815,6 +819,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
+	frame:RegisterEvent("UNIT_TARGET")
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")

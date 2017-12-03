@@ -673,6 +673,7 @@ L["Name Only"] = "Nur Name"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Transparency"] = "Transparenz nicht ausgewählter Ziele"
 L["Not Targeted"] = "Nicht anvisiert"
+L["Is Targeting Me"] = true
 L["Off Cooldown"] = "Benutzbar"
 L["On Cooldown"] = "Auf Abklingzeit"
 L["Only load nameplates for units within this range."] = "Namensplaketten werden nur angezeigt, wenn sie in Reichweite sind."

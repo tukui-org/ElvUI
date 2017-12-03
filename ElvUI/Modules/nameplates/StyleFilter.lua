@@ -474,9 +474,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	end
 
 	--Try to match by target conditions
-	if not failed and (trigger.isTarget or trigger.notTarget) then
+	if not failed and (trigger.isTarget or trigger.notTarget or trigger.targetMe) then
 		condition = false
-		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) or (trigger.targetMe and frame.isTargetingMe) then
 			condition = true
 		end
 		failed = not condition
@@ -761,6 +761,10 @@ function mod:StyleFilterConfigureEvents()
 
 				-- real events
 				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
+
+				if filter.triggers.targetMe then
+					self.StyleFilterEvents["UNIT_TARGET"] = true
+				end
 
 				if filter.triggers.healthThreshold then
 					self.StyleFilterEvents["UNIT_HEALTH"] = true
