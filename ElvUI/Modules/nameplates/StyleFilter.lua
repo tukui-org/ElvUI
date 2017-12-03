@@ -50,8 +50,12 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
             C_Timer_After(updateIn+0.01, function()
-                mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
-                icon[varTimerName] = nil
+				if frame and frame:IsShown() then
+					mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
+                end
+                if icon and icon[varTimerName] then
+	                icon[varTimerName] = nil
+	            end
             end)
             icon[varTimerName] = true
 		end
