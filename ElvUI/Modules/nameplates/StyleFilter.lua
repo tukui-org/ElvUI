@@ -323,6 +323,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 		frame.Portrait:Hide() --This could have been forced so hide it
 		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
 		self:ConfigureElement_Portrait(frame)
+		if frame.RightArrow:IsShown() then
+			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
+		end
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
