@@ -51,7 +51,7 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 		if updateIn > 0 then
             C_Timer_After(updateIn, function()
 				if frame and frame:IsShown() then
-					mod:UpdateElement_Filters(frame, 'Delayed_Aura_Update')
+					mod:UpdateElement_Filters(frame, 'AuraWaitTimer_Update')
                 end
                 if icon and icon[varTimerName] then
 	                icon[varTimerName] = nil
@@ -755,7 +755,7 @@ function mod:StyleFilterConfigureEvents()
 
 				-- fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
 				self.StyleFilterEvents["UpdateElement_All"] = true
-				self.StyleFilterEvents["Delayed_Aura_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
+				self.StyleFilterEvents["AuraWaitTimer_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then

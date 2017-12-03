@@ -390,6 +390,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 
 	local CanAttack = UnitCanAttack(unit, self.playerUnitToken)
 	local isPlayer = UnitIsPlayer(unit)
+	frame.unitFrame.isTargetingMe = UnitIsUnit(unit..'target', 'player')
 
 	if(UnitIsUnit(unit, "player")) then
 		frame.unitFrame.UnitType = "PLAYER"
