@@ -699,6 +699,7 @@ local function UpdateFilterGroup()
 				},
 				isTarget = {
 					name = L["Is Targeted"],
+					desc = L["If enabled then the filter will only activate when you are targeting the unit."],
 					order = 4,
 					type = 'toggle',
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -712,6 +713,7 @@ local function UpdateFilterGroup()
 				},
 				notTarget = {
 					name = L["Not Targeted"],
+					desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
 					order = 5,
 					type = 'toggle',
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -725,6 +727,7 @@ local function UpdateFilterGroup()
 				},
 				targetMe = {
 					name = L["Is Targeting Player"],
+					desc = L["If enabled then the filter will only activate when the unit is targeting you."],
 					order = 6,
 					type = 'toggle',
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
