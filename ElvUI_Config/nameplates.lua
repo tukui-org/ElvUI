@@ -793,13 +793,26 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						spacer2 = {
+						notInterruptible = {
+							type = 'toggle',
 							order = 2,
+							name = L["Non-Interruptable"],
+							desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.notInterruptible
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.notInterruptible = value
+								NP:ConfigureAll()
+							end,
+						},
+						spacer2 = {
+							order = 3,
 							type = 'description',
 							name = '',
 						},
 						addSpell = {
-							order = 3,
+							order = 4,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
@@ -813,7 +826,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeSpell = {
-							order = 4,
+							order = 5,
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',

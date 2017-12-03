@@ -639,6 +639,7 @@ L["If enabled then the filter will only activate if the level of the unit is equ
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "Wenn aktiviert, wird der Filter nur aktiviert wenn das Level der Einheit diesem Wert entspricht."
 L["If enabled then the filter will only activate if the level of the unit matches your own."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn das Level er Einheit deinem Level entspricht."
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen unterbrechbaren Zauber wirkt."
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit im Kampf ist."
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit nicht im Kampf ist."
 L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du im Kampf bist."

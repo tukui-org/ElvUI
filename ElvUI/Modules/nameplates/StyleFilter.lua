@@ -419,9 +419,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	end
 
 	--Try to match by casting interruptible
-	if not failed and (trigger.casting and trigger.casting.interruptible) then
+	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
-		if castbarShown and frame.CastBar.canInterrupt then
+		if castbarShown and ((trigger.casting.interruptible and frame.CastBar.canInterrupt) or (trigger.casting.notInterruptible and not frame.CastBar.canInterrupt)) then
 			condition = true
 			castbarTriggered = true
 		end
@@ -758,7 +758,7 @@ function mod:StyleFilterConfigureEvents()
 					end
 				end
 
-				if filter.triggers.casting.interruptible then
+				if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
 					self.StyleFilterEvents["UpdateElement_Cast"] = 1
 				end
 
