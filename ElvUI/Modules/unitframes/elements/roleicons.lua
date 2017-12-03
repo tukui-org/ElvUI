@@ -109,8 +109,8 @@ function UF:Configure_RoleIcon(frame)
 		role:ClearAllPoints()
 		role:Point(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)
 		role:Size(db.roleIcon.size)
-		
-		if true then
+
+		if db.roleIcon.combatHide then
 			E:RegisterEventForObject("PLAYER_REGEN_ENABLED", frame, UF.UpdateRoleIcon)
 			E:RegisterEventForObject("PLAYER_REGEN_DISABLED", frame, UF.UpdateRoleIcon)
 		else
