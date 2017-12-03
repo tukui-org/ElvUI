@@ -205,6 +205,7 @@ P['bags'] = {
 		["backdropSpacing"] = 4,
 		['showBackdrop'] = false,
 		['mouseover'] = false,
+		['visibility'] = "[petbattle] hide; show",
 	},
 };
 

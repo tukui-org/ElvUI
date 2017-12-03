@@ -337,6 +337,21 @@ E.Options.args.bags = {
 						['HORIZONTAL'] = L["Horizontal"],
 					},
 				},
+				visibility = {
+					type = 'input',
+					order = 8,
+					name = L["Visibility State"],
+					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
+					width = 'full',
+					multiline = true,
+					set = function(info, value)
+						if value and value:match('[\n\r]') then
+							value = value:gsub('[\n\r]','')
+						end
+						E.db.bags.bagBar['visibility'] = value;
+						B:SizeAndPositionBagBar()
+					end,
+				},
 			},
 		},
 		bagSortingGroup = {

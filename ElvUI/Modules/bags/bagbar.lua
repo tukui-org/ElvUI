@@ -9,6 +9,7 @@ local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local RegisterStateDriver = RegisterStateDriver
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
@@ -46,6 +47,13 @@ function B:SizeAndPositionBagBar()
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local growthDirection = E.db.bags.bagBar.growthDirection
 	local sortDirection = E.db.bags.bagBar.sortDirection
+
+	local visibility = E.db.bags.bagBar.visibility
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
+
+	RegisterStateDriver(ElvUIBags, "visibility", visibility);
 
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)
