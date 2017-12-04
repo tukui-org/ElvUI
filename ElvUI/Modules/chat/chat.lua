@@ -2000,13 +2000,13 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 	end
 
 	for i = 1, BNGetNumFriends() do
-		local _, AccountName, _, _, _, AccountID, _, IsOnline = BNGetFriendInfo(i)
-		if IsOnline and AccountID then
-			local _, CharacterName, _, RealmName = BNGetGameAccountInfo(AccountID)
-			if AccountName == playerName then
-				playerName = CharacterName
-				if RealmName ~= E.myrealm then
-					playerName = format('%s-%s', playerName, gsub(RealmName,'[%s%-]',''))
+		local _, accountName, _, _, _, bnetIDGameAccount, _, isOnline = BNGetFriendInfo(i)
+		if isOnline and bnetIDGameAccount then
+			local _, characterName, _, realmName = BNGetGameAccountInfo(bnetIDGameAccount)
+			if accountName == playerName then
+				playerName = characterName
+				if realmName ~= E.myrealm then
+					playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
 				end
 				break
 			end
