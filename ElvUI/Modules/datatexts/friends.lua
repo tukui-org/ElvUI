@@ -162,20 +162,22 @@ local function BuildBNTable(total)
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
 	local realmName, faction, race, class, zoneName, level
 	for i = 1, total do
-		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
-		_, _, _, realmName, _, faction, race, class, _, zoneName, level = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
+		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i);
+		if bnetIDGameAccount then
+			_, _, _, realmName, _, faction, race, class, _, zoneName, level = BNGetGameAccountInfo(bnetIDGameAccount);
 
-		if isOnline then
-			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			if isOnline then
+				characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+				for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+				for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+				BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
-			if tableList[client] then
-				tableList[client][#tableList[client]+1] = BNTable[i]
-			else
-				tableList[client] = {}
-				tableList[client][1] = BNTable[i]
+				if tableList[client] then
+					tableList[client][#tableList[client]+1] = BNTable[i]
+				else
+					tableList[client] = {}
+					tableList[client][1] = BNTable[i]
+				end
 			end
 		end
 	end
