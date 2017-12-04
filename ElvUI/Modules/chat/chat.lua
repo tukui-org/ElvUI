@@ -1053,6 +1053,10 @@ end
 
 function CH:GetBNFriendColor(name, id)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
+	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
+
+	if not bnetIDGameAccount then return TAG or name end --dont know how this is possible
+
 	local _, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
 
 	if class and class ~= '' then --other non-english locales require this
@@ -1062,7 +1066,6 @@ function CH:GetBNFriendColor(name, id)
 
 	local CLASS = class and class ~= '' and gsub(strupper(class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
-	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
 end
