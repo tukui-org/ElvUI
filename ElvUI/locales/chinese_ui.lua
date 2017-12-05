@@ -104,6 +104,7 @@ L["Main Hand"] = "主手"
 L["Mission(s) Report:"] = "任务报告:"
 L["Mitigation By Level: "] = "等级减伤: "
 L["Mobile"] = true
+L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["Naval Mission(s) Report:"] = "海军任务报告:"
 L["No Guild"] = "没有公会"
 L["Offhand"] = "副手"

@@ -104,6 +104,7 @@ L["Main Hand"] = "Mano Derecha"
 L["Mission(s) Report:"] = "Informe de Misión(es)"
 L["Mitigation By Level: "] = "Mitigación Por Nivel: "
 L["Mobile"] = true
+L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["Naval Mission(s) Report:"] = "Informe de Misión(es) Navales"
 L["No Guild"] = "Sin Hermandad"
 L["Offhand"] = "Mano Izquierda"

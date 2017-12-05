@@ -104,6 +104,7 @@ L["Main Hand"] = "Правая рука"
 L["Mission(s) Report:"] = "Отчет миссий:"
 L["Mitigation By Level: "] = "Снижение на уровне: "
 L["Mobile"] = "Мобильный"
+L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["Naval Mission(s) Report:"] = "Отчет морских миссий:"
 L["No Guild"] = "Нет гильдии"
 L["Offhand"] = "Левая рука"

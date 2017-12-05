@@ -104,6 +104,7 @@ L["Main Hand"] = "주장비"
 L["Mission(s) Report:"] = true
 L["Mitigation By Level: "] = "레벨별 데미지 경감률"
 L["Mobile"] = true
+L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["Naval Mission(s) Report:"] = true
 L["No Guild"] = "길드 없음"
 L["Offhand"] = "보조장비"

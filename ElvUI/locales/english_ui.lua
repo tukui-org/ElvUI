@@ -104,6 +104,7 @@ L["Main Hand"] = true
 L["Mission(s) Report:"] = true
 L["Mitigation By Level: "] = true
 L["Mobile"] = true
+L["Mov. Speed:"] = true
 L["Naval Mission(s) Report:"] = true
 L["No Guild"] = true
 L["Offhand"] = true
