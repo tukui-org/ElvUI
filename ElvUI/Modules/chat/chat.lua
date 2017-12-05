@@ -2046,7 +2046,7 @@ function CH:SocialQueueMessage(guid, message)
 	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
 	PlaySound(7355) --TUTORIAL_POPUP
 
-	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
+	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
 
 function CH:SocialQueueEvent(event, guid, numAddedItems)
