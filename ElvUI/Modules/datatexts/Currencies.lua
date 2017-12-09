@@ -11,7 +11,9 @@ local GetMoney = GetMoney
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME6 = EXPANSION_NAME6
 local OTHER = OTHER
-local ToggleCharacter = ToggleCharacter
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ToggleCharacter
 
 -- Currencies we care about
 local Currencies = {
