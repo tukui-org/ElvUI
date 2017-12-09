@@ -11,6 +11,7 @@ local GetMoney = GetMoney
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME6 = EXPANSION_NAME6
 local OTHER = OTHER
+local ToggleCharacter = ToggleCharacter
 
 -- Currencies we care about
 local Currencies = {
@@ -42,6 +43,10 @@ end
 
 local gold
 local chosenCurrency, currencyAmount
+
+local function OnClick()
+	ToggleCharacter("TokenFrame")
+end
 
 local function OnEvent(self)
 	gold = GetMoney();
@@ -104,5 +109,5 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', {'PLAYER_ENTERING_WORLD', 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, CURRENCY)
+DT:RegisterDatatext('Currencies', {'PLAYER_ENTERING_WORLD', 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, CURRENCY)
 
