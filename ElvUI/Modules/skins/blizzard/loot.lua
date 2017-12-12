@@ -111,7 +111,7 @@ local function LoadSkin()
 
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
-	BonusRollFrame.PromptFrame.Timer:SetBackdropColor(unpack(E.media.backdropfadecolor))
+	BonusRollFrame.BlackBackgroundHoist.Background:SetColorTexture(unpack(E.media.backdropfadecolor))
 
 	BonusRollFrame.SpecRing:SetTexture("")
 	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 1, -1)
