@@ -109,11 +109,12 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
 
-	BonusRollFrame.PromptFrame.Timer.Bar:SetColorTexture(1, 1, 1)
-	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
+	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
+	BonusRollFrame.PromptFrame.Timer:SetBackdropColor(unpack(E.media.backdropfadecolor))
 
 	BonusRollFrame.SpecRing:SetTexture("")
-	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 0, -3)
+	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 1, -1)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
@@ -124,6 +125,7 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
+		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrame:GetFrameLevel());
 		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
 	end)
 
