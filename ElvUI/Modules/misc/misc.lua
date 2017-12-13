@@ -249,7 +249,7 @@ function M:AutoInvite(event, leaderName)
 								if bnRealm and bnRealm ~= '' and bnRealm ~= E.myrealm then
 									bnToonName = format('%s-%s', bnToonName, gsub(bnRealm,'[%s%-]',''))
 								end
-								if bnToonName == leaderName then
+								if bnToonName and (bnToonName == leaderName) then
 									AcceptGroup()
 									bnAcceptedInvite = true
 									break
