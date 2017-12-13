@@ -112,6 +112,9 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 
+	BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", -2, 0)
+	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
+
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
 	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
@@ -122,9 +125,12 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", (E.PixelMode and 0 or 2), -(E.PixelMode and 0 or 2))
 	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
+	BonusRollFrame.SpecIcon.b:SetSize(16, 16)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
+	BonusRollFrame.SpecIcon:SetSize(16, 16)
+	print(BonusRollFrame.SpecIcon:GetSize())
 
 	BonusRollFrame.SpecRing:SetTexture("")
 
