@@ -128,8 +128,6 @@ local function LoadSkin()
 
 	BonusRollFrame.SpecRing:SetTexture("")
 
-	BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-	BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
 	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
@@ -139,8 +137,17 @@ local function LoadSkin()
 		if BonusRollFrame.BlackBackgroundHoist.b then
 			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1);
 		end
+
+		BonusRollFrame.CurrentCountFrame:ClearAllPoints()
 		if BonusRollFrame.SpecIcon.b then
 			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
+			if BonusRollFrame.SpecIcon.b:IsShown() then
+				BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			else
+				BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			end
+		else
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 		end
 
 		--skin currency icons
