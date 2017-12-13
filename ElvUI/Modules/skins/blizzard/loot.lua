@@ -130,7 +130,6 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
 	BonusRollFrame.SpecIcon:SetSize(16, 16)
-	print(BonusRollFrame.SpecIcon:GetSize())
 
 	BonusRollFrame.SpecRing:SetTexture("")
 
