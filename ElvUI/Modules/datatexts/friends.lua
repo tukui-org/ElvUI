@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local type, pairs, select = type, pairs, select
+local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, wipe = table.sort, wipe
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
