@@ -131,8 +131,12 @@ local function LoadSkin()
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
 		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
 		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+1);
-		BonusRollFrame.BlackBackgroundHoist:SetFrameLevel(BonusRollFrameLevel);
-		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
+		if BonusRollFrame.BlackBackgroundHoist.b then
+			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel);
+		end
+		if BonusRollFrame.SpecIcon.b then
+			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
+		end
 	end)
 
 	local LootFrame = _G["LootFrame"]
