@@ -111,21 +111,27 @@ local function LoadSkin()
 
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
-	BonusRollFrame.BlackBackgroundHoist.Background:SetColorTexture(unpack(E.media.backdropfadecolor))
 
-	BonusRollFrame.SpecRing:SetTexture("")
-	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 1, -1)
-	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
+	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
+	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
+	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
-	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame.SpecIcon, "TOPLEFT", 0, 0)
-	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame.SpecIcon, "BOTTOMRIGHT", 0, 0)
+	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", (E.PixelMode and 0 or 2), -(E.PixelMode and 0 or 2))
+	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
+	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
+	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.SpecIcon:SetInside()
+
+	BonusRollFrame.SpecRing:SetTexture("")
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
-		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrame:GetFrameLevel());
+		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
+		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+1);
+		BonusRollFrame.BlackBackgroundHoist:SetFrameLevel(BonusRollFrameLevel);
 		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
 	end)
 
