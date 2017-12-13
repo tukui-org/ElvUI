@@ -123,13 +123,11 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
 	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", (E.PixelMode and 0 or 2), -(E.PixelMode and 0 or 2))
-	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
+	BonusRollFrame.SpecIcon.b:SetSize(16, 16) -- `BonusRollFrame.SpecIcon:GetSize()` [24, 24]
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
-	BonusRollFrame.SpecIcon.b:SetSize(16, 16)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
-	BonusRollFrame.SpecIcon:SetSize(16, 16)
 
 	BonusRollFrame.SpecRing:SetTexture("")
 
