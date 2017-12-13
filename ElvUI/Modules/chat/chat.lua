@@ -60,6 +60,8 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
 local GetCursorPosition = GetCursorPosition
 local GMChatFrame_IsGM = GMChatFrame_IsGM
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsInInstance, IsInRaid, IsInGroup = IsInInstance, IsInRaid, IsInGroup
@@ -92,6 +94,7 @@ local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
+local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local UNKNOWN = UNKNOWN
 
 --Variables that are only used in ChatFrame_MessageEventHandler
@@ -1051,20 +1054,51 @@ function CH:ShortChannel()
 	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[strupper(self)] or gsub(self, "channel:", ""))
 end
 
+local function getFirstToonClassColor(id)
+	if not id then return end
+	local bnetIDAccount, isOnline, numGameAccounts, client, Class, _
+	local total = BNGetNumFriends();
+	for i = 1, total do
+		bnetIDAccount, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		if isOnline and (bnetIDAccount == id) then
+			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			if numGameAccounts > 0 then
+				for y = 1, numGameAccounts do
+					_, _, client, _, _, _, _, Class = BNGetFriendGameAccountInfo(i, y);
+					if (client == BNET_CLIENT_WOW) and Class and Class ~= '' then
+						return Class --return the first toon's class
+					end
+				end
+			end
+			break
+		end
+	end
+end
+
 function CH:GetBNFriendColor(name, id)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
 	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local Class
 
-	if not bnetIDGameAccount then return TAG or name end --dont know how this is possible
-
-	local _, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
-
-	if class and class ~= '' then --other non-english locales require this
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k;break end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k;break end end
+	if not bnetIDGameAccount then --dont know how this is possible
+		local firstToonClass = getFirstToonClassColor(id)
+		if firstToonClass then
+			Class = firstToonClass
+		else
+			return TAG or name
+		end
 	end
 
-	local CLASS = class and class ~= '' and gsub(strupper(class),'%s','')
+	if not Class then
+		_, _, _, _, _, _, _, Class = BNGetGameAccountInfo(bnetIDGameAccount)
+	end
+
+	if Class and Class ~= '' then --other non-english locales require this
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class = k;break end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
+	end
+
+	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
@@ -1999,21 +2033,25 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 		return true
 	end
 
+	local numGameAccounts, accountName, isOnline, gameCharacterName, gameClient, realmName, _
 	for i = 1, BNGetNumFriends() do
-		local _, accountName, _, _, _, bnetIDGameAccount, _, isOnline = BNGetFriendInfo(i)
-		if isOnline and bnetIDGameAccount then
-			local _, characterName, _, realmName = BNGetGameAccountInfo(bnetIDGameAccount)
-			if accountName == playerName then
-				playerName = characterName
-				if realmName ~= E.myrealm then
-					playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
+		numGameAccounts = BNGetNumFriendGameAccounts(i);
+		_, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		if isOnline and numGameAccounts > 0 then
+			for y = 1, numGameAccounts do
+				_, gameCharacterName, gameClient, realmName = BNGetFriendGameAccountInfo(i, y);
+				if (gameClient == BNET_CLIENT_WOW) and (accountName == playerName) then
+					playerName = gameCharacterName
+					if realmName ~= E.myrealm then
+						playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
+					end
+					if leaderName == playerName then
+						return true
+					end
 				end
-				break
 			end
 		end
 	end
-
-	return leaderName == playerName
 end
 
 local socialQueueCache = {}
