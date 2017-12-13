@@ -102,8 +102,10 @@ local function LoadSkin()
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 
-	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.SpecRing:SetTexture("")
+	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
+	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
@@ -126,18 +128,15 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
 
-	BonusRollFrame.SpecRing:SetTexture("")
-
-	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
-
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
+		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
 		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
 		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2);
-
 		if BonusRollFrame.BlackBackgroundHoist.b then
 			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1);
 		end
 
+		--set currency icons position at bottom right (or left of the spec icon, on the bottom right)
 		BonusRollFrame.CurrentCountFrame:ClearAllPoints()
 		if BonusRollFrame.SpecIcon.b then
 			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
