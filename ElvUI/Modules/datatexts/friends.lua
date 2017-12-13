@@ -18,7 +18,6 @@ local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local SetItemRef = SetItemRef
 local GetFriendInfo = GetFriendInfo
 local BNGetFriendInfo = BNGetFriendInfo
-local BNGetGameAccountInfo = BNGetGameAccountInfo
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local GetNumFriends = GetNumFriends
 local BNGetNumFriends = BNGetNumFriends
@@ -31,6 +30,9 @@ local L_EasyMenu = L_EasyMenu
 local IsShiftKeyDown = IsShiftKeyDown
 local GetRealmName = GetRealmName
 local GetCurrentMapAreaID = GetCurrentMapAreaID
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local FRIENDS = FRIENDS
 local AFK = AFK
 local DND = DND
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
@@ -140,8 +142,10 @@ local function BuildFriendTable(total)
 		end
 
 		if connected then
+			--other non-english locales require this
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+
 			friendTable[i] = { name, level, class, area, connected, status, note }
 		end
 	end
@@ -155,38 +159,63 @@ local function Sort(a, b)
 	end
 end
 
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level)
+	bnIndex = bnIndex + 1 --bump the index one for a new addition
+
+	if class and class ~= "" then --other non-english locales require this
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+	end
+
+	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+
+	if tableList[client] then
+		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
+	else
+		tableList[client] = {}
+		tableList[client][1] = BNTable[bnIndex]
+	end
+
+	return bnIndex
+end
+
 local function BuildBNTable(total)
-	for _,v in pairs(tableList) do wipe(v) end
+	for _, v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
 
+	local bnIndex, battleNetAdded = 0
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
-	local realmName, faction, race, class, zoneName, level
+	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level
+	local numGameAccounts
+
 	for i = 1, total do
 		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i);
-		if bnetIDGameAccount then
-			_, _, _, realmName, _, faction, race, class, _, zoneName, level = BNGetGameAccountInfo(bnetIDGameAccount);
-		else --clear these since they are outside of the loop
-			realmName, faction, race, class, zoneName, level = nil, nil, nil, nil, nil, nil
-		end
 		if isOnline then
-			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-			if class and class ~= "" then
-				for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-				for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-			end
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-
-			if tableList[client] then
-				tableList[client][#tableList[client]+1] = BNTable[i]
+			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			if numGameAccounts > 0 then
+				battleNetAdded = false
+				for y = 1, numGameAccounts do
+					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level = BNGetFriendGameAccountInfo(i, y);
+					if (gameClient == "BSAp" or gameClient == "App") and not battleNetAdded then
+						bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
+							gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isAFK, isDND, noteText,
+							realmName, faction, race, class, zoneName, level
+						);
+						battleNetAdded = true --only add the battlenet or mobile once
+					end
+				end
 			else
-				tableList[client] = {}
-				tableList[client][1] = BNTable[i]
+				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
+					characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText,
+					nil --[[realmName]], nil --[[faction]], nil --[[race]], nil --[[class]], nil --[[zoneName]], nil --[[level]]
+				);
 			end
 		end
 	end
 
 	sort(BNTable, Sort)
-	for _,v in pairs(tableList) do sort(v, Sort) end
+	for _, v in pairs(tableList) do sort(v, Sort) end
 end
 
 local function OnEvent(self, event, message)
@@ -221,7 +250,7 @@ local function Click(self, btn)
 		if #friendTable > 0 then
 			for i = 1, #friendTable do
 				info = friendTable[i]
-				if (info[5]) then
+				if info[5] then
 					menuCountInvites = menuCountInvites + 1
 					menuCountWhispers = menuCountWhispers + 1
 
@@ -234,20 +263,29 @@ local function Click(self, btn)
 			end
 		end
 		if #BNTable > 0 then
-			local realID
+			local realID, hasBnet
 			for i = 1, #BNTable do
 				info = BNTable[i]
-				if (info[5]) then
-					realID = info[2]
-					menuCountWhispers = menuCountWhispers + 1
-					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
+				if info[5] then
+					realID, hasBnet = info[2], false
+
+					for _, z in ipairs(menuList[3].menuList) do
+						if z and z.text and (z.text == realID) then
+							hasBnet = true
+							break
+						end
+					end
+
+					if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
+						menuCountWhispers = menuCountWhispers + 1
+						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
+					end
 
 					if info[6] == wowString and UnitFactionGroup("player") == info[12] then
 						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 						classc = classc or GetQuestDifficultyColor(info[16])
 
 						menuCountInvites = menuCountInvites + 1
-
 						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
 					end
 				end
