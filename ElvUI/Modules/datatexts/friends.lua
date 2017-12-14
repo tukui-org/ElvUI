@@ -32,6 +32,8 @@ local GetRealmName = GetRealmName
 local GetCurrentMapAreaID = GetCurrentMapAreaID
 local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local GetDisplayedInviteType = GetDisplayedInviteType
+local BNRequestInviteFriend = BNRequestInviteFriend
 local FRIENDS = FRIENDS
 local AFK = AFK
 local DND = DND
@@ -75,13 +77,19 @@ local menuList = {
 	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, name)
+local function inviteClick(self, name, guid)
 	menuFrame:Hide()
 
+	if not name then return end
 	if type(name) ~= 'number' then
 		InviteUnit(name)
-	else
-		BNInviteFriend(name);
+	elseif guid then
+		local inviteType = GetDisplayedInviteType(guid)
+		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
+			BNInviteFriend(name)
+		elseif inviteType == "REQUEST_INVITE" then
+			BNRequestInviteFriend(name)
+		end
 	end
 end
 
@@ -161,7 +169,7 @@ local function Sort(a, b)
 	end
 end
 
-local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level)
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid)
 	local isAdded, bnInfo = 0
 	for i = 1, bnIndex do
 		isAdded, bnInfo = 0, BNTable[i]
@@ -190,7 +198,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		end
 		if isAdded == 2 then -- swap data
 			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level }
+			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
 			if bnInfo[6] then
 				if tableList[bnInfo[6]] then
 					for n, y in ipairs(tableList[bnInfo[6]]) do
@@ -224,7 +232,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 	end
 
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level }
+	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
 
 	if tableList[client] then
 		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
@@ -242,7 +250,7 @@ local function BuildBNTable(total)
 
 	local bnIndex = 0
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText
-	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level, isGameAFK, isGameBusy
+	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level, isGameAFK, isGameBusy, guid
 	local numGameAccounts
 
 	for i = 1, total do
@@ -251,8 +259,8 @@ local function BuildBNTable(total)
 			numGameAccounts = BNGetNumFriendGameAccounts(i);
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, _, _, _, _, _, _, isGameAFK, isGameBusy = BNGetFriendGameAccountInfo(i, y);
-					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isBnetAFK or isGameAFK, isBnetDND or isGameBusy, noteText, realmName, faction, race, class, zoneName, level);
+					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, _, _, _, _, _, _, isGameAFK, isGameBusy, guid = BNGetFriendGameAccountInfo(i, y);
+					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isBnetAFK or isGameAFK, isBnetDND or isGameBusy, noteText, realmName, faction, race, class, zoneName, level, guid);
 				end
 			else
 				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText);
@@ -334,7 +342,7 @@ local function Click(self, btn)
 						classc = classc or GetQuestDifficultyColor(info[16])
 
 						menuCountInvites = menuCountInvites + 1
-						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], arg2 = info[17], notCheckable=true, func = inviteClick}
 					end
 				end
 			end
