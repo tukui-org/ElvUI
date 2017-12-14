@@ -328,7 +328,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
 
-					if info[6] == wowString and UnitFactionGroup("player") == info[12] then
+					if info[6] == wowString and (UnitFactionGroup("player") == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
 						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 						classc = classc or GetQuestDifficultyColor(info[16])
 
