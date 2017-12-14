@@ -122,6 +122,7 @@ L["Out of Power"] = "Sans ressource"
 L["Out of Range"] = "Hors de portée"
 L["Restore Bar"] = "Restaurer la barre"
 L["Restore the actionbars default settings"] = "Restaure la barre d'actions avec ses paramètres par défaut."
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "Secondes"
 L["Show Empty Buttons"] = "Voir les emplacements vide"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true

@@ -122,6 +122,7 @@ L["Out of Power"] = "能量不足"
 L["Out of Range"] = "超出范围"
 L["Restore Bar"] = "重置动作条"
 L["Restore the actionbars default settings"] = "恢复此动作条的预设设定"
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = "显示空白按钮"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "当一个技能在充能但仍有剩余使用次数时使用反向填充动画"

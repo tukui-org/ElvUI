@@ -118,8 +118,19 @@ local function BuildABConfig()
 				desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
 				set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
 			},
-			movementModifier = {
+			rightClickSelfCast = {
 				order = 11,
+				type = "toggle",
+				name = L["RightClick Self-Cast"],
+				set = function(info, value)
+					E.db.actionbar.rightClickSelfCast = value;
+					for _, bar in pairs(AB["handledBars"]) do
+						AB:UpdateButtonConfig(bar, bar.bindButtons)
+					end
+				end,
+			},
+			movementModifier = {
+				order = 12,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -132,7 +143,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 12,
+				order = 13,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],

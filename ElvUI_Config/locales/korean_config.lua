@@ -158,6 +158,7 @@ L["Out of Power"] = "자원 부족"
 L["Out of Range"] = "사정거리 밖"
 L["Restore Bar"] = "기본값으로 초기화"
 L["Restore the actionbars default settings"] = "이 행동단축바에 대한 모든 수치를 기본값으로 되돌립니다."
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "초 단위 색상"
 L["Show Empty Buttons"] = true
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true

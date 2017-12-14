@@ -122,6 +122,7 @@ L["Out of Power"] = "施放能量不足"
 L["Out of Range"] = "超出施放範圍"
 L["Restore Bar"] = "還原快捷列"
 L["Restore the actionbars default settings"] = "恢復此快捷列的預設設定"
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = "顯示空白按鈕"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "當法術仍有可使用次數並在充能時顯示一個倒數動畫"

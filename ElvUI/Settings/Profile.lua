@@ -2911,6 +2911,7 @@ P["actionbar"] = {
 	["hideCooldownBling"] = false,
 	["useDrawSwipeOnCharges"] = false,
 	["addNewSpells"] = false,
+	["rightClickSelfCast"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,

@@ -122,6 +122,7 @@ L["Out of Power"] = "Мало ресурса"
 L["Out of Range"] = "Вне радиуса"
 L["Restore Bar"] = "Восстановить панель"
 L["Restore the actionbars default settings"] = "Восстанавливает настройки панели по умолчанию."
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "Секунды"
 L["Show Empty Buttons"] = "Показывать пустые кнопки"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Отображать анимацию заполнения, когда заклинание перезаряжается, но все еще имеет заряды."

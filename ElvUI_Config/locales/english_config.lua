@@ -122,6 +122,7 @@ L["Out of Power"] = true
 L["Out of Range"] = true
 L["Restore Bar"] = true
 L["Restore the actionbars default settings"] = true
+L["RightClick Self-Cast"] = true
 L["Seconds"] = true
 L["Show Empty Buttons"] = true
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true
