@@ -169,7 +169,24 @@ local function Sort(a, b)
 	end
 end
 
-local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, hasFocus)
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid)
+	if class and class ~= "" then --other non-english locales require this
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+	end
+
+	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
+
+	if tableList[client] then
+		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
+	else
+		tableList[client] = {}
+		tableList[client][1] = BNTable[bnIndex]
+	end
+end
+
+local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, hasFocus)
 	-- `hasFocus` is not added to BNTable[i]; we only need this to keep our friends datatext in sync with the friends list
 	local isAdded, bnInfo = 0
 	for i = 1, bnIndex do
@@ -206,21 +223,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 					end
 				end
 			end
-
-			if class and class ~= "" then --other non-english locales require this
-				for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-				for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-			end
-
-			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
-
-			if tableList[client] then
-				tableList[client][#tableList[client]+1] = BNTable[i]
-			else
-				tableList[client] = {}
-				tableList[client][1] = BNTable[i]
-			end
+			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid)
 		end
 		if isAdded ~= 0 then
 			break
@@ -231,21 +234,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 	end
 
 	bnIndex = bnIndex + 1 --bump the index one for a new addition
-
-	if class and class ~= "" then --other non-english locales require this
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-	end
-
-	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
-
-	if tableList[client] then
-		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
-	else
-		tableList[client] = {}
-		tableList[client][1] = BNTable[bnIndex]
-	end
+	AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid)
 
 	return bnIndex
 end
@@ -266,10 +255,10 @@ local function BuildBNTable(total)
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					hasFocus, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, _, _, _, _, _, _, isGameAFK, isGameBusy, guid = BNGetFriendGameAccountInfo(i, y);
-					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isBnetAFK or isGameAFK, isBnetDND or isGameBusy, noteText, realmName, faction, race, class, zoneName, level, guid, hasFocus);
+					bnIndex = PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isBnetAFK or isGameAFK, isBnetDND or isGameBusy, noteText, realmName, faction, race, class, zoneName, level, guid, hasFocus);
 				end
 			else
-				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText);
+				bnIndex = PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText);
 			end
 		end
 	end
