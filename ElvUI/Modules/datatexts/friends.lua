@@ -198,18 +198,23 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 			end
 		end
 		if isAdded == 2 then -- swap data
-			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
-			if bnInfo[6] then
-				if tableList[bnInfo[6]] then
-					for n, y in ipairs(tableList[bnInfo[6]]) do
-						if y == bnInfo then
-							tremove(tableList[bnInfo[6]], n);
-							break -- remove the old one from tableList
-						end
+			if bnInfo[6] and tableList[bnInfo[6]] then
+				for n, y in ipairs(tableList[bnInfo[6]]) do
+					if y == bnInfo then
+						tremove(tableList[bnInfo[6]], n);
+						break -- remove the old one from tableList
 					end
 				end
 			end
+
+			if class and class ~= "" then --other non-english locales require this
+				for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+				for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+			end
+
+			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid }
+
 			if tableList[client] then
 				tableList[client][#tableList[client]+1] = BNTable[i]
 			else
