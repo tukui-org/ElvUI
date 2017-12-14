@@ -104,7 +104,7 @@ local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
-local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
+local statusTable = { "|cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
@@ -136,9 +136,11 @@ local function BuildFriendTable(total)
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
 
 		if status == "<"..AFK..">" then
-			status = "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
+			status = " "..statusTable[1]
 		elseif status == "<"..DND..">" then
-			status = "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r"
+			status = " "..statusTable[2]
+		else
+			status = statusTable[3]
 		end
 
 		if connected then
@@ -211,7 +213,7 @@ local function BuildBNTable(total)
 
 	local bnIndex = 0
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
-	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level
+	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level, isGameAFK, isGameBusy
 	local numGameAccounts
 
 	for i = 1, total do
@@ -220,17 +222,11 @@ local function BuildBNTable(total)
 			numGameAccounts = BNGetNumFriendGameAccounts(i);
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level = BNGetFriendGameAccountInfo(i, y);
-					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
-						gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isAFK, isDND, noteText,
-						realmName, faction, race, class, zoneName, level
-					);
+					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, _, _, _, _, _, _, isGameAFK, isGameBusy = BNGetFriendGameAccountInfo(i, y);
+					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isGameAFK, isGameBusy, noteText, realmName, faction, race, class, zoneName, level);
 				end
 			else
-				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
-					characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText,
-					nil --[[realmName]], nil --[[faction]], nil --[[race]], nil --[[class]], nil --[[zoneName]], nil --[[level]]
-				);
+				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText);
 			end
 		end
 	end
@@ -283,6 +279,7 @@ local function Click(self, btn)
 				end
 			end
 		end
+
 		if #BNTable > 0 then
 			local realID, hasBnet
 			for i = 1, #BNTable do
@@ -352,7 +349,7 @@ local function OnEnter(self)
 				classc = classc or GetQuestDifficultyColor(info[2])
 
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
-				DT.tooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped]," "..info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+				DT.tooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped],info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 			end
 		end
 	end
@@ -366,8 +363,14 @@ local function OnEnter(self)
 				for i = 1, #Table do
 					info = Table[i]
 					if info[7] then
+						if info[8] == true then
+							status = " "..statusTable[1]
+						elseif info[9] == true then
+							status = " "..statusTable[2]
+						else
+							status = statusTable[3]
+						end
 						if info[6] == wowString then
-							if (info[8] == true) then status = 1 elseif (info[9] == true) then status = 2 else status = 3 end
 							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
 							if info[16] ~= '' then
 								levelc = GetQuestDifficultyColor(info[16])
@@ -382,14 +385,14 @@ local function OnEnter(self)
 							end
 
 							if UnitInParty(info[5]) or UnitInRaid(info[5]) then grouped = 1 else grouped = 2 end
-							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
+							DT.tooltip:AddDoubleLine(format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
 								if E:GetZoneText(GetCurrentMapAreaID()) == info[15] then zonec = activezone else zonec = inactivezone end
 								if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
 								DT.tooltip:AddDoubleLine(info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 							end
 						else
-							DT.tooltip:AddDoubleLine(info[4], info[2], .9, .9, .9, .9, .9, .9)
+							DT.tooltip:AddDoubleLine(info[4]..status, info[2], .9, .9, .9, .9, .9, .9)
 						end
 					end
 				end
