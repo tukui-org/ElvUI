@@ -313,7 +313,7 @@ local function Click(self, btn)
 			local realID, hasBnet
 			for i = 1, #BNTable do
 				info = BNTable[i]
-				if info[5] then
+				if info[7] then
 					realID, hasBnet = info[2], false
 
 					for _, z in ipairs(menuList[3].menuList) do
@@ -413,7 +413,7 @@ local function OnEnter(self)
 								classc = RAID_CLASS_COLORS["PRIEST"]
 							end
 
-							if UnitInParty(info[5]) or UnitInRaid(info[5]) then grouped = 1 else grouped = 2 end
+							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 							DT.tooltip:AddDoubleLine(format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
 								if E:GetZoneText(GetCurrentMapAreaID()) == info[15] then zonec = activezone else zonec = inactivezone end
