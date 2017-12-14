@@ -62,9 +62,9 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 
 local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
 local menuList = {
-	{ text = OPTIONS_MENU, isTitle = true,notCheckable=true},
-	{ text = INVITE, hasArrow = true,notCheckable=true, },
-	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true,notCheckable=true, },
+	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
+	{ text = INVITE, hasArrow = true, notCheckable=true, },
+	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true, },
 	{ text = PLAYER_STATUS, hasArrow = true, notCheckable=true,
 		menuList = {
 			{ text = "|cff2BC226"..AVAILABLE.."|r", notCheckable=true, func = function() if IsChatAFK() then SendChatMessage("", "AFK") elseif IsChatDND() then SendChatMessage("", "DND") end end },
@@ -200,12 +200,12 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 						end
 					end
 				end
-				if tableList[client] then
-					tableList[client][#tableList[client]+1] = BNTable[i]
-				else
-					tableList[client] = {}
-					tableList[client][1] = BNTable[i]
-				end
+			end
+			if tableList[client] then
+				tableList[client][#tableList[client]+1] = BNTable[i]
+			else
+				tableList[client] = {}
+				tableList[client][1] = BNTable[i]
 			end
 		end
 		if isAdded ~= 0 then
@@ -297,14 +297,15 @@ local function Click(self, btn)
 			for i = 1, #friendTable do
 				info = friendTable[i]
 				if info[5] then
-					menuCountInvites = menuCountInvites + 1
-					menuCountWhispers = menuCountWhispers + 1
-
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 					classc = classc or GetQuestDifficultyColor(info[2]);
 
-					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = inviteClick}
-					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = whisperClick}
+					menuCountWhispers = menuCountWhispers + 1
+					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = whisperClick}
+					if not (UnitInParty(info[1]) or UnitInRaid(info[1])) then
+						menuCountInvites = menuCountInvites + 1
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = inviteClick}
+					end
 				end
 			end
 		end
