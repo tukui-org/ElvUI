@@ -755,8 +755,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[254183] = Defaults(), -- Seared Skin
 
 		-- Kin'garoth
-		[233062] = Defaults(), -- Infernal Burning
-		[230345] = Defaults(), -- Crashing Comet
 		[244312] = Defaults(), -- Forging Strike
 		[246840] = Defaults(), -- Ruiner
 		[248061] = Defaults(), -- Purging Protocol
