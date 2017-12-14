@@ -168,12 +168,12 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 				if client == "BSAp" or client == "App" then -- dont add two bnet clients
 					isAdded = true
 					break
-				elseif client == wowString then -- if they had a bnet info just swap it with first character info
+				elseif client ~= "BSAp" and client ~= "App" then -- if they had a bnet info just swap it with game character info
 					BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 					isAdded = true
 					break
 				end
-			elseif bnInfo[6] == wowString then -- dont add a bnet client if we have a wow client
+			elseif bnInfo[6] ~= "BSAp" and bnInfo[6] ~= "App" then -- dont add a bnet client if we have a game client
 				if client == "BSAp" or client == "App" then
 					isAdded = true
 					break
