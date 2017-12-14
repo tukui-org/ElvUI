@@ -160,6 +160,31 @@ local function Sort(a, b)
 end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level)
+	local bnInfo, isAdded
+	for i = 1, bnIndex do
+		bnInfo, isAdded = BNTable[i], false
+		if bnInfo and (bnInfo[1] == bnetIDAccount) then
+			if bnInfo[6] == "BSAp" or bnInfo[6] == "App" then
+				if client == "BSAp" or client == "App" then -- dont add two bnet clients
+					isAdded = true
+					break
+				elseif client == wowString then -- if they had a bnet info just swap it with first character info
+					BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+					isAdded = true
+					break
+				end
+			elseif bnInfo[6] == wowString then -- dont add a bnet client if we have a wow client
+				if client == "BSAp" or client == "App" then
+					isAdded = true
+					break
+				end
+			end
+		end
+	end
+	if isAdded then
+		return bnIndex
+	end
+
 	bnIndex = bnIndex + 1 --bump the index one for a new addition
 
 	if class and class ~= "" then --other non-english locales require this
@@ -184,7 +209,7 @@ local function BuildBNTable(total)
 	for _, v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
 
-	local bnIndex, battleNetAdded = 0
+	local bnIndex = 0
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
 	local gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level
 	local numGameAccounts
@@ -194,23 +219,12 @@ local function BuildBNTable(total)
 		if isOnline then
 			numGameAccounts = BNGetNumFriendGameAccounts(i);
 			if numGameAccounts > 0 then
-				battleNetAdded = false
 				for y = 1, numGameAccounts do
 					_, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level = BNGetFriendGameAccountInfo(i, y);
-					if gameClient and (gameClient == "BSAp" or gameClient == "App") then
-						if not battleNetAdded then
-							bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
-								gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isAFK, isDND, noteText,
-								realmName, faction, race, class, zoneName, level
-							);
-							battleNetAdded = true --only add the battlenet or mobile once
-						end
-					elseif gameClient then
-						bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
-							gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isAFK, isDND, noteText,
-							realmName, faction, race, class, zoneName, level
-						);
-					end
+					bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
+						gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isAFK, isDND, noteText,
+						realmName, faction, race, class, zoneName, level
+					);
 				end
 			else
 				bnIndex = AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag,
