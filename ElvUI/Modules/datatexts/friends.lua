@@ -170,6 +170,7 @@ local function Sort(a, b)
 end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, hasFocus)
+	-- `hasFocus` is not added to BNTable[i]; we only need this to keep our friends datatext in sync with the friends list
 	local isAdded, bnInfo = 0
 	for i = 1, bnIndex do
 		isAdded, bnInfo = 0, BNTable[i]
