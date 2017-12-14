@@ -104,7 +104,7 @@ local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
-local statusTable = { "|cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r", "" }
+local statusTable = { " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", " |cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
@@ -136,9 +136,9 @@ local function BuildFriendTable(total)
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
 
 		if status == "<"..AFK..">" then
-			status = " "..statusTable[1]
+			status = statusTable[1]
 		elseif status == "<"..DND..">" then
-			status = " "..statusTable[2]
+			status = statusTable[2]
 		else
 			status = statusTable[3]
 		end
@@ -364,9 +364,9 @@ local function OnEnter(self)
 					info = Table[i]
 					if info[7] then
 						if info[8] == true then
-							status = " "..statusTable[1]
+							status = statusTable[1]
 						elseif info[9] == true then
-							status = " "..statusTable[2]
+							status = statusTable[2]
 						else
 							status = statusTable[3]
 						end
