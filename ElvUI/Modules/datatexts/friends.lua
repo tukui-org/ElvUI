@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, wipe = table.sort, wipe
+local sort, wipe, tremove = table.sort, wipe, tremove
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
 local BNSetCustomMessage = BNSetCustomMessage
@@ -162,28 +162,50 @@ local function Sort(a, b)
 end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level)
-	local bnInfo, isAdded
+	local isAdded, bnInfo = 0
 	for i = 1, bnIndex do
-		bnInfo, isAdded = BNTable[i], false
+		isAdded, bnInfo = 0, BNTable[i]
 		if bnInfo and (bnInfo[1] == bnetIDAccount) then
-			if bnInfo[6] == "BSAp" or bnInfo[6] == "App" then
-				if client == "BSAp" or client == "App" then -- dont add two bnet clients
-					isAdded = true
-					break
-				elseif client ~= "BSAp" and client ~= "App" then -- if they had a bnet info just swap it with game character info
-					BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level }
-					isAdded = true
-					break
+			if bnInfo[6] == "BSAp" then
+				if client == "BSAp" then -- unlikely to happen
+					isAdded = 1
+				elseif client == "App" then -- Mobile -> App
+					isAdded = 2 --swap data
+				else -- Mobile -> Game
+					isAdded = 2 --swap data
 				end
-			elseif bnInfo[6] ~= "BSAp" and bnInfo[6] ~= "App" then -- dont add a bnet client if we have a game client
-				if client == "BSAp" or client == "App" then
-					isAdded = true
-					break
+			elseif bnInfo[6] == "App" then
+				if client == "App" then -- unlikely to happen
+					isAdded = 1
+				elseif client == "BSAp" then -- ignore Mobile
+					isAdded = 1
+				else -- App -> Game
+					isAdded = 2 --swap data
+				end
+			elseif bnInfo[6] then -- Game
+				if client == "BSAp" or client == "App" then -- ignore Mobile and App
+					isAdded = 1
 				end
 			end
 		end
+		if isAdded == 2 then -- swap data
+			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level }
+			if bnInfo[6] and tableList[bnInfo[6]] then
+				for n, y in ipairs(tableList[bnInfo[6]]) do
+					if y == bnInfo then
+						tremove(tableList[bnInfo[6]], n);
+						break -- remove the old one from tableList
+					end
+				end
+				tableList[client][#tableList[client]+1] = BNTable[i]
+			end
+		end
+		if isAdded ~= 0 then
+			break
+		end
 	end
-	if isAdded then
+	if isAdded ~= 0 then
 		return bnIndex
 	end
 
