@@ -373,6 +373,16 @@ local function LoadSkin()
 			self.skinned = true
 		end
 	end)
+
+	-- MicroButton Talent Alert
+	if TalentMicroButtonAlert then
+		TalentMicroButtonAlert:ClearAllPoints()
+		TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
+		TalentMicroButtonAlert:StripTextures()
+		TalentMicroButtonAlert.Arrow:Hide()
+		TalentMicroButtonAlert:CreateBackdrop("Transparent")
+		S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
+	end
 end
 
 S:AddCallback("SkinMisc", LoadSkin)
