@@ -405,6 +405,7 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 		E.db.chat.tapFontSize = fontSize
 		E.db.datatexts.font = font
 		E.db.datatexts.fontSize = fontSize
+		E.db.general.minimap.locationFont = font
 		E.db.tooltip.font = font
 		E.db.tooltip.fontSize = fontSize
 		E.db.tooltip.headerFontSize = fontSize
