@@ -257,27 +257,7 @@ function mod:GetNamePlateForUnit(unit)
 	end
 end
 
-function mod:RestoreNonTargetFrameLevel(frame)
-	-- don't bother reseting the target frame; we can't rely on `frame.isTarget` because this is called first
-	if UnitIsUnit(frame.unit, "target") then return end
-
-	local newLevel
-	if frame.plateID then
-		newLevel = frame.plateID*10
-	else -- the elvui player nameplate has no plateID, fallback to old method for now
-		local parent = self:GetNamePlateForUnit(frame.unit);
-		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
-	end
-	if newLevel then
-		frame:SetFrameLevel(newLevel+3)
-		frame.Glow:SetFrameLevel(newLevel+1)
-		frame.Buffs:SetFrameLevel(newLevel+2)
-		frame.Debuffs:SetFrameLevel(newLevel+2)
-	end
-end
-
-function mod:SetTargetFrame(frame)
-	--Match parent's frame level for targetting purposes. Best time to do it is here.
+function mod:GetPlateFrameLevels(frame)
 	local newLevel, targetLevel
 	if mod.TargetPlateLevelIndex then
 		targetLevel = mod.TargetPlateLevelIndex*10
@@ -288,20 +268,46 @@ function mod:SetTargetFrame(frame)
 		local parent = self:GetNamePlateForUnit(frame.unit);
 		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
 	end
+	return newLevel, targetLevel
+end
 
+function mod:SetPlateFrameLevel(frame, level, step, isTarget)
+	if frame and level and step then
+		local newLevel = level + step + (isTarget and 110 or 0) --StyleFilter's FrameLevelChanged goes up to 100, keep Target over 100 by setting it to 110
+		frame:SetFrameLevel(newLevel+2)
+		frame.Glow:SetFrameLevel(newLevel)
+		frame.Buffs:SetFrameLevel(newLevel+1)
+		frame.Debuffs:SetFrameLevel(newLevel+1)
+	end
+end
+
+function mod:ResetNameplateFrameLevel(frame)
+	local isTarget = UnitIsUnit(frame.unit, "target") -- frame.isTarget is not the same here so keep this.
+	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
+	if newLevel then
+		if frame.FrameLevelChanged then
+			local actionLevel = (targetLevel or newLevel) + (frame.FrameLevelChanged*10)
+			self:SetPlateFrameLevel(frame, actionLevel, (isTarget and 3) or 1, isTarget)
+		elseif isTarget then
+			self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, isTarget)
+		else
+			self:SetPlateFrameLevel(frame, newLevel, 1)
+		end
+	end
+end
+
+function mod:SetTargetFrame(frame)
+	--Match parent's frame level for targetting purposes. Best time to do it is here.
+	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
 	local targetExists = UnitExists("target")
-	if UnitIsUnit(frame.unit, "target") and not frame.isTarget then
+	local unitIsTarget = UnitIsUnit(frame.unit, "target")
+
+	if unitIsTarget and not frame.isTarget then
 		frame.isTarget = true
 
 		--local oldFrameLevel = frame:GetFrameLevel()
-		targetLevel = targetLevel or newLevel --fallback to newLevel if we dont have it
-		if targetLevel then
-			frame:SetFrameLevel(targetLevel+5)
-			frame.Glow:SetFrameLevel(targetLevel+3)
-			frame.Buffs:SetFrameLevel(targetLevel+4)
-			frame.Debuffs:SetFrameLevel(targetLevel+4)
-		end
-		--print("targetPlateLevelIndex:", mod.TargetPlateLevelIndex, "\noldFrameLevel:", oldFrameLevel, "\nnewFrameLevel:", frame:GetFrameLevel(), "\ntargetLevel:", targetLevel, "\nnewLevel:", newLevel, "\n\n")
+		if targetLevel then self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, true) end
+		--print("frame.FrameLevelChanged:", frame.FrameLevelChanged, "\ntargetPlateLevelIndex:", mod.TargetPlateLevelIndex, "\noldFrameLevel:", oldFrameLevel, "\nnewFrameLevel:", frame:GetFrameLevel(), "\ntargetLevel:", targetLevel, "\nnewLevel:", newLevel, "\n\n")
 
 		if self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
@@ -331,7 +337,7 @@ function mod:SetTargetFrame(frame)
 			frame:SetAlpha(1)
 		end
 	else
-		if frame.isTarget then
+		if frame.isTarget and not unitIsTarget then
 			frame.isTarget = nil
 			if self.db.useTargetScale then
 				self:SetFrameScale(frame, frame.ThreatScale or 1)
@@ -347,10 +353,7 @@ function mod:SetTargetFrame(frame)
 			frame:SetAlpha(1)
 		end
 		if newLevel then
-			frame:SetFrameLevel(newLevel+3)
-			frame.Glow:SetFrameLevel(newLevel+1)
-			frame.Buffs:SetFrameLevel(newLevel+2)
-			frame.Debuffs:SetFrameLevel(newLevel+2)
+			self:SetPlateFrameLevel(frame, newLevel, 1)
 		end
 	end
 
@@ -410,7 +413,7 @@ end
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	frame = frame or self:GetNamePlateForUnit(unit)
 
-	local plateID = self:GetNewPlateLevel(frame)
+	local plateID = self:GetNameplateID(frame)
 	frame.unitFrame.plateID = plateID
 
 	frame.unitFrame.unit = unit
@@ -663,7 +666,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	mod:UpdateElement_Portrait(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
-		mod:ForEachPlate("RestoreNonTargetFrameLevel")
+		mod:ForEachPlate("ResetNameplateFrameLevel")
 		mod:SetTargetFrame(frame)
 	end
 
@@ -672,7 +675,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	end
 end
 
-function mod:GetNewPlateLevel(frame)
+function mod:GetNameplateID(frame)
 	local plateName = frame:GetName()
 	local plateID = plateName and tonumber(match(plateName, "%d+$"))
 	if plateID and ((not mod.TargetPlateLevelIndex) or (plateID >= mod.TargetPlateLevelIndex)) then
@@ -682,7 +685,7 @@ function mod:GetNewPlateLevel(frame)
 end
 
 function mod:NAME_PLATE_CREATED(_, frame)
-	local plateID = self:GetNewPlateLevel(frame)
+	local plateID = self:GetNameplateID(frame)
 	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_NamePlate%d", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
@@ -750,15 +753,18 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
-		mod:ForEachPlate("RestoreNonTargetFrameLevel")
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
+		mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
 		mod:UpdateVisibility()
 	elseif(event == "UNIT_TARGET") then
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player')
 		mod:UpdateElement_Filters(self, event)
+		if unit == "player" and not UnitExists("target") then --basically a `PLAYER_TARGET_CLEARED`, though, it's slower than `PLAYER_TARGET_CHANGED`
+			mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
+		end
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
