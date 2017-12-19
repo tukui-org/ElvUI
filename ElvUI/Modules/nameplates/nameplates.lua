@@ -260,24 +260,22 @@ end
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = self:GetNamePlateForUnit(frame.unit);
-	if(parent) then
-		if frame:GetFrameLevel() < 100 then
-			frame:SetFrameLevel(parent:GetFrameLevel() + 100)
-		end
+	local parentLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
 
-		frame:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 1)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 2)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 2)
+	if parentLevel then
+		frame:SetFrameLevel(parentLevel+3)
+		frame.Glow:SetFrameLevel(parentLevel+1)
+		frame.Buffs:SetFrameLevel(parentLevel+2)
+		frame.Debuffs:SetFrameLevel(parentLevel+2)
 	end
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		if(parent) then
-			frame:SetFrameLevel(parent:GetFrameLevel() + 5)
-			frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
-			frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-			frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+		if parentLevel then
+			frame:SetFrameLevel(parentLevel+5)
+			frame.Glow:SetFrameLevel(parentLevel+3)
+			frame.Buffs:SetFrameLevel(parentLevel+4)
+			frame.Debuffs:SetFrameLevel(parentLevel+4)
 		end
 
 		if(self.db.useTargetScale) then
