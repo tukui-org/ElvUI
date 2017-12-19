@@ -290,7 +290,10 @@ function mod:SetTargetFrame(frame)
 	end
 
 	local targetExists = UnitExists("target")
-	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
+	if UnitIsUnit(frame.unit, "target") and not frame.isTarget then
+		frame.isTarget = true
+
+		--local oldFrameLevel = frame:GetFrameLevel()
 		targetLevel = targetLevel or newLevel --fallback to newLevel if we dont have it
 		if targetLevel then
 			frame:SetFrameLevel(targetLevel+5)
@@ -298,12 +301,13 @@ function mod:SetTargetFrame(frame)
 			frame.Buffs:SetFrameLevel(targetLevel+4)
 			frame.Debuffs:SetFrameLevel(targetLevel+4)
 		end
+		--print("targetPlateLevelIndex:", mod.TargetPlateLevelIndex, "\noldFrameLevel:", oldFrameLevel, "\nnewFrameLevel:", frame:GetFrameLevel(), "\ntargetLevel:", targetLevel, "\nnewLevel:", newLevel, "\n\n")
 
-		if(self.db.useTargetScale) then
+		if self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
-		frame.isTarget = true
-		if(self.db.units[frame.UnitType].healthbar.enable ~= true and self.db.alwaysShowTargetHealth) then
+
+		if self.db.units[frame.UnitType].healthbar.enable ~= true and self.db.alwaysShowTargetHealth then
 			frame.Name:ClearAllPoints()
 			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
@@ -323,44 +327,39 @@ function mod:SetTargetFrame(frame)
 			self:UpdateElement_All(frame, frame.unit, true, true)
 		end
 
-		if(targetExists) then
+		if targetExists then
 			frame:SetAlpha(1)
 		end
-	elseif (frame.isTarget) then
-		if(self.db.useTargetScale) then
-			self:SetFrameScale(frame, frame.ThreatScale or 1)
-		end
-		frame.isTarget = nil
-		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
-			self:UpdateAllFrame(frame)
+	else
+		if frame.isTarget then
+			frame.isTarget = nil
+			if self.db.useTargetScale then
+				self:SetFrameScale(frame, frame.ThreatScale or 1)
+			end
+			if self.db.units[frame.UnitType].healthbar.enable ~= true then
+				self:UpdateAllFrame(frame)
+			end
 		end
 
-		if(targetExists and not UnitIsUnit(frame.unit, "player")) then
+		if targetExists and not UnitIsUnit(frame.unit, "player") then
 			frame:SetAlpha(1 - self.db.nonTargetTransparency)
 		else
 			frame:SetAlpha(1)
 		end
-	else
 		if newLevel then
 			frame:SetFrameLevel(newLevel+3)
 			frame.Glow:SetFrameLevel(newLevel+1)
 			frame.Buffs:SetFrameLevel(newLevel+2)
 			frame.Debuffs:SetFrameLevel(newLevel+2)
 		end
-
-		if(targetExists and not UnitIsUnit(frame.unit, "player"))  then
-			frame:SetAlpha(1 - self.db.nonTargetTransparency)
-		else
-			frame:SetAlpha(1)
-		end
 	end
 
 	mod:ClassBar_Update()
 
-	if (self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER") then
+	if self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER" then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame:Hide()
-	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
+	elseif frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition then --Visibility for static nameplate is handled in UpdateVisibility
 		frame:Show()
 	end
 end
