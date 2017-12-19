@@ -258,7 +258,8 @@ function mod:GetNamePlateForUnit(unit)
 end
 
 function mod:RestoreNonTargetFrameLevel(frame)
-	if frame.isTarget then return end -- don't bother reseting the target frame
+	-- don't bother reseting the target frame; we can't rely on `frame.isTarget` because this is called first
+	if UnitIsUnit(frame.unit, "target") then return end
 
 	local newLevel
 	if frame.plateID then
