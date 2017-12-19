@@ -411,13 +411,13 @@ function AB:CreateBar(id)
 end
 
 function AB:PLAYER_REGEN_ENABLED()
-	if AB.NeedsUpdateButtonSettings == true then
-		AB.NeedsUpdateButtonSettings = nil
+	if AB.NeedsUpdateButtonSettings then
 		self:UpdateButtonSettings()
+		AB.NeedsUpdateButtonSettings = nil
 	end
-	if AB.NeedsUpdateMicroPositionDimensions == true then
-		AB.NeedsUpdateMicroPositionDimensions = nil
+	if AB.NeedsUpdateMicroPositionDimensions then
 		self:UpdateMicroPositionDimensions()
+		AB.NeedsUpdateMicroPositionDimensions = nil
 	end
 	if AB.NeedsAdjustMaxStanceButtons then
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
