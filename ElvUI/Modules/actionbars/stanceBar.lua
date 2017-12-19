@@ -280,7 +280,11 @@ function AB:PositionAndSizeBarShapeShift()
 end
 
 function AB:AdjustMaxStanceButtons(event)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then
+		AB.NeedsAdjustMaxStanceButtons = event or true
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
 
 	local visibility = self.db.stanceBar.visibility;
 	if visibility and visibility:match('[\n\r]') then
