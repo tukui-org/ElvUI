@@ -684,7 +684,7 @@ end
 
 function mod:NAME_PLATE_CREATED(_, frame)
 	local plateID = self:GetNewPlateLevel(frame)
-	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_Plate%d_UnitFrame", plateID), UIParent);
+	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_NamePlate%d", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
 	frame.unitFrame:SetFrameStrata("BACKGROUND")
@@ -1099,7 +1099,7 @@ function mod:Initialize()
 	self:UpdateVehicleStatus()
 
 	--Hacked Nameplate
-	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvUI_Player_NamePlate", E.UIParent, "SecureUnitButtonTemplate")
+	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvUI_NamePlate_Player", E.UIParent, "SecureUnitButtonTemplate")
 	self.PlayerFrame__:SetAttribute("unit", "player")
 	self.PlayerFrame__:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self.PlayerFrame__:SetAttribute("*type1", "target")
