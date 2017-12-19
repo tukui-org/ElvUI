@@ -83,7 +83,7 @@ function mod:CheckBGHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
-			name = name:match("(.+)%-.+") or name
+			name = match(name,"([^%-]+).*")
 			if name and self.HealerSpecs[talentSpec] then
 				self.Healers[name] = talentSpec
 			elseif name and self.Healers[name] then
