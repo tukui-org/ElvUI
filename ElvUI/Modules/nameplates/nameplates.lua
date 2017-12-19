@@ -9,6 +9,7 @@ local type = type
 local twipe = table.wipe
 local format = string.format
 local match = string.match
+local tonumber = tonumber
 --WoW API / Variables
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
