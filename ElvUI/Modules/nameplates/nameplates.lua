@@ -257,25 +257,45 @@ function mod:GetNamePlateForUnit(unit)
 	end
 end
 
+function mod:RestoreNonTargetFrameLevel(frame)
+	if frame.isTarget then return end -- don't bother reseting the target frame
+
+	local newLevel
+	if frame.plateID then
+		newLevel = frame.plateID*10
+	else -- the elvui player nameplate has no plateID, fallback to old method for now
+		local parent = self:GetNamePlateForUnit(frame.unit);
+		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
+	end
+	if newLevel then
+		frame:SetFrameLevel(newLevel+3)
+		frame.Glow:SetFrameLevel(newLevel+1)
+		frame.Buffs:SetFrameLevel(newLevel+2)
+		frame.Debuffs:SetFrameLevel(newLevel+2)
+	end
+end
+
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
-	local parent = self:GetNamePlateForUnit(frame.unit);
-	local parentLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
-
-	if parentLevel then
-		frame:SetFrameLevel(parentLevel+3)
-		frame.Glow:SetFrameLevel(parentLevel+1)
-		frame.Buffs:SetFrameLevel(parentLevel+2)
-		frame.Debuffs:SetFrameLevel(parentLevel+2)
+	local newLevel, targetLevel
+	if mod.TargetPlateLevelIndex then
+		targetLevel = mod.TargetPlateLevelIndex*10
+	end
+	if frame.plateID then
+		newLevel = frame.plateID*10
+	else -- the elvui player nameplate has no plateID, fallback to old method for now
+		local parent = self:GetNamePlateForUnit(frame.unit);
+		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
 	end
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		if parentLevel then
-			frame:SetFrameLevel(parentLevel+5)
-			frame.Glow:SetFrameLevel(parentLevel+3)
-			frame.Buffs:SetFrameLevel(parentLevel+4)
-			frame.Debuffs:SetFrameLevel(parentLevel+4)
+		targetLevel = targetLevel or newLevel --fallback to newLevel if we dont have it
+		if targetLevel then
+			frame:SetFrameLevel(targetLevel+5)
+			frame.Glow:SetFrameLevel(targetLevel+3)
+			frame.Buffs:SetFrameLevel(targetLevel+4)
+			frame.Debuffs:SetFrameLevel(targetLevel+4)
 		end
 
 		if(self.db.useTargetScale) then
@@ -320,6 +340,13 @@ function mod:SetTargetFrame(frame)
 			frame:SetAlpha(1)
 		end
 	else
+		if newLevel then
+			frame:SetFrameLevel(newLevel+3)
+			frame.Glow:SetFrameLevel(newLevel+1)
+			frame.Buffs:SetFrameLevel(newLevel+2)
+			frame.Debuffs:SetFrameLevel(newLevel+2)
+		end
+
 		if(targetExists and not UnitIsUnit(frame.unit, "player"))  then
 			frame:SetAlpha(1 - self.db.nonTargetTransparency)
 		else
@@ -381,7 +408,11 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
-	frame = frame or self:GetNamePlateForUnit(unit);
+	frame = frame or self:GetNamePlateForUnit(unit)
+
+	local plateID = self:GetNewPlateLevel(frame)
+	frame.unitFrame.plateID = plateID
+
 	frame.unitFrame.unit = unit
 	frame.unitFrame.displayedUnit = unit
 	self:UpdateInVehicle(frame, true)
@@ -458,6 +489,7 @@ end
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame = frame or self:GetNamePlateForUnit(unit);
 	frame.unitFrame.unit = nil
+	frame.unitFrame.plateID = nil
 
 	local unitType = frame.unitFrame.UnitType
 	if(frame.unitFrame.UnitType == "PLAYER") then
@@ -631,6 +663,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	mod:UpdateElement_Portrait(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
+		mod:ForEachPlate("RestoreNonTargetFrameLevel")
 		mod:SetTargetFrame(frame)
 	end
 
@@ -639,12 +672,23 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	end
 end
 
+function mod:GetNewPlateLevel(frame)
+	local plateName = frame:GetName()
+	local plateID = plateName and tonumber(match(plateName, "%d+$"))
+	if plateID and ((not mod.TargetPlateLevelIndex) or (plateID >= mod.TargetPlateLevelIndex)) then
+		mod.TargetPlateLevelIndex = plateID + 1
+	end
+	return plateID
+end
+
 function mod:NAME_PLATE_CREATED(_, frame)
-	frame.unitFrame = CreateFrame("BUTTON", "ElvUI"..frame:GetName().."UnitFrame", UIParent);
+	local plateID = self:GetNewPlateLevel(frame)
+	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_Plate%d_UnitFrame", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
 	frame.unitFrame:SetFrameStrata("BACKGROUND")
 	frame.unitFrame:SetScript("OnEvent", mod.OnEvent)
+	frame.unitFrame.plateID = plateID
 
 	frame.unitFrame.HealthBar = self:ConstructElement_HealthBar(frame.unitFrame)
 	frame.unitFrame.PowerBar = self:ConstructElement_PowerBar(frame.unitFrame)
@@ -706,6 +750,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
+		mod:ForEachPlate("RestoreNonTargetFrameLevel")
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
@@ -1053,7 +1098,7 @@ function mod:Initialize()
 	self:UpdateVehicleStatus()
 
 	--Hacked Nameplate
-	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvNamePlate", E.UIParent, "SecureUnitButtonTemplate")
+	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvUI_Player_NamePlate", E.UIParent, "SecureUnitButtonTemplate")
 	self.PlayerFrame__:SetAttribute("unit", "player")
 	self.PlayerFrame__:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self.PlayerFrame__:SetAttribute("*type1", "target")
