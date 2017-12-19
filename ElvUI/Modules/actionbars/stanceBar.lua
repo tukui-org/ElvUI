@@ -317,6 +317,7 @@ function AB:AdjustMaxStanceButtons(event)
 
 	self:PositionAndSizeBarShapeShift();
 
+	-- sometimes after combat lock down `event` may be true because of passing it back with `AB.NeedsAdjustMaxStanceButtons`
 	if event == 'UPDATE_SHAPESHIFT_FORMS' then
 		self:StyleShapeShift()
 	end
