@@ -6,6 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local pairs = pairs
 local type = type
+local gsub = gsub
 local twipe = table.wipe
 local format = string.format
 local match = string.match
@@ -44,6 +45,7 @@ local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local UNKNOWN = UNKNOWN
 
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
@@ -84,7 +86,7 @@ function mod:CheckBGHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
-			name = match(name,"([^%-]+).*")
+			name = gsub(name,'%-'..PLAYER_REALM,'') --[[ name = match(name,"([^%-]+).*") ]]
 			if name and self.HealerSpecs[talentSpec] then
 				self.Healers[name] = talentSpec
 			elseif name and self.Healers[name] then
@@ -99,8 +101,10 @@ function mod:CheckArenaHealers()
 	if not (numOpps > 1) then return end
 
 	for i=1, 5 do
-		local name = UnitName(format('arena%d', i))
+		local name, realm = UnitName(format('arena%d', i))
 		if name and name ~= UNKNOWN then
+			realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
+			if realm then name = name.."-"..realm end
 			local s = GetArenaOpponentSpec(i)
 			local _, talentSpec = nil, UNKNOWN
 			if s and s > 0 then
