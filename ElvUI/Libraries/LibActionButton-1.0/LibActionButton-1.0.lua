@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 11
+local MINOR_VERSION = 12
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -1333,6 +1333,7 @@ function UpdateCooldown(self)
 		end
 		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
+	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
 end
 
 function StartFlash(self)
