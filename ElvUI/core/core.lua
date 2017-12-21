@@ -927,9 +927,9 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		end
 	else
 		local numMembers = GetNumGroupMembers()
-		if (numMembers == 0) and rosterNumMembers then
+		if numMembers and (numMembers == 0) and rosterNumMembers then
 			rosterNumMembers = nil -- clear this after we leave the group
-		elseif (numMembers > 1) and ((not rosterNumMembers) or (rosterNumMembers ~= numMembers)) then
+		elseif numMembers and (numMembers > 1) and ((not rosterNumMembers) or (rosterNumMembers ~= numMembers)) then
 			E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 			rosterNumMembers = numMembers
 		end
