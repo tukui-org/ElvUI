@@ -13,6 +13,7 @@ local GetAddOnMetadata = GetAddOnMetadata
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
 local SendAddonMessage = SendAddonMessage
+local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
@@ -177,7 +178,14 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 		if not E.SendPluginVersionCheck then
 			E.SendPluginVersionCheck = SendPluginVersionCheck
 		end
-		E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
+
+		local numMembers = GetNumGroupMembers()
+		if (numMembers == 0) and lib.numMembers then
+			lib.numMembers = nil -- clear this after we leave the group
+		elseif (numMembers > 1) and ((not lib.numMembers) or (lib.numMembers ~= numMembers)) then
+			E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
+			lib.numMembers = numMembers
+		end
 	end
 end
 
