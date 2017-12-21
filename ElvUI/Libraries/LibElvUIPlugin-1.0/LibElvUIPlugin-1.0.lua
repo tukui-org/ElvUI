@@ -153,9 +153,11 @@ end
 function lib:VersionCheck(event, prefix, message, channel, sender)
 	local E = ElvUI[1]
 	if (event == "CHAT_MSG_ADDON") and sender and message and (message ~= "") and (prefix == lib.prefix) then
-		local myRealm = gsub(E.myrealm,'[%s%-]','')
-		local myName = E.myname..'-'..myRealm
-		if sender == myName then return end
+		if not lib.myName then
+			local myRealm = gsub(E.myrealm,'[%s%-]','')
+			lib.myName = E.myname..'-'..myRealm
+		end
+		if sender == lib.myName then return end
 		if not E["pluginRecievedOutOfDateMessage"] then
 			local name, version, plugin, Pname
 			for _, p in pairs({strsplit(";",message)}) do
@@ -183,7 +185,7 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 		if (numMembers == 0) and lib.numMembers then
 			lib.numMembers = nil -- clear this after we leave the group
 		elseif (numMembers > 1) and ((not lib.numMembers) or (lib.numMembers ~= numMembers)) then
-			E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
+			E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
 			lib.numMembers = numMembers
 		end
 	end
