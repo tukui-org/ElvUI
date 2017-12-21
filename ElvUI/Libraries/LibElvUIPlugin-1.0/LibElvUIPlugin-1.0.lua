@@ -216,18 +216,19 @@ function lib:SendPluginVersionCheck(message)
 	local ChatType = ((not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) or (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE))) and "INSTANCE_CHAT" or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or nil
 	if not ChatType then return end
 
-	local maxChar, msgLength = 250, strlen(message)
+	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
 		local splitMessage
 		for _=1, ceil(msgLength/maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
-				ElvUI[1]:Delay(1, SendAddonMessage(lib.prefix, splitMessage, ChatType))
+				ElvUI[1]:Delay(delay, SendAddonMessage(lib.prefix, splitMessage, ChatType))
+				delay = delay + 1
 			end
 		end
 	else
-		ElvUI[1]:Delay(1, SendAddonMessage(lib.prefix, message, ChatType))
+		SendAddonMessage(lib.prefix, message, ChatType)
 	end
 end
 
