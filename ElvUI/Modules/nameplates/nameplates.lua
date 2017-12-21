@@ -263,6 +263,7 @@ function mod:GetNamePlateForUnit(unit)
 end
 
 function mod:GetPlateFrameLevels(frame)
+	local blizzPlate = self:GetNamePlateForUnit(frame.unit)
 	local newLevel, targetLevel
 	if mod.TargetPlateLevelIndex then
 		targetLevel = mod.TargetPlateLevelIndex*10
@@ -270,40 +271,42 @@ function mod:GetPlateFrameLevels(frame)
 	if frame.plateID then
 		newLevel = frame.plateID*10
 	else -- the elvui player nameplate has no plateID, fallback to old method for now
-		local parent = self:GetNamePlateForUnit(frame.unit);
-		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
+		newLevel = blizzPlate and blizzPlate.GetFrameLevel and (blizzPlate:GetFrameLevel()+100);
 	end
-	return newLevel, targetLevel
+	return newLevel, targetLevel, blizzPlate
 end
 
-function mod:SetPlateFrameLevel(frame, level, step, isTarget)
+function mod:SetPlateFrameLevel(frame, blizzPlate, level, step, isTarget)
 	if frame and level and step then
 		local newLevel = level + step + (isTarget and 110 or 0) --StyleFilter's FrameLevelChanged goes up to 100, keep Target over 100 by setting it to 110
 		frame:SetFrameLevel(newLevel+2)
 		frame.Glow:SetFrameLevel(newLevel)
 		frame.Buffs:SetFrameLevel(newLevel+1)
 		frame.Debuffs:SetFrameLevel(newLevel+1)
+		if blizzPlate and newLevel > 1 then
+			blizzPlate:SetFrameLevel(newLevel-1)
+		end
 	end
 end
 
 function mod:ResetNameplateFrameLevel(frame)
 	local isTarget = UnitIsUnit(frame.unit, "target") -- frame.isTarget is not the same here so keep this.
-	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
+	local newLevel, targetLevel, blizzPlate = mod:GetPlateFrameLevels(frame)
 	if newLevel then
 		if frame.FrameLevelChanged then
 			local actionLevel = (targetLevel or newLevel) + (frame.FrameLevelChanged*10)
-			self:SetPlateFrameLevel(frame, actionLevel, (isTarget and 3) or 1, isTarget)
+			self:SetPlateFrameLevel(frame, blizzPlate, actionLevel, (isTarget and 3) or 1, isTarget)
 		elseif isTarget then
-			self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, isTarget)
+			self:SetPlateFrameLevel(frame, blizzPlate, targetLevel or newLevel, 3, isTarget)
 		else
-			self:SetPlateFrameLevel(frame, newLevel, 1)
+			self:SetPlateFrameLevel(frame, blizzPlate, newLevel, 1)
 		end
 	end
 end
 
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
-	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
+	local newLevel, targetLevel, blizzPlate = mod:GetPlateFrameLevels(frame)
 	local targetExists = UnitExists("target")
 	local unitIsTarget = UnitIsUnit(frame.unit, "target")
 
@@ -311,7 +314,7 @@ function mod:SetTargetFrame(frame)
 		frame.isTarget = true
 
 		--local oldFrameLevel = frame:GetFrameLevel()
-		if targetLevel then self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, true) end
+		if targetLevel then self:SetPlateFrameLevel(frame, blizzPlate, targetLevel or newLevel, 3, true) end
 		--print("frame.FrameLevelChanged:", frame.FrameLevelChanged, "\ntargetPlateLevelIndex:", mod.TargetPlateLevelIndex, "\noldFrameLevel:", oldFrameLevel, "\nnewFrameLevel:", frame:GetFrameLevel(), "\ntargetLevel:", targetLevel, "\nnewLevel:", newLevel, "\n\n")
 
 		if self.db.useTargetScale then
@@ -358,7 +361,7 @@ function mod:SetTargetFrame(frame)
 			frame:SetAlpha(1)
 		end
 		if newLevel then
-			self:SetPlateFrameLevel(frame, newLevel, 1)
+			self:SetPlateFrameLevel(frame, blizzPlate, newLevel, 1)
 		end
 	end
 
