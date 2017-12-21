@@ -153,10 +153,7 @@ end
 function lib:VersionCheck(event, prefix, message, channel, sender)
 	local E = ElvUI[1]
 	if (event == "CHAT_MSG_ADDON") and sender and message and (message ~= "") and (prefix == lib.prefix) then
-		if not lib.myName then
-			local myRealm = gsub(E.myrealm,'[%s%-]','')
-			lib.myName = E.myname..'-'..myRealm
-		end
+		if not lib.myName then lib.myName = E.myname..'-'..gsub(E.myrealm,'[%s%-]','') end
 		if sender == lib.myName then return end
 		if not E["pluginRecievedOutOfDateMessage"] then
 			local name, version, plugin, Pname
