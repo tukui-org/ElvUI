@@ -907,7 +907,7 @@ function E:SendMessage()
 	end
 end
 
-local rosterNumMembers
+local SendRecieveGroupSize
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
@@ -926,12 +926,12 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 		end
 	else
-		local numMembers = GetNumGroupMembers()
-		if numMembers == 0 and rosterNumMembers then
-			rosterNumMembers = nil -- clear this after we leave the group
-		elseif numMembers > 1 and rosterNumMembers ~= numMembers then
-			E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
-			rosterNumMembers = numMembers
+		local num = GetNumGroupMembers()
+		if num ~= SendRecieveGroupSize then
+			if num > 1 and SendRecieveGroupSize and num > SendRecieveGroupSize then
+				E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
+			end
+			SendRecieveGroupSize = num
 		end
 	end
 end

@@ -178,12 +178,12 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 			E.SendPluginVersionCheck = SendPluginVersionCheck
 		end
 
-		local numMembers = GetNumGroupMembers()
-		if numMembers == 0 and lib.numMembers then
-			lib.numMembers = nil -- clear this after we leave the group
-		elseif numMembers > 1 and lib.numMembers ~= numMembers then
-			E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
-			lib.numMembers = numMembers
+		local num = GetNumGroupMembers()
+		if num ~= lib.groupSize then
+			if num > 1 and lib.groupSize and num > lib.groupSize then
+				E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
+			end
+			lib.groupSize = num
 		end
 	end
 end
