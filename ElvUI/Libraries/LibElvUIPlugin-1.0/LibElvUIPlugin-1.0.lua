@@ -179,9 +179,9 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 		end
 
 		local numMembers = GetNumGroupMembers()
-		if numMembers and (numMembers == 0) and lib.numMembers then
+		if numMembers == 0 and lib.numMembers then
 			lib.numMembers = nil -- clear this after we leave the group
-		elseif numMembers and (numMembers > 1) and ((not lib.numMembers) or (lib.numMembers ~= numMembers)) then
+		elseif numMembers > 1 and lib.numMembers ~= numMembers then
 			E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
 			lib.numMembers = numMembers
 		end
