@@ -30,6 +30,7 @@ local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local SendAddonMessage = SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
+local GetNumGroupMembers = GetNumGroupMembers
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -906,6 +907,7 @@ function E:SendMessage()
 	end
 end
 
+local rosterNumMembers
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
@@ -924,17 +926,23 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 		end
 	else
-		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
+		local numMembers = GetNumGroupMembers()
+		if (numMembers == 0) and rosterNumMembers then
+			rosterNumMembers = nil -- clear this after we leave the group
+		elseif (numMembers > 1) and ((not rosterNumMembers) or (rosterNumMembers ~= numMembers)) then
+			E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
+			rosterNumMembers = numMembers
+		end
 	end
 end
 
 RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
-local f = CreateFrame('Frame')
+local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 --f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
-f:SetScript('OnEvent', SendRecieve)
+f:SetScript("OnEvent", SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then
