@@ -286,11 +286,12 @@ local function LoadSkin()
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 
-	--New Table Attribute Display (/fstack -> then Ctrl)
+	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	local function dynamicScrollButtonVisibility(button, frame)
 		if not button.dynamicVisibility then
-			button:HookScript("OnShow", function(self) frame:Show() end)
-			button:HookScript("OnHide", function(self) frame:Hide() end)
+			frame:SetShown(button:IsShown())
+			button:HookScript("OnShow", function() frame:Show() end)
+			button:HookScript("OnHide", function() frame:Hide() end)
 			button.dynamicVisibility = true
 		end
 	end
