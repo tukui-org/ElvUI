@@ -282,14 +282,15 @@ end
 function mod:SetPlateFrameLevel(frame, level, isTarget)
 	if frame and level then
 		if frame.UnitType and frame.UnitType == "PLAYER" then
-			level = 905 --5 higher than target
+			level = 980 --10 higher than target
 		elseif isTarget then
-			level = 900 --higher than the max calculated level of 880
-		elseif frame.FrameLevelChanged then --calculate Style Filter FrameLevelChanged leveling
-			--level method :: {level (highest can be 80)} + {floor * numleveled [highest can be 800 (10*2*40)]}
-			--highest possible should be level 880 (80 + 800) and we add 1 to all so 881
+			level = 970 --higher than the max calculated level of 960
+		elseif frame.FrameLevelChanged then
+			--calculate Style Filter FrameLevelChanged leveling
+			--level method: max 80 + (10*(40*2)) max 800 + max 80 (40*2) = max 960
+			--highest possible should be level 960 and we add 1 to all so 961
 			local leveledCount = mod.CollectedFrameLevelCount or 1
-			level = level + ((frame.FrameLevelChanged*mod.levelStep)*leveledCount)
+			level = level + (frame.FrameLevelChanged*(40*mod.levelStep)) + (leveledCount*mod.levelStep)
 		end
 
 		frame:SetFrameLevel(level+1)
