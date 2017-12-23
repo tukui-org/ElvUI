@@ -502,6 +502,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	end
 
 	self:UpdateElement_Filters(frame.unitFrame, "NAME_PLATE_UNIT_ADDED")
+	mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
@@ -688,7 +689,6 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	mod:UpdateElement_Portrait(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
-		mod:ForEachPlate("ResetNameplateFrameLevel")
 		mod:SetTargetFrame(frame)
 	end
 
