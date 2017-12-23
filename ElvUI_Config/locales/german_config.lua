@@ -66,11 +66,12 @@ Namensformate:
 'name:long' - Name auf 20 Zeichen beschränkt
 
 Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
-["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[Wenn du dieses auf 1 setzt werden alle Namensplaketten die vom Stilfilter ausgelöst werden über jeder anderen Namensplakette liegen.
 
-If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
+Wenn du dieses auf 2 setzt in einem anderen Stilfilter, werden alle Namensplakette die vom Filter ausgelöst wurden, über den Namensplaketten liegen die auf 1 gesetzt sind, usw.
 
-NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
+HINWEIS: Diese Einstellung behebt NICHT die Probleme mit klicken oder mouseover von überlappenden Namensplaketten. Dieses Problem liegt dranm dass wir nicht im Stande sind das
+Frame Level von klickbaren Namensplakette zu manipulieren.]=]
 
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
