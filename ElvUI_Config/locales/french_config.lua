@@ -95,6 +95,7 @@ L["Color when the text is in the seconds format."] = "Couleur quand le texte est
 L["Cooldown Text"] = "Texte temps de recharge"
 L["Darken Inactive"] = "Foncé Inactif"
 L["Days"] = "Jours"
+L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "Affiche les noms des raccourcis sur les boutons de la barre d'action."
 L["Display cooldown text on anything with the cooldown spiral."] = "Affiche le temps de recharge au format numérique plutôt que la spirale d'origine."
 L["Display macro names on action buttons."] = "Affiche les noms des macros sur les boutons dans la barre d'action."
