@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 17
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 18
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -223,7 +223,7 @@ function lib:SendPluginVersionCheck(message)
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
-				ElvUI[1]:Delay(delay, SendAddonMessage(lib.prefix, splitMessage, ChatType))
+				ElvUI[1]:Delay(delay, SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
 		end
