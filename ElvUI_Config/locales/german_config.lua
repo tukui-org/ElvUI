@@ -95,6 +95,7 @@ L["Color when the text is in the seconds format."] = "Färbe den Text in dieser 
 L["Cooldown Text"] = "Abklingzeittext"
 L["Darken Inactive"] = "Inaktives verdunkeln"
 L["Days"] = "Tage"
+L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "Zeige Tastaturbelegungen auf der Aktionsleiste an."
 L["Display cooldown text on anything with the cooldown spiral."] = "Zeige die Abklingzeit auf allen Tasten mit Hilfe iner animierten Spirale."
 L["Display macro names on action buttons."] = "Zeige Makronamen auf der Aktionsleiste an."

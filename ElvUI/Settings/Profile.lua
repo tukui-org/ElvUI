@@ -2912,6 +2912,7 @@ P["actionbar"] = {
 	["useDrawSwipeOnCharges"] = false,
 	["addNewSpells"] = false,
 	["rightClickSelfCast"] = false,
+	["desaturateOnCooldown"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,
