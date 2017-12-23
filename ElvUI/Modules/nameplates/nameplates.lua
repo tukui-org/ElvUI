@@ -1118,8 +1118,8 @@ function mod:Initialize()
 
 	self:StyleFilterConfigureEvents()
 
-	--Nameplate Leveling Step (1:glow 2:frame)
-	-- range is from 3 [(1*2)+1] to 81 [(40*2)+1]
+	--Nameplate Leveling Step (glow, frame) (2)
+	-- range is from 3 [(1*2)+1] to 81 [(40*2)+1] ~ [(nameplateID * step) + frame layer]
 	-- 40 is the max amount of nameplate tokens
 	self.levelStep = 2
 
