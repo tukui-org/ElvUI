@@ -1600,7 +1600,7 @@ local function UpdateFilterGroup()
 				},
 				frameLevel = {
 					name = L["Frame Level"],
-					desc = ["NAMEPLATE_FRAMELEVEL_DESC"],
+					desc = L["NAMEPLATE_FRAMELEVEL_DESC"],
 					order = 7,
 					type = "range",
 					min = 0, max = 10, step = 1,
