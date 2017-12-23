@@ -43,6 +43,9 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
+local GetCVar = GetCVar
+local Saturate = Saturate
+local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
@@ -610,9 +613,13 @@ function mod:SetBaseNamePlateSize()
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
 
 	-- this wont taint like NamePlateDriverFrame.SetBaseNamePlateSize
-	C_NamePlate_SetNamePlateFriendlySize(baseWidth, baseHeight);
-	C_NamePlate_SetNamePlateEnemySize(baseWidth, baseHeight);
-	C_NamePlate_SetNamePlateSelfSize(baseWidth, baseHeight);
+	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+	local zeroBasedScale = namePlateVerticalScale - 1.0
+	local clampedZeroBasedScale = Saturate(zeroBasedScale)
+	C_NamePlate_SetNamePlateFriendlySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
+	C_NamePlate_SetNamePlateEnemySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
+	C_NamePlate_SetNamePlateSelfSize(baseWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale), baseHeight)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
