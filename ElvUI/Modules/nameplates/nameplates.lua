@@ -262,57 +262,63 @@ function mod:GetNamePlateForUnit(unit)
 	end
 end
 
-function mod:GetPlateFrameLevels(frame)
-	local newLevel, targetLevel
-	if mod.TargetPlateLevelIndex then
-		targetLevel = mod.TargetPlateLevelIndex*10
+function mod:GetPlateFrameLevel(frame)
+	local plateLevel
+	if frame.UnitType and frame.UnitType == "PLAYER" then
+		plateLevel = 0 -- deadend return; we force this in mod:SetPlateFrameLevel
+	elseif frame.plateID then
+		plateLevel = frame.plateID*mod.levelStep
+	elseif frame.unit then
+		--this is a fall back to the old method but nothing should end up here
+		local parent = self:GetNamePlateForUnit(frame.unit)
+		plateLevel = parent and parent.GetFrameLevel and parent:GetFrameLevel()
 	end
-	if frame.plateID then
-		newLevel = frame.plateID*10
-	else -- the elvui player nameplate has no plateID, fallback to old method for now
-		local parent = self:GetNamePlateForUnit(frame.unit);
-		newLevel = parent and parent.GetFrameLevel and (parent:GetFrameLevel()+100);
-	end
-	return newLevel, targetLevel
+	return plateLevel
 end
 
-function mod:SetPlateFrameLevel(frame, level, step, isTarget)
-	if frame and level and step then
-		local newLevel = level + step + (isTarget and 110 or 0) --StyleFilter's FrameLevelChanged goes up to 100, keep Target over 100 by setting it to 110
-		frame:SetFrameLevel(newLevel+2)
-		frame.Glow:SetFrameLevel(newLevel)
-		frame.Buffs:SetFrameLevel(newLevel+1)
-		frame.Debuffs:SetFrameLevel(newLevel+1)
+function mod:SetPlateFrameLevel(frame, level, isTarget)
+	if frame and level then
+		if frame.UnitType and frame.UnitType == "PLAYER" then
+			level = 905 --5 higher than target
+		elseif isTarget then
+			level = 900 --higher than the max calculated level of 880
+		elseif frame.FrameLevelChanged then --calculate Style Filter FrameLevelChanged leveling
+			--level method :: {level (highest can be 80)} + {floor * numleveled [highest can be 800 (10*2*40)]}
+			--highest possible should be level 880 (80 + 800) and we add 1 to all so 881
+			local leveledCount = mod.CollectedFrameLevelCount or 1
+			level = level + ((frame.FrameLevelChanged*mod.levelStep)*leveledCount)
+		end
+
+		frame:SetFrameLevel(level+1)
+		frame.Glow:SetFrameLevel(level)
+		frame.Buffs:SetFrameLevel(level+1)
+		frame.Debuffs:SetFrameLevel(level+1)
 	end
 end
 
 function mod:ResetNameplateFrameLevel(frame)
-	local isTarget = UnitIsUnit(frame.unit, "target") -- frame.isTarget is not the same here so keep this.
-	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
-	if newLevel then
-		if frame.FrameLevelChanged then
-			local actionLevel = (targetLevel or newLevel) + (frame.FrameLevelChanged*10)
-			self:SetPlateFrameLevel(frame, actionLevel, (isTarget and 3) or 1, isTarget)
-		elseif isTarget then
-			self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, isTarget)
-		else
-			self:SetPlateFrameLevel(frame, newLevel, 1)
+	local isTarget = UnitIsUnit(frame.unit, "target") --frame.isTarget is not the same here so keep this.
+	local plateLevel = mod:GetPlateFrameLevel(frame)
+	if plateLevel then
+		if frame.FrameLevelChanged then --keep how many plates we change, this is reset to 1 post-ResetNameplateFrameLevel
+			mod.CollectedFrameLevelCount = (mod.CollectedFrameLevelCount and mod.CollectedFrameLevelCount + 1) or 1
 		end
+		self:SetPlateFrameLevel(frame, plateLevel, isTarget)
 	end
 end
 
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
-	local newLevel, targetLevel = mod:GetPlateFrameLevels(frame)
+	local plateLevel = mod:GetPlateFrameLevel(frame)
 	local targetExists = UnitExists("target")
 	local unitIsTarget = UnitIsUnit(frame.unit, "target")
 
 	if unitIsTarget and not frame.isTarget then
 		frame.isTarget = true
 
-		--local oldFrameLevel = frame:GetFrameLevel()
-		if targetLevel then self:SetPlateFrameLevel(frame, targetLevel or newLevel, 3, true) end
-		--print("frame.FrameLevelChanged:", frame.FrameLevelChanged, "\ntargetPlateLevelIndex:", mod.TargetPlateLevelIndex, "\noldFrameLevel:", oldFrameLevel, "\nnewFrameLevel:", frame:GetFrameLevel(), "\ntargetLevel:", targetLevel, "\nnewLevel:", newLevel, "\n\n")
+		if plateLevel then
+			self:SetPlateFrameLevel(frame, plateLevel, true)
+		end
 
 		if self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
@@ -357,8 +363,9 @@ function mod:SetTargetFrame(frame)
 		else
 			frame:SetAlpha(1)
 		end
-		if newLevel then
-			self:SetPlateFrameLevel(frame, newLevel, 1)
+
+		if plateLevel then
+			self:SetPlateFrameLevel(frame, plateLevel)
 		end
 	end
 
@@ -592,6 +599,9 @@ function mod:ForEachPlate(functionToRun, ...)
 			self[functionToRun](self, frame.unitFrame, ...)
 		end
 	end
+	if functionToRun == "ResetNameplateFrameLevel" then
+		mod.CollectedFrameLevelCount = 1
+	end
 end
 
 function mod:SetBaseNamePlateSize()
@@ -681,11 +691,9 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 end
 
 function mod:GetNameplateID(frame)
+	if frame == mod.PlayerFrame__ then return 0 end
 	local plateName = frame:GetName()
 	local plateID = plateName and tonumber(match(plateName, "%d+$"))
-	if plateID and ((not mod.TargetPlateLevelIndex) or (plateID >= mod.TargetPlateLevelIndex)) then
-		mod.TargetPlateLevelIndex = plateID + 1
-	end
 	return plateID
 end
 
@@ -1102,6 +1110,11 @@ function mod:Initialize()
 	end
 
 	self:StyleFilterConfigureEvents()
+
+	--Nameplate Leveling Step (1:glow 2:frame)
+	-- range is from 3 [(1*2)+1] to 81 [(40*2)+1]
+	-- 40 is the max amount of nameplate tokens
+	self.levelStep = 2
 
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
