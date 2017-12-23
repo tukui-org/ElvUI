@@ -284,7 +284,7 @@ function mod:SetPlateFrameLevel(frame, level, isTarget)
 		if frame.UnitType and frame.UnitType == "PLAYER" then
 			level = 980 --10 higher than target
 		elseif isTarget then
-			level = 970 --higher than the max calculated level of 960
+			level = 970 --10 higher than the max calculated level of 960
 		elseif frame.FrameLevelChanged then
 			--calculate Style Filter FrameLevelChanged leveling
 			--level method: max 80 + (10*(40*2)) max 800 + max 80 (40*2) = max 960
