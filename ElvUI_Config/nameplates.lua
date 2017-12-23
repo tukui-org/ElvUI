@@ -1600,7 +1600,7 @@ local function UpdateFilterGroup()
 				},
 				frameLevel = {
 					name = L["Frame Level"],
-					desc = L["This is a flooring system for nameplates (0 = base floor [all non-triggered plates], 10 = highest floor).\n\nIf you set this to 1 all triggered plates will be above any of the non-triggered (default leveled) ElvUI plates.\n\nIf you set this to 2 all triggered plates will be above any of the Frame Level 1 triggered plates and the non-triggered ElvUI plates.\n\nNOTE: This setting will NOT fix the ability to correctly click or mouseover nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the nameplate frames rendered on the World Frame."],
+					desc = ["NAMEPLATE_FRAMELEVEL_DESC"],
 					order = 7,
 					type = "range",
 					min = 0, max = 10, step = 1,

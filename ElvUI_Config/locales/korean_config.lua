@@ -102,6 +102,11 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 |cffceff00name:long|r : 최대 20글자
 
 표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=]
+["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+
+If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
+
+NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
 --ActionBars
 L["Action Paging"] = "페이지 자동전환 조건"
