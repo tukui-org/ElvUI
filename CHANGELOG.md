@@ -1,15 +1,46 @@
 **Version 10.70 [  ]**
 
 **New Additions:**  
-
+Added new style filter triggers "Is Targeting Player" and "Is Not Targeting Player".  
+Added ability to Shift+LeftClick the Gold datatext in order to clear session data.  
+Added new style filter trigger "Casting Non-Interruptible".  
+Added visibility options to the bag-bar.  
+Added visibility options to the microbar.  
+Added a Combat-Hide option to role icons on party/raid frames.  
+Added option to self-cast with a right-click on actionbuttons.  
+Added style filter action "Frame Level".  
 
 
 **Bug Fixes:**  
-
+Changed the vehicle fix we put in place previously. It will only affect the Antorus raid instance now. You no longer need pet frames to see vehicles in old raids.  
+Fixed issue with stance bar visibility when switching between specs.  
+Fixed issue with aura min/max time left settings in style filter actions.  
+Fixed position issue with the nameplate target arrow when portrait was hidden.  
+Fixed issue where style filter trigger didn't always set the health color properly.  
+Fixed issue which required the user to click "Okay" in the Color Picker before colors updated (this was locked down intentionally for performance reasons, but those issues have been resolved in a different way). Colors will now update as you click the wheel.  
+Fixed a performance issue with bag sorting. Sorting should seem a lot smoother, especially for low end computers.  
+Suppressed error that could happen when you received a whisper from a friend which WoW had not provided data for yet.  
+Fixed issue which broke the Aura step in the install guide.  
+Fixed a few issues with auto-invite relating to other realms and multiple friends from the same bnet account.  
+Fixed a frame level issue with nameplates which caused them to bleed into each other when overlapped.  
+Fixed issue which caused the version check for ElvUI and associated 3rd party plugins to get sent to the addon communications channel excessively. It will now send a lot fewer messages in total.  
+Fixed issue which could cause the clickable area on nameplates to use an incorrect size.  
 
 
 **Misc. Changes:**  
-
+Cleaned up code in Friend datatext.  
+Updated RaidDebuffs filter and added a few from Tiago Azevedo.  
+Removed alert and flash in chat tabs when chat history is displayed after a login or reload.  
+Removed IconBorder texture on BagBar bag icons.  
+Shortened the text displayed on the movement speed datatext. This is currently only affecting the English client, but can be modified for other localizations by changing the respective localization string.  
+Clicking the Currencies datatext will now open the currencies frame in WoW.  
+Various font and skin tweaks.  
+Enhanced the display and sorting of the Friend datatext.  
+Skinned the "Unspent Talent Point" alert and positioned it near the top of the screen.  
+Changed the default value of "Max Duration" for Target Debuffs to 0.  
+Included the minimap location text font in the "Apply To All" option.  
+Reverted a backdrop color change on the TradeSkill frame.  
+Changed the name format used for the ElvUI nameplates. Previously it was "ElvUI_Plate%d_UnitFrame" and now it is "ElvUI_NamePlate%d".  
 
 ___
 **Version 10.69 [ December 1st 2017 ]**
