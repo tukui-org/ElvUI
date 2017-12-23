@@ -2,13 +2,13 @@
 
 **New Additions:**  
 Added new style filter triggers "Is Targeting Player" and "Is Not Targeting Player".  
-Added ability to Shift+LeftClick the Gold datatext in order to clear session data.  
 Added new style filter trigger "Casting Non-Interruptible".  
+Added new style filter action "Frame Level".  
+Added ability to Shift+LeftClick the Gold datatext in order to clear session data.  
 Added visibility options to the bag-bar.  
 Added visibility options to the microbar.  
 Added a Combat-Hide option to role icons on party/raid frames.  
 Added option to self-cast with a right-click on actionbuttons.  
-Added style filter action "Frame Level".  
 Added "Desaturate On Cooldown" option to action bars. It will make icons black and white when the action is on cooldown.  
 
 
@@ -26,17 +26,20 @@ Fixed a few issues with auto-invite relating to other realms and multiple friend
 Fixed a frame level issue with nameplates which caused them to bleed into each other when overlapped.  
 Fixed issue which caused the version check for ElvUI and associated 3rd party plugins to get sent to the addon communications channel excessively. It will now send a lot fewer messages in total.  
 Fixed issue which could cause the clickable area on nameplates to use an incorrect size.  
+Fixed issue which made some healers in Battlegrounds having the healer icon on nameplate when someone else with the same name was also a healer.  
+Fixed issue which prevented asking for an invite to an already made using the Friend Datatext menu invite.  
+Fixed the AFK status on Friend Datatext.  
 
 
 **Misc. Changes:**  
 Cleaned up code in Friend datatext.  
+Enhanced the display and sorting of the Friend datatext.  
+Shortened the text displayed on the movement speed datatext. This is currently only affecting the English client, but can be modified for other localizations by changing the respective localization string.  
+Clicking the Currencies datatext will now open the currencies frame in WoW.  
 Updated RaidDebuffs filter and added a few from Tiago Azevedo.  
 Removed alert and flash in chat tabs when chat history is displayed after a login or reload.  
 Removed IconBorder texture on BagBar bag icons.  
-Shortened the text displayed on the movement speed datatext. This is currently only affecting the English client, but can be modified for other localizations by changing the respective localization string.  
-Clicking the Currencies datatext will now open the currencies frame in WoW.  
 Various font and skin tweaks.  
-Enhanced the display and sorting of the Friend datatext.  
 Skinned the "Unspent Talent Point" alert and positioned it near the top of the screen.  
 Changed the default value of "Max Duration" for Target Debuffs to 0.  
 Included the minimap location text font in the "Apply To All" option.  
