@@ -66,7 +66,7 @@ Name Formats:
 'name:long' - Name restricted to 20 characters
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=]
-["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
 
 If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
 

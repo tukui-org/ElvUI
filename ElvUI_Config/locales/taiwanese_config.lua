@@ -66,7 +66,7 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 'name:long' - 名稱上限為 20 個字元
 
 若要停用此功能，此欄位請留空。如需更多資訊，請至 http://www.tukui.org]=]
-["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
 
 If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
 

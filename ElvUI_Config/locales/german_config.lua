@@ -66,7 +66,7 @@ Namensformate:
 'name:long' - Name auf 20 Zeichen beschränkt
 
 Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
-["NAMEPLATE_FRAMELEVEL_DESC"] = [=[L[Wenn du dieses auf 1 setzt werden alle Namensplaketten die vom Stilfilter ausgelöst werden über jeder anderen Namensplakette liegen.
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[Wenn du dieses auf 1 setzt werden alle Namensplaketten die vom Stilfilter ausgelöst werden über jeder anderen Namensplakette liegen.
 
 Wenn du dieses auf 2 setzt in einem anderen Stilfilter, werden alle Namensplakette die vom Filter ausgelöst wurden, über den Namensplaketten liegen die auf 1 gesetzt sind, usw.
 
