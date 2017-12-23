@@ -9,6 +9,7 @@ Added visibility options to the microbar.
 Added a Combat-Hide option to role icons on party/raid frames.  
 Added option to self-cast with a right-click on actionbuttons.  
 Added style filter action "Frame Level".  
+Added "Desaturate On Cooldown" option to action bars. It will make icons black and white when the action is on cooldown.  
 
 
 **Bug Fixes:**  
