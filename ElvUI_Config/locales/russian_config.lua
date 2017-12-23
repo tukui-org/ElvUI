@@ -95,7 +95,6 @@ L["Color when the text is in the seconds format."] = "Цвет текста вр
 L["Cooldown Text"] = "Текст восстановления"
 L["Darken Inactive"] = "Неактивные затенены"
 L["Days"] = "Дни"
-L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "Отображать назначенные клавиши на кнопках."
 L["Display cooldown text on anything with the cooldown spiral."] = "Отображать время восстановления на кнопках/предметах."
 L["Display macro names on action buttons."] = "Отображать названия макросов на кнопках."

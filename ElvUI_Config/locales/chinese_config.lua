@@ -95,7 +95,6 @@ L["Color when the text is in the seconds format."] = "以秒显示的文字颜�
 L["Cooldown Text"] = "冷却文字"
 L["Darken Inactive"] = "未激活时暗化"
 L["Days"] = "天"
-L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "在动作条按钮上显示键位名称"
 L["Display cooldown text on anything with the cooldown spiral."] = "显示技能冷却时间"
 L["Display macro names on action buttons."] = "在动作条按钮上显示宏名称"

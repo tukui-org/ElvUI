@@ -95,7 +95,6 @@ L["Color when the text is in the seconds format."] = true
 L["Cooldown Text"] = true
 L["Darken Inactive"] = true
 L["Days"] = true
-L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = true
 L["Display cooldown text on anything with the cooldown spiral."] = true
 L["Display macro names on action buttons."] = true
