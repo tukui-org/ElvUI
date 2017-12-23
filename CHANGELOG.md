@@ -33,6 +33,7 @@ Fixed the AFK status on Friend Datatext.
 
 **Misc. Changes:**  
 Cleaned up code in Friend datatext.  
+Friend datatext can now show friends who are playing multiple games and show each character that is on WoW with the ability to invite or whisper each toon via right click menu.
 Enhanced the display and sorting of the Friend datatext.  
 Shortened the text displayed on the movement speed datatext. This is currently only affecting the English client, but can be modified for other localizations by changing the respective localization string.  
 Clicking the Currencies datatext will now open the currencies frame in WoW.  
