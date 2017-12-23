@@ -940,11 +940,13 @@ function UF:RegisterRaidDebuffIndicator()
 
 		local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
 		local other = E.global.unitframe.raidDebuffIndicator.otherFilter
+		instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
+		otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
 
 		if instanceType == "party" or instanceType == "raid" then
-			ORD:RegisterDebuffs(E.global.unitframe.aurafilters[instance].spells)
+			ORD:RegisterDebuffs(instanceSpells)
 		else
-			ORD:RegisterDebuffs(E.global.unitframe.aurafilters[other].spells)
+			ORD:RegisterDebuffs(otherSpells)
 		end
 	end
 end
