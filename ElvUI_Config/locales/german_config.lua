@@ -70,7 +70,7 @@ L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[Wenn du dieses auf 1 setzt werden alle Namen
 
 Wenn du dieses auf 2 setzt in einem anderen Stilfilter, werden alle Namensplakette die vom Filter ausgelöst wurden, über den Namensplaketten liegen die auf 1 gesetzt sind, usw.
 
-HINWEIS: Diese Einstellung behebt NICHT die Probleme mit klicken oder mouseover von überlappenden Namensplaketten. Dieses Problem liegt dranm dass wir nicht im Stande sind das
+HINWEIS: Diese Einstellung behebt NICHT die Probleme mit klicken oder mouseover von überlappenden Namensplaketten. Dieses Problem liegt dran, dass wir nicht im Stande sind das
 Frame Level von klickbaren Namensplakette zu manipulieren.]=]
 
 --ActionBars
