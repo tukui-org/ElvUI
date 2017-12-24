@@ -38,6 +38,18 @@ local function LoadSkin()
 	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
 	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
 	S:HandleCloseButton(_G["ArtifactRelicForgeFrameCloseButton"])
+
+	ArtifactFrame.PerksTab.RelicTalentAlert:StripTextures()
+	ArtifactFrame.PerksTab.RelicTalentAlert:CreateBackdrop("Transparent")
+	ArtifactFrame.PerksTab.RelicTalentAlert:SetPoint("TOPRIGHT", ArtifactFrame, "TOPRIGHT", -20, 0)
+
+	ArtifactFrame.KnowledgeLevelHelpBox:StripTextures()
+	ArtifactFrame.KnowledgeLevelHelpBox.Arrow:Hide()
+	ArtifactFrame.KnowledgeLevelHelpBox:CreateBackdrop("Transparent")
+
+	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:StripTextures()
+	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:CreateBackdrop("Transparent")
+	S:HandleButton(ArtifactRelicForgeFrame.TutorialFrame.GlowBox.Button)
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)
