@@ -1145,14 +1145,14 @@ function AB:ToggleDesaturation(value)
 	if value then
 		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
 		local start, duration
-		for button in pairs(LAB.ActionButtons) do
+		for button in pairs(LAB.actionButtons) do
 			button.saturationLocked = true
 			start, duration = button:GetCooldown()
 			OnCooldownUpdate(nil, button, start, duration)
 		end
 	else
 		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
-		for button in pairs(LAB.ActionButtons) do
+		for button in pairs(LAB.actionButtons) do
 			button.saturationLocked = nil
 			button.icon:SetDesaturated(false)
 		end
