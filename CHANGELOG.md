@@ -26,9 +26,8 @@ Fixed a few issues with auto-invite relating to other realms and multiple friend
 Fixed a frame level issue with nameplates which caused them to bleed into each other when overlapped.  
 Fixed issue which caused the version check for ElvUI and associated 3rd party plugins to get sent to the addon communications channel excessively. It will now send a lot fewer messages in total.  
 Fixed issue which could cause the clickable area on nameplates to use an incorrect size.  
-Fixed issue which made some healers in Battlegrounds having the healer icon on nameplate when someone else with the same name was also a healer.  
-Fixed issue which prevented asking for an invite to an already made using the Friend Datatext menu invite.  
-Fixed the AFK status on Friend Datatext.  
+Fixed issue with healer icons in battlegrounds when multiple players had the same name.  
+Fixed various issues with the Friend datatext relating to multiple characters or games from the same account.  
 
 
 **Misc. Changes:**  
