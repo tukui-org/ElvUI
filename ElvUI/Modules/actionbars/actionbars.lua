@@ -1128,8 +1128,11 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
-local function OnCooldownUpdate(event, button, start, duration)
+local function OnCooldownUpdate(_, button, start, duration)
+	if not button._state_type == "action" then return; end
+
 	if start and duration > 1.5 then
+		button.saturationLocked = true --Lock any new actions that are created after we activated desaturation
 		button.icon:SetDesaturated(true)
 	else
 		button.icon:SetDesaturated(false)
@@ -1138,17 +1141,21 @@ end
 
 function AB:ToggleDesaturation(value)
 	value = value or self.db.desaturateOnCooldown
-	
+
 	if value then
-		for button in pairs(LAB:GetAllButtons()) do
-			button.saturationLocked = true
-		end
 		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
-	else
-		for button in pairs(LAB:GetAllButtons()) do
-			button.saturationLocked = nil
+		local start, duration
+		for button in pairs(LAB.ActionButtons) do
+			button.saturationLocked = true
+			start, duration = button:GetCooldown()
+			OnCooldownUpdate(nil, button, start, duration)
 		end
+	else
 		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
+		for button in pairs(LAB.ActionButtons) do
+			button.saturationLocked = nil
+			button.icon:SetDesaturated(false)
+		end
 	end
 end
 
@@ -1204,6 +1211,8 @@ function AB:Initialize()
 	LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") --Keep an eye on this, in case it taints
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	
+	self:ToggleDesaturation()
 end
 
 local function InitializeCallback()
