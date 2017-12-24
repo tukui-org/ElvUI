@@ -1128,9 +1128,8 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
-local function OnCooldownUpdate(_, button, start, duration)
-	if not button.icon then return end
-	if start and (duration and duration > 1.5) then
+local function OnCooldownUpdate(event, button, start, duration)
+	if start and duration > 1.5 then
 		button.icon:SetDesaturated(true)
 	else
 		button.icon:SetDesaturated(false)
@@ -1139,21 +1138,15 @@ end
 
 function AB:ToggleDesaturation(value)
 	value = value or self.db.desaturateOnCooldown
-
+	
 	if value then
-		local start, duration
 		for button in pairs(LAB:GetAllButtons()) do
 			button.saturationLocked = true
-			start, duration = button:GetCooldown()
-			OnCooldownUpdate("OnCooldownUpdate", button, start, duration)
 		end
 		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
 	else
 		for button in pairs(LAB:GetAllButtons()) do
 			button.saturationLocked = nil
-			if button.icon and button.icon:IsDesaturated() then
-				button.icon:SetDesaturated(false)
-			end
 		end
 		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
 	end
