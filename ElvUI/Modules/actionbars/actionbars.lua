@@ -1128,12 +1128,20 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
+local function DelayedSaturate(button)
+	button.icon:SetDesaturate(false)
+end
+
 local function OnCooldownUpdate(_, button, start, duration)
 	if not button._state_type == "action" then return; end
 
 	if start and duration > 1.5 then
-		button.saturationLocked = true --Lock any new actions that are created after we activated desaturation
+		button.saturationLocked = true --Lock any new actions that are created after we activated desaturation option
 		button.icon:SetDesaturated(true)
+
+		--Calculate when the cooldown is finished and manually trigger an update then
+		local cdLeft = (start + duration - GetTime())
+		E:Delay(cdLeft, DelayedSaturate, button)
 	else
 		button.icon:SetDesaturated(false)
 	end
