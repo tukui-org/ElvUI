@@ -1129,7 +1129,7 @@ end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
 local function DelayedSaturate(button)
-	button.icon:SetDesaturate(false)
+	button.icon:SetDesaturated(false)
 end
 
 local function OnCooldownUpdate(_, button, start, duration)
