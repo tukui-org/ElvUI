@@ -300,15 +300,15 @@ function E:Delay(delay, func, ...)
 				local i = 1
 				while(i<=count) do
 					local waitRecord = tremove(waitTable,i)
-					local d = tremove(waitRecord,1)
-					local f = tremove(waitRecord,1)
-					local p = tremove(waitRecord,1)
-					if(d>elapse) then
-					  tinsert(waitTable,i,{d-elapse,f,p})
+					local delay = tremove(waitRecord,1)
+					local func = tremove(waitRecord,1)
+					local params = tremove(waitRecord,1)
+					if(delay>elapse) then
+					  tinsert(waitTable,i,{delay-elapse,func,params})
 					  i = i + 1
 					else
 					  count = count - 1
-					  f(unpack(p))
+					  func(unpack(params))
 					end
 				end
 			end)
