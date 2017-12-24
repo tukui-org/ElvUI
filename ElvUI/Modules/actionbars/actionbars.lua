@@ -1128,8 +1128,19 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
+local cStart, cDuration, cLeft
+local function GetCooldownLeft(button)
+	cStart, cDuration = button:GetCooldown()
+	cLeft = (cStart + cDuration - GetTime())
+	return cLeft
+end
+
 local function DelayedSaturate(button)
-	button.icon:SetDesaturated(false)
+	--We probably need to check cooldown here again just in case something
+	--caused the action to come off cooldown early and we then activated it again
+	if GetCooldownLeft(button) <= 0 then
+		button.icon:SetDesaturated(false)
+	end
 end
 
 local function OnCooldownUpdate(_, button, start, duration)
@@ -1140,8 +1151,7 @@ local function OnCooldownUpdate(_, button, start, duration)
 		button.icon:SetDesaturated(true)
 
 		--Calculate when the cooldown is finished and manually trigger an update then
-		local cdLeft = (start + duration - GetTime())
-		E:Delay(cdLeft, DelayedSaturate, button)
+		E:Delay(GetCooldownLeft(button), DelayedSaturate, button)
 	else
 		button.icon:SetDesaturated(false)
 	end
