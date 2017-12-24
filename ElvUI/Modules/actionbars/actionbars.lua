@@ -1138,7 +1138,7 @@ end
 local function DelayedSaturate(button)
 	--We probably need to check cooldown here again just in case something
 	--caused the action to come off cooldown early and we then activated it again
-	if GetCooldownLeft(button) <= 0 then
+	if GetCooldownLeft(button) <= 0.1 then --Allow some wiggle room
 		button.icon:SetDesaturated(false)
 	end
 end
