@@ -175,6 +175,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		return --We hide it. Lets not do other things (no point)
 	end
 	if FrameLevelChanged then
+		frame.StyleChanged = true
 		frame.FrameLevelChanged = actions.frameLevel -- we pass this to `ResetNameplateFrameLevel`
 	end
 	if HealthColorChanged then

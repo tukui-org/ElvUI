@@ -543,15 +543,34 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.Level:SetText("")
 	frame.unitFrame.NPCTitle:ClearAllPoints()
 	frame.unitFrame.NPCTitle:SetText("")
-	frame.unitFrame.Elite:Hide()
 	frame.unitFrame.DetectionModel:Hide()
+	frame.unitFrame.Elite:Hide()
 	frame.unitFrame:Hide()
 	frame.unitFrame.isTarget = nil
 	frame.unitFrame.isTargetingMe = nil
 	frame.unitFrame.displayedUnit = nil
-	frame.ThreatData = nil
 	frame.unitFrame.UnitType = nil
 	frame.unitFrame.TopLevelFrame = nil
+	frame.unitFrame.TopOffset = nil
+	frame.unitFrame.isBeingTanked = nil
+	frame.unitFrame.ThreatScale = nil
+	frame.unitFrame.ThreatData = nil
+
+	--StyleFilter Variables
+	frame.unitFrame.StyleFilterWaitTime = nil
+	frame.unitFrame.StyleChanged = nil
+	--StyleFilter Actions
+	frame.unitFrame.VisibilityChanged = nil
+	frame.unitFrame.FrameLevelChanged = nil
+	frame.unitFrame.HealthColorChanged = nil
+	frame.unitFrame.BorderChanged = nil
+	frame.unitFrame.FlashingHealth = nil
+	frame.unitFrame.TextureChanged = nil
+	frame.unitFrame.ScaleChanged = nil
+	frame.unitFrame.AlphaChanged = nil
+	frame.unitFrame.NameColorChanged = nil
+	frame.unitFrame.PortraitShown = nil
+	frame.unitFrame.NameOnlyChanged = nil
 
 	if self.ClassBar and (unitType == "PLAYER") then
 		mod:ClassBar_Update()
@@ -731,8 +750,8 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
-		self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
-			self:Hide() --Hide Blizzard's Nameplate
+		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
+			blizzPlate:Hide() --Hide Blizzard's Nameplate
 		end)
 		--print('Hooked on NAME_PLATE_CREATED')
 		frame.unitFrame.onShowHooked = true
