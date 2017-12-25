@@ -508,11 +508,9 @@ end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame = frame or self:GetNamePlateForUnit(unit);
-	frame.unitFrame.unit = nil
-	frame.unitFrame.plateID = nil
 
 	local unitType = frame.unitFrame.UnitType
-	if(frame.unitFrame.UnitType == "PLAYER") then
+	if unitType == "PLAYER" then
 		self.PlayerFrame = nil
 		self.PlayerNamePlateAnchor:Hide()
 	end
@@ -546,10 +544,12 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.DetectionModel:Hide()
 	frame.unitFrame.Elite:Hide()
 	frame.unitFrame:Hide()
+	frame.unitFrame.unit = nil
+	frame.unitFrame.plateID = nil
+	frame.unitFrame.UnitType = nil
 	frame.unitFrame.isTarget = nil
 	frame.unitFrame.isTargetingMe = nil
 	frame.unitFrame.displayedUnit = nil
-	frame.unitFrame.UnitType = nil
 	frame.unitFrame.TopLevelFrame = nil
 	frame.unitFrame.TopOffset = nil
 	frame.unitFrame.isBeingTanked = nil
