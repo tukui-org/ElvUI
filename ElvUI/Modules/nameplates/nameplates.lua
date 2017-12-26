@@ -517,6 +517,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 
 	self:HideAuraIcons(frame.unitFrame.Buffs)
 	self:HideAuraIcons(frame.unitFrame.Debuffs)
+	self:ClearStyledPlate(frame.unitFrame)
 	frame.unitFrame:UnregisterAllEvents()
 	frame.unitFrame.HealthBar.r, frame.unitFrame.HealthBar.g, frame.unitFrame.HealthBar.b = nil, nil, nil
 	frame.unitFrame.HealthBar:Hide()
@@ -555,22 +556,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.isBeingTanked = nil
 	frame.unitFrame.ThreatScale = nil
 	frame.unitFrame.ThreatData = nil
-
-	--StyleFilter Variables
 	frame.unitFrame.StyleFilterWaitTime = nil
-	frame.unitFrame.StyleChanged = nil
-	--StyleFilter Actions
-	frame.unitFrame.VisibilityChanged = nil
-	frame.unitFrame.FrameLevelChanged = nil
-	frame.unitFrame.HealthColorChanged = nil
-	frame.unitFrame.BorderChanged = nil
-	frame.unitFrame.FlashingHealth = nil
-	frame.unitFrame.TextureChanged = nil
-	frame.unitFrame.ScaleChanged = nil
-	frame.unitFrame.AlphaChanged = nil
-	frame.unitFrame.NameColorChanged = nil
-	frame.unitFrame.PortraitShown = nil
-	frame.unitFrame.NameOnlyChanged = nil
 
 	if self.ClassBar and (unitType == "PLAYER") then
 		mod:ClassBar_Update()
