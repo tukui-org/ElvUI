@@ -237,42 +237,54 @@ local rolePaths = {
 	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
 }
 
-local chatLogos_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
-local chatLogos_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
-local chatLogos_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
-local specialChatIcons = {
-	["Area52"] = {
-		["Illidelv"] = chatLogos_ElvUI,
-	},
-	["Illidan"] = {
-		["Affinichi"] = chatLogos_Bathrobe,
-		["Uplift"] = chatLogos_Bathrobe,
-		["Affinitii"] = chatLogos_Bathrobe,
-		["Affinity"] = chatLogos_Bathrobe
-	},
-	["Spirestone"] = {
-		["Elv"] = chatLogos_ElvUI,
-		["Tirain"] = chatLogos_MrHankey,
-		["Sinth"] = chatLogos_MrHankey,
-	},
-	["Silvermoon"] = {
-		["Blazii"] = chatLogos_ElvUI,
-		["Chazii"] = chatLogos_ElvUI,
-	},
-	["Shattrath"] = {
-		["Merathilis"] = chatLogos_ElvUI,
-	},
-	["Cenarius"] = {
-		["Simpy"] = chatLogos_ElvUI,
-		["Imsojelly"] = chatLogos_ElvUI,
-		["Cutepally"] = chatLogos_ElvUI,
-	},
-	["Kil'jaeden"] = {
-		["Elvz"] = chatLogos_ElvUI,
-	},
-}
+local specialChatIcons
+do --this can save some main file locals
+	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	local oldBlue = IconPath.."elvui.blp:13:22|t"
+	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
+	--local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
+	--local ElvRed = IconPath.."elvui_red.tga:13:25|t"
+	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
+	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
+	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
+	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
+	specialChatIcons = {
+		["Area52"] = {
+			["Illidelv"] = oldBlue,
+		},
+		["Kil'jaeden"] = {
+			["Elvz"] = oldBlue,
+		},
+		["Spirestone"] = {
+			["Elv"] = oldBlue,
+			["Tirain"] = MrHankey,
+			["Sinth"] = MrHankey,
+		},
+		["Illidan"] = {
+			["Affinichi"] = Bathrobe,
+			["Uplift"] = Bathrobe,
+			["Affinitii"] = Bathrobe,
+			["Affinity"] = Bathrobe
+		},
+		["Silvermoon"] = {
+			["Blazii"] = ElvBlue, --Blazeflack
+			["Chazii"] = ElvBlue, --Blazeflack
+		},
+		["Shattrath"] = {
+			["Merathilis"] = ElvOrange,
+		},
+		["CenarionCircle"] = {
+			["Wennie"] = ElvPurple, --Simpy
+		},
+		["Cenarius"] = {
+			["Simpy"] = ElvPurple,
+			["Imsojelly"] = ElvPurple, --Simpy
+			["Cutepally"] = ElvPurple, --Simpy
+		},
+	}
+end
 
-CH.Keywords = {};
+CH.Keywords = {}
 CH.ClassNames = {}
 
 local numScrollMessages
