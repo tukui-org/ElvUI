@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 
 --Cache global variables
@@ -9,6 +9,7 @@ local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local RegisterStateDriver = RegisterStateDriver
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
@@ -27,6 +28,7 @@ end
 function B:SkinBag(bag)
 	local icon = _G[bag:GetName().."IconTexture"]
 	bag.oldTex = icon:GetTexture()
+	bag.IconBorder:SetAlpha(0)
 
 	bag:StripTextures()
 	bag:SetTemplate("Default", true)
@@ -45,6 +47,13 @@ function B:SizeAndPositionBagBar()
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local growthDirection = E.db.bags.bagBar.growthDirection
 	local sortDirection = E.db.bags.bagBar.sortDirection
+
+	local visibility = E.db.bags.bagBar.visibility
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
+
+	RegisterStateDriver(ElvUIBags, "visibility", visibility);
 
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)

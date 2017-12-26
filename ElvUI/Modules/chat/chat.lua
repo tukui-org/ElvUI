@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -60,6 +60,8 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
 local GetCursorPosition = GetCursorPosition
 local GMChatFrame_IsGM = GMChatFrame_IsGM
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsInInstance, IsInRaid, IsInGroup = IsInInstance, IsInRaid, IsInGroup
@@ -92,6 +94,7 @@ local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
+local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local UNKNOWN = UNKNOWN
 
 --Variables that are only used in ChatFrame_MessageEventHandler
@@ -234,42 +237,54 @@ local rolePaths = {
 	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
 }
 
-local chatLogos_ElvUI = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t"
-local chatLogos_Bathrobe = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
-local chatLogos_MrHankey = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t"
-local specialChatIcons = {
-	["Area52"] = {
-		["Illidelv"] = chatLogos_ElvUI,
-	},
-	["Illidan"] = {
-		["Affinichi"] = chatLogos_Bathrobe,
-		["Uplift"] = chatLogos_Bathrobe,
-		["Affinitii"] = chatLogos_Bathrobe,
-		["Affinity"] = chatLogos_Bathrobe
-	},
-	["Spirestone"] = {
-		["Elv"] = chatLogos_ElvUI,
-		["Tirain"] = chatLogos_MrHankey,
-		["Sinth"] = chatLogos_MrHankey,
-	},
-	["Silvermoon"] = {
-		["Blazii"] = chatLogos_ElvUI,
-		["Chazii"] = chatLogos_ElvUI,
-	},
-	["Shattrath"] = {
-		["Merathilis"] = chatLogos_ElvUI,
-	},
-	["Cenarius"] = {
-		["Simpy"] = chatLogos_ElvUI,
-		["Imsojelly"] = chatLogos_ElvUI,
-		["Cutepally"] = chatLogos_ElvUI,
-	},
-	["Kil'jaeden"] = {
-		["Elvz"] = chatLogos_ElvUI,
-	},
-}
+local specialChatIcons
+do --this can save some main file locals
+	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	local oldBlue = IconPath.."elvui.blp:13:22|t"
+	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
+	--local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
+	--local ElvRed = IconPath.."elvui_red.tga:13:25|t"
+	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
+	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
+	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
+	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
+	specialChatIcons = {
+		["Area52"] = {
+			["Illidelv"] = oldBlue,
+		},
+		["Kil'jaeden"] = {
+			["Elvz"] = oldBlue,
+		},
+		["Spirestone"] = {
+			["Elv"] = oldBlue,
+			["Tirain"] = MrHankey,
+			["Sinth"] = MrHankey,
+		},
+		["Illidan"] = {
+			["Affinichi"] = Bathrobe,
+			["Uplift"] = Bathrobe,
+			["Affinitii"] = Bathrobe,
+			["Affinity"] = Bathrobe
+		},
+		["Silvermoon"] = {
+			["Blazii"] = ElvBlue, --Blazeflack
+			["Chazii"] = ElvBlue, --Blazeflack
+		},
+		["Shattrath"] = {
+			["Merathilis"] = ElvOrange,
+		},
+		["CenarionCircle"] = {
+			["Wennie"] = ElvPurple, --Simpy
+		},
+		["Cenarius"] = {
+			["Simpy"] = ElvPurple,
+			["Imsojelly"] = ElvPurple, --Simpy
+			["Cutepally"] = ElvPurple, --Simpy
+		},
+	}
+end
 
-CH.Keywords = {};
+CH.Keywords = {}
 CH.ClassNames = {}
 
 local numScrollMessages
@@ -685,22 +700,16 @@ function CH:UpdateAnchors()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
 		if not frame then break; end
-		if not E.db.datatexts.leftChatPanel then
-			local noBackdrop = (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")
-			frame:ClearAllPoints()
-			if(E.db.chat.editBoxPosition == 'BELOW_CHAT') then
-				frame:Point("TOPLEFT", ChatFrame1, "BOTTOMLEFT", noBackdrop and -1 or -4, noBackdrop and -1 or -4)
-				frame:Point("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", noBackdrop and 10 or 7, -LeftChatTab:GetHeight()-(noBackdrop and 1 or 4))
-			else
-				frame:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", noBackdrop and -1 or -1, noBackdrop and 1 or 4)
-				frame:Point("TOPRIGHT", ChatFrame1, "TOPRIGHT", noBackdrop and 10 or 4, LeftChatTab:GetHeight()+(noBackdrop and 1 or 4))
-			end
+		local noBackdrop = (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")
+		frame:ClearAllPoints()
+		if not E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+			frame:Point("TOPLEFT", ChatFrame1, "BOTTOMLEFT", noBackdrop and -1 or -4, noBackdrop and -1 or -4)
+			frame:Point("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", noBackdrop and 10 or 7, -LeftChatTab:GetHeight()-(noBackdrop and 1 or 4))
+		elseif E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+			frame:SetAllPoints(LeftChatDataPanel)
 		else
-			if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-				frame:SetAllPoints(LeftChatDataPanel)
-			else
-				frame:SetAllPoints(LeftChatTab)
-			end
+			frame:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", noBackdrop and -1 or -1, noBackdrop and 1 or 4)
+			frame:Point("TOPRIGHT", ChatFrame1, "TOPRIGHT", noBackdrop and 10 or 4, LeftChatTab:GetHeight()+(noBackdrop and 1 or 4))
 		end
 	end
 
@@ -1057,18 +1066,52 @@ function CH:ShortChannel()
 	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[strupper(self)] or gsub(self, "channel:", ""))
 end
 
+local function getFirstToonClassColor(id)
+	if not id then return end
+	local bnetIDAccount, isOnline, numGameAccounts, client, Class, _
+	local total = BNGetNumFriends();
+	for i = 1, total do
+		bnetIDAccount, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		if isOnline and (bnetIDAccount == id) then
+			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			if numGameAccounts > 0 then
+				for y = 1, numGameAccounts do
+					_, _, client, _, _, _, _, Class = BNGetFriendGameAccountInfo(i, y);
+					if (client == BNET_CLIENT_WOW) and Class and Class ~= '' then
+						return Class --return the first toon's class
+					end
+				end
+			end
+			break
+		end
+	end
+end
+
 function CH:GetBNFriendColor(name, id)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
-	local _, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
+	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local Class
 
-	if class and class ~= '' then --other non-english locales require this
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k;break end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k;break end end
+	if not bnetIDGameAccount then --dont know how this is possible
+		local firstToonClass = getFirstToonClassColor(id)
+		if firstToonClass then
+			Class = firstToonClass
+		else
+			return TAG or name
+		end
 	end
 
-	local CLASS = class and class ~= '' and gsub(strupper(class),'%s','')
+	if not Class then
+		_, _, _, _, _, _, _, Class = BNGetGameAccountInfo(bnetIDGameAccount)
+	end
+
+	if Class and Class ~= '' then --other non-english locales require this
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class = k;break end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
+	end
+
+	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
-	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
 end
@@ -1527,7 +1570,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		if ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
-					if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
+					if not CH.SuppressFlash and not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
 						FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 					end
 				end
@@ -1852,6 +1895,7 @@ function CH:DisplayChatHistory()
 	end
 
 	CH.SoundPlayed = true;
+	CH.SuppressFlash = true;
 	for _, chat in pairs(CHAT_FRAMES) do
 		for i=1, #data do
 			d = data[i]
@@ -1866,6 +1910,7 @@ function CH:DisplayChatHistory()
 		end
 	end
 	CH.SoundPlayed = nil;
+	CH.SuppressFlash = nil;
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
@@ -2000,21 +2045,27 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 		return true
 	end
 
+	local numGameAccounts, accountName, isOnline, gameCharacterName, gameClient, realmName, _
 	for i = 1, BNGetNumFriends() do
-		local _, AccountName, _, _, _, AccountID, _, IsOnline = BNGetFriendInfo(i)
-		if IsOnline then
-			local _, CharacterName, _, RealmName = BNGetGameAccountInfo(AccountID)
-			if AccountName == playerName then
-				playerName = CharacterName
-				if RealmName ~= E.myrealm then
-					playerName = format('%s-%s', playerName, gsub(RealmName,'[%s%-]',''))
+		_, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		if isOnline then
+			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			if numGameAccounts > 0 then
+				for y = 1, numGameAccounts do
+					_, gameCharacterName, gameClient, realmName = BNGetFriendGameAccountInfo(i, y);
+					if (gameClient == BNET_CLIENT_WOW) and (accountName == playerName) then
+						playerName = gameCharacterName
+						if realmName ~= E.myrealm then
+							playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
+						end
+						if leaderName == playerName then
+							return true
+						end
+					end
 				end
-				break
 			end
 		end
 	end
-
-	return leaderName == playerName
 end
 
 local socialQueueCache = {}
@@ -2047,7 +2098,7 @@ function CH:SocialQueueMessage(guid, message)
 	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
 	PlaySound(7355) --TUTORIAL_POPUP
 
-	DEFAULT_CHAT_FRAME:AddMessage(format('|Hsqu:%s|h[%sElvUI|r] %s|h', guid, (E.media.hexvaluecolor or '|cff00b3ff'), strtrim(message)))
+	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
 
 function CH:SocialQueueEvent(event, guid, numAddedItems)

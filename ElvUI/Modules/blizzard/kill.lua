@@ -41,7 +41,6 @@ function B:KillBlizzard()
 		HelpPlate:Kill()
 		HelpPlateTooltip:Kill()
 	end
-	TalentMicroButtonAlert:Kill()
 	EJMicroButtonAlert:Kill()
 	--CompanionsMicroButtonAlert:Kill()
 	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)

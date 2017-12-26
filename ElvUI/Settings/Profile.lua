@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 P.gridSize = 64
 P.farmSize = 340
@@ -205,6 +205,7 @@ P['bags'] = {
 		["backdropSpacing"] = 4,
 		['showBackdrop'] = false,
 		['mouseover'] = false,
+		['visibility'] = "[petbattle] hide; show",
 	},
 };
 
@@ -1229,7 +1230,7 @@ P['unitframe'] = {
 				['sortMethod'] = 'TIME_REMAINING',
 				['sortDirection'] = 'DESCENDING',
 				['minDuration'] = 0,
-				['maxDuration'] = 300,
+				['maxDuration'] = 0,
 				['priority'] = 'Blacklist,Personal,nonPersonal', --Target Buffs
 				['xOffset'] = 0,
 				['yOffset'] = 0,
@@ -2217,6 +2218,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -2401,6 +2403,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -2551,6 +2554,7 @@ P['unitframe'] = {
 				["tank"] = true,
 				["healer"] = true,
 				["damager"] = true,
+				["combatHide"] = false,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -2899,6 +2903,7 @@ P["actionbar"] = {
 		['mouseover'] = false,
 		['buttonsPerRow'] = 11,
 		['alpha'] = 1,
+		['visibility'] = "show",
 	},
 
 	['globalFadeAlpha'] = 0,
@@ -2906,6 +2911,8 @@ P["actionbar"] = {
 	["hideCooldownBling"] = false,
 	["useDrawSwipeOnCharges"] = false,
 	["addNewSpells"] = false,
+	["rightClickSelfCast"] = false,
+	["desaturateOnCooldown"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,

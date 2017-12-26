@@ -93,6 +93,15 @@ local function UpdateColor(tbox)
 	editingText = nil
 end
 
+local function HandleUpdateLimiter(self, elapsed)
+	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+	if self.timeSinceUpdate > 0.15 then
+		self.allowUpdate = true
+	else
+		self.allowUpdate = false
+	end
+end
+
 function B:EnhanceColorPicker()
 	if IsAddOnLoaded("ColorPickerPlus") then
 		return
@@ -131,14 +140,21 @@ function B:EnhanceColorPicker()
 			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus() end)
 			self:Width(345)
 		end
+		
+		--Set OnUpdate script to handle update limiter
+		self:SetScript("OnUpdate", HandleUpdateLimiter)
 	end)
 
 	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
-	--this little script will make you have to press ok for you to notice any changes.
+	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
 	ColorPickerFrame:SetScript('OnColorSelect', function(self, r, g, b)
 		ColorSwatch:SetColorTexture(r, g, b)
 		if not editingText then
 			UpdateColorTexts(r, g, b)
+		end
+		if self.allowUpdate then
+			self.func()
+			self.timeSinceUpdate = 0
 		end
 	end)
 

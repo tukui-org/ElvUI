@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates');
 local LSM = LibStub("LibSharedMedia-3.0");
 
@@ -43,16 +43,46 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
 
-function mod:StyleFilterAuraCheck(names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
-	local total, count = 0, 0
+local C_Timer_After = C_Timer.After
+
+function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTimeLeft)
+	if icon and not icon[varTimerName] then
+		local updateIn = timeLeft-mTimeLeft
+		if updateIn > 0 then
+            C_Timer_After(updateIn, function()
+				if frame and frame:IsShown() then
+					mod:UpdateElement_Filters(frame, 'AuraWaitTimer_Update')
+                end
+                if icon and icon[varTimerName] then
+	                icon[varTimerName] = nil
+	            end
+            end)
+            icon[varTimerName] = true
+		end
+    end
+end
+
+function mod:StyleFilterAuraCheck(frame, names, icons, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow = 0, 0
 	for name, value in pairs(names) do
 		if value == true then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
-		for frameNum, icon in pairs(icons) do
-			if icons[frameNum]:IsShown() and (value == true) and ((icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name)))
-				and (not minTimeLeft or (minTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) > minTimeLeft))) and (not maxTimeLeft or (maxTimeLeft == 0 or (icon.expirationTime and (icon.expirationTime - GetTime()) < maxTimeLeft))) then
-				count = count + 1 --keep track of how many matches we have
+		for _, icon in pairs(icons) do
+			isSpell = (icon.name and icon.name == name) or (icon.spellID and icon.spellID == tonumber(name))
+			if isSpell and icon:IsShown() and (value == true) then
+				hasMinTime = minTimeLeft and minTimeLeft ~= 0
+				hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+				timeLeft = (hasMinTime or hasMaxTime) and icon.expirationTime and (icon.expirationTime - GetTime())
+				minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+				maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+				if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+					if hasMinTime then self:StyleFilterAuraWaitTimer(frame, icon, 'hasMinTimer', timeLeft, minTimeLeft) end
+					if hasMaxTime then self:StyleFilterAuraWaitTimer(frame, icon, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+				end
+				if minTimeAllow and maxTimeAllow then
+					count = count + 1 --keep track of how many matches we have
+				end
 			end
 		end
 	end
@@ -127,7 +157,7 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
@@ -143,6 +173,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 			frame:Hide()
 		end
 		return --We hide it. Lets not do other things (no point)
+	end
+	if FrameLevelChanged then
+		frame.StyleChanged = true
+		frame.FrameLevelChanged = actions.frameLevel -- we pass this to `ResetNameplateFrameLevel`
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
@@ -236,7 +270,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
@@ -249,6 +283,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 			end
 		end
 		frame:Show()
+	end
+	if FrameLevelChanged then
+		frame.FrameLevelChanged = nil
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
@@ -293,6 +330,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 		frame.Portrait:Hide() --This could have been forced so hide it
 		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
 		self:ConfigureElement_Portrait(frame)
+		if frame.RightArrow:IsShown() then
+			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
+		end
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
@@ -386,9 +426,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	end
 
 	--Try to match by casting interruptible
-	if not failed and (trigger.casting and trigger.casting.interruptible) then
+	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
-		if castbarShown and frame.CastBar.canInterrupt then
+		if castbarShown and ((trigger.casting.interruptible and frame.CastBar.canInterrupt) or (trigger.casting.notInterruptible and not frame.CastBar.canInterrupt)) then
 			condition = true
 			castbarTriggered = true
 		end
@@ -443,10 +483,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by target conditions
+	--Try to match by player target conditions
 	if not failed and (trigger.isTarget or trigger.notTarget) then
 		condition = false
 		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
+			condition = true
+		end
+		failed = not condition
+	end
+
+	--Try to match by unit target conditions
+	if not failed and (trigger.targetMe or trigger.notTargetMe) then
+		condition = false
+		if (trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe) then
 			condition = true
 		end
 		failed = not condition
@@ -643,7 +692,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to buff aura conditions
 	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		condition = self:StyleFilterAuraCheck(trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs and frame.Buffs.icons, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -651,7 +700,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to debuff aura conditions
 	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		condition = self:StyleFilterAuraCheck(trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		condition = self:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs and frame.Debuffs.icons, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -684,13 +733,14 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 		(actions.color and actions.color.name), --NameColorChanged
 		(actions.usePortrait), --PortraitShown
 		(actions.nameOnly), --NameOnlyChanged
-		(actions.hide) --VisibilityChanged
+		(actions.hide), --VisibilityChanged
+		(actions.frameLevel and actions.frameLevel ~= 0) --FrameLevelChanged
 	)
 end
 
 function mod:ClearStyledPlate(frame)
 	if frame.StyleChanged then
-		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged, frame.FrameLevelChanged)
 	end
 end
 
@@ -713,6 +763,7 @@ function mod:StyleFilterConfigureEvents()
 
 				-- fake events along with "UpdateElement_Cast" (use 1 instead of true to override StyleFilterWaitTime)
 				self.StyleFilterEvents["UpdateElement_All"] = true
+				self.StyleFilterEvents["AuraWaitTimer_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if next(filter.triggers.casting.spells) then
@@ -724,12 +775,16 @@ function mod:StyleFilterConfigureEvents()
 					end
 				end
 
-				if filter.triggers.casting.interruptible then
+				if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
 					self.StyleFilterEvents["UpdateElement_Cast"] = 1
 				end
 
 				-- real events
 				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
+
+				if filter.triggers.targetMe or filter.triggers.notTargetMe then
+					self.StyleFilterEvents["UNIT_TARGET"] = true
+				end
 
 				if filter.triggers.healthThreshold then
 					self.StyleFilterEvents["UNIT_HEALTH"] = true

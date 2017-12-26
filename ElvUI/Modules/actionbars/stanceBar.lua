@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
 --Cache global variables
@@ -16,7 +16,6 @@ local GetShapeshiftFormInfo = GetShapeshiftFormInfo
 local CooldownFrame_Set = CooldownFrame_Set
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
 local GetBindingKey = GetBindingKey
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
@@ -281,7 +280,11 @@ function AB:PositionAndSizeBarShapeShift()
 end
 
 function AB:AdjustMaxStanceButtons(event)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then
+		AB.NeedsAdjustMaxStanceButtons = event or true
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
 
 	local visibility = self.db.stanceBar.visibility;
 	if visibility and visibility:match('[\n\r]') then
@@ -314,16 +317,12 @@ function AB:AdjustMaxStanceButtons(event)
 
 	self:PositionAndSizeBarShapeShift();
 
+	-- sometimes after combat lock down `event` may be true because of passing it back with `AB.NeedsAdjustMaxStanceButtons`
 	if event == 'UPDATE_SHAPESHIFT_FORMS' then
 		self:StyleShapeShift()
 	end
 
-	if numButtons == 0 then
-		UnregisterStateDriver(bar, "show");
-		bar:Hide(); --this keeps the stanceBar backdrop hidden on toons without a stanceBar
-	else
-		RegisterStateDriver(bar, "show", visibility);
-	end
+	RegisterStateDriver(bar, "visibility", (numButtons == 0 and "hide") or visibility);
 end
 
 function AB:UpdateStanceBindings()
@@ -344,17 +343,9 @@ function AB:CreateBarShapeShift()
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};
-	bar:SetAttribute("_onstate-show", [[
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end
-	]]);
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');

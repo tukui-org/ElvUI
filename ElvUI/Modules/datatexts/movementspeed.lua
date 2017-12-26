@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 --Cache global variables
@@ -10,9 +10,9 @@ local GetUnitSpeed = GetUnitSpeed
 local IsFalling = IsFalling
 local IsFlying = IsFlying
 local IsSwimming = IsSwimming
-local STAT_MOVEMENT_SPEED = STAT_MOVEMENT_SPEED
 
 local displayNumberString = ''
+local movementSpeedText = L["Mov. Speed:"]
 local beforeFalling
 local lastPanel
 
@@ -32,7 +32,7 @@ local function OnEvent(self)
 		beforeFalling = speed
 	end
 
-	self.text:SetFormattedText(displayNumberString, STAT_MOVEMENT_SPEED, speed/BASE_MOVEMENT_SPEED*100)
+	self.text:SetFormattedText(displayNumberString, movementSpeedText, speed/BASE_MOVEMENT_SPEED*100)
 	lastPanel = self
 end
 

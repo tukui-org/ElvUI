@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 local LBG = LibStub("LibButtonGlow-1.0", true)
 
@@ -102,29 +102,58 @@ local function LoadSkin()
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 
-	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.SpecRing:SetTexture("")
+	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
+	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
 
-	BonusRollFrame.PromptFrame.Timer.Bar:SetColorTexture(1, 1, 1)
-	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
+	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 
-	BonusRollFrame.SpecRing:SetTexture("")
-	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 0, -3)
-	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
+	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
+	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
+	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
-	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame.SpecIcon, "TOPLEFT", 0, 0)
-	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame.SpecIcon, "BOTTOMRIGHT", 0, 0)
+	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
+	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
+	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
+	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.SpecIcon:SetInside()
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
-		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
+		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
+		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
+		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2);
+		if BonusRollFrame.BlackBackgroundHoist.b then
+			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1);
+		end
+
+		--set currency icons position at bottom right (or left of the spec icon, on the bottom right)
+		BonusRollFrame.CurrentCountFrame:ClearAllPoints()
+		if BonusRollFrame.SpecIcon.b then
+			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
+			if BonusRollFrame.SpecIcon.b:IsShown() then
+				BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			else
+				BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			end
+		else
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+		end
+
+		--skin currency icons
+		local ccf, pfifc = BonusRollFrame.CurrentCountFrame.Text, BonusRollFrame.PromptFrame.InfoFrame.Cost
+		local text1, text2 = ccf and ccf:GetText(), pfifc and pfifc:GetText()
+		if text1 and text1:find('|t') then ccf:SetText(text1:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
+		if text2 and text2:find('|t') then pfifc:SetText(text2:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
 	end)
 
 	local LootFrame = _G["LootFrame"]

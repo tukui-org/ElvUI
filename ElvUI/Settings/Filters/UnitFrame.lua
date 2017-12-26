@@ -658,12 +658,17 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	-- Legion
 	-- Antorus, the Burning Throne
 		-- Garothi Worldbreaker
+		[244590] = Defaults(), -- Molten Hot Fel
 		[244761] = Defaults(), -- Annihilation
+		[246920] = Defaults(), -- Haywire Decimation
 		[246369] = Defaults(), -- Searing Barrage
 		[246848] = Defaults(), -- Luring Destruction
 		[246220] = Defaults(), -- Fel Bombardment
 		[247159] = Defaults(), -- Luring Destruction
 		[244122] = Defaults(), -- Carnage
+		[244410] = Defaults(), -- Decimation
+		[245294] = Defaults(), -- Empowered Decimation
+		[246368] = Defaults(), -- Searing Barrage
 
 		-- Felhounds of Sargeras
 		[245022] = Defaults(), -- Burning Remnant
@@ -683,6 +688,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[244071] = Defaults(), -- Weight of Darkness
 		[244578] = Defaults(), -- Siphon Corruption
 		[248819] = Defaults(), -- Siphoned
+		[254429] = Defaults(), -- Weight of Darkness
+		[244072] = Defaults(), -- Molten Touch
 
 		-- Antoran High Command
 		[245121] = Defaults(), -- Entropic Blast
@@ -692,6 +699,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[244172] = Defaults(), -- Psychic Assault
 		[244388] = Defaults(), -- Psychic Scarring
 		[244420] = Defaults(), -- Chaos Pulse
+		[254771] = Defaults(), -- Disruption Field
+		[257974] = Defaults(), -- Chaos Pulse
+		[244910] = Defaults(), -- Felshield
+		[244737] = Defaults(), -- Shock Grenade
 
 		-- Portal Keeper Hasabel
 		[244016] = Defaults(), -- Reality Tear
@@ -707,8 +718,11 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[245118] = Defaults(), -- Cloying Shadows
 		[245050] = Defaults(), -- Delusions
 		[245040] = Defaults(), -- Corrupt
-		[244926] = Defaults(), -- Felsilk Wrap
 		[244607] = Defaults(), -- Flames of Xoroth
+		[244915] = Defaults(), -- Leech Essence
+		[244926] = Defaults(), -- Felsilk Wrap
+		[244949] = Defaults(), -- Felsilk Wrap
+		[244613] = Defaults(), -- Everburning Flames
 
 		-- Eonar the Life-Binder
 		[248326] = Defaults(), -- Rain of Fel
@@ -717,6 +731,11 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[249015] = Defaults(), -- Feedback - Burning Embers
 		[249014] = Defaults(), -- Feedback - Foul Steps
 		[249017] = Defaults(), -- Feedback - Arcane Singularity
+		[250693] = Defaults(), -- Arcane Buildup
+		[250691] = Defaults(), -- Burning Embers
+		[248795] = Defaults(), -- Fel Wake
+		[248332] = Defaults(), -- Rain of Fel
+		[250140] = Defaults(), -- Foul Steps
 
 		-- Imonar the Soulhunter
 		[248424] = Defaults(), -- Gathering Power
@@ -726,22 +745,33 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[248252] = Defaults(), -- Infernal Rockets
 		[247687] = Defaults(), -- Sever
 		[247716] = Defaults(), -- Charged Blasts
+		[247367] = Defaults(), -- Shock Lance
 		[250255] = Defaults(), -- Empowered Shock Lance
 		[247641] = Defaults(), -- Stasis Trap
+		[255029] = Defaults(), -- Sleep Canister
+		[248321] = Defaults(), -- Conflagration
+		[247932] = Defaults(), -- Shrapnel Blast
+		[248070] = Defaults(), -- Empowered Shrapnel Blast
+		[254183] = Defaults(), -- Seared Skin
 
 		-- Kin'garoth
-		[233062] = Defaults(), -- Infernal Burning
-		[230345] = Defaults(), -- Crashing Comet
 		[244312] = Defaults(), -- Forging Strike
 		[246840] = Defaults(), -- Ruiner
 		[248061] = Defaults(), -- Purging Protocol
+		[249686] = Defaults(), -- Reverberating Decimation
 		[246706] = Defaults(), -- Demolish
+		[246698] = Defaults(), -- Demolish
+		[245919] = Defaults(), -- Meteor Swarm
+		[245770] = Defaults(), -- Decimation
 
 		-- Varimathras
 		[244042] = Defaults(), -- Marked Prey
 		[243961] = Defaults(), -- Misery
 		[248732] = Defaults(), -- Echoes of Doom
+		[243973] = Defaults(), -- Torment of Shadows
+		[244005] = Defaults(), -- Dark Fissure
 		[244093] = Defaults(), -- Necrotic Embrace
+		[244094] = Defaults(), -- Necrotic Embrace
 
 		-- The Coven of Shivarra
 		[244899] = Defaults(), -- Fiery Strike
@@ -749,10 +779,17 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[245586] = Defaults(), -- Chilled Blood
 		[246763] = Defaults(), -- Fury of Golganneth
 		[245674] = Defaults(), -- Flames of Khaz'goroth
+		[245671] = Defaults(), -- Flames of Khaz'goroth
 		[245910] = Defaults(), -- Spectral Army of Norgannon
+		[253520] = Defaults(), -- Fulminating Pulse
+		[245634] = Defaults(), -- Whirling Saber
+		[253020] = Defaults(), -- Storm of Darkness
+		[245921] = Defaults(), -- Spectral Army of Norgannon
+		[250757] = Defaults(), -- Cosmic Glare
 
 		-- Aggramar
 		[244291] = Defaults(), -- Foe Breaker
+		[255060] = Defaults(), -- Empowered Foe Breaker
 		[245995] = Defaults(), -- Scorching Blaze
 		[246014] = Defaults(), -- Searing Tempest
 		[244912] = Defaults(), -- Blazing Eruption
@@ -760,9 +797,30 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[247091] = Defaults(), -- Catalyzed
 		[245631] = Defaults(), -- Unchecked Flame
 		[245916] = Defaults(), -- Molten Remnants
+		[245990] = Defaults(), -- Taeshalach's Reach
+		[254452] = Defaults(), -- Ravenous Blaze
+		[244736] = Defaults(), -- Wake of Flame
+		[247079] = Defaults(), -- Empowered Flame Rend
 
 		-- Argus the Unmaker
-		-- [] = Defaults(), --
+		[251815] = Defaults(), -- Edge of Obliteration
+		[248499] = Defaults(), -- Sweeping Scythe
+		[250669] = Defaults(), -- Soulburst
+		[251570] = Defaults(), -- Soulbomb
+		[248396] = Defaults(), -- Soulblight
+		[258039] = Defaults(), -- Deadly Scythe
+		[252729] = Defaults(), -- Cosmic Ray
+		[256899] = Defaults(), -- Soul Detonation
+		[252634] = Defaults(), -- Cosmic Smash
+		[252616] = Defaults(), -- Cosmic Beacon
+		[255200] = Defaults(), -- Aggramar's Boon
+		[255199] = Defaults(), -- Avatar of Aggramar
+		[258647] = Defaults(), -- Gift of the Sea
+		[253901] = Defaults(), -- Strength of the Sea
+		[257299] = Defaults(), -- Ember of Rage
+		[248167] = Defaults(), -- Death Fog
+		[258646] = Defaults(), -- Gift of the Sky
+		[253903] = Defaults(), -- Strength of the Sky
 
 	-- Tomb of Sargeras
 		-- Goroth

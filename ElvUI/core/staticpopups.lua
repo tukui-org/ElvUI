@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
 --Lua functions
@@ -405,6 +405,7 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 		E.db.chat.tapFontSize = fontSize
 		E.db.datatexts.font = font
 		E.db.datatexts.fontSize = fontSize
+		E.db.general.minimap.locationFont = font
 		E.db.tooltip.font = font
 		E.db.tooltip.fontSize = fontSize
 		E.db.tooltip.headerFontSize = fontSize

@@ -66,6 +66,11 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 "name:long" - Имя с ограничением длины в 20 символов
 
 Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=]
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+
+If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
+
+NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
@@ -95,6 +100,7 @@ L["Color when the text is in the seconds format."] = "Цвет текста вр
 L["Cooldown Text"] = "Текст восстановления"
 L["Darken Inactive"] = "Неактивные затенены"
 L["Days"] = "Дни"
+L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "Отображать назначенные клавиши на кнопках."
 L["Display cooldown text on anything with the cooldown spiral."] = "Отображать время восстановления на кнопках/предметах."
 L["Display macro names on action buttons."] = "Отображать названия макросов на кнопках."
@@ -122,6 +128,7 @@ L["Out of Power"] = "Мало ресурса"
 L["Out of Range"] = "Вне радиуса"
 L["Restore Bar"] = "Восстановить панель"
 L["Restore the actionbars default settings"] = "Восстанавливает настройки панели по умолчанию."
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "Секунды"
 L["Show Empty Buttons"] = "Показывать пустые кнопки"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Отображать анимацию заполнения, когда заклинание перезаряжается, но все еще имеет заряды."
@@ -637,10 +644,15 @@ L["If enabled then the filter will only activate if the level of the unit is equ
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита равен этому числу."
 L["If enabled then the filter will only activate if the level of the unit matches your own."] = "Если включено, то фильтр будет акитивирован, когда уровень юнита равен вашему."
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Если включено, то фильтр будет акитивирован, когда юнит произносит прерываемое заклинание."
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = "Если включено, фильтр будет активирован только когда юнит в бою."
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Если включено, фильтр будет активирован только когда юнит вне боя."
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
 L["If enabled then the filter will only activate when you are out of combat."] = "Если включено, фильтр будет активирован только когда вы вне боя."
+L["If enabled then the filter will only activate when you are targeting the unit."] = true
+L["If enabled then the filter will only activate when you are not targeting the unit."] = true
+L["If enabled then the filter will only activate when the unit is targeting you."] = true
+L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = "Если включено, то вы более не будете видеть индикаторы, использующие вид по умолчанию от Blizzard."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "Если аура добавлена номером, то для удаления потребуется номер."
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = "Если включено, то будет проверяться ваша репутация у фракции, к которой принадлежит юнит."
@@ -671,6 +683,8 @@ L["Name Only"] = "Только имя"
 L["NamePlates"] = "Индикаторы здоровья"
 L["Non-Target Transparency"] = "Прозрачность не цели"
 L["Not Targeted"] = "Не взят в цель"
+L["Is Targeting Player"] = true
+L["Is Not Targeting Player"] = true
 L["Off Cooldown"] = "не восстанавливается"
 L["On Cooldown"] = "Восстанавливается"
 L["Only load nameplates for units within this range."] = "Отображать индикаторы для юнитов на этом расстоянии и ближе."

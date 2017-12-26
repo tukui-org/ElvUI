@@ -66,6 +66,11 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 
 空白则为禁用. 如需技术支持请至http://www.tukui.org]=]
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+
+If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
+
+NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
@@ -95,6 +100,7 @@ L["Color when the text is in the seconds format."] = "以秒显示的文字颜�
 L["Cooldown Text"] = "冷却文字"
 L["Darken Inactive"] = "未激活时暗化"
 L["Days"] = "天"
+L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "在动作条按钮上显示键位名称"
 L["Display cooldown text on anything with the cooldown spiral."] = "显示技能冷却时间"
 L["Display macro names on action buttons."] = "在动作条按钮上显示宏名称"
@@ -122,6 +128,7 @@ L["Out of Power"] = "能量不足"
 L["Out of Range"] = "超出范围"
 L["Restore Bar"] = "重置动作条"
 L["Restore the actionbars default settings"] = "恢复此动作条的预设设定"
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = "显示空白按钮"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "当一个技能在充能但仍有剩余使用次数时使用反向填充动画"
@@ -236,7 +243,7 @@ L["Your Auras First"] = "自身光环优先"
 
 --Chat
 L["Above Chat"] = "聊天框上方"
-L["Adds an arrow infront of the chat lines to copy the entire line."] = true
+L["Adds an arrow infront of the chat lines to copy the entire line."] = "在聊天信息前加上一个箭头来复制整行"
 L["Adjust the height of your right chat panel."] = "调整右聊天框的高度"
 L["Adjust the width of your right chat panel."] = "调整右聊天框的宽度"
 L["Alerts"] = "提醒"
@@ -248,7 +255,7 @@ L["Below Chat"] = "聊天框下方"
 L["Chat EditBox Position"] = "聊天输入框位置"
 L["Chat History"] = "聊天历史"
 L["Class Color Mentions"] = "职业颜色提示"
-L["Copy Chat Lines"] = true
+L["Copy Chat Lines"] = "复制聊天信息"
 L["Custom Timestamp Color"] = "自定义时间戳颜色"
 L["Display LFG Icons in group chat."] = "在小队聊天中显示随机队列图标"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在链接上时显示鼠标提示"
@@ -638,10 +645,15 @@ L["If enabled then the filter will only activate if the level of the unit is equ
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "启用后过滤器仅仅在单位等级符合该值的时候激活"
 L["If enabled then the filter will only activate if the level of the unit matches your own."] = "启用后过滤器仅仅在单位等级符合你的等级的时候激活"
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "启用后过滤器仅仅在单位施放可打断技能的时候激活"
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "启用后过滤器仅仅在单位施放不可打断技能的时候激活"
 L["If enabled then the filter will only activate when the unit is in combat."] = "启用后过滤器仅仅在单位在战斗中的时候激活"
 L["If enabled then the filter will only activate when the unit is out of combat."] = "启用后过滤器仅仅在单位不在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are in combat."] = "启用后过滤器仅仅在你在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are out of combat."] = "启用后过滤器仅仅在你不在战斗中的时候激活"
+L["If enabled then the filter will only activate when you are targeting the unit."] = "启用后过滤器仅仅在你指向目标的时候激活"
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "启用后过滤器仅仅在你没有指向目标的时候激活"
+L["If enabled then the filter will only activate when the unit is targeting you."] = "启用后过滤器仅仅在单位目标为你的时候激活"
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "启用后过滤器仅仅在单位目标不为你的时候激活"
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = "启用后你将无法看到使用暴雪默认外观的姓名版"
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光环和一个数一起列出你需要用它来将其移出列表"
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = "启用后声望类型将会使用单位所属阵营声望的具体级别"
@@ -654,7 +666,7 @@ L["In Combat"] = "战斗中"
 L["Instance Type"] = "副本类型"
 L["Interruptible"] = "可打断"
 L["Is PvP Talents"] = "PvP天赋"
-L["Is Targeted"] = "目标"
+L["Is Targeted"] = "你的目标"
 L["LEVEL_BOSS"] = "对首领请设置为-1, 或者设为0以禁用."
 L["Load Distance"] = "读取距离"
 L["Low Health Threshold"] = "低生命值阈值"
@@ -672,6 +684,8 @@ L["Name Only"] = "仅姓名"
 L["NamePlates"] = "姓名板(血条)"
 L["Non-Target Transparency"] = "非目标透明度"
 L["Not Targeted"] = "非目标"
+L["Is Targeting Player"] = "目标为玩家"
+L["Is Not Targeting Player"] = "目标不为玩家"
 L["Off Cooldown"] = "冷却外"
 L["On Cooldown"] = "冷却中"
 L["Only load nameplates for units within this range."] = "仅仅读取在此范围内的姓名板"
@@ -1050,7 +1064,7 @@ L["Model Rotation"] = "模型旋转"
 L["Mouseover"] = "鼠标滑过显示"
 L["Name"] = "姓名"
 L["Neutral"] = "中立"
-L["Non-Interruptable"] = "不可打断颜色"
+L["Non-Interruptable"] = "不可打断"
 L["Not valid spell id"] = "不正确的技能ID"
 L["Num Rows"] = "行数"
 L["Number of Groups"] = "队伍数目"

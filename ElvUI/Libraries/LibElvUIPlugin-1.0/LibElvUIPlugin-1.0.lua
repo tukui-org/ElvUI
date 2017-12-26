@@ -1,18 +1,19 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 15
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 18
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
 --Cache global variables
 --Lua functions
-local pairs, tonumber = pairs, tonumber
-local format, strsplit, gsub = format, strsplit, gsub
+local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
+local format, strsplit, strlen, gsub, ceil = format, strsplit, strlen, gsub, ceil
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local GetAddOnMetadata = GetAddOnMetadata
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
 local SendAddonMessage = SendAddonMessage
+local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
@@ -87,11 +88,11 @@ function lib:RegisterPlugin(name,callback, isLib)
 		if not lib.ConfigFrame then
 			local configFrame = CreateFrame("Frame")
 			configFrame:RegisterEvent("ADDON_LOADED")
-			configFrame:SetScript("OnEvent", function(self,event,addon)
+			configFrame:SetScript("OnEvent", function(self, event, addon)
 				if addon == "ElvUI_Config" then
-					for _, plugin in pairs(lib.plugins) do
-						if(plugin.callback) then
-							plugin.callback()
+					for _, PlugIn in pairs(lib.plugins) do
+						if PlugIn.callback then
+							PlugIn.callback()
 						end
 					end
 				end
@@ -151,20 +152,20 @@ end
 
 function lib:VersionCheck(event, prefix, message, channel, sender)
 	local E = ElvUI[1]
-	if (event == "CHAT_MSG_ADDON") and sender and message and (message ~= "") and (prefix == lib.prefix) then
-		local myRealm = gsub(E.myrealm,'[%s%-]','')
-		local myName = E.myname..'-'..myRealm
-		if sender == myName then return end
+	if (event == "CHAT_MSG_ADDON") and sender and message and (not strmatch(message, "^%s-$")) and (prefix == lib.prefix) then
+		if not lib.myName then lib.myName = E.myname..'-'..gsub(E.myrealm,'[%s%-]','') end
+		if sender == lib.myName then return end
 		if not E["pluginRecievedOutOfDateMessage"] then
+			local name, version, plugin, Pname
 			for _, p in pairs({strsplit(";",message)}) do
-				if not p:match("^%s-$") then
-					local name, version = p:match("([%w_]+)=([%d%p]+)")
+				if not strmatch(p, "^%s-$") then
+					name, version = strmatch(p, "([%w_]+)=([%d%p]+)")
 					if lib.plugins[name] then
-						local plugin = lib.plugins[name]
+						plugin = lib.plugins[name]
 						if plugin.version ~= 'BETA' and version ~= nil and tonumber(version) ~= nil and plugin.version ~= nil and tonumber(plugin.version) ~= nil and tonumber(version) > tonumber(plugin.version) then
 							plugin.old = true
 							plugin.newversion = tonumber(version)
-							local Pname = GetAddOnMetadata(plugin.name, "Title")
+							Pname = GetAddOnMetadata(plugin.name, "Title")
 							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 							E["pluginRecievedOutOfDateMessage"] = true
 						end
@@ -173,19 +174,28 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 			end
 		end
 	else
-		E.SendPluginVersionCheck = E.SendPluginVersionCheck or SendPluginVersionCheck
-		E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
+		if not E.SendPluginVersionCheck then
+			E.SendPluginVersionCheck = SendPluginVersionCheck
+		end
+
+		local num = GetNumGroupMembers()
+		if num ~= lib.groupSize then
+			if num > 1 and lib.groupSize and num > lib.groupSize then
+				E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
+			end
+			lib.groupSize = num
+		end
 	end
 end
 
 function lib:GeneratePluginList()
-	local list = ""
-	local E = ElvUI[1]
+	local list, E = "", ElvUI[1]
+	local author, Pname, color
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
-			local author = GetAddOnMetadata(plugin.name, "Author")
-			local Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
-			local color = plugin.old and E:RGBToHex(1,0,0) or E:RGBToHex(0,1,0)
+			author = GetAddOnMetadata(plugin.name, "Author")
+			Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
+			color = plugin.old and E:RGBToHex(1,0,0) or E:RGBToHex(0,1,0)
 			list = list .. Pname
 			if author then
 			  list = list .. " ".. INFO_BY .." " .. author
@@ -201,34 +211,24 @@ function lib:GeneratePluginList()
 end
 
 function lib:SendPluginVersionCheck(message)
-	if not message or (message == "") then return end
-	local plist = {strsplit(";",message)}
-	local m = ""
-	local delay = 1
-	local E = ElvUI[1]
-	for _, p in pairs(plist) do
-		if not p:match("^%s-$") then
-			if(#(m .. p .. ";") < 230) then
-				m = m .. p .. ";"
-			else
-				local _, instanceType = IsInInstance()
-				if IsInRaid() then
-					E:Delay(delay,SendAddonMessage(lib.prefix, m, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"))
-				elseif IsInGroup() then
-					E:Delay(delay,SendAddonMessage(lib.prefix, m, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"))
-				end
-				m = p .. ";"
+	if (not message) or strmatch(message, "^%s-$") then return end
+
+	local ChatType = ((not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) or (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE))) and "INSTANCE_CHAT" or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or nil
+	if not ChatType then return end
+
+	local delay, maxChar, msgLength = 0, 250, strlen(message)
+	if msgLength > maxChar then
+		local splitMessage
+		for _=1, ceil(msgLength/maxChar) do
+			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
+			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
+				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
+				ElvUI[1]:Delay(delay, SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
 		end
-	end
-	if m == "" then return end
-	-- Send the last message
-	local _, instanceType = IsInInstance()
-	if IsInRaid() then
-		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"))
-	elseif IsInGroup() then
-		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"))
+	else
+		SendAddonMessage(lib.prefix, message, ChatType)
 	end
 end
 

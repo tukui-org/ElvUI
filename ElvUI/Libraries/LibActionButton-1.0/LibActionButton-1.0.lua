@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 11
+local MINOR_VERSION = 13
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -1133,7 +1133,9 @@ function Update(self)
 
 	-- Zone ability button handling
 	self.zoneAbilityDisabled = false
-	self.icon:SetDesaturated(false)
+	if not self.saturationLocked then
+		self.icon:SetDesaturated(false)
+	end
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
@@ -1142,7 +1144,9 @@ function Update(self)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
 				self.zoneAbilityDisabled = true
-				self.icon:SetDesaturated(true)
+				if not self.saturationLocked then
+					self.icon:SetDesaturated(true)
+				end
 			end
 		end
 	end
@@ -1333,6 +1337,7 @@ function UpdateCooldown(self)
 		end
 		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
+	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
 end
 
 function StartFlash(self)

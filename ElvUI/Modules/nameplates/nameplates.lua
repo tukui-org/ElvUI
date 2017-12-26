@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -6,9 +6,11 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local pairs = pairs
 local type = type
+local gsub = gsub
 local twipe = table.wipe
 local format = string.format
 local match = string.match
+local tonumber = tonumber
 --WoW API / Variables
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
@@ -41,8 +43,12 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
+local GetCVar = GetCVar
+local Saturate = Saturate
+local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
@@ -83,7 +89,7 @@ function mod:CheckBGHealers()
 	for i = 1, GetNumBattlefieldScores() do
 		name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
-			name = name:match("(.+)%-.+") or name
+			name = gsub(name,'%-'..PLAYER_REALM,'') --[[ name = match(name,"([^%-]+).*") ]]
 			if name and self.HealerSpecs[talentSpec] then
 				self.Healers[name] = talentSpec
 			elseif name and self.Healers[name] then
@@ -98,8 +104,10 @@ function mod:CheckArenaHealers()
 	if not (numOpps > 1) then return end
 
 	for i=1, 5 do
-		local name = UnitName(format('arena%d', i))
+		local name, realm = UnitName(format('arena%d', i))
 		if name and name ~= UNKNOWN then
+			realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
+			if realm then name = name.."-"..realm end
 			local s = GetArenaOpponentSpec(i)
 			local _, talentSpec = nil, UNKNOWN
 			if s and s > 0 then
@@ -257,34 +265,70 @@ function mod:GetNamePlateForUnit(unit)
 	end
 end
 
+function mod:GetPlateFrameLevel(frame)
+	local plateLevel
+	if frame.UnitType and frame.UnitType == "PLAYER" then
+		plateLevel = 0 -- deadend return; we force this in mod:SetPlateFrameLevel
+	elseif frame.plateID then
+		plateLevel = frame.plateID*mod.levelStep
+	elseif frame.unit then
+		--this is a fall back to the old method but nothing should end up here
+		local parent = self:GetNamePlateForUnit(frame.unit)
+		plateLevel = parent and parent.GetFrameLevel and parent:GetFrameLevel()
+	end
+	return plateLevel
+end
+
+function mod:SetPlateFrameLevel(frame, level, isTarget)
+	if frame and level then
+		if frame.UnitType and frame.UnitType == "PLAYER" then
+			level = 895 --5 higher than target
+		elseif isTarget then
+			level = 890 --10 higher than the max calculated level of 880
+		elseif frame.FrameLevelChanged then
+			--calculate Style Filter FrameLevelChanged leveling
+			--level method: (10*(40*2)) max 800 + max 80 (40*2) = max 880
+			--highest possible should be level 880 and we add 1 to all so 881
+			local leveledCount = mod.CollectedFrameLevelCount or 1
+			level = (frame.FrameLevelChanged*(40*mod.levelStep)) + (leveledCount*mod.levelStep)
+		end
+
+		frame:SetFrameLevel(level+1)
+		frame.Glow:SetFrameLevel(level)
+		frame.Buffs:SetFrameLevel(level+1)
+		frame.Debuffs:SetFrameLevel(level+1)
+	end
+end
+
+function mod:ResetNameplateFrameLevel(frame)
+	local isTarget = UnitIsUnit(frame.unit, "target") --frame.isTarget is not the same here so keep this.
+	local plateLevel = mod:GetPlateFrameLevel(frame)
+	if plateLevel then
+		if frame.FrameLevelChanged then --keep how many plates we change, this is reset to 1 post-ResetNameplateFrameLevel
+			mod.CollectedFrameLevelCount = (mod.CollectedFrameLevelCount and mod.CollectedFrameLevelCount + 1) or 1
+		end
+		self:SetPlateFrameLevel(frame, plateLevel, isTarget)
+	end
+end
+
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
-	local parent = self:GetNamePlateForUnit(frame.unit);
-	if(parent) then
-		if frame:GetFrameLevel() < 100 then
-			frame:SetFrameLevel(parent:GetFrameLevel() + 100)
-		end
-
-		frame:SetFrameLevel(parent:GetFrameLevel() + 3)
-		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 1)
-		frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 2)
-		frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 2)
-	end
-
+	local plateLevel = mod:GetPlateFrameLevel(frame)
 	local targetExists = UnitExists("target")
-	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		if(parent) then
-			frame:SetFrameLevel(parent:GetFrameLevel() + 5)
-			frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
-			frame.Buffs:SetFrameLevel(parent:GetFrameLevel() + 4)
-			frame.Debuffs:SetFrameLevel(parent:GetFrameLevel() + 4)
+	local unitIsTarget = UnitIsUnit(frame.unit, "target")
+
+	if unitIsTarget and not frame.isTarget then
+		frame.isTarget = true
+
+		if plateLevel then
+			self:SetPlateFrameLevel(frame, plateLevel, true)
 		end
 
-		if(self.db.useTargetScale) then
+		if self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
-		frame.isTarget = true
-		if(self.db.units[frame.UnitType].healthbar.enable ~= true and self.db.alwaysShowTargetHealth) then
+
+		if self.db.units[frame.UnitType].healthbar.enable ~= true and self.db.alwaysShowTargetHealth then
 			frame.Name:ClearAllPoints()
 			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
@@ -304,37 +348,37 @@ function mod:SetTargetFrame(frame)
 			self:UpdateElement_All(frame, frame.unit, true, true)
 		end
 
-		if(targetExists) then
-			frame:SetAlpha(1)
-		end
-	elseif (frame.isTarget) then
-		if(self.db.useTargetScale) then
-			self:SetFrameScale(frame, frame.ThreatScale or 1)
-		end
-		frame.isTarget = nil
-		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
-			self:UpdateAllFrame(frame)
-		end
-
-		if(targetExists and not UnitIsUnit(frame.unit, "player")) then
-			frame:SetAlpha(1 - self.db.nonTargetTransparency)
-		else
+		if targetExists then
 			frame:SetAlpha(1)
 		end
 	else
-		if(targetExists and not UnitIsUnit(frame.unit, "player"))  then
+		if frame.isTarget and not unitIsTarget then
+			frame.isTarget = nil
+			if self.db.useTargetScale then
+				self:SetFrameScale(frame, frame.ThreatScale or 1)
+			end
+			if self.db.units[frame.UnitType].healthbar.enable ~= true then
+				self:UpdateAllFrame(frame)
+			end
+		end
+
+		if targetExists and not UnitIsUnit(frame.unit, "player") then
 			frame:SetAlpha(1 - self.db.nonTargetTransparency)
 		else
 			frame:SetAlpha(1)
+		end
+
+		if plateLevel then
+			self:SetPlateFrameLevel(frame, plateLevel)
 		end
 	end
 
 	mod:ClassBar_Update()
 
-	if (self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER") then
+	if self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER" then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame:Hide()
-	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
+	elseif frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition then --Visibility for static nameplate is handled in UpdateVisibility
 		frame:Show()
 	end
 end
@@ -383,13 +427,18 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
-	frame = frame or self:GetNamePlateForUnit(unit);
+	frame = frame or self:GetNamePlateForUnit(unit)
+
+	local plateID = self:GetNameplateID(frame)
+	frame.unitFrame.plateID = plateID
+
 	frame.unitFrame.unit = unit
 	frame.unitFrame.displayedUnit = unit
 	self:UpdateInVehicle(frame, true)
 
 	local CanAttack = UnitCanAttack(unit, self.playerUnitToken)
 	local isPlayer = UnitIsPlayer(unit)
+	frame.unitFrame.isTargetingMe = UnitIsUnit(unit..'target', 'player')
 
 	if(UnitIsUnit(unit, "player")) then
 		frame.unitFrame.UnitType = "PLAYER"
@@ -454,20 +503,21 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	end
 
 	self:UpdateElement_Filters(frame.unitFrame, "NAME_PLATE_UNIT_ADDED")
+	mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame = frame or self:GetNamePlateForUnit(unit);
-	frame.unitFrame.unit = nil
 
 	local unitType = frame.unitFrame.UnitType
-	if(frame.unitFrame.UnitType == "PLAYER") then
+	if unitType == "PLAYER" then
 		self.PlayerFrame = nil
 		self.PlayerNamePlateAnchor:Hide()
 	end
 
 	self:HideAuraIcons(frame.unitFrame.Buffs)
 	self:HideAuraIcons(frame.unitFrame.Debuffs)
+	self:ClearStyledPlate(frame.unitFrame)
 	frame.unitFrame:UnregisterAllEvents()
 	frame.unitFrame.HealthBar.r, frame.unitFrame.HealthBar.g, frame.unitFrame.HealthBar.b = nil, nil, nil
 	frame.unitFrame.HealthBar:Hide()
@@ -492,14 +542,21 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.Level:SetText("")
 	frame.unitFrame.NPCTitle:ClearAllPoints()
 	frame.unitFrame.NPCTitle:SetText("")
-	frame.unitFrame.Elite:Hide()
 	frame.unitFrame.DetectionModel:Hide()
+	frame.unitFrame.Elite:Hide()
 	frame.unitFrame:Hide()
-	frame.unitFrame.isTarget = nil
-	frame.unitFrame.displayedUnit = nil
-	frame.ThreatData = nil
+	frame.unitFrame.unit = nil
+	frame.unitFrame.plateID = nil
 	frame.unitFrame.UnitType = nil
+	frame.unitFrame.isTarget = nil
+	frame.unitFrame.isTargetingMe = nil
+	frame.unitFrame.displayedUnit = nil
 	frame.unitFrame.TopLevelFrame = nil
+	frame.unitFrame.TopOffset = nil
+	frame.unitFrame.isBeingTanked = nil
+	frame.unitFrame.ThreatScale = nil
+	frame.unitFrame.ThreatData = nil
+	frame.unitFrame.StyleFilterWaitTime = nil
 
 	if self.ClassBar and (unitType == "PLAYER") then
 		mod:ClassBar_Update()
@@ -552,6 +609,9 @@ function mod:ForEachPlate(functionToRun, ...)
 			self[functionToRun](self, frame.unitFrame, ...)
 		end
 	end
+	if functionToRun == "ResetNameplateFrameLevel" then
+		mod.CollectedFrameLevelCount = 1
+	end
 end
 
 function mod:SetBaseNamePlateSize()
@@ -560,9 +620,13 @@ function mod:SetBaseNamePlateSize()
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
 
 	-- this wont taint like NamePlateDriverFrame.SetBaseNamePlateSize
-	C_NamePlate_SetNamePlateFriendlySize(baseWidth, baseHeight);
-	C_NamePlate_SetNamePlateEnemySize(baseWidth, baseHeight);
-	C_NamePlate_SetNamePlateSelfSize(baseWidth, baseHeight);
+	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+	local zeroBasedScale = namePlateVerticalScale - 1.0
+	local clampedZeroBasedScale = Saturate(zeroBasedScale)
+	C_NamePlate_SetNamePlateFriendlySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
+	C_NamePlate_SetNamePlateEnemySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
+	C_NamePlate_SetNamePlateSelfSize(baseWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale), baseHeight)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
@@ -639,12 +703,21 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	end
 end
 
+function mod:GetNameplateID(frame)
+	if frame == mod.PlayerFrame__ then return 0 end
+	local plateName = frame:GetName()
+	local plateID = plateName and tonumber(match(plateName, "%d+$"))
+	return plateID
+end
+
 function mod:NAME_PLATE_CREATED(_, frame)
-	frame.unitFrame = CreateFrame("BUTTON", "ElvUI"..frame:GetName().."UnitFrame", UIParent);
+	local plateID = self:GetNameplateID(frame)
+	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_NamePlate%d", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
 	frame.unitFrame:SetFrameStrata("BACKGROUND")
 	frame.unitFrame:SetScript("OnEvent", mod.OnEvent)
+	frame.unitFrame.plateID = plateID
 
 	frame.unitFrame.HealthBar = self:ConstructElement_HealthBar(frame.unitFrame)
 	frame.unitFrame.PowerBar = self:ConstructElement_PowerBar(frame.unitFrame)
@@ -663,8 +736,8 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
-		self:SecureHookScript(frame.UnitFrame, "OnShow", function(self)
-			self:Hide() --Hide Blizzard's Nameplate
+		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
+			blizzPlate:Hide() --Hide Blizzard's Nameplate
 		end)
 		--print('Hooked on NAME_PLATE_CREATED')
 		frame.unitFrame.onShowHooked = true
@@ -710,7 +783,14 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
+		mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
 		mod:UpdateVisibility()
+	elseif(event == "UNIT_TARGET") then
+		self.isTargetingMe = UnitIsUnit(unit..'target', 'player')
+		mod:UpdateElement_Filters(self, event)
+		if unit == "player" and not UnitExists("target") then --basically a `PLAYER_TARGET_CLEARED`, though, it's slower than `PLAYER_TARGET_CHANGED`
+			mod:ForEachPlate("ResetNameplateFrameLevel") --keep this after `UpdateElement_Filters`
+		end
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
@@ -815,6 +895,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	frame:RegisterEvent("UNIT_EXITING_VEHICLE")
 	frame:RegisterEvent("UNIT_PET")
+	frame:RegisterEvent("UNIT_TARGET")
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
@@ -1043,13 +1124,18 @@ function mod:Initialize()
 
 	self:StyleFilterConfigureEvents()
 
+	--Nameplate Leveling Step (glow, frame) (2)
+	-- range is from 3 [(1*2)+1] to 81 [(40*2)+1] ~ [(nameplateID * step) + frame layer]
+	-- 40 is the max amount of nameplate tokens
+	self.levelStep = 2
+
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
 	self:UpdateVehicleStatus()
 
 	--Hacked Nameplate
-	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvNamePlate", E.UIParent, "SecureUnitButtonTemplate")
+	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvUI_NamePlate_Player", E.UIParent, "SecureUnitButtonTemplate")
 	self.PlayerFrame__:SetAttribute("unit", "player")
 	self.PlayerFrame__:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	self.PlayerFrame__:SetAttribute("*type1", "target")

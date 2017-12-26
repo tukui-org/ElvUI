@@ -66,6 +66,11 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 'name:long' - 名稱上限為 20 個字元
 
 若要停用此功能，此欄位請留空。如需更多資訊，請至 http://www.tukui.org]=]
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
+
+If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
+
+NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
 --ActionBars
 L["Action Paging"] = "快捷列翻頁"
@@ -95,6 +100,7 @@ L["Color when the text is in the seconds format."] = "以秒顯示的文字顏�
 L["Cooldown Text"] = "冷卻文字"
 L["Darken Inactive"] = "非啟用者變暗"
 L["Days"] = "天"
+L["Desaturate On Cooldown"] = true
 L["Display bind names on action buttons."] = "在快捷列按鈕上顯示快捷鍵名稱."
 L["Display cooldown text on anything with the cooldown spiral."] = "在任何冷卻動畫上顯示技能冷卻時間."
 L["Display macro names on action buttons."] = "在快捷列按鈕上顯示巨集名稱."
@@ -122,6 +128,7 @@ L["Out of Power"] = "施放能量不足"
 L["Out of Range"] = "超出施放範圍"
 L["Restore Bar"] = "還原快捷列"
 L["Restore the actionbars default settings"] = "恢復此快捷列的預設設定"
+L["RightClick Self-Cast"] = true
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = "顯示空白按鈕"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "當法術仍有可使用次數並在充能時顯示一個倒數動畫"
@@ -638,10 +645,15 @@ L["If enabled then the filter will only activate if the level of the unit is equ
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果選中則過濾器僅僅在單位等級符合該值的時候啟動"
 L["If enabled then the filter will only activate if the level of the unit matches your own."] = "如果選中則過濾器僅僅在單位等級符合你的等級的時候啟動"
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "如果選中則過濾器僅僅在單位施放可打斷技能的時候啟動"
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = "如果選中則過濾器僅僅在單位在戰鬥中的時候啟動"
 L["If enabled then the filter will only activate when the unit is out of combat."] = "如果選中則過濾器僅僅在單位不在戰鬥中的時候啟動"
 L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器僅僅在你在戰鬥中的時候啟動"
 L["If enabled then the filter will only activate when you are out of combat."] = "如果選中則過濾器僅僅在你不在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when you are targeting the unit."] = true
+L["If enabled then the filter will only activate when you are not targeting the unit."] = true
+L["If enabled then the filter will only activate when the unit is targeting you."] = true
+L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光環和一個數一起列出你需要用它來將其移出列表"
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
@@ -672,6 +684,8 @@ L["Name Only"] = true
 L["NamePlates"] = "姓名板(血條)"
 L["Non-Target Transparency"] = "非目標透明度"
 L["Not Targeted"] = "非目標"
+L["Is Targeting Player"] = true
+L["Is Not Targeting Player"] = true
 L["Off Cooldown"] = true
 L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = "僅僅讀取在此範圍內的姓名板"

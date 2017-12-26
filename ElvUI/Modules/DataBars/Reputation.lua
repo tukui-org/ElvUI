@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -25,17 +25,17 @@ function mod:UpdateReputation(event)
 	if not mod.db.reputation.enable then return end
 
 	local bar = self.repBar
-
-	local ID
-	local isFriend, friendText, standingLabel
+	local ID, isFriend, friendText, standingLabel
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 
-	if (C_Reputation_IsFactionParagon(factionID)) then
+	if factionID and C_Reputation_IsFactionParagon(factionID) then
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max = 0, threshold
-		value = currentValue % threshold
-		if hasRewardPending then
-			value = value + threshold
+		if currentValue and threshold then
+			min, max = 0, threshold
+			value = currentValue % threshold
+			if hasRewardPending then
+				value = value + threshold
+			end
 		end
 	end
 
@@ -113,22 +113,25 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-
-	if (C_Reputation_IsFactionParagon(factionID)) then
+	if factionID and C_Reputation_IsFactionParagon(factionID) then
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-		min, max = 0, threshold
-		value = currentValue % threshold
-		if hasRewardPending then
-			value = value + threshold
+		if currentValue and threshold then
+			min, max = 0, threshold
+			value = currentValue % threshold
+			if hasRewardPending then
+				value = value + threshold
+			end
 		end
 	end
 
-	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 	if name then
 		GameTooltip:AddLine(name)
 		GameTooltip:AddLine(' ')
 
-		GameTooltip:AddDoubleLine(STANDING..':', friendID and friendTextLevel or _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
+		local friendID, friendTextLevel, _
+		if factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
+
+		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
 		GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 	end
 	GameTooltip:Show()

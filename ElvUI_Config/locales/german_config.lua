@@ -66,6 +66,12 @@ Namensformate:
 'name:long' - Name auf 20 Zeichen beschränkt
 
 Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[Wenn du dieses auf 1 setzt werden alle Namensplaketten die vom Stilfilter ausgelöst werden über jeder anderen Namensplakette liegen.
+
+Wenn du dieses auf 2 setzt in einem anderen Stilfilter, werden alle Namensplakette die vom Filter ausgelöst wurden, über den Namensplaketten liegen die auf 1 gesetzt sind, usw.
+
+HINWEIS: Diese Einstellung behebt NICHT die Probleme mit klicken oder mouseover von überlappenden Namensplaketten. Dieses Problem liegt dran, dass wir nicht im Stande sind das
+Frame Level von klickbaren Namensplakette zu manipulieren.]=]
 
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
@@ -95,6 +101,7 @@ L["Color when the text is in the seconds format."] = "Färbe den Text in dieser 
 L["Cooldown Text"] = "Abklingzeittext"
 L["Darken Inactive"] = "Inaktives verdunkeln"
 L["Days"] = "Tage"
+L["Desaturate On Cooldown"] = "Auf Cooldown entsättigt"
 L["Display bind names on action buttons."] = "Zeige Tastaturbelegungen auf der Aktionsleiste an."
 L["Display cooldown text on anything with the cooldown spiral."] = "Zeige die Abklingzeit auf allen Tasten mit Hilfe iner animierten Spirale."
 L["Display macro names on action buttons."] = "Zeige Makronamen auf der Aktionsleiste an."
@@ -122,6 +129,7 @@ L["Out of Power"] = "Keine Kraft"
 L["Out of Range"] = "Außer Reichweite"
 L["Restore Bar"] = "Leiste zurücksetzen"
 L["Restore the actionbars default settings"] = "Wiederherstellung der vordefinierten Aktionsleisteneinstellung"
+L["RightClick Self-Cast"] = "Rechtsklick Selbstzauber"
 L["Seconds"] = "Sekunden"
 L["Show Empty Buttons"] = "Zeige leere Tasten"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Zeigt eine 'Swipe' Animation wenn ein Zauber am Aufladen ist aber immer noch Aufladungen hat." --not a really good translation for 'Swipe'
@@ -639,10 +647,15 @@ L["If enabled then the filter will only activate if the level of the unit is equ
 L["If enabled then the filter will only activate if the level of the unit matches this value."] = "Wenn aktiviert, wird der Filter nur aktiviert wenn das Level der Einheit diesem Wert entspricht."
 L["If enabled then the filter will only activate if the level of the unit matches your own."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn das Level er Einheit deinem Level entspricht."
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen unterbrechbaren Zauber wirkt."
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen nicht unterbrechbaren Zauber wirkt."
 L["If enabled then the filter will only activate when the unit is in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit im Kampf ist."
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit nicht im Kampf ist."
 L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du im Kampf bist."
 L["If enabled then the filter will only activate when you are out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du nicht im Kampf bist."
+L["If enabled then the filter will only activate when you are targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit im Ziel hast."
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht im Ziel hast."
+L["If enabled then the filter will only activate when the unit is targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich als Ziel hat."
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich nicht als Ziel hat."
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = "Wenn aktiviert wirst du nicht mehr in der Lage sein Namensplaketten im Blizzard Stil zu sehen."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "Wenn die Aura mit einer Nummer aufgeführt ist, dann musst du sie benutzten um sie aus der Liste zu entfernen."
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = "Wenn aktiviert dann wird die Reaktionskontrolle benutzt um den Ruf mit der Fraktion zu prüfen die zu der Einheit gehört."
@@ -673,6 +686,8 @@ L["Name Only"] = "Nur Name"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Transparency"] = "Transparenz nicht ausgewählter Ziele"
 L["Not Targeted"] = "Nicht anvisiert"
+L["Is Targeting Player"] = "Hat Spieler als Ziel"
+L["Is Not Targeting Player"] = "Hat Spieler nicht als Ziel"
 L["Off Cooldown"] = "Benutzbar"
 L["On Cooldown"] = "Auf Abklingzeit"
 L["Only load nameplates for units within this range."] = "Namensplaketten werden nur angezeigt, wenn sie in Reichweite sind."

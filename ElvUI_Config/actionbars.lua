@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -118,8 +118,28 @@ local function BuildABConfig()
 				desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
 				set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
 			},
-			movementModifier = {
+			rightClickSelfCast = {
 				order = 11,
+				type = "toggle",
+				name = L["RightClick Self-Cast"],
+				set = function(info, value)
+					E.db.actionbar.rightClickSelfCast = value;
+					for _, bar in pairs(AB["handledBars"]) do
+						AB:UpdateButtonConfig(bar, bar.bindButtons)
+					end
+				end,
+			},
+			desaturateOnCooldown = {
+				order = 12,
+				type = "toggle",
+				name = L["Desaturate On Cooldown"],
+				set = function(info, value)
+					E.db.actionbar.desaturateOnCooldown = value;
+					AB:ToggleDesaturation(value)
+				end,
+			},
+			movementModifier = {
+				order = 13,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -132,7 +152,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 12,
+				order = 14,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
@@ -543,26 +563,51 @@ local function BuildABConfig()
 				type = "toggle",
 				name = L["Enable"],
 			},
-			alpha = {
+			mouseover = {
 				order = 2,
+				name = L["Mouse Over"],
+				desc = L["The frame is not shown unless you mouse over the frame."],
+				type = "toggle",
+			},
+			spacer = {
+				order = 3,
+				type = "description",
+				name = " ",
+			},
+			alpha = {
+				order = 4,
 				type = 'range',
 				name = L["Alpha"],
 				isPercent = true,
 				desc = L["Change the alpha level of the frame."],
 				min = 0, max = 1, step = 0.1,
 			},
-			mouseover = {
-				order = 3,
-				name = L["Mouse Over"],
-				desc = L["The frame is not shown unless you mouse over the frame."],
-				type = "toggle",
-			},
 			buttonsPerRow = {
-				order = 4,
+				order = 5,
 				type = 'range',
 				name = L["Buttons Per Row"],
 				desc = L["The amount of buttons to display per row."],
 				min = 1, max = #MICRO_BUTTONS, step = 1,
+			},
+			spacer2 = {
+				order = 6,
+				type = "description",
+				name = " ",
+			},
+			visibility = {
+				type = 'input',
+				order = 7,
+				name = L["Visibility State"],
+				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
+				width = 'full',
+				multiline = true,
+				set = function(info, value)
+					if value and value:match('[\n\r]') then
+						value = value:gsub('[\n\r]','')
+					end
+					E.db.actionbar['microbar']['visibility'] = value;
+					AB:UpdateMicroPositionDimensions()
+				end,
 			},
 		},
 	}
