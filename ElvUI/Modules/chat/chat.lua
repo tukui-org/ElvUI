@@ -1141,12 +1141,10 @@ function CH:GetPluginIcon(sender)
 end
 
 local function GetChatIcons(sender)
-	if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
-		for realm, _ in pairs(specialChatIcons) do
-			for character, texture in pairs(specialChatIcons[realm]) do
-				if sender == character.."-"..realm then
-					return texture
-				end
+	for realm, _ in pairs(specialChatIcons) do
+		for character, texture in pairs(specialChatIcons[realm]) do
+			if sender == character.."-"..realm then
+				return texture
 			end
 		end
 	end
