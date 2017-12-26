@@ -1,4 +1,16 @@
-**Version 10.70 [  ]**
+**Version 10.71 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**   
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.70 [ December 26th 2017 ]**
 
 **New Additions:**  
 Added new style filter triggers "Is Targeting Player" and "Is Not Targeting Player".  
@@ -9,7 +21,7 @@ Added visibility options to the bag-bar.
 Added visibility options to the microbar.  
 Added a Combat-Hide option to role icons on party/raid frames.  
 Added option to self-cast with a right-click on actionbuttons.  
-Added "Desaturate On Cooldown" option to action bars. It will make icons black and white when the action is on cooldown.  
+Added "Desaturate On Cooldown" option to action bars. It will make icons black&white when the action is on cooldown.  
 
 
 **Bug Fixes:**  
