@@ -1144,6 +1144,8 @@ local function OnCooldownUpdate(_, button, start, duration)
 			button.onCooldownDoneHooked = true
 			AB:HookScript(button.cooldown, "OnCooldownDone", Saturate)
 		end
+	else
+		button.icon:SetDesaturated(false)
 	end
 end
 
