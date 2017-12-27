@@ -636,7 +636,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	if hasEquipment then
 		local btn
 		local equipment = follower.followerTab.AbilitiesFrame.Equipment
-		if not equipment.backdrop then
+		if equipment and not equipment.backdrop then
 			for i = 1, #equipment do
 				btn = equipment[i]
 				btn.Border:SetTexture(nil)
