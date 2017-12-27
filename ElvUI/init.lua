@@ -13,6 +13,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 --Cache global variables
 local _G = _G
 local pairs = pairs
+local format = string.format
 local GameMenuFrame = GameMenuFrame
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuButtonAddons = GameMenuButtonAddons
@@ -96,7 +97,7 @@ function AddOn:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
-	GameMenuButton:SetText(AddOnName)
+	GameMenuButton:SetText(format("|cfffe7b2c%s|r", AddOnName))
 	GameMenuButton:SetScript("OnClick", function()
 		AddOn:ToggleConfig()
 		HideUIPanel(GameMenuFrame)
