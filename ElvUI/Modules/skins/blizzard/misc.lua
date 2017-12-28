@@ -301,7 +301,7 @@ local function LoadSkin()
 		TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
 		TalentMicroButtonAlert.tex:SetSize(32, 32)
 	else
-		TalentMicroButtonAlert:Hide() -- hide it, because then the blizz default will show
+		TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
 	end
 end
 
