@@ -287,7 +287,7 @@ local function LoadSkin()
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 
 	-- MicroButton Talent Alert
-	if TalentMicroButtonAlert then
+	if(E.global.general.showMissingTalentAlert and TalentMicroButtonAlert) then
 		TalentMicroButtonAlert:ClearAllPoints()
 		TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
 		TalentMicroButtonAlert:StripTextures()
@@ -300,6 +300,8 @@ local function LoadSkin()
 		TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
 		TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
 		TalentMicroButtonAlert.tex:SetSize(32, 32)
+	else
+		TalentMicroButtonAlert:Hide() -- hide it, because then the blizz default will show
 	end
 end
 
