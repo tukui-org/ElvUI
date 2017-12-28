@@ -1566,6 +1566,9 @@ function E:Initialize()
 
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
+	self:UpdateBorderColors()
+	self:UpdateBackdropColors()
+	self:UpdateStatusBars()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
