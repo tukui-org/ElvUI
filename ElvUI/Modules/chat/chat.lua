@@ -594,11 +594,17 @@ function CH:UpdateSettings()
 	end
 end
 
-local function removeIconFromLine(text)
-	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end) --converts raid icons into {star} etc, if possible.
-	text = gsub(text, "(%s?)|T.-|t(%s?)", function(x,y) return (x~="" and x) or (y~="" and y) or "" end) --strip any other texture out but keep a single space from the side(s).
-	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text.
-	return text
+local removeIconFromLine
+do
+	local raidIconFunc = function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end
+	local stripTextureFunc = function(x,y) return (x~="" and x) or (y~="" and y) or "" end
+	local hyperLinkFunc = function(x, y) if x=="" then return y end end
+	removeIconFromLine = function(text)
+		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
+		text = gsub(text, "(%s?)|T.-|t(%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
+		text = gsub(text, "(|?)|H.-|?|h(.-)|?|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
+		return text
+	end
 end
 
 local function colorizeLine(text, r, g, b)
