@@ -597,7 +597,7 @@ end
 local removeIconFromLine
 do
 	local raidIconFunc = function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end
-	local stripTextureFunc = function(x,y) return (x~="" and x) or (y~="" and y) or "" end
+	local stripTextureFunc = function(x, y) return (x~="" and x) or (y~="" and y) or "" end
 	local hyperLinkFunc = function(x, y) if x=="" then return y end end
 	removeIconFromLine = function(text)
 		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
