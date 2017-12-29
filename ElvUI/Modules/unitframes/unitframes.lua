@@ -998,7 +998,7 @@ function UF:CheckBrawlForArenaFrames(event)
 			end
 		end
 	end
-	if disableArenaFrames then
+	if UF.db['units']['arena'].enable and disableArenaFrames then
 		if (not brawlName) or brawlName == '' then brawlName = UNKNOWN end
 		E:Print(format(L['Forcing Arena Frames to be disabled. Reason: Inside of Instance [%s].'], brawlName))
 	end
