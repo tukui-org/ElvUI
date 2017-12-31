@@ -818,6 +818,7 @@ local function LoadSkin()
 
 	--What's New
 	SplashFrame:CreateBackdrop("Transparent")
+	SplashFrame.Header:FontTemplate(nil, 22)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
 end
