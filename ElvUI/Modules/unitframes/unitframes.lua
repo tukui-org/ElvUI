@@ -21,9 +21,6 @@ local InCombatLockdown = InCombatLockdown
 local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local GetInstanceInfo = GetInstanceInfo
-local GetSpellInfo = GetSpellInfo
-local C_PvP_IsInBrawl = C_PvP.IsInBrawl
-local C_PvP_GetBrawlInfo = C_PvP.GetBrawlInfo
 local UnregisterStateDriver = UnregisterStateDriver
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterAttributeDriver = UnregisterAttributeDriver
@@ -31,7 +28,6 @@ local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
 local CompactRaidFrameContainer = CompactRaidFrameContainer
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
-local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
@@ -437,17 +433,6 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
-function UF:IsBrawlWarsongScramble()
-	local inBrawl = C_PvP_IsInBrawl()
-	local brawlWarsongScramble = GetSpellInfo('229908') -- Brawl: Warsong Scramble
-	local brawlInfo = C_PvP_GetBrawlInfo()
-	if (brawlInfo and brawlInfo.name) and (brawlWarsongScramble == brawlInfo.name) then
-		local _, _, _, _, _, _, _, mapID = GetInstanceInfo() --{ [1]='Warsong Gulch', [2]='pvp', [8]=489 }
-		if (mapID == 489) then return inBrawl, true, brawlWarsongScramble end
-	end
-	return inBrawl, false, ''
-end
-
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	if E.private["unitframe"].enable ~= true then return; end
@@ -467,15 +452,13 @@ function UF:Update_AllFrames()
 	end
 
 	for unit, group in pairs(self['groupunits']) do
-		if group ~= 'arena' then -- arena is handled by `UpdateAllHeaders`
-			if self.db['units'][group].enable then
-				self[unit]:Enable()
-				self[unit]:Update()
-				E:EnableMover(self[unit].mover:GetName())
-			else
-				self[unit]:Disable()
-				E:DisableMover(self[unit].mover:GetName())
-			end
+		if self.db['units'][group].enable then
+			self[unit]:Enable()
+			self[unit]:Update()
+			E:EnableMover(self[unit].mover:GetName())
+		else
+			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -968,42 +951,6 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:CheckBrawlForArenaFrames(event)
-	if InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'CheckBrawlForArenaFrames')
-		return
-	end
-
-	if event == 'PLAYER_REGEN_ENABLED' or event == 'PVP_BRAWL_INFO_UPDATED' then
-		self:UnregisterEvent(event)
-	end
-
-	local isInBrawl, isWarsongScramble, brawlName = UF:IsBrawlWarsongScramble()
-	local disableArenaFrames -- Used to disable Arena Frames inside of [Brawl: Warsong Scramble]
-	local frame, unit
-	for i=1, 5 do
-		frame = UF['arena'..i]
-		unit = frame and frame.unit
-		if unit then
-			if isInBrawl and isWarsongScramble then
-				disableArenaFrames = true
-			end
-			if UF.db['units']['arena'].enable and not disableArenaFrames then
-				UF[unit]:Enable()
-				UF[unit]:Update()
-				E:EnableMover(UF[unit].mover:GetName())
-			else
-				UF[unit]:Disable()
-				E:DisableMover(UF[unit].mover:GetName())
-			end
-		end
-	end
-	if UF.db['units']['arena'].enable and disableArenaFrames then
-		if (not brawlName) or brawlName == '' then brawlName = UNKNOWN end
-		E:Print(format(L['Forcing Arena Frames to be disabled. Reason: Inside of Instance [%s].'], brawlName))
-	end
-end
-
 function UF:UpdateAllHeaders(event)
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateAllHeaders')
@@ -1036,16 +983,6 @@ function UF:UpdateAllHeaders(event)
 			--Update BuffIndicators on profile change as they might be using profile specific data
 			self:UpdateAuraWatchFromHeader(group)
 		end
-	end
-
-	-- handle disable / enable of Arena Frames
-	-- sometimes C_PvP_IsInBrawl returns incorrect data on PLAYER_ENTERING_WORLD
-	-- we can delay the check until PVP_BRAWL_INFO_UPDATED
-	local isInInstance, instanceType = IsInInstance()
-	if isInInstance and instanceType == 'pvp' then
-		self:RegisterEvent('PVP_BRAWL_INFO_UPDATED', 'CheckBrawlForArenaFrames')
-	else
-		self:CheckBrawlForArenaFrames()
 	end
 end
 
