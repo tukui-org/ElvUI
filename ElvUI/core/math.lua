@@ -227,11 +227,7 @@ function E:GetFormattedText(style, min, max)
 
 	if style == 'DEFICIT' then
 		gftDeficit = max - min
-		if gftDeficit <= 0 then
-			return ''
-		else
-			return format(gftUseStyle, E:ShortValue(gftDeficit))
-		end
+		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit))) or ''
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
