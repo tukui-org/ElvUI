@@ -199,6 +199,8 @@ function E:GetXYOffset(position, override)
 end
 
 local styles = {
+	-- keep percents in this table with `PERCENT` in the key, and `%.1f%%` in the value somewhere.
+	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
 	['CURRENT_PERCENT'] =  '%s - %.1f%%',
