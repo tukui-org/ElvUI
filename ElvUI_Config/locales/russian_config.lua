@@ -1081,7 +1081,6 @@ L["Party Pets"] = "Питомцы группы"
 L["Party Targets"] = "Цели группы"
 L["Per Row"] = "Кол-во в ряду"
 L["Percent"] = "Процент"
-L["Percent nodecimal"] = true
 L["Personal"] = "Свое"
 L["Pet Name"] = "Имя питомца"
 L["Player Frame Aura Bars"] = "Полосы аур рамки игрока"

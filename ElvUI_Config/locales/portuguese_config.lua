@@ -1088,7 +1088,6 @@ L["Party Pets"] = "Ajudantes do Grupo"
 L["Party Targets"] = "Alvos do Grupo"
 L["Per Row"] = "Por Linha"
 L["Percent"] = "Porcentagem"
-L["Percent nodecimal"] = true
 L["Personal"] = "Pessoal"
 L["Pet Name"] = true
 L["Player Frame Aura Bars"] = true
