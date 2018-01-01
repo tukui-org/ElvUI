@@ -27,6 +27,11 @@
 <!--- when ElvUI is the only addon enabled -->
 
 
+**Blizzard Issue?**
+<!--- Please test if you can reproduce the issue with 0 addons enabled -->
+<!--- Include screenshot of how it looks if possible -->
+
+
 **Additional Information**
 <!--- Please provide any additional information here -->
 
