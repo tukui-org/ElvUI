@@ -211,7 +211,7 @@ E.Options.args.general = {
 					order = 25,
 					type = "range",
 					name = L["Decimal Length"],
-					desc = L["Changes the number of digits to the right of the decimal point in a number. For example, the number 123.45 has a length of 2."],
+					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
 					min = 0, max = 4, step = 1,
 					get = function(info) return E.db.general.decimalLength end,
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
