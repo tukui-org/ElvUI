@@ -14,53 +14,54 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local C_Timer_After = C_Timer.After
 
 --Return short value of a number
+local shortValueDec
 function E:ShortValue(v)
-	local dec = format("%%.%df", E.db.general.decimalLength or 1)
+	shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
 	if E.db.general.numberPrefixStyle == "METRIC" then
 		if abs(v) >= 1e9 then
-			return format(dec.."G", v / 1e9)
+			return format(shortValueDec.."G", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format(dec.."M", v / 1e6)
+			return format(shortValueDec.."M", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format(dec.."k", v / 1e3)
+			return format(shortValueDec.."k", v / 1e3)
 		else
 			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "CHINESE" then
 		if abs(v) >= 1e8 then
-			return format(dec.."Y", v / 1e8)
+			return format(shortValueDec.."Y", v / 1e8)
 		elseif abs(v) >= 1e4 then
-			return format(dec.."W", v / 1e4)
+			return format(shortValueDec.."W", v / 1e4)
 		else
 			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "KOREAN" then
 		if abs(v) >= 1e8 then
-			return format(dec.."억", v / 1e8)
+			return format(shortValueDec.."억", v / 1e8)
 		elseif abs(v) >= 1e4 then
-			return format(dec.."만", v / 1e4)
+			return format(shortValueDec.."만", v / 1e4)
 		elseif abs(v) >= 1e3 then
-			return format(dec.."천", v / 1e3)
+			return format(shortValueDec.."천", v / 1e3)
 		else
 			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
 		if abs(v) >= 1e9 then
-			return format(dec.."Mrd", v / 1e9)
+			return format(shortValueDec.."Mrd", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format(dec.."Mio", v / 1e6)
+			return format(shortValueDec.."Mio", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format(dec.."Tsd", v / 1e3)
+			return format(shortValueDec.."Tsd", v / 1e3)
 		else
 			return format("%s", v)
 		end
 	else
 		if abs(v) >= 1e9 then
-			return format(dec.."B", v / 1e9)
+			return format(shortValueDec.."B", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format(dec.."M", v / 1e6)
+			return format(shortValueDec.."M", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format(dec.."K", v / 1e3)
+			return format(shortValueDec.."K", v / 1e3)
 		else
 			return format("%s", v)
 		end
