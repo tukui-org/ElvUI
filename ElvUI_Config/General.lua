@@ -207,8 +207,17 @@ E.Options.args.general = {
 						["GERMAN"] = "German (Tsd, Mio, Mrd)"
 					},
 				},
-				commandBarSetting = {
+				decimalLength = {
 					order = 25,
+					type = "range",
+					name = L["Decimal Length"],
+					desc = L["Changes the number of digits to the right of the decimal point in a number. For example, the number 123.45 has a length of 2."],
+					min = 0, max = 4, step = 1,
+					get = function(info) return E.db.general.decimalLength end,
+					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				commandBarSetting = {
+					order = 26,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,

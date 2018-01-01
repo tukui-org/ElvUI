@@ -21,6 +21,7 @@ P['general'] = {
 	["talkingHeadFrameScale"] = 0.9,
 	['afk'] = true,
 	["numberPrefixStyle"] = "ENGLISH",
+	["decimalLength"] = 1,
 
 	["fontSize"] = 12,
 	["font"] = "PT Sans Narrow",

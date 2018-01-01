@@ -15,53 +15,54 @@ local C_Timer_After = C_Timer.After
 
 --Return short value of a number
 function E:ShortValue(v)
+	local dec = format("%%.%df", E.db.general.decimalLength or 1)
 	if E.db.general.numberPrefixStyle == "METRIC" then
 		if abs(v) >= 1e9 then
-			return format("%.1fG", v / 1e9)
+			return format(dec.."G", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format("%.1fM", v / 1e6)
+			return format(dec.."M", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format("%.1fk", v / 1e3)
+			return format(dec.."k", v / 1e3)
 		else
-			return format("%d", v)
+			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "CHINESE" then
 		if abs(v) >= 1e8 then
-			return format("%.1fY", v / 1e8)
+			return format(dec.."Y", v / 1e8)
 		elseif abs(v) >= 1e4 then
-			return format("%.1fW", v / 1e4)
+			return format(dec.."W", v / 1e4)
 		else
-			return format("%d", v)
+			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "KOREAN" then
 		if abs(v) >= 1e8 then
-			return format("%.1f억", v / 1e8)
+			return format(dec.."억", v / 1e8)
 		elseif abs(v) >= 1e4 then
-			return format("%.1f만", v / 1e4)
+			return format(dec.."만", v / 1e4)
 		elseif abs(v) >= 1e3 then
-			return format("%.1f천", v / 1e3)
+			return format(dec.."천", v / 1e3)
 		else
-			return format("%d", v)
+			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
 		if abs(v) >= 1e9 then
-			return format("%.1fMrd", v / 1e9)
+			return format(dec.."Mrd", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format("%.1fMio", v / 1e6)
+			return format(dec.."Mio", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format("%.1fTsd", v / 1e3)
+			return format(dec.."Tsd", v / 1e3)
 		else
-			return format("%d", v)
+			return format("%s", v)
 		end
 	else
 		if abs(v) >= 1e9 then
-			return format("%.1fB", v / 1e9)
+			return format(dec.."B", v / 1e9)
 		elseif abs(v) >= 1e6 then
-			return format("%.1fM", v / 1e6)
+			return format(dec.."M", v / 1e6)
 		elseif abs(v) >= 1e3 then
-			return format("%.1fK", v / 1e3)
+			return format(dec.."K", v / 1e3)
 		else
-			return format("%d", v)
+			return format("%s", v)
 		end
 	end
 end
@@ -213,7 +214,12 @@ function E:GetFormattedText(style, min, max)
 
 	if max == 0 then max = 1 end
 
-	local useStyle = styles[style]
+	local useStyle
+	if style:find('PERCENT') then
+		useStyle = styles[style]:gsub('%%%.1f%%%%', '%%.'..(E.db.general.decimalLength or 1)..'f%%%%')
+	else
+		useStyle = styles[style]
+	end
 
 	if style == 'DEFICIT' then
 		local deficit = max - min
