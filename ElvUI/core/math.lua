@@ -210,6 +210,7 @@ local styles = {
 	['DEFICIT'] = '-%s'
 }
 
+local gftDec, gftUseStyle, gftDeficit
 function E:GetFormattedText(style, min, max)
 	assert(styles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
@@ -217,33 +218,30 @@ function E:GetFormattedText(style, min, max)
 
 	if max == 0 then max = 1 end
 
-	local useStyle
-	if style:find('PERCENT') then
-		useStyle = styles[style]:gsub('%%%.1f%%%%', '%%.'..(E.db.general.decimalLength or 1)..'f%%%%')
+	gftDec = (E.db.general.decimalLength or 1)
+	if (gftDec ~= 1) and style:find('PERCENT') then
+		gftUseStyle = styles[style]:gsub('%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
 	else
-		useStyle = styles[style]
+		gftUseStyle = styles[style]
 	end
 
 	if style == 'DEFICIT' then
-		local deficit = max - min
-		if deficit <= 0 then
+		gftDeficit = max - min
+		if gftDeficit <= 0 then
 			return ''
 		else
-			return format(useStyle, E:ShortValue(deficit))
+			return format(gftUseStyle, E:ShortValue(gftDeficit))
 		end
 	elseif style == 'PERCENT' then
-		local s = format(useStyle, min / max * 100)
-		return s
+		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
 		return format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
-		return format(useStyle,  E:ShortValue(min), E:ShortValue(max))
+		return format(gftUseStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		local s = format(useStyle, E:ShortValue(min), min / max * 100)
-		return s
+		return format(gftUseStyle, E:ShortValue(min), min / max * 100)
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		local s = format(useStyle, E:ShortValue(min), E:ShortValue(max), min / max * 100)
-		return s
+		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max), min / max * 100)
 	end
 end
 
