@@ -1087,6 +1087,7 @@ L["Party Pets"] = "Familiers des coéquipiers"
 L["Party Targets"] = "Cible des coéquipiers"
 L["Per Row"] = "par ligne"
 L["Percent"] = "Pourcent"
+L["Percent nodecimal"] = true
 L["Personal"] = "Personnel"
 L["Pet Name"] = "Nom du familier"
 L["Player Frame Aura Bars"] = "Barre d'aura du joueur"

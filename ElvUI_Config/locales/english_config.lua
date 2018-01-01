@@ -1076,6 +1076,7 @@ L["Party Pets"] = true
 L["Party Targets"] = true
 L["Per Row"] = true
 L["Percent"] = true
+L["Percent nodecimal"] = true
 L["Personal"] = true
 L["Pet Name"] = true
 L["Player Frame Aura Bars"] = true

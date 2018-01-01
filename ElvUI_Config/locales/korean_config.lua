@@ -1135,6 +1135,7 @@ L["Party Pets"] = "파티원 소환수"
 L["Party Targets"] = "파티원의 대상"
 L["Per Row"] = "한 줄에 표시할 아이콘 수"
 L["Percent"] = "%"
+L["Percent nodecimal"] = true
 L["Personal"] = "플레이어"
 L["Pet Name"] = "펫 이름"
 L["Player Frame Aura Bars"] = true

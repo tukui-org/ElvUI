@@ -1087,6 +1087,7 @@ L["Party Pets"] = "隊伍寵物"
 L["Party Targets"] = "隊伍目標"
 L["Per Row"] = "每行"
 L["Percent"] = "百分比"
+L["Percent nodecimal"] = true
 L["Personal"] = "個人的"
 L["Pet Name"] = "寵物名字"
 L["Player Frame Aura Bars"] = "玩家框架光環條"

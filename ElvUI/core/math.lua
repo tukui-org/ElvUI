@@ -203,6 +203,7 @@ local styles = {
 	['CURRENT_PERCENT'] =  '%s - %.1f%%',
 	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
 	['PERCENT'] = '%.1f%%',
+	['PERCENT_NODECIMAL'] = "%.0f%%",
 	['DEFICIT'] = '-%s'
 }
 
@@ -223,6 +224,9 @@ function E:GetFormattedText(style, min, max)
 			return format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
+		local s = format(useStyle, min / max * 100)
+		return s
+	elseif style == 'PERCENT_NODECIMAL' then
 		local s = format(useStyle, min / max * 100)
 		return s
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
