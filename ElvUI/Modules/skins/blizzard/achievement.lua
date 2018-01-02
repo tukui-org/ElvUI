@@ -189,8 +189,105 @@ local function LoadSkin(event)
 
 	-- Search
 	AchievementFrame.searchResults:StripTextures()
-	AchievementFrame.searchResults:SetTemplate("Default")
+	AchievementFrame.searchResults:SetTemplate("Transparent")
 	AchievementFrame.searchPreviewContainer:StripTextures()
+
+	local function resultOnEnter(self)
+		self.hl:Show()
+	end
+
+	local function resultOnLeave(self)
+		self.hl:Hide()
+	end
+
+	local function skinSearchPreview(button)
+		button:GetNormalTexture():SetColorTexture(0.1, 0.1, 0.1, .9)
+		button:GetPushedTexture():SetColorTexture(0.1, 0.1, 0.1, .9)
+	end
+
+	local function achievementSearchPreviewButton(button)
+		skinSearchPreview(button)
+
+		button.iconFrame:SetAlpha(0)
+	end
+
+	local function styleSearchPreview(preview, index)
+		if index == 1 then
+			preview:SetPoint("TOPLEFT", AchievementFrame.searchBox, "BOTTOMLEFT", 0, 1)
+			preview:SetPoint("TOPRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 80, 1)
+		else
+			preview:SetPoint("TOPLEFT", AchievementFrame.searchPreview[index - 1], "BOTTOMLEFT", 0, 1)
+			preview:SetPoint("TOPRIGHT", AchievementFrame.searchPreview[index - 1], "BOTTOMRIGHT", 0, 1)
+		end
+
+		preview:SetNormalTexture("")
+		preview:SetPushedTexture("")
+		preview:SetHighlightTexture("")
+
+		local hl = preview:CreateTexture(nil, "BACKGROUND")
+		hl:SetAllPoints()
+		hl:SetTexture(E.media.normTex)
+		hl:SetVertexColor(r, g, b, .2)
+		hl:Hide()
+		preview.hl = hl
+
+		preview:SetTemplate("Transparent")
+
+		for i = 1, #AchievementFrame.searchPreview do
+			achievementSearchPreviewButton(AchievementFrame.searchPreview[i])
+		end
+		skinSearchPreview(AchievementFrame.showAllSearchResults)
+
+		preview:HookScript("OnEnter", resultOnEnter)
+		preview:HookScript("OnLeave", resultOnLeave)
+	end
+
+	for i = 1, 5 do
+		styleSearchPreview(AchievementFrame.searchPreview[i], i)
+	end
+
+	styleSearchPreview(AchievementFrame.showAllSearchResults, 6)
+
+	hooksecurefunc("AchievementFrame_UpdateFullSearchResults", function()
+		local numResults = GetNumFilteredAchievements()
+
+		local scrollFrame = AchievementFrame.searchResults.scrollFrame
+		local offset = HybridScrollFrame_GetOffset(scrollFrame)
+		local results = scrollFrame.buttons
+		local result, index
+
+		for i = 1, #results do
+			result = results[i]
+			index = offset + i
+
+			if index <= numResults then
+				if not result.styled then
+					result:SetNormalTexture("")
+					result:SetPushedTexture("")
+					result:GetRegions():Hide()
+
+					result.resultType:SetTextColor(1, 1, 1)
+					result.path:SetTextColor(1, 1, 1)
+
+					result.styled = true
+				end
+
+				if result.icon:GetTexCoord() == 0 then
+					result.icon:SetTexCoord(unpack(E.TexCoords))
+				end
+			end
+		end
+	end)
+
+	hooksecurefunc(AchievementFrame.searchResults.scrollFrame, "update", function(self)
+		for i = 1, #self.buttons do
+			local result = self.buttons[i]
+
+			if result.icon:GetTexCoord() == 0 then
+				result.icon:SetTexCoord(unpack(E.TexCoords))
+			end
+		end
+	end)
 
 	S:HandleCloseButton(AchievementFrame.searchResults.closeButton)
 	S:HandleScrollBar(AchievementFrameScrollFrameScrollBar)
