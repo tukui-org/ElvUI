@@ -193,7 +193,7 @@ local function Sort(a, b)
 	end
 end
 
---Sort alphabetic by client (this is a paired by keys sorting)
+--Sort client by statically given index (this is a `pairs by keys` sorting method)
 local function clientSort(a, b)
 	if a and b then
 		if clientIndex[a] and clientIndex[b] then
