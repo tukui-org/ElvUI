@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, wipe, tremove = table.sort, wipe, tremove
+local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
 local BNSetCustomMessage = BNSetCustomMessage
@@ -107,7 +107,6 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString = BNET_CLIENT_WOW
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -116,19 +115,34 @@ local statusTable = { " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", "
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
+local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2 = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2
+local wowString = BNET_CLIENT_WOW
 local dataValid = false
 local lastPanel
 
+local clientSorted = {}
 local clientTags = {
 	[BNET_CLIENT_WOW] = "WoW",
-	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_D3] = "D3",
 	[BNET_CLIENT_WTCG] = "HS",
 	[BNET_CLIENT_HEROES] = "HotS",
 	[BNET_CLIENT_OVERWATCH] = "OW",
 	[BNET_CLIENT_SC] = "SC",
+	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_DESTINY2] = "Dst2",
 	["BSAp"] = L["Mobile"],
+}
+local clientIndex = {
+	[BNET_CLIENT_WOW] = 1,
+	[BNET_CLIENT_D3] = 2,
+	[BNET_CLIENT_WTCG] = 3,
+	[BNET_CLIENT_HEROES] = 4,
+	[BNET_CLIENT_OVERWATCH] = 5,
+	[BNET_CLIENT_SC] = 6,
+	[BNET_CLIENT_SC2] = 7,
+	[BNET_CLIENT_DESTINY2] = 8,
+	["App"] = 9,
+	["BSAp"] = 10,
 }
 
 local function SortAlphabeticName(a, b)
@@ -162,10 +176,30 @@ local function BuildFriendTable(total)
 	sort(friendTable, SortAlphabeticName)
 end
 
---Sort alphabetic by battleTag
+--Sort: client-> (WoW: faction-> name) ELSE:btag
 local function Sort(a, b)
-	if a[3] and b[3] then
-		return a[3] < b[3]
+	if a[6] and b[6] then
+		if (a[6] == b[6]) then
+			if (a[6] == wowString) and a[12] and b[12] then
+				if (a[12] == b[12]) and a[4] and b[4] then
+					return a[4] < b[4] --sort by name
+				end
+				return a[12] < b[12] --sort by faction
+			elseif (a[3] and b[3]) then
+				return a[3] < b[3] --sort by battleTag
+			end
+		end
+		return a[6] < b[6] --sort by client
+	end
+end
+
+--Sort alphabetic by client (this is a paired by keys sorting)
+local function clientSort(a, b)
+	if a and b then
+		if clientIndex[a] and clientIndex[b] then
+			return clientIndex[a] < clientIndex[b]
+		end
+		return a < b
 	end
 end
 
@@ -242,6 +276,7 @@ end
 local function BuildBNTable(total)
 	for _, v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
+	wipe(clientSorted)
 
 	local bnIndex = 0
 	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText
@@ -265,6 +300,8 @@ local function BuildBNTable(total)
 
 	sort(BNTable, Sort)
 	for _, v in pairs(tableList) do sort(v, Sort) end
+	for c in pairs(tableList) do tinsert(clientSorted, c) end
+	if next(clientSorted) then sort(clientSorted, clientSort) end
 end
 
 local function OnEvent(self, event, message)
@@ -388,8 +425,10 @@ local function OnEnter(self)
 	end
 
 	if numBNetOnline > 0 then
-		local status
-		for client, Table in pairs(tableList) do
+		local status, client, Table
+		for z = 1, #clientSorted do
+			client = clientSorted[z]
+			Table = tableList[client]
 			if #Table > 0 then
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(format("%s (%s)", battleNetString, clientTags[client] or client))
