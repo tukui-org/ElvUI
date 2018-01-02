@@ -2146,9 +2146,9 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 		end
 
 		if name then
-			self:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L['is looking for members']) or L['joined a group'], fullName or UNKNOWN, name))
+			self:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN, name))
 		else
-			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L['is looking for members']) or L['joined a group'], fullName or UNKNOWN))
+			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN))
 		end
 	elseif firstQueue then
 		local output, outputCount, queueCount, queueName = '', '', 0

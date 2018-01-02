@@ -136,7 +136,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s 기능이 사용할 수 없는 %s 함수를 사용하려 합니다."
-L["No locals to dump"] = true --Currently not used
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터설정을 전송하려 합니다. 받으시겠습니까?"

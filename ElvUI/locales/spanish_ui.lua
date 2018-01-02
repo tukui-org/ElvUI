@@ -136,7 +136,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s intentó llamar a la función protegida '%s'."
-L["No locals to dump"] = "No hay locales para volcar"
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s quiere compartir sus filtros contigo. ¿Aceptas la petición?"

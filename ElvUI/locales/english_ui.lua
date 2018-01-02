@@ -136,7 +136,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = true
-L["No locals to dump"] = true
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = true
@@ -182,7 +181,6 @@ L["Layout"] = true
 L["Lock"] = true
 L["Low Resolution"] = true
 L["low"] = true
-L["Movers unlocked. Move them now and click Lock when you are done."] = true
 L["Nudge"] = true
 L["Physical DPS"] = true
 L["Please click the button below so you can setup variables and ReloadUI."] = true
