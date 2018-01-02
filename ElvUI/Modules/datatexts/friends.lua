@@ -173,7 +173,9 @@ local function BuildFriendTable(total)
 			friendTable[i] = { name, level, class, area, connected, status, note }
 		end
 	end
-	sort(friendTable, SortAlphabeticName)
+	if next(friendTable) then
+		sort(friendTable, SortAlphabeticName)
+	end
 end
 
 --Sort: client-> (WoW: faction-> name) ELSE:btag
@@ -298,10 +300,20 @@ local function BuildBNTable(total)
 		end
 	end
 
-	sort(BNTable, Sort)
-	for _, v in pairs(tableList) do sort(v, Sort) end
-	for c in pairs(tableList) do tinsert(clientSorted, c) end
-	if next(clientSorted) then sort(clientSorted, clientSort) end
+	if next(BNTable) then
+		sort(BNTable, Sort)
+	end
+	if next(tableList) then
+		for c, v in pairs(tableList) do
+			if next(v) then
+				sort(v, Sort)
+			end
+			tinsert(clientSorted, c)
+		end
+	end
+	if next(clientSorted) then
+		sort(clientSorted, clientSort)
+	end
 end
 
 local function OnEvent(self, event, message)
