@@ -344,7 +344,7 @@ function S:HandleMaxMinFrame(frame)
 	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
 		local button = frame[name]
 		if button then
-			button:SetSize(16, 16)
+			button:SetSize(18, 18)
 			button:ClearAllPoints()
 			button:SetPoint("CENTER")
 
@@ -358,6 +358,7 @@ function S:HandleMaxMinFrame(frame)
 				button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
 				button:HookScript('OnEnter', S.SetModifiedBackdrop)
 				button:HookScript('OnLeave', S.SetOriginalBackdrop)
+				button:SetHitRectInsets(1, 1, 1, 1)
 			end
 
 			if name == "MaximizeButton" then
