@@ -339,30 +339,32 @@ end
 function S:HandleMaxMinFrame(frame)
 	assert(frame, "does not exist.")
 
+	frame:StripTextures()
+
 	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
-		if frame then frame:StripTextures() end
-
 		local button = frame[name]
-		button:SetSize(16, 16)
-		button:ClearAllPoints()
-		button:SetPoint("CENTER")
+		if button then
+			button:SetSize(16, 16)
+			button:ClearAllPoints()
+			button:SetPoint("CENTER")
 
-		button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-		button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-		button:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 
-		if not button.backdrop then
-			button:CreateBackdrop("Default", true)
-			button.backdrop:Point("TOPLEFT", button, 1, -1)
-			button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
-			button:HookScript('OnEnter', S.SetModifiedBackdrop)
-			button:HookScript('OnLeave', S.SetOriginalBackdrop)
-		end
+			if not button.backdrop then
+				button:CreateBackdrop("Default", true)
+				button.backdrop:Point("TOPLEFT", button, 1, -1)
+				button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
+				button:HookScript('OnEnter', S.SetModifiedBackdrop)
+				button:HookScript('OnLeave', S.SetOriginalBackdrop)
+			end
 
-		if name == "MaximizeButton" then
-			button:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-			button:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-			button:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+			if name == "MaximizeButton" then
+				button:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+				button:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+				button:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+			end
 		end
 	end
 end
