@@ -3,7 +3,7 @@
 **New Additions:**  
 Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
 Added option to control the amount of decimals used for values on elements like NamePlates and UnitFrames.  
-Added new "Quicj Join" datatext.  
+Added new "Quick Join" datatext.  
 Added options to hide specific sections in the Friends datatext tooltip.  
 
 
