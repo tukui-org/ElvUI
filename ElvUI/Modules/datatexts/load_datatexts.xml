@@ -31,4 +31,5 @@
 	<Script file='movementspeed.lua'/>
 	<Script file='Currencies.lua'/>
 	<Script file='CustomCurrency.lua'/>
+	<Script file='quickjoin.lua'/>
 </Ui>
