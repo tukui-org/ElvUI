@@ -4,15 +4,10 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 local UNKNOWN = UNKNOWN
 local QUICK_JOIN = QUICK_JOIN
-
 --Lua functions
-local next = next
-local pairs = pairs
-local type = type
-local select = select
-local join = string.join
+local next, pairs, select, type = next, pairs, select, type
 local twipe = table.wipe
-local format = string.format
+local format, join = string.format, string.join
 --WoW API / Variables
 local C_LFGList = C_LFGList
 local C_SocialQueue = C_SocialQueue
@@ -20,6 +15,9 @@ local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS:
 
 local displayModifierString = ''
 local lastPanel;
