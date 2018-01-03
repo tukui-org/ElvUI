@@ -375,6 +375,7 @@ L["Display In Main Tooltip"] = "在货币信息文字中显示"
 L["Display minimap panels below the minimap, used for datatexts."] = "显示小地图下方的信息框"
 L["Displayed Currency"] = "显示的金额"
 L["Gold Format"] = "金币格式"
+L["Hide specific sections in the datatext tooltip."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = "启用后这个货币将在'货币'信息文字中显示"
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示服务器时间"
 L["left"] = "左"

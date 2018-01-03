@@ -518,9 +518,14 @@ E.Options.args.datatexts = {
 			name = FRIENDS,
 			args = {
 				header = {
-					order = 1,
+					order = 0,
 					type = "header",
 					name = FRIENDS,
+				},
+				description = {
+					order = 1,
+					type = "description",
+					name = L["Hide specific sections in the datatext tooltip."],
 				},
 				hideGroup = {
 					order = 2,

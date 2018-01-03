@@ -422,6 +422,7 @@ L["Display In Main Tooltip"] = true
 L["Display minimap panels below the minimap, used for datatexts."] = "미니맵 하단에 2개의 정보문자를 추가합니다."
 L["Displayed Currency"] = true
 L["Gold Format"] = "골드 표시방법"
+L["Hide specific sections in the datatext tooltip."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
 L["If not set to true then the server time will be displayed instead."] = "체크 시 컴퓨터의 시간을 표시하고, 체크 해제 시 서버시간으로 표시합니다."
 L["left"] = "왼쪽"

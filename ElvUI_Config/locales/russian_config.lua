@@ -374,6 +374,7 @@ L["Display In Main Tooltip"] = "Отображать в основной под�
 L["Display minimap panels below the minimap, used for datatexts."] = "Отображать панели информационных текстов под миникартой."
 L["Displayed Currency"] = "Отображаемая валюта"
 L["Gold Format"] = "Формат золота"
+L["Hide specific sections in the datatext tooltip."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = "При включении будет отображать данную валюту в основной подсказке инфо-текста валют."
 L["If not set to true then the server time will be displayed instead."] = "Если отключено, будет отображаться серверное время."
 L["left"] = "Слева"

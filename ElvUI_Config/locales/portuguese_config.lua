@@ -375,6 +375,7 @@ L["Display In Main Tooltip"] = true
 L["Display minimap panels below the minimap, used for datatexts."] = "Exibir painéis abaixo do minimapa, usados para textos informativos."
 L["Displayed Currency"] = true
 L["Gold Format"] = true
+L["Hide specific sections in the datatext tooltip."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
 L["If not set to true then the server time will be displayed instead."] = "Se não definido como verdade, então a hora do servidor será exibida."
 L["left"] = "esquerda"
