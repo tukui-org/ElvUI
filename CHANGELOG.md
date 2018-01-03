@@ -1,13 +1,21 @@
 **Version 10.71 [  ]**
 
 **New Additions:**  
+Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
+Added option to control the amount of decimals used for values on elements like NamePlates and UnitFrames.  
+Added new "Quicj Join" datatext.  
+Added options to hide specific sections in the Friends datatext tooltip.  
 
 
 **Bug Fixes:**   
+Fixed issue with missing border colors on some elements after a login or reload.  
+Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly.  
+Fixed issue with arena frames displaying wrong unit in PvP Brawls.  
 
 
 **Misc. Changes:**  
-
+Various tweaks and fixes to skins.  
+Tweaked sorting in the Friends datatext so WoW is always on top.  
 
 ___
 **Version 10.70 [ December 26th 2017 ]**
