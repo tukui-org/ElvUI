@@ -241,45 +241,48 @@ local specialChatIcons
 do --this can save some main file locals
 	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
 	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
-	--local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
 	--local ElvRed = IconPath.."elvui_red.tga:13:25|t"
 	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
 	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
 	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
 	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
-		["Area52"] = {
-			["Illidelv"] = ElvBlue,
-		},
-		["Kil'jaeden"] = {
-			["Elvz"] = ElvBlue,
-		},
-		["Spirestone"] = {
-			["Elv"] = ElvBlue,
-			["Tirain"] = MrHankey,
-			["Sinth"] = MrHankey,
-		},
-		["Illidan"] = {
-			["Affinichi"] = Bathrobe,
-			["Uplift"] = Bathrobe,
-			["Affinitii"] = Bathrobe,
-			["Affinity"] = Bathrobe
-		},
-		["Silvermoon"] = {
-			["Blazii"] = ElvBlue, --Blazeflack
-			["Chazii"] = ElvBlue, --Blazeflack
-		},
-		["Shattrath"] = {
-			["Merathilis"] = ElvOrange,
-		},
-		["CenarionCircle"] = {
-			["Wennie"] = ElvPurple, --Simpy
-		},
-		["Cenarius"] = {
-			["Simpy"] = ElvPurple,
-			["Imsojelly"] = ElvPurple, --Simpy
-			["Cutepally"] = ElvPurple, --Simpy
-		},
+		-- Elv --
+		["Illidelv-Area52"] = ElvBlue,
+		["Elvz-Kil'jaeden"] = ElvBlue,
+		["Elv-Spirestone"] = ElvBlue,
+		-- Tirain --
+		["Tirain-Spirestone"] = MrHankey,
+		["Sinth-Spirestone"] = MrHankey,
+		-- Merathilis --
+		["Merathilis-Shattrath"] = ElvOrange, --Druid
+		-- Affinity's Toons --
+		["Affinichi-Illidan"] = Bathrobe,
+		["Uplift-Illidan"] = Bathrobe,
+		["Affinitii-Illidan"] = Bathrobe,
+		["Affinity-Illidan"] = Bathrobe,
+		-- Blazeflack's Toons --
+		["Blazii-Silvermoon"] = ElvBlue, --Priest
+		["Chazii-Silvermoon"] = ElvBlue, --Shaman
+		-- Simpy's Toons --
+		["Arieva-Cenarius"] = ElvPurple, --Hunter
+		["Buddercup-Cenarius"] = ElvPurple, --Rogue
+		["Cutepally-Cenarius"] = ElvPurple, --Paladin
+		["Ezek-Cenarius"] = ElvPurple, --DK
+		["Glice-Cenarius"] = ElvPurple, --Warrior
+		["Imsojelly-Cenarius"] = ElvPurple, --DK [horde]
+		["Imsopeachy-Cenarius"] = ElvPurple, --DH [horde]
+		["Imsosalty-Cenarius"] = ElvPurple, --Paladin [horde]
+		["Kalline-Cenarius"] = ElvPurple, --Shaman
+		["Puttietat-Cenarius"] = ElvPurple, --Druid
+		["Simpy-Cenarius"] = ElvPurple, --Warlock
+		["Twigly-Cenarius"] = ElvPurple, --Monk
+		["Bunne-CenarionCircle"] = ElvPink, --Warrior
+		["Loppybunny-CenarionCircle"] = ElvPink, --Mage
+		["Puttietat-CenarionCircle"] = ElvPink, --Druid [horde]
+		["Rubee-CenarionCircle"] = ElvPink, --DH
+		["Wennie-CenarionCircle"] = ElvPink, --Priest
 	}
 end
 
@@ -1145,16 +1148,6 @@ function CH:GetPluginIcon(sender)
 	return icon
 end
 
-local function GetChatIcons(sender)
-	for realm, _ in pairs(specialChatIcons) do
-		for character, texture in pairs(specialChatIcons[realm]) do
-			if sender == character.."-"..realm then
-				return texture
-			end
-		end
-	end
-end
-
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
@@ -1402,7 +1395,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local body;
 
 			-- Add AFK/DND flags
-			local pflag = GetChatIcons(arg2);
+			local pflag = specialChatIcons[arg2]
 			local pluginIcon = CH:GetPluginIcon(arg2)
 			if(arg6 ~= "") then
 				if ( arg6 == "GM" ) then
