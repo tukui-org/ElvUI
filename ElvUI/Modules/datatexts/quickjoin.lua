@@ -25,6 +25,8 @@ local quickJoinGroups, quickJoin = nil, {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	if not next(quickJoin) then return end
+
 	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true);
 	DT.tooltip:AddLine(" ");
 	for name, activity in pairs(quickJoin) do
