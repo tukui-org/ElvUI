@@ -12,7 +12,7 @@ local DELETE = DELETE
 local FRIENDS = FRIENDS
 local HideLeftChat = HideLeftChat
 local HideRightChat = HideRightChat
-local HIDE = HIDE.." "
+local HIDE = HIDE
 local AFK = AFK
 local DND = DND
 
@@ -177,29 +177,29 @@ local clientTable = {
 }
 
 local function SetupFriendClient(client, order)
-	local friendDatatextOptions = E.Options.args.datatexts.args.friends.args
-	if not (friendDatatextOptions and client and order) then return end --safety
+	local hideGroup = E.Options.args.datatexts.args.friends.args.hideGroup.args
+	if not (hideGroup and client and order) then return end --safety
 	local clientName = 'hide'..client
-	friendDatatextOptions[clientName] = {
+	hideGroup[clientName] = {
 		order = order,
 		type = 'toggle',
-		name = HIDE..(clientTable[client] or client),
+		name = clientTable[client] or client,
 		get = function(info) return E.db.datatexts.friends[clientName] or false end,
 		set = function(info, value) E.db.datatexts.friends[clientName] = value; DT:LoadDataTexts() end,
 	}
 end
 
 local function SetupFriendClients() --this function is used to create the client options in order
-	SetupFriendClient('App', 4)
-	SetupFriendClient('BSAp', 5)
-	SetupFriendClient('WoW', 6)
-	SetupFriendClient('D3', 7)
-	SetupFriendClient('WTCG', 8)
-	SetupFriendClient('Hero', 9)
-	SetupFriendClient('Pro', 10)
-	SetupFriendClient('S1', 11)
-	SetupFriendClient('S2', 12)
-	SetupFriendClient('DST2', 13)
+	SetupFriendClient('App', 3)
+	SetupFriendClient('BSAp', 4)
+	SetupFriendClient('WoW', 5)
+	SetupFriendClient('D3', 6)
+	SetupFriendClient('WTCG', 7)
+	SetupFriendClient('Hero', 8)
+	SetupFriendClient('Pro', 9)
+	SetupFriendClient('S1', 10)
+	SetupFriendClient('S2', 11)
+	SetupFriendClient('DST2', 12)
 end
 
 E.Options.args.datatexts = {
@@ -522,19 +522,27 @@ E.Options.args.datatexts = {
 					type = "header",
 					name = FRIENDS,
 				},
-				hideAFK = {
+				hideGroup = {
 					order = 2,
-					type = 'toggle',
-					name = HIDE..AFK,
-					get = function(info) return E.db.datatexts.friends.hideAFK end,
-					set = function(info, value) E.db.datatexts.friends.hideAFK = value; DT:LoadDataTexts() end,
-				},
-				hideDND = {
-					order = 3,
-					type = 'toggle',
-					name = HIDE..DND,
-					get = function(info) return E.db.datatexts.friends.hideDND end,
-					set = function(info, value) E.db.datatexts.friends.hideDND = value; DT:LoadDataTexts() end,
+					type = "group",
+					guiInline = true,
+					name = HIDE,
+					args = {
+						hideAFK = {
+							order = 1,
+							type = 'toggle',
+							name = AFK,
+							get = function(info) return E.db.datatexts.friends.hideAFK end,
+							set = function(info, value) E.db.datatexts.friends.hideAFK = value; DT:LoadDataTexts() end,
+						},
+						hideDND = {
+							order = 2,
+							type = 'toggle',
+							name = DND,
+							get = function(info) return E.db.datatexts.friends.hideDND end,
+							set = function(info, value) E.db.datatexts.friends.hideDND = value; DT:LoadDataTexts() end,
+						},
+					},
 				},
 			},
 		},
