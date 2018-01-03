@@ -8,7 +8,7 @@ local QUICK_JOIN = QUICK_JOIN
 --Lua functions
 local join = string.join
 local twipe = table.wipe
-local find = string.find
+local format = string.format
 --WoW API / Variables
 local C_LFGList = C_LFGList
 local C_SocialQueue = C_SocialQueue
@@ -39,8 +39,8 @@ local function OnEvent(self)
 	quickJoinGroups = C_SocialQueue.GetAllGroups()
 	local CHAT = E:GetModule("Chat") --load order issue requires this to be here, could probably change load order to fix...
 	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityID, activityName, comment, leaderName, isLeader, activityFullName, activity, output, outputCount, queueCount, queueName, _
-	
-	for i, guid in pairs(quickJoinGroups) do
+
+	for _, guid in pairs(quickJoinGroups) do
 		coloredName, players = UNKNOWN, C_SocialQueue.GetGroupMembers(guid)
 		members = players and SocialQueueUtil_SortGroupMembers(players)
 		playerName, nameColor = "", ""
@@ -67,7 +67,7 @@ local function OnEvent(self)
 				_, activityID, activityName, comment, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(firstQueue.queueData.lfgListID)
 				isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
 			end
-			
+
 			--[[if activityID or firstQueue.queueData.activityID then
 				activityFullName = C_LFGList.GetActivityInfo(activityID or firstQueue.queueData.activityID)
 			end]]
@@ -81,7 +81,7 @@ local function OnEvent(self)
 				activity = format("[+%s]%s", numQueues - 1, activity)
 			end
 		elseif firstQueue then
-			output, outputCount, queueCount, queueName = '', '', 0
+			output, outputCount, queueCount = '', '', 0
 			for _, queue in pairs(queues) do
 				if type(queue) == 'table' and queue.eligible then
 					queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
