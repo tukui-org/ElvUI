@@ -340,23 +340,31 @@ local function Click(self, btn)
 	if btn == "RightButton" then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
-		local classc, levelc, info
+		local classc, levelc, info, shouldSkip
 
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if #friendTable > 0 then
+		if (#friendTable > 0) and not E.db.datatexts.friends['hideWoW'] then
 			for i = 1, #friendTable do
 				info = friendTable[i]
 				if info[5] then
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
-					classc = classc or GetQuestDifficultyColor(info[2]);
+					shouldSkip = false
+					if (info[6] == statusTable[1]) and E.db.datatexts.friends['hideAFK'] then
+						shouldSkip = true
+					elseif (info[6] == statusTable[2]) and E.db.datatexts.friends['hideDND'] then
+						shouldSkip = true
+					end
+					if not shouldSkip then
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+						classc = classc or GetQuestDifficultyColor(info[2]);
 
-					menuCountWhispers = menuCountWhispers + 1
-					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = whisperClick}
-					if not (UnitInParty(info[1]) or UnitInRaid(info[1])) then
-						menuCountInvites = menuCountInvites + 1
-						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = inviteClick}
+						menuCountWhispers = menuCountWhispers + 1
+						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = whisperClick}
+						if not (UnitInParty(info[1]) or UnitInRaid(info[1])) then
+							menuCountInvites = menuCountInvites + 1
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = inviteClick}
+						end
 					end
 				end
 			end
@@ -367,26 +375,37 @@ local function Click(self, btn)
 			for i = 1, #BNTable do
 				info = BNTable[i]
 				if info[7] then
-					realID, hasBnet = info[2], false
+					shouldSkip = false
+					if (info[8] == true) and E.db.datatexts.friends['hideAFK'] then
+						shouldSkip = true
+					elseif (info[9] == true) and E.db.datatexts.friends['hideDND'] then
+						shouldSkip = true
+					end
+					if info[6] and E.db.datatexts.friends['hide'..info[6]] then
+						shouldSkip = true
+					end
+					if not shouldSkip then
+						realID, hasBnet = info[2], false
 
-					for _, z in ipairs(menuList[3].menuList) do
-						if z and z.text and (z.text == realID) then
-							hasBnet = true
-							break
+						for _, z in ipairs(menuList[3].menuList) do
+							if z and z.text and (z.text == realID) then
+								hasBnet = true
+								break
+							end
 						end
-					end
 
-					if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
-						menuCountWhispers = menuCountWhispers + 1
-						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
-					end
+						if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
+							menuCountWhispers = menuCountWhispers + 1
+							menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
+						end
 
-					if info[6] == wowString and (UnitFactionGroup("player") == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
-						classc = classc or GetQuestDifficultyColor(info[16])
+						if info[6] == wowString and (UnitFactionGroup("player") == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
+							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+							classc = classc or GetQuestDifficultyColor(info[16])
 
-						menuCountInvites = menuCountInvites + 1
-						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], arg2 = info[17], notCheckable=true, func = inviteClick}
+							menuCountInvites = menuCountInvites + 1
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], arg2 = info[17], notCheckable=true, func = inviteClick}
+						end
 					end
 				end
 			end
@@ -396,6 +415,17 @@ local function Click(self, btn)
 	else
 		ToggleFriendsFrame()
 	end
+end
+
+local lastTooltipXLineHeader
+local function TooltipAddXLine(X, header, ...)
+	X = (X == true and 'AddDoubleLine') or 'AddLine'
+	if lastTooltipXLineHeader ~= header then
+		DT.tooltip[X](DT.tooltip, ' ')
+		DT.tooltip[X](DT.tooltip, header)
+		lastTooltipXLineHeader = header
+	end
+	DT.tooltip[X](DT.tooltip, ...)
 end
 
 local function OnEnter(self)
@@ -417,68 +447,83 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc, info, grouped
+	local zonec, classc, levelc, realmc, info, grouped, shouldSkip
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-	if onlineFriends > 0 then
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(worldOfWarcraftString)
+	if (onlineFriends > 0) and not E.db.datatexts.friends['hideWoW'] then
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
-				if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+				shouldSkip = false
+				if (info[6] == statusTable[1]) and E.db.datatexts.friends['hideAFK'] then
+					shouldSkip = true
+				elseif (info[6] == statusTable[2]) and E.db.datatexts.friends['hideDND'] then
+					shouldSkip = true
+				end
+				if not shouldSkip then
+					if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
+					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
-				classc = classc or GetQuestDifficultyColor(info[2])
+					classc = classc or GetQuestDifficultyColor(info[2])
 
-				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
-				DT.tooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped],info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+					if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
+					TooltipAddXLine(true, worldOfWarcraftString, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped],info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+				end
 			end
 		end
 	end
 
 	if numBNetOnline > 0 then
-		local status, client, Table
+		local status, client, Table, header
 		for z = 1, #clientSorted do
 			client = clientSorted[z]
 			Table = tableList[client]
-			if #Table > 0 then
-				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(format("%s (%s)", battleNetString, clientTags[client] or client))
+			header = format("%s (%s)", battleNetString, clientTags[client] or client)
+			shouldSkip = E.db.datatexts.friends['hide'..client]
+			if (#Table > 0) and not shouldSkip then
 				for i = 1, #Table do
 					info = Table[i]
 					if info[7] then
+						shouldSkip = false
 						if info[8] == true then
+							if E.db.datatexts.friends['hideAFK'] then
+								shouldSkip = true
+							end
 							status = statusTable[1]
 						elseif info[9] == true then
+							if E.db.datatexts.friends['hideDND'] then
+								shouldSkip = true
+							end
 							status = statusTable[2]
 						else
 							status = statusTable[3]
 						end
-						if info[6] == wowString then
-							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
-							if info[16] ~= '' then
-								levelc = GetQuestDifficultyColor(info[16])
+						if not shouldSkip then
+							if info[6] == wowString then
+								classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
+								if info[16] ~= '' then
+									levelc = GetQuestDifficultyColor(info[16])
+								else
+									levelc = RAID_CLASS_COLORS["PRIEST"]
+									classc = RAID_CLASS_COLORS["PRIEST"]
+								end
+
+								--Sometimes the friend list is fubar with level 0 unknown friends
+								if not classc then
+									classc = RAID_CLASS_COLORS["PRIEST"]
+								end
+
+								if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
+								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
+								if IsShiftKeyDown() then
+									if E:GetZoneText(GetCurrentMapAreaID()) == info[15] then zonec = activezone else zonec = inactivezone end
+									if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
+									TooltipAddXLine(true, header, info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+								end
 							else
-								levelc = RAID_CLASS_COLORS["PRIEST"]
-								classc = RAID_CLASS_COLORS["PRIEST"]
-							end
-
-							--Sometimes the friend list is fubar with level 0 unknown friends
-							if not classc then
-								classc = RAID_CLASS_COLORS["PRIEST"]
-							end
-
-							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
-							DT.tooltip:AddDoubleLine(format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
-							if IsShiftKeyDown() then
-								if E:GetZoneText(GetCurrentMapAreaID()) == info[15] then zonec = activezone else zonec = inactivezone end
-								if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
-								DT.tooltip:AddDoubleLine(info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
-							end
-						else
-							DT.tooltip:AddDoubleLine(info[4]..status, info[2], .9, .9, .9, .9, .9, .9)
-							if IsShiftKeyDown() and (info[18] and info[18] ~= '') and (info[6] and info[6] ~= "App" and info[6] ~= "BSAp") then
-								DT.tooltip:AddLine(info[18], inactivezone.r, inactivezone.g, inactivezone.b)
+								TooltipAddXLine(true, header, info[4]..status, info[2], .9, .9, .9, .9, .9, .9)
+								if IsShiftKeyDown() and (info[18] and info[18] ~= '') and (info[6] and info[6] ~= "App" and info[6] ~= "BSAp") then
+									TooltipAddXLine(false, header, info[18], inactivezone.r, inactivezone.g, inactivezone.b)
+								end
 							end
 						end
 					end

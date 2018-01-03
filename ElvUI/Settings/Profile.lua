@@ -818,6 +818,23 @@ P['datatexts'] = {
 	--Time Datatext
 	['localtime'] = true,
 	['time24'] = false,
+	--Friends
+	['friends'] = {
+		--status
+		['hideAFK'] = false,
+		['hideDND'] = false,
+		--clients
+		['hideWoW'] = false,
+		['hideD3'] = false,
+		['hideWTCG'] = false, --Hearthstone
+		['hideHero'] = false, --Heros of the Storm
+		['hidePro'] = false, --Overwatch
+		['hideS1'] = false,
+		['hideS2'] = false,
+		['hideDST2'] = false,
+		['hideBSAp'] = false, --Mobile
+		['hideApp'] = false, --Launcher
+	},
 
 	--Enabled/Disabled Panels
 	['minimapPanels'] = true,

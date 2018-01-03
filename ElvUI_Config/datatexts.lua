@@ -9,8 +9,12 @@ local pairs = pairs
 local type = type
 local NONE = NONE
 local DELETE = DELETE
+local FRIENDS = FRIENDS
 local HideLeftChat = HideLeftChat
 local HideRightChat = HideRightChat
+local HIDE = HIDE.." "
+local AFK = AFK
+local DND = DND
 
 function DT:PanelLayoutOptions()
 	for name, data in pairs(DT.RegisteredDataTexts) do
@@ -157,6 +161,45 @@ local function SetupCustomCurrencies()
 	for currencyID in pairs(E.global.datatexts.customCurrencies) do
 		CreateCustomCurrencyOptions(currencyID)
 	end
+end
+
+local clientTable = {
+	['WoW'] = "WoW",
+	['D3'] = "D3",
+	['WTCG'] = "HS", --Hearthstone
+	['Hero'] = "HotS", --Heros of the Storm
+	['Pro'] = "OW", --Overwatch
+	['S1'] = "SC",
+	['S2'] = "SC2",
+	['DST2'] = "Dst2",
+	['BSAp'] = L["Mobile"],
+	['App'] = "App", --Launcher
+}
+
+local function SetupFriendClient(client, order)
+	local friendDatatextOptions = E.Options.args.datatexts.args.friends.args
+	if not (friendDatatextOptions and client and order) then return end --safety
+	local clientName = 'hide'..client
+	friendDatatextOptions[clientName] = {
+		order = order,
+		type = 'toggle',
+		name = HIDE..(clientTable[client] or client),
+		get = function(info) return E.db.datatexts.friends[clientName] or false end,
+		set = function(info, value) E.db.datatexts.friends[clientName] = value; DT:LoadDataTexts() end,
+	}
+end
+
+local function SetupFriendClients() --this function is used to create the client options in order
+	SetupFriendClient('App', 4)
+	SetupFriendClient('BSAp', 5)
+	SetupFriendClient('WoW', 6)
+	SetupFriendClient('D3', 7)
+	SetupFriendClient('WTCG', 8)
+	SetupFriendClient('Hero', 9)
+	SetupFriendClient('Pro', 10)
+	SetupFriendClient('S1', 11)
+	SetupFriendClient('S2', 12)
+	SetupFriendClient('DST2', 13)
 end
 
 E.Options.args.datatexts = {
@@ -469,8 +512,34 @@ E.Options.args.datatexts = {
 				},
 			},
 		},
-		customCurrency = {
+		friends = {
 			order = 7,
+			type = "group",
+			name = FRIENDS,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = FRIENDS,
+				},
+				hideAFK = {
+					order = 2,
+					type = 'toggle',
+					name = HIDE..AFK,
+					get = function(info) return E.db.datatexts.friends.hideAFK end,
+					set = function(info, value) E.db.datatexts.friends.hideAFK = value; DT:LoadDataTexts() end,
+				},
+				hideDND = {
+					order = 3,
+					type = 'toggle',
+					name = HIDE..DND,
+					get = function(info) return E.db.datatexts.friends.hideDND end,
+					set = function(info, value) E.db.datatexts.friends.hideDND = value; DT:LoadDataTexts() end,
+				},
+			},
+		},
+		customCurrency = {
+			order = 8,
 			type = "group",
 			name = L["Custom Currency"],
 			args = {
@@ -520,3 +589,4 @@ E.Options.args.datatexts = {
 
 DT:PanelLayoutOptions()
 SetupCustomCurrencies()
+SetupFriendClients()
