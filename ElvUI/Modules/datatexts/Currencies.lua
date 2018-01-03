@@ -42,28 +42,24 @@ function DT:Currencies_GetCurrencyList()
 	return currencyList
 end
 
-local gold
-local chosenCurrency, currencyAmount
+local gold, chosenCurrency, currencyAmount
 
 local function OnClick()
 	ToggleCharacter("TokenFrame")
 end
 
 local function OnEvent(self)
-	gold = GetMoney();
-	if E.db.datatexts.currencies.displayedCurrency == "GOLD" then
+	gold, chosenCurrency = GetMoney(), Currencies[E.db.datatexts.currencies.displayedCurrency]
+	if E.db.datatexts.currencies.displayedCurrency == "GOLD" or chosenCurrency == nil then
 		self.text:SetText(E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
 	else
-		chosenCurrency = Currencies[E.db.datatexts.currencies.displayedCurrency]
-		if chosenCurrency then
-			currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
-			if E.db.datatexts.currencies.displayStyle == "ICON" then
-				self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
-			elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
-				self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, chosenCurrency.NAME, currencyAmount)
-			else --ICON_TEXT_ABBR
-				self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, E:AbbreviateString(chosenCurrency.NAME), currencyAmount)
-			end
+		currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
+		if E.db.datatexts.currencies.displayStyle == "ICON" then
+			self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
+		elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
+			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, chosenCurrency.NAME, currencyAmount)
+		else --ICON_TEXT_ABBR
+			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, E:AbbreviateString(chosenCurrency.NAME), currencyAmount)
 		end
 	end
 end
