@@ -430,6 +430,7 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
+	lastTooltipXLineHeader = nil
 
 	local numberOfFriends, onlineFriends = GetNumFriends()
 	local totalBNet, numBNetOnline = BNGetNumFriends()
