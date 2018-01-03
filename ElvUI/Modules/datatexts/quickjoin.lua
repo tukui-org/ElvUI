@@ -6,6 +6,10 @@ local UNKNOWN = UNKNOWN
 local QUICK_JOIN = QUICK_JOIN
 
 --Lua functions
+local next = next
+local pairs = pairs
+local type = type
+local select = select
 local join = string.join
 local twipe = table.wipe
 local format = string.format
