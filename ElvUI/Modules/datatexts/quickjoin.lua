@@ -34,10 +34,13 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
+local CHAT
 local function OnEvent(self)
 	twipe(quickJoin)
 	quickJoinGroups = C_SocialQueue.GetAllGroups()
-	local CHAT = E:GetModule("Chat") --load order issue requires this to be here, could probably change load order to fix...
+
+	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
+
 	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityID, activityName, comment, leaderName, isLeader, activityFullName, activity, output, outputCount, queueCount, queueName, _
 
 	for _, guid in pairs(quickJoinGroups) do
