@@ -230,7 +230,6 @@ local smileyKeys = {
 	["</3"]="BrokenHeart",
 };
 
-
 local rolePaths = {
 	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank.tga:15:15:0:0:64:64:2:56:2:56|t]],
 	HEALER = [[|TInterface\AddOns\ElvUI\media\textures\healer.tga:15:15:0:0:64:64:2:56:2:56|t]],
@@ -242,7 +241,7 @@ do --this can save some main file locals
 	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
 	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
 	local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
-	--local ElvRed = IconPath.."elvui_red.tga:13:25|t"
+	local ElvRed = IconPath.."elvui_red.tga:13:25|t"
 	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
 	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
 	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
@@ -257,6 +256,9 @@ do --this can save some main file locals
 		["Sinth-Spirestone"] = MrHankey,
 		-- Merathilis --
 		["Merathilis-Shattrath"] = ElvOrange, --Druid
+		["Merathilîs-Shattrath"] = ElvBlue, --Shaman
+		["Damará-Shattrath"] = ElvRed, --Paladin
+		["Asragoth-Shattrath"] = ElvBlue, --Warlock
 		-- Affinity's Toons --
 		["Affinichi-Illidan"] = Bathrobe,
 		["Uplift-Illidan"] = Bathrobe,
@@ -557,7 +559,6 @@ function CH:StyleChat(frame)
 		else
 			self:SetAlpha(0)
 		end
-
 	end)
 
 	CreatedFrames = id
@@ -1271,7 +1272,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		if ( type == "SYSTEM" or type == "SKILL" or type == "CURRENCY" or type == "MONEY" or
-		     type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
+			type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
 			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
 		elseif (type == "LOOT") then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
@@ -2369,7 +2370,6 @@ function CH:Initialize()
 	close:EnableMouse(true)
 
 	S:HandleCloseButton(close)
-
 
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
