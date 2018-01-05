@@ -445,7 +445,7 @@ E.Options.args.datatexts = {
 					name = L["Displayed Currency"],
 					get = function(info) return E.db.datatexts.currencies.displayedCurrency end,
 					set = function(info, value) E.db.datatexts.currencies.displayedCurrency = value; DT:LoadDataTexts() end,
-					values = function() return DT:Currencies_GetCurrencyList() end,
+					values = DT.CurrencyList,
 				},
 				displayStyle = {
 					order = 3,

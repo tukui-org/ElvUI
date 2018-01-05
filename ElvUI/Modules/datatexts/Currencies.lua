@@ -31,29 +31,26 @@ local Currencies = {
 	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(515)), 16, 16)},
 }
 
-local currencyList
-function DT:Currencies_GetCurrencyList()
-	currencyList = {}
-	for currency, data in pairs(Currencies) do
-		currencyList[currency] = data.NAME
-	end
-	currencyList["GOLD"] = BONUS_ROLL_REWARD_MONEY
-
-	return currencyList
+-- CurrencyList for config
+local currencyList = {}
+for currency, data in pairs(Currencies) do
+	currencyList[currency] = data.NAME
 end
-
-local gold, chosenCurrency, currencyAmount
+currencyList["GOLD"] = BONUS_ROLL_REWARD_MONEY
+DT.CurrencyList = currencyList
 
 local function OnClick()
 	ToggleCharacter("TokenFrame")
 end
 
+local goldText
 local function OnEvent(self)
-	gold, chosenCurrency = GetMoney(), Currencies[E.db.datatexts.currencies.displayedCurrency]
+	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
+	local chosenCurrency = Currencies[E.db.datatexts.currencies.displayedCurrency]
 	if E.db.datatexts.currencies.displayedCurrency == "GOLD" or chosenCurrency == nil then
-		self.text:SetText(E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
+		self.text:SetText(goldText)
 	else
-		currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
+		local currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
 		if E.db.datatexts.currencies.displayStyle == "ICON" then
 			self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
 		elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
@@ -67,7 +64,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	DT.tooltip:AddDoubleLine(L["Gold"]..":", E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Gold"]..":", goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME6) --"Legion"
