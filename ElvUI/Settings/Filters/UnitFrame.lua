@@ -1226,10 +1226,10 @@ G.unitframe.buffwatch = {
 		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), -- Earth Shield (Honor Talent)
 	},
 	MONK = {
-		[119611] = ClassBuff(119611, "TOPLEFT", {0.3, 0.8, 0.6}),       -- Renewing Mist
-		[116849] = ClassBuff(116849, "TOPRIGHT", {0.2, 0.8, 0.2}),      -- Life Cocoon
-		[124682] = ClassBuff(124682, "BOTTOMLEFT", {0.8, 0.8, 0.25}),   -- Enveloping Mist
-		[191840] = ClassBuff(191840, "BOTTOMRIGHT", {0.27, 0.62, 0.7}), -- Essence Font
+		[119611] = ClassBuff(119611, "TOPLEFT", {0.3, 0.8, 0.6}),        -- Renewing Mist
+		[116849] = ClassBuff(116849, "TOPRIGHT", {0.2, 0.8, 0.2}, true), -- Life Cocoon
+		[124682] = ClassBuff(124682, "BOTTOMLEFT", {0.8, 0.8, 0.25}),    -- Enveloping Mist
+		[191840] = ClassBuff(191840, "BOTTOMRIGHT", {0.27, 0.62, 0.7}),  -- Essence Font
 	},
 	ROGUE = {
 		[57934] = ClassBuff(57934, "TOPRIGHT", {0.89, 0.09, 0.05}), -- Tricks of the Trade
