@@ -135,6 +135,13 @@ function mod:UpdateHonorDimensions()
 	self.honorBar.statusBar:SetOrientation(self.db.honor.orientation)
 	self.honorBar.statusBar:SetReverseFill(self.db.honor.reverseFill)
 	self.honorBar.text:FontTemplate(LSM:Fetch("font", self.db.honor.font), self.db.honor.textSize, self.db.honor.fontOutline)
+
+	if self.db.honor.orientation == "HORIZONTAL" then
+		self.honorBar.statusBar:SetRotatesTexture(false)
+	else
+		self.honorBar.statusBar:SetRotatesTexture(true)
+	end
+
 	if self.db.honor.mouseover then
 		self.honorBar:SetAlpha(0)
 	else

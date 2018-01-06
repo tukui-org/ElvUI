@@ -138,6 +138,14 @@ function mod:UpdateArtifactDimensions()
 	self.artifactBar.bagValue:SetOrientation(self.db.artifact.orientation)
 	self.artifactBar.bagValue:SetReverseFill(self.db.artifact.reverseFill)
 
+	if self.db.artifact.orientation == "HORIZONTAL" then
+		self.artifactBar.statusBar:SetRotatesTexture(false)
+		self.artifactBar.bagValue:SetRotatesTexture(false)
+	else
+		self.artifactBar.statusBar:SetRotatesTexture(true)
+		self.artifactBar.bagValue:SetRotatesTexture(true)
+	end
+
 	self.artifactBar.text:FontTemplate(LSM:Fetch("font", self.db.artifact.font), self.db.artifact.textSize, self.db.artifact.fontOutline)
 	if self.db.artifact.mouseover then
 		self.artifactBar:SetAlpha(0)

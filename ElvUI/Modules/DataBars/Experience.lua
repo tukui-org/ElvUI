@@ -135,6 +135,14 @@ function mod:UpdateExperienceDimensions()
 	self.expBar.statusBar:SetOrientation(self.db.experience.orientation)
 	self.expBar.rested:SetReverseFill(self.db.experience.reverseFill)
 
+	if self.db.experience.orientation == "HORIZONTAL" then
+		self.expBar.rested:SetRotatesTexture(false)
+		self.expBar.statusBar:SetRotatesTexture(false)
+	else
+		self.expBar.rested:SetRotatesTexture(true)
+		self.expBar.statusBar:SetRotatesTexture(true)
+	end
+
 	if self.db.experience.mouseover then
 		self.expBar:SetAlpha(0)
 	else
