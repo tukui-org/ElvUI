@@ -16,6 +16,7 @@ Fixed issue with arena frames displaying wrong unit in PvP Brawls.
 **Misc. Changes:**  
 Various tweaks and fixes to skins.  
 Tweaked sorting in the Friends datatext so WoW is always on top.  
+Updated some of the Priest, Monk, and Paladin Buff Indicator spells.  
 
 ___
 **Version 10.70 [ December 26th 2017 ]**
