@@ -1192,12 +1192,13 @@ end
 
 G.unitframe.buffwatch = {
 	PRIEST = {
-		[194384] = ClassBuff(194384, "TOPRIGHT", {1, 0, 0.75}),        -- Atonement
-		[41635] = ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),          -- Prayer of Mending
-		[139] = ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}),               -- Renew
-		[17] = ClassBuff(17, "TOPLEFT", {0.81, 0.85, 0.1}, true),            -- Power Word: Shield
-		[47788] = ClassBuff(47788, "LEFT", {221/255, 117/255, 0}, true),     -- Guardian Spirit
-		[33206] = ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression
+		[194384] = ClassBuff(194384, "TOPRIGHT", {1, 1, 0.66}),          -- Atonement
+		[41635] = ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),      -- Prayer of Mending
+		[193065] = ClassBuff(193065, "BOTTOMRIGHT", {0.54, 0.21, 0.78}), -- Masochism
+		[139] = ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}),           -- Renew
+		[17] = ClassBuff(17, "TOPLEFT", {0.7, 0.7, 0.7}, true),          -- Power Word: Shield
+		[47788] = ClassBuff(47788, "LEFT", {0.86, 0.45, 0}, true),       -- Guardian Spirit
+		[33206] = ClassBuff(33206, "LEFT", {0.47, 0.35, 0.74}, true),    -- Pain Suppression
 	},
 	DRUID = {
 		[774] = ClassBuff(774, "TOPRIGHT", {0.8, 0.4, 0.8}),      -- Rejuvenation
@@ -1218,10 +1219,10 @@ G.unitframe.buffwatch = {
 		[1022] = ClassBuff(1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true),    -- Hand of Protection
 		[1044] = ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),  -- Hand of Freedom
 		[6940] = ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
-		[223306] = ClassBuff(223306, 'BOTTOMLEFT', {0.87, 0.7, 0.03}),   -- Bestow Faith
+		[223306] = ClassBuff(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),     -- Bestow Faith
 	},
 	SHAMAN = {
-		[61295] = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}), -- Riptide
+		[61295] = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),    -- Riptide
 		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), -- Earth Shield (Honor Talent)
 	},
 	MONK = {
@@ -1231,15 +1232,18 @@ G.unitframe.buffwatch = {
 		[124081] = ClassBuff(124081, "BOTTOMRIGHT", {0.7, 0.4, 0}),  -- Zen Sphere
 	},
 	ROGUE = {
-		[57934] = ClassBuff(57934, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Tricks of the Trade
+		[57934] = ClassBuff(57934, "TOPRIGHT", {0.89, 0.09, 0.05}), -- Tricks of the Trade
 	},
 	WARRIOR = {
-		[114030] = ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}),          -- Vigilance
-		[3411] = ClassBuff(3411, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Intervene
+		[114030] = ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}),   -- Vigilance
+		[3411] = ClassBuff(3411, "TOPRIGHT", {0.89, 0.09, 0.05}), -- Intervene
 	},
 	PET = {
-		[19615] = ClassBuff(19615, 'TOPLEFT', {227/255, 23/255, 13/255}, true), -- Frenzy
-		[136] = ClassBuff(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true) --Mend Pet
+		-- Warlock Pets
+		[193396] = ClassBuff(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true), -- Demonic Empowerment
+		-- Hunter Pets
+		[19615] = ClassBuff(19615, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
+		[136] = ClassBuff(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)        -- Mend Pet
 	},
 	HUNTER = {}, --Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
 	DEMONHUNTER = {},
@@ -1300,10 +1304,10 @@ G.unitframe.HastedChannelTicks = {
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825] = {r = 250/255, g = 146/255, b = 27/255},  --Bloodlust
-	[32182] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
-	[80353] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
-	[90355] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
+	[2825] = {r = 0.98, g = 0.57, b = 0.10},  --Bloodlust
+	[32182] = {r = 0.98, g = 0.57, b = 0.10}, --Heroism
+	[80353] = {r = 0.98, g = 0.57, b = 0.10}, --Time Warp
+	[90355] = {r = 0.98, g = 0.57, b = 0.10}, --Ancient Hysteria
 }
 
 G.unitframe.DebuffHighlightColors = {
