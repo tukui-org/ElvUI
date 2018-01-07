@@ -524,11 +524,11 @@ function B:UpdateAllSlots()
 			self.Bags[bagID]:UpdateBagSlots(bagID);
 		end
 	end
-	
+
 	--Refresh search in case we moved items around
 	if B:IsSearching() then
 		B:SetSearch(SEARCH_STRING);
-	end	
+	end
 end
 
 function B:SetSlotAlphaForBag(f)

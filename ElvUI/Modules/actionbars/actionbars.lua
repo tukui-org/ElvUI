@@ -1225,7 +1225,7 @@ function AB:Initialize()
 	LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") --Keep an eye on this, in case it taints
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-	
+
 	self:ToggleDesaturation()
 end
 

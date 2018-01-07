@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
-local S = E:GetModule('Skins')
 E.Blizzard = B;
 
 --No point caching anything here, but list them here for mikk's FindGlobals script

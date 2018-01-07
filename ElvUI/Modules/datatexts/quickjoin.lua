@@ -45,12 +45,12 @@ local function OnEvent(self)
 
 	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
 
-	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityID, activityName, comment, leaderName, isLeader, activityFullName, activity, output, outputCount, queueCount, queueName, _
+	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityID, activityName, leaderName, isLeader, activityFullName, activity, output, queueCount, queueName, _
 
 	for _, guid in pairs(quickJoinGroups) do
 		coloredName, players = UNKNOWN, C_SocialQueue.GetGroupMembers(guid)
 		members = players and SocialQueueUtil_SortGroupMembers(players)
-		playerName, nameColor = "", ""
+		playerName = ""
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
@@ -71,7 +71,7 @@ local function OnEvent(self)
 		if isLFGList and firstQueue and firstQueue.eligible then
 
 			if firstQueue.queueData.lfgListID then
-				_, activityID, activityName, comment, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(firstQueue.queueData.lfgListID)
+				_, activityID, activityName, _, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(firstQueue.queueData.lfgListID)
 				isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
 			end
 
@@ -88,7 +88,7 @@ local function OnEvent(self)
 				activity = format("[+%s]%s", numQueues - 1, activity)
 			end
 		elseif firstQueue then
-			output, outputCount, queueCount = '', '', 0
+			output, queueCount = '', 0
 			for _, queue in pairs(queues) do
 				if type(queue) == 'table' and queue.eligible then
 					queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''

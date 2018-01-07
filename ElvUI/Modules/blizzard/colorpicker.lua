@@ -140,7 +140,7 @@ function B:EnhanceColorPicker()
 			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus() end)
 			self:Width(345)
 		end
-		
+
 		--Set OnUpdate script to handle update limiter
 		self:SetScript("OnUpdate", HandleUpdateLimiter)
 	end)

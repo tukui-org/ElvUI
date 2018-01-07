@@ -1259,7 +1259,7 @@ function E:UnregisterEventForObject(event, object, func)
 		if #EventRegister[event][object] == 0 then
 			EventRegister[event][object] = nil
 		end
-		
+
 		--If this event no longer has any objects registered then unregister it and remove it from the register
 		if not next(EventRegister[event]) then
 			EventFrame:UnregisterEvent(event)
