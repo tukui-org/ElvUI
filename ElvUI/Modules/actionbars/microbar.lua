@@ -9,6 +9,7 @@ local assert = assert
 local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
+local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_MicroBar, MainMenuBarPerformanceBar, MainMenuMicroButton
@@ -82,14 +83,23 @@ local __buttons = {}
 	end
 -- end
 
-function AB:UpdateMicroPositionDimensions()
-	if not ElvUI_MicroBar then return end
-
+function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
-		AB.NeedsUpdateMicroPositionDimensions = true
+		AB.NeedsUpdateMicroBarVisibility = true
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
+
+	local visibility = self.db.microbar.visibility
+	if visibility and visibility:match('[\n\r]') then
+		visibility = visibility:gsub('[\n\r]','')
+	end
+
+	RegisterStateDriver(ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide");
+end
+
+function AB:UpdateMicroPositionDimensions()
+	if not ElvUI_MicroBar then return end
 
 	local numRows = 1
 	local prevButton = ElvUI_MicroBar
@@ -124,13 +134,6 @@ function AB:UpdateMicroPositionDimensions()
 	AB.MicroHeight = (((_G["CharacterMicroButton"]:GetHeight() - 26) * numRows)-numRows)-1
 	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
 
-	local visibility = self.db.microbar.visibility
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
-	end
-
-	RegisterStateDriver(ElvUI_MicroBar, "visibility", (self.db.microbar.enabled and visibility) or "hide");
-
 	if ElvUI_MicroBar.mover then
 		if self.db.microbar.enabled then
 			E:EnableMover(ElvUI_MicroBar.mover:GetName())
@@ -138,6 +141,8 @@ function AB:UpdateMicroPositionDimensions()
 			E:DisableMover(ElvUI_MicroBar.mover:GetName())
 		end
 	end
+
+	self:UpdateMicroBarVisibility()
 end
 
 function AB:UpdateMicroButtons()
@@ -147,8 +152,12 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent, 'SecureHandlerStateTemplate')
+	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
+
+	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
+	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
+	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
 
 	E.FrameLocks["ElvUI_MicroBar"] = true;
 	for i=1, #MICRO_BUTTONS do

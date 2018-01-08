@@ -415,9 +415,9 @@ function AB:PLAYER_REGEN_ENABLED()
 		self:UpdateButtonSettings()
 		AB.NeedsUpdateButtonSettings = nil
 	end
-	if AB.NeedsUpdateMicroPositionDimensions then
-		self:UpdateMicroPositionDimensions()
-		AB.NeedsUpdateMicroPositionDimensions = nil
+	if AB.NeedsUpdateMicroBarVisibility then
+		self:UpdateMicroBarVisibility()
+		AB.NeedsUpdateMicroBarVisibility = nil
 	end
 	if AB.NeedsAdjustMaxStanceButtons then
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
