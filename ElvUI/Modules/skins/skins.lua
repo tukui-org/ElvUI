@@ -116,8 +116,7 @@ function S:HandleButton(f, strip)
 
 	if strip then f:StripTextures() end
 
-	f:CreateBackdrop("Default", true)
-	f.backdrop:SetAllPoints()
+	f:SetTemplate("Default", true)
 	f:HookScript("OnEnter", S.SetModifiedBackdrop)
 	f:HookScript("OnLeave", S.SetOriginalBackdrop)
 end
