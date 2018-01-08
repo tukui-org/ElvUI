@@ -11,6 +11,7 @@ Added options to hide specific sections in the Friends datatext tooltip.
 Fixed issue with missing border colors on some elements after a login or reload.  
 Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly.  
 Fixed issue with arena frames displaying wrong unit in PvP Brawls.  
+Fixed issue which caused the MicroBars position to be misplaced during combat.  
 
 
 **Misc. Changes:**  
