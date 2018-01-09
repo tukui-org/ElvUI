@@ -4,6 +4,7 @@
 Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
 Added option to control the amount of decimals used for values on elements like NamePlates and UnitFrames.  
 Added new "Quick Join" datatext.  
+Added new style filter action "Power Color".  
 Added options to hide specific sections in the Friends datatext tooltip.  
 
 
@@ -18,6 +19,7 @@ Fixed issue which caused the MicroBar position to be misplaced during combat.
 Various tweaks and fixes to skins.  
 Tweaked sorting in the Friends datatext so WoW is always on top.  
 Updated some of the Priest, Monk, and Paladin Buff Indicator spells.  
+Style Filter border color action now applies to the Power Bar border as well.  
 
 ___
 **Version 10.70 [ December 26th 2017 ]**
