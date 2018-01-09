@@ -177,7 +177,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		E.frames[frame.HealthBar.backdrop] = nil --Lets lock this to the values we want (needed for when the media border color changes)
+		E.frames[frame.HealthBar.backdrop] = nil -- dont allow these border colors to update for now
 		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
 			E.frames[frame.PowerBar.backdrop] = nil
@@ -297,7 +297,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
-		E.frames[frame.HealthBar.backdrop] = true
+		E.frames[frame.HealthBar.backdrop] = true -- restore these borders to be updated
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
 			E.frames[frame.PowerBar.backdrop] = true
