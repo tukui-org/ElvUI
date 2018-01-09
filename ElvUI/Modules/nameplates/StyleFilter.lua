@@ -157,7 +157,7 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
+function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
@@ -270,7 +270,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
+function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
@@ -729,18 +729,18 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
 		(healthBarShown and actions.texture and actions.texture.enable), --TextureChanged
 		(healthBarShown and actions.scale and actions.scale ~= 1), --ScaleChanged
+		(actions.frameLevel and actions.frameLevel ~= 0), --FrameLevelChanged
 		(actions.alpha and actions.alpha ~= -1), --AlphaChanged
 		(actions.color and actions.color.name), --NameColorChanged
 		(actions.usePortrait), --PortraitShown
 		(actions.nameOnly), --NameOnlyChanged
-		(actions.hide), --VisibilityChanged
-		(actions.frameLevel and actions.frameLevel ~= 0) --FrameLevelChanged
+		(actions.hide) --VisibilityChanged
 	)
 end
 
 function mod:ClearStyledPlate(frame)
 	if frame.StyleChanged then
-		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged, frame.FrameLevelChanged)
+		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.FrameLevelChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
 
