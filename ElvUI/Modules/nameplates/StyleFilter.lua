@@ -126,21 +126,6 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
-	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
-	backdrop:SetBackdropBorderColor(r, g, b, a)
-	if not backdrop.StyleFilterBorderColorHooked then
-		backdrop.StyleFilterBorderColorHooked = true
-		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(bd, bdr, bdg, bdb, bda)
-			if bd:GetParent():GetParent().BorderChanged then --only call this for ones we lock
-				if bdr ~= bd.r or bdg ~= bd.g or bdb ~= bd.b or bda ~= bd.a then
-					bd:SetBackdropBorderColor(bd.r, bd.g, bd.b, bd.a)
-				end
-			end
-		end)
-	end
-end
-
 function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
 	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -189,12 +174,14 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.PowerColorChanged = true
 		frame.PowerBar:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a);
 	end
-	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
+	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		self:StyleFilterBorderColorLock(frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		E.frames[frame.HealthBar.backdrop] = nil --Lets lock this to the values we want (needed for when the media border color changes)
+		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
-			self:StyleFilterBorderColorLock(frame.PowerBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+			E.frames[frame.PowerBar.backdrop] = nil
+			frame.PowerBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 	end
 	if FlashingHealth then
@@ -310,8 +297,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
+		E.frames[frame.HealthBar.backdrop] = true
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
+			E.frames[frame.PowerBar.backdrop] = true
 			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
