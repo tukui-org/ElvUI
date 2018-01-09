@@ -3487,18 +3487,13 @@ E.Options.args.nameplate = {
 					type = 'execute',
 					buttonElvUI = true,
 					func = function()
-						if G.nameplate.filters[selectedNameplateFilter] then
-							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable = false;
-							E:Print(L["You can't remove a default name from the filter, disabling the name."])
-						else
-							for profile in pairs(E.data.profiles) do
-								if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] then
-									E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] = nil;
-								end
+						for profile in pairs(E.data.profiles) do
+							if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] then
+								E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] = nil;
 							end
-							E.global.nameplate.filters[selectedNameplateFilter] = nil;
-							selectedNameplateFilter = nil;
 						end
+						E.global.nameplate.filters[selectedNameplateFilter] = nil;
+						selectedNameplateFilter = nil;
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
