@@ -193,6 +193,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.BorderChanged = true
 		self:StyleFilterBorderColorLock(frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
+			self:StyleFilterBorderColorLock(frame.PowerBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		end
 	end
 	if FlashingHealth then
 		frame.StyleChanged = true
@@ -308,6 +311,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if BorderChanged then
 		frame.BorderChanged = nil
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
+			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
 	end
 	if FlashingHealth then
 		frame.FlashingHealth = nil
