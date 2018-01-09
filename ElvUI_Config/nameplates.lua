@@ -3485,6 +3485,7 @@ E.Options.args.nameplate = {
 					order = 3,
 					name = L["Remove Nameplate Filter"],
 					type = 'execute',
+					buttonElvUI = true,
 					func = function()
 						if G.nameplate.filters[selectedNameplateFilter] then
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable = false;
@@ -3501,6 +3502,7 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup();
 						NP:ConfigureAll()
 					end,
+					disabled = function() return G.nameplate.filters[selectedNameplateFilter] end,
 					hidden = function() return selectedNameplateFilter == nil end,
 				},
 			},

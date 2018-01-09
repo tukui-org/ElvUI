@@ -1417,6 +1417,7 @@ E.Options.args.filters = {
 		deleteFilter = {
 			type = 'execute',
 			order = 3,
+			buttonElvUI = true,
 			name = L["Delete Filter"],
 			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 			func = function()
