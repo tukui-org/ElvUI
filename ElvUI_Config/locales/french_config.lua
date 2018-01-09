@@ -558,7 +558,6 @@ L["# Displayed Auras"] = "Auras affichées"
 L["Actions"] = "Actions"
 L["Add a Name or NPC ID to the list."] = "Ajouter le nom ou l'ID d'un PNJ à la liste"
 L["Add Name or NPC ID"] = "Ajouter le nom ou l'ID d'un PNJ"
-L["Add Nameplate Filter"] = "Ajouter un filtre pour les barres de noms"
 L["Add Regular Filter"] = "Ajouter un filtre"
 L["Add Special Filter"] = "Ajouter un filtre spécial"
 L["Always Show Target Health"] = "Toujours voir la vie de la cible"
@@ -711,13 +710,11 @@ L["Reaction Colors"] = true
 L["Reaction Type"] = true
 L["Remove a Name or NPC ID from the list."] = true
 L["Remove Name or NPC ID"] = true
-L["Remove Nameplate Filter"] = true
 L["Require All"] = true
 L["Reset filter priority to the default state."] = true
 L["Reset Priority"] = true
 L["Return filter to its default state."] = true
 L["Scale of the nameplate that is targetted."] = true
-L["Select Nameplate Filter"] = true
 L["Set Settings to Default"] = true
 L["Set the transparency level of nameplates that are not the target nameplate."] = true
 L["Set to either stack nameplates vertically or allow them to overlap."] = true
@@ -764,7 +761,6 @@ L["Use Tanked Color when a nameplate is being effectively tanked by another tank
 L["Use Target Scale"] = true
 L["Use Threat Color"] = true
 L["When enabled the nameplate will stay visible in a locked position."] = true
-L["You can't remove a default name from the filter, disabling the name."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "Filtres d'auras"
@@ -1198,7 +1194,6 @@ L["Width"] = "Largeur" --Also used in NamePlates module
 L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."] = "Voir les améliorations avec les affaiblissements quand il n'y a pas d'affaiblissement actif, et vice versa."
 L["xOffset"] = "Décalage de l'axe X"
 L["yOffset"] = "Décalage de l'axe Y" --Another variation in bags section Y Offset
-L["You can't remove a pre-existing filter."] = "Vous ne pouvez pas supprimer un filtre préexistant."
 L["You cannot copy settings from the same unit."] = "Vous ne pouvez pas copier les réglages du même cadre."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Vous ne pouvez pas supprimer un sort du filtre qui est par défaut.configurer le sort en 'désactivé'."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Vous devez maintenir le modifieur enfoncé pour retirer une aura en cliquant du droit sur l'icône. Sélectionnez Aucun pour désactiver la liste noire."

@@ -558,7 +558,6 @@ L["# Displayed Auras"] = true
 L["Actions"] = true
 L["Add a Name or NPC ID to the list."] = true
 L["Add Name or NPC ID"] = true
-L["Add Nameplate Filter"] = true
 L["Add Regular Filter"] = true
 L["Add Special Filter"] = true
 L["Always Show Target Health"] = true
@@ -711,13 +710,11 @@ L["Reaction Colors"] = true
 L["Reaction Type"] = true
 L["Remove a Name or NPC ID from the list."] = true
 L["Remove Name or NPC ID"] = true
-L["Remove Nameplate Filter"] = true
 L["Require All"] = true
 L["Reset filter priority to the default state."] = true
 L["Reset Priority"] = true
 L["Return filter to its default state."] = true
 L["Scale of the nameplate that is targetted."] = true
-L["Select Nameplate Filter"] = true
 L["Set Settings to Default"] = true
 L["Set the transparency level of nameplates that are not the target nameplate."] = true
 L["Set to either stack nameplates vertically or allow them to overlap."] = true
@@ -764,7 +761,6 @@ L["Use Tanked Color when a nameplate is being effectively tanked by another tank
 L["Use Target Scale"] = true
 L["Use Threat Color"] = true
 L["When enabled the nameplate will stay visible in a locked position."] = true
-L["You can't remove a default name from the filter, disabling the name."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = true
@@ -1198,7 +1194,6 @@ L["Width"] = "Comprimento"
 L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."] = true
 L["xOffset"] = "Distância X"
 L["yOffset"] = "Distância Y"
-L["You can't remove a pre-existing filter."] = "Você não pode remover um filtro pré-existente."
 L["You cannot copy settings from the same unit."] = "Você não pode copiar as configurações da mesma unidade."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Você não pode remover um feitiço de um filtro padrão que não seja um feitiço personalizado. Em vez disso definindo feitiço para falso."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = true
