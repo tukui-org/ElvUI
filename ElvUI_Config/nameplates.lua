@@ -3444,7 +3444,7 @@ E.Options.args.nameplate = {
 			args = {
 				addFilter = {
 					order = 1,
-					name = L["Add Nameplate Filter"],
+					name = L["Create Filter"],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -3463,7 +3463,7 @@ E.Options.args.nameplate = {
 					end,
 				},
 				selectFilter = {
-					name = L["Select Nameplate Filter"],
+					name = L["Select Filter"],
 					type = 'select',
 					order = 2,
 					get = function(info) return selectedNameplateFilter end,
@@ -3483,7 +3483,8 @@ E.Options.args.nameplate = {
 				},
 				removeFilter = {
 					order = 3,
-					name = L["Remove Nameplate Filter"],
+					name = L["Delete Filter"],
+					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 					type = 'execute',
 					buttonElvUI = true,
 					func = function()
