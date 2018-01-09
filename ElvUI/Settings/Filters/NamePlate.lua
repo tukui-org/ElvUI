@@ -176,9 +176,11 @@ E["StyleFilterDefaults"] = {
 	["actions"] = {
 		["color"] = {
 			["health"] = false,
+			["power"] = false,
 			["border"] = false,
 			["name"] = false,
 			["healthColor"] = {r=1,g=1,b=1,a=1},
+			["powerColor"] = {r=1,g=1,b=1,a=1},
 			["borderColor"] = {r=1,g=1,b=1,a=1},
 			["nameColor"] = {r=1,g=1,b=1,a=1}
 		},

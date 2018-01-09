@@ -42,6 +42,7 @@ local UnitName = UnitName
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
+local PowerBarColor = PowerBarColor
 
 local C_Timer_After = C_Timer.After
 
@@ -157,7 +158,7 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
@@ -182,6 +183,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		frame.StyleChanged = true
 		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+	end
+	if PowerColorChanged then
+		frame.StyleChanged = true
+		frame.PowerColorChanged = true
+		frame.PowerBar:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a);
 	end
 	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
 		frame.StyleChanged = true
@@ -270,7 +276,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
+local temp = {r = 1, b = 1, g = 1}
+function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
@@ -290,6 +297,13 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
+	end
+	if PowerColorChanged then
+		frame.PowerColorChanged = nil
+		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or temp
+		if color then
+			frame.PowerBar:SetStatusBarColor(color.r, color.g, color.b)
+		end
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
@@ -725,6 +739,7 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 	local healthBarShown = frame.HealthBar:IsShown()
 	self:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
+		(healthBarShown and actions.color and actions.color.power), --PowerColorChanged
 		(healthBarShown and actions.color and actions.color.border and frame.HealthBar.backdrop), --BorderChanged
 		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
 		(healthBarShown and actions.texture and actions.texture.enable), --TextureChanged
@@ -740,7 +755,7 @@ end
 
 function mod:ClearStyledPlate(frame)
 	if frame.StyleChanged then
-		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.FrameLevelChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.FrameLevelChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
 

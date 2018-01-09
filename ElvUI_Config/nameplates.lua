@@ -1642,15 +1642,41 @@ local function UpdateFilterGroup()
 							type = "description",
 							name = " ",
 						},
+						power = {
+							name = L["Power"],
+							order = 4,
+							type = 'toggle',
+						},
+						powerColor = {
+							name = L["Power Color"],
+							type = 'color',
+							order = 5,
+							hasAlpha = true,
+							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.power end,
+							get = function(info)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.powerColor
+								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.powerColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+						},
+						spacer2 = {
+							order = 6,
+							type = "description",
+							name = " ",
+						},
 						border = {
 							name = L["Border"],
-							order = 4,
+							order = 7,
 							type = 'toggle',
 						},
 						borderColor = {
 							name = L["Border Color"],
 							type = 'color',
-							order = 5,
+							order = 8,
 							hasAlpha = true,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.border end,
 							get = function(info)
@@ -1663,20 +1689,20 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						spacer2 = {
-							order = 6,
+						spacer3 = {
+							order = 9,
 							type = "description",
 							name = " ",
 						},
 						name = {
 							name = L["Name"],
-							order = 7,
+							order = 10,
 							type = 'toggle',
 						},
 						nameColor = {
 							name = L["Name Color"],
 							type = 'color',
-							order = 8,
+							order = 11,
 							hasAlpha = true,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.name end,
 							get = function(info)
