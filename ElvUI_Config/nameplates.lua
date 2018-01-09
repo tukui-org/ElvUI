@@ -1570,11 +1570,13 @@ local function UpdateFilterGroup()
 					order = 2,
 					type = 'toggle',
 					name = L["Use Portrait"],
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 				},
 				nameOnly = {
 					name = L["Name Only"],
 					order = 3,
 					type = 'toggle',
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 				},
 				spacer1 = {
 					order = 4,
