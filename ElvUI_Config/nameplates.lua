@@ -3462,35 +3462,10 @@ E.Options.args.nameplate = {
 						NP:ConfigureAll()
 					end,
 				},
-				removeFilter = {
-					order = 2,
-					name = L["Remove Nameplate Filter"],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
-						if match(value, "^[%s%p]-$") then
-							return
-						end
-						if G.nameplate.filters[value] then
-							E.db.nameplates.filters[value].triggers.enable = false;
-							E:Print(L["You can't remove a default name from the filter, disabling the name."])
-						else
-							for profile in pairs(E.data.profiles) do
-								if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[value] then
-									E.data.profiles[profile].nameplates.filters[value] = nil;
-								end
-							end
-							E.global.nameplate.filters[value] = nil;
-							selectedNameplateFilter = nil;
-						end
-						UpdateFilterGroup();
-						NP:ConfigureAll()
-					end,
-				},
 				selectFilter = {
 					name = L["Select Nameplate Filter"],
 					type = 'select',
-					order = 3,
+					order = 2,
 					get = function(info) return selectedNameplateFilter end,
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()
@@ -3505,6 +3480,28 @@ E.Options.args.nameplate = {
 						end
 						return filters
 					end,
+				},
+				removeFilter = {
+					order = 3,
+					name = L["Remove Nameplate Filter"],
+					type = 'execute',
+					func = function()
+						if G.nameplate.filters[selectedNameplateFilter] then
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable = false;
+							E:Print(L["You can't remove a default name from the filter, disabling the name."])
+						else
+							for profile in pairs(E.data.profiles) do
+								if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] then
+									E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] = nil;
+								end
+							end
+							E.global.nameplate.filters[selectedNameplateFilter] = nil;
+							selectedNameplateFilter = nil;
+						end
+						UpdateFilterGroup();
+						NP:ConfigureAll()
+					end,
+					hidden = function() return selectedNameplateFilter == nil end,
 				},
 			},
 		},
