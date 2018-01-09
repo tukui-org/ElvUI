@@ -13,6 +13,7 @@ Fixed issue with missing border colors on some elements after a login or reload.
 Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly.  
 Fixed issue with arena frames displaying wrong unit in PvP Brawls.  
 Fixed issue which caused the MicroBar position to be misplaced during combat.  
+Fixed issue which caused the Color Picker default color button to be disabled when it should still be active.  
 
 
 **Misc. Changes:**  
