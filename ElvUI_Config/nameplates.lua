@@ -1629,7 +1629,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.health end,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
-								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+								return t.r, t.g, t.b, t.a, 136/255, 255/255, 102/255, 1
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.healthColor
@@ -1655,7 +1655,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.power end,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.powerColor
-								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+								return t.r, t.g, t.b, t.a, 102/255, 136/255, 255/255, 1
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.powerColor
@@ -1681,7 +1681,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.border end,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
-								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+								return t.r, t.g, t.b, t.a, 0, 0, 0, 1
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.borderColor
@@ -1707,7 +1707,7 @@ local function UpdateFilterGroup()
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.name end,
 							get = function(info)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
-								return t.r, t.g, t.b, t.a, 104/255, 138/255, 217/255, 1
+								return t.r, t.g, t.b, t.a, 200/255, 200/255, 200/255, 1
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
