@@ -144,10 +144,10 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-mod.BackdropColorLockFrames = {}
+mod.BorderColorLockFrames = {}
 function mod.StyleFilterBackdropColorUpdate()
-	if not next(mod.BackdropColorLockFrames) then return end
-	for frame, _ in pairs(mod.BackdropColorLockFrames) do
+	if not next(mod.BorderColorLockFrames) then return end
+	for frame, _ in pairs(mod.BorderColorLockFrames) do
 		if frame then
 			if frame.template == 'Default' or frame.template == nil then
 				if frame.backdropTexture then
@@ -159,18 +159,18 @@ function mod.StyleFilterBackdropColorUpdate()
 				frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
 			end
 		else
-			mod.BackdropColorLockFrames[frame] = nil;
+			mod.BorderColorLockFrames[frame] = nil;
 		end
 	end
 end
 
-function mod:StyleFilterBackdropColorLock(backdrop, switch)
+function mod:StyleFilterBorderColorLock(backdrop, switch)
 	if switch == true then
 		E.frames[backdrop] = nil --dont allow these border colors to update for now
-		mod.BackdropColorLockFrames[backdrop] = true --but keep the backdrop updated
+		mod.BorderColorLockFrames[backdrop] = true --but keep the backdrop updated
 	else
 		E.frames[backdrop] = true --restore these borders to be updated
-		mod.BackdropColorLockFrames[backdrop] = nil
+		mod.BorderColorLockFrames[backdrop] = nil
 	end
 end
 
@@ -208,10 +208,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		mod:StyleFilterBackdropColorLock(frame.HealthBar.backdrop, true)
+		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, true)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
-			mod:StyleFilterBackdropColorLock(frame.PowerBar.backdrop, true)
+			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, true)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 	end
@@ -327,10 +327,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
-		mod:StyleFilterBackdropColorLock(frame.HealthBar.backdrop, false)
+		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, false)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
-			mod:StyleFilterBackdropColorLock(frame.PowerBar.backdrop, false)
+			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, false)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
