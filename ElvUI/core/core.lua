@@ -491,6 +491,7 @@ function E:UpdateBorderColors()
 	end
 end
 
+--NamePlate module hooks `UpdateBackdropColors` for Style Filter color locking
 function E:UpdateBackdropColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame then

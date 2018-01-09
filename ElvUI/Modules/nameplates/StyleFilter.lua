@@ -17,10 +17,6 @@ local strsplit = string.split
 local tinsert = table.insert
 local tsort = table.sort
 local twipe = table.wipe
-local hooksecurefunc = hooksecurefunc
-
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 
 local GetInstanceInfo = GetInstanceInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
@@ -45,6 +41,11 @@ local UnitReaction = UnitReaction
 local PowerBarColor = PowerBarColor
 
 local C_Timer_After = C_Timer.After
+
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
+
+local FallbackColor = {r=1, b=1, g=1}
 
 function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTimeLeft)
 	if icon and not icon[varTimerName] then
@@ -143,6 +144,36 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
+mod.BackdropColorLockFrames = {}
+function mod.StyleFilterBackdropColorUpdate()
+	if not next(mod.BackdropColorLockFrames) then return end
+	for frame, _ in pairs(mod.BackdropColorLockFrames) do
+		if frame then
+			if frame.template == 'Default' or frame.template == nil then
+				if frame.backdropTexture then
+					frame.backdropTexture:SetVertexColor(unpack(E.media.backdropcolor))
+				else
+					frame:SetBackdropColor(unpack(E.media.backdropcolor))
+				end
+			elseif frame.template == 'Transparent' then
+				frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+			end
+		else
+			mod.BackdropColorLockFrames[frame] = nil;
+		end
+	end
+end
+
+function mod:StyleFilterBackdropColorLock(backdrop, switch)
+	if switch == true then
+		E.frames[backdrop] = nil --dont allow these border colors to update for now
+		mod.BackdropColorLockFrames[backdrop] = true --but keep the backdrop updated
+	else
+		E.frames[backdrop] = true --restore these borders to be updated
+		mod.BackdropColorLockFrames[backdrop] = nil
+	end
+end
+
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
@@ -177,10 +208,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		E.frames[frame.HealthBar.backdrop] = nil -- dont allow these border colors to update for now
+		mod:StyleFilterBackdropColorLock(frame.HealthBar.backdrop, true)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
-			E.frames[frame.PowerBar.backdrop] = nil
+			mod:StyleFilterBackdropColorLock(frame.PowerBar.backdrop, true)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 	end
@@ -266,7 +297,6 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	end
 end
 
-local temp = {r = 1, b = 1, g = 1}
 function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
@@ -290,17 +320,17 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
-		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or temp
+		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or FallbackColor
 		if color then
 			frame.PowerBar:SetStatusBarColor(color.r, color.g, color.b)
 		end
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
-		E.frames[frame.HealthBar.backdrop] = true -- restore these borders to be updated
+		mod:StyleFilterBackdropColorLock(frame.HealthBar.backdrop, false)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
-			E.frames[frame.PowerBar.backdrop] = true
+			mod:StyleFilterBackdropColorLock(frame.PowerBar.backdrop, false)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
