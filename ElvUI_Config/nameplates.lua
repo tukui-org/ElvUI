@@ -2773,8 +2773,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		playerShortcut = {
+		healPredictionShortcut = {
 			order = 13,
+			type = "execute",
+			name = L["Heal Prediction"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "healPrediction") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		playerShortcut = {
+			order = 14,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
@@ -2782,19 +2790,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		healerShortcut = {
-			order = 14,
+			order = 15,
 			type = "execute",
 			name = L["Healer Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		friendlyPlayerShortcut = {
-			order = 15,
-			type = "execute",
-			name = L["Friendly Player Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -2802,8 +2802,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		enemyPlayerShortcut = {
+		friendlyPlayerShortcut = {
 			order = 17,
+			type = "execute",
+			name = L["Friendly Player Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		enemyPlayerShortcut = {
+			order = 18,
 			type = "execute",
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
@@ -2811,19 +2819,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyNPCShortcut = {
-			order = 18,
+			order = 19,
 			type = "execute",
 			name = L["Friendly NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		enemyNPCShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Enemy NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
@@ -2831,8 +2831,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		filtersShortcut = {
+		enemyNPCShortcut = {
 			order = 21,
+			type = "execute",
+			name = L["Enemy NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		filtersShortcut = {
+			order = 22,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
@@ -2840,7 +2848,7 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
-			order = 22,
+			order = 23,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -3424,6 +3432,47 @@ E.Options.args.nameplate = {
 							order = 5,
 							type = 'color',
 							hasAlpha = false,
+						},
+					},
+				},
+				healPrediction = {
+					order = 225,
+					name = L["Heal Prediction"],
+					type = 'group',
+					get = function(info)
+						local t = E.db.nameplates.healPrediction[ info[#info] ]
+						local d = P.nameplates.healPrediction[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+					end,
+					set = function(info, r, g, b, a)
+						local t = E.db.nameplates.healPrediction[ info[#info] ]
+						t.r, t.g, t.b, t.a = r, g, b, a
+						NP:ForEachPlate("ConfigureElement_HealthBar", true)
+					end,
+					args = {
+						personal = {
+							order = 1,
+							name = L["Personal"],
+							type = 'color',
+							hasAlpha = true,
+						},
+						others = {
+							order = 2,
+							name = L["Others"],
+							type = 'color',
+							hasAlpha = true,
+						},
+						absorbs = {
+							order = 2,
+							name = L["Absorbs"],
+							type = 'color',
+							hasAlpha = true,
+						},
+						healAbsorbs = {
+							order = 3,
+							name = L["Heal Absorbs"],
+							type = 'color',
+							hasAlpha = true,
 						},
 					},
 				},

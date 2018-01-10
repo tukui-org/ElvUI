@@ -153,17 +153,17 @@ function mod:UpdateElement_HealPrediction(frame)
 
 	local maxOverflow = 1
 	if(healAbsorb > allIncomingHeal) then
-		--healAbsorb = healAbsorb - allIncomingHeal
+		healAbsorb = healAbsorb - allIncomingHeal
 		allIncomingHeal = 0
 		myIncomingHeal = 0
 
-		--[[if(health < healAbsorb) then
-			hasOverHealAbsorb = true
+		if(health < healAbsorb) then
+			--hasOverHealAbsorb = true
 			healAbsorb = health
-		end]]
+		end
 	else
 		allIncomingHeal = allIncomingHeal - healAbsorb
-		--healAbsorb = 0
+		healAbsorb = 0
 
 		if(health + allIncomingHeal > maxHealth * maxOverflow) then
 			allIncomingHeal = maxHealth * maxOverflow - health
@@ -200,6 +200,7 @@ function mod:UpdateElement_HealPrediction(frame)
 	local previousTexture = frame.HealthBar:GetStatusBarTexture();
 	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.PersonalHealPrediction , myIncomingHeal);
 	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.HealPrediction, allIncomingHeal);
+	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.HealAbsorbBar, healAbsorb);
 	mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, absorb);
 end
 
@@ -226,6 +227,9 @@ end
 function mod:ConfigureElement_HealthBar(frame, configuring)
 	local healthBar = frame.HealthBar
 	local absorbBar = frame.AbsorbBar
+	local healAbsorbBar = frame.HealAbsorbBar
+	local otherHeals = frame.HealPrediction
+	local myHeals = frame.PersonalHealPrediction
 
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
@@ -239,13 +243,22 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	if(not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
+	if (not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()
 	end
-	absorbBar:Hide()
+	if not configuring then
+		absorbBar:Hide()
+	end
 
 	healthBar.text:SetAllPoints(healthBar)
 	healthBar.text:SetFont(LSM:Fetch("font", self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
+
+	--Heal Prediction Colors
+	local c = self.db.healPrediction
+	myHeals:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+	otherHeals:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+	absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
+	healAbsorbBar:SetStatusBarColor(c.healAbsorbs.r, c.healAbsorbs.g, c.healAbsorbs.b, c.healAbsorbs.a)
 end
 
 function mod:ConstructElement_HealthBar(parent)
@@ -254,15 +267,15 @@ function mod:ConstructElement_HealthBar(parent)
 
 	parent.AbsorbBar = CreateFrame("StatusBar", "$parentAbsorbBar", frame)
 	parent.AbsorbBar:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
-	parent.AbsorbBar:SetStatusBarColor(1, 1, 0, 0.25)
+
+	parent.HealAbsorbBar = CreateFrame("StatusBar", "$parentHealAbsorbBar", frame)
+	parent.HealAbsorbBar:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 
 	parent.HealPrediction = CreateFrame("StatusBar", "$parentHealPrediction", frame)
 	parent.HealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
-	parent.HealPrediction:SetStatusBarColor(0, 1, 0, 0.25)
 
 	parent.PersonalHealPrediction = CreateFrame("StatusBar", "$parentPersonalHealPrediction", frame)
 	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
-	parent.PersonalHealPrediction:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
 	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))

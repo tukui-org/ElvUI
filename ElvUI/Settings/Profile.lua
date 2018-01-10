@@ -255,6 +255,12 @@ P["nameplates"] = {
 		["bad"] = { r = 0.78, g = 0.25, b = 0.25 },
 		["offline"] = {r = 0.3, g = 0.3, b = 0.3},
 	},
+	['healPrediction'] = {
+		['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
+		['others'] = {r = 0, g = 1, b = 0, a = 0.25},
+		['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+		['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+	},
 	['threat'] = {
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
