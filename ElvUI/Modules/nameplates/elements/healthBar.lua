@@ -145,38 +145,44 @@ function mod:UpdateElement_HealPrediction(frame)
 	local unit = frame.displayedUnit or frame.unit
 	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 	local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
-	local totalAbsorb = UnitGetTotalAbsorbs(unit) or 0
-	local myCurrentHealAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
-
-	if(health < myCurrentHealAbsorb) then
-		myCurrentHealAbsorb = health
-	end
+	local otherIncomingHeal = 0
+	--local hasOverHealAbsorb = false
 
 	local maxOverflow = 1
-	if(health - myCurrentHealAbsorb + allIncomingHeal > maxHealth * maxOverflow) then
-		allIncomingHeal = maxHealth * maxOverflow - health + myCurrentHealAbsorb
-	end
+	if(healAbsorb > allIncomingHeal) then
+		--healAbsorb = healAbsorb - allIncomingHeal
+		allIncomingHeal = 0
+		myIncomingHeal = 0
 
-	local otherIncomingHeal = 0
-	if(allIncomingHeal < myIncomingHeal) then
-		myIncomingHeal = allIncomingHeal
+		--[[if(health < healAbsorb) then
+			hasOverHealAbsorb = true
+			healAbsorb = health
+		end]]
 	else
-		otherIncomingHeal = allIncomingHeal - myIncomingHeal
-	end
+		allIncomingHeal = allIncomingHeal - healAbsorb
+		--healAbsorb = 0
 
-	if(health - myCurrentHealAbsorb + allIncomingHeal + totalAbsorb >= maxHealth or health + totalAbsorb >= maxHealth) then
-		if(allIncomingHeal > myCurrentHealAbsorb) then
-			totalAbsorb = max(0, maxHealth - (health - myCurrentHealAbsorb + allIncomingHeal))
+		if(health + allIncomingHeal > maxHealth * maxOverflow) then
+			allIncomingHeal = maxHealth * maxOverflow - health
+		end
+
+		if(allIncomingHeal < myIncomingHeal) then
+			myIncomingHeal = allIncomingHeal
 		else
-			totalAbsorb = max(0, maxHealth - health)
+			otherIncomingHeal = allIncomingHeal - myIncomingHeal
 		end
 	end
 
-	if(myCurrentHealAbsorb > allIncomingHeal) then
-		myCurrentHealAbsorb = myCurrentHealAbsorb - allIncomingHeal
-	else
-		myCurrentHealAbsorb = 0
+	--local hasOverAbsorb = false
+	if(health + allIncomingHeal + absorb >= maxHealth) then
+		--[[if(absorb > 0) then
+			hasOverAbsorb = true
+		end]]
+
+		absorb = math.max(0, maxHealth - health - allIncomingHeal)
 	end
 
 	frame.PersonalHealPrediction:SetMinMaxValues(0, maxHealth)
@@ -187,15 +193,14 @@ function mod:UpdateElement_HealPrediction(frame)
 	frame.HealPrediction:SetValue(otherIncomingHeal)
 	frame.HealPrediction:Show()
 
-
 	frame.AbsorbBar:SetMinMaxValues(0, maxHealth)
-	frame.AbsorbBar:SetValue(totalAbsorb)
+	frame.AbsorbBar:SetValue(absorb)
 	frame.AbsorbBar:Show()
 
 	local previousTexture = frame.HealthBar:GetStatusBarTexture();
 	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.PersonalHealPrediction , myIncomingHeal);
 	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.HealPrediction, allIncomingHeal);
-	previousTexture = mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, totalAbsorb);
+	mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, absorb);
 end
 
 
