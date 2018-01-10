@@ -182,7 +182,7 @@ function mod:UpdateElement_HealPrediction(frame)
 			hasOverAbsorb = true
 		end]]
 
-		absorb = math.max(0, maxHealth - health - allIncomingHeal)
+		absorb = max(0, maxHealth - health - allIncomingHeal)
 	end
 
 	frame.PersonalHealPrediction:SetMinMaxValues(0, maxHealth)
