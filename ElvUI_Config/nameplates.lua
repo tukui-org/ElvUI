@@ -3448,6 +3448,9 @@ E.Options.args.nameplate = {
 						local t = E.db.nameplates.healPrediction[ info[#info] ]
 						t.r, t.g, t.b, t.a = r, g, b, a
 						NP:ForEachPlate("ConfigureElement_HealthBar", true)
+						if NP.PlayerFrame__ and NP.PlayerFrame__.unitFrame and NP.PlayerFrame__.unitFrame.UnitType then
+							NP:ConfigureElement_HealthBar(NP.PlayerFrame__.unitFrame, true)
+						end
 					end,
 					args = {
 						personal = {
