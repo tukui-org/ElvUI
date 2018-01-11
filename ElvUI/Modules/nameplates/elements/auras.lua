@@ -56,6 +56,16 @@ end
 function mod:HideAuraIcons(auras)
 	for i=1, #auras.icons do
 		auras.icons[i]:Hide()
+
+		-- cancel any StyleFilterAuraWaitTimer timers
+		if auras.icons[i].hasMinTimer then
+			auras.icons[i].hasMinTimer:Cancel()
+			auras.icons[i].hasMinTimer = nil
+		end
+		if auras.icons[i].hasMaxTimer then
+			auras.icons[i].hasMaxTimer:Cancel()
+			auras.icons[i].hasMaxTimer = nil
+		end
 	end
 end
 

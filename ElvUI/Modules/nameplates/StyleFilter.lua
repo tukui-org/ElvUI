@@ -40,7 +40,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
 local PowerBarColor = PowerBarColor
 
-local C_Timer_After = C_Timer.After
+local C_Timer_NewTimer = C_Timer.NewTimer
 
 local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
@@ -51,7 +51,7 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 	if icon and not icon[varTimerName] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
-            C_Timer_After(updateIn, function()
+            icon[varTimerName] = C_Timer_NewTimer(updateIn, function()
 				if frame and frame:IsShown() then
 					mod:UpdateElement_Filters(frame, 'AuraWaitTimer_Update')
                 end
@@ -59,7 +59,6 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 	                icon[varTimerName] = nil
 	            end
             end)
-            icon[varTimerName] = true
 		end
     end
 end
