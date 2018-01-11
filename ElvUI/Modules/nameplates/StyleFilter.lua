@@ -761,7 +761,7 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 		frame.castbarTriggered = castbarTriggered
 	end
 
-	local healthBarEnabled = mod.db.units[frame.UnitType].powerbar.enable
+	local healthBarEnabled = mod.db.units[frame.UnitType].healthbar.enable
 	local powerBarEnabled = mod.db.units[frame.UnitType].powerbar.enable
 	local healthBarShown = healthBarEnabled and frame.HealthBar:IsShown()
 	self:StyleFilterSetChanges(frame, actions,
