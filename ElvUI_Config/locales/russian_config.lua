@@ -739,7 +739,7 @@ L["These filters don't use a list of spells like the regular filters. Instead th
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "Эти фильтры используют списки заклинаний для определения стоит ли блокироват ь ауру. Их можно изменить в разделе 'Фильтры' окна настроек."
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Это сбросит фильтр на умолчания. Любые заклинания, добавленные в этот фильтр, будут удалены."
 L["Threat"] = "Угроза"
-L["Tiers"] = true
+L["Tiers"] = "Ряды"
 L["Time To Hold"] = "Время задержки"
 L["Toggle Off While In Combat"] = "Включать в бою"
 L["Toggle On While In Combat"] = "Отключить в бою"
@@ -1137,7 +1137,7 @@ L["Style"] = "Стиль"
 L["Tank Frames"] = "Танки"
 L["Tank Target"] = "Цели танков"
 L["Tapped"] = "Чужой"
-L["Targeting"] = true
+L["Targeting"] = "Цели"
 L["Target Glow"] = "Подсветка цели"
 L["Target On Mouse-Down"] = "Выделение при нажати"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Выделять при нажатии кнопки мыши, а не при ее отпускании.\n\n|cffFF0000Внимание: Если Вы используете аддон 'Clique', то Вы также должны изменить его настройки при изменении этой."
