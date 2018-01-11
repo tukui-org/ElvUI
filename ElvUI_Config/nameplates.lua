@@ -33,6 +33,7 @@ local FACTION_STANDING_LABEL5 = FACTION_STANDING_LABEL5
 local FACTION_STANDING_LABEL6 = FACTION_STANDING_LABEL6
 local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
 local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
+local GARRISON_CURRENT_LEVEL = GARRISON_CURRENT_LEVEL --"Tier %d";
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists, CUSTOM_CLASS_COLORS
 
@@ -278,7 +279,7 @@ local function UpdateTalentSection()
 			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["tier"..i.."enabled"] = {
 				type = 'toggle',
 				order = order,
-				name = L["Tier"..i],
+				name = format(GARRISON_CURRENT_LEVEL, i),
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] end,
 				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] = value; UpdateTalentSection(); NP:ConfigureAll() end
 			}
