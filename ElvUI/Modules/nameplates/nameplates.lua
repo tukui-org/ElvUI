@@ -1118,10 +1118,9 @@ function mod:Initialize()
 	if E.private["nameplates"].enable ~= true then return end
 
 	--Add metatable to all our StyleFilters so they can grab default values if missing
-	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:StyleFilterInitializeFilter(filterTable);
-	end
+	self:StyleFilterInitializeAllFilters()
 
+	--Populate table with events allowed to trigger style filter actions based on enabled filters.
 	self:StyleFilterConfigureEvents()
 
 	--StyleFilter: Add a hook so we can color lock specific regions on the frame.

@@ -1020,6 +1020,12 @@ function mod:PLAYER_LOGOUT()
 	end
 end
 
+function mod:StyleFilterInitializeAllFilters()
+	for _, filterTable in pairs(E.global.nameplate.filters) do
+		self:StyleFilterInitializeFilter(filterTable);
+	end
+end
+
 function mod:StyleFilterInitializeFilter(tbl)
 	copyDefaults(tbl, E.StyleFilterDefaults);
 end

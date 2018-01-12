@@ -1008,6 +1008,7 @@ function E:UpdateAll(ignoreInstall)
 
 	local NP = self:GetModule('NamePlates')
 	NP.db = self.db.nameplates
+	NP:StyleFilterInitializeAllFilters()
 	NP:ConfigureAll()
 
 	local DataBars = self:GetModule("DataBars")
