@@ -1120,7 +1120,7 @@ function mod:Initialize()
 	--Add metatable to all our StyleFilters so they can grab default values if missing
 	self:StyleFilterInitializeAllFilters()
 
-	--Populate table with events allowed to trigger style filter actions based on enabled filters.
+	--Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	self:StyleFilterConfigureEvents()
 
 	--StyleFilter: Add a hook so we can color lock specific regions on the frame.
