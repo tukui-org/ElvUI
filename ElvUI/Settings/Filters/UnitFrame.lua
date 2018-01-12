@@ -845,7 +845,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[239264] = Defaults(), -- Lunar Flare (Tank)
 		[236712] = Defaults(), -- Lunar Beacon
 		[236304] = Defaults(), -- Incorporeal Shot
-		[236305] = Defaults(), -- Incorporeal Shot -- (Heroic)
+		[236305] = Defaults(), -- Incorporeal Shot (Heroic)
 		[236306] = Defaults(), -- Incorporeal Shot
 		[237570] = Defaults(), -- Incorporeal Shot
 		[248911] = Defaults(), -- Incorporeal Shot
@@ -853,7 +853,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[236330] = Defaults(), -- Astral Vulnerability
 		[236529] = Defaults(), -- Twilight Glaive
 		[236541] = Defaults(), -- Twilight Glaive
-		[237561] = Defaults(), -- Twilight Glaive -- (Heroic)
+		[237561] = Defaults(), -- Twilight Glaive (Heroic)
 		[237633] = Defaults(), -- Spectral Glaive
 		[233263] = Defaults(), -- Embrace of the Eclipse
 
@@ -1191,16 +1191,16 @@ G.unitframe.buffwatch = {
 		[33206]  = ClassBuff(33206, "LEFT", {0.47, 0.35, 0.74}, true),   -- Pain Suppression
 	},
 	DRUID = {
-		[774]    = ClassBuff(774, "TOPRIGHT", {0.8, 0.4, 0.8}),    -- Rejuvenation
-		[155777] = ClassBuff(155777, "RIGHT", {0.8, 0.4, 0.8}),    -- Germination
-		[8936]   = ClassBuff(8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}), -- Regrowth
-		[33763]  = ClassBuff(33763, "TOPLEFT", {0.4, 0.8, 0.2}),   -- Lifebloom
-		[188550] = ClassBuff(188550, "TOPLEFT", {0.4, 0.8, 0.2}),  -- Lifebloom T18 4pc
-		[48438]  = ClassBuff(48438, "BOTTOMRIGHT", {0.8, 0.4, 0}), -- Wild Growth
-		[207386] = ClassBuff(207386, "TOP", {0.4, 0.2, 0.8}),      -- Spring Blossoms
-		[102351] = ClassBuff(102351, "LEFT", {0.2, 0.8, 0.8}),     -- Cenarion Ward (Initial Buff)
-		[102352] = ClassBuff(102352, "LEFT", {0.2, 0.8, 0.8}),     -- Cenarion Ward (HoT)
-		[200389] = ClassBuff(200389, "BOTTOM", {1, 1, 0.4}),       -- Cultivation
+		[774]    = ClassBuff(774, "TOPRIGHT", {0.8, 0.4, 0.8}),   		-- Rejuvenation
+		[155777] = ClassBuff(155777, "RIGHT", {0.8, 0.4, 0.8}),   		-- Germination
+		[8936]   = ClassBuff(8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}),		-- Regrowth
+		[33763]  = ClassBuff(33763, "TOPLEFT", {0.4, 0.8, 0.2}),  		-- Lifebloom
+		[188550] = ClassBuff(188550, "TOPLEFT", {0.4, 0.8, 0.2}), 		-- Lifebloom T18 4pc
+		[48438]  = ClassBuff(48438, "BOTTOMRIGHT", {0.8, 0.4, 0}),		-- Wild Growth
+		[207386] = ClassBuff(207386, "TOP", {0.4, 0.2, 0.8}),     		-- Spring Blossoms
+		[102351] = ClassBuff(102351, "LEFT", {0.2, 0.8, 0.8}),    		-- Cenarion Ward (Initial Buff)
+		[102352] = ClassBuff(102352, "LEFT", {0.2, 0.8, 0.8}),    		-- Cenarion Ward (HoT)
+		[200389] = ClassBuff(200389, "BOTTOM", {1, 1, 0.4}),      		-- Cultivation
 	},
 	PALADIN = {
 		[53563]  = ClassBuff(53563, "TOPRIGHT", {0.7, 0.3, 0.7}),          -- Beacon of Light
@@ -1212,8 +1212,8 @@ G.unitframe.buffwatch = {
 		[223306] = ClassBuff(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),       -- Bestow Faith
 	},
 	SHAMAN = {
-		[61295]  = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),   -- Riptide
-		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), -- Earth Shield (Honor Talent)
+		[61295]  = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),   	 -- Riptide
+		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), 	 -- Earth Shield (Honor Talent)
 	},
 	MONK = {
 		[119611] = ClassBuff(119611, "TOPLEFT", {0.3, 0.8, 0.6}),        -- Renewing Mist
@@ -1222,11 +1222,11 @@ G.unitframe.buffwatch = {
 		[191840] = ClassBuff(191840, "BOTTOMRIGHT", {0.27, 0.62, 0.7}),  -- Essence Font
 	},
 	ROGUE = {
-		[57934] = ClassBuff(57934, "TOPRIGHT", {0.89, 0.09, 0.05}), -- Tricks of the Trade
+		[57934] = ClassBuff(57934, "TOPRIGHT", {0.89, 0.09, 0.05}),		 -- Tricks of the Trade
 	},
 	WARRIOR = {
-		[114030] = ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}),     -- Vigilance
-		[3411]   = ClassBuff(3411, "TOPRIGHT", {0.89, 0.09, 0.05}), -- Intervene
+		[114030] = ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}),     	 -- Vigilance
+		[3411]   = ClassBuff(3411, "TOPRIGHT", {0.89, 0.09, 0.05}), 	 -- Intervene
 	},
 	PET = {
 		-- Warlock Pets
@@ -1284,20 +1284,20 @@ end)
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[SpellName(198590)] = 1, --Drain Soul
+	[SpellName(198590)] = 1, -- Drain Soul
 }
 
 -- Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-	[SpellName(205021)] = true, --Ray of Frost
+	[SpellName(205021)] = true, -- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]  = {r = 0.98, g = 0.57, b = 0.10}, --Bloodlust
-	[32182] = {r = 0.98, g = 0.57, b = 0.10}, --Heroism
-	[80353] = {r = 0.98, g = 0.57, b = 0.10}, --Time Warp
-	[90355] = {r = 0.98, g = 0.57, b = 0.10}, --Ancient Hysteria
+	[2825]  = {r = 0.98, g = 0.57, b = 0.10}, -- Bloodlust
+	[32182] = {r = 0.98, g = 0.57, b = 0.10}, -- Heroism
+	[80353] = {r = 0.98, g = 0.57, b = 0.10}, -- Time Warp
+	[90355] = {r = 0.98, g = 0.57, b = 0.10}, -- Ancient Hysteria
 }
 
 G.unitframe.DebuffHighlightColors = {
