@@ -51,7 +51,8 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 	if icon and not icon[varTimerName] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
-            icon[varTimerName] = C_Timer_NewTimer(updateIn, function()
+			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
+            icon[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
 				if frame and frame:IsShown() then
 					mod:UpdateElement_Filters(frame, 'AuraWaitTimer_Update')
                 end
