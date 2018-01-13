@@ -6,10 +6,11 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI')
 --Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert = table.insert
+local tinsert, next = table.insert, next
 local floor, ceil = math.floor, math.ceil
 local format, len, sub, find = string.format, string.len, string.sub, string.find
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
@@ -654,6 +655,26 @@ function B:AssignBagFlagMenu()
 	end
 end
 
+B.BorderColorLockFrames = {}
+function B:BackdropBorderColorUpdate()
+	if not next(B.BorderColorLockFrames) then return end
+	for frame, _ in pairs(B.BorderColorLockFrames) do
+		if frame then
+			if frame.template == 'Default' or frame.template == nil then
+				if frame.backdropTexture then
+					frame.backdropTexture:SetVertexColor(unpack(E.media.backdropcolor))
+				else
+					frame:SetBackdropColor(unpack(E.media.backdropcolor))
+				end
+			elseif frame.template == 'Transparent' then
+				frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+			end
+		else
+			B.BorderColorLockFrames[frame] = nil;
+		end
+	end
+end
+
 function B:GetBagAssignedInfo(holder)
 	if not (holder and holder.id and holder.id > 0) then return end
 
@@ -675,7 +696,6 @@ function B:GetBagAssignedInfo(holder)
 
 			if active then
 				color = B.AssignmentColors[i]
-				holder:SetBackdropBorderColor(unpack(color or B.AssignmentColors[0]))
 				active = (color and i) or 0
 				break
 			end
@@ -684,7 +704,12 @@ function B:GetBagAssignedInfo(holder)
 
 	if not active then
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		E.frames[holder] = true --restore these borders to be updated
+		B.BorderColorLockFrames[holder] = nil
 	else
+		holder:SetBackdropBorderColor(unpack(color or B.AssignmentColors[0]))
+		E.frames[holder] = nil --dont allow these border colors to update for now
+		B.BorderColorLockFrames[holder] = true --but keep the backdrop updated
 		return active
 	end
 end
@@ -1896,6 +1921,11 @@ function B:Initialize()
 	ElvUIAssignBagDropdown:SetClampedToScreen(true)
 	ElvUIAssignBagDropdown:Hide()
 	L_UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
+
+	--Add a hook so we can color lock specific regions on the frame.
+	-- we use this to lock the border color and keep the backdrop color updated
+	-- hooking `UpdateBackdropColors` because it runs after `UpdateBorderColors`
+	hooksecurefunc(E, "UpdateBackdropColors", self.BackdropBorderColorUpdate)
 
 	--Set some variables on movers
 	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
