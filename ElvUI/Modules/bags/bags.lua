@@ -10,7 +10,6 @@ local tinsert, next = table.insert, next
 local floor, ceil = math.floor, math.ceil
 local format, len, sub, find = string.format, string.len, string.sub, string.find
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
