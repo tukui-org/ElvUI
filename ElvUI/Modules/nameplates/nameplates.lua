@@ -1123,11 +1123,6 @@ function mod:Initialize()
 	--Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	self:StyleFilterConfigureEvents()
 
-	--StyleFilter: Add a hook so we can color lock specific regions on the frame.
-	-- we use this to lock the border color and keep the backdrop color updated
-	-- hooking `UpdateBackdropColors` because it runs after `UpdateBorderColors`
-	hooksecurefunc(E, "UpdateBackdropColors", self.StyleFilterBackdropColorUpdate)
-
 	--Nameplate Leveling Step (glow, frame) (2)
 	-- range is from 3 [(1*2)+1] to 81 [(40*2)+1] ~ [(nameplateID * step) + frame layer]
 	-- 40 is the max amount of nameplate tokens

@@ -144,33 +144,11 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-mod.BorderColorLockFrames = {}
-function mod.StyleFilterBackdropColorUpdate()
-	if not next(mod.BorderColorLockFrames) then return end
-	for frame, _ in pairs(mod.BorderColorLockFrames) do
-		if frame then
-			if frame.template == 'Default' or frame.template == nil then
-				if frame.backdropTexture then
-					frame.backdropTexture:SetVertexColor(unpack(E.media.backdropcolor))
-				else
-					frame:SetBackdropColor(unpack(E.media.backdropcolor))
-				end
-			elseif frame.template == 'Transparent' then
-				frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
-			end
-		else
-			mod.BorderColorLockFrames[frame] = nil;
-		end
-	end
-end
-
 function mod:StyleFilterBorderColorLock(backdrop, switch)
 	if switch == true then
-		E.frames[backdrop] = nil --dont allow these border colors to update for now
-		mod.BorderColorLockFrames[backdrop] = true --but keep the backdrop updated
+		backdrop.ignoreBorderColors = true --but keep the backdrop updated
 	else
-		E.frames[backdrop] = true --restore these borders to be updated
-		mod.BorderColorLockFrames[backdrop] = nil
+		backdrop.ignoreBorderColors = nil --restore these borders to be updated
 	end
 end
 

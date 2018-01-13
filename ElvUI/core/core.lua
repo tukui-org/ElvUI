@@ -454,7 +454,9 @@ end
 function E:UpdateFrameTemplates()
 	for frame in pairs(self["frames"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
-			frame:SetTemplate(frame.template, frame.glossTex);
+			if not frame.ignoreFrameTemplates then
+				frame:SetTemplate(frame.template, frame.glossTex);
+			end
 		else
 			self["frames"][frame] = nil;
 		end
@@ -462,7 +464,9 @@ function E:UpdateFrameTemplates()
 
 	for frame in pairs(self["unitFrameElements"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
-			frame:SetTemplate(frame.template, frame.glossTex);
+			if not frame.ignoreFrameTemplates then
+				frame:SetTemplate(frame.template, frame.glossTex);
+			end
 		else
 			self["unitFrameElements"][frame] = nil;
 		end
@@ -472,8 +476,10 @@ end
 function E:UpdateBorderColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame and not frame.ignoreUpdates then
-			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-				frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
+			if not frame.ignoreBorderColors then
+				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+					frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
+				end
 			end
 		else
 			self["frames"][frame] = nil;
@@ -482,8 +488,10 @@ function E:UpdateBorderColors()
 
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame and not frame.ignoreUpdates then
-			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-				frame:SetBackdropBorderColor(unpack(self['media'].unitframeBorderColor))
+			if not frame.ignoreBorderColors then
+				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+					frame:SetBackdropBorderColor(unpack(self['media'].unitframeBorderColor))
+				end
 			end
 		else
 			self["unitFrameElements"][frame] = nil;
@@ -491,19 +499,19 @@ function E:UpdateBorderColors()
 	end
 end
 
---NamePlate module hooks `UpdateBackdropColors` for Style Filter color locking
---also Bag module hooks this for the assigned bags border color
 function E:UpdateBackdropColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame then
-			if frame.template == 'Default' or frame.template == nil then
-				if frame.backdropTexture then
-					frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
-				else
-					frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+			if not frame.ignoreBackdropColors then
+				if frame.template == 'Default' or frame.template == nil then
+					if frame.backdropTexture then
+						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+					else
+						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+					end
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 				end
-			elseif frame.template == 'Transparent' then
-				frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 			end
 		else
 			self["frames"][frame] = nil;
@@ -512,14 +520,16 @@ function E:UpdateBackdropColors()
 
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame then
-			if frame.template == 'Default' or frame.template == nil then
-				if frame.backdropTexture then
-					frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
-				else
-					frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+			if not frame.ignoreBackdropColors then
+				if frame.template == 'Default' or frame.template == nil then
+					if frame.backdropTexture then
+						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+					else
+						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+					end
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 				end
-			elseif frame.template == 'Transparent' then
-				frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 			end
 		else
 			self["unitFrameElements"][frame] = nil;
