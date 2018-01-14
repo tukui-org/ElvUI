@@ -43,6 +43,7 @@ L["Sort Tab"] = "Сортировать вкладки" --Not used, yet?
 L["Temporary Move"] = "Временное перемещение"
 L["Toggle Bags"] = "Показать сумки"
 L["Vendor Grays"] = "Продавать серые предметы"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "АФК" --Also used in datatexts and tooltip

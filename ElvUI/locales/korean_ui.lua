@@ -43,6 +43,7 @@ L["Sort Tab"] = "탭 정렬" --Not used, yet?
 L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
 L["Vendor Grays"] = "잡동사니 자동판매"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "자리비움"

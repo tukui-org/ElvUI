@@ -43,6 +43,7 @@ L["Sort Tab"] = "選項排列" --Not used, yet?
 L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Vendor Grays"] = "出售灰色物品"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "暫離" --Also used in datatexts and tooltip

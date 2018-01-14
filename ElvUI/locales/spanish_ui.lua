@@ -43,6 +43,7 @@ L["Sort Tab"] = "Ordenar Pestaña"
 L["Temporary Move"] = "Movimiento Temporal"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Vendor Grays"] = "Vender Objetos Grises"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "Ausente"

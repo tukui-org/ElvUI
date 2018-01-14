@@ -43,6 +43,7 @@ L["Sort Tab"] = "Organiser les onglets" --Not used, yet?
 L["Temporary Move"] = "Déplacer temporairement"
 L["Toggle Bags"] = "Afficher les sacs"
 L["Vendor Grays"] = "Vendre les objets gris"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "ABS" --Also used in datatexts and tooltip
