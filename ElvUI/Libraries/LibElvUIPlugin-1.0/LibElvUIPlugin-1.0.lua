@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 19
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 20
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -23,6 +23,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 lib.plugins = {}
 lib.index = 0
 lib.prefix = "ElvUIPluginVC"
+lib.groupSize = -1
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
@@ -180,9 +181,8 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
-			if num > 1 and ((lib.groupSize and num > lib.groupSize) or not lib.sentOnce) then
+			if num > 1 and num > lib.groupSize then
 				E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 12)
-				lib.sentOnce = true
 			end
 			lib.groupSize = num
 		end

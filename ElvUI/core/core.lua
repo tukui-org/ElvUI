@@ -919,7 +919,7 @@ function E:SendMessage()
 	end
 end
 
-local SendRecieveGroupSize, SendRecieveSentOnce
+local SendRecieveGroupSize = -1
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
@@ -940,9 +940,8 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	else
 		local num = GetNumGroupMembers()
 		if num ~= SendRecieveGroupSize then
-			if num > 1 and ((SendRecieveGroupSize and num > SendRecieveGroupSize) or not SendRecieveSentOnce) then
+			if num > 1 and num > SendRecieveGroupSize then
 				E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
-				SendRecieveSentOnce = true
 			end
 			SendRecieveGroupSize = num
 		end
