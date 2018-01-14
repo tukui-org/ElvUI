@@ -23,7 +23,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 lib.plugins = {}
 lib.index = 0
 lib.prefix = "ElvUIPluginVC"
-lib.groupSize = -1
+lib.groupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"

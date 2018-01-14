@@ -919,7 +919,7 @@ function E:SendMessage()
 	end
 end
 
-local SendRecieveGroupSize = -1
+local SendRecieveGroupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
