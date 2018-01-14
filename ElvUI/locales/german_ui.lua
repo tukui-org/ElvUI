@@ -38,12 +38,12 @@ L["Purchase Bags"] = "Taschen kaufen"
 L["Purchase"] = "Kaufen"
 L["Reagent Bank"] = "Reagenzien Bank"
 L["Reset Position"] = "Position zurücksetzen"
+L["Right Click the bag icon to assign a type of item to this bag."] = "Rechts Klicke auf das Taschensymbol um einen Gegenstandstyp zuzuweisen."
 L["Show/Hide Reagents"] = "Reagenzien anzeigen/ausblenden"
 L["Sort Tab"] = "Tab sortieren" --Not used, yet?
 L["Temporary Move"] = "Temporäres Bewegen"
 L["Toggle Bags"] = "Taschen umschalten"
 L["Vendor Grays"] = "Graue Gegenstände verkaufen"
-L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "AFK" --Also used in datatexts and tooltip

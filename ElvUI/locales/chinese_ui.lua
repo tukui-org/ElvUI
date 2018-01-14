@@ -38,12 +38,12 @@ L["Purchase Bags"] = "购买背包"
 L["Purchase"] = "购买"
 L["Reagent Bank"] = "材料银行"
 L["Reset Position"] = "重设位置"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
 L["Vendor Grays"] = "出售灰色物品"
-L["Right Click the bag icon to assign a type of item to this bag."] = true
 
 --Chat
 L["AFK"] = "离开" --Also used in datatexts and tooltip
