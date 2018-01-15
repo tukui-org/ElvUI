@@ -122,39 +122,39 @@ local function OnEnter(self)
 		end
 	end
 
-    if next(lockedInstances["raids"]) then
-        DT.tooltip:AddLine(" ")
-        DT.tooltip:AddLine(L["Saved Raid(s)"])
+	if next(lockedInstances["raids"]) then
+		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-        for _,instance in pairs(lockedInstances["raids"]) do
-            name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
+		for _,instance in pairs(lockedInstances["raids"]) do
+			name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
 
-            local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-            local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
-            if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-                DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-            else
-                DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-            end
-        end
-    end
+			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
+			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+			else
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+			end
+		end
+	end
 
-    if next(lockedInstances["dungeons"]) then
-        DT.tooltip:AddLine(" ")
-        DT.tooltip:AddLine(L["Saved Dungeon(s)"])
+	if next(lockedInstances["dungeons"]) then
+		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-        for _,instance in pairs(lockedInstances["dungeons"]) do
-            name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
+		for _,instance in pairs(lockedInstances["dungeons"]) do
+			name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
 
-            local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-            local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
-            if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-                DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-            else
-                DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-            end
-        end
-    end
+			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
+			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+			else
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+			end
+		end
+	end
 
 	local addedLine = false
 	for i = 1, GetNumSavedWorldBosses() do
