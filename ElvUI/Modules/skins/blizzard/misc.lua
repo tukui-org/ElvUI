@@ -148,8 +148,23 @@ local function LoadSkin()
 
 	-- reskin popup buttons
 	for i = 1, 4 do
+		local StaticPopup = _G["StaticPopup"..i]
+		StaticPopup:HookScript("OnShow", function() -- UpdateRecapButton is created OnShow
+			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
+				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
+				hooksecurefunc(_G["StaticPopup"..i], "UpdateRecapButton", function(self)
+					-- when UpdateRecapButton runs and enables the button it unsets OnEnter
+					-- we need to reset it with ours, blizzard will replace it when the button
+					-- is disabled. so we don't have to worry about anything else.
+					if self.button4 and self.button4:IsEnabled() then
+						self.button4:SetScript("OnEnter", S.SetModifiedBackdrop)
+						self.button4:SetScript("OnLeave", S.SetOriginalBackdrop)
+					end
+				end)
+			end
+		end)
 		for j = 1, 4 do
-			S:HandleButton(_G["StaticPopup"..i]["button"..j])
+			S:HandleButton(StaticPopup["button"..j])
 		end
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
