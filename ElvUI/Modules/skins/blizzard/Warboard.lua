@@ -10,7 +10,7 @@ local S = E:GetModule('Skins')
 -- GLOBALS:
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Contribution ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Warboard ~= true then return end
 
 
 end
