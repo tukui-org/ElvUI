@@ -148,8 +148,8 @@ local function LoadSkin()
 
 	-- reskin popup buttons
 	for i = 1, 4 do
-		for j = 1, 3 do
-			S:HandleButton(_G["StaticPopup"..i.."Button"..j])
+		for j = 1, 4 do
+			S:HandleButton(_G["StaticPopup"..i]["button"..j])
 		end
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
