@@ -819,6 +819,7 @@ L["Stable"] = "兽栏"
 L["Tabard Frame"] = "战袍"
 L["TalkingHead"] = "剧情对话框"
 L["Trainer Frame"] = "训练师"
+L["Warboard"] = "英雄的召唤布告牌"
 
 --Tooltip
 L["Always Hide"] = "总是隐藏"

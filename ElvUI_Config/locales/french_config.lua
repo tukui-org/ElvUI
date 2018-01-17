@@ -819,6 +819,7 @@ L["Stable"] = "Écurie"
 L["Tabard Frame"] = "Tabard"
 L["TalkingHead"] = "Dialogue flottant"
 L["Trainer Frame"] = "Entraîneur"
+L["Warboard"] = "Tableau de l’appel des héros"
 
 --Tooltip
 L["Always Hide"] = "Toujours masqué"

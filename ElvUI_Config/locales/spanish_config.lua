@@ -818,6 +818,7 @@ L["Stable"] = "Establo"
 L["Tabard Frame"] = "Tabardos"
 L["TalkingHead"] = true
 L["Trainer Frame"] = "Entrenador"
+L["Warboard"] = "Tablero de ¡Se busca héroe!"
 
 --Tooltip
 L["Always Hide"] = "Ocultar Siempre"

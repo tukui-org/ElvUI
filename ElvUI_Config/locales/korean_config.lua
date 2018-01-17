@@ -867,6 +867,7 @@ L["Stable"] = "소환수 보관창"
 L["Tabard Frame"] = "휘장 프레임"
 L["TalkingHead"] = true
 L["Trainer Frame"] = "기술전문가 창"
+L["Warboard"] = "영웅의 부름 게시판"
 
 --Tooltip
 L["Always Hide"] = "표시하지 않음"

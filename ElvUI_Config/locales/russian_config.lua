@@ -818,6 +818,7 @@ L["Stable"] = "Стойла"
 L["Tabard Frame"] = "Создание накидки"
 L["TalkingHead"] = "Говорящая голова"
 L["Trainer Frame"] = "Тренер"
+L["Warboard"] = "Доска объявлений для героев"
 
 --Tooltip
 L["Always Hide"] = "Всегда скрывать"

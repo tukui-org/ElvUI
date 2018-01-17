@@ -821,6 +821,7 @@ L["Stable"] = "Stall"
 L["Tabard Frame"] = "Wappenrockfenster"
 L["TalkingHead"] = "Sprechender Kopf"
 L["Trainer Frame"] = "Lehrerfenster"
+L["Warboard"] = "Heldenaufruf"
 
 --Tooltip
 L["Always Hide"] = "Immer verstecken"

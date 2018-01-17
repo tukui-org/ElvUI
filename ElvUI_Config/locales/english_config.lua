@@ -808,6 +808,7 @@ L["Stable"] = true
 L["Tabard Frame"] = true
 L["TalkingHead"] = true
 L["Trainer Frame"] = true
+L["Warboard"] = "Hero's Call Board"
 
 --Tooltip
 L["Always Hide"] = true

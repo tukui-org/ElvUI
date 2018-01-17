@@ -365,7 +365,7 @@ E.Options.args.skins = {
 				},
 				Warboard = {
 					type = "toggle",
-					name = "Warboard",
+					name = L["Warboard"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},
