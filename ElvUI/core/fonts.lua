@@ -131,5 +131,11 @@ function E:UpdateBlizzardFonts()
 		SetFont(Game13FontShadow,					NORMAL, 14)									 -- InspectPvpFrame
 		SetFont(NumberFontNormalSmall,				NORMAL, 11, "OUTLINE")						 -- Calendar, EncounterJournal
 		SetFont(GameFont_Gigantic,				NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET);		 -- Used at the install steps
+		-- 7.3.5
+		SetFont(Game16Font,							NORMAL, 16);								 -- Added in 7.3.5 used for ?
+		SetFont(Game46Font,							NORMAL, 46);								 -- Added in 7.3.5 used for ?
+		SetFont(DestinyFontMed,						NORMAL, 14);								 -- Added in 7.3.5 used for ?
+		SetFont(Fancy12Font,						NORMAL, 12);								 -- Added in 7.3.5 used for ?
+		SetFont(Fancy14Font,						NORMAL, 14);								 -- Added in 7.3.5 used for ?
 	end
 end
