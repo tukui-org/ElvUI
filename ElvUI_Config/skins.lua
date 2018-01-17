@@ -363,6 +363,11 @@ E.Options.args.skins = {
 					name = INTERFACE_OPTIONS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Warboard = {
+					type = "toggle",
+					name = "Warboard",
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

@@ -65,5 +65,6 @@
 	<Script file='tradeskill.lua'/>
 	<Script file='trainer.lua'/>
 	<Script file='voidstorage.lua'/>
+	<Script file='Warboard.lua'/>
 	<Script file='worldmap.lua'/>
 </Ui>

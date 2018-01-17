@@ -121,6 +121,7 @@ V['skins'] = {
 		["Obliterum"] = true,
 		["Contribution"] = true,
 		["BlizzardOptions"] = true,
+		["Warboard"] = true,
 	},
 }
 
