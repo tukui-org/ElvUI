@@ -3,36 +3,36 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select, unpack = select, unpack
-local sort, wipe = table.sort, wipe
-local ceil, type = math.ceil, type
+local select, unpack, sort, wipe, ceil, type = select, unpack, table.sort, wipe, math.ceil, type
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
-local GetNumGuildMembers = GetNumGuildMembers
-local GetGuildRosterInfo = GetGuildRosterInfo
-local GetGuildRosterMOTD = GetGuildRosterMOTD
-local IsInGuild = IsInGuild
-local LoadAddOn = LoadAddOn
-local GuildRoster = GuildRoster
-local GetMouseFocus = GetMouseFocus
-local SetItemRef = SetItemRef
-local GetQuestDifficultyColor = GetQuestDifficultyColor
-local UnitInParty = UnitInParty
-local UnitInRaid = UnitInRaid
-local L_EasyMenu = L_EasyMenu
-local InviteToGroup = InviteToGroup
-local RequestInviteFromUnit = RequestInviteFromUnit
-local IsShiftKeyDown = IsShiftKeyDown
-local GetGuildInfo = GetGuildInfo
-local ToggleGuildFrame = ToggleGuildFrame
-local GetGuildFactionInfo = GetGuildFactionInfo
 local GetCurrentMapAreaID = GetCurrentMapAreaID
 local GetDisplayedInviteType = GetDisplayedInviteType
+local GetGuildFactionInfo = GetGuildFactionInfo
+local GetGuildInfo = GetGuildInfo
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetGuildRosterMOTD = GetGuildRosterMOTD
+local GetMouseFocus = GetMouseFocus
+local GetNumGuildMembers = GetNumGuildMembers
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local GuildRoster = GuildRoster
+local InviteToGroup = InviteToGroup
+local IsInGuild = IsInGuild
+local IsShiftKeyDown = IsShiftKeyDown
+local LoadAddOn = LoadAddOn
+local RequestInviteFromUnit = RequestInviteFromUnit
+local SetItemRef = SetItemRef
+local ToggleGuildFrame = ToggleGuildFrame
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local GUILD_MOTD = GUILD_MOTD
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
+local GUILD_MOTD = GUILD_MOTD
 local REMOTE_CHAT = REMOTE_CHAT
+
+local L_EasyMenu = L_EasyMenu
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
