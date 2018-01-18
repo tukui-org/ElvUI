@@ -80,7 +80,8 @@ local menuList = {
 local function inviteClick(self, name, guid)
 	menuFrame:Hide()
 
-	if not name then return end
+	if not (name and name ~= "") then return end
+
 	if type(name) ~= 'number' then
 		InviteUnit(name)
 	elseif guid then

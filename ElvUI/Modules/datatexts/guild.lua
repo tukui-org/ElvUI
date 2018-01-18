@@ -5,7 +5,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local select, unpack = select, unpack
 local sort, wipe = table.sort, wipe
-local ceil = math.ceil
+local ceil, type = math.ceil, type
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
 local GetNumGuildMembers = GetNumGuildMembers
@@ -15,17 +15,19 @@ local IsInGuild = IsInGuild
 local LoadAddOn = LoadAddOn
 local GuildRoster = GuildRoster
 local GetMouseFocus = GetMouseFocus
-local InviteUnit = InviteUnit
 local SetItemRef = SetItemRef
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local L_EasyMenu = L_EasyMenu
+local InviteToGroup = InviteToGroup
+local RequestInviteFromUnit = RequestInviteFromUnit
 local IsShiftKeyDown = IsShiftKeyDown
 local GetGuildInfo = GetGuildInfo
 local ToggleGuildFrame = ToggleGuildFrame
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetCurrentMapAreaID = GetCurrentMapAreaID
+local GetDisplayedInviteType = GetDisplayedInviteType
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GUILD_MOTD = GUILD_MOTD
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
@@ -89,18 +91,18 @@ local mobilestatus = {
 local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
-	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile
+	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile, guid
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
 		if not name then return end
 
 		statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
-			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile }
+			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile, guid }
 		end
 	end
 end
@@ -168,9 +170,23 @@ local menuList = {
 	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
-local function inviteClick(self, playerName)
+local function inviteClick(self, name, guid)
 	menuFrame:Hide()
-	InviteUnit(playerName)
+
+	if not (name and name ~= "") then return end
+
+	if guid then
+		local inviteType = GetDisplayedInviteType(guid)
+		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
+			InviteToGroup(name)
+		elseif inviteType == "REQUEST_INVITE" then
+			RequestInviteFromUnit(name)
+		end
+	else
+		-- if for some reason guid isnt here fallback and just try to invite them
+		-- this is unlikely but having a fallback doesnt hurt
+		InviteToGroup(name)
+	end
 end
 
 local function whisperClick(self, playerName)
@@ -198,11 +214,11 @@ local function Click(self, btn)
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
 					grouped = ""
-					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1],notCheckable=true, func = inviteClick}
+					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
 				end
 				menuCountWhispers = menuCountWhispers + 1
 				if not grouped then grouped = "" end
-				menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1],notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1], notCheckable=true, func = whisperClick}
 			end
 		end
 
