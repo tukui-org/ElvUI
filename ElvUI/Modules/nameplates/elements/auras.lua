@@ -116,7 +116,7 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 	end
 end
 
-function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, _, texture, count, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, _, texture, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
 	local isFriend, filterCheck, isUnit, isPlayer, canDispell, allowDuration, noDuration = false
 
@@ -127,7 +127,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit) and not UnitCanAttack('player', frame.unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isUnit = frame.unit and caster and UnitIsUnit(frame.unit, caster)
-		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck = mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
