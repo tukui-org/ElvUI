@@ -448,7 +448,7 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 end
 
-function UF:AuraFilter(unit, button, name, _, _, _, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function UF:AuraFilter(unit, button, name, _, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
 
@@ -463,7 +463,7 @@ function UF:AuraFilter(unit, button, name, _, _, _, dispelType, duration, expira
 	button.isPlayer = isPlayer
 	button.isFriend = isFriend
 	button.isStealable = isStealable
-	button.dtype = dispelType
+	button.dtype = debuffType
 	button.duration = duration
 	button.expiration = expiration
 	button.name = name
@@ -476,7 +476,7 @@ function UF:AuraFilter(unit, button, name, _, _, _, dispelType, duration, expira
 
 	if db.priority ~= '' then
 		isUnit = unit and caster and UnitIsUnit(unit, caster)
-		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else

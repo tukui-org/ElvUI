@@ -7,39 +7,42 @@ local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
-local BNSetCustomMessage = BNSetCustomMessage
+local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local BNGetFriendInfo = BNGetFriendInfo
 local BNGetInfo = BNGetInfo
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetNumFriends = BNGetNumFriends
+local BNInviteFriend = BNInviteFriend
+local BNRequestInviteFriend = BNRequestInviteFriend
+local BNSetCustomMessage = BNSetCustomMessage
+local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local GetDisplayedInviteType = GetDisplayedInviteType
+local GetFriendInfo = GetFriendInfo
+local GetNumFriends = GetNumFriends
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local GetRealmName = GetRealmName
+local InviteToGroup = InviteToGroup
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
+local IsShiftKeyDown = IsShiftKeyDown
+local RequestInviteFromUnit = RequestInviteFromUnit
 local SendChatMessage = SendChatMessage
-local InviteUnit = InviteUnit
-local BNInviteFriend = BNInviteFriend
-local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local SetItemRef = SetItemRef
-local GetFriendInfo = GetFriendInfo
-local BNGetFriendInfo = BNGetFriendInfo
-local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
-local GetNumFriends = GetNumFriends
-local BNGetNumFriends = BNGetNumFriends
-local GetQuestDifficultyColor = GetQuestDifficultyColor
+local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitFactionGroup = UnitFactionGroup
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local ToggleFriendsFrame = ToggleFriendsFrame
-local L_EasyMenu = L_EasyMenu
-local IsShiftKeyDown = IsShiftKeyDown
-local GetRealmName = GetRealmName
-local GetCurrentMapAreaID = GetCurrentMapAreaID
-local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
-local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
-local GetDisplayedInviteType = GetDisplayedInviteType
-local BNRequestInviteFriend = BNRequestInviteFriend
-local FRIENDS = FRIENDS
+
 local AFK = AFK
 local DND = DND
-local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local FRIENDS = FRIENDS
 local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
+local L_EasyMenu = L_EasyMenu
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 -- create a popup
@@ -80,15 +83,31 @@ local menuList = {
 local function inviteClick(self, name, guid)
 	menuFrame:Hide()
 
-	if not name then return end
-	if type(name) ~= 'number' then
-		InviteUnit(name)
-	elseif guid then
+	if not (name and name ~= "") then return end
+	local isBNet = type(name) == 'number'
+
+	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
 		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
-			BNInviteFriend(name)
+			if isBNet then
+				BNInviteFriend(name)
+			else
+				InviteToGroup(name)
+			end
 		elseif inviteType == "REQUEST_INVITE" then
-			BNRequestInviteFriend(name)
+			if isBNet then
+				BNRequestInviteFriend(name)
+			else
+				RequestInviteFromUnit(name)
+			end
+		end
+	else
+		-- if for some reason guid isnt here fallback and just try to invite them
+		-- this is unlikely but having a fallback doesnt hurt
+		if isBNet then
+			BNInviteFriend(name)
+		else
+			InviteToGroup(name)
 		end
 	end
 end
@@ -153,9 +172,9 @@ end
 
 local function BuildFriendTable(total)
 	wipe(friendTable)
-	local name, level, class, area, connected, status, note
+	local _, name, level, class, area, connected, status, note, guid
 	for i = 1, total do
-		name, level, class, area, connected, status, note = GetFriendInfo(i)
+		name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
 
 		if status == "<"..AFK..">" then
 			status = statusTable[1]
@@ -170,7 +189,7 @@ local function BuildFriendTable(total)
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 
-			friendTable[i] = { name, level, class, area, connected, status, note }
+			friendTable[i] = { name, level, class, area, connected, status, note, guid }
 		end
 	end
 	if next(friendTable) then
@@ -363,7 +382,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = whisperClick}
 						if not (UnitInParty(info[1]) or UnitInRaid(info[1])) then
 							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], notCheckable=true, func = inviteClick}
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1], arg2 = info[8], notCheckable=true, func = inviteClick}
 						end
 					end
 				end

@@ -35,6 +35,17 @@ function S:SetOriginalBackdrop()
 	self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 end
 
+-- function to handle the recap button script
+function S:UpdateRecapButton()
+	-- when UpdateRecapButton runs and enables the button, it unsets OnEnter
+	-- we need to reset it with ours. blizzard will replace it when the button
+	-- is disabled. so, we don't have to worry about anything else.
+	if self and self.button4 and self.button4:IsEnabled() then
+		self.button4:SetScript("OnEnter", S.SetModifiedBackdrop)
+		self.button4:SetScript("OnLeave", S.SetOriginalBackdrop)
+	end
+end
+
 S.PVPHonorXPBarFrames = {}
 S.PVPHonorXPBarSkinned = false
 function S:SkinPVPHonorXPBar(frame)

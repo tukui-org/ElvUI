@@ -6,6 +6,7 @@ Added option to control the amount of decimals used for values on elements like 
 Added new "Quick Join" datatext.  
 Added new style filter action "Power Color".  
 Added options to hide specific sections in the Friends datatext tooltip.  
+Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).  
 
 
 **Bug Fixes:**   
@@ -14,10 +15,15 @@ Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly
 Fixed issue with arena frames displaying wrong unit in PvP Brawls.  
 Fixed issue which caused the MicroBar position to be misplaced during combat.  
 Fixed issue which caused the Color Picker default color button to be disabled when it should still be active.  
+Fixed error when importing style filters via global (account settings).  
+Fixed issue (#282) which prevented some Style Filter actions from taking affect.  
+Fixed issue (#288) which caused items in the bag to not update correctly (after sorting).  
+Fixed issue which caused the invite via Guild and Friend (non-bnet) datatext to not properly request an invite.  
 
 
 **Misc. Changes:**  
-Various tweaks and fixes to skins.  
+Updated UnitFrame and NamePlate heal prediction based on oUF changes.  
+Various tweaks and fixes to skins and skinned: Recap button & Warboard frame.  
 Tweaked sorting in the Friends datatext so WoW is always on top.  
 Updated some of the Priest, Monk, and Paladin Buff Indicator spells.  
 Style Filter border color action now applies to the Power Bar border as well.  
