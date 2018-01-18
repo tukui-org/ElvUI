@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select, unpack, sort, wipe, ceil, type = select, unpack, table.sort, wipe, math.ceil, type
+local select, unpack, sort, wipe, ceil = select, unpack, table.sort, wipe, math.ceil
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
 local GetCurrentMapAreaID = GetCurrentMapAreaID
