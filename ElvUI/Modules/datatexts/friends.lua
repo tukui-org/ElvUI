@@ -7,40 +7,42 @@ local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
-local BNSetCustomMessage = BNSetCustomMessage
+local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local BNGetFriendInfo = BNGetFriendInfo
 local BNGetInfo = BNGetInfo
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetNumFriends = BNGetNumFriends
+local BNInviteFriend = BNInviteFriend
+local BNRequestInviteFriend = BNRequestInviteFriend
+local BNSetCustomMessage = BNSetCustomMessage
+local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local GetDisplayedInviteType = GetDisplayedInviteType
+local GetFriendInfo = GetFriendInfo
+local GetNumFriends = GetNumFriends
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local GetRealmName = GetRealmName
+local InviteToGroup = InviteToGroup
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
+local IsShiftKeyDown = IsShiftKeyDown
+local RequestInviteFromUnit = RequestInviteFromUnit
 local SendChatMessage = SendChatMessage
-local BNInviteFriend = BNInviteFriend
-local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local SetItemRef = SetItemRef
-local GetFriendInfo = GetFriendInfo
-local BNGetFriendInfo = BNGetFriendInfo
-local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
-local GetNumFriends = GetNumFriends
-local BNGetNumFriends = BNGetNumFriends
-local GetQuestDifficultyColor = GetQuestDifficultyColor
+local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitFactionGroup = UnitFactionGroup
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local ToggleFriendsFrame = ToggleFriendsFrame
-local L_EasyMenu = L_EasyMenu
-local IsShiftKeyDown = IsShiftKeyDown
-local GetRealmName = GetRealmName
-local GetCurrentMapAreaID = GetCurrentMapAreaID
-local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
-local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
-local GetDisplayedInviteType = GetDisplayedInviteType
-local BNRequestInviteFriend = BNRequestInviteFriend
-local RequestInviteFromUnit = RequestInviteFromUnit
-local InviteToGroup = InviteToGroup
-local FRIENDS = FRIENDS
+
 local AFK = AFK
 local DND = DND
-local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local FRIENDS = FRIENDS
 local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
+local L_EasyMenu = L_EasyMenu
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 -- create a popup
