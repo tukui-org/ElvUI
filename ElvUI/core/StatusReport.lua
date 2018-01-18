@@ -9,6 +9,30 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS:
 
+
+--[[
+	Info we want to display here:
+
+	AddOn Info
+		ElvUI Version
+		Are other addons enabled?
+		Is Auto-Scale enabled?
+		UI Scale
+	WoW Info
+		WoW Build
+		Locale
+		Display Mode
+		Resolution
+		Is Mac Client?
+	Character Info
+		Race
+		Class
+		Faction
+		Level
+		Specialization
+		Zone
+]]
+
 function E:CreateStatusFrame()
 	--Main frame
 	local StatusFrame = CreateFrame("Frame", "ElvUIStatusReport", E.UIParent)
