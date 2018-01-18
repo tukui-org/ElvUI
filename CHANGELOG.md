@@ -16,8 +16,8 @@ Fixed issue with arena frames displaying wrong unit in PvP Brawls.
 Fixed issue which caused the MicroBar position to be misplaced during combat.  
 Fixed issue which caused the Color Picker default color button to be disabled when it should still be active.  
 Fixed error when importing style filters via global (account settings).  
-Fixed issue which prevented some Style Filter actions from taking affect.  
-Fixed issue which caused items in the bag to not update correctly (after sorting).  
+Fixed issue (#282) which prevented some Style Filter actions from taking affect.  
+Fixed issue (#288) which caused items in the bag to not update correctly (after sorting).  
 Fixed issue which caused the invite via Guild and Friend (non-bnet) datatext to not properly request an invite.  
 
 
