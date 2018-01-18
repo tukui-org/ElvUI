@@ -343,6 +343,35 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 	end
 end
 
+local function CreateCloseButton(frame, size, offset, texture, backdrop)
+	size = (size or 16)
+	offset = (offset or -6)
+	texture = (texture or "Interface\\AddOns\\ElvUI\\media\\textures\\close.tga")
+
+	local CloseButton = CreateFrame("Button", nil, frame)
+	CloseButton:Size(size)
+	CloseButton:Point("TOPRIGHT", offset, offset)
+	if backdrop then
+		CloseButton:CreateBackdrop("Default", true)
+	end
+
+	CloseButton.Texture = CloseButton:CreateTexture(nil, "OVERLAY")
+	CloseButton.Texture:SetAllPoints()
+	CloseButton.Texture:SetTexture(texture)
+
+	CloseButton:SetScript("OnClick", function(self)
+		self:GetParent():Hide()
+	end)
+	CloseButton:SetScript("OnEnter", function(self)
+		self.Texture:SetVertexColor(unpack(E["media"].rgbvaluecolor))
+	end)
+	CloseButton:SetScript("OnLeave", function(self)
+		self.Texture:SetVertexColor(1, 1, 1)
+	end)
+
+	frame.CloseButton = CloseButton
+end
+
 local function addapi(object)
 	local mt = getmetatable(object).__index
 	if not object.Size then mt.Size = Size end
@@ -358,6 +387,7 @@ local function addapi(object)
 	if not object.FontTemplate then mt.FontTemplate = FontTemplate end
 	if not object.StripTextures then mt.StripTextures = StripTextures end
 	if not object.StyleButton then mt.StyleButton = StyleButton end
+	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 end
 
 local handled = {["Frame"] = true}
