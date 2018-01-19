@@ -179,7 +179,7 @@ E.Options.args.general = {
 					order = 22,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
-					min = 0.32, max = 0.64, step = 0.01,
+					softMin = 0.20, softMax = 0.64, step = 0.01,
 					get = function(info) return E.global.general.minUiScale end,
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
