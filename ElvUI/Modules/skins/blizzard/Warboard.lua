@@ -37,17 +37,6 @@ local function LoadSkin()
 	WarboardQuestChoiceFrame.GarrCorners:Hide()
 
 	WarboardQuestChoiceFrame.Background:Hide()
-
-	WarboardQuestChoiceFrame.Title.Text:FontTemplate(nil, 22)
-
-	for i = 1, 3 do
-		local option = _G["WarboardQuestChoiceFrameOption"..i]
-		local headerText = option.Header.Text
-		local optionText = option.OptionText
-
-		headerText:FontTemplate(nil, 16)
-		optionText:FontTemplate(nil, 12)
-	end
 end
 
 S:AddCallbackForAddon("Blizzard_WarboardUI", "Warboard", LoadSkin)
