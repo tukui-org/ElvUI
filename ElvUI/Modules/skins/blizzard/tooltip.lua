@@ -85,6 +85,8 @@ local function LoadSkin()
 		WorldMapCompareTooltip1,
 		WorldMapCompareTooltip2,
 		WorldMapCompareTooltip3,
+		EventTraceTooltip,
+		FrameStackTooltip,
 	}
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')

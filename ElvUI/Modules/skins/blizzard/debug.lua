@@ -47,18 +47,6 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
-	FrameStackTooltip:HookScript("OnShow", function(self)
-		if not self.template then
-			self:SetTemplate("Transparent")
-		end
-	end)
-
-	EventTraceTooltip:HookScript("OnShow", function(self)
-		if not self.template then
-			self:SetTemplate("Transparent")
-		end
-	end)
-
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
