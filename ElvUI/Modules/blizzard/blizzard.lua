@@ -34,21 +34,23 @@ function B:Initialize()
 	end)
 
 	-- MicroButton Talent Alert
-	if(E.global.general.showMissingTalentAlert and TalentMicroButtonAlert) then
-		TalentMicroButtonAlert:ClearAllPoints()
-		TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
-		TalentMicroButtonAlert:StripTextures()
-		TalentMicroButtonAlert.Arrow:Hide()
-		TalentMicroButtonAlert.Text:FontTemplate()
-		TalentMicroButtonAlert:CreateBackdrop("Transparent")
-		S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
+	if TalentMicroButtonAlert then -- why do we need to check this?
+		if E.global.general.showMissingTalentAlert then
+			TalentMicroButtonAlert:ClearAllPoints()
+			TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
+			TalentMicroButtonAlert:StripTextures()
+			TalentMicroButtonAlert.Arrow:Hide()
+			TalentMicroButtonAlert.Text:FontTemplate()
+			TalentMicroButtonAlert:CreateBackdrop("Transparent")
+			S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
-		TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
-		TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
-		TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
-		TalentMicroButtonAlert.tex:SetSize(32, 32)
-	else
-		TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
+			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
+			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
+			TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
+			TalentMicroButtonAlert.tex:SetSize(32, 32)
+		else
+			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
+		end
 	end
 end
 
