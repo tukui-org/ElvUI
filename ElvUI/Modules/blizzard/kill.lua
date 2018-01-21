@@ -42,9 +42,6 @@ function B:KillBlizzard()
 		HelpPlateTooltip:Kill()
 	end
 	EJMicroButtonAlert:Kill()
-	if not E.global.general.showMissingTalentAlert then
-		TalentMicroButtonAlert:Kill()
-	end
 	--CompanionsMicroButtonAlert:Kill()
 	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
 end
