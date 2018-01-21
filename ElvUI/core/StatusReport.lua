@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 
 --WoW API / Variables
-
+local CreateFrame = CreateFrame
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS:
@@ -40,7 +40,7 @@ function E:CreateStatusFrame()
 	StatusFrame:Point("CENTER", 0, 200)
 	StatusFrame:SetFrameStrata("HIGH")
 	StatusFrame:CreateBackdrop("Transparent", nil, true)
-	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.8)
+	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
 	StatusFrame:SetShown(false)
 	StatusFrame:SetMovable(true)
 	StatusFrame:CreateCloseButton()
@@ -55,47 +55,78 @@ function E:CreateStatusFrame()
 
 	--Sections
 	local function CreateSection(width, height, anchor1, anchorTo, anchor2, yOffset)
-		local frame = CreateFrame("Frame", nil, StatusFrame)
-		frame:Size(width, height)
-		frame:Point(anchor1, anchorTo, anchor2, 0, yOffset)
+		local section = CreateFrame("Frame", nil, StatusFrame)
+		section:Size(width, height)
+		section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
 
-		frame.Header = CreateFrame("Frame", nil, frame)
-		frame.Header:Size(400, 30)
-		frame.Header:Point("TOP", frame)
+		section.Header = CreateFrame("Frame", nil, section)
+		section.Header:Size(400, 30)
+		section.Header:Point("TOP", section)
 
-		frame.Header.Text = frame.Header:CreateFontString(nil, "ARTWORK", "SystemFont_Outline")
-		frame.Header.Text:Point("TOP")
-		frame.Header.Text:Point("BOTTOM")
-		frame.Header.Text:SetJustifyH("CENTER")
-		frame.Header.Text:SetJustifyV("MIDDLE")
+		section.Header.Text = section.Header:CreateFontString(nil, "ARTWORK", "SystemFont_Outline")
+		section.Header.Text:Point("TOP")
+		section.Header.Text:Point("BOTTOM")
+		section.Header.Text:SetJustifyH("CENTER")
+		section.Header.Text:SetJustifyV("MIDDLE")
+		local font, height, flags = section.Header.Text:GetFont()
+		section.Header.Text:SetFont(font, height*1.3, flags)
 
-		frame.Header.LeftDivider = frame.Header:CreateTexture(nil, "ARTWORK")
-		frame.Header.LeftDivider:Height(8)
-		frame.Header.LeftDivider:Point("LEFT", frame.Header, "LEFT", 5, 0)
-		frame.Header.LeftDivider:Point("RIGHT", frame.Header.Text, "LEFT", -5, 0)
-		frame.Header.LeftDivider:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-		frame.Header.LeftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		section.Header.LeftDivider = section.Header:CreateTexture(nil, "ARTWORK")
+		section.Header.LeftDivider:Height(8)
+		section.Header.LeftDivider:Point("LEFT", section.Header, "LEFT", 5, 0)
+		section.Header.LeftDivider:Point("RIGHT", section.Header.Text, "LEFT", -5, 0)
+		section.Header.LeftDivider:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
+		section.Header.LeftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 
-		frame.Header.RightDivider = frame.Header:CreateTexture(nil, "ARTWORK")
-		frame.Header.RightDivider:Height(8)
-		frame.Header.RightDivider:Point("RIGHT", frame.Header, "RIGHT", -5, 0)
-		frame.Header.RightDivider:Point("LEFT", frame.Header.Text, "RIGHT", 5, 0)
-		frame.Header.RightDivider:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
-		frame.Header.RightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		section.Header.RightDivider = section.Header:CreateTexture(nil, "ARTWORK")
+		section.Header.RightDivider:Height(8)
+		section.Header.RightDivider:Point("RIGHT", section.Header, "RIGHT", -5, 0)
+		section.Header.RightDivider:Point("LEFT", section.Header.Text, "RIGHT", 5, 0)
+		section.Header.RightDivider:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border")
+		section.Header.RightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 
-		return frame
+		return section
+	end
+
+	local function CreateContent(num, parent, anchorTo)
+		local content = CreateFrame("Frame", nil, parent)
+		content:Size(340, (num * 20))
+		content:Point("TOP", anchorTo, "BOTTOM",0 , -5)
+		for i = 1, num do
+			local line = CreateFrame("Frame", nil, content)
+			line:Size(340, 20)
+			line.Text = line:CreateFontString(nil, "ARTWORK", "SystemFont_Outline")
+			line.Text:SetAllPoints()
+			line.Text:SetJustifyH("LEFT")
+			line.Text:SetJustifyV("MIDDLE")
+			line.Text:SetText("test")
+			content["Line"..i] = line
+
+			if i == 1 then
+				content["Line"..i]:Point("TOP", content, "TOP")
+			else
+				content["Line"..i]:Point("TOP", content["Line"..(i-1)], "BOTTOM", 0, -5)
+			end
+		end
+
+		return content
 	end
 
 	StatusFrame.Section1 = CreateSection(400, 150, "TOP", StatusFrame, "TOP", -30)
 	StatusFrame.Section2 = CreateSection(400, 175, "TOP", StatusFrame.Section1, "BOTTOM", 0)
 	StatusFrame.Section3 = CreateSection(400, 185, "TOP", StatusFrame.Section2, "BOTTOM", 0)
-	StatusFrame.Section4 = CreateSection(400, 90, "TOP", StatusFrame.Section3, "BOTTOM", 0)
+	StatusFrame.Section4 = CreateSection(400, 60, "TOP", StatusFrame.Section3, "BOTTOM", 0)
+
 	--Section headers
-	StatusFrame.Section1.Header.Text:SetText("AddOn Info")
-	StatusFrame.Section2.Header.Text:SetText("WoW Info")
-	StatusFrame.Section3.Header.Text:SetText("Character Info")
-	StatusFrame.Section4.Header.Text:SetText("Export Info To")
+	StatusFrame.Section1.Header.Text:SetText("|cfffe7b2cAddOn Info|r")
+	StatusFrame.Section2.Header.Text:SetText("|cfffe7b2cWoW Info|r")
+	StatusFrame.Section3.Header.Text:SetText("|cfffe7b2cCharacter Info|r")
+	StatusFrame.Section4.Header.Text:SetText("|cfffe7b2cExport To|r")
+
 	--Section contents
+	StatusFrame.Section1.Content = CreateContent(4, StatusFrame.Section1, StatusFrame.Section1.Header)
+	StatusFrame.Section2.Content = CreateContent(5, StatusFrame.Section2, StatusFrame.Section2.Header)
+	StatusFrame.Section3.Content = CreateContent(6, StatusFrame.Section3, StatusFrame.Section3.Header)
 
 	E.StatusFrame = StatusFrame
 end
