@@ -16,16 +16,21 @@ local GetScreenResolutions = GetScreenResolutions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local UnitLevel = UnitLevel
+local MyName = UnitName('player')
+
+local function IsAddOnEnabled(addon)
+	return GetAddOnEnableState(MyName, addon) == 2
+end
 
 local function AreOtherAddOnsEnabled()
-	local name, loadable, reason, _
+	local name
 	for i = 1, GetNumAddOns() do
-		name, _, _, loadable, reason = GetAddOnInfo(i)
-		if ((name ~= "ElvUI" and name ~= "ElvUI Config") and (loadable or (not loadable and reason == "DEMAND_LOADED"))) then --Loaded or load on demand
-			return "No"
+		name = GetAddOnInfo(i)
+		if (name ~= "ElvUI" and name ~= "ElvUI_Config") then --Loaded or load on demand
+			return IsAddOnEnabled(i) and "Yes" or "No"
 		end
 	end
-	return "Yes"
+	return "No"
 end
 
 local function GetUiScale()
