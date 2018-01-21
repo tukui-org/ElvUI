@@ -42,7 +42,7 @@ function B:Initialize()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
 			TalentMicroButtonAlert:CreateBackdrop("Transparent")
-			S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
+			E:GetModule("Skins"):HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
 			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
