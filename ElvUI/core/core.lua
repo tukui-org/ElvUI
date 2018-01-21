@@ -55,7 +55,8 @@ E.myfaction = select(2, UnitFactionGroup('player'));
 E.myname = UnitName("player");
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
-E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
+E.wowpatch, E.wowbuild = GetBuildInfo();
+E.wowpatch, E.wowbuild = tonumber(E.wowpatch), tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
 E.isMacClient = IsMacClient();
