@@ -7,6 +7,8 @@ local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
+local GetAddOnEnableState = GetAddOnEnableState
+local IsAddOnEnabled = IsAddOnEnabled
 local GetCurrentResolution = GetCurrentResolution
 local GetCVar = GetCVar
 local GetLocale = GetLocale
@@ -16,10 +18,9 @@ local GetScreenResolutions = GetScreenResolutions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local UnitLevel = UnitLevel
-local MyName = UnitName('player')
 
 local function IsAddOnEnabled(addon)
-	return GetAddOnEnableState(MyName, addon) == 2
+	return GetAddOnEnableState(E.myname, addon) == 2
 end
 
 local function AreOtherAddOnsEnabled()
