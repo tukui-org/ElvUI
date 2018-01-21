@@ -7,6 +7,7 @@ Added new "Quick Join" datatext.
 Added new style filter action "Power Color".  
 Added options to hide specific sections in the Friends datatext tooltip.  
 Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).  
+Added new command "/estatus" which will show a Status Report frame with helpful information for troubleshooting purposes.  
 
 
 **Bug Fixes:**   
