@@ -1261,9 +1261,9 @@ function E:UnregisterEventForObject(event, object, func)
 
 	--Find the specified function for the specified object and remove it from the register
 	if EventRegister[event] and EventRegister[event][object] then
-		for _, registeredFunc in ipairs(EventRegister[event][object]) do
+		for index, registeredFunc in ipairs(EventRegister[event][object]) do
 			if func == registeredFunc then
-				tremove(EventRegister[event][object], registeredFunc)
+				tremove(EventRegister[event][object], index)
 				break
 			end
 		end
