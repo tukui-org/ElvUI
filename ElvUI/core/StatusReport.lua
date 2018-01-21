@@ -7,8 +7,6 @@ local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
-local GetAddOnEnableState = GetAddOnEnableState
-local IsAddOnEnabled = IsAddOnEnabled
 local GetCurrentResolution = GetCurrentResolution
 local GetCVar = GetCVar
 local GetLocale = GetLocale
@@ -19,19 +17,15 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local UnitLevel = UnitLevel
 
-local function IsAddOnEnabled(addon)
-	return GetAddOnEnableState(E.myname, addon) == 2
-end
-
 local function AreOtherAddOnsEnabled()
-	local name
+	local name, loadable, reason, _
 	for i = 1, GetNumAddOns() do
-		name = GetAddOnInfo(i)
-		if (name ~= "ElvUI" and name ~= "ElvUI_Config") then --Loaded or load on demand
-			return IsAddOnEnabled(i) and "Yes" or "No"
+		name, _, _, loadable, reason = GetAddOnInfo(i)
+		if ((name ~= "ElvUI" and name ~= "ElvUI Config") and (loadable or (not loadable and reason == "DEMAND_LOADED"))) then --Loaded or load on demand
+			return "No"
 		end
 	end
-	return "No"
+	return "Yes"
 end
 
 local function GetUiScale()
