@@ -21,11 +21,11 @@ local function AreOtherAddOnsEnabled()
 	local name, loadable, reason, _
 	for i = 1, GetNumAddOns() do
 		name, _, _, loadable, reason = GetAddOnInfo(i)
-		if ((name ~= "ElvUI" and name ~= "ElvUI Config") and (loadable or (not loadable and reason == "DEMAND_LOADED"))) then --Loaded or load on demand
-			return "No"
+		if ((name ~= "ElvUI" and name ~= "ElvUI_Config") and (loadable or (not loadable and reason == "DEMAND_LOADED"))) then --Loaded or load on demand
+			return "Yes"
 		end
 	end
-	return "Yes"
+	return "No"
 end
 
 local function GetUiScale()
