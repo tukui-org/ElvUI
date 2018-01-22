@@ -6,6 +6,7 @@ local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
 --Cache global variables
 --Lua functions
 local _G = _G
+local floor = floor
 local tonumber, select = tonumber, select
 local format, split = string.format, string.split
 --WoW API / Variables
@@ -112,8 +113,8 @@ function mod:ArtifactBar_OnEnter()
 	local apInBags = self.BagArtifactPower
 
 	GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', E:ShortValue(xpForNextPoint - xp), remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %d %s)', E:ShortValue(apInBags), apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %s %s)', E:ShortValue(xpForNextPoint - xp), remaining / xpForNextPoint * 100, floor(20 * remaining / xpForNextPoint), L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %s %s)', E:ShortValue(apInBags), apInBags / xpForNextPoint * 100, floor(20 * apInBags / xpForNextPoint), L["Bars"]), 1, 1, 1)
 	if (numPointsAvailableToSpend > 0) then
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(format(ARTIFACT_POWER_TOOLTIP_BODY, numPointsAvailableToSpend), nil, nil, nil, true)
