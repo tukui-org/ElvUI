@@ -66,11 +66,9 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 
 空白则为禁用. 如需技术支持请至http://www.tukui.org]=]
-L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[If you set this to 1 then all plates triggered by this style filter will be above any of the non-triggered plates.
-
-If you set this to 2 in another style filter then all plates triggered by that filter will be above plates with frame level set to 1 and all non-triggered plates, and so on.
-
-NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
+L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[如果你设置为1则所有符合这个过滤器的姓名版将在其他姓名版上方。
+如果你将另一个过滤器设置为2则符合那个过滤器的姓名版将在设为1的姓名版以及未触发的姓名版上方。
+请注意：这个设置不会修复在互相重叠的姓名版上点击/鼠标悬停的问题。该问题是由于我们无法处理姓名版可点击区域的层次。]=]
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
