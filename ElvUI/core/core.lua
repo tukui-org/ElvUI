@@ -55,7 +55,7 @@ E.myfaction = select(2, UnitFactionGroup('player'));
 E.myname = UnitName("player");
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
-E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
+E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
 E.isMacClient = IsMacClient();
@@ -454,7 +454,9 @@ end
 function E:UpdateFrameTemplates()
 	for frame in pairs(self["frames"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
-			frame:SetTemplate(frame.template, frame.glossTex);
+			if not frame.ignoreFrameTemplates then
+				frame:SetTemplate(frame.template, frame.glossTex);
+			end
 		else
 			self["frames"][frame] = nil;
 		end
@@ -462,7 +464,9 @@ function E:UpdateFrameTemplates()
 
 	for frame in pairs(self["unitFrameElements"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
-			frame:SetTemplate(frame.template, frame.glossTex);
+			if not frame.ignoreFrameTemplates then
+				frame:SetTemplate(frame.template, frame.glossTex);
+			end
 		else
 			self["unitFrameElements"][frame] = nil;
 		end
@@ -472,8 +476,10 @@ end
 function E:UpdateBorderColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame and not frame.ignoreUpdates then
-			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-				frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
+			if not frame.ignoreBorderColors then
+				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+					frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
+				end
 			end
 		else
 			self["frames"][frame] = nil;
@@ -482,8 +488,10 @@ function E:UpdateBorderColors()
 
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame and not frame.ignoreUpdates then
-			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-				frame:SetBackdropBorderColor(unpack(self['media'].unitframeBorderColor))
+			if not frame.ignoreBorderColors then
+				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+					frame:SetBackdropBorderColor(unpack(self['media'].unitframeBorderColor))
+				end
 			end
 		else
 			self["unitFrameElements"][frame] = nil;
@@ -494,14 +502,16 @@ end
 function E:UpdateBackdropColors()
 	for frame, _ in pairs(self["frames"]) do
 		if frame then
-			if frame.template == 'Default' or frame.template == nil then
-				if frame.backdropTexture then
-					frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
-				else
-					frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+			if not frame.ignoreBackdropColors then
+				if frame.template == 'Default' or frame.template == nil then
+					if frame.backdropTexture then
+						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+					else
+						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+					end
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 				end
-			elseif frame.template == 'Transparent' then
-				frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 			end
 		else
 			self["frames"][frame] = nil;
@@ -510,14 +520,16 @@ function E:UpdateBackdropColors()
 
 	for frame, _ in pairs(self["unitFrameElements"]) do
 		if frame then
-			if frame.template == 'Default' or frame.template == nil then
-				if frame.backdropTexture then
-					frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
-				else
-					frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+			if not frame.ignoreBackdropColors then
+				if frame.template == 'Default' or frame.template == nil then
+					if frame.backdropTexture then
+						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+					else
+						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+					end
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 				end
-			elseif frame.template == 'Transparent' then
-				frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
 			end
 		else
 			self["unitFrameElements"][frame] = nil;
@@ -907,7 +919,7 @@ function E:SendMessage()
 	end
 end
 
-local SendRecieveGroupSize
+local SendRecieveGroupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
@@ -928,7 +940,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	else
 		local num = GetNumGroupMembers()
 		if num ~= SendRecieveGroupSize then
-			if num > 1 and SendRecieveGroupSize and num > SendRecieveGroupSize then
+			if num > 1 and num > SendRecieveGroupSize then
 				E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 			end
 			SendRecieveGroupSize = num
@@ -1007,6 +1019,7 @@ function E:UpdateAll(ignoreInstall)
 
 	local NP = self:GetModule('NamePlates')
 	NP.db = self.db.nameplates
+	NP:StyleFilterInitializeAllFilters()
 	NP:ConfigureAll()
 
 	local DataBars = self:GetModule("DataBars")
@@ -1248,9 +1261,9 @@ function E:UnregisterEventForObject(event, object, func)
 
 	--Find the specified function for the specified object and remove it from the register
 	if EventRegister[event] and EventRegister[event][object] then
-		for _, registeredFunc in ipairs(EventRegister[event][object]) do
+		for index, registeredFunc in ipairs(EventRegister[event][object]) do
 			if func == registeredFunc then
-				tremove(EventRegister[event][object], registeredFunc)
+				tremove(EventRegister[event][object], index)
 				break
 			end
 		end
@@ -1259,7 +1272,7 @@ function E:UnregisterEventForObject(event, object, func)
 		if #EventRegister[event][object] == 0 then
 			EventRegister[event][object] = nil
 		end
-		
+
 		--If this event no longer has any objects registered then unregister it and remove it from the register
 		if not next(EventRegister[event]) then
 			EventFrame:UnregisterEvent(event)
@@ -1566,6 +1579,9 @@ function E:Initialize()
 
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
+	self:UpdateBorderColors()
+	self:UpdateBackdropColors()
+	self:UpdateStatusBars()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");

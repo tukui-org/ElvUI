@@ -4,9 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
 --WoW API / Variables
-local GetCVar = GetCVar
+local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -57,7 +56,10 @@ local function LoadSkin()
 
 	EventTraceTooltip:HookScript("OnShow", function(self)
 		if not self.template then
-			self:SetTemplate("Transparent")
+			self:SetTemplate("Transparent", nil, true) --ignore updates
+		else
+			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			self:SetBackdropColor(unpack(E.media.backdropfadecolor))
 		end
 	end)
 

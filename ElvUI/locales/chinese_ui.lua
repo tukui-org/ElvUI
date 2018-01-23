@@ -38,6 +38,7 @@ L["Purchase Bags"] = "购买背包"
 L["Purchase"] = "购买"
 L["Reagent Bank"] = "材料银行"
 L["Reset Position"] = "重设位置"
+L["Right Click the bag icon to assign a type of item to this bag."] = "右键点击背包按钮来选择将某一类型的物品放在此背包中"
 L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
@@ -103,7 +104,7 @@ L["lvl"] = "等级"
 L["Main Hand"] = "主手"
 L["Mission(s) Report:"] = "任务报告:"
 L["Mitigation By Level: "] = "等级减伤: "
-L["Mobile"] = true
+L["Mobile"] = "App"
 L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["Naval Mission(s) Report:"] = "海军任务报告:"
 L["No Guild"] = "没有公会"
@@ -136,7 +137,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s 尝试调用保护函数 '%s'."
-L["No locals to dump"] = "没有本地文件"
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 试图与你分享过滤器配置. 你是否接受?"

@@ -138,14 +138,14 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, rank, texture, count, dispelType, duration, expiration, caster, isStealable,
+	local name, rank, texture, count, debuffType, duration, expiration, caster, isStealable,
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
 		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	if element.forceShow then
 		spellID = 47540
 		name, rank, texture = GetSpellInfo(spellID)
-		count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
+		count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
 	end
 
 	if(name) then
@@ -188,7 +188,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		local show = true
 		if not element.forceShow then
 			show = (element.CustomFilter or customFilter) (element, unit, button, name, rank, texture,
-				count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+				count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
 		end
 
@@ -207,9 +207,9 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 			if(button.overlay) then
 				if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
-					local color = DebuffTypeColor[dispelType] or DebuffTypeColor.none
+					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
 
-					button.overlay:SetVertexColor(color.r, color.g, color.b)
+					button.overlay:SetVertexColor(color[1], color[2], color[3])
 					button.overlay:Show()
 				else
 					button.overlay:Hide()
@@ -237,14 +237,18 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			--[[ Callback: Auras:PostUpdateIcon(unit, button, index, position)
 			Called after the aura button has been updated.
 
-			* self     - the widget holding the aura buttons
-			* unit     - the unit on which the aura is cast (string)
-			* button   - the updated aura button (Button)
-			* index    - the index of the aura (number)
-			* position - the actual position of the aura button (number)
+			* self        - the widget holding the aura buttons
+			* unit        - the unit on which the aura is cast (string)
+			* button      - the updated aura button (Button)
+			* index       - the index of the aura (number)
+			* position    - the actual position of the aura button (number)
+			* duration    - the aura duration in seconds (number?)
+			* expiration  - the point in time when the aura will expire. Comparable to GetTime() (number)
+			* debuffType  - the debuff type of the aura (string?)['Curse', 'Disease', 'Magic', 'Poison']
+			* isStealable - whether the aura can be stolen or purged (boolean)
 			--]]
 			if(element.PostUpdateIcon) then
-				element:PostUpdateIcon(unit, button, index, position)
+				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
 			end
 
 			return VISIBLE

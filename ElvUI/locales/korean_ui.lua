@@ -38,6 +38,7 @@ L["Purchase Bags"] = "가방 슬롯 구입"
 L["Purchase"] = "구입"
 L["Reagent Bank"] = REAGENT_BANK
 L["Reset Position"] = "위치 초기화"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 L["Show/Hide Reagents"] = "재료은행 표시"
 L["Sort Tab"] = "탭 정렬" --Not used, yet?
 L["Temporary Move"] = "임시 이동"
@@ -136,7 +137,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s 기능이 사용할 수 없는 %s 함수를 사용하려 합니다."
-L["No locals to dump"] = true --Currently not used
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터설정을 전송하려 합니다. 받으시겠습니까?"

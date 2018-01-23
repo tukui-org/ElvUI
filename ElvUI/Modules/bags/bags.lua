@@ -6,7 +6,7 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI')
 --Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert = table.insert
+local tinsert, next = table.insert, next
 local floor, ceil = math.floor, math.ceil
 local format, len, sub, find = string.format, string.len, string.sub, string.find
 --WoW API / Variables
@@ -52,7 +52,13 @@ local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UpdateSlot = UpdateSlot
+local SetBagSlotFlag = SetBagSlotFlag
+local SetBankBagSlotFlag = SetBankBagSlotFlag
+local GetBagSlotFlag = GetBagSlotFlag
+local GetBankBagSlotFlag = GetBankBagSlotFlag
 local UseContainerItem = UseContainerItem
+local ContainerIDToInventoryID = ContainerIDToInventoryID
+local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
@@ -61,11 +67,22 @@ local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
+local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
+local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
+local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+local BAG_FILTER_LABELS = BAG_FILTER_LABELS
+local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+
+local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
+local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
+local L_UIDropDownMenu_Initialize = L_UIDropDownMenu_Initialize
+local L_ToggleDropDownMenu = L_ToggleDropDownMenu
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -75,18 +92,26 @@ local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
 -- GLOBALS: HandleModifiedItemClick
 
+local ElvUIAssignBagDropdown
 local SEARCH_STRING = ""
 
 B.ProfessionColors = {
-	[0x0008] = {224/255, 187/255, 74/255}, -- Leatherworking
-	[0x0010] = {74/255, 77/255, 224/255}, -- Inscription
-	[0x0020] = {18/255, 181/255, 32/255}, -- Herbs
-	[0x0040] = {160/255, 3/255, 168/255}, -- Enchanting
-	[0x0080] = {232/255, 118/255, 46/255}, -- Engineering
-	[0x0200] = {8/255, 180/255, 207/255}, -- Gems
-	[0x0400] = {105/255, 79/255,  7/255}, -- Mining
-	[0x8000] = {107/255, 150/255, 255/255}, -- Fishing
-	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
+	[0x0008]   = {224/255, 187/255, 74/255},  -- Leatherworking
+	[0x0010]   = {74/255, 77/255, 224/255},   -- Inscription
+	[0x0020]   = {18/255, 181/255, 32/255},   -- Herbs
+	[0x0040]   = {194/255, 4/255, 204/255},   -- Enchanting
+	[0x0080]   = {232/255, 118/255, 46/255},  -- Engineering
+	[0x0200]   = {8/255, 180/255, 207/255},   -- Gems
+	[0x0400]   = {138/255, 103/255, 9/255},   -- Mining
+	[0x8000]   = {107/255, 150/255, 255/255}, -- Fishing
+	[0x010000] = {222/255, 13/255,  65/255},  -- Cooking
+}
+
+B.AssignmentColors = {
+	[0] = {252/255, 59/255, 54/255}, -- fallback
+	[2] = {0/255, 127/255, 121/255}, -- equipment
+	[3] = {145/255, 242/255, 123/255}, -- consumables
+	[4] = {255/255, 81/255, 168/255}, -- tradegoods
 }
 
 function B:GetContainerFrame(arg)
@@ -111,8 +136,12 @@ function B:Tooltip_Show()
 	GameTooltip:AddLine(self.ttText)
 
 	if self.ttText2 then
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddDoubleLine(self.ttText2, self.ttText2desc, 1, 1, 1)
+		if self.ttText2desc then
+			GameTooltip:AddLine(' ')
+			GameTooltip:AddDoubleLine(self.ttText2, self.ttText2desc, 1, 1, 1)
+		else
+			GameTooltip:AddLine(self.ttText2)
+		end
 	end
 
 	GameTooltip:Show()
@@ -386,6 +415,9 @@ function B:UpdateSlot(bagID, slotID)
 	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
 
+	local assignedID = (self.isBank and bagID) or bagID - 1
+	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
+
 	slot.name, slot.rarity = nil, nil;
 	local texture, count, locked, readable, noValue
 	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
@@ -411,6 +443,7 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	slot.itemLevel:SetText("")
+
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
@@ -437,18 +470,29 @@ function B:UpdateSlot(bagID, slotID)
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot:SetBackdropBorderColor(r, g, b);
+			slot.ignoreBorderColors = true
+		elseif B.AssignmentColors[assignedBag] then
+			slot:SetBackdropBorderColor(unpack(B.AssignmentColors[assignedBag]))
+			slot.ignoreBorderColors = true
 		else
-			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			slot.ignoreBorderColors = nil
 		end
+	elseif B.AssignmentColors[assignedBag] then
+		slot:SetBackdropBorderColor(unpack(B.AssignmentColors[assignedBag]))
+		slot.ignoreBorderColors = true
 	else
-		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		slot.ignoreBorderColors = nil
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
@@ -524,11 +568,11 @@ function B:UpdateAllSlots()
 			self.Bags[bagID]:UpdateBagSlots(bagID);
 		end
 	end
-	
+
 	--Refresh search in case we moved items around
 	if B:IsSearching() then
 		B:SetSearch(SEARCH_STRING);
-	end	
+	end
 end
 
 function B:SetSlotAlphaForBag(f)
@@ -565,6 +609,95 @@ function B:REAGENTBANK_PURCHASED()
 	ElvUIReagentBankFrame.cover:Hide()
 end
 
+function B:AssignBagFlagMenu()
+	local holder = ElvUIAssignBagDropdown.holder
+	ElvUIAssignBagDropdown.holder = nil
+
+	if not (holder and holder.id and holder.id > 0) then return end
+
+	local inventoryID = ContainerIDToInventoryID(holder.id)
+	if IsInventoryItemProfessionBag("player", inventoryID) then return end
+
+	local info = L_UIDropDownMenu_CreateInfo()
+    info.text = BAG_FILTER_ASSIGN_TO
+    info.isTitle = 1
+    info.notCheckable = 1
+    L_UIDropDownMenu_AddButton(info)
+
+    info.isTitle = nil
+    info.notCheckable = nil
+    info.tooltipWhileDisabled = 1
+    info.tooltipOnButton = 1
+
+	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
+		if i ~= LE_BAG_FILTER_FLAG_JUNK then
+			info.text = BAG_FILTER_LABELS[i]
+			info.func = function(_, _, _, value)
+				value = not value
+
+				if holder.id > NUM_BAG_SLOTS then
+					SetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i, value)
+				else
+					SetBagSlotFlag(holder.id, i, value)
+				end
+
+				holder.tempflag = (value and i) or -1
+			end
+
+			if holder.tempflag then
+				info.checked = holder.tempflag == i
+			else
+				if holder.id > NUM_BAG_SLOTS then
+					info.checked = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i)
+				else
+					info.checked = GetBagSlotFlag(holder.id, i)
+				end
+			end
+
+			info.disabled = nil
+			info.tooltipTitle = nil
+			L_UIDropDownMenu_AddButton(info)
+		end
+	end
+end
+
+function B:GetBagAssignedInfo(holder)
+	if not (holder and holder.id and holder.id > 0) then return end
+
+	local inventoryID = ContainerIDToInventoryID(holder.id)
+	if IsInventoryItemProfessionBag("player", inventoryID) then return end
+
+	if holder.tempflag then
+		holder.tempflag = nil --clear tempflag from AssignBagFlagMenu
+	end
+
+	local active, color
+	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
+		if i ~= LE_BAG_FILTER_FLAG_JUNK then --ignore this one
+			if holder.id > NUM_BAG_SLOTS then
+				active = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i)
+			else
+				active = GetBagSlotFlag(holder.id, i)
+			end
+
+			if active then
+				color = B.AssignmentColors[i]
+				active = (color and i) or 0
+				break
+			end
+		end
+	end
+
+	if not active then
+		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		holder.ignoreBorderColors = nil --restore these borders to be updated
+	else
+		holder:SetBackdropBorderColor(unpack(color or B.AssignmentColors[0]))
+		holder.ignoreBorderColors = true --dont allow these border colors to update for now
+		return active
+	end
+end
+
 function B:Layout(isBank)
 	if E.private.bags.enable ~= true then return; end
 	local f = self:GetContainerFrame(isBank);
@@ -589,20 +722,32 @@ function B:Layout(isBank)
 	local lastContainerButton;
 	local numContainerSlots = GetNumBankSlots();
 	for i, bagID in ipairs(f.BagIDs) do
+		local assignedBag
+
 		--Bag Containers
 		if (not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
 			if not f.ContainerHolder[i] then
 				if(isBank) then
-					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. bagID - 4, f.ContainerHolder, "BankItemButtonBagTemplate")
-					f.ContainerHolder[i]:SetScript('OnClick', function(self)
-						local inventoryID = self:GetInventorySlot();
-						PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
+					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
+					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
+						if button == "RightButton" and holder.id then
+							ElvUIAssignBagDropdown.holder = holder
+							L_ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+						else
+							local inventoryID = holder:GetInventorySlot();
+							PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
+						end
 					end)
 				else
 					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. bagID .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
-					f.ContainerHolder[i]:SetScript('OnClick', function(self)
-						local id = self:GetID();
-						PutItemInBag(id);--Put bag on empty slot, or drop item in this bag
+					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
+						if button == "RightButton" and holder.id then
+							ElvUIAssignBagDropdown.holder = holder
+							L_ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+						else
+							local id = holder:GetID();
+							PutItemInBag(id);--Put bag on empty slot, or drop item in this bag
+						end
 					end)
 				end
 
@@ -616,7 +761,6 @@ function B:Layout(isBank)
 				f.ContainerHolder[i].id = isBank and bagID or bagID + 1
 				f.ContainerHolder[i]:HookScript("OnEnter", function(self) B.SetSlotAlphaForBag(self, f) end)
 				f.ContainerHolder[i]:HookScript("OnLeave", function(self) B.ResetSlotAlphaForBags(self, f) end)
-
 
 				if isBank then
 					f.ContainerHolder[i]:SetID(bagID - 4)
@@ -636,6 +780,8 @@ function B:Layout(isBank)
 				BankFrameItemButton_Update(f.ContainerHolder[i])
 				BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])
 			end
+
+			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
 
 			f.ContainerHolder[i]:Size(buttonSize)
 			f.ContainerHolder[i]:ClearAllPoints()
@@ -659,6 +805,7 @@ function B:Layout(isBank)
 			end
 
 			f.Bags[bagID].numSlots = numSlots;
+			f.Bags[bagID].assigned = assignedBag;
 			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID));
 
 			--Hide unused slots
@@ -937,6 +1084,8 @@ function B:OnEvent(event, ...)
 		B:UpdateReagentSlot(...)
 	elseif (event == "QUEST_ACCEPTED" or event == "QUEST_REMOVED") and self:IsShown() then
 		self:UpdateAllSlots()
+	elseif (event == "BANK_BAG_SLOT_FLAGS_UPDATED" or event == "BAG_SLOT_FLAGS_UPDATED") then
+		B:Layout(self.isBank);
 	end
 end
 
@@ -1088,12 +1237,14 @@ function B:ContructContainerFrame(name, isBank)
 	f.UpdateAllSlots = B.UpdateAllSlots;
 	f.UpdateBagSlots = B.UpdateBagSlots;
 	f.UpdateCooldowns = B.UpdateCooldowns;
-	f:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED');
-	f:RegisterEvent('ITEM_LOCK_CHANGED');
-	f:RegisterEvent('ITEM_UNLOCKED');
-	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
-	f:RegisterEvent('BAG_UPDATE');
-	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED");
+	f:RegisterEvent("ITEM_LOCK_CHANGED");
+	f:RegisterEvent("ITEM_UNLOCKED");
+	f:RegisterEvent("BAG_UPDATE_COOLDOWN")
+	f:RegisterEvent("BAG_UPDATE");
+	f:RegisterEvent("BAG_SLOT_FLAGS_UPDATED");
+	f:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED");
+	f:RegisterEvent("PLAYERBANKSLOTS_CHANGED");
 	f:RegisterEvent("QUEST_ACCEPTED");
 	f:RegisterEvent("QUEST_REMOVED");
 	f:SetScript('OnEvent', B.OnEvent);
@@ -1284,6 +1435,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton:GetPushedTexture():SetInside()
 		f.bagsButton:StyleButton(nil, true)
 		f.bagsButton.ttText = L["Toggle Bags"]
+		f.bagsButton.ttText2 = format("|cffFFFFFF%s|r", L["Right Click the bag icon to assign a type of item to this bag."])
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function()
@@ -1398,6 +1550,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton:GetPushedTexture():SetInside()
 		f.bagsButton:StyleButton(nil, true)
 		f.bagsButton.ttText = L["Toggle Bags"]
+		f.bagsButton.ttText2 = format("|cffFFFFFF%s|r", L["Right Click the bag icon to assign a type of item to this bag."])
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
@@ -1745,6 +1898,13 @@ function B:Initialize()
 	BankFrameHolder:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove)
+
+	--Bag Assignment Dropdown Menu
+	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "L_UIDropDownMenuTemplate")
+	ElvUIAssignBagDropdown:SetID(1)
+	ElvUIAssignBagDropdown:SetClampedToScreen(true)
+	ElvUIAssignBagDropdown:Hide()
+	L_UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
 
 	--Set some variables on movers
 	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]

@@ -114,10 +114,10 @@ local methods = {
 		self.g = g
 		self.b = b
 		self.a = a or 1
-		self.dR = defaultR
-		self.dG = defaultG
-		self.dB = defaultB
-		self.dA = defaultA
+		self.dR = defaultR or self.dR
+		self.dG = defaultG or self.dG
+		self.dB = defaultB or self.dB
+		self.dA = defaultA or self.dA
 		self.colorSwatch:SetVertexColor(r, g, b, a)
 	end,
 

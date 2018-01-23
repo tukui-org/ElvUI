@@ -35,6 +35,8 @@ local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
 local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
 
+local C_Timer_After = C_Timer.After
+
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
 local MAX_MOVE_TIME = 1.25
@@ -725,20 +727,21 @@ local function RegisterUpdateDelayed()
 	end
 end
 
-function B:StopStacking(message)
+function B:StopStacking(message, noUpdate)
 	twipe(moves)
 	twipe(moveTracker)
 	moveRetries, lastItemID, lockStop, lastDestination, lastMove = 0, nil, nil, nil, nil
 
 	self.SortUpdateTimer:Hide()
+
+	if not noUpdate then
+		--Add a delayed update call, as BAG_UPDATE fires slightly delayed
+		-- and we don't want the last few unneeded updates to be catched
+		C_Timer_After(0.6, RegisterUpdateDelayed)
+	end
+
 	if message then
-		if message == "DoMovesFinished" then
-			--Add a delayed update call, as BAG_UPDATE fires slightly delayed
-			-- and we don't want the last few unneeded updates to be catched
-			C_Timer.After(0.6, RegisterUpdateDelayed)
-		else
-			E:Print(message)
-		end
+		E:Print(message)
 	end
 end
 
@@ -876,7 +879,7 @@ function B:DoMoves()
 			end
 		end
 	end
-	B:StopStacking("DoMovesFinished")
+	B:StopStacking()
 end
 
 function B:GetGroup(id)
@@ -895,8 +898,7 @@ function B:CommandDecorator(func, groupsDefaults)
 
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
-			E:Print(L["Already Running.. Bailing Out!"]);
-			B:StopStacking()
+			B:StopStacking(L["Already Running.. Bailing Out!"], true)
 			return;
 		end
 

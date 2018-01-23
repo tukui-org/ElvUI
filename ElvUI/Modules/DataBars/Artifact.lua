@@ -6,6 +6,7 @@ local LAP = LibStub("LibArtifactPower-1.0-ElvUI")
 --Cache global variables
 --Lua functions
 local _G = _G
+local floor = floor
 local tonumber, select = tonumber, select
 local format, split = string.format, string.split
 --WoW API / Variables
@@ -71,11 +72,11 @@ function mod:UpdateArtifact(event, unit)
 
 		local textFormat = self.db.artifact.textFormat
 		if textFormat == 'PERCENT' then
-			text = format('%d%%', xp / xpForNextPoint * 100)
+			text = format('%s%%', floor(xp / xpForNextPoint * 100))
 		elseif textFormat == 'CURMAX' then
 			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint))
 		elseif textFormat == 'CURPERC' then
-			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
+			text = format('%s - %s%%', E:ShortValue(xp), floor(xp / xpForNextPoint * 100))
 		elseif textFormat == 'CUR' then
 			text = format('%s', E:ShortValue(totalXP))
 		elseif textFormat == 'REM' then
@@ -83,7 +84,7 @@ function mod:UpdateArtifact(event, unit)
 		elseif textFormat == 'CURREM' then
 			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint - xp))
 		elseif textFormat == 'CURPERCREM' then
-			text = format('%s - %d%% (%s)', E:ShortValue(xp), xp / xpForNextPoint * 100, E:ShortValue(xpForNextPoint - xp))
+			text = format('%s - %s%% (%s)', E:ShortValue(xp), floor(xp / xpForNextPoint * 100), E:ShortValue(xpForNextPoint - xp))
 		end
 
 		bar.text:SetText(text)
@@ -111,9 +112,9 @@ function mod:ArtifactBar_OnEnter()
 	local remaining = xpForNextPoint - xp
 	local apInBags = self.BagArtifactPower
 
-	GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%d%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), xp/xpForNextPoint * 100), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%d%% - %d %s)', E:ShortValue(xpForNextPoint - xp), remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%d%% - %d %s)', E:ShortValue(apInBags), apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%s%%)', E:ShortValue(xp), E:ShortValue(xpForNextPoint), floor(xp / xpForNextPoint * 100)), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%s%% - %s %s)', E:ShortValue(xpForNextPoint - xp), floor(remaining / xpForNextPoint * 100), floor(20 * remaining / xpForNextPoint), L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %s (%s%% - %s %s)', E:ShortValue(apInBags), floor(apInBags / xpForNextPoint * 100), floor(20 * apInBags / xpForNextPoint), L["Bars"]), 1, 1, 1)
 	if (numPointsAvailableToSpend > 0) then
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(format(ARTIFACT_POWER_TOOLTIP_BODY, numPointsAvailableToSpend), nil, nil, nil, true)
@@ -137,6 +138,14 @@ function mod:UpdateArtifactDimensions()
 	self.artifactBar.statusBar:SetReverseFill(self.db.artifact.reverseFill)
 	self.artifactBar.bagValue:SetOrientation(self.db.artifact.orientation)
 	self.artifactBar.bagValue:SetReverseFill(self.db.artifact.reverseFill)
+
+	if self.db.artifact.orientation == "HORIZONTAL" then
+		self.artifactBar.statusBar:SetRotatesTexture(false)
+		self.artifactBar.bagValue:SetRotatesTexture(false)
+	else
+		self.artifactBar.statusBar:SetRotatesTexture(true)
+		self.artifactBar.bagValue:SetRotatesTexture(true)
+	end
 
 	self.artifactBar.text:FontTemplate(LSM:Fetch("font", self.db.artifact.font), self.db.artifact.textSize, self.db.artifact.fontOutline)
 	if self.db.artifact.mouseover then

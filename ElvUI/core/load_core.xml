@@ -7,6 +7,7 @@
 	<Script file='pluginInstaller.lua'/>
 	<Script file='pixelperfect.lua'/>
 	<Script file='toolkit.lua'/>
+	<Script file='StatusReport.lua'/>
 	<Script file='commands.lua'/>
 	<Script file='staticpopups.lua'/>
 	<Script file='animation.lua'/>

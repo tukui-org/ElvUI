@@ -230,7 +230,6 @@ local smileyKeys = {
 	["</3"]="BrokenHeart",
 };
 
-
 local rolePaths = {
 	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank.tga:15:15:0:0:64:64:2:56:2:56|t]],
 	HEALER = [[|TInterface\AddOns\ElvUI\media\textures\healer.tga:15:15:0:0:64:64:2:56:2:56|t]],
@@ -240,47 +239,52 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	local oldBlue = IconPath.."elvui.blp:13:22|t"
 	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
-	--local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
-	--local ElvRed = IconPath.."elvui_red.tga:13:25|t"
+	local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvRed = IconPath.."elvui_red.tga:13:25|t"
 	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
 	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
 	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
 	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
-		["Area52"] = {
-			["Illidelv"] = oldBlue,
-		},
-		["Kil'jaeden"] = {
-			["Elvz"] = oldBlue,
-		},
-		["Spirestone"] = {
-			["Elv"] = oldBlue,
-			["Tirain"] = MrHankey,
-			["Sinth"] = MrHankey,
-		},
-		["Illidan"] = {
-			["Affinichi"] = Bathrobe,
-			["Uplift"] = Bathrobe,
-			["Affinitii"] = Bathrobe,
-			["Affinity"] = Bathrobe
-		},
-		["Silvermoon"] = {
-			["Blazii"] = ElvBlue, --Blazeflack
-			["Chazii"] = ElvBlue, --Blazeflack
-		},
-		["Shattrath"] = {
-			["Merathilis"] = ElvOrange,
-		},
-		["CenarionCircle"] = {
-			["Wennie"] = ElvPurple, --Simpy
-		},
-		["Cenarius"] = {
-			["Simpy"] = ElvPurple,
-			["Imsojelly"] = ElvPurple, --Simpy
-			["Cutepally"] = ElvPurple, --Simpy
-		},
+		-- Elv --
+		["Illidelv-Area52"] = ElvBlue,
+		["Elvz-Kil'jaeden"] = ElvBlue,
+		["Elv-Spirestone"] = ElvBlue,
+		-- Tirain --
+		["Tirain-Spirestone"] = MrHankey,
+		["Sinth-Spirestone"] = MrHankey,
+		-- Merathilis --
+		["Merathilis-Shattrath"] = ElvOrange, --Druid
+		["Merathilîs-Shattrath"] = ElvBlue, --Shaman
+		["Damará-Shattrath"] = ElvRed, --Paladin
+		["Asragoth-Shattrath"] = ElvBlue, --Warlock
+		-- Affinity's Toons --
+		["Affinichi-Illidan"] = Bathrobe,
+		["Uplift-Illidan"] = Bathrobe,
+		["Affinitii-Illidan"] = Bathrobe,
+		["Affinity-Illidan"] = Bathrobe,
+		-- Blazeflack's Toons --
+		["Blazii-Silvermoon"] = ElvBlue, --Priest
+		["Chazii-Silvermoon"] = ElvBlue, --Shaman
+		-- Simpy's Toons --
+		["Arieva-Cenarius"] = ElvPurple, --Hunter
+		["Buddercup-Cenarius"] = ElvPurple, --Rogue
+		["Cutepally-Cenarius"] = ElvPurple, --Paladin
+		["Ezek-Cenarius"] = ElvPurple, --DK
+		["Glice-Cenarius"] = ElvPurple, --Warrior
+		["Imsojelly-Cenarius"] = ElvPurple, --DK [horde]
+		["Imsopeachy-Cenarius"] = ElvPurple, --DH [horde]
+		["Imsosalty-Cenarius"] = ElvPurple, --Paladin [horde]
+		["Kalline-Cenarius"] = ElvPurple, --Shaman
+		["Puttietat-Cenarius"] = ElvPurple, --Druid
+		["Simpy-Cenarius"] = ElvPurple, --Warlock
+		["Twigly-Cenarius"] = ElvPurple, --Monk
+		["Bunne-CenarionCircle"] = ElvPink, --Warrior
+		["Loppybunny-CenarionCircle"] = ElvPink, --Mage
+		["Puttietat-CenarionCircle"] = ElvPink, --Druid [horde]
+		["Rubee-CenarionCircle"] = ElvPink, --DH
+		["Wennie-CenarionCircle"] = ElvPink, --Priest
 	}
 end
 
@@ -555,7 +559,6 @@ function CH:StyleChat(frame)
 		else
 			self:SetAlpha(0)
 		end
-
 	end)
 
 	CreatedFrames = id
@@ -594,11 +597,17 @@ function CH:UpdateSettings()
 	end
 end
 
-local function removeIconFromLine(text)
-	text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end) --converts raid icons into {star} etc, if possible.
-	text = gsub(text, "(%s?)|T.-|t(%s?)", function(x,y) return (x~="" and x) or (y~="" and y) or "" end) --strip any other texture out but keep a single space from the side(s).
-	text = gsub(text, "|H.-|h(.-)|h", "%1") --strip hyperlink data only keeping the actual text.
-	return text
+local removeIconFromLine
+do
+	local raidIconFunc = function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end
+	local stripTextureFunc = function(x, y) return (x~="" and x) or (y~="" and y) or "" end
+	local hyperLinkFunc = function(x, y) if x=="" then return y end end
+	removeIconFromLine = function(text)
+		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
+		text = gsub(text, "(%s?)|T.-|t(%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
+		text = gsub(text, "(|?)|H.-|?|h(.-)|?|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
+		return text
+	end
 end
 
 local function colorizeLine(text, r, g, b)
@@ -1140,18 +1149,6 @@ function CH:GetPluginIcon(sender)
 	return icon
 end
 
-local function GetChatIcons(sender)
-	if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
-		for realm, _ in pairs(specialChatIcons) do
-			for character, texture in pairs(specialChatIcons[realm]) do
-				if sender == character.."-"..realm then
-					return texture
-				end
-			end
-		end
-	end
-end
-
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
@@ -1275,7 +1272,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		if ( type == "SYSTEM" or type == "SKILL" or type == "CURRENCY" or type == "MONEY" or
-		     type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
+			type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
 			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
 		elseif (type == "LOOT") then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
@@ -1399,7 +1396,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local body;
 
 			-- Add AFK/DND flags
-			local pflag = GetChatIcons(arg2);
+			local pflag = specialChatIcons[arg2]
 			local pluginIcon = CH:GetPluginIcon(arg2)
 			if(arg6 ~= "") then
 				if ( arg6 == "GM" ) then
@@ -2143,9 +2140,9 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 		end
 
 		if name then
-			self:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L['is looking for members']) or L['joined a group'], fullName or UNKNOWN, name))
+			self:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN, name))
 		else
-			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L['is looking for members']) or L['joined a group'], fullName or UNKNOWN))
+			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN))
 		end
 	elseif firstQueue then
 		local output, outputCount, queueCount, queueName = '', '', 0
@@ -2373,7 +2370,6 @@ function CH:Initialize()
 	close:EnableMouse(true)
 
 	S:HandleCloseButton(close)
-
 
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)

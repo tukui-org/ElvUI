@@ -148,8 +148,15 @@ local function LoadSkin()
 
 	-- reskin popup buttons
 	for i = 1, 4 do
-		for j = 1, 3 do
-			S:HandleButton(_G["StaticPopup"..i.."Button"..j])
+		local StaticPopup = _G["StaticPopup"..i]
+		StaticPopup:HookScript("OnShow", function() -- UpdateRecapButton is created OnShow
+			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
+				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
+				hooksecurefunc(_G["StaticPopup"..i], "UpdateRecapButton", S.UpdateRecapButton)
+			end
+		end)
+		for j = 1, 4 do
+			S:HandleButton(StaticPopup["button"..j])
 		end
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
@@ -285,22 +292,6 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
-
-	-- MicroButton Talent Alert
-	if TalentMicroButtonAlert then
-		TalentMicroButtonAlert:ClearAllPoints()
-		TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
-		TalentMicroButtonAlert:StripTextures()
-		TalentMicroButtonAlert.Arrow:Hide()
-		TalentMicroButtonAlert.Text:FontTemplate()
-		TalentMicroButtonAlert:CreateBackdrop("Transparent")
-		S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
-
-		TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
-		TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
-		TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
-		TalentMicroButtonAlert.tex:SetSize(32, 32)
-	end
 end
 
 S:AddCallback("SkinMisc", LoadSkin)

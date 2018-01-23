@@ -38,6 +38,7 @@ L["Purchase Bags"] = "Приобрести слот"
 L["Purchase"] = "Приобрести слот"
 L["Reagent Bank"] = "Банк материалов"
 L["Reset Position"] = "Сбросить позицию"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 L["Show/Hide Reagents"] = "Показать/скрыть материалы"
 L["Sort Tab"] = "Сортировать вкладки" --Not used, yet?
 L["Temporary Move"] = "Временное перемещение"
@@ -136,7 +137,6 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s tried to call the protected function '%s'."
-L["No locals to dump"] = "No locals to dump"
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"

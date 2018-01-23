@@ -38,6 +38,7 @@ L["Purchase Bags"] = "Acheter des sacs"
 L["Purchase"] = "Acheter"
 L["Reagent Bank"] = "Banque de composants"
 L["Reset Position"] = "Réinitialiser la position"
+L["Right Click the bag icon to assign a type of item to this bag."] = true
 L["Show/Hide Reagents"] = "Afficher / Masquer les composants"
 L["Sort Tab"] = "Organiser les onglets" --Not used, yet?
 L["Temporary Move"] = "Déplacer temporairement"
@@ -136,13 +137,12 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s a essayé d'appeler la fonction protégée '%s'."
-L["No locals to dump"] = "Aucunes données à vider"
 
 --Distributor
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s tente de partager ses filtres avec vous. Voulez-vous accepter la demande ?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s tente de partager le profil %s avec vous. Voulez-vous accepter la demande ?"
 L["Data From: %s"] = "Donnée de : %s"
-L["Filter download complete from %s, would you like to apply changes now?"] = "Téléchargement du filtre de %s complet, voulez-vous appliquer les changements maintenant ?" 
+L["Filter download complete from %s, would you like to apply changes now?"] = "Téléchargement du filtre de %s complet, voulez-vous appliquer les changements maintenant ?"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Seigneur ! C'est un miracle ! Le téléchargement s'est envolé et a disparu comme un pet dans le vent ! Essayez encore !"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Téléchargement du profil de %s complet, mais le profil de % existe déjà. Changez le nom ou il écrasera le profil existant."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Téléchargement du profil de %s complet, voulez-vous charger le profil %s maintenant ?"

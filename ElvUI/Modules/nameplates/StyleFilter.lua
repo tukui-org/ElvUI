@@ -17,10 +17,6 @@ local strsplit = string.split
 local tinsert = table.insert
 local tsort = table.sort
 local twipe = table.wipe
-local hooksecurefunc = hooksecurefunc
-
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 
 local GetInstanceInfo = GetInstanceInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
@@ -42,14 +38,21 @@ local UnitName = UnitName
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
+local PowerBarColor = PowerBarColor
 
-local C_Timer_After = C_Timer.After
+local C_Timer_NewTimer = C_Timer.NewTimer
+
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
+
+local FallbackColor = {r=1, b=1, g=1}
 
 function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTimeLeft)
 	if icon and not icon[varTimerName] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
-            C_Timer_After(updateIn, function()
+			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
+            icon[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
 				if frame and frame:IsShown() then
 					mod:UpdateElement_Filters(frame, 'AuraWaitTimer_Update')
                 end
@@ -57,7 +60,6 @@ function mod:StyleFilterAuraWaitTimer(frame, icon, varTimerName, timeLeft, mTime
 	                icon[varTimerName] = nil
 	            end
             end)
-            icon[varTimerName] = true
 		end
     end
 end
@@ -125,21 +127,6 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function mod:StyleFilterBorderColorLock(backdrop, r, g, b, a)
-	backdrop.r, backdrop.g, backdrop.b, backdrop.a = r, g, b, a
-	backdrop:SetBackdropBorderColor(r, g, b, a)
-	if not backdrop.StyleFilterBorderColorHooked then
-		backdrop.StyleFilterBorderColorHooked = true
-		hooksecurefunc(backdrop, "SetBackdropBorderColor", function(self, r, g, b, a)
-			if self:GetParent():GetParent().BorderChanged then --only call this for ones we lock
-				if r ~= self.r or g ~= self.g or b ~= self.b or a ~= self.a then
-					self:SetBackdropBorderColor(self.r, self.g, self.b, self.a)
-				end
-			end
-		end)
-	end
-end
-
 function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
 	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -157,7 +144,15 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	end)
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
+function mod:StyleFilterBorderColorLock(backdrop, switch)
+	if switch == true then
+		backdrop.ignoreBorderColors = true --but keep the backdrop updated
+	else
+		backdrop.ignoreBorderColors = nil --restore these borders to be updated
+	end
+end
+
+function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
@@ -183,10 +178,20 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 	end
-	if BorderChanged then --Lets lock this to the values we want (needed for when the media border color changes)
+	if PowerColorChanged then
+		frame.StyleChanged = true
+		frame.PowerColorChanged = true
+		frame.PowerBar:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a);
+	end
+	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		self:StyleFilterBorderColorLock(frame.HealthBar.backdrop, actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, true)
+		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
+			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, true)
+			frame.PowerBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		end
 	end
 	if FlashingHealth then
 		frame.StyleChanged = true
@@ -270,7 +275,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, BorderCha
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged, FrameLevelChanged)
+function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, FrameLevelChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
@@ -291,9 +296,21 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, BorderChanged, F
 		frame.HealthColorChanged = nil
 		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
 	end
+	if PowerColorChanged then
+		frame.PowerColorChanged = nil
+		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or FallbackColor
+		if color then
+			frame.PowerBar:SetStatusBarColor(color.r, color.g, color.b)
+		end
+	end
 	if BorderChanged then
 		frame.BorderChanged = nil
+		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, false)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		if mod.db.units[frame.UnitType].powerbar.enable and frame.PowerBar.backdrop then
+			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, false)
+			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
 	end
 	if FlashingHealth then
 		frame.FlashingHealth = nil
@@ -402,16 +419,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by casting spell name or spell id
 	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
 		condition = 0
-		for name, value in pairs(trigger.casting.spells) do
+		for spellName, value in pairs(trigger.casting.spells) do
 			if value == true then --only check spell that are checked
 				condition = 1
 				if castbarShown then
 					spell = frame.CastBar.Name:GetText() --Make sure we can check spell name
 					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
-						if tonumber(name) then
-							name = GetSpellInfo(name)
+						if tonumber(spellName) then
+							spellName = GetSpellInfo(spellName)
 						end
-						if name and name == spell then
+						if spellName and spellName == spell then
 							condition = 2
 							break
 						end
@@ -722,25 +739,28 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 		frame.castbarTriggered = castbarTriggered
 	end
 
-	local healthBarShown = frame.HealthBar:IsShown()
+	local healthBarEnabled = mod.db.units[frame.UnitType].healthbar.enable
+	local powerBarEnabled = mod.db.units[frame.UnitType].powerbar.enable
+	local healthBarShown = healthBarEnabled and frame.HealthBar:IsShown()
 	self:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
+		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColorChanged
 		(healthBarShown and actions.color and actions.color.border and frame.HealthBar.backdrop), --BorderChanged
 		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
 		(healthBarShown and actions.texture and actions.texture.enable), --TextureChanged
 		(healthBarShown and actions.scale and actions.scale ~= 1), --ScaleChanged
+		(actions.frameLevel and actions.frameLevel ~= 0), --FrameLevelChanged
 		(actions.alpha and actions.alpha ~= -1), --AlphaChanged
 		(actions.color and actions.color.name), --NameColorChanged
 		(actions.usePortrait), --PortraitShown
 		(actions.nameOnly), --NameOnlyChanged
-		(actions.hide), --VisibilityChanged
-		(actions.frameLevel and actions.frameLevel ~= 0) --FrameLevelChanged
+		(actions.hide) --VisibilityChanged
 	)
 end
 
 function mod:ClearStyledPlate(frame)
 	if frame.StyleChanged then
-		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged, frame.FrameLevelChanged)
+		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.FrameLevelChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
 
@@ -976,6 +996,12 @@ function mod:PLAYER_LOGOUT()
 		else
 			removeDefaults(filterTable, E.StyleFilterDefaults);
 		end
+	end
+end
+
+function mod:StyleFilterInitializeAllFilters()
+	for _, filterTable in pairs(E.global.nameplate.filters) do
+		self:StyleFilterInitializeFilter(filterTable);
 	end
 end
 

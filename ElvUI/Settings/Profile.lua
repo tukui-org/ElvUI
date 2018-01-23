@@ -21,6 +21,7 @@ P['general'] = {
 	["talkingHeadFrameScale"] = 0.9,
 	['afk'] = true,
 	["numberPrefixStyle"] = "ENGLISH",
+	["decimalLength"] = 1,
 
 	["fontSize"] = 12,
 	["font"] = "PT Sans Narrow",
@@ -253,6 +254,12 @@ P["nameplates"] = {
 		["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
 		["bad"] = { r = 0.78, g = 0.25, b = 0.25 },
 		["offline"] = {r = 0.3, g = 0.3, b = 0.3},
+	},
+	['healPrediction'] = {
+		['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
+		['others'] = {r = 0, g = 1, b = 0, a = 0.25},
+		['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+		['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 	},
 	['threat'] = {
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
@@ -817,6 +824,23 @@ P['datatexts'] = {
 	--Time Datatext
 	['localtime'] = true,
 	['time24'] = false,
+	--Friends
+	['friends'] = {
+		--status
+		['hideAFK'] = false,
+		['hideDND'] = false,
+		--clients
+		['hideWoW'] = false,
+		['hideD3'] = false,
+		['hideWTCG'] = false, --Hearthstone
+		['hideHero'] = false, --Heros of the Storm
+		['hidePro'] = false, --Overwatch
+		['hideS1'] = false,
+		['hideS2'] = false,
+		['hideDST2'] = false,
+		['hideBSAp'] = false, --Mobile
+		['hideApp'] = false, --Launcher
+	},
 
 	--Enabled/Disabled Panels
 	['minimapPanels'] = true,

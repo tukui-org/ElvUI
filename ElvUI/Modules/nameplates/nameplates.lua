@@ -1118,10 +1118,9 @@ function mod:Initialize()
 	if E.private["nameplates"].enable ~= true then return end
 
 	--Add metatable to all our StyleFilters so they can grab default values if missing
-	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:StyleFilterInitializeFilter(filterTable);
-	end
+	self:StyleFilterInitializeAllFilters()
 
+	--Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	self:StyleFilterConfigureEvents()
 
 	--Nameplate Leveling Step (glow, frame) (2)

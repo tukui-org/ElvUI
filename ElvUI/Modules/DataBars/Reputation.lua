@@ -147,6 +147,13 @@ function mod:UpdateReputationDimensions()
 	self.repBar.statusBar:SetOrientation(self.db.reputation.orientation)
 	self.repBar.statusBar:SetReverseFill(self.db.reputation.reverseFill)
 	self.repBar.text:FontTemplate(LSM:Fetch("font", self.db.reputation.font), self.db.reputation.textSize, self.db.reputation.fontOutline)
+
+	if self.db.reputation.orientation == "HORIZONTAL" then
+		self.repBar.statusBar:SetRotatesTexture(false)
+	else
+		self.repBar.statusBar:SetRotatesTexture(true)
+	end
+
 	if self.db.reputation.mouseover then
 		self.repBar:SetAlpha(0)
 	else

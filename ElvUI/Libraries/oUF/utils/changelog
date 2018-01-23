@@ -41,6 +41,7 @@ local generateLog = function(prevTag, currentTag)
 			else
 				line = line:sub(7)
 			end
+			line = line:gsub('#(%d+)', '[#%1](https://github.com/oUF-wow/oUF/issues/%1)')
 
 			i = i + 1
 			ti(out, sf('    %s. %s', i, line))

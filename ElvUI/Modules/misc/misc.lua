@@ -199,6 +199,7 @@ function M:PVPMessageEnhancement(_, msg)
 end
 
 local hideStatic = false;
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','');
 function M:AutoInvite(event, leaderName)
 	if not E.db.general.autoAcceptInvite then return; end
 
@@ -212,7 +213,6 @@ function M:AutoInvite(event, leaderName)
 		if IsInGuild() then GuildRoster() end
 
 		local friendName, guildMemberName, memberName, numGameAccounts, isOnline, bnToonName, bnClient, bnRealm, bnAcceptedInvite, _;
-		local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','');
 		local inGroup = false;
 
 		for friendIndex = 1, GetNumFriends() do
@@ -246,8 +246,8 @@ function M:AutoInvite(event, leaderName)
 						for toonIndex = 1, numGameAccounts do
 							_, bnToonName, bnClient, bnRealm = BNGetFriendGameAccountInfo(bnIndex, toonIndex);
 							if bnClient == BNET_CLIENT_WOW then
-								if bnRealm and bnRealm ~= '' and bnRealm ~= E.myrealm then
-									bnToonName = format('%s-%s', bnToonName, gsub(bnRealm,'[%s%-]',''))
+								if bnRealm and bnRealm ~= '' and bnRealm ~= PLAYER_REALM then
+									bnToonName = format('%s-%s', bnToonName, bnRealm)
 								end
 								if bnToonName and (bnToonName == leaderName) then
 									AcceptGroup()

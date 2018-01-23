@@ -121,5 +121,5 @@ function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, heal
 	UF:UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb, true);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
-	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
+	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
 end

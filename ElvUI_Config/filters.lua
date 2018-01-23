@@ -1379,29 +1379,8 @@ E.Options.args.filters = {
 				E.global.unitframe['aurafilters'][value]['spells'] = {};
 			end,
 		},
-		deleteFilter = {
-			type = 'input',
-			order = 2,
-			name = L["Delete Filter"],
-			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
-			get = function(info) return "" end,
-			set = function(info, value)
-				if match(value, "^[%s%p]-$") then
-					return
-				end
-				if G.unitframe.aurafilters[value] then
-					E:Print(L["You can't remove a pre-existing filter."])
-				else
-					E.global.unitframe['aurafilters'][value] = nil;
-					removePriority(value); --This will wipe a filter from the new aura system profile settings.
-					selectedFilter = nil;
-					selectedSpell = nil;
-					E.Options.args.filters.args.filterGroup = nil;
-				end
-			end,
-		},
 		selectFilter = {
-			order = 3,
+			order = 2,
 			type = 'select',
 			name = L["Select Filter"],
 			get = function(info) return selectedFilter end,
@@ -1434,6 +1413,22 @@ E.Options.args.filters = {
 				filters['Debuff Highlight'] = 'Debuff Highlight'
 				return filters
 			end,
+		},
+		deleteFilter = {
+			type = 'execute',
+			order = 3,
+			buttonElvUI = true,
+			name = L["Delete Filter"],
+			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
+			func = function()
+				E.global.unitframe['aurafilters'][selectedFilter] = nil
+				removePriority(selectedFilter) --This will wipe a filter from the new aura system profile settings.
+				selectedFilter = nil
+				selectedSpell = nil
+				E.Options.args.filters.args.filterGroup = nil
+			end,
+			disabled = function() return G.unitframe.aurafilters[selectedFilter] end,
+			hidden = function() return selectedFilter == nil end,
 		},
 	},
 }

@@ -28,43 +28,35 @@ local Currencies = {
 	["SHADOWY_COIN"] = {ID = 1154, NAME = GetCurrencyInfo(1154), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1154)), 16, 16)},
 	["VEILED_ARGUNITE"] = {ID = 1508, NAME = GetCurrencyInfo(1508), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1508)), 16, 16)},
 	-- Other
-	["APEXIS_CRYSTAL"] = {ID = 823, NAME = GetCurrencyInfo(823), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(823)), 16, 16)},
 	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(515)), 16, 16)},
 }
 
-local currencyList
-function DT:Currencies_GetCurrencyList()
-	currencyList = {}
-	for currency, data in pairs(Currencies) do
-		currencyList[currency] = data.NAME
-	end
-	currencyList["GOLD"] = BONUS_ROLL_REWARD_MONEY
-
-	return currencyList
+-- CurrencyList for config
+local currencyList = {}
+for currency, data in pairs(Currencies) do
+	currencyList[currency] = data.NAME
 end
-
-local gold
-local chosenCurrency, currencyAmount
+currencyList["GOLD"] = BONUS_ROLL_REWARD_MONEY
+DT.CurrencyList = currencyList
 
 local function OnClick()
 	ToggleCharacter("TokenFrame")
 end
 
+local goldText
 local function OnEvent(self)
-	gold = GetMoney();
-	if E.db.datatexts.currencies.displayedCurrency == "GOLD" then
-		self.text:SetText(E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
+	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
+	local chosenCurrency = Currencies[E.db.datatexts.currencies.displayedCurrency]
+	if E.db.datatexts.currencies.displayedCurrency == "GOLD" or chosenCurrency == nil then
+		self.text:SetText(goldText)
 	else
-		chosenCurrency = Currencies[E.db.datatexts.currencies.displayedCurrency]
-		if chosenCurrency then
-			currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
-			if E.db.datatexts.currencies.displayStyle == "ICON" then
-				self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
-			elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
-				self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, chosenCurrency.NAME, currencyAmount)
-			else --ICON_TEXT_ABBR
-				self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, E:AbbreviateString(chosenCurrency.NAME), currencyAmount)
-			end
+		local currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
+		if E.db.datatexts.currencies.displayStyle == "ICON" then
+			self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
+		elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
+			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, chosenCurrency.NAME, currencyAmount)
+		else --ICON_TEXT_ABBR
+			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, E:AbbreviateString(chosenCurrency.NAME), currencyAmount)
 		end
 	end
 end
@@ -72,7 +64,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	DT.tooltip:AddDoubleLine(L["Gold"]..":", E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Gold"]..":", goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME6) --"Legion"
@@ -88,7 +80,6 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
-	DT.tooltip:AddDoubleLine(Currencies["APEXIS_CRYSTAL"].NAME, select(2, GetCurrencyInfo(Currencies["APEXIS_CRYSTAL"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["DARKMOON_PRIZE_TICKET"].NAME, select(2, GetCurrencyInfo(Currencies["DARKMOON_PRIZE_TICKET"].ID)), 1, 1, 1)
 
 	--[[
