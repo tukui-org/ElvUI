@@ -24,12 +24,8 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 	aura.spellID = spellID
 	aura.expirationTime = expirationTime
 	if ( count > 1 ) then
-		local countText = count;
-		if ( count >= 10 ) then
-			countText = BUFF_STACKS_OVERFLOW;
-		end
 		aura.count:Show();
-		aura.count:SetText(countText);
+		aura.count:SetText(count);
 	else
 		aura.count:Hide();
 	end

@@ -28,6 +28,7 @@ Various tweaks and fixes to skins and skinned: Recap button & Warboard frame.
 Tweaked sorting in the Friends datatext so WoW is always on top.  
 Updated some of the Priest, Monk, and Paladin Buff Indicator spells.  
 Style Filter border color action now applies to the Power Bar border as well.  
+Stacks on nameplate auras will no longer be hidden when they reach 10 or above.  
 
 ___
 **Version 10.70 [ December 26th 2017 ]**
