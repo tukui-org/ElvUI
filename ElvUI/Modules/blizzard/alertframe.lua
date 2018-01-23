@@ -185,5 +185,8 @@ function B:AlertMovers()
 		/run LegendaryItemAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r")
 		/run StorePurchaseAlertSystem:AddAlert("\124cffa335ee\124Hitem:180545::::::::::\124h[Mystic Runesaber]\124h\124r", "", "", 214)
 		/run DigsiteCompleteAlertSystem:AddAlert(1)
+
+		--Bonus Rolls
+		/run BonusRollFrame_StartBonusRoll(242969,1,179,1273,14)
 	]]
 end
