@@ -142,7 +142,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 		alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
 	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
 		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
-	elseif self.alertFrameSubSystem.anchorFrame then --anchor frame system
+	elseif alertFrameSubSystem.anchorFrame then --anchor frame system
 		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchorsNonAlert
 	end
 end
