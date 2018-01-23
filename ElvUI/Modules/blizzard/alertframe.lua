@@ -94,6 +94,15 @@ function B:AdjustAnchors(relativeAlert)
 	return relativeAlert;
 end
 
+function B:AdjustAnchorsNonAlert(relativeAlert)
+	if self.anchorFrame:IsShown() then
+		self.anchorFrame:ClearAllPoints()
+		self.anchorFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
+		return self.anchorFrame;
+	end
+	return relativeAlert;
+end
+
 function B:AdjustQueuedAnchors(relativeAlert)
 	for alertFrame in self.alertFramePool:EnumerateActive() do
 		alertFrame:ClearAllPoints()
@@ -133,6 +142,8 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 		alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
 	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
 		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
+	elseif self.alertFrameSubSystem.anchorFrame then --anchor frame system
+		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchorsNonAlert
 	end
 end
 
