@@ -1,4 +1,18 @@
-**Version 10.71 [  ]**
+**Version 10.72 [  ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**   
+
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.71 [ January 23rd 2018 ]**
 
 **New Additions:**  
 Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
