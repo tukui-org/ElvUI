@@ -180,7 +180,7 @@ function E:CreateStatusFrame()
 	--Main frame
 	local StatusFrame = CreateFrame("Frame", "ElvUIStatusReport", E.UIParent)
 	StatusFrame:Size(300, 600)
-	StatusFrame:Point("CENTER", 0, 200)
+	StatusFrame:Point("CENTER", E.UIParent, "CENTER")
 	StatusFrame:SetFrameStrata("HIGH")
 	StatusFrame:CreateBackdrop("Transparent", nil, true)
 	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
