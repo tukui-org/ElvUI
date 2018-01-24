@@ -592,8 +592,16 @@ do
 
 	-- exported
 	local sortlist = {}
-	local sortListByValue = function(a,b)
+
+	-- these were added by ElvUI
+	local sortStr1, sortStr2 = "%((%d+)%)", "%[(%d+)]"
+	local sortValue = function(a,b)
 		if a and b and (a[2] and b[2]) then
+			local a2 = a[2]:match(sortStr1) or a[2]:match(sortStr2)
+			local b2 = b[2]:match(sortStr1) or b[2]:match(sortStr2)
+			if a2 and b2 then -- try to sort by the number inside of brackets if we can
+				return tonumber(a2) < tonumber(b2)
+			end
 			return a[2] < b[2]
 		end
 	end
@@ -609,13 +617,13 @@ do
 				for k, v in pairs(list) do
 					sortlist[#sortlist + 1] = {k,v}
 				end
-				tsort(sortlist, sortListByValue)
+				tsort(sortlist, sortValue)
 
 				for i, sortedList in ipairs(sortlist) do
 					AddListItem(self, sortedList[1], sortedList[2], itemType)
 					sortlist[i] = nil
 				end
-			else
+			else -- this is the default way (unchanged by ElvUI)
 				for v in pairs(list) do
 					sortlist[#sortlist + 1] = v
 				end
