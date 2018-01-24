@@ -592,21 +592,39 @@ do
 
 	-- exported
 	local sortlist = {}
-	local function SetList(self, list, order, itemType)
+	local sortListByValue = function(a,b)
+		if a and b and (a[2] and b[2]) then
+			return a[2] < b[2]
+		end
+	end
+
+	local function SetList(self, list, order, itemType, sortByValue)
 		self.list = list
 		self.pullout:Clear()
 		self.hasClose = nil
 		if not list then return end
 
 		if type(order) ~= "table" then
-			for v in pairs(list) do
-				sortlist[#sortlist + 1] = v
-			end
-			tsort(sortlist)
+			if sortByValue then -- added by ElvUI
+				for k, v in pairs(list) do
+					sortlist[#sortlist + 1] = {k,v}
+				end
+				tsort(sortlist, sortListByValue)
 
-			for i, key in ipairs(sortlist) do
-				AddListItem(self, key, list[key], itemType)
-				sortlist[i] = nil
+				for i, sortedList in ipairs(sortlist) do
+					AddListItem(self, sortedList[1], sortedList[2], itemType)
+					sortlist[i] = nil
+				end
+			else
+				for v in pairs(list) do
+					sortlist[#sortlist + 1] = v
+				end
+				tsort(sortlist)
+
+				for i, key in ipairs(sortlist) do
+					AddListItem(self, key, list[key], itemType)
+					sortlist[i] = nil
+				end
 			end
 		else
 			for i, key in ipairs(order) do
