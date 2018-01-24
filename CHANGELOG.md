@@ -5,11 +5,13 @@
 
 
 **Bug Fixes:**   
-
+Corrected some issues with NamePlate text (name/level/title) when "Always Show Target Health" was disabled.
+Fixed visual issue which put `/estatus` out of screen on lower resolutions.
 
 
 **Misc. Changes:**  
-
+Style Filter action `Name Only` will now also show NPC Title text if it's enabled in General Nameplate settings.
+Sorted the Dropdown for Style Filters by Priority (rather than by Name).
 
 ___
 **Version 10.71 [ January 23rd 2018 ]**
