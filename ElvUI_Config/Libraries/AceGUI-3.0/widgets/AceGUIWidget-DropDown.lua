@@ -597,10 +597,10 @@ do
 	local sortStr1, sortStr2 = "%((%d+)%)", "%[(%d+)]"
 	local sortValue = function(a,b)
 		if a and b and (a[2] and b[2]) then
-			local a2 = a[2]:match(sortStr1) or a[2]:match(sortStr2)
-			local b2 = b[2]:match(sortStr1) or b[2]:match(sortStr2)
-			if a2 and b2 then -- try to sort by the number inside of brackets if we can
-				return tonumber(a2) < tonumber(b2)
+			local a2 = tonumber(a[2]:match(sortStr1) or a[2]:match(sortStr2))
+			local b2 = tonumber(b[2]:match(sortStr1) or b[2]:match(sortStr2))
+			if a2 and b2 and (a2 ~= b2) then
+				return a2 < b2 -- try to sort by the number inside of brackets if we can
 			end
 			return a[2] < b[2]
 		end
