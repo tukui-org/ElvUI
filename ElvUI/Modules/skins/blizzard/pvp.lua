@@ -180,6 +180,10 @@ local function LoadSkin()
 	S:HandleCheckBox(WarGameTournamentModeCheckButton)
 	ConquestTooltip:SetTemplate("Transparent")
 	PVPRewardTooltip:SetTemplate("Transparent")
+
+	--Tutorials
+	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)
+	S:HandleCloseButton(HonorFrame.BonusFrame.BrawlHelpBox.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_PVPUI', "PvPUI", LoadSkin)

@@ -39,13 +39,9 @@ local function LoadSkin()
 	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
 	S:HandleCloseButton(_G["ArtifactRelicForgeFrameCloseButton"])
 
-	ArtifactFrame.PerksTab.RelicTalentAlert:StripTextures()
-	ArtifactFrame.PerksTab.RelicTalentAlert:CreateBackdrop("Transparent")
-	ArtifactFrame.PerksTab.RelicTalentAlert:SetPoint("TOPRIGHT", ArtifactFrame, "TOPRIGHT", -20, 0)
-
-	ArtifactFrame.KnowledgeLevelHelpBox:StripTextures()
-	ArtifactFrame.KnowledgeLevelHelpBox.Arrow:Hide()
-	ArtifactFrame.KnowledgeLevelHelpBox:CreateBackdrop("Transparent")
+	--Tutorial
+	S:HandleCloseButton(ArtifactFrame.KnowledgeLevelHelpBox.CloseButton)
+	S:HandleCloseButton(ArtifactFrame.PerksTab.RelicTalentAlert.CloseButton)
 
 	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:StripTextures()
 	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:CreateBackdrop("Transparent")

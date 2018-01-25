@@ -100,6 +100,8 @@ local function LoadSkin()
 	WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:Size(22,20)
 	WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:Size(22,20)
 
+	S:HandleCloseButton(WorldMapFrame.UIElementsFrame.BountyBoard.TutorialBox.CloseButton)
+
 	WorldMapFrameAreaLabel:FontTemplate(nil,30)
 	WorldMapFrameAreaLabel:SetShadowOffset(2,-2)
 	WorldMapFrameAreaLabel:SetTextColor(0.9,0.8,0.6)
