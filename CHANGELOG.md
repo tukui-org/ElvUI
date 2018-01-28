@@ -1,16 +1,32 @@
-**Version 10.72 [  ]**
+**Version 10.73 [  ]**
 
 **New Additions:**  
 
 
 
 **Bug Fixes:**   
-Corrected some issues with NamePlate text (name/level/title) when "Always Show Target Health" was disabled.  
-Fixed visual issue which put "/estatus" out of screen on lower resolutions.  
+
 
 
 **Misc. Changes:**  
-Style Filter action Name Only will now also show NPC Title text if it's enabled in General Nameplate settings.  
+
+
+___
+**Version 10.72 [ January 28th 2018 ]**
+
+**New Additions:**  
+None  
+
+
+**Bug Fixes:**   
+Fixed position of the ElvUI Status Report frame (/estatus).  
+Fixed issue updating npc titles on NamePlates.  
+Fixed placement issue of name and level on NamePlates when "Always Show Target Healthbar" is disabled.  
+Improved workaround for vehicle issue on Antoran High Command (credit: ls-@GitHub).  
+
+
+**Misc. Changes:**  
+The Style Filter action "Name Only" will also display the NPC title now.  
 Sorted the Dropdown for Style Filters by Priority (rather than by Name).  
 Skinned various tutorial frame close buttons.  
 
