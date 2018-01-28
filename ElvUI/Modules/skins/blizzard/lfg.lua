@@ -670,7 +670,10 @@ local function LoadSkin()
 				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
 		end
-	end);
+	end)
+
+	-- Tutorial
+	S:HandleCloseButton(PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
 S:AddCallback("LFG", LoadSkin)

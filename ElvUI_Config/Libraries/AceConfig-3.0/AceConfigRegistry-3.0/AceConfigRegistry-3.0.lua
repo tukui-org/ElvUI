@@ -91,9 +91,11 @@ local basekeys={
 	func=optmethodfalse,
 	arg={["*"]=true},
 	width=optstring,
+	-- below here were created by ElvUI --
 	customWidth=optnumber,
 	textWidth=optmethodbool,
 	buttonElvUI=optmethodbool,
+	sortByValue=optmethodbool,
 	dragdrop=optmethodbool,
 		dragOnEnter=optmethodfalse,
 		dragOnLeave=optmethodfalse,

@@ -316,6 +316,9 @@ local function LoadSkin()
 	S:HookScript(GarrisonMissionMechanicTooltip, "OnShow", function(self)
 		self:SetTemplate("Transparent")
 	end)
+
+	--LandingPage Tutorial
+	S:HandleCloseButton(GarrisonLandingPageTutorialBox.CloseButton)
 end
 
 local function SkinTooltip()

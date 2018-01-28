@@ -18,8 +18,8 @@ tooltip:SetPoint("CENTER")
 tooltip:SetSize(200, 200)
 GameTooltip_SetDefaultAnchor(tooltip, UIParent)
 
-function mod:UpdateElement_NPCTitle(frame)
-	if not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and not UnitIsUnit("target", frame.unit) and self.db.showNPCTitles and not self.db.units[frame.UnitType].healthbar.enable then
+function mod:UpdateElement_NPCTitle(frame, triggered)
+	if self.db.showNPCTitles and not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and (triggered or (not self.db.units[frame.UnitType].healthbar.enable and (not self.db.alwaysShowTargetHealth or not UnitIsUnit("target", frame.unit)))) then
 		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()

@@ -267,6 +267,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
 		end
+		--show the npc title
+		self:UpdateElement_NPCTitle(frame, true)
 		--position the portrait
 		self:ConfigureElement_Portrait(frame, true)
 		--position suramar detection
@@ -369,7 +371,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 			self:ConfigureElement_Name(frame)
 			self:UpdateElement_Name(frame)
 		else
-			frame.Name:SetText()
+			frame.Name:SetText("")
+		end
+		if self.db.showNPCTitles then
+			self:UpdateElement_NPCTitle(frame)
+		else
+			frame.NPCTitle:SetText("")
 		end
 		if self.db.units[frame.UnitType].portrait.enable then
 			self:ConfigureElement_Portrait(frame)
