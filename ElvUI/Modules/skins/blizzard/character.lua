@@ -375,8 +375,27 @@ local function LoadSkin()
 	local function UpdateFactionSkins()
 		ReputationListScrollFrame:StripTextures()
 		ReputationFrame:StripTextures(true)
-		for i=1, GetNumFactions() do
+		local factionOffset = FauxScrollFrame_GetOffset(ReputationListScrollFrame)
+		local numFactions = GetNumFactions()
+		for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
 			local statusbar = _G["ReputationBar"..i.."ReputationBar"]
+			local button = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
+			local factionIndex = factionOffset + i
+			local name, _, _, _, _, _, atWarWith, canToggleAtWar, _, isCollapsed = GetFactionInfo(factionIndex)
+			if ( factionIndex <= numFactions ) then
+				if button then
+					button:SetNormalTexture("Interface\\Buttons\\UI-PlusMinus-Buttons")
+					button.SetNormalTexture = function() end
+					button:GetNormalTexture():SetInside()
+					button:SetHighlightTexture(nil)
+
+					if isCollapsed then
+						button:GetNormalTexture():SetTexCoord(0, 0.4375, 0, 0.4375)
+					else
+						button:GetNormalTexture():SetTexCoord(0.5625, 1, 0, 0.4375)
+					end
+				end
+			end
 
 			if statusbar then
 				statusbar:SetStatusBarTexture(E["media"].normTex)
@@ -393,7 +412,6 @@ local function LoadSkin()
 				_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
-
 			end
 		end
 		ReputationDetailFrame:StripTextures()
