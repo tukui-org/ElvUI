@@ -381,7 +381,7 @@ local function LoadSkin()
 			local statusbar = _G["ReputationBar"..i.."ReputationBar"]
 			local button = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
 			local factionIndex = factionOffset + i
-			local name, _, _, _, _, _, atWarWith, canToggleAtWar, _, isCollapsed = GetFactionInfo(factionIndex)
+			local _, _, _, _, _, _, _, _, _, isCollapsed = GetFactionInfo(factionIndex)
 			if ( factionIndex <= numFactions ) then
 				if button then
 					button:SetNormalTexture("Interface\\Buttons\\UI-PlusMinus-Buttons")
