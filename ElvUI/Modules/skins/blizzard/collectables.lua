@@ -243,6 +243,7 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
 	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
 	ToyBox.progressBar:StripTextures()
+	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local function TextColorModified(self, r, g, b)
 		if(r == 0.33 and g == 0.27 and b == 0.2) then
@@ -366,6 +367,7 @@ local function LoadSkin()
 	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
 	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
 	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
+	S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	--Skin set buttons
 	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
