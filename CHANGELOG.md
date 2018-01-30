@@ -28,6 +28,7 @@ Improved workaround for vehicle issue on Antoran High Command (credit: ls-@GitHu
 **Misc. Changes:**  
 The Style Filter action "Name Only" will also display the NPC title now.  
 Sorted the Dropdown for Style Filters by Priority (rather than by Name).  
+Skinned the Expand/Collapse buttons in the Reputation Frame.  
 Skinned various tutorial frame close buttons.  
 
 ___
