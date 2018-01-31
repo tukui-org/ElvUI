@@ -787,6 +787,7 @@ L["Table"] = true
 --Skins
 L["AddOn Manager"] = true
 L["Alert Frames"] = "Alertas"
+L["Allied Races"] = true
 L["Archaeology Frame"] = "Arqueologia"
 L["BG Map"] = "Mapa do CB"
 L["BG Score"] = "Placar do CB"

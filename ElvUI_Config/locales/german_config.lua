@@ -789,6 +789,7 @@ L["Table"] = "Tabelle"
 --Skins
 L["AddOn Manager"] = true --no need to translate
 L["Alert Frames"] = "Alarmfenster"
+L["Allied Races"] = "Verbündete Völker"
 L["Archaeology Frame"] = "Archäologiefenster"
 L["BG Map"] = "Schlachtfeldkarte"
 L["BG Score"] = "Schlachtfeldpunkte"

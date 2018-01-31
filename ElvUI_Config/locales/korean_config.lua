@@ -835,6 +835,7 @@ L["Table"] = true
 --Skins
 L["AddOn Manager"] = true
 L["Alert Frames"] = "알림 프레임"
+L["Allied Races"] = true
 L["Archaeology Frame"] = "고고학 창"
 L["BG Map"] = "전장 맵"
 L["BG Score"] = "전장 점수판"

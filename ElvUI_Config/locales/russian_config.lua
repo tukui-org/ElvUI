@@ -786,6 +786,7 @@ L["Table"] = "Таблица"
 --Skins
 L["AddOn Manager"] = "Модификации"
 L["Alert Frames"] = "Предупреждения"
+L["Allied Races"] = true
 L["Archaeology Frame"] = "Археология"
 L["BG Map"] = "Карта ПБ"
 L["BG Score"] = "Таблица ПБ"

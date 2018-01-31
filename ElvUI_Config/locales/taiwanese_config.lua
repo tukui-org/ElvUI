@@ -787,6 +787,7 @@ L["Table"] = "表"
 --Skins
 L["AddOn Manager"] = "插件管理"
 L["Alert Frames"] = "警報"
+L["Allied Races"] = true
 L["Archaeology Frame"] = "考古學框架"
 L["BG Map"] = "戰場地圖"
 L["BG Score"] = "戰場積分"

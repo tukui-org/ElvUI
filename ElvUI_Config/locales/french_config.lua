@@ -787,6 +787,7 @@ L["Table"] = "Tableau"
 --Skins
 L["AddOn Manager"] = "Fenêtre d'Add-ons"
 L["Alert Frames"] = "Fenêtre d'Alerte"
+L["Allied Races"] = true
 L["Archaeology Frame"] = "Fenêtre d'Archéologie"
 L["BG Map"] = "Carte Champs de bataille"
 L["BG Score"] = "Scores Champs de bataille"

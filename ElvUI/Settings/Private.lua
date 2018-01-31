@@ -122,6 +122,7 @@ V['skins'] = {
 		["Contribution"] = true,
 		["BlizzardOptions"] = true,
 		["Warboard"] = true,
+		["AlliedRaces"] = true,
 	},
 }
 
