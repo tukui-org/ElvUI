@@ -254,9 +254,10 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"] = MrHankey,
 		["Sinth-Spirestone"] = MrHankey,
-		-- Merathilis --
-		["Merathilis-Shattrath"] = ElvOrange, --Druid
+		-- Merathilis Toons --
+		["Merathilis-Shattrath"] = ElvOrange, --Druid [alliance]
 		["Merathilîs-Shattrath"] = ElvBlue, --Shaman
+		["Merathilis-Garrosh"] = ElvOrange, -- Druid [horde]
 		["Damará-Shattrath"] = ElvRed, --Paladin
 		["Asragoth-Shattrath"] = ElvBlue, --Warlock
 		-- Affinity's Toons --
