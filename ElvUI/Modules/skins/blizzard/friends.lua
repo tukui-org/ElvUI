@@ -345,6 +345,9 @@ local function LoadSkin()
 		icon:Point("RIGHT", button, "RIGHT", -24, 0)
 		icon.SetPoint = E.noop
 	end
+
+	--Tutorial
+	S:HandleCloseButton(FriendsTabHeader.FriendsFrameQuickJoinHelpTip.CloseButton)
 end
 
 S:AddCallback("Friends", LoadSkin)
