@@ -6,13 +6,14 @@
 
 **Bug Fixes:**   
 Fix rare tooltip error (attempt to index local 'color')  
+Fixed error trying to copy settings between nameplate units (#305)  
 
 
 **Misc. Changes:**  
 Skinned a couple more Close Buttons.  
 Skin the new Allied Races Frame.  
 Skinned the Expand/Collapse buttons on the Character Frame's Reputation tab.  
-Adjusted the Flight Map font.  
+Adjusted the Flight Map font (#306)  
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
