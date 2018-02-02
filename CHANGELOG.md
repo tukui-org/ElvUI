@@ -9,7 +9,10 @@ Fix rare tooltip error (attempt to index local 'color')
 
 
 **Misc. Changes:**  
-
+Skinned a couple more Close Buttons.
+Skin the new Allied Races Frame.
+Skinned the Expand/Collapse buttons on the Character Frame's Reputation tab.
+Adjusted the Flight Map font.
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
@@ -28,7 +31,6 @@ Improved workaround for vehicle issue on Antoran High Command (credit: ls-@GitHu
 **Misc. Changes:**  
 The Style Filter action "Name Only" will also display the NPC title now.  
 Sorted the Dropdown for Style Filters by Priority (rather than by Name).  
-Skinned the Expand/Collapse buttons in the Reputation Frame.  
 Skinned various tutorial frame close buttons.  
 
 ___
