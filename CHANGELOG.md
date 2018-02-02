@@ -5,7 +5,7 @@
 
 
 **Bug Fixes:**   
-
+Fix rare tooltip error (attempt to index local 'color')  
 
 
 **Misc. Changes:**  
