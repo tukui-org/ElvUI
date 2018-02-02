@@ -591,8 +591,8 @@ function TT:SetUnitAura(tt, unit, index, filter)
 		if caster then
 			local name = UnitName(caster)
 			local _, class = UnitClass(caster)
-			if not (class and class ~= "") then class = "PRIEST" end
 			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+			if not color then color = RAID_CLASS_COLORS["PRIEST"] end
 			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
