@@ -659,6 +659,9 @@ do
 
 	-- The remainder of this scope is a temporary fix for issue #404,
 	-- regarding vehicle support on headers for the Antorus raid instance.
+	-- Track changes to SecureButton_GetModifiedUnit, this hack should be
+	-- removed when UnitTargetsVehicleInRaidUI is added to it. Supposedly,
+	-- it should happen in 8.x.
 	local isHacked = false
 	local shouldHack
 
