@@ -218,6 +218,35 @@ local function LoadSkin()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:Point("CENTER")
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
+
+	-- Skin the +/- buttons in the QuestLog
+	hooksecurefunc("QuestLogQuests_Update", function(poiTable)
+		local numEntries = GetNumQuestLogEntries();
+
+		local headerIndex = 0;
+		local headerCollapsed = false;
+		local headerShown, headerLogIndex;
+		for questLogIndex = 1, numEntries do
+			local _, _, _, isHeader, isCollapsed, _, _, questID, _, _, _, _, isTask, isBounty, _, isHidden, _ = GetQuestLogTitle(questLogIndex);
+			if ( isHeader ) then
+				headerShown = false;
+				headerLogIndex = questLogIndex;
+				headerCollapsed = isCollapsed;
+			elseif ( not isTask and not isHidden and (not isBounty or IsQuestComplete(questID))) then
+				if ( not headerShown ) then
+					headerShown = true;
+					headerIndex = headerIndex + 1;
+					button = QuestLogQuests_GetHeaderButton(headerIndex);
+
+					if (headerCollapsed) then
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+					else
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+					end
+				end
+			end
+		end
+	end)
 end
 
 S:AddCallback("Quest", LoadSkin)

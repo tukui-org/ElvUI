@@ -384,15 +384,10 @@ local function LoadSkin()
 			local _, _, _, _, _, _, _, _, _, isCollapsed = GetFactionInfo(factionIndex)
 			if ( factionIndex <= numFactions ) then
 				if button then
-					button:SetNormalTexture("Interface\\Buttons\\UI-PlusMinus-Buttons")
-					button.SetNormalTexture = function() end
-					button:GetNormalTexture():SetInside()
-					button:SetHighlightTexture(nil)
-
 					if isCollapsed then
-						button:GetNormalTexture():SetTexCoord(0, 0.4375, 0, 0.4375)
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
 					else
-						button:GetNormalTexture():SetTexCoord(0.5625, 1, 0, 0.4375)
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
 					end
 				end
 			end
@@ -418,9 +413,9 @@ local function LoadSkin()
 		ReputationDetailFrame:SetTemplate("Transparent")
 		ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
 	end
-	ReputationFrame:HookScript("OnShow", UpdateFactionSkins)
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
+	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)
 
 	--Reputation Paragon Tooltip
 	local tooltip = ReputationParagonTooltip
