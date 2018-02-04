@@ -5,15 +5,16 @@
 
 
 **Bug Fixes:**   
-Fix rare tooltip error (attempt to index local 'color')  
+Fixed rare tooltip error (attempt to index local 'color')  
 Fixed error trying to copy settings between nameplate units (#305)  
 
 
 **Misc. Changes:**  
-Skinned a couple more Close Buttons.  
-Skin the new Allied Races Frame.  
-Skinned the Expand/Collapse buttons on the Character Frame's Reputation tab.  
-Adjusted the Flight Map font (#306)  
+Skinned the new Allied Races frame.  
+Skinned a few more tutorial frame close buttons.  
+Skinned the Expand/Collapse buttons on the Quest Log and Character Reputation Page.  
+Adjusted the Flight Map's font to match the general media font. (#306)  
+Added the combat and resting icon texture from Supervillain UI.  
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
