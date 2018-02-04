@@ -6,12 +6,13 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, pairs, select = unpack, pairs, select
 --WoW API / Variables
+local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local GetFactionInfo = GetFactionInfo
 local GetItemLevelColor = GetItemLevelColor
+local GetNumFactions = GetNumFactions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationRole = GetSpecializationRole
-local GetCurrencyListSize = GetCurrencyListSize
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitLevel = UnitLevel
@@ -438,26 +439,47 @@ local function LoadSkin()
 
 	--Currency
 	local function UpdateCurrencySkins()
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate("Transparent")
-		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
+		if TokenFramePopup then
+			if not TokenFramePopup.template then
+				TokenFramePopup:StripTextures();
+				TokenFramePopup:SetTemplate("Transparent");
+			end
+			TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28);
+		end
 
-		for i=1, GetCurrencyListSize() do
-			local button = _G["TokenFrameContainerButton"..i]
+		if not TokenFrameContainer.buttons then return end
+		local buttons = TokenFrameContainer.buttons;
+		local numButtons = #buttons;
+
+		for i=1, numButtons do
+			local button = buttons[i];
 
 			if button then
-				button.highlight:Kill()
-				button.categoryMiddle:Kill()
-				button.categoryLeft:Kill()
-				button.categoryRight:Kill()
+				if button.highlight then button.highlight:Kill() end
+				if button.categoryLeft then button.categoryLeft:Kill() end
+				if button.categoryRight then button.categoryRight:Kill() end
+				if button.categoryMiddle then button.categoryMiddle:Kill() end
 
 				if button.icon then
-					button.icon:SetTexCoord(unpack(E.TexCoords))
+					button.icon:SetTexCoord(unpack(E.TexCoords));
+				end
+
+				if button.expandIcon and button.isHeader then
+					if button.isExpanded then
+						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+						button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+						button.expandIcon:SetSize(14, 14);
+					else
+						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+						button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+						button.expandIcon:SetSize(14, 14);
+					end
 				end
 			end
 		end
 	end
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
+	hooksecurefunc(TokenFrameContainer, "update", UpdateCurrencySkins)
 end
 
 S:AddCallback("Character", LoadSkin)
