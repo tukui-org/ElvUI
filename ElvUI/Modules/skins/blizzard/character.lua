@@ -470,16 +470,19 @@ local function LoadSkin()
 						button.highlightTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Hilight");
 						button.highlightTexture:SetBlendMode("ADD");
 						button.highlightTexture:SetInside(button.expandIcon);
+
+						-- these two only need to be called once
+						-- adding them here will prevent additional calls
+						button.expandIcon:SetPoint("LEFT", 4, 0);
+						button.expandIcon:SetSize(14, 14);
 					end
 					if button.isHeader then
 						if button.isExpanded then
 							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
 							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
-							button.expandIcon:SetSize(14, 14);
 						else
 							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
 							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
-							button.expandIcon:SetSize(14, 14);
 						end
 						button.highlightTexture:Show()
 					else
