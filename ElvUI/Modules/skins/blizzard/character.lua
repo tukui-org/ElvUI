@@ -437,7 +437,11 @@ local function LoadSkin()
 	end)
 
 	--Currency
-	TokenFrame:HookScript("OnShow", function()
+	local function UpdateCurrencySkins()
+		TokenFramePopup:StripTextures()
+		TokenFramePopup:SetTemplate("Transparent")
+		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
+
 		for i=1, GetCurrencyListSize() do
 			local button = _G["TokenFrameContainerButton"..i]
 
@@ -452,10 +456,8 @@ local function LoadSkin()
 				end
 			end
 		end
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate("Transparent")
-		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
-	end)
+	end
+	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 end
 
 S:AddCallback("Character", LoadSkin)
