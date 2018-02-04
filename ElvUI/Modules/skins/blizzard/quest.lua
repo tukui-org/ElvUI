@@ -7,6 +7,10 @@ local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local IsQuestComplete = IsQuestComplete
+local GetQuestLogTitle = GetQuestLogTitle
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local QuestLogQuests_GetHeaderButton = QuestLogQuests_GetHeaderButton
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -220,25 +224,23 @@ local function LoadSkin()
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
 	-- Skin the +/- buttons in the QuestLog
-	hooksecurefunc("QuestLogQuests_Update", function(poiTable)
-		local numEntries = GetNumQuestLogEntries();
+	hooksecurefunc("QuestLogQuests_Update", function()
+		local _, isHeader, isCollapsed, questID, isTask, isBounty, isHidden, numEntries, headerIndex, headerCollapsed, headerShown, button;
 
-		local headerIndex = 0;
-		local headerCollapsed = false;
-		local headerShown, headerLogIndex;
+		numEntries = GetNumQuestLogEntries();
+		headerIndex, headerCollapsed = 0, false;
+
 		for questLogIndex = 1, numEntries do
-			local _, _, _, isHeader, isCollapsed, _, _, questID, _, _, _, _, isTask, isBounty, _, isHidden, _ = GetQuestLogTitle(questLogIndex);
-			if ( isHeader ) then
-				headerShown = false;
-				headerLogIndex = questLogIndex;
-				headerCollapsed = isCollapsed;
-			elseif ( not isTask and not isHidden and (not isBounty or IsQuestComplete(questID))) then
-				if ( not headerShown ) then
-					headerShown = true;
-					headerIndex = headerIndex + 1;
-					button = QuestLogQuests_GetHeaderButton(headerIndex);
+			_, _, _, isHeader, isCollapsed, _, _, questID, _, _, _, _, isTask, isBounty, _, isHidden, _ = GetQuestLogTitle(questLogIndex);
 
-					if (headerCollapsed) then
+			if isHeader then
+				headerShown, headerCollapsed = false, isCollapsed;
+			elseif not isTask and not isHidden and not headerShown and (not isBounty or IsQuestComplete(questID)) then
+				headerShown, headerIndex = true, headerIndex+1;
+				button = QuestLogQuests_GetHeaderButton(headerIndex);
+
+				if button then
+					if headerCollapsed then
 						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
 					else
 						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
