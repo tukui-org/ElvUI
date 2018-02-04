@@ -225,7 +225,7 @@ local function LoadSkin()
 
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc("QuestLogQuests_Update", function()
-		local _, isHeader, isCollapsed, questID, isTask, isBounty, isHidden, numEntries, headerIndex, headerCollapsed, headerShown, button;
+		local _, isHeader, isCollapsed, questID, isTask, isBounty, isHidden, numEntries, headerIndex, headerCollapsed, headerShown, headerButton;
 
 		numEntries = GetNumQuestLogEntries();
 		headerIndex, headerCollapsed = 0, false;
@@ -237,13 +237,13 @@ local function LoadSkin()
 				headerShown, headerCollapsed = false, isCollapsed;
 			elseif not isTask and not isHidden and not headerShown and (not isBounty or IsQuestComplete(questID)) then
 				headerShown, headerIndex = true, headerIndex+1;
-				button = QuestLogQuests_GetHeaderButton(headerIndex);
+				headerButton = QuestLogQuests_GetHeaderButton(headerIndex);
 
-				if button then
+				if headerButton then
 					if headerCollapsed then
-						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+						headerButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
 					else
-						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+						headerButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
 					end
 				end
 			end
