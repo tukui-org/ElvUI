@@ -464,15 +464,26 @@ local function LoadSkin()
 					button.icon:SetTexCoord(unpack(E.TexCoords));
 				end
 
-				if button.expandIcon and button.isHeader then
-					if button.isExpanded then
-						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
-						button.expandIcon:SetTexCoord(unpack(E.TexCoords));
-						button.expandIcon:SetSize(14, 14);
+				if button.expandIcon then
+					if not button.highlightTexture then
+						button.highlightTexture = button:CreateTexture(button:GetName().."HighlightTexture", "HIGHLIGHT");
+						button.highlightTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Hilight");
+						button.highlightTexture:SetBlendMode("ADD");
+						button.highlightTexture:SetInside(button.expandIcon);
+					end
+					if button.isHeader then
+						if button.isExpanded then
+							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+							button.expandIcon:SetSize(14, 14);
+						else
+							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+							button.expandIcon:SetSize(14, 14);
+						end
+						button.highlightTexture:Show()
 					else
-						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
-						button.expandIcon:SetTexCoord(unpack(E.TexCoords));
-						button.expandIcon:SetSize(14, 14);
+						button.highlightTexture:Hide()
 					end
 				end
 			end
