@@ -3045,6 +3045,7 @@ E.Options.args.unitframe.args.player = {
 						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
 						["RESTING"] = [[|TInterface\AddOns\ElvUI\media\textures\resting:14|t]],
+						["RESTING1"] = [[|TInterface\AddOns\ElvUI\media\textures\resting1:14|t]],
 					},
 				},
 				customTexture = {
