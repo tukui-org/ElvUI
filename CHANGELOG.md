@@ -13,6 +13,7 @@ Fixed error trying to copy settings between nameplate units (#305)
 Skinned the new Allied Races frame.  
 Skinned a few more tutorial frame close buttons.  
 Skinned the Expand/Collapse buttons on the Quest Log and Character Reputation/Currency Page.  
+Skinned the reward and bonus icons on the PvP Skin.  
 Adjusted the Flight Map's font to match the general media font. (#306)  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 
