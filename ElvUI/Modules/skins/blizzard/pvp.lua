@@ -202,7 +202,7 @@ local function LoadSkin()
 		local WeeklyBonusIcon = button.Reward.WeeklyBonus:CreateTexture(nil, nil, self)
 		WeeklyBonusIcon:SetPoint("TOPLEFT", button.Reward.WeeklyBonus, "TOPLEFT", 2, -2)
 		WeeklyBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.WeeklyBonus, "BOTTOMRIGHT", -2, 2)
-		WeeklyBonusIcon:SetTexture("Interface\\Icons\\Achievement_Battleground_TempleOfKotmogu_02_Cyan")
+		WeeklyBonusIcon:SetTexture("Interface\\Icons\\ability_skyreach_flash_bang")
 		WeeklyBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
