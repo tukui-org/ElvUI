@@ -58,6 +58,7 @@ local function LoadSkin()
 			reward:CreateBackdrop()
 			reward:StyleButton()
 			reward.Border:SetAlpha(0)
+			reward.Icon:SetDrawLayer("OVERLAY")
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
 			reward.backdrop:SetOutside(reward.Icon)
 			reward.isSkinned = true
