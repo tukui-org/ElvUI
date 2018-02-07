@@ -14,6 +14,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AlliedRaces ~= true then return end
 
 	-- AlliedRacesFrame:StripTextures() -- this will hide almost everything, not cool
+	AlliedRacesFrame:CreateBackdrop("Transparent")
 	AlliedRacesFrameBg:Hide()
 	AlliedRacesFramePortrait:Hide()
 	AlliedRacesFramePortraitFrame:Hide()
@@ -31,8 +32,8 @@ local function LoadSkin()
 	AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.Border:Hide()
 	AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:Hide()
 	AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:Hide()
+	AlliedRacesFrame.ModelFrame:StripTextures()
 
-	AlliedRacesFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(AlliedRacesFrameCloseButton)
 	S:HandleScrollBar(AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar)
 end
