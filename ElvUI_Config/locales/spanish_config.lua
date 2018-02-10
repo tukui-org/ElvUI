@@ -1181,7 +1181,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true
 L["Value must be a number"] = "El valor debe ser un número"
-L["Vertical Orientation"] = true
+L["Vertical Fill Direction"] = true
 L["Vertical Spacing"] = "Espaciado Vertical"
 L["Vertical"] = "Vertical"
 L["Visibility"] = "Visibilidad"

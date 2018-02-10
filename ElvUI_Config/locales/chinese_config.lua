@@ -1180,7 +1180,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "使用细边框"
 L["Use this backdrop color for units that are dead or ghosts."] = "死亡或灵魂状态背景"
 L["Value must be a number"] = "数值必须为一个数字"
-L["Vertical Orientation"] = "垂直方向"
+L["Vertical Fill Direction"] = true
 L["Vertical Spacing"] = "垂直间隔"
 L["Vertical"] = "垂直"
 L["Visibility"] = "可见性"

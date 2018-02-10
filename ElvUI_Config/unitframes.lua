@@ -2896,7 +2896,7 @@ E.Options.args.unitframe.args.player = {
 				verticalOrientation = {
 					order = 8,
 					type = "toggle",
-					name = L["Vertical Orientation"],
+					name = L["Vertical Fill Direction"],
 					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 				},
 				detachedWidth = {

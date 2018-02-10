@@ -1230,7 +1230,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true
 L["Value must be a number"] = "값으로 숫자만 입력할 수 있습니다."
-L["Vertical Orientation"] = true
+L["Vertical Fill Direction"] = true
 L["Vertical Spacing"] = "수직 간격"
 L["Vertical"] = "세로"
 L["Visibility"] = "표시"
