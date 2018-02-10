@@ -965,7 +965,6 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enemy Aura Type"] = "Type d'aura inamicale"
 L["Fade the unitframe when out of combat, not casting, no target exists."] = "Estompe les cadres d'unités quand vous êtes hors combat, quand vous ne lancez pas un sort, ou que vous ne ciblez personne."
 L["Fill"] = "Remplissage"
-L["Fill Orientation"] = true
 L["Filled"] = "Rempli"
 L["Filter Type"] = "Type de filtre"
 L["Fluid Position Buffs on Debuffs"] = "Position fluide des améliorations avec les affaiblissements"
@@ -1183,6 +1182,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "Utiliser les bordures fines sur certains cadres d'unités."
 L["Use this backdrop color for units that are dead or ghosts."] = "Utiliser cette couleur de fond pour les joueurs morts ou en fantômes"
 L["Value must be a number"] = "La valeur doit être un nombre"
+L["Vertical Orientation"] = "Orientation verticale"
 L["Vertical Spacing"] = "Espace vertical"
 L["Vertical"] = "Verticale" --Also used in bags section
 L["Visibility"] = "Visibilité"

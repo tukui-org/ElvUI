@@ -1013,7 +1013,6 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enemy Aura Type"] = "적군일 때 표시 계열"
 L["Fade the unitframe when out of combat, not casting, no target exists."] = "평상시에 유닛프레임을 표시하지 않습니다.|n|n전투에 돌입하거나 캐스팅을 시작하거나 대상이 존재하거나 마우스를 갖다 댈 때에만 프레임이 드러납니다."
 L["Fill"] = "채우기"
-L["Fill Orientation"] = true
 L["Filled"] = "하단에 깔기"
 L["Filter Type"] = "필터 종류"
 L["Fluid Position Buffs on Debuffs"] = true
@@ -1231,6 +1230,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true
 L["Value must be a number"] = "값으로 숫자만 입력할 수 있습니다."
+L["Vertical Orientation"] = true
 L["Vertical Spacing"] = "수직 간격"
 L["Vertical"] = "세로"
 L["Visibility"] = "표시"

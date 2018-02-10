@@ -967,7 +967,6 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enemy Aura Type"] = "Feindlicher Aurentyp"
 L["Fade the unitframe when out of combat, not casting, no target exists."] = "Blende die Haupteinheitenfenster aus, wenn du dich nicht im Kampf befindest, keine Zauber wirkst oder kein Ziel anvisierst."
 L["Fill"] = "Füllen"
-L["Fill Orientation"] = "Ausrichtung der Füllung"
 L["Filled"] = "Gefüllt"
 L["Filter Type"] = "Filter Typ"
 L["Fluid Position Buffs on Debuffs"] = "Flüssige Position Stärkungszauber auf Schwächungszauber"
@@ -1185,6 +1184,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "Benutze dünne Rahmen auf bestimmten Einheitenfenster Elementen."
 L["Use this backdrop color for units that are dead or ghosts."] = "Benutze diese Hintergrundfarbe für Einheiten die Tod oder als Geist sind."
 L["Value must be a number"] = "Der Wert muss eine Zahl sein"
+L["Vertical Orientation"] = "Vertikale Ausrichtung"
 L["Vertical Spacing"] = "Vertikaler Abstand"
 L["Vertical"] = "Vertikal" --Also used in bags section
 L["Visibility"] = "Sichtbarkeit"
