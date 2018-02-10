@@ -963,6 +963,7 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enemy Aura Type"] = "敌对光环类型"
 L["Fade the unitframe when out of combat, not casting, no target exists."] = "非战斗/施法/目标不存在时隐藏单位框架"
 L["Fill"] = "填充"
+L["Fill Orientation"] = true
 L["Filled"] = "全长"
 L["Filter Type"] = "过滤器类型"
 L["Fluid Position Buffs on Debuffs"] = "增益流动定位在减益上"
@@ -1180,7 +1181,6 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "使用细边框"
 L["Use this backdrop color for units that are dead or ghosts."] = "死亡或灵魂状态背景"
 L["Value must be a number"] = "数值必须为一个数字"
-L["Vertical Orientation"] = "垂直方向"
 L["Vertical Spacing"] = "垂直间隔"
 L["Vertical"] = "垂直"
 L["Visibility"] = "可见性"
