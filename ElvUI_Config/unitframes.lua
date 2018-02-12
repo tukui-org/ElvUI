@@ -2879,87 +2879,113 @@ E.Options.args.unitframe.args.player = {
 					type = "toggle",
 					name = L["Additional Power Text"],
 				},
-				detachFromFrame = {
-					type = 'toggle',
-					order = 7,
-					name = L["Detach From Frame"],
-					set = function(info, value)
-						if value == true then
-							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
-						else
-							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
-						end
-						E.db.unitframe.units['player']['classbar'][ info[#info] ] = value;
-						UF:CreateAndUpdateUF('player')
-					end,
-				},
-				verticalOrientation = {
-					order = 8,
-					type = "toggle",
-					name = L["Vertical Fill Direction"],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-				},
-				detachedWidth = {
-					type = 'range',
+				spacer = {
 					order = 9,
-					name = L["Detached Width"],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
+					type = "description",
+					name = "",
 				},
-				parent = {
-					type = 'select',
+				detachGroup = {
 					order = 10,
-					name = L["Parent"],
-					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					values = {
-						["FRAME"] = "FRAME",
-						["UIPARENT"] = "UIPARENT",
-					},
-				},
-				strataAndLevel = {
-					order = 20,
 					type = "group",
-					name = L["Strata and Level"],
-					get = function(info) return E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] end,
-					set = function(info, value) E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+					name = L["Detach From Frame"],
+					get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+					set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 					guiInline = true,
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					hidden = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 					args = {
-						useCustomStrata = {
+						detachFromFrame = {
+							type = 'toggle',
 							order = 1,
-							type = "toggle",
-							name = L["Use Custom Strata"],
+							name = ENABLE,
+							width = 'full',
+							set = function(info, value)
+								if value == true then
+									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
+								else
+									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
+								end
+								E.db.unitframe.units['player']['classbar'][ info[#info] ] = value;
+								UF:CreateAndUpdateUF('player')
+							end,
 						},
-						frameStrata = {
+						detachedWidth = {
+							type = 'range',
 							order = 2,
-							type = "select",
-							name = L["Frame Strata"],
+							name = L["Detached Width"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
+						},
+						orientation = {
+							type = 'select',
+							order = 3,
+							name = L["Frame Orientation"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 							values = {
-								["BACKGROUND"] = "BACKGROUND",
-								["LOW"] = "LOW",
-								["MEDIUM"] = "MEDIUM",
-								["HIGH"] = "HIGH",
-								["DIALOG"] = "DIALOG",
-								["TOOLTIP"] = "TOOLTIP",
+								['HORIZONTAL'] = L["Horizontal"],
+								['VERTICAL'] = L["Vertical"],
 							},
 						},
-						spacer = {
-							order = 3,
-							type = "description",
-							name = "",
-						},
-						useCustomLevel = {
+						verticalOrientation = {
 							order = 4,
 							type = "toggle",
-							name = L["Use Custom Level"],
+							name = L["Vertical Fill Direction"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 						},
-						frameLevel = {
+						parent = {
+							type = 'select',
 							order = 5,
-							type = "range",
-							name = L["Frame Level"],
-							min = 2, max = 128, step = 1,
+							name = L["Parent"],
+							desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							values = {
+								["FRAME"] = "FRAME",
+								["UIPARENT"] = "UIPARENT",
+							},
+						},
+						strataAndLevel = {
+							order = 10,
+							type = "group",
+							name = L["Strata and Level"],
+							get = function(info) return E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] end,
+							set = function(info, value) E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+							guiInline = true,
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							hidden = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							args = {
+								useCustomStrata = {
+									order = 1,
+									type = "toggle",
+									name = L["Use Custom Strata"],
+								},
+								frameStrata = {
+									order = 2,
+									type = "select",
+									name = L["Frame Strata"],
+									values = {
+										["BACKGROUND"] = "BACKGROUND",
+										["LOW"] = "LOW",
+										["MEDIUM"] = "MEDIUM",
+										["HIGH"] = "HIGH",
+										["DIALOG"] = "DIALOG",
+										["TOOLTIP"] = "TOOLTIP",
+									},
+								},
+								spacer = {
+									order = 3,
+									type = "description",
+									name = "",
+								},
+								useCustomLevel = {
+									order = 4,
+									type = "toggle",
+									name = L["Use Custom Level"],
+								},
+								frameLevel = {
+									order = 5,
+									type = "range",
+									name = L["Frame Level"],
+									min = 2, max = 128, step = 1,
+								},
+							},
 						},
 					},
 				},
