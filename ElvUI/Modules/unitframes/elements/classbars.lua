@@ -92,9 +92,6 @@ function UF:Configure_ClassBar(frame, cur)
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
-			-- the holder must be placed on topleft of the mover so that the vertical classbar will be correctly placed inside the mover
-			bars.Holder:ClearAllPoints()
-			bars.Holder:Point("TOPLEFT", bars.Holder.mover, "TOPLEFT")
 		else
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
@@ -163,7 +160,7 @@ function UF:Configure_ClassBar(frame, cur)
 				else
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							bars[i]:Point("TOP", bars[i-1], "BOTTOM", 0, -(db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
+							bars[i]:Point("BOTTOM", bars[i-1], "TOP", 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
 						else
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button
 						end
