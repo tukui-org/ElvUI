@@ -140,7 +140,7 @@ function UF:Configure_ClassBar(frame, cur)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 						bars[i]:SetWidth(CLASSBAR_WIDTH)
-						bars.Holder:SetHeight(((frame.CLASSBAR_HEIGHT + db.classbar.spacing)* i) - db.classbar.spacing) -- fix the holder height
+						bars.Holder:SetHeight(((frame.CLASSBAR_HEIGHT + db.classbar.spacing)* frame.MAX_CLASS_BAR) - db.classbar.spacing) -- fix the holder height
 					else
 						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 						bars.Holder:SetHeight(frame.CLASSBAR_HEIGHT) -- set the holder height to default
