@@ -2930,9 +2930,16 @@ E.Options.args.unitframe.args.player = {
 							name = L["Vertical Fill Direction"],
 							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 						},
+						spacing = {
+							order = 5,
+							type = "range",
+							name = L["Spacing"],
+							min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1,
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+						},
 						parent = {
 							type = 'select',
-							order = 5,
+							order = 6,
 							name = L["Parent"],
 							desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,

@@ -1142,6 +1142,7 @@ P['unitframe'] = {
 				["parent"] = "FRAME",
 				["verticalOrientation"] = false,
 				["orientation"] = 'HORIZONTAL',
+				["spacing"] = 1,
 				["strataAndLevel"] = {
 					["useCustomStrata"] = false,
 					["frameStrata"] = "LOW",
