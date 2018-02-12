@@ -140,14 +140,10 @@ function UF:Configure_ClassBar(frame, cur)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 						bars[i]:SetWidth(CLASSBAR_WIDTH)
-						if bars.Holder.mover then
-							bars.Holder.mover:SetHeight(((frame.CLASSBAR_HEIGHT + db.classbar.spacing)* i) - db.classbar.spacing) -- fix the mover height
-						end
+						bars.Holder:SetHeight(((frame.CLASSBAR_HEIGHT + db.classbar.spacing)* i) - db.classbar.spacing) -- fix the holder height
 					else
 						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
-						if bars.Holder.mover then
-							bars.Holder.mover:SetHeight(frame.CLASSBAR_HEIGHT) -- set the mover height to default
-						end
+						bars.Holder:SetHeight(frame.CLASSBAR_HEIGHT) -- set the holder height to default
 					end
 				elseif i ~= frame.MAX_CLASS_BAR then
 					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
@@ -162,7 +158,7 @@ function UF:Configure_ClassBar(frame, cur)
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 							bars[i]:Point("BOTTOM", bars[i-1], "TOP", 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
 						else
-							bars[i]:Point("LEFT", bars[i-1], "RIGHT", (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == frame.MAX_CLASS_BAR then
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
