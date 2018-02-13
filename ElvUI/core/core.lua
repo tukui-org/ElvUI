@@ -15,7 +15,6 @@ local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
-local GetBonusBarOffset = GetBonusBarOffset
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
@@ -614,8 +613,8 @@ function E:CheckRole()
 		role = self.ClassRole[self.myclass][talentTree]
 	end
 
-	--Check for PvP gear or gladiator stance
-	if role == "Tank" and (IsInPvPGear or (E.myclass == "WARRIOR" and GetBonusBarOffset() == 3)) then
+	--Check for PvP gear
+	if role == "Tank" and IsInPvPGear then
 		role = "Melee"
 	end
 
