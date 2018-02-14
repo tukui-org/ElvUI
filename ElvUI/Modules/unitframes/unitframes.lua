@@ -525,6 +525,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local UNIT_HEIGHT = db.infoPanel and db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
+	local groupSpacing = 0
 
 	local numGroups = self.numGroups
 	for i=1, numGroups do
@@ -588,13 +589,13 @@ function UF.groupPrototype:Configure_Groups(self)
 				if group then
 					group:Point(point, self, point, 0, height * yMult)
 				end
-				height = height + UNIT_HEIGHT + db.verticalSpacing
+				height = height + UNIT_HEIGHT + db.verticalSpacing + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then
 					group:Point(point, self, point, width * xMult, 0)
 				end
-				width = width + db.width + db.horizontalSpacing
+				width = width + db.width + db.horizontalSpacing + groupSpacing
 
 				newCols = newCols + 1
 			end
@@ -604,34 +605,34 @@ function UF.groupPrototype:Configure_Groups(self)
 					if group then
 						group:Point(point, self, point, width * xMult, 0)
 					end
-					width = width + ((db.width + db.horizontalSpacing) * 5)
+					width = width + ((db.width + db.horizontalSpacing) * 5) + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((UNIT_HEIGHT + db.verticalSpacing) * (newRows - 1)) * yMult)
+					group:Point(point, self, point, ((((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + db.verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
 						group:Point(point, self, point, 0, height * yMult)
 					end
-					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
+					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, ((db.width + db.horizontalSpacing) * (newCols - 1)) * xMult, (((UNIT_HEIGHT + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:Point(point, self, point, (((db.width + db.horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
+			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) +groupSpacing
 		elseif width == 0 then
-			width = width + ((db.width + db.horizontalSpacing) * 5)
+			width = width + ((db.width + db.horizontalSpacing) * 5) +groupSpacing
 		end
 	end
 
 	if not self.isInstanceForced then
-		self.dirtyWidth = width - db.horizontalSpacing
-		self.dirtyHeight = height - db.verticalSpacing
+		self.dirtyWidth = width - db.horizontalSpacing -groupSpacing
+		self.dirtyHeight = height - db.verticalSpacing -groupSpacing
 	end
 
 	if self.mover then
@@ -640,7 +641,7 @@ function UF.groupPrototype:Configure_Groups(self)
 		self:GetScript("OnSizeChanged")(self) --Mover size is not updated if frame is hidden, so call an update manually
 	end
 
-	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
+	self:SetSize(width - db.horizontalSpacing -groupSpacing, height - db.verticalSpacing -groupSpacing)
 end
 
 function UF.groupPrototype:Update(self)
