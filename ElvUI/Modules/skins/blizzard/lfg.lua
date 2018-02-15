@@ -18,7 +18,7 @@ local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
--- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS, LFGCollapseList, LFGIsIDHeader
+-- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
@@ -269,13 +269,10 @@ local function LoadSkin()
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton, nil, true)
 	end
-	
-	hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button, dungeonID)
-		button.id = dungeonID;
-		if ( LFGIsIDHeader(dungeonID) ) then
-			local isCollapsed = LFGCollapseList[dungeonID];
-			button.isCollapsed = isCollapsed;
-			if ( isCollapsed ) then
+
+	hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button)
+		if button and button.expandOrCollapseButton:IsShown() then
+			if button.isCollapsed then
 				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
 			else
 				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
