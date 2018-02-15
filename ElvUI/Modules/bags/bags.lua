@@ -446,6 +446,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
+		slot.ignoreBorderColors = true
 	elseif (clink) then
 		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
 		slot.name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
@@ -1016,18 +1017,23 @@ function B:UpdateReagentSlot(slotID)
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot:SetBackdropBorderColor(r, g, b);
+			slot.ignoreBorderColors = true
 		else
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+			slot.ignoreBorderColors = nil
 		end
 	else
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+		slot.ignoreBorderColors = nil
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
