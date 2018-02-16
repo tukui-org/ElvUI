@@ -104,6 +104,23 @@ local function LoadSkin()
 		end
 	end)
 
+	local function SkinCollapseButton(self, _, tradeSkillInfo)
+		if tradeSkillInfo.collapsed then
+			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+		else
+			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+		end
+	end
+
+	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
+		for i, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do
+			if not tradeSkillButton.headerIsHooked then
+				hooksecurefunc(tradeSkillButton, "SetUpHeader", SkinCollapseButton)
+				tradeSkillButton.headerIsHooked = true
+			end
+		end
+	end)
+
 	--Guild Crafters
 	S:HandleCloseButton(TradeSkillFrame.DetailsFrame.GuildFrame.CloseButton)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
