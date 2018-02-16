@@ -5,8 +5,8 @@
 
 
 **Bug Fixes:**   
-Fixed rare tooltip error (attempt to index local 'color')  
-Fixed error trying to copy settings between nameplate units (#305)  
+Fixed rare tooltip error (attempt to index local 'color').  
+Fixed error trying to copy settings between nameplate units (#305).  
 
 
 **Misc. Changes:**  
@@ -14,8 +14,9 @@ Skinned the new Allied Races frame.
 Skinned a few more tutorial frame close buttons.  
 Skinned the Expand/Collapse buttons on the Quest Log and Character Reputation/Currency Page.  
 Skinned the reward and bonus icons on the PvP Skin.  
-Adjusted the Flight Map's font to match the general media font. (#306)  
+Adjusted the Flight Map's font to match the general media font (#306).  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
+Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
