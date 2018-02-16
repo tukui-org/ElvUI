@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
+local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
 local C_Timer_After = C_Timer.After
 local CreateFrame = CreateFrame
