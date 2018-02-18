@@ -26,20 +26,17 @@ local function LoadSkin()
 	WORLD_QUEST_TRACKER_MODULE.Header.Text:FontTemplate()
 
 	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
-	S:HandleButton(minimizeButton)
-	minimizeButton:Size(16, 14)
-	minimizeButton.text = minimizeButton:CreateFontString(nil, "OVERLAY")
-	minimizeButton.text:FontTemplate()
-	minimizeButton.text:Point("CENTER", minimizeButton, "CENTER", 0, 0)
-	minimizeButton.text:SetText("-")
-	minimizeButton.text:SetJustifyH("CENTER")
-	minimizeButton.text:SetJustifyV("MIDDLE")
-	minimizeButton:HookScript('OnClick', function(self)
-		local textObject = self.text
+	minimizeButton:StripTextures()
+	minimizeButton:Size(16, 16)
+	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
+	minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+	minimizeButton.tex:SetInside()
+	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+	minimizeButton:HookScript("OnClick", function(self)
 		if ObjectiveTrackerFrame.collapsed then
-			textObject:SetText("+")
+			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
 		else
-			textObject:SetText("-")
+			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
 		end
 	end)
 
