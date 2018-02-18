@@ -190,6 +190,8 @@ function UF:Configure_Auras(frame, auraType)
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
 		end
+		db.buffs.attachTo = "DEBUFFS"
+		frame.Buffs.attachTo = frame.Debuffs
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
 	elseif position == "DEBUFFS_ON_BUFFS" then
@@ -198,6 +200,8 @@ function UF:Configure_Auras(frame, auraType)
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
 		end
+		db.debuffs.attachTo = "BUFFS"
+		frame.Debuffs.attachTo = frame.Buffs
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 		frame.Debuffs.PostUpdate = nil
 	elseif position == "FLUID_BUFFS_ON_DEBUFFS" then
@@ -206,6 +210,8 @@ function UF:Configure_Auras(frame, auraType)
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
 		end
+		db.buffs.attachTo = "DEBUFFS"
+		frame.Buffs.attachTo = frame.Debuffs
 		frame.Buffs.PostUpdate = UF.UpdateBuffsHeight
 		frame.Debuffs.PostUpdate = UF.UpdateBuffsPositionAndDebuffHeight
 	elseif position == "FLUID_DEBUFFS_ON_BUFFS" then
@@ -214,6 +220,8 @@ function UF:Configure_Auras(frame, auraType)
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
 		end
+		db.debuffs.attachTo = "BUFFS"
+		frame.Debuffs.attachTo = frame.Buffs
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsPositionAndBuffHeight
 		frame.Debuffs.PostUpdate = UF.UpdateDebuffsHeight
 	else
