@@ -215,8 +215,8 @@ local function LoadSkin()
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
 			if not reward.backdrop then
 				reward:CreateBackdrop("Default")
-				reward.backdrop:SetPoint("TOPLEFT", reward.Icon, "TOPLEFT", -2, 2)
-				reward.backdrop:SetPoint("BOTTOMRIGHT", reward.Icon, "BOTTOMRIGHT", 2, -2)
+				reward.backdrop:SetPoint("TOPLEFT", reward.Icon, "TOPLEFT", -1, 1)
+				reward.backdrop:SetPoint("BOTTOMRIGHT", reward.Icon, "BOTTOMRIGHT", 1, -1)
 				reward.backdrop:SetFrameLevel(reward:GetFrameLevel())
 
 				reward.Quantity:SetParent(reward.backdrop)
