@@ -218,6 +218,12 @@ local function LoadSkin()
 				S:HandleIcon(reward.Icon, reward.border)
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
+				hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
+					self:GetParent().border.backdrop:SetBackdropBorderColor(r, g, b)
+				end)
+				hooksecurefunc(reward.IconBorder, "Hide", function(self, r, g, b)
+					self:GetParent().border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				end)
 			end
 		end
 	end
