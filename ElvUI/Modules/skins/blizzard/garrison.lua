@@ -213,17 +213,11 @@ local function LoadSkin()
 		local button = buttons[i]
 		for _, reward in pairs(button.Rewards) do
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
-			if not reward.backdrop then
-				reward:CreateBackdrop("Default")
-				reward.backdrop:SetPoint("TOPLEFT", reward.Icon, "TOPLEFT", -1, 1)
-				reward.backdrop:SetPoint("BOTTOMRIGHT", reward.Icon, "BOTTOMRIGHT", 1, -1)
-				reward.backdrop:SetFrameLevel(reward:GetFrameLevel())
-
-				reward.Quantity:SetParent(reward.backdrop)
+			if not reward.border then
+				reward.border = CreateFrame("Frame", nil, reward)
+				S:HandleIcon(reward.Icon, reward.border)
+				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
-				-- hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-					-- self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-				-- end)
 			end
 		end
 	end
