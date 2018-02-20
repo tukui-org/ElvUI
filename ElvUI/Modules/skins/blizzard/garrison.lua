@@ -74,6 +74,34 @@ local function LoadSkin()
 			frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 			frame.Icon:SetDrawLayer("BORDER", 0)
 		end)
+
+		--This handles border color for rewards on Garrison/Order Hall Report Frame
+		hooksecurefunc("GarrisonLandingPageReportList_UpdateAvailable", function()
+			local items = GarrisonLandingPageReport.List.AvailableItems;
+			local numItems = #items;
+			local scrollFrame = GarrisonLandingPageReport.List.listScroll;
+			local offset = HybridScrollFrame_GetOffset(scrollFrame);
+			local buttons = scrollFrame.buttons;
+			local numButtons = #buttons;
+
+			for i = 1, numButtons do
+				local button = buttons[i];
+				local index = offset + i; -- adjust index
+				if ( index <= numItems ) then
+					local item = items[index];
+					local index = 1;
+					for id, reward in pairs(item.rewards) do
+						local Reward = button.Rewards[index];
+						if Reward.IconBorder:IsShown() then
+							local r, g, b = Reward.IconBorder:GetVertexColor()
+							Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
+						else
+							Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+						end
+					end
+				end
+			end
+		end)
 	end
 
 	--Stop here if Garrison skin is disabled
