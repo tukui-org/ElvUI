@@ -92,12 +92,13 @@ local function LoadSkin()
 					local index = 1;
 					for id, reward in pairs(item.rewards) do
 						local Reward = button.Rewards[index];
-						if Reward.IconBorder:IsShown() then
+						if (reward.itemID) then
 							local r, g, b = Reward.IconBorder:GetVertexColor()
 							Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
 						else
 							Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 						end
+						index = index + 1;
 					end
 				end
 			end
