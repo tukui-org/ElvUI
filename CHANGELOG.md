@@ -1,7 +1,7 @@
 **Version 10.73 [  ]**
 
 **New Additions:**  
-
+Added color options for Debuff Highlighting.  
 
 
 **Bug Fixes:**   
