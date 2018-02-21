@@ -246,7 +246,7 @@ local function LoadSkin()
 	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 
-	--Loot buttons
+	-- Loot buttons
 	local items = EncounterJournal.encounter.info.lootScroll.buttons
 	for i = 1, #items do
 		local item = items[i]
@@ -264,9 +264,19 @@ local function LoadSkin()
 
 		item.icon:SetSize(36, 36)
 		item.icon:Point("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
+		item.icon:SetDrawLayer("ARTWORK")
+		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		S:HandleIcon(item.icon)
-		item.icon:SetDrawLayer("OVERLAY")
+		item.IconBackdrop = CreateFrame("Frame", nil, item)
+		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
+		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
+		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
+		item.IconBackdrop:SetTemplate("Default")
+
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
 
 		item:CreateBackdrop("Transparent")
 		item.backdrop:Point("TOPLEFT", 0, -4)
