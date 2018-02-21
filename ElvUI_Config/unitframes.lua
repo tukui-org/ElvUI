@@ -2585,6 +2585,47 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
+						debuffHighlight = {
+							order = 8,
+							name = L["Debuff Highlighting"],
+							type = 'group',
+							get = function(info)
+								local t = E.db.unitframe.colors.debuffHighlight[ info[#info] ]
+								local d = P.unitframe.colors.debuffHighlight[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.debuffHighlight[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								UF:Update_AllFrames()
+							end,
+							args = {
+								Magic = {
+									order = 1,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Curse = {
+									order = 2,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Disease = {
+									order = 3,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Poison = {
+									order = 4,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+							},
+						},
 					},
 				},
 				disabledBlizzardFrames = {

@@ -352,16 +352,16 @@ function UF:UpdateColors()
 	local bad = E:GetColorTable(db.reaction.BAD)
 	local neutral = E:GetColorTable(db.reaction.NEUTRAL)
 
-	ElvUF.colors.tapped = E:GetColorTable(db.tapped);
-	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected);
-	ElvUF.colors.health = E:GetColorTable(db.health);
-	ElvUF.colors.power.MANA = E:GetColorTable(db.power.MANA);
-	ElvUF.colors.power.RAGE = E:GetColorTable(db.power.RAGE);
-	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS);
-	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
-	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
-	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
-	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
+	ElvUF.colors.tapped = E:GetColorTable(db.tapped)
+	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected)
+	ElvUF.colors.health = E:GetColorTable(db.health)
+	ElvUF.colors.power.MANA = E:GetColorTable(db.power.MANA)
+	ElvUF.colors.power.RAGE = E:GetColorTable(db.power.RAGE)
+	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS)
+	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY)
+	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER)
+	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN)
+	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY)
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:GetColorTable(db.power.MAELSTROM)
@@ -374,8 +374,8 @@ function UF:UpdateColors()
 	--Monk, Mage, Paladin and Warlock, Death Knight
 	ElvUF.colors.ClassBars = {}
 	ElvUF.colors.ClassBars.MONK = {}
-	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
-	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE);
+	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN)
+	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE)
 	ElvUF.colors.ClassBars.MONK[1] = E:GetColorTable(db.classResources.MONK[1])
 	ElvUF.colors.ClassBars.MONK[2] = E:GetColorTable(db.classResources.MONK[2])
 	ElvUF.colors.ClassBars.MONK[3] = E:GetColorTable(db.classResources.MONK[3])
@@ -393,12 +393,16 @@ function UF:UpdateColors()
 	ElvUF.colors.reaction[6] = good
 	ElvUF.colors.reaction[7] = good
 	ElvUF.colors.reaction[8] = good
-	ElvUF.colors.smooth = {1, 0, 0,
-	1, 1, 0,
-	unpack(E:GetColorTable(db.health))}
+	ElvUF.colors.smooth = {1, 0, 0,	1, 1, 0, unpack(E:GetColorTable(db.health))}
 
-	ElvUF.colors.castColor = E:GetColorTable(db.castColor);
-	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt);
+	ElvUF.colors.castColor = E:GetColorTable(db.castColor)
+	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt)
+	
+	ElvUF.colors.DebuffHighlight = {}
+	ElvUF.colors.DebuffHighlight["Magic"] = E:GetColorTable(db.debuffHighlight.Magic)
+	ElvUF.colors.DebuffHighlight["Curse"] = E:GetColorTable(db.debuffHighlight.Curse)
+	ElvUF.colors.DebuffHighlight["Disease"] = E:GetColorTable(db.debuffHighlight.Disease)
+	ElvUF.colors.DebuffHighlight["Poison"] = E:GetColorTable(db.debuffHighlight.Poison)
 end
 
 function UF:Update_StatusBars()
