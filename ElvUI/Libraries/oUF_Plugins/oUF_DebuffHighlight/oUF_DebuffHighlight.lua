@@ -120,6 +120,10 @@ local function Update(object, event, unit)
 			object.DebuffHighlight:SetVertexColor(0, 0, 0, 0)
 		end
 	end
+	
+	if object.DebuffHighlight.PostUpdate then
+		object.DebuffHighlight:PostUpdate(object, debuffType, texture, wasFiltered, style, color)
+	end
 end
  
 local function Enable(object)
