@@ -619,38 +619,55 @@ function S:HandleSliderFrame(frame)
 end
 
 function S:HandleFollowerPage(follower, hasItems, hasEquipment)
-	local abilities = follower.followerTab.AbilitiesFrame.Abilities
-	if follower.numAbilitiesStyled == nil then
-		follower.numAbilitiesStyled = 1
+	local followerTab = follower and follower.followerTab
+	local abilityFrame = followerTab.AbilitiesFrame
+	if not abilityFrame then return end
+
+	local abilities = abilityFrame.Abilities
+	if abilities then
+		for i = 1, #abilities do
+			local iconButton = abilities[i].IconButton
+			local icon = iconButton and iconButton.Icon
+			if icon and not iconButton.backdrop then
+				S:HandleIcon(icon, iconButton)
+				icon:SetDrawLayer("BORDER", 0)
+				if iconButton.Border then
+					iconButton.Border:SetTexture(nil)
+				end
+			end
+		end
 	end
-	local numAbilitiesStyled = follower.numAbilitiesStyled
-	local ability = abilities[numAbilitiesStyled]
-	while ability do
-		local icon = ability.IconButton.Icon
-		S:HandleIcon(icon, ability.IconButton)
-		icon:SetDrawLayer("BORDER", 0)
-		numAbilitiesStyled = numAbilitiesStyled + 1
-		ability = abilities[numAbilitiesStyled]
+
+	local combatAllySpells = abilityFrame.CombatAllySpell
+	if combatAllySpells then
+		for i = 1, #combatAllySpells do
+			local icon = combatAllySpells[i].iconTexture
+			if icon and not combatAllySpells[i].backdrop then
+				S:HandleIcon(icon, combatAllySpells[i])
+			end
+		end
 	end
-	follower.numAbilitiesStyled = numAbilitiesStyled
 
 	if hasItems then
-		local weapon = follower.followerTab.ItemWeapon
-		local armor = follower.followerTab.ItemArmor
-		if not weapon.backdrop then
+		local weapon = followerTab.ItemWeapon
+		if weapon and not weapon.backdrop then
 			S:HandleIcon(weapon.Icon, weapon)
-			weapon.Border:SetTexture(nil)
-			weapon.backdrop:SetFrameLevel(weapon:GetFrameLevel())
+			if weapon.Border then
+				weapon.Border:SetTexture(nil)
+			end
 		end
-		if not armor.backdrop then
+
+		local armor = followerTab.ItemArmor
+		if armor and not armor.backdrop then
 			S:HandleIcon(armor.Icon, armor)
-			armor.Border:SetTexture(nil)
-			armor.backdrop:SetFrameLevel(armor:GetFrameLevel())
+			if armor.Border then
+				armor.Border:SetTexture(nil)
+			end
 		end
 	end
 
-	local xpbar = follower.followerTab.XPBar
-	if not xpbar.backdrop then
+	local xpbar = followerTab.XPBar
+	if xpbar and not xpbar.backdrop then
 		xpbar:StripTextures()
 		xpbar:SetStatusBarTexture(E["media"].normTex)
 		xpbar:CreateBackdrop("Transparent")
@@ -658,22 +675,36 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 
 	-- only OrderHall
 	if hasEquipment then
-		local btn
-		local equipment = follower.followerTab.AbilitiesFrame.Equipment
-		if equipment and not equipment.backdrop then
+		local equipment = abilityFrame.Equipment
+		if equipment then
 			for i = 1, #equipment do
-				btn = equipment[i]
-				btn.Border:SetTexture(nil)
-				btn.BG:SetTexture(nil)
-				btn.Icon:SetTexCoord(unpack(E.TexCoords))
-				if not btn.backdop then
-					btn:CreateBackdrop("Default")
-					btn.backdrop:SetPoint("TOPLEFT", btn.Icon, "TOPLEFT", -2, 2)
-					btn.backdrop:SetPoint("BOTTOMRIGHT", btn.Icon, "BOTTOMRIGHT", 2, -2)
+				-- fix borders being off
+				equipment[i]:SetScale(1)
+
+				-- handle its styling
+				if not equipment[i].template then
+					equipment[i]:SetTemplate('Default')
+					equipment[i]:SetSize(48, 48)
+					equipment[i].BG:SetTexture(nil)
+					equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
+					equipment[i].Icon:SetInside(equipment[i])
+					if equipment[i].Border then
+						equipment[i].Border:SetTexture(nil)
+					end
+				end
+
+				-- handle the placement slightly to move them apart a bit
+				local totalWidth = equipment[i]:GetWidth() * #equipment
+				local point, anchor, secondaryPoint, _, y = equipment[i]:GetPoint();
+				if anchor ~= abilityFrame.EquipmentSlotsLabel then
+					equipment[i]:SetPoint(point, anchor, secondaryPoint, E.Border*4, y);
+				elseif followerTab.isLandingPage then
+					equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
+				else
+					equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
 				end
 			end
 		end
-		btn = nil
 	end
 end
 
