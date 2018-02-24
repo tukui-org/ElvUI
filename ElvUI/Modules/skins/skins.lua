@@ -694,14 +694,18 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				end
 
 				-- handle the placement slightly to move them apart a bit
-				local totalWidth = equipment[i]:GetWidth() * #equipment
-				local point, anchor, secondaryPoint, _, y = equipment[i]:GetPoint();
-				if anchor ~= abilityFrame.EquipmentSlotsLabel then
-					equipment[i]:SetPoint(point, anchor, secondaryPoint, E.Border*4, y);
-				elseif followerTab.isLandingPage then
-					equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
-				else
-					equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
+				if equipment[i]:IsShown() then
+					local point, anchor, secondaryPoint, _, y = equipment[i]:GetPoint();
+					if anchor and abilityFrame.EquipmentSlotsLabel then
+						local totalWidth = equipment[i]:GetWidth() * #equipment
+						if anchor ~= abilityFrame.EquipmentSlotsLabel then
+							equipment[i]:SetPoint(point, anchor, secondaryPoint, E.Border*4, y);
+						elseif followerTab.isLandingPage then
+							equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
+						else
+							equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
+						end
+					end
 				end
 			end
 		end
