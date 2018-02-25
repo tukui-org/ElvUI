@@ -685,11 +685,21 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				if not equipment[i].template then
 					equipment[i]:SetTemplate('Default')
 					equipment[i]:SetSize(48, 48)
-					equipment[i].BG:SetTexture(nil)
-					equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
-					equipment[i].Icon:SetInside(equipment[i])
+					if equipment[i].BG then
+						equipment[i].BG:SetTexture(nil)
+					end
 					if equipment[i].Border then
 						equipment[i].Border:SetTexture(nil)
+					end
+					if equipment[i].Icon then
+						equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
+						equipment[i].Icon:SetInside(equipment[i])
+					end
+					if equipment[i].EquipGlow then
+						equipment[i].EquipGlow:SetSize(78, 78)
+					end
+					if equipment[i].ValidSpellHighlight then
+						equipment[i].ValidSpellHighlight:SetSize(78, 78)
 					end
 				end
 
