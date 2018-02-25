@@ -6862,10 +6862,6 @@ function E:RefreshCustomTextsConfigs()
 	for unit, _ in pairs(E.db.unitframe.units) do
 		if E.db.unitframe.units[unit].customTexts then
 			for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
-				--This takes care of custom texts that were added before the enable option was added.
-				if E.db.unitframe.units[unit].customTexts[objectName].enable == nil then
-					E.db.unitframe.units[unit].customTexts[objectName].enable = true
-				end
 				CreateCustomTextGroup(unit, objectName)
 			end
 		end

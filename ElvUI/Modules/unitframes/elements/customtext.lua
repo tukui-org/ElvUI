@@ -36,7 +36,12 @@ function UF:Configure_CustomTexts(frame)
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
 			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', attachPoint, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
-			
+
+			--This takes care of custom texts that were added before the enable option was added.
+			if objectDB.enable == nil then
+				objectDB.enable = true
+			end
+
 			if objectDB.enable then
 				frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 				frame.customTexts[objectName]:Show()
