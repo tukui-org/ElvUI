@@ -37,7 +37,7 @@ function UF:Configure_CustomTexts(frame)
 			frame.customTexts[objectName]:ClearAllPoints()
 			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', attachPoint, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			
-			if objectDB.enable ~= false then
+			if objectDB.enable then
 				frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 				frame.customTexts[objectName]:Show()
 			else
