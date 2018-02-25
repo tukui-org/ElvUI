@@ -94,6 +94,15 @@ function B:AdjustAnchors(relativeAlert)
 	return relativeAlert;
 end
 
+function B:AdjustAnchorsNonAlert(relativeAlert)
+	if self.anchorFrame:IsShown() then
+		self.anchorFrame:ClearAllPoints()
+		self.anchorFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
+		return self.anchorFrame;
+	end
+	return relativeAlert;
+end
+
 function B:AdjustQueuedAnchors(relativeAlert)
 	for alertFrame in self.alertFramePool:EnumerateActive() do
 		alertFrame:ClearAllPoints()
@@ -133,6 +142,8 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 		alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
 	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
 		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
+	elseif alertFrameSubSystem.anchorFrame then --anchor frame system
+		alertFrameSubSystem.AdjustAnchors = B.AdjustAnchorsNonAlert
 	end
 end
 
@@ -174,5 +185,8 @@ function B:AlertMovers()
 		/run LegendaryItemAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r")
 		/run StorePurchaseAlertSystem:AddAlert("\124cffa335ee\124Hitem:180545::::::::::\124h[Mystic Runesaber]\124h\124r", "", "", 214)
 		/run DigsiteCompleteAlertSystem:AddAlert(1)
+
+		--Bonus Rolls
+		/run BonusRollFrame_StartBonusRoll(242969,1,179,1273,14)
 	]]
 end
