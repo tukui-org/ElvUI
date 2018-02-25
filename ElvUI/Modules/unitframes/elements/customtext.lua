@@ -33,10 +33,17 @@ function UF:Configure_CustomTexts(frame)
 
 			local attachPoint = self:GetObjectAnchorPoint(frame, objectDB.attachTextTo)
 			frame.customTexts[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
-			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
 			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', attachPoint, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			
+			if objectDB.enable then
+				frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
+				frame.customTexts[objectName]:Show()
+			else
+				frame:Untag(frame.customTexts[objectName])
+				frame.customTexts[objectName]:Hide()
+			end
 		end
 	end
 end

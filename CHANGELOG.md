@@ -3,6 +3,7 @@
 **New Additions:**  
 Added color options for Debuff Highlighting.  
 Added mover for BonusRollFrame.  
+Added option to Enable/Disable individual Custom Texts.  
 
 
 **Bug Fixes:**   
