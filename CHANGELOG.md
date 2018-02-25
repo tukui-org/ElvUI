@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added color options for Debuff Highlighting.  
+Added mover for BonusRollFrame.  
 
 
 **Bug Fixes:**   
