@@ -223,6 +223,7 @@ L["Count yOffset"] = "Décalage Y de la pile"
 L["Defines how the group is sorted."] = "Définit la façon dont le groupe est trié."
 L["Defines the sort order of the selected sort method."] = "Définit l'ordre de tri selon la méthode choisie (Ascendant/Descendant)"
 L["Disabled Blizzard"] = "Désactiver Blizzard"
+L["Duration Font Size"] = true
 L["Fade Threshold"] = "Seuil du fondu"
 L["Index"] = "Index"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Indique si les améliorations que vous lancez doivent être séparées avant ou après."

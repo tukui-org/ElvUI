@@ -221,6 +221,7 @@ L["Count yOffset"] = true
 L["Defines how the group is sorted."] = true
 L["Defines the sort order of the selected sort method."] = true
 L["Disabled Blizzard"] = true
+L["Duration Font Size"] = true
 L["Fade Threshold"] = true
 L["Index"] = true
 L["Indicate whether buffs you cast yourself should be separated before or after."] = true

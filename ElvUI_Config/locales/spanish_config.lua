@@ -223,6 +223,7 @@ L["Count yOffset"] = true
 L["Defines how the group is sorted."] = "Define como se ordena el grupo."
 L["Defines the sort order of the selected sort method."] = "Define el orden para el método de organización seleccionado."
 L["Disabled Blizzard"] = true
+L["Duration Font Size"] = true
 L["Fade Threshold"] = "Umbral de Transparencia"
 L["Index"] = "Índice"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Indica si los beneficios lanzados por ti deberían estar separados antes o después."

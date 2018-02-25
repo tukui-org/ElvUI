@@ -269,6 +269,7 @@ L["Count yOffset"] = "중첩수 y 좌표"
 L["Defines how the group is sorted."] = "오라를 어떤 기준으로 정렬할지를 결정합니다."
 L["Defines the sort order of the selected sort method."] = "기준을 바탕으로 하여 어떤 순서로 정렬할지를 결정합니다."
 L["Disabled Blizzard"] = "기본 오라창 미사용"
+L["Duration Font Size"] = true
 L["Fade Threshold"] = "초읽기 시작 시점"
 L["Index"] = "종류"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "스스로 걸은 효과를 남이 걸어준 효과보다 먼저 나열할지, 후에 나열할지, 구분하지 않을지를 결정합니다."

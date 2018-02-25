@@ -701,7 +701,6 @@ P["nameplates"] = {
 --Auras
 P['auras'] = {
 	['font'] = 'Homespun',
-	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['countYOffset'] = 0,
 	['countXOffset'] = 0,
@@ -718,6 +717,8 @@ P['auras'] = {
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
 		['size'] = 32,
+		["countFontsize"] = 10,
+		["durationFontSize"] = 10,
 	},
 	['debuffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
@@ -729,6 +730,8 @@ P['auras'] = {
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
 		['size'] = 32,
+		["countFontsize"] = 10,
+		["durationFontSize"] = 10,
 	},
 }
 

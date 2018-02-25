@@ -71,8 +71,13 @@ if(not ElvDB.profiles["Minimalistic"]) then
 			["font"] = "Expressway",
 			["buffs"] = {
 				["maxWraps"] = 2,
+				["countFontSize"] = 11,
+				["durationFontSize"] = 11,
 			},
-			["fontSize"] = 11,
+			["debuffs"] = {
+				["countFontSize"] = 11,
+				["durationFontSize"] = 11,
+			},
 		},
 		["bags"] = {
 			["itemLevelFontSize"] = 9,

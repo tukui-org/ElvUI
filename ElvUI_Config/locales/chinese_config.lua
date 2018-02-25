@@ -221,6 +221,7 @@ L["Count yOffset"] = "计数Y偏移"
 L["Defines how the group is sorted."] = "定义组排序方式"
 L["Defines the sort order of the selected sort method."] = "定义排序方式的排序方向"
 L["Disabled Blizzard"] = "禁用暴雪框架"
+L["Duration Font Size"] = true
 L["Fade Threshold"] = "阈值渐隐"
 L["Index"] = "索引"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "将你自身施放的增益从整体增益之前或之后分离出来"

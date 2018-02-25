@@ -222,6 +222,7 @@ L["Count yOffset"] = "Отступ стаков по Y"
 L["Defines how the group is sorted."] = "Определяет условия сортировки"
 L["Defines the sort order of the selected sort method."] = "Определяет порядок в выбранном методе сортировки."
 L["Disabled Blizzard"] = "Отключить ауры Blizzard"
+L["Duration Font Size"] = true
 L["Fade Threshold"] = "Значение мерцания"
 L["Index"] = "Порядок наложения"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Определяет должны ли Ваши баффы находиться отдельно перед или после остальных."
