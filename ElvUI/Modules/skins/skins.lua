@@ -766,7 +766,7 @@ function S:HandleGarrisonPortrait(portrait)
 	if not portrait.backdrop then
 		portrait:CreateBackdrop("Default")
 		portrait.backdrop:SetPoint("TOPLEFT", portrait, "TOPLEFT", -1, 1)
-		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 2, -2)
+		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
 		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
 	end
 end
