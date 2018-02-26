@@ -17,6 +17,7 @@ Skinned the new Allied Races frame.
 Skinned a few more tutorial frame close buttons.  
 Skinned the Expand/Collapse buttons on various frames.  
 Skinned the reward and bonus icons on the PvP Skin.  
+Skinned the Orderhall/Garrison Portraits.  
 Adjusted the Flight Map's font to match the general media font (#306).  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
