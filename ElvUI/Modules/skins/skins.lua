@@ -746,6 +746,31 @@ function S:HandleShipFollowerPage(followerTab)
 	end
 end
 
+-- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+function S:HandleGarrisonPortrait(portrait)
+	local size = portrait.Portrait:GetSize() + 2
+	portrait:SetSize(size, size)
+
+	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
+	portrait.Portrait:ClearAllPoints()
+	portrait.Portrait:SetPoint("TOPLEFT", 1, -1)
+
+	portrait.PortraitRing:Hide()
+	portrait.PortraitRingQuality:SetTexture("")
+	portrait.PortraitRingCover:SetTexture("")
+	portrait.LevelBorder:SetAlpha(0)
+
+	portrait.Level:ClearAllPoints()
+	portrait.Level:SetPoint("BOTTOM")
+
+	if not portrait.backdrop then
+		portrait:CreateBackdrop("Default")
+		portrait.backdrop:SetPoint("TOPLEFT", portrait, "TOPLEFT", -1, 1)
+		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 2, -2)
+		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
+	end
+end
+
 function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
 	assert(frame, "HandleIconSelectionFrame: frame argument missing")
 	assert(numIcons and type(numIcons) == "number", "HandleIconSelectionFrame: numIcons argument missing or not a number")
