@@ -1173,6 +1173,7 @@ P['unitframe'] = {
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
 				["yOffset"] = 0,
+				["spacing"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1316,6 +1317,7 @@ P['unitframe'] = {
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
 				["yOffset"] = 0,
+				["spacing"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1615,6 +1617,7 @@ P['unitframe'] = {
 				['sort'] = 'TIME_REMAINING',
 				["uniformThreshold"] = 0,
 				["yOffset"] = 0,
+				["spacing"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,

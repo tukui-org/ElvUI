@@ -248,13 +248,6 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					['NONE'] = NONE,
 				},
 			},
-			filters = {
-				name = FILTERS,
-				guiInline = true,
-				type = 'group',
-				order = 500,
-				args = {},
-			},
 			friendlyAuraType = {
 				type = 'select',
 				order = 16,
@@ -287,6 +280,19 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				type = 'range',
 				name = L["yOffset"],
 				min = -1000, max = 1000, step = 1,
+			},
+			spacing = {
+				order = 20,
+				type = "range",
+				name = L["Spacing"],
+				min = 0, softMax = 20, step = 1,
+			},
+			filters = {
+				name = FILTERS,
+				guiInline = true,
+				type = 'group',
+				order = 500,
+				args = {},
 			},
 		},
 	}
