@@ -7,8 +7,10 @@ local CH = E:GetModule("Chat");
 local select, unpack, pairs = select, unpack, pairs
 local format = string.format
 --WoW API / Variables
+local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+local GetCVarBool = GetCVarBool
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
@@ -77,7 +79,6 @@ end
 
 function M:UpdateChatBubble(chatBubble, guid, name)
 	local defaultColor = "ffffffff"
-	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
 		color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class].colorStr or RAID_CLASS_COLORS[class].colorStr
@@ -90,7 +91,7 @@ end
 function M:SkinBubble(frame)
 	local mult = E.mult * UIParent:GetScale()
 	local font
-	for i=1, frame:GetNumRegions() do
+	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetTexture(nil)
@@ -208,6 +209,20 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
+local function FindChatBubble(msg)
+	local chatBubbles = C_ChatBubbles.GetAllChatBubbles()
+
+	for index = 1, #chatBubbles do
+		local chatBubble = chatBubbles[index]
+		for i = 1, select("#", chatBubble:GetRegions()) do
+			local region = select(i, chatBubble:GetRegions())
+			if region:GetObjectType() == "FontString" and region:GetText() == msg then
+				return chatBubble
+			end
+		end
+	end
+end
+
 local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
 	if GetCVarBool(events[event]) then
 		self.elapsed = 0
@@ -227,8 +242,9 @@ local function ChatBubble_OnUpdate(self, elapsed)
 	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
 	if (M.BubbleFrame.lastupdate < .1) then return end
 	M.BubbleFrame.lastupdate = 0
-
-	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
+	local chatBubble = FindChatBubble(self.msg)
+	if chatBubble or lastupdate > 0.3 then
+		self:Hide()
 		if chatBubble then
 			if not chatBubble.isSkinnedElvUI then
 				M:SkinBubble(chatBubble)
