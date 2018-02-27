@@ -4,7 +4,7 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, unpack, pairs = select, unpack, pairs
+local select, unpack, pairs, next = select, unpack, pairs, next
 local format = string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
@@ -14,21 +14,16 @@ local GetCVarBool = GetCVarBool
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS, RAID_CLASS_COLORS
 
 local events = {
 	CHAT_MSG_SAY = "chatBubbles",
 	CHAT_MSG_YELL = "chatBubbles",
 	CHAT_MSG_MONSTER_SAY = "chatBubbles",
 	CHAT_MSG_MONSTER_YELL = "chatBubbles",
-
-	CHAT_MSG_PARTY = "chatBubblesParty",
-	CHAT_MSG_PARTY_LEADER = "chatBubblesParty",
-	CHAT_MSG_MONSTER_PARTY = "chatBubblesParty",
 }
 
 function M:UpdateBubbleBorder()
@@ -78,6 +73,7 @@ function M:UpdateBubbleBorder()
 end
 
 function M:UpdateChatBubble(chatBubble, guid, name)
+	if E.private.general.chatBubbleName ~= true then return end
 	local defaultColor = "ffffffff"
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
@@ -188,18 +184,17 @@ function M:SkinBubble(frame)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		frame:SetBackdrop(nil)
-
 		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 		frame.backdrop:SetInside(frame, 4, 4)
 		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
 		frame.backdrop:SetDrawLayer("ARTWORK", -8)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-
 		frame:SetClampedToScreen(false)
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
 		frame:SetBackdrop(nil)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
+		frameName:Hide()
 	end
 
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)

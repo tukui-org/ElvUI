@@ -608,6 +608,13 @@ E.Options.args.general = {
 						["THICKOUTLINE"] = "THICKOUTLINE",
 					},
 				},
+				name = {
+					order = 6,
+					type = "toggle",
+					name = L["Chat Bubble Names"],
+					get = function(info) return E.private.general.chatBubbleName end,
+					set = function(info, value) E.private.general.chatBubbleName = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
 			},
 		},
 		objectiveFrameGroup = {
