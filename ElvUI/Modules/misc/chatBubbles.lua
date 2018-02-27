@@ -241,7 +241,7 @@ local function ChatBubble_OnUpdate(self, elapsed)
 
 	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
 	if (M.BubbleFrame.lastupdate < .1) then return end
-	M.BubbleFrame.lastupdate = 0
+	-- M.BubbleFrame.lastupdate = 0 -- do we need this?!
 	local chatBubble = FindChatBubble(self.msg)
 	if chatBubble or M.BubbleFrame.lastupdate > 0.3 then
 		self:Hide()
