@@ -13,7 +13,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 -- GLOBALS: GarrisonFollowerTabMixin
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then return end
 
 	hooksecurefunc(GarrisonFollowerTabMixin, "ShowFollower", function(self, followerID)
 		local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
