@@ -26,6 +26,7 @@
 	<Script file='friends.lua'/>
 	<Script file='flightmap.lua'/>
 	<Script file='garrison.lua'/>
+	<Script file='garrison_template.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='gossip.lua'/>
 	<Script file='guild.lua'/>

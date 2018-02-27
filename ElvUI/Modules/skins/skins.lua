@@ -12,9 +12,10 @@ local SetDesaturation = SetDesaturation
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame
+-- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame, HybridScrollFrame_GetOffset
 
 E.Skins = S
 S.addonsToLoad = {}
@@ -685,11 +686,21 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				if not equipment[i].template then
 					equipment[i]:SetTemplate('Default')
 					equipment[i]:SetSize(48, 48)
-					equipment[i].BG:SetTexture(nil)
-					equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
-					equipment[i].Icon:SetInside(equipment[i])
+					if equipment[i].BG then
+						equipment[i].BG:SetTexture(nil)
+					end
 					if equipment[i].Border then
 						equipment[i].Border:SetTexture(nil)
+					end
+					if equipment[i].Icon then
+						equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
+						equipment[i].Icon:SetInside(equipment[i])
+					end
+					if equipment[i].EquipGlow then
+						equipment[i].EquipGlow:SetSize(78, 78)
+					end
+					if equipment[i].ValidSpellHighlight then
+						equipment[i].ValidSpellHighlight:SetSize(78, 78)
 					end
 				end
 
@@ -733,6 +744,106 @@ function S:HandleShipFollowerPage(followerTab)
 		if followerTab.isLandingPage then
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
+	end
+end
+
+S.FollowerListUpdateDataFrames = {}
+function S:HandleFollowerListOnUpdateData(frame)
+	if (frame == 'GarrisonLandingPageFollowerList') and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
+		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
+	end
+
+	if S.FollowerListUpdateDataFrames[frame] then return end
+	S.FollowerListUpdateDataFrames[frame] = true -- make sure we don't double hook `GarrisonLandingPageFollowerList`
+
+	hooksecurefunc(_G[frame], "UpdateData", function(Frame)
+		local followersList = Frame.followersList
+		local ScrollFrame = Frame.listScroll
+		local offset = HybridScrollFrame_GetOffset(ScrollFrame)
+		local Buttons = ScrollFrame.buttons
+		local numFollowers = #followersList
+		local numButtons = #Buttons
+
+		for i = 1, numButtons do
+			local button = Buttons[i]
+			local index = offset + i -- adjust index
+
+			if button then
+				if (index <= numFollowers) and not button.template then
+					button:SetTemplate()
+
+					if button.Category then
+						button.Category:ClearAllPoints()
+						button.Category:SetPoint("TOP", button, "TOP", 0, -4)
+					end
+
+					if button.Follower then
+						button.Follower.Name:SetWordWrap(false)
+						button.Follower.BG:Hide()
+						button.Follower.Selection:SetTexture("")
+						button.Follower.AbilitiesBG:SetTexture("")
+						button.Follower.BusyFrame:SetAllPoints()
+
+						local hl = button.Follower:GetHighlightTexture()
+						hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+						hl:ClearAllPoints()
+						hl:SetPoint("TOPLEFT", 1, -1)
+						hl:SetPoint("BOTTOMRIGHT", -1, 1)
+
+						if button.Follower.PortraitFrame then
+							S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
+							button.Follower.PortraitFrame:ClearAllPoints()
+							button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+						end
+					end
+				end
+
+				if button.Follower then
+					if button.Follower.Selection then
+						if button.Follower.Selection:IsShown() then
+							button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
+						else
+							button.Follower:SetBackdropColor(0, 0, 0, .25)
+						end
+					end
+
+					if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
+						local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
+						if color and button.Follower.PortraitFrame.backdrop then
+							button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+						end
+					end
+				end
+			end
+		end
+	end)
+end
+
+-- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+function S:HandleGarrisonPortrait(portrait)
+	if not portrait.Portrait then return end
+
+	local size = portrait.Portrait:GetSize() + 2
+	portrait:SetSize(size, size)
+
+	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
+	portrait.Portrait:ClearAllPoints()
+	portrait.Portrait:SetPoint("TOPLEFT", 1, -1)
+
+	portrait.PortraitRing:Hide()
+	portrait.PortraitRingQuality:SetTexture("")
+	portrait.PortraitRingCover:SetTexture("")
+	portrait.LevelBorder:SetAlpha(0)
+
+	portrait.Level:ClearAllPoints()
+	portrait.Level:SetPoint("BOTTOM")
+	portrait.Level:FontTemplate(nil, 12, "OUTLINE")
+
+	if not portrait.backdrop then
+		portrait:CreateBackdrop("Default")
+		portrait.backdrop:SetPoint("TOPLEFT", portrait, "TOPLEFT", -1, 1)
+		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
+		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
 	end
 end
 

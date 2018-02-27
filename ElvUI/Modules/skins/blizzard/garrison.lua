@@ -270,6 +270,10 @@ local function LoadSkin()
 		end
 	end)
 
+	-- Garrison Portraits
+	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
+	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
+
 	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
