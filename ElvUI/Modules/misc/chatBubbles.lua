@@ -12,7 +12,6 @@ local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
