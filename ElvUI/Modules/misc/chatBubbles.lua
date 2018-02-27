@@ -9,13 +9,26 @@ local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent
 -- GLOBALS: CUSTOM_CLASS_COLORS
+
+local events = {
+	CHAT_MSG_SAY = "chatBubbles",
+	CHAT_MSG_YELL = "chatBubbles",
+	CHAT_MSG_MONSTER_SAY = "chatBubbles",
+	CHAT_MSG_MONSTER_YELL = "chatBubbles",
+
+	CHAT_MSG_PARTY = "chatBubblesParty",
+	CHAT_MSG_PARTY_LEADER = "chatBubblesParty",
+	CHAT_MSG_MONSTER_PARTY = "chatBubblesParty",
+}
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
@@ -63,16 +76,37 @@ function M:UpdateBubbleBorder()
 	end
 end
 
+function M:UpdateChatBubble(chatBubble, guid, name)
+	local defaultColor = "ffffffff"
+	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
+	if guid ~= nil and guid ~= "" then
+		local _, class = GetPlayerInfoByGUID(guid)
+		color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class].colorStr or RAID_CLASS_COLORS[class].colorStr
+	else
+		color = defaultColor
+	end
+	frameName:SetFormattedText("|c%s%s|r", color, name)
+end
+
 function M:SkinBubble(frame)
 	local mult = E.mult * UIParent:GetScale()
+	local font
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetTexture(nil)
 		elseif region:GetObjectType() == "FontString" then
+			font = region:GetFontObject()
 			frame.text = region
 		end
 	end
+
+	local name = frame:CreateFontString(nil, "BORDER")
+	name:SetPoint("TOPLEFT", 5, 5)
+	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
+	name:SetJustifyH("LEFT")
+	name:SetFontObject(font)
+	frameName = name
 
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
@@ -175,6 +209,16 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
+local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+	if GetCVarBool(events[event]) then
+		self.elapsed = 0
+		self.msg = msg
+		self.sender = Ambiguate(sender, "none")
+		self.guid = guid
+		self:Show()
+	end
+end
+
 local function ChatBubble_OnUpdate(self, elapsed)
 	if not M.BubbleFrame then return end
 	if not M.BubbleFrame.lastupdate then
@@ -186,8 +230,11 @@ local function ChatBubble_OnUpdate(self, elapsed)
 	M.BubbleFrame.lastupdate = 0
 
 	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
-		if not chatBubble.isSkinnedElvUI then
-			M:SkinBubble(chatBubble)
+		if chatBubble then
+			if not chatBubble.isSkinnedElvUI then
+				M:SkinBubble(chatBubble)
+			end
+			M:UpdateChatBubble(chatBubble, self.guid, self.sender)
 		end
 	end
 end
@@ -195,12 +242,18 @@ end
 function M:ToggleChatBubbleScript()
 	local _, instanceType = IsInInstance()
 	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else
+		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 	end
 end
 
 function M:LoadChatBubbles()
 	self.BubbleFrame = CreateFrame('Frame')
+
+	for event in next, events do
+		self.BubbleFrame:RegisterEvent(event)
+	end
 end
