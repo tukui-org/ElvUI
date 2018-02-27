@@ -5,28 +5,32 @@ local S = E:GetModule("Skins")
 -- Lua functions
 local _G = _G
 -- WoW API
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local hooksecurefunc = hooksecurefunc
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: hooksecurefunc
+-- GLOBALS: GarrisonFollowerTabMixin
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
-	hooksecurefunc(_G["GarrisonFollowerTabMixin"], "ShowFollower", function(self, followerID, followerList)
-		local followerInfo = C_Garrison_GetFollowerInfo(followerID)
+	hooksecurefunc(GarrisonFollowerTabMixin, "ShowFollower", function(self, followerID)
+		local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
 		if not followerInfo then return end
 
 		if not self.PortraitFrame.styled then
 			S:HandleGarrisonPortrait(self.PortraitFrame)
-
 			self.PortraitFrame.styled = true
 		end
 
-		local color = ITEM_QUALITY_COLORS[followerInfo.quality]
-		self.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		self.Name:SetVertexColor(color.r, color.g, color.b)
+		local color = followerInfo.quality and ITEM_QUALITY_COLORS[followerInfo.quality]
+		if color then
+			if self.PortraitFrame.backdrop then
+				self.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			end
+			self.Name:SetVertexColor(color.r, color.g, color.b)
+		end
 
 		self.XPBar:ClearAllPoints()
 		self.XPBar:SetPoint("BOTTOMLEFT", self.PortraitFrame, "BOTTOMRIGHT", 7, -15)

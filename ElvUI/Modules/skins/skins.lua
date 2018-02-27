@@ -748,6 +748,8 @@ end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
 function S:HandleGarrisonPortrait(portrait)
+	if not portrait.Portrait then return end
+
 	local size = portrait.Portrait:GetSize() + 2
 	portrait:SetSize(size, size)
 
@@ -762,6 +764,7 @@ function S:HandleGarrisonPortrait(portrait)
 
 	portrait.Level:ClearAllPoints()
 	portrait.Level:SetPoint("BOTTOM")
+	portrait.Level:FontTemplate(nil, 12, "OUTLINE")
 
 	if not portrait.backdrop then
 		portrait:CreateBackdrop("Default")

@@ -8,8 +8,9 @@ local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CUSTOM_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame
+-- GLOBALS: CUSTOM_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame, HybridScrollFrame_GetOffset
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
@@ -70,57 +71,63 @@ local function LoadSkin()
 	FollowerTab.XPBar:CreateBackdrop()
 
 	hooksecurefunc(OrderHallMissionFrameFollowers, "UpdateData", function(self)
-		local followerFrame = self:GetParent()
-		local followers = self.followers
 		local followersList = self.followersList
-		local followerScrollFrame = followerFrame.FollowerList.listScroll
-		local numFollowers = #followersList
 		local scrollFrame = self.listScroll
 		local offset = HybridScrollFrame_GetOffset(scrollFrame)
 		local buttons = scrollFrame.buttons
+		local numFollowers = #followersList
 		local numButtons = #buttons
 
 		for i = 1, numButtons do
 			local button = buttons[i]
 			local index = offset + i -- adjust index
 
-			if ( index <= numFollowers ) then
-				local follower = followers[followersList[index]]
-				if not button.restyled then
-					button.Follower.Name:SetWordWrap(false)
-					button.Follower.BG:Hide()
-					button.Follower.Selection:SetTexture("")
-					button.Follower.AbilitiesBG:SetTexture("")
-
+			if button then
+				if (index <= numFollowers) and not button.template then
 					button:SetTemplate()
 
-					button.Follower.BusyFrame:SetAllPoints()
-
-					local hl = button.Follower:GetHighlightTexture()
-					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-					hl:ClearAllPoints()
-					hl:SetPoint("TOPLEFT", 1, -1)
-					hl:SetPoint("BOTTOMRIGHT", -1, 1)
-
-					if button.Follower.PortraitFrame then
-						S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
-						button.Follower.PortraitFrame:ClearAllPoints()
-						button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+					if button.Category then
+						button.Category:ClearAllPoints()
+						button.Category:SetPoint("TOP", button, "TOP", 0, -4)
 					end
 
-					button.restyled = true
+					if button.Follower then
+						button.Follower.Name:SetWordWrap(false)
+						button.Follower.BG:Hide()
+						button.Follower.Selection:SetTexture("")
+						button.Follower.AbilitiesBG:SetTexture("")
+						button.Follower.BusyFrame:SetAllPoints()
+
+						local hl = button.Follower:GetHighlightTexture()
+						hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+						hl:ClearAllPoints()
+						hl:SetPoint("TOPLEFT", 1, -1)
+						hl:SetPoint("BOTTOMRIGHT", -1, 1)
+
+						if button.Follower.PortraitFrame then
+							S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
+							button.Follower.PortraitFrame:ClearAllPoints()
+							button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+						end
+					end
 				end
-			end
 
-			if button.Follower.Selection:IsShown() then
-				button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
-			else
-				button.Follower:SetBackdropColor(0, 0, 0, .25)
-			end
+				if button.Follower then
+					if button.Follower.Selection then
+						if button.Follower.Selection:IsShown() then
+							button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
+						else
+							button.Follower:SetBackdropColor(0, 0, 0, .25)
+						end
+					end
 
-			if button.Follower.PortraitFrame.quality then
-				local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
-				button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
+						local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
+						if color and button.Follower.PortraitFrame.backdrop then
+							button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+						end
+					end
+				end
 			end
 		end
 	end)
