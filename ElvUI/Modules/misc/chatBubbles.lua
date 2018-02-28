@@ -86,13 +86,11 @@ end
 
 function M:SkinBubble(frame)
 	local mult = E.mult * UIParent:GetScale()
-	local font
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetTexture(nil)
 		elseif region:GetObjectType() == "FontString" then
-			font = region:GetFontObject()
 			frame.text = region
 		end
 	end
@@ -101,7 +99,7 @@ function M:SkinBubble(frame)
 	name:SetPoint("TOPLEFT", 5, 5)
 	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
 	name:SetJustifyH("LEFT")
-	name:SetFontObject(font)
+	name:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 	frame.Name = name
 
 	if(E.private.general.chatBubbles == 'backdrop') then
