@@ -47,6 +47,7 @@ local AB = 461
 local TOK = 856
 local SSM = 860
 local DG = 935
+local SS = 1186
 local name
 local select = select
 
@@ -98,6 +99,8 @@ function DT:BattlegroundStats()
 				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
 				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(3), GetBattlefieldStatData(index, 3),1,1,1)
 				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(4), GetBattlefieldStatData(index, 4),1,1,1)
+			elseif CurrentMapID == SS then
+				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
 			end
 			break
 		end
