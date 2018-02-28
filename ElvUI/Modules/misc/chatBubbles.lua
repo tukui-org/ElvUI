@@ -81,7 +81,7 @@ function M:UpdateChatBubble(chatBubble, guid, name)
 	else
 		color = defaultColor
 	end
-	frameName:SetFormattedText("|c%s%s|r", color, name)
+	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
 end
 
 function M:SkinBubble(frame)
@@ -97,20 +97,20 @@ function M:SkinBubble(frame)
 		end
 	end
 
-	local name = frame:CreateFontString(nil, "BORDER")
+	name = frame:CreateFontString(nil, "BORDER")
 	name:SetPoint("TOPLEFT", 5, 5)
 	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
 	name:SetJustifyH("LEFT")
 	name:SetFontObject(font)
-	frameName = name
+	frame.Name = name
 
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
 			frame:SetBackdrop({
-			  bgFile = E["media"].blankTex,
-			  edgeFile = E["media"].blankTex,
-			  tile = false, tileSize = 0, edgeSize = mult,
-			  insets = { left = 0, right = 0, top = 0, bottom = 0}
+				bgFile = E["media"].blankTex,
+				edgeFile = E["media"].blankTex,
+				tile = false, tileSize = 0, edgeSize = mult,
+				insets = { left = 0, right = 0, top = 0, bottom = 0}
 			})
 			frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
 			frame:SetBackdropBorderColor(0, 0, 0)
@@ -194,7 +194,7 @@ function M:SkinBubble(frame)
 		frame:SetBackdrop(nil)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
-		frameName:Hide()
+		frame.Name:Hide()
 	end
 
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
@@ -205,7 +205,7 @@ function M:SkinBubble(frame)
 end
 
 local function FindChatBubble(msg)
-	local chatBubbles = C_ChatBubbles.GetAllChatBubbles()
+	local chatBubbles = C_ChatBubbles_GetAllChatBubbles()
 
 	for index = 1, #chatBubbles do
 		local chatBubble = chatBubbles[index]
@@ -239,7 +239,6 @@ local function ChatBubble_OnUpdate(self, elapsed)
 	M.BubbleFrame.lastupdate = 0
 	local chatBubble = FindChatBubble(self.msg)
 	if chatBubble or M.BubbleFrame.lastupdate > 0.3 then
-		self:Hide()
 		if chatBubble then
 			if not chatBubble.isSkinnedElvUI then
 				M:SkinBubble(chatBubble)
