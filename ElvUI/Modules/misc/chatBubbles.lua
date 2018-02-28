@@ -85,6 +85,7 @@ function M:UpdateChatBubble(chatBubble, guid, name)
 end
 
 function M:SkinBubble(frame)
+	if frame:IsForbidden() then return end
 	local mult = E.mult * UIParent:GetScale()
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
