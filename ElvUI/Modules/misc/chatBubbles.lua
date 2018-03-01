@@ -4,16 +4,16 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, unpack, pairs, next = select, unpack, pairs, next
+local select, next, unpack = select, next, unpack
 local format = string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
-local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local GetCVarBool = GetCVarBool
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
+local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent
@@ -74,10 +74,12 @@ end
 
 function M:UpdateChatBubble(chatBubble, guid, name)
 	if E.private.general.chatBubbleName ~= true then return end
-	local defaultColor = "ffffffff"
+	local defaultColor, color = "ffffffff"
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
-		color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class].colorStr or RAID_CLASS_COLORS[class].colorStr
+		if class then
+			color = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] and CUSTOM_CLASS_COLORS[class].colorStr) or (RAID_CLASS_COLORS[class] and RAID_CLASS_COLORS[class].colorStr)
+		end
 	else
 		color = defaultColor
 	end
@@ -96,7 +98,7 @@ function M:SkinBubble(frame)
 		end
 	end
 
-	name = frame:CreateFontString(nil, "BORDER")
+	local name = frame:CreateFontString(nil, "BORDER")
 	name:SetPoint("TOPLEFT", 5, 5)
 	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
 	name:SetJustifyH("LEFT")
