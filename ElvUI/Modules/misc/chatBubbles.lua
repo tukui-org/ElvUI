@@ -72,7 +72,7 @@ function M:UpdateBubbleBorder()
 	end
 end
 
-function M:UpdateChatBubble(chatBubble, guid, name)
+function M:AddChatBubbleName(chatBubble, guid, name)
 	if E.private.general.chatBubbleName ~= true then return end
 	local defaultColor, color = "ffffffff"
 	if guid ~= nil and guid ~= "" then
@@ -244,7 +244,7 @@ local function ChatBubble_OnUpdate(self, elapsed)
 			if not chatBubble.isSkinnedElvUI then
 				M:SkinBubble(chatBubble)
 			end
-			M:UpdateChatBubble(chatBubble, self.guid, self.sender)
+			M:AddChatBubbleName(chatBubble, self.guid, self.sender)
 		end
 	end
 end
