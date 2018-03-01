@@ -220,6 +220,7 @@ local function FindChatBubble(msg)
 end
 
 local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+	if not M.BubbleFrame then return end
 	if GetCVarBool(events[event]) then
 		self.elapsed = 0
 		self.msg = msg
