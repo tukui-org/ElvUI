@@ -212,7 +212,7 @@ local function FindChatBubble(msg)
 		local chatBubble = chatBubbles[index]
 		for i = 1, select("#", chatBubble:GetRegions()) do
 			local region = select(i, chatBubble:GetRegions())
-			if region:GetObjectType() == "FontString" and region:GetText() == msg then
+			if region and region:GetObjectType() == "FontString" and region:GetText() == msg then
 				return chatBubble
 			end
 		end
