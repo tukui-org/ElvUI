@@ -6,7 +6,6 @@ local CH = E:GetModule("Chat");
 --Lua functions
 local select, unpack, pairs = select, unpack, pairs
 local format = string.format
-local twipe = table.wipe
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
@@ -38,13 +37,12 @@ function M:UpdateBubbleBorder()
 		end
 	end
 
-	if self.Name then -- make sure we reset this everytime
-		self.Name:SetText("")
-	end
-
 	local text = self.text:GetText()
-	if text and self.Name and E.private.general.chatBubbleName == true then
-		M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text], text)
+	if self.Name then
+		self.Name:SetText("") --Always reset it
+		if text and E.private.general.chatBubbleName == true then
+			M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
+		end
 	end
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
@@ -77,7 +75,9 @@ function M:UpdateBubbleBorder()
 	end
 end
 
-function M:AddChatBubbleName(chatBubble, guid, name, text)
+function M:AddChatBubbleName(chatBubble, guid, name)
+	if not name then return end
+
 	local defaultColor, color = "ffffffff"
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
@@ -88,12 +88,7 @@ function M:AddChatBubbleName(chatBubble, guid, name, text)
 		color = defaultColor
 	end
 
-	if name then
-		chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
-	end
-
-	messageToGUID[text] = nil
-	messageToSender[text] = nil
+	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
 end
 
 function M:SkinBubble(frame)
@@ -216,7 +211,7 @@ function M:SkinBubble(frame)
 end
 
 local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
-	if E.private.general.chatBubbleName ~= true or not M.BubbleFrame then return end
+	if not E.private.general.chatBubbleName then return end
 
 	messageToGUID[msg] = guid
 	messageToSender[msg] = Ambiguate(sender, "none")
@@ -248,8 +243,8 @@ function M:ToggleChatBubbleScript()
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 		--Clear caches
-		twipe(messageToGUID)
-		twipe(messageToSender)
+		messageToGUID = {}
+		messageToSender {}
 	end
 end
 
