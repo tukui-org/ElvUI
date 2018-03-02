@@ -4,27 +4,23 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, next, unpack = select, next, unpack
+local select, unpack, pairs = select, unpack, pairs
 local format = string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
+local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
-local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent
--- GLOBALS: CUSTOM_CLASS_COLORS, RAID_CLASS_COLORS
+-- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
 
-local events = {
-	CHAT_MSG_SAY = "chatBubbles",
-	CHAT_MSG_YELL = "chatBubbles",
-	CHAT_MSG_MONSTER_SAY = "chatBubbles",
-	CHAT_MSG_MONSTER_YELL = "chatBubbles",
-}
+--Message caches
+local messageToGUID = {}
+local messageToSender = {}
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
@@ -40,6 +36,9 @@ function M:UpdateBubbleBorder()
 			self.borderright:SetColorTexture(r, g, b)
 		end
 	end
+
+	local text = self.text:GetText()
+	M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
@@ -73,7 +72,11 @@ function M:UpdateBubbleBorder()
 end
 
 function M:AddChatBubbleName(chatBubble, guid, name)
-	if E.private.general.chatBubbleName ~= true then return end
+	if E.private.general.chatBubbleName ~= true then
+		chatBubble.Name:SetText("")
+		return
+	end
+
 	local defaultColor, color = "ffffffff"
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
@@ -83,6 +86,7 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	else
 		color = defaultColor
 	end
+
 	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
 end
 
@@ -205,29 +209,11 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
-local function FindChatBubble(msg)
-	local chatBubbles = C_ChatBubbles_GetAllChatBubbles()
-
-	for index = 1, #chatBubbles do
-		local chatBubble = chatBubbles[index]
-		for i = 1, select("#", chatBubble:GetRegions()) do
-			local region = select(i, chatBubble:GetRegions())
-			if region and region:GetObjectType() == "FontString" and region:GetText() == msg then
-				return chatBubble
-			end
-		end
-	end
-end
-
 local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
 	if not M.BubbleFrame then return end
-	if GetCVarBool(events[event]) then
-		self.elapsed = 0
-		self.msg = msg
-		self.sender = Ambiguate(sender, "none")
-		self.guid = guid
-		self:Show()
-	end
+
+	messageToGUID[msg] = guid
+	messageToSender[msg] = Ambiguate(sender, "none")
 end
 
 local function ChatBubble_OnUpdate(self, elapsed)
@@ -239,13 +225,10 @@ local function ChatBubble_OnUpdate(self, elapsed)
 	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
 	if (M.BubbleFrame.lastupdate < .1) then return end
 	M.BubbleFrame.lastupdate = 0
-	local chatBubble = FindChatBubble(self.msg)
-	if chatBubble or M.BubbleFrame.lastupdate > 0.3 then
-		if chatBubble then
-			if not chatBubble.isSkinnedElvUI then
-				M:SkinBubble(chatBubble)
-			end
-			M:AddChatBubbleName(chatBubble, self.guid, self.sender)
+
+	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
+		if not chatBubble.isSkinnedElvUI then
+			M:SkinBubble(chatBubble)
 		end
 	end
 end
@@ -258,13 +241,17 @@ function M:ToggleChatBubbleScript()
 	else
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
+		--Clear caches
+		messageToGUID = {}
+		messageToSender = {}
 	end
 end
 
 function M:LoadChatBubbles()
 	self.BubbleFrame = CreateFrame('Frame')
 
-	for event in next, events do
-		self.BubbleFrame:RegisterEvent(event)
-	end
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 end
