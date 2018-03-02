@@ -6,6 +6,7 @@ local CH = E:GetModule("Chat");
 --Lua functions
 local select, unpack, pairs = select, unpack, pairs
 local format = string.format
+local twipe = table.wipe
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
@@ -37,9 +38,13 @@ function M:UpdateBubbleBorder()
 		end
 	end
 
+	if self.Name then -- make sure we reset this everytime
+		self.Name:SetText("")
+	end
+
 	local text = self.text:GetText()
-	if text then
-		M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
+	if text and self.Name and E.private.general.chatBubbleName == true then
+		M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text], text)
 	end
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
@@ -72,12 +77,7 @@ function M:UpdateBubbleBorder()
 	end
 end
 
-function M:AddChatBubbleName(chatBubble, guid, name)
-	if E.private.general.chatBubbleName ~= true then
-		chatBubble.Name:SetText("")
-		return
-	end
-
+function M:AddChatBubbleName(chatBubble, guid, name, text)
 	local defaultColor, color = "ffffffff"
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
@@ -89,6 +89,8 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	end
 
 	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+	messageToGUID[text] = nil
+	messageToSender[text] = nil
 end
 
 function M:SkinBubble(frame)
@@ -211,7 +213,7 @@ function M:SkinBubble(frame)
 end
 
 local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
-	if not M.BubbleFrame then return end
+	if E.private.general.chatBubbleName ~= true or not M.BubbleFrame then return end
 
 	messageToGUID[msg] = guid
 	messageToSender[msg] = Ambiguate(sender, "none")
@@ -243,8 +245,8 @@ function M:ToggleChatBubbleScript()
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 		--Clear caches
-		messageToGUID = {}
-		messageToSender = {}
+		twipe(messageToGUID)
+		twipe(messageToSender)
 	end
 end
 
