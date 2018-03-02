@@ -423,6 +423,7 @@ L["Bonus Reward Position"] = true
 L["Bottom Panel"] = true
 L["Chat Bubbles Style"] = true
 L["Chat Bubbles"] = true
+L["Chat Bubbles Names"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = true
@@ -432,6 +433,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = true
 L["Display battleground messages in the middle of the screen."] = true
 L["Display emotion icons in chat."] = true
+L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = true
 L["Enable + Adjust Movers"] = true
 L["Enable/Disable the loot frame."] = true

@@ -433,6 +433,7 @@ L["Bonus Reward Position"] = "Позиция бонусной награды"
 L["Bottom Panel"] = "Нижняя панель"
 L["Chat Bubbles Style"] = "Стиль облачков сообщений"
 L["Chat Bubbles"] = "Облачка сообщений"
+L["Chat Bubble Names"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Decimal Length"] = "Десятичные доли"
 L["Direction the bar moves on gains/losses"] = "направление заполнения полосы"
@@ -442,6 +443,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Отображать панель на верхней границе экрана. Это косметический элемент."
 L["Display battleground messages in the middle of the screen."] = "Отображать сообщения полей боя в центре экрана."
 L["Display emotion icons in chat."] = "Показывать смайлы в чате"
+L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "Иконки эмоций"
 L["Enable + Adjust Movers"] = "Включить и двигать фиксаторы"
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."

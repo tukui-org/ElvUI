@@ -434,6 +434,7 @@ L["Bonus Reward Position"] = "Position des récompenses bonus"
 L["Bottom Panel"] = "Bandeau en bas"
 L["Chat Bubbles Style"] = "Style des bulles de discussion"
 L["Chat Bubbles"] = "Bulles de discussion"
+L["Chat Bubble Names"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre lors de gains/pertes"
@@ -443,6 +444,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
 L["Display battleground messages in the middle of the screen."] = "Afficher le message du champ de bataille au milieu de l'écran"
 L["Display emotion icons in chat."] = "Afficher les émoticônes dans le chat"
+L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "Emoticônes"
 L["Enable + Adjust Movers"] = true
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."

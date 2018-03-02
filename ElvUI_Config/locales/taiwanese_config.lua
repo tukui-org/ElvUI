@@ -434,6 +434,7 @@ L["Bonus Reward Position"] = "額外獎勵位置"
 L["Bottom Panel"] = "底部面板"
 L["Chat Bubbles Style"] = "聊天氣泡樣式"
 L["Chat Bubbles"] = "聊天氣泡"
+L["Chat Bubble Names"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "條增加/減少時的方向"
@@ -443,6 +444,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "顯示跨越螢幕頂部的面板,僅僅是用于裝飾."
 L["Display battleground messages in the middle of the screen."] = "屏幕中間顯示戰場信息"
 L["Display emotion icons in chat."] = "在對話中顯示表情圖示."
+L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "表情圖示"
 L["Enable + Adjust Movers"] = "啟用並移動其他框架"
 L["Enable/Disable the loot frame."] = "啟用/停用拾取框架."
