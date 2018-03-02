@@ -48,7 +48,7 @@ local function LoadSkin()
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer("OVERLAY")
 	QuestInfoSkillPointFrameIconTexture:Point("TOPLEFT", 2, -2)
 	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
-	QuestInfoSkillPointFrame:SetTemplate("Default")
+	QuestInfoSkillPointFrame:CreateBackdrop("Default")
 	QuestInfoSkillPointFrameCount:SetDrawLayer("OVERLAY")
 
 	QuestInfoItemHighlight:StripTextures()
