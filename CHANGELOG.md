@@ -6,6 +6,7 @@ Added mover for BonusRollFrame.
 Added option to Enable/Disable individual Custom Texts.  
 Added individual font size options to duration and count text on Buffs and Debuffs (the ones near the minimap).  
 Added spacing option to unitframe Aura Bars.  
+Added an option to show the unit name on the chatbubbles.  
 
 
 **Bug Fixes:**   
