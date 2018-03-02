@@ -442,7 +442,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "显示跨越屏幕顶部的面板,仅仅是用于装饰."
 L["Display battleground messages in the middle of the screen."] = "屏幕中间显示战场信息"
 L["Display emotion icons in chat."] = "在聊天中显示表情图标"
-L["Display the Name of the Unit on the Chat Bubble.\n\n|cffff0000Shows not with backdrop disabled or in Instances/Raid.|r"] = true
+L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "表情图标"
 L["Enable + Adjust Movers"] = "启用并移动其他框架"
 L["Enable/Disable the loot frame."] = "开/关物品掉落框架"
