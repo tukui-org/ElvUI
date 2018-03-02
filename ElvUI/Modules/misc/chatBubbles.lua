@@ -88,7 +88,10 @@ function M:AddChatBubbleName(chatBubble, guid, name, text)
 		color = defaultColor
 	end
 
-	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+	if name then
+		chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+	end
+
 	messageToGUID[text] = nil
 	messageToSender[text] = nil
 end
