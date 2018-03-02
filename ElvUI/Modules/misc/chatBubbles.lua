@@ -38,11 +38,12 @@ function M:UpdateBubbleBorder()
 	end
 
 	local text = self.text:GetText()
-	M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
+	if text then
+		M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
+	end
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
-		local text = self.text:GetText()
 		if text and text:match("%s-[^%s]+%s*") then
 			for word in text:gmatch("%s-[^%s]+%s*") do
 				tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
