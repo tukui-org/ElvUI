@@ -61,6 +61,9 @@ function S:SkinPVPHonorXPBar(frame)
 
 		if XPBar.Bar and not XPBar.Bar.backdrop then
 			XPBar.Bar:CreateBackdrop("Default")
+			if XPBar.Bar.Background then
+				XPBar.Bar.Background:SetInside(XPBar.Bar.backdrop)
+			end
 			if XPBar.Bar.Spark then
 				XPBar.Bar.Spark:SetAlpha(0)
 			end
