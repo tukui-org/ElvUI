@@ -244,7 +244,7 @@ function M:ToggleChatBubbleScript()
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 		--Clear caches
 		messageToGUID = {}
-		messageToSender {}
+		messageToSender = {}
 	end
 end
 
