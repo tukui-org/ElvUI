@@ -793,6 +793,22 @@ function S:HandleFollowerListOnUpdateData(frame)
 						hl:SetPoint("TOPLEFT", 1, -1)
 						hl:SetPoint("BOTTOMRIGHT", -1, 1)
 
+						if button.Follower.Counters then
+							for y = 1, #button.Follower.Counters do
+								local counter = button.Follower.Counters[y]
+								if counter and not counter.template then
+									counter:SetTemplate()
+									if counter.Border then
+										counter.Border:SetTexture(nil)
+									end
+									if counter.Icon then
+										counter.Icon:SetTexCoord(unpack(E.TexCoords))
+										counter.Icon:SetInside()
+									end
+								end
+							end
+						end
+
 						if button.Follower.PortraitFrame then
 							S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
 							button.Follower.PortraitFrame:ClearAllPoints()
