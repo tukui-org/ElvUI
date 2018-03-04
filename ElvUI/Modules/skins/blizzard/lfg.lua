@@ -334,13 +334,13 @@ local function LoadSkin()
 			item.border:SetTemplate()
 			item.border:SetOutside(item.Icon)
 
-			local r, g, b
-			if item.IconBorder:IsShown() then
-				r, g, b = item.IconBorder:GetVertexColor()
-			else
-				r, g, b = unpack(E["media"].bordercolor)
-			end
-			item.border:SetBackdropBorderColor(r, g, b)
+			hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().border:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(item.IconBorder, "Hide", function(self)
+				self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 
 			item.Icon:SetTexCoord(unpack(E.TexCoords))
 			item.Icon:SetDrawLayer("OVERLAY")
