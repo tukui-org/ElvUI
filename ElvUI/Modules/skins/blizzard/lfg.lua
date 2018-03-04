@@ -334,6 +334,14 @@ local function LoadSkin()
 			item.border:SetTemplate()
 			item.border:SetOutside(item.Icon)
 
+			local r, g, b
+			if item.IconBorder:IsShown() then
+				r, g, b = item.IconBorder:GetVertexColor()
+			else
+				r, g, b = unpack(E["media"].bordercolor)
+			end
+			item.border:SetBackdropBorderColor(r, g, b)
+
 			item.Icon:SetTexCoord(unpack(E.TexCoords))
 			item.Icon:SetDrawLayer("OVERLAY")
 			item.Icon:SetParent(item.border)
