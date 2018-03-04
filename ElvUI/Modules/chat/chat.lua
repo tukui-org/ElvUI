@@ -1097,9 +1097,9 @@ local function getFirstToonClassColor(id)
 	end
 end
 
-function CH:GetBNFriendColor(name, id)
+function CH:GetBNFriendColor(name, id, useBTag)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
-	local TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local TAG = (useBTag or CH.db.useBTagName) and battleTag and strmatch(battleTag,'([^#]+)')
 	local Class
 
 	if not bnetIDGameAccount then --dont know how this is possible
@@ -1956,7 +1956,7 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 		temp[50] = event
 		temp[51] = time()
-		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13]) or CH:GetColorName(event, ...)
+		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or CH:GetColorName(event, ...)
 
 		tinsert(data, temp)
 		while #data >= 128 do
