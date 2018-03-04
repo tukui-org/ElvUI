@@ -195,13 +195,8 @@ E.Options.args.chat = {
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				spacer = {
-					order = 20,
-					type = "description",
-					name = " ",
-				},
 				timeStampFormat = {
-					order = 21,
+					order = 20,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -214,6 +209,11 @@ E.Options.args.chat = {
 						["%H:%M "] = "15:27",
 						["%H:%M:%S "] =	"15:27:32"
 					},
+				},
+				spacer = {
+					order = 21,
+					type = "description",
+					name = " ",
 				},
 				useCustomTimeColor = {
 					order = 22,
