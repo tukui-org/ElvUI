@@ -7,11 +7,15 @@ Added option to Enable/Disable individual Custom Texts.
 Added individual font size options to duration and count text on Buffs and Debuffs (the ones near the minimap).  
 Added spacing option to unitframe Aura Bars.  
 Added an option to show the unit name on the chatbubbles.  
+Added option to use BattleTag instead of Real ID names in chat.  
+Added option to use a vertical classbar on unitframes.  
+Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
 
 
 **Bug Fixes:**   
 Fixed rare tooltip error (attempt to index local 'color').  
 Fixed error trying to copy settings between nameplate units (#305).  
+Fixed various issues with the keybind feature (/kb). Trying to keybind an empty pet action button will now correctly show a tooltip. Trying to keybind a flyout menu will now correctly show a tooltip too.  
 
 
 **Misc. Changes:**  
@@ -23,6 +27,8 @@ Skinned the Orderhall/Garrison Portraits.
 Adjusted the Flight Map's font to match the general media font (#306).  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
+Added automatic handling of "Attach To" setting on unitframe auras. When setting Smart Aura Position, then the "Attach To" setting will automatically be set for the respective aura type, and then the selection box will be disabled.  
+
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
