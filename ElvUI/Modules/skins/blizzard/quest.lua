@@ -136,12 +136,12 @@ local function LoadSkin()
 		local rewardButton = rewardsFrame.RewardButtons[index]
 		local mapButton = MapQuestInfoRewardsFrame.RewardButtons[index]
 
-		if(not mapButton.IsSkinned) then
+		if(mapButton and not mapButton.IsSkinned) then
 			HandleReward(mapButton)
 			mapButton.IsSkinned = true
 		end
 
-		if(not rewardButton.skinned) then
+		if(rewardButton and not rewardButton.skinned) then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
 			rewardButton.IconBorder:SetAlpha(0)
