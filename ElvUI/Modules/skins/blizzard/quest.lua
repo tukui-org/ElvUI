@@ -152,12 +152,10 @@ local function LoadSkin()
 
 			hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
 				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-				self:GetParent().Name:SetVertexColor(r, g, b)
 				self:SetTexture("")
 			end)
 			hooksecurefunc(rewardButton.IconBorder, "Hide", function(self)
 				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				self:GetParent().Name:SetVertexColor(1, 1, 1)
 			end)
 
 			rewardButton.skinned = true
