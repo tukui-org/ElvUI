@@ -23,6 +23,7 @@ Skinned the new Allied Races frame.
 Skinned a few more tutorial frame close buttons.  
 Skinned the Expand/Collapse buttons on various frames.  
 Skinned the reward and bonus icons on the PvP Skin.  
+Skinned the reward icons with a quality border on the quest skin.  
 Skinned the Orderhall/Garrison Portraits.  
 Adjusted the Flight Map's font to match the general media font (#306).  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
