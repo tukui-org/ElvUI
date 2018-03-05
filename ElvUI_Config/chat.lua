@@ -144,7 +144,7 @@ E.Options.args.chat = {
 					order = 13,
 					type = "toggle",
 					name = L["Show BattleTag Names"],
-					desc = L["Show BattleTag names instead of RealID names inside of chat."],
+					desc = L["Show BattleTag names instead of Real ID names inside of chat."],
 				},
 				socialQueueMessages = {
 					order = 14,
