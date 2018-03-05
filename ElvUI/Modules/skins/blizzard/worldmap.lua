@@ -59,43 +59,6 @@ local function LoadSkin()
 	TrackingOptions.Background:SetAlpha(0)
 	TrackingOptions.IconOverlay:SetTexture("")
 
-	local rewardFrames = {
-		['MoneyFrame'] = true,
-		['XPFrame'] = true,
-		['SkillPointFrame'] = true, -- this may have extra textures.. need to check on it when possible
-		['HonorFrame'] = true,
-		['ArtifactXPFrame'] = true,
-		['TitleFrame'] = true,
-	}
-
-	local function HandleReward(frame)
-		if frame.backdrop then return end
-		frame.NameFrame:SetAlpha(0)
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame:CreateBackdrop()
-		frame.backdrop:SetOutside(frame.Icon)
-		frame.Name:FontTemplate()
-		frame.Count:ClearAllPoints()
-		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
-		if(frame.CircleBackground) then
-			frame.CircleBackground:SetAlpha(0)
-			frame.CircleBackgroundGlow:SetAlpha(0)
-		end
-	end
-
-	for frame, _ in pairs(rewardFrames) do
-		HandleReward(MapQuestInfoRewardsFrame[frame])
-	end
-
-	-- The Icon Border should be in QualityColor
-	hooksecurefunc('QuestInfo_GetRewardButton', function(_, index)
-		local button = MapQuestInfoRewardsFrame.RewardButtons[index]
-		if(button) then
-			HandleReward(button)
-			button.IconBorder:SetAlpha(0)
-		end
-	end)
-
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')

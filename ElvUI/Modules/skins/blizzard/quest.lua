@@ -102,9 +102,45 @@ local function LoadSkin()
 		end
 	end)
 
-	-- The Icon Border should be in Quality Color
+	local rewardFrames = {
+		["MoneyFrame"] = true,
+		["XPFrame"] = true,
+		["SkillPointFrame"] = true, -- this may have extra textures.. need to check on it when possible
+		["HonorFrame"] = true,
+		["ArtifactXPFrame"] = true,
+		["TitleFrame"] = true,
+	}
+
+	local function HandleReward(frame)
+		if frame.backdrop then return end
+		frame.NameFrame:SetAlpha(0)
+		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame:CreateBackdrop()
+		frame.backdrop:SetOutside(frame.Icon)
+		frame.Name:FontTemplate()
+		frame.Count:ClearAllPoints()
+		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+
+		if(frame.CircleBackground) then
+			frame.CircleBackground:SetAlpha(0)
+			frame.CircleBackgroundGlow:SetAlpha(0)
+		end
+	end
+
+	for frame, _ in pairs(rewardFrames) do
+		HandleReward(MapQuestInfoRewardsFrame[frame])
+	end
+
+	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
-		local rewardButton = rewardsFrame.RewardButtons[index];
+		local rewardButton = rewardsFrame.RewardButtons[index]
+		local mapButton = MapQuestInfoRewardsFrame.RewardButtons[index]
+
+		if(not mapButton.IsSkinned) then
+			HandleReward(mapButton)
+			mapButton.IsSkinned = true
+		end
+
 		if(not rewardButton.skinned) then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -113,6 +149,16 @@ local function LoadSkin()
 			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 			rewardButton.Icon:SetDrawLayer("OVERLAY")
 			rewardButton.Count:SetDrawLayer("OVERLAY")
+
+			hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:GetParent().Name:SetVertexColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(rewardButton.IconBorder, "Hide", function(self)
+				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:GetParent().Name:SetVertexColor(1, 1, 1)
+			end)
 
 			rewardButton.skinned = true
 		end
