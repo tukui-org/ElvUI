@@ -143,8 +143,8 @@ E.Options.args.chat = {
 				useBTagName = {
 					order = 13,
 					type = "toggle",
-					name = L["Show BattleTag Names"],
-					desc = L["Show BattleTag names instead of Real ID names inside of chat."],
+					name = L["Use Real ID BattleTag"],
+					desc = L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."],
 				},
 				socialQueueMessages = {
 					order = 14,
