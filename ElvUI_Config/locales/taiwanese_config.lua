@@ -442,6 +442,7 @@ L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "條增加/減少時的方向"
 L["Disable Tutorial Buttons"] = "禁用教程按鈕"
 L["Disables the tutorial button found on some frames."] = "禁用部分框體上的教程按鈕"
+L["Displays a detailed report of every item sold when enabled."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "顯示跨越螢幕底部的面板,僅僅是用于裝飾."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "顯示跨越螢幕頂部的面板,僅僅是用于裝飾."
 L["Display battleground messages in the middle of the screen."] = "屏幕中間顯示戰場信息"
@@ -490,6 +491,7 @@ L["Thin Border Theme"] = "細邊框主題"
 L["Toggle Tutorials"] = "教學開關"
 L["Top Panel"] = "頂部面板"
 L["Unit Prefix Style"] = true
+L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "當你離開時顯示AFK界面"
 
 --Media

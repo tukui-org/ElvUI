@@ -154,7 +154,7 @@ function M:MERCHANT_CLOSED()
 end
 
 function M:MERCHANT_SHOW()
-	if E.db.general.vendorGrays then
+	if E.db.bags.vendorGrays then
 		C_Timer_After(0.5, VendorGrays)
 	end
 
