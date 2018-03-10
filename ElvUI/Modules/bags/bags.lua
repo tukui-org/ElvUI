@@ -1215,21 +1215,20 @@ function B:VendorGrays(delete)
 	end
 
 	local gain, sold = 0, 0
-	local itemID, count, link, itype, rarity, price, stack
+	local itemID, itemLink, count, link, itype, rarity, price, stack
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
-			local l = GetContainerItemLink(bag, slot)
+			itemLink = GetContainerItemLink(bag, slot)
 			itemID = GetContainerItemID(bag, slot)
-			if itemID then
+			if itemID and select(11, GetItemInfo(itemLink)) then
 				count = select(2, GetContainerItemInfo(bag, slot))
 				_, link, rarity, _, _, itype, _, _, _, _, price = GetItemInfo(itemID)
 
 				if delete then
-					if find(l,"ff9d9d9d") then
+					if find(itemLink,"ff9d9d9d") then
 						PickupContainerItem(bag, slot)
 						DeleteCursorItem()
 						count = count + 1
-						sold = sold + stack
 					end
 				else
 					if rarity == 0 and itype ~= "Quest" then
