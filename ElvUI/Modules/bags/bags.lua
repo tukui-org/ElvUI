@@ -1184,41 +1184,87 @@ function B:GetGraysValue()
 	return c
 end
 
+function B:FormatMoney(amount, style)
+	local coppername = "|cffeda55fc|r"
+	local silvername = "|cffc7c7cfs|r"
+	local goldname = "|cffffd700g|r"
+	local value = abs(amount)
+	local gold = floor(value / 10000)
+	local silver = floor(mod(value / 100, 100))
+	local copper = floor(mod(value, 100))
+
+	local str = ""
+	if gold > 0 then
+		str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
+	end
+	if silver > 0 then
+		str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
+	end
+	if copper > 0 or value == 0 then
+		str = format("%s%d%s", str, copper, coppername)
+	end
+
+	return str
+end
+
 function B:VendorGrays(delete)
-	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
+	if (not MerchantFrame or not MerchantFrame:IsShown()) then
 		E:Print(L["You must be at a vendor."])
 		return
 	end
 
-	local c = 0
-	local count = 0
-	for b=0,4 do
-		for s=1,GetContainerNumSlots(b) do
-			local l = GetContainerItemLink(b, s)
-			if l and select(11, GetItemInfo(l)) then
-				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
+	-- local c = 0
+	-- local count = 0
+	-- for b=0,4 do
+		-- for s=1,GetContainerNumSlots(b) do
+			-- local l = GetContainerItemLink(b, s)
+			-- if l and select(11, GetItemInfo(l)) then
+				-- local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
 
-				if delete then
-					if find(l,"ff9d9d9d") then
-						PickupContainerItem(b, s)
-						DeleteCursorItem()
-						c = c+p
-						count = count + 1
-					end
-				else
-					if select(3, GetItemInfo(l))==0 and p>0 then
-						UseContainerItem(b, s)
-						PickupMerchantItem()
-						c = c+p
-					end
+				-- if delete then
+					-- if find(l,"ff9d9d9d") then
+						-- PickupContainerItem(b, s)
+						-- DeleteCursorItem()
+						-- c = c+p
+						-- count = count + 1
+					-- end
+				-- else
+					-- if select(3, GetItemInfo(l))==0 and p>0 then
+						-- UseContainerItem(b, s)
+						-- PickupMerchantItem()
+						-- c = c+p
+					-- end
+				-- end
+			-- end
+		-- end
+	-- end
+
+	-- if c>0 and not delete then
+		-- local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
+		-- E:Print(format("%s |cffffffff%d%s |cffffffff%d%s |cffffffff%d%s.",L["Vendored gray items for:"],g,L["goldabbrev"],s,L["silverabbrev"],c,L["copperabbrev"]))
+	-- end
+
+	local gain, sold = 0, 0
+	local itemID, count, link, type, rarity, price, stack
+	for bag = 0, 4, 1 do
+		for slot = 1, GetContainerNumSlots(bag), 1 do
+			itemID = GetContainerItemID(bag, slot)
+			if itemID then
+				count = select(2, GetContainerItemInfo(bag, slot))
+				_, link, rarity, _, _, type, _, _, _, _, price = GetItemInfo(itemID)
+				if rarity == 0 and type ~= "Quest" then
+					stack = (price or 0) * (count or 1)
+					sold = sold + stack
+					E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, count, B:FormatMoney(stack)))
+					UseContainerItem(bag, slot)
 				end
 			end
 		end
 	end
+	gain = gain + sold
 
-	if c>0 and not delete then
-		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
-		E:Print(format("%s |cffffffff%d%s |cffffffff%d%s |cffffffff%d%s.",L["Vendored gray items for:"],g,L["goldabbrev"],s,L["silverabbrev"],c,L["copperabbrev"]))
+	if gain > 0 then
+		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(gain)))
 	end
 end
 
