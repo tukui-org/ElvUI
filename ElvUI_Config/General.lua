@@ -74,7 +74,6 @@ E.Options.args.general = {
 					name = L["Vendor Gray Detailed Report"],
 					desc = L["Displays a detailed report of every item sold when enabled."],
 					type = "toggle",
-					disabled = function() return not E.db.general.vendorGrays end
 				},
 				autoRoll = {
 					order = 8,
