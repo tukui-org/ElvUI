@@ -489,6 +489,7 @@ L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "바의 증감방향을 결정합니다."
 L["Disable Tutorial Buttons"] = true
 L["Disables the tutorial button found on some frames."] = true
+L["Displays a detailed report of every item sold when enabled."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
 L["Display battleground messages in the middle of the screen."] = true
@@ -537,6 +538,7 @@ L["Thin Border Theme"] = true
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
 L["Unit Prefix Style"] = true
+L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
 
 --Media

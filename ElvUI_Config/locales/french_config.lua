@@ -442,6 +442,7 @@ L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre lors de gains/pertes"
 L["Disable Tutorial Buttons"] = "Désactiver les boutons du tutoriel"
 L["Disables the tutorial button found on some frames."] = true
+L["Displays a detailed report of every item sold when enabled."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
 L["Display battleground messages in the middle of the screen."] = "Afficher le message du champ de bataille au milieu de l'écran"
@@ -490,6 +491,7 @@ L["Thin Border Theme"] = "Thème aec bordures fines"
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"
 L["Unit Prefix Style"] = "Style des préfixes d'unités"
+L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial."
 
 --Media

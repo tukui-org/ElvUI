@@ -488,6 +488,7 @@ L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = "顶部面板"
 L["Unit Prefix Style"] = "单位缩写"
+L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
 
 --Media

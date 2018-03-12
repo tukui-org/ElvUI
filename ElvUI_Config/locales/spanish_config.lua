@@ -442,6 +442,7 @@ L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = true
 L["Disable Tutorial Buttons"] = true
 L["Disables the tutorial button found on some frames."] = true
+L["Displays a detailed report of every item sold when enabled."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte inferior de la pantalla. Es es sólo algo cosmético."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte superior de la pantalla. Es es sólo algo cosmético."
 L["Display battleground messages in the middle of the screen."] = true
@@ -490,6 +491,7 @@ L["Thin Border Theme"] = true
 L["Toggle Tutorials"] = "Mostrar/Ocultar Tutoriales"
 L["Top Panel"] = "Panel Superior"
 L["Unit Prefix Style"] = true
+L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
 
 --Media

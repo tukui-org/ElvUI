@@ -21,6 +21,7 @@ local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetContainerItemCooldown = GetContainerItemCooldown
+local GetContainerItemID = GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
@@ -1166,6 +1167,29 @@ function B:UpdateGoldText()
 	self.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db['bags'].moneyFormat, not E.db['bags'].moneyCoins))
 end
 
+function B:FormatMoney(amount, style)
+	local coppername = "|cffeda55fc|r"
+	local silvername = "|cffc7c7cfs|r"
+	local goldname = "|cffffd700g|r"
+	local value = abs(amount)
+	local gold = floor(value / 10000)
+	local silver = floor(mod(value / 100, 100))
+	local copper = floor(mod(value, 100))
+
+	local str = ""
+	if gold > 0 then
+		str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
+	end
+	if silver > 0 then
+		str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
+	end
+	if copper > 0 or value == 0 then
+		str = format("%s%d%s", str, copper, coppername)
+	end
+
+	return str
+end
+
 function B:GetGraysValue()
 	local c = 0
 
@@ -1190,35 +1214,39 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local c = 0
-	local count = 0
-	for b=0,4 do
-		for s=1,GetContainerNumSlots(b) do
-			local l = GetContainerItemLink(b, s)
-			if l and select(11, GetItemInfo(l)) then
-				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
+	local gain, sold = 0, 0
+	local itemID, itemLink, count, link, itype, rarity, price, stack
+	for bag = 0, 4, 1 do
+		for slot = 1, GetContainerNumSlots(bag), 1 do
+			itemLink = GetContainerItemLink(bag, slot)
+			itemID = GetContainerItemID(bag, slot)
+			if itemID and select(11, GetItemInfo(itemLink)) then
+				count = select(2, GetContainerItemInfo(bag, slot))
+				_, link, rarity, _, _, itype, _, _, _, _, price = GetItemInfo(itemID)
 
 				if delete then
-					if find(l,"ff9d9d9d") then
-						PickupContainerItem(b, s)
+					if find(itemLink,"ff9d9d9d") then
+						PickupContainerItem(bag, slot)
 						DeleteCursorItem()
-						c = c+p
 						count = count + 1
 					end
 				else
-					if select(3, GetItemInfo(l))==0 and p>0 then
-						UseContainerItem(b, s)
-						PickupMerchantItem()
-						c = c+p
+					if rarity == 0 and itype ~= "Quest" then
+						stack = (price or 0) * (count or 1)
+						sold = sold + stack
+						if E.db.general.vendorGraysDetails then
+							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, count, B:FormatMoney(stack)))
+						end
+						UseContainerItem(bag, slot)
 					end
 				end
 			end
 		end
 	end
+	gain = gain + sold
 
-	if c>0 and not delete then
-		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
-		E:Print(format("%s |cffffffff%d%s |cffffffff%d%s |cffffffff%d%s.",L["Vendored gray items for:"],g,L["goldabbrev"],s,L["silverabbrev"],c,L["copperabbrev"]))
+	if gain > 0 then
+		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(gain)))
 	end
 end
 

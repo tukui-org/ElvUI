@@ -67,17 +67,24 @@ E.Options.args.general = {
 					order = 6,
 					name = L["Vendor Grays"],
 					desc = L["Automatically vendor gray items when visiting a vendor."],
-					type = 'toggle',
+					type = "toggle",
+				},
+				vendorGraysDetails = {
+					order = 7,
+					name = L["Vendor Gray Detailed Report"],
+					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
+					disabled = function() return not E.db.general.vendorGrays end
 				},
 				autoRoll = {
-					order = 7,
+					order = 8,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
-					order = 8,
+					order = 9,
 					type = "toggle",
 					name = L["Loot"],
 					desc = L["Enable/Disable the loot frame."],
@@ -85,7 +92,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 9,
+					order = 10,
 					type = "toggle",
 					name = L["Loot Roll"],
 					desc = L["Enable/Disable the loot roll frame."],
@@ -135,7 +142,6 @@ E.Options.args.general = {
 					desc = L["When you go AFK display the AFK screen."],
 					get = function(info) return E.db.general.afk end,
 					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
-
 				},
 				enhancedPvpMessages = {
 					order = 17,
