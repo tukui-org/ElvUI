@@ -1245,7 +1245,7 @@ function B:VendorGrays(delete)
 	end
 	gain = gain + sold
 
-	if gain > 0 then
+	if gain > 0 and not delete then
 		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(gain)))
 	end
 end
