@@ -36,7 +36,9 @@ resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 		E.UIParent:Point("CENTER");
 	end
 
-	E:StaticPopup_Hide('FAILED_UISCALE')
+	if E.global.general.autoScale then
+		E:StaticPopup_Hide('FAILED_UISCALE')
+	end
 
 	self:UnregisterEvent(event)
 end)
