@@ -1190,7 +1190,7 @@ function B:FormatMoney(amount)
 end
 
 function B:GetGraysValue()
-	local goldLoss, itemID, rarity, itype, itemPrice, stackCount, stackPrice, _ = 0
+	local value, itemID, rarity, itype, itemPrice, stackCount, stackPrice, _ = 0
 
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
@@ -1201,14 +1201,14 @@ function B:GetGraysValue()
 					stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 					stackPrice = itemPrice * stackCount
 					if (rarity and rarity == 0) and (itype and itype ~= "Quest") and (stackPrice > 0) then
-						goldLoss = goldLoss + stackPrice
+						value = value + stackPrice
 					end
 				end
 			end
 		end
 	end
 
-	return goldLoss
+	return value
 end
 
 function B:VendorGrays(delete)
