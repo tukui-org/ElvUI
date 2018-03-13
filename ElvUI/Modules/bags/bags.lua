@@ -1213,7 +1213,7 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local gain, sold, itemID, count, link, itype, rarity, price, stack, _ = 0, 0
+	local sold, itemID, count, link, itype, rarity, price, stack, _ = 0
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			itemID = GetContainerItemID(bag, slot)
@@ -1238,10 +1238,9 @@ function B:VendorGrays(delete)
 			end
 		end
 	end
-	gain = gain + sold
 
-	if (gain > 0) and not delete then
-		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(gain)))
+	if (sold > 0) and not delete then
+		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(sold)))
 	end
 end
 
