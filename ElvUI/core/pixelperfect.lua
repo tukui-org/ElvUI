@@ -23,18 +23,20 @@ frame:SetScript("OnEvent", function(self, event)
 		E.UIParent:SetSize(uiParentWidth, uiParentHeight)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 		uiParentWidth, uiParentHeight = nil, nil
-		if E.global.general.autoScale and uiParentScale and (uiParentScale < 0.64) then
-			UIParent:SetScale(uiParentScale)
-			uiParentScale = nil
-		end
-	else
-		E.UIParent:ClearAllPoints();
-		if E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-			E.UIParent:Point("BOTTOM");
-		else
-			E.UIParent:Point("CENTER");
-		end
 	end
+
+	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
+		UIParent:SetScale(uiParentScale)
+		uiParentScale = nil
+	end
+
+	E.UIParent:ClearAllPoints();
+	if E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
+		E.UIParent:Point("BOTTOM");
+	else
+		E.UIParent:Point("CENTER");
+	end
+
 	self:UnregisterEvent(event)
 end)
 
