@@ -1190,21 +1190,25 @@ function B:FormatMoney(amount)
 end
 
 function B:GetGraysValue()
-	local c = 0
+	local goldLoss, itemID, rarity, itype, itemPrice, stackCount, stackPrice, _ = 0
 
-	for b=0,4 do
-		for s=1,GetContainerNumSlots(b) do
-			local l = GetContainerItemLink(b, s)
-			if l and select(11, GetItemInfo(l)) then
-				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
-				if select(3, GetItemInfo(l))==0 and p>0 then
-					c = c+p
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) do
+			itemID = GetContainerItemID(bag, slot)
+			if itemID then
+				_, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+				if itemPrice then
+					stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+					stackPrice = itemPrice * stackCount
+					if (rarity and rarity == 0) and (itype and itype ~= "Quest") and (stackPrice > 0) then
+						goldLoss = goldLoss + stackPrice
+					end
 				end
 			end
 		end
 	end
 
-	return c
+	return goldLoss
 end
 
 function B:VendorGrays(delete)
