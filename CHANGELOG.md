@@ -10,6 +10,8 @@ Added an option to show the unit name on the chatbubbles.
 Added option to use BattleTag instead of Real ID names in chat.  
 Added option to use a vertical classbar on unitframes.  
 Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
+Added a detailed report for vendor grey items.  
+Added a spec icon on the tooltip.  
 
 
 **Bug Fixes:**   
