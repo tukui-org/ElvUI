@@ -6,9 +6,9 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI')
 --Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert, next = table.insert, next
-local floor, ceil = math.floor, math.ceil
-local format, len, sub, find = string.format, string.len, string.sub, string.find
+local tinsert = table.insert
+local floor, ceil, abs, mod = math.floor, math.ceil, math.abs, math.fmod
+local format, len, sub = string.format, string.len, string.sub
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -42,7 +42,6 @@ local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
-local PickupMerchantItem = PickupMerchantItem
 local PlaySound = PlaySound
 local PutItemInBag = PutItemInBag
 local SetItemButtonCount = SetItemButtonCount
@@ -1167,7 +1166,7 @@ function B:UpdateGoldText()
 	self.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db['bags'].moneyFormat, not E.db['bags'].moneyCoins))
 end
 
-function B:FormatMoney(amount, style)
+function B:FormatMoney(amount)
 	local coppername = "|cffeda55fc|r"
 	local silvername = "|cffc7c7cfs|r"
 	local goldname = "|cffffd700g|r"
@@ -1214,28 +1213,24 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local gain, sold = 0, 0
-	local itemID, itemLink, count, link, itype, rarity, price, stack
+	local gain, sold, itemID, count, link, itype, rarity, price, stack, _ = 0, 0
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
-			itemLink = GetContainerItemLink(bag, slot)
 			itemID = GetContainerItemID(bag, slot)
-			if itemID and select(11, GetItemInfo(itemLink)) then
-				count = select(2, GetContainerItemInfo(bag, slot))
+			if itemID then
 				_, link, rarity, _, _, itype, _, _, _, _, price = GetItemInfo(itemID)
+				count = select(2, GetContainerItemInfo(bag, slot))
 
-				if delete then
-					if find(itemLink,"ff9d9d9d") then
+				if (rarity and rarity == 0) and (itype and itype ~= "Quest") then
+					if delete then
 						PickupContainerItem(bag, slot)
 						DeleteCursorItem()
-						count = count + 1
-					end
-				else
-					if rarity == 0 and itype ~= "Quest" then
+						-- count = count + 1
+					else
 						stack = (price or 0) * (count or 1)
 						sold = sold + stack
-						if E.db.general.vendorGraysDetails then
-							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, count, B:FormatMoney(stack)))
+						if E.db.general.vendorGraysDetails and link then
+							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, (count or 1), B:FormatMoney(stack)))
 						end
 						UseContainerItem(bag, slot)
 					end
@@ -1245,7 +1240,7 @@ function B:VendorGrays(delete)
 	end
 	gain = gain + sold
 
-	if gain > 0 and not delete then
+	if (gain > 0) and not delete then
 		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(gain)))
 	end
 end
