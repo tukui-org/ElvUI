@@ -1219,7 +1219,7 @@ function B:VendorGrays(delete)
 			itemID = GetContainerItemID(bag, slot)
 			if itemID then
 				_, link, rarity, _, _, itype, _, _, _, _, price = GetItemInfo(itemID)
-				count = select(2, GetContainerItemInfo(bag, slot))
+				count = select(2, GetContainerItemInfo(bag, slot)) or 1
 
 				if (rarity and rarity == 0) and (itype and itype ~= "Quest") then
 					if delete then
@@ -1227,10 +1227,10 @@ function B:VendorGrays(delete)
 						DeleteCursorItem()
 						-- count = count + 1
 					else
-						stack = (price or 0) * (count or 1)
+						stack = (price or 0) * count
 						sold = sold + stack
 						if E.db.general.vendorGraysDetails and link then
-							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, (count or 1), B:FormatMoney(stack)))
+							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, count, B:FormatMoney(stack)))
 						end
 						UseContainerItem(bag, slot)
 					end
