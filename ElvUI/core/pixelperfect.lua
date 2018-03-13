@@ -35,9 +35,16 @@ frame:SetScript("OnEvent", function(self, event)
 end)
 
 function E:UIScale(event)
-	if IsMacClient() and self.global.screenheight and self.global.screenwidth and (self.screenheight ~= self.global.screenheight or self.screenwidth ~= self.global.screenwidth) then
+	local width = self.screenwidth;
+	local height = self.screenheight;
+
+	if IsMacClient() and self.global.screenheight and self.global.screenwidth and (height ~= self.global.screenheight or width ~= self.global.screenwidth) then
 		self.screenheight = self.global.screenheight
 		self.screenwidth = self.global.screenwidth
+
+		-- adjust these for this func
+		width = self.screenwidth
+		height = self.screenheight
 	end
 
 	if(GetCVar('uiScale')) then
@@ -46,17 +53,14 @@ function E:UIScale(event)
 
 	local minScale = self.global.general.minUiScale or 0.64
 	if self.global.general.autoScale then
-		scale = max(minScale, min(1.15, 768/self.screenheight));
+		scale = max(minScale, min(1.15, 768/height));
 	else
-		scale = max(minScale, min(1.15, self.global.uiScale or 768/self.screenheight or UIParent:GetScale()));
+		scale = max(minScale, min(1.15, self.global.uiScale or (768/height) or UIParent:GetScale()));
 	end
 
-	if self.screenwidth < 1600 then
-			self.lowversion = true;
-	elseif self.screenwidth >= 3840 and self.global.general.eyefinity then
-		local width = self.screenwidth;
-		local height = self.screenheight;
-
+	if width < 1600 then
+		self.lowversion = true;
+	elseif width >= 3840 and self.global.general.eyefinity then
 		-- because some user enable bezel compensation, we need to find the real width of a single monitor.
 		-- I don't know how it really work, but i'm assuming they add pixel to width to compensate the bezel. :P
 
@@ -83,9 +87,9 @@ function E:UIScale(event)
 		self.eyefinity = width;
 	end
 
-	self.mult = 768/self.screenheight/scale
-	self.Spacing = self.PixelMode and 0 or self.mult
-	self.Border = (self.PixelMode and self.mult or self.mult*2)
+	self.mult = 768/height/scale
+	self.Spacing = (self.PixelMode and 0) or self.mult
+	self.Border = (self.PixelMode and self.mult) or self.mult*2
 
 	if self.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
@@ -108,14 +112,12 @@ function E:UIScale(event)
 
 		--Resize self.UIParent if Eyefinity is on.
 		if self.eyefinity then
-			local width = self.eyefinity;
-			local height = self.screenheight;
 
 			-- if autoscale is off, find a new width value of self.UIParent for screen #1.
 			if not self.global.general.autoScale or height > 1200 then
 				local h = UIParent:GetHeight();
-				local ratio = self.screenheight / h;
-				local w = self.eyefinity / ratio;
+				local ratio = height / h;
+				local w = width / ratio;
 
 				width = w;
 				height = h;
@@ -125,7 +127,7 @@ function E:UIScale(event)
 				uiParentWidth = width
 				uiParentHeight = height
 			else
-				self.UIParent:SetSize(width, height);
+				self.UIParent:SetSize(width, height)
 				self.UIParent.origHeight = self.UIParent:GetHeight()
 			end
 		else
@@ -136,10 +138,10 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			if InCombatLockdown() then
-				uiParentWidth = UIParent:GetWidth();
-				uiParentHeight = UIParent:GetHeight();
+				uiParentWidth = width
+				uiParentHeight = height
 			else
-				self.UIParent:SetSize(UIParent:GetSize());
+				self.UIParent:SetSize(width, height)
 				self.UIParent.origHeight = self.UIParent:GetHeight()
 			end
 		end
