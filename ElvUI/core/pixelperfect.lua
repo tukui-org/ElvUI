@@ -16,8 +16,8 @@ local InCombatLockdown = InCombatLockdown
 
 local scale, uiParentWidth, uiParentHeight, uiParentScale
 --This handles resizing/repositioning after leaving combat
-local frame = CreateFrame("Frame")
-frame:SetScript("OnEvent", function(self, event)
+local resizeAfterTabFrame = CreateFrame("Frame")
+resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 	if uiParentWidth and uiParentHeight then
 		E.UIParent:SetSize(uiParentWidth, uiParentHeight)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
@@ -35,6 +35,8 @@ frame:SetScript("OnEvent", function(self, event)
 	else
 		E.UIParent:Point("CENTER");
 	end
+
+	E:StaticPopup_Hide('FAILED_UISCALE')
 
 	self:UnregisterEvent(event)
 end)
@@ -156,7 +158,7 @@ function E:UIScale(event)
 		end
 
 		if inCombatLockdown then
-			frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+			resizeAfterTabFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		else
 			self.UIParent:ClearAllPoints();
 			if self.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
