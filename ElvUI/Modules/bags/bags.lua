@@ -1238,7 +1238,7 @@ function B:VendorGrays(delete)
 		end
 	end
 
-	if (goldGained > 0) and not delete then
+	if goldGained > 0 then
 		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(goldGained)))
 	end
 end
