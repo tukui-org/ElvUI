@@ -1213,24 +1213,23 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local sold, itemID, count, link, itype, rarity, price, stack, _ = 0
+	local goldGained, itemID, link, itype, rarity, itemPrice, stackCount, stackPrice, _ = 0
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			itemID = GetContainerItemID(bag, slot)
 			if itemID then
-				_, link, rarity, _, _, itype, _, _, _, _, price = GetItemInfo(itemID)
-				count = select(2, GetContainerItemInfo(bag, slot)) or 1
+				_, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+				stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 
 				if (rarity and rarity == 0) and (itype and itype ~= "Quest") then
 					if delete then
 						PickupContainerItem(bag, slot)
 						DeleteCursorItem()
-						-- count = count + 1
 					else
-						stack = (price or 0) * count
-						sold = sold + stack
+						stackPrice = (itemPrice or 0) * stackCount
+						goldGained = goldGained + stackPrice
 						if E.db.general.vendorGraysDetails and link then
-							E:Print(("%s|cFF00DDDDx%d|r %s"):format(link, count, B:FormatMoney(stack)))
+							E:Print(format("%s|cFF00DDDDx%d|r %s", link, stackCount, B:FormatMoney(stackPrice)))
 						end
 						UseContainerItem(bag, slot)
 					end
@@ -1239,8 +1238,8 @@ function B:VendorGrays(delete)
 		end
 	end
 
-	if (sold > 0) and not delete then
-		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(sold)))
+	if (goldGained > 0) and not delete then
+		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(goldGained)))
 	end
 end
 
