@@ -1180,13 +1180,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
 		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+		local nameWithRealm -- we also use this lower in function to correct guild mobile to link with the realm as well
 
 		--Cache name->class
-		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
+		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','') -- also used similar to nameWithRealm except for emotes to link the realm
 		if name and name ~= '' then
 			CH.ClassNames[name:lower()] = englishClass
-			local className = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
-			CH.ClassNames[className:lower()] = englishClass
+			nameWithRealm = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
+			CH.ClassNames[nameWithRealm:lower()] = englishClass
 		end
 
 		local channelLength = strlen(arg4);
@@ -1397,8 +1398,12 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local body;
 
 			-- Add AFK/DND flags
-			local pflag = specialChatIcons[arg2]
-			local pluginIcon = CH:GetPluginIcon(arg2)
+			local pflagName = arg2
+			if ( type == "GUILD" and (nameWithRealm and nameWithRealm ~= arg2) ) then
+				pflagName = nameWithRealm -- make sure guild mobile has realm name
+			end
+			local pflag = specialChatIcons[pflagName]
+			local pluginIcon = CH:GetPluginIcon(pflagName)
 			if(arg6 ~= "") then
 				if ( arg6 == "GM" ) then
 					--If it was a whisper, dispatch it to the GMChat addon.
@@ -1424,8 +1429,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					pflag = ""
 				end
 
-				if(lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-					pflag = lfgRoles[arg2]..(pflag or "")
+				if(lfgRoles[pflagName] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
+					pflag = lfgRoles[pflagName]..(pflag or "")
 				end
 			end
 
@@ -1488,7 +1493,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			if ( type == "TEXT_EMOTE" and realm) then
+				-- make sure emote has realm link correct
 				playerLink = GetPlayerLink(arg2.."-"..realm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
+			elseif ( type == "GUILD" and (nameWithRealm and nameWithRealm ~= arg2) ) then
+				-- make sure guild mobile has realm link correct
+				playerLink = GetPlayerLink(nameWithRealm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
 			elseif ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
 				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
 			else
@@ -1518,6 +1527,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					if ( type == "EMOTE" ) then
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
 					elseif ( type == "TEXT_EMOTE" and realm ) then
+						-- make sure emote has realm link correct
 						if info.colorNameByClass then
 							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
 						else
