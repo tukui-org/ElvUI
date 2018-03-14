@@ -133,35 +133,26 @@ function E:UIScale(event)
 				width = w;
 				height = h;
 			end
-
-			if inCombatLockdown then --Delay changing size if we are in combat, to prevent error when people have minimized the game
-				uiParentWidth = width
-				uiParentHeight = height
-				uiParentScale = scale
-			else
-				self.UIParent:SetSize(width, height)
-				self.UIParent.origHeight = self.UIParent:GetHeight()
-			end
-		else
 			--[[Eyefinity Test mode
 				Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 				Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
+				self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 			]]
-			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
-
-			if inCombatLockdown then
-				uiParentWidth = width
-				uiParentHeight = height
-				uiParentScale = scale
-			else
-				self.UIParent:SetSize(width, height)
-				self.UIParent.origHeight = self.UIParent:GetHeight()
-			end
+		elseif GetCVar("gxWindow") then
+			width = UIParent:GetWidth()
+			height = UIParent:GetHeight()
 		end
 
-		if inCombatLockdown then
+		if inCombatLockdown then --Delay changing size if we are in combat, to prevent error when people have minimized the game
+			uiParentWidth = width
+			uiParentHeight = height
+			uiParentScale = scale
+
 			resizeAfterTabFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		else
+			self.UIParent:SetSize(width, height)
+			self.UIParent.origHeight = self.UIParent:GetHeight()
+
 			self.UIParent:ClearAllPoints();
 			if self.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
 				self.UIParent:Point("BOTTOM");
