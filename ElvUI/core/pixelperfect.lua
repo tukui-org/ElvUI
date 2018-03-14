@@ -44,9 +44,8 @@ resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 end)
 
 function E:UIScale(event)
-	local width = self.screenwidth;
-	local height = self.screenheight;
-	local inCombatLockdown = InCombatLockdown()
+	local width = self.screenwidth
+	local height = self.screenheight
 	local isMacClient = IsMacClient()
 
 	if isMacClient and self.global.screenheight and self.global.screenwidth and (height ~= self.global.screenheight or width ~= self.global.screenwidth) then
@@ -143,7 +142,7 @@ function E:UIScale(event)
 			height = UIParent:GetHeight()
 		end
 
-		if inCombatLockdown then --Delay changing size if we are in combat, to prevent error when people have minimized the game
+		if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
 			uiParentWidth = width
 			uiParentHeight = height
 			uiParentScale = scale
