@@ -1180,7 +1180,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
 		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-		local nameWithRealm -- we also use this lower in function to correct guild mobile to link with the realm as well
+		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','') -- also used similar to nameWithRealm except for emotes to link the realm
@@ -1399,8 +1399,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			-- Add AFK/DND flags
 			local pflagName = arg2
-			if ( type == "GUILD" and (nameWithRealm and nameWithRealm ~= arg2) ) then
-				pflagName = nameWithRealm -- make sure guild mobile has realm name
+			if ( arg14 and nameWithRealm and nameWithRealm ~= arg2 ) then
+				pflagName = nameWithRealm -- make sure mobile has realm name
 			end
 			local pflag = specialChatIcons[pflagName]
 			local pluginIcon = CH:GetPluginIcon(pflagName)
@@ -1492,11 +1492,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				playerLinkDisplayText = ("[%s]"):format(coloredName);
 			end
 
-			if ( type == "TEXT_EMOTE" and realm) then
+			if ( type == "TEXT_EMOTE" and realm ) then
 				-- make sure emote has realm link correct
 				playerLink = GetPlayerLink(arg2.."-"..realm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
-			elseif ( type == "GUILD" and (nameWithRealm and nameWithRealm ~= arg2) ) then
-				-- make sure guild mobile has realm link correct
+			elseif ( arg14 and nameWithRealm and nameWithRealm ~= arg2 ) then
+				-- make sure mobile has realm link correct
 				playerLink = GetPlayerLink(nameWithRealm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
 			elseif ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
 				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
