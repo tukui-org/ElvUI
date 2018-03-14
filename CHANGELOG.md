@@ -10,14 +10,17 @@ Added an option to show the unit name on the chatbubbles.
 Added option to use BattleTag instead of Real ID names in chat.  
 Added option to use a vertical classbar on unitframes.  
 Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
-Added a detailed report for vendor grey items.  
-Added a spec icon on the tooltip.  
+Added an option for a detailed report for Vendor Grey Items.  
+Added Talent Spec Icon on the tooltip.  
 
 
 **Bug Fixes:**   
+Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
 Fixed error trying to copy settings between nameplate units (#305).  
 Fixed various issues with the keybind feature (/kb). Trying to keybind an empty pet action button will now correctly show a tooltip. Trying to keybind a flyout menu will now correctly show a tooltip too.  
+Clicking on a player's name who whispered you or messaged into guild chat via Mobile app will now properly link their name with realm attached.  
+Corrected issue which made the UI Scale incorrect after alt-tab during combat when using Fullscreen. (This will now autocorrect itself after combat ends).  
 
 
 **Misc. Changes:**  
@@ -31,6 +34,7 @@ Adjusted the Flight Map's font to match the general media font (#306).
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
 Added automatic handling of "Attach To" setting on unitframe auras. When setting Smart Aura Position, then the "Attach To" setting will automatically be set for the respective aura type, and then the selection box will be disabled.  
+Saved Instances will now be sorted by name then difficulty. (thanks Kelebek)  
 
 
 ___
