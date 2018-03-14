@@ -6,6 +6,7 @@ local DT = E:GetModule('DataTexts')
 local date = date
 local next, pairs, unpack = next, pairs, unpack
 local format, join = string.format, string.join
+local tsort, tinsert = table.sort, table.insert
 --WoW API / Variables
 local GetGameTime = GetGameTime
 local RequestRaidInfo = RequestRaidInfo
@@ -41,7 +42,6 @@ local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
 local localizedName, isActive, startTime, canEnter, _
-local name, reset, difficultyId, extended, maxPlayers, numEncounters, encounterProgress
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
@@ -112,29 +112,35 @@ local function OnEnter(self)
 
 	local lockedInstances = {raids = {}, dungeons = {}}
 	for i = 1, GetNumSavedInstances() do
-		local name, instanceId, _, difficulty, locked, extended, _, isRaid, _, _, _, _  = GetSavedInstanceInfo(i)
+		local name, _, _, difficulty, locked, extended, _, isRaid, _, _, _, _  = GetSavedInstanceInfo(i)
 		if (locked or extended) and name then
+			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+			local sortName = name .. (displayMythic and 3 or (isHeroic or displayHeroic) and 2 or 1)
+			local difficultyLetter = (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N")
 			if isRaid then
-				lockedInstances["raids"][instanceId] = {GetSavedInstanceInfo(i)}
+				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, {GetSavedInstanceInfo(i)}})
 			elseif not isRaid and difficulty == 23 then
-				lockedInstances["dungeons"][instanceId] = {GetSavedInstanceInfo(i)}
+				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, {GetSavedInstanceInfo(i)}})
 			end
 		end
 	end
 
+	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter
 	if next(lockedInstances["raids"]) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-		for _,instance in pairs(lockedInstances["raids"]) do
-			name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
+		tsort(lockedInstances["raids"], function( a,b ) return a[1] < b[1] end)
+
+		for i = 1, #lockedInstances["raids"] do
+			difficultyLetter = lockedInstances["raids"][i][2]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["raids"][i][3])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
@@ -143,22 +149,30 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		for _,instance in pairs(lockedInstances["dungeons"]) do
-			name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
+		tsort(lockedInstances["dungeons"], function( a,b ) return a[1] < b[1] end)
+
+		for i = 1,#lockedInstances["dungeons"] do
+			difficultyLetter = lockedInstances["deungeons"][i][2]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][3])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficultyId)
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N"), name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
 
 	local addedLine = false
+	local worldbossLockoutList = {}
 	for i = 1, GetNumSavedWorldBosses() do
 		name, _, reset = GetSavedWorldBossInfo(i)
+		tinsert(worldbossLockoutList, {name, reset})
+	end
+	tsort(worldbossLockoutList, function( a,b ) return a[1] < b[1] end)
+	for i = 1,#worldbossLockoutList do
+		name, reset = unpack(worldbossLockoutList[i])
 		if(reset) then
 			if(not addedLine) then
 				DT.tooltip:AddLine(' ')
