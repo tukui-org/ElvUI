@@ -150,11 +150,11 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			if inCombatLockdown then
-				uiParentWidth = width
-				uiParentHeight = height
+				uiParentWidth = UIParent:GetWidth()
+				uiParentHeight = UIParent:GetHeight()
 				uiParentScale = scale
 			else
-				self.UIParent:SetSize(width, height)
+				self.UIParent:SetSize(UIParent:GetSize())
 				self.UIParent.origHeight = self.UIParent:GetHeight()
 			end
 		end
