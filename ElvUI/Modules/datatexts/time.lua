@@ -23,6 +23,7 @@ local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
+local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTimeFrame
@@ -33,8 +34,8 @@ local europeDisplayFormat = '';
 local ukDisplayFormat = '';
 local europeDisplayFormat_nocolor = join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = join("", "", "%d", ":|r%02d", " %s|r")
-local lockoutInfoFormat = "%s%s |cffaaaaaa(%s, %s/%s)"
-local lockoutInfoFormatNoEnc = "%s%s |cffaaaaaa(%s)"
+local lockoutInfoFormat = "%s%s%s |cffaaaaaa(%s, %s/%s)"
+local lockoutInfoFormatNoEnc = "%s%s%s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local curHr, curMin, curAmPm
@@ -87,12 +88,37 @@ local function OnLeave()
 	enteredFrame = false;
 end
 
+local convertNames = {
+	[DUNGEON_FLOOR_TEMPESTKEEP1] = select(2, GetAchievementInfo(696)) -- ["The Eye"] = "Tempest Keep"
+}
+
+local instanceIconByName = {}
+local function GetInstanceImages(index, raid)
+	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
+	while instanceID do
+		instanceIconByName[convertNames[name] or name] = buttonImage
+		index = index + 1
+		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
+	end
+end
+
+local collectedInstanceImages = false
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	if(not enteredFrame) then
 		enteredFrame = true;
 		RequestRaidInfo()
+	end
+
+	if not collectedInstanceImages then
+		for i=1, 7 do -- 7 tiers
+			EJ_SelectTier(i);
+			GetInstanceImages(1, false); -- Populate for dungeon icons
+			GetInstanceImages(1, true); -- Populate for raid icons
+		end
+		E.instanceIconByName = instanceIconByName
+		collectedInstanceImages = true
 	end
 
 	DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND);
@@ -111,21 +137,25 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
+	local fontSize = E.db.tooltip.textFontSize + 4
+
 	for i = 1, GetNumSavedInstances() do
-		local name, _, _, difficulty, locked, extended, _, isRaid, _, _, _, _  = GetSavedInstanceInfo(i)
+		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 3 or (isHeroic or displayHeroic) and 2 or 1)
 			local difficultyLetter = (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N")
+			local buttonImg = instanceIconByName[name] and format("|T%s:%d:%d:0:0:64:64:5:59:5:59|t", instanceIconByName[name], fontSize, fontSize) or ""
+
 			if isRaid then
-				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, {GetSavedInstanceInfo(i)}})
+				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			elseif not isRaid and difficulty == 23 then
-				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, {GetSavedInstanceInfo(i)}})
+				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			end
 		end
 	end
 
-	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter
+	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg
 	if next(lockedInstances["raids"]) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
@@ -134,13 +164,14 @@ local function OnEnter(self)
 
 		for i = 1, #lockedInstances["raids"] do
 			difficultyLetter = lockedInstances["raids"][i][2]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["raids"][i][3])
+			buttonImg = lockedInstances["raids"][i][3]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["raids"][i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
@@ -153,13 +184,14 @@ local function OnEnter(self)
 
 		for i = 1,#lockedInstances["dungeons"] do
 			difficultyLetter = lockedInstances["deungeons"][i][2]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][3])
+			buttonImg = lockedInstances["deungeons"][i][3]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
