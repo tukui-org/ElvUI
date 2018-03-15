@@ -166,7 +166,7 @@ local function OnEnter(self)
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 3 or (isHeroic or displayHeroic) and 2 or 1)
 			local difficultyLetter = (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N")
-			local buttonImg = instanceIconByName[name] and format("|T%s:%d:%d:0:0:96:96:0:64:0:64|t", instanceIconByName[name], 16, 16) or ""
+			local buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t", instanceIconByName[name]) or ""
 
 			if isRaid then
 				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})

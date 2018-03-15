@@ -18,17 +18,17 @@ local OTHER = OTHER
 -- Currencies we care about
 local Currencies = {
 	-- Legion
-	["ANCIENT_MANA"] = {ID = 1155, NAME = GetCurrencyInfo(1155), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1155)), 16, 16)},
-	["CURIOUS_COIN"] = {ID = 1275, NAME = GetCurrencyInfo(1275), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1275)), 16, 16)},
-	["ORDER_RESOURCES"] = {ID = 1220, NAME = GetCurrencyInfo(1220), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1220)), 16, 16)},
-	["LEGIONFALL_WAR_SUPPLIES"] = {ID = 1342, NAME = GetCurrencyInfo(1342), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1342)), 16, 16)},
-	["SIGHTLESS_EYE"] = {ID = 1149, NAME = GetCurrencyInfo(1149), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1149)), 16, 16)},
-	["SEAL_OF_BROKEN_FATE"] = {ID = 1273, NAME = GetCurrencyInfo(1273), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1273)), 16, 16)},
-	["NETHERSHARD"] = {ID = 1226, NAME = GetCurrencyInfo(1226), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1226)), 16, 16)},
-	["SHADOWY_COIN"] = {ID = 1154, NAME = GetCurrencyInfo(1154), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1154)), 16, 16)},
-	["VEILED_ARGUNITE"] = {ID = 1508, NAME = GetCurrencyInfo(1508), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(1508)), 16, 16)},
+	["ANCIENT_MANA"] = {ID = 1155, NAME = GetCurrencyInfo(1155), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1155)))},
+	["CURIOUS_COIN"] = {ID = 1275, NAME = GetCurrencyInfo(1275), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1275)))},
+	["ORDER_RESOURCES"] = {ID = 1220, NAME = GetCurrencyInfo(1220), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1220)))},
+	["LEGIONFALL_WAR_SUPPLIES"] = {ID = 1342, NAME = GetCurrencyInfo(1342), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1342)))},
+	["SIGHTLESS_EYE"] = {ID = 1149, NAME = GetCurrencyInfo(1149), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1149)))},
+	["SEAL_OF_BROKEN_FATE"] = {ID = 1273, NAME = GetCurrencyInfo(1273), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1273)))},
+	["NETHERSHARD"] = {ID = 1226, NAME = GetCurrencyInfo(1226), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1226)))},
+	["SHADOWY_COIN"] = {ID = 1154, NAME = GetCurrencyInfo(1154), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1154)))},
+	["VEILED_ARGUNITE"] = {ID = 1508, NAME = GetCurrencyInfo(1508), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1508)))},
 	-- Other
-	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(515)), 16, 16)},
+	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(515)))},
 }
 
 -- CurrencyList for config
