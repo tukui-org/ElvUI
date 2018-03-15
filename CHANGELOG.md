@@ -12,7 +12,7 @@ Added option to use a vertical classbar on unitframes.
 Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
 Added an option for a detailed report for Vendor Grey Items.  
 Added Talent Spec Icon on the tooltip.  
-Added Instance Icons on the Saved Instances tooltip.  
+Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea!)  
 
 
 **Bug Fixes:**   
@@ -35,7 +35,7 @@ Adjusted the Flight Map's font to match the general media font (#306).
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
 Added automatic handling of "Attach To" setting on unitframe auras. When setting Smart Aura Position, then the "Attach To" setting will automatically be set for the respective aura type, and then the selection box will be disabled.  
-Saved Instances will now be sorted by name then difficulty. (thanks Kelebek)  
+Saved Instances will now be sorted by name then difficulty. (Thanks Kelebek for initial work!)  
 
 
 ___
