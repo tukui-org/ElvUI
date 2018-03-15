@@ -40,8 +40,8 @@ local europeDisplayFormat = '';
 local ukDisplayFormat = '';
 local europeDisplayFormat_nocolor = join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = join("", "", "%d", ":|r%02d", " %s|r")
-local lockoutInfoFormat = "%s%s%s |cffaaaaaa(%s, %s/%s)"
-local lockoutInfoFormatNoEnc = "%s%s%s |cffaaaaaa(%s)"
+local lockoutInfoFormat = "%s%s %s |cffaaaaaa(%s, %s/%s)"
+local lockoutInfoFormatNoEnc = "%s%s %s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local curHr, curMin, curAmPm
