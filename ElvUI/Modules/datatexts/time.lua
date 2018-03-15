@@ -160,14 +160,13 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
-	local fontSize = E.db.tooltip.textFontSize + 4
 	for i = 1, GetNumSavedInstances() do
 		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 3 or (isHeroic or displayHeroic) and 2 or 1)
 			local difficultyLetter = (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N")
-			local buttonImg = instanceIconByName[name] and format("|T%s:%d:%d:0:0:64:64:5:59:5:59|t", instanceIconByName[name], fontSize, fontSize) or ""
+			local buttonImg = instanceIconByName[name] and format("|T%s:%d:%d:0:0:96:96:0:64:0:64|t", instanceIconByName[name], 16, 16) or ""
 
 			if isRaid then
 				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
