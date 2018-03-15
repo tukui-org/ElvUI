@@ -26,6 +26,7 @@ local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_SelectTier = EJ_SelectTier
 local EJ_GetNumTiers = EJ_GetNumTiers
+local EJ_GetCurrentTier = EJ_GetCurrentTier
 local GetAchievementInfo = GetAchievementInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -121,11 +122,20 @@ local function OnEnter(self)
 	if not collectedInstanceImages then
 		local numTiers = (EJ_GetNumTiers() or 0)
 		if numTiers > 0 then
+			local currentTier = EJ_GetCurrentTier()
+
+			-- Loop through the expansions to collect the textures
 			for i=1, numTiers do
 				EJ_SelectTier(i);
 				GetInstanceImages(1, false); -- Populate for dungeon icons
 				GetInstanceImages(1, true); -- Populate for raid icons
 			end
+
+			-- Set it back to the previous tier
+			if currentTier then
+				EJ_SelectTier(currentTier);
+			end
+
 			collectedInstanceImages = true
 		end
 	end
