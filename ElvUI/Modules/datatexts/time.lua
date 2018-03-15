@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local date = date
-local next, pairs, unpack = next, pairs, unpack
+local next, unpack = next, unpack
 local format, join = string.format, string.join
 local tsort, tinsert = table.sort, table.insert
 --WoW API / Variables
@@ -24,6 +24,7 @@ local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
+local EJ_SelectTier = EJ_SelectTier
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTimeFrame
