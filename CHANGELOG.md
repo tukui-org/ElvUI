@@ -12,6 +12,7 @@ Added option to use a vertical classbar on unitframes.
 Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
 Added an option for a detailed report for Vendor Grey Items.  
 Added Talent Spec Icon on the tooltip.  
+Added Instance Icons on the Saved Instances tooltip.  
 
 
 **Bug Fixes:**   
