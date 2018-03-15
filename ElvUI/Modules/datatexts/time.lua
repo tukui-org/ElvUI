@@ -119,7 +119,6 @@ local function OnEnter(self)
 			GetInstanceImages(1, false); -- Populate for dungeon icons
 			GetInstanceImages(1, true); -- Populate for raid icons
 		end
-		E.instanceIconByName = instanceIconByName
 		collectedInstanceImages = true
 	end
 
