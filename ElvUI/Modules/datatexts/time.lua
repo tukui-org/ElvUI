@@ -116,9 +116,9 @@ local nhm -- Normal, Heroic, Mythic
 local locale = GetLocale()
 if locale == "koKR" or locale == "zhCN" or locale == "zhTW" then
 	nhm = {
-		PLAYER_DIFFICULTY1,
-		PLAYER_DIFFICULTY2,
-		PLAYER_DIFFICULTY6
+		PLAYER_DIFFICULTY1, -- N
+		PLAYER_DIFFICULTY2, -- H
+		PLAYER_DIFFICULTY6  -- M
 	}
 else
 	nhm = {
