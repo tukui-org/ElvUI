@@ -170,7 +170,7 @@ local function OnEnter(self)
 
 			if isRaid then
 				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
-			elseif not isRaid and difficulty == 23 then
+			elseif not isRaid and (difficulty == 2 or difficulty == 23) then -- 2 = heroic, 23 = mythic
 				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			end
 		end
