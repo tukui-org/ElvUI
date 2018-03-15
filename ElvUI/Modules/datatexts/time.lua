@@ -25,6 +25,7 @@ local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_SelectTier = EJ_SelectTier
+local GetAchievementInfo = GetAchievementInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTimeFrame
