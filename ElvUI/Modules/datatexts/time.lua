@@ -208,8 +208,8 @@ local function OnEnter(self)
 		tsort(lockedInstances["dungeons"], function( a,b ) return a[1] < b[1] end)
 
 		for i = 1,#lockedInstances["dungeons"] do
-			difficultyLetter = lockedInstances["deungeons"][i][2]
-			buttonImg = lockedInstances["deungeons"][i][3]
+			difficultyLetter = lockedInstances["dungeons"][i][2]
+			buttonImg = lockedInstances["dungeons"][i][3]
 			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
