@@ -7,6 +7,8 @@ local date = date
 local next, unpack = next, unpack
 local format, join = string.format, string.join
 local tsort, tinsert = table.sort, table.insert
+local utf8sub = string.utf8sub
+
 --WoW API / Variables
 local GetGameTime = GetGameTime
 local RequestRaidInfo = RequestRaidInfo
@@ -112,10 +114,18 @@ end
 
 local nhm -- Normal, Heroic, Mythic
 local locale = GetLocale()
-if locale == "ruRU" then
-	nhm = {"О", "Г", "Э"}
+if locale == "koKR" or locale == "zhCN" or locale == "zhTW" then
+	nhm = {
+		PLAYER_DIFFICULTY1,
+		PLAYER_DIFFICULTY2,
+		PLAYER_DIFFICULTY6
+	}
 else
-	nhm = {"N", "H", "M"}
+	nhm = {
+		utf8sub(PLAYER_DIFFICULTY1, 1, 1),
+		utf8sub(PLAYER_DIFFICULTY2, 1, 1),
+		utf8sub(PLAYER_DIFFICULTY6, 1, 1)
+	}
 end
 
 local collectedInstanceImages = false
