@@ -121,10 +121,14 @@ local function OnEnter(self)
 		collectedInstanceImages = true
 	end
 
-	DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND);
+	local addedHeader = false
 	for i = 1, GetNumWorldPVPAreas() do
 		_, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
 		if canEnter then
+			if not addedHeader then
+				DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND)
+				addedHeader = true
+			end
 			if isActive then
 				startTime = WINTERGRASP_IN_PROGRESS
 			elseif startTime == nil then
@@ -138,7 +142,6 @@ local function OnEnter(self)
 
 	local lockedInstances = {raids = {}, dungeons = {}}
 	local fontSize = E.db.tooltip.textFontSize + 4
-
 	for i = 1, GetNumSavedInstances() do
 		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
@@ -157,7 +160,9 @@ local function OnEnter(self)
 
 	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg
 	if next(lockedInstances["raids"]) then
-		DT.tooltip:AddLine(" ")
+		if DT.tooltip:NumLines() > 0 then
+			DT.tooltip:AddLine(" ")
+		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
 		tsort(lockedInstances["raids"], function( a,b ) return a[1] < b[1] end)
@@ -177,7 +182,9 @@ local function OnEnter(self)
 	end
 
 	if next(lockedInstances["dungeons"]) then
-		DT.tooltip:AddLine(" ")
+		if DT.tooltip:NumLines() > 0 then
+			DT.tooltip:AddLine(" ")
+		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
 		tsort(lockedInstances["dungeons"], function( a,b ) return a[1] < b[1] end)
@@ -207,7 +214,9 @@ local function OnEnter(self)
 		name, reset = unpack(worldbossLockoutList[i])
 		if(reset) then
 			if(not addedLine) then
-				DT.tooltip:AddLine(' ')
+				if DT.tooltip:NumLines() > 0 then
+					DT.tooltip:AddLine(" ")
+				end
 				DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 				addedLine = true
 			end
@@ -216,8 +225,9 @@ local function OnEnter(self)
 	end
 
 	local Hr, Min, AmPm = CalculateTimeValues(true)
-
-	DT.tooltip:AddLine(" ")
+	if DT.tooltip:NumLines() > 0 then
+		DT.tooltip:AddLine(" ")
+	end
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
 			format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
