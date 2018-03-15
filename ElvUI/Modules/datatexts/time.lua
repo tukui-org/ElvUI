@@ -110,6 +110,14 @@ local function GetInstanceImages(index, raid)
 	end
 end
 
+local nhm -- Normal, Heroic, Mythic
+local locale = GetLocale()
+if locale == "ruRU" then
+	nhm = {"О", "Г", "Э"}
+else
+	nhm = {"N", "H", "M"}
+end
+
 local collectedInstanceImages = false
 local function OnEnter(self)
 	DT:SetupTooltip(self)
@@ -165,7 +173,7 @@ local function OnEnter(self)
 		if (locked or extended) and name then
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 3 or (isHeroic or displayHeroic) and 2 or 1)
-			local difficultyLetter = (displayMythic and "M" or (isHeroic or displayHeroic) and "H" or "N")
+			local difficultyLetter = (displayMythic and nhm[3] or (isHeroic or displayHeroic) and nhm[2] or nhm[1])
 			local buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
 
 			if isRaid then
