@@ -90,15 +90,19 @@ local function OnLeave()
 	enteredFrame = false;
 end
 
-local convertNames = {
-	[DUNGEON_FLOOR_TEMPESTKEEP1] = select(2, GetAchievementInfo(696)) -- ["The Eye"] = "Tempest Keep"
-}
+-- use these to convert "The Eye" into "Tempest Keep"
+local DUNGEON_FLOOR_TEMPESTKEEP1 = DUNGEON_FLOOR_TEMPESTKEEP1
+local TempestKeep = select(2, GetAchievementInfo(696))
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
 	while instanceID do
-		instanceIconByName[convertNames[name] or name] = buttonImage
+		if name == DUNGEON_FLOOR_TEMPESTKEEP1 then
+			instanceIconByName[TempestKeep] = buttonImage
+		else
+			instanceIconByName[name] = buttonImage
+		end
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
 	end
