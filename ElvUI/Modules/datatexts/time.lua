@@ -94,7 +94,7 @@ end
 
 -- use these to convert "The Eye" into "Tempest Keep"
 local DUNGEON_FLOOR_TEMPESTKEEP1 = DUNGEON_FLOOR_TEMPESTKEEP1
-local TempestKeep = select(2, GetAchievementInfo(696))
+local TempestKeep = select(2, GetAchievementInfo(1088)):match('%((.-)%)$')
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
