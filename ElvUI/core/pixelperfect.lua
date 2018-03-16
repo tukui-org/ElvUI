@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
 local IsMacClient = IsMacClient
-local GetCVar, SetCVar = GetCVar, SetCVar
+local GetCVarBool, GetCVar, SetCVar = GetCVarBool, GetCVar, SetCVar
 local GetScreenHeight, GetScreenWidth = GetScreenHeight, GetScreenWidth
 local InCombatLockdown = InCombatLockdown
 
@@ -137,7 +137,7 @@ function E:UIScale(event)
 				Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
 				self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 			]]
-		elseif GetCVar("gxWindow") then
+		elseif GetCVarBool("gxWindow") then
 			width = UIParent:GetWidth()
 			height = UIParent:GetHeight()
 		end
