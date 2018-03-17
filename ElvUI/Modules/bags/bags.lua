@@ -508,8 +508,6 @@ function B:UpdateSlot(bagID, slotID)
 			slot.flashAnim:Play()
 			slot.newitemglowAnim:Play()
 		end
-	else
-		slot.NewItemTexture:Hide()
 	end
 
 	if (texture) then
@@ -1056,8 +1054,6 @@ function B:UpdateReagentSlot(slotID)
 			slot.flashAnim:Play()
 			slot.newitemglowAnim:Play()
 		end
-	else
-		slot.NewItemTexture:Hide()
 	end
 
 	SetItemButtonTexture(slot, texture);
