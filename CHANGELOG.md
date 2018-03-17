@@ -22,6 +22,7 @@ Fixed error trying to copy settings between nameplate units (#305).
 Fixed various issues with the keybind feature (/kb). Trying to keybind an empty pet action button will now correctly show a tooltip. Trying to keybind a flyout menu will now correctly show a tooltip too.  
 Clicking on a player's name who whispered you or messaged into guild chat via Mobile app will now properly link their name with realm attached.  
 Corrected issue which made the UI Scale incorrect after alt-tab during combat when using Fullscreen on higher resolutions. (This will now autocorrect itself after combat ends).  
+Fixed issue in which class colored names in chat could still hijack the coloring of some hyperlinks.  
 
 
 **Misc. Changes:**  
