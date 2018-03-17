@@ -171,14 +171,16 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
+	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg, sortName, difficulty, locked, isRaid, isLFR, isHeroicOrMythic, isHeroic, displayHeroic, displayMythic, lockoutColor
+
 	for i = 1, GetNumSavedInstances() do
-		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
+		name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
-			local isLFR, isHeroicOrMythic = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
-			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-			local difficultyLetter = (displayMythic and nhm[4] or (isHeroic or displayHeroic) and nhm[3] or isLFR and nhm[1] or nhm[2])
-			local buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
+			isLFR, isHeroicOrMythic = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
+			_, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+			sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+			difficultyLetter = (displayMythic and nhm[4] or (isHeroic or displayHeroic) and nhm[3] or isLFR and nhm[1] or nhm[2])
+			buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
 
 			if isRaid then
 				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
@@ -188,7 +190,6 @@ local function OnEnter(self)
 		end
 	end
 
-	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg
 	if next(lockedInstances["raids"]) then
 		if DT.tooltip:NumLines() > 0 then
 			DT.tooltip:AddLine(" ")
@@ -202,7 +203,7 @@ local function OnEnter(self)
 			buttonImg = lockedInstances["raids"][i][3]
 			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["raids"][i][4])
 
-			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
@@ -224,7 +225,7 @@ local function OnEnter(self)
 			buttonImg = lockedInstances["dungeons"][i][3]
 			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][4])
 
-			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
