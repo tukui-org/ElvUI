@@ -445,7 +445,9 @@ function B:UpdateSlot(bagID, slotID)
 	slot.itemLevel:SetText("")
 
 	if B.ProfessionColors[bagType] then
-		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
+		local r, g, b = unpack(B.ProfessionColors[bagType])
+		slot.bagGlow:SetVertexColor(r, g, b)
+		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif (clink) then
 		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
@@ -455,9 +457,8 @@ function B:UpdateSlot(bagID, slotID)
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
-		if(slot.rarity) then
+		if slot.rarity then
 			r, g, b = GetItemQualityColor(slot.rarity);
-			slot.shadow:SetBackdropBorderColor(r, g, b)
 		end
 
 		--Item Level
@@ -470,38 +471,47 @@ function B:UpdateSlot(bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
+			slot.bagGlow:SetVertexColor(1.0, 0.3, 0.3);
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
+			slot.bagGlow:SetVertexColor(1.0, 0.3, 0.3);
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
+			slot.bagGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
 		elseif B.AssignmentColors[assignedBag] then
-			slot:SetBackdropBorderColor(unpack(B.AssignmentColors[assignedBag]))
+			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
+			slot.bagGlow:SetVertexColor(rr, gg, bb)
+			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot.ignoreBorderColors = true
 		else
+			slot.bagGlow:SetVertexColor(1, 1, 1)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			slot.ignoreBorderColors = nil
 		end
 	elseif B.AssignmentColors[assignedBag] then
-		slot:SetBackdropBorderColor(unpack(B.AssignmentColors[assignedBag]))
+		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
+		slot.bagGlow:SetVertexColor(rr, gg, bb)
+		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot.ignoreBorderColors = true
 	else
+		slot.bagGlow:SetVertexColor(1, 1, 1)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		slot.ignoreBorderColors = nil
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
-		slot.shadow:Show()
-		E:Flash(slot.shadow, 1, true)
+		slot.bagGlow:Show()
+		E:Flash(slot.bagGlow, 0.5, true)
 	else
-		slot.shadow:Hide()
-		E:StopFlash(slot.shadow)
+		slot.bagGlow:Hide()
+		E:StopFlash(slot.bagGlow)
 	end
 
 	if (texture) then
@@ -868,7 +878,11 @@ function B:Layout(isBank)
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 					end
 
-					f.Bags[bagID][slotID]:CreateShadow()
+					local bagGlow = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+					bagGlow:SetInside()
+					bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
+					bagGlow:Hide()
+					f.Bags[bagID][slotID].bagGlow = bagGlow
 				end
 
 				f.Bags[bagID][slotID]:SetID(slotID);
@@ -953,8 +967,12 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].iconTexture:SetInside(f.reagentFrame.slots[i]);
 				f.reagentFrame.slots[i].iconTexture:SetTexCoord(unpack(E.TexCoords));
 				f.reagentFrame.slots[i].IconBorder:SetAlpha(0)
-				f.reagentFrame.slots[i]:CreateShadow()
-				f.reagentFrame.slots[i].shadow:Hide()
+
+				local bagGlow = f.reagentFrame.slots[i]:CreateTexture(nil, "OVERLAY")
+				bagGlow:SetInside()
+				bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
+				bagGlow:Hide()
+				f.reagentFrame.slots[i].bagGlow = bagGlow
 			end
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
@@ -1009,39 +1027,43 @@ function B:UpdateReagentSlot(slotID)
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
-		if(slot.rarity) then
+		if slot.rarity then
 			r, g, b = GetItemQualityColor(slot.rarity);
-			slot.shadow:SetBackdropBorderColor(r, g, b);
 		end
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
+			slot.bagGlow:SetVertexColor(1.0, 0.3, 0.3);
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
+			slot.bagGlow:SetVertexColor(1.0, 0.3, 0.3);
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
+			slot.bagGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
 		else
+			slot.bagGlow:SetVertexColor(1, 1, 1)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 			slot.ignoreBorderColors = nil
 		end
 	else
+		slot.bagGlow:SetVertexColor(1, 1, 1);
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 		slot.ignoreBorderColors = nil
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
-		slot.shadow:Show()
-		E:Flash(slot.shadow, 1, true)
+		slot.bagGlow:Show()
+		E:Flash(slot.bagGlow, 0.5, true)
 	else
-		slot.shadow:Hide()
-		E:StopFlash(slot.shadow)
+		slot.bagGlow:Hide()
+		E:StopFlash(slot.bagGlow)
 	end
 
 	SetItemButtonTexture(slot, texture);
