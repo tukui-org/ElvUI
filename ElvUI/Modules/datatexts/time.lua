@@ -3,11 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local date = date
 local next, unpack = next, unpack
 local format, join = string.format, string.join
 local tsort, tinsert = table.sort, table.insert
-local utf8sub = string.utf8sub
+local date, utf8sub = date, string.utf8sub
 
 --WoW API / Variables
 local GetGameTime = GetGameTime
@@ -48,7 +47,6 @@ local curHr, curMin, curAmPm
 local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
-local localizedName, isActive, startTime, canEnter, _
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
@@ -152,6 +150,8 @@ local function OnEnter(self)
 	end
 
 	local addedHeader = false
+	local localizedName, isActive, startTime, canEnter, _
+
 	for i = 1, GetNumWorldPVPAreas() do
 		_, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
 		if canEnter then
@@ -171,7 +171,8 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
-	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg, sortName, difficulty, locked, isRaid, isLFR, isHeroicOrMythicDungeon, isHeroic, displayHeroic, displayMythic, lockoutColor
+	local name, difficulty, locked, extended, isRaid
+	local isLFR, isHeroicOrMythicDungeon, isHeroic, displayHeroic, displayMythic, sortName, difficultyLetter, buttonImg
 
 	for i = 1, GetNumSavedInstances() do
 		name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
@@ -190,6 +191,7 @@ local function OnEnter(self)
 		end
 	end
 
+	local reset, maxPlayers, numEncounters, encounterProgress, lockoutColor
 	if next(lockedInstances["raids"]) then
 		if DT.tooltip:NumLines() > 0 then
 			DT.tooltip:AddLine(" ")
