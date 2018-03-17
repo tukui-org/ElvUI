@@ -38,7 +38,7 @@ Changed the click needed to reset current session in the gold datatext from Shif
 Added automatic handling of "Attach To" setting on unitframe auras. When setting Smart Aura Position, then the "Attach To" setting will automatically be set for the respective aura type, and then the selection box will be disabled.  
 Saved Instances will now be sorted by name then difficulty. (Thanks Kelebek for initial work!)  
 Saved Instances will now show Raid Finder lockouts correctly and will also allow heroic dungeons to be shown.  
-Added a new item glow to the Bag module.  
+Added a new item glow to the Bag module. (This will flash on the inside of the slot, based on the slots border color.)  
 
 
 ___
