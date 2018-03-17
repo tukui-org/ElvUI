@@ -1738,7 +1738,7 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message)
-	for itemLink in message:gmatch("|%x+|Hitem:.-|h.-|h|r") do
+	for itemLink in message:gmatch("|%x+|H.-|h.-|h|r") do
 		protectLinks[itemLink]=itemLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if itemLink == keyword then
