@@ -1738,10 +1738,10 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message)
-	for itemLink in message:gmatch("|%x+|H.-|h.-|h|r") do
-		protectLinks[itemLink]=itemLink:gsub('%s','|s')
+	for hyperLink in message:gmatch("|%x+|H.-|h.-|h|r") do
+		protectLinks[hyperLink]=hyperLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
-			if itemLink == keyword then
+			if hyperLink == keyword then
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
 					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
@@ -1753,8 +1753,8 @@ function CH:CheckKeyword(message)
 		end
 	end
 
-	for itemLink, tempLink in pairs(protectLinks) do
-		message = message:gsub(itemLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
+	for hyperLink, tempLink in pairs(protectLinks) do
+		message = message:gsub(hyperLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
 	end
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
@@ -1796,9 +1796,9 @@ function CH:CheckKeyword(message)
 		end
 	end
 
-	for itemLink, tempLink in pairs(protectLinks) do
-		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), itemLink)
-		protectLinks[itemLink] = nil
+	for hyperLink, tempLink in pairs(protectLinks) do
+		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
+		protectLinks[hyperLink] = nil
 	end
 
 	return rebuiltString
