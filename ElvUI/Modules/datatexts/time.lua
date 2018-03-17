@@ -112,7 +112,7 @@ end
 
 local locale = GetLocale()
 local krcntw = locale == "koKR" or locale == "zhCN" or locale == "zhTW"
-local nhm = { -- Raid Finder, Normal, Heroic, Mythic
+local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and PLAYER_DIFFICULTY3) or utf8sub(PLAYER_DIFFICULTY3, 1, 1), -- R
 	(krcntw and PLAYER_DIFFICULTY1) or utf8sub(PLAYER_DIFFICULTY1, 1, 1), -- N
 	(krcntw and PLAYER_DIFFICULTY2) or utf8sub(PLAYER_DIFFICULTY2, 1, 1), -- H
@@ -180,7 +180,7 @@ local function OnEnter(self)
 			isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
 			_, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-			difficultyLetter = (displayMythic and nhm[4] or (isHeroic or displayHeroic) and nhm[3] or isLFR and nhm[1] or nhm[2])
+			difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
 			buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
 
 			if isRaid then
