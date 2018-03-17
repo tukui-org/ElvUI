@@ -171,12 +171,12 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
-	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg, sortName, difficulty, locked, isRaid, isLFR, isHeroicOrMythic, isHeroic, displayHeroic, displayMythic, lockoutColor
+	local name, reset, extended, maxPlayers, numEncounters, encounterProgress, difficultyLetter, buttonImg, sortName, difficulty, locked, isRaid, isLFR, isHeroicOrMythicDungeon, isHeroic, displayHeroic, displayMythic, lockoutColor
 
 	for i = 1, GetNumSavedInstances() do
 		name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
-			isLFR, isHeroicOrMythic = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
+			isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
 			_, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
 			difficultyLetter = (displayMythic and nhm[4] or (isHeroic or displayHeroic) and nhm[3] or isLFR and nhm[1] or nhm[2])
@@ -184,7 +184,7 @@ local function OnEnter(self)
 
 			if isRaid then
 				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
-			elseif not isRaid and isHeroicOrMythic then
+			elseif isHeroicOrMythicDungeon then
 				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			end
 		end
