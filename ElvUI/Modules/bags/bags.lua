@@ -497,11 +497,17 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
-		slot.shadow:Show()
-		E:Flash(slot.shadow, 1, true)
-	else
-		slot.shadow:Hide()
-		E:StopFlash(slot.shadow)
+		local _, _, _, quality = GetContainerItemInfo(slot.bagID, slot.slotID)
+		if quality and NEW_ITEM_ATLAS_BY_QUALITY[quality] then
+			slot.NewItemTexture:SetAtlas(NEW_ITEM_ATLAS_BY_QUALITY[quality])
+		else
+			slot.NewItemTexture:SetAtlas("bags-glow-white")
+		end
+		slot.NewItemTexture:Show()
+		if not slot.flashAnim:IsPlaying() and not slot.newitemglowAnim:IsPlaying() then
+			slot.flashAnim:Play()
+			slot.newitemglowAnim:Play()
+		end
 	end
 
 	if (texture) then
@@ -1037,11 +1043,17 @@ function B:UpdateReagentSlot(slotID)
 	end
 
 	if(C_NewItemsIsNewItem(bagID, slotID)) then
-		slot.shadow:Show()
-		E:Flash(slot.shadow, 1, true)
-	else
-		slot.shadow:Hide()
-		E:StopFlash(slot.shadow)
+		local _, _, _, quality = GetContainerItemInfo(slot.bagID, slot.slotID)
+		if quality and NEW_ITEM_ATLAS_BY_QUALITY[quality] then
+			slot.NewItemTexture:SetAtlas(NEW_ITEM_ATLAS_BY_QUALITY[quality])
+		else
+			slot.NewItemTexture:SetAtlas("bags-glow-white")
+		end
+		slot.NewItemTexture:Show()
+		if not slot.flashAnim:IsPlaying() and not slot.newitemglowAnim:IsPlaying() then
+			slot.flashAnim:Play()
+			slot.newitemglowAnim:Play()
+		end
 	end
 
 	SetItemButtonTexture(slot, texture);
