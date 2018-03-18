@@ -473,16 +473,16 @@ local function LoadSkin()
 
 						-- these two only need to be called once
 						-- adding them here will prevent additional calls
-						button.expandIcon:SetPoint("LEFT", 4, 0);
-						button.expandIcon:SetSize(14, 14);
+						button.expandIcon:Point("LEFT", 4, 0);
+						button.expandIcon:SetSize(15, 15);
 					end
 					if button.isHeader then
 						if button.isExpanded then
 							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
-							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+							button.expandIcon:SetTexCoord(0,1,0,1);
 						else
 							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
-							button.expandIcon:SetTexCoord(unpack(E.TexCoords));
+							button.expandIcon:SetTexCoord(0,1,0,1);
 						end
 						button.highlightTexture:Show()
 					else
