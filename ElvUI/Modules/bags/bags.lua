@@ -407,7 +407,7 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
-function B:BagSlotGlowSwitch(slot, show)
+function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show then
 			slot.newItemGlow:Show()
@@ -419,8 +419,8 @@ function B:BagSlotGlowSwitch(slot, show)
 	end
 end
 
-local function hideBagSlotGlow(slot)
-	B:BagSlotGlowSwitch(slot)
+local function hideNewItemGlow(slot)
+	B:NewItemGlowSlotSwitch(slot)
 end
 
 function B:UpdateSlot(bagID, slotID)
@@ -522,7 +522,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	B:BagSlotGlowSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
+	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
@@ -901,7 +901,7 @@ function B:Layout(isBank)
 						newItemGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagNewItemGlow.tga")
 						newItemGlow:Hide()
 						f.Bags[bagID][slotID].newItemGlow = newItemGlow
-						f.Bags[bagID][slotID]:HookScript("OnEnter", hideBagSlotGlow)
+						f.Bags[bagID][slotID]:HookScript("OnEnter", hideNewItemGlow)
 					end
 				end
 
@@ -994,7 +994,7 @@ function B:Layout(isBank)
 					newItemGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagNewItemGlow.tga")
 					newItemGlow:Hide()
 					f.reagentFrame.slots[i].newItemGlow = newItemGlow
-					f.reagentFrame.slots[i]:HookScript("OnEnter", hideBagSlotGlow)
+					f.reagentFrame.slots[i]:HookScript("OnEnter", hideNewItemGlow)
 				end
 			end
 
@@ -1081,7 +1081,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	B:BagSlotGlowSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
+	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
