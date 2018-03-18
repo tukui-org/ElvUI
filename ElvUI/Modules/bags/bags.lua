@@ -407,15 +407,20 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
-function B:HideBagSlotGlow(slot)
-	if slot and slot.bagGlow and slot.bagGlow:IsShown() then
-		slot.bagGlow:Hide()
-		E:StopFlash(slot.bagGlow)
+function B:BagSlotGlowSwitch(slot, show)
+	if slot and slot.bagGlow then
+		if show then
+			slot.bagGlow:Show()
+			E:Flash(slot.bagGlow, 0.5, true)
+		else
+			slot.bagGlow:Hide()
+			E:StopFlash(slot.bagGlow)
+		end
 	end
 end
 
 local function hideBagSlotGlow(slot)
-	B:HideBagSlotGlow(slot)
+	B:BagSlotGlowSwitch(slot)
 end
 
 function B:UpdateSlot(bagID, slotID)
@@ -517,13 +522,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	if(C_NewItems_IsNewItem(bagID, slotID)) then
-		slot.bagGlow:Show()
-		E:Flash(slot.bagGlow, 0.5, true)
-	else
-		slot.bagGlow:Hide()
-		E:StopFlash(slot.bagGlow)
-	end
+	B:BagSlotGlowSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
@@ -1082,13 +1081,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	if(C_NewItems_IsNewItem(bagID, slotID)) then
-		slot.bagGlow:Show()
-		E:Flash(slot.bagGlow, 0.5, true)
-	else
-		slot.bagGlow:Hide()
-		E:StopFlash(slot.bagGlow)
-	end
+	B:BagSlotGlowSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
