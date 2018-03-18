@@ -378,9 +378,9 @@ local function IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, 
 	return false
 end
 
-local UpdateItemUpgradeIcon, UpgradeCheck_OnUpdate
+local UpdateItemUpgradeIcon;
 local ITEM_UPGRADE_CHECK_TIME = 0.5;
-function UpgradeCheck_OnUpdate(self, elapsed)
+local function UpgradeCheck_OnUpdate(self, elapsed)
 	self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed;
 
 	if (self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME) then
@@ -391,13 +391,14 @@ end
 function UpdateItemUpgradeIcon(slot)
 	if not E.db.bags.upgradeIcon then
 		slot.UpgradeIcon:SetShown(false);
+		slot:SetScript("OnUpdate", nil);
 		return
 	end
 
 	slot.timeSinceUpgradeCheck = 0;
 
 	local itemIsUpgrade = IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
-	if (itemIsUpgrade == nil) then -- nil means not all the data was available to determine if this is an upgrade.
+	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false);
 		slot:SetScript("OnUpdate", UpgradeCheck_OnUpdate);
 	else
