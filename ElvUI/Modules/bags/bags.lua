@@ -77,7 +77,6 @@ local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
 local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
-local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 
 local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
 local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
@@ -846,10 +845,21 @@ function B:Layout(isBank)
 
 					if not(f.Bags[bagID][slotID].questIcon) then
 						f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'] or _G[f.Bags[bagID][slotID]:GetName()].IconQuestTexture
-						f.Bags[bagID][slotID].questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG);
-						f.Bags[bagID][slotID].questIcon:SetInside(f.Bags[bagID][slotID]);
-						f.Bags[bagID][slotID].questIcon:SetTexCoord(unpack(E.TexCoords));
+						f.Bags[bagID][slotID].questIcon:ClearAllPoints();
+						f.Bags[bagID][slotID].questIcon:SetPoint("BOTTOMLEFT", 1, 2);
+						f.Bags[bagID][slotID].questIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagQuestIcon.tga");
+						f.Bags[bagID][slotID].questIcon:SetSize(24, 24);
+						f.Bags[bagID][slotID].questIcon:SetTexCoord(0,1,0,1);
 						f.Bags[bagID][slotID].questIcon:Hide();
+					end
+
+					if f.Bags[bagID][slotID].UpgradeIcon then
+						f.Bags[bagID][slotID].UpgradeIcon:ClearAllPoints();
+						f.Bags[bagID][slotID].UpgradeIcon:SetPoint("TOPLEFT", 1, 0);
+						f.Bags[bagID][slotID].UpgradeIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagUpgradeIcon.tga");
+						f.Bags[bagID][slotID].UpgradeIcon:SetSize(24, 24);
+						f.Bags[bagID][slotID].UpgradeIcon:SetTexCoord(0,1,0,1);
+						f.Bags[bagID][slotID].UpgradeIcon:Hide();
 					end
 
 					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
