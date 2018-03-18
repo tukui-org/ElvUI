@@ -15,7 +15,7 @@ local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
-local C_NewItemsIsNewItem = C_NewItems.IsNewItem
+local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_Timer_After = C_Timer.After
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
@@ -407,6 +407,17 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
+function B:HideBagSlotGlow(slot)
+	if slot and slot.bagGlow and slot.bagGlow:IsShown() then
+		slot.bagGlow:Hide()
+		E:StopFlash(slot.bagGlow)
+	end
+end
+
+local function hideBagSlotGlow(slot)
+	B:HideBagSlotGlow(slot)
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -506,7 +517,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	if(C_NewItemsIsNewItem(bagID, slotID)) then
+	if(C_NewItems_IsNewItem(bagID, slotID)) then
 		slot.bagGlow:Show()
 		E:Flash(slot.bagGlow, 0.5, true)
 	else
@@ -885,11 +896,14 @@ function B:Layout(isBank)
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 					end
 
-					local bagGlow = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
-					bagGlow:SetInside()
-					bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
-					bagGlow:Hide()
-					f.Bags[bagID][slotID].bagGlow = bagGlow
+					if not f.Bags[bagID][slotID].bagGlow then
+						local bagGlow = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						bagGlow:SetInside()
+						bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
+						bagGlow:Hide()
+						f.Bags[bagID][slotID].bagGlow = bagGlow
+						f.Bags[bagID][slotID]:HookScript("OnEnter", hideBagSlotGlow)
+					end
 				end
 
 				f.Bags[bagID][slotID]:SetID(slotID);
@@ -975,11 +989,14 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].iconTexture:SetTexCoord(unpack(E.TexCoords));
 				f.reagentFrame.slots[i].IconBorder:SetAlpha(0)
 
-				local bagGlow = f.reagentFrame.slots[i]:CreateTexture(nil, "OVERLAY")
-				bagGlow:SetInside()
-				bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
-				bagGlow:Hide()
-				f.reagentFrame.slots[i].bagGlow = bagGlow
+				if not f.reagentFrame.slots[i].bagGlow then
+					local bagGlow = f.reagentFrame.slots[i]:CreateTexture(nil, "OVERLAY")
+					bagGlow:SetInside()
+					bagGlow:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\bagGlow.tga")
+					bagGlow:Hide()
+					f.reagentFrame.slots[i].bagGlow = bagGlow
+					f.reagentFrame.slots[i]:HookScript("OnEnter", hideBagSlotGlow)
+				end
 			end
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
@@ -1065,7 +1082,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	if(C_NewItemsIsNewItem(bagID, slotID)) then
+	if(C_NewItems_IsNewItem(bagID, slotID)) then
 		slot.bagGlow:Show()
 		E:Flash(slot.bagGlow, 0.5, true)
 	else
