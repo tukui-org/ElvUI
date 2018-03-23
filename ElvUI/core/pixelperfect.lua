@@ -14,7 +14,7 @@ local InCombatLockdown = InCombatLockdown
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 
-local scale, uiParentWidth, uiParentHeight
+local scale, uiParentWidth, uiParentHeight, uiParentScale
 --This handles resizing/repositioning after leaving combat
 local resizeAfterTabFrame = CreateFrame("Frame")
 resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
@@ -22,6 +22,11 @@ resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 		E.UIParent:SetSize(uiParentWidth, uiParentHeight)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 		uiParentWidth, uiParentHeight = nil, nil
+	end
+
+	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
+		UIParent:SetScale(uiParentScale)
+		uiParentScale = nil
 	end
 
 	E.UIParent:ClearAllPoints();
@@ -103,6 +108,11 @@ function E:UIScale(event)
 			SetCVar("useUiScale", 1);
 			SetCVar("uiScale", scale);
 		end
+
+		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
+		if scale < 0.64 then
+			UIParent:SetScale(scale)
+		end
 	end
 
 	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
@@ -135,6 +145,7 @@ function E:UIScale(event)
 		if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
 			uiParentWidth = width
 			uiParentHeight = height
+			uiParentScale = scale
 
 			resizeAfterTabFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		else
