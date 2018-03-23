@@ -5,7 +5,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
-local GetScreenHeight, GetScreenWidth = GetScreenHeight, GetScreenWidth
 local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
