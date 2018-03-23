@@ -30,8 +30,6 @@ Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea
 
 
 **Bug Fixes:**   
-Fixed UI-Scale bug for users over 1080p in Fullscreen mode. (Thanks AcidWeb and Nihilith for helping debug).  
-Fixed UI-Scale being off for Mac users as well. (Thank you critklepka for helping debug the Mac scale issue).  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
 Fixed error trying to copy settings between nameplate units (#305).  
@@ -39,7 +37,8 @@ Fixed various issues with the keybind feature (/kb). Trying to keybind an empty 
 Clicking on a player's name who whispered you or messaged into guild chat via Mobile app will now properly link their name with realm attached.  
 Corrected issue which made the UI Scale incorrect after alt-tab during combat when using Fullscreen on higher resolutions. (This will now autocorrect itself after combat ends).  
 Fixed issue in which class colored names in chat could still hijack the coloring of some hyperlinks. (This will also allow other hyperlinks to be keywords as well.)  
-Fixed various scaling issues in the pixel perfect code.  
+Fixed UI-Scale bug for users over 1080p in Fullscreen mode. (Thanks AcidWeb and Nihilith for helping debug).  
+Fixed UI-Scale being off for Mac users as well. (Thank you critklepka for helping debug the Mac scale issue).  
 
 
 **Misc. Changes:**  
