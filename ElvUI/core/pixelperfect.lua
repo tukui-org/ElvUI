@@ -19,7 +19,8 @@ local resizeAfterTabFrame = CreateFrame("Frame")
 resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
 		UIParent:SetScale(uiParentScale)
-		uiParentScale = nil
+		E.UIParent:SetSize(UIParent:GetSize())
+		uiParentScale, uiParentWidth, uiParentHeight = nil, nil, nil
 	end
 
 	if uiParentWidth and uiParentHeight then
