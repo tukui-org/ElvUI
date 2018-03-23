@@ -28,6 +28,8 @@ function UF:Construct_DebuffHighlight(frame)
 		frame.DBHGlow:SetParent(frame.Health)
 	end
 
+	dbh.PostUpdate = UF.PostUpdate_DebuffHighlight
+
 	return dbh
 end
 
@@ -47,5 +49,16 @@ function UF:Configure_DebuffHighlight(frame)
 		end
 	else
 		frame:DisableElement('DebuffHighlight')
+	end
+end
+
+function UF:PostUpdate_DebuffHighlight(object, debuffType, texture, wasFiltered, style, color)
+	if debuffType and not wasFiltered then
+		color = UF.db.colors.debuffHighlight[debuffType]
+		if object.DebuffHighlightBackdrop and object.DBHGlow then
+			object.DBHGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+		else
+			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
+		end
 	end
 end

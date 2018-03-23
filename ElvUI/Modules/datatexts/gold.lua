@@ -6,10 +6,11 @@ local DT = E:GetModule('DataTexts')
 local pairs = pairs
 local join = string.join
 --WoW API / Variables
-local IsLoggedIn = IsLoggedIn
-local GetMoney = GetMoney
-local IsShiftKeyDown = IsShiftKeyDown
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local GetMoney = GetMoney
+local IsControlKeyDown = IsControlKeyDown
+local IsLoggedIn = IsLoggedIn
+local IsShiftKeyDown = IsShiftKeyDown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvDB, ToggleAllBags
@@ -45,14 +46,14 @@ local function OnEvent(self)
 end
 
 local function Click(self, btn)
-	if IsShiftKeyDown() then
-		if btn == "LeftButton" then
-			Profit = 0
-			Spent = 0
-			DT.tooltip:Hide();
-		elseif btn == "RightButton" then
+	if btn == "RightButton" then
+		if IsShiftKeyDown() then
 			ElvDB.gold = nil;
 			OnEvent(self)
+			DT.tooltip:Hide();
+		elseif IsControlKeyDown() then
+			Profit = 0
+			Spent = 0
 			DT.tooltip:Hide();
 		end
 	else

@@ -140,83 +140,32 @@ E.Options.args.chat = {
 					type = "toggle",
 					name = L["Auto-Close Pet Battle Log"],
 				},
-				socialQueueMessages = {
+				useBTagName = {
 					order = 13,
+					type = "toggle",
+					name = L["Use Real ID BattleTag"],
+					desc = L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."],
+				},
+				socialQueueMessages = {
+					order = 14,
 					type = "toggle",
 					name = L["Quick Join Messages"],
 					desc = L["Show clickable Quick Join messages inside of the chat."],
 				},
 				copyChatLines = {
-					order = 14,
+					order = 15,
 					type = "toggle",
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				throttleInterval = {
-					order = 15,
-					type = 'range',
-					name = L["Spam Interval"],
-					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
-					min = 0, max = 120, step = 1,
-					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
-						if value == 0 then
-							CH:DisableChatThrottle()
-						end
-					end,
-				},
-				scrollDownInterval = {
-					order = 16,
-					type = 'range',
-					name = L["Scroll Interval"],
-					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
-					min = 0, max = 120, step = 5,
-					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
-					end,
-				},
-				numAllowedCombatRepeat = {
-					order = 17,
-					type = "range",
-					name = L["Allowed Combat Repeat"],
-					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
-					min = 2, max = 10, step = 1,
-				},
-				numScrollMessages = {
-					order = 18,
-					type = "range",
-					name = L["Scroll Messages"],
-					desc = L["Number of messages you scroll for each step."],
-					min = 1, max = 10, step = 1,
-				},
-				spacer = {
-					order = 19,
-					type = "description",
-					name = " ",
-				},
-				timeStampFormat = {
-					order = 20,
-					type = 'select',
-					name = TIMESTAMPS_LABEL,
-					desc = OPTION_TOOLTIP_TIMESTAMPS,
-					values = {
-						['NONE'] = NONE,
-						["%I:%M "] = "03:27",
-						["%I:%M:%S "] = "03:27:32",
-						["%I:%M %p "] = "03:27 PM",
-						["%I:%M:%S %p "] = "03:27:32 PM",
-						["%H:%M "] = "15:27",
-						["%H:%M:%S "] =	"15:27:32"
-					},
-				},
 				useCustomTimeColor = {
-					order = 21,
+					order = 16,
 					type = "toggle",
 					name = L["Custom Timestamp Color"],
 					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
 				},
 				customTimeColor = {
-					order = 22,
+					order = 17,
 					type = "color",
 					hasAlpha = false,
 					name = L["Timestamp Color"],
@@ -231,6 +180,58 @@ E.Options.args.chat = {
 						t.r, t.g, t.b = r, g, b
 					end,
 				},
+				timeStampFormat = {
+					order = 18,
+					type = 'select',
+					name = TIMESTAMPS_LABEL,
+					desc = OPTION_TOOLTIP_TIMESTAMPS,
+					values = {
+						['NONE'] = NONE,
+						["%I:%M "] = "03:27",
+						["%I:%M:%S "] = "03:27:32",
+						["%I:%M %p "] = "03:27 PM",
+						["%I:%M:%S %p "] = "03:27:32 PM",
+						["%H:%M "] = "15:27",
+						["%H:%M:%S "] =	"15:27:32"
+					},
+				},
+				throttleInterval = {
+					order = 19,
+					type = 'range',
+					name = L["Spam Interval"],
+					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
+					min = 0, max = 120, step = 1,
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value
+						if value == 0 then
+							CH:DisableChatThrottle()
+						end
+					end,
+				},
+				scrollDownInterval = {
+					order = 20,
+					type = 'range',
+					name = L["Scroll Interval"],
+					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
+					min = 0, max = 120, step = 5,
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value
+					end,
+				},
+				numAllowedCombatRepeat = {
+					order = 21,
+					type = "range",
+					name = L["Allowed Combat Repeat"],
+					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
+					min = 2, max = 10, step = 1,
+				},
+				numScrollMessages = {
+					order = 22,
+					type = "range",
+					name = L["Scroll Messages"],
+					desc = L["Number of messages you scroll for each step."],
+					min = 1, max = 10, step = 1,
+				}
 			},
 		},
 		alerts = {

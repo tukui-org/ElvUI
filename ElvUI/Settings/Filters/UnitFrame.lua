@@ -747,6 +747,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 
 		-- Kin'garoth
 		[244312] = Defaults(), -- Forging Strike
+		[254919] = Defaults(), -- Forging Strike
 		[246840] = Defaults(), -- Ruiner
 		[248061] = Defaults(), -- Purging Protocol
 		[249686] = Defaults(), -- Reverberating Decimation

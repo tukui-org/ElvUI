@@ -270,6 +270,16 @@ local function LoadSkin()
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton, nil, true)
 	end
 
+	hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button)
+		if button and button.expandOrCollapseButton:IsShown() then
+			if button.isCollapsed then
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+			else
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+			end
+		end
+	end)
+
 	hooksecurefunc("ScenarioQueueFrameSpecific_Update", function()
 
 		for i = 1, NUM_SCENARIO_CHOICE_BUTTONS do
@@ -323,6 +333,14 @@ local function LoadSkin()
 			item.border = CreateFrame("Frame", nil, item)
 			item.border:SetTemplate()
 			item.border:SetOutside(item.Icon)
+
+			hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().border:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(item.IconBorder, "Hide", function(self)
+				self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 
 			item.Icon:SetTexCoord(unpack(E.TexCoords))
 			item.Icon:SetDrawLayer("OVERLAY")

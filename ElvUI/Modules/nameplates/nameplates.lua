@@ -935,7 +935,7 @@ end
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
-		if(type(value) == "table") then
+		if(type(value) == "table" and to[setting] ~= nil) then
 			CopySettings(from[setting], to[setting])
 		else
 			if(to[setting] ~= nil) then

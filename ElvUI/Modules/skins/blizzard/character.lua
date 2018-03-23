@@ -6,12 +6,13 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, pairs, select = unpack, pairs, select
 --WoW API / Variables
+local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local GetFactionInfo = GetFactionInfo
 local GetItemLevelColor = GetItemLevelColor
+local GetNumFactions = GetNumFactions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationRole = GetSpecializationRole
-local GetCurrencyListSize = GetCurrencyListSize
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitLevel = UnitLevel
@@ -375,8 +376,22 @@ local function LoadSkin()
 	local function UpdateFactionSkins()
 		ReputationListScrollFrame:StripTextures()
 		ReputationFrame:StripTextures(true)
-		for i=1, GetNumFactions() do
+		local factionOffset = FauxScrollFrame_GetOffset(ReputationListScrollFrame)
+		local numFactions = GetNumFactions()
+		for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
 			local statusbar = _G["ReputationBar"..i.."ReputationBar"]
+			local button = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
+			local factionIndex = factionOffset + i
+			local _, _, _, _, _, _, _, _, _, isCollapsed = GetFactionInfo(factionIndex)
+			if ( factionIndex <= numFactions ) then
+				if button then
+					if isCollapsed then
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+					else
+						button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+					end
+				end
+			end
 
 			if statusbar then
 				statusbar:SetStatusBarTexture(E["media"].normTex)
@@ -393,16 +408,15 @@ local function LoadSkin()
 				_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
-
 			end
 		end
 		ReputationDetailFrame:StripTextures()
 		ReputationDetailFrame:SetTemplate("Transparent")
 		ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
 	end
-	ReputationFrame:HookScript("OnShow", UpdateFactionSkins)
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
+	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)
 
 	--Reputation Paragon Tooltip
 	local tooltip = ReputationParagonTooltip
@@ -424,25 +438,62 @@ local function LoadSkin()
 	end)
 
 	--Currency
-	TokenFrame:HookScript("OnShow", function()
-		for i=1, GetCurrencyListSize() do
-			local button = _G["TokenFrameContainerButton"..i]
+	local function UpdateCurrencySkins()
+		if TokenFramePopup then
+			if not TokenFramePopup.template then
+				TokenFramePopup:StripTextures();
+				TokenFramePopup:SetTemplate("Transparent");
+			end
+			TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28);
+		end
+
+		if not TokenFrameContainer.buttons then return end
+		local buttons = TokenFrameContainer.buttons;
+		local numButtons = #buttons;
+
+		for i=1, numButtons do
+			local button = buttons[i];
 
 			if button then
-				button.highlight:Kill()
-				button.categoryMiddle:Kill()
-				button.categoryLeft:Kill()
-				button.categoryRight:Kill()
+				if button.highlight then button.highlight:Kill() end
+				if button.categoryLeft then button.categoryLeft:Kill() end
+				if button.categoryRight then button.categoryRight:Kill() end
+				if button.categoryMiddle then button.categoryMiddle:Kill() end
 
 				if button.icon then
-					button.icon:SetTexCoord(unpack(E.TexCoords))
+					button.icon:SetTexCoord(unpack(E.TexCoords));
+				end
+
+				if button.expandIcon then
+					if not button.highlightTexture then
+						button.highlightTexture = button:CreateTexture(button:GetName().."HighlightTexture", "HIGHLIGHT");
+						button.highlightTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Hilight");
+						button.highlightTexture:SetBlendMode("ADD");
+						button.highlightTexture:SetInside(button.expandIcon);
+
+						-- these two only need to be called once
+						-- adding them here will prevent additional calls
+						button.expandIcon:Point("LEFT", 4, 0);
+						button.expandIcon:SetSize(15, 15);
+					end
+					if button.isHeader then
+						if button.isExpanded then
+							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+							button.expandIcon:SetTexCoord(0,1,0,1);
+						else
+							button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+							button.expandIcon:SetTexCoord(0,1,0,1);
+						end
+						button.highlightTexture:Show()
+					else
+						button.highlightTexture:Hide()
+					end
 				end
 			end
 		end
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate("Transparent")
-		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
-	end)
+	end
+	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
+	hooksecurefunc(TokenFrameContainer, "update", UpdateCurrencySkins)
 end
 
 S:AddCallback("Character", LoadSkin)

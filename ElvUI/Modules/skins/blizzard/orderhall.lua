@@ -69,6 +69,10 @@ local function LoadSkin()
 	FollowerTab.XPBar:SetStatusBarTexture(E["media"].normTex)
 	FollowerTab.XPBar:CreateBackdrop()
 
+	-- Orderhall Portraits
+	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
+	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to garrison landing page
+
 	-- Missions
 	local MissionTab = OrderHallMissionFrame.MissionTab
 	local MissionComplete = OrderHallMissionFrame.MissionComplete

@@ -245,13 +245,14 @@ function TT:GetTalentSpec(unit, isPlayer)
 		if(not isPlayer) then
 			local role = GetSpecializationRoleByID(spec);
 			if(role ~= nil) then
-				local _, name = GetSpecializationInfoByID(spec);
-				return name
+				local _, name, _, icon = GetSpecializationInfoByID(spec)
+				icon = icon and "|T"..icon..":12:12:0:0:64:64:5:59:5:59|t " or ""
+				return name and icon..name
 			end
 		else
-			local _, name = GetSpecializationInfo(spec)
-
-			return name
+			local _, name, _, icon = GetSpecializationInfo(spec)
+			icon = icon and "|T"..icon..":12:12:0:0:64:64:5:59:5:59|t " or ""
+			return name and icon..name
 		end
 	end
 end
@@ -592,6 +593,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			local name = UnitName(caster)
 			local _, class = UnitClass(caster)
 			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+			if not color then color = RAID_CLASS_COLORS["PRIEST"] end
 			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))

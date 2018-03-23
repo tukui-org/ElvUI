@@ -3,6 +3,7 @@
 	<Script file='addonmanager.lua'/>
 	<Script file='AdventureMap.lua'/>
 	<Script file='alerts.lua'/>
+	<Script file='AlliedRaces.lua'/>
 	<Script file='archaeology.lua'/>
 	<Script file='artifact.lua'/>
 	<Script file='auctionhouse.lua'/>
@@ -25,6 +26,7 @@
 	<Script file='friends.lua'/>
 	<Script file='flightmap.lua'/>
 	<Script file='garrison.lua'/>
+	<Script file='garrison_template.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='gossip.lua'/>
 	<Script file='guild.lua'/>

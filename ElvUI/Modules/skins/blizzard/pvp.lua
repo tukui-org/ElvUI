@@ -74,6 +74,29 @@ local function LoadSkin()
 	HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetInside()
 	HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
+	for _, button in pairs({HonorFrame.BonusFrame.RandomBGButton, HonorFrame.BonusFrame.Arena1Button, HonorFrame.BonusFrame.BrawlButton}) do
+		button.Reward:StripTextures()
+		button.Reward:SetTemplate("Default")
+		button.Reward:SetSize(40, 40)
+		button.Reward:SetPoint("RIGHT", button, "RIGHT", -8, 0)
+
+		button.Reward.Icon:SetAllPoints()
+		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
+		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
+		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
+		button.Reward.EnlistmentBonus:StripTextures()
+		button.Reward.EnlistmentBonus:SetTemplate("Default")
+		button.Reward.EnlistmentBonus:SetSize(20, 20)
+		button.Reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
+
+		local EnlistmentBonusIcon = button.Reward.EnlistmentBonus:CreateTexture(nil, nil, self)
+		EnlistmentBonusIcon:SetPoint("TOPLEFT", button.Reward.EnlistmentBonus, "TOPLEFT", 2, -2)
+		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
+		EnlistmentBonusIcon:SetTexture("Interface\\Icons\\achievement_guildperk_honorablemention_rank2")
+		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	end
+
 	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
 	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
 
@@ -160,6 +183,27 @@ local function LoadSkin()
 		button:StyleButton(nil, true)
 		button.SelectedTexture:SetInside()
 		button.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
+		button.Reward:StripTextures()
+		button.Reward:SetTemplate("Default")
+		button.Reward:SetSize(35, 35)
+		button.Reward:SetPoint("RIGHT", button, "RIGHT", -7, -1)
+
+		button.Reward.Icon:SetAllPoints()
+		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
+		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
+		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
+		button.Reward.WeeklyBonus:StripTextures()
+		button.Reward.WeeklyBonus:SetTemplate("Default")
+		button.Reward.WeeklyBonus:SetSize(20, 20)
+		button.Reward.WeeklyBonus:SetPoint("TOPRIGHT", 2, 2)
+
+		local WeeklyBonusIcon = button.Reward.WeeklyBonus:CreateTexture(nil, nil, self)
+		WeeklyBonusIcon:SetPoint("TOPLEFT", button.Reward.WeeklyBonus, "TOPLEFT", 2, -2)
+		WeeklyBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.WeeklyBonus, "BOTTOMRIGHT", -2, 2)
+		WeeklyBonusIcon:SetTexture("Interface\\Icons\\ability_skyreach_flash_bang")
+		WeeklyBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
 	handleButton(ConquestFrame.RatedBG)

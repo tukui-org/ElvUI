@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
+local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
 local C_Timer_After = C_Timer.After
 local CreateFrame = CreateFrame
@@ -101,6 +101,38 @@ local function LoadSkin()
 			Count:SetDrawLayer("OVERLAY")
 
 			Button.NameFrame:Kill()
+		end
+	end)
+
+	local function SkinRecipeList(self, _, tradeSkillInfo)
+		-- +/- Buttons
+		if tradeSkillInfo.collapsed then
+			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+		else
+			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+		end
+
+		-- Skillbar
+		if tradeSkillInfo.hasProgressBar then
+			self.SubSkillRankBar.BorderMid:Hide()
+			self.SubSkillRankBar.BorderLeft:Hide()
+			self.SubSkillRankBar.BorderRight:Hide()
+
+			if not self.SubSkillRankBar.backdrop then
+				self.SubSkillRankBar:CreateBackdrop("Default")
+				self.SubSkillRankBar.backdrop:SetAllPoints()
+				self.SubSkillRankBar:SetStatusBarTexture(E["media"].normTex)
+				E:RegisterStatusBar(self.SubSkillRankBar)
+			end
+		end
+	end
+
+	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
+		for i, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do
+			if not tradeSkillButton.headerIsHooked then
+				hooksecurefunc(tradeSkillButton, "SetUpHeader", SkinRecipeList)
+				tradeSkillButton.headerIsHooked = true
+			end
 		end
 	end)
 

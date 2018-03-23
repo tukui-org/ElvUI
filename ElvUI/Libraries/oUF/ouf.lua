@@ -190,7 +190,13 @@ for k, v in next, {
 		UnregisterUnitWatch(self)
 		self:Hide()
 	end,
+	--[[ frame:IsEnabled()
+	Used to check if a unit frame is registered with the unit existence monitor. This is a reference to
+	`UnitWatchRegistered`.
 
+	* self - unit frame
+	--]]
+	IsEnabled = UnitWatchRegistered,
 	--[[ frame:UpdateAllElements(event)
 	Used to update all enabled elements on the given frame.
 
@@ -659,6 +665,9 @@ do
 
 	-- The remainder of this scope is a temporary fix for issue #404,
 	-- regarding vehicle support on headers for the Antorus raid instance.
+	-- Track changes to SecureButton_GetModifiedUnit, this hack should be
+	-- removed when UnitTargetsVehicleInRaidUI is added to it. Supposedly,
+	-- it should happen in 8.x.
 	local isHacked = false
 	local shouldHack
 

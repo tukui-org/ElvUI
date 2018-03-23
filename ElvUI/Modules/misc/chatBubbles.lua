@@ -7,15 +7,20 @@ local CH = E:GetModule("Chat");
 local select, unpack, pairs = select, unpack, pairs
 local format = string.format
 --WoW API / Variables
+local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
+
+--Message caches
+local messageToGUID = {}
+local messageToSender = {}
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
@@ -32,9 +37,16 @@ function M:UpdateBubbleBorder()
 		end
 	end
 
+	local text = self.text:GetText()
+	if self.Name then
+		self.Name:SetText("") --Always reset it
+		if text and E.private.general.chatBubbleName then
+			M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
+		end
+	end
+
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
-		local text = self.text:GetText()
 		if text and text:match("%s-[^%s]+%s*") then
 			for word in text:gmatch("%s-[^%s]+%s*") do
 				tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
@@ -63,9 +75,26 @@ function M:UpdateBubbleBorder()
 	end
 end
 
+function M:AddChatBubbleName(chatBubble, guid, name)
+	if not name then return end
+
+	local defaultColor, color = "ffffffff"
+	if guid ~= nil and guid ~= "" then
+		local _, class = GetPlayerInfoByGUID(guid)
+		if class then
+			color = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] and CUSTOM_CLASS_COLORS[class].colorStr) or (RAID_CLASS_COLORS[class] and RAID_CLASS_COLORS[class].colorStr)
+		end
+	else
+		color = defaultColor
+	end
+
+	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+end
+
 function M:SkinBubble(frame)
+	if frame:IsForbidden() then return end
 	local mult = E.mult * UIParent:GetScale()
-	for i=1, frame:GetNumRegions() do
+	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			region:SetTexture(nil)
@@ -74,13 +103,20 @@ function M:SkinBubble(frame)
 		end
 	end
 
+	local name = frame:CreateFontString(nil, "BORDER")
+	name:SetPoint("TOPLEFT", 5, 5)
+	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
+	name:SetJustifyH("LEFT")
+	name:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
+	frame.Name = name
+
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
 			frame:SetBackdrop({
-			  bgFile = E["media"].blankTex,
-			  edgeFile = E["media"].blankTex,
-			  tile = false, tileSize = 0, edgeSize = mult,
-			  insets = { left = 0, right = 0, top = 0, bottom = 0}
+				bgFile = E["media"].blankTex,
+				edgeFile = E["media"].blankTex,
+				tile = false, tileSize = 0, edgeSize = mult,
+				insets = { left = 0, right = 0, top = 0, bottom = 0}
 			})
 			frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
 			frame:SetBackdropBorderColor(0, 0, 0)
@@ -154,18 +190,17 @@ function M:SkinBubble(frame)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		frame:SetBackdrop(nil)
-
 		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 		frame.backdrop:SetInside(frame, 4, 4)
 		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
 		frame.backdrop:SetDrawLayer("ARTWORK", -8)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-
 		frame:SetClampedToScreen(false)
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
 		frame:SetBackdrop(nil)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
+		frame.Name:Hide()
 	end
 
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
@@ -173,6 +208,13 @@ function M:SkinBubble(frame)
 	M.UpdateBubbleBorder(frame)
 
 	frame.isSkinnedElvUI = true
+end
+
+local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+	if not E.private.general.chatBubbleName then return end
+
+	messageToGUID[msg] = guid
+	messageToSender[msg] = Ambiguate(sender, "none")
 end
 
 local function ChatBubble_OnUpdate(self, elapsed)
@@ -195,12 +237,22 @@ end
 function M:ToggleChatBubbleScript()
 	local _, instanceType = IsInInstance()
 	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else
+		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
+		--Clear caches
+		messageToGUID = {}
+		messageToSender = {}
 	end
 end
 
 function M:LoadChatBubbles()
 	self.BubbleFrame = CreateFrame('Frame')
+
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")
+	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 end

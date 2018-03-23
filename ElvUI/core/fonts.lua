@@ -77,6 +77,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontSize*1.1)
 		SetFont(SystemFont_OutlineThick_Huge2,      NORMAL, 20, MONOCHROME.."THICKOUTLINE")
 		SetFont(SystemFont_Outline_Small,           NUMBER, self.db.general.fontSize, "OUTLINE")
+		SetFont(SystemFont_Shadow_Huge3,            NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET) -- FlightMap
 		SetFont(SystemFont_Shadow_Large,            NORMAL, 15)
 		SetFont(SystemFont_Shadow_Med1,             NORMAL, self.db.general.fontSize)
 		SetFont(SystemFont_Shadow_Med3,             NORMAL, self.db.general.fontSize*1.1)

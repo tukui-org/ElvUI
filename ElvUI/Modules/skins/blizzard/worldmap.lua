@@ -45,7 +45,6 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
-	-- This button is flashing. Needs review
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
 	QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
@@ -55,42 +54,10 @@ local function LoadSkin()
 
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 
-	local rewardFrames = {
-		['MoneyFrame'] = true,
-		['XPFrame'] = true,
-		['SkillPointFrame'] = true, -- this may have extra textures.. need to check on it when possible
-		['HonorFrame'] = true,
-		['ArtifactXPFrame'] = true,
-		['TitleFrame'] = true,
-	}
-
-	local function HandleReward(frame)
-		if frame.backdrop then return end
-		frame.NameFrame:SetAlpha(0)
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame:CreateBackdrop()
-		frame.backdrop:SetOutside(frame.Icon)
-		frame.Name:FontTemplate()
-		frame.Count:ClearAllPoints()
-		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
-		if(frame.CircleBackground) then
-			frame.CircleBackground:SetAlpha(0)
-			frame.CircleBackgroundGlow:SetAlpha(0)
-		end
-	end
-
-	for frame, _ in pairs(rewardFrames) do
-		HandleReward(MapQuestInfoRewardsFrame[frame])
-	end
-
-	-- The Icon Border should be in QualityColor
-	hooksecurefunc('QuestInfo_GetRewardButton', function(_, index)
-		local button = MapQuestInfoRewardsFrame.RewardButtons[index]
-		if(button) then
-			HandleReward(button)
-			button.IconBorder:SetAlpha(0)
-		end
-	end)
+	local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
+	TrackingOptions.Button:SetAlpha(0)
+	TrackingOptions.Background:SetAlpha(0)
+	TrackingOptions.IconOverlay:SetTexture("")
 
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
