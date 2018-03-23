@@ -18,15 +18,15 @@ local scale, uiParentWidth, uiParentHeight, uiParentScale
 --This handles resizing/repositioning after leaving combat
 local resizeAfterTabFrame = CreateFrame("Frame")
 resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
+	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
+		UIParent:SetScale(uiParentScale)
+		uiParentScale = nil
+	end
+
 	if uiParentWidth and uiParentHeight then
 		E.UIParent:SetSize(uiParentWidth, uiParentHeight)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 		uiParentWidth, uiParentHeight = nil, nil
-	end
-
-	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
-		UIParent:SetScale(uiParentScale)
-		uiParentScale = nil
 	end
 
 	E.UIParent:ClearAllPoints();
