@@ -21,7 +21,7 @@ resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 		UIParent:SetScale(uiParentScale)
 
 		-- we need to regrab the UIParent size here. (issue: #337) reason:
-		-- when we alt tab during combat for resolutions higher than 1080p,
+		-- when we alt tab during combat for resolutions higher than 1080p under lowest scale 0.64,
 		-- the store values are not correct but the scale is.
 		uiParentWidth, uiParentHeight = UIParent:GetSize()
 
