@@ -19,7 +19,12 @@ local resizeAfterTabFrame = CreateFrame("Frame")
 resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
 		UIParent:SetScale(uiParentScale)
+
+		-- we need to regrab the UIParent size here. (issue: #337) reason:
+		-- when we alt tab during combat for resolutions higher than 1080p,
+		-- the store values are not correct but the scale is.
 		uiParentWidth, uiParentHeight = UIParent:GetSize()
+
 		uiParentScale = nil
 	end
 
