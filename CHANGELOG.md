@@ -42,6 +42,7 @@ Saved Instances will now be sorted by name then difficulty. (Thanks Kelebek for 
 Saved Instances will now show Raid Finder lockouts correctly and will also allow heroic dungeons to be shown.  
 Updated the New Item Glow to the Bag module. (This will flash on the inside of the slot, based on the slots border color.)  
 Updated the Quest and Upgrade Icon in the Bag module.  
+Added Kin's Forging Strike to Raid Debuffs (for normal+ raids).  
 
 ___
 **Version 10.72 [ January 28th 2018 ]**
