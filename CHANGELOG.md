@@ -16,6 +16,8 @@ Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea
 
 
 **Bug Fixes:**   
+Fixed UI-Scale bug for users over 1080p in Fullscreen mode. (Thanks AcidWeb and Nihilith for helping debug).  
+Fixed UI-Scale being off for Mac users as well. (Thank you critklepka for helping debug the Mac scale issue).  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
 Fixed error trying to copy settings between nameplate units (#305).  
