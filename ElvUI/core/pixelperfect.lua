@@ -4,7 +4,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
-local IsMacClient = IsMacClient
 local GetCVar, SetCVar = GetCVar, SetCVar
 local GetScreenHeight, GetScreenWidth = GetScreenHeight, GetScreenWidth
 local InCombatLockdown = InCombatLockdown
@@ -46,16 +45,6 @@ end)
 function E:UIScale(event, loginFrame)
 	local width = E.screenwidth
 	local height = E.screenheight
-	local isMacClient = IsMacClient()
-
-	if isMacClient and E.global.screenheight and E.global.screenwidth and (height ~= E.global.screenheight or width ~= E.global.screenwidth) then
-		E.screenheight = E.global.screenheight
-		E.screenwidth = E.global.screenwidth
-
-		-- adjust these for this func
-		width = E.screenwidth
-		height = E.screenheight
-	end
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then
@@ -116,11 +105,6 @@ function E:UIScale(event, loginFrame)
 	end
 
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
-		if isMacClient then
-			E.global.screenheight = floor(GetScreenHeight()*100+.5)/100
-			E.global.screenwidth = floor(GetScreenWidth()*100+.5)/100
-		end
-
 		--Resize E.UIParent if Eyefinity is on.
 		if E.eyefinity then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
