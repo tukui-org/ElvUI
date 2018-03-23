@@ -138,8 +138,7 @@ function E:UIScale(event, loginFrame)
 				E.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 			]]
 		else
-			width = UIParent:GetWidth()
-			height = UIParent:GetHeight()
+			width, height = UIParent:GetSize()
 		end
 
 		if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
