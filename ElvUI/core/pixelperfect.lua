@@ -19,8 +19,8 @@ local resizeAfterTabFrame = CreateFrame("Frame")
 resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 	if uiParentScale and (uiParentScale < 0.64) and E.global.general.autoScale then
 		UIParent:SetScale(uiParentScale)
-		E.UIParent:SetSize(UIParent:GetSize())
-		uiParentScale, uiParentWidth, uiParentHeight = nil, nil, nil
+		uiParentWidth, uiParentHeight = UIParent:GetSize()
+		uiParentScale = nil
 	end
 
 	if uiParentWidth and uiParentHeight then
@@ -127,10 +127,7 @@ function E:UIScale(event, loginFrame)
 		end
 
 		if InCombatLockdown() then --Delay changing size if we are in combat, to prevent error when people have minimized the game
-			uiParentWidth = width
-			uiParentHeight = height
-			uiParentScale = scale
-
+			uiParentWidth, uiParentHeight, uiParentScale = width, height, scale
 			resizeAfterTabFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		else
 			E.UIParent:SetSize(width, height)
