@@ -1547,7 +1547,7 @@ local function HandleCommandBar()
 	end
 end
 
-function E:Initialize()
+function E:Initialize(loginFrame)
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
@@ -1566,7 +1566,7 @@ function E:Initialize()
 	self:DBConversions()
 
 	self:CheckRole()
-	self:UIScale('PLAYER_LOGIN');
+	self:UIScale('PLAYER_LOGIN', loginFrame);
 
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules

@@ -43,35 +43,35 @@ resizeAfterTabFrame:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
 end)
 
-function E:UIScale(event)
-	local width = self.screenwidth
-	local height = self.screenheight
+function E:UIScale(event, loginFrame)
+	local width = E.screenwidth
+	local height = E.screenheight
 	local isMacClient = IsMacClient()
 
-	if isMacClient and self.global.screenheight and self.global.screenwidth and (height ~= self.global.screenheight or width ~= self.global.screenwidth) then
-		self.screenheight = self.global.screenheight
-		self.screenwidth = self.global.screenwidth
+	if isMacClient and E.global.screenheight and E.global.screenwidth and (height ~= E.global.screenheight or width ~= E.global.screenwidth) then
+		E.screenheight = E.global.screenheight
+		E.screenwidth = E.global.screenwidth
 
 		-- adjust these for this func
-		width = self.screenwidth
-		height = self.screenheight
+		width = E.screenwidth
+		height = E.screenheight
 	end
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then
-		self.global.uiScale = uiScaleCVar
+		E.global.uiScale = uiScaleCVar
 	end
 
-	local minScale = self.global.general.minUiScale or 0.64
-	if self.global.general.autoScale then
+	local minScale = E.global.general.minUiScale or 0.64
+	if E.global.general.autoScale then
 		scale = max(minScale, min(1.15, 768/height));
 	else
-		scale = max(minScale, min(1.15, self.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()));
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()));
 	end
 
 	if width < 1600 then
-		self.lowversion = true;
-	elseif width >= 3840 and self.global.general.eyefinity then
+		E.lowversion = true;
+	elseif width >= 3840 and E.global.general.eyefinity then
 		-- because some user enable bezel compensation, we need to find the real width of a single monitor.
 		-- I don't know how it really work, but i'm assuming they add pixel to width to compensate the bezel. :P
 
@@ -91,20 +91,20 @@ function E:UIScale(event)
 
 		-- yep, now set ElvUI to lower resolution if screen #1 width < 1600
 		if width < 1600 then
-			self.lowversion = true;
+			E.lowversion = true;
 		end
 
 		-- register a constant, we will need it later for launch.lua
-		self.eyefinity = width;
+		E.eyefinity = width;
 	end
 
-	self.mult = 768/height/scale
-	self.Spacing = (self.PixelMode and 0) or self.mult
-	self.Border = (self.PixelMode and self.mult) or self.mult*2
+	E.mult = 768/height/scale
+	E.Spacing = (E.PixelMode and 0) or E.mult
+	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
-	if self.global.general.autoScale then
+	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if E.Round and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) and (event == 'PLAYER_LOGIN') then
+		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) then
 			SetCVar("useUiScale", 1);
 			SetCVar("uiScale", scale);
 		end
@@ -115,16 +115,16 @@ function E:UIScale(event)
 		end
 	end
 
-	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
+	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
 		if isMacClient then
-			self.global.screenheight = floor(GetScreenHeight()*100+.5)/100
-			self.global.screenwidth = floor(GetScreenWidth()*100+.5)/100
+			E.global.screenheight = floor(GetScreenHeight()*100+.5)/100
+			E.global.screenwidth = floor(GetScreenWidth()*100+.5)/100
 		end
 
-		--Resize self.UIParent if Eyefinity is on.
-		if self.eyefinity then
-			-- if autoscale is off, find a new width value of self.UIParent for screen #1.
-			if not self.global.general.autoScale or height > 1200 then
+		--Resize E.UIParent if Eyefinity is on.
+		if E.eyefinity then
+			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
+			if not E.global.general.autoScale or height > 1200 then
 				local h = UIParent:GetHeight();
 				local ratio = height / h;
 				local w = width / ratio;
@@ -135,7 +135,7 @@ function E:UIScale(event)
 			--[[Eyefinity Test mode
 				Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 				Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-				self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
+				E.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 			]]
 		else
 			width = UIParent:GetWidth()
@@ -149,39 +149,43 @@ function E:UIScale(event)
 
 			resizeAfterTabFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		else
-			self.UIParent:SetSize(width, height)
-			self.UIParent.origHeight = self.UIParent:GetHeight()
+			E.UIParent:SetSize(width, height)
+			E.UIParent.origHeight = E.UIParent:GetHeight()
 
-			self.UIParent:ClearAllPoints();
-			if self.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-				self.UIParent:Point("BOTTOM");
+			E.UIParent:ClearAllPoints();
+			if E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
+				E.UIParent:Point("BOTTOM");
 			else
-				self.UIParent:Point("CENTER");
+				E.UIParent:Point("CENTER");
 			end
 		end
 
 		--Calculate potential coordinate differences
-		self.diffGetLeft = E:Round(abs(UIParent:GetLeft() - self.UIParent:GetLeft()))
-		self.diffGetRight = E:Round(abs(UIParent:GetRight() - self.UIParent:GetRight()))
-		self.diffGetTop = E:Round(abs(UIParent:GetTop() - self.UIParent:GetTop()))
-		self.diffGetBottom = E:Round(abs(UIParent:GetBottom() - self.UIParent:GetBottom()))
+		E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
+		E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
+		E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
+		E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
 
 		local change
 		if E.Round then
 			change = abs((E:Round(UIParent:GetScale(), 5) * 100) - (E:Round(scale, 5) * 100))
 		end
 
-		if event == 'UI_SCALE_CHANGED' and change and change > 1 and self.global.general.autoScale then
-			E:StaticPopup_Show('FAILED_UISCALE')
-		elseif event == 'UI_SCALE_CHANGED' and change and change > 1 then
-			E:StaticPopup_Show('CONFIG_RL')
+		if event == 'UI_SCALE_CHANGED' and change and change > 1 then
+			if E.global.general.autoScale then
+				E:StaticPopup_Show('FAILED_UISCALE')
+			else
+				E:StaticPopup_Show('CONFIG_RL')
+			end
 		end
 
-		self:UnregisterEvent('PLAYER_LOGIN')
+		if loginFrame and event == 'PLAYER_LOGIN' then
+			loginFrame:UnregisterEvent('PLAYER_LOGIN')
+		end
 	end
 end
 
 -- pixel perfect script of custom ui scale.
 function E:Scale(x)
-	return self.mult*floor(x/self.mult+.5);
+	return E.mult * floor(x/E.mult+.5);
 end
