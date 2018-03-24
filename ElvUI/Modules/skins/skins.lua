@@ -838,8 +838,6 @@ function S:HandleFollowerListOnUpdateData(frame)
 	if S.FollowerListUpdateDataFrames[frame] then return end
 	S.FollowerListUpdateDataFrames[frame] = true -- make sure we don't double hook `GarrisonLandingPageFollowerList`
 
-	print('frame', frame)
-
 	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
 		S:HandleFollowerListOnUpdateDataFunc(dataFrame)
 	end)
