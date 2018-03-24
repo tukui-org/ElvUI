@@ -751,6 +751,85 @@ function S:HandleShipFollowerPage(followerTab)
 end
 
 S.FollowerListUpdateDataFrames = {}
+function S:HandleFollowerListOnUpdateDataFunc(Frame)
+	local followersList = Frame.followersList
+	local ScrollFrame = Frame.listScroll
+	local offset = HybridScrollFrame_GetOffset(ScrollFrame)
+	local Buttons = ScrollFrame.buttons
+	local numFollowers = #followersList
+	local numButtons = #Buttons
+
+	for i = 1, numButtons do
+		local button = Buttons[i]
+		local index = offset + i -- adjust index
+
+		if button then
+			if (index <= numFollowers) and not button.template then
+				button:SetTemplate()
+
+				if button.Category then
+					button.Category:ClearAllPoints()
+					button.Category:SetPoint("TOP", button, "TOP", 0, -4)
+				end
+
+				if button.Follower then
+					button.Follower.Name:SetWordWrap(false)
+					button.Follower.BG:Hide()
+					button.Follower.Selection:SetTexture("")
+					button.Follower.AbilitiesBG:SetTexture("")
+					button.Follower.BusyFrame:SetAllPoints()
+
+					local hl = button.Follower:GetHighlightTexture()
+					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+					hl:ClearAllPoints()
+					hl:SetPoint("TOPLEFT", 1, -1)
+					hl:SetPoint("BOTTOMRIGHT", -1, 1)
+
+					if button.Follower.Counters then
+						for y = 1, #button.Follower.Counters do
+							local counter = button.Follower.Counters[y]
+							if counter and not counter.template then
+								counter:SetTemplate()
+								if counter.Border then
+									counter.Border:SetTexture(nil)
+								end
+								if counter.Icon then
+									counter.Icon:SetTexCoord(unpack(E.TexCoords))
+									counter.Icon:SetInside()
+								end
+							end
+						end
+					end
+
+					if button.Follower.PortraitFrame and not button.Follower.PortraitFrameStyled then
+						S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
+						button.Follower.PortraitFrame:ClearAllPoints()
+						button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+						button.Follower.PortraitFrameStyled = true
+					end
+				end
+			end
+
+			if button.Follower then
+				if button.Follower.Selection then
+					if button.Follower.Selection:IsShown() then
+						button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
+					else
+						button.Follower:SetBackdropColor(0, 0, 0, .25)
+					end
+				end
+
+				if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
+					local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
+					if color and button.Follower.PortraitFrame.backdrop then
+						button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
+				end
+			end
+		end
+	end
+end
+
 function S:HandleFollowerListOnUpdateData(frame)
 	if (frame == 'GarrisonLandingPageFollowerList') and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
 		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
@@ -759,82 +838,10 @@ function S:HandleFollowerListOnUpdateData(frame)
 	if S.FollowerListUpdateDataFrames[frame] then return end
 	S.FollowerListUpdateDataFrames[frame] = true -- make sure we don't double hook `GarrisonLandingPageFollowerList`
 
-	hooksecurefunc(_G[frame], "UpdateData", function(Frame)
-		local followersList = Frame.followersList
-		local ScrollFrame = Frame.listScroll
-		local offset = HybridScrollFrame_GetOffset(ScrollFrame)
-		local Buttons = ScrollFrame.buttons
-		local numFollowers = #followersList
-		local numButtons = #Buttons
+	print('frame', frame)
 
-		for i = 1, numButtons do
-			local button = Buttons[i]
-			local index = offset + i -- adjust index
-
-			if button then
-				if (index <= numFollowers) and not button.template then
-					button:SetTemplate()
-
-					if button.Category then
-						button.Category:ClearAllPoints()
-						button.Category:SetPoint("TOP", button, "TOP", 0, -4)
-					end
-
-					if button.Follower then
-						button.Follower.Name:SetWordWrap(false)
-						button.Follower.BG:Hide()
-						button.Follower.Selection:SetTexture("")
-						button.Follower.AbilitiesBG:SetTexture("")
-						button.Follower.BusyFrame:SetAllPoints()
-
-						local hl = button.Follower:GetHighlightTexture()
-						hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-						hl:ClearAllPoints()
-						hl:SetPoint("TOPLEFT", 1, -1)
-						hl:SetPoint("BOTTOMRIGHT", -1, 1)
-
-						if button.Follower.Counters then
-							for y = 1, #button.Follower.Counters do
-								local counter = button.Follower.Counters[y]
-								if counter and not counter.template then
-									counter:SetTemplate()
-									if counter.Border then
-										counter.Border:SetTexture(nil)
-									end
-									if counter.Icon then
-										counter.Icon:SetTexCoord(unpack(E.TexCoords))
-										counter.Icon:SetInside()
-									end
-								end
-							end
-						end
-
-						if button.Follower.PortraitFrame then
-							S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
-							button.Follower.PortraitFrame:ClearAllPoints()
-							button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
-						end
-					end
-				end
-
-				if button.Follower then
-					if button.Follower.Selection then
-						if button.Follower.Selection:IsShown() then
-							button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
-						else
-							button.Follower:SetBackdropColor(0, 0, 0, .25)
-						end
-					end
-
-					if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
-						local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
-						if color and button.Follower.PortraitFrame.backdrop then
-							button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-						end
-					end
-				end
-			end
-		end
+	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
+		S:HandleFollowerListOnUpdateDataFunc(dataFrame)
 	end)
 end
 

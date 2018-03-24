@@ -19,9 +19,9 @@ local function LoadSkin()
 		local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
 		if not followerInfo then return end
 
-		if not self.PortraitFrame.styled then
+		if not self.PortraitFrameStyled then
 			S:HandleGarrisonPortrait(self.PortraitFrame)
-			self.PortraitFrame.styled = true
+			self.PortraitFrameStyled = true
 		end
 
 		local color = followerInfo.quality and ITEM_QUALITY_COLORS[followerInfo.quality]
