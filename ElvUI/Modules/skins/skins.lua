@@ -835,8 +835,8 @@ function S:HandleFollowerListOnUpdateData(frame)
 		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
 	end
 
-	if S.FollowerListUpdateDataFrames[frame] ~= nil then return end
-	S.FollowerListUpdateDataFrames[frame] = 0 -- make sure we don't double hook `GarrisonLandingPageFollowerList`
+	if S.FollowerListUpdateDataFrames[frame] ~= nil then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
+	S.FollowerListUpdateDataFrames[frame] = 0 -- use this variable to reduce calls to HandleFollowerListOnUpdateDataFunc
 
 	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
 		if not S.FollowerListUpdateDataFrames[frame] then return end
