@@ -750,7 +750,6 @@ function S:HandleShipFollowerPage(followerTab)
 	end
 end
 
-S.FollowerListUpdateDataFrames = {}
 function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFollowers)
 	if not Buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
 	for i = 1, numButtons do
@@ -824,6 +823,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 	end
 end
 
+S.FollowerListUpdateDataFrames = {}
 function S:HandleFollowerListOnUpdateData(frame)
 	if (frame == 'GarrisonLandingPageFollowerList') and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
 		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
@@ -844,6 +844,7 @@ function S:HandleFollowerListOnUpdateData(frame)
 			FollowerListUpdateDataLastOffset = offset
 		else -- this will delay the function call until every other call
 			S.FollowerListUpdateDataFrames[frame] = S.FollowerListUpdateDataFrames[frame] + 1
+			-- this is mainly to prevent two calls when you add or remove a follower to a mission
 			if S.FollowerListUpdateDataFrames[frame] < 2 then return end
 		end
 
