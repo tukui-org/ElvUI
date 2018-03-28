@@ -751,14 +751,8 @@ function S:HandleShipFollowerPage(followerTab)
 end
 
 S.FollowerListUpdateDataFrames = {}
-function S:HandleFollowerListOnUpdateDataFunc(Frame)
-	local followersList = Frame.followersList
-	local ScrollFrame = Frame.listScroll
-	local offset = HybridScrollFrame_GetOffset(ScrollFrame)
-	local Buttons = ScrollFrame.buttons
-	local numFollowers = #followersList
-	local numButtons = #Buttons
-
+function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFollowers)
+	if not Buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
 	for i = 1, numButtons do
 		local button = Buttons[i]
 		local index = offset + i -- adjust index
@@ -838,13 +832,23 @@ function S:HandleFollowerListOnUpdateData(frame)
 	if S.FollowerListUpdateDataFrames[frame] ~= nil then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
 	S.FollowerListUpdateDataFrames[frame] = 0 -- use this variable to reduce calls to HandleFollowerListOnUpdateDataFunc
 
+	local FollowerListUpdateDataLastOffset = nil
 	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
-		if not S.FollowerListUpdateDataFrames[frame] then return end
-		S.FollowerListUpdateDataFrames[frame] = S.FollowerListUpdateDataFrames[frame] + 1
-		if S.FollowerListUpdateDataFrames[frame] > 1 then
-			S:HandleFollowerListOnUpdateDataFunc(dataFrame)
-			S.FollowerListUpdateDataFrames[frame] = 0
+		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
+		local offset = HybridScrollFrame_GetOffset(dataFrame.listScroll)
+		local Buttons = dataFrame.listScroll.buttons
+		local followersList = dataFrame.followersList
+
+		-- store the offset so we can bypass the updateData delay
+		if FollowerListUpdateDataLastOffset ~= offset then
+			FollowerListUpdateDataLastOffset = offset
+		else -- this will delay the function call until every other call
+			S.FollowerListUpdateDataFrames[frame] = S.FollowerListUpdateDataFrames[frame] + 1
+			if S.FollowerListUpdateDataFrames[frame] < 2 then return end
 		end
+
+		S.FollowerListUpdateDataFrames[frame] = 0 -- back to zero because we call it
+		S:HandleFollowerListOnUpdateDataFunc(Buttons, Buttons and #Buttons, offset, followersList and #followersList)
 	end)
 end
 
