@@ -263,7 +263,7 @@ local function LoadSkin()
 		item.bosslessTexture:SetAlpha(0)
 
 		item.icon:SetSize(36, 36)
-		item.icon:Point("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
+		item.icon:Point("TOPLEFT", E.PixelMode and 1 or -1, -(E.PixelMode and 5 or 8))
 		item.icon:SetDrawLayer("ARTWORK")
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
