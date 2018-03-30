@@ -5,11 +5,11 @@
 
 
 **Bug Fixes:**   
-
+The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
 
 
 **Misc. Changes:**  
-The Plugin Installer frame is now movable
+The Plugin Installer frame is now movable.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
