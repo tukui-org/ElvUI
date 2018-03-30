@@ -70,7 +70,7 @@ UF['classMaxResourceBar'] = {
 	["DRUID"] = 5
 }
 
-UF['mapIDs'] = {
+UF['instanceMapIDs'] = {
 	[30] = 40, -- Alterac Valley
 	[489] = 10, -- Warsong Gulch
 	[529] = 15, -- Arathi Basin
@@ -84,6 +84,8 @@ UF['mapIDs'] = {
 	[998] = 10, -- Temple of Kotmogu
 	[1105] = 15, -- Deepwind Gourge
 	[1280] = 40, -- Southshore vs. Tarren Mill
+	[1681] = 15, -- Arathi Blizzard
+	[1803] = 10, -- Seething Shore
 }
 
 UF['headerGroupBy'] = {
@@ -766,10 +768,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, mapID = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
 
-			if UF.mapIDs[mapID] then
-				maxPlayers = UF.mapIDs[mapID]
+			if UF.instanceMapIDs[instanceMapID] then
+				maxPlayers = UF.instanceMapIDs[instanceMapID]
 			end
 
 			if maxPlayers > 0 then
