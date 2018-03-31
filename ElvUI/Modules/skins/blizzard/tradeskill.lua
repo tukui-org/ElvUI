@@ -128,7 +128,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
-		for i, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do
+		for _, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do
 			if not tradeSkillButton.headerIsHooked then
 				hooksecurefunc(tradeSkillButton, "SetUpHeader", SkinRecipeList)
 				tradeSkillButton.headerIsHooked = true

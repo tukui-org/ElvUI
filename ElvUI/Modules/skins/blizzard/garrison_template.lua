@@ -3,7 +3,6 @@ local S = E:GetModule("Skins")
 
 -- Cache global variables
 -- Lua functions
-local _G = _G
 -- WoW API
 local hooksecurefunc = hooksecurefunc
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo

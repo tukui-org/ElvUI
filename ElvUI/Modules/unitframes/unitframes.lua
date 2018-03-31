@@ -399,7 +399,7 @@ function UF:UpdateColors()
 
 	ElvUF.colors.castColor = E:GetColorTable(db.castColor)
 	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt)
-	
+
 	ElvUF.colors.DebuffHighlight = {}
 	ElvUF.colors.DebuffHighlight["Magic"] = E:GetColorTable(db.debuffHighlight.Magic)
 	ElvUF.colors.DebuffHighlight["Curse"] = E:GetColorTable(db.debuffHighlight.Curse)

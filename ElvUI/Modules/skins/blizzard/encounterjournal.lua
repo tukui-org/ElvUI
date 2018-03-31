@@ -264,7 +264,7 @@ local function LoadSkin()
 		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
 		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
 		item.IconBackdrop:SetTemplate("Default")
-		
+
 		item.name:ClearAllPoints()
 		item.name:Point("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
 		item.boss:SetTextColor(1, 1, 1)
