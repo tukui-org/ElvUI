@@ -1940,9 +1940,9 @@ function CH:DelayGuildMOTD()
 				end
 			end
 			df:SetScript('OnUpdate', nil)
-		else -- 5 seconds can be too fast for the API response. lets wait anywhere between 5-25 seconds.
+		else -- 5 seconds can be too fast for the API response. let's try once every 5 seconds (max 5 checks).
 			delay, checks = 0, checks + 1
-			if checks >= 5 then -- max 5 checks.
+			if checks >= 5 then
 				df:SetScript('OnUpdate', nil)
 			end
 		end
