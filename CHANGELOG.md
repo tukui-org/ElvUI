@@ -7,6 +7,7 @@
 **Bug Fixes:**   
 The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
 Fixed issue that prevented the Guild MOTD from being shown in the chat after a `/reload` sometimes.  
+Fixed issue that prevented the Loot Spec icon on BonusRollFrame from showing correctly after changing specs.  
 
 
 **Misc. Changes:**  
