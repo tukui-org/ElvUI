@@ -258,14 +258,14 @@ L["FocusTarget Frame"] = "주시대상의 대상 프레임"
 L["GM Ticket Frame"] = "GM요청 번호표"
 L["Honor Bar"] = "명예바"
 L["Left Chat"] = "좌측 패널"
-L["Level Up Display / Boss Banner"] = true
+L["Level Up Display / Boss Banner"] = "레벨업 표시 / 보스 배너"
 L["Loot / Alert Frames"] = "획득/알림 창"
 L["Loot Frame"] = "전리품 프레임"
 L["Loss Control Icon"] = "제어손실 표시"
 L["MA Frames"] = "지원공격 전담 프레임"
 L["Micro Bar"] = "메뉴모음 바"
 L["Minimap"] = "미니맵"
-L["MirrorTimer"] = true
+L["MirrorTimer"] = "미러 타이머"
 L["MT Frames"] = "방어전담 프레임"
 L["Objective Frame"] = "퀘스트 프레임"
 L["Party Frames"] = "파티 프레임"
@@ -296,9 +296,9 @@ L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.
 
-Options:
-  Shift + RightClick - Hides mover temporarily.
-  Ctrl + RightClick - Resets mover position to default.
+선택사항:
+  Shift + 우클릭 - 조정자를 일시적으로 숨깁니다.
+  Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
 ]=]
 
 --Plugin Installer
