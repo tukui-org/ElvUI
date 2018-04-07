@@ -92,6 +92,7 @@ local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
+local wipe = wipe
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -1152,6 +1153,41 @@ function CH:GetPluginIcon(sender)
 		if icon and icon ~= "" then break end
 	end
 	return icon
+end
+
+--Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
+local seenGroups = {};
+function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement, noGroupReplacement)
+	wipe(seenGroups);
+
+	for tag in gmatch(message, "%b{}") do
+		local term = strlower(gsub(tag, "[{}]", ""));
+		if ( not noIconReplacement and ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] ) then
+			message = gsub(message, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t");
+		elseif ( not noGroupReplacement and GROUP_TAG_LIST[term] ) then
+			local groupIndex = GROUP_TAG_LIST[term];
+			if not seenGroups[groupIndex] then
+				seenGroups[groupIndex] = true;
+				local groupList = "[";
+				for i=1, GetNumGroupMembers() do
+					local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
+					if ( name and subgroup == groupIndex ) then
+						local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
+						if ( classColorTable ) then
+							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
+						end
+						groupList = groupList..(groupList == "[" and "" or GlobalStrings.PLAYER_LIST_DELIMITER)..name;
+					end
+				end
+				if groupList ~= "[" then
+					groupList = groupList.."]";
+					message = gsub(message, tag, groupList, 1);
+				end
+			end
+		end
+	end
+
+	return message;
 end
 
 E.NameReplacements = {}
