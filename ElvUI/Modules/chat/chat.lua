@@ -12,6 +12,7 @@ local strtrim, strmatch = strtrim, strmatch
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
+local Ambiguate = Ambiguate
 local BetterDate = BetterDate
 local BNet_GetClientEmbeddedTexture = BNet_GetClientEmbeddedTexture
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
@@ -124,7 +125,7 @@ local GlobalStrings = {
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GetColoredName, LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
+-- GLOBALS: LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
 -- GLOBALS: LeftChatPanel, LeftChatToggleButton, ChatFrame1, ChatTypeInfo, ChatMenu
 -- GLOBALS: CopyChatFrame, CopyChatFrameEditBox, CHAT_FRAMES, LeftChatTab, RightChatPanel
 -- GLOBALS: CopyChatScrollFrame, CopyChatScrollFrameScrollBar, RightChatDataPanel
@@ -1146,6 +1147,38 @@ function CH:GetPluginIcon(sender)
 end
 
 --Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
+function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+	local chatType = strsub(event, 10);
+	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
+		chatType = "WHISPER";
+	end
+	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
+		chatType = "CHANNEL"..arg8;
+	end
+	local info = ChatTypeInfo[chatType];
+
+	--ambiguate guild chat names
+	if (chatType == "GUILD") then
+		arg2 = Ambiguate(arg2, "guild")
+	else
+		arg2 = Ambiguate(arg2, "none")
+	end
+
+	if ( info and info.colorNameByClass and arg12 ) then
+	local _, englishClass = GetPlayerInfoByGUID(arg12)
+
+	if ( englishClass ) then
+		local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
+		if ( not classColorTable ) then
+			return arg2;
+		end
+		return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+		end
+	end
+	return arg2;
+end
+
+--Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
 local seenGroups = {};
 function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement, noGroupReplacement)
 	wipe(seenGroups);
@@ -1210,7 +1243,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = savedColorName or GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+		local coloredName = savedColorName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
@@ -1995,7 +2028,7 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 		temp[50] = event
 		temp[51] = time()
-		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or GetColoredName(event, ...)
+		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or CH:GetColoredName(event, ...)
 
 		tinsert(data, temp)
 		while #data >= 128 do
