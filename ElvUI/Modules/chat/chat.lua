@@ -1131,16 +1131,6 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
 end
 
-function CH:GetSavedName(arg12, arg2)
-	if not arg12 or arg12 == '' then return arg2 end
-	if strmatch(arg12, '^|c.+|r$') or (not tonumber(arg12) and not strmatch(arg12, '^Player%-')) then return arg12 end
-end
-
-function CH:GetColorName(event,...)
-	local arg2, arg12 = select(02,...), select(12,...)
-	return CH:GetSavedName(arg12, arg2) or GetColoredName(event, ...)
-end
-
 local PluginIconsCalls = {}
 function CH:AddPluginIcons(func)
 	tinsert(PluginIconsCalls, func)
@@ -1193,6 +1183,7 @@ end
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
+		local savedColorName = select(52, ...);
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = ...;
 		if (arg16) then
 			-- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
@@ -1219,7 +1210,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+		local coloredName = savedColorName or GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
@@ -1507,7 +1498,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			--ElvUI: Get class colored name for BattleNet friend
 			if ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
-				coloredName = CH:GetSavedName(arg12) or CH:GetBNFriendColor(arg2, arg13)
+				coloredName = savedColorName or CH:GetBNFriendColor(arg2, arg13)
 			end
 
 			local playerLink;
@@ -1944,7 +1935,7 @@ function CH:DisplayChatHistory()
 				CH.timeOverride = d[51]
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[52],unpack(d,13))
+						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],unpack(d))
 					end
 				end
 			end
@@ -2004,7 +1995,7 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 		temp[50] = event
 		temp[51] = time()
-		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or CH:GetColorName(event, ...)
+		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or GetColoredName(event, ...)
 
 		tinsert(data, temp)
 		while #data >= 128 do
