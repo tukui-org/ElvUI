@@ -8,6 +8,8 @@
 The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
 Fixed issue that prevented the Guild MOTD from being shown in the chat after a `/reload` sometimes.  
 Fixed issue that prevented the Loot Spec icon on BonusRollFrame from showing correctly after changing specs.  
+Fixed issue which could cause an error in other addons when Chat History was enabled.  
+Fixed issue with range checking on retribution paladins below lvl 78. Until lvl 12 the range will only be melee, then you get Hand of Reckoning which we can use to check range.  
 
 
 **Misc. Changes:**  
