@@ -1962,6 +1962,7 @@ function CH:DisplayChatHistory()
 		return
 	end
 
+	CH.SoundPlayed = true
 	for _, chat in pairs(CHAT_FRAMES) do
 		for i=1, #data do
 			d = data[i]
@@ -1974,6 +1975,7 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
+	CH.SoundPlayed = nil
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
