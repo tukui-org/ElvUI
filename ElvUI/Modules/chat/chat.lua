@@ -1622,7 +1622,7 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
 
-		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
+		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( type == "WHISPER" or type == "BN_WHISPER" ) then
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, type);
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
@@ -1633,10 +1633,10 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 			FlashClientIcon();
 		end
 
-		if ( not self:IsShown() ) then
+		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
-					if not CH.SuppressFlash and not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
+					if not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
 						FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 					end
 				end
@@ -1962,8 +1962,6 @@ function CH:DisplayChatHistory()
 		return
 	end
 
-	CH.SoundPlayed = true;
-	CH.SuppressFlash = true;
 	for _, chat in pairs(CHAT_FRAMES) do
 		for i=1, #data do
 			d = data[i]
@@ -1976,8 +1974,6 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
-	CH.SoundPlayed = nil;
-	CH.SuppressFlash = nil;
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
