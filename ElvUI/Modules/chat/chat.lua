@@ -1106,7 +1106,8 @@ end
 
 function CH:GetBNFriendColor(name, id, useBTag)
 	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
-	local TAG = (useBTag or CH.db.useBTagName) and battleTag and strmatch(battleTag,'([^#]+)')
+	local BATTLE_TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 	local Class
 
 	if not bnetIDGameAccount then --dont know how this is possible
@@ -1114,7 +1115,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		if firstToonClass then
 			Class = firstToonClass
 		else
-			return TAG or name
+			return TAG or name, BATTLE_TAG
 		end
 	end
 
@@ -1130,7 +1131,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
 
-	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
+	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, BATTLE_TAG
 end
 
 local PluginIconsCalls = {}
@@ -1215,12 +1216,18 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 end
 
 E.NameReplacements = {}
-function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName)
+function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, and historyName are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
 		if (arg16) then
 			-- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
 			return true;
+		end
+
+		local historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
+		if isHistory == "ElvUI_ChatHistory" then
+			if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
+			historySavedName = historyName
 		end
 
 		local type = strsub(event, 10);
@@ -1239,9 +1246,6 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 				end
 			end
 		end
-
-		local historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
-		if isHistory == "ElvUI_ChatHistory" then historySavedName = historyName end
 
 		arg2 = E.NameReplacements[arg2] or arg2
 
@@ -1969,7 +1973,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52])
+						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 					end
 				end
 			end
@@ -2028,7 +2032,11 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 		temp[50] = event
 		temp[51] = time()
-		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or CH:GetColoredName(event, ...)
+
+		local coloredName, battleTag
+		if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
+		if battleTag then temp[53] = battleTag end -- store the battletag so we can replace arg2 later in the function
+		temp[52] = coloredName or CH:GetColoredName(event, ...)
 
 		tinsert(data, temp)
 		while #data >= 128 do
