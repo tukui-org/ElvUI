@@ -73,7 +73,9 @@ G['unitframe'] = {
 		},
 		["PALADIN"] = {
 			["enemySpells"] = {
-				[20271] = true, -- Judgement (30 yards)
+				[62124] = true, -- Hand of Reckoning (30 yards)
+				[183218] = true, -- Hand of Hindrance (30 yards)
+				[20271] = true, -- Judgement (30 yards) (does not work for retribution below lvl 78)
 			},
 			["longEnemySpells"] = {
 				[20473] = true, -- Holy Shock (40 yards)
