@@ -571,7 +571,7 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
-function CH:AddMessage(msg, r, g, b, chatTypeID, messageAccessID, lineID, isHistory, historyTime)
+function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
 	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
 	if isHistory == "ElvUI_ChatHistory" then historyTimestamp = historyTime end
 
@@ -593,7 +593,7 @@ function CH:AddMessage(msg, r, g, b, chatTypeID, messageAccessID, lineID, isHist
 		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
 	end
 
-	self.OldAddMessage(self, msg, r, g, b, chatTypeID, messageAccessID, lineID)
+	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
 end
 
 function CH:UpdateSettings()
