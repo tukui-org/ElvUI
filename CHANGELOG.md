@@ -11,7 +11,7 @@ Fixed issue that prevented the Loot Spec icon on BonusRollFrame from showing cor
 Fixed issue which could cause an error in other addons when Chat History was enabled.  
 Fixed issue with range checking on retribution paladins below lvl 78. Until lvl 12 the range will only be melee, then you get Hand of Reckoning which we can use to check range.  
 Fixed issue preventing the stance bar buttons to be keybound.  
-Fixed issue which caused the Chat History to sometimes attempt to reply to the wrong BattleNet friend. (Thanks @peuuuurnoel) ref: !44  
+Fixed issue which caused the Chat History to sometimes attempt to reply to the wrong BattleNet friend. ref: !44 (Thanks @peuuuurnoel)  
 
 
 **Misc. Changes:**  
