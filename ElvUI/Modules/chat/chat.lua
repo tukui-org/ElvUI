@@ -573,7 +573,7 @@ end
 
 function CH:AddMessage(msg, r, g, b, chatTypeID, messageAccessID, lineID, isHistory, historyTime)
 	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
-	if isHistory == "ElvUI_History" then historyTimestamp = historyTime end
+	if isHistory == "ElvUI_ChatHistory" then historyTimestamp = historyTime end
 
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time());
@@ -1240,13 +1240,13 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 			end
 		end
 
-		local savedHistoryName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved color names without overriding
-		if isHistory == "ElvUI_History" then savedHistoryName = historyName end
+		local historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
+		if isHistory == "ElvUI_ChatHistory" then historySavedName = historyName end
 
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = savedHistoryName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
@@ -1534,7 +1534,7 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 
 			--ElvUI: Get class colored name for BattleNet friend
 			if ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
-				coloredName = savedHistoryName or CH:GetBNFriendColor(arg2, arg13)
+				coloredName = historySavedName or CH:GetBNFriendColor(arg2, arg13)
 			end
 
 			local playerLink;
@@ -1970,7 +1970,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],'ElvUI_History',d[51],d[52])
+						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52])
 					end
 				end
 			end
