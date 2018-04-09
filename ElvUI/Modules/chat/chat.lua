@@ -1105,7 +1105,7 @@ local function getFirstToonClassColor(id)
 end
 
 function CH:GetBNFriendColor(name, id, useBTag)
-	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
+	local _, _, battleTag, isBattleTagPresence, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
 	local BATTLE_TAG = battleTag and strmatch(battleTag,'([^#]+)')
 	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 	local Class
@@ -1115,7 +1115,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		if firstToonClass then
 			Class = firstToonClass
 		else
-			return TAG or name, BATTLE_TAG
+			return TAG or name, isBattleTagPresence and BATTLE_TAG
 		end
 	end
 
@@ -1131,7 +1131,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
 
-	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, BATTLE_TAG
+	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, isBattleTagPresence and BATTLE_TAG
 end
 
 local PluginIconsCalls = {}
