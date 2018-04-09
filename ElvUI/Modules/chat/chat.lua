@@ -2036,7 +2036,7 @@ function CH:SaveChatHistory(event, ...)
 
 		local coloredName, battleTag
 		if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
-		if battleTag then temp[53] = battleTag end -- store the battletag so we can replace arg2 later in the function
+		if battleTag then temp[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
 		temp[52] = coloredName or CH:GetColoredName(event, ...)
 
 		tinsert(data, temp)
