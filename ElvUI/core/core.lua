@@ -1528,7 +1528,7 @@ local function SetModifiedHeight()
 		return
 	end
 	E:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+	local height = E.UIParent.origHeight - (OrderHallCommandBar:GetHeight() + E.Border)
 	E.UIParent:SetHeight(height)
 end
 
