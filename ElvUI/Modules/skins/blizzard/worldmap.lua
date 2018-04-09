@@ -53,9 +53,9 @@ local function LoadSkin()
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 
 	local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
-	TrackingOptions.Button:SetAlpha(0)
+	TrackingOptions.Button:StripTextures()
 	TrackingOptions.Background:SetAlpha(0)
-	TrackingOptions.IconOverlay:SetTexture("")
+	TrackingOptions.IconOverlay:SetAlpha(0)
 
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
