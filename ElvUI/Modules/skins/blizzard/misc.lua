@@ -158,6 +158,7 @@ local function LoadSkin()
 		for j = 1, 4 do
 			S:HandleButton(StaticPopup["button"..j])
 		end
+		_G["StaticPopup"..i.."EditBox"]:SetFrameLevel(_G["StaticPopup"..i.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
