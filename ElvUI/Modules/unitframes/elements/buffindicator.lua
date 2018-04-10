@@ -179,7 +179,8 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 					icon.cd:SetAlpha(1)
 				elseif icon.style == 'texturedIcon' then
 					icon.icon:SetVertexColor(1, 1, 1)
-					icon.icon:SetTexCoord(.18, .82, .18, .82);
+					-- icon.icon:SetTexCoord(.18, .82, .18, .82);
+					icon.icon:SetTexCoord(unpack(E.TexCoords));
 					icon.icon:SetTexture(icon.image);
 					icon.icon:Show()
 					icon.border:Show()
