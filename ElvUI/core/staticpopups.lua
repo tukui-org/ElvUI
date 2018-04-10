@@ -1095,6 +1095,7 @@ function E:Contruct_StaticPopups()
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end
 
+		_G["ElvUI_StaticPopup"..index.."EditBox"]:SetFrameLevel(_G["ElvUI_StaticPopup"..index.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameSilver"])
