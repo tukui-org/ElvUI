@@ -18,6 +18,7 @@ Fixed issue which caused the Chat History to sometimes attempt to reply to the w
 The Plugin Installer frame is now movable.  
 The Chat Module now supports Custom Class Colors a little better now.  
 Chat History will now highlight keywords, allow linking of URLs, and will no longer populate Last Tell for replies.  
+Reworked the Equipment Flyout skin.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
