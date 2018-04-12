@@ -315,6 +315,15 @@ local function LoadSkin()
 	RecruitAFriendNoteFrame:StripTextures()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
 
+	RecruitAFriendSentFrame:StripTextures()
+	RecruitAFriendSentFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(RecruitAFriendSentFrameCloseButton)
+	S:HandleButton(RecruitAFriendSentFrame.OKButton)
+	hooksecurefunc("RecruitAFriend_Send", function()
+		RecruitAFriendSentFrame:ClearAllPoints()
+		RecruitAFriendSentFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
+	end)
+
 	--Quick join
 	S:HandleScrollBar(QuickJoinScrollFrameScrollBar, 5)
 	S:HandleButton(QuickJoinFrame.JoinQueueButton)
