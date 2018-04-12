@@ -209,51 +209,56 @@ local function LoadSkin()
 	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	local function SkinItemFlyouts()
-		--Because EquipmentFlyout_Show seems to run as OnUpdate, prevent re-skinning the frames over and over.
-		if (not EquipmentFlyoutFrameButtons.isSkinned) or (EquipmentFlyoutFrameButtons.bg2 and not EquipmentFlyoutFrameButtons.bg2.isSkinned) or (EquipmentFlyoutFrameButtons.bg3 and not EquipmentFlyoutFrameButtons.bg3.isSkinned) or (EquipmentFlyoutFrameButtons.bg4 and not EquipmentFlyoutFrameButtons.bg4.isSkinned) then
-			EquipmentFlyoutFrameButtons:StripTextures()
-			EquipmentFlyoutFrameButtons:SetTemplate("Transparent")
-			EquipmentFlyoutFrameButtons.isSkinned = true
-			if EquipmentFlyoutFrameButtons.bg2 then EquipmentFlyoutFrameButtons.bg2.isSkinned = true end
-			if EquipmentFlyoutFrameButtons.bg3 then EquipmentFlyoutFrameButtons.bg3.isSkinned = true end
-			if EquipmentFlyoutFrameButtons.bg4 then EquipmentFlyoutFrameButtons.bg4.isSkinned = true end
+		local flyout = EquipmentFlyoutFrame;
+		local buttons = flyout.buttons;
+		local buttonAnchor = flyout.buttonFrame;
+
+		if not buttonAnchor.template then
+			buttonAnchor:StripTextures()
+			buttonAnchor:SetTemplate("Transparent")
 		end
 
-		local i = 1
-		local button = _G["EquipmentFlyoutFrameButton"..i]
-
-		while button do
+		for i, button in ipairs(buttons) do
 			if not button.isHooked then
-				local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
-
+				button.isHooked = true
 				button:StyleButton(false)
 				button:GetNormalTexture():SetTexture(nil)
 
+				local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
+
 				if not button.backdrop then
+					button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
 					button:CreateBackdrop("Default")
 					button.backdrop:SetAllPoints()
 
-					hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-						self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-						self:SetTexture("")
-					end)
-					hooksecurefunc(button.IconBorder, 'Hide', function(self)
-						self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end)
+					if i ~= 1 then -- dont do this for the Drop In Bag button
+						button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
+						button.IconBorder:SetTexture("")
+
+						hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+							self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+							self:SetTexture("")
+						end)
+						hooksecurefunc(button.IconBorder, 'Hide', function(self)
+							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+						end)
+					end
 				end
 
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-				button.isHooked = true
+				if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
+					buttonAnchor["bg"..i]:SetTexture(nil)
+				end
 			end
-
-			i = i + 1
-			button = _G["EquipmentFlyoutFrameButton"..i]
 		end
+
+		local width, height = buttonAnchor:GetSize()
+		buttonAnchor:Size(width+3, height)
 	end
 
 	--Swap item flyout frame (shown when holding alt over a slot)
-	EquipmentFlyoutFrame:HookScript("OnShow", SkinItemFlyouts)
+	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
 
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()
