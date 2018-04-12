@@ -321,7 +321,7 @@ local function LoadSkin()
 	S:HandleButton(RecruitAFriendSentFrame.OKButton)
 	hooksecurefunc("RecruitAFriend_Send", function()
 		RecruitAFriendSentFrame:ClearAllPoints()
-		RecruitAFriendSentFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
+		RecruitAFriendSentFrame:Point("CENTER", E.UIParent, "CENTER", 0, 100)
 	end)
 
 	--Quick join
