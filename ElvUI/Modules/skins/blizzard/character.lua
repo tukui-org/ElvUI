@@ -223,6 +223,10 @@ local function LoadSkin()
 		end
 
 		for i, button in ipairs(buttons) do
+			if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
+				buttonAnchor["bg"..i]:SetTexture(nil)
+			end
+
 			if not button.isHooked then
 				button.isHooked = true
 				button:StyleButton(false)
@@ -255,10 +259,6 @@ local function LoadSkin()
 					hooksecurefunc(button.IconBorder, 'Hide', function(self)
 						self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end)
-				end
-
-				if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
-					buttonAnchor["bg"..i]:SetTexture(nil)
 				end
 			end
 		end
