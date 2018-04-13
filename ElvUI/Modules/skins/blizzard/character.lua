@@ -224,27 +224,33 @@ local function LoadSkin()
 				button:StyleButton(false)
 				button:GetNormalTexture():SetTexture(nil)
 
-				local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:SetInside()
+				button.icon:SetTexCoord(unpack(E.TexCoords))
 
 				if not button.backdrop then
 					button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
 					button:CreateBackdrop("Default")
 					button.backdrop:SetAllPoints()
 
-					if i ~= 1 then -- dont do this for the Drop In Bag button
+					if i == 1 then -- hook SetTexture so we can revert the border color of the placeInBags button
+						hooksecurefunc(button.icon, 'SetTexture', function(self)
+							local parent = self:GetParent()
+							if parent and parent.location and (parent.location == EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION) then
+								self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							end
+						end)
+					else -- dont call this intially on placeInBags button
 						button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
-						button.IconBorder:SetTexture("")
-
-						hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-							self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-							self:SetTexture("")
-						end)
-						hooksecurefunc(button.IconBorder, 'Hide', function(self)
-							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end)
 					end
+
+					button.IconBorder:SetTexture("")
+					hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+						self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+						self:SetTexture("")
+					end)
+					hooksecurefunc(button.IconBorder, 'Hide', function(self)
+						self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end)
 				end
 
 				if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
