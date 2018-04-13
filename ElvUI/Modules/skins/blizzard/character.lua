@@ -21,6 +21,8 @@ local UnitSex = UnitSex
 -- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
 -- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY
 
+local PLACEINBAGS_LOCATION = 0xFFFFFFFF; -- EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 
@@ -234,7 +236,7 @@ local function LoadSkin()
 
 					if i == 1 then -- hook SetTexture so we can revert the border color of the placeInBags button
 						hooksecurefunc(button.icon, 'SetTexture', function(self)
-							if self:GetParent().location == EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION then
+							if self:GetParent().location == PLACEINBAGS_LOCATION then
 								self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 							end
 						end)
