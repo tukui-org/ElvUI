@@ -244,12 +244,14 @@ local function LoadSkin()
 						button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 					end
 
-					hooksecurefunc(button.icon, 'SetTexture', function(self)
-						local loc = self:GetParent().location
-						if (loc == PLACEINBAGS_LOCATION) or (loc == IGNORESLOT_LOCATION) or (loc == UNIGNORESLOT_LOCATION) then
-							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end
-					end)
+					if i == 1 or i == 2 then
+						hooksecurefunc(button.icon, 'SetTexture', function(self)
+							local loc = self:GetParent().location
+							if (loc == PLACEINBAGS_LOCATION) or (loc == IGNORESLOT_LOCATION) or (loc == UNIGNORESLOT_LOCATION) then
+								self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							end
+						end)
+					end
 
 					button.IconBorder:SetTexture("")
 					hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
