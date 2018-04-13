@@ -21,7 +21,9 @@ local UnitSex = UnitSex
 -- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
 -- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY
 
-local PLACEINBAGS_LOCATION = 0xFFFFFFFF; -- EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION
+local PLACEINBAGS_LOCATION = 0xFFFFFFFF;
+local IGNORESLOT_LOCATION = 0xFFFFFFFE;
+local UNIGNORESLOT_LOCATION = 0xFFFFFFFD;
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
@@ -234,15 +236,16 @@ local function LoadSkin()
 					button:CreateBackdrop("Default")
 					button.backdrop:SetAllPoints()
 
-					if i == 1 then -- hook SetTexture so we can revert the border color of the placeInBags button
-						hooksecurefunc(button.icon, 'SetTexture', function(self)
-							if self:GetParent().location == PLACEINBAGS_LOCATION then
-								self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-							end
-						end)
-					else -- dont call this intially on placeInBags button
+					if i ~= 1 then -- dont call this intially on placeInBags button
 						button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 					end
+
+					hooksecurefunc(button.icon, 'SetTexture', function(self)
+						local loc = self:GetParent().location
+						if (loc == PLACEINBAGS_LOCATION) or (loc == IGNORESLOT_LOCATION) or (loc == UNIGNORESLOT_LOCATION) then
+							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+						end
+					end)
 
 					button.IconBorder:SetTexture("")
 					hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
