@@ -234,8 +234,7 @@ local function LoadSkin()
 
 					if i == 1 then -- hook SetTexture so we can revert the border color of the placeInBags button
 						hooksecurefunc(button.icon, 'SetTexture', function(self)
-							local parent = self:GetParent()
-							if parent and parent.location and (parent.location == EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION) then
+							if self:GetParent().location == EQUIPMENTFLYOUT_PLACEINBAGS_LOCATION then
 								self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 							end
 						end)
