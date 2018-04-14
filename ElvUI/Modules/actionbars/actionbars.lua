@@ -426,7 +426,15 @@ function AB:PLAYER_REGEN_ENABLED()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
-local function Vehicle_OnEvent(self)
+local vehicle_safeOnEvent
+local function Vehicle_OnEvent(self, event)
+	if event == "PLAYER_REGEN_ENABLED" then
+		self:UnregisterEvent(event)
+	elseif InCombatLockdown() then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', vehicle_safeOnEvent)
+		return
+	end
+
 	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
@@ -434,6 +442,9 @@ local function Vehicle_OnEvent(self)
 	else
 		self:Hide()
 	end
+end
+vehicle_safeOnEvent = function(...)
+	Vehicle_OnEvent(...)
 end
 
 local function Vehicle_OnClick(self)
