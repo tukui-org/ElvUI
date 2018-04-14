@@ -426,12 +426,12 @@ function AB:PLAYER_REGEN_ENABLED()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
-local vehicle_safeOnEvent
+local vehicle_CallOnEvent -- so we can call the local function inside of itself
 local function Vehicle_OnEvent(self, event)
 	if event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent(event)
 	elseif InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED', vehicle_safeOnEvent)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', vehicle_CallOnEvent)
 		return
 	end
 
@@ -443,9 +443,7 @@ local function Vehicle_OnEvent(self, event)
 		self:Hide()
 	end
 end
-vehicle_safeOnEvent = function(...)
-	Vehicle_OnEvent(...)
-end
+vehicle_CallOnEvent = Vehicle_OnEvent
 
 local function Vehicle_OnClick(self)
 	if ( UnitOnTaxi("player") ) then
