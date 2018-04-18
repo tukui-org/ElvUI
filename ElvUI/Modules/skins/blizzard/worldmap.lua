@@ -45,7 +45,10 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
-	QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+	if E.private.skins.blizzard.tooltip then
+		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+	end
+
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)

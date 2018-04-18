@@ -191,14 +191,16 @@ local function LoadSkin()
 	end
 
 	--Suggestion Reward Tooltips
-	local tooltip = EncounterJournalTooltip
-	local item1 = tooltip.Item1
-	local item2 = tooltip.Item2
-	tooltip:SetTemplate("Transparent")
-	S:HandleIcon(item1.icon)
-	S:HandleIcon(item2.icon)
-	item1.IconBorder:SetTexture(nil)
-	item2.IconBorder:SetTexture(nil)
+	if E.private.skins.blizzard.tooltip then
+		local tooltip = EncounterJournalTooltip
+		local item1 = tooltip.Item1
+		local item2 = tooltip.Item2
+		tooltip:SetTemplate("Transparent")
+		S:HandleIcon(item1.icon)
+		S:HandleIcon(item2.icon)
+		item1.IconBorder:SetTexture(nil)
+		item2.IconBorder:SetTexture(nil)
+	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	local function SkinDungeons()

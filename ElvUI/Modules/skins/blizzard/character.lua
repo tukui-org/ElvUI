@@ -436,23 +436,25 @@ local function LoadSkin()
 	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)
 
 	--Reputation Paragon Tooltip
-	local tooltip = ReputationParagonTooltip
-	local reward = tooltip.ItemTooltip
-	local icon = reward.Icon
-	tooltip:SetTemplate("Transparent")
-	if icon then
-		S:HandleIcon(icon)
-		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(reward.IconBorder, "Hide", function(self)
-			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	if E.private.skins.blizzard.tooltip then
+		local tooltip = ReputationParagonTooltip
+		local reward = tooltip.ItemTooltip
+		local icon = reward.Icon
+		tooltip:SetTemplate("Transparent")
+		if icon then
+			S:HandleIcon(icon)
+			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(reward.IconBorder, "Hide", function(self)
+				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
+		end
+		tooltip:HookScript("OnShow", function(self)
+			self:SetTemplate("Transparent")
 		end)
 	end
-	tooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent")
-	end)
 
 	--Currency
 	local function UpdateCurrencySkins()
