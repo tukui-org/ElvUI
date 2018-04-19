@@ -1064,7 +1064,7 @@ ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
 ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 
-	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) return nil
+	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or nil
 end
 
 ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
@@ -1092,29 +1092,29 @@ end
 ElvUF.Tags.Events['target:veryshort'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target:veryshort'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName ~= nil and E:ShortenString(targetName, 5) return nil
+	return targetName ~= nil and E:ShortenString(targetName, 5) or nil
 end
 
 ElvUF.Tags.Events['target:short'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target:short'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName ~= nil and E:ShortenString(targetName, 10) return nil
+	return targetName ~= nil and E:ShortenString(targetName, 10) or nil
 end
 
 ElvUF.Tags.Events['target:medium'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target:medium'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName ~= nil and E:ShortenString(targetName, 15) return nil
+	return targetName ~= nil and E:ShortenString(targetName, 15) or nil
 end
 
 ElvUF.Tags.Events['target:long'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target:long'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName ~= nil and E:ShortenString(targetName, 20) return nil
+	return targetName ~= nil and E:ShortenString(targetName, 20) or nil
 end
 
 ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName return nil
+	return targetName or nil
 end
