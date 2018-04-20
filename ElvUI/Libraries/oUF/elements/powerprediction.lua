@@ -64,7 +64,7 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local _, _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
+	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 	local mainPowerType = UnitPowerType(unit)
 	local hasAltManaBar = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][mainPowerType]
 	local mainCost, altCost = 0, 0

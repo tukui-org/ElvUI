@@ -82,7 +82,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, _, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
+		local name, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -147,7 +147,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
-			local name, _, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
+			local name, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
 			if ( not name ) then
 				-- if there is no name, there is no bar
 				frame.CastBar:Hide();

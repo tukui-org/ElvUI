@@ -110,7 +110,7 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 	if(not name) then
 		return element:Hide()
 	end
@@ -312,7 +312,7 @@ local function UNIT_SPELLCAST_DELAYED(self, event, unit, _, _, _, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, _, _, startTime, _, _, castID = UnitCastingInfo(unit)
+	local name, _, _, startTime, _, _, castID = UnitCastingInfo(unit)
 	if(not startTime or not element:IsShown()) then return end
 
 	local duration = GetTime() - (startTime / 1000)
