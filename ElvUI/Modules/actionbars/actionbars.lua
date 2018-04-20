@@ -795,10 +795,6 @@ function AB:DisableBlizzard()
 	MultiBarLeft:SetParent(UIHider)
 	MultiBarRight:SetParent(UIHider)
 
-	--Look into what this does
-	ArtifactWatchBar:SetParent(UIHider)
-	HonorWatchBar:SetParent(UIHider)
-
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
 		_G["ActionButton" .. i]:Hide()
@@ -843,9 +839,18 @@ function AB:DisableBlizzard()
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
-	MainMenuExpBar:UnregisterAllEvents()
-	MainMenuExpBar:Hide()
-	MainMenuExpBar:SetParent(UIHider)
+
+	--Look into what this does, probably removed in BFA
+	--[[
+		ArtifactWatchBar:SetParent(UIHider)
+		HonorWatchBar:SetParent(UIHider)
+		MainMenuExpBar:UnregisterAllEvents()
+		MainMenuExpBar:Hide()
+		MainMenuExpBar:SetParent(UIHider)
+		ReputationWatchBar:UnregisterAllEvents()
+		ReputationWatchBar:Hide()
+		ReputationWatchBar:SetParent(UIHider)
+	--]]
 
 	for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
@@ -855,10 +860,6 @@ function AB:DisableBlizzard()
 			child:SetParent(UIHider)
 		end
 	end
-
-	ReputationWatchBar:UnregisterAllEvents()
-	ReputationWatchBar:Hide()
-	ReputationWatchBar:SetParent(UIHider)
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
