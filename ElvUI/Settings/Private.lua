@@ -31,7 +31,7 @@ V['bags'] = {
 }
 
 V["nameplates"] = {
-	["enable"] = true,
+	["enable"] = false,
 }
 
 V['auras'] = {
@@ -53,7 +53,7 @@ V['skins'] = {
 		['enable'] = true,
 	},
 	['blizzard'] = {
-		['enable'] = true,
+		['enable'] = false,
 		["deathRecap"] = true,
 		["bags"] = true,
 		["bmah"] = true, --black market ah
@@ -132,7 +132,7 @@ V['tooltip'] = {
 }
 
 V['unitframe'] = {
-	['enable'] = true,
+	['enable'] = false,
 	['disabledBlizzardFrames'] = {
 		['player'] = true,
 		['target'] = true,
