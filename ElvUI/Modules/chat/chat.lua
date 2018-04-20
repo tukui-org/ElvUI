@@ -567,10 +567,6 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	--New BFA Stuff we need to hide.
-	ChatFrame1.ScrollBar:Kill()
-	ChatFrame1.ScrollToBottomButton:Kill()
-
 	CreatedFrames = id
 	frame.styled = true
 end
@@ -815,6 +811,11 @@ function CH:PositionChat(override)
 		isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
 		tab.owner = chat
+
+		-- Hide new Bfa Scroll bars
+		chat.ScrollBar:Kill()
+		chat.ScrollToBottomButton:Kill()
+
 		if id > NUM_CHAT_WINDOWS then
 			if select(2, tab:GetPoint()):GetName() ~= chatbg then
 				isDocked = true
