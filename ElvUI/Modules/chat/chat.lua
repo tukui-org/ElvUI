@@ -567,6 +567,10 @@ function CH:StyleChat(frame)
 		end
 	end)
 
+	--New BFA Stuff we need to hide.
+	ChatFrame1.ScrollBar:Kill()
+	ChatFrame1.ScrollToBottomButton:Kill()
+
 	CreatedFrames = id
 	frame.styled = true
 end
