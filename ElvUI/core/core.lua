@@ -404,7 +404,7 @@ LocalizeZoneNames()
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the " (Outland)" part unlike the GetRealZoneText() API.
 function E:GetZoneText(zoneAreaID)
-	local zoneName = GetMapNameByID(zoneAreaID)
+	local zoneName = C_Map_GetMapInfo(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]
 
 	if continent and continent == "Outland" then
