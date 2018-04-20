@@ -44,7 +44,7 @@ end
 
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms();
-	local texture, name, isActive, isCastable, _;
+	local texture, isActive, isCastable;
 	local buttonName, button, icon, cooldown;
 	local stance = GetShapeshiftForm();
 
@@ -55,11 +55,13 @@ function AB:StyleShapeShift()
 		cooldown = _G[buttonName.."Cooldown"];
 
 		if i <= numForms then
-			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
+			texture, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if self.db.stanceBar.style == 'darkenInactive' then
-				_,_, texture = GetSpellInfo(name)
-			end
+			--[[
+				if self.db.stanceBar.style == 'darkenInactive' then
+					_,_, texture = GetSpellInfo(name)
+				end
+			]]
 
 			if not texture then
 				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
