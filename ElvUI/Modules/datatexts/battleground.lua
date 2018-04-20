@@ -7,7 +7,7 @@ local join = string.join
 --WoW API / Variables
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
-local GetCurrentMapAreaID = GetCurrentMapAreaID
+local C_Map_GetCurrentMapID = C_Map.GetCurrentMapID
 local GetBattlefieldStatInfo = GetBattlefieldStatInfo
 local GetBattlefieldStatData = GetBattlefieldStatData
 
@@ -65,7 +65,7 @@ end
 
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
-	local CurrentMapID = GetCurrentMapAreaID()
+	local CurrentMapID = C_Map_GetCurrentMapID()
 	for index=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(index)
 		if name and name == E.myname then
