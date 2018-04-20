@@ -1499,8 +1499,11 @@ function E:GetTopCPUFunc(msg)
 	else
 		mod = (not checkCore and self:GetModule(module, true))
 		if not mod then
-			self:Print(module.." not found, falling back to checking core.")
-			mod, checkCore = self, "E"
+			if not checkCore then
+				self:Print(module.." not found, falling back to checking core.")
+				checkCore = "E"
+			end
+			mod = self
 		end
 		for name in pairs(mod) do
 			if (name ~= "GetModule") and type(mod[name]) == "function" then
