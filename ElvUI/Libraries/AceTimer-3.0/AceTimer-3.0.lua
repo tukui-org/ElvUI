@@ -15,7 +15,7 @@
 -- make into AceTimer.
 -- @class file
 -- @name AceTimer-3.0
--- @release $Id: AceTimer-3.0.lua 1119 2014-10-14 17:23:29Z nevcairiel $
+-- @release $Id: AceTimer-3.0.lua 1170 2018-03-29 17:38:58Z funkydude $
 
 local MAJOR, MINOR = "AceTimer-3.0", 17 -- Bump minor on changes
 local AceTimer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
@@ -34,13 +34,15 @@ local function new(self, loop, func, delay, ...)
 		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
 	end
 
-	local timer = {...}
-	timer.object = self
-	timer.func = func
-	timer.looping = loop
-	timer.argsCount = select("#", ...)
-	timer.delay = delay
-	timer.ends = GetTime() + delay
+	local timer = {
+		object = self,
+		func = func,
+		looping = loop,
+		argsCount = select("#", ...),
+		delay = delay,
+		ends = GetTime() + delay,
+		...
+	}
 
 	activeTimers[timer] = timer
 
@@ -156,7 +158,7 @@ end
 
 --- Cancels all timers registered to the current addon object ('self')
 function AceTimer:CancelAllTimers()
-	for k,v in pairs(activeTimers) do
+	for k,v in next, activeTimers do
 		if v.object == self then
 			AceTimer.CancelTimer(self, k)
 		end
@@ -187,8 +189,8 @@ if oldminor and oldminor < 10 then
 	AceTimer.frame:SetScript("OnEvent", nil)
 	AceTimer.frame:UnregisterAllEvents()
 	-- convert timers
-	for object,timers in pairs(AceTimer.selfs) do
-		for handle,timer in pairs(timers) do
+	for object,timers in next, AceTimer.selfs do
+		for handle,timer in next, timers do
 			if type(timer) == "table" and timer.callback then
 				local newTimer
 				if timer.delay then
@@ -214,7 +216,7 @@ elseif oldminor and oldminor < 17 then
 	-- Clear old timer table and update upvalue
 	AceTimer.activeTimers = {}
 	activeTimers = AceTimer.activeTimers
-	for handle, timer in pairs(oldTimers) do
+	for handle, timer in next, oldTimers do
 		local newTimer
 		-- Stop the old timer animation
 		local duration, elapsed = timer:GetDuration(), timer:GetElapsed()
@@ -232,7 +234,7 @@ elseif oldminor and oldminor < 17 then
 
 	-- Migrate transitional handles
 	if oldminor < 13 and AceTimer.hashCompatTable then
-		for handle, id in pairs(AceTimer.hashCompatTable) do
+		for handle, id in next, AceTimer.hashCompatTable do
 			local t = activeTimers[id]
 			if t then
 				activeTimers[id] = nil
@@ -257,7 +259,7 @@ local mixins = {
 
 function AceTimer:Embed(target)
 	AceTimer.embeds[target] = true
-	for _,v in pairs(mixins) do
+	for _,v in next, mixins do
 		target[v] = AceTimer[v]
 	end
 	return target
@@ -271,6 +273,6 @@ function AceTimer:OnEmbedDisable(target)
 	target:CancelAllTimers()
 end
 
-for addon in pairs(AceTimer.embeds) do
+for addon in next, AceTimer.embeds do
 	AceTimer:Embed(addon)
 end

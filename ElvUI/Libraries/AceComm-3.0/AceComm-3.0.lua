@@ -9,7 +9,7 @@
 -- make into AceComm.
 -- @class file
 -- @name AceComm-3.0
--- @release $Id: AceComm-3.0.lua 1107 2014-02-19 16:40:32Z nevcairiel $
+-- @release $Id: AceComm-3.0.lua 1171 2018-04-20 07:33:22Z nevcairiel $
 
 --[[ AceComm-3.0
 
@@ -20,7 +20,7 @@ TODO: Time out old data rotting around from dead senders? Not a HUGE deal since 
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 local CTL = assert(ChatThrottleLib, "AceComm-3.0 requires ChatThrottleLib")
 
-local MAJOR, MINOR = "AceComm-3.0", 10
+local MAJOR, MINOR = "AceComm-3.0", 11
 local AceComm,oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceComm then return end
@@ -65,7 +65,11 @@ function AceComm:RegisterComm(prefix, method)
 	if #prefix > 16 then -- TODO: 15?
 		error("AceComm:RegisterComm(prefix,method): prefix length is limited to 16 characters")
 	end
-	RegisterAddonMessagePrefix(prefix)
+	if C_ChatInfo then
+		C_ChatInfo.RegisterAddonMessagePrefix(prefix)
+	else
+		RegisterAddonMessagePrefix(prefix)
+	end
 
 	return AceComm._RegisterComm(self, prefix, method)	-- created by CallbackHandler
 end
