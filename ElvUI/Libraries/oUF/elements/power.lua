@@ -262,11 +262,11 @@ function updateFrequentUpdates(self)
 	if power.frequentUpdates and not self:IsEventRegistered('UNIT_POWER_FREQUENT') then
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
-		if self:IsEventRegistered('UNIT_POWER') then
-			self:UnregisterEvent('UNIT_POWER', Path)
+		if self:IsEventRegistered('UNIT_POWER_UPDATE') then
+			self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		end
-	elseif not self:IsEventRegistered('UNIT_POWER') then
-		self:RegisterEvent('UNIT_POWER', Path)
+	elseif not self:IsEventRegistered('UNIT_POWER_UPDATE') then
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
 		if self:IsEventRegistered('UNIT_POWER_FREQUENT') then
 			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
@@ -285,7 +285,7 @@ local function Enable(self, unit)
 		if(element.frequentUpdates and (unit == 'player' or unit == 'pet')) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		else
-			self:RegisterEvent('UNIT_POWER', Path)
+			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		end
 
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
@@ -316,7 +316,7 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
