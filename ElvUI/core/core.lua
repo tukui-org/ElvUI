@@ -1461,8 +1461,8 @@ local function CompareCPUDiff(showall, minCalls)
 			end
 			newUsage, calls = GetFunctionCPUUsage(mod[newFunc], true)
 			differance = newUsage - oldUsage
-			if showall and calls > minCalls then
-				E:Print(calls, name, differance)
+			if showall and (calls > minCalls) then
+				E:Print('Name('..name..')  Calls('..calls..') Diff('..(differance > 0 and format("%.3f", differance) or 0)..')')
 			end
 			if (differance > greatestDiff) and calls > minCalls then
 				greatestName, greatestUsage, greatestCalls, greatestDiff = name, newUsage, calls, differance
@@ -1471,7 +1471,7 @@ local function CompareCPUDiff(showall, minCalls)
 	end
 
 	if greatestName then
-		E:Print(greatestName.. " had the CPU usage difference of: "..greatestUsage.."ms. And has been called ".. greatestCalls.." times.")
+		E:Print(greatestName.. " had the CPU usage difference of: "..(greatestUsage > 0 and format("%.3f", greatestUsage) or 0).."ms. And has been called ".. greatestCalls.." times.")
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
@@ -1480,6 +1480,11 @@ local function CompareCPUDiff(showall, minCalls)
 end
 
 function E:GetTopCPUFunc(msg)
+	if not GetCVarBool("scriptProfile") then
+		E:Print("For `/cpuusage` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
+		return
+	end
+
 	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
 	local checkCore, mod = (not module or module == "") and "E"
 
