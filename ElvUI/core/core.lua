@@ -1497,17 +1497,18 @@ function E:GetTopCPUFunc(msg)
 			end
 		end
 	else
-		mod = (not checkCore and self:GetModule(module, true))
-		if not mod then
-			if not checkCore then
+		if not checkCore then
+			mod = self:GetModule(module, true)
+			if not mod then
 				self:Print(module.." not found, falling back to checking core.")
-				checkCore = "E"
+				mod, checkCore = self, "E"
 			end
+		else
 			mod = self
 		end
-		for name in pairs(mod) do
-			if (name ~= "GetModule") and type(mod[name]) == "function" then
-				CPU_USAGE[(checkCore or module)..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		for name, func in pairs(mod) do
+			if (name ~= "GetModule") and type(func) == "function" then
+				CPU_USAGE[(checkCore or module)..":"..name] = GetFunctionCPUUsage(func, true)
 			end
 		end
 	end
