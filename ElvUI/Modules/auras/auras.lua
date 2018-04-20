@@ -188,7 +188,7 @@ function A:UpdateAura(button, index)
 			button:SetScript("OnUpdate", nil)
 		end
 
-		if(count > 1) then
+		if count and (count > 1) then
 			button.count:SetText(count)
 		else
 			button.count:SetText("")
