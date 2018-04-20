@@ -13,7 +13,7 @@ local function Round(number, decimalPlaces)
 		local mult = 10^decimalPlaces
 		return floor(number * mult + .5) / mult
 	end
-	return floor(num + .5)
+	return floor(number + .5)
 end
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
