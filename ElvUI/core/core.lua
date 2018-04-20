@@ -1475,42 +1475,42 @@ local function CompareCPUDiff(showall, minCalls)
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
+
+	twipe(CPU_USAGE)
 end
 
 function E:GetTopCPUFunc(msg)
 	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
-	local mod
+	local checkCore, mod = (not module or module == "") and "E"
 
-	module = (module == "nil" and nil) or module
-	if not module then
-		E:Print('cpuusage: module (arg1) is required! This can be set as "all" too.')
-		return
-	end
 	showall = (showall == "true" and true) or false
 	delay = (delay == "nil" and nil) or tonumber(delay) or 5
 	minCalls = (minCalls == "nil" and nil) or tonumber(minCalls) or 15
 
 	twipe(CPU_USAGE)
 	if module == "all" then
-		for _, registeredModule in pairs(self['RegisteredModules']) do
-			mod = self:GetModule(registeredModule, true) or self
-			for name in pairs(mod) do
-				if type(mod[name]) == "function" and name ~= "GetModule" then
-					CPU_USAGE[registeredModule..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		for moduName, modu in pairs(self.modules) do
+			for funcName, func in pairs(modu) do
+				if (funcName ~= "GetModule") and (type(func) == "function") then
+					CPU_USAGE[moduName..":"..funcName] = GetFunctionCPUUsage(func, true)
 				end
 			end
 		end
 	else
-		mod = self:GetModule(module, true) or self
+		mod = (not checkCore and self:GetModule(module, true))
+		if not mod then
+			self:Print(module.." not found, falling back to checking core.")
+			mod, checkCore = self, "E"
+		end
 		for name in pairs(mod) do
-			if type(mod[name]) == "function" and name ~= "GetModule" then
-				CPU_USAGE[module..":"..name] = GetFunctionCPUUsage(mod[name], true)
+			if (name ~= "GetModule") and type(mod[name]) == "function" then
+				CPU_USAGE[(checkCore or module)..":"..name] = GetFunctionCPUUsage(mod[name], true)
 			end
 		end
 	end
 
 	self:Delay(delay, CompareCPUDiff, showall, minCalls)
-	self:Print("Calculating CPU Usage differences (module: "..(module or "?")..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
+	self:Print("Calculating CPU Usage differences (module: "..(checkCore or module)..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
 end
 
 local function SetOriginalHeight()
