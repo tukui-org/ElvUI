@@ -19,7 +19,7 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
-local GetMapNameByID = GetMapNameByID
+local C_Map_GetMapInfo = C_Map.GetMapInfo
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
@@ -389,7 +389,7 @@ local function LocalizeZoneNames()
 	local localizedZoneName
 
 	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = GetMapNameByID(mapID)
+		localizedZoneName = C_Map_GetMapInfo(mapID)
 		if localizedZoneName then
 			-- Add combination of English and localized name to lookup table
 			if not localizedMapNames[englishName] then
@@ -947,7 +947,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	end
 end
 
-RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
+C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
