@@ -587,7 +587,7 @@ end
 
 function TT:SetUnitAura(tt, unit, index, filter)
 	if tt:IsForbidden() then return end
-	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
+	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 	if id and self.db.spellID then
 		if caster then
 			local name = UnitName(caster)

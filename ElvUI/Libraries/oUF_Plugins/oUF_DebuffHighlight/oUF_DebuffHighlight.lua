@@ -28,7 +28,7 @@ local function GetDebuffType(unit, filter, filterTable)
 	if not unit or not UnitCanAssist("player", unit) then return nil end
 	local i = 1
 	while true do
-		local name, _, texture, _, debufftype, _,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
+		local name, texture, _, debufftype, _,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
 		if not texture then break end
 		
 		local filterSpell = filterTable[spellID] or filterTable[name]
