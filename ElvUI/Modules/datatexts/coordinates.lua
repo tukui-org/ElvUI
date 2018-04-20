@@ -5,7 +5,6 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local join = string.join
 --WoW API / Variables
-local GetPlayerMapPosition = GetPlayerMapPosition
 local ToggleFrame = ToggleFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -21,7 +20,7 @@ local function Update(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		x, y = GetPlayerMapPosition("player")
+		x, y = nil, nil --GetPlayerMapPosition("player")
 		x = E:Round(100 * x, 1)
 		y = E:Round(100 * y, 1)
 
@@ -31,7 +30,7 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	local x = GetPlayerMapPosition("player")
+	local x = nil --GetPlayerMapPosition("player")
 	if not x then
 		inRestrictedArea = true
 		self.text:SetText("N/A")

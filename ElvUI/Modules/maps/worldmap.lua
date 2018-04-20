@@ -8,7 +8,6 @@ local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
-local GetPlayerMapPosition = GetPlayerMapPosition
 local InCombatLockdown = InCombatLockdown
 local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
@@ -70,7 +69,7 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	local x = GetPlayerMapPosition("player")
+	local x = nil --GetPlayerMapPosition("player")
 	if not x then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
@@ -85,7 +84,7 @@ end
 
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
-	local x, y = GetPlayerMapPosition("player")
+	local x, y = nil, nil --GetPlayerMapPosition("player")
 	x = x and E:Round(100 * x, 2) or 0
 	y = y and E:Round(100 * y, 2) or 0
 
