@@ -11,7 +11,7 @@ local CreateFrame = CreateFrame
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local GetAddOnMetadata = GetAddOnMetadata
 local IsAddOnLoaded = IsAddOnLoaded
-local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
+local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local SendAddonMessage = SendAddonMessage
 local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -77,7 +77,7 @@ function lib:RegisterPlugin(name,callback, isLib)
 	local loaded = IsAddOnLoaded("ElvUI_Config")
 
 	if not lib.vcframe then
-		RegisterAddonMessagePrefix(lib.prefix)
+		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		local f = CreateFrame('Frame')
 		f:RegisterEvent("GROUP_ROSTER_UPDATE")
 		f:RegisterEvent("CHAT_MSG_ADDON")
