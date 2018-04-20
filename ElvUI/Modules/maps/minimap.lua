@@ -538,7 +538,7 @@ function M:Initialize()
 	MinimapZoomIn:Hide()
 	MinimapZoomOut:Hide()
 
-	MiniMapVoiceChatFrame:Hide()
+	-- MiniMapVoiceChatFrame:Hide()
 
 	MinimapNorthTag:Kill()
 
