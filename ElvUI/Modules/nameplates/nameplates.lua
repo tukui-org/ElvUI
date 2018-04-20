@@ -804,12 +804,12 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
 		mod:UpdateElement_MaxPower(self)
-	elseif(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
+	elseif(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
 		local powerType, powerToken = UnitPowerType(self.displayedUnit)
 		local arg1 = ...
 		self.PowerToken = powerToken
 		self.PowerType = powerType
-		if(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT") then
+		if(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT") then
 			if mod.ClassBar and arg1 == powerToken then
 				mod:ClassBar_Update()
 			end
@@ -863,7 +863,7 @@ function mod:RegisterEvents(frame, unit)
 		end
 
 		if(self.db.units[frame.UnitType].powerbar.enable) then
-			frame:RegisterUnitEvent("UNIT_POWER", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_POWER_UPDATE", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit, displayedUnit)
