@@ -375,7 +375,7 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, texture, startTime, endTime, _, _, notInterruptible, spellID = UnitChannelInfo(unit)
+	local name, _, texture, startTime, endTime, _, notInterruptible, spellID = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
@@ -442,7 +442,7 @@ local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, _, startTime, endTime, _, _, _, spellID = UnitChannelInfo(unit)
+	local name, _, _, startTime, endTime, _, _, spellID = UnitChannelInfo(unit)
 	if(not name or not element:IsShown()) then
 		return
 	end
