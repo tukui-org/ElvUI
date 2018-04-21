@@ -15,7 +15,7 @@ function mod:UpdateElement_Detection(frame)
 		return;
 	end
 
-	local name = UnitAura(frame.displayedUnit, DETECTION_BUFF) or UnitAura(frame.displayedUnit, DETECTION_BUFF2)
+	local name = frame.displayedUnit and (UnitAura(frame.displayedUnit, DETECTION_BUFF) or UnitAura(frame.displayedUnit, DETECTION_BUFF2))
 	if (name) then
 		frame.DetectionModel:Show()
 		frame.DetectionModel:SetModel("Spells\\Blackfuse_LaserTurret_GroundBurn_State_Base")
