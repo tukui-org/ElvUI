@@ -2460,6 +2460,9 @@ function CH:Initialize()
 
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
+
+	-- The width got changed in Bfa
+	CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 
 local function InitializeCallback()
