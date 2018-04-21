@@ -192,7 +192,7 @@ local function Enable(self)
 		MonkStaggerBar:UnregisterEvent('PLAYER_ENTERING_WORLD')
 		MonkStaggerBar:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 		MonkStaggerBar:UnregisterEvent('UNIT_DISPLAYPOWER')
-		MonkStaggerBar:UnregisterEvent('UPDATE_VEHICLE_ACTION_BAR')
+		--MonkStaggerBar:UnregisterEvent('UPDATE_VEHICLE_ACTION_BAR')
 
 		element:Hide()
 
