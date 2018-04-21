@@ -99,9 +99,7 @@ end
 
 local UNIT_SPELLCAST_SENT = function (self, event, unit, castID)
 	local castbar = self.Castbar
-
-	local target = nil -- what can we get target with ??
-	castbar.curTarget = (target and target ~= "") and target or nil
+	castbar.curTarget = (unit == 'player' and UnitName('target')) or UnitName(unit..'target') or nil
 
 	if castbar.isTradeSkill then
 		castbar.tradeSkillCastId = castID
