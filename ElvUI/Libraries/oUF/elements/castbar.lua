@@ -179,10 +179,8 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	element:Show()
 end
 
-local function UNIT_SPELLCAST_FAILED(self, event, unit)
+local function UNIT_SPELLCAST_FAILED(self, event, unit, castID, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
-
-	local name, _, _, _, _, _, castID, _, spellID = UnitCastingInfo(unit)
 	local element = self.Castbar
 	if(element.castID ~= castID) then
 		return
@@ -194,6 +192,7 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit)
 	end
 
 	local text = element.Text
+	local name = text:GetText()
 	if(text) then
 		text:SetText(FAILED)
 	end
@@ -235,10 +234,8 @@ local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, castID)
 	castbar:Hide()
 end
 
-local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit)
+local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
-
-	local name, _, _, _, _, _, castID, _, spellID = UnitCastingInfo(unit)
 
 	local element = self.Castbar
 	if(element.castID ~= castID) then
@@ -246,6 +243,7 @@ local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit)
 	end
 
 	local text = element.Text
+	local name = text:GetText()
 	if(text) then
 		text:SetText(INTERRUPTED)
 	end
@@ -343,10 +341,8 @@ local function UNIT_SPELLCAST_DELAYED(self, event, unit)
 	end
 end
 
-local function UNIT_SPELLCAST_STOP(self, event, unit)
+local function UNIT_SPELLCAST_STOP(self, event, unit, castID, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
-
-	local name, _, _, _, _, _, castID, _, spellID = UnitChannelInfo(unit)
 
 	local element = self.Castbar
 	if(element.castID ~= castID) then
@@ -372,6 +368,7 @@ local function UNIT_SPELLCAST_STOP(self, event, unit)
 	* spellID - spell identifier of the spell (number)
 	--]]
 	if(element.PostCastStop) then
+		local name = element.Text and element.Text:GetText()
 		return element:PostCastStop(unit, name, castID, spellID)
 	end
 end
@@ -476,7 +473,7 @@ local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit)
 	end
 end
 
-local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit)
+local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit, _, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
@@ -493,7 +490,7 @@ local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit)
 		* spellID - spell identifier of the channeled spell (number)
 		--]]
 		if(element.PostChannelStop) then
-			local name, _, _, _, _, _, _, _, spellID = UnitChannelInfo(unit)
+			local name = element.Text and element.Text:GetText()
 			return element:PostChannelStop(unit, name, spellID)
 		end
 	end
