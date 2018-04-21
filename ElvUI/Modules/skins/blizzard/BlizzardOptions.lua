@@ -612,7 +612,6 @@ local function LoadSkin()
 		-- Graphics
 		"Display_DisplayModeDropDown",
 		"Display_ResolutionDropDown",
-		"Display_RefreshDropDown",
 		"Display_PrimaryMonitorDropDown",
 		"Display_AntiAliasingDropDown",
 		"Display_VerticalSyncDropDown",
@@ -643,7 +642,6 @@ local function LoadSkin()
 		-- Advanced
 		"Advanced_BufferingDropDown",
 		"Advanced_LagDropDown",
-		"Advanced_HardwareCursorDropDown",
 		"Advanced_GraphicsAPIDropDown",
 		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAlphaTest",
@@ -655,14 +653,16 @@ local function LoadSkin()
 		"AudioOptionsSoundPanelHardwareDropDown",
 		"AudioOptionsSoundPanelSoundChannelsDropDown",
 		"AudioOptionsSoundPanelSoundCacheSizeDropDown",
-		"AudioOptionsVoicePanelInputDeviceDropDown",
-		"AudioOptionsVoicePanelChatModeDropDown",
-		"AudioOptionsVoicePanelOutputDeviceDropDown",
 
 		-- Raid Profiles
 		"CompactUnitFrameProfilesProfileSelector",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
 		"CompactUnitFrameProfilesGeneralOptionsFrameSortByDropdown",
+
+		-- VoiceChat
+		"AudioOptionsVoicePanelOutputDeviceDropdown",
+		"AudioOptionsVoicePanelMicDeviceDropdown",
+		"AudioOptionsVoicePanelChatModeDropdown",
 	}
 
 	for i = 1, getn(optiondropdown) do
@@ -677,10 +677,10 @@ local function LoadSkin()
 	local buttons = {
 		"RecordLoopbackSoundButton",
 		"PlayLoopbackSoundButton",
-		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
 		"InterfaceOptionsSocialPanelTwitterLoginButton",
 		"InterfaceOptionsDisplayPanelResetTutorials",
-		"InterfaceOptionsSocialPanelRedockChat"
+		"InterfaceOptionsSocialPanelRedockChat",
+		"AudioOptionsVoicePanelTestInputDevice.ToggleTest",
 	}
 
 	for _, button in pairs(buttons) do
@@ -689,8 +689,6 @@ local function LoadSkin()
 		end
 	end
 
-	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
-	AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
 	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
 		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
 		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
@@ -775,7 +773,10 @@ local function LoadSkin()
 		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHeightSlider",
-		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider"
+		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider",
+		"AudioOptionsVoicePanelVoiceChatVolume",
+		"AudioOptionsVoicePanelVoiceChatMicVolume",
+		"AudioOptionsVoicePanelVoiceChatMicSensitivity",
 	}
 
 	for i = 1, #sliders do
