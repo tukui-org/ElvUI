@@ -392,10 +392,13 @@ function UF:PostCastStart(unit, name)
 
 			UF:SetCastTicks(self, baseTicks, extraTickRatio)
 		elseif baseTicks then
+		-- T17 mage buff
+		--[[
 			local hasBuff = UnitBuff("player", MageBuffName)
 			if name == MageSpellName and hasBuff then
 				baseTicks = baseTicks + 5
 			end
+		]]
 			UF:SetCastTicks(self, baseTicks)
 		else
 			UF:HideTicks()
