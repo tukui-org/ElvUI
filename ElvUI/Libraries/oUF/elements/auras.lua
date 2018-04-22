@@ -72,7 +72,10 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local function UpdateTooltip(self)
-	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	local index = self:GetID()
+	if index and (index ~= 0) then
+		GameTooltip:SetUnitAura(self:GetParent().__owner.unit, index, self.filter)
+	end
 end
 
 local function onEnter(self)
@@ -145,7 +148,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	-- ElvUI block
 	if element.forceShow then
 		spellID = 47540
-		name, texture = GetSpellInfo(spellID)
+		name, _, texture = GetSpellInfo(spellID)
 		count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
 	end
 	-- end Block

@@ -30,7 +30,9 @@ local function FormatTime(s)
 end
 
 local function UpdateTooltip(self)
-	GameTooltip:SetUnitAura(self.__unit, self:GetParent().aura.name, self:GetParent().aura.filter)
+	if self:GetParent().aura.index then
+		GameTooltip:SetUnitAura(self.__unit, self:GetParent().aura.index, self:GetParent().aura.filter)
+	end
 end
 
 local function OnEnter(self)
@@ -212,7 +214,7 @@ local function Update(self, event, unit)
 	if(auraBars.forceShow) then
 		for index = 1, auraBars.maxBars do
 			local spellID = 47540
-			local name, icon = GetSpellInfo(spellID)
+			local name, _, icon = GetSpellInfo(spellID)
 			local count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, canApplyAura, isBossDebuff = 5, 'Magic', 0, 0, 'player', nil, nil, nil, nil
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
@@ -237,6 +239,7 @@ local function Update(self, event, unit)
 			if (auraBars.filter or DefaultFilter)(self, unit, name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer) then
 				lastAuraIndex = lastAuraIndex + 1
 				auras[lastAuraIndex] = {}
+				auras[lastAuraIndex].index = index
 				auras[lastAuraIndex].spellID = spellID
 				auras[lastAuraIndex].name = name
 				auras[lastAuraIndex].icon = icon
