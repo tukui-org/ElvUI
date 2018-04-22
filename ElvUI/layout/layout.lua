@@ -239,6 +239,14 @@ function LO:ToggleChatPanels()
 	end
 end
 
+local function ChatButtonPanel_OnClick()
+	if ChatButtonHolder:IsShown() then
+		ChatButtonHolder:Hide()
+	else
+		ChatButtonHolder:Show()
+	end
+end
+
 function LO:CreateChatPanels()
 	local SPACING = E.Border*3 - E.Spacing
 
@@ -251,7 +259,6 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
-
 
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -287,7 +294,7 @@ function LO:CreateChatPanels()
 		if btn == "LeftButton" then
 			ChatButton_OnClick(self)
 		elseif btn == "RightButton" then
-			PVEFrame_ToggleFrame()
+			ChatButtonPanel_OnClick(self)
 		end
 	end)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
@@ -357,28 +364,29 @@ function LO:CreateChatPanels()
 end
 
 function LO:CreateChatButtonPanel()
-	if E.private.chat.enable ~= true then return end
+	if E.private.chat.enable ~= true or InCombatLockdown() then return end
 
-	local ChatButtonHolder = CreateFrame("Frame", nil, UIParent)
-	ChatButtonHolder:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 4, 165)
-	ChatButtonHolder:SetSize(28, 105)
-	--ChatButtonHolder:Hide()
+	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", UIParent)
+	ChatButtonHolder:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 4, 185)
+	ChatButtonHolder:SetSize(27, 85)
+	ChatButtonHolder:Hide()
 
 	ChatFrameChannelButton:ClearAllPoints()
 	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")
-
-	QuickJoinToastButton:ClearAllPoints()
-	QuickJoinToastButton:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", 0, 4)
 
 	-- We have to reparent the buttons to our ChatButtonHolder
 	ChatFrameChannelButton:SetParent(ChatButtonHolder)
 	ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
 	ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
+	ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
 	QuickJoinToastButton:SetParent(ChatButtonHolder)
 
 	E:GetModule("Skins"):HandleButton(ChatFrameChannelButton)
 	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceDeafenButton)
 	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceMuteButton)
+
+	ChatAlertFrame:ClearAllPoints()
+	ChatAlertFrame:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", -1, 3)
 end
 
 function LO:CreateMinimapPanels()
