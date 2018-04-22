@@ -2304,8 +2304,6 @@ function CH:Initialize()
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
-	ChatFrameMenuButton:Kill()
-	QuickJoinToastButton:Kill()
 
 	if WIM then
 		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
@@ -2461,25 +2459,10 @@ function CH:Initialize()
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
 
+	ChatFrameMenuButton:Kill() -- We have it on your CopyChatButton via right click
+
 	-- The width got changed in Bfa
 	CombatLogQuickButtonFrame_CustomTexture:Hide()
-
-	-- New Voice Chat Buttons from Bfa
-	local ChatButtonHolder = CreateFrame("Frame", nil, UIParent)
-	ChatButtonHolder:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 427, 58)
-	ChatButtonHolder:SetSize(28, 85)
-
-	ChatFrameChannelButton:ClearAllPoints()
-	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")
-
-	-- Mover for the new ChatButtons
-	E:CreateMover(ChatButtonHolder, "ChatButtonHolder", L["Chat Button Mover"], nil, nil, nil, "ALL,SOLO")
-	-- Mover for the ChatAlertFrame (e.g. the VoiceChat Portraits)
-	E:CreateMover(ChatAlertFrame, "ChatAlertFrameMover", L["Chat Alert Frame Mover"], nil, nil, nil, "ALL,SOLO")
-
-	S:HandleButton(ChatFrameChannelButton)
-	S:HandleButton(ChatFrameToggleVoiceDeafenButton)
-	S:HandleButton(ChatFrameToggleVoiceMuteButton)
 end
 
 local function InitializeCallback()

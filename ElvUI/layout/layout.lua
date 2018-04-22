@@ -24,6 +24,7 @@ end
 
 function LO:Initialize()
 	self:CreateChatPanels()
+	self:CreateChatButtonPanel()
 	self:CreateMinimapPanels()
 	self:SetDataPanelStyle()
 
@@ -83,6 +84,8 @@ local function ChatButton_OnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
+		GameTooltip:AddLine('')
+		GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Chat Buttons"], 1, 1, 1)
 		GameTooltip:Show()
 	end
 end
@@ -277,9 +280,16 @@ function LO:CreateChatPanels()
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', E.Border - E.Spacing*3, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	lchattb:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
-	lchattb:SetScript('OnClick', ChatButton_OnClick)
+	lchattb:SetScript('OnClick', function(self, btn)
+		if btn == "LeftButton" then
+			ChatButton_OnClick(self)
+		elseif btn == "RightButton" then
+			PVEFrame_ToggleFrame()
+		end
+	end)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
 	lchattb.text:FontTemplate()
 	lchattb.text:Point('CENTER')
@@ -344,6 +354,31 @@ function LO:CreateChatPanels()
 	end
 
 	self:ToggleChatPanels()
+end
+
+function LO:CreateChatButtonPanel()
+	if E.private.chat.enable ~= true then return end
+
+	local ChatButtonHolder = CreateFrame("Frame", nil, UIParent)
+	ChatButtonHolder:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 4, 165)
+	ChatButtonHolder:SetSize(28, 105)
+	--ChatButtonHolder:Hide()
+
+	ChatFrameChannelButton:ClearAllPoints()
+	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")
+
+	QuickJoinToastButton:ClearAllPoints()
+	QuickJoinToastButton:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", 0, 4)
+
+	-- We have to reparent the buttons to our ChatButtonHolder
+	ChatFrameChannelButton:SetParent(ChatButtonHolder)
+	ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
+	ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
+	QuickJoinToastButton:SetParent(ChatButtonHolder)
+
+	E:GetModule("Skins"):HandleButton(ChatFrameChannelButton)
+	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceDeafenButton)
+	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceMuteButton)
 end
 
 function LO:CreateMinimapPanels()
