@@ -240,6 +240,8 @@ function LO:ToggleChatPanels()
 end
 
 local function ChatButtonPanel_OnClick()
+	GameTooltip:Hide()
+
 	if ChatButtonHolder:IsShown() then
 		ChatButtonHolder:Hide()
 	else
@@ -364,7 +366,7 @@ function LO:CreateChatPanels()
 end
 
 function LO:CreateChatButtonPanel()
-	if E.private.chat.enable ~= true or InCombatLockdown() then return end
+	if E.private.chat.enable ~= true then return end
 
 	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", UIParent)
 	ChatButtonHolder:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 4, 185)
