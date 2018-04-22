@@ -130,7 +130,7 @@ local function Path(self, event, ...)
 		--[[ Override: Runes:UpdateColor(runeIndex)
 		Used to completely override the internal function for updating the widgets' colors.
 
-		* self  - the Runes element
+		* self      - the Runes element
 		* runeIndex - the index of the updated rune (number)
 		--]]
 		local UpdateColorMethod = element.UpdateColor or UpdateColor
@@ -141,6 +141,7 @@ local function Path(self, event, ...)
 	end
 end
 
+-- ElvUI block
 local function RunesEnable(self)
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
 	self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
@@ -192,10 +193,13 @@ end
 local VisibilityPath = function(self, ...)
 	return (self.Runes.OverrideVisibility or Visibility) (self, ...)
 end
+-- end ElvUI
 
+-- changed by ElvUI
 local ForceUpdate = function(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
+-- end ElvUI
 
 local function Enable(self, unit)
 	local element = self.Runes
@@ -226,9 +230,9 @@ local function Disable(self)
 
 		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
-		
-		RunesDisable(self)
+
+		RunesDisable(self) -- ElvUI
 	end
 end
 
-oUF:AddElement('Runes', VisibilityPath, Enable, Disable)
+oUF:AddElement('Runes', VisibilityPath, Enable, Disable) -- changed by ElvUI
