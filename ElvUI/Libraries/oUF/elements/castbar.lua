@@ -106,7 +106,7 @@ local UNIT_SPELLCAST_SENT = function (self, event, unit, castID)
 		castbar.tradeSkillCastId = castID
 	end
 end
--- end ElvUI
+-- end block
 
 local function UNIT_SPELLCAST_START(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
@@ -145,7 +145,7 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 		element:SetValue(0)
 	end
 	element:SetMinMaxValues(0, element.max)
-	-- end ElvUI
+	-- end block
 
 	if(element.Text) then element.Text:SetText(text) end
 	if(element.Icon) then element.Icon:SetTexture(texture) end
@@ -195,7 +195,7 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, castID, spellID)
 		mergeTradeskill = false;
 		element.tradeSkillCastId = nil
 	end
-	-- end ElvUI
+	-- end block
 
 	local text = element.Text
 	if(text) then
@@ -239,7 +239,7 @@ local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, castID)
 	castbar:SetValue(0)
 	castbar:Hide()
 end
--- end ElvUI
+-- end block
 
 local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
@@ -362,7 +362,7 @@ local function UNIT_SPELLCAST_STOP(self, event, unit, castID, spellID)
 		element.casting = nil
 		element.notInterruptible = nil
 	end
-	-- end ElvUI
+	-- end block
 
 	--[[ Callback: Castbar:PostCastStop(unit, name, castID, spellID)
 	Called after the element has been updated when a spell cast has finished.
@@ -402,7 +402,7 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, spellID)
 	element.startTime = startTime
 	element.endTime = endTime
 	element.extraTickRatio = 0
-	-- end ElvUI
+	-- end block
 
 	-- We have to do this, as it's possible for spell casts to never have _STOP
 	-- executed or be fully completed by the OnUpdate handler before CHANNEL_START
@@ -464,7 +464,7 @@ local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit, _, spellID)
 	-- ElvUI block
 	element.startTime = startTime / 1000
 	element.endTime = endTime / 1000
-	-- end ElvUI
+	-- end block
 
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(duration)
@@ -625,7 +625,7 @@ local function Enable(self, unit)
 			-- ElvUI block
 			self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
 			self:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
-			-- end ElvUI
+			-- end block
 		end
 
 		element.horizontal = element:GetOrientation() == 'HORIZONTAL'
@@ -685,7 +685,7 @@ local function Disable(self)
 		-- ElvUI block
 		self:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 		self:UnregisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
-		-- end ElvUI
+		-- end block
 
 		element:SetScript('OnUpdate', nil)
 	end
@@ -697,6 +697,6 @@ hooksecurefunc(C_TradeSkillUI, "CraftRecipe", function(_, num)
 	tradeskillTotal = num or 1
 	mergeTradeskill = true
 end)
--- end ElvUI
+-- end block
 
 oUF:AddElement('Castbar', Update, Enable, Disable)

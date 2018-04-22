@@ -71,7 +71,7 @@ local oUF = ns.oUF
 -- ElvUI
 local format = string.format
 local tinsert, tremove = table.insert, table.remove
--- end ElvUI
+-- end block
 
 local _PATTERN = '%[..-%]+'
 
@@ -89,7 +89,7 @@ local _ENV = {
 		if not r or type(r) == 'string' then --wtf?
 			return '|cffFFFFFF'
 		end
-		-- end ElvUI
+		-- end block
 
 		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
@@ -610,7 +610,7 @@ local escapeSequences = {
 	["||T"] = "|T",
 	["||t"] = "|t",
 }
--- end ElvUI
+-- end block
 
 local tagPool = {}
 local funcPool = {}
@@ -676,7 +676,7 @@ local function Tag(self, fs, tagstr)
 			containsOnUpdate = onUpdateDelay[tag] or 0.15;
 		end
 	end
-	-- end ElvUI
+	-- end block
 
 	local func = tagPool[tagstr]
 	if(not func) then
@@ -735,7 +735,7 @@ local function Tag(self, fs, tagstr)
 				func = function(self)
 					return self:SetText(bracket)
 				end
-				-- end ElvUI
+				-- end block
 			end
 		end
 
@@ -809,7 +809,7 @@ local function Tag(self, fs, tagstr)
 		if numTags ~= -1 then
 			tagPool[tagstr] = func
 		end
-		-- end ElvUI
+		-- end block
 	end
 	fs.UpdateTag = func
 
@@ -821,7 +821,7 @@ local function Tag(self, fs, tagstr)
 		-- ElvUI added check
 		elseif containsOnUpdate then
 			timer = containsOnUpdate
-		-- end ElvUI
+		-- end block
 		else
 			timer = .5
 		end

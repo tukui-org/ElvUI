@@ -112,7 +112,7 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
 	end
-	-- end ElvUI
+	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and element.tapped) then
@@ -275,7 +275,7 @@ function updateFrequentUpdates(self)
 		end
 	end
 end
--- end ElvUI
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Power
@@ -285,7 +285,7 @@ local function Enable(self, unit)
 		-- ElvUI block
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
-		-- end ElvUI
+		-- end block
 
 		if(element.frequentUpdates and (unit == 'player' or unit == 'pet')) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)

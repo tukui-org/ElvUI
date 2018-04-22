@@ -158,7 +158,7 @@ local function Visibility(self, event, unit)
 		return Path(self, event, unit)
 	end
 end
--- end ElvUI
+-- end block
 
 local function VisibilityPath(self, ...)
 	--[[ Override: Stagger.OverrideVisibility(self, event, unit)

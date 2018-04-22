@@ -87,7 +87,7 @@ local function UpdateColor(element, unit, cur, max)
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(parent)
 	end
-	-- end ElvUI
+	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
@@ -207,7 +207,7 @@ function updateFrequentUpdates(self)
 		end	
 	end
 end
--- end ElvUI
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Health
@@ -217,7 +217,7 @@ local function Enable(self, unit)
 		-- ElvUI block
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
-		-- end ElvUI
+		-- end block
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)

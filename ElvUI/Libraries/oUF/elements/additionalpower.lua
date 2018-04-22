@@ -150,7 +150,7 @@ local function ElementEnable(self)
 	end
 
 	self.AdditionalPower.isEnabled = true
-	-- end ElvUI
+	-- end block
 
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
@@ -167,7 +167,7 @@ local function ElementDisable(self)
 	end
 
 	self.AdditionalPower.isEnabled = nil
-	-- end ElvUI
+	-- end block
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end

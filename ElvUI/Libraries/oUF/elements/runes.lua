@@ -193,13 +193,13 @@ end
 local VisibilityPath = function(self, ...)
 	return (self.Runes.OverrideVisibility or Visibility) (self, ...)
 end
--- end ElvUI
+-- end block
 
 -- changed by ElvUI
 local ForceUpdate = function(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
--- end ElvUI
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Runes

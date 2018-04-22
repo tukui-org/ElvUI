@@ -195,7 +195,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 				count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
 		end
-		-- end ElvUI
+		-- end block
 
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
