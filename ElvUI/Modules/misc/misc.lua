@@ -18,6 +18,7 @@ local CanMerchantRepair = CanMerchantRepair
 local GetRepairAllCost = GetRepairAllCost
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
 local CanGuildBankRepair = CanGuildBankRepair
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local RepairAllItems = RepairAllItems
 local InCombatLockdown = InCombatLockdown
 local GetNumGroupMembers = GetNumGroupMembers
@@ -63,7 +64,8 @@ function M:ErrorFrameToggle(event)
 	end
 end
 
-function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
+function M:COMBAT_LOG_EVENT_UNFILTERED()
+	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
 	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
 	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 

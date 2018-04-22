@@ -200,8 +200,6 @@ function DT:AssignPanelToDataText(panel, data)
 			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
 				panel:RegisterUnitEvent(event, 'player')
-			elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-				panel:RegisterUnitEvent(event, E.myguid, UnitGUID("pet"))
 			else
 				panel:RegisterEvent(event)
 			end
