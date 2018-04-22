@@ -209,7 +209,7 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, castID, spellID)
 	* spellID - spell identifier of the failed spell (number)
 	--]]
 	if(element.PostCastFailed) then
-		return element:PostCastFailed(unit, name, castID, spellID)
+		return element:PostCastFailed(unit, GetSpellInfo(spellID), castID, spellID)
 	end
 end
 
@@ -260,7 +260,7 @@ local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID, spellID)
 	* spellID - spell identifier of the interrupted spell (number)
 	--]]
 	if(element.PostCastInterrupted) then
-		return element:PostCastInterrupted(unit, name, castID, spellID)
+		return element:PostCastInterrupted(unit, GetSpellInfo(spellID), castID, spellID)
 	end
 end
 
@@ -367,7 +367,7 @@ local function UNIT_SPELLCAST_STOP(self, event, unit, castID, spellID)
 	--]]
 	if(element.PostCastStop) then
 		local name = element.Text and element.Text:GetText()
-		return element:PostCastStop(unit, name, castID, spellID)
+		return element:PostCastStop(unit, GetSpellInfo(spellID), castID, spellID)
 	end
 end
 
@@ -489,7 +489,7 @@ local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit, _, spellID)
 		--]]
 		if(element.PostChannelStop) then
 			local name = element.Text and element.Text:GetText()
-			return element:PostChannelStop(unit, name, spellID)
+			return element:PostChannelStop(unit, GetSpellInfo(spellID), spellID)
 		end
 	end
 end

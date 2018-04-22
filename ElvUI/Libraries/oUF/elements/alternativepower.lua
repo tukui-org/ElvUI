@@ -30,7 +30,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- sourced from FrameXML/UnitPowerBarAlt.lua
-local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX or 10
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function updateTooltip(self)
 	GameTooltip:SetText(self.powerName, 1, 1, 1)

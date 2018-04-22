@@ -127,11 +127,11 @@ local function Path(self, event, ...)
 	if(event == 'RUNE_POWER_UPDATE') then
 		return UpdateMethod(self, event, ...)
 	else
-		--[[ Override: Runes:UpdateColor(powerType)
+		--[[ Override: Runes:UpdateColor(runeIndex)
 		Used to completely override the internal function for updating the widgets' colors.
 
 		* self  - the Runes element
-		* index - the index of the updated rune (number)
+		* runeIndex - the index of the updated rune (number)
 		--]]
 		local UpdateColorMethod = element.UpdateColor or UpdateColor
 		for index = 1, #element do

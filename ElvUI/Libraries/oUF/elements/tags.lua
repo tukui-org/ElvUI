@@ -478,12 +478,12 @@ local tagEvents = {
 	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['offline']             = 'UNIT_HEALTH UNIT_CONNECTION',
 	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION',
-	['curmana']             = 'UNIT_POWER UNIT_MAXPOWER',
-	['maxmana']             = 'UNIT_POWER UNIT_MAXPOWER',
+	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
+	['maxmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['soulshards']          = 'UNIT_POWER_UPDATE',
-	['holypower']           = 'UNIT_POWER SPELLS_CHANGED',
-	['chi']                 = 'UNIT_POWER SPELLS_CHANGED',
-	['arcanecharges']       = 'UNIT_POWER SPELLS_CHANGED',
+	['holypower']           = 'UNIT_POWER_UPDATE SPELLS_CHANGED',
+	['chi']                 = 'UNIT_POWER_UPDATE SPELLS_CHANGED',
+	['arcanecharges']       = 'UNIT_POWER_UPDATE SPELLS_CHANGED',
 	['powercolor']          = 'UNIT_DISPLAYPOWER',
 }
 
