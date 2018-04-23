@@ -60,17 +60,17 @@ local function LoadSkin()
 	end
 
 	-- PVP Talents
-	for i = 1, 6 do
-		for j = 1, 3 do
-			local button = _G["InspectPVPFrameTalentRow"..i.."Talent"..j]
+	local trinketSlot = InspectPVPFrame.TrinketSlot
+	--trinketSlot:StripTextures() -- WIP
 
-			button:StripTextures()
-			button:CreateBackdrop("Default")
+	local talentSlot1 = InspectPVPFrame.TalentSlot1
+	--talentSlot1:StripTextures() -- WIP
 
-			button.Icon:SetAllPoints()
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
-		end
-	end
+	local talentSlot2 = InspectPVPFrame.TalentSlot2
+	--talentSlot2:StripTextures() -- WIP
+
+	local talentSlot3 = InspectPVPFrame.TalentSlot3
+	--talentSlot3:StripTextures() -- WIP
 
 	for i = 1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
