@@ -124,6 +124,7 @@ V['skins'] = {
 		["BlizzardOptions"] = true,
 		["Warboard"] = true,
 		["AlliedRaces"] = true,
+		["channels"] = true,
 	},
 }
 

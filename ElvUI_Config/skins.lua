@@ -373,6 +373,11 @@ E.Options.args.skins = {
 					name = L["Allied Races"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				channels  = {
+					type = "toggle",
+					name = CHANNELS,
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

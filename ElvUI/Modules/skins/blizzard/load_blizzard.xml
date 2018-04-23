@@ -16,6 +16,7 @@
 	<Script file='BlizzardOptions.lua'/>
 	<Script file='BNet.lua'/>
 	<Script file='calendar.lua'/>
+	<Script file='channels.lua'/>
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
 	<Script file='Contribution.lua'/>
