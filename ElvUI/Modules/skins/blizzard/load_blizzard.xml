@@ -9,6 +9,7 @@
 	<Script file='auctionhouse.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='barber.lua'/>
+	<Script file='BFAMissions.lua'/>
 	<Script file='bgmap.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='binding.lua'/>
@@ -16,7 +17,7 @@
 	<Script file='BlizzardOptions.lua'/>
 	<Script file='BNet.lua'/>
 	<Script file='calendar.lua'/>
-	<Script file='channels.lua'/>
+	<Script file='Channels.lua'/>
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
 	<Script file='Contribution.lua'/>

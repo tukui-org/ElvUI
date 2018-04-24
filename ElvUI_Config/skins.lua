@@ -373,9 +373,14 @@ E.Options.args.skins = {
 					name = L["Allied Races"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				channels  = {
+				Channels  = {
 					type = "toggle",
 					name = CHANNELS,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				BFAMissions = { --Temporary
+					type = "toggle",
+					name = L["BFAMission"], -- Needs locale
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

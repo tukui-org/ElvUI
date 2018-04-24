@@ -12,7 +12,7 @@ local CreateChannelPopup = _G["CreateChannelPopup"]
 -- GLOBALS:
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.channels ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Channels ~= true then return end
 
 	--Channel Frame
 	local frames = {
