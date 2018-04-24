@@ -27,7 +27,7 @@ local function LoadSkin()
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
 		PlayerTalentFrameTalents,
-		PlayerTalentFramePVPTalents.Talents
+		--PlayerTalentFramePVPTalents.Talents
 	}
 
 	for _, object in pairs(objects) do
@@ -67,7 +67,7 @@ local function LoadSkin()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
 
-	for i=1, 4 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 
 		if i == 1 then
@@ -77,7 +77,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
-		for i=1, 4 do
+		for i = 1, 3 do
 			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
@@ -307,91 +307,91 @@ local function LoadSkin()
 	end
 
 	--Skin talent rows and buttons
-	for i = 1, MAX_PVP_TALENT_TIERS do
-		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
-		row.Bg:Hide()
-		row:DisableDrawLayer("BORDER")
-		row:StripTextures()
-		row.GlowFrame:Kill() --We can either kill or reposition the glows. Not sure which is preferred.
+	--for i = 1, MAX_PVP_TALENT_TIERS do
+		--local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
+		--row.Bg:Hide()
+		--row:DisableDrawLayer("BORDER")
+		--row:StripTextures()
+		--row.GlowFrame:Kill() --We can either kill or reposition the glows. Not sure which is preferred.
 		-- row.GlowFrame.TopGlowLine:SetPoint("TOP", 0, 5)
 		-- row.GlowFrame.BottomGlowLine:SetPoint("BOTTOM", 0, -5)
 
-		row.TopLine:Point("TOP", 0, 4)
-		row.BottomLine:Point("BOTTOM", 0, -4)
-
-		for j = 1, MAX_PVP_TALENT_COLUMNS do
-			local button = row["Talent"..j];
-			local icon = button.Icon
-
-			button:StripTextures()
-			button:SetFrameLevel(button:GetFrameLevel() + 5)
-			button:CreateBackdrop("Default")
-			button.backdrop:SetOutside(icon)
-			icon:SetDrawLayer("OVERLAY")
-			icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-
-			button.bg = CreateFrame("Frame", nil, button)
-			button.bg:CreateBackdrop("Overlay")
-			button.bg:SetFrameLevel(button:GetFrameLevel() -2)
-			button.bg:Point("TOPLEFT", 15, -1)
-			button.bg:Point("BOTTOMRIGHT", -10, 1)
-			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
-			button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
-			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
-		end
-	end
+		--row.TopLine:Point("TOP", 0, 4)
+		--row.BottomLine:Point("BOTTOM", 0, -4)
+--
+		--for j = 1, MAX_PVP_TALENT_COLUMNS do
+			--local button = row["Talent"..j];
+			--local icon = button.Icon
+--
+			--button:StripTextures()
+			--button:SetFrameLevel(button:GetFrameLevel() + 5)
+			--button:CreateBackdrop("Default")
+			--button.backdrop:SetOutside(icon)
+			--icon:SetDrawLayer("OVERLAY")
+			--icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+--
+			--button.bg = CreateFrame("Frame", nil, button)
+			--button.bg:CreateBackdrop("Overlay")
+			--button.bg:SetFrameLevel(button:GetFrameLevel() -2)
+			--button.bg:Point("TOPLEFT", 15, -1)
+			--button.bg:Point("BOTTOMRIGHT", -10, 1)
+			--button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
+			--button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
+			--button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
+		--end
+	--end
 
 	--Apply color to chosen talents
-	hooksecurefunc("PVPTalentFrame_Update", function(self)
-		for i = 1, MAX_PVP_TALENT_TIERS do
-			for j = 1, MAX_PVP_TALENT_COLUMNS do
-				local button = self.Talents["Tier"..i]["Talent"..j]
-				if button.knownSelection then
-					if button.knownSelection:IsShown() then
-						button.bg.SelectedTexture:Show()
-						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
-					else
-						button.bg.SelectedTexture:Hide()
-					end
-				end
-			end
-		end
-	end)
+	--hooksecurefunc("PVPTalentFrame_Update", function(self)
+		--for i = 1, MAX_PVP_TALENT_TIERS do
+			--for j = 1, MAX_PVP_TALENT_COLUMNS do
+				--local button = self.Talents["Tier"..i]["Talent"..j]
+				--if button.knownSelection then
+					--if button.knownSelection:IsShown() then
+						--button.bg.SelectedTexture:Show()
+						--button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
+					--else
+						--button.bg.SelectedTexture:Hide()
+					--end
+				--end
+			--end
+		--end
+	--end)
 
 	--Create portrait element for the PvP Talent Frame so we can see prestige
-	local portrait = PlayerTalentFramePVPTalents:CreateTexture(nil, "OVERLAY")
-	portrait:SetSize(57,57);
-	portrait:SetPoint("CENTER", PlayerTalentFramePVPTalents.PortraitBackground, "CENTER", 0, 0);
+	--local portrait = PlayerTalentFramePVPTalents:CreateTexture(nil, "OVERLAY")
+	--portrait:SetSize(57,57);
+	--portrait:SetPoint("CENTER", PlayerTalentFramePVPTalents.PortraitBackground, "CENTER", 0, 0);
 	--Kill background
-	PlayerTalentFramePVPTalents.PortraitBackground:Kill()
+	--PlayerTalentFramePVPTalents.PortraitBackground:Kill()
 	--Reposition portrait by repositioning the background
-	PlayerTalentFramePVPTalents.PortraitBackground:ClearAllPoints()
-	PlayerTalentFramePVPTalents.PortraitBackground:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", 5, -5)
+	--PlayerTalentFramePVPTalents.PortraitBackground:ClearAllPoints()
+	--PlayerTalentFramePVPTalents.PortraitBackground:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", 5, -5)
 	--Reposition the wreath
-	PlayerTalentFramePVPTalents.SmallWreath:ClearAllPoints()
-	PlayerTalentFramePVPTalents.SmallWreath:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -2, -25)
+	--PlayerTalentFramePVPTalents.SmallWreath:ClearAllPoints()
+	--PlayerTalentFramePVPTalents.SmallWreath:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -2, -25)
 	--Update texture according to prestige
-	hooksecurefunc("PlayerTalentFramePVPTalents_SetUp", function()
-		local prestigeLevel = UnitPrestige("player");
-		if (prestigeLevel > 0) then
-			portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
-		end
-	end)
+	--hooksecurefunc("PlayerTalentFramePVPTalents_SetUp", function()
+		--local prestigeLevel = UnitPrestige("player");
+		--if (prestigeLevel > 0) then
+			--portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
+		--end
+	--end)
 
 	-- Prestige Level Dialog
-	PVPTalentPrestigeLevelDialog:StripTextures()
-	PVPTalentPrestigeLevelDialog:CreateBackdrop('Transparent')
-	PVPTalentPrestigeLevelDialog.Laurel:SetAtlas("honorsystem-prestige-laurel", true) --Re-add textures removed by StripTextures()
-	PVPTalentPrestigeLevelDialog.TopDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	PVPTalentPrestigeLevelDialog.BottomDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
-	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
+	--PVPTalentPrestigeLevelDialog:StripTextures()
+	--PVPTalentPrestigeLevelDialog:CreateBackdrop('Transparent')
+	--PVPTalentPrestigeLevelDialog.Laurel:SetAtlas("honorsystem-prestige-laurel", true) --Re-add textures removed by StripTextures()
+	--PVPTalentPrestigeLevelDialog.TopDivider:SetAtlas("honorsystem-prestige-rewardline", true)
+	--PVPTalentPrestigeLevelDialog.BottomDivider:SetAtlas("honorsystem-prestige-rewardline", true)
+	--S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
+	--S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
+	--S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
 
-	S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
+	--S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
 
 	-- Tutorial
-	S:HandleCloseButton(PlayerTalentFramePVPTalents.TutorialBox.CloseButton)
+	--S:HandleCloseButton(PlayerTalentFramePVPTalents.TutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)
