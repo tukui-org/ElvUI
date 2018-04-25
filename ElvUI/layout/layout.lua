@@ -239,7 +239,7 @@ function LO:ToggleChatPanels()
 	end
 end
 
-local function ChatButtonPanel_OnClick()
+function LO:ChatButtonPanel_OnClick()
 	GameTooltip:Hide()
 
 	if ChatButtonHolder:IsShown() then
@@ -296,7 +296,7 @@ function LO:CreateChatPanels()
 		if btn == "LeftButton" then
 			ChatButton_OnClick(self)
 		elseif btn == "RightButton" then
-			ChatButtonPanel_OnClick(self)
+			LO:ChatButtonPanel_OnClick(self)
 		end
 	end)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
