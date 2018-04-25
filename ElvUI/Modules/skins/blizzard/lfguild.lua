@@ -13,6 +13,69 @@ local pairs = pairs
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
 
+	--Bfa skin
+	local function SkinLFGuild(self)
+		self:StripTextures()
+		self:SetTemplate("Transparent")
+		LookingForGuildFrameInset:StripTextures(false)
+
+		local checkbox = {
+			"LookingForGuildPvPButton",
+			"LookingForGuildWeekendsButton",
+			"LookingForGuildWeekdaysButton",
+			"LookingForGuildRPButton",
+			"LookingForGuildRaidButton",
+			"LookingForGuildQuestButton",
+			"LookingForGuildDungeonButton",
+		}
+
+		-- skin checkboxes
+		for _, v in pairs(checkbox) do
+			S:HandleCheckBox(_G[v])
+		end
+
+		-- have to skin these checkboxes seperate for some reason o_O
+		S:HandleCheckBox(LookingForGuildTankButton.checkButton)
+		S:HandleCheckBox(LookingForGuildHealerButton.checkButton)
+		S:HandleCheckBox(LookingForGuildDamagerButton.checkButton)
+
+		LookingForGuildBrowseButton_LeftSeparator:Kill()
+		LookingForGuildRequestButton_RightSeparator:Kill()
+		S:HandleScrollBar(LookingForGuildBrowseFrameContainerScrollBar)
+		S:HandleButton(LookingForGuildBrowseButton)
+		S:HandleButton(LookingForGuildRequestButton)
+		S:HandleCloseButton(LookingForGuildFrameCloseButton)
+		LookingForGuildCommentInputFrame:CreateBackdrop("Default")
+		LookingForGuildCommentInputFrame:StripTextures(false)
+
+		-- skin container buttons on browse and request page
+		for i = 1, 5 do
+			local b = _G["LookingForGuildBrowseFrameContainerButton"..i]
+			local t = _G["LookingForGuildAppsFrameContainerButton"..i]
+			b:SetBackdrop(nil)
+			t:SetBackdrop(nil)
+		end
+
+		-- skin tabs
+		for i= 1, 3 do
+			S:HandleTab(_G["LookingForGuildFrameTab"..i])
+		end
+
+		GuildFinderRequestMembershipFrame:StripTextures(true)
+		GuildFinderRequestMembershipFrame:SetTemplate("Transparent")
+		S:HandleButton(GuildFinderRequestMembershipFrameAcceptButton)
+		S:HandleButton(GuildFinderRequestMembershipFrameCancelButton)
+		GuildFinderRequestMembershipFrameInputFrame:StripTextures()
+		GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+	end
+	hooksecurefunc("LookingForGuildFrame_OnShow", SkinLFGuild)
+	--Bfa skin end
+
+	--------------
+	-- Old skin --
+	--------------
+
+	--[[
 	local checkbox = {
 		"LookingForGuildPvPButton",
 		"LookingForGuildWeekendsButton",
@@ -65,6 +128,7 @@ local function LoadSkin()
 	S:HandleButton(GuildFinderRequestMembershipFrameCancelButton)
 	GuildFinderRequestMembershipFrameInputFrame:StripTextures()
 	GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+	]]
 end
 
 S:AddCallbackForAddon("Blizzard_LookingForGuildUI", "LookingForGuild", LoadSkin)
