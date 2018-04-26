@@ -16,7 +16,7 @@ function mod:UpdateElement_Elite(frame)
 			icon:SetTexCoord(0, 0.15, 0.35, 0.63)
 			icon:Show()
 		elseif c == 'rareelite' or c == 'rare' then
-			icon:SetTexCoord(0, 0.15, 0.63, 0.91)
+			icon:SetTexCoord(0, 0.15, 0.55, 0.91) -- probably needs adjusting for bfa
 			icon:Show()
 		else
 			icon:Hide()
