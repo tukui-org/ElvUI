@@ -15,13 +15,13 @@ local function LoadSkin()
 	-------------
 	--  Temp   --
 	-------------
+	local MissionFrame = _G["BFAMissionFrame"]
+	MissionFrame:StripTextures()
+	MissionFrame:CreateBackdrop("Transparent")
 
-	_G["BFAMissionFrame"]:StripTextures()
-	_G["BFAMissionFrame"]:CreateBackdrop("Transparent")
+	MissionFrame.GarrCorners:Hide()
 
-	_G["BFAMissionFrame"].GarrCorners:Hide()
-
-	S:HandleCloseButton(_G["BFAMissionFrame"].CloseButton)
+	S:HandleCloseButton(MissionFrame.CloseButton)
 
 	for i = 1, 3 do
 		S:HandleTab(_G["BFAMissionFrameTab"..i])
@@ -31,7 +31,21 @@ local function LoadSkin()
 	S:HandleScrollBar(_G["BFAMissionFrameMissionsListScrollFrameScrollBar"])
 
 	-- Follower Tab
+	local Follower = _G["BFAMissionFrameFollowers"]
+	local XPBar = MissionFrame.FollowerTab.XPBar
+	local Class = MissionFrame.FollowerTab.Class
+	Follower:StripTextures()
+	Follower:SetTemplate("Transparent")
+	S:HandleEditBox(Follower.SearchBox)
 	S:HandleScrollBar(_G["BFAMissionFrameFollowersListScrollFrameScrollBar"])
+
+	--S:HandleFollowerPage("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
+
+	XPBar:StripTextures()
+	XPBar:SetStatusBarTexture(E["media"].normTex)
+	XPBar:CreateBackdrop()
+
+	Class:SetSize(50, 43)
 
 	-- Scouting Map
 	-- Probably takes the skin from OrderHallUI

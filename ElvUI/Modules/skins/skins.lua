@@ -622,6 +622,7 @@ function S:HandleSliderFrame(frame)
 	end
 end
 
+-- TODO: Update the function for BFA
 function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	local followerTab = follower and follower.followerTab
 	local abilityFrame = followerTab.AbilitiesFrame
