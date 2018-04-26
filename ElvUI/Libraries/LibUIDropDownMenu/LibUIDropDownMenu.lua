@@ -11,6 +11,8 @@ local wipe = table.wipe
 -- WoW
 local CreateFrame, GetCursorPosition, GetCVar, GetScreenHeight, GetScreenWidth, OpenColorPicker, PlaySound = CreateFrame, GetCursorPosition, GetCVar, GetScreenHeight, GetScreenWidth, OpenColorPicker, PlaySound
 
+local tinsert = table.insert -- ElvUI
+
 -- ----------------------------------------------------------------------------
 local MAJOR_VERSION = "LibUIDropDownMenu"
 local MINOR_VERSION = 90000 + tonumber(("$Rev: 30 $"):match("%d+"))
@@ -255,6 +257,9 @@ function L_UIDropDownMenu_CreateFrames(level, index)
 		newList:SetID(L_UIDROPDOWNMENU_MAXLEVELS);
 		newList:SetWidth(180)
 		newList:SetHeight(10)
+
+		tinsert(UIMenus, "L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS) -- ElvUI: Allow closing with escape
+
 		for i=L_UIDROPDOWNMENU_MINBUTTONS+1, L_UIDROPDOWNMENU_MAXBUTTONS do
 			local newButton = CreateFrame("Button", "L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Button"..i, newList, "L_UIDropDownMenuButtonTemplate");
 			newButton:SetID(i);
