@@ -13,7 +13,7 @@ function mod:UpdateElement_Elite(frame)
 	if self.db.units[frame.UnitType].eliteIcon.enable then
 		local c = UnitClassification(frame.unit)
 		if c == 'elite' or c == "worldboss" then
-			icon:SetTexCoord(0, 0.15, 0.35, 0.63)
+			icon:SetTexCoord(0, 0.15, 0.28, 0.53)
 			icon:Show()
 		elseif c == 'rareelite' or c == 'rare' then
 			icon:SetTexCoord(0, 0.15, 0.55, 0.84)
