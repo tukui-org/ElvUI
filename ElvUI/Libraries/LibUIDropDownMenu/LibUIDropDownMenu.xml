@@ -12,7 +12,6 @@
 			<OnLoad>
 				local fontName, fontHeight, fontFlags = _G["L_DropDownList1Button1NormalText"]:GetFont();
 				L_UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = fontHeight;
-				tinsert(UIMenus, "L_DropDownList1"); --Allow closing with escape
 			</OnLoad>
 		</Scripts>
 	</Button>
@@ -20,10 +19,5 @@
 		<Size>
 			<AbsDimension x="180" y="10"/>
 		</Size>
-		<Scripts>
-			<OnLoad>
-				tinsert(UIMenus, "L_DropDownList2"); --Allow closing with escape
-			</OnLoad>
-		</Scripts>
 	</Button>
 </Ui>
