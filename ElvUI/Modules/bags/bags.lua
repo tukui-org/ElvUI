@@ -469,7 +469,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif (clink) then
-		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
+		local itemEquipLoc, itemClassID, itemSubClassID
 		slot.name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		-- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
 		local _, iLvl = LibItemLevel:GetItemInfo(clink)
