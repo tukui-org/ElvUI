@@ -43,7 +43,7 @@ L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
-L["Vendor Grays"] = "出售灰色物品"
+L["Vendor / Delete Grays"] = true
 
 --Chat
 L["AFK"] = "离开" --Also used in datatexts and tooltip
@@ -333,12 +333,12 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "接受这个将重置姓名版中所有光环的过滤器优先级. 你确定吗？"
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "接受这个将重置单位框架中所有光环的过滤器优先级. 你确定吗？"
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定要对所有ElvUI元素使用这个字体?"
-L["Are you sure you want to delete all your gray items?"] = "确定需要摧毁你的灰色物品?"
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"
 L["Are you sure you want to reset all the settings on this profile?"] = "确定需要重置这个配置文件中的所有设置?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "确定需要重置所有框架至默认位置?"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "由于大量的改动导致光环系统需要一个新的安装过程. 这是可选的, 最后一步将设置你的光环样式. 点击「完成」将不再提示. 如果由于某些原因反复提示, 请重新开启游戏."
 L["Can't buy anymore slots!"] = "银行背包栏位已达最大值"
+L["Delete gray items?"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "检测到您的ElvUI设置插件已过期.这可能是因为您的 Tukui 客户端已过期.请访问我们的下载页面并更新 Tukui 客户端，然后重新安装ElvUI.ElvUI设置插件过期会造成某些选项丢失"
 L["Disable Warning"] = '停用警告'
 L["Discard"] = "取消"
