@@ -10,7 +10,7 @@ local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
 -- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
--- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel
+-- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, QuickJoinToastButton
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -380,7 +380,7 @@ function LO:CreateChatButtonPanel()
 	ChatFrameChannelButton:SetParent(ChatButtonHolder)
 	ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
 	ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
-	ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
+	--ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
 	QuickJoinToastButton:SetParent(ChatButtonHolder)
 
 	E:GetModule("Skins"):HandleButton(ChatFrameChannelButton)
