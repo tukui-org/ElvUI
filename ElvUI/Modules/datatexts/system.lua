@@ -20,6 +20,7 @@ local GetCVar = GetCVar
 local GetAvailableBandwidth = GetAvailableBandwidth
 local GetNetStats = GetNetStats
 local GetDownloadedPercentage = GetDownloadedPercentage
+local GetNetIpTypes = GetNetIpTypes
 local IsShiftKeyDown = IsShiftKeyDown
 local GetFramerate = GetFramerate
 
@@ -118,6 +119,13 @@ local function OnEnter(self)
 	bandwidth = GetAvailableBandwidth()
 
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+
+	if ( GetCVarBool("useIPv6") ) then
+			local ipTypes = { "IPv4", "IPv6" }
+			local ipTypeHome, ipTypeWorld = GetNetIpTypes();
+			DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+			DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	end	
 
 	if bandwidth ~= 0 then
 		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
