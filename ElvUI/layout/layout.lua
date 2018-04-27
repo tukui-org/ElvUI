@@ -388,7 +388,7 @@ function LO:CreateChatButtonPanel()
 	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceMuteButton)
 
 	ChatAlertFrame:ClearAllPoints()
-	ChatAlertFrame:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", -1, 3)
+	ChatAlertFrame:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", 1, 3)
 end
 
 function LO:CreateMinimapPanels()

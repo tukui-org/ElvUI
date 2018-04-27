@@ -50,6 +50,11 @@ local function LoadSkin()
 
 	S:HandleEditBox(CreateChannelPopup.Name)
 	S:HandleEditBox(CreateChannelPopup.Password)
+
+	VoiceChatPromptActivateChannel:StripTextures()
+	VoiceChatPromptActivateChannel:CreateBackdrop("Transparent")
+	S:HandleButton(VoiceChatPromptActivateChannel.AcceptButton)
+	S:HandleCloseButton(VoiceChatPromptActivateChannel.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_Channels", "Channels", LoadSkin)
