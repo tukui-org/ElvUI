@@ -126,6 +126,7 @@ V['skins'] = {
 		["AlliedRaces"] = true,
 		["Channels"] = true,
 		["BFAMissions"] = true,
+		["AzeriteUI"] = true,
 	},
 }
 

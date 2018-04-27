@@ -383,6 +383,11 @@ E.Options.args.skins = {
 					name = L["BFAMission"], -- Needs locale
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				AzeriteUI = { --Temporary
+					type = "toggle",
+					name = L["AzeriteUI"], -- Needs locale
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
