@@ -33,4 +33,4 @@ local function LoadSkin()
 	]]
 end
 
-S:AddCallbackForAddon("Blizzard_AzeriteTempUI", "AzeriteUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_AzeriteTempUI", "AzeriteUI", LoadSkin) -- TODO: Change the Blizz Addon to the final one
