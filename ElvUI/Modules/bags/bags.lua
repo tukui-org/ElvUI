@@ -1642,7 +1642,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.vendorGraysButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
 		f.vendorGraysButton:GetPushedTexture():SetInside()
 		f.vendorGraysButton:StyleButton(nil, true)
-		f.vendorGraysButton.ttText = L["Vendor Grays"]
+		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
 		f.vendorGraysButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.vendorGraysButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.vendorGraysButton:SetScript("OnClick", B.VendorGrayCheck)

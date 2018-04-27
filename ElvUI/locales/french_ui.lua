@@ -43,7 +43,7 @@ L["Show/Hide Reagents"] = "Afficher / Masquer les composants"
 L["Sort Tab"] = "Organiser les onglets" --Not used, yet?
 L["Temporary Move"] = "Déplacer temporairement"
 L["Toggle Bags"] = "Afficher les sacs"
-L["Vendor Grays"] = "Vendre les objets gris"
+L["Vendor / Delete Grays"] = true
 
 --Chat
 L["AFK"] = "ABS" --Also used in datatexts and tooltip
@@ -333,12 +333,12 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "En acceptant, votre liste de priorités des filtres sera réinitialisée pour les auras des barre de noms. Êtes-vous sûr ?"
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "En acceptant, votre liste de priorités des filtres sera réinitialisée pour les auras des cadres d'unités. Êtes-vous sûr ?"
 L["Are you sure you want to apply this font to all ElvUI elements?"] =  "Êtes-vous sûr de vouloir appliquer cette police à tous les éléments d'ELvUI ?"
-L["Are you sure you want to delete all your gray items?"] = "Êtes-vous sûr de vouloir détruire tous vos Objets Gris ?"
 L["Are you sure you want to disband the group?"] = "Êtes-vous sûr de vouloir dissoudre le groupe ? "
 L["Are you sure you want to reset all the settings on this profile?"] = "Êtes-vous sûr de vouloir réinitialiser tous les réglages sur ce profil ?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "Êtes-vous sûr de vouloir réinitialiser tous les cadres à leur position par défaut ?"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "En raison de la confusion générale provoquée par le nouveau système d'aura, j'ai mis en place une nouvelle étape dans le processus d'installation. Cette option est facultative. Si vous aimez la façon dont vos auras sont configurés allez à la dernière étape et cliquez sur Terminé pour ne pas être averti à nouveau. Si, pour une raison quelconque, vous êtes averti de nouveau, relancez complètement le jeu."
 L["Can't buy anymore slots!"] = "Impossible d'acheter plus emplacements !"
+L["Delete gray items?"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "Nous avons détecté que votre installation d'ElvUI est périmée. Cela peut venir du client Tukui qui est également périmé. Merci de visiter notre page de téléchargement pour mettre à jour le client Tukui, puis réinstallez ElvUI. Ne pas avoir la version à jour ElvUI peut entrainer des erreurs."
 L["Disable Warning"] = "Désactiver l'alerte"
 L["Discard"] = "Annuler"

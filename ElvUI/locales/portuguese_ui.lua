@@ -43,7 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = "Aba de Organização"
 L["Temporary Move"] = "Mover Temporariamente"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
-L["Vendor Grays"] = "Vender Itens Cinzentos"
+L["Vendor / Delete Grays"] = true
 
 --Chat
 L["AFK"] = "LDT"
@@ -333,12 +333,12 @@ L["A setting you have changed will change an option for this character only. Thi
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true
 L["Are you sure you want to apply this font to all ElvUI elements?"] = true
-L["Are you sure you want to delete all your gray items?"] = "Tem a certeza de que deseja destruir todos os seus itens cinzentos?"
 L["Are you sure you want to disband the group?"] = "Tem a certeza de que quer dissolver o grupo?"
 L["Are you sure you want to reset all the settings on this profile?"] = "Tem certeza que quer redefinir todas as configurações desse perfil?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "Tem a certeza de que deseja restaurar todos os movedores de volta para a sua posição padrão?"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "Devido à grande confusão causada pelo novo sistema de auras foi implementado um novo passo no processo de instalação. Este passo é opcional, se você gosta da maneira que as suas auras estão configuradas vá para o último passo e clique em Terminado para não ser solicitado a configurar este passo novamente. Se por algum motivo for repetidamente solicitado a fazê-lo, por favor reinicie o seu jogo."
 L["Can't buy anymore slots!"] = "Não é possível comprar mais espaços!"
+L["Delete gray items?"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = true
 L["Disable Warning"] = "Desativar Aviso"
 L["Discard"] = "Descartar"
