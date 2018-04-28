@@ -39,7 +39,7 @@ function mod:AzeriteBar_OnClick()
 	-- FILL ME
 end
 
-function mod:UpdateaAzeriteDimensions()
+function mod:UpdateAzeriteDimensions()
 	self.azeriteBar:Width(self.db.azerite.width)
 	self.azeriteBar:Height(self.db.azerite.height)
 	self.azeriteBar.statusBar:SetOrientation(self.db.azerite.orientation)
@@ -86,7 +86,7 @@ function mod:LoadAzeriteBar()
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
 
-	self:UpdateArtifactDimensions()
+	self:UpdateAzeriteDimensions()
 	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"])
 	self:EnableDisable_AzeriteBar()
 end
