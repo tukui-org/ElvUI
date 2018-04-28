@@ -16,6 +16,7 @@ local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBa
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
+local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
@@ -1693,6 +1694,11 @@ function B:ContructContainerFrame(name, isBank)
 			CloseBackpack()
 			for i = 1, NUM_BAG_FRAMES do
 				CloseBag(i)
+			end
+
+			-- hide new item glow on bag 0 fix [note: closebag handles the others correctly]
+			for slotID = 1, GetContainerNumSlots(0) do
+				C_NewItems_RemoveNewItem(0, slotID);
 			end
 
 			if ElvUIBags and ElvUIBags.buttons then
