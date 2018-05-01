@@ -902,12 +902,13 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	frame:Height(frame:GetHeight() + 10)
 	scrollFrame:Height(scrollFrame:GetHeight() + 10)
 
-	S:HandleButton(okayButton)
-	S:HandleButton(cancelButton)
-	S:HandleEditBox(editBox)
+	-- We handle the skin in the files for now.
+	--S:HandleButton(okayButton)
+	--S:HandleButton(CancelButton)
+	--S:HandleEditBox(editBox)
 
-	cancelButton:ClearAllPoints()
-	cancelButton:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -5, 5)
+	--cancelButton:ClearAllPoints()
+	--cancelButton:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -5, 5)
 
 	for i = 1, numIcons do
 		local button = _G[buttonNameTemplate..i]
