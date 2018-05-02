@@ -16,11 +16,15 @@ local MOUSE_LABEL = MOUSE_LABEL
 local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
 local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
+local C_Map_GetPlayerMapPosition, C_Map_GetCurrentMapID = C_Map.GetPlayerMapPosition, C_Map.GetCurrentMapID
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
 -- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
 -- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
+
+local WorldMapFrame = TestWorldMapFrame --For beta. Needs to be removed later
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -69,7 +73,8 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	local x = nil --GetPlayerMapPosition("player")
+	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
+	local x, y = position.x, position.y
 	if not x then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
@@ -84,7 +89,8 @@ end
 
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
-	local x, y = nil, nil --GetPlayerMapPosition("player")
+	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
+	local x, y = position.x, position.y
 	x = x and E:Round(100 * x, 2) or 0
 	y = y and E:Round(100 * y, 2) or 0
 
