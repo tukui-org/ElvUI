@@ -74,8 +74,7 @@ end
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
 	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
-	local x, y = position.x, position.y
-	if not x then
+	if not position then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
 		self.CoordsTimer = nil
@@ -89,8 +88,7 @@ end
 
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
-	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
-	local x, y = position.x, position.y
+	local x, y = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player"):GetXY()
 	x = x and E:Round(100 * x, 2) or 0
 	y = y and E:Round(100 * y, 2) or 0
 
