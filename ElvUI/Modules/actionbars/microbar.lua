@@ -49,14 +49,14 @@ function AB:HandleMicroButton(button)
 	f:SetTemplate("Default", true)
 	button.backdrop = f
 
-	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)
 	pushed:SetInside(f)
 
-	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	normal:SetTexCoord(0.22, 0.81, 0.21, 0.82)
 	normal:SetInside(f)
 
 	if disabled then
-		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+		disabled:SetTexCoord(0.22, 0.81, 0.21, 0.82)
 		disabled:SetInside(f)
 	end
 end
