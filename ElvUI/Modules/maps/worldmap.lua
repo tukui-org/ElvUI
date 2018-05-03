@@ -6,6 +6,8 @@ E.WorldMap = M
 --Lua functions
 local find = string.find
 --WoW API / Variables
+local C_Map_GetCurrentMapID = C_Map.GetCurrentMapID
+local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local InCombatLockdown = InCombatLockdown
@@ -15,8 +17,6 @@ local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
 local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
 local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
-
-local C_Map_GetPlayerMapPosition, C_Map_GetCurrentMapID = C_Map.GetPlayerMapPosition, C_Map.GetCurrentMapID
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
@@ -72,7 +72,7 @@ function M:PLAYER_REGEN_DISABLED()
 end
 
 local inRestrictedArea = false
-function M:PLAYER_ENTERING_WORLD()
+function M:WORLD_MAP_UPDATE()
 	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
 	if not position then
 		inRestrictedArea = true
@@ -148,7 +148,7 @@ function M:Initialize()
 		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
 		M:PositionCoords()
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("WORLD_MAP_UPDATE")
 	end
 
 	if(E.global.general.smallerWorldMap) then
