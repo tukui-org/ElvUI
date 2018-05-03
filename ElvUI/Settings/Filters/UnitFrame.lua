@@ -1144,6 +1144,28 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
 		[200227] = Defaults(), -- Tangled Web
+
+	-- Battle for Azeroth
+	-- Uldir
+		-- MOTHER
+		[268277] = Defaults(), -- Purifying Flame
+		[268253] = Defaults(), -- Surgical Beam
+		[268095] = Defaults(), -- Cleansing Purge
+		[267787] = Defaults(), -- Sundering Scalpel
+		[268198] = Defaults(), -- Clinging Corruption
+		[267821] = Defaults(), -- Defense Grid
+
+		-- Vectis
+		[265127] = Defaults(), -- Lingering Infection
+		[265178] = Defaults(), -- Mutagenic Pathogen
+		[265206] = Defaults(), -- Immunosuppression
+		[265212] = Defaults(), -- Gestate
+		[265129] = Defaults(), -- Omega Vector
+		[267160] = Defaults(), -- Omega Vector
+		[267161] = Defaults(), -- Omega Vector
+		[267162] = Defaults(), -- Omega Vector
+		[267163] = Defaults(), -- Omega Vector
+		[267164] = Defaults(), -- Omega Vector
 	},
 }
 
