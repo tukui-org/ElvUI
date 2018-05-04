@@ -1166,6 +1166,18 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[267162] = Defaults(), -- Omega Vector
 		[267163] = Defaults(), -- Omega Vector
 		[267164] = Defaults(), -- Omega Vector
+
+		-- Mythrax
+		--[272146] = Defaults(), -- Annihilation
+		[272536] = Defaults(), -- Imminent Ruin
+		[274693] = Defaults(), -- Essence Shear
+		[272407] = Defaults(), -- Oblivion Sphere
+
+		-- Fetid Devourer
+		[262313] = Defaults(), -- Malodorous Miasma
+		[262292] = Defaults(), -- Rotting Regurgitation
+		[262314] = Defaults(), -- Deadly Disease
+
 	},
 }
 
