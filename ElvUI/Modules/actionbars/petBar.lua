@@ -22,7 +22,7 @@ local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvUI_Bar4, PetActionBarFrame
+-- GLOBALS: ElvUI_Bar4, PetActionBarFrame, Spell
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
@@ -39,7 +39,7 @@ function AB:UpdatePet(event, unit)
 		local icon = _G[buttonName.."Icon"];
 		local autoCast = _G[buttonName.."AutoCastable"];
 		local shine = _G[buttonName.."Shine"];
-		local name, subtext, texture, isToken, isActive, autoCastAllowed, autoCastEnabled = GetPetActionInfo(i);
+		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 
 		if not isToken then
 			icon:SetTexture(texture);
@@ -50,7 +50,13 @@ function AB:UpdatePet(event, unit)
 		end
 
 		button.isToken = isToken;
-		button.tooltipSubtext = subtext;
+		if spellID then
+			local spell = Spell:CreateFromSpellID(spellID);
+			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
+				button.tooltipSubtext = spell:GetSpellSubtext();
+			end);
+		end
+
 
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
 			--button:GetCheckedTexture():SetColorTexture(1, 1, 1)
@@ -286,6 +292,17 @@ function AB:CreateBarPet()
 			self:Show();
 		end
 	]]);
+
+	bar:SetScript("OnHide", function()
+		for i=1, NUM_PET_ACTION_SLOTS, 1 do
+			local button = _G["PetActionButton"..i];
+			if button.spellDataLoadedCancelFunc then
+				button.spellDataLoadedCancelFunc()
+				button.spellDataLoadedCancelFunc = nil
+			end
+		end
+	end);
+
 
 	PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
