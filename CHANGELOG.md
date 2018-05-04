@@ -26,7 +26,7 @@ Chat History will now highlight keywords, allow linking of URLs, and will no lon
 Reworked the Equipment Flyout skin.  
 Unitframe tags will now return nil instead of an empty string when there is nothing to show.  
 Made it more clear that the "vendor greys" button also deletes items when not at vendor.  
-The system datatext will now display protocol info (IPv4/IPv6) if applicable.  
+The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
