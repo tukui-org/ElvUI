@@ -8,20 +8,23 @@ local sort, wipe = table.sort, wipe
 local floor = math.floor
 local format = string.format
 --WoW API / Variables
-local GetNumAddOns = GetNumAddOns
-local GetAddOnInfo = GetAddOnInfo
-local IsAddOnLoaded = IsAddOnLoaded
-local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
-local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
-local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAddOnCPUUsage = GetAddOnCPUUsage
-local ResetCPUUsage = ResetCPUUsage
-local GetCVar = GetCVar
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAvailableBandwidth = GetAvailableBandwidth
-local GetNetStats = GetNetStats
+local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
 local GetDownloadedPercentage = GetDownloadedPercentage
-local IsShiftKeyDown = IsShiftKeyDown
 local GetFramerate = GetFramerate
+local GetNetIpTypes = GetNetIpTypes
+local GetNetStats = GetNetStats
+local GetNumAddOns = GetNumAddOns
+local IsAddOnLoaded = IsAddOnLoaded
+local IsShiftKeyDown = IsShiftKeyDown
+local ResetCPUUsage = ResetCPUUsage
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
+local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
+local UNKNOWN = UNKNOWN
 
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5
@@ -109,9 +112,12 @@ local function Click()
 	ResetCPUUsage();
 end
 
+local ipTypes = {"IPv4", "IPv6"}
+local ipTypeHome, ipTypeWorld
+local cpuProfiling
 local function OnEnter(self)
 	enteredFrame = true;
-	local cpuProfiling = GetCVar("scriptProfile") == "1"
+	cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
 	UpdateMemory()
@@ -119,13 +125,19 @@ local function OnEnter(self)
 
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
+	if GetCVarBool("useIPv6") then
+		ipTypeHome, ipTypeWorld = GetNetIpTypes();
+		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	end
+
 	if bandwidth ~= 0 then
 		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		DT.tooltip:AddLine(" ")
 	end
 
-	local totalCPU = nil
+	local totalCPU
 	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()

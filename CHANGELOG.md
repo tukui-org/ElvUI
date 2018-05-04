@@ -1,7 +1,7 @@
 **Version 10.74 [  ]**
 
 **New Additions:**  
-
+Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 
 
 **Bug Fixes:**   
@@ -13,6 +13,10 @@ Fixed issue with range checking on retribution paladins below lvl 78. Until lvl 
 Fixed issue preventing the stance bar buttons to be keybound.  
 Fixed issue which caused the Chat History to sometimes attempt to reply to the wrong BattleTag friend. This will only fix BattleTag friend history messages to be linked correctly, while Real ID friends history messages will still suffer from this issue. ref: !44 (Thanks @peuuuurnoel)
 Fixed tooltips getting skinned while Tooltip Skin option is disabled.  
+Fixed issue which prevented a dropdown from being shown in the world map.  
+Fixed an error regarding LeaveVehicleButton in battlegrounds.  
+Fixed a typo in datatexts which could prevent LDB data texts from loading when entering world.  
+Fixed issue which prevented the "new item" glow from hiding on items in bag 0 when closing bags.  
 
 
 **Misc. Changes:**  
@@ -20,6 +24,9 @@ The Plugin Installer frame is now movable.
 The Chat Module now supports Custom Class Colors a little better now.  
 Chat History will now highlight keywords, allow linking of URLs, and will no longer populate Last Tell for replies.  
 Reworked the Equipment Flyout skin.  
+Unitframe tags will now return nil instead of an empty string when there is nothing to show.  
+Made it more clear that the "vendor greys" button also deletes items when not at vendor.  
+The system datatext will now display protocol info (IPv4/IPv6) if applicable.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
