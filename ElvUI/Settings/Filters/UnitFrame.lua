@@ -1178,6 +1178,17 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[262292] = Defaults(), -- Rotting Regurgitation
 		[262314] = Defaults(), -- Deadly Disease
 
+		-- Taloc
+		[270290] = Defaults(), -- Blood Storm
+		[275270] = Defaults(), -- Fixate
+		[271224] = Defaults(), -- Plasma Discharge
+		[271225] = Defaults(), -- Plasma Discharge
+
+		-- Zul
+		[273365] = Defaults(), -- Dark Revelation
+		[273434] = Defaults(), -- Pit of Despair
+		[274195] = Defaults(), -- Corrupted Blood
+		[272018] = Defaults(), -- Absorbed in Darkness
 	},
 }
 
