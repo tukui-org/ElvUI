@@ -4,5 +4,5 @@
 	<Script file='Reputation.lua'/>
 	<Script file='Honor.lua'/>
 	<Script file='Artifact.lua'/>
-	<!-- <Script file='Azerite.lua'/> -->
+	<Script file='Azerite.lua'/>
 </Ui>

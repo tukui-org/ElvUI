@@ -44,7 +44,7 @@ function mod:UpdateDataBarDimensions()
 	self:UpdateReputationDimensions()
 	self:UpdateArtifactDimensions()
 	self:UpdateHonorDimensions()
-	--self:UpdateAzeriteDimensions()
+	self:UpdateAzeriteDimensions()
 end
 
 function mod:PLAYER_LEVEL_UP(level)
@@ -69,7 +69,7 @@ function mod:Initialize()
 	self:LoadReputationBar()
 	self:LoadHonorBar()
 	self:LoadArtifactBar()
-	--self:LoadAzeriteBar()
+	self:LoadAzeriteBar()
 
 	self:RegisterEvent("PLAYER_LEVEL_UP")
 end

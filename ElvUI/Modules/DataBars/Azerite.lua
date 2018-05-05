@@ -13,30 +13,75 @@ local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
-function mod:UpdateAzerite()
-	--if not mod.db.azerite.enable then return end
+function mod:UpdateAzerite(event, unit)
+	if not mod.db.azerite.enable then return end
+
+	if (event == "UNIT_INVENTORY_CHANGED" and unit ~= "player") then
+		return
+	end
 
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
-	if (not azeriteItemLocation) then
-		return;
+	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) then
+		bar:Hide()
+	elseif azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+		bar:Show()
+
+		if self.db.azerite.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
+
+		local text = ''
+		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+		local xpToNextLevel = totalLevelXP - xp
+
+		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
+		bar.statusBar:SetValue(xp)
+
+		local textFormat = self.db.azerite.textFormat
+		if textFormat == 'PERCENT' then
+			text = format('%s%%', floor(xp / xpToNextLevel * 100))
+		elseif textFormat == 'CURMAX' then
+			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpToNextLevel))
+		elseif textFormat == 'CURPERC' then
+			text = format('%s - %s%%', E:ShortValue(xp), floor(xp /xpToNextLevel * 100))
+		elseif textFormat == 'CUR' then
+			text = format('%s', E:ShortValue(totalLevelXP))
+		elseif textFormat == 'REM' then
+			text = format('%s', E:ShortValue(xpToNextLevel - xp))
+		elseif textFormat == 'CURREM' then
+			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpToNextLevel - xp))
+		elseif textFormat == 'CURPERCREM' then
+			text = format('%s - %s%% (%s)', E:ShortValue(xp), floor(xp / xpToNextLevel * 100), E:ShortValue(xpToNextLevel - xp))
+		end
+
+		bar.text:SetText(text)
 	end
-
-	--XP
-	xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-
-	--Current Level
-	currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
 end
 
 function mod:AzeriteBar_OnEnter()
-	-- FILL ME
-end
+	if mod.db.azerite.mouseover then
+		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	end
+	GameTooltip:ClearLines()
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-function mod:AzeriteBar_OnClick()
-	-- FILL ME
+	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem();
+	local azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation);
+	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+	local xpToNextLevel = totalLevelXP - xp
+
+	itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
+		local azeriteItemName = azeriteItem:GetItemName();
+		GameTooltip:AddDoubleLine(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB());
+		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
+		GameTooltip:Show()
+	end)
 end
 
 function mod:UpdateAzeriteDimensions()
@@ -47,10 +92,8 @@ function mod:UpdateAzeriteDimensions()
 
 	if self.db.azerite.orientation == "HORIZONTAL" then
 		self.azeriteBar.statusBar:SetRotatesTexture(false)
-		self.azeriteBar.bagValue:SetRotatesTexture(false)
 	else
 		self.azeriteBar.statusBar:SetRotatesTexture(true)
-		self.azeriteBar.bagValue:SetRotatesTexture(true)
 	end
 
 	self.azeriteBar.text:FontTemplate(LSM:Fetch("font", self.db.azerite.font), self.db.azerite.textSize, self.db.azerite.fontOutline)
@@ -64,16 +107,14 @@ end
 function mod:EnableDisable_AzeriteBar()
 	if self.db.azerite.enable then
 		--Possible Events
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", _)
-		self:RegisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED", _)
-		self:RegisterEvent("CVAR_UPDATE", _)
+		self:RegisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED", 'UpdateAzerite')
+		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateAzerite')
 
 		self:UpdateAzerite()
 		E:EnableMover(self.azeriteBar.mover:GetName())
 	else
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		self:UnregisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED")
-		self:UnregisterEvent("CVAR_UPDATE")
+		self:UnregisterEvent('UNIT_INVENTORY_CHANGED')
 
 		self.azeriteBar:Hide()
 		E:DisableMover(self.azeriteBar.mover:GetName())
@@ -81,7 +122,7 @@ function mod:EnableDisable_AzeriteBar()
 end
 
 function mod:LoadAzeriteBar()
-	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, self.AzeriteBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
