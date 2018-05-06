@@ -24,6 +24,10 @@ function mod:UpdateAzerite(event, unit)
 		return
 	end
 
+	if (event == "PLAYER_ENTERING_WORLD") then
+		self.azeriteBar.eventFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end
+
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
@@ -130,6 +134,13 @@ function mod:LoadAzeriteBar()
 	self.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
+
+	self.azeriteBar.eventFrame = CreateFrame("Frame")
+	self.azeriteBar.eventFrame:Hide()
+	self.azeriteBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self.azeriteBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self.azeriteBar.eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self.azeriteBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateAzerite(event) end)
 
 	self:UpdateAzeriteDimensions()
 	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"])
