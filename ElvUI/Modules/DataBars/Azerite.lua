@@ -4,11 +4,15 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
-
+local floor = floor
+local format = string.format
 --WoW API / Variables
+local AZERITE_POWER_TOOLTIP_BODY = AZERITE_POWER_TOOLTIP_BODY
+local AZERITE_POWER_TOOLTIP_TITLE = AZERITE_POWER_TOOLTIP_TITLE
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
+local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
@@ -36,7 +40,6 @@ function mod:UpdateAzerite(event, unit)
 
 		local text = ''
 		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 		local xpToNextLevel = totalLevelXP - xp
 
 		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
