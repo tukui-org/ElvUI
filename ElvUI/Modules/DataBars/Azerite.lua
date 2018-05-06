@@ -57,7 +57,7 @@ function mod:UpdateAzerite(event, unit)
 		elseif textFormat == 'CURPERC' then
 			text = format('%s - %s%%', E:ShortValue(xp), floor(xp /totalLevelXP * 100))
 		elseif textFormat == 'CUR' then
-			text = format('%s', E:ShortValue(totalLevelXP))
+			text = format('%s', E:ShortValue(xp))
 		elseif textFormat == 'REM' then
 			text = format('%s', E:ShortValue(xpToNextLevel))
 		elseif textFormat == 'CURREM' then
@@ -84,10 +84,22 @@ function mod:AzeriteBar_OnEnter()
 	local xpToNextLevel = totalLevelXP - xp
 
 	self.itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
-		local azeriteItemName = azeriteItem:GetItemName();
+		local azeriteItemName = azeriteItem:GetItemName()
+
+		--[[ From Blizz Code
 		GameTooltip:SetText(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB());
 		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
+		]]
+
+		GameTooltip:AddDoubleLine(L["Azerite Power"], azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
+		GameTooltip:AddLine(' ')
+
+		GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%s%%)', E:ShortValue(xp), E:ShortValue(totalLevelXP), floor(xp / totalLevelXP  * 100)), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Remaining AP:"], format(' %s', E:ShortValue(xpToNextLevel)), 1, 1, 1)
+		GameTooltip:AddLine(' ')
+
 		GameTooltip_AddInstructionLine(GameTooltip, "WORK IN PROGRESS") -- DELETE ME
+
 		GameTooltip:Show()
 	end)
 end
