@@ -83,6 +83,7 @@ function mod:AzeriteBar_OnEnter()
 		local azeriteItemName = azeriteItem:GetItemName();
 		GameTooltip:SetText(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB());
 		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
+		GameTooltip_AddInstructionLine(GameTooltip, "WORK IN PROGRESS") -- DELETE ME
 		GameTooltip:Show()
 	end)
 end
