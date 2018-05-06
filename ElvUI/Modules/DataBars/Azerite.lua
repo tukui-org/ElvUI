@@ -76,7 +76,7 @@ function mod:AzeriteBar_OnEnter()
 	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 	local xpToNextLevel = totalLevelXP - xp
 
-	itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
+	self.itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
 		local azeriteItemName = azeriteItem:GetItemName();
 		GameTooltip:AddDoubleLine(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB());
 		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
