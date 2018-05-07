@@ -753,7 +753,7 @@ local function LoadSkin()
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
-		"Advanced_RenderScaleSlider",
+		"Display_RenderScaleSlider",
 		"Advanced_GammaSlider",
 		"AudioOptionsSoundPanelMasterVolume",
 		"AudioOptionsSoundPanelSoundVolume",
