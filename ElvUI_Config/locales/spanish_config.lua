@@ -1103,7 +1103,6 @@ L["Remove SpellID"] = "Eliminar ID de Hechizo"
 L["Rest Icon"] = "Icono de Descanso"
 L["Restore Defaults"] = "Restaurar por Defecto"
 L["Right to Left"] = true
-L["RL / ML Icons"] = "Iconos LB / MD"
 L["RL Icon"] = true
 L["Role Icon"] = "Icono de Rol"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true

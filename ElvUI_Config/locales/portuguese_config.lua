@@ -1104,7 +1104,6 @@ L["Remove SpellID"] = "Remover SpellID"
 L["Rest Icon"] = "ìcone de descansar"
 L["Restore Defaults"] = "Restaurar ao Padrão"
 L["Right to Left"] = true
---L["RL / ML Icons"] = "Icons LR / MS"
 L["RL Icon"] = true
 L["Role Icon"] = "Ícone do papel"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true
