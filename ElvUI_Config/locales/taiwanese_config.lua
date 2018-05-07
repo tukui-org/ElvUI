@@ -1105,6 +1105,7 @@ L["Rest Icon"] = "充分休息圖示"
 L["Restore Defaults"] = "恢復預設"
 L["Right to Left"] = "右到左"
 L["RL / ML Icons"] = "團隊隊長/裝備分配圖示"
+L["RL Icon"] = true
 L["Role Icon"] = "角色定位圖示"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true
 L["Select a unit to copy settings from."] = "選擇從哪單位複制."

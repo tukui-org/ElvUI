@@ -5054,7 +5054,8 @@ E.Options.args.unitframe.args.party = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			--name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
