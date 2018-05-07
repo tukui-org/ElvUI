@@ -94,8 +94,8 @@ function mod:AzeriteBar_OnEnter()
 		GameTooltip:AddDoubleLine(L["Azerite Power"], azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		GameTooltip:AddLine(' ')
 
-		GameTooltip:AddDoubleLine(L["AP:"], format(' %s / %s (%s%%)', E:ShortValue(xp), E:ShortValue(totalLevelXP), floor(xp / totalLevelXP  * 100)), 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Remaining AP:"], format(' %s', E:ShortValue(xpToNextLevel)), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
 		GameTooltip:AddLine(' ')
 
 		GameTooltip_AddInstructionLine(GameTooltip, "WORK IN PROGRESS") -- DELETE ME
