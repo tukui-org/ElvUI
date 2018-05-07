@@ -98,9 +98,9 @@ local function updateSafeZone(self)
 end
 
 -- ElvUI block
-local UNIT_SPELLCAST_SENT = function (self, event, unit, castID)
+local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
 	local castbar = self.Castbar
-	castbar.curTarget = (unit == 'player' and UnitName('target')) or UnitName(unit..'target') or nil
+	castbar.curTarget = (target and target ~= "") and target or nil
 
 	if castbar.isTradeSkill then
 		castbar.tradeSkillCastId = castID
