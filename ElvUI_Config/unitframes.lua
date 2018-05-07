@@ -5054,7 +5054,6 @@ E.Options.args.unitframe.args.party = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			--name = L["RL / ML Icons"],
 			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
@@ -5062,7 +5061,7 @@ E.Options.args.unitframe.args.party = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -5661,14 +5660,14 @@ E.Options.args.unitframe.args.raid = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -6082,14 +6081,14 @@ E.Options.args.unitframe.args.raid40 = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
