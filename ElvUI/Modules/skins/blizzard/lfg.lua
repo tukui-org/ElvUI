@@ -564,23 +564,9 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
-	local function handleLFGListCancelDeclineButton(button)
-		S:HandleButton(button)
-		if button.Icon then
-			button.Icon:Hide()
-		end
-		if not button.text then
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-			button.text:SetText('x')
-			button.text:SetJustifyH('CENTER')
-			button.text:Point('CENTER', button, 'CENTER')
-		end
-	end
-
 	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
 		if not button.DeclineButton.template then
-			handleLFGListCancelDeclineButton(button.DeclineButton)
+			S:HandleButton(button.DeclineButton, nil, true)
 		end
 		if not button.InviteButton.template then
 			S:HandleButton(button.InviteButton)
@@ -589,7 +575,7 @@ local function LoadSkin()
 
 	hooksecurefunc("LFGListSearchEntry_Update", function(button)
 		if not button.CancelButton.template then
-			handleLFGListCancelDeclineButton(button.CancelButton)
+			S:HandleButton(button.CancelButton, nil, true)
 		end
 	end)
 

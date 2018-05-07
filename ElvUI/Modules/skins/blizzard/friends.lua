@@ -206,7 +206,7 @@ local function LoadSkin()
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
 	local function SkinFriendRequest(frame)
 		if frame.isSkinned then return; end
-		S:HandleButton(frame.DeclineButton)
+		S:HandleButton(frame.DeclineButton, nil, true)
 		S:HandleButton(frame.AcceptButton)
 		frame.isSkinned = true
 	end

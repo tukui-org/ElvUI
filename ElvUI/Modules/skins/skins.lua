@@ -113,7 +113,7 @@ function S:StatusBarColorGradient(bar, value, max, backdrop)
 	bar:SetStatusBarColor(r, g, b)
 end
 
-function S:HandleButton(f, strip)
+function S:HandleButton(f, strip, isDeclineButton)
 	assert(f, "doesn't exist!")
 
 	if f.Left then f.Left:SetAlpha(0) end
@@ -139,6 +139,18 @@ function S:HandleButton(f, strip)
 	if f.SetDisabledTexture then f:SetDisabledTexture("") end
 
 	if strip then f:StripTextures() end
+
+	-- used for a white X on decline buttons (more clear)
+	if isDeclineButton then
+		if f.Icon then f.Icon:Hide() end
+		if not f.text then
+			f.text = f:CreateFontString(nil, 'OVERLAY')
+			f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			f.text:SetText('x')
+			f.text:SetJustifyH('CENTER')
+			f.text:Point('CENTER', f, 'CENTER')
+		end
+	end
 
 	f:SetTemplate("Default", true)
 	f:HookScript("OnEnter", S.SetModifiedBackdrop)
