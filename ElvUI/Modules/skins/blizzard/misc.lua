@@ -33,10 +33,6 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
-
-		--DropDownMenu library support
-		"L_DropDownList1Backdrop",
-		"L_DropDownList1MenuBackdrop"
 	}
 
 	for i = 1, getn(skins) do
@@ -235,14 +231,6 @@ local function LoadSkin()
 		end
 	end)
 
-	--LibUIDropDownMenu
-	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
-		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
-		end
-	end)
-
 	--[[local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
 			local button = _G["WatchFrameItem"..i]
@@ -293,6 +281,18 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
+
+	--DropDownMenu library support
+	if LibStub("LibUIDropDownMenu", true) then
+		L_DropDownList1Backdrop:SetTemplate("Transparent")
+		L_DropDownList1MenuBackdrop:SetTemplate("Transparent")
+		hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
+			if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
+				_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
+				_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
+			end
+		end)
+	end
 end
 
 S:AddCallback("SkinMisc", LoadSkin)
