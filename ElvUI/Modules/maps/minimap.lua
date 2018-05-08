@@ -116,7 +116,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 
 	for id=1, count do
 		name, texture, _, category, nested  = GetTrackingInfo(id);
-		info = L_UIDropDownMenu_CreateInfo();
+		info = UIDropDownMenu_CreateInfo();
 		info.text = name;
 		info.checked = MiniMapTrackingDropDownButton_IsActive;
 		info.func = MiniMapTracking_SetTracking;
@@ -147,11 +147,11 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 end
 
 --Create the new minimap tracking dropdown frame and initialize it
-local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "L_UIDropDownMenuTemplate")
+local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
 ElvUIMiniMapTrackingDropDown:SetID(1)
 ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
 ElvUIMiniMapTrackingDropDown:Hide()
-L_UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, MiniMapTrackingDropDown_Initialize, "MENU");
+UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, MiniMapTrackingDropDown_Initialize, "MENU");
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu

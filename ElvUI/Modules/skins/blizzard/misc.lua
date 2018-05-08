@@ -35,8 +35,8 @@ local function LoadSkin()
 		"DropDownList1MenuBackdrop",
 
 		--DropDownMenu library support
-		"L_DropDownList1Backdrop",
-		"L_DropDownList1MenuBackdrop"
+		"DropDownList1Backdrop",
+		"DropDownList1MenuBackdrop"
 	}
 
 	for i = 1, getn(skins) do
@@ -232,14 +232,6 @@ local function LoadSkin()
 		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
-		end
-	end)
-
-	--LibUIDropDownMenu
-	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
-		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)
 

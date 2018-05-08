@@ -65,7 +65,7 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	preferredIndex = 3
 }
 
-local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = INVITE, hasArrow = true, notCheckable=true, },
