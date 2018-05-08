@@ -12,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -281,18 +281,6 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
-
-	--DropDownMenu library support
-	if LibStub("LibUIDropDownMenu", true) then
-		L_DropDownList1Backdrop:SetTemplate("Transparent")
-		L_DropDownList1MenuBackdrop:SetTemplate("Transparent")
-		hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
-			if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-				_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-				_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
-			end
-		end)
-	end
 end
 
 S:AddCallback("SkinMisc", LoadSkin)

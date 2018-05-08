@@ -113,6 +113,24 @@ function S:StatusBarColorGradient(bar, value, max, backdrop)
 	bar:SetStatusBarColor(r, g, b)
 end
 
+-- DropDownMenu library support
+function S:SkinLibDropDownMenu(prefix, maxLevels)
+	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
+		local bd = _G[prefix..'_DropDownList1Backdrop'];
+		local mbd = _G[prefix..'_DropDownList1MenuBackdrop'];
+		if bd and not bd.template then bd:SetTemplate('Transparent') end
+		if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
+
+		S[prefix..'_UIDropDownMenuSkinned'] = true;
+		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
+			local ddbd = _G[prefix..'_DropDownList'..maxLevels..'Backdrop'];
+			local ddmbd = _G[prefix..'_DropDownList'..maxLevels..'MenuBackdrop'];
+			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
+			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
+		end)
+	end
+end
+
 function S:HandleButton(f, strip, isDeclineButton)
 	assert(f, "doesn't exist!")
 
@@ -932,6 +950,15 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 end
 
 function S:ADDON_LOADED(_, addon)
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
+		if not S.L_UIDropDownMenuSkinned then --LibUIDropDownMenu
+			S:SkinLibDropDownMenu('L', _G.L_UIDROPDOWNMENU_MAXLEVELS)
+		end
+		if not S.Lib_UIDropDownMenuSkinned then --NoTaint_UIDropDownMenu
+			S:SkinLibDropDownMenu('Lib', _G.LIB_UIDROPDOWNMENU_MAXLEVELS)
+		end
+	end
+
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method
