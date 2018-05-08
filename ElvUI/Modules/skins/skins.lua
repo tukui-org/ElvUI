@@ -114,7 +114,7 @@ function S:StatusBarColorGradient(bar, value, max, backdrop)
 end
 
 -- DropDownMenu library support
-function S:SkinLibDropDownMenu(prefix, maxLevels)
+function S:SkinLibDropDownMenu(prefix)
 	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
 		local bd = _G[prefix..'_DropDownList1Backdrop'];
 		local mbd = _G[prefix..'_DropDownList1MenuBackdrop'];
@@ -123,8 +123,9 @@ function S:SkinLibDropDownMenu(prefix, maxLevels)
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true;
 		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local ddbd = _G[prefix..'_DropDownList'..maxLevels..'Backdrop'];
-			local ddmbd = _G[prefix..'_DropDownList'..maxLevels..'MenuBackdrop'];
+			local lvls = _G[prefix..'_UIDROPDOWNMENU_MAXLEVELS'];
+			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
+			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
 			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
 		end)
@@ -953,12 +954,8 @@ end
 
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
-		if not S.L_UIDropDownMenuSkinned then --LibUIDropDownMenu
-			S:SkinLibDropDownMenu('L', _G.L_UIDROPDOWNMENU_MAXLEVELS)
-		end
-		if not S.Lib_UIDropDownMenuSkinned then --NoTaint_UIDropDownMenu
-			S:SkinLibDropDownMenu('Lib', _G.LIB_UIDROPDOWNMENU_MAXLEVELS)
-		end
+		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
+		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
 
 	if self.allowBypass[addon] then
