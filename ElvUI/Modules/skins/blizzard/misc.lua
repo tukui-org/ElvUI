@@ -33,10 +33,6 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
-
-		--DropDownMenu library support
-		"DropDownList1Backdrop",
-		"DropDownList1MenuBackdrop"
 	}
 
 	for i = 1, getn(skins) do
