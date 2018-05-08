@@ -27,5 +27,4 @@
 	<Include file="LibBase64-1.0\lib.xml"/>
 	<Script file="LibAnim\LibAnim.lua"/>
 	<Script file="LibItemLevel\LibItemLevel.lua"/>
-	<Include file="LibUIDropDownMenu\LibUIDropDownMenu.xml"/>
 </Ui>
