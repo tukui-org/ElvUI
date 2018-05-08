@@ -1216,7 +1216,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 end
 
 E.NameReplacements = {}
-function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
@@ -1652,21 +1652,27 @@ function CH:ChatFrame_MessageEventHandler(event, arg1, arg2, arg3, arg4, arg5, a
 	end
 end
 
-function CH:ChatFrame_OnEvent(event, ...)
-	if ( ChatFrame_ConfigEventHandler(self, event, ...) ) then
-		return;
-	end
-	if ( ChatFrame_SystemEventHandler(self, event, ...) ) then
-		return
-	end
-	if ( CH.ChatFrame_MessageEventHandler(self, event, ...) ) then
-		return
-	end
+function CH:ChatFrame_ConfigEventHandler(...)
+	return ChatFrame_ConfigEventHandler(...)
 end
 
-function CH:FloatingChatFrame_OnEvent(event, ...)
-	CH.ChatFrame_OnEvent(self, event, ...);
-	FloatingChatFrame_OnEvent(self, event, ...);
+function CH:ChatFrame_SystemEventHandler(...)
+	return ChatFrame_SystemEventHandler(...)
+end
+
+function CH:ChatFrame_OnEvent(...)
+	if CH:ChatFrame_ConfigEventHandler(...) then return end
+	if CH:ChatFrame_SystemEventHandler(...) then return end
+	if CH:ChatFrame_MessageEventHandler(...) then return end
+end
+
+function CH:FloatingChatFrame_OnEvent(...)
+	CH:ChatFrame_OnEvent(...);
+	FloatingChatFrame_OnEvent(...);
+end
+
+local function FloatingChatFrameOnEvent(...)
+	CH:FloatingChatFrame_OnEvent(...)
 end
 
 function CH:SetupChat()
@@ -1690,15 +1696,8 @@ function CH:SetupChat()
 		if not frame.scriptsSet then
 			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 
-			--[[THIS CAUSES LUA ERROR WHEN RESETTING CHAT TO DEFAULTS OR WHEN RUNNING FCF_ResetChatWindows()
-			if id > NUM_CHAT_WINDOWS then
-				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
-			elseif id ~= 2 then
-				frame:SetScript("OnEvent", CH.ChatFrame_OnEvent)
-			end]]
-			--Use this instead for the time being
 			if id ~= 2 then
-				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
+				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
 			end
 
 			hooksecurefunc(frame, "SetScript", function(f, script, func)
@@ -1974,7 +1973,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
+						CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 					end
 				end
 			end
@@ -1995,7 +1994,7 @@ function CH:DelayGuildMOTD()
 			for _, frame in pairs(CHAT_FRAMES) do
 				chat = _G[frame]
 				if chat and chat:IsEventRegistered('CHAT_MSG_GUILD') then
-					ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
+					CH:ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
 					chat:RegisterEvent('GUILD_MOTD')
 				end
 			end
