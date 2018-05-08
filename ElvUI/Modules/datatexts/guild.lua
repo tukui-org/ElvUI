@@ -32,7 +32,7 @@ local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
 local REMOTE_CHAT = REMOTE_CHAT
 
-local L_EasyMenu = L_EasyMenu
+local EasyMenu = EasyMenu
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
@@ -222,7 +222,7 @@ local function Click(self, btn)
 			end
 		end
 
-		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleGuildFrame()
 	end

@@ -6,7 +6,7 @@ local DT = E:GetModule('DataTexts')
 local select = select
 local format, join = string.format, string.join
 --WoW API / Variables
-local L_EasyMenu = L_EasyMenu
+local EasyMenu = EasyMenu
 local GetActiveSpecGroup = GetActiveSpecGroup
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecGroups = GetNumSpecGroups
@@ -144,7 +144,7 @@ local function OnClick(self, button)
 					specList[index + 1] = nil
 				end
 			end
-			L_EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
 		end
 	else
 		DT.tooltip:Hide()
@@ -161,7 +161,7 @@ local function OnClick(self, button)
 			end
 		end
 
-		L_EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
 	end
 end
 

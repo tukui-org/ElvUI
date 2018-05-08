@@ -22,9 +22,9 @@ local GuildInstanceDifficulty = GuildInstanceDifficulty
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
-local L_ToggleDropDownMenu = L_ToggleDropDownMenu
-local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
-local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
+local ToggleDropDownMenu = ToggleDropDownMenu
+local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
+local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local MiniMapTrackingDropDownButton_IsActive = MiniMapTrackingDropDownButton_IsActive
 local MiniMapTrackingDropDown_IsNoTrackingActive = MiniMapTrackingDropDown_IsNoTrackingActive
@@ -75,7 +75,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 	local _, class = UnitClass("player");
 
 	if (level == 1) then
-		info = L_UIDropDownMenu_CreateInfo();
+		info = UIDropDownMenu_CreateInfo();
 		info.text=MINIMAP_TRACKING_NONE;
 		info.checked = MiniMapTrackingDropDown_IsNoTrackingActive;
 		info.func = ClearAllTracking;
@@ -83,7 +83,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 		info.arg1 = nil;
 		info.isNotRadio = true;
 		info.keepShownOnClick = true;
-		L_UIDropDownMenu_AddButton(info, level);
+		UIDropDownMenu_AddButton(info, level);
 
 		if (class == "HUNTER") then --only show hunter dropdown for hunters
 			numTracking = 0;
@@ -101,7 +101,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 				info.keepShownOnClick = false;
 				info.hasArrow = true;
 				info.value = HUNTER_TRACKING;
-				L_UIDropDownMenu_AddButton(info, level)
+				UIDropDownMenu_AddButton(info, level)
 			end
 		end
 
@@ -111,7 +111,7 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 		info.keepShownOnClick = false;
 		info.hasArrow = true;
 		info.value = TOWNSFOLK;
-		L_UIDropDownMenu_AddButton(info, level)
+		UIDropDownMenu_AddButton(info, level)
 	end
 
 	for id=1, count do
@@ -139,9 +139,9 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 			(nested < 0 or -- this tracking shouldn't be nested
 			(nested == HUNTER_TRACKING and class ~= "HUNTER") or
 			(numTracking == 1 and category == "spell"))) then -- this is a hunter tracking ability, but you only have one
-			L_UIDropDownMenu_AddButton(info, level);
+			UIDropDownMenu_AddButton(info, level);
 		elseif (level == 2 and (nested == TOWNSFOLK or (nested == HUNTER_TRACKING and class == "HUNTER")) and nested == UIDROPDOWNMENU_MENU_VALUE) then
-			L_UIDropDownMenu_AddButton(info, level);
+			UIDropDownMenu_AddButton(info, level);
 		end
 	end
 end
@@ -256,7 +256,7 @@ function M:Minimap_OnMouseUp(btn)
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
 	elseif btn == "RightButton" then
-		L_ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor");
+		ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor");
 	else
 		Minimap_OnClick(self)
 	end

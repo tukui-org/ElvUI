@@ -42,7 +42,7 @@ local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local L_EasyMenu = L_EasyMenu
+local EasyMenu = EasyMenu
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 -- create a popup
@@ -430,7 +430,7 @@ local function Click(self, btn)
 			end
 		end
 
-		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleFriendsFrame()
 	end

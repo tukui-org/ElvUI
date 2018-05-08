@@ -21,9 +21,9 @@ local GetNumLootItems = GetNumLootItems
 local GiveMasterLoot = GiveMasterLoot
 local IsFishingLoot = IsFishingLoot
 local IsModifiedClick = IsModifiedClick
-local L_ToggleDropDownMenu = L_ToggleDropDownMenu
-local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
-local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
+local ToggleDropDownMenu = ToggleDropDownMenu
+local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
+local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local LootSlotHasItem = LootSlotHasItem
 local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
 local ResetCursor = ResetCursor
@@ -222,7 +222,7 @@ function M:LOOT_CLOSED()
 end
 
 function M:OPEN_MASTER_LOOT_LIST()
-	L_ToggleDropDownMenu(1, nil, ElvUIGroupLootDropDown, lootFrame.slots[ss], 0, 0)
+	ToggleDropDownMenu(1, nil, ElvUIGroupLootDropDown, lootFrame.slots[ss], 0, 0)
 end
 
 function M:UPDATE_MASTER_LOOT_LIST()
