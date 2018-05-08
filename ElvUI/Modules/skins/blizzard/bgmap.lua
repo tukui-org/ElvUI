@@ -16,7 +16,7 @@ local L_ToggleDropDownMenu = L_ToggleDropDownMenu
 -- GLOBALS: UIParent, SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
 -- GLOBALS: BattlefieldMinimapTabDropDown_TogglePlayers, BattlefieldMinimapTabDropDown_ToggleLock
 -- GLOBALS: BattlefieldMinimapTabDropDown_ShowOpacity, BattlefieldMinimap_UpdateOpacity
--- GLOBALS: L_UIDROPDOWNMENU_MENU_LEVEL
+-- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
@@ -52,20 +52,20 @@ local function LoadSkin()
 		info.func = BattlefieldMinimapTabDropDown_TogglePlayers;
 		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.showPlayers or false;
 		info.isNotRadio = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		L_UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 
 		-- Battlefield minimap lock
 		info.text = LOCK_BATTLEFIELDMINIMAP;
 		info.func = BattlefieldMinimapTabDropDown_ToggleLock;
 		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked or false;
 		info.isNotRadio = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		L_UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 
 		-- Opacity
 		info.text = BATTLEFIELDMINIMAP_OPACITY_LABEL;
 		info.func = BattlefieldMinimapTabDropDown_ShowOpacity;
 		info.notCheckable = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		L_UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 	end
 	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "L_UIDropDownMenuTemplate")
 	ElvUIBattlefieldMinimapTabDropDown:SetID(1)
