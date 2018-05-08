@@ -123,7 +123,7 @@ function S:SkinLibDropDownMenu(prefix)
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true;
 		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[prefix..'_UIDROPDOWNMENU_MAXLEVELS'];
+			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
 			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
 			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
