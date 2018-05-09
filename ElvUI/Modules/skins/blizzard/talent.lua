@@ -6,6 +6,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
+local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
@@ -180,6 +181,7 @@ local function LoadSkin()
 	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
 		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
+		local numSpecs = GetNumSpecializations(nil, self.isPet);
 
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
 		local scrollChild = self.spellsScroll.child
@@ -188,13 +190,15 @@ local function LoadSkin()
 
 		local index = 1
 		local bonuses
+		local bonusesIncrement = 1;
 		if self.isPet then
-			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet)}
+			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet, true)}
+			bonusesIncrement = 2;
 		else
-			bonuses = SPEC_SPELLS_DISPLAY[id]
+			bonuses = C_SpecializationInfo_GetSpellsDisplay(id)
 		end
 		if bonuses then
-			for i = 1, #bonuses, 2 do
+			for i = 1, #bonuses, bonusesIncrement do
 				local frame = scrollChild["abilityButton"..index]
 				local _, icon = GetSpellTexture(bonuses[i])
 				if frame then
@@ -213,7 +217,7 @@ local function LoadSkin()
 			end
 		end
 
-		for i = 1, GetNumSpecializations(nil, self.isPet) do
+		for i = 1, numSpecs do
 			local bu = self["specButton"..i]
 			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
@@ -305,7 +309,23 @@ local function LoadSkin()
 		end
 	end
 
-	-- PVP Talents
+	-- PVP Talents WIP
+	PlayerTalentFrameTalentsPvpTalentFrame:StripTextures()
+	PlayerTalentFrameTalentsPvpTalentFrameTalentList:StripTextures()
+	PlayerTalentFrameTalentsPvpTalentFrameTalentListBg:SetAlpha(0)
+	PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollChild:StripTextures()
+	PlayerTalentFrameTalentsPvpTalentFrameTalentListInset:StripTextures()
+	PlayerTalentFrameTalentsPvpTalentFrameTalentListInsetBg:SetAlpha(0)
+
+	--[[ ADJUST ME ]]
+	PlayerTalentFrameTalentsPvpTalentFrameTalentList:CreateBackdrop("Transparent")
+	PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:SetAllPoints()
+	PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:SetFrameLevel(0)
+	-- Adjust the backdrop Position
+	-- PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:Point('BOTTOMRIGHT', PlayerTalentFrameTalentsPvpTalentFrameTalentList, 'BOTTOMRIGHT', 0, -6)
+
+	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
+	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)
