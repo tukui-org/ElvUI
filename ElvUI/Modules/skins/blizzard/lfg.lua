@@ -490,7 +490,7 @@ local function LoadSkin()
 	LFGListFrame.EntryCreation.CancelButton:Point("BOTTOMLEFT", -1, 3)
 	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
 	LFGListFrame.EntryCreation.ListGroupButton:Point("BOTTOMRIGHT", -6, 3)
-	S:HandleEditBox(LFGListEntryCreationDescription)
+	S:HandleEditBox(LFGListCreationDescription)
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
