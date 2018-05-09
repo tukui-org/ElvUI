@@ -388,6 +388,11 @@ E.Options.args.skins = {
 					name = L["AzeriteUI"], -- Needs locale
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Communities = { --Temporary
+					type = "toggle",
+					name = L["Communities"], -- Needs locale
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

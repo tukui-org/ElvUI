@@ -22,6 +22,7 @@
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
 	<Script file='Contribution.lua'/>
+	<Script file='Communities.lua'/>
 	<Script file='deathRecap.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='dressingroom.lua'/>
