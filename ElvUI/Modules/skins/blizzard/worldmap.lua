@@ -12,31 +12,32 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
 
 	local WorldMapFrame = _G["WorldMapFrame"]
-	WorldMapFrame.BorderFrame.Inset:StripTextures()
+	WorldMapFrame:StripTextures()
 	WorldMapFrame.BorderFrame:StripTextures()
-	WorldMapFrameNavBar:StripTextures()
-	WorldMapFrameNavBarOverlay:StripTextures()
+	WorldMapFrame.NavBar:StripTextures()
+	WorldMapFrame.NavBar.overlay:StripTextures()
 
-	WorldMapFrameNavBarHomeButton:StripTextures()
-	WorldMapFrameNavBarHomeButton:CreateBackdrop("Default", true)
-	WorldMapFrameNavBarHomeButton.backdrop:SetPoint("TOPLEFT", WorldMapFrameNavBarHomeButton, "TOPLEFT", 0, 0)
-	WorldMapFrameNavBarHomeButton.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrameNavBarHomeButton, "BOTTOMRIGHT", -15, 0)
-	WorldMapFrameNavBarHomeButton:SetFrameLevel(1)
-	WorldMapFrameNavBarHomeButton.text:FontTemplate()
+	WorldMapFrame:CreateBackdrop("Transparent")
 
-	S:HandleDropDownBox(WorldMapLevelDropDown)
-	WorldMapLevelDropDown:Point("TOPLEFT", -17, 0)
+	WorldMapFrameHomeButton:StripTextures()
+	WorldMapFrameHomeButton:CreateBackdrop("Default", true)
+	WorldMapFrameHomeButton.backdrop:SetPoint("TOPLEFT", WorldMapFrameHomeButton, "TOPLEFT", 0, 0)
+	WorldMapFrameHomeButton.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrameHomeButton, "BOTTOMRIGHT", -15, 0)
+	WorldMapFrameHomeButton:SetFrameLevel(1)
+	WorldMapFrameHomeButton.text:FontTemplate()
 
-	WorldMapFrame.BorderFrame:CreateBackdrop("Transparent")
-	WorldMapFrame.BorderFrame.Inset:CreateBackdrop("Default")
-	WorldMapFrame.BorderFrame.Inset.backdrop:Point("TOPLEFT", WorldMapFrame.BorderFrame.Inset, "TOPLEFT", 1, -3)
-	WorldMapFrame.BorderFrame.Inset.backdrop:Point("BOTTOMRIGHT", WorldMapFrame.BorderFrame.Inset, "BOTTOMRIGHT", -1, 1)
+	-- Quest Frames
+	QuestMapFrame.VerticalSeparator:Hide()
+
+	QuestScrollFrame.DetailFrame:StripTextures()
+	QuestScrollFrame.Background:SetAlpha(0)
+	QuestScrollFrame.Contents.Separator.Divider:Hide()
+
+	QuestScrollFrame.DetailFrame:CreateBackdrop("Default")
+	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 1, -3)
+	QuestScrollFrame.DetailFrame.backdrop:Point("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -1, 1)
 
 	S:HandleScrollBar(QuestScrollFrameScrollBar)
-
-	if E.global.general.disableTutorialButtons then
-		WorldMapFrameTutorialButton:Kill()
-	end
 
 	local QuestMapFrame = _G["QuestMapFrame"]
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
@@ -52,33 +53,36 @@ local function LoadSkin()
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
-
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 
-	local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
-	TrackingOptions.Button:StripTextures()
-	TrackingOptions.Background:SetAlpha(0)
-	TrackingOptions.IconOverlay:SetAlpha(0)
+	if E.global.general.disableTutorialButtons then
+		WorldMapFrame.BorderFrame.Tutorial:Kill()
+	end
 
-	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
-	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
-	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
+	--local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
+	--TrackingOptions.Button:StripTextures()
+	--TrackingOptions.Background:SetAlpha(0)
+	--TrackingOptions.IconOverlay:SetAlpha(0)
 
-	WorldMapFrame.UIElementsFrame.BountyBoard.BountyName:FontTemplate(nil, 14, "OUTLINE")
-	WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:Size(22,20)
-	WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:Size(22,20)
+	--S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
+	--S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
+	--SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
 
-	S:HandleCloseButton(WorldMapFrame.UIElementsFrame.BountyBoard.TutorialBox.CloseButton)
+	--WorldMapFrame.UIElementsFrame.BountyBoard.BountyName:FontTemplate(nil, 14, "OUTLINE")
+	--WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:Size(22,20)
+	--WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:Size(22,20)
 
-	WorldMapFrameAreaLabel:FontTemplate(nil,30)
-	WorldMapFrameAreaLabel:SetShadowOffset(2,-2)
-	WorldMapFrameAreaLabel:SetTextColor(0.9,0.8,0.6)
-	WorldMapFrameAreaDescription:FontTemplate(nil,20)
-	WorldMapFrameAreaDescription:SetShadowOffset(2,-2)
-	WorldMapFrameAreaPetLevels:FontTemplate(nil,20)
-	WorldMapFrameAreaPetLevels:SetShadowOffset(2,-2)
-	WorldMapZoneInfo:FontTemplate(nil,25)
-	WorldMapZoneInfo:SetShadowOffset(2,-2)
+	--S:HandleCloseButton(WorldMapFrame.UIElementsFrame.BountyBoard.TutorialBox.CloseButton)
+
+	--WorldMapFrameAreaLabel:FontTemplate(nil,30)
+	--WorldMapFrameAreaLabel:SetShadowOffset(2,-2)
+	--WorldMapFrameAreaLabel:SetTextColor(0.9,0.8,0.6)
+	--WorldMapFrameAreaDescription:FontTemplate(nil,20)
+	--WorldMapFrameAreaDescription:SetShadowOffset(2,-2)
+	--WorldMapFrameAreaPetLevels:FontTemplate(nil,20)
+	--WorldMapFrameAreaPetLevels:SetShadowOffset(2,-2)
+	--WorldMapZoneInfo:FontTemplate(nil,25)
+	--WorldMapZoneInfo:SetShadowOffset(2,-2)
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)
