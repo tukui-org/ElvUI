@@ -24,8 +24,6 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
 -- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 
-local WorldMapFrame = TestWorldMapFrame --For beta. Needs to be removed later
-
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
 	["TOPRIGHT"] = "BOTTOMRIGHT",
@@ -70,7 +68,7 @@ end
 function M:PLAYER_REGEN_DISABLED()
 
 end
-
+--[[
 local inRestrictedArea = false
 function M:WORLD_MAP_UPDATE()
 	local position = C_Map_GetPlayerMapPosition(C_Map_GetCurrentMapID(), "player")
@@ -98,10 +96,10 @@ function M:UpdateCoords()
 		CoordsHolder.playerCoords:SetText("")
 	end
 
-	local scale = WorldMapDetailFrame:GetEffectiveScale()
-	local width = WorldMapDetailFrame:GetWidth()
-	local height = WorldMapDetailFrame:GetHeight()
-	local centerX, centerY = WorldMapDetailFrame:GetCenter()
+	local scale = WorldMapFrame:GetEffectiveScale()
+	local width = WorldMapFrame:GetWidth()
+	local height = WorldMapFrame:GetHeight()
+	local centerX, centerY = WorldMapFrame:GetCenter()
 	x, y = GetCursorPosition()
 	local adjustedX = (x / scale - (centerX - (width/2))) / width
 	local adjustedY = (centerY + (height/2) - y / scale) / height
@@ -130,8 +128,10 @@ function M:PositionCoords()
 	CoordsHolder.mouseCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
+]]
 
 function M:Initialize()
+	--[[
 	if(E.global.general.WorldMapCoordinates.enable) then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
@@ -150,6 +150,7 @@ function M:Initialize()
 
 		self:RegisterEvent("WORLD_MAP_UPDATE")
 	end
+	]]
 
 	if(E.global.general.smallerWorldMap) then
 		BlackoutWorld:SetTexture(nil)
