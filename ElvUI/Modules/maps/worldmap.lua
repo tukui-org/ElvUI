@@ -152,6 +152,7 @@ function M:Initialize()
 	end
 	]]
 
+	--[[ FIX ME
 	if(E.global.general.smallerWorldMap) then
 		BlackoutWorld:SetTexture(nil)
 		self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')
@@ -165,6 +166,7 @@ function M:Initialize()
 			self:SetSmallWorldMap()
 		end
 	end
+	]]
 
 	--Set alpha used when moving
 	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
