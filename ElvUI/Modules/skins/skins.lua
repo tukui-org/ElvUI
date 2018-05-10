@@ -460,6 +460,10 @@ function S:HandleEditBox(frame)
 	if(frame.Middle) then
 		frame.Middle:Kill()
 	end
+
+	if(frame.Mid) then
+		frame.Mid:Kill()
+	end
 end
 
 function S:HandleDropDownBox(frame, width)
