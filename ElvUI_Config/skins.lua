@@ -390,7 +390,7 @@ E.Options.args.skins = {
 				},
 				Communities = { --Temporary
 					type = "toggle",
-					name = L["Communities"], -- Needs locale
+					name = COMMUNITIES,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},
