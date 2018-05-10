@@ -48,6 +48,7 @@ local function LoadSkin()
 
 	if E.private.skins.blizzard.tooltip then
 		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+		QuestScrollFrame.WarCampaignTooltip:SetTemplate("Transparent")
 	end
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
