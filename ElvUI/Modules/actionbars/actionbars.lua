@@ -840,18 +840,6 @@ function AB:DisableBlizzard()
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
 
-	--Look into what this does, probably removed in BFA
-	--[[
-		ArtifactWatchBar:SetParent(UIHider)
-		HonorWatchBar:SetParent(UIHider)
-		MainMenuExpBar:UnregisterAllEvents()
-		MainMenuExpBar:Hide()
-		MainMenuExpBar:SetParent(UIHider)
-		ReputationWatchBar:UnregisterAllEvents()
-		ReputationWatchBar:Hide()
-		ReputationWatchBar:SetParent(UIHider)
-	--]]
-
 	for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
 		if child then
