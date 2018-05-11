@@ -45,25 +45,26 @@ function mod:UpdateAzerite(event, unit)
 		local text = ''
 		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local xpToNextLevel = totalLevelXP - xp
+		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
 		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
 		bar.statusBar:SetValue(xp)
 
 		local textFormat = self.db.azerite.textFormat
 		if textFormat == 'PERCENT' then
-			text = format('%s%%', floor(xp / totalLevelXP * 100))
+			text = format('%s%% [%s]', floor(xp / totalLevelXP * 100), currentLevel)
 		elseif textFormat == 'CURMAX' then
-			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(totalLevelXP))
+			text = format('%s - %s [%s]', E:ShortValue(xp), E:ShortValue(totalLevelXP), currentLevel)
 		elseif textFormat == 'CURPERC' then
-			text = format('%s - %s%%', E:ShortValue(xp), floor(xp /totalLevelXP * 100))
+			text = format('%s - %s%% [%s]', E:ShortValue(xp), floor(xp /totalLevelXP * 100), currentLevel)
 		elseif textFormat == 'CUR' then
-			text = format('%s', E:ShortValue(xp))
+			text = format('%s [%s]', E:ShortValue(xp), currentLevel)
 		elseif textFormat == 'REM' then
-			text = format('%s', E:ShortValue(xpToNextLevel))
+			text = format('%s [%s]', E:ShortValue(xpToNextLevel), currentLevel)
 		elseif textFormat == 'CURREM' then
-			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpToNextLevel))
+			text = format('%s - %s [%s]', E:ShortValue(xp), E:ShortValue(xpToNextLevel), currentLevel)
 		elseif textFormat == 'CURPERCREM' then
-			text = format('%s - %s%% (%s)', E:ShortValue(xp), floor(xp / totalLevelXP * 100), E:ShortValue(xpToNextLevel))
+			text = format('%s - %s%% (%s) [%s]', E:ShortValue(xp), floor(xp / totalLevelXP * 100), E:ShortValue(xpToNextLevel), currentLevel)
 		end
 
 		bar.text:SetText(text)
