@@ -33,7 +33,6 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
-local UnitFactionGroup = UnitFactionGroup
 local UnitIsAFK = UnitIsAFK
 local DND = DND
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -291,15 +290,11 @@ function AFK:Initialize()
 	self.AFKMode.bottom.logo:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
 	self.AFKMode.bottom.logo:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga")
 
-	local factionGroup = UnitFactionGroup("player");
-	--factionGroup = "Alliance"
-	local size, offsetX, offsetY = 140, -20, -16
-	local nameOffsetX, nameOffsetY = -10, -28
+	local factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = E.myfaction, 140, -20, -16, -10, -28;
 	if factionGroup == "Neutral" then
-		factionGroup = "Panda"
-		size, offsetX, offsetY = 90, 15, 10
-		nameOffsetX, nameOffsetY = 20, -5
+		factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = "Panda", 90, 15, 10, 20, -5;
 	end
+
 	self.AFKMode.bottom.faction = self.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
 	self.AFKMode.bottom.faction:Point("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", offsetX, offsetY)
 	self.AFKMode.bottom.faction:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
