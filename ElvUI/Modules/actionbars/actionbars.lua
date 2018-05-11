@@ -837,7 +837,6 @@ function AB:DisableBlizzard()
 	ActionBarController:UnregisterAllEvents()
 	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
-	MainMenuBar:UnregisterAllEvents()
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
 
