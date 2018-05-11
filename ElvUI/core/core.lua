@@ -46,11 +46,10 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
-E.myclass = select(2, UnitClass("player"));
-E.myClassID = select(3, UnitClass("player"));
 E.myspec = GetSpecialization();
-E.myrace = select(2, UnitRace("player"));
-E.myfaction = UnitFactionGroup('player');
+E.myLocalizedRace, E.myrace = UnitRace("player");
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player');
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
 E.myname = UnitName("player");
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
