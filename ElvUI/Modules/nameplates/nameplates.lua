@@ -801,6 +801,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
 		mod:CheckUnitType(self)
 		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Filters(self, event)
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
