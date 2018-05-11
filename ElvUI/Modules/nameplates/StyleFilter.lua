@@ -793,21 +793,27 @@ function mod:StyleFilterConfigureEvents()
 				self.StyleFilterEvents["AuraWaitTimer_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
-				if next(filter.triggers.casting.spells) then
-					for _, value in pairs(filter.triggers.casting.spells) do
-						if value == true then
-							self.StyleFilterEvents["UpdateElement_Cast"] = 1
-							break
+				if filter.triggers.casting then
+					if next(filter.triggers.casting.spells) then
+						for _, value in pairs(filter.triggers.casting.spells) do
+							if value == true then
+								self.StyleFilterEvents["UpdateElement_Cast"] = 1
+								break
+							end
 						end
 					end
-				end
 
-				if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-					self.StyleFilterEvents["UpdateElement_Cast"] = 1
+					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
+						self.StyleFilterEvents["UpdateElement_Cast"] = 1
+					end
 				end
 
 				-- real events
 				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
+
+				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
+					self.StyleFilterEvents["UNIT_FACTION"] = true
+				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
 					self.StyleFilterEvents["UNIT_TARGET"] = true

@@ -409,19 +409,24 @@ function mod:CheckUnitType(frame)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		self:UpdateAllFrame(frame)
+		return true
 	elseif(role ~= "HEALER" and frame.UnitType == "HEALER") then
 		self:UpdateAllFrame(frame)
+		return true
 	elseif frame.UnitType == "FRIENDLY_PLAYER" then
 		--This line right here is likely the cause of the fps drop when entering world
 		--CheckUnitType is being called about 1000 times because the "UNIT_FACTION" event is being triggered this amount of times for some insane reason
 		self:UpdateAllFrame(frame)
+		return true
 	elseif(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
 		if(CanAttack) then
 			self:UpdateAllFrame(frame)
+			return true
 		end
 	elseif(frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "ENEMY_NPC") then
 		if(not CanAttack) then
 			self:UpdateAllFrame(frame)
+			return true
 		end
 	end
 end
@@ -799,7 +804,11 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
-		mod:CheckUnitType(self)
+		local wasUpdated = mod:CheckUnitType(self)
+		if not wasUpdated then
+			mod:UpdateElement_HealthColor(self)
+			mod:UpdateElement_Filters(self, event)
+		end
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then

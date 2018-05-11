@@ -36,6 +36,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitFactionGroup = UnitFactionGroup
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
@@ -46,14 +47,13 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
-E.myclass = select(2, UnitClass("player"));
-E.myClassID = select(3, UnitClass("player"));
-E.myspec = GetSpecialization();
-E.myrace = select(2, UnitRace("player"));
-E.myfaction = select(2, UnitFactionGroup('player'));
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
+E.myLocalizedRace, E.myrace = UnitRace("player");
 E.myname = UnitName("player");
-E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
+E.myspec = GetSpecialization();
+E.version = GetAddOnMetadata("ElvUI", "Version");
 E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
@@ -420,6 +420,13 @@ end
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
+end
+
+function E:NEUTRAL_FACTION_SELECT_RESULT()
+	local newFaction, newLocalizedFaction = UnitFactionGroup("player")
+	if E.myfaction ~= newFaction then
+		E.myfaction, E.myLocalizedFaction = newFaction, newLocalizedFaction
+	end
 end
 
 function E:PLAYER_ENTERING_WORLD()
@@ -1605,8 +1612,9 @@ function E:Initialize(loginFrame)
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");
-	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")
