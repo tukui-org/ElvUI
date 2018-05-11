@@ -46,13 +46,13 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
-E.myspec = GetSpecialization();
-E.myLocalizedRace, E.myrace = UnitRace("player");
-E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player');
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
+E.myLocalizedRace, E.myrace = UnitRace("player");
 E.myname = UnitName("player");
-E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
+E.myspec = GetSpecialization();
+E.version = GetAddOnMetadata("ElvUI", "Version");
 E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
