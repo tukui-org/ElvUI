@@ -62,8 +62,19 @@ function mod:PLAYER_LEVEL_UP(level)
 	end
 end
 
+function mod:DisableBlizzard()
+	-- Hidden parent frame
+	UIHider = CreateFrame("Frame")
+	UIHider:Hide()
+
+	StatusTrackingBarManager:SetParent(UIHider)
+	StatusTrackingBarManager:UnregisterAllEvents()
+end
+
 function mod:Initialize()
 	self.db = E.db.databars
+
+	--self:DisableBlizzard()
 
 	self:LoadExperienceBar()
 	self:LoadReputationBar()
