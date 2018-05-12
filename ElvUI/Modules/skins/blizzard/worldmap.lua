@@ -54,42 +54,8 @@ local function LoadSkin()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	-- WorldMap SidePanel Button
-	local function HandleQuestToggleButton(button, direction)
-		button:ClearAllPoints()
-		button:SetPoint("CENTER")
-
-		local arrow = button:CreateTexture(nil, "ARTWORK")
-		arrow:SetPoint("TOPLEFT", 5, -9)
-		arrow:SetPoint("BOTTOMRIGHT", -20, 9)
-
-		if direction == "Right" then
-			arrow:SetTexture([[Interface/MONEYFRAME/Arrow-Right-Up]])
-		elseif direction == "Left" then
-			arrow:SetTexture([[Interface/MONEYFRAME/Arrow-Left-Up]])
-		end
-
-		local quest = button:CreateTexture(nil, "ARTWORK")
-		quest:SetTexture([[Interface/QuestFrame/QuestMapLogAtlas]])
-		quest:SetTexCoord(0.5390625, 0.556640625, 0.7265625, 0.75)
-		quest:SetPoint("TOPLEFT", 14, -5)
-		quest:SetPoint("BOTTOMRIGHT", -1, 3)
-
-		button:SetNormalTexture("")
-		button:SetPushedTexture("")
-		button:SetHighlightTexture("")
-
-		S:HandleButton(button)
-	end
-
-	local function HandleWorldMapSidePanelToggle(frame)
-		HandleQuestToggleButton(frame.OpenButton, "Right")
-		HandleQuestToggleButton(frame.CloseButton, "Left")
-
-		frame:SetSize(32, 32)
-	end
-
-	HandleWorldMapSidePanelToggle(WorldMapFrame.SidePanelToggle)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, nil, true)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton)
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
