@@ -956,6 +956,52 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
+-- Taken from Aurora
+local function Handle_SetNormalTexture(self, texture)
+	if self.settingTexture then return end
+	self.settingTexture = true
+	self:SetNormalTexture("")
+
+	if texture and texture ~= "" then
+		if texture:find("Plus") then
+			self._elvBG.plus:Show()
+		elseif texture:find("Minus") then
+			self._elvBG.plus:Hide()
+		end
+		self._elvBG:Show()
+	else
+		self._elvBG:Hide()
+	end
+	self.settingTexture = nil
+end
+
+function S:HandleExpandOrCollapse(button)
+	button:SetHighlightTexture("")
+	button:SetPushedTexture("")
+
+	local bg = CreateFrame("Frame", nil, button)
+	bg:SetSize(13, 13)
+	bg:SetPoint("TOPLEFT", button:GetNormalTexture(), 0, -2)
+	bg:CreateBackdrop()
+	button._elvBG = bg
+
+	button._elvHightlight = {}
+	bg.minus = bg:CreateTexture(nil, "OVERLAY")
+	bg.minus:SetPoint("TOPLEFT", 2, -6)
+	bg.minus:SetPoint("BOTTOMRIGHT", -2, 6)
+	bg.minus:SetSize(16, 16)
+	bg.minus:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+	tinsert(button._elvHightlight, bg.minus)
+
+	bg.plus = bg:CreateTexture(nil, "OVERLAY")
+	bg.plus:SetPoint("TOPLEFT", 6, -2)
+	bg.plus:SetPoint("BOTTOMRIGHT", -6, 2)
+	bg.plus:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+	tinsert(button._elvHightlight, bg.plus)
+
+	hooksecurefunc(button, "SetNormalTexture", Handle_SetNormalTexture)
+end
+
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu

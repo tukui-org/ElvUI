@@ -270,31 +270,21 @@ local function LoadSkin()
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
 	-- Skin the +/- buttons in the QuestLog
-	--hooksecurefunc("QuestLogQuests_Update", function()
-		--local _, isHeader, isCollapsed, questID, isTask, isBounty, isHidden, numEntries, headerIndex, headerCollapsed, headerShown, headerButton;
---
-		--numEntries = GetNumQuestLogEntries();
-		--headerIndex, headerCollapsed = 0, false;
---
-		--for questLogIndex = 1, numEntries do
-			--_, _, _, isHeader, isCollapsed, _, _, questID, _, _, _, _, isTask, isBounty, _, isHidden, _ = GetQuestLogTitle(questLogIndex);
---
-			--if isHeader then
-				--headerShown, headerCollapsed = false, isCollapsed;
-			--elseif not isTask and not isHidden and not headerShown and (not isBounty or IsQuestComplete(questID)) then
-				--headerShown, headerIndex = true, headerIndex+1;
-				--headerButton = QuestLogQuests_GetHeaderButton(headerIndex);
---
-				--if headerButton then
-					--if headerCollapsed then
-						--headerButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
-					--else
-						--headerButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
-					--end
-				--end
-			--end
-		--end
-	--end)
+	hooksecurefunc("QuestLogQuests_Update", function()
+		for i = 6, QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
+			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
+			if not child.IsSkinned then
+				if child.ButtonText then
+					QuestLogHeaderTemplate(child)
+				end
+				child.IsSkinned = true
+			end
+		end
+	end)
+
+	function QuestLogHeaderTemplate(button)
+		S:HandleExpandOrCollapse(button)
+	end
 end
 
 S:AddCallback("Quest", LoadSkin)
