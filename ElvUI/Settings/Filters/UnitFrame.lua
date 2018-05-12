@@ -1189,6 +1189,23 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[273434] = Defaults(), -- Pit of Despair
 		[274195] = Defaults(), -- Corrupted Blood
 		[272018] = Defaults(), -- Absorbed in Darkness
+
+		-- Zek'voz, Herald of N'zoth
+		[265237] = Defaults(), -- Shatter
+		[265264] = Defaults(), -- Void Lash
+		[265360] = Defaults(), -- Roiling Deceit
+		[265662] = Defaults(), -- Corruptor's Pact
+		[265646] = Defaults(), -- Will of the Corruptor
+
+		-- G'huun
+		[263436] = Defaults(), -- Imperfect Physiology
+		[263227] = Defaults(), -- Putrid Blood
+		[263372] = Defaults(), -- Power Matrix
+		[272506] = Defaults(), -- Explosive Corruption
+		[267409] = Defaults(), -- Dark Bargain
+		[267430] = Defaults(), -- Torment
+		[263235] = Defaults(), -- Blood Feast
+		[270287] = Defaults(), -- Blighted Ground
 	},
 }
 
