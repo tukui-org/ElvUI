@@ -1007,16 +1007,21 @@ function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, ancho
 	S[templateName](self.overlayFrames[#self.overlayFrames])
 end
 
-function S:WorldMapDropDownMenuTemplate(Frame)
+function S:HandleWorldMapDropDownMenu(Frame)
 	local name = Frame:GetName()
 
-	local left, middle, right
-	left = Frame.Left
-	middle = Frame.Middle
-	right = Frame.Right
+	local left = Frame.Left
+	local middle = Frame.Middle
+	local right = Frame.Right
+
 	left:SetAlpha(0)
 	middle:SetAlpha(0)
 	right:SetAlpha(0)
+
+	left:SetSize(25, 64)
+	left:SetPoint("TOPLEFT", 0, 17)
+	middle:SetHeight(64)
+	right:SetSize(25, 64)
 
 	local button = Frame.Button
 	if(button) then
@@ -1037,12 +1042,12 @@ function S:WorldMapDropDownMenuTemplate(Frame)
 		self:HandleNextPrevButton(button, true)
 	end
 
-	local disabled
-	disabled = button.DisabledTexture
+	local disabled = button.DisabledTexture
 	disabled:SetAllPoints(button)
 	disabled:SetColorTexture(0, 0, 0, .3)
 	disabled:SetDrawLayer("OVERLAY")
 
+	Frame.Text:FontTemplate(nil, 10)
 	Frame.Text:SetSize(0, 10)
 	Frame.Text:SetPoint("RIGHT", right, -43, 2)
 
@@ -1051,11 +1056,6 @@ function S:WorldMapDropDownMenuTemplate(Frame)
 		middle:SetWidth(115)
 	end
 	Frame:SetHeight(32)
-
-	left:SetSize(25, 64)
-	left:SetPoint("TOPLEFT", 0, 17)
-	middle:SetHeight(64)
-	right:SetSize(25, 64)
 
 	Frame:CreateBackdrop("Default")
 	Frame.backdrop:Point("TOPLEFT", 20, -2)

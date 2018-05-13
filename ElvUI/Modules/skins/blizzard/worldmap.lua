@@ -76,8 +76,14 @@ local function LoadSkin()
 	--WorldMapZoneInfo:FontTemplate(nil,25)
 	--WorldMapZoneInfo:SetShadowOffset(2,-2)
 
+
+	-- Floor Dropdown
+	local function WorldMapFloorNavigationDropDown(Frame)
+		S:HandleWorldMapDropDownMenu(Frame)
+	end
+
 	-- Tracking Button
-	local function WorldMapTrackingOptionsButtonTemplate(Button)
+	local function WorldMapTrackingOptionsButton(Button)
 		local shadow = Button:GetRegions()
 		shadow:Hide()
 
@@ -91,24 +97,19 @@ local function LoadSkin()
 	end
 
 	-- Bounty Board
-	local function WorldMapBountyBoardTemplate(Frame)
+	local function WorldMapBountyBoard(Frame)
 		Frame.BountyName:FontTemplate()
 
 		S:HandleCloseButton(Frame.TutorialBox.CloseButton)
-	end
-
-	-- Floor Dropdown
-	local function WorldMapFloorNavigationFrameTemplate(Frame)
-		S:WorldMapDropDownMenuTemplate(Frame)
 	end
 
 	-- Add a hook to adjust the OverlayFrames
 	hooksecurefunc(WorldMapFrame, "AddOverlayFrame", S.WorldMapMixin_AddOverlayFrame)
 
 	-- Elements
-	WorldMapFloorNavigationFrameTemplate(WorldMapFrame.overlayFrames[1]) -- NavBar handled in ElvUI/modules/skins/misc
-	WorldMapTrackingOptionsButtonTemplate(WorldMapFrame.overlayFrames[2]) -- Buttons
-	WorldMapBountyBoardTemplate(WorldMapFrame.overlayFrames[3]) -- BountyBoard
+	WorldMapFloorNavigationDropDown(WorldMapFrame.overlayFrames[1]) -- NavBar handled in ElvUI/modules/skins/misc
+	WorldMapTrackingOptionsButton(WorldMapFrame.overlayFrames[2]) -- Buttons
+	WorldMapBountyBoard(WorldMapFrame.overlayFrames[3]) -- BountyBoard
 	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
 	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
 end
