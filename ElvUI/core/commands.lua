@@ -18,6 +18,7 @@ local debugprofilestop = debugprofilestop
 local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
 local ResetCPUUsage = ResetCPUUsage
 local GetAddOnInfo = GetAddOnInfo
+local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: FarmMode, Minimap, FarmModeMap, EGrid, MacroEditBox, HelloKittyLeft
@@ -121,6 +122,11 @@ f:SetScript("OnUpdate", OnUpdate)
 
 local toggleMode, debugTimer = false, 0;
 function E:GetCPUImpact()
+	if not GetCVarBool("scriptProfile") then
+		E:Print("For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
+		return
+	end
+
 	if(not toggleMode) then
 		ResetCPUUsage();
 		toggleMode, num_frames, debugTimer = true, 0, debugprofilestop();
