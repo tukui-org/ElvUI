@@ -212,7 +212,7 @@ function M:AutoInvite(event, leaderName)
 		if GetNumFriends() > 0 then ShowFriends() end
 		if IsInGuild() then GuildRoster() end
 
-		local friendName, guildMemberName, memberName, numGameAccounts, isOnline, bnToonName, bnClient, bnRealm, bnAcceptedInvite, _;
+		local friendName, guildMemberName, memberName, numGameAccounts, isOnline, accountName, bnToonName, bnClient, bnRealm, bnAcceptedInvite, _;
 		local inGroup = false;
 
 		for friendIndex = 1, GetNumFriends() do
@@ -238,35 +238,39 @@ function M:AutoInvite(event, leaderName)
 
 		if not inGroup then
 			for bnIndex = 1, BNGetNumFriends() do
-				bnAcceptedInvite = false
-				_, _, _, _, _, _, _, isOnline = BNGetFriendInfo(bnIndex);
+				_, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(bnIndex);
 				if isOnline then
-					numGameAccounts = BNGetNumFriendGameAccounts(bnIndex);
-					if numGameAccounts > 0 then
-						for toonIndex = 1, numGameAccounts do
-							_, bnToonName, bnClient, bnRealm = BNGetFriendGameAccountInfo(bnIndex, toonIndex);
-							if bnClient == BNET_CLIENT_WOW then
-								if bnRealm and bnRealm ~= '' and bnRealm ~= PLAYER_REALM then
-									bnToonName = format('%s-%s', bnToonName, bnRealm)
-								end
-								if bnToonName and (bnToonName == leaderName) then
-									AcceptGroup()
-									bnAcceptedInvite = true
-									break
+					if accountName and (accountName == leaderName) then
+						AcceptGroup()
+						bnAcceptedInvite = true
+					end
+					if not bnAcceptedInvite then
+						numGameAccounts = BNGetNumFriendGameAccounts(bnIndex);
+						if numGameAccounts > 0 then
+							for toonIndex = 1, numGameAccounts do
+								_, bnToonName, bnClient, bnRealm = BNGetFriendGameAccountInfo(bnIndex, toonIndex);
+								if bnClient == BNET_CLIENT_WOW then
+									if bnRealm and bnRealm ~= '' and bnRealm ~= PLAYER_REALM then
+										bnToonName = format('%s-%s', bnToonName, bnRealm)
+									end
+									if bnToonName and (bnToonName == leaderName) then
+										AcceptGroup()
+										bnAcceptedInvite = true
+										break
+									end
 								end
 							end
 						end
-						if bnAcceptedInvite then
-							break
-						end
+					end
+					if bnAcceptedInvite then
+						break
 					end
 				end
 			end
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
-		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custon created group
+		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custom created group
 		StaticPopup_Hide("PARTY_INVITE")
-		StaticPopup_Hide("PARTY_INVITE_XREALM") --Not sure bout this but whatever, still an invite
 		hideStatic = false
 	end
 end
