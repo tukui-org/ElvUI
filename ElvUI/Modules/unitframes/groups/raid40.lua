@@ -41,7 +41,7 @@ function UF:Construct_Raid40Frames()
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
-	self.ResurrectIndicator = UF:Construct_ResurectionIcon(self)
+	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
@@ -210,6 +210,9 @@ function UF:Update_Raid40Frames(frame, db)
 
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)
+
+	-- Resurrect Icon
+	UF:Configure_ResurrectionIcon(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

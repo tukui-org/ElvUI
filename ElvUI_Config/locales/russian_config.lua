@@ -1102,6 +1102,7 @@ L["Remove Spell ID or Name"] = "Удалить ID или имя заклинан
 L["Remove SpellID"] = "Удалить ID заклинания"
 L["Rest Icon"] = "Иконка отдыха"
 L["Restore Defaults"] = "Восстановить умолчания" --Also used in Media and ActionBars sections
+L["Resurrect Icon"] = true
 L["Right to Left"] = "Справа налево"
 L["RL Icon"] = true
 L["Role Icon"] = "Иконка роли"

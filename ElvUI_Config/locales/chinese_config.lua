@@ -1101,6 +1101,7 @@ L["Remove Spell ID or Name"] = "移除技能ID或者名称"
 L["Remove SpellID"] = "移除技能ID"
 L["Rest Icon"] = "充分休息图标"
 L["Restore Defaults"] = "恢复预设"
+L["Resurrect Icon"] = true
 L["Right to Left"] = "右到左"
 L["RL Icon"] = true
 L["Role Icon"] = "角色定位图标"

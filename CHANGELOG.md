@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
+Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
 
 
 **Bug Fixes:**   
