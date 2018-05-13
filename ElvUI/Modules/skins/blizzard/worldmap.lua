@@ -76,7 +76,6 @@ local function LoadSkin()
 	--WorldMapZoneInfo:FontTemplate(nil,25)
 	--WorldMapZoneInfo:SetShadowOffset(2,-2)
 
-
 	-- Floor Dropdown
 	local function WorldMapFloorNavigationDropDown(Frame)
 		S:HandleWorldMapDropDownMenu(Frame)

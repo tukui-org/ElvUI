@@ -275,14 +275,14 @@ local function LoadSkin()
 			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if not child.IsSkinned then
 				if child.ButtonText then
-					HandleQuestLogHeaderTemplate(child)
+					S:SkinExpandOrCollapse(child)
 				end
 				child.IsSkinned = true
 			end
 		end
 	end)
 
-	function HandleQuestLogHeaderTemplate(button)
+	function S:SkinExpandOrCollapse(button) -- Maybe give it a better name
 		S:HandleExpandOrCollapse(button)
 	end
 end
