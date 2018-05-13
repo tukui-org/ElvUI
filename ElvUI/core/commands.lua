@@ -120,17 +120,18 @@ f:Hide()
 f:SetScript("OnUpdate", OnUpdate)
 
 local toggleMode = false
+local debugTimer = 0
 function E:GetCPUImpact()
 	if(not toggleMode) then
 		ResetCPUUsage()
 		num_frames = 0;
-		debugprofilestart()
+		debugTimer = debugprofilestop()
 		f:Show()
 		toggleMode = true
 		self:Print("CPU Impact being calculated, type /cpuimpact to get results when you are ready.")
 	else
 		f:Hide()
-		local ms_passed = debugprofilestop()
+		local ms_passed = debugprofilestop() - debugTimer
 		UpdateAddOnCPUUsage()
 
 		self:Print("Consumed "..(GetAddOnCPUUsage("ElvUI") / num_frames).." milliseconds per frame. Each frame took "..(ms_passed / num_frames).." to render.");
