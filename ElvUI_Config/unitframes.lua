@@ -1631,14 +1631,20 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 				name = L["Attach To"],
 				values = attachToValues,
 			},
-			xOffset = {
+			size = {
 				order = 5,
+				type = 'range',
+				name = L["Size"],
+				min = 8, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 6,
 				type = 'range',
 				name = L["xOffset"],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 6,
+				order = 7,
 				type = 'range',
 				name = L["yOffset"],
 				min = -300, max = 300, step = 1,
