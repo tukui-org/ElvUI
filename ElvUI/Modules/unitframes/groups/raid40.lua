@@ -212,7 +212,7 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_RaidIcon(frame)
 
 	-- Resurrect Icon
-	UF:Configure_ResurectionIcon(frame)
+	UF:Configure_ResurrectionIcon(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

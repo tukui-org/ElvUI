@@ -237,7 +237,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_RaidIcon(frame)
 
-		UF:Configure_ResurectionIcon(frame)
+		UF:Configure_ResurrectionIcon(frame)
 
 		UF:Configure_DebuffHighlight(frame)
 

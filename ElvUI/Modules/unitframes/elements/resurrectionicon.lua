@@ -15,7 +15,7 @@ function UF:Construct_ResurrectionIcon(frame)
 	return tex
 end
 
-function UF:Configure_ResurectionIcon(frame)
+function UF:Configure_ResurrectionIcon(frame)
 	local RI = frame.ResurrectIndicator
 	local db = frame.db
 
