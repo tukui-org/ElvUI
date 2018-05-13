@@ -71,7 +71,7 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	local position = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
+	local position = C_Map_GetBestMapForUnit("player")
 	if not position then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
