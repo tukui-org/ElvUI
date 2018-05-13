@@ -1103,6 +1103,7 @@ L["Remove Spell ID or Name"] = "Supprimer l'identifiant ou le nom d'un sort"
 L["Remove SpellID"] = "Supprimer l'identifiant d'un sort"
 L["Rest Icon"] = "Icône reposé"
 L["Restore Defaults"] = "Restaurer les paramètres par défaut" --Also used in Media and ActionBars sections
+L["Resurrect Icon"] = true
 L["Right to Left"] = "De droite à gauche"
 L["RL / ML Icons"] = "Icônes RL / ML"
 L["Role Icon"] = "Icône de rôle"

@@ -1105,6 +1105,7 @@ L["Remove Spell ID or Name"] = "Entferne Zauber ID oder Name"
 L["Remove SpellID"] = "Entferne Zauber ID"
 L["Rest Icon"] = "Ausgeruht-Symbol"
 L["Restore Defaults"] = "Standard wiederherstellen" --Also used in General and ActionBars sections
+L["Resurrect Icon"] = "Wiederbelebungssymbol"
 L["Right to Left"] = "Rechts nach Links"
 L["RL / ML Icons"] = "RL / ML Symbole"
 L["Role Icon"] = "Rollensymbol"

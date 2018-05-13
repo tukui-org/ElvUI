@@ -1092,6 +1092,7 @@ L["Remove Spell ID or Name"] = true
 L["Remove SpellID"] = true
 L["Rest Icon"] = true
 L["Restore Defaults"] = true --Also used in Media and ActionBars sections
+L["Resurrect Icon"] = true
 L["Right to Left"] = true
 L["RL / ML Icons"] = true
 L["Role Icon"] = true

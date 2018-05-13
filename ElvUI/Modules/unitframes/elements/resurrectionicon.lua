@@ -6,11 +6,28 @@ local UF = E:GetModule('UnitFrames');
 
 --WoW API / Variables
 
-function UF:Construct_ResurectionIcon(frame)
+function UF:Construct_ResurrectionIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
-	tex:Point('CENTER', frame.Health.value, 'CENTER')
+	tex:Point('CENTER', frame.Health, 'CENTER')
 	tex:Size(30, 25)
 	tex:SetDrawLayer('OVERLAY', 7)
 
 	return tex
+end
+
+function UF:Configure_ResurectionIcon(frame)
+	local RI = frame.ResurrectIndicator
+	local db = frame.db
+
+	if db.resurrectIcon.enable then
+		frame:EnableElement('ResurrectIndicator')
+		RI:Show()
+
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.resurrectIcon.attachToObject)
+		RI:ClearAllPoints()
+		RI:Point(db.resurrectIcon.attachTo, attachPoint, db.resurrectIcon.attachTo, db.resurrectIcon.xOffset, db.resurrectIcon.yOffset)
+	else
+		frame:DisableElement('ResurrectIndicator')
+		RI:Hide()
+	end
 end

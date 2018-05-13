@@ -1103,6 +1103,7 @@ L["Remove Spell ID or Name"] = true
 L["Remove SpellID"] = "Remover SpellID"
 L["Rest Icon"] = "ìcone de descansar"
 L["Restore Defaults"] = "Restaurar ao Padrão"
+L["Resurrect Icon"] = true
 L["Right to Left"] = true
 L["RL / ML Icons"] = "Icons LR / MS"
 L["Role Icon"] = "Ícone do papel"
