@@ -989,7 +989,6 @@ function S:HandleExpandOrCollapse(button)
 	bg.minus = bg:CreateTexture(nil, "OVERLAY")
 	bg.minus:SetPoint("TOPLEFT", 2, -6)
 	bg.minus:SetPoint("BOTTOMRIGHT", -2, 6)
-	bg.minus:SetSize(16, 16)
 	bg.minus:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
 	tinsert(button._elvHightlight, bg.minus)
 
