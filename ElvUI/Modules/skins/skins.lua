@@ -1002,6 +1002,66 @@ function S:HandleExpandOrCollapse(button)
 	hooksecurefunc(button, "SetNormalTexture", Handle_SetNormalTexture)
 end
 
+-- World Map related Skinning functions used for WoW 8.0
+function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, anchorPoint, relativeTo, relativePoint, offsetX, offsetY)
+	S[templateName](self.overlayFrames[#self.overlayFrames])
+end
+
+function S:WorldMapDropDownMenuTemplate(Frame)
+	local name = Frame:GetName()
+
+	local left, middle, right
+	left = Frame.Left
+	middle = Frame.Middle
+	right = Frame.Right
+	left:SetAlpha(0)
+	middle:SetAlpha(0)
+	right:SetAlpha(0)
+
+	local button = Frame.Button
+	if(button) then
+		button:ClearAllPoints()
+		button:Point("RIGHT", frame, "RIGHT", -10, 3)
+		button:SetSize(20, 20)
+
+		button.NormalTexture:SetTexture("")
+		button.PushedTexture:SetTexture("")
+		button.HighlightTexture:SetTexture("")
+		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
+			if not noReset then
+				self:ClearAllPoints()
+				self:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
+			end
+		end)
+
+		self:HandleNextPrevButton(button, true)
+	end
+
+	local disabled
+	disabled = button.DisabledTexture
+	disabled:SetAllPoints(button)
+	disabled:SetColorTexture(0, 0, 0, .3)
+	disabled:SetDrawLayer("OVERLAY")
+
+	Frame.Text:SetSize(0, 10)
+	Frame.Text:SetPoint("RIGHT", right, -43, 2)
+
+	if not Frame.noResize then
+		Frame:SetWidth(40)
+		middle:SetWidth(115)
+	end
+	Frame:SetHeight(32)
+
+	left:SetSize(25, 64)
+	left:SetPoint("TOPLEFT", 0, 17)
+	middle:SetHeight(64)
+	right:SetSize(25, 64)
+
+	Frame:CreateBackdrop("Default")
+	Frame.backdrop:Point("TOPLEFT", 20, -2)
+	Frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+end
+
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu

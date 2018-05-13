@@ -6,7 +6,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon
+-- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
@@ -64,19 +64,6 @@ local function LoadSkin()
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
 	end
 
-	--local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
-	--TrackingOptions.Button:StripTextures()
-	--TrackingOptions.Background:SetAlpha(0)
-	--TrackingOptions.IconOverlay:SetAlpha(0)
-
-	--S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
-	--S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
-	--SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
-
-	--WorldMapFrame.UIElementsFrame.BountyBoard.BountyName:FontTemplate(nil, 14, "OUTLINE")
-	--WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:Size(22,20)
-	--WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:Size(22,20)
-
 	--S:HandleCloseButton(WorldMapFrame.UIElementsFrame.BountyBoard.TutorialBox.CloseButton)
 
 	--WorldMapFrameAreaLabel:FontTemplate(nil,30)
@@ -88,6 +75,42 @@ local function LoadSkin()
 	--WorldMapFrameAreaPetLevels:SetShadowOffset(2,-2)
 	--WorldMapZoneInfo:FontTemplate(nil,25)
 	--WorldMapZoneInfo:SetShadowOffset(2,-2)
+
+	-- Tracking Button
+	local function WorldMapTrackingOptionsButtonTemplate(Button)
+		local shadow = Button:GetRegions()
+		shadow:Hide()
+
+		Button.Background:Hide()
+		Button.IconOverlay:SetAlpha(0)
+		Button.Border:Hide()
+
+		local tex = Button:GetHighlightTexture()
+		tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
+		tex:SetAllPoints(Button.Icon)
+	end
+
+	-- Bounty Board
+	local function WorldMapBountyBoardTemplate(Frame)
+		Frame.BountyName:FontTemplate()
+
+		S:HandleCloseButton(Frame.TutorialBox.CloseButton)
+	end
+
+	-- Floor Dropdown
+	local function WorldMapFloorNavigationFrameTemplate(Frame)
+		S:WorldMapDropDownMenuTemplate(Frame)
+	end
+
+	-- Add a hook to adjust the OverlayFrames
+	hooksecurefunc(WorldMapFrame, "AddOverlayFrame", S.WorldMapMixin_AddOverlayFrame)
+
+	-- Elements
+	WorldMapFloorNavigationFrameTemplate(WorldMapFrame.overlayFrames[1]) -- NavBar handled in ElvUI/modules/skins/misc
+	WorldMapTrackingOptionsButtonTemplate(WorldMapFrame.overlayFrames[2]) -- Buttons
+	WorldMapBountyBoardTemplate(WorldMapFrame.overlayFrames[3]) -- BountyBoard
+	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
+	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)
