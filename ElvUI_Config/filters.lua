@@ -253,7 +253,7 @@ local function UpdateFilterGroup()
 					name = L["Remove Spell ID or Name"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					type = 'execute',
-                    buttonElvUI = true, 
+					buttonElvUI = true,
 					func = function()
 						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
@@ -1178,7 +1178,7 @@ local function UpdateFilterGroup()
 					name = L["Remove Spell ID or Name"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					type = 'execute',
-                    buttonElvUI = true,
+					buttonElvUI = true,
 					func = function()
 						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
