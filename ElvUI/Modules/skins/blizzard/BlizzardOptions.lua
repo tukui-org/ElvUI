@@ -680,7 +680,6 @@ local function LoadSkin()
 		"InterfaceOptionsSocialPanelTwitterLoginButton",
 		"InterfaceOptionsDisplayPanelResetTutorials",
 		"InterfaceOptionsSocialPanelRedockChat",
-		"AudioOptionsVoicePanelTestInputDevice.ToggleTest",
 	}
 
 	for _, button in pairs(buttons) do
@@ -688,6 +687,37 @@ local function LoadSkin()
 			S:HandleButton(_G[button])
 		end
 	end
+
+	local AudioOptionsVoicePanel = _G["AudioOptionsVoicePanel"]
+	local TestInputDevice = AudioOptionsVoicePanel.TestInputDevice
+
+	-- Toggle Test Audio Button - Wow 8.0
+	S:HandleButton(TestInputDevice.ToggleTest)
+
+	-- PushToTalk KeybindButton - Wow 8.0
+	local function HandlePushToTalkButton(button)
+		button:SetSize(button:GetSize())
+
+		button.TopLeft:Hide()
+		button.TopRight:Hide()
+		button.BottomLeft:Hide()
+		button.BottomRight:Hide()
+		button.TopMiddle:Hide()
+		button.MiddleLeft:Hide()
+		button.MiddleRight:Hide()
+		button.BottomMiddle:Hide()
+		button.MiddleMiddle:Hide()
+		button:SetHighlightTexture("")
+
+		button:SetTemplate("Default", true)
+		button:HookScript("OnEnter", S.SetModifiedBackdrop)
+		button:HookScript("OnLeave", S.SetOriginalBackdrop)
+	end
+
+	function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(self)
+		HandlePushToTalkButton(self.PushToTalkKeybindButton)
+	end
+	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
 	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
 		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
