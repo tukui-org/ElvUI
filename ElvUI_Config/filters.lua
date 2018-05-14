@@ -90,15 +90,17 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove Spell ID or Name"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
+					buttonElvUI = true,
+					type = 'execute',
+					func = function()
+						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						E.global.unitframe.DebuffHighlightColors[value] = nil;
 						selectedSpell = nil;
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
 					end,
+					disabled = function() return not (selectedSpell and selectedSpell ~= "") end,
 				},
 				selectSpell = {
 					name = L["Select Spell"],
@@ -110,7 +112,6 @@ local function UpdateFilterGroup()
 					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,
 					values = function()
 						local filters = {}
-						filters[''] = NONE
 						local list = E.global.unitframe.DebuffHighlightColors
 						if not list then return end
 						for filter in pairs(list) do
@@ -124,6 +125,7 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
+						if not next(filters) then filters[''] = NONE end
 						return filters
 					end,
 				},
@@ -250,9 +252,10 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove Spell ID or Name"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
+					type = 'execute',
+                    buttonElvUI = true, 
+					func = function()
+						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						if G['unitframe'].AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false;
@@ -266,6 +269,7 @@ local function UpdateFilterGroup()
 						UF:CreateAndUpdateUF('target')
 						UF:CreateAndUpdateUF('focus')
 					end,
+					disabled = function() return not (selectedSpell and selectedSpell ~= "") end,
 				},
 				selectSpell = {
 					name = L["Select Spell"],
@@ -280,7 +284,6 @@ local function UpdateFilterGroup()
 					end,
 					values = function()
 						local filters = {}
-						filters[''] = NONE
 						local list = E.global.unitframe.AuraBarColors
 						if not list then return end
 						for filter in pairs(list) do
@@ -294,6 +297,7 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
+						if not next(filters) then filters[''] = NONE end
 						return filters
 					end,
 				},
@@ -1173,9 +1177,10 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove Spell ID or Name"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
+					type = 'execute',
+                    buttonElvUI = true,
+					func = function()
+						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						if G['unitframe']['aurafilters'][selectedFilter] then
 							if G['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
@@ -1191,6 +1196,7 @@ local function UpdateFilterGroup()
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
 					end,
+					disabled = function() return not (selectedSpell and selectedSpell ~= "") end,
 				},
 				filterType = {
 					order = 4,
@@ -1217,7 +1223,6 @@ local function UpdateFilterGroup()
 					end,
 					values = function()
 						local filters = {}
-						filters[''] = NONE
 						local list = E.global.unitframe['aurafilters'][selectedFilter]['spells']
 						if not list then return end
 						for filter in pairs(list) do
@@ -1231,6 +1236,7 @@ local function UpdateFilterGroup()
 							end
 							filters[filter] = filter
 						end
+						if not next(filters) then filters[''] = NONE end
 						return filters
 					end,
 				},
