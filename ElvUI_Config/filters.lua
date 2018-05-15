@@ -88,7 +88,7 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 2,
-					name = L["Remove Spell ID or Name"],
+					name = L["Remove Spell"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					buttonElvUI = true,
 					type = 'execute',
@@ -250,7 +250,7 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 2,
-					name = L["Remove Spell ID or Name"],
+					name = L["Remove Spell"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					type = 'execute',
 					buttonElvUI = true,
@@ -1157,7 +1157,7 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 2,
-					name = L["Remove Spell ID or Name"],
+					name = L["Remove Spell"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					type = 'execute',
 					buttonElvUI = true,
