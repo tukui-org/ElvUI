@@ -423,27 +423,21 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove SpellID"],
 					desc = L["Remove a spell from the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
+					type = 'execute',
+					buttonElvUI = true,
+					func = function()
+						if G.unitframe.buffwatch.PET[selectedSpell] then
+							E.global.unitframe.buffwatch.PET[selectedSpell].enabled = false
+							E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 						else
-							local spellID = tonumber(value)
-							if G.unitframe.buffwatch.PET[spellID] then
-								E.global.unitframe.buffwatch.PET[spellID].enabled = false
-								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-							else
-								E.global.unitframe.buffwatch.PET[spellID] = nil
-							end
+							E.global.unitframe.buffwatch.PET[selectedSpell] = nil
 						end
 
 						selectedSpell = nil;
 						UpdateFilterGroup();
 						UF:CreateAndUpdateUF('pet')
 					end,
+					disabled = function() return not selectedSpell end,
 				},
 				selectSpell = {
 					name = L["Select Spell"],
@@ -664,21 +658,14 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove SpellID"],
 					desc = L["Remove a spell from the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
+					type = 'execute',
+					buttonElvUI = true,
+					func = function()
+						if G.unitframe.buffwatch[E.myclass][selectedSpell] then
+							E.global.unitframe.buffwatch[E.myclass][selectedSpell].enabled = false
+							E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 						else
-							local spellID = tonumber(value)
-							if G.unitframe.buffwatch[E.myclass][spellID] then
-								E.global.unitframe.buffwatch[E.myclass][spellID].enabled = false
-								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-							else
-								E.global.unitframe.buffwatch[E.myclass][spellID] = nil
-							end
+							E.global.unitframe.buffwatch[E.myclass][selectedSpell] = nil
 						end
 
 						selectedSpell = nil;
@@ -688,6 +675,7 @@ local function UpdateFilterGroup()
 						UF:UpdateAuraWatchFromHeader('party')
 						UF:UpdateAuraWatchFromHeader('raidpet', true)
 					end,
+					disabled = function() return not selectedSpell end,
 				},
 				selectSpell = {
 					name = L["Select Spell"],
@@ -917,21 +905,14 @@ local function UpdateFilterGroup()
 					order = 2,
 					name = L["Remove SpellID"],
 					desc = L["Remove a spell from the filter."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
+					type = 'execute',
+					buttonElvUI = true,
+					func = function()
+						if P.unitframe.filters.buffwatch[selectedSpell] then
+							E.db.unitframe.filters.buffwatch[selectedSpell].enabled = false
+							E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 						else
-							local spellID = tonumber(value)
-							if P.unitframe.filters.buffwatch[spellID] then
-								E.db.unitframe.filters.buffwatch[spellID].enabled = false
-								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-							else
-								E.db.unitframe.filters.buffwatch[spellID] = nil
-							end
+							E.db.unitframe.filters.buffwatch[selectedSpell] = nil
 						end
 
 						selectedSpell = nil;
@@ -940,6 +921,7 @@ local function UpdateFilterGroup()
 						UF:UpdateAuraWatchFromHeader('raid40')
 						UF:UpdateAuraWatchFromHeader('party')
 					end,
+					disabled = function() return not selectedSpell end,
 				},
 				selectSpell = {
 					name = L["Select Spell"],
