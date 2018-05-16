@@ -104,20 +104,26 @@ function AddOn:OnInitialize()
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
 
-	if not IsAddOnLoaded("ConsolePort") then
+	if not (IsAddOnLoaded("ConsolePort") and IsAddOnLoaded("ConsolePortUI_Menu")) then
 		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
 		GameMenuButton:Point("TOPLEFT", GameMenuButtonAddons, "BOTTOMLEFT", 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)
 	else
+		--[[ ConsolePortUI_Menu needs to expose it's button mixin: L.Button
 		if GameMenuButton.Middle then
 			GameMenuButton.Middle:Hide()
 			GameMenuButton.Left:Hide()
 			GameMenuButton.Right:Hide()
 		end
-		ConsolePort:GetData().Atlas.SetFutureButtonStyle(GameMenuButton, nil, nil, true)
-		GameMenuButton:Size(240, 46)
-		GameMenuButton:Point("TOP", GameMenuButtonWhatsNew, "BOTTOMLEFT", 0, -1)
-		GameMenuFrame:Size(530, 576)
+		GameMenuButton:Point("TOP", ConsolePortUI_MenuSystemAddOns, "BOTTOM", 0, 0)
+		ConsolePortUI_MenuSystemMacros:ClearAllPoints()
+		ConsolePortUI_MenuSystemMacros:Point("TOP", GameMenuButton, "BOTTOM", 0, -16)
+		]]
+
+		---- need to update these later if they expose the mixin
+		-- ConsolePort:GetData().Atlas.SetFutureButtonStyle(GameMenuButton, nil, nil, true)
+		-- GameMenuButton:Size(240, 46)
+		-- GameMenuFrame:Size(530, 576)
 	end
 
 	self.loadedtime = GetTime()
