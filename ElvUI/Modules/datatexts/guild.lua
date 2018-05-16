@@ -269,7 +269,9 @@ local function OnEnter(self, _, noUpdate)
 		end
 
 		info = guildTable[i]
+		-- FIX ME
 		if E:GetZoneText(C_Map_GetCurrentMapID()) == info[4] then zonec = activezone else zonec = inactivezone end
+
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end

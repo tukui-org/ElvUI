@@ -403,6 +403,8 @@ LocalizeZoneNames()
 --Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the " (Outland)" part unlike the GetRealZoneText() API.
+
+-- Needs to be adjusted for 8.0 ?
 function E:GetZoneText(zoneAreaID)
 	local zoneName = C_Map_GetMapInfo(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]
