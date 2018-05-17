@@ -29,7 +29,6 @@ function UF:Construct_PartyFrames()
 	self.SHADOW_SPACING = 3
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
-
 		self.MouseGlow = UF:Construct_MouseGlow(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		self.Name = UF:Construct_NameText(self)
@@ -43,7 +42,6 @@ function UF:Construct_PartyFrames()
 		self.unitframeType = "party"..self.childType
 	else
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
 

@@ -35,10 +35,10 @@ function UF:Construct_BossFrames(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 
 	frame.Castbar = self:Construct_Castbar(frame)
-	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
 	frame.AlternativePower = self:Construct_AltPowerBar(frame)
 	frame.ClassBar = "AlternativePower"
-	frame.Range = UF:Construct_Range(frame)
+	frame.Range = self:Construct_Range(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame:SetAttribute("type2", "focus")

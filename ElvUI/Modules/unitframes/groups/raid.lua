@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Cache global variables
 --Lua functions
-local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -43,10 +42,8 @@ function UF:Construct_RaidFrames()
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
+	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-	tinsert(self.__elements, UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
