@@ -2,7 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+local _G = _G
 --Lua functions
+local pairs = pairs
+local select = select
+local assert = assert
 local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
