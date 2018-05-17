@@ -3,7 +3,7 @@
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
-
+Added new UnitFrame Glow settings located under `UnitFrame -> General -> Colors -> Frame Glow`. Each type of UnitFrame (Player, Target, Etc) has new options to specifically control blocking these settings located under `UnitFrame -> Frame -> Block __ Glow`. (Ref: #344)  
 
 **Bug Fixes:**   
 The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
