@@ -2700,7 +2700,7 @@ E.Options.args.unitframe = {
 										},
 										color = {
 											order = 4,
-											name = L["Color"],
+											name = COLOR,
 											type = 'color',
 											hasAlpha = true,
 										},
@@ -2747,7 +2747,7 @@ E.Options.args.unitframe = {
 										},
 										color = {
 											order = 4,
-											name = L["Color"],
+											name = COLOR,
 											type = 'color',
 											hasAlpha = true,
 										},
