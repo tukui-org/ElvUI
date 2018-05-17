@@ -2391,7 +2391,7 @@ E.Options.args.unitframe = {
 								},
 								color = {
 									order = 5,
-									name = L['Color'],
+									name = COLOR,
 									type = 'color',
 									hasAlpha = true,
 								},
