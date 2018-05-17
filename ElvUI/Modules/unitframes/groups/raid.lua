@@ -171,8 +171,6 @@ function UF:Update_RaidFrames(frame, db)
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
-		frame.USE_TARGET_GLOW = db.targetGlow
-
 		frame.VARIABLES_SET = true
 	end
 
@@ -195,9 +193,6 @@ function UF:Update_RaidFrames(frame, db)
 
 	--Threat
 	UF:Configure_Threat(frame)
-
-	--Target Glow
-	UF:Configure_TargetGlow(frame)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)

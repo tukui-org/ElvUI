@@ -25,6 +25,8 @@ function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
+	frame.MouseGlow = self:Construct_MouseGlow(frame)
+	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTargetTarget Frame"], nil, nil, nil, 'ALL,SOLO')

@@ -2654,8 +2654,170 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						debuffHighlight = {
+						frameHighlight = {
 							order = 8,
+							name = L["Frame Glow"],
+							type = 'group',
+							args = {
+								mainGlow = {
+									order = 1,
+									type = 'group',
+									guiInline = true,
+									name = L["Mouseover Glow"],
+									get = function(info)
+										local t = E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										if type(t) == "boolean" then return t end
+										local d = P.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+									end,
+									set = function(info, r, g, b, a)
+										local t = E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										if type(t) == "boolean" then
+											E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ] = r
+										else
+											t.r, t.g, t.b, t.a = r, g, b, a
+										end
+										UF:FrameGlow_UpdateFrames();
+									end,
+									disabled = function() return not E.db.unitframe.colors.frameHighlight.mainGlow.enable end,
+									args = {
+										enable = {
+											order = 1,
+											type = 'toggle',
+											name = L["Enable"],
+											disabled = false,
+										},
+										spacer = {
+											order = 2,
+											type = "description",
+											name = "",
+										},
+										class = {
+											order = 3,
+											type = 'toggle',
+											name = L["Use Class Color"],
+											desc = L["Alpha channel is taken from the color option."],
+										},
+										color = {
+											order = 4,
+											name = L["Color"],
+											type = 'color',
+											hasAlpha = true,
+										},
+									}
+								},
+								targetGlow = {
+									order = 3,
+									type = 'group',
+									guiInline = true,
+									name = L["Targeted Glow"],
+									get = function(info)
+										local t = E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										if type(t) == "boolean" then return t end
+										local d = P.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+									end,
+									set = function(info, r, g, b, a)
+										local t = E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										if type(t) == "boolean" then
+											E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ] = r
+										else
+											t.r, t.g, t.b, t.a = r, g, b, a
+										end
+										UF:FrameGlow_UpdateFrames();
+									end,
+									disabled = function() return not E.db.unitframe.colors.frameHighlight.targetGlow.enable end,
+									args = {
+										enable = {
+											order = 1,
+											type = 'toggle',
+											name = L["Enable"],
+											disabled = false,
+										},
+										spacer = {
+											order = 2,
+											type = "description",
+											name = "",
+										},
+										class = {
+											order = 3,
+											type = 'toggle',
+											name = L["Use Class Color"],
+											desc = L["Alpha channel is taken from the color option."],
+										},
+										color = {
+											order = 4,
+											name = L["Color"],
+											type = 'color',
+											hasAlpha = true,
+										},
+									}
+								},
+								mouseoverGlow = {
+									order = 5,
+									type = 'group',
+									guiInline = true,
+									name = L["Mouseover Highlight"],
+									get = function(info)
+										local t = E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										if type(t) == "boolean" then return t end
+										local d = P.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+									end,
+									set = function(info, r, g, b, a)
+										local t = E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										if type(t) == "boolean" then
+											E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ] = r
+										else
+											t.r, t.g, t.b, t.a = r, g, b, a
+										end
+										UF:FrameGlow_UpdateFrames();
+									end,
+									disabled = function() return not E.db.unitframe.colors.frameHighlight.mouseoverGlow.enable end,
+									args = {
+										enable = {
+											order = 1,
+											type = 'toggle',
+											name = L["Enable"],
+											disabled = false,
+										},
+										texture = {
+											type = "select",
+											dialogControl = 'LSM30_Statusbar',
+											order = 2,
+											name = L["Texture"],
+											values = AceGUIWidgetLSMlists.statusbar,
+											get = function(info)
+												return E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+											end,
+											set = function(info, value)
+												E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ] = value;
+												UF:FrameGlow_UpdateFrames();
+											end,
+										},
+										spacer = {
+											order = 3,
+											type = "description",
+											name = "",
+										},
+										class = {
+											order = 4,
+											type = 'toggle',
+											name = L["Use Class Color"],
+											desc = L["Alpha channel is taken from the color option."],
+										},
+										color = {
+											order = 5,
+											name = L['Color'],
+											type = 'color',
+											hasAlpha = true,
+										},
+									}
+								},
+							},
+						},
+						debuffHighlight = {
+							order = 9,
 							name = L["Debuff Highlighting"],
 							type = 'group',
 							get = function(info)
@@ -2939,6 +3101,23 @@ E.Options.args.unitframe.args.player = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3527,6 +3706,18 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				disableMouseoverGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 17,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
@@ -3704,6 +3895,23 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
@@ -3825,6 +4033,23 @@ E.Options.args.unitframe.args.targettargettarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3954,6 +4179,18 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
@@ -4077,6 +4314,23 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4205,6 +4459,18 @@ E.Options.args.unitframe.args.pet = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4360,6 +4626,23 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
@@ -4501,10 +4784,17 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 16,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 17,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4660,10 +4950,22 @@ E.Options.args.unitframe.args.arena = {
 						["RIGHT"] = L["Right"],
 					},
 				},
-				targetGlow = {
+				spacer = {
 					order = 17,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 18,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 19,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4816,10 +5118,17 @@ E.Options.args.unitframe.args.party = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -5416,10 +5725,17 @@ E.Options.args.unitframe.args.raid = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -5838,10 +6154,17 @@ E.Options.args.unitframe.args.raid40 = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -6252,6 +6575,18 @@ E.Options.args.unitframe.args.raidpet = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
+				disableMouseoverGlow = {
+					order = 8,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],
@@ -6527,6 +6862,18 @@ E.Options.args.unitframe.args.tank = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				disableMouseoverGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		targetsGroup = {
@@ -6713,6 +7060,18 @@ E.Options.args.unitframe.args.assist = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
