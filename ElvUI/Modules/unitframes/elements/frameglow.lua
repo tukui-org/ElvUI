@@ -306,7 +306,3 @@ function UF:FrameGlow_UpdateFrames()
 		end
 	end
 end
-
--- keep these for now as empty functions so plugins dont break
-function UF:UpdateTargetGlow() end
-function UF:Configure_TargetGlow() end
