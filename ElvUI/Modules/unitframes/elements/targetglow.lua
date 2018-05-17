@@ -102,7 +102,7 @@ end
 
 function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	if not glow then return end
-	local option = E.db.unitframe.colors.frameHighlight[which]
+	local option = E.db.unitframe.colors.frameGlow[which]
 	local r, g, b, a = 1, 1, 1, 1
 
 	if option.color then
@@ -161,7 +161,7 @@ end
 
 function UF:FrameGlow_ToggleTargetGlow(frame, glow, setColor)
 	local unit = frame.unit or (frame.isForced and 'player')
-	if E.db.unitframe.colors.frameHighlight.targetGlow.enable and unit and UnitIsUnit(unit, 'target') and not (frame.db and frame.db.disableTargetGlow) then
+	if E.db.unitframe.colors.frameGlow.targetGlow.enable and unit and UnitIsUnit(unit, 'target') and not (frame.db and frame.db.disableTargetGlow) then
 		if setColor then
 			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
 		end
@@ -182,7 +182,7 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	if frame.Health and frame.Health.highlight then
-		if E.db.unitframe.colors.frameHighlight.mouseoverGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
+		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
 			frame.Health.highlight:SetTexture(dbTexture)
 			UF:FrameGlow_SetGlowColor(frame.Health.highlight, unit, 'mouseoverGlow')
 		elseif frame.Health.highlight:IsShown() then
@@ -191,7 +191,7 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	if frame.MouseGlow then
-		if E.db.unitframe.colors.frameHighlight.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
+		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
 			UF:FrameGlow_SetGlowColor(frame.MouseGlow, unit, 'mainGlow')
 		else
 			UF:FrameGlow_HideGlow(frame.MouseGlow)
@@ -215,7 +215,7 @@ function UF:Construct_MouseGlow(frame)
 
 	frame:HookScript('OnEnter', function()
 		-- mouseover glow
-		if E.db.unitframe.colors.frameHighlight.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
+		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
 			UF:FrameGlow_PositionGlow(frame, mainGlow, mainGlow.powerGlow)
 			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 				mainGlow.powerGlow:Show()
@@ -224,7 +224,7 @@ function UF:Construct_MouseGlow(frame)
 		end
 
 		-- mouseover texture
-		if E.db.unitframe.colors.frameHighlight.mouseoverGlow.enable and frame.Health and frame.Health.highlight and not (frame.db and frame.db.disableMouseoverGlow) then
+		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and frame.Health and frame.Health.highlight and not (frame.db and frame.db.disableMouseoverGlow) then
 			frame.Health.highlight:Show()
 		end
 	end)
@@ -270,7 +270,7 @@ function UF:FrameGlow_CheckChildren(frame, dbTexture)
 end
 
 function UF:FrameGlow_UpdateFrames()
-	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameHighlight.mouseoverGlow.texture)
+	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 
 	-- focus, focustarget, pet, pettarget, player, target, targettarget, targettargettarget
 	for unit in pairs(self.units) do

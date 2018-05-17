@@ -170,7 +170,7 @@ function UF:Configure_HealthBar(frame)
 	health.highlight:ClearAllPoints()
 	health.highlight:SetPoint("TOPLEFT", health, "TOPLEFT")
 	health.highlight:SetPoint("BOTTOMRIGHT", health:GetStatusBarTexture(), "BOTTOMRIGHT")
-	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameHighlight.mouseoverGlow.texture)
+	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 	UF:FrameGlow_ConfigureGlow(frame, frame.unit, dbTexture)
 
 	frame:UpdateElement("Health")

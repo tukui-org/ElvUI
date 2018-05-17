@@ -984,7 +984,7 @@ P['unitframe'] = {
 			},
 			['WARLOCK'] = {r = 148/255, g = 130/255, b = 201/255}
 		},
-		['frameHighlight'] = {
+		['frameGlow'] = {
 			['mainGlow'] = {
 				['enable'] = false,
 				['class'] = false,
@@ -997,7 +997,7 @@ P['unitframe'] = {
 			},
 			['mouseoverGlow'] = {
 				['enable'] = true,
-				['class'] = true,
+				['class'] = false,
 				['texture'] = "ElvUI Blank",
 				['color'] = {r=1, g=1, b=1, a=0.1}
 			}

@@ -2654,7 +2654,7 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						frameHighlight = {
+						frameGlow = {
 							order = 8,
 							name = L["Frame Glow"],
 							type = 'group',
@@ -2665,21 +2665,21 @@ E.Options.args.unitframe = {
 									guiInline = true,
 									name = L["Mouseover Glow"],
 									get = function(info)
-										local t = E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
 										if type(t) == "boolean" then return t end
-										local d = P.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										local d = P.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
 										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 									end,
 									set = function(info, r, g, b, a)
-										local t = E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
 										if type(t) == "boolean" then
-											E.db.unitframe.colors.frameHighlight.mainGlow[ info[#info] ] = r
+											E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ] = r
 										else
 											t.r, t.g, t.b, t.a = r, g, b, a
 										end
 										UF:FrameGlow_UpdateFrames();
 									end,
-									disabled = function() return not E.db.unitframe.colors.frameHighlight.mainGlow.enable end,
+									disabled = function() return not E.db.unitframe.colors.frameGlow.mainGlow.enable end,
 									args = {
 										enable = {
 											order = 1,
@@ -2712,21 +2712,21 @@ E.Options.args.unitframe = {
 									guiInline = true,
 									name = L["Targeted Glow"],
 									get = function(info)
-										local t = E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
 										if type(t) == "boolean" then return t end
-										local d = P.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										local d = P.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
 										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 									end,
 									set = function(info, r, g, b, a)
-										local t = E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
 										if type(t) == "boolean" then
-											E.db.unitframe.colors.frameHighlight.targetGlow[ info[#info] ] = r
+											E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ] = r
 										else
 											t.r, t.g, t.b, t.a = r, g, b, a
 										end
 										UF:FrameGlow_UpdateFrames();
 									end,
-									disabled = function() return not E.db.unitframe.colors.frameHighlight.targetGlow.enable end,
+									disabled = function() return not E.db.unitframe.colors.frameGlow.targetGlow.enable end,
 									args = {
 										enable = {
 											order = 1,
@@ -2759,21 +2759,21 @@ E.Options.args.unitframe = {
 									guiInline = true,
 									name = L["Mouseover Highlight"],
 									get = function(info)
-										local t = E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
 										if type(t) == "boolean" then return t end
-										local d = P.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										local d = P.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
 										return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 									end,
 									set = function(info, r, g, b, a)
-										local t = E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+										local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
 										if type(t) == "boolean" then
-											E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ] = r
+											E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ] = r
 										else
 											t.r, t.g, t.b, t.a = r, g, b, a
 										end
 										UF:FrameGlow_UpdateFrames();
 									end,
-									disabled = function() return not E.db.unitframe.colors.frameHighlight.mouseoverGlow.enable end,
+									disabled = function() return not E.db.unitframe.colors.frameGlow.mouseoverGlow.enable end,
 									args = {
 										enable = {
 											order = 1,
@@ -2788,10 +2788,10 @@ E.Options.args.unitframe = {
 											name = L["Texture"],
 											values = AceGUIWidgetLSMlists.statusbar,
 											get = function(info)
-												return E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ]
+												return E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
 											end,
 											set = function(info, value)
-												E.db.unitframe.colors.frameHighlight.mouseoverGlow[ info[#info] ] = value;
+												E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ] = value;
 												UF:FrameGlow_UpdateFrames();
 											end,
 										},
