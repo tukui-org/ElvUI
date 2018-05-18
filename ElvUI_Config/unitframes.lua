@@ -3018,7 +3018,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'execute',
 					order = 3,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('player'); E:ResetMovers('Player Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player Frame"], nil, {unit='player', mover='Player Frame'}) end,
 				},
 				showAuras = {
 					order = 4,
@@ -3624,7 +3624,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('target'); E:ResetMovers('Target Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, {unit='target', mover='Target Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3830,7 +3830,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('targettarget'); E:ResetMovers('TargetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, {unit='targettarget', mover='TargetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3973,7 +3973,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('targettargettarget'); E:ResetMovers('TargetTargetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, {unit='targettargettarget', mover='TargetTargetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4112,7 +4112,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('focus'); E:ResetMovers('Focus Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, {unit='focus', mover='Focus Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4254,7 +4254,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('focustarget'); E:ResetMovers('FocusTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, {unit='focustarget', mover='FocusTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4393,7 +4393,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('pet'); E:ResetMovers('Pet Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, {unit='pet', mover='Pet Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4565,7 +4565,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('pettarget'); E:ResetMovers('PetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, {unit='pettarget', mover='PetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4706,7 +4706,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('boss'); E:ResetMovers('Boss Frames') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end,
 				},
 				displayFrames = {
 					type = 'execute',
@@ -4861,7 +4861,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('arena'); E:ResetMovers('Arena Frames') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, {unit='arena', mover='Arena Frames'}) end,
 				},
 				displayFrames = {
 					type = 'execute',
@@ -5058,7 +5058,7 @@ E.Options.args.unitframe.args.party = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('party'); E:ResetMovers('Party Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, {unit='party', mover='Party Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -5665,7 +5665,7 @@ E.Options.args.unitframe.args.raid = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raid'); E:ResetMovers('Raid Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Frames"], nil, {unit='raid', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -6094,7 +6094,7 @@ E.Options.args.unitframe.args.raid40 = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raid40'); E:ResetMovers('Raid Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid-40 Frames"], nil, {unit='raid40', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -6523,7 +6523,7 @@ E.Options.args.unitframe.args.raidpet = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raidpet'); E:ResetMovers('Raid Pet Frames'); UF:CreateAndUpdateHeaderGroup('raidpet', nil, nil, true); end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit='raidpet', mover='Raid Pet Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -6815,7 +6815,7 @@ E.Options.args.unitframe.args.tank = {
 			type = 'execute',
 			order = 1,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('tank') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, {unit='tank'}) end,
 		},
 		generalGroup = {
 			order = 2,
@@ -7014,7 +7014,7 @@ E.Options.args.unitframe.args.assist = {
 			type = 'execute',
 			order = 1,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('assist') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, {unit='assist'}) end,
 		},
 		generalGroup = {
 			order = 2,

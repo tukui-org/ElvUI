@@ -195,6 +195,34 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs["RESET_UF_UNIT"] = {
+	text = L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		if E.UnitFrames and (self.data and self.data.unit) then
+			E.UnitFrames:ResetUnitSettings(self.data.unit);
+			if self.data.mover then
+				E:ResetMovers(self.data.mover);
+			end
+
+			if self.data.unit == 'raidpet' then
+				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
+			end
+
+			local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+			if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+				ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
+			end
+		else
+			E:Print(L["Error resetting UnitFrame."]);
+		end
+	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs["RESET_UF_AF"] = {
 	text = L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"],
 	button1 = ACCEPT,
