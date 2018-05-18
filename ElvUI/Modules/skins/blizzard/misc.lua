@@ -41,7 +41,7 @@ local function LoadSkin()
 
 	QueueStatusFrame:StripTextures()
 
-	if not IsAddOnLoaded("ConsolePort") then
+	if not IsAddOnLoaded("ConsolePortUI_Menu") then
 		-- reskin all esc/menu buttons
 		local BlizzardMenuButtons = {
 			"GameMenuButtonOptions",
@@ -70,9 +70,7 @@ local function LoadSkin()
 
 		-- Skin the ElvUI Menu Button
 		S:HandleButton(GameMenuFrame.ElvUI)
-	end
 
-	if not IsAddOnLoaded("ConsolePort") then
 		GameMenuFrame:SetTemplate("Transparent")
 		GameMenuFrameHeader:SetTexture("")
 		GameMenuFrameHeader:ClearAllPoints()

@@ -3,7 +3,7 @@
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
-
+Added new UnitFrame Glow settings located under `UnitFrame -> General -> Frame Glow`. Each type of UnitFrame (Player, Target, Etc) has new options to specifically control blocking these settings located under `UnitFrame -> Frame -> Block __ Glow`. (Ref: #344)  
 
 **Bug Fixes:**   
 The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
@@ -27,7 +27,8 @@ Chat History will now highlight keywords, allow linking of URLs, and will no lon
 Reworked the Equipment Flyout skin.  
 Unitframe tags will now return nil instead of an empty string when there is nothing to show.  
 Made it more clear that the "vendor greys" button also deletes items when not at vendor.  
-The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)
+The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)  
+Resetting a UnitFrame to default will now show a popup confirmation upon clicking the reset button.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**

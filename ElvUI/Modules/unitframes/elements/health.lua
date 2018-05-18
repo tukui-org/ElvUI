@@ -46,6 +46,11 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorDisconnected = true
 	health:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
+	-- MouseOver Highlight Texture
+	health.highlight = health:CreateTexture("$parentHighlight", "ARTWORK", nil, 1)
+	health.highlight:Hide()
+	UF:FrameGlow_ElementHook(frame, health.highlight, 'mouseoverGlow')
+
 	return health
 end
 
@@ -160,6 +165,13 @@ function UF:Configure_HealthBar(frame)
 
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
+
+	-- MouseOver Highlight Texture
+	health.highlight:ClearAllPoints()
+	health.highlight:SetPoint("TOPLEFT", health, "TOPLEFT")
+	health.highlight:SetPoint("BOTTOMRIGHT", health:GetStatusBarTexture(), "BOTTOMRIGHT")
+	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
+	UF:FrameGlow_ConfigureGlow(frame, frame.unit, dbTexture)
 
 	frame:UpdateElement("Health")
 end

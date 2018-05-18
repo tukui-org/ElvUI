@@ -195,6 +195,35 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs["RESET_UF_UNIT"] = {
+	text = L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		if self.data and self.data.unit then
+			local UF = E:GetModule('UnitFrames');
+			UF:ResetUnitSettings(self.data.unit);
+			if self.data.mover then
+				E:ResetMovers(self.data.mover);
+			end
+
+			if self.data.unit == 'raidpet' then
+				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
+			end
+
+			local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+			if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+				ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
+			end
+		else
+			E:Print(L["Error resetting UnitFrame."]);
+		end
+	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs["RESET_UF_AF"] = {
 	text = L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"],
 	button1 = ACCEPT,
@@ -491,6 +520,18 @@ function E:StaticPopup_OnShow()
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", E.StaticPopup_OnKeyDown);
 	end
+
+	-- boost static popups over ace gui
+	local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+	if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+		self.frameStrataIncreased = true
+		self:SetFrameStrata("FULLSCREEN_DIALOG")
+
+		local popupFrameLevel = self:GetFrameLevel()
+		if popupFrameLevel < 100 then
+			self:SetFrameLevel(popupFrameLevel+100)
+		end
+	end
 end
 
 function E:StaticPopup_EscapePressed()
@@ -607,6 +648,17 @@ function E:StaticPopup_OnHide()
 	self.extraFrame:Hide();
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", nil);
+	end
+
+	-- static popup was boosted over ace gui, set it back to normal
+	if self.frameStrataIncreased then
+		self.frameStrataIncreased = nil
+		self:SetFrameStrata("DIALOG")
+
+		local popupFrameLevel = self:GetFrameLevel()
+		if popupFrameLevel > 100 then
+			self:SetFrameLevel(popupFrameLevel-100)
+		end
 	end
 end
 

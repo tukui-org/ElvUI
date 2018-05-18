@@ -8,7 +8,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Lua functions
 local _G = _G
 local unpack = unpack
-local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
@@ -66,22 +65,15 @@ function UF:Construct_ArenaFrames(frame)
 		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
 		frame.Buffs = self:Construct_Buffs(frame)
-
 		frame.Debuffs = self:Construct_Debuffs(frame)
-
 		frame.Castbar = self:Construct_Castbar(frame)
-
-		frame.HealthPrediction = UF:Construct_HealComm(frame)
+		frame.HealthPrediction = self:Construct_HealComm(frame)
+		frame.MouseGlow = self:Construct_MouseGlow(frame)
+		frame.TargetGlow = self:Construct_TargetGlow(frame)
 		frame.Trinket = self:Construct_Trinket(frame)
 		frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-		frame.Range = UF:Construct_Range(frame)
+		frame.Range = self:Construct_Range(frame)
 		frame:SetAttribute("type2", "focus")
-
-		frame.TargetGlow = UF:Construct_TargetGlow(frame)
-		tinsert(frame.__elements, UF.UpdateTargetGlow)
-		frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
-		frame:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-		frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 
 		frame.customTexts = {}
 		frame.InfoPanel = self:Construct_InfoPanel(frame)
@@ -156,7 +148,6 @@ function UF:Update_ArenaFrames(frame, db)
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
-		frame.USE_TARGET_GLOW = db.targetGlow
 		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 
 		frame.VARIABLES_SET = true
@@ -180,9 +171,6 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Target Glow
-	UF:Configure_TargetGlow(frame)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
