@@ -22,8 +22,7 @@ local function LoadSkin()
 
 	local KeyBindingFrame = _G["KeyBindingFrame"]
 	for _, v in pairs(buttons) do
-		KeyBindingFrame[v]:StripTextures()
-		KeyBindingFrame[v]:SetTemplate("Default", true)
+		S:HandleButton(KeyBindingFrame[v])
 	end
 
 	KeyBindingFrame.header:StripTextures()
@@ -41,16 +40,13 @@ local function LoadSkin()
 	KeyBindingFrame.bindingsContainer:StripTextures()
 	KeyBindingFrame.bindingsContainer:SetTemplate("Transparent")
 
-	for i = 1, KEY_BINDINGS_DISPLAYED  do
+	for i = 1, KEY_BINDINGS_DISPLAYED, 1 do
 		local button1 = _G["KeyBindingFrameKeyBinding"..i.."Key1Button"]
 		local button2 = _G["KeyBindingFrameKeyBinding"..i.."Key2Button"]
-		button1:StripTextures(true)
-		button1:StyleButton(false)
-		button1:SetTemplate("Default", true)
-		button2:StripTextures(true)
-		button2:StyleButton(false)
-		button2:SetTemplate("Default", true)
+		S:HandleButton(button1)
+		S:HandleButton(button2)
 	end
+
 	KeyBindingFrame.okayButton:Point("BOTTOMLEFT", KeyBindingFrame.unbindButton, "BOTTOMRIGHT", 3, 0)
 	KeyBindingFrame.cancelButton:Point("BOTTOMLEFT", KeyBindingFrame.okayButton, "BOTTOMRIGHT", 3, 0)
 	KeyBindingFrame.unbindButton:Point("BOTTOMRIGHT", KeyBindingFrame, "BOTTOMRIGHT", -211, 16)
