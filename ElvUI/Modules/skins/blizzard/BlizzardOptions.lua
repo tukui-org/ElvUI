@@ -648,6 +648,7 @@ local function LoadSkin()
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
 		"Advanced_PhysicsInteractionDropDown",
+		"Advanced_AdapterDropDown",
 
 		-- Audio
 		"AudioOptionsSoundPanelHardwareDropDown",
