@@ -207,7 +207,7 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 			end
 
 			if self.data.unit == 'raidpet' then
-				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
+				E.UnitFrames:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
 			end
 
 			local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
