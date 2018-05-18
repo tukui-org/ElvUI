@@ -200,14 +200,15 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function(self)
-		if E.UnitFrames and (self.data and self.data.unit) then
-			E.UnitFrames:ResetUnitSettings(self.data.unit);
+		if self.data and self.data.unit then
+			local UF = E:GetModule('UnitFrames');
+			UF:ResetUnitSettings(self.data.unit);
 			if self.data.mover then
 				E:ResetMovers(self.data.mover);
 			end
 
 			if self.data.unit == 'raidpet' then
-				E.UnitFrames:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
+				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
 			end
 
 			local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
