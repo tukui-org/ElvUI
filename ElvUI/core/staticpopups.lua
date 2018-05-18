@@ -519,6 +519,18 @@ function E:StaticPopup_OnShow()
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", E.StaticPopup_OnKeyDown);
 	end
+
+	-- boost static popups over ace gui
+	local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+	if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+		self.frameStrataIncreased = true
+		self:SetFrameStrata("FULLSCREEN_DIALOG")
+
+		local popupFrameLevel = self:GetFrameLevel()
+		if popupFrameLevel < 100 then
+			self:SetFrameLevel(popupFrameLevel+100)
+		end
+	end
 end
 
 function E:StaticPopup_EscapePressed()
@@ -635,6 +647,17 @@ function E:StaticPopup_OnHide()
 	self.extraFrame:Hide();
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", nil);
+	end
+
+	-- static popup was boosted over ace gui, set it back to normal
+	if self.frameStrataIncreased then
+		self.frameStrataIncreased = nil
+		self:SetFrameStrata("DIALOG")
+
+		local popupFrameLevel = self:GetFrameLevel()
+		if popupFrameLevel > 100 then
+			self:SetFrameLevel(popupFrameLevel-100)
+		end
 	end
 end
 
