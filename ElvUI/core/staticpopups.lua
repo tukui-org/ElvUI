@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
-local lower = string.lower
+local lower, format = string.lower, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
@@ -20,6 +20,7 @@ local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
+local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
@@ -1131,8 +1132,8 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index]:SetScript('OnEvent', E.StaticPopup_OnEvent)
 
 		for i = 1, 3 do
-			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(self)
-				E.StaticPopup_OnClick(self:GetParent(), self:GetID())
+			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(button)
+				E.StaticPopup_OnClick(button:GetParent(), button:GetID())
 			end)
 		end
 
