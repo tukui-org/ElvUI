@@ -21,10 +21,10 @@ local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	if not (frame and frame.VARIABLES_SET) then return end
 
-	local PVPSpecIcon		= frame.PVPSpecIcon
 	local Trinket			= frame.Trinket
-	local AltPowerBar		= frame.AltPowerBar
 	local InfoPanel			= frame.InfoPanel
+	local PVPSpecIcon		= frame.PVPSpecIcon
+	local AltPowerBar		= frame.AlternativePower
 	local healthBackdrop	= frame.Health	and frame.Health.backdrop
 	local powerBackdrop		= frame.Power	and frame.Power.backdrop
 	local pixelOffset		= (E.PixelMode and 3) or 4
