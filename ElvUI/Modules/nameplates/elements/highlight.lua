@@ -21,6 +21,9 @@ function mod:UpdateElement_Highlight(frame)
 	if frame:IsShown() and frame.unit and UnitIsUnit("mouseover", frame.unit) and (frame.NameOnlyChanged or (not self.db.units[frame.UnitType].healthbar.enable and self.db.units[frame.UnitType].showName)) and not frame.isTarget then
 		frame.Name.NameOnlyGlow:Show()
 		frame.Highlight:Show()
+	elseif frame:IsShown() and frame.unit and UnitIsUnit("mouseover", frame.unit) and not self.db.units[frame.UnitType].healthbar.enable and self.db.showNPCTitles and (frame.NPCTitle:GetText() ~= nil and frame.NPCTitle:GetText() ~= "") and not frame.isTarget then
+		frame.NPCTitle.NameOnlyGlow:Show()
+		frame.Highlight:Show()
 	elseif frame:IsShown() and frame.unit and UnitIsUnit("mouseover", frame.unit) and (not frame.NameOnlyChanged or self.db.units[frame.UnitType].healthbar.enable) and not frame.isTarget then
 		frame.Highlight.texture:ClearAllPoints()
 		frame.Highlight.texture:SetPoint("TOPLEFT", frame.HealthBar, "TOPLEFT")
@@ -45,6 +48,7 @@ function mod:ConstructElement_Highlight(frame)
 
 	f:HookScript("OnHide", function()
 		frame.Name.NameOnlyGlow:Hide()
+		frame.NPCTitle.NameOnlyGlow:Hide()
 		frame.Highlight.texture:Hide()
 	end)
 

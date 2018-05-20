@@ -40,6 +40,7 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 		end
 
 		frame.NPCTitle:SetTextColor(r - 0.1, g - 0.1, b - 0.1)
+		frame.NPCTitle.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
 	else
 		frame.NPCTitle:SetText("")
 	end
@@ -55,5 +56,16 @@ function mod:ConfigureElement_NPCTitle(frame)
 end
 
 function mod:ConstructElement_NPCTitle(frame)
-	return frame:CreateFontString(nil, "OVERLAY")
+	local title = frame:CreateFontString(nil, "OVERLAY")
+
+	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	g:SetVertexColor(1, 1, 1, .3)
+	g:Hide()
+	g:SetPoint("TOPLEFT", title, -20, 8)
+	g:SetPoint("BOTTOMRIGHT", title, 20, -8)
+
+	title.NameOnlyGlow = g
+
+	return title
 end
