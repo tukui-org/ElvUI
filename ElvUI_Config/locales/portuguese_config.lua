@@ -658,13 +658,13 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = true
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = true
+L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then the filter will only activate when the unit is out of combat."] = true
+L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are in combat."] = true
+L["If enabled then the filter will only activate when you are not targeting the unit."] = true
 L["If enabled then the filter will only activate when you are out of combat."] = true
 L["If enabled then the filter will only activate when you are targeting the unit."] = true
-L["If enabled then the filter will only activate when you are not targeting the unit."] = true
-L["If enabled then the filter will only activate when the unit is targeting you."] = true
-L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
@@ -675,8 +675,10 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["Instance Type"] = true
 L["Interruptible"] = true
+L["Is Not Targeting Player"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = true
+L["Is Targeting Player"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["Load Distance"] = true
 L["Low Health Threshold"] = "Limiar de Vida Baixa"
@@ -691,12 +693,11 @@ L["Minimum Time Left"] = true
 L["Minus"] = true
 L["Missing"] = true
 L["Name Color"] = true
+L["Name Colored Glow"] = true
 L["Name Only"] = true
 L["NamePlates"] = "Placas de Identificação"
 L["Non-Target Transparency"] = true
 L["Not Targeted"] = true
-L["Is Targeting Player"] = true
-L["Is Not Targeting Player"] = true
 L["Off Cooldown"] = true
 L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = true
@@ -766,10 +767,9 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = true
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true
 L["Use Target Scale"] = true
+L["Use the Name Color of the unit for the Name Glow."] = true
 L["Use Threat Color"] = true
 L["When enabled the nameplate will stay visible in a locked position."] = true
-L["Name Colored Glow"] = true
-L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = true

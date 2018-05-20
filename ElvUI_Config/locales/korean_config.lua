@@ -706,13 +706,13 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "활성화하면 유닛이 차단 가능한 주문을 시전하고 있을 경우에만 필터가 작동합니다."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "활성화하면 유닛이 차단 불가능한 주문을 시전하고 있을 경우에만 필터가 작동합니다."
 L["If enabled then the filter will only activate when the unit is in combat."] = "활성화하면 유닛이 전투 중일때만 필터가 작동합니다."
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "활성화하면 유닛이 자신을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when the unit is out of combat."] = "활성화하면 유닛이 비전투 중일때만 필터가 작동합니다."
+L["If enabled then the filter will only activate when the unit is targeting you."] = "활성화하면 유닛이 자신을 대상으로 잡고 있을 때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are in combat."] = "활성화하면 자신이 전투 중일때만 필터가 작동합니다."
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "활성화하면 자신이 유닛을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are out of combat."] = "활성화하면 자신이 비전투 중일때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are targeting the unit."] = "활성화하면 자신이 유닛을 대상으로 잡고 있을 때만 필터가 작동합니다."
-L["If enabled then the filter will only activate when you are not targeting the unit."] = "활성화하면 자신이 유닛을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
-L["If enabled then the filter will only activate when the unit is targeting you."] = "활성화하면 유닛이 자신을 대상으로 잡고 있을 때만 필터가 작동합니다."
-L["If enabled then the filter will only activate when the unit is not targeting you."] = "활성화하면 유닛이 자신을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = "활성화하면 기본 블리자드 외형을 사용하는 이름표를 더이상 보지 않게됩니다."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
@@ -723,8 +723,10 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["Instance Type"] = "인스턴스 종류"
 L["Interruptible"] = true
+L["Is Not Targeting Player"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = true
+L["Is Targeting Player"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["Load Distance"] = "작동 거리"
 L["Low Health Threshold"] = "낮은 생명력 임계점"
@@ -739,12 +741,11 @@ L["Minimum Time Left"] = true
 L["Minus"] = true
 L["Missing"] = true
 L["Name Color"] = "이름 색상"
+L["Name Colored Glow"] = true
 L["Name Only"] = "이름만"
 L["NamePlates"] = "이름표"
 L["Non-Target Transparency"] = "비대상 투명도"
 L["Not Targeted"] = true
-L["Is Targeting Player"] = true
-L["Is Not Targeting Player"] = true
 L["Off Cooldown"] = true
 L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = true
@@ -814,10 +815,9 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "정적인 위치 사용"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "다른 방어전담자가 효율적으로 역할 수행중일때 색상을 입힙니다."
 L["Use Target Scale"] = "대상 크기조정 사용"
+L["Use the Name Color of the unit for the Name Glow."] = true
 L["Use Threat Color"] = "위협 색상 사용"
 L["When enabled the nameplate will stay visible in a locked position."] = "활성화하면 이름표가 고정된 위치에 표시된 채 머무릅니다."
-L["Name Colored Glow"] = true
-L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "오라 필터"

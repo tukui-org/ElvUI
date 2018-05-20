@@ -658,13 +658,13 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "如果選中則過濾器僅僅在單位施放可打斷技能的時候啟動"
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = "如果選中則過濾器僅僅在單位在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then the filter will only activate when the unit is out of combat."] = "如果選中則過濾器僅僅在單位不在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器僅僅在你在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when you are not targeting the unit."] = true
 L["If enabled then the filter will only activate when you are out of combat."] = "如果選中則過濾器僅僅在你不在戰鬥中的時候啟動"
 L["If enabled then the filter will only activate when you are targeting the unit."] = true
-L["If enabled then the filter will only activate when you are not targeting the unit."] = true
-L["If enabled then the filter will only activate when the unit is targeting you."] = true
-L["If enabled then the filter will only activate when the unit is not targeting you."] = true
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光環和一個數一起列出你需要用它來將其移出列表"
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
@@ -675,8 +675,10 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["Instance Type"] = true
 L["Interruptible"] = "可打斷"
+L["Is Not Targeting Player"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = "目標"
+L["Is Targeting Player"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["Load Distance"] = "讀取距離"
 L["Low Health Threshold"] = "低生命值閾值"
@@ -691,12 +693,11 @@ L["Minimum Time Left"] = true
 L["Minus"] = true
 L["Missing"] = "缺失"
 L["Name Color"] = "姓名顏色"
+L["Name Colored Glow"] = true
 L["Name Only"] = true
 L["NamePlates"] = "姓名板(血條)"
 L["Non-Target Transparency"] = "非目標透明度"
 L["Not Targeted"] = "非目標"
-L["Is Targeting Player"] = true
-L["Is Not Targeting Player"] = true
 L["Off Cooldown"] = true
 L["On Cooldown"] = true
 L["Only load nameplates for units within this range."] = "僅僅讀取在此範圍內的姓名板"
@@ -766,10 +767,9 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "當另一個坦克更有效的坦住時姓名板使用被坦住的顏色"
 L["Use Target Scale"] = "使用目標縮放"
+L["Use the Name Color of the unit for the Name Glow."] = true
 L["Use Threat Color"] = "使用仇恨顏色"
 L["When enabled the nameplate will stay visible in a locked position."] = "啟用後姓名板將在鎖定的位置持續可見"
-L["Name Colored Glow"] = true
-L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "光環過濾器"

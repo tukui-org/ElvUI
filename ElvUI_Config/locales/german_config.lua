@@ -660,13 +660,13 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen unterbrechbaren Zauber wirkt."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen nicht unterbrechbaren Zauber wirkt."
 L["If enabled then the filter will only activate when the unit is in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit im Kampf ist."
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich nicht als Ziel hat."
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit nicht im Kampf ist."
+L["If enabled then the filter will only activate when the unit is targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich als Ziel hat."
 L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du im Kampf bist."
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht im Ziel hast."
 L["If enabled then the filter will only activate when you are out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du nicht im Kampf bist."
 L["If enabled then the filter will only activate when you are targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit im Ziel hast."
-L["If enabled then the filter will only activate when you are not targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht im Ziel hast."
-L["If enabled then the filter will only activate when the unit is targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich als Ziel hat."
-L["If enabled then the filter will only activate when the unit is not targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich nicht als Ziel hat."
 L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."] = "Wenn aktiviert wirst du nicht mehr in der Lage sein Namensplaketten im Blizzard Stil zu sehen."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = "Wenn die Aura mit einer Nummer aufgeführt ist, dann musst du sie benutzten um sie aus der Liste zu entfernen."
 L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = "Wenn aktiviert dann wird die Reaktionskontrolle benutzt um den Ruf mit der Fraktion zu prüfen die zu der Einheit gehört."
@@ -677,8 +677,10 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Kraft niedriger sein als dieser Wert um den Filter zu aktivieren. Setzte auf 0 um zu deaktiveren."
 L["Instance Type"] = "Instanz Typ"
 L["Interruptible"] = "Unterbrechbar"
+L["Is Not Targeting Player"] = "Hat Spieler nicht als Ziel"
 L["Is PvP Talents"] = "Ist PvP Talent"
 L["Is Targeted"] = "Ist anvisiert"
+L["Is Targeting Player"] = "Hat Spieler als Ziel"
 L["LEVEL_BOSS"] = "Setze das Level auf -1 für Boss Einheiten oder auf 0 um zu deaktivieren"
 L["Load Distance"] = "Anzeige Distanz"
 L["Low Health Threshold"] = "Niedrige Lebensbedrohung"
@@ -693,12 +695,11 @@ L["Minimum Time Left"] = "Minimale Zeit verbleibend"
 L["Minus"] = true --No need to translate
 L["Missing"] = "Fehlend"
 L["Name Color"] = "Namen Farbe"
+L["Name Colored Glow"] = true
 L["Name Only"] = "Nur Name"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Transparency"] = "Transparenz nicht ausgewählter Ziele"
 L["Not Targeted"] = "Nicht anvisiert"
-L["Is Targeting Player"] = "Hat Spieler als Ziel"
-L["Is Not Targeting Player"] = "Hat Spieler nicht als Ziel"
 L["Off Cooldown"] = "Benutzbar"
 L["On Cooldown"] = "Auf Abklingzeit"
 L["Only load nameplates for units within this range."] = "Namensplaketten werden nur angezeigt, wenn sie in Reichweite sind."
@@ -768,10 +769,9 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "Benutze statische Position"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
+L["Use the Name Color of the unit for the Name Glow."] = true
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
 L["When enabled the nameplate will stay visible in a locked position."] = "Wenn aktiviert, sind die Namensplaketten in einer festen Position sichtbar."
-L["Name Colored Glow"] = true
-L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "Auren Filter"
