@@ -36,7 +36,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local AltPowerBar		= frame.AlternativePower
 	local powerBackdrop		= frame.Power and frame.Power.backdrop
 	local healthBackdrop	= frame.Health and frame.Health.backdrop
-	local AdditionalPower	= (frame.Stagger and frame.Stagger.backdrop) or (frame.Runes and frame.Runes.backdrop) or (frame.AdditionalPower and frame.AdditionalPower.backdrop)
+	local AdditionalPower	= (frame.AdditionalPower and frame.AdditionalPower.backdrop) or (frame.Stagger and frame.Stagger.backdrop) or (frame.Runes and frame.Runes.backdrop)
 	local pixelOffset		= (E.PixelMode and 3) or 4
 
 	mainGlow:ClearAllPoints()
