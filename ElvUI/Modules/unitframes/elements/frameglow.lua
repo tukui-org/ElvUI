@@ -257,34 +257,38 @@ function UF:FrameGlow_CheckTarget(frame, glow, setColor)
 end
 
 function UF:FrameGlow_CheckMouseover(frame, glow)
+	local shouldShow
 	if UF:FrameGlow_MouseOnUnit(frame) then
-		local wasShown
-
 		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
+			shouldShow = 'frame'
+		end
+		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
+			shouldShow = (shouldShow and 'both') or 'texture'
+		end
+	end
+
+	if shouldShow then
+		if frame.Highlight and not frame.Highlight:IsShown() then
+			frame.Highlight:Show()
+		end
+		if (shouldShow == 'both' or shouldShow == 'frame') then
 			if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
 				glow.powerGlow:Show()
 			end
-			if frame.Highlight then
-				frame.Highlight:Show()
-				wasShown = true
-			end
 			glow:Show()
-		end
-
-		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and frame.Highlight and frame.Highlight.texture and not (frame.db and frame.db.disableMouseoverGlow) then
-			if not frame.Highlight:IsShown() then
-				frame.Highlight:Show()
-			end
-			frame.Highlight.texture:Show()
-		else
-			if frame.Highlight and frame.Highlight:IsShown() and not wasShown then
-				frame.Highlight:Hide()
-			elseif frame.Highlight and frame.Highlight.texture then
+			if (shouldShow == 'frame') and frame.Highlight.texture and not frame.Highlight.texture:IsShown() then
 				frame.Highlight.texture:Hide()
 			end
 		end
-	elseif frame.Highlight and frame.Highlight:IsShown() then
-		frame.Highlight:Hide()
+		if (shouldShow == 'both' or shouldShow == 'texture') and frame.Highlight.texture and not frame.Highlight.texture:IsShown() then
+			frame.Highlight.texture:Show()
+		end
+	else
+		if frame.Highlight and frame.Highlight:IsShown() and not shouldShow then
+			frame.Highlight:Hide()
+		elseif frame.Highlight and frame.Highlight.texture then
+			frame.Highlight.texture:Hide()
+		end
 	end
 end
 
