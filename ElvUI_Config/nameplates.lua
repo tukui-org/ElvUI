@@ -2980,7 +2980,7 @@ E.Options.args.nameplate = {
 							order = 13,
 							type = "toggle",
 							name = L["Name Colored Glow"],
-							desc = L["Use the Name Color of the unit for the Name Glow on nameplates."],
+							desc = L["Use the Name Color of the unit for the Name Glow."],
 						},
 						targetedNamePlate = {
 							order = 14,
