@@ -59,15 +59,19 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 		powerGlow:Point('BOTTOMRIGHT', powerBackdrop, pixelOffset, -pixelOffset)
 	end
 
-	if (AltPowerBar and not AltPowerBar.hookedGlow) and frame.unit and frame.unit:find('boss%d') then
-		AltPowerBar.hookedGlow = true
+	if (AltPowerBar and not mainGlow.altPowerHooked) and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
+		mainGlow.altPowerHooked = true
 		AltPowerBar:HookScript('OnShow', function()
-			mainGlow:Point('TOPLEFT', AltPowerBar.backdrop, -pixelOffset, pixelOffset)
-			mainGlow:Point('TOPRIGHT', AltPowerBar.backdrop, pixelOffset, pixelOffset)
+			if mainGlow then
+				mainGlow:Point('TOPLEFT', AltPowerBar.backdrop, -pixelOffset, pixelOffset)
+				mainGlow:Point('TOPRIGHT', AltPowerBar.backdrop, pixelOffset, pixelOffset)
+			end
 		end)
 		AltPowerBar:HookScript('OnHide', function()
-			mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
-			mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
+			if mainGlow then
+				mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
+				mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
+			end
 		end)
 	elseif PVPSpecIcon and PVPSpecIcon:IsShown() then
 		local z = (InfoPanel and InfoPanel:IsShown() and InfoPanel.backdrop)
