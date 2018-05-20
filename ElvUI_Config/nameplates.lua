@@ -2976,8 +2976,14 @@ E.Options.args.nameplate = {
 								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
 							end,
 						},
-						targetedNamePlate = {
+						nameColoredGlow = {
 							order = 13,
+							type = "toggle",
+							name = L["Name Colored Glow"],
+							desc = L["Use the Name Color of the unit for the Name Glow on nameplates."],
+						},
+						targetedNamePlate = {
+							order = 14,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -3056,7 +3062,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 14,
+							order = 15,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],

@@ -40,7 +40,12 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 		end
 
 		frame.NPCTitle:SetTextColor(r - 0.1, g - 0.1, b - 0.1)
-		frame.NPCTitle.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
+
+		if self.db.nameColoredGlow then
+			frame.NPCTitle.NameOnlyGlow:SetVertexColor(r, g, b, 1)
+		else
+			frame.NPCTitle.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
+		end
 	else
 		frame.NPCTitle:SetText("")
 	end
