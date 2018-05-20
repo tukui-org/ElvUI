@@ -695,7 +695,7 @@ L["Minimum Time Left"] = "Minimale Zeit verbleibend"
 L["Minus"] = true --No need to translate
 L["Missing"] = "Fehlend"
 L["Name Color"] = "Namen Farbe"
-L["Name Colored Glow"] = true
+L["Name Colored Glow"] = "Klassenfarben Leuchten"
 L["Name Only"] = "Nur Name"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Transparency"] = "Transparenz nicht ausgewählter Ziele"
@@ -769,7 +769,7 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "Benutze statische Position"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
-L["Use the Name Color of the unit for the Name Glow."] = true
+L["Use the Name Color of the unit for the Name Glow."] = "Benutze Klassenfarbe für das Einheiten Namensleuchten."
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
 L["When enabled the nameplate will stay visible in a locked position."] = "Wenn aktiviert, sind die Namensplaketten in einer festen Position sichtbar."
 
