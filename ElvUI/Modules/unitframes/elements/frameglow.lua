@@ -19,6 +19,24 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
+function UF:FrameGlow_ToggleGlowPosition(frame, power, health, glow, pixelOffset)
+	if (power and power.backdrop and power:IsVisible()) and ((power == frame.AlternativePower) or not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR)) then
+		glow:Point('TOPLEFT', power.backdrop, -pixelOffset, pixelOffset)
+		glow:Point('TOPRIGHT', power.backdrop, pixelOffset, pixelOffset)
+	elseif health then
+		glow:Point('TOPLEFT', health, -pixelOffset, pixelOffset)
+		glow:Point('TOPRIGHT', health, pixelOffset, pixelOffset)
+	end
+end
+
+function UF:FrameGlow_PositionElementGlow(frame, element, elementName, healthBackdrop, mainGlow, pixelOffset)
+	UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset)
+	if not mainGlow[elementName..'Hooked'] then mainGlow[elementName..'Hooked'] = true
+		element:HookScript('OnShow', function() UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset) end)
+		element:HookScript('OnHide', function() UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset) end)
+	end
+end
+
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
 		local unit = frame.unit or (frame.isForced and 'player')
@@ -36,18 +54,12 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local AltPowerBar		= frame.AlternativePower
 	local powerBackdrop		= frame.Power and frame.Power.backdrop
 	local healthBackdrop	= frame.Health and frame.Health.backdrop
-	local classPower		= (frame.ClassPower and frame.ClassPower.backdrop) or (frame.AdditionalPower and frame.AdditionalPower.backdrop) or (frame.Stagger and frame.Stagger.backdrop) or (frame.Runes and frame.Runes.backdrop)
+	local classPower		= frame.ClassPower or frame.AdditionalPower or frame.Stagger or frame.Runes
 	local pixelOffset		= (E.PixelMode and 3) or 4
 
 	mainGlow:ClearAllPoints()
-
-	if classPower and classPower:IsVisible() and not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR) then
-		mainGlow:Point('TOPLEFT', classPower, -pixelOffset, pixelOffset)
-		mainGlow:Point('TOPRIGHT', classPower, pixelOffset, pixelOffset)
-	else
-		mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
-		mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
-	end
+	mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
+	mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
 
 	if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 		mainGlow:Point('BOTTOMLEFT', healthBackdrop, -pixelOffset, -pixelOffset)
@@ -66,20 +78,10 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 		powerGlow:Point('BOTTOMRIGHT', powerBackdrop, pixelOffset, -pixelOffset)
 	end
 
-	if (AltPowerBar and not mainGlow.altPowerHooked) and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
-		mainGlow.altPowerHooked = true
-		AltPowerBar:HookScript('OnShow', function()
-			if mainGlow then
-				mainGlow:Point('TOPLEFT', AltPowerBar.backdrop, -pixelOffset, pixelOffset)
-				mainGlow:Point('TOPRIGHT', AltPowerBar.backdrop, pixelOffset, pixelOffset)
-			end
-		end)
-		AltPowerBar:HookScript('OnHide', function()
-			if mainGlow then
-				mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
-				mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
-			end
-		end)
+	if classPower then
+		UF:FrameGlow_PositionElementGlow(frame, classPower, 'classPower', healthBackdrop, mainGlow, pixelOffset)
+	elseif AltPowerBar and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
+		UF:FrameGlow_PositionElementGlow(frame, AltPowerBar, 'altPower', healthBackdrop, mainGlow, pixelOffset)
 	elseif PVPSpecIcon and PVPSpecIcon:IsShown() then
 		local z = (InfoPanel and InfoPanel:IsShown() and InfoPanel.backdrop)
 		mainGlow:Point('TOPLEFT', PVPSpecIcon.bg, -pixelOffset, pixelOffset)
@@ -114,6 +116,13 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 	if not frame.Highlight then
 		frame.Highlight = CreateFrame('Frame', nil, frame)
 		frame.Highlight:Hide()
+		frame.Highlight:HookScript('OnEvent', function(_, event)
+			if event == 'UPDATE_MOUSEOVER_UNIT' then
+				UF:FrameGlow_CheckMouseover(frame, frame.MouseGlow)
+			elseif event == 'PLAYER_TARGET_CHANGED' then
+				UF:FrameGlow_CheckTarget(frame, frame.TargetGlow)
+			end
+		end)
 	end
 
 	mainGlow.powerGlow = powerGlow
@@ -196,12 +205,13 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 		unit = frame.unit or (frame.isForced and 'player')
 	end
 
+	local shouldHide
 	if frame.Highlight and frame.Highlight.texture then
 		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
 			frame.Highlight.texture:SetTexture(dbTexture)
 			UF:FrameGlow_SetGlowColor(frame.Highlight.texture, unit, 'mouseoverGlow')
-		elseif frame.Highlight:IsShown() then
-			frame.Highlight:Hide()
+		else
+			shouldHide = 'texture'
 		end
 	end
 
@@ -210,6 +220,17 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 			UF:FrameGlow_SetGlowColor(frame.MouseGlow, unit, 'mainGlow')
 		else
 			UF:FrameGlow_HideGlow(frame.MouseGlow)
+			if shouldHide then
+				shouldHide = 'both'
+			end
+		end
+	end
+
+	if shouldHide then
+		if shouldHide == 'both' and frame.Highlight:IsShown() then
+			frame.Highlight:Hide()
+		elseif shouldHide == 'texture' then
+			frame.Highlight.texture:Hide()
 		end
 	end
 
@@ -219,12 +240,12 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 end
 
 function UF:FrameGlow_CheckTarget(frame, glow, setColor)
-	if not frame then return end
+	if not (frame and glow and frame:IsVisible()) then return end
 
 	local unit = frame.unit or (frame.isForced and 'player')
-	if E.db.unitframe.colors.frameGlow.targetGlow.enable and unit and UnitIsUnit(unit, 'target') and not (frame.db and frame.db.disableTargetGlow) then
+	if E.db.unitframe.colors.frameGlow.targetGlow.enable and (unit and UnitIsUnit(unit, 'target')) and not (frame.db and frame.db.disableTargetGlow) then
 		if setColor then
-			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
+			UF:FrameGlow_SetGlowColor(glow, unit, 'targetGlow')
 		end
 		if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
 			glow.powerGlow:Show()
@@ -313,31 +334,18 @@ end
 function UF:Construct_MouseGlow(frame)
 	local mainGlow = UF:FrameGlow_CreateGlow(frame, true)
 	UF:FrameGlow_ElementHook(frame, mainGlow, 'mainGlow')
-
-	frame.Highlight:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
-	frame.Highlight:HookScript('OnEvent', function(_, event)
-		if event == 'UPDATE_MOUSEOVER_UNIT' then
-			UF:FrameGlow_CheckMouseover(frame, mainGlow)
-		end
-	end)
-
 	UF:Construct_HighlightGlow(frame, mainGlow)
+	frame.Highlight:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
 
 	return mainGlow
 end
 
 function UF:Construct_TargetGlow(frame)
-	local mainGlow = UF:FrameGlow_CreateGlow(frame)
-	UF:FrameGlow_ElementHook(frame, mainGlow, 'targetGlow')
-
+	local targetGlow = UF:FrameGlow_CreateGlow(frame)
+	UF:FrameGlow_ElementHook(frame, targetGlow, 'targetGlow')
 	frame.Highlight:RegisterEvent('PLAYER_TARGET_CHANGED')
-	frame.Highlight:HookScript('OnEvent', function(_, event)
-		if event == 'PLAYER_TARGET_CHANGED' then
-			UF:FrameGlow_CheckTarget(frame, mainGlow)
-		end
-	end)
 
-	return mainGlow
+	return targetGlow
 end
 
 function UF:FrameGlow_CheckChildren(frame, dbTexture)
