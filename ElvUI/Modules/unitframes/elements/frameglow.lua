@@ -31,7 +31,6 @@ end
 function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	if not (frame and frame.VARIABLES_SET) then return end
 
-	local Trinket			= frame.Trinket
 	local InfoPanel			= frame.InfoPanel
 	local PVPSpecIcon		= frame.PVPSpecIcon
 	local AltPowerBar		= frame.AlternativePower
@@ -69,17 +68,6 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 		AltPowerBar:HookScript('OnHide', function()
 			mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
 			mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
-		end)
-	elseif Trinket and not Trinket.hookedGlow then
-		Trinket.hookedGlow = true
-		Trinket:HookScript('OnShow', function()
-			mainGlow:Point('TOPRIGHT', Trinket.bg, pixelOffset, pixelOffset)
-			mainGlow:Point('BOTTOMRIGHT', Trinket.bg, pixelOffset, -pixelOffset)
-		end)
-		Trinket:HookScript('OnHide', function()
-			local z = (PVPSpecIcon and PVPSpecIcon:IsShown() and PVPSpecIcon.bg)
-			mainGlow:Point('TOPRIGHT', z or healthBackdrop, pixelOffset, pixelOffset)
-			mainGlow:Point('BOTTOMRIGHT', z or frame, pixelOffset, -pixelOffset)
 		end)
 	elseif PVPSpecIcon and PVPSpecIcon:IsShown() then
 		local z = (InfoPanel and InfoPanel:IsShown() and InfoPanel.backdrop)
