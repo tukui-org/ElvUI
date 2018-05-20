@@ -34,13 +34,20 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local InfoPanel			= frame.InfoPanel
 	local PVPSpecIcon		= frame.PVPSpecIcon
 	local AltPowerBar		= frame.AlternativePower
-	local healthBackdrop	= frame.Health	and frame.Health.backdrop
-	local powerBackdrop		= frame.Power	and frame.Power.backdrop
+	local AdditionalPB		= frame.AdditionalPower and frame.AdditionalPower.backdrop
+	local healthBackdrop	= frame.Health and frame.Health.backdrop
+	local powerBackdrop		= frame.Power and frame.Power.backdrop
 	local pixelOffset		= (E.PixelMode and 3) or 4
 
 	mainGlow:ClearAllPoints()
-	mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
-	mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
+
+	if AdditionalPB and not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR) then
+		mainGlow:Point('TOPLEFT', AdditionalPB, -pixelOffset, pixelOffset)
+		mainGlow:Point('TOPRIGHT', AdditionalPB, pixelOffset, pixelOffset)
+	else
+		mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
+		mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
+	end
 
 	if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 		mainGlow:Point('BOTTOMLEFT', healthBackdrop, -pixelOffset, -pixelOffset)
