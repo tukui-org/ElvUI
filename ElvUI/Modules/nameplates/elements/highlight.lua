@@ -9,12 +9,12 @@ local CreateFrame = CreateFrame
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 
-local function HighlightUpdate(self)
-	if not (self.unit and UnitExists("mouseover") and UnitIsUnit("mouseover", self.unit)) then
-		self.Name.NameOnlyGlow:Hide()
-		self.Highlight.texture:Hide()
-		self.Highlight:Hide()
+local function MouseOnUnit(frame)
+	if frame and frame:IsVisible() and UnitExists('mouseover') then
+		return frame.unit and UnitIsUnit('mouseover', frame.unit)
 	end
+
+	return false
 end
 
 function mod:UpdateElement_Highlight(frame)
@@ -28,8 +28,6 @@ function mod:UpdateElement_Highlight(frame)
 		frame.Highlight.texture:Show()
 		frame.Highlight:Show()
 	else
-		frame.Name.NameOnlyGlow:Hide()
-		frame.Highlight.texture:Hide()
 		frame.Highlight:Hide()
 	end
 end
@@ -52,7 +50,9 @@ function mod:ConstructElement_Highlight(frame)
 
 	f:SetScript("OnUpdate", function(watcher, elapsed)
 		if watcher.elapsed and watcher.elapsed > 0.1 then
-			HighlightUpdate(frame)
+			if not MouseOnUnit(frame) then
+				watcher:Hide()
+			end
 			watcher.elapsed = 0
 		else
 			watcher.elapsed = (watcher.elapsed or 0) + elapsed
