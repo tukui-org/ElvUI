@@ -41,7 +41,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 
 	mainGlow:ClearAllPoints()
 
-	if classPower and not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR) then
+	if classPower and classPower:IsVisible() and not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR) then
 		mainGlow:Point('TOPLEFT', classPower, -pixelOffset, pixelOffset)
 		mainGlow:Point('TOPRIGHT', classPower, pixelOffset, pixelOffset)
 	else
