@@ -29,6 +29,7 @@ Unitframe tags will now return nil instead of an empty string when there is noth
 Made it more clear that the "vendor greys" button also deletes items when not at vendor.  
 The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)  
 Resetting a UnitFrame to default will now show a popup confirmation upon clicking the reset button.  
+Nameplate NPC Title Text will now show the glow color when it's the only thing shown on the nameplate (health and name disabled with show npc titles turned on).  
 Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
 
 ___
