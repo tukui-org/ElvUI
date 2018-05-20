@@ -730,6 +730,7 @@ L["Shortcuts"] = "快捷键"
 L["Show In Combat"] = "战斗中显示"
 L["Show NPC Titles"] = "显示NPC头衔"
 L["Show With Target"] = "有目标时显示"
+L["When using Static Position, this option also requires the target to be attackable."] = true
 L["Side Arrows"] = "侧面箭头"
 L["Style Filter"] = "样式过滤器"
 L["Suramar Detection"] = "苏拉玛卫兵探测"

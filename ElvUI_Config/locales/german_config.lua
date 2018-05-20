@@ -734,6 +734,7 @@ L["Shortcuts"] = "Verknüpfungen"
 L["Show In Combat"] = "Im Kampf anzeigen"
 L["Show NPC Titles"] = "Zeige NPC Titel"
 L["Show With Target"] = "Zeige mit Ziel"
+L["When using Static Position, this option also requires the target to be attackable."] = true
 L["Side Arrows"] = "Seitliche Pfeile"
 L["Style Filter"] = "Stil Filter"
 L["Suramar Detection"] = "Surumar Aufspürung"

@@ -2491,6 +2491,7 @@ local function GetUnitSettings(unit, name)
 							order = 2,
 							type = "toggle",
 							name = L["Show With Target"],
+							desc = L["When using Static Position, this option also requires the target to be attackable."],
 							get = function(info) return E.db.nameplates.units[unit].visibility.showWithTarget end,
 							set = function(info, value) E.db.nameplates.units[unit].visibility.showWithTarget = value; NP:ConfigureAll() end,
 							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,

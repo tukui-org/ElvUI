@@ -732,6 +732,7 @@ L["Shortcuts"] = "Raccourcis"
 L["Show In Combat"] = "Voir en combat"
 L["Show NPC Titles"] = true
 L["Show With Target"] = true
+L["When using Static Position, this option also requires the target to be attackable."] = true
 L["Side Arrows"] = true
 L["Style Filter"] = true
 L["Suramar Detection"] = true

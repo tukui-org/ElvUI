@@ -780,6 +780,7 @@ L["Shortcuts"] = "바로가기"
 L["Show In Combat"] = "전투시 표시"
 L["Show NPC Titles"] = "NPC 칭호 표시"
 L["Show With Target"] = "대상이 있을때 표시"
+L["When using Static Position, this option also requires the target to be attackable."] = true
 L["Side Arrows"] = "양옆 화살표"
 L["Style Filter"] = "스타일 필터"
 L["Suramar Detection"] = "수라마르 감지"

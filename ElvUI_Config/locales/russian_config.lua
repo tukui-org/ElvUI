@@ -731,6 +731,7 @@ L["Shortcuts"] = "Ярлыки"
 L["Show In Combat"] = "Показывать в бою"
 L["Show NPC Titles"] = "Титулы НИП"
 L["Show With Target"] = "Отображать с целью"
+L["When using Static Position, this option also requires the target to be attackable."] = true
 L["Side Arrows"] = "Стрелки по сторонам"
 L["Style Filter"] = "Фильтры стиля"
 L["Suramar Detection"] = "Сурамарское обнаружение"
