@@ -766,6 +766,8 @@ L["Use Tanked Color when a nameplate is being effectively tanked by another tank
 L["Use Target Scale"] = "使用目标缩放"
 L["Use Threat Color"] = "使用仇恨颜色"
 L["When enabled the nameplate will stay visible in a locked position."] = "启用后姓名板将在锁定的位置持续可见"
+L["Name Colored Glow"] = true
+L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "光环过滤器"

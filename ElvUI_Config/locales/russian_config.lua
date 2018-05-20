@@ -767,6 +767,8 @@ L["Use Tanked Color when a nameplate is being effectively tanked by another tank
 L["Use Target Scale"] = "Масштабирование цели"
 L["Use Threat Color"] = "Использовать цвет угрозы"
 L["When enabled the nameplate will stay visible in a locked position."] = "Если включено, то индикатор игрока будет оставаться видимым на фиксированной позиции."
+L["Name Colored Glow"] = true
+L["Use the Name Color of the unit for the Name Glow."] = true
 
 --Profiles Export/Import
 L["Aura Filters"] = "Фильтры аур"
