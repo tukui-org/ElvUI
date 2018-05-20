@@ -118,9 +118,9 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 		frame.Highlight:Hide()
 		frame.Highlight:HookScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
-				UF:FrameGlow_CheckMouseover(frame, frame.MouseGlow)
+				UF:FrameGlow_CheckMouseover(frame)
 			elseif event == 'PLAYER_TARGET_CHANGED' then
-				UF:FrameGlow_CheckTarget(frame, frame.TargetGlow)
+				UF:FrameGlow_CheckTarget(frame)
 			end
 		end)
 	end
@@ -179,13 +179,13 @@ function UF:FrameGlow_ElementHook(frame, glow, which)
 
 		if which == 'mouseoverGlow' then
 			UF:FrameGlow_PositionHighlight(frame)
-			UF:FrameGlow_CheckMouseover(frame, glow)
+			UF:FrameGlow_CheckMouseover(frame)
 		else
 			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
 		end
 
 		if which == 'targetGlow' then
-			UF:FrameGlow_CheckTarget(frame, glow)
+			UF:FrameGlow_CheckTarget(frame)
 		end
 	end)
 end
@@ -235,28 +235,30 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	if frame.TargetGlow then
-		UF:FrameGlow_CheckTarget(frame, frame.TargetGlow, true)
+		UF:FrameGlow_CheckTarget(frame, true)
 	end
 end
 
-function UF:FrameGlow_CheckTarget(frame, glow, setColor)
-	if not (frame and glow and frame:IsVisible()) then return end
+function UF:FrameGlow_CheckTarget(frame, setColor)
+	if not (frame and frame.TargetGlow and frame:IsVisible()) then return end
 
 	local unit = frame.unit or (frame.isForced and 'player')
 	if E.db.unitframe.colors.frameGlow.targetGlow.enable and (unit and UnitIsUnit(unit, 'target')) and not (frame.db and frame.db.disableTargetGlow) then
 		if setColor then
-			UF:FrameGlow_SetGlowColor(glow, unit, 'targetGlow')
+			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
 		end
-		if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
-			glow.powerGlow:Show()
+		if frame.TargetGlow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
+			frame.TargetGlow.powerGlow:Show()
 		end
-		glow:Show()
+		frame.TargetGlow:Show()
 	else
-		UF:FrameGlow_HideGlow(glow)
+		UF:FrameGlow_HideGlow(frame.TargetGlow)
 	end
 end
 
-function UF:FrameGlow_CheckMouseover(frame, glow)
+function UF:FrameGlow_CheckMouseover(frame)
+	if not (frame and frame.MouseGlow and frame:IsVisible()) then return end
+
 	local shouldShow
 	if UF:FrameGlow_MouseOnUnit(frame) then
 		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
@@ -272,10 +274,11 @@ function UF:FrameGlow_CheckMouseover(frame, glow)
 			frame.Highlight:Show()
 		end
 		if (shouldShow == 'both' or shouldShow == 'frame') then
-			if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
-				glow.powerGlow:Show()
+			if frame.MouseGlow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
+				frame.MouseGlow.powerGlow:Show()
 			end
-			glow:Show()
+			frame.MouseGlow:Show()
+
 			if (shouldShow == 'frame') and frame.Highlight.texture and not frame.Highlight.texture:IsShown() then
 				frame.Highlight.texture:Hide()
 			end
