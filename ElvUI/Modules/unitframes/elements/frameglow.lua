@@ -274,9 +274,14 @@ function UF:Construct_HighlightGlow(frame, glow)
 				frame.Highlight.texture:Hide()
 			end
 		end)
-		frame.Highlight:SetScript('OnUpdate', function(watcher)
-			if not UF:FrameGlow_MouseOnUnit(frame) then
-				watcher:Hide()
+		frame.Highlight:SetScript('OnUpdate', function(watcher, elapsed)
+			if watcher.elapsed and watcher.elapsed > 0.1 then
+				if not UF:FrameGlow_MouseOnUnit(frame) then
+					watcher:Hide()
+				end
+				watcher.elapsed = 0
+			else
+				watcher.elapsed = (watcher.elapsed or 0) + elapsed
 			end
 		end)
 

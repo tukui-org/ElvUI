@@ -50,7 +50,14 @@ function mod:ConstructElement_Highlight(frame)
 		frame.Highlight.texture:Hide()
 	end)
 
-	f:SetScript("OnUpdate", function() HighlightUpdate(frame) end)
+	f:SetScript("OnUpdate", function(watcher, elapsed)
+		if watcher.elapsed and watcher.elapsed > 0.1 then
+			HighlightUpdate(frame)
+			watcher.elapsed = 0
+		else
+			watcher.elapsed = (watcher.elapsed or 0) + elapsed
+		end
+	end)
 
 	return f
 end
