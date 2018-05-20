@@ -237,13 +237,15 @@ end
 
 function UF:FrameGlow_CheckMouseover(frame, glow)
 	if UF:FrameGlow_MouseOnUnit(frame) then
+		local wasShown
+
 		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
 			if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
 				glow.powerGlow:Show()
 			end
 			if frame.Highlight then
 				frame.Highlight:Show()
-				frame.Highlight.texture:Hide()
+				wasShown = true
 			end
 			glow:Show()
 		end
@@ -253,6 +255,12 @@ function UF:FrameGlow_CheckMouseover(frame, glow)
 				frame.Highlight:Show()
 			end
 			frame.Highlight.texture:Show()
+		else
+			if frame.Highlight and frame.Highlight:IsShown() and not wasShown then
+				frame.Highlight:Hide()
+			elseif frame.Highlight and frame.Highlight.texture then
+				frame.Highlight.texture:Hide()
+			end
 		end
 	elseif frame.Highlight and frame.Highlight:IsShown() then
 		frame.Highlight:Hide()
@@ -276,13 +284,14 @@ end
 
 function UF:Construct_HighlightGlow(frame, glow)
 	if frame.Health and frame.Highlight then
-		frame.Highlight:HookScript('OnHide', function()
+		frame.Highlight:HookScript('OnHide', function(watcher)
 			UF:FrameGlow_HideGlow(glow)
 
-			if frame.Highlight and frame.Highlight.texture and frame.Highlight.texture:IsShown() then
-				frame.Highlight.texture:Hide()
+			if watcher.texture and watcher.texture:IsShown() then
+				watcher.texture:Hide()
 			end
 		end)
+
 		frame.Highlight:SetScript('OnUpdate', function(watcher, elapsed)
 			if watcher.elapsed and watcher.elapsed > 0.1 then
 				if not UF:FrameGlow_MouseOnUnit(frame) then
