@@ -168,9 +168,15 @@ function UF:FrameGlow_ElementHook(frame, glow, which)
 		if unit then
 			UF:FrameGlow_SetGlowColor(glow, unit, which)
 		end
+
 		if which == 'mouseoverGlow' then
+			UF:FrameGlow_PositionHighlight(frame)
 			UF:FrameGlow_CheckMouseover(frame, glow)
-		elseif which == 'targetGlow' then
+		else
+			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
+		end
+
+		if which == 'targetGlow' then
 			UF:FrameGlow_CheckTarget(frame, glow)
 		end
 	end)
@@ -218,7 +224,6 @@ function UF:FrameGlow_CheckTarget(frame, glow, setColor)
 
 	local unit = frame.unit or (frame.isForced and 'player')
 	if E.db.unitframe.colors.frameGlow.targetGlow.enable and unit and UnitIsUnit(unit, 'target') and not (frame.db and frame.db.disableTargetGlow) then
-		UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
 		if setColor then
 			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
 		end
@@ -234,7 +239,6 @@ end
 function UF:FrameGlow_CheckMouseover(frame, glow)
 	if UF:FrameGlow_MouseOnUnit(frame) then
 		if E.db.unitframe.colors.frameGlow.mainGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
-			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
 			if glow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
 				glow.powerGlow:Show()
 			end
@@ -246,7 +250,6 @@ function UF:FrameGlow_CheckMouseover(frame, glow)
 		end
 
 		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and frame.Highlight and frame.Highlight.texture and not (frame.db and frame.db.disableMouseoverGlow) then
-			UF:FrameGlow_PositionHighlight(frame)
 			if not frame.Highlight:IsShown() then
 				frame.Highlight:Show()
 			end
@@ -262,6 +265,13 @@ function UF:FrameGlow_PositionHighlight(frame)
 		frame.Highlight.texture:ClearAllPoints()
 		frame.Highlight.texture:Point('TOPLEFT', frame.Health, 'TOPLEFT')
 		frame.Highlight.texture:Point('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+	end
+end
+
+function UF:Configure_HighlightGlow(frame)
+	if frame.Highlight and frame.Highlight.texture then
+		local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
+		frame.Highlight.texture:SetTexture(dbTexture)
 	end
 end
 
@@ -285,9 +295,7 @@ function UF:Construct_HighlightGlow(frame, glow)
 			end
 		end)
 
-		local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 		frame.Highlight.texture = frame.Health:CreateTexture('$parentHighlight', 'ARTWORK', nil, 1)
-		frame.Highlight.texture:SetTexture(dbTexture)
 		frame.Highlight.texture:Hide()
 
 		UF:FrameGlow_ElementHook(frame, frame.Highlight.texture, 'mouseoverGlow')
