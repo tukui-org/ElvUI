@@ -20,7 +20,8 @@ local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScript)
-	if not frame then return end
+	if not (frame and glow and offset) then return end
+
 	local power = powerName and frame[powerName]
 	if not power then return end
 
@@ -50,7 +51,7 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 	if (power and power.backdrop and power:IsVisible()) and ((power == frame.AlternativePower) or not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR)) then
 		glow:Point('TOPLEFT', power.backdrop, -offset, offset)
 		glow:Point('TOPRIGHT', power.backdrop, offset, offset)
-	elseif frame.Health.backdrop then
+	elseif frame.Health and frame.Health.backdrop then
 		glow:Point('TOPLEFT', frame.Health.backdrop, -offset, offset)
 		glow:Point('TOPRIGHT', frame.Health.backdrop, offset, offset)
 	end
