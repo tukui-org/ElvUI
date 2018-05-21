@@ -57,7 +57,7 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 end
 
 function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
-	if not glow[powerName..'Hooked'] then
+	if frame and power and not glow[powerName..'Hooked'] then
 		glow[powerName..'Hooked'] = true
 		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
 		power:HookScript('OnShow', func)
