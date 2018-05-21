@@ -19,21 +19,49 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
-function UF:FrameGlow_ToggleGlowPosition(frame, power, health, glow, pixelOffset)
+function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScript)
+	if not frame then return end
+	local power = powerName and frame[powerName]
+	if not power then return end
+
+	-- check for Additional Power to hook scripts on
+	local useBonusPower, bonus
+	if powerName == 'ClassPower' then
+		local bonusName = (frame.AdditionalPower and 'AdditionalPower') or (frame.Stagger and 'Stagger') or (frame.Runes and 'Runes')
+		bonus = bonusName and frame[bonusName]
+
+		if bonus then
+			if not fromScript then
+				UF:FrameGlow_HookPowerBar(frame, bonus, bonusName, glow, offset)
+			end
+
+			useBonusPower = bonus:IsVisible()
+		end
+	end
+
+	if not fromScript then
+		UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
+	end
+
+	if useBonusPower then
+		power = bonus
+	end
+
 	if (power and power.backdrop and power:IsVisible()) and ((power == frame.AlternativePower) or not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR)) then
-		glow:Point('TOPLEFT', power.backdrop, -pixelOffset, pixelOffset)
-		glow:Point('TOPRIGHT', power.backdrop, pixelOffset, pixelOffset)
-	elseif health then
-		glow:Point('TOPLEFT', health, -pixelOffset, pixelOffset)
-		glow:Point('TOPRIGHT', health, pixelOffset, pixelOffset)
+		glow:Point('TOPLEFT', power.backdrop, -offset, offset)
+		glow:Point('TOPRIGHT', power.backdrop, offset, offset)
+	elseif frame.Health.backdrop then
+		glow:Point('TOPLEFT', frame.Health.backdrop, -offset, offset)
+		glow:Point('TOPRIGHT', frame.Health.backdrop, offset, offset)
 	end
 end
 
-function UF:FrameGlow_PositionElementGlow(frame, element, elementName, healthBackdrop, mainGlow, pixelOffset)
-	UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset)
-	if not mainGlow[elementName..'Hooked'] then mainGlow[elementName..'Hooked'] = true
-		element:HookScript('OnShow', function() UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset) end)
-		element:HookScript('OnHide', function() UF:FrameGlow_ToggleGlowPosition(frame, element, healthBackdrop, mainGlow, pixelOffset) end)
+function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
+	if not glow[powerName..'Hooked'] then
+		glow[powerName..'Hooked'] = true
+		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
+		power:HookScript('OnShow', func)
+		power:HookScript('OnHide', func)
 	end
 end
 
@@ -49,43 +77,43 @@ end
 function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	if not (frame and frame.VARIABLES_SET) then return end
 
-	local InfoPanel			= frame.InfoPanel
-	local PVPSpecIcon		= frame.PVPSpecIcon
-	local AltPowerBar		= frame.AlternativePower
-	local powerBackdrop		= frame.Power and frame.Power.backdrop
-	local healthBackdrop	= frame.Health and frame.Health.backdrop
-	local classPower		= frame.ClassPower or frame.AdditionalPower or frame.Stagger or frame.Runes
-	local pixelOffset		= (E.PixelMode and E.mult*3) or E.mult*4
+	local infoPanel = frame.InfoPanel
+	local classPower = frame.ClassPower
+	local altPower = frame.AlternativePower
+	local pvpSpec = frame.PVPSpecIcon
+	local power = frame.Power and frame.Power.backdrop
+	local health = frame.Health and frame.Health.backdrop
+	local offset = (E.PixelMode and E.mult*3) or E.mult*4
 
 	mainGlow:ClearAllPoints()
-	mainGlow:Point('TOPLEFT', healthBackdrop, -pixelOffset, pixelOffset)
-	mainGlow:Point('TOPRIGHT', healthBackdrop, pixelOffset, pixelOffset)
+	mainGlow:Point('TOPLEFT', health, -offset, offset)
+	mainGlow:Point('TOPRIGHT', health, offset, offset)
 
 	if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
-		mainGlow:Point('BOTTOMLEFT', healthBackdrop, -pixelOffset, -pixelOffset)
-		mainGlow:Point('BOTTOMRIGHT', healthBackdrop, pixelOffset, -pixelOffset)
+		mainGlow:Point('BOTTOMLEFT', health, -offset, -offset)
+		mainGlow:Point('BOTTOMRIGHT', health, offset, -offset)
 	else
 		--offset is set because its one pixel off for some reason
-		mainGlow:Point('BOTTOMLEFT', frame, -pixelOffset, -(E.PixelMode and pixelOffset or pixelOffset-1))
-		mainGlow:Point('BOTTOMRIGHT', frame, pixelOffset, -(E.PixelMode and pixelOffset or pixelOffset-1))
+		mainGlow:Point('BOTTOMLEFT', frame, -offset, -(E.PixelMode and offset or offset-1))
+		mainGlow:Point('BOTTOMRIGHT', frame, offset, -(E.PixelMode and offset or offset-1))
 	end
 
 	if powerGlow then
 		powerGlow:ClearAllPoints()
-		powerGlow:Point('TOPLEFT', powerBackdrop, -pixelOffset, pixelOffset)
-		powerGlow:Point('TOPRIGHT', powerBackdrop, pixelOffset, pixelOffset)
-		powerGlow:Point('BOTTOMLEFT', powerBackdrop, -pixelOffset, -pixelOffset)
-		powerGlow:Point('BOTTOMRIGHT', powerBackdrop, pixelOffset, -pixelOffset)
+		powerGlow:Point('TOPLEFT', power, -offset, offset)
+		powerGlow:Point('TOPRIGHT', power, offset, offset)
+		powerGlow:Point('BOTTOMLEFT', power, -offset, -offset)
+		powerGlow:Point('BOTTOMRIGHT', power, offset, -offset)
 	end
 
 	if classPower then
-		UF:FrameGlow_PositionElementGlow(frame, classPower, 'classPower', healthBackdrop, mainGlow, pixelOffset)
-	elseif AltPowerBar and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
-		UF:FrameGlow_PositionElementGlow(frame, AltPowerBar, 'altPower', healthBackdrop, mainGlow, pixelOffset)
-	elseif PVPSpecIcon and PVPSpecIcon:IsShown() then
-		local z = (InfoPanel and InfoPanel:IsShown() and InfoPanel.backdrop)
-		mainGlow:Point('TOPLEFT', PVPSpecIcon.bg, -pixelOffset, pixelOffset)
-		mainGlow:Point('BOTTOMLEFT', z or PVPSpecIcon.bg, -pixelOffset, -pixelOffset)
+		UF:FrameGlow_ClassGlowPosition(frame, 'ClassPower', mainGlow, offset)
+	elseif altPower and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
+		UF:FrameGlow_ClassGlowPosition(frame, 'AlternativePower', mainGlow, offset)
+	elseif pvpSpec and pvpSpec:IsShown() then
+		local shownPanel = (infoPanel and infoPanel:IsShown() and infoPanel.backdrop)
+		mainGlow:Point('TOPLEFT', pvpSpec.bg, -offset, offset)
+		mainGlow:Point('BOTTOMLEFT', shownPanel or pvpSpec.bg, -offset, -offset)
 	end
 end
 
