@@ -19,6 +19,45 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
+function UF:FrameGlow_MouseOnUnit(frame)
+	if frame and frame:IsVisible() and UnitExists('mouseover') then
+		local unit = frame.unit or (frame.isForced and 'player')
+		return unit and UnitIsUnit('mouseover', unit)
+	end
+
+	return false
+end
+
+function UF:FrameGlow_ElementHook(frame, glow, which)
+	if not (frame and frame.__elements) then return end
+	tinsert(frame.__elements, function()
+		local unit = frame.unit or (frame.isForced and 'player')
+		if unit then
+			UF:FrameGlow_SetGlowColor(glow, unit, which)
+		end
+
+		if which == 'mouseoverGlow' then
+			UF:FrameGlow_PositionHighlight(frame)
+			UF:FrameGlow_CheckMouseover(frame)
+		else
+			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
+		end
+
+		if which == 'targetGlow' then
+			UF:FrameGlow_CheckTarget(frame)
+		end
+	end)
+end
+
+function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
+	if (frame and power and powerName and glow and offset) and not glow[powerName..'Hooked'] then
+		glow[powerName..'Hooked'] = true
+		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
+		power:HookScript('OnShow', func)
+		power:HookScript('OnHide', func)
+	end
+end
+
 function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScript)
 	if not (frame and glow and offset) then return end
 
@@ -55,24 +94,6 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 		glow:Point('TOPLEFT', frame.Health.backdrop, -offset, offset)
 		glow:Point('TOPRIGHT', frame.Health.backdrop, offset, offset)
 	end
-end
-
-function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
-	if (frame and power and powerName and glow and offset) and not glow[powerName..'Hooked'] then
-		glow[powerName..'Hooked'] = true
-		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
-		power:HookScript('OnShow', func)
-		power:HookScript('OnHide', func)
-	end
-end
-
-function UF:FrameGlow_MouseOnUnit(frame)
-	if frame and frame:IsVisible() and UnitExists('mouseover') then
-		local unit = frame.unit or (frame.isForced and 'player')
-		return unit and UnitIsUnit('mouseover', unit)
-	end
-
-	return false
 end
 
 function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
@@ -196,27 +217,6 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 			glow.powerGlow:SetBackdropBorderColor(r, g, b, a)
 		end
 	end
-end
-
-function UF:FrameGlow_ElementHook(frame, glow, which)
-	if not (frame and frame.__elements) then return end
-	tinsert(frame.__elements, function()
-		local unit = frame.unit or (frame.isForced and 'player')
-		if unit then
-			UF:FrameGlow_SetGlowColor(glow, unit, which)
-		end
-
-		if which == 'mouseoverGlow' then
-			UF:FrameGlow_PositionHighlight(frame)
-			UF:FrameGlow_CheckMouseover(frame)
-		else
-			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
-		end
-
-		if which == 'targetGlow' then
-			UF:FrameGlow_CheckTarget(frame)
-		end
-	end)
 end
 
 function UF:FrameGlow_HideGlow(glow)
