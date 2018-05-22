@@ -276,8 +276,12 @@ function UF:FrameGlow_CheckTarget(frame, setColor)
 		if setColor then
 			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
 		end
-		if frame.TargetGlow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
-			frame.TargetGlow.powerGlow:Show()
+		if frame.TargetGlow.powerGlow then
+			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
+				frame.TargetGlow.powerGlow:Show()
+			elseif frame.TargetGlow.powerGlow:IsShown() then
+				frame.TargetGlow.powerGlow:Hide()
+			end
 		end
 		frame.TargetGlow:Show()
 	else
@@ -303,8 +307,12 @@ function UF:FrameGlow_CheckMouseover(frame)
 			frame.Highlight:Show()
 		end
 		if (shouldShow == 'both' or shouldShow == 'frame') then
-			if frame.MouseGlow.powerGlow and (frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR) then
-				frame.MouseGlow.powerGlow:Show()
+			if frame.MouseGlow.powerGlow then
+				if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
+					frame.MouseGlow.powerGlow:Show()
+				elseif frame.MouseGlow.powerGlow:IsShown() then
+					frame.MouseGlow.powerGlow:Hide()
+				end
 			end
 			frame.MouseGlow:Show()
 
