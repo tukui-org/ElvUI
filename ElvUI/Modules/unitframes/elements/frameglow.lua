@@ -316,7 +316,7 @@ function UF:FrameGlow_CheckMouseover(frame)
 			end
 			frame.MouseGlow:Show()
 
-			if (shouldShow == 'frame') and frame.Highlight.texture and not frame.Highlight.texture:IsShown() then
+			if (shouldShow == 'frame') and frame.Highlight.texture and frame.Highlight.texture:IsShown() then
 				frame.Highlight.texture:Hide()
 			end
 		end
