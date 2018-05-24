@@ -102,7 +102,7 @@ function E:CreateCooldownTimer(parent)
 		parent.FontOverride(parent)
 	end
 
-	-- used by nameplate module to override the cooldown color by its setting (if enabled)
+	-- used by nameplate and bag module to override the cooldown color by its setting (if enabled)
 	if parent.ColorOverride then
 		timer.ColorOverride = parent.ColorOverride
 	end
@@ -160,6 +160,7 @@ function E:UpdateCooldownSettings(module)
 
 	-- okay update the other 3 override settings if it was one of the core file calls
 	if module and (module == 'all') then
+		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('auras')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('unitframe')
