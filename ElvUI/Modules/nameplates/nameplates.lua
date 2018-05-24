@@ -667,7 +667,12 @@ local function HidePlayerNamePlate()
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
+	local healthShown
 	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
+		healthShown = true
+	end
+
+	if healthShown then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
@@ -680,6 +685,20 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		else
 			frame.PowerBar:Hide()
 		end
+	end
+
+	mod:UpdateElement_RaidIcon(frame)
+	mod:UpdateElement_HealerIcon(frame)
+	mod:UpdateElement_Name(frame)
+	mod:UpdateElement_NPCTitle(frame)
+	mod:UpdateElement_Level(frame)
+	mod:UpdateElement_Elite(frame)
+	mod:UpdateElement_Detection(frame)
+	mod:UpdateElement_Highlight(frame)
+	mod:UpdateElement_Portrait(frame)
+
+	if healthShown then
+		mod:UpdateElement_Glow(frame)
 	else
 		-- make sure we hide the arrows and/or glow after disabling the healthbar
 		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
@@ -688,17 +707,6 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
 		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
 	end
-
-	mod:UpdateElement_RaidIcon(frame)
-	mod:UpdateElement_HealerIcon(frame)
-	mod:UpdateElement_Name(frame)
-	mod:UpdateElement_NPCTitle(frame)
-	mod:UpdateElement_Glow(frame)
-	mod:UpdateElement_Level(frame)
-	mod:UpdateElement_Elite(frame)
-	mod:UpdateElement_Detection(frame)
-	mod:UpdateElement_Highlight(frame)
-	mod:UpdateElement_Portrait(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
