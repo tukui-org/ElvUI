@@ -137,14 +137,6 @@ local namePlateDriverEvents = {
 	"UNIT_FACTION"
 }
 
-function mod:ToggleNamePlateFriendlySize(horizontalScale, zeroBasedScale, lockedInstance)
-	if lockedInstance then
-		C_NamePlate_SetNamePlateFriendlySize(NamePlateDriverFrame.baseNamePlateWidth * horizontalScale, NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale));
-	else
-		C_NamePlate_SetNamePlateFriendlySize(self.db.clickableWidth * horizontalScale, self.db.clickableHeight * Lerp(1.0, 1.25, zeroBasedScale))
-	end
-end
-
 function mod:ToggleNamePlateDriverEvents(lockedInstance)
 	for _, event in pairs(namePlateDriverEvents) do
 		if lockedInstance then
@@ -166,16 +158,10 @@ function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
+	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
-		local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 		self:ToggleNamePlateDriverEvents(lockedInstance)
-
-		-- workaround for #206
-		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
-		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
-		local zeroBasedScale = namePlateVerticalScale - 1.0
-		self:ToggleNamePlateFriendlySize(horizontalScale, zeroBasedScale, lockedInstance)
 	end
 
 	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
@@ -197,6 +183,9 @@ function mod:PLAYER_ENTERING_WORLD()
 	if self.db.units.PLAYER.useStaticPosition then
 		mod:UpdateVisibility()
 	end
+
+	-- workaround for #206
+	self:SetBaseNamePlateSize(lockedInstance)
 end
 
 function mod:ClassBar_Update()
@@ -634,7 +623,7 @@ function mod:ForEachPlate(functionToRun, ...)
 	end
 end
 
-function mod:SetBaseNamePlateSize()
+function mod:SetBaseNamePlateSize(lockedInstance)
 	local baseWidth = self.db.clickableWidth
 	local baseHeight = self.db.clickableHeight
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
@@ -644,9 +633,14 @@ function mod:SetBaseNamePlateSize()
 	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
 	local zeroBasedScale = namePlateVerticalScale - 1.0
 	local clampedZeroBasedScale = Saturate(zeroBasedScale)
-	C_NamePlate_SetNamePlateFriendlySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
+
 	C_NamePlate_SetNamePlateEnemySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
 	C_NamePlate_SetNamePlateSelfSize(baseWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale), baseHeight)
+
+	-- workaround for #206
+	local friendlyWidth = (lockedInstance and NamePlateDriverFrame.baseNamePlateWidth) or baseWidth
+	local friendlyHeight = (lockedInstance and NamePlateDriverFrame.baseNamePlateHeight) or baseHeight
+	C_NamePlate_SetNamePlateFriendlySize(friendlyWidth * horizontalScale, friendlyHeight * Lerp(1.0, 1.25, zeroBasedScale));
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
