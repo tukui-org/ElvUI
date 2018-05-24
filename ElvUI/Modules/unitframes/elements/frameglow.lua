@@ -105,7 +105,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local pvpSpec = frame.PVPSpecIcon
 	local power = frame.Power and frame.Power.backdrop
 	local health = frame.Health and frame.Health.backdrop
-	local offset = (E.PixelMode and E.mult*3) or E.mult*4
+	local offset = (E.PixelMode and E.mult*3) or E.mult*4 -- edgeSize is 3
 
 	mainGlow:ClearAllPoints()
 	mainGlow:Point('TOPLEFT', health, -offset, offset)

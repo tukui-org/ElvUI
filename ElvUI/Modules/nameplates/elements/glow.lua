@@ -51,7 +51,7 @@ function mod:UpdatePosition_Glow(frame, shouldShow, CastBar)
 	local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
 
 	if frame.Glow and (self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7") then -- original glow
-		local offset = (E.PixelMode and E.mult*4) or E.mult*6
+		local offset = (E.PixelMode and E.mult*6) or E.mult*8 -- edgeSize is 5 (not attached to the backdrop needs +1 for pixel mode or +3 for non pixel mode)
 		frame.Glow:SetOutside((iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, offset, offset, (iconPosition == "RIGHT" and castBar.Icon) or bottomBar)
 
 		if shouldShow then
@@ -122,14 +122,9 @@ function mod:UpdateElement_Glow(frame)
 end
 
 function mod:ConfigureElement_Glow(frame)
-	local offset = (E.PixelMode and E.mult*4) or E.mult*6
 	frame.Glow:SetFrameLevel(0)
 	frame.Glow:SetFrameStrata("BACKGROUND")
-	frame.Glow:SetOutside(frame.HealthBar, offset, offset, frame.PowerBar:IsShown() and frame.PowerBar)
-	frame.Glow:SetBackdrop( {
-		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
-		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
-	})
+	frame.Glow:SetBackdrop({edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 end
 
 function mod:ConstructElement_Glow(frame)
