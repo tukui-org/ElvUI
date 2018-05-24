@@ -137,20 +137,28 @@ local namePlateDriverEvents = {
 	"UNIT_FACTION"
 }
 
-function mod:ToggleNamePlateDriverEvents(instanceType)
+function mod:ToggleNamePlateFriendlySize(horizontalScale, zeroBasedScale, lockedInstance)
+	if lockedInstance then
+		C_NamePlate_SetNamePlateFriendlySize(NamePlateDriverFrame.baseNamePlateWidth * horizontalScale, NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale));
+	else
+		C_NamePlate_SetNamePlateFriendlySize(self.db.clickableWidth * horizontalScale, self.db.clickableHeight * Lerp(1.0, 1.25, zeroBasedScale))
+	end
+end
+
+function mod:ToggleNamePlateDriverEvents(lockedInstance)
 	for _, event in pairs(namePlateDriverEvents) do
-		if instanceType == "none" then
-			NamePlateDriverFrame:UnregisterEvent(event)
-		else
+		if lockedInstance then
 			NamePlateDriverFrame:RegisterEvent(event)
+		else
+			NamePlateDriverFrame:UnregisterEvent(event)
 		end
 	end
 
-	if instanceType == "none" then
-		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
-		SetCVar("nameplateShowDebuffsOnFriendly", true)
-	else
+	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
+	else
+		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil;
+		SetCVar("nameplateShowDebuffsOnFriendly", true)
 	end
 end
 
@@ -160,13 +168,20 @@ function mod:PLAYER_ENTERING_WORLD()
 	local inInstance, instanceType = IsInInstance()
 
 	if not self.db.hideBlizzardPlates then
-		self:ToggleNamePlateDriverEvents(instanceType)
+		local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+		self:ToggleNamePlateDriverEvents(lockedInstance)
+
+		-- workaround for #206
+		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+		local zeroBasedScale = namePlateVerticalScale - 1.0
+		self:ToggleNamePlateFriendlySize(horizontalScale, zeroBasedScale, lockedInstance)
 	end
 
-	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
+	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
-	elseif inInstance and instanceType == 'arena' and self.db.units.ENEMY_PLAYER.markHealers then
+	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
 		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
 		self:CheckArenaHealers()
