@@ -3292,11 +3292,6 @@ E.Options.args.nameplate = {
 							desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
 							min = -1, max = 20, step = 1,
 							disabled = function() return not E.db.nameplates.cooldown.override end,
-							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
-							set = function(info, value)
-								E.db.nameplates.cooldown[ info[#info] ] = value;
-								E:UpdateCooldownSettings('nameplates');
-							end,
 						},
 						expiringColor = {
 							type = 'color',
