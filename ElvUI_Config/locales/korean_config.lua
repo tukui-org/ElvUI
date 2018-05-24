@@ -134,6 +134,7 @@ L["Color when the text is in the hours format."] = "버튼에 배치된 행동�
 L["Color when the text is in the minutes format."] = "버튼에 배치된 행동의 재사용 대기시간이 분 단위일 경우 글자색"
 L["Color when the text is in the seconds format."] = "버튼에 배치된 행동의 재사용 대기시간이 초 단위일 경우 글자색"
 L["Cooldown Text"] = "재사용 대기시간 설정"
+L["Override Global Cooldown Text"] = true
 L["Darken Inactive"] = "킨 태세만 아이콘 표시"
 L["Days"] = "일 단위 색상"
 L["Desaturate On Cooldown"] = "재사용 대기중일 때 흑백처리"

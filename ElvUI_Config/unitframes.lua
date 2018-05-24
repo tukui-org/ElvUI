@@ -2425,7 +2425,7 @@ E.Options.args.unitframe = {
 						header = {
 							order = 1,
 							type = "header",
-							name = L["Cooldown Text"],
+							name = L["Override Global Cooldown Text"],
 						},
 						override = {
 							type = "toggle",

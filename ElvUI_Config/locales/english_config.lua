@@ -98,6 +98,7 @@ L["Color when the text is in the hours format."] = true
 L["Color when the text is in the minutes format."] = true
 L["Color when the text is in the seconds format."] = true
 L["Cooldown Text"] = true
+L["Override Global Cooldown Text"] = true
 L["Darken Inactive"] = true
 L["Days"] = true
 L["Desaturate On Cooldown"] = true

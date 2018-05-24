@@ -98,6 +98,7 @@ L["Color when the text is in the hours format."] = "以小時顯示的文字顏�
 L["Color when the text is in the minutes format."] = "以分顯示的文字顏色."
 L["Color when the text is in the seconds format."] = "以秒顯示的文字顏色."
 L["Cooldown Text"] = "冷卻文字"
+L["Override Global Cooldown Text"] = true
 L["Darken Inactive"] = "非啟用者變暗"
 L["Days"] = "天"
 L["Desaturate On Cooldown"] = true
