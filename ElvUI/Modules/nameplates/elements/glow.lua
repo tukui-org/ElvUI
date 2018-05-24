@@ -45,11 +45,14 @@ function mod:UpdatePoisiton_Arrow(frame, shouldShow)
 	end
 end
 
-function mod:UpdatePosition_Glow(frame, shouldShow, bar)
-	local bottomBar = (bar and bar:IsShown() and bar) or (frame.PowerBar and frame.PowerBar:IsShown() and frame.PowerBar)
+function mod:UpdatePosition_Glow(frame, shouldShow, CastBar)
+	local castBar = (CastBar and CastBar:IsShown()) and CastBar
+	local bottomBar = castBar or (frame.PowerBar and frame.PowerBar:IsShown() and frame.PowerBar)
+	local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
+
 	if frame.Glow and (self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7") then -- original glow
 		local offset = (E.PixelMode and E.mult*4) or E.mult*6
-		frame.Glow:SetOutside(frame.HealthBar, offset, offset, bottomBar)
+		frame.Glow:SetOutside((iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, offset, offset, (iconPosition == "RIGHT" and castBar.Icon) or bottomBar)
 
 		if shouldShow then
 			frame.Glow:Show()
@@ -67,8 +70,8 @@ function mod:UpdatePosition_Glow(frame, shouldShow, bar)
 		end
 
 		local size = (E.Border+14+(bottomBar and 3 or 0))*scale;
-		frame.Glow2:Point("TOPLEFT", frame.HealthBar, "TOPLEFT", -(size*2), size)
-		frame.Glow2:Point("BOTTOMRIGHT", bottomBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
+		frame.Glow2:Point("TOPLEFT", (iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, "TOPLEFT", -(size*2), size)
+		frame.Glow2:Point("BOTTOMRIGHT", (iconPosition == "RIGHT" and castBar.Icon) or bottomBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
 
 		if shouldShow then
 			frame.Glow2:Show()
