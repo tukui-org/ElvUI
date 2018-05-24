@@ -255,10 +255,7 @@ E.Options.args.bags = {
 					min = -1, max = 20, step = 1,
 					disabled = function() return not E.db.bags.cooldown.override end,
 					get = function(info) return E.db.bags.cooldown[ info[#info] ] end,
-					set = function(info, value)
-						E.db.bags.cooldown[ info[#info] ] = value;
-						E:UpdateCooldownSettings('bags');
-					end,
+					set = function(info, value) E.db.bags.cooldown[ info[#info] ] = value end,
 				},
 				expiringColor = {
 					type = 'color',

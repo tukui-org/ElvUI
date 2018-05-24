@@ -3293,10 +3293,7 @@ E.Options.args.nameplate = {
 							min = -1, max = 20, step = 1,
 							disabled = function() return not E.db.nameplates.cooldown.override end,
 							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
-							set = function(info, value)
-								E.db.nameplates.cooldown[ info[#info] ] = value;
-								E:UpdateCooldownSettings('nameplates');
-							end,
+							set = function(info, value) E.db.nameplates.cooldown[ info[#info] ] = value end,
 						},
 						expiringColor = {
 							type = 'color',

@@ -2443,10 +2443,7 @@ E.Options.args.unitframe = {
 							min = -1, max = 20, step = 1,
 							disabled = function() return not E.db.unitframe.cooldown.override end,
 							get = function(info) return E.db.unitframe.cooldown[ info[#info] ] end,
-							set = function(info, value)
-								E.db.unitframe.cooldown[ info[#info] ] = value;
-								E:UpdateCooldownSettings('unitframe');
-							end,
+							set = function(info, value) E.db.unitframe.cooldown[ info[#info] ] = value end,
 						},
 						expiringColor = {
 							type = 'color',
