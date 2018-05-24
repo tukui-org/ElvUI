@@ -680,7 +680,6 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		else
 			frame.PowerBar:Hide()
 		end
-		mod:UpdateElement_Glow(frame) -- this needs to run after we show the powerbar or not to place the new glow2 properly
 	else
 		-- make sure we hide the arrows and/or glow after disabling the healthbar
 		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
@@ -689,10 +688,12 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
 		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
 	end
+
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
 	mod:UpdateElement_NPCTitle(frame)
+	mod:UpdateElement_Glow(frame)
 	mod:UpdateElement_Level(frame)
 	mod:UpdateElement_Elite(frame)
 	mod:UpdateElement_Detection(frame)
