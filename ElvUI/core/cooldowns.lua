@@ -158,7 +158,7 @@ function E:UpdateCooldownSettings(module)
 
 	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4] = E:GetCooldownColors(cooldownDB)
 
-	-- okay update the other 3 override settings if it was one of the core file calls
+	-- okay update the other override settings if it was one of the core file calls
 	if module and (module == 'all') then
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('auras')
