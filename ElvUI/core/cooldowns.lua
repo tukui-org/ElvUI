@@ -137,6 +137,7 @@ function E:RegisterCooldown(cooldown)
 end
 
 function E:GetCooldownColors(db)
+	if not db then db = self.db.cooldown end -- just incase someone calls this without a first arg use the global
 	local c4 = E:RGBToHex(db.expiringColor.r, db.expiringColor.g, db.expiringColor.b) -- color for timers that are soon to expire
 	local c3 = E:RGBToHex(db.secondsColor.r, db.secondsColor.g, db.secondsColor.b) -- color for timers that have seconds remaining
 	local c2 = E:RGBToHex(db.minutesColor.r, db.minutesColor.g, db.minutesColor.b) -- color for timers that have minutes remaining
