@@ -447,7 +447,7 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
-	if E.UnitFrames and (E.db.unitframe.cooldown.override and E.TimeColors['unitframe']) then
+	if E.db.unitframe.cooldown.override and E.TimeColors['unitframe'] then
 		timeColors, timeThreshold = E.TimeColors['unitframe'], E.db.unitframe.cooldown.threshold
 	end
 	if not timeThreshold then

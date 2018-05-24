@@ -83,7 +83,7 @@ function A:UpdateTime(elapsed)
 	end
 
 	local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
-	if E.UnitFrames and (E.db.auras.cooldown.override and E.TimeColors['auras']) then
+	if E.db.auras.cooldown.override and E.TimeColors['auras'] then
 		timeColors, timeThreshold = E.TimeColors['auras'], E.db.auras.cooldown.threshold
 	end
 	if not timeThreshold then
