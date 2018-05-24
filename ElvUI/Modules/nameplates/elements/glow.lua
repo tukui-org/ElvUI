@@ -68,12 +68,12 @@ function mod:UpdateElement_Glow(frame)
 			frame.Glow2:Point("BOTTOMRIGHT", powerBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
-			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, E.Border*2)
+			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, -E.Border)
 			frame.TopArrow:Show()
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
-			frame.RightArrow:Point("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E.Border*2, 0)
-			frame.LeftArrow:Point("LEFT", frame.HealthBar, "RIGHT", -(E.Border*2), 0)
+			frame.RightArrow:Point("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E.Border, 0)
+			frame.LeftArrow:Point("LEFT", frame.HealthBar, "RIGHT", -E.Border, 0)
 			frame.RightArrow:Show()
 			frame.LeftArrow:Show()
 		end
