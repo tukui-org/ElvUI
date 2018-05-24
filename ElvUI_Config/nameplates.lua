@@ -2733,12 +2733,12 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "fontGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		classBarShortcut = {
+		cooldownShortcut = {
 			order = 7,
 			type = "execute",
-			name = L["Classbar"],
+			name = L["Cooldown Text"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cooldownGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
@@ -2746,8 +2746,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		threatShortcut = {
+		classBarShortcut = {
 			order = 9,
+			type = "execute",
+			name = L["Classbar"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		threatShortcut = {
+			order = 10,
 			type = "execute",
 			name = L["Threat"],
 			buttonElvUI = true,
@@ -2755,19 +2763,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		castBarShortcut = {
-			order = 10,
+			order = 11,
 			type = "execute",
 			name = L["Cast Bar"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "castGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		reactionShortcut = {
-			order = 11,
-			type = "execute",
-			name = L["Reaction Colors"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
@@ -2775,8 +2775,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		healPredictionShortcut = {
+		reactionShortcut = {
 			order = 13,
+			type = "execute",
+			name = L["Reaction Colors"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		healPredictionShortcut = {
+			order = 14,
 			type = "execute",
 			name = L["Heal Prediction"],
 			buttonElvUI = true,
@@ -2784,19 +2792,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		playerShortcut = {
-			order = 14,
+			order = 15,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		healerShortcut = {
-			order = 15,
-			type = "execute",
-			name = L["Healer Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -2804,8 +2804,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		friendlyPlayerShortcut = {
+		healerShortcut = {
 			order = 17,
+			type = "execute",
+			name = L["Healer Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyPlayerShortcut = {
+			order = 18,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
@@ -2813,19 +2821,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		enemyPlayerShortcut = {
-			order = 18,
+			order = 19,
 			type = "execute",
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		friendlyNPCShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Friendly NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
@@ -2833,8 +2833,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		enemyNPCShortcut = {
+		friendlyNPCShortcut = {
 			order = 21,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		enemyNPCShortcut = {
+			order = 22,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
@@ -2842,7 +2850,7 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		filtersShortcut = {
-			order = 22,
+			order = 23,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
@@ -2850,7 +2858,7 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
-			order = 23,
+			order = 24,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -3249,8 +3257,86 @@ E.Options.args.nameplate = {
 						},
 					},
 				},
-				classBarGroup = {
+				cooldownGroup = {
+					type = "group",
 					order = 125,
+					name = L["Cooldown Text"],
+					get = function(info)
+						local t = E.db.nameplates.cooldown[ info[#info] ]
+						local d = P.nameplates.cooldown[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b;
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.nameplates.cooldown[ info[#info] ]
+						t.r, t.g, t.b = r, g, b;
+						E:UpdateCooldownSettings('nameplates');
+					end,
+					args = {
+						header = {
+							order = 1,
+							type = "header",
+							name = L["Cooldown Text"],
+						},
+						override = {
+							type = "toggle",
+							order = 2,
+							name = L["Use Override"],
+							desc = L["This will override the global cooldown settings."],
+							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
+							set = function(info, value) E.db.nameplates.cooldown[ info[#info] ] = value end,
+						},
+						threshold = {
+							type = 'range',
+							order = 3,
+							name = L["Low Threshold"],
+							desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
+							min = -1, max = 20, step = 1,
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
+							set = function(info, value)
+								E.db.nameplates.cooldown[ info[#info] ] = value;
+								E:UpdateCooldownSettings('nameplates');
+							end,
+						},
+						expiringColor = {
+							type = 'color',
+							order = 4,
+							name = L["Expiring"],
+							desc = L["Color when the text is about to expire"],
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+						},
+						secondsColor = {
+							type = 'color',
+							order = 5,
+							name = L["Seconds"],
+							desc = L["Color when the text is in the seconds format."],
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+						},
+						minutesColor = {
+							type = 'color',
+							order = 6,
+							name = L["Minutes"],
+							desc = L["Color when the text is in the minutes format."],
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+						},
+						hoursColor = {
+							type = 'color',
+							order = 7,
+							name = L["Hours"],
+							desc = L["Color when the text is in the hours format."],
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+						},
+						daysColor = {
+							type = 'color',
+							order = 8,
+							name = L["Days"],
+							desc = L["Color when the text is in the days format."],
+							disabled = function() return not E.db.nameplates.cooldown.override end,
+						},
+					},
+				},
+				classBarGroup = {
+					order = 130,
 					type = "group",
 					name = L["Classbar"],
 					get = function(info) return E.db.nameplates.classbar[ info[#info] ] end,

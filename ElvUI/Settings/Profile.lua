@@ -243,6 +243,15 @@ P["nameplates"] = {
 	["glowColor"] = { r = 77/255, g = 179/255, b = 255/255, a = 1 },
 	["nameColoredGlow"] = false,
 	["alwaysShowTargetHealth"] = true,
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",
@@ -735,6 +744,15 @@ P['auras'] = {
 		["countFontsize"] = 10,
 		["durationFontSize"] = 10,
 	},
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 }
 
 --Chat
@@ -914,6 +932,15 @@ P['unitframe'] = {
 	['targetOnMouseDown'] = false,
 	["auraBlacklistModifier"] = "SHIFT",
 	["thinBorders"] = false,
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 	['colors'] = {
 		["borderColor"] = {r = 0, g = 0, b = 0},
 		['healthclass'] = false,

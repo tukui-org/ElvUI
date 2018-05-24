@@ -499,7 +499,7 @@ E.Options.args.general = {
 			set = function(info, r, g, b)
 				local t = E.db.cooldown[ info[#info] ]
 				t.r, t.g, t.b = r, g, b
-				E:UpdateCooldownSettings();
+				E:UpdateCooldownSettings('global');
 			end,
 			args = {
 				header = {
@@ -524,7 +524,7 @@ E.Options.args.general = {
 					get = function(info) return E.db.cooldown[ info[#info] ] end,
 					set = function(info, value)
 						E.db.cooldown[ info[#info] ] = value
-						E:UpdateCooldownSettings();
+						E:UpdateCooldownSettings('global');
 					end,
 				},
 				expiringColor = {
