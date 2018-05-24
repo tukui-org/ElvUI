@@ -231,6 +231,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
 	aura.cooldown.FontOverride = cooldownFontOverride
+	aura.cooldown.ColorOverride = 'nameplates'
 	E:RegisterCooldown(aura.cooldown)
 
 	aura.count = aura:CreateFontString(nil, "OVERLAY")

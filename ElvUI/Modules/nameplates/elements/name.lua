@@ -52,7 +52,11 @@ function mod:UpdateElement_Name(frame, triggered)
 		end
 	end
 
-	frame.Name.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
+	if self.db.nameColoredGlow then
+		frame.Name.NameOnlyGlow:SetVertexColor(r - 0.1, g - 0.1, b - 0.1, 1)
+	else
+		frame.Name.NameOnlyGlow:SetVertexColor(self.db.glowColor.r, self.db.glowColor.g, self.db.glowColor.b, self.db.glowColor.a)
+	end
 end
 
 function mod:ConfigureElement_Name(frame)

@@ -325,6 +325,8 @@ function E:StringTitle(str)
 	return str:gsub("(.)", upper, 1)
 end
 
+E.TimeThreshold = 3
+
 -- aura time colors for days, hours, minutes, seconds, fadetimer
 E.TimeColors = {
 	[0] = '|cffeeeeee',

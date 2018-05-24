@@ -667,7 +667,9 @@ local function HidePlayerNamePlate()
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
-	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
+	local healthShown = (frame.UnitType and self.db.units[frame.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)
+
+	if healthShown then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
@@ -680,15 +682,8 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		else
 			frame.PowerBar:Hide()
 		end
-		mod:UpdateElement_Glow(frame) -- this needs to run after we show the powerbar or not to place the new glow2 properly
-	else
-		-- make sure we hide the arrows and/or glow after disabling the healthbar
-		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
-		if frame.LeftArrow and frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
-		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
-		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
-		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
 	end
+
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
@@ -698,6 +693,17 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	mod:UpdateElement_Detection(frame)
 	mod:UpdateElement_Highlight(frame)
 	mod:UpdateElement_Portrait(frame)
+
+	if healthShown then
+		mod:UpdateElement_Glow(frame)
+	else
+		-- make sure we hide the arrows and/or glow after disabling the healthbar
+		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
+		if frame.LeftArrow and frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
+		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
+		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
+		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
+	end
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
@@ -1112,6 +1118,12 @@ function mod:UpdateFonts(plate)
 	end
 	if plate.NPCTitle then
 		plate.NPCTitle:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+
+	--update glow incase name font changes
+	local healthShown = (plate.UnitType and self.db.units[plate.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (plate.isTarget and self.db.alwaysShowTargetHealth)
+	if healthShown then
+		self:UpdateElement_Glow(plate)
 	end
 end
 

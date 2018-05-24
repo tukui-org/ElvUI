@@ -984,7 +984,7 @@ function E:UpdateAll(ignoreInstall)
 	self:SetMoversPositions()
 
 	self:UpdateMedia()
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	if self.RefreshGUI then self:RefreshGUI() end --Refresh Config
 
 	local UF = self:GetModule('UnitFrames')
@@ -1589,7 +1589,7 @@ function E:Initialize(loginFrame)
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules
 	self:LoadMovers(); --Load Movers
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	self.initialized = true
 
 	if self.private.install_complete == nil then

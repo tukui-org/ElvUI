@@ -18,6 +18,7 @@ Fixed issue which prevented a dropdown from being shown in the world map.
 Fixed an error regarding LeaveVehicleButton in battlegrounds.  
 Fixed a typo in datatexts which could prevent LDB data texts from loading when entering world.  
 Fixed issue which prevented the "new item" glow from hiding on items in bag 0 when closing bags.  
+Fixed various issues with the Targeted Glows on NamePlates.  
 
 
 **Misc. Changes:**  
@@ -29,6 +30,9 @@ Unitframe tags will now return nil instead of an empty string when there is noth
 Made it more clear that the "vendor greys" button also deletes items when not at vendor.  
 The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)  
 Resetting a UnitFrame to default will now show a popup confirmation upon clicking the reset button.  
+Nameplate NPC Title Text will now show the glow color on mouseover when it's the only thing shown on the nameplate (health and name disabled with show npc titles turned on).  
+Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
+Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`. These now when not using Cooldown Override will use the Cooldown Text settings inside of General config.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**

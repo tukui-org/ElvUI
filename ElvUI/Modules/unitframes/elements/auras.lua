@@ -446,13 +446,21 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
+	local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
+	if E.db.unitframe.cooldown.override and E.TimeColors['unitframe'] then
+		timeColors, timeThreshold = E.TimeColors['unitframe'], E.db.unitframe.cooldown.threshold
+	end
+	if not timeThreshold then
+		timeThreshold = E.TimeThreshold
+	end
+
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, 4)
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, timeThreshold)
 	if self.text:GetFont() then
-		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
 		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
-		self.text:SetFormattedText(format("%s%s|r", E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	end
 end
 

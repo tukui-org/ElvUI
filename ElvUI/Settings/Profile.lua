@@ -213,6 +213,15 @@ P['bags'] = {
 	["clearSearchOnClose"] = false,
 	["disableBagSort"] = false,
 	["disableBankSort"] = false,
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = false,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',
@@ -255,7 +264,17 @@ P["nameplates"] = {
 	["loadDistance"] = 40,
 	["targetGlow"] = "style2",
 	["glowColor"] = { r = 77/255, g = 179/255, b = 255/255, a = 1 },
+	["nameColoredGlow"] = false,
 	["alwaysShowTargetHealth"] = true,
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",
@@ -721,7 +740,7 @@ P['auras'] = {
 	['countXOffset'] = 0,
 	['timeYOffset'] = 0,
 	['timeXOffset'] = 0,
-	['fadeThreshold'] = 5,
+	['fadeThreshold'] = 6,
 	['buffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
 		['wrapAfter'] = 12,
@@ -747,6 +766,15 @@ P['auras'] = {
 		['size'] = 32,
 		["countFontsize"] = 10,
 		["durationFontSize"] = 10,
+	},
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
 	},
 }
 
@@ -927,6 +955,15 @@ P['unitframe'] = {
 	['targetOnMouseDown'] = false,
 	["auraBlacklistModifier"] = "SHIFT",
 	["thinBorders"] = false,
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
 	['colors'] = {
 		["borderColor"] = {r = 0, g = 0, b = 0},
 		['healthclass'] = false,
@@ -1372,7 +1409,7 @@ P['unitframe'] = {
 			['width'] = 130,
 			['height'] = 36,
 			['disableMouseoverGlow'] = false,
-			['disableTargetGlow'] = false,
+			['disableTargetGlow'] = true,
 			['health'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',

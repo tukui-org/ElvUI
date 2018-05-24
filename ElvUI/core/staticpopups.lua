@@ -8,6 +8,7 @@ local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wip
 local lower, format = string.lower, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
@@ -212,9 +213,11 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
 			end
 
-			local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
-			if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-				ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
+			if IsAddOnLoaded("ElvUI_Config") then
+				local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
+				end
 			end
 		else
 			E:Print(L["Error resetting UnitFrame."]);
@@ -523,14 +526,16 @@ function E:StaticPopup_OnShow()
 	end
 
 	-- boost static popups over ace gui
-	local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
-	if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-		self.frameStrataIncreased = true
-		self:SetFrameStrata("FULLSCREEN_DIALOG")
+	if IsAddOnLoaded("ElvUI_Config") then
+		local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+			self.frameStrataIncreased = true
+			self:SetFrameStrata("FULLSCREEN_DIALOG")
 
-		local popupFrameLevel = self:GetFrameLevel()
-		if popupFrameLevel < 100 then
-			self:SetFrameLevel(popupFrameLevel+100)
+			local popupFrameLevel = self:GetFrameLevel()
+			if popupFrameLevel < 100 then
+				self:SetFrameLevel(popupFrameLevel+100)
+			end
 		end
 	end
 end
