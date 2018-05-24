@@ -49,8 +49,9 @@ function mod:UpdateElement_Glow(frame)
 	]]
 	if (shouldShow ~= 0) then
 		if self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7" then -- original glow
+			local offset = (E.PixelMode and E.mult*4) or E.mult*6
 			frame.Glow:Show()
-			frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
+			frame.Glow:SetOutside(frame.HealthBar, offset, offset, frame.PowerBar:IsShown() and frame.PowerBar)
 		end
 		if self.db.targetGlow == "style2" or self.db.targetGlow == "style6" or self.db.targetGlow == "style8" then -- new background glow
 			frame.Glow2:Show()
@@ -62,17 +63,17 @@ function mod:UpdateElement_Glow(frame)
 				end
 			end
 			local powerBar = frame.PowerBar:IsShown() and frame.PowerBar;
-			local size = E.Border*(10+(powerBar and 3 or 0))*scale;
-			frame.Glow2:SetPoint("TOPLEFT", frame.HealthBar, "TOPLEFT", -E:Scale(size*2), E:Scale(size))
-			frame.Glow2:SetPoint("BOTTOMRIGHT", powerBar or frame.HealthBar, "BOTTOMRIGHT", E:Scale(size*2), -E:Scale(size))
+			local size = (E.Border+14+(powerBar and 3 or 0))*scale;
+			frame.Glow2:Point("TOPLEFT", frame.HealthBar, "TOPLEFT", -(size*2), size)
+			frame.Glow2:Point("BOTTOMRIGHT", powerBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
-			frame.TopArrow:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, E:Scale(E.Border*2))
+			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, E.Border*2)
 			frame.TopArrow:Show()
 		end
 		if shouldShow ~= 2 and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
-			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E:Scale(E.Border*2), 0)
-			frame.LeftArrow:SetPoint("LEFT", frame.HealthBar, "RIGHT", -E:Scale(E.Border*2), 0)
+			frame.RightArrow:Point("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", E.Border*2, 0)
+			frame.LeftArrow:Point("LEFT", frame.HealthBar, "RIGHT", -(E.Border*2), 0)
 			frame.RightArrow:Show()
 			frame.LeftArrow:Show()
 		end
@@ -88,16 +89,14 @@ function mod:UpdateElement_Glow(frame)
 end
 
 function mod:ConfigureElement_Glow(frame)
+	local offset = (E.PixelMode and E.mult*4) or E.mult*6
 	frame.Glow:SetFrameLevel(0)
 	frame.Glow:SetFrameStrata("BACKGROUND")
-	frame.Glow:SetOutside(frame.HealthBar, 2.5 + mod.mult, 2.5 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
+	frame.Glow:SetOutside(frame.HealthBar, offset, offset, frame.PowerBar:IsShown() and frame.PowerBar)
 	frame.Glow:SetBackdrop( {
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
-
-	--frame.Glow:SetBackdropBorderColor(0, 0, 0)
-	frame.Glow:SetScale(E.PixelMode and 1.5 or 2)
 end
 
 function mod:ConstructElement_Glow(frame)
