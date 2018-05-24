@@ -31,6 +31,7 @@ The system datatext will now display protocol info (IPv4/IPv6) if applicable. (c
 Resetting a UnitFrame to default will now show a popup confirmation upon clicking the reset button.  
 Nameplate NPC Title Text will now show the glow color on mouseover when it's the only thing shown on the nameplate (health and name disabled with show npc titles turned on).  
 Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
+Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`. These now when not using Cooldown Override will use the Cooldown Text settings inside of General config.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
