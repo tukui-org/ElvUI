@@ -18,7 +18,7 @@ Fixed issue which prevented a dropdown from being shown in the world map.
 Fixed an error regarding LeaveVehicleButton in battlegrounds.  
 Fixed a typo in datatexts which could prevent LDB data texts from loading when entering world.  
 Fixed issue which prevented the "new item" glow from hiding on items in bag 0 when closing bags.  
-Fixed various issues with the glows on NamePlates.  
+Fixed various issues with the Targeted Glows on NamePlates.  
 
 
 **Misc. Changes:**  
