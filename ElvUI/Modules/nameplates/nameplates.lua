@@ -667,7 +667,7 @@ local function HidePlayerNamePlate()
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
-	local healthShown = self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)
+	local healthShown = (frame.UnitType and self.db.units[frame.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)
 
 	if healthShown then
 		mod:UpdateElement_MaxHealth(frame)
@@ -1118,6 +1118,12 @@ function mod:UpdateFonts(plate)
 	end
 	if plate.NPCTitle then
 		plate.NPCTitle:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+
+	--update glow incase name font changes
+	local healthShown = (plate.UnitType and self.db.units[plate.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (plate.isTarget and self.db.alwaysShowTargetHealth)
+	if healthShown then
+		self:UpdateElement_Glow(plate)
 	end
 end
 

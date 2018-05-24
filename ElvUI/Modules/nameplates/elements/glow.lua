@@ -70,7 +70,7 @@ function mod:UpdateElement_Glow(frame)
 		if shouldShow ~= 2 and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
 			local topArrowSpace = -3
 			if self.db.units[frame.UnitType].showName and (frame.Name:GetText() ~= nil and frame.Name:GetText() ~= "") then
-				topArrowSpace = 8
+				topArrowSpace = self.db.fontSize + topArrowSpace
 			end
 			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, topArrowSpace)
 			frame.TopArrow:Show()
