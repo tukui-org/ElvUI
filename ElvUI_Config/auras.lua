@@ -155,7 +155,7 @@ E.Options.args.auras = {
 				fadeThreshold = {
 					type = 'range',
 					name = L["Fade Threshold"],
-					desc = L["Threshold before the icon will fade out and in. Set to -1 to disable."],
+					desc = L["Threshold before the icon will fade out and back in. Set to -1 to disable."],
 					min = -1, max = 30, step = 1,
 					order = 1,
 				},
