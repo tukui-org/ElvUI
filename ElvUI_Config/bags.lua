@@ -222,7 +222,7 @@ E.Options.args.bags = {
 		cooldown = {
 			type = "group",
 			order = 4,
-			name = L["Cooldown Text"],
+			name = L["Cooldown Override"],
 			get = function(info)
 				local t = E.db.bags.cooldown[ info[#info] ]
 				local d = P.bags.cooldown[ info[#info] ]
@@ -237,7 +237,7 @@ E.Options.args.bags = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["Override Global Cooldown Text"],
+					name = L["Cooldown Override"],
 				},
 				override = {
 					type = "toggle",

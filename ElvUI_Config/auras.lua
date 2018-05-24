@@ -229,7 +229,7 @@ E.Options.args.auras = {
 		cooldownGroup = {
 			type = "group",
 			order = 10,
-			name = L["Cooldown Text"],
+			name = L["Cooldown Override"],
 			get = function(info)
 				local t = E.db.auras.cooldown[ info[#info] ]
 				local d = P.auras.cooldown[ info[#info] ]
@@ -244,7 +244,7 @@ E.Options.args.auras = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["Override Global Cooldown Text"],
+					name = L["Cooldown Override"],
 				},
 				override = {
 					type = "toggle",
