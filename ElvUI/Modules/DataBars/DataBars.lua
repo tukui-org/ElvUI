@@ -43,7 +43,7 @@ function mod:UpdateDataBarDimensions()
 	self:UpdateExperienceDimensions()
 	self:UpdateReputationDimensions()
 	self:UpdateArtifactDimensions()
-	self:UpdateHonorDimensions()
+	--self:UpdateHonorDimensions()
 	self:UpdateAzeriteDimensions()
 end
 
@@ -67,7 +67,7 @@ function mod:Initialize()
 
 	self:LoadExperienceBar()
 	self:LoadReputationBar()
-	self:LoadHonorBar()
+	--self:LoadHonorBar()
 	self:LoadArtifactBar()
 	self:LoadAzeriteBar()
 
