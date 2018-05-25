@@ -18,7 +18,9 @@ local shortValueDec
 function E:ShortValue(v)
 	shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
 	if E.db.general.numberPrefixStyle == "METRIC" then
-		if abs(v) >= 1e9 then
+		if abs(v) >= 1e12 then
+			return format(shortValueDec.."T", v / 1e12)
+		elseif abs(v) >= 1e9 then
 			return format(shortValueDec.."G", v / 1e9)
 		elseif abs(v) >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)
@@ -46,7 +48,9 @@ function E:ShortValue(v)
 			return format("%s", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
-		if abs(v) >= 1e9 then
+		if abs(v) >= 1e12 then
+			return format(shortValueDec.."Bio", v / 1e12)
+		elseif abs(v) >= 1e9 then
 			return format(shortValueDec.."Mrd", v / 1e9)
 		elseif abs(v) >= 1e6 then
 			return format(shortValueDec.."Mio", v / 1e6)
@@ -56,7 +60,9 @@ function E:ShortValue(v)
 			return format("%s", v)
 		end
 	else
-		if abs(v) >= 1e9 then
+		if abs(v) >= 1e12 then
+			return format(shortValueDec.."T", v / 1e12)
+		elseif abs(v) >= 1e9 then
 			return format(shortValueDec.."B", v / 1e9)
 		elseif abs(v) >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)

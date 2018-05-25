@@ -137,36 +137,43 @@ local namePlateDriverEvents = {
 	"UNIT_FACTION"
 }
 
-function mod:ToggleNamePlateDriverEvents(instanceType)
+function mod:ToggleNamePlateDriverEvents(lockedInstance)
 	for _, event in pairs(namePlateDriverEvents) do
-		if instanceType == "none" then
-			NamePlateDriverFrame:UnregisterEvent(event)
-		else
+		if lockedInstance then
 			NamePlateDriverFrame:RegisterEvent(event)
+		else
+			NamePlateDriverFrame:UnregisterEvent(event)
 		end
 	end
 
-	if instanceType == "none" then
-		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
-		SetCVar("nameplateShowDebuffsOnFriendly", true)
-	else
+	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
+	else
+		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil;
+		SetCVar("nameplateShowDebuffsOnFriendly", true)
 	end
+end
+
+function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
+	local inInstance, instanceType = IsInInstance()
+	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	mod:SetBaseNamePlateSize(lockedInstance) -- workaround for #206
 end
 
 function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
+	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
-		self:ToggleNamePlateDriverEvents(instanceType)
+		self:ToggleNamePlateDriverEvents(lockedInstance)
 	end
 
-	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
+	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
-	elseif inInstance and instanceType == 'arena' and self.db.units.ENEMY_PLAYER.markHealers then
+	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
 		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
 		self:CheckArenaHealers()
@@ -182,6 +189,9 @@ function mod:PLAYER_ENTERING_WORLD()
 	if self.db.units.PLAYER.useStaticPosition then
 		mod:UpdateVisibility()
 	end
+
+	-- workaround for #206
+	mod:SetBaseNamePlateSize(lockedInstance)
 end
 
 function mod:ClassBar_Update()
@@ -619,19 +629,27 @@ function mod:ForEachPlate(functionToRun, ...)
 	end
 end
 
-function mod:SetBaseNamePlateSize()
-	local baseWidth = self.db.clickableWidth
-	local baseHeight = self.db.clickableHeight
-	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
+function mod:SetBaseNamePlateSize(lockedInstance)
+	local clickWidth = self.db.clickableWidth + ((E.PixelMode and 2) or 6)
+	local clickHeight = self.db.clickableHeight
 
-	-- this wont taint like NamePlateDriverFrame.SetBaseNamePlateSize
-	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
-	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
-	local zeroBasedScale = namePlateVerticalScale - 1.0
-	local clampedZeroBasedScale = Saturate(zeroBasedScale)
-	C_NamePlate_SetNamePlateFriendlySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
-	C_NamePlate_SetNamePlateEnemySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
-	C_NamePlate_SetNamePlateSelfSize(baseWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale), baseHeight)
+	self.PlayerFrame__:SetSize(clickWidth, clickHeight)
+	C_NamePlate_SetNamePlateSelfSize(clickWidth, clickHeight)
+	C_NamePlate_SetNamePlateEnemySize(clickWidth, clickHeight)
+
+	-- workaround for #206
+	local friendlyWidth, friendlyHeight
+	if lockedInstance then
+		-- handle it just like blizzard does when using blizzard friendly plates
+		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+		local zeroBasedScale = namePlateVerticalScale - 1.0
+
+		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
+		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
+	end
+
+	C_NamePlate_SetNamePlateFriendlySize(friendlyWidth or clickWidth, friendlyHeight or clickHeight)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
@@ -1201,6 +1219,9 @@ function mod:Initialize()
 		InterfaceOptionsNamesPanelUnitNameplatesFriends:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -50)
 		InterfaceOptionsNamesPanelUnitNameplatesEnemies:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -80)
 	end
+
+	-- Update NamePlate clickable range when the blizzard CVars change (workaround for #206)
+	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", mod.NamePlateDriverFrame_UpdateNamePlateOptions)
 
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
