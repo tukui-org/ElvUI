@@ -142,11 +142,11 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_FACTION', Path)
-
-		if(element.Prestige) then
-			self:RegisterEvent('HONOR_PRESTIGE_UPDATE', Path)
-		end
+		--self:RegisterEvent('UNIT_FACTION', Path)
+--
+		--if(element.Prestige) then
+			--self:RegisterEvent('HONOR_PRESTIGE_UPDATE', Path)
+		--end
 
 		return true
 	end
@@ -159,11 +159,11 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
 
-		if(element.Prestige) then
-			element.Prestige:Hide()
-
-			self:UnregisterEvent('HONOR_PRESTIGE_UPDATE', Path)
-		end
+		--if(element.Prestige) then
+			--element.Prestige:Hide()
+--
+			--self:UnregisterEvent('HONOR_PRESTIGE_UPDATE', Path)
+		--end
 	end
 end
 
