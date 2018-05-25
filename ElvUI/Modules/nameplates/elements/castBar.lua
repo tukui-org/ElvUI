@@ -290,9 +290,9 @@ function mod:ConfigureElement_CastBar(frame)
 end
 
 function mod:ConstructElement_CastBar(parent)
-	local function updateGlowPosition(castBar)
+	local function updateGlowPosition()
 		if not parent then return end
-		mod:UpdatePosition_Glow(parent, nil, castBar)
+		mod:UpdatePosition_Glow(parent)
 	end
 
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
