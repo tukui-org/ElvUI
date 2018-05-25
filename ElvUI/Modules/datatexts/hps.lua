@@ -29,7 +29,7 @@ end
 local function GetHPS(self)
 	local hps
 	if healTotal == 0 or combatTime == 0 then
-		hps = "0.0"
+		hps = 0
 	else
 		hps = healTotal / combatTime
 	end
