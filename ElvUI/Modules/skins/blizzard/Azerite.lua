@@ -9,28 +9,18 @@ local S = E:GetModule('Skins')
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
-----------
--- TEMP --
-----------
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteUI ~= true then return end
 
 	AzeriteEmpoweredItemUI:StripTextures()
+	AzeriteEmpoweredItemUI.BorderFrame:StripTextures()
 	AzeriteEmpoweredItemUIPortrait:Hide()
 	AzeriteEmpoweredItemUIPortraitFrame:Hide()
+
 	AzeriteEmpoweredItemUI:CreateBackdrop("Transparent")
+	AzeriteEmpoweredItemUI.backdrop:SetAllPoints()
 
 	S:HandleCloseButton(AzeriteEmpoweredItemUICloseButton)
-
-	--TODO: Skin the Azerite Tier Icons
-	--[[
-	local function SkinIcons()
-		-- MY ULTIMATE SKINNING FUNCTION
-	end
-	hooksecurefunc(AzeriteEmpoweredItemUIMixin, "OnShow", SkinIcons)
-	AzeriteEmpoweredItemUI:HookScript("OnShow", SkinIcons)
-	]]
 end
 
-S:AddCallbackForAddon("Blizzard_AzeriteTempUI", "AzeriteUI", LoadSkin) -- TODO: Change the Blizz Addon to the final one
+S:AddCallbackForAddon("Blizzard_AzeriteUI", "AzeriteUI", LoadSkin)
