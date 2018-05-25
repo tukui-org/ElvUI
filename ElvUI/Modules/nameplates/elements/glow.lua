@@ -46,7 +46,7 @@ function mod:UpdatePoisiton_Arrow(frame, shouldShow)
 end
 
 function mod:UpdatePosition_Glow(frame, shouldShow)
-	local castBar = (frame.CastBar and frame.CastBar:IsShown()) and frame.CastBar
+	local castBar = frame.CastBar and frame.CastBar:IsShown() and frame.CastBar
 	local bottomBar = castBar or (frame.PowerBar and frame.PowerBar:IsShown() and frame.PowerBar)
 	local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
 
