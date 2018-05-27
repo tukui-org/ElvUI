@@ -1,20 +1,15 @@
 --[[
-# Element: PvP and Prestige Icons
+# Element: PvP Icon
 
-Handles the visibility and updating of an indicator based on the unit's PvP status and prestige level.
+Handles the visibility and updating of an indicator based on the unit's PvP status.
 
 ## Widget
 
-PvPIndicator - A `Texture` used to display faction, FFA PvP status or prestige icon.
-
-## Sub-Widgets
-
-Prestige - A `Texture` used to display the prestige background image.
+PvPIndicator - A `Texture` used to display faction, FFA PvP status icon.
 
 ## Notes
 
 This element updates by changing the texture.
-The `Prestige` sub-widget has to be on a lower sub-layer than the `PvP` texture.
 
 ## Examples
 
@@ -35,9 +30,6 @@ The `Prestige` sub-widget has to be on a lower sub-layer than the `PvP` texture.
 local _, ns = ...
 local oUF = ns.oUF
 
-local FFA_ICON = [[Interface\TargetingFrame\UI-PVP-FFA]]
-local FACTION_ICON = [[Interface\TargetingFrame\UI-PVP-]]
-
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 
@@ -54,20 +46,10 @@ local function Update(self, event, unit)
 	end
 
 	local status
-	local prestigeLevel = UnitPrestige(unit)
 	local factionGroup = UnitFactionGroup(unit)
 
 	if(UnitIsPVPFreeForAll(unit)) then
-		if(element.Prestige and prestigeLevel > 0) then
-			element:SetTexture(GetPrestigeInfo(prestigeLevel))
-			element:SetTexCoord(0, 1, 0, 1)
-			element.Prestige:SetAtlas('honorsystem-portrait-neutral', false)
-		else
-			element:SetTexture(FFA_ICON)
-			element:SetTexCoord(0, 0.65625, 0, 0.65625)
-		end
-
-		status = 'ffa'
+		status = 'FFA'
 	elseif(factionGroup and factionGroup ~= 'Neutral' and UnitIsPVP(unit)) then
 		if(unit == 'player' and UnitIsMercenary(unit)) then
 			if(factionGroup == 'Horde') then
@@ -77,47 +59,27 @@ local function Update(self, event, unit)
 			end
 		end
 
-		if(element.Prestige and prestigeLevel > 0) then
-			element:SetTexture(GetPrestigeInfo(prestigeLevel))
-			element:SetTexCoord(0, 1, 0, 1)
-			element.Prestige:SetAtlas('honorsystem-portrait-' .. factionGroup, false)
-		else
-			element:SetTexture(FACTION_ICON .. factionGroup)
-			element:SetTexCoord(0, 0.65625, 0, 0.65625)
-		end
-
 		status = factionGroup
 	end
 
 	if(status) then
+		element:SetTexture([[Interface\TargetingFrame\UI-PVP-]] .. status)
+		element:SetTexCoord(0, 0.65625, 0, 0.65625)
 		element:Show()
-
-		if(element.Prestige) then
-			if(prestigeLevel > 0) then
-				element.Prestige:Show()
-			else
-				element.Prestige:Hide()
-			end
-		end
 	else
 		element:Hide()
-
-		if(element.Prestige) then
-			element.Prestige:Hide()
-		end
 	end
 
-	--[[ Callback: PvPIndicator:PostUpdate(unit, status, prestigeLevel)
+	--[[ Callback: PvPIndicator:PostUpdate(unit, status)
 	Called after the element has been updated.
 
 	* self          - the PvPIndicator element
 	* unit          - the unit for which the update has been triggered (string)
 	* status        - the unit's current PvP status or faction accounting for mercenary mode (string)['ffa', 'Alliance',
 	                  'Horde']
-	* prestigeLevel - the unit's current prestige rank (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, status, prestigeLevel)
+		return element:PostUpdate(unit, status)
 	end
 end
 
@@ -142,11 +104,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		--self:RegisterEvent('UNIT_FACTION', Path)
---
-		--if(element.Prestige) then
-			--self:RegisterEvent('HONOR_PRESTIGE_UPDATE', Path)
-		--end
+		self:RegisterEvent('UNIT_FACTION', Path)
 
 		return true
 	end
@@ -158,12 +116,6 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
-
-		--if(element.Prestige) then
-			--element.Prestige:Hide()
---
-			--self:UnregisterEvent('HONOR_PRESTIGE_UPDATE', Path)
-		--end
 	end
 end
 
