@@ -145,9 +145,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
 		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
-	-- count may be nil sometimes
-	count = count or 0
-
 	-- ElvUI block
 	if element.forceShow then
 		spellID = 47540
