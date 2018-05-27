@@ -12,6 +12,7 @@ local format = string.format
 local match = string.match
 local tonumber = tonumber
 --WoW API / Variables
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
@@ -767,8 +768,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
 			blizzPlate:Hide() --Hide Blizzard's Nameplate
+			blizzPlate:UnregisterAllEvents() --Remove any events
+			CompactUnitFrame_UnregisterEvents(blizzPlate) --Let Blizzard remove any OnEvent and OnUpdate scripts
 		end)
-		--print('Hooked on NAME_PLATE_CREATED')
 		frame.unitFrame.onShowHooked = true
 	end
 end
