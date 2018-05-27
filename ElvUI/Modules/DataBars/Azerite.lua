@@ -99,8 +99,6 @@ function mod:AzeriteBar_OnEnter()
 		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
 		GameTooltip:AddLine(' ')
 
-		GameTooltip_AddInstructionLine(GameTooltip, "WORK IN PROGRESS") -- DELETE ME
-
 		GameTooltip:Show()
 	end)
 end
