@@ -6,8 +6,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local format = format
 --WoW API / Variables
-local CanPrestige = CanPrestige
-local GetMaxPlayerHonorLevel = GetMaxPlayerHonorLevel
 local ToggleTalentFrame = ToggleTalentFrame
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
@@ -15,7 +13,6 @@ local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
-local PVP_HONOR_PRESTIGE_AVAILABLE = PVP_HONOR_PRESTIGE_AVAILABLE
 local HONOR = HONOR
 local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
 local InCombatLockdown = InCombatLockdown
@@ -25,7 +22,6 @@ local InCombatLockdown = InCombatLockdown
 
 function mod:UpdateHonor(event, unit)
 	if not mod.db.honor.enable then return end
-	if event == "HONOR_PRESTIGE_UPDATE" and unit ~= "player" then return end
 	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then return end
 
 	local bar = self.honorBar
@@ -68,9 +64,7 @@ function mod:UpdateHonor(event, unit)
 		local text = ''
 		local textFormat = self.db.honor.textFormat
 
-		if (CanPrestige()) then
-			text = PVP_HONOR_PRESTIGE_AVAILABLE
-		elseif (level == levelmax) then
+		if (level == levelmax) then
 			text = MAX_HONOR_LEVEL
 		else
 			if textFormat == 'PERCENT' then
@@ -94,7 +88,6 @@ function mod:UpdateHonor(event, unit)
 	end
 end
 
-local PRESTIGE_TEXT = PVP_PRESTIGE_RANK_UP_TITLE..HEADER_COLON
 function mod:HonorBar_OnEnter()
 	if mod.db.honor.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
@@ -106,17 +99,13 @@ function mod:HonorBar_OnEnter()
 	local max = UnitHonorMax("player");
 	local level = UnitHonorLevel("player");
 	local levelmax = GetMaxPlayerHonorLevel();
-	local prestigeLevel = UnitPrestige("player");
 
 	GameTooltip:AddLine(HONOR)
 
 	GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
-	GameTooltip:AddDoubleLine(PRESTIGE_TEXT, prestigeLevel, 1, 1, 1)
 	GameTooltip:AddLine(' ')
 
-	if (CanPrestige()) then
-		GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE);
-	elseif (level == levelmax) then
+	if (level == levelmax) then
 		GameTooltip:AddLine(MAX_HONOR_LEVEL);
 	else
 		GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
@@ -152,7 +141,6 @@ end
 function mod:EnableDisable_HonorBar()
 	if self.db.honor.enable then
 		self:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
-		self:RegisterEvent("HONOR_PRESTIGE_UPDATE", "UpdateHonor")
 		self:UpdateHonor()
 		E:EnableMover(self.honorBar.mover:GetName())
 	else
