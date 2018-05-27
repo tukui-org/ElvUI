@@ -938,7 +938,7 @@ end
 
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	if(frame) then
+	if frame then
 		frame:SetScale(1.35)
 	end
 end
@@ -1205,7 +1205,9 @@ function mod:Initialize()
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
 		NamePlateDriverFrame:UnregisterAllEvents()
-		NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
+		--This taints and prevents default nameplates in dungeons and raids
+		NamePlateDriverFrame.ApplyFrameOptions = E.noop
+		NamePlateDriverFrame.SetupClassNameplateBars = E.noop
 	else
 		InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
