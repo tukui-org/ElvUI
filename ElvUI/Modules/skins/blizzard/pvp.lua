@@ -157,6 +157,43 @@ local function LoadSkin()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
 
+	-- New tiny Role icons in Bfa
+	ConquestFrame.TankIcon:StripTextures()
+	ConquestFrame.TankIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.TankIcon:DisableDrawLayer("OVERLAY")
+
+	ConquestFrame.TankIcon.bg = ConquestFrame.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	ConquestFrame.TankIcon.bg:Point("CENTER")
+	ConquestFrame.TankIcon.bg:Size(40)
+	ConquestFrame.TankIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.TankIcon.checkButton)
+
+	ConquestFrame.HealerIcon:StripTextures()
+	ConquestFrame.HealerIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.HealerIcon:DisableDrawLayer("OVERLAY")
+
+	ConquestFrame.HealerIcon.bg = ConquestFrame.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	ConquestFrame.HealerIcon.bg:Point("CENTER")
+	ConquestFrame.HealerIcon.bg:Size(40)
+	ConquestFrame.HealerIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.HealerIcon.checkButton)
+
+	ConquestFrame.DPSIcon:StripTextures()
+	ConquestFrame.DPSIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.DPSIcon:DisableDrawLayer("OVERLAY")
+
+	ConquestFrame.DPSIcon.bg = ConquestFrame.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	ConquestFrame.DPSIcon.bg:Point("CENTER")
+	ConquestFrame.DPSIcon.bg:Size(40)
+	ConquestFrame.DPSIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
+
 	local function handleButton(button)
 		button:StripTextures()
 		button:SetTemplate()
