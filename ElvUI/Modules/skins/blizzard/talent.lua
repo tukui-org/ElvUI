@@ -7,6 +7,7 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
@@ -309,20 +310,102 @@ local function LoadSkin()
 		end
 	end
 
-	-- PVP Talents WIP
-	PlayerTalentFrameTalentsPvpTalentFrame:StripTextures()
-	PlayerTalentFrameTalentsPvpTalentFrameTalentList:StripTextures()
-	PlayerTalentFrameTalentsPvpTalentFrameTalentListBg:SetAlpha(0)
-	PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollChild:StripTextures()
-	PlayerTalentFrameTalentsPvpTalentFrameTalentListInset:StripTextures()
-	PlayerTalentFrameTalentsPvpTalentFrameTalentListInsetBg:SetAlpha(0)
+	-- PVP Talents
+	local function SkinPvpTalentSlots(button)
+		button._elvUIBG = S:CropIcon(button.Texture, button)
+		button.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+		button.Arrow:SetPoint("LEFT", button.Texture, "RIGHT", 5, 0)
+		button.Arrow:SetSize(26, 13)
+		button.Border:Hide()
 
-	--[[ ADJUST ME ]]
-	PlayerTalentFrameTalentsPvpTalentFrameTalentList:CreateBackdrop("Transparent")
-	PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:SetAllPoints()
-	PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:SetFrameLevel(0)
-	-- Adjust the backdrop Position
-	-- PlayerTalentFrameTalentsPvpTalentFrameTalentList.backdrop:Point('BOTTOMRIGHT', PlayerTalentFrameTalentsPvpTalentFrameTalentList, 'BOTTOMRIGHT', 0, -6)
+		button:SetSize(button:GetSize())
+		button.Texture:SetSize(32, 32)
+		button.TalentName:SetPoint("TOP", button, "BOTTOM", 0, 0)
+	end
+
+	local function SkinPvpTalentTrinketSlot(button)
+		SkinPvpTalentSlots(button)
+		button.Texture:SetTexture([[Interface\Icons\INV_Jewelry_Trinket_04]])
+		button.Texture:SetSize(48, 48)
+		button.Arrow:SetSize(26, 13)
+	end
+
+	function S:HandleInsetFrameTemplate(Frame)
+		Frame.Bg:Hide()
+
+		Frame.InsetBorderTopLeft:Hide()
+		Frame.InsetBorderTopRight:Hide()
+
+		Frame.InsetBorderBottomLeft:Hide()
+		Frame.InsetBorderBottomRight:Hide()
+
+		Frame.InsetBorderTop:Hide()
+		Frame.InsetBorderBottom:Hide()
+		Frame.InsetBorderLeft:Hide()
+		Frame.InsetBorderRight:Hide()
+	end
+
+	function S:SkinTalentListButtons(Frame)
+		local name = Frame:GetName()
+
+		_G[name.."BtnCornerLeft"]:SetTexture("")
+		_G[name.."BtnCornerRight"]:SetTexture("")
+		_G[name.."ButtonBottomBorder"]:SetTexture("")
+		S:HandleInsetFrameTemplate(Frame.Inset)
+
+		Frame.Inset:SetPoint("TOPLEFT", 4, -60)
+		Frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
+	end
+
+	local PvpTalentFrame = PlayerTalentFrameTalents.PvpTalentFrame
+	PvpTalentFrame:StripTextures()
+
+	PvpTalentFrame.Swords:SetSize(72, 67)
+	PvpTalentFrame.Orb:Hide()
+	PvpTalentFrame.Ring:Hide()
+
+	-- Skin the PvP Icons
+	SkinPvpTalentTrinketSlot(PvpTalentFrame.TrinketSlot)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot1)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot2)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot3)
+
+	PvpTalentFrame.TalentList:StripTextures()
+	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
+
+	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
+	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
+	PvpTalentFrame.TalentList.MyTopLeftCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopRightCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopBorder:Hide()
+
+	local function HandleInsetButton(Button)
+		S:HandleButton(Button)
+
+		if Button.LeftSeparator then
+			Button.LeftSeparator:Hide()
+		end
+		if Button.RightSeparator then
+			Button.RightSeparator:Hide()
+		end
+	end
+
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("TOPLEFT", 5, -5)
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("BOTTOMRIGHT", -21, 32)
+	HandleInsetButton(select(4, PvpTalentFrame.TalentList:GetChildren()))
+
+	PvpTalentFrame.OrbModelScene:SetAlpha(0)
+
+	PvpTalentFrame:SetSize(131, 379)
+	PvpTalentFrame:SetPoint("LEFT", PlayerTalentFrameTalents, "RIGHT", -135, 0)
+	PvpTalentFrame.Swords:SetPoint("BOTTOM", 0, 30)
+	PvpTalentFrame.Label:SetPoint("BOTTOM", 0, 104)
+	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
+
+	PvpTalentFrame.TrinketSlot:SetPoint("TOP", 0, -16)
+	PvpTalentFrame.TalentSlot1:SetPoint("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
+	PvpTalentFrame.TalentSlot2:SetPoint("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
+	PvpTalentFrame.TalentSlot3:SetPoint("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
 
 	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
 	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)

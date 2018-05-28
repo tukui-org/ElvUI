@@ -176,6 +176,18 @@ function S:HandleButton(f, strip, isDeclineButton)
 	f:HookScript("OnLeave", S.SetOriginalBackdrop)
 end
 
+function S:CropIcon(texture, parent)
+	texture:SetTexCoord(unpack(E.TexCoords))
+	if parent then
+		local layer, subLevel = texture:GetDrawLayer()
+		local iconBorder = parent:CreateTexture(nil, layer, nil, subLevel - 1)
+		iconBorder:SetPoint("TOPLEFT", texture, -1, 1)
+		iconBorder:SetPoint("BOTTOMRIGHT", texture, 1, -1)
+		iconBorder:SetColorTexture(0, 0, 0)
+		return iconBorder
+	end
+end
+
 function S:HandleScrollBar(frame, thumbTrim)
 	if frame:GetName() then
 		if frame.Background then frame.Background:SetTexture(nil) end
