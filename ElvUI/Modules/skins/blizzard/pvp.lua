@@ -19,7 +19,7 @@ local function LoadSkin()
 		S:HandleTab(_G["PVPUIFrameTab"..i])
 	end
 
-	for i = 1, 4 do
+	for i = 1, 3 do
 		local bu = _G["PVPQueueFrameCategoryButton"..i]
 
 		bu.Ring:Kill()
@@ -39,6 +39,16 @@ local function LoadSkin()
 		bu.border:SetOutside(bu.Icon)
 		bu.Icon:SetParent(bu.border)
 	end
+
+	PVPQueueFrameBg:Hide()
+	PVPQueueFrameInsetRightBorder:Hide()
+	PVPQueueFrameInsetLeftBorder:Hide()
+	PVPQueueFrameInsetTopBorder:Hide()
+	PVPQueueFrameInsetBottomBorder:Hide()
+	PVPQueueFrameInsetBotLeftCorner:Hide()
+	PVPQueueFrameInsetBotRightCorner:Hide()
+	PVPQueueFrameInsetTopRightCorner:Hide()
+	PVPQueueFrameInsetTopLeftCorner:Hide()
 
 	-- Honor Frame
 	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
@@ -97,46 +107,48 @@ local function LoadSkin()
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
-	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
-	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
-
-	HonorFrame.RoleInset:StripTextures()
-	S:HandleCheckBox(HonorFrame.RoleInset.DPSIcon.checkButton, true)
-	S:HandleCheckBox(HonorFrame.RoleInset.TankIcon.checkButton, true)
-	S:HandleCheckBox(HonorFrame.RoleInset.HealerIcon.checkButton, true)
-
-	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.TankIcon.bg = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HonorFrame.RoleInset.TankIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.TankIcon.bg:Size(80)
-	HonorFrame.RoleInset.TankIcon.bg:SetAlpha(0.5)
-
-	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.HealerIcon.bg = HonorFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HonorFrame.RoleInset.HealerIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.HealerIcon.bg:Size(80)
-	HonorFrame.RoleInset.HealerIcon.bg:SetAlpha(0.5)
-
-	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.DPSIcon.bg = HonorFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-	HonorFrame.RoleInset.DPSIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.DPSIcon.bg:Size(80)
-	HonorFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
-
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
 			self.bg:SetDesaturated(true)
 		end
 	end)
+
+	-- New tiny Role icons in Bfa
+	HonorFrame.TankIcon:StripTextures()
+	HonorFrame.TankIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.TankIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.TankIcon.bg = HonorFrame.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HonorFrame.TankIcon.bg:Point("CENTER")
+	HonorFrame.TankIcon.bg:Size(40)
+	HonorFrame.TankIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.TankIcon.checkButton)
+
+	HonorFrame.HealerIcon:StripTextures()
+	HonorFrame.HealerIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.HealerIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.HealerIcon.bg = HonorFrame.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HonorFrame.HealerIcon.bg:Point("CENTER")
+	HonorFrame.HealerIcon.bg:Size(40)
+	HonorFrame.HealerIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.HealerIcon.checkButton)
+
+	HonorFrame.DPSIcon:StripTextures()
+	HonorFrame.DPSIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.DPSIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.DPSIcon.bg = HonorFrame.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	HonorFrame.DPSIcon.bg:Point("CENTER")
+	HonorFrame.DPSIcon.bg:Size(40)
+	HonorFrame.DPSIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.DPSIcon.checkButton)
 
 	-- Conquest Frame
 	local ConquestFrame = _G["ConquestFrame"]
@@ -144,38 +156,6 @@ local function LoadSkin()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
-
-	ConquestFrame.RoleInset:StripTextures()
-	S:HandleCheckBox(ConquestFrame.RoleInset.DPSIcon.checkButton, true)
-	S:HandleCheckBox(ConquestFrame.RoleInset.TankIcon.checkButton, true)
-	S:HandleCheckBox(ConquestFrame.RoleInset.HealerIcon.checkButton, true)
-
-	ConquestFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.TankIcon.bg = ConquestFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	ConquestFrame.RoleInset.TankIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.TankIcon.bg:Size(80)
-	ConquestFrame.RoleInset.TankIcon.bg:SetAlpha(0.5)
-
-	ConquestFrame.RoleInset.HealerIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.HealerIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.HealerIcon.bg = ConquestFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	ConquestFrame.RoleInset.HealerIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.HealerIcon.bg:Size(80)
-	ConquestFrame.RoleInset.HealerIcon.bg:SetAlpha(0.5)
-
-	ConquestFrame.RoleInset.DPSIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.DPSIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.DPSIcon.bg = ConquestFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-	ConquestFrame.RoleInset.DPSIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.DPSIcon.bg:Size(80)
-	ConquestFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
 
 	local function handleButton(button)
 		button:StripTextures()
@@ -212,17 +192,6 @@ local function LoadSkin()
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
-	-- WarGames Frame
-	local WarGamesFrame = _G["WarGamesFrame"]
-	WarGamesFrame:StripTextures()
-	WarGamesFrame.RightInset:StripTextures()
-	S:HandleButton(WarGameStartButton, true)
-	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
-	WarGamesFrame.HorizontalBar:StripTextures()
-	S:HandleScrollBar(WarGamesFrameInfoScrollFrameScrollBar)
-	WarGamesFrameInfoScrollFrameScrollBar:StripTextures()
-	S:HandleCheckBox(WarGameTournamentModeCheckButton)
-	
 	if E.private.skins.blizzard.tooltip then
 		ConquestTooltip:SetTemplate("Transparent")
 		PVPRewardTooltip:SetTemplate("Transparent")
