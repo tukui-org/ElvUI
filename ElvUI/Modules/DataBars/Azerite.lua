@@ -97,7 +97,6 @@ function mod:AzeriteBar_OnEnter()
 
 		GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
 		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
-		GameTooltip:AddLine(' ')
 
 		GameTooltip:Show()
 	end)

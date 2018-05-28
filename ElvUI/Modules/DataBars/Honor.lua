@@ -40,20 +40,12 @@ function mod:UpdateHonor(event, unit)
 
 		local current = UnitHonor("player");
 		local max = UnitHonorMax("player");
-		local level = UnitHonorLevel("player");
-		local levelmax = GetMaxPlayerHonorLevel();
 
 		--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
 		if max == 0 then max = 1 end
 
-		if (level == levelmax) then
-			-- Force the bar to full for the max level
-			bar.statusBar:SetMinMaxValues(0, 1)
-			bar.statusBar:SetValue(1)
-		else
-			bar.statusBar:SetMinMaxValues(0, max)
-			bar.statusBar:SetValue(current)
-		end
+		bar.statusBar:SetMinMaxValues(0, max)
+		bar.statusBar:SetValue(current)
 
 		if self.db.honor.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
@@ -64,24 +56,20 @@ function mod:UpdateHonor(event, unit)
 		local text = ''
 		local textFormat = self.db.honor.textFormat
 
-		if (level == levelmax) then
-			text = MAX_HONOR_LEVEL
-		else
-			if textFormat == 'PERCENT' then
-				text = format('%d%%', current / max * 100)
-			elseif textFormat == 'CURMAX' then
-				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
-			elseif textFormat == 'CURPERC' then
-				text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
-			elseif textFormat == 'CUR' then
-				text = format('%s', E:ShortValue(current))
-			elseif textFormat == 'REM' then
-				text = format('%s', E:ShortValue(max-current))
-			elseif textFormat == 'CURREM' then
-				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
-			elseif textFormat == 'CURPERCREM' then
-				text = format('%s - %d%% (%s)', E:ShortValue(current), current / max * 100, E:ShortValue(max - current))
-			end
+		if textFormat == 'PERCENT' then
+			text = format('%d%%', current / max * 100)
+		elseif textFormat == 'CURMAX' then
+			text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
+		elseif textFormat == 'CURPERC' then
+			text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
+		elseif textFormat == 'CUR' then
+			text = format('%s', E:ShortValue(current))
+		elseif textFormat == 'REM' then
+			text = format('%s', E:ShortValue(max-current))
+		elseif textFormat == 'CURREM' then
+			text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
+		elseif textFormat == 'CURPERCREM' then
+			text = format('%s - %d%% (%s)', E:ShortValue(current), current / max * 100, E:ShortValue(max - current))
 		end
 
 		bar.text:SetText(text)
@@ -98,19 +86,15 @@ function mod:HonorBar_OnEnter()
 	local current = UnitHonor("player");
 	local max = UnitHonorMax("player");
 	local level = UnitHonorLevel("player");
-	local levelmax = GetMaxPlayerHonorLevel();
 
 	GameTooltip:AddLine(HONOR)
 
 	GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
 	GameTooltip:AddLine(' ')
 
-	if (level == levelmax) then
-		GameTooltip:AddLine(MAX_HONOR_LEVEL);
-	else
-		GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
-	end
+	GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
+
 	GameTooltip:Show()
 end
 
