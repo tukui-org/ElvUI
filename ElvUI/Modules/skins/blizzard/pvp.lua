@@ -51,15 +51,20 @@ local function LoadSkin()
 	PVPQueueFrameInsetTopLeftCorner:Hide()
 
 	-- Honor Frame
-	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
-
 	local HonorFrame = _G["HonorFrame"]
-	HonorFrame.Inset:StripTextures()
+	local Inset = HonorFrame.Inset
+
+	for i = 1, 9 do
+		select(i, Inset:GetRegions()):Hide()
+	end
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
+	S:HandleDropDownBox(HonorFrameTypeDropDown, 160)
+
 	HonorFrame.BonusFrame:StripTextures()
-	HonorFrame.BonusFrame.ShadowOverlay:StripTextures()
+	HonorFrame.BonusFrame.ShadowOverlay:Hide()
+	HonorFrame.BonusFrame.WorldBattlesTexture:Hide()
 	HonorFrame.BonusFrame.RandomBGButton:StripTextures()
 	HonorFrame.BonusFrame.RandomBGButton:SetTemplate()
 	HonorFrame.BonusFrame.RandomBGButton:StyleButton(nil, true)
@@ -152,9 +157,15 @@ local function LoadSkin()
 
 	-- Conquest Frame
 	local ConquestFrame = _G["ConquestFrame"]
-	ConquestFrame.Inset:StripTextures()
+	local Inset = ConquestFrame.Inset
+
 	ConquestFrame:StripTextures()
-	ConquestFrame.ShadowOverlay:StripTextures()
+	ConquestFrame.ShadowOverlay:Hide()
+
+	for i = 1, 9 do
+		select(i, Inset:GetRegions()):Hide()
+	end
+
 	S:HandleButton(ConquestJoinButton, true)
 
 	-- New tiny Role icons in Bfa
@@ -234,6 +245,9 @@ local function LoadSkin()
 		PVPRewardTooltip:SetTemplate("Transparent")
 	end
 
+	S:SkinPVPHonorXPBar('HonorFrame')
+	S:SkinPVPHonorXPBar('ConquestFrame')
+
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)
 	S:HandleCloseButton(HonorFrame.BonusFrame.BrawlHelpBox.CloseButton)
@@ -268,9 +282,6 @@ local function LoadSecondarySkin()
 
 		self.background:Hide()
 	end)
-
-	S:SkinPVPHonorXPBar('HonorFrame')
-	S:SkinPVPHonorXPBar('ConquestFrame')
 end
 
 S:AddCallback("PVP", LoadSecondarySkin)
