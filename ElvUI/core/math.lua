@@ -27,7 +27,7 @@ function E:ShortValue(v)
 		elseif abs(v) >= 1e3 then
 			return format(shortValueDec.."k", v / 1e3)
 		else
-			return format("%s", v)
+			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "CHINESE" then
 		if abs(v) >= 1e8 then
@@ -35,7 +35,7 @@ function E:ShortValue(v)
 		elseif abs(v) >= 1e4 then
 			return format(shortValueDec.."W", v / 1e4)
 		else
-			return format("%s", v)
+			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "KOREAN" then
 		if abs(v) >= 1e8 then
@@ -45,7 +45,7 @@ function E:ShortValue(v)
 		elseif abs(v) >= 1e3 then
 			return format(shortValueDec.."천", v / 1e3)
 		else
-			return format("%s", v)
+			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
 		if abs(v) >= 1e12 then
@@ -57,7 +57,7 @@ function E:ShortValue(v)
 		elseif abs(v) >= 1e3 then
 			return format(shortValueDec.."Tsd", v / 1e3)
 		else
-			return format("%s", v)
+			return format("%.0f", v)
 		end
 	else
 		if abs(v) >= 1e12 then
@@ -69,7 +69,7 @@ function E:ShortValue(v)
 		elseif abs(v) >= 1e3 then
 			return format(shortValueDec.."K", v / 1e3)
 		else
-			return format("%s", v)
+			return format("%.0f", v)
 		end
 	end
 end
