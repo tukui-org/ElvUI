@@ -407,6 +407,21 @@ local function LoadSkin()
 	PvpTalentFrame.TalentSlot2:SetPoint("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
 	PvpTalentFrame.TalentSlot3:SetPoint("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
 
+	-- Adjust me: Highlight texture and selected texture missing
+	for i =1, 10 do
+		local bu = _G["PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameButton"..i]
+		local icon = bu.Icon
+		if bu then
+			bu:StripTextures()
+
+			bu:CreateBackdrop("Overlay")
+			bu.backdrop:Point("TOPLEFT", 8, 2)
+			bu.backdrop:Point("BOTTOMRIGHT", 8, -2)
+
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
 	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
 	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)
 end
