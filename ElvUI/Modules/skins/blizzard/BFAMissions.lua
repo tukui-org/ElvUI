@@ -12,9 +12,6 @@ local _G = _G
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BFAMissions ~= true then return end
 
-	-------------
-	--  Temp   --
-	-------------
 	local MissionFrame = _G["BFAMissionFrame"]
 	MissionFrame:StripTextures()
 	MissionFrame:CreateBackdrop("Transparent")
@@ -28,6 +25,10 @@ local function LoadSkin()
 	end
 
 	-- Mission Tab
+	local MissionTab = MissionFrame.MissionTab
+
+	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
+	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
 	S:HandleScrollBar(_G["BFAMissionFrameMissionsListScrollFrameScrollBar"])
 
 	-- Follower Tab
