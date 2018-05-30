@@ -99,6 +99,24 @@ local function LoadSkin()
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
+	-- Honor Frame Specific Buttons
+	for _, bu in pairs(HonorFrame.SpecificFrame.buttons) do
+		bu.Bg:Hide()
+		bu.Border:Hide()
+
+		bu:SetNormalTexture("")
+		bu:SetHighlightTexture("")
+
+		local bg = CreateFrame("Frame", nil, bu)
+		bg:SetPoint("TOPLEFT", 2, 0)
+		bg:SetPoint("BOTTOMRIGHT", -1, 2)
+		bg:CreateBackdrop("Default")
+		bg.backdrop:SetFrameLevel(bu:GetFrameLevel()-1)
+
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
+		bu.Icon:SetPoint("TOPLEFT", 5, -3)
+	end
+
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
 			self.bg:SetDesaturated(true)
