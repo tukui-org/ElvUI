@@ -28,7 +28,7 @@ local function LoadSkin()
 		bu:SetTemplate()
 		bu:StyleButton(nil, true)
 
-		bu.Icon:SetTexCoord(.15, .85, .15, .85)
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		bu.Icon:Point("LEFT", bu, "LEFT")
 		bu.Icon:SetDrawLayer("OVERLAY")
 		bu.Icon:Size(45)
