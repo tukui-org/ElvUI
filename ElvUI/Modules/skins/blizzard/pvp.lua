@@ -107,6 +107,10 @@ local function LoadSkin()
 		bu:SetNormalTexture("")
 		bu:SetHighlightTexture("")
 
+		bu:StyleButton(nil, true)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
 		local bg = CreateFrame("Frame", nil, bu)
 		bg:SetPoint("TOPLEFT", 2, 0)
 		bg:SetPoint("BOTTOMRIGHT", -1, 2)
