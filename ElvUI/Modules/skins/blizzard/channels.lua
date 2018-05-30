@@ -24,14 +24,6 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
-	for i = 1, ChannelFrame:GetNumRegions() do
-		local region = select(i, ChannelFrame:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			region:SetTexture(nil)
-			region:SetAlpha(0)
-		end
-	end
-
 	ChannelFrameInset:Hide()
 	ChannelFrame.LeftInset:Hide()
 	ChannelFrame.RightInset:Hide()
@@ -55,6 +47,21 @@ local function LoadSkin()
 	VoiceChatPromptActivateChannel:CreateBackdrop("Transparent")
 	S:HandleButton(VoiceChatPromptActivateChannel.AcceptButton)
 	S:HandleCloseButton(VoiceChatPromptActivateChannel.CloseButton)
+
+	-- Hide the Channel Header Textures
+	hooksecurefunc(ChannelButtonHeaderMixin, "Update", function(self)
+		self:CreateBackdrop("Transparent")
+
+		self.NormalTexture:SetTexture("")
+		self.HighlightTexture:SetTexture("")
+
+		-- TODO: Adjust the Texture Size
+		if self:IsCollapsed() then
+			self.Collapsed:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+		else
+			self.Collapsed:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_Channels", "Channels", LoadSkin)
