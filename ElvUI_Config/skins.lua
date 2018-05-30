@@ -378,19 +378,24 @@ E.Options.args.skins = {
 					name = CHANNELS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				BFAMissions = { --Temporary
+				BFAMissions = {
 					type = "toggle",
-					name = L["BFAMission"], -- Needs locale
+					name = L["BFAMission"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				AzeriteUI = { --Temporary
+				AzeriteUI = {
 					type = "toggle",
-					name = L["AzeriteUI"], -- Needs locale
+					name = L["AzeriteUI"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Communities = { --Temporary
 					type = "toggle",
 					name = COMMUNITIES,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				Scrapping = {
+					type = "toggle",
+					name = L["Scrapping"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

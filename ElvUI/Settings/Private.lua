@@ -128,6 +128,7 @@ V['skins'] = {
 		["BFAMissions"] = true,
 		["AzeriteUI"] = true,
 		["Communities"] = true,
+		["Scrapping"] = true,
 	},
 }
 

@@ -58,6 +58,7 @@
 	<Script file='quest.lua'/>
 	<Script file='questchoice.lua'/>
 	<Script file='raid.lua'/>
+	<Script file='ScrappingMachine.lua'/>
 	<Script file='socket.lua'/>
 	<Script file='spellbook.lua'/>
 	<Script file='stable.lua'/>
