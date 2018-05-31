@@ -17,27 +17,9 @@ local function LoadSkin()
 	AzeriteEmpoweredItemUIPortrait:Hide()
 	AzeriteEmpoweredItemUIPortraitFrame:Hide()
 
+	AzeriteEmpoweredItemUI:CreateBackdrop("Transparent")
+
 	S:HandleCloseButton(AzeriteEmpoweredItemUICloseButton)
-
-	local function AdjustSizeForTiers(self, numTiers)
-		self.BackgroundFrame:SetPoint("TOPLEFT", 4, 0)
-		if numTiers == 3 then
-			self:SetSize(474, 468)
-		else
-			self:SetSize(615, 612)
-		end
-	end
-
-	function S:AzeriteEmpoweredItemUIFrame(frame)
-		hooksecurefunc(frame, "AdjustSizeForTiers", AdjustSizeForTiers)
-
-		frame:SetClipsChildren(true)
-
-		frame.BackgroundFrame.KeyOverlay.Shadow:ClearAllPoints()
-		frame.BackgroundFrame.KeyOverlay.Shadow:SetPoint("TOPLEFT", -5, 0)
-		frame.BackgroundFrame.KeyOverlay.Shadow:SetPoint("BOTTOMRIGHT", frame.BackgroundFrame.KeyOverlay, "TOPRIGHT", 5, -40)
-	end
-	S:AzeriteEmpoweredItemUIFrame(AzeriteEmpoweredItemUI)
 end
 
 S:AddCallbackForAddon("Blizzard_AzeriteUI", "AzeriteUI", LoadSkin)
