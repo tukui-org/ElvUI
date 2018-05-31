@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -104,18 +105,14 @@ local function LoadSkin()
 		bu.Bg:Hide()
 		bu.Border:Hide()
 
-		bu:SetNormalTexture("")
-		bu:SetHighlightTexture("")
-
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
 		bu:StyleButton(nil, true)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		local bg = CreateFrame("Frame", nil, bu)
-		bg:SetPoint("TOPLEFT", 2, 0)
-		bg:SetPoint("BOTTOMRIGHT", -1, 2)
-		bg:CreateBackdrop("Default")
-		bg.backdrop:SetFrameLevel(bu:GetFrameLevel()-1)
+		bu:SetNormalTexture("")
+		bu:SetHighlightTexture("")
 
 		bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		bu.Icon:SetPoint("TOPLEFT", 5, -3)
