@@ -6,13 +6,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select = pairs, select
 --WoW API / Variables
-local ChannelFrame = _G["ChannelFrame"]
-local CreateChannelPopup = _G["CreateChannelPopup"]
+local C_Timer_After = C_Timer.After
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Channels ~= true then return end
+
+	local ChannelFrame = _G["ChannelFrame"]
+	local CreateChannelPopup = _G["CreateChannelPopup"]
 
 	--Channel Frame
 	local frames = {
@@ -34,7 +36,29 @@ local function LoadSkin()
 	S:HandleCloseButton(ChannelFrameCloseButton)
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
-	--S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
+
+	--BUGFIX: ChannelFrame.ChannelRoster.ScrollFrame.scrollBar
+	--Hide current scrollbar
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarTop:Hide()
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarTop = nil
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarBottom:Hide()
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarBottom = nil
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarMiddle:Hide()
+	ChannelFrameScrollUpButton:Hide()
+	ChannelFrameScrollUpButton = nil
+	ChannelFrameScrollDownButton:Hide()
+	ChannelFrameScrollDownButton = nil
+	select(2, ChannelFrame.ChannelRoster.ScrollFrame:GetChildren()):Hide()
+
+	--Create new one with fixed template
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar = CreateFrame("Slider", nil, ChannelFrame.ChannelRoster.ScrollFrame, "HybridScrollBarTemplateFixed")
+	S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
+	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetFrameLevel(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
+	C_Timer_After(0.25, function()
+		--Scroll back to top
+		ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetValue(1)
+		ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetValue(0)
+	end)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
 	S:HandleButton(CreateChannelPopup.OKButton)
@@ -50,17 +74,9 @@ local function LoadSkin()
 
 	-- Hide the Channel Header Textures
 	hooksecurefunc(ChannelButtonHeaderMixin, "Update", function(self)
-		self:CreateBackdrop("Transparent")
+		self:SetTemplate("Transparent")
 
 		self.NormalTexture:SetTexture("")
-		self.HighlightTexture:SetTexture("")
-
-		-- TODO: Adjust the Texture Size
-		if self:IsCollapsed() then
-			self.Collapsed:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
-		else
-			self.Collapsed:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
-		end
 	end)
 end
 
