@@ -51,6 +51,7 @@ local function LoadSkin()
 	select(2, ChannelFrame.ChannelRoster.ScrollFrame:GetChildren()):Hide()
 
 	--Create new one with fixed template
+	-- FIX ME, on first load, the scrollbar is on the bottom
 	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar = CreateFrame("Slider", nil, ChannelFrame.ChannelRoster.ScrollFrame, "HybridScrollBarTemplateFixed")
 	S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
 	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetFrameLevel(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
