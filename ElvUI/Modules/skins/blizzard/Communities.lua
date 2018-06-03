@@ -4,9 +4,9 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
+local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
-
+local C_Timer_After = C_Timer.After
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -15,6 +15,7 @@ local function LoadSkin()
 
 	local CommunitiesFrame = _G["CommunitiesFrame"]
 	CommunitiesFrame:StripTextures()
+	CommunitiesFrame.PortraitOverlay:Kill()
 	CommunitiesFrame.PortraitOverlay.Portrait:Hide()
 	CommunitiesFrame.PortraitOverlay.PortraitFrame:Hide()
 	CommunitiesFrame.CommunitiesList.InsetFrame:StripTextures()
@@ -25,7 +26,6 @@ local function LoadSkin()
 	CommunitiesFrame:CreateBackdrop("Transparent")
 
 	CommunitiesFrameTopTileStreaks:Hide()
-	--CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide() -- Maybe we should keep this
 	CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 	CommunitiesFrameInsetBg:Hide()
 	CommunitiesFrameInsetInsetBottomBorder:Hide()
@@ -53,6 +53,17 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
+	select(2, CommunitiesFrame.MemberList.ListScrollFrame:GetChildren()):Hide() -- Hide default ScrollBar
+	CommunitiesFrame.MemberList.ListScrollFrame.scrollBar = CreateFrame("Slider", nil, CommunitiesFrame.MemberList.ListScrollFrame, "HybridScrollBarTemplateFixed")
+	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
+	CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetFrameLevel(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
+	C_Timer_After(0.25, function()
+		--Scroll back to top
+		CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetValue(1)
+		CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetValue(0)
+	end)
+
+
 	--[[ FIX ME
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
 	S:HandleScrollBar(CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
@@ -61,7 +72,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 	]]
 
-	-- CHAT TAB
+	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
 	CommunitiesFrame.MemberList.InsetFrame:StripTextures()
 	CommunitiesFrame.MemberList.InsetFrame:SetTemplate("Transparent")
@@ -77,13 +88,15 @@ local function LoadSkin()
 
 	-- ROSTER TAB
 	local MemberList = CommunitiesFrame.MemberList
-	MemberList.ColumnDisplay:StripTextures()
-	MemberList.ColumnDisplay.InsetBorderLeft:Hide()
-	MemberList.ColumnDisplay.InsetBorderBottomLeft:Hide()
-	MemberList.ColumnDisplay.InsetBorderTopLeft:Hide()
-	MemberList.ColumnDisplay.InsetBorderTop:Hide()
-	MemberList.ColumnDisplay.Background:Hide()
-	MemberList.ColumnDisplay.TopTileStreaks:Hide()
+	local ColumnDisplay = MemberList.ColumnDisplay
+	ColumnDisplay:StripTextures()
+	ColumnDisplay.InsetBorderLeft:Hide()
+	ColumnDisplay.InsetBorderBottomLeft:Hide()
+	ColumnDisplay.InsetBorderTopLeft:Hide()
+	ColumnDisplay.InsetBorderTop:Hide()
+	ColumnDisplay.Background:Hide()
+	ColumnDisplay.TopTileStreaks:Hide()
+
 
 	--[[FIX ME
 	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
@@ -91,7 +104,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 
-	-- PERKS TAB
+	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
 	GuildBenefitsFrame.InsetBorderLeft:Hide()
 	GuildBenefitsFrame.InsetBorderRight:Hide()
@@ -116,6 +129,16 @@ local function LoadSkin()
 
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
+	select(2, CommunitiesFrameRewards:GetChildren()):Hide()
+	CommunitiesFrameRewards.scrollBar = CreateFrame("Slider", nil, CommunitiesFrameRewards, "HybridScrollBarTemplateFixed")
+	S:HandleScrollBar(CommunitiesFrameRewards.scrollBar)
+	CommunitiesFrameRewards.scrollBar:SetFrameLevel(CommunitiesFrameRewards.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
+	C_Timer_After(0.25, function()
+		--Scroll back to top
+		CommunitiesFrameRewards.scrollBar:SetValue(1)
+		CommunitiesFrameRewards.scrollBar:SetValue(0)
+	end)
+
 	hooksecurefunc("CommunitiesGuildRewards_Update", function(self)
 		local scrollFrame = self.RewardsContainer
 		local offset = HybridScrollFrame_GetOffset(scrollFrame)
@@ -132,17 +155,110 @@ local function LoadSkin()
 			button:SetNormalTexture("")
 			button:SetHighlightTexture("")
 
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
+			local hover = button:CreateTexture()
+			hover:SetColorTexture(1, 1, 1, 0.3)
+			hover:SetInside()
+			button.hover = hover
+			button:SetHighlightTexture(hover)
 
-			button:SetScript("OnEnter", S.SetModifiedBackdrop)
-			button:SetScript("OnLeave", S.SetOriginalBackdrop)
+			button.Icon:SetTexCoord(unpack(E.TexCoords))
 
 			button.index = index
 		end
-		local totalHeight = numRewards * (COMMUNITIES_GUILD_REWARDS_BUTTON_HEIGHT + COMMUNITIES_GUILD_REWARDS_BUTTON_OFFSET)
-		local displayedHeight = numButtons * (COMMUNITIES_GUILD_REWARDS_BUTTON_HEIGHT + COMMUNITIES_GUILD_REWARDS_BUTTON_OFFSET)
-		HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight)
 	end)
+
+	-- [[ INFO TAB ]]
+	CommunitiesFrameGuildDetailsFrame.InsetBorderLeft:Hide()
+	CommunitiesFrameGuildDetailsFrame.InsetBorderRight:Hide()
+	CommunitiesFrameGuildDetailsFrame.InsetBorderBottomRight:Hide()
+	CommunitiesFrameGuildDetailsFrame.InsetBorderBottomLeft:Hide()
+	CommunitiesFrameGuildDetailsFrame.InsetBorderTopRight:Hide()
+	CommunitiesFrameGuildDetailsFrame.InsetBorderTopLeft:Hide()
+
+	local striptextures = {
+		"CommunitiesFrameGuildDetailsFrameInfo",
+		"CommunitiesFrameGuildDetailsFrameNews",
+		"CommunitiesGuildNewsFiltersFrame",
+	}
+
+	for _, frame in pairs(striptextures) do
+		_G[frame]:StripTextures()
+	end
+
+	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
+	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
+
+
+	S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameInfoScrollBar)
+	--S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
+	S:HandleButton(CommunitiesFrame.GuildLogButton)
+
+	-- Filters Frame
+	local FiltersFrame = _G["CommunitiesGuildNewsFiltersFrame"]
+	FiltersFrame:CreateBackdrop("Transparent")
+	S:HandleCheckBox(FiltersFrame.GuildAchievement)
+	S:HandleCheckBox(FiltersFrame.Achievement)
+	S:HandleCheckBox(FiltersFrame.DungeonEncounter)
+	S:HandleCheckBox(FiltersFrame.EpicItemLooted)
+	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
+	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
+	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
+
+	S:HandleCloseButton(FiltersFrame.CloseButton)
+
+	-- Guild Log
+	CommunitiesGuildLogFrame:StripTextures()
+	CommunitiesGuildLogFrame.Container:StripTextures()
+	CommunitiesGuildLogFrame:CreateBackdrop("Transparent")
+
+	S:HandleScrollBar(CommunitiesGuildLogFrameScrollBar, 4)
+	S:HandleCloseButton(CommunitiesGuildLogFrameCloseButton)
+	--S:HandleButton(CommunitiesGuildLogFrameCloseButton) -- The same name as the CloseButton dafuq?!
+
+	-- Recruitment Info
+	CommunitiesGuildRecruitmentFrame:StripTextures()
+	CommunitiesGuildRecruitmentFrame:CreateBackdrop("Transparent")
+	CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
+
+	-- CheckBoxes
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.QuestButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.DungeonButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.RaidButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.PvPButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.RPButton)
+
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.AvailabilityFrame.WeekdaysButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.AvailabilityFrame.WeekendsButton)
+
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.TankButton.checkButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.HealerButton.checkButton)
+	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.DamagerButton.checkButton)
+
+	S:HandleCloseButton(CommunitiesGuildRecruitmentFrameCloseButton)
+
+	CommunitiesGuildRecruitmentFrameRecruitment.ListGuildButton.LeftSeparator:Hide()
+	S:HandleButton(CommunitiesGuildRecruitmentFrameRecruitment.ListGuildButton)
+
+	-- Tabs
+	for i = 1, 2 do
+		S:HandleTab(_G["CommunitiesGuildRecruitmentFrameTab"..i])
+	end
+
+	CommunitiesGuildRecruitmentFrameRecruitment.CommentFrame.CommentInputFrame:StripTextures()
+	S:HandleEditBox(CommunitiesGuildRecruitmentFrameRecruitment.CommentFrame.CommentInputFrame)
+
+	-- Recruitment Request
+	CommunitiesGuildRecruitmentFrameApplicants.InviteButton.RightSeparator:Hide()
+	CommunitiesGuildRecruitmentFrameApplicants.DeclineButton.LeftSeparator:Hide()
+
+	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.InviteButton)
+	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.MessageButton)
+	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
+
+	for i = 1, 5 do
+		local bu = _G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]
+		bu:SetBackdrop(nil)
+	end
 end
 
 S:AddCallbackForAddon("Blizzard_Communities", "Communities", LoadSkin)
