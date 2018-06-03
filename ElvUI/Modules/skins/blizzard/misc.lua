@@ -39,6 +39,8 @@ local function LoadSkin()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
+	S:HandleButton(StaticPopup1ExtraButton)
+
 	QueueStatusFrame:StripTextures()
 
 	if not IsAddOnLoaded("ConsolePortUI_Menu") then
