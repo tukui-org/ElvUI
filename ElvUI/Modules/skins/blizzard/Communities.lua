@@ -47,6 +47,53 @@ local function LoadSkin()
 	CommunitiesFrameInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetBotLeftCorner:Hide()
 
+	local function SkinTab(tab)
+		local normTex = tab:GetNormalTexture()
+		if normTex then
+			normTex:SetTexCoord(unpack(E.TexCoords))
+			normTex:SetInside()
+		end
+
+		if not tab.isSkinned then
+			for i = 1, tab:GetNumRegions() do
+				local region = select(i, tab:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
+						region:Kill()
+					end
+				end
+			end
+
+			tab.pushed = true;
+			tab:CreateBackdrop("Default")
+			tab.backdrop:Point("TOPLEFT", -2, 2)
+			tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
+			tab:StyleButton(true)
+			tab.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+				if texPath ~= nil then
+					self:SetPushedTexture(nil);
+				end
+			end)
+
+			hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+				if texPath ~= nil then
+					self:SetHighlightTexture(nil);
+				end
+			end)
+
+			local point, relatedTo, point2, _, y = tab:GetPoint()
+			tab:Point(point, relatedTo, point2, 1, y)
+		end
+
+		tab.isSkinned = true
+	end
+	SkinTab(CommunitiesFrame.ChatTab)
+	SkinTab(CommunitiesFrame.RosterTab)
+	SkinTab(CommunitiesFrame.GuildBenefitsTab)
+	SkinTab(CommunitiesFrame.GuildInfoTab)
+
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 	S:HandleCloseButton(CommunitiesFrameCloseButton)
 	S:HandleButton(CommunitiesFrame.InviteButton)
