@@ -24,6 +24,9 @@ local function LoadSkin()
 		S:HandleTab(_G["BFAMissionFrameTab"..i])
 	end
 
+	-- Missions
+	S:HandleButton(BFAMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton)
+
 	-- Mission Tab
 	local MissionTab = MissionFrame.MissionTab
 
