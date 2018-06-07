@@ -1,12 +1,14 @@
-**Version 10.74 [  ]**
+**Version 10.74 [ June 7th 2018 ]**
 
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
-Added new UnitFrame Glow settings located under `UnitFrame -> General -> Frame Glow`. Each type of UnitFrame (Player, Target, Etc) has new options to specifically control blocking these settings located under `UnitFrame -> Frame -> Block __ Glow`. (Ref: #344)  
+Added new UnitFrame Glow settings located under `UnitFrame -> General -> Frame Glow`. Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
+Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
+Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`.  
 
 **Bug Fixes:**   
-The instance group size for Seething Shore and Arathi Blizzard has been fixed.  
+Fixed instance group size for Seething Shore and Arathi Blizzard.  
 Fixed issue that prevented the Guild MOTD from being shown in the chat after a `/reload` sometimes.  
 Fixed issue that prevented the Loot Spec icon on BonusRollFrame from showing correctly after changing specs.  
 Fixed issue which could cause an error in other addons when Chat History was enabled.  
@@ -21,6 +23,8 @@ Fixed issue which prevented the "new item" glow from hiding on items in bag 0 wh
 Fixed various issues with the Targeted Glows on NamePlates.  
 Fixed issue which made the Friendly Blizzard plates wider than they should be for some users.  
 Fixed issue which may have caused the Nameplate Clickable range to be off more than it should.  
+Fixed issue which prevented nameplate glow from wrapping around the enemy castbars.  
+Fixed error for shapeshifting druids who enter combat when nameplate classbar is attached to player nameplate.  
 
 
 **Misc. Changes:**  
@@ -33,8 +37,8 @@ Made it more clear that the "vendor greys" button also deletes items when not at
 The system datatext will now display protocol info (IPv4/IPv6) if applicable. (credit: Kopert)  
 Resetting a UnitFrame to default will now show a popup confirmation upon clicking the reset button.  
 Nameplate NPC Title Text will now show the glow color on mouseover when it's the only thing shown on the nameplate (health and name disabled with show npc titles turned on).  
-Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
-Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`. These now when not using Cooldown Override will use the Cooldown Text settings inside of General config.  
+E:ShortValue will now floor values below 1000.  
+Optimized nameplates a bit, by making sure updates on Blizzard plates would not continue firing after we replaced them with our own.  
 
 ___
 **Version 10.73 [ March 23rd 2018 ]**
