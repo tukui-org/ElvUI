@@ -24,15 +24,11 @@ local function LoadSkin()
 				local modules = frame[i]
 				if modules then
 					local header = modules.Header
-					header:SetFrameStrata("HIGH")
-					header:SetFrameLevel(10)
-
 					local background = modules.Header.Background
 					background:SetAtlas(nil)
 
 					local text = modules.Header.Text
 					text:FontTemplate()
-					text:SetDrawLayer("OVERLAY", 7)
 					text:SetParent(header)
 				end
 			end
