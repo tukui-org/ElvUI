@@ -33,23 +33,18 @@ local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
--- GLOBALS: PlayerTalentFrame, TimeManagerFrame, HelpOpenTicketButton, HelpOpenWebTicketButton
--- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
--- GLOBALS: BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
--- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
--- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
--- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
--- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
--- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
--- GLOBALS: MinimapMover, AurasHolder, AurasMover, Minimap_OnClick
--- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
--- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
--- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
--- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
--- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
--- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
--- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop, UIDROPDOWNMENU_MENU_VALUE
+-- GLOBALS: AudioOptionsFrame, AudioOptionsFrameCancel
+-- GLOBALS: BottomLeftMiniPanel, BottomMiniPanel, BottomRightMiniPanel, EncounterJournal, EncounterJournal_LoadUI
+-- GLOBALS: FeedbackUIButton, GameMenuFrame, GameTimeFrame, GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox
+-- GLOBALS: GetMinimapShape, GuildFrame, GuildFrame_LoadUI, HelpOpenTicketButton, HelpOpenWebTicketButton
+-- GLOBALS: InterfaceOptionsFrame, InterfaceOptionsFrameCancel, LeftMiniPanel
+-- GLOBALS: Minimap, Minimap_OnClick, MinimapBackdrop, MinimapBorder, MinimapBorderTop, MiniMapChallengeMode, MinimapCluster
+-- GLOBALS: MiniMapInstanceDifficulty, MiniMapMailBorder, MiniMapMailFrame, MiniMapMailIcon, MinimapMover, MinimapNorthTag
+-- GLOBALS: MiniMapTracking, MiniMapTrackingDropDown, MiniMapVoiceChatFrame, MiniMapWorldMapButton, MinimapZoneTextButton
+-- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
+-- GLOBALS: QueueStatusMinimapButtonBorder, RightMiniPanel, SpellBookFrame, StoreMicroButton, TalentFrame_LoadUI
+-- GLOBALS: TimeManagerClockButton, TimeManagerFrame, TopLeftMiniPanel, TopMiniPanel, TopRightMiniPanel, UIParent
+-- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
