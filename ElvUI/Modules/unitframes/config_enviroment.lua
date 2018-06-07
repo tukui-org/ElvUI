@@ -171,7 +171,6 @@ function UF:ShowChildUnits(header, ...)
 		local frame = select(i, ...)
 		frame:RegisterForClicks(nil)
 		frame:SetID(i)
-		frame.TargetGlow:SetAlpha(0)
 		self:ForceShow(frame)
 	end
 end
@@ -182,7 +181,6 @@ function UF:UnshowChildUnits(header, ...)
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
 		frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-		frame.TargetGlow:SetAlpha(1)
 		self:UnforceShow(frame)
 	end
 end

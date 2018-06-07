@@ -52,8 +52,8 @@ function M:SetLargeWorldMap()
 	end
 
 	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
-	WorldMapFrame:SetSize(1002, 668)
+	WorldMapFrame:Point("CENTER", E.UIParent, "CENTER", 0, 100)
+	WorldMapFrame:Size(1002, 668)
 end
 
 function M:SetSmallWorldMap()

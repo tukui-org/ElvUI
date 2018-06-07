@@ -38,12 +38,12 @@ L["Purchase Bags"] = "가방 슬롯 구입"
 L["Purchase"] = "구입"
 L["Reagent Bank"] = REAGENT_BANK
 L["Reset Position"] = "위치 초기화"
-L["Right Click the bag icon to assign a type of item to this bag."] = true
+L["Right Click the bag icon to assign a type of item to this bag."] = "가방 아이콘을 우클릭하여 이 가방의 아이템 종류를 할당합니다."
 L["Show/Hide Reagents"] = "재료은행 표시"
 L["Sort Tab"] = "탭 정렬" --Not used, yet?
 L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
-L["Vendor Grays"] = "잡동사니 자동판매"
+L["Vendor / Delete Grays"] = true
 
 --Chat
 L["AFK"] = "자리비움"
@@ -52,8 +52,8 @@ L["G"] = "길드"
 L["I"] = "인스"
 L["IL"] = "인스장"
 L["Invalid Target"] = "잘못된 대상"
-L["is looking for members"] = true
-L["joined a group"] = true
+L["is looking for members"] = "구성원 찾는 중"
+L["joined a group"] = "그룹에 참여"
 L["O"] = "관리자"
 L["P"] = "파티"
 L["PL"] = "파장"
@@ -65,10 +65,10 @@ L["whispers"] = "귓"
 L["yells"] = "외침"
 
 --DataBars
-L["Current Level:"] = true
-L["Honor Remaining:"] = true
-L["Honor XP:"] = true
-L["In Bags:"] = true
+L["Current Level:"] = "현재 레벨"
+L["Honor Remaining:"] = "남은 명예"
+L["Honor XP:"] = "명예 경험치"
+L["In Bags:"] = "가방 속에"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
@@ -77,12 +77,12 @@ L["Arena"] = "투기장"
 L["AVD: "] = "방어율: "
 L["Avoidance Breakdown"] = "방어율 목록"
 L["Bandwidth"] = "대역폭"
-L["Building(s) Report:"] = true
+L["Building(s) Report:"] = "건축 보고서"
 L["Character: "] = "캐릭터:"
 L["Chest"] = "가슴"
 L["Combat"] = "전투"
-L["Combat/Arena Time"] = true
-L["Coords"] = true
+L["Combat/Arena Time"] = "전투/투기장 시간"
+L["Coords"] = "좌표"
 L["copperabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:33:48:1:16|t" --"|cffeda55f●|r"
 L["Deficit:"] = "손해:"
 L["Download"] = "다운로드"
@@ -90,50 +90,52 @@ L["DPS"] = "DPS"
 L["Earned:"] = "수입:"
 L["Feet"] = "발"
 L["Friends List"] = "친구 목록"
-L["Garrison"] = true
-L["Gold"] = true
+L["Garrison"] = "주둔지"
+L["Gold"] = "골드"
 L["goldabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:1:16:1:16|t" --"|cffffd700●|r"
 L["Hands"] = "손"
 L["Head"] = "머리"
-L["Hold Shift + Right Click:"] = true
+L["Hold Shift + Right Click:"] = "쉬프트+우클릭"
 L["Home Latency:"] = "지연 시간:"
+L["Home Protocol:"] = true
 L["HP"] = "주문력"
 L["HPS"] = "HPS"
 L["Legs"] = "다리"
 L["lvl"] = "레벨"
 L["Main Hand"] = "주장비"
-L["Mission(s) Report:"] = true
+L["Mission(s) Report:"] = "임무 보고서"
 L["Mitigation By Level: "] = "레벨별 데미지 경감률"
 L["Mobile"] = true
 L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
-L["Naval Mission(s) Report:"] = true
+L["Naval Mission(s) Report:"] = "해상 임무 보고서"
 L["No Guild"] = "길드 없음"
 L["Offhand"] = "보조장비"
 L["Profit:"] = "이익:"
-L["Reset Counters: Hold Shift + Left Click"] = true
-L["Reset Data: Hold Shift + Right Click"] = "기록 리셋: Shift + 우클릭"
+L["Reset Counters: Hold Shift + Left Click"] = "통계 초기화: 쉬프트+우클릭"
+L["Reset Data: Hold Shift + Right Click"] = "자료 초기화: Shift + 우클릭"
 L["Saved Raid(s)"] = "귀속된 던전"
-L["Saved Dungeon(s)"] = true
+L["Saved Dungeon(s)"] = "귀속된 던전"
 L["Server: "] = "서버:"
 L["Session:"] = "현재 접속:"
 L["Shoulder"] = "어깨"
 L["silverabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:17:32:1:16|t" --"|cffc7c7cf●|r"
 L["SP"] = "주문력"
-L["Spell/Heal Power"] = true
+L["Spell/Heal Power"] = "주문력"
 L["Spec"] = "전문화"
 L["Spent:"] = "지출:"
 L["Stats For:"] = "점수:"
-L["System"] = true
-L["Talent/Loot Specialization"] = true
+L["System"] = "시스템"
+L["Talent/Loot Specialization"] = "전문화/전리품 획득 전문화 변경"
 L["Total CPU:"] = "전체 CPU 사용량:"
 L["Total Memory:"] = "전체 메모리:"
 L["Total: "] = "합계:"
 L["Unhittable:"] = "100% 방어행동까지"
 L["Waist"] = "허리"
+L["World Protocol:"] = true
 L["Wrist"] = "손목"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "클릭 : 전문화 교체"
-L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "우클릭 : 전리품 전문화 변경"
-L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
+L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "우클릭 : 전리품 획득 전문화 변경"
+L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF쉬프트 + 클릭:|r 특성 전문화창 보기"
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s 기능이 사용할 수 없는 %s 함수를 사용하려 합니다."
@@ -220,7 +222,7 @@ L["Bars"] = "바"
 L["Calendar"] = "달력"
 L["Can't Roll"] = "주사위를 굴릴 수 없습니다."
 L["Disband Group"] = "그룹 해산"
-L["Empty Slot"] = true
+L["Empty Slot"] = "빈 칸"
 L["Enable"] = "사용"
 L["Experience"] = "경험치"
 L["Fishy Loot"] = "낚시 전리품"
@@ -230,7 +232,7 @@ L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
-L["AP:"] = true -- Artifact Power
+L["AP:"] = "유물력" -- Artifact Power
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
 
@@ -238,34 +240,34 @@ L["You don't have permission to mark targets."] = "레이드 아이콘을 지정
 L["Alternative Power"] = "특수상황 진행 바"
 L["Archeology Progress Bar"] = "고고학 진척도 바"
 L["Arena Frames"] = "투기장 프레임"
-L["Artifact Bar"] = true
-L["Bag Mover (Grow Down)"] = true
-L["Bag Mover (Grow Up)"] = true
-L["Bag Mover"] = true
+L["Artifact Bar"] = "유물력바"
+L["Bag Mover (Grow Down)"] = "가방 조정자(아래로 성장)"
+L["Bag Mover (Grow Up)"] = "가방 조정자(위로 성장)"
+L["Bag Mover"] = "가방 조정자"
 L["Bags"] = "가방"
-L["Bank Mover (Grow Down)"] = true
-L["Bank Mover (Grow Up)"] = true
+L["Bank Mover (Grow Down)"] = "은행 조정자(아래로 성장)"
+L["Bank Mover (Grow Up)"] = "은행 조정자(위로 성장)'"
 L["Bar "] = "바 "
 L["BNet Frame"] = "배틀넷 알림"
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
-L["Class Totems"] = true
+L["Class Totems"] = "직업 토템"
 L["Classbar"] = "직업바"
 L["Experience Bar"] = "경험치 바"
 L["Focus Castbar"] = "주시대상 시전바"
 L["Focus Frame"] = "주시대상 프레임"
 L["FocusTarget Frame"] = "주시대상의 대상 프레임"
 L["GM Ticket Frame"] = "GM요청 번호표"
-L["Honor Bar"] = true
+L["Honor Bar"] = "명예바"
 L["Left Chat"] = "좌측 패널"
-L["Level Up Display / Boss Banner"] = true
+L["Level Up Display / Boss Banner"] = "레벨업 표시 / 보스 배너"
 L["Loot / Alert Frames"] = "획득/알림 창"
 L["Loot Frame"] = "전리품 프레임"
 L["Loss Control Icon"] = "제어손실 표시"
 L["MA Frames"] = "지원공격 전담 프레임"
 L["Micro Bar"] = "메뉴모음 바"
 L["Minimap"] = "미니맵"
-L["MirrorTimer"] = true
+L["MirrorTimer"] = "미러 타이머"
 L["MT Frames"] = "방어전담 프레임"
 L["Objective Frame"] = "퀘스트 프레임"
 L["Party Frames"] = "파티 프레임"
@@ -277,36 +279,36 @@ L["Player Buffs"] = "플레이어 버프"
 L["Player Castbar"] = "플레이어 시전바"
 L["Player Debuffs"] = "플레이어 디버프"
 L["Player Frame"] = "플레이어 프레임"
-L["Player Nameplate"] = true
-L["Player Powerbar"] = true
+L["Player Nameplate"] = "플레이어 이룜표"
+L["Player Powerbar"] = "플레이어 자원바"
 L["Raid Frames"] = "레이드 프레임"
 L["Raid Pet Frames"] = "레이드 소환수 프레임"
 L["Raid-40 Frames"] = "레이드 프레임(40인)"
 L["Reputation Bar"] = "평판 바"
 L["Right Chat"] = "우측 패널"
 L["Stance Bar"] = "태세 바"
-L["Talking Head Frame"] = true
+L["Talking Head Frame"] = "토킹 헤드 프레임"
 L["Target Castbar"] = "대상 시전바"
 L["Target Frame"] = "대상 프레임"
-L["Target Powerbar"] = true
+L["Target Powerbar"] = "대상 자원바"
 L["TargetTarget Frame"] = "대상의대상 프레임"
 L["TargetTargetTarget Frame"] = "대상의대상의대상 프레임"
 L["Tooltip"] = "툴팁"
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
-L["Zone Ability"] = true
+L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.
 
-Options:
-  Shift + RightClick - Hides mover temporarily.
-  Ctrl + RightClick - Resets mover position to default.
+선택사항:
+  Shift + 우클릭 - 조정자를 일시적으로 숨깁니다.
+  Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
 ]=]
 
 --Plugin Installer
-L["ElvUI Plugin Installation"] = true
-L["In Progress"] = true
-L["List of installations in queue:"] = true
-L["Pending"] = true
-L["Steps"] = true
+L["ElvUI Plugin Installation"] = "ElvUI 플러그인  설치"
+L["In Progress"] = "진행 중"
+L["List of installations in queue:"] = "설치 대기열 목록"
+L["Pending"] = "미결"
+L["Steps"] = "단계"
 
 --Prints
 L[" |cff00ff00bound to |r"] = " 키로 다음의 행동을 실행합니다: |cff2eb7e4"
@@ -330,15 +332,16 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "이 설정은 캐릭터별로 따로 저장되므로|n프로필에 영향을 주지도, 받지도 않습니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
-L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true
-L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true
-L["Are you sure you want to apply this font to all ElvUI elements?"] = true
-L["Are you sure you want to delete all your gray items?"] = "모든 잡동사니를 버리겠습니까?"
+L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = true
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "수락하시면 이름표에 적용된 모든 필터 목록이 초기화 됩니다. 정말로 하시겠습니까?"
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "수락하시면 유닛프레임에 적용된 모든 필터 목록이 초기화 됩니다. 정말로 하시겠습니까?"
+L["Are you sure you want to apply this font to all ElvUI elements?"] = "정말로 이 글씨체를 ElvUI의 모든 구성요소에 적용하시겠습니까?"
 L["Are you sure you want to disband the group?"] = "현재 그룹을 해산하시겠습니까?"
 L["Are you sure you want to reset all the settings on this profile?"] = "현재 사용중인 프로필을 초기화 하시겠습니까?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "모든 프레임을 기본 위치로 초기화 하시겠습니까?"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "새로운 오라시스템을 혼란스러워 하는 분들이 많아 설치과정에 관련 페이지를 추가했습니다. 해도 되고 안해도 됩니다. 이미 스스로 오라시스템을 구축했으면 그냥 설치를 마지막까지 넘겨 종료하세요."
 L["Can't buy anymore slots!"] = "더 이상 가방 칸을 늘릴 수 없습니다."
+L["Delete gray items?"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "ElvUI_Config 가 오래된 버전입니다. Tukui Client 프로그램을 쓰고 있으면 클라이언트를 업데이트하고 ElvUI를 재설치하세요."
 L["Disable Warning"] = "비활성화 경고"
 L["Discard"] = "작업 취소"
@@ -347,6 +350,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "현재 사용하는 ElvUI가 5버전 이상 뒤쳐진 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI가 오래된 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI의 데이터베이스를 조정할 필요가 있습니다. 잠시 기다려주세요."
+L["Error resetting UnitFrame."] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "행동단축바나 주문책의 스킬에 마우스오버 후 키를 누르면 단축키로 지정합니다. 단축키를 지정한 곳을 우클릭 하거나 ESC를 누르면 해제합니다."
 L["I Swear"] = "알겠습니다."
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "현재 설치된 애드온 중 하나가 정상 로드되지 않았습니다. 에러가 날 확률이 높아 리로드합니다."
@@ -355,13 +359,13 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "변경 사항을 적용하려면 애드온을 리로드 해야합니다."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "이 설정은 모든 캐릭터에게 동일하게 적용됩니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
 L["Save"] = "저장"
-L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "불러오려는 프로필이 이미 존재합니다. 새로운 이름을 지정하시거나 기존 프로필에 덮어쓸지를 선택하십시오."
 L["Type /hellokitty to revert to old settings."] = "/hellokitty 를 입력해서 예전 세팅으로 돌릴 수 있습니다."
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "힐러 레이아웃을 사용할 거라면 Clique 애드온을 같이 써 클릭캐스팅 기능을 이용할 것을 강력히 추천합니다."
 L["Yes, Keep Changes!"] = "네! 이대로 할래요!"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Thin Border Theme 선택을 바꾸었습니다. 설치과정을 끝까지 밟아 그래픽 관련 버그를 미연에 방지하는 걸 추천합니다."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "UI 배율이 변경되었지만 ElvUI의 UI크기 자동조절 기능이 켜져있습니다. UI크기 자동조절 기능을 끄고 싶다면 '수락'을 누르세요."
-L["You have imported settings which may require a UI reload to take effect. Reload now?"] = true
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "적용을 위해 UI 다시불러오기가 필요할 수 있는 설정을 가져왔습니다. 지금 UI를 재시작하시겠습니까?"
 L["You must purchase a bank slot first!"] = "우선 은행가방 칸을 구입해야됩니다!"
 
 --Tooltip
@@ -386,6 +390,6 @@ L["You can toggle the microbar by using your middle mouse button on the minimap 
 L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"] = "|cff2eb7e4/resetui|r 입력으로 움직였던 모든 프레임의 위치를 초기화할 수 있습니다. |cff2eb7e4 /resetui 프레임이름|r 으로 특정 프레임만 초기화도 가능합니다."
 
 --UnitFrames
-L["Dead"] = true
+L["Dead"] = "죽음"
 L["Ghost"] = "유령"
 L["Offline"] = "오프라인"

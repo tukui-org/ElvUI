@@ -70,7 +70,7 @@ UF['classMaxResourceBar'] = {
 	["DRUID"] = 5
 }
 
-UF['mapIDs'] = {
+UF['instanceMapIDs'] = {
 	[30] = 40, -- Alterac Valley
 	[489] = 10, -- Warsong Gulch
 	[529] = 15, -- Arathi Basin
@@ -78,12 +78,16 @@ UF['mapIDs'] = {
 	[607] = 15, -- Strand of the Ancients
 	[628] = 40, -- Isle of Conquest
 	[726] = 10, -- Twin Peaks
-	[727] = 10, -- Silvershard mines
-	[761] = 10, -- The Battle for Gilneas
+	[727] = 10, -- Silvershard Mines [STVDiamondMineBG]
+	[761] = 10, -- The Battle for Gilneas [GilneasBattleground2]
 	[968] = 10, -- Rated Eye of the Storm
 	[998] = 10, -- Temple of Kotmogu
-	[1105] = 15, -- Deepwind Gourge
-	[1280] = 40, -- Southshore vs. Tarren Mill
+	[1105] = 15, -- Deepwind Gourge [GoldRush]
+	[1280] = 40, -- Tarren Mill vs Southshore [HillsbradFoothillsBG]
+	[1681] = 15, -- Arathi Blizzard [ArathiBasinWinter]
+	[1803] = 10, -- Seething Shore [AzeriteBG]
+	--[1715] = 5, -- Battle for Blackrock Mountain
+	--do not have enough information on this one yet, going to store the instanceID for now.
 }
 
 UF['headerGroupBy'] = {
@@ -397,7 +401,7 @@ function UF:UpdateColors()
 
 	ElvUF.colors.castColor = E:GetColorTable(db.castColor)
 	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt)
-	
+
 	ElvUF.colors.DebuffHighlight = {}
 	ElvUF.colors.DebuffHighlight["Magic"] = E:GetColorTable(db.debuffHighlight.Magic)
 	ElvUF.colors.DebuffHighlight["Curse"] = E:GetColorTable(db.debuffHighlight.Curse)
@@ -529,7 +533,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local UNIT_HEIGHT = db.infoPanel and db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
-	local groupSpacing = 0
+	local groupSpacing = db.groupSpacing
 
 	local numGroups = self.numGroups
 	for i=1, numGroups do
@@ -766,10 +770,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, mapID = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
 
-			if UF.mapIDs[mapID] then
-				maxPlayers = UF.mapIDs[mapID]
+			if UF.instanceMapIDs[instanceMapID] then
+				maxPlayers = UF.instanceMapIDs[instanceMapID]
 			end
 
 			if maxPlayers > 0 then

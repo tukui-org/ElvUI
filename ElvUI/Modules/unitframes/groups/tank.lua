@@ -27,6 +27,8 @@ function UF:Construct_TankFrames()
 	self.Name = UF:Construct_NameText(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
+	self.MouseGlow = UF:Construct_MouseGlow(self)
+	self.TargetGlow = UF:Construct_TargetGlow(self)
 	self.Range = UF:Construct_Range(self)
 
 	if not self.isChild then

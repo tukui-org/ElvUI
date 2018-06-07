@@ -261,6 +261,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleCloseButton(QuestLogPopupDetailFrameCloseButton)
+	S:HandleScrollBar(QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)

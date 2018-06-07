@@ -14,7 +14,6 @@ local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
-local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
 
 local auraCache = {}
 
@@ -232,6 +231,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
 	aura.cooldown.FontOverride = cooldownFontOverride
+	aura.cooldown.ColorOverride = 'nameplates'
 	E:RegisterCooldown(aura.cooldown)
 
 	aura.count = aura:CreateFontString(nil, "OVERLAY")

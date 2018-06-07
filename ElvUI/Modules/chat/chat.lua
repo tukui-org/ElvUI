@@ -12,19 +12,22 @@ local strtrim, strmatch = strtrim, strmatch
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
 --WoW API / Variables
-local IsAltKeyDown = IsAltKeyDown
+local Ambiguate = Ambiguate
 local BetterDate = BetterDate
 local BNet_GetClientEmbeddedTexture = BNet_GetClientEmbeddedTexture
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
 local BNGetFriendInfo = BNGetFriendInfo
 local BNGetFriendInfoByID = BNGetFriendInfoByID
 local BNGetGameAccountInfo = BNGetGameAccountInfo
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
 local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
 local ChatEdit_ActivateChat = ChatEdit_ActivateChat
 local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
 local ChatEdit_ParseText = ChatEdit_ParseText
 local ChatEdit_SetLastTellTarget = ChatEdit_SetLastTellTarget
+local ChatFrame_CanChatGroupPerformExpressionExpansion = ChatFrame_CanChatGroupPerformExpressionExpansion
 local ChatFrame_ConfigEventHandler = ChatFrame_ConfigEventHandler
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatFrame_SendTell = ChatFrame_SendTell
@@ -32,8 +35,12 @@ local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local Chat_GetChatCategory = Chat_GetChatCategory
 local CreateFrame = CreateFrame
+local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
+local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_SocialGetLastItem = C_Social.GetLastItem
 local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
+local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
+local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
 local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
 local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
@@ -49,6 +56,7 @@ local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
 local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
+local GetCursorPosition = GetCursorPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
@@ -58,12 +66,11 @@ local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTime = GetTime
-local GetCursorPosition = GetCursorPosition
 local GMChatFrame_IsGM = GMChatFrame_IsGM
-local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
-local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local IsAltKeyDown = IsAltKeyDown
 local IsInInstance, IsInRaid, IsInGroup = IsInInstance, IsInRaid, IsInGroup
 local IsMouseButtonDown = IsMouseButtonDown
 local IsShiftKeyDown = IsShiftKeyDown
@@ -73,28 +80,26 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
+local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
+local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
+local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
 local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
+local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
+local wipe = wipe
+local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
+local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local ToggleQuickJoinPanel = ToggleQuickJoinPanel
-local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
-local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
-local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
-local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
-local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
-local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
-local BNET_CLIENT_WOW = BNET_CLIENT_WOW
+local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
 
 --Variables that are only used in ChatFrame_MessageEventHandler
@@ -119,7 +124,7 @@ local GlobalStrings = {
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GetColoredName, LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
+-- GLOBALS: LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
 -- GLOBALS: LeftChatPanel, LeftChatToggleButton, ChatFrame1, ChatTypeInfo, ChatMenu
 -- GLOBALS: CopyChatFrame, CopyChatFrameEditBox, CHAT_FRAMES, LeftChatTab, RightChatPanel
 -- GLOBALS: CopyChatScrollFrame, CopyChatScrollFrameScrollBar, RightChatDataPanel
@@ -566,9 +571,12 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
-function CH:AddMessage(msg, ...)
+function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
+	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
+	if isHistory == "ElvUI_ChatHistory" then historyTimestamp = historyTime end
+
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time());
 		timeStamp = timeStamp:gsub(' ', '')
 		timeStamp = timeStamp:gsub('AM', ' AM')
 		timeStamp = timeStamp:gsub('PM', ' PM')
@@ -579,14 +587,13 @@ function CH:AddMessage(msg, ...)
 		else
 			msg = format("[%s] %s", timeStamp, msg)
 		end
-		CH.timeOverride = nil;
 	end
 
 	if CH.db.copyChatLines then
 		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), [[|TInterface\AddOns\ElvUI\media\textures\ArrowRight:14|t]], msg)
 	end
 
-	self.OldAddMessage(self, msg, ...)
+	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
 end
 
 function CH:UpdateSettings()
@@ -1098,8 +1105,9 @@ local function getFirstToonClassColor(id)
 end
 
 function CH:GetBNFriendColor(name, id, useBTag)
-	local _, _, battleTag, _, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
-	local TAG = (useBTag or CH.db.useBTagName) and battleTag and strmatch(battleTag,'([^#]+)')
+	local _, _, battleTag, isBattleTagPresence, _, bnetIDGameAccount = BNGetFriendInfoByID(id)
+	local BATTLE_TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 	local Class
 
 	if not bnetIDGameAccount then --dont know how this is possible
@@ -1107,7 +1115,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		if firstToonClass then
 			Class = firstToonClass
 		else
-			return TAG or name
+			return TAG or name, isBattleTagPresence and BATTLE_TAG
 		end
 	end
 
@@ -1123,17 +1131,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
 	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
 
-	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name
-end
-
-function CH:GetSavedName(arg12, arg2)
-	if not arg12 or arg12 == '' then return arg2 end
-	if strmatch(arg12, '^|c.+|r$') or (not tonumber(arg12) and not strmatch(arg12, '^Player%-')) then return arg12 end
-end
-
-function CH:GetColorName(event,...)
-	local arg2, arg12 = select(02,...), select(12,...)
-	return CH:GetSavedName(arg12, arg2) or GetColoredName(event, ...)
+	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, isBattleTagPresence and BATTLE_TAG
 end
 
 local PluginIconsCalls = {}
@@ -1150,13 +1148,87 @@ function CH:GetPluginIcon(sender)
 	return icon
 end
 
+--Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
+function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+	local chatType = strsub(event, 10);
+	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
+		chatType = "WHISPER";
+	end
+	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
+		chatType = "CHANNEL"..arg8;
+	end
+	local info = ChatTypeInfo[chatType];
+
+	--ambiguate guild chat names
+	if (chatType == "GUILD") then
+		arg2 = Ambiguate(arg2, "guild")
+	else
+		arg2 = Ambiguate(arg2, "none")
+	end
+
+	if ( info and info.colorNameByClass and arg12 ) then
+	local _, englishClass = GetPlayerInfoByGUID(arg12)
+
+	if ( englishClass ) then
+		local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
+		if ( not classColorTable ) then
+			return arg2;
+		end
+		return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+		end
+	end
+	return arg2;
+end
+
+--Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
+local seenGroups = {};
+function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement, noGroupReplacement)
+	wipe(seenGroups);
+
+	for tag in gmatch(message, "%b{}") do
+		local term = strlower(gsub(tag, "[{}]", ""));
+		if ( not noIconReplacement and ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] ) then
+			message = gsub(message, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t");
+		elseif ( not noGroupReplacement and GROUP_TAG_LIST[term] ) then
+			local groupIndex = GROUP_TAG_LIST[term];
+			if not seenGroups[groupIndex] then
+				seenGroups[groupIndex] = true;
+				local groupList = "[";
+				for i=1, GetNumGroupMembers() do
+					local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
+					if ( name and subgroup == groupIndex ) then
+						local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
+						if ( classColorTable ) then
+							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
+						end
+						groupList = groupList..(groupList == "[" and "" or GlobalStrings.PLAYER_LIST_DELIMITER)..name;
+					end
+				end
+				if groupList ~= "[" then
+					groupList = groupList.."]";
+					message = gsub(message, tag, groupList, 1);
+				end
+			end
+		end
+	end
+
+	return message;
+end
+
 E.NameReplacements = {}
-function CH:ChatFrame_MessageEventHandler(event, ...)
+function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
+	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
-		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = ...;
 		if (arg16) then
 			-- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
 			return true;
+		end
+
+		local historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
+		if isHistory == "ElvUI_ChatHistory" then
+			if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
+			historySavedName = historyName
 		end
 
 		local type = strsub(event, 10);
@@ -1179,7 +1251,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = CH:GetColorName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
@@ -1275,7 +1347,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		if ( type == "SYSTEM" or type == "SKILL" or type == "CURRENCY" or type == "MONEY" or
 			type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif (type == "LOOT") then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
 			-- arg5 contains the name of the player who looted
@@ -1285,13 +1357,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					arg1 = arg1 .. " " .. Social_GetShareItemLink(itemID, creationContext, true);
 				end
 			end
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( strsub(type,1,7) == "COMBAT_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( strsub(type,1,6) == "SPELL_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( strsub(type,1,10) == "BG_SYSTEM_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
 			-- Append [Share] hyperlink
 			if (arg12 == E.myguid and C_SocialIsSocialEnabled()) then
@@ -1300,7 +1372,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
 				end
 			end
-			self:AddMessage(format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
 			local message = format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName)));
 			if (C_SocialIsSocialEnabled()) then
@@ -1312,50 +1384,62 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					end
 				end
 			end
-			self:AddMessage(message, info.r, info.g, info.b, info.id);
+			self:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "IGNORED" ) then
-			self:AddMessage(format(GlobalStrings.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(GlobalStrings.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "FILTERED" ) then
-			self:AddMessage(format(GlobalStrings.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(GlobalStrings.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(GlobalStrings.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id);
+			self:AddMessage(GlobalStrings.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
-				self:AddMessage(format(_G["CHAT_"..type.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(_G["CHAT_"..type.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			else
-				self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+				self:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		elseif (type == "CHANNEL_NOTICE_USER") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if ( not globalstring ) then
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
-
+			if not globalstring then
+				GMError(("Missing global string for %q"):format("CHAT_"..arg1.."_NOTICE_BN"));
+				return;
+			end
 			if(arg5 ~= "") then
 				-- TWO users in this notice (E.G. x kicked y)
-				self:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			elseif ( arg1 == "INVITE" ) then
-				self:AddMessage(format(globalstring, arg4, arg2), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(globalstring, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			else
-				self:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 			if ( arg1 == "INVITE" and GetCVarBool("blockChannelInvites") ) then
-				self:AddMessage(GlobalStrings.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id);
+				self:AddMessage(GlobalStrings.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		elseif (type == "CHANNEL_NOTICE") then
-			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
+			local globalstring;
 			if( arg1 == "TRIAL_RESTRICTED" ) then
 				globalstring = GlobalStrings.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
+				globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 				if ( not globalstring ) then
 					globalstring = _G["CHAT_"..arg1.."_NOTICE"];
+					if not globalstring then
+						GMError(("Missing global string for %q"):format("CHAT_"..arg1.."_NOTICE"));
+						return;
+					end
 				end
 			end
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, accessID, accessID, typeID)
+			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
+			if not globalstring then
+				GMError(("Missing global string for %q"):format("BN_INLINE_TOAST_"..arg1));
+				return;
+			end
 			local message;
 			if ( arg1 == "FRIEND_REQUEST" ) then
 				message = globalstring;
@@ -1382,17 +1466,17 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
 				message = format(globalstring, playerLink);
 			end
-			self:AddMessage(message, info.r, info.g, info.b, info.id);
+			self:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1));
 				local linkDisplayText = ("[%s]"):format(arg2);
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
-				self:AddMessage(format(GlobalStrings.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(GlobalStrings.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
-				self:AddMessage(GlobalStrings.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id);
+				self:AddMessage(GlobalStrings.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		else
 			local body;
@@ -1448,35 +1532,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			-- Search for icon links and replace them with texture links.
-			for tag in gmatch(arg1, "%b{}") do
-				local term = strlower(gsub(tag, "[{}]", ""));
-				-- If arg17 is true, don't convert to raid icons
-				if ( not arg17 and ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] ) then
-					arg1 = gsub(arg1, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t");
-				elseif ( GROUP_TAG_LIST[term] ) then
-					local groupIndex = GROUP_TAG_LIST[term];
-					local groupList = "[";
-					for i=1, GetNumGroupMembers() do
-						local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i);
-						if ( name and subgroup == groupIndex ) then
-							local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
-							if ( classColorTable ) then
-								name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
-							end
-							groupList = groupList..(groupList == "[" and "" or GlobalStrings.PLAYER_LIST_DELIMITER)..name;
-						end
-					end
-					groupList = groupList.."]";
-					arg1 = gsub(arg1, tag, groupList);
-				end
-			end
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)); -- If arg17 is true, don't convert to raid icons
 
 			--Remove groups of many spaces
 			arg1 = RemoveExtraSpaces(arg1);
 
 			--ElvUI: Get class colored name for BattleNet friend
 			if ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
-				coloredName = CH:GetSavedName(arg12) or CH:GetBNFriendColor(arg2, arg13)
+				coloredName = historySavedName or CH:GetBNFriendColor(arg2, arg13)
 			end
 
 			local playerLink;
@@ -1561,24 +1624,24 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
 				body = body:gsub("^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
-			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID);
+			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
 
-		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
+		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( type == "WHISPER" or type == "BN_WHISPER" ) then
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, type);
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
-				PlaySound(3081) --TELL_MESSAGE
+				PlaySound(SOUNDKIT.TELL_MESSAGE);
 			end
 			self.tellTimer = GetTime() + GlobalStrings.CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
 			FlashClientIcon();
 		end
 
-		if ( not self:IsShown() ) then
+		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
-					if not CH.SuppressFlash and not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
+					if not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
 						FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 					end
 				end
@@ -1589,21 +1652,27 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 	end
 end
 
-function CH:ChatFrame_OnEvent(event, ...)
-	if ( ChatFrame_ConfigEventHandler(self, event, ...) ) then
-		return;
-	end
-	if ( ChatFrame_SystemEventHandler(self, event, ...) ) then
-		return
-	end
-	if ( CH.ChatFrame_MessageEventHandler(self, event, ...) ) then
-		return
-	end
+function CH:ChatFrame_ConfigEventHandler(...)
+	return ChatFrame_ConfigEventHandler(...)
 end
 
-function CH:FloatingChatFrame_OnEvent(event, ...)
-	CH.ChatFrame_OnEvent(self, event, ...);
-	FloatingChatFrame_OnEvent(self, event, ...);
+function CH:ChatFrame_SystemEventHandler(...)
+	return ChatFrame_SystemEventHandler(...)
+end
+
+function CH:ChatFrame_OnEvent(...)
+	if CH:ChatFrame_ConfigEventHandler(...) then return end
+	if CH:ChatFrame_SystemEventHandler(...) then return end
+	if CH:ChatFrame_MessageEventHandler(...) then return end
+end
+
+function CH:FloatingChatFrame_OnEvent(...)
+	CH:ChatFrame_OnEvent(...);
+	FloatingChatFrame_OnEvent(...);
+end
+
+local function FloatingChatFrameOnEvent(...)
+	CH:FloatingChatFrame_OnEvent(...)
 end
 
 function CH:SetupChat()
@@ -1627,15 +1696,8 @@ function CH:SetupChat()
 		if not frame.scriptsSet then
 			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 
-			--[[THIS CAUSES LUA ERROR WHEN RESETTING CHAT TO DEFAULTS OR WHEN RUNNING FCF_ResetChatWindows()
-			if id > NUM_CHAT_WINDOWS then
-				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
-			elseif id ~= 2 then
-				frame:SetScript("OnEvent", CH.ChatFrame_OnEvent)
-			end]]
-			--Use this instead for the time being
 			if id ~= 2 then
-				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
+				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
 			end
 
 			hooksecurefunc(frame, "SetScript", function(f, script, func)
@@ -1904,43 +1966,45 @@ function CH:DisplayChatHistory()
 		return
 	end
 
-	CH.SoundPlayed = true;
-	CH.SuppressFlash = true;
+	CH.SoundPlayed = true
 	for _, chat in pairs(CHAT_FRAMES) do
 		for i=1, #data do
 			d = data[i]
 			if type(d) == 'table' then
-				CH.timeOverride = d[51]
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH.ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[52],unpack(d,13))
+						CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 					end
 				end
 			end
 		end
 	end
-	CH.SoundPlayed = nil;
-	CH.SuppressFlash = nil;
+	CH.SoundPlayed = nil
 end
 
 tremove(ChatTypeGroup['GUILD'], 2)
 function CH:DelayGuildMOTD()
-	local delay, delayFrame, chat = 0, CreateFrame('Frame')
+	local delay, checks, delayFrame, chat = 0, 0, CreateFrame('Frame')
 	tinsert(ChatTypeGroup['GUILD'], 2, 'GUILD_MOTD')
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
 		if delay < 5 then return end
 		local msg = GetGuildRosterMOTD()
-		for _, frame in pairs(CHAT_FRAMES) do
-			chat = _G[frame]
-			if chat and chat:IsEventRegistered('CHAT_MSG_GUILD') then
-				if msg and strlen(msg) > 0 then
-					ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
+		if msg and strlen(msg) > 0 then
+			for _, frame in pairs(CHAT_FRAMES) do
+				chat = _G[frame]
+				if chat and chat:IsEventRegistered('CHAT_MSG_GUILD') then
+					CH:ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
+					chat:RegisterEvent('GUILD_MOTD')
 				end
-				chat:RegisterEvent('GUILD_MOTD')
+			end
+			df:SetScript('OnUpdate', nil)
+		else -- 5 seconds can be too fast for the API response. let's try once every 5 seconds (max 5 checks).
+			delay, checks = 0, checks + 1
+			if checks >= 5 then
+				df:SetScript('OnUpdate', nil)
 			end
 		end
-		df:SetScript('OnUpdate', nil)
 	end)
 end
 
@@ -1968,7 +2032,11 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 		temp[50] = event
 		temp[51] = time()
-		temp[52] = temp[13]>0 and CH:GetBNFriendColor(temp[2], temp[13], true) or CH:GetColorName(event, ...)
+
+		local coloredName, battleTag
+		if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
+		if battleTag then temp[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
+		temp[52] = coloredName or CH:GetColoredName(event, ...)
 
 		tinsert(data, temp)
 		while #data >= 128 do
@@ -2295,16 +2363,16 @@ function CH:Initialize()
 		end
 	end)
 
-	if self.db.chatHistory then
-		self:DisplayChatHistory()
-	end
-
 	for _, event in pairs(FindURL_Events) do
 		ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		local nType = strsub(event, 10)
 		if nType ~= 'AFK' and nType ~= 'DND' then
 			self:RegisterEvent(event, 'SaveChatHistory')
 		end
+	end
+
+	if self.db.chatHistory then
+		self:DisplayChatHistory()
 	end
 
 	local S = E:GetModule('Skins')

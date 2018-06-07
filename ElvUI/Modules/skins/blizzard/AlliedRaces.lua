@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local _G = _G
 
 --WoW API / Variables
 

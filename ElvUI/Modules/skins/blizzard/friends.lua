@@ -206,7 +206,7 @@ local function LoadSkin()
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
 	local function SkinFriendRequest(frame)
 		if frame.isSkinned then return; end
-		S:HandleButton(frame.DeclineButton)
+		S:HandleButton(frame.DeclineButton, nil, true)
 		S:HandleButton(frame.AcceptButton)
 		frame.isSkinned = true
 	end
@@ -314,6 +314,15 @@ local function LoadSkin()
 	S:HandleEditBox(RecruitAFriendNameEditBox)
 	RecruitAFriendNoteFrame:StripTextures()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
+
+	RecruitAFriendSentFrame:StripTextures()
+	RecruitAFriendSentFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(RecruitAFriendSentFrameCloseButton)
+	S:HandleButton(RecruitAFriendSentFrame.OKButton)
+	hooksecurefunc("RecruitAFriend_Send", function()
+		RecruitAFriendSentFrame:ClearAllPoints()
+		RecruitAFriendSentFrame:Point("CENTER", E.UIParent, "CENTER", 0, 100)
+	end)
 
 	--Quick join
 	S:HandleScrollBar(QuickJoinScrollFrameScrollBar, 5)

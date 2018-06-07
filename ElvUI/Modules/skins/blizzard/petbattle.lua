@@ -206,51 +206,53 @@ local function LoadSkin()
 	f.TopVersusText:Point("TOP", f, "TOP", 0, -35)
 
 	-- TOOLTIPS SKINNING
-	local function SkinPetTooltip(tt)
-		tt.Background:SetTexture(nil)
-		if tt.Delimiter1 then
-			tt.Delimiter1:SetTexture(nil)
-			tt.Delimiter2:SetTexture(nil)
+	if E.private.skins.blizzard.tooltip then
+		local function SkinPetTooltip(tt)
+			tt.Background:SetTexture(nil)
+			if tt.Delimiter1 then
+				tt.Delimiter1:SetTexture(nil)
+				tt.Delimiter2:SetTexture(nil)
+			end
+			tt.BorderTop:SetTexture(nil)
+			tt.BorderTopLeft:SetTexture(nil)
+			tt.BorderTopRight:SetTexture(nil)
+			tt.BorderLeft:SetTexture(nil)
+			tt.BorderRight:SetTexture(nil)
+			tt.BorderBottom:SetTexture(nil)
+			tt.BorderBottomRight:SetTexture(nil)
+			tt.BorderBottomLeft:SetTexture(nil)
+			tt:SetTemplate("Transparent")
 		end
-		tt.BorderTop:SetTexture(nil)
-		tt.BorderTopLeft:SetTexture(nil)
-		tt.BorderTopRight:SetTexture(nil)
-		tt.BorderLeft:SetTexture(nil)
-		tt.BorderRight:SetTexture(nil)
-		tt.BorderBottom:SetTexture(nil)
-		tt.BorderBottomRight:SetTexture(nil)
-		tt.BorderBottomLeft:SetTexture(nil)
-		tt:SetTemplate("Transparent")
+
+		SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
+		SkinPetTooltip(PetBattlePrimaryUnitTooltip)
+		SkinPetTooltip(BattlePetTooltip)
+		SkinPetTooltip(FloatingBattlePetTooltip)
+		SkinPetTooltip(FloatingPetBattleAbilityTooltip)
+
+		-- BATTLEPET RARITY COLOR
+		hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
+			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
+			if quality and rarity > 1 then
+				BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+			else
+				BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+		end)
+
+		-- TOOLTIP DEFAULT POSITION
+		hooksecurefunc("PetBattleAbilityTooltip_Show", function()
+			local t = PetBattlePrimaryAbilityTooltip
+			local point, x, y = "TOPRIGHT", -4, -4
+			--Position it at the bottom right on low resolution setups
+			--Otherwise the tooltip might overlap enemy team unit info
+			if E.lowversion then
+				point, x, y = "BOTTOMRIGHT", -4, 4
+			end
+			t:ClearAllPoints()
+			t:Point(point, E.UIParent, point, x, y)
+		end)
 	end
-
-	SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
-	SkinPetTooltip(PetBattlePrimaryUnitTooltip)
-	SkinPetTooltip(BattlePetTooltip)
-	SkinPetTooltip(FloatingBattlePetTooltip)
-	SkinPetTooltip(FloatingPetBattleAbilityTooltip)
-
-	-- BATTLEPET RARITY COLOR
-	hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
-		local quality = rarity and ITEM_QUALITY_COLORS[rarity]
-		if quality and rarity > 1 then
-			BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
-		else
-			BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
-
-	-- TOOLTIP DEFAULT POSITION
-	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
-		local t = PetBattlePrimaryAbilityTooltip
-		local point, x, y = "TOPRIGHT", -4, -4
-		--Position it at the bottom right on low resolution setups
-		--Otherwise the tooltip might overlap enemy team unit info
-		if E.lowversion then
-			point, x, y = "BOTTOMRIGHT", -4, 4
-		end
-		t:ClearAllPoints()
-		t:Point(point, E.UIParent, point, x, y)
-	end)
 
 	local extraInfoBars = {
 		f.Ally2,

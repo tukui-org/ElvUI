@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 --Lua functions
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split = string.lower, string.split
+local lower, split, format = string.lower, string.split, format
 --WoW API / Variables
 local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
 local SetCVar = SetCVar
@@ -14,10 +14,11 @@ local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRoste
 local GetGuildRosterLastOnline = GetGuildRosterLastOnline
 local GuildUninvite = GuildUninvite
 local SendChatMessage = SendChatMessage
-local debugprofilestart, debugprofilestop = debugprofilestart, debugprofilestop
+local debugprofilestop = debugprofilestop
 local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
 local ResetCPUUsage = ResetCPUUsage
 local GetAddOnInfo = GetAddOnInfo
+local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: FarmMode, Minimap, FarmModeMap, EGrid, MacroEditBox, HelloKittyLeft
@@ -119,22 +120,26 @@ local f = CreateFrame("Frame")
 f:Hide()
 f:SetScript("OnUpdate", OnUpdate)
 
-local toggleMode = false
+local toggleMode, debugTimer = false, 0;
 function E:GetCPUImpact()
-	if(not toggleMode) then
-		ResetCPUUsage()
-		num_frames = 0;
-		debugprofilestart()
-		f:Show()
-		toggleMode = true
-		self:Print("CPU Impact being calculated, type /cpuimpact to get results when you are ready.")
-	else
-		f:Hide()
-		local ms_passed = debugprofilestop()
-		UpdateAddOnCPUUsage()
+	if not GetCVarBool("scriptProfile") then
+		E:Print("For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
+		return
+	end
 
-		self:Print("Consumed "..(GetAddOnCPUUsage("ElvUI") / num_frames).." milliseconds per frame. Each frame took "..(ms_passed / num_frames).." to render.");
-		toggleMode = false
+	if(not toggleMode) then
+		ResetCPUUsage();
+		toggleMode, num_frames, debugTimer = true, 0, debugprofilestop();
+		self:Print("CPU Impact being calculated, type /cpuimpact to get results when you are ready.");
+		f:Show();
+	else
+		f:Hide();
+		local ms_passed = debugprofilestop() - debugTimer;
+		UpdateAddOnCPUUsage();
+
+		local per, passed = ((num_frames == 0 and 0) or (GetAddOnCPUUsage("ElvUI") / num_frames)), ((num_frames == 0 and 0) or (ms_passed / num_frames));
+		self:Print("Consumed "..(per and per > 0 and format("%.3f", per) or 0).."ms per frame. Each frame took "..(passed and passed > 0 and format("%.3f", passed) or 0).."ms to render.");
+		toggleMode = false;
 	end
 end
 
@@ -216,9 +221,9 @@ function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
-	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
+	self:RegisterChatCommand("cpuimpact", "GetCPUImpact")
 
-	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
+	self:RegisterChatCommand("cpuusage", "GetTopCPUFunc")
 	-- args: module, showall, delay, minCalls
 	-- Example1: /cpuusage all
 	-- Example2: /cpuusage Bags true
@@ -226,21 +231,21 @@ function E:LoadCommands()
 	-- Note: showall, delay, and minCalls will default if not set
 	-- arg1 can be "all" this will scan all registered modules!
 
-	self:RegisterChatCommand('bgstats', 'BGStats')
-	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
-	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
-	self:RegisterChatCommand('harlemshake', 'HarlemShakeToggle')
-	self:RegisterChatCommand('luaerror', 'LuaError')
-	self:RegisterChatCommand('egrid', 'Grid')
+	self:RegisterChatCommand("bgstats", "BGStats")
+	self:RegisterChatCommand("hellokitty", "HelloKittyToggle")
+	self:RegisterChatCommand("hellokittyfix", "HelloKittyFix")
+	self:RegisterChatCommand("harlemshake", "HarlemShakeToggle")
+	self:RegisterChatCommand("luaerror", "LuaError")
+	self:RegisterChatCommand("egrid", "Grid")
 	self:RegisterChatCommand("moveui", "ToggleConfigMode")
 	self:RegisterChatCommand("resetui", "ResetUI")
-	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
-	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
+	self:RegisterChatCommand("cleanguild", "MassGuildKick")
+	self:RegisterChatCommand("enableblizzard", "EnableBlizzardAddOns")
 	self:RegisterChatCommand("estatus", "ShowStatusReport")
-	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
+	-- self:RegisterChatCommand("aprilfools", "") --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
 		local AB = E:GetModule("ActionBars")
-		self:RegisterChatCommand('kb', AB.ActivateBindMode)
+		self:RegisterChatCommand("kb", AB.ActivateBindMode)
 	end
 end

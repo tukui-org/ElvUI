@@ -4,9 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack = pairs, unpack
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SquareButton_SetIcon
 
@@ -47,7 +45,10 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
-	QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+	if E.private.skins.blizzard.tooltip then
+		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+	end
+
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
@@ -55,9 +56,9 @@ local function LoadSkin()
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 
 	local TrackingOptions = _G["WorldMapFrame"].UIElementsFrame.TrackingOptionsButton
-	TrackingOptions.Button:SetAlpha(0)
+	TrackingOptions.Button:StripTextures()
 	TrackingOptions.Background:SetAlpha(0)
-	TrackingOptions.IconOverlay:SetTexture("")
+	TrackingOptions.IconOverlay:SetAlpha(0)
 
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)

@@ -31,7 +31,6 @@ local RequestInviteFromUnit = RequestInviteFromUnit
 local SendChatMessage = SendChatMessage
 local SetItemRef = SetItemRef
 local ToggleFriendsFrame = ToggleFriendsFrame
-local UnitFactionGroup = UnitFactionGroup
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
@@ -42,7 +41,7 @@ local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local L_EasyMenu = L_EasyMenu
+local EasyMenu = EasyMenu
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 -- create a popup
@@ -65,7 +64,7 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	preferredIndex = 3
 }
 
-local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = INVITE, hasArrow = true, notCheckable=true, },
@@ -418,7 +417,7 @@ local function Click(self, btn)
 							menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 						end
 
-						if info[6] == wowString and (UnitFactionGroup("player") == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
+						if info[6] == wowString and (E.myfaction == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
 							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
 							classc = classc or GetQuestDifficultyColor(info[16])
 
@@ -430,7 +429,7 @@ local function Click(self, btn)
 			end
 		end
 
-		L_EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleFriendsFrame()
 	end

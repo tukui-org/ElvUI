@@ -16,6 +16,7 @@ local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBa
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
+local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
@@ -78,10 +79,10 @@ local SEARCH = SEARCH
 local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 
-local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
-local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
-local L_UIDropDownMenu_Initialize = L_UIDropDownMenu_Initialize
-local L_ToggleDropDownMenu = L_ToggleDropDownMenu
+local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
+local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
+local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
+local ToggleDropDownMenu = ToggleDropDownMenu
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -639,11 +640,11 @@ function B:AssignBagFlagMenu()
 	local inventoryID = ContainerIDToInventoryID(holder.id)
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
-	local info = L_UIDropDownMenu_CreateInfo()
+	local info = UIDropDownMenu_CreateInfo()
     info.text = BAG_FILTER_ASSIGN_TO
     info.isTitle = 1
     info.notCheckable = 1
-    L_UIDropDownMenu_AddButton(info)
+    UIDropDownMenu_AddButton(info)
 
     info.isTitle = nil
     info.notCheckable = nil
@@ -677,7 +678,7 @@ function B:AssignBagFlagMenu()
 
 			info.disabled = nil
 			info.tooltipTitle = nil
-			L_UIDropDownMenu_AddButton(info)
+			UIDropDownMenu_AddButton(info)
 		end
 	end
 end
@@ -753,7 +754,7 @@ function B:Layout(isBank)
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" and holder.id then
 							ElvUIAssignBagDropdown.holder = holder
-							L_ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+							ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 						else
 							local inventoryID = holder:GetInventorySlot();
 							PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
@@ -764,7 +765,7 @@ function B:Layout(isBank)
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" and holder.id then
 							ElvUIAssignBagDropdown.holder = holder
-							L_ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+							ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 						else
 							local id = holder:GetID();
 							PutItemInBag(id);--Put bag on empty slot, or drop item in this bag
@@ -883,6 +884,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
 
 					f.Bags[bagID][slotID].cooldown = _G[f.Bags[bagID][slotID]:GetName()..'Cooldown'];
+					f.Bags[bagID][slotID].cooldown.ColorOverride = 'bags'
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
 					f.Bags[bagID][slotID].bagID = bagID
 					f.Bags[bagID][slotID].slotID = slotID
@@ -1637,7 +1639,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.vendorGraysButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
 		f.vendorGraysButton:GetPushedTexture():SetInside()
 		f.vendorGraysButton:StyleButton(nil, true)
-		f.vendorGraysButton.ttText = L["Vendor Grays"]
+		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
 		f.vendorGraysButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.vendorGraysButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.vendorGraysButton:SetScript("OnClick", B.VendorGrayCheck)
@@ -1693,6 +1695,11 @@ function B:ContructContainerFrame(name, isBank)
 			CloseBackpack()
 			for i = 1, NUM_BAG_FRAMES do
 				CloseBag(i)
+			end
+
+			-- hide new item glow on bag 0 fix [note: closebag handles the others correctly]
+			for slotID = 1, GetContainerNumSlots(0) do
+				C_NewItems_RemoveNewItem(0, slotID);
 			end
 
 			if ElvUIBags and ElvUIBags.buttons then
@@ -1970,11 +1977,11 @@ function B:Initialize()
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove)
 
 	--Bag Assignment Dropdown Menu
-	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "L_UIDropDownMenuTemplate")
+	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "UIDropDownMenuTemplate")
 	ElvUIAssignBagDropdown:SetID(1)
 	ElvUIAssignBagDropdown:SetClampedToScreen(true)
 	ElvUIAssignBagDropdown:Hide()
-	L_UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
+	UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
 
 	--Set some variables on movers
 	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]

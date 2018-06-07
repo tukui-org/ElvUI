@@ -222,8 +222,11 @@ local function LoadSkin()
 	S:HandleScrollBar(WarGamesFrameInfoScrollFrameScrollBar)
 	WarGamesFrameInfoScrollFrameScrollBar:StripTextures()
 	S:HandleCheckBox(WarGameTournamentModeCheckButton)
-	ConquestTooltip:SetTemplate("Transparent")
-	PVPRewardTooltip:SetTemplate("Transparent")
+	
+	if E.private.skins.blizzard.tooltip then
+		ConquestTooltip:SetTemplate("Transparent")
+		PVPRewardTooltip:SetTemplate("Transparent")
+	end
 
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)

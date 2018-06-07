@@ -36,6 +36,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitFactionGroup = UnitFactionGroup
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
@@ -46,14 +47,13 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
-E.myclass = select(2, UnitClass("player"));
-E.myClassID = select(3, UnitClass("player"));
-E.myspec = GetSpecialization();
-E.myrace = select(2, UnitRace("player"));
-E.myfaction = select(2, UnitFactionGroup('player'));
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
+E.myLocalizedRace, E.myrace = UnitRace("player");
 E.myname = UnitName("player");
-E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
+E.myspec = GetSpecialization();
+E.version = GetAddOnMetadata("ElvUI", "Version");
 E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
@@ -420,6 +420,13 @@ end
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
+end
+
+function E:NEUTRAL_FACTION_SELECT_RESULT()
+	local newFaction, newLocalizedFaction = UnitFactionGroup("player")
+	if E.myfaction ~= newFaction then
+		E.myfaction, E.myLocalizedFaction = newFaction, newLocalizedFaction
+	end
 end
 
 function E:PLAYER_ENTERING_WORLD()
@@ -975,7 +982,7 @@ function E:UpdateAll(ignoreInstall)
 	self:SetMoversPositions()
 
 	self:UpdateMedia()
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	if self.RefreshGUI then self:RefreshGUI() end --Refresh Config
 
 	local UF = self:GetModule('UnitFrames')
@@ -1461,8 +1468,8 @@ local function CompareCPUDiff(showall, minCalls)
 			end
 			newUsage, calls = GetFunctionCPUUsage(mod[newFunc], true)
 			differance = newUsage - oldUsage
-			if showall and calls > minCalls then
-				E:Print(calls, name, differance)
+			if showall and (calls > minCalls) then
+				E:Print('Name('..name..')  Calls('..calls..') Diff('..(differance > 0 and format("%.3f", differance) or 0)..')')
 			end
 			if (differance > greatestDiff) and calls > minCalls then
 				greatestName, greatestUsage, greatestCalls, greatestDiff = name, newUsage, calls, differance
@@ -1471,46 +1478,55 @@ local function CompareCPUDiff(showall, minCalls)
 	end
 
 	if greatestName then
-		E:Print(greatestName.. " had the CPU usage difference of: "..greatestUsage.."ms. And has been called ".. greatestCalls.." times.")
+		E:Print(greatestName.. " had the CPU usage difference of: "..(greatestUsage > 0 and format("%.3f", greatestUsage) or 0).."ms. And has been called ".. greatestCalls.." times.")
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
+
+	twipe(CPU_USAGE)
 end
 
 function E:GetTopCPUFunc(msg)
-	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
-	local mod
-
-	module = (module == "nil" and nil) or module
-	if not module then
-		E:Print('cpuusage: module (arg1) is required! This can be set as "all" too.')
+	if not GetCVarBool("scriptProfile") then
+		E:Print("For `/cpuusage` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
 		return
 	end
+
+	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
+	local checkCore, mod = (not module or module == "") and "E"
+
 	showall = (showall == "true" and true) or false
 	delay = (delay == "nil" and nil) or tonumber(delay) or 5
 	minCalls = (minCalls == "nil" and nil) or tonumber(minCalls) or 15
 
 	twipe(CPU_USAGE)
 	if module == "all" then
-		for _, registeredModule in pairs(self['RegisteredModules']) do
-			mod = self:GetModule(registeredModule, true) or self
-			for name in pairs(mod) do
-				if type(mod[name]) == "function" and name ~= "GetModule" then
-					CPU_USAGE[registeredModule..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		for moduName, modu in pairs(self.modules) do
+			for funcName, func in pairs(modu) do
+				if (funcName ~= "GetModule") and (type(func) == "function") then
+					CPU_USAGE[moduName..":"..funcName] = GetFunctionCPUUsage(func, true)
 				end
 			end
 		end
 	else
-		mod = self:GetModule(module, true) or self
-		for name in pairs(mod) do
-			if type(mod[name]) == "function" and name ~= "GetModule" then
-				CPU_USAGE[module..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		if not checkCore then
+			mod = self:GetModule(module, true)
+			if not mod then
+				self:Print(module.." not found, falling back to checking core.")
+				mod, checkCore = self, "E"
+			end
+		else
+			mod = self
+		end
+		for name, func in pairs(mod) do
+			if (name ~= "GetModule") and type(func) == "function" then
+				CPU_USAGE[(checkCore or module)..":"..name] = GetFunctionCPUUsage(func, true)
 			end
 		end
 	end
 
 	self:Delay(delay, CompareCPUDiff, showall, minCalls)
-	self:Print("Calculating CPU Usage differences (module: "..(module or "?")..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
+	self:Print("Calculating CPU Usage differences (module: "..(checkCore or module)..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
 end
 
 local function SetOriginalHeight()
@@ -1528,7 +1544,7 @@ local function SetModifiedHeight()
 		return
 	end
 	E:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+	local height = E.UIParent.origHeight - (OrderHallCommandBar:GetHeight() + E.Border)
 	E.UIParent:SetHeight(height)
 end
 
@@ -1571,7 +1587,7 @@ function E:Initialize(loginFrame)
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules
 	self:LoadMovers(); --Load Movers
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	self.initialized = true
 
 	if self.private.install_complete == nil then
@@ -1596,8 +1612,9 @@ function E:Initialize(loginFrame)
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");
-	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")

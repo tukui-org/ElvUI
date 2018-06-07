@@ -43,7 +43,7 @@ L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
-L["Vendor Grays"] = "出售灰色物品"
+L["Vendor / Delete Grays"] = "出售/删除灰色物品"
 
 --Chat
 L["AFK"] = "离开" --Also used in datatexts and tooltip
@@ -97,6 +97,7 @@ L["Hands"] = "手"
 L["Head"] = "头"
 L["Hold Shift + Right Click:"] = "按住Shift + 右键点击"
 L["Home Latency:"] = "本机延迟:"
+L["Home Protocol:"] = "本地协议:"
 L["HP"] = "生命值"
 L["HPS"] = "治疗输出"
 L["Legs"] = "腿"
@@ -130,6 +131,7 @@ L["Total Memory:"] = "总内存:"
 L["Total: "] = "合计: "
 L["Unhittable:"] = "未命中:"
 L["Waist"] = "腰"
+L["World Protocol:"] ="世界协议:"
 L["Wrist"] = "护腕"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左键点击:|r 更改当前专精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右键点击:|r 更改拾取专精"
@@ -330,15 +332,16 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "你所做的改动只会影响到使用这个插件的本角色, 你需要重新加载界面才能使改动生效."
+L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = true
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "接受这个将重置姓名版中所有光环的过滤器优先级. 你确定吗？"
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "接受这个将重置单位框架中所有光环的过滤器优先级. 你确定吗？"
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定要对所有ElvUI元素使用这个字体?"
-L["Are you sure you want to delete all your gray items?"] = "确定需要摧毁你的灰色物品?"
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"
 L["Are you sure you want to reset all the settings on this profile?"] = "确定需要重置这个配置文件中的所有设置?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "确定需要重置所有框架至默认位置?"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "由于大量的改动导致光环系统需要一个新的安装过程. 这是可选的, 最后一步将设置你的光环样式. 点击「完成」将不再提示. 如果由于某些原因反复提示, 请重新开启游戏."
 L["Can't buy anymore slots!"] = "银行背包栏位已达最大值"
+L["Delete gray items?"] = "删除灰色物品?"
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "检测到您的ElvUI设置插件已过期.这可能是因为您的 Tukui 客户端已过期.请访问我们的下载页面并更新 Tukui 客户端，然后重新安装ElvUI.ElvUI设置插件过期会造成某些选项丢失"
 L["Disable Warning"] = '停用警告'
 L["Discard"] = "取消"
@@ -347,6 +350,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期5个或者更多的版本。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
+L["Error resetting UnitFrame."] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "移动鼠标到动作条或技能书按钮上绑定快捷键. 按ESC或鼠标右键取消目前快捷键"
 L["I Swear"] = '我承诺'
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起来你使用的一个插件使得Blizzard_CompactRaidFrames停用了。这会产生错误与问题。这个插件现在会被重新启用"

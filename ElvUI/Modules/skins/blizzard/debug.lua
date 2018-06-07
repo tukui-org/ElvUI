@@ -48,20 +48,22 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
-	FrameStackTooltip:HookScript("OnShow", function(self)
-		if not self.template then
-			self:SetTemplate("Transparent")
-		end
-	end)
+	if E.private.skins.blizzard.tooltip then
+		FrameStackTooltip:HookScript("OnShow", function(self)
+			if not self.template then
+				self:SetTemplate("Transparent")
+			end
+		end)
 
-	EventTraceTooltip:HookScript("OnShow", function(self)
-		if not self.template then
-			self:SetTemplate("Transparent", nil, true) --ignore updates
-		else
-			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			self:SetBackdropColor(unpack(E.media.backdropfadecolor))
-		end
-	end)
+		EventTraceTooltip:HookScript("OnShow", function(self)
+			if not self.template then
+				self:SetTemplate("Transparent", nil, true) --ignore updates
+			else
+				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:SetBackdropColor(unpack(E.media.backdropfadecolor))
+			end
+		end)
+	end
 
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 

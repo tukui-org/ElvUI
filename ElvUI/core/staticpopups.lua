@@ -5,9 +5,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
-local lower = string.lower
+local lower, format = string.lower, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
@@ -20,6 +21,7 @@ local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
+local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
@@ -195,6 +197,37 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs["RESET_UF_UNIT"] = {
+	text = L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		if self.data and self.data.unit then
+			local UF = E:GetModule('UnitFrames');
+			UF:ResetUnitSettings(self.data.unit);
+			if self.data.mover then
+				E:ResetMovers(self.data.mover);
+			end
+
+			if self.data.unit == 'raidpet' then
+				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
+			end
+
+			if IsAddOnLoaded("ElvUI_Config") then
+				local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
+				end
+			end
+		else
+			E:Print(L["Error resetting UnitFrame."]);
+		end
+	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs["RESET_UF_AF"] = {
 	text = L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"],
 	button1 = ACCEPT,
@@ -248,14 +281,14 @@ E.PopupDialogs["KEYBIND_MODE"] = {
 }
 
 E.PopupDialogs["DELETE_GRAYS"] = {
-	text = L["Are you sure you want to delete all your gray items?"],
+	text = format("|cffff0000%s|r", L["Delete gray items?"]),
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function() E:GetModule('Bags'):VendorGrays(true) end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs["DELETE_GRAYS"].Money);
 	end,
-	timeout = 0,
+	timeout = 4,
 	whileDead = 1,
 	hideOnEscape = false,
 	hasMoneyFrame = 1,
@@ -491,6 +524,20 @@ function E:StaticPopup_OnShow()
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", E.StaticPopup_OnKeyDown);
 	end
+
+	-- boost static popups over ace gui
+	if IsAddOnLoaded("ElvUI_Config") then
+		local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+			self.frameStrataIncreased = true
+			self:SetFrameStrata("FULLSCREEN_DIALOG")
+
+			local popupFrameLevel = self:GetFrameLevel()
+			if popupFrameLevel < 100 then
+				self:SetFrameLevel(popupFrameLevel+100)
+			end
+		end
+	end
 end
 
 function E:StaticPopup_EscapePressed()
@@ -607,6 +654,17 @@ function E:StaticPopup_OnHide()
 	self.extraFrame:Hide();
 	if ( dialog.enterClicksFirstButton ) then
 		self:SetScript("OnKeyDown", nil);
+	end
+
+	-- static popup was boosted over ace gui, set it back to normal
+	if self.frameStrataIncreased then
+		self.frameStrataIncreased = nil
+		self:SetFrameStrata("DIALOG")
+
+		local popupFrameLevel = self:GetFrameLevel()
+		if popupFrameLevel > 100 then
+			self:SetFrameLevel(popupFrameLevel-100)
+		end
 	end
 end
 
@@ -1079,8 +1137,8 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index]:SetScript('OnEvent', E.StaticPopup_OnEvent)
 
 		for i = 1, 3 do
-			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(self)
-				E.StaticPopup_OnClick(self:GetParent(), self:GetID())
+			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(button)
+				E.StaticPopup_OnClick(button:GetParent(), button:GetID())
 			end)
 		end
 
@@ -1095,6 +1153,7 @@ function E:Contruct_StaticPopups()
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end
 
+		_G["ElvUI_StaticPopup"..index.."EditBox"]:SetFrameLevel(_G["ElvUI_StaticPopup"..index.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameSilver"])

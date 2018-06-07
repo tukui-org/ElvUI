@@ -12,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -33,10 +33,6 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
-
-		--DropDownMenu library support
-		"L_DropDownList1Backdrop",
-		"L_DropDownList1MenuBackdrop"
 	}
 
 	for i = 1, getn(skins) do
@@ -45,7 +41,7 @@ local function LoadSkin()
 
 	QueueStatusFrame:StripTextures()
 
-	if not IsAddOnLoaded("ConsolePort") then
+	if not IsAddOnLoaded("ConsolePortUI_Menu") then
 		-- reskin all esc/menu buttons
 		local BlizzardMenuButtons = {
 			"GameMenuButtonOptions",
@@ -74,9 +70,7 @@ local function LoadSkin()
 
 		-- Skin the ElvUI Menu Button
 		S:HandleButton(GameMenuFrame.ElvUI)
-	end
 
-	if not IsAddOnLoaded("ConsolePort") then
 		GameMenuFrame:SetTemplate("Transparent")
 		GameMenuFrameHeader:SetTexture("")
 		GameMenuFrameHeader:ClearAllPoints()
@@ -158,6 +152,7 @@ local function LoadSkin()
 		for j = 1, 4 do
 			S:HandleButton(StaticPopup["button"..j])
 		end
+		_G["StaticPopup"..i.."EditBox"]:SetFrameLevel(_G["StaticPopup"..i.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
@@ -231,14 +226,6 @@ local function LoadSkin()
 		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
-		end
-	end)
-
-	--LibUIDropDownMenu
-	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
-		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)
 

@@ -96,7 +96,7 @@ function DT:SetupObjectLDB(name, obj) --self will now be the event
 		LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
 	end
 
-	DT:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
 
 	--Update config if it has been loaded
 	if DT.PanelLayoutOptions then

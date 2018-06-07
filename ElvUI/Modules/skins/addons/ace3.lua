@@ -155,8 +155,9 @@ function S:SkinAce3()
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
 			button:HookScript('OnClick', function(this)
-				local self = this.obj
-				self.pullout.frame:SetTemplate('Default', true)
+				if this and this.obj and this.obj.pullout and this.obj.pullout.frame and not this.obj.pullout.frame.template then
+					this.obj.pullout.frame:SetTemplate('Default', true)
+				end
 			end)
 		elseif TYPE == "LSM30_Font" or TYPE == "LSM30_Sound" or TYPE == "LSM30_Border" or TYPE == "LSM30_Background" or TYPE == "LSM30_Statusbar" then
 			local frame = widget.frame
@@ -193,9 +194,8 @@ function S:SkinAce3()
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
 			button:HookScript('OnClick', function(this)
-				local self = this.obj
-				if self.dropdown then
-					self.dropdown:SetTemplate('Default', true)
+				if this and this.obj and this.obj.dropdown and not this.obj.dropdown.template then
+					this.obj.dropdown:SetTemplate('Default', true)
 				end
 			end)
 		elseif TYPE == "EditBox" then

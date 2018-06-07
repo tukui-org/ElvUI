@@ -5,7 +5,7 @@ Handles the visibility and updating of the player's class resources (like Chi Or
 
 ## Widget
 
-ClassPower - An `table` consisting of as many StatusBars as the theoretical maximum return of [UnitPowerMax](http://wowprogramming.com/docs/api/UnitPowerMax).
+ClassPower - An `table` consisting of as many StatusBars as the theoretical maximum return of [UnitPowerMax](http://wowprogramming.com/docs/api/UnitPowerMax.html).
 
 ## Sub-Widgets
 

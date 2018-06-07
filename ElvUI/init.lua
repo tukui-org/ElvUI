@@ -104,20 +104,10 @@ function AddOn:OnInitialize()
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
 
-	if not IsAddOnLoaded("ConsolePort") then
+	if not IsAddOnLoaded("ConsolePortUI_Menu") then -- #390
 		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
 		GameMenuButton:Point("TOPLEFT", GameMenuButtonAddons, "BOTTOMLEFT", 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)
-	else
-		if GameMenuButton.Middle then
-			GameMenuButton.Middle:Hide()
-			GameMenuButton.Left:Hide()
-			GameMenuButton.Right:Hide()
-		end
-		ConsolePort:GetData().Atlas.SetFutureButtonStyle(GameMenuButton, nil, nil, true)
-		GameMenuButton:Size(240, 46)
-		GameMenuButton:Point("TOP", GameMenuButtonWhatsNew, "BOTTOMLEFT", 0, -1)
-		GameMenuFrame:Size(530, 576)
 	end
 
 	self.loadedtime = GetTime()
@@ -234,4 +224,26 @@ function AddOn:ToggleConfig(msg)
 	end
 
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
+end
+
+--HonorFrameLoadTaint workaround
+--credit: https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
+if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
+	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
+		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
+			return
+		end
+		for i=1, UIDROPDOWNMENU_MAXLEVELS do
+			for j=1, UIDROPDOWNMENU_MAXBUTTONS do
+				local b = _G["DropDownList" .. i .. "Button" .. j]
+				if not (issecurevariable(b, "value") or b:IsShown()) then
+					b.value = nil
+					repeat
+						j, b["fx" .. j] = j+1
+					until issecurevariable(b, "value")
+				end
+			end
+		end
+	end)
 end

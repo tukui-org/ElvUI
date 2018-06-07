@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Cache global variables
 --Lua functions
-local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -35,10 +34,7 @@ function UF:Construct_RaidpetFrames()
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-	tinsert(self.__elements, UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-
+	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
@@ -131,8 +127,6 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.CLASSBAR_YOFFSET = 0
 		frame.BOTTOM_OFFSET = 0
 
-		frame.USE_TARGET_GLOW = db.targetGlow
-
 		frame.VARIABLES_SET = true
 	end
 
@@ -151,9 +145,6 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	--Threat
 	UF:Configure_Threat(frame)
-
-	--Target Glow
-	UF:Configure_TargetGlow(frame)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)

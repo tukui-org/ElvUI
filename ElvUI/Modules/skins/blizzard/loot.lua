@@ -127,6 +127,20 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
+	hooksecurefunc(BonusRollFrame.SpecIcon, "Hide", function(specIcon)
+		if specIcon.b and specIcon.b:IsShown() then
+			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			specIcon.b:Hide()
+		end
+	end)
+	hooksecurefunc(BonusRollFrame.SpecIcon, "Show", function(specIcon)
+		if specIcon.b and not specIcon.b:IsShown() and specIcon:GetTexture() ~= nil then
+			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
+			BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			specIcon.b:Show()
+		end
+	end)
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
 		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer

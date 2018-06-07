@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Cache global variables
 --Lua functions
-local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -40,13 +39,11 @@ function UF:Construct_RaidFrames()
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
-	self.ResurrectIndicator = UF:Construct_ResurectionIcon(self)
+	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
+	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-	tinsert(self.__elements, UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
@@ -76,10 +73,10 @@ function UF:RaidSmartVisibility(event)
 		self.isInstanceForced = nil
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, mapID = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
 
-			if UF.mapIDs[mapID] then
-				maxPlayers = UF.mapIDs[mapID]
+			if UF.instanceMapIDs[instanceMapID] then
+				maxPlayers = UF.instanceMapIDs[instanceMapID]
 			end
 
 			UnregisterStateDriver(self, "visibility")
@@ -171,8 +168,6 @@ function UF:Update_RaidFrames(frame, db)
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
-		frame.USE_TARGET_GLOW = db.targetGlow
-
 		frame.VARIABLES_SET = true
 	end
 
@@ -196,9 +191,6 @@ function UF:Update_RaidFrames(frame, db)
 	--Threat
 	UF:Configure_Threat(frame)
 
-	--Target Glow
-	UF:Configure_TargetGlow(frame)
-
 	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
@@ -209,6 +201,9 @@ function UF:Update_RaidFrames(frame, db)
 
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)
+
+	-- Resurrect Icon
+	UF:Configure_ResurrectionIcon(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

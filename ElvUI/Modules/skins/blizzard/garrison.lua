@@ -113,8 +113,10 @@ local function LoadSkin()
 	GarrisonBuildingFrame.TitleText:Show()
 	GarrisonBuildingFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
-	GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
-	GarrisonBuildingFrame.BuildingLevelTooltip:SetTemplate('Transparent')
+	if E.private.skins.blizzard.tooltip then
+		GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
+		GarrisonBuildingFrame.BuildingLevelTooltip:SetTemplate('Transparent')
+	end
 
 	-- Follower List
 	local FollowerList = GarrisonBuildingFrame.FollowerList
@@ -325,6 +327,11 @@ local function LoadSkin()
 	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
+
+	--LandingPage Tutorial
+	S:HandleCloseButton(GarrisonLandingPageTutorialBox.CloseButton)
+	
+	if E.private.skins.blizzard.tooltip ~= true then return end
 	-- ShipYard: Mission Tooltip
 	local tooltip = GarrisonShipyardMapMissionTooltip
 	local reward = tooltip.ItemTooltip
@@ -349,13 +356,10 @@ local function LoadSkin()
 	S:HookScript(GarrisonMissionMechanicTooltip, "OnShow", function(self)
 		self:SetTemplate("Transparent")
 	end)
-
-	--LandingPage Tutorial
-	S:HandleCloseButton(GarrisonLandingPageTutorialBox.CloseButton)
 end
 
 local function SkinTooltip()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
 	local function SkinFollowerTooltip(frame)
 		for i = 1, 9 do

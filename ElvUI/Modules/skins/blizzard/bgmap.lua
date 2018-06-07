@@ -8,15 +8,15 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local L_UIDropDownMenu_Initialize = L_UIDropDownMenu_Initialize
-local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
-local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
-local L_ToggleDropDownMenu = L_ToggleDropDownMenu
+local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
+local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
+local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
+local ToggleDropDownMenu = ToggleDropDownMenu
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
 -- GLOBALS: BattlefieldMinimapTabDropDown_TogglePlayers, BattlefieldMinimapTabDropDown_ToggleLock
 -- GLOBALS: BattlefieldMinimapTabDropDown_ShowOpacity, BattlefieldMinimap_UpdateOpacity
--- GLOBALS: L_UIDROPDOWNMENU_MENU_LEVEL
+-- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
@@ -45,32 +45,32 @@ local function LoadSkin()
 
 	--Custom dropdown to avoid using regular DropDownMenu code (taints)
 	local function BattlefieldMinimapTabDropDown_Initialize()
-		local info = L_UIDropDownMenu_CreateInfo();
+		local info = UIDropDownMenu_CreateInfo();
 
 		-- Show battlefield players
 		info.text = SHOW_BATTLEFIELDMINIMAP_PLAYERS;
 		info.func = BattlefieldMinimapTabDropDown_TogglePlayers;
 		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.showPlayers or false;
 		info.isNotRadio = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 
 		-- Battlefield minimap lock
 		info.text = LOCK_BATTLEFIELDMINIMAP;
 		info.func = BattlefieldMinimapTabDropDown_ToggleLock;
 		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked or false;
 		info.isNotRadio = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 
 		-- Opacity
 		info.text = BATTLEFIELDMINIMAP_OPACITY_LABEL;
 		info.func = BattlefieldMinimapTabDropDown_ShowOpacity;
 		info.notCheckable = true;
-		L_UIDropDownMenu_AddButton(info, L_UIDROPDOWNMENU_MENU_LEVEL);
+		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
 	end
-	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "L_UIDropDownMenuTemplate")
+	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "UIDropDownMenuTemplate")
 	ElvUIBattlefieldMinimapTabDropDown:SetID(1)
 	ElvUIBattlefieldMinimapTabDropDown:Hide()
-	L_UIDropDownMenu_Initialize(ElvUIBattlefieldMinimapTabDropDown, BattlefieldMinimapTabDropDown_Initialize, "MENU");
+	UIDropDownMenu_Initialize(ElvUIBattlefieldMinimapTabDropDown, BattlefieldMinimapTabDropDown_Initialize, "MENU");
 
 	BattlefieldMinimap:SetScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
@@ -78,7 +78,7 @@ local function LoadSkin()
 			BattlefieldMinimapTab:SetUserPlaced(true)
 			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
 		elseif btn == "RightButton" then
-			L_ToggleDropDownMenu(1, nil, ElvUIBattlefieldMinimapTabDropDown, self:GetName(), 0, -4)
+			ToggleDropDownMenu(1, nil, ElvUIBattlefieldMinimapTabDropDown, self:GetName(), 0, -4)
 			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
 		end
 	end)

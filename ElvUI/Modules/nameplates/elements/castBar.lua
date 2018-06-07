@@ -290,25 +290,9 @@ function mod:ConfigureElement_CastBar(frame)
 end
 
 function mod:ConstructElement_CastBar(parent)
-	local function updateGlowPosition(castBar)
-		if not parent.Glow2 then return end
-		local scale = 1;
-		if mod.db.useTargetScale then
-			if mod.db.targetScale >= 0.75 then
-				scale = mod.db.targetScale
-			else
-				scale = 0.75
-			end
-		end
-		local powerBar = parent.PowerBar:IsShown() and parent.PowerBar;
-		local size = E.Border*(10+(powerBar and 3 or 0))*scale;
-		if castBar:IsShown() then
-			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(2+size*2), E:Scale(2+size))
-			parent.Glow2:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMRIGHT", E:Scale(4+size*2), -E:Scale(4+size))
-		else
-			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(size*2), E:Scale(size))
-			parent.Glow2:SetPoint("BOTTOMRIGHT", powerBar or parent.HealthBar, "BOTTOMRIGHT", E:Scale(size*2), -E:Scale(size))
-		end
+	local function updateGlowPosition()
+		if not parent then return end
+		mod:UpdatePosition_Glow(parent)
 	end
 
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
