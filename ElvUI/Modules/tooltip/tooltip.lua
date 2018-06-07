@@ -605,7 +605,7 @@ end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	if tt:IsForbidden() then return end
-	local id = select(3, tt:GetSpell())
+	local id = select(2, tt:GetSpell())
 	if not id or not self.db.spellID then return end
 
 	local displayString = ("|cFFCA3C3C%s|r %d"):format(ID, id)
