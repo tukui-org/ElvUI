@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local select = select
-local getn = getn
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -19,7 +18,7 @@ local function LoadSkin()
 		"TicketStatusFrameButton",
 	}
 
-	for i = 1, getn(skins) do
+	for i = 1, #skins do
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
