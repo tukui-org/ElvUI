@@ -30,11 +30,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 13
+local MINOR_VERSION = 14
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
+
+local WoW80 = select(4, GetBuildInfo()) >= 80000
 
 -- Lua functions
 local _G = _G
@@ -1568,8 +1570,12 @@ Action.GetSpellId              = function(self)
 	if actionType == "spell" then
 		return id
 	elseif actionType == "macro" then
-		local _, _, spellId = GetMacroSpell(id)
-		return spellId
+		if WoW80 then
+			return (GetMacroSpell(id))
+		else
+			local _, _, spellId = GetMacroSpell(id)
+			return spellId
+		end
 	end
 end
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end
