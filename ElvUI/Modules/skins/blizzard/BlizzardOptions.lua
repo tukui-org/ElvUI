@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local getn = getn
 local pairs = pairs
 local print = print
 local ceil = math.ceil
@@ -29,7 +28,7 @@ local function LoadSkin()
 		"VideoOptionsFrame",
 	}
 
-	for i = 1, getn(BlizzardHeader) do
+	for i = 1, #BlizzardHeader do
 		local title = _G[BlizzardHeader[i].."Header"]
 		if title then
 			title:SetTexture("")
@@ -61,7 +60,7 @@ local function LoadSkin()
 		"RolePollPopupAcceptButton"
 	}
 
-	for i = 1, getn(BlizzardButtons) do
+	for i = 1, #BlizzardButtons do
 		local ElvuiButtons = _G[BlizzardButtons[i]]
 		if ElvuiButtons then
 			S:HandleButton(ElvuiButtons)
@@ -218,7 +217,7 @@ local function LoadSkin()
 		"CombatConfigColorsUnitColors",
 	}
 
-	for i = 1, getn(frames) do
+	for i = 1, #frames do
 		local SkinFrames = _G[frames[i]]
 		SkinFrames:StripTextures()
 		SkinFrames:SetTemplate("Transparent")
@@ -231,7 +230,7 @@ local function LoadSkin()
 		"CombatConfigColorsColorizeEntireLine",
 	}
 
-	for i = 1, getn(otherframe) do
+	for i = 1, #otherframe do
 		local SkinFrames = _G[otherframe[i]]
 		SkinFrames:ClearAllPoints()
 		if SkinFrames == CombatConfigColorsColorizeSpellNames then
@@ -510,7 +509,7 @@ local function LoadSkin()
 		"AccessibilityPanelColorblindMode",
 	}
 
-	for i = 1, getn(interfacecheckbox) do
+	for i = 1, #interfacecheckbox do
 		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
 		if icheckbox then
 			S:HandleCheckBox(icheckbox)
@@ -549,7 +548,7 @@ local function LoadSkin()
 		"AccessibilityPanelColorFilterDropDown",
 	}
 
-	for i = 1, getn(interfacedropdown) do
+	for i = 1, #interfacedropdown do
 		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
 		if idropdown then
 			S:HandleDropDownBox(idropdown)
@@ -596,7 +595,7 @@ local function LoadSkin()
 		"NetworkOptionsPanelUseIPv6",
 	}
 
-	for i = 1, getn(optioncheckbox) do
+	for i = 1, #optioncheckbox do
 		local ocheckbox = _G[optioncheckbox[i]]
 		if ocheckbox then
 			S:HandleCheckBox(ocheckbox)
@@ -661,7 +660,7 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelChatModeDropdown",
 	}
 
-	for i = 1, getn(optiondropdown) do
+	for i = 1, #optiondropdown do
 		local odropdown = _G[optiondropdown[i]]
 		if odropdown then
 			S:HandleDropDownBox(odropdown,165)
@@ -759,7 +758,7 @@ local function LoadSkin()
 		"AutoActivatePvE",
 	}
 
-	for i = 1, getn(raidcheckbox) do
+	for i = 1, #raidcheckbox do
 		local icheckbox = _G["CompactUnitFrameProfilesGeneralOptionsFrame"..raidcheckbox[i]]
 		if icheckbox then
 			S:HandleCheckBox(icheckbox)
