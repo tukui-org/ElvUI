@@ -31,22 +31,9 @@ local function LoadSkin()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 
-	-- Netherlight Crucible
-	local ArtifactRelicForgeFrame = _G["ArtifactRelicForgeFrame"]
-	ArtifactRelicForgeFrame:StripTextures()
-	ArtifactRelicForgeFrame:CreateBackdrop("Transparent")
-	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
-	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
-	S:HandleCloseButton(_G["ArtifactRelicForgeFrameCloseButton"])
-
 	--Tutorial
 	S:HandleCloseButton(ArtifactFrame.KnowledgeLevelHelpBox.CloseButton)
-	S:HandleCloseButton(ArtifactFrame.PerksTab.RelicTalentAlert.CloseButton)
 	S:HandleCloseButton(ArtifactFrame.AppearanceTabHelpBox.CloseButton)
-
-	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:StripTextures()
-	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:CreateBackdrop("Transparent")
-	S:HandleButton(ArtifactRelicForgeFrame.TutorialFrame.GlowBox.Button)
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)
