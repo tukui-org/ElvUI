@@ -1035,7 +1035,7 @@ function E:UpdateAll(ignoreInstall)
 	DataBars:UpdateDataBarDimensions()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_ReputationBar()
-	DataBars:EnableDisable_ArtifactBar()
+	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_HonorBar()
 
 	local T = self:GetModule('Threat')
