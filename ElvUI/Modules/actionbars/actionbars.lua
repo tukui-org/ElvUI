@@ -854,6 +854,10 @@ function AB:DisableBlizzard()
 	MainMenuBarArtFrame:Hide()
 	MainMenuBarArtFrame:SetParent(UIHider)
 
+	StatusTrackingBarManager:EnableMouse(false)
+	StatusTrackingBarManager:UnregisterAllEvents()
+	StatusTrackingBarManager:Hide()
+
 	StanceBarFrame:UnregisterAllEvents()
 	StanceBarFrame:Hide()
 	StanceBarFrame:SetParent(UIHider)
