@@ -68,7 +68,7 @@ local function LoadSkin()
 	BonusFrame.ShadowOverlay:Hide()
 	BonusFrame.WorldBattlesTexture:Hide()
 
-	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "LargeBattlegroundButton", "BrawlButton"}) do
+	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton"}) do
 		local bu = BonusFrame[bonusButton]
 		local reward = bu.Reward
 
@@ -251,8 +251,33 @@ local function LoadSkin()
 		PVPRewardTooltip:SetTemplate("Transparent")
 	end
 
-	S:SkinPVPHonorXPBar('HonorFrame')
-	S:SkinPVPHonorXPBar('ConquestFrame')
+	-- Honor Frame StatusBar
+	HonorFrame.ConquestBar:StripTextures()
+	HonorFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(HonorFrame.ConquestBar)
+	HonorFrame.ConquestBar:SetFrameLevel(HonorFrame.ConquestBar:GetFrameLevel() + 2)
+	HonorFrame.ConquestBar:CreateBackdrop("Default")
+
+	-- Icon
+	HonorFrame.ConquestBar.Reward.Ring:Hide()
+	HonorFrame.ConquestBar.Reward.CircleMask:Hide()
+	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
+	-- Conquest Frame StatusBar
+	ConquestFrame.ConquestBar:StripTextures()
+	ConquestFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(ConquestFrame.ConquestBar)
+	ConquestFrame.ConquestBar:SetFrameLevel(ConquestFrame.ConquestBar:GetFrameLevel() + 2)
+	ConquestFrame.ConquestBar:CreateBackdrop("Default")
+
+	-- Icon
+	ConquestFrame.ConquestBar.Reward.Ring:Hide()
+	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
+	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
+	-- OLD WAY!
+	--S:SkinPVPHonorXPBar(HonorFrame.ConquestBar)
+	--S:SkinPVPHonorXPBar('ConquestFrame')
 
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)

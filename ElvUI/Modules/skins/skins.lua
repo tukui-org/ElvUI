@@ -47,6 +47,7 @@ function S:UpdateRecapButton()
 	end
 end
 
+-- We need to test this for the BGScore frame
 S.PVPHonorXPBarFrames = {}
 S.PVPHonorXPBarSkinned = false
 function S:SkinPVPHonorXPBar(frame)
