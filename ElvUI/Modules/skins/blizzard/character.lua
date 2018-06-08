@@ -440,7 +440,7 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = ReputationParagonTooltip
+		local tooltip = EmbeddedItemTooltip
 		local reward = tooltip.ItemTooltip
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")
