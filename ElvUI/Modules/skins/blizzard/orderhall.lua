@@ -83,13 +83,14 @@ local function LoadSkin()
 	S:HandleButton(MissionComplete.NextMissionButton)
 
 	-- TalentFrame
-	-- BFA only gets skinned after the OrderHallUI was loaded
 	local TalentFrame = _G["OrderHallTalentFrame"]
-	TalentFrame:StripTextures()
-	TalentFrame.LeftInset:StripTextures()
-	TalentFrame:SetTemplate("Transparent")
-	TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
-	S:HandleCloseButton(TalentFrame.CloseButton)
+	if TalentFrame then
+		TalentFrame:StripTextures()
+		TalentFrame.LeftInset:StripTextures()
+		TalentFrame:SetTemplate("Transparent")
+		TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+		S:HandleCloseButton(TalentFrame.CloseButton)
+	end
 
 	-- Chromie Frame
 	_G["OrderHallTalentFramePortraitFrame"]:Hide()
