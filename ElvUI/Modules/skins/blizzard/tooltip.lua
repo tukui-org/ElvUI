@@ -85,6 +85,7 @@ local function LoadSkin()
 		WorldMapCompareTooltip1,
 		WorldMapCompareTooltip2,
 		WorldMapCompareTooltip3,
+		EmbeddedItemTooltip, -- Paragon ?
 	}
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
