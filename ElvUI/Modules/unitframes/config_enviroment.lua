@@ -117,6 +117,8 @@ function UF:ForceShow(frame)
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame, true)
 
+	frame:EnableMouse(false)
+
 	frame:Show()
 	if frame:IsVisible() and frame.Update then
 		frame:Update()
@@ -142,6 +144,8 @@ function UF:UnforceShow(frame)
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
+
+	frame:EnableMouse(true)
 
 	if frame.oldOnUpdate then
 		frame:SetScript("OnUpdate", frame.oldOnUpdate)
@@ -169,7 +173,6 @@ function UF:ShowChildUnits(header, ...)
 
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
-		frame:RegisterForClicks(nil)
 		frame:SetID(i)
 		self:ForceShow(frame)
 	end
@@ -180,7 +183,6 @@ function UF:UnshowChildUnits(header, ...)
 
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
-		frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 		self:UnforceShow(frame)
 	end
 end
