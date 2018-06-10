@@ -107,8 +107,8 @@ function AB:UpdateMicroPositionDimensions()
 
 	local numRows = 1
 	local prevButton = ElvUI_MicroBar
-	local offset = (E.PixelMode and 1) or 3
-	local spacing = (offset + self.db.microbar.buttonSpacing)
+	local offset = E:Scale(E.PixelMode and 1 or 3)
+	local spacing = E:Scale(offset + self.db.microbar.buttonSpacing)
 
 	for i=1, #MICRO_BUTTONS do
 		local button = _G[__buttonIndex[i]] or _G[MICRO_BUTTONS[i]]
