@@ -75,14 +75,6 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
-local __buttons = {}
--- if(C_StorePublic.IsEnabled()) then
-	__buttons[10] = "StoreMicroButton"
-	for i=10, #MICRO_BUTTONS do
-		__buttons[i + 1] = MICRO_BUTTONS[i]
-	end
--- end
-
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
 		AB.NeedsUpdateMicroBarVisibility = true
@@ -107,9 +99,9 @@ function AB:UpdateMicroPositionDimensions()
 	local spacing = (offset + self.db.microbar.buttonSpacing)
 
 	for i=1, #MICRO_BUTTONS do
-		local button = _G[__buttons[i]] or _G[MICRO_BUTTONS[i]]
+		local button = _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
-		lastColumnButton = _G[__buttons[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
+		lastColumnButton = _G[MICRO_BUTTONS[lastColumnButton]]
 
 		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4);
 		button:ClearAllPoints();
