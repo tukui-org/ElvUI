@@ -75,6 +75,7 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
+-- we use this table to keep the MainMenu button on the end.
 local __buttons = {
 	[8] = "CollectionsMicroButton",
 	[9] = "EJMicroButton",
