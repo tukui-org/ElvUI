@@ -16,13 +16,13 @@ local InCombatLockdown = InCombatLockdown
 -- GLOBALS: MICRO_BUTTONS, CharacterMicroButton, GuildMicroButtonTabard
 -- GLOBALS: GuildMicroButton, MicroButtonPortrait, CollectionsMicroButtonAlert
 
-local function Button_OnEnter()
+local function onEnter()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 end
 
-local function Button_OnLeave()
+local function onLeave()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeOut(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), 0)
 	end
@@ -38,8 +38,8 @@ function AB:HandleMicroButton(button)
 	button:SetParent(ElvUI_MicroBar)
 	button.Flash:SetTexture(nil)
 	button:GetHighlightTexture():Kill()
-	button:HookScript('OnEnter', Button_OnEnter)
-	button:HookScript('OnLeave', Button_OnLeave)
+	button:HookScript('OnEnter', onEnter)
+	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	local f = CreateFrame("Frame", nil, button)
@@ -126,7 +126,7 @@ function AB:UpdateMicroPositionDimensions()
 		prevButton = button
 	end
 
-	if AB.db.microbar.mouseover then
+	if AB.db.microbar.mouseover and not ElvUI_MicroBar:IsMouseOver() then
 		ElvUI_MicroBar:SetAlpha(0)
 	else
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
@@ -163,6 +163,8 @@ end
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
+	microBar:SetScript('OnEnter', onEnter)
+	microBar:SetScript('OnLeave', onLeave)
 
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
