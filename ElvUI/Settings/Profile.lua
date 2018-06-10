@@ -3049,6 +3049,7 @@ P["actionbar"] = {
 		['mouseover'] = false,
 		['buttonsPerRow'] = 11,
 		['buttonSize'] = 20,
+		['buttonSpacing'] = 2,
 		['alpha'] = 1,
 		['visibility'] = "show",
 	},
