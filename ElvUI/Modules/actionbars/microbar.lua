@@ -76,8 +76,7 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
--- we use this to keep the MainMenu button on the end.
--- also, this is now used to show the Help button instead of the Store button for CN region.
+-- we use this table to keep the MainMenu button on the end.
 local __buttons = {
 	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton",
 	[11] = "MainMenuMicroButton"
