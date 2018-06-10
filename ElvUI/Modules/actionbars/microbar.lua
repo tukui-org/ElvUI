@@ -7,6 +7,7 @@ local _G = _G
 local assert = assert
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
@@ -76,12 +77,10 @@ function AB:UpdateMicroButtonsParent()
 end
 
 local __buttons = {}
--- if(C_StorePublic.IsEnabled()) then
-	__buttons[10] = "StoreMicroButton"
-	for i=10, #MICRO_BUTTONS do
-		__buttons[i + 1] = MICRO_BUTTONS[i]
-	end
--- end
+__buttons[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton"
+for i=10, #MICRO_BUTTONS do
+	__buttons[i + 1] = MICRO_BUTTONS[i]
+end
 
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
@@ -106,7 +105,7 @@ function AB:UpdateMicroPositionDimensions()
 	local offset = (E.PixelMode and 1) or 3
 	local spacing = (offset + self.db.microbar.buttonSpacing)
 
-	for i=1, #MICRO_BUTTONS do
+	for i=1, #MICRO_BUTTONS-1 do
 		local button = _G[__buttons[i]] or _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
 		lastColumnButton = _G[__buttons[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
