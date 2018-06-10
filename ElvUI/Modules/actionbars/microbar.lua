@@ -78,6 +78,8 @@ end
 
 -- we use this table to keep the MainMenu button on the end.
 local __buttons = {
+	[8] = "CollectionsMicroButton",
+	[9] = "EJMicroButton",
 	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton",
 	[11] = "MainMenuMicroButton"
 }
