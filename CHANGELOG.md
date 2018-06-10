@@ -1,3 +1,17 @@
+**Version 10.75 [ ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
+Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
+
+
+**Misc. Changes:**  
+Added button size and spacing options to the Micro Bar and fixed several issues with it.  
+
+___
 **Version 10.74 [ June 7th 2018 ]**
 
 **New Additions:**  
@@ -7,7 +21,8 @@ Added new UnitFrame Glow settings located under `UnitFrame -> General -> Frame G
 Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
 Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`.  
 
-**Bug Fixes:**   
+
+**Bug Fixes:**  
 Fixed instance group size for Seething Shore and Arathi Blizzard.  
 Fixed issue that prevented the Guild MOTD from being shown in the chat after a `/reload` sometimes.  
 Fixed issue that prevented the Loot Spec icon on BonusRollFrame from showing correctly after changing specs.  
@@ -58,7 +73,7 @@ Added Talent Spec Icon on the tooltip.
 Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea!)  
 
 
-**Bug Fixes:**   
+**Bug Fixes:**  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
 Fixed error trying to copy settings between nameplate units (#305).  
@@ -94,7 +109,7 @@ ___
 None  
 
 
-**Bug Fixes:**   
+**Bug Fixes:**  
 Fixed position of the ElvUI Status Report frame (/estatus).  
 Fixed issue updating npc titles on NamePlates.  
 Fixed placement issue of name and level on NamePlates when "Always Show Target Healthbar" is disabled.  
@@ -119,7 +134,7 @@ Added the ability to assign items to bags like in blizzard's ui to our big bag (
 Added new command "/estatus" which will show a Status Report frame with helpful information for troubleshooting purposes.  
 
 
-**Bug Fixes:**   
+**Bug Fixes:**  
 Fixed issue with missing border colors on some elements after a login or reload.  
 Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly.  
 Fixed issue with arena frames displaying wrong unit in PvP Brawls.  
@@ -311,7 +326,7 @@ Added instance type triggers to nameplate style filters.
 Added instance difficulty triggers to nameplate style filters.  
 Added classification triggers to nameplate style filters.  
 Added toggle option for datatext backdrop. Disabling it will remove the backdrop completely and only show text.  
-Added option to hide Blizzard nameplates. If enabled then you will no longer see nameplates with the default Blizzard appearance. This option can be found in the NamePlate General Options.   
+Added option to hide Blizzard nameplates. If enabled then you will no longer see nameplates with the default Blizzard appearance. This option can be found in the NamePlate General Options.  
 Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
 Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
 Added alpha action to nameplate style filters.  
@@ -397,7 +412,7 @@ Added "blockNonPersonal" special filter for aura filtering. Combine this filter 
 
 
 **Bug Fixes:**  
-Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.    
+Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.  
 
 
 **Misc. Changes:**  
