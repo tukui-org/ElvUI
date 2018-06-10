@@ -35,19 +35,23 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	button:SetParent(ElvUI_MicroBar)
-	button.Flash:SetTexture(nil)
-	button:GetHighlightTexture():Kill()
-	button:HookScript('OnEnter', onEnter)
-	button:HookScript('OnLeave', onLeave)
-	button:SetHitRectInsets(0, 0, 0, 0)
-
 	local f = CreateFrame("Frame", nil, button)
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetTemplate("Default", true)
 	f:SetOutside(button)
 	button.backdrop = f
+
+	button:SetParent(ElvUI_MicroBar)
+	button:GetHighlightTexture():Kill()
+	button:HookScript('OnEnter', onEnter)
+	button:HookScript('OnLeave', onLeave)
+	button:SetHitRectInsets(0, 0, 0, 0)
+
+	if button.Flash then
+		button.Flash:SetInside()
+		button.Flash:SetTexture(nil)
+	end
 
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:SetInside(f)
