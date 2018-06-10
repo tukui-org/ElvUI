@@ -75,13 +75,12 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
-local __buttons = {}
--- if(C_StorePublic.IsEnabled()) then
-	__buttons[10] = "StoreMicroButton"
-	for i=10, #MICRO_BUTTONS do
-		__buttons[i + 1] = MICRO_BUTTONS[i]
-	end
--- end
+local __buttons = {
+	[8] = "CollectionsMicroButton",
+	[9] = "EJMicroButton",
+	[10] = "StoreMicroButton",
+	[11] = "MainMenuMicroButton",
+}
 
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
