@@ -75,8 +75,8 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
--- we use this table to keep the MainMenu button on the end.
-local __buttons = {
+-- we use this table to sort the micro buttons on our bar to match Blizzard's button placements.
+local __buttonIndex = {
 	[8] = "CollectionsMicroButton",
 	[9] = "EJMicroButton",
 	[10] = "StoreMicroButton",
@@ -107,9 +107,9 @@ function AB:UpdateMicroPositionDimensions()
 	local spacing = (offset + self.db.microbar.buttonSpacing)
 
 	for i=1, #MICRO_BUTTONS do
-		local button = _G[__buttons[i]] or _G[MICRO_BUTTONS[i]]
+		local button = _G[__buttonIndex[i]] or _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
-		lastColumnButton = _G[__buttons[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
+		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
 
 		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4);
 		button:ClearAllPoints();
