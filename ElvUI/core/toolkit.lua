@@ -51,13 +51,7 @@ local function Size(frame, width, height)
 end
 
 local function Width(frame, width)
-	--[[if(not width) then
-		if frame:GetName() then
-			assert(width,frame:GetName()..' Width not set properly.')
-		end
-		assert(width,'Width not set properly.')
-	end]]
-
+	assert(width)
 	frame:SetWidth(E:Scale(width))
 end
 
