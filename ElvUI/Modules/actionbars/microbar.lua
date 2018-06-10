@@ -76,8 +76,7 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
-local __buttons = {}
-__buttons[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton"
+local __buttons = {[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton"}
 for i=10, #MICRO_BUTTONS do
 	__buttons[i + 1] = MICRO_BUTTONS[i]
 end
