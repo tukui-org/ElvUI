@@ -40,13 +40,13 @@ function AB:HandleMicroButton(button)
 	button:GetHighlightTexture():Kill()
 	button:HookScript('OnEnter', Button_OnEnter)
 	button:HookScript('OnLeave', Button_OnLeave)
+	button:SetHitRectInsets(0, 0, 0, 0)
 
 	local f = CreateFrame("Frame", nil, button)
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
-	f:Point("BOTTOMLEFT", button, "BOTTOMLEFT", 2, 0)
-	f:Point("TOPRIGHT", button, "TOPRIGHT", -2, -28)
 	f:SetTemplate("Default", true)
+	f:SetOutside(button)
 	button.backdrop = f
 
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
@@ -108,17 +108,17 @@ function AB:UpdateMicroPositionDimensions()
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
 		lastColumnButton = _G[__buttons[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
 
-		button:Width(28)
-		button:Height(58)
+		button:Width(self.db.microbar.buttonSize);
+		button:Height(self.db.microbar.buttonSize * 1.4);
 		button:ClearAllPoints();
 
 		if prevButton == ElvUI_MicroBar then
-			button:Point("TOPLEFT", prevButton, "TOPLEFT", -2, 28)
+			button:Point('TOPLEFT', prevButton, 'TOPLEFT', 0, 0)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
-			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, 27);
+			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -3);
 			numRows = numRows + 1
 		else
-			button:Point('LEFT', prevButton, 'RIGHT', -3, 0);
+			button:Point('LEFT', prevButton, 'RIGHT', 3, 0);
 		end
 
 		prevButton = button
@@ -130,8 +130,8 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end
 
-	AB.MicroWidth = ((_G["CharacterMicroButton"]:GetWidth() - 3) * self.db.microbar.buttonsPerRow)-1
-	AB.MicroHeight = (((_G["CharacterMicroButton"]:GetHeight() - 26) * numRows)-numRows)-1
+	AB.MicroWidth = ((_G["CharacterMicroButton"]:GetWidth() + 3) * self.db.microbar.buttonsPerRow) - 3
+	AB.MicroHeight = ((_G["CharacterMicroButton"]:GetHeight() + 3) * numRows) - 3
 	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
 
 	if ElvUI_MicroBar.mover then
@@ -146,8 +146,15 @@ function AB:UpdateMicroPositionDimensions()
 end
 
 function AB:UpdateMicroButtons()
-	GuildMicroButtonTabard:ClearAllPoints()
-	GuildMicroButtonTabard:Point("TOP", GuildMicroButton.backdrop, "TOP", 0, 25)
+	GuildMicroButtonTabard:SetInside(GuildMicroButton)
+
+	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
+	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+
+	GuildMicroButtonTabard.emblem:ClearAllPoints()
+	GuildMicroButtonTabard.emblem:Point("TOPLEFT", GuildMicroButton, "TOPLEFT", 4, -4)
+	GuildMicroButtonTabard.emblem:Point("BOTTOMRIGHT", GuildMicroButton, "BOTTOMRIGHT", -4, 8)
+
 	self:UpdateMicroPositionDimensions()
 end
 

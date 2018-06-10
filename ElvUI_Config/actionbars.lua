@@ -582,21 +582,28 @@ local function BuildABConfig()
 				desc = L["Change the alpha level of the frame."],
 				min = 0, max = 1, step = 0.1,
 			},
-			buttonsPerRow = {
+			buttonSize = {
 				order = 5,
+				type = 'range',
+				name = L["Button Size"],
+				desc = L["The size of the action buttons."],
+				min = 15, max = 40, step = 1,
+			},
+			buttonsPerRow = {
+				order = 6,
 				type = 'range',
 				name = L["Buttons Per Row"],
 				desc = L["The amount of buttons to display per row."],
 				min = 1, max = #MICRO_BUTTONS, step = 1,
 			},
 			spacer2 = {
-				order = 6,
+				order = 7,
 				type = "description",
 				name = " ",
 			},
 			visibility = {
 				type = 'input',
-				order = 7,
+				order = 8,
 				name = L["Visibility State"],
 				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 				width = 'full',
