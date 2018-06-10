@@ -80,7 +80,7 @@ local __buttonIndex = {
 	[8] = "CollectionsMicroButton",
 	[9] = "EJMicroButton",
 	[10] = "StoreMicroButton",
-	[11] = "MainMenuMicroButton",
+	[11] = "MainMenuMicroButton"
 }
 
 function AB:UpdateMicroBarVisibility()
