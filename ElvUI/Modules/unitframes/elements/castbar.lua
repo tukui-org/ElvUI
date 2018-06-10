@@ -8,7 +8,6 @@ local abs, min = abs, math.min
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
-local UnitBuff = UnitBuff
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
@@ -478,7 +477,6 @@ function UF:PostChannelUpdate(unit, name)
 
 			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
 		elseif baseTicks then
-			local hasBuff = UnitBuff("player", MageBuffName)
 			if self.chainChannel then
 				baseTicks = baseTicks + 1
 			end
