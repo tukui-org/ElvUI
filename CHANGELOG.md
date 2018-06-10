@@ -5,7 +5,7 @@
 
 **Bug Fixes:**  
 Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
-Fixed error when attempting to click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
+Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
 
 
 **Misc. Changes:**  
