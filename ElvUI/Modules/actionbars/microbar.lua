@@ -16,8 +16,6 @@ local InCombatLockdown = InCombatLockdown
 -- GLOBALS: MICRO_BUTTONS, CharacterMicroButton, GuildMicroButtonTabard
 -- GLOBALS: GuildMicroButton, MicroButtonPortrait, CollectionsMicroButtonAlert
 
-local isNotCN -- used to pick 'HelpMicroButton' or 'StoreMicroButton' added on 8.0.1.26310
-
 local function Button_OnEnter()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
@@ -100,9 +98,8 @@ function AB:UpdateMicroPositionDimensions()
 	local offset = (E.PixelMode and 1) or 3
 	local spacing = (offset + self.db.microbar.buttonSpacing)
 
-	for i=1, #MICRO_BUTTONS-1 do
-		local btn = (i == 11 and isNotCN and i+1) or i;
-		local button = _G[MICRO_BUTTONS[btn]];
+	for i=1, #MICRO_BUTTONS do
+		local button = _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
 		lastColumnButton = _G[MICRO_BUTTONS[lastColumnButton]]
 
@@ -162,8 +159,6 @@ function AB:SetupMicroBar()
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
 	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
-
-	isNotCN = (GetCurrentRegionName() ~= "CN")
 
 	E.FrameLocks["ElvUI_MicroBar"] = true;
 	for i=1, #MICRO_BUTTONS do
