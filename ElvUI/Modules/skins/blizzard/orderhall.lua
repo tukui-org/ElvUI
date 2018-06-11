@@ -90,12 +90,12 @@ local function LoadSkin()
 		TalentFrame:SetTemplate("Transparent")
 		TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 		S:HandleCloseButton(TalentFrame.CloseButton)
-	end
 
-	-- Chromie Frame
-	_G["OrderHallTalentFramePortraitFrame"]:Hide()
-	_G["OrderHallTalentFramePortrait"]:Hide()
-	S:HandleButton(_G["OrderHallTalentFrame"].BackButton)
+		-- Chromie Frame
+		_G["OrderHallTalentFramePortraitFrame"]:Hide()
+		_G["OrderHallTalentFramePortrait"]:Hide()
+		S:HandleButton(_G["OrderHallTalentFrame"].BackButton)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', "OrderHall", LoadSkin)
