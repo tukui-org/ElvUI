@@ -127,6 +127,7 @@ V['skins'] = {
 		["Channels"] = true,
 		["BFAMissions"] = true,
 		["AzeriteUI"] = true,
+		["AzeriteRespec"] = true,
 		["Communities"] = true,
 		["Scrapping"] = true,
 		["Islands"] = true,

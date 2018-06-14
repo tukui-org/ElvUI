@@ -395,12 +395,17 @@ E.Options.args.skins = {
 				},
 				Scrapping = {
 					type = "toggle",
-					name = SCRAP_BUTTON, -- i think its okayish
+					name = SCRAP_BUTTON,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Islands = {
 					type = "toggle",
 					name = ISLANDS_HEADER,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				AzeriteRespec = {
+					type = "toggle",
+					name = AZERITE_RESPEC_TITLE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},
