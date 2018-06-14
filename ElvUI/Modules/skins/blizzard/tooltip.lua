@@ -91,6 +91,13 @@ local function LoadSkin()
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
+	-- WoW 8.0 Tooltip Backdrop [[FIX ME]]
+	hooksecurefunc("GameTooltip_SetBackdropStyle", function(self, style)
+		self:SetTemplate("Transparent")
+		--self:SetBackdropBorderColor(unpack(E['media'].bordercolor))
+		--self:SetBackdropColor(unpack(E['media'].backdropcolor))
+	end)
+
 	-- Skin GameTooltip Status Bar
 	GameTooltipStatusBar:SetStatusBarTexture(E['media'].normTex)
 	E:RegisterStatusBar(GameTooltipStatusBar)
