@@ -129,6 +129,7 @@ V['skins'] = {
 		["AzeriteUI"] = true,
 		["Communities"] = true,
 		["Scrapping"] = true,
+		["Islands"] = true,
 	},
 }
 

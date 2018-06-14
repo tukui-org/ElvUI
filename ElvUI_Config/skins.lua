@@ -388,14 +388,19 @@ E.Options.args.skins = {
 					name = L["AzeriteUI"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				Communities = { --Temporary
+				Communities = {
 					type = "toggle",
 					name = COMMUNITIES,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Scrapping = {
 					type = "toggle",
-					name = L["Scrapping"],
+					name = SCRAP_BUTTON, -- i think its okayish
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				Islands = {
+					type = "toggle",
+					name = ISLANDS_HEADER,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},
