@@ -227,6 +227,7 @@ E.Options.args.databars = {
 				},
 			},
 		},
+		--[[
 		artifact = {
 			order = 6,
 			get = function(info) return mod.db.artifact[ info[#info] ] end,
@@ -326,6 +327,7 @@ E.Options.args.databars = {
 				},
 			},
 		},
+		]]
 		honor = {
 			order = 7,
 			get = function(info) return mod.db.honor[ info[#info] ] end,
