@@ -404,27 +404,29 @@ function UF:PostUpdateAura(unit, button)
 		button:SetSize(size, size)
 	end
 
-	if button.expiration and button.duration and (button.duration ~= 0) then
-		local getTime = GetTime()
-		if not button:GetScript('OnUpdate') then
-			button.expirationTime = button.expiration
-			button.expirationSaved = button.expiration - getTime
-			button.nextupdate = -1
-			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
+	if E.private.cooldown.enable then
+		if button.expiration and button.duration and (button.duration ~= 0) then
+			local getTime = GetTime()
+			if not button:GetScript('OnUpdate') then
+				button.expirationTime = button.expiration
+				button.expirationSaved = button.expiration - getTime
+				button.nextupdate = -1
+				button:SetScript('OnUpdate', UF.UpdateAuraTimer)
+			end
+			if (button.expirationTime ~= button.expiration) or (button.expirationSaved ~= (button.expiration - getTime))  then
+				button.expirationTime = button.expiration
+				button.expirationSaved = button.expiration - getTime
+				button.nextupdate = -1
+			end
 		end
-		if (button.expirationTime ~= button.expiration) or (button.expirationSaved ~= (button.expiration - getTime))  then
-			button.expirationTime = button.expiration
-			button.expirationSaved = button.expiration - getTime
-			button.nextupdate = -1
-		end
-	end
 
-	if button.expiration and button.duration and (button.duration == 0 or button.expiration <= 0) then
-		button.expirationTime = nil
-		button.expirationSaved = nil
-		button:SetScript('OnUpdate', nil)
-		if button.text:GetFont() then
-			button.text:SetText('')
+		if button.expiration and button.duration and (button.duration == 0 or button.expiration <= 0) then
+			button.expirationTime = nil
+			button.expirationSaved = nil
+			button:SetScript('OnUpdate', nil)
+			if button.text:GetFont() then
+				button.text:SetText('')
+			end
 		end
 	end
 end
