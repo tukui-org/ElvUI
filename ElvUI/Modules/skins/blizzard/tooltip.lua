@@ -90,6 +90,7 @@ local function LoadSkin()
 		WorldMapCompareTooltip2,
 		WorldMapCompareTooltip3,
 		ReputationParagonTooltip,
+		StoryTooltip,
 		EmbeddedItemTooltip,
 	}
 	for _, tt in pairs(tooltips) do
