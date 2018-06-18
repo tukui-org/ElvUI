@@ -562,7 +562,7 @@ end
 
 function TT:GameTooltip_ShowStatusBar(tt)
 	if tt:IsForbidden() then return end
-	local statusBar = _G[tt:GetName().."StatusBar"..tt.shownStatusBars];
+	local statusBar = _G[tt:GetName().."StatusBar"]
 	if statusBar and not statusBar.skinned then
 		statusBar:StripTextures()
 		statusBar:SetStatusBarTexture(E['media'].normTex)
