@@ -412,14 +412,12 @@ local function LoadSkin()
 		local icon = bu.Icon
 		if bu then
 			bu:StripTextures()
+			bu:StyleButton()
 
 			bu:CreateBackdrop("Overlay")
 			bu.backdrop:SetAllPoints()
 
 			icon:SetTexCoord(unpack(E.TexCoords))
-
-			bu:SetScript("OnEnter", S.SetModifiedBackdrop)
-			bu:SetScript("OnLeave", S.SetOriginalBackdrop)
 		end
 	end
 
