@@ -70,6 +70,10 @@ local function LoadSkin()
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G['GameTooltip']
 	local GameTooltipStatusBar =  _G['GameTooltipStatusBar']
+
+	local StoryTooltip = QuestScrollFrame.StoryTooltip
+	StoryTooltip:SetFrameLevel(4)
+
 	local tooltips = {
 		GameTooltip,
 		ItemRefTooltip,
@@ -85,17 +89,16 @@ local function LoadSkin()
 		WorldMapCompareTooltip1,
 		WorldMapCompareTooltip2,
 		WorldMapCompareTooltip3,
-		EmbeddedItemTooltip, -- Paragon ?
+		ReputationParagonTooltip,
+		EmbeddedItemTooltip,
 	}
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
 	-- WoW 8.0 Tooltip Backdrop [[FIX ME]]
-	hooksecurefunc("GameTooltip_SetBackdropStyle", function(self, style)
+	hooksecurefunc("GameTooltip_SetBackdropStyle", function(self)
 		self:SetTemplate("Transparent")
-		--self:SetBackdropBorderColor(unpack(E['media'].bordercolor))
-		--self:SetBackdropColor(unpack(E['media'].backdropcolor))
 	end)
 
 	-- Skin GameTooltip Status Bar
