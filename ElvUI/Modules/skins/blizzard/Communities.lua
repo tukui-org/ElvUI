@@ -144,12 +144,12 @@ local function LoadSkin()
 	ColumnDisplay.Background:Hide()
 	ColumnDisplay.TopTileStreaks:Hide()
 
-
 	--[[FIX ME
 	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
 	]]
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
+	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
@@ -306,6 +306,62 @@ local function LoadSkin()
 		local bu = _G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]
 		bu:SetBackdrop(nil)
 	end
+
+	-- Communities Settings
+	local Settings = _G["CommunitiesSettingsDialog"]
+	Settings:StripTextures()
+	Settings:CreateBackdrop("Transparent")
+	Settings.backdrop:SetAllPoints()
+
+	Settings.IconPreview:SetTexCoord(unpack(E.TexCoords))
+	Settings.IconPreviewRing:Hide()
+
+	S:HandleEditBox(Settings.NameEdit)
+	S:HandleEditBox(Settings.ShortNameEdit)
+	S:HandleEditBox(Settings.Description)
+	S:HandleEditBox(Settings.MessageOfTheDay)
+
+	S:HandleButton(Settings.ChangeAvatarButton)
+	S:HandleButton(Settings.Accept)
+	S:HandleButton(Settings.Delete)
+	S:HandleButton(Settings.Cancel)
+
+	-- Avatar Picker
+	local Avatar = _G["CommunitiesAvatarPickerDialog"]
+	Avatar:StripTextures()
+	Avatar:CreateBackdrop("Transparent")
+	Avatar.backdrop:SetAllPoints()
+
+	Avatar.ScrollFrame:StripTextures()
+	S:HandleScrollBar(CommunitiesAvatarPickerDialogScrollBar)
+
+	S:HandleButton(Avatar.OkayButton)
+	S:HandleButton(Avatar.CancelButton)
+
+	-- Invite Frame (Ticket Manager - Blizz WTF?!)
+	local TicketManager = _G["CommunitiesTicketManagerDialog"]
+	TicketManager:StripTextures()
+	TicketManager.InviteManager.ArtOverlay:Hide()
+	TicketManager.InviteManager.ColumnDisplay.InsetBorderLeft:Hide()
+	TicketManager.InviteManager.ColumnDisplay.InsetBorderBottomLeft:Hide()
+
+	TicketManager:CreateBackdrop("Transparent")
+	TicketManager.backdrop:SetAllPoints()
+
+	S:HandleEditBox(TicketManager.LinkBox)
+	S:HandleButton(TicketManager.Copy)
+	S:HandleButton(TicketManager.Close)
+
+	--[[ TO DO: Adjust the DropDown Menus
+	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
+	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
+
+	-- Also the ScrollBar
+	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
+
+	-- Handle the MaximizeButton: TicketManager.MaximizeButton
+	]]
+	S:HandleButton(TicketManager.GenerateLinkButton)
 end
 
 S:AddCallbackForAddon("Blizzard_Communities", "Communities", LoadSkin)
