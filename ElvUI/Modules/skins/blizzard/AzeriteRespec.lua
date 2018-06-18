@@ -13,8 +13,27 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
 
 	local AzeriteRespecFrame = _G["AzeriteRespecFrame"]
-	--AzeriteRespecFrame:StripTextures()
-	--AzeriteRespecFrame:CreateBackdrop("Transparent")
+	-- We can't use StripTextures() otherwise all gets killed. Not coolio!
+	AzeriteRespecFramePortraitFrame:Hide()
+	AzeriteRespecFramePortrait:Hide()
+	AzeriteRespecFrameTitleBg:Hide()
+	AzeriteRespecFrameTopBorder:Hide()
+	AzeriteRespecFrameTopRightCorner:Hide()
+	AzeriteRespecFrameRightBorder:Hide()
+	AzeriteRespecFrameLeftBorder:Hide()
+	AzeriteRespecFrameBottomBorder:Hide()
+	AzeriteRespecFrameBotRightCorner:Hide()
+	AzeriteRespecFrameBotLeftCorner:Hide()
+	AzeriteRespecFrameBg:Hide()
+	AzeriteRespecFrame.ButtonFrame:StripTextures()
+	AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton.LeftSeparator:Hide()
+	AzeriteRespecFrame.ButtonFrame.MoneyFrameEdge:Hide()
+
+	AzeriteRespecFrame:CreateBackdrop("Transparent")
+	AzeriteRespecFrame.backdrop:SetAllPoints()
+
+	S:HandleButton(AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
+	S:HandleCloseButton(AzeriteRespecFrameCloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_AzeriteRespecUI", "AzeriteRespec", LoadSkin)
