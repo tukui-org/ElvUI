@@ -47,7 +47,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local runemap = {1, 2, 3, 4, 5, 6}
-local isDefault = true
+local hasSortOrder = false
 
 local function onUpdate(self, elapsed)
 	local duration = self.duration + elapsed
@@ -105,13 +105,13 @@ local function Update(self, event)
 
 	if(element.sortOrder == 'asc') then
 		table.sort(runemap, ascSort)
-		isDefault = false
+		hasSortOrder = true
 	elseif(element.sortOrder == 'desc') then
 		table.sort(runemap, descSort)
-		isDefault = false
-	elseif(not isDefault) then
+		hasSortOrder = true
+	elseif(hasSortOrder) then
 		table.sort(runemap)
-		isDefault = true
+		hasSortOrder = false
 	end
 
 	local rune, start, duration, runeReady
