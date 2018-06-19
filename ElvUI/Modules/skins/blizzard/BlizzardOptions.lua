@@ -568,6 +568,7 @@ local function LoadSkin()
 		"Advanced_UseUIScale",
 		"Advanced_ShowHDModels",
 		"Advanced_DesktopGamma",
+		"Advanced_LockCursorToScreen",
 		--Network
 		"NetworkOptionsPanelAdvancedCombatLogging",
 		-- Audio
@@ -778,6 +779,8 @@ local function LoadSkin()
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
+		"Advanced_ContrastSlider",
+		"Advanced_BrightnessSlider",
 		"Display_RenderScaleSlider",
 		"Advanced_GammaSlider",
 		"AudioOptionsSoundPanelMasterVolume",
