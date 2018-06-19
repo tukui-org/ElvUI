@@ -25,9 +25,7 @@ function D:ModifyErrorFrame()
 	hooksecurefunc(ScriptErrorsFrame, 'Update', ScriptErrors_UnHighlightText)
 
 	-- Unhighlight text when focus is hit
-	local function UnHighlightText(self)
-		self:HighlightText(0, 0)
-	end
+	local function UnHighlightText(self) self:HighlightText(0, 0) end
 	ScriptErrorsFrame.ScrollFrame.Text:HookScript("OnEscapePressed", UnHighlightText)
 
 	ScriptErrorsFrame:SetSize(500, 300)
@@ -60,9 +58,14 @@ function D:ModifyErrorFrame()
 		ScriptErrorsFrame:Update()
 	end)
 	ScriptErrorsFrame.lastButton = lastButton
+
+	D:ScriptErrorsFrame_UpdateButtons()
+	D:Unhook(ScriptErrorsFrame, 'OnShow')
 end
 
 function D:ScriptErrorsFrame_UpdateButtons()
+	if not ScriptErrorsFrame.firstButton then return end
+
 	local numErrors = #ScriptErrorsFrame.order;
 	local index = ScriptErrorsFrame.index;
 	if ( index == 0 ) then
@@ -110,11 +113,7 @@ function D:Initialize()
 	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
 
-	if( not IsAddOnLoaded("Blizzard_DebugTools") ) then
-		LoadAddOn("Blizzard_DebugTools")
-	end
-
-	self:ModifyErrorFrame()
+	self:SecureHookScript(ScriptErrorsFrame, 'OnShow', D.ModifyErrorFrame)
 	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
 	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)
 	self:SecureHook('StaticPopup_Show')

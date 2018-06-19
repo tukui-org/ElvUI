@@ -11,43 +11,60 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
+local FrameTexs = {
+	"TopLeft",
+	"TopRight",
+	"Top",
+	"BottomLeft",
+	"BottomRight",
+	"Bottom",
+	"Left",
+	"Right",
+	"TitleBG",
+	"DialogBG",
+}
+
+local function LoadErrorFrameSkin()
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
+
+	local function SkinOnShow()
+		local ScriptErrorsFrame = _G["ScriptErrorsFrame"]
+		ScriptErrorsFrame:SetParent(E.UIParent)
+		ScriptErrorsFrame:SetTemplate('Transparent')
+		S:HandleScrollBar(ScriptErrorsFrameScrollBar)
+		S:HandleCloseButton(ScriptErrorsFrameClose)
+		ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
+		ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
+		ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
+
+		for i=1, #FrameTexs do
+			_G["ScriptErrorsFrame"..FrameTexs[i]]:SetTexture(nil)
+		end
+
+		-- Our Buttons
+		if ScriptErrorsFrame.firstButton then
+			S:HandleButton(ScriptErrorsFrame.firstButton)
+		end
+		if ScriptErrorsFrame.lastButton then
+			S:HandleButton(ScriptErrorsFrame.lastButton)
+		end
+
+		-- Default Buttons
+		S:HandleButton(ScriptErrorsFrame.Reload)
+		S:HandleButton(ScriptErrorsFrame.Close)
+		S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
+		S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
+
+		S:Unhook(ScriptErrorsFrame, 'OnShow')
+	end
+
+	S:SecureHookScript(ScriptErrorsFrame, 'OnShow', SkinOnShow)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
 
-	local ScriptErrorsFrame = _G["ScriptErrorsFrame"]
-	ScriptErrorsFrame:SetParent(E.UIParent)
-	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(ScriptErrorsFrameScrollBar)
-	S:HandleCloseButton(ScriptErrorsFrameClose)
-	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
-	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
-	EventTraceFrame:SetTemplate("Transparent")
-	local texs = {
-		"TopLeft",
-		"TopRight",
-		"Top",
-		"BottomLeft",
-		"BottomRight",
-		"Bottom",
-		"Left",
-		"Right",
-		"TitleBG",
-		"DialogBG",
-	}
-
-	for i=1, #texs do
-		_G["ScriptErrorsFrame"..texs[i]]:SetTexture(nil)
-		_G["EventTraceFrame"..texs[i]]:SetTexture(nil)
-	end
-
-	S:HandleButton(ScriptErrorsFrame.Reload)
-	S:HandleButton(ScriptErrorsFrame.Close)
-	S:HandleButton(ScriptErrorsFrame.firstButton)
-	S:HandleButton(ScriptErrorsFrame.lastButton)
-	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
-	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
-
+	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		FrameStackTooltip:HookScript("OnShow", function(self)
 			if not self.template then
@@ -65,6 +82,11 @@ local function LoadSkin()
 		end)
 	end
 
+	for i=1, #FrameTexs do
+		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture(nil)
+	end
+
+	EventTraceFrame:SetTemplate("Transparent")
 	S:HandleCloseButton(EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
@@ -157,4 +179,12 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
+-- ScriptErrorsFrame Skin
+S:AddCallback("ScriptErrorsFrame", LoadErrorFrameSkin)
+
+-- EventTrace, FrameStack, TableInspect Skins
+if IsAddOnLoaded("Blizzard_DebugTools") then
+	S:AddCallback("SkinDebugTools", LoadSkin)
+else
+	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
+end
