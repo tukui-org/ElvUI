@@ -423,6 +423,9 @@ local function LoadSkin()
 
 	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
 	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)
+
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)
