@@ -18,8 +18,6 @@ local function LoadSkin()
 	AdventureMapQuestChoiceDialog:StripTextures()
 	AdventureMapQuestChoiceDialog:CreateBackdrop("Transparent")
 	AdventureMapQuestChoiceDialog.backdrop:SetFrameStrata("LOW")
-	AdventureMapQuestChoiceDialog.PortraitBg:Hide()
-	AdventureMapQuestChoiceDialog.Portrait:Hide()
 
 	-- Rewards
 	local function SkinRewards()
