@@ -298,6 +298,65 @@ function S:HandleScrollBar(frame, thumbTrim)
 	end
 end
 
+-- HybridScrollFrame (Taken from Aurora)
+function S:HandleScrollSlider(Slider, thumbTrim)
+	local parent = Slider:GetParent()
+	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
+	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
+
+	Slider.trackBG:SetAlpha(0)
+
+	Slider.ScrollBarTop:Hide()
+	Slider.ScrollBarMiddle:Hide()
+	Slider.ScrollBarBottom:Hide()
+
+	if not Slider.trackbg then
+		Slider.trackbg = CreateFrame("Frame", nil, Slider)
+		Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, -1)
+		Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 1)
+		Slider.trackbg:SetTemplate("Transparent")
+	end
+
+	if Slider.ScrollUp and Slider.ScrollDown then
+		if not Slider.ScrollUp.icon then
+			S:HandleNextPrevButton(Slider.ScrollUp, true, true)
+			Slider.ScrollUp:Size(Slider.ScrollUp:GetWidth() + 7, Slider.ScrollUp:GetHeight() + 7)
+		end
+
+		if not Slider.ScrollDown.icon then
+			S:HandleNextPrevButton(Slider.ScrollDown, true)
+			Slider.ScrollDown:Size(Slider.ScrollDown:GetWidth() + 7, Slider.ScrollDown:GetHeight() + 7)
+		end
+	end
+
+	if parent.scrollUp and parent.scrollDown then
+		if not parent.scrollUp.icon then
+			S:HandleNextPrevButton(parent.scrollUp, true, true)
+			parent.scrollUp:Size(parent.scrollUp:GetWidth() + 9, parent.scrollUp:GetHeight() + 7) -- Not perfect
+		end
+
+		if not parent.scrollDown.icon then
+			S:HandleNextPrevButton(parent.scrollDown, true)
+			parent.scrollDown:Size(parent.scrollDown:GetWidth() + 9, parent.scrollDown:GetHeight() + 7) -- Not perfect
+		end
+	end
+
+	if Slider.thumbTexture then
+		if not thumbTrim then thumbTrim = 3 end
+		Slider.thumbTexture:SetTexture(nil)
+		if not Slider.thumbbg then
+			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
+			Slider.thumbbg:Point("TOPLEFT", Slider.thumbTexture, "TOPLEFT", 2, -thumbTrim)
+			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
+			Slider.thumbbg:SetTemplate("Default", true, true)
+			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+			if Slider.trackbg then
+				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
+			end
+		end
+	end
+end
+
 --Tab Regions
 local tabs = {
 	"LeftDisabled",

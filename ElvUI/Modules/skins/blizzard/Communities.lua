@@ -100,22 +100,9 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
-	select(2, CommunitiesFrame.MemberList.ListScrollFrame:GetChildren()):Hide() -- Hide default ScrollBar
-	CommunitiesFrame.MemberList.ListScrollFrame.scrollBar = CreateFrame("Slider", nil, CommunitiesFrame.MemberList.ListScrollFrame, "HybridScrollBarTemplateFixed")
-	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetFrameLevel(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer_After(0.25, function()
-		--Scroll back to top
-		CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetValue(1)
-		CommunitiesFrame.MemberList.ListScrollFrame.scrollBar:SetValue(0)
-	end)
-
-
-	--[[ FIX ME
-	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-	S:HandleScrollBar(CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
-	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	]]
+	S:HandleScrollSlider(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
+	S:HandleScrollSlider(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
+	S:HandleScrollSlider(CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
@@ -176,15 +163,7 @@ local function LoadSkin()
 
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
-	select(2, CommunitiesFrameRewards:GetChildren()):Hide()
-	CommunitiesFrameRewards.scrollBar = CreateFrame("Slider", nil, CommunitiesFrameRewards, "HybridScrollBarTemplateFixed")
-	S:HandleScrollBar(CommunitiesFrameRewards.scrollBar)
-	CommunitiesFrameRewards.scrollBar:SetFrameLevel(CommunitiesFrameRewards.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer_After(0.25, function()
-		--Scroll back to top
-		CommunitiesFrameRewards.scrollBar:SetValue(1)
-		CommunitiesFrameRewards.scrollBar:SetValue(0)
-	end)
+	S:HandleScrollSlider(CommunitiesFrameRewards.scrollBar)
 
 	hooksecurefunc("CommunitiesGuildRewards_Update", function(self)
 		local scrollFrame = self.RewardsContainer
@@ -246,7 +225,7 @@ local function LoadSkin()
 
 
 	S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	--S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
+	S:HandleScrollSlider(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	-- Filters Frame
