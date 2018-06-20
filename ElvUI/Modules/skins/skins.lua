@@ -510,6 +510,67 @@ function S:HandleDropDownBox(frame, width)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
+-- New BFA DropDown Template (Credits Aurora)
+function S:HandleDropDownFrame(Frame, Width)
+	local name = Frame:GetName()
+
+	if not Width then Width = 155 end
+
+	local left, middle, right
+	left = Frame.Left
+	middle = Frame.Middle
+	right = Frame.Right
+
+	left:SetAlpha(0)
+	middle:SetAlpha(0)
+	right:SetAlpha(0)
+
+	local button = Frame.Button
+	if (button) then
+		button:SetSize(24, 24)
+		button:ClearAllPoints()
+		button:Point("RIGHT", right, "RIGHT", -20, 0)
+
+		button.NormalTexture:SetTexture("")
+		button.PushedTexture:SetTexture("")
+		button.HighlightTexture:SetTexture("")
+
+		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
+			if not noReset then
+				self:ClearAllPoints()
+				self:SetPoint("RIGHT", Frame, "RIGHT", E:Scale(-20), E:Scale(0), true)
+			end
+		end)
+
+		self:HandleNextPrevButton(button, true)
+	end
+
+	local disabled = button.DisabledTexture
+	disabled:SetAllPoints(button)
+	disabled:SetColorTexture(0, 0, 0, .3)
+	disabled:SetDrawLayer("OVERLAY")
+
+	local bg = CreateFrame("Frame", nil, Frame)
+	bg:SetPoint("TOPLEFT", left, 20, -21)
+	bg:SetPoint("BOTTOMRIGHT", right, -19, 23)
+	bg:SetFrameLevel(Frame:GetFrameLevel())
+	bg:CreateBackdrop("Default")
+
+	if not Frame.noResize then
+		Frame:SetWidth(40)
+		middle:SetWidth(Width)
+	end
+	Frame:SetHeight(32)
+
+	left:SetSize(25, 64)
+	left:SetPoint("TOPLEFT", 0, 17)
+	middle:SetHeight(64)
+	right:SetSize(25, 64)
+
+	Frame.Text:SetSize(0, 10)
+	Frame.Text:SetPoint("RIGHT", right, -43, 2)
+end
+
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	assert(frame, 'does not exist.')
 	frame:StripTextures()

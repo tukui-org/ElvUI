@@ -115,9 +115,10 @@ local function LoadSkin()
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
 	S:HandleScrollBar(CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 	]]
+
+	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
+	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
@@ -144,12 +145,11 @@ local function LoadSkin()
 	ColumnDisplay.Background:Hide()
 	ColumnDisplay.TopTileStreaks:Hide()
 
-	--[[FIX ME
-	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
-	]]
+	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberListDropDownMenu)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
+	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
