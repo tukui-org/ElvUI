@@ -503,6 +503,7 @@ local function LoadSkin()
 		"MousePanelInvertMouse",
 		"MousePanelClickToMove",
 		"MousePanelEnableMouseSpeed",
+		"MousePanelLockCursorToScreen",
 		-- Accessability
 		"AccessibilityPanelMovePad",
 		"AccessibilityPanelCinematicSubtitles",
@@ -513,7 +514,7 @@ local function LoadSkin()
 		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
 		if icheckbox then
 			S:HandleCheckBox(icheckbox)
-		 else
+		else
 			print(interfacecheckbox[i])
 		end
 	end
@@ -568,7 +569,6 @@ local function LoadSkin()
 		"Advanced_UseUIScale",
 		"Advanced_ShowHDModels",
 		"Advanced_DesktopGamma",
-		"Advanced_LockCursorToScreen",
 		--Network
 		"NetworkOptionsPanelAdvancedCombatLogging",
 		-- Audio
@@ -781,6 +781,7 @@ local function LoadSkin()
 		"Advanced_MaxFPSBKSlider",
 		"Advanced_ContrastSlider",
 		"Advanced_BrightnessSlider",
+		"Advanced_RenderScaleSlider",
 		"Display_RenderScaleSlider",
 		"Advanced_GammaSlider",
 		"AudioOptionsSoundPanelMasterVolume",
