@@ -214,6 +214,15 @@ local function LoadSkin()
 		end
 	end)
 
+	-- Guild Reputation Bar TO DO: Adjust me!
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Middle:Hide()
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Right:Hide()
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Left:Hide()
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.BG:Hide()
+	E:RegisterStatusBar(CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar)
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar:CreateBackdrop()
+	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.backdrop:SetAllPoints()
+
 	-- [[ INFO TAB ]]
 	CommunitiesFrameGuildDetailsFrame.InsetBorderLeft:Hide()
 	CommunitiesFrameGuildDetailsFrame.InsetBorderRight:Hide()
@@ -348,9 +357,10 @@ local function LoadSkin()
 	TicketManager:CreateBackdrop("Transparent")
 	TicketManager.backdrop:SetAllPoints()
 
-	S:HandleEditBox(TicketManager.LinkBox)
+	S:HandleButton(TicketManager.LinkToChat)
 	S:HandleButton(TicketManager.Copy)
 	S:HandleButton(TicketManager.Close)
+	S:HandleButton(TicketManager.GenerateLinkButton)
 
 	--[[ TO DO: Adjust the DropDown Menus
 	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
@@ -361,7 +371,6 @@ local function LoadSkin()
 
 	-- Handle the MaximizeButton: TicketManager.MaximizeButton
 	]]
-	S:HandleButton(TicketManager.GenerateLinkButton)
 end
 
 S:AddCallbackForAddon("Blizzard_Communities", "Communities", LoadSkin)
