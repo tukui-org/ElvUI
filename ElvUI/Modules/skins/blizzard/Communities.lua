@@ -330,8 +330,11 @@ local function LoadSkin()
 	local TicketManager = _G["CommunitiesTicketManagerDialog"]
 	TicketManager:StripTextures()
 	TicketManager.InviteManager.ArtOverlay:Hide()
+	TicketManager.InviteManager.ColumnDisplay:StripTextures()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderLeft:Hide()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderBottomLeft:Hide()
+	-- TO DO: Fix the Tabs
+	TicketManager.InviteManager.ListScrollFrame:StripTextures()
 
 	TicketManager:CreateBackdrop("Transparent")
 	TicketManager.backdrop:SetAllPoints()
@@ -341,15 +344,11 @@ local function LoadSkin()
 	S:HandleButton(TicketManager.Close)
 	S:HandleButton(TicketManager.GenerateLinkButton)
 
-	--[[ TO DO: Adjust the DropDown Menus
-	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
-	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
+	S:HandleDropDownFrame(TicketManager.ExpiresDropDownMenu)
+	S:HandleDropDownFrame(TicketManager.UsesDropDownMenu)
 
-	-- Also the ScrollBar
-	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
-
-	-- Handle the MaximizeButton: TicketManager.MaximizeButton
-	]]
+	S:HandleScrollSlider(TicketManager.InviteManager.ListScrollFrame.scrollBar)
+	S:HandleButton(TicketManager.MaximizeButton)
 end
 
 S:AddCallbackForAddon("Blizzard_Communities", "Communities", LoadSkin)
