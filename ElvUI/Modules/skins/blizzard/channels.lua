@@ -37,29 +37,7 @@ local function LoadSkin()
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
 
-	--BUGFIX: ChannelFrame.ChannelRoster.ScrollFrame.scrollBar
-	--Hide current scrollbar
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarTop:Hide()
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarTop = nil
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarBottom:Hide()
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarBottom = nil
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.ScrollBarMiddle:Hide()
-	ChannelFrameScrollUpButton:Hide()
-	ChannelFrameScrollUpButton = nil
-	ChannelFrameScrollDownButton:Hide()
-	ChannelFrameScrollDownButton = nil
-	select(2, ChannelFrame.ChannelRoster.ScrollFrame:GetChildren()):Hide()
-
-	--Create new one with fixed template
-	-- FIX ME, on first load, the scrollbar is on the bottom
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar = CreateFrame("Slider", nil, ChannelFrame.ChannelRoster.ScrollFrame, "HybridScrollBarTemplateFixed")
-	S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
-	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetFrameLevel(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer_After(0.25, function()
-		--Scroll back to top
-		ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetValue(1)
-		ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetValue(0)
-	end)
+	S:HandleScrollSlider(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
 	S:HandleButton(CreateChannelPopup.OKButton)
