@@ -485,6 +485,7 @@ local function LoadSkin()
 		"ActionBarsPanelBottomRight",
 		"ActionBarsPanelRight",
 		"ActionBarsPanelRightTwo",
+		"ActionBarsPanelStackRightBars",
 		"ActionBarsPanelCountdownCooldowns",
 		-- Names
 		"NamesPanelMyName",
