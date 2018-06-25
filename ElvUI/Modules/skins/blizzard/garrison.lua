@@ -256,6 +256,7 @@ local function LoadSkin()
 	-- Landing page: Follower list
 	FollowerList = GarrisonLandingPage.FollowerList
 	FollowerList.FollowerHeaderBar:Hide()
+	FollowerList.FollowerScrollFrame:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
 	scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)

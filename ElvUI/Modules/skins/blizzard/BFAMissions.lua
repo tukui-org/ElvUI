@@ -17,6 +17,8 @@ local function LoadSkin()
 	MissionFrame:CreateBackdrop("Transparent")
 
 	MissionFrame.GarrCorners:Hide()
+	MissionFrame.CloseButtonBorder:Hide()
+	MissionFrame.TitleScroll:Hide()
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
 
@@ -41,9 +43,12 @@ local function LoadSkin()
 	Follower:StripTextures()
 	Follower:SetTemplate("Transparent")
 	S:HandleEditBox(Follower.SearchBox)
+	hooksecurefunc(Follower, "ShowFollower", function(self)
+		S:HandleFollowerPage(self, true, true)
+	end)
 	S:HandleScrollBar(_G["BFAMissionFrameFollowersListScrollFrameScrollBar"])
 
-	--S:HandleFollowerPage("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
+	S:HandleFollowerListOnUpdateData("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
 
 	XPBar:StripTextures()
 	XPBar:SetStatusBarTexture(E["media"].normTex)
