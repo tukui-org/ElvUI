@@ -55,9 +55,6 @@ local function LoadSkin()
 	XPBar:CreateBackdrop()
 
 	Class:SetSize(50, 43)
-
-	-- Scouting Map
-	-- Probably takes the skin from OrderHallUI
 end
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', "BFAMissions", LoadSkin)
