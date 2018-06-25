@@ -237,10 +237,12 @@ function B:SetSearch(query)
 				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if ( empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
+					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
 					SetItemButtonDesaturated(button, 1);
-					button:SetAlpha(0.4);
+					button.searchOverlay:Show();
+					button:SetAlpha(0.5);
 				end
 			end
 		end
@@ -253,10 +255,12 @@ function B:SetSearch(query)
 			local success, result = pcall(method, Search, link, query)
 			if ( empty or (success and result) ) then
 				SetItemButtonDesaturated(button);
+				button.searchOverlay:Hide();
 				button:SetAlpha(1);
 			else
 				SetItemButtonDesaturated(button, 1);
-				button:SetAlpha(0.4);
+				button.searchOverlay:Show();
+				button:SetAlpha(0.5);
 			end
 		end
 	end
@@ -290,10 +294,12 @@ function B:SetGuildBankSearch(query)
 				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if (empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
+					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
 					SetItemButtonDesaturated(button, 1);
-					button:SetAlpha(0.4);
+					button.searchOverlay:Show();
+					button:SetAlpha(0.5);
 				end
 			end
 		end
@@ -429,14 +435,14 @@ function B:UpdateSlot(bagID, slotID)
 		return;
 	end
 
-	local slot, _ = self.Bags[bagID][slotID], nil;
+	local slot = self.Bags[bagID][slotID];
 	local bagType = self.Bags[bagID].type;
 
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
 	slot.name, slot.rarity = nil, nil;
-	local texture, count, locked, readable, noValue
+	local texture, count, locked, readable, noValue, _
 	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
 
 	local clink = GetContainerItemLink(bagID, slotID);
@@ -543,7 +549,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+	SetItemButtonDesaturated(slot, locked);
 
 	if GameTooltip:GetOwner() == slot and not slot.hasItem then
 		B:Tooltip_Hide()
@@ -883,6 +889,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].iconTexture:SetInside(f.Bags[bagID][slotID]);
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
 
+					f.Bags[bagID][slotID].searchOverlay:SetAllPoints();
 					f.Bags[bagID][slotID].cooldown = _G[f.Bags[bagID][slotID]:GetName()..'Cooldown'];
 					f.Bags[bagID][slotID].cooldown.ColorOverride = 'bags'
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
@@ -985,6 +992,7 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				f.reagentFrame.slots[i].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
+				f.reagentFrame.slots[i].searchOverlay:SetAllPoints();
 				f.reagentFrame.slots[i].iconTexture = _G[f.reagentFrame.slots[i]:GetName()..'IconTexture'];
 				f.reagentFrame.slots[i].iconTexture:SetInside(f.reagentFrame.slots[i]);
 				f.reagentFrame.slots[i].iconTexture:SetTexCoord(unpack(E.TexCoords));
@@ -1087,7 +1095,7 @@ function B:UpdateReagentSlot(slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+	SetItemButtonDesaturated(slot, locked);
 end
 
 function B:UpdateAll()
