@@ -17,7 +17,7 @@ local BNInviteFriend = BNInviteFriend
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
-local C_Map_GetCurrentMapID = C_Map.GetCurrentMapID
+local C_Map_GetBestMapForUnitPlayer = function() return C_Map.GetBestMapForUnit("player") end
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetFriendInfo = GetFriendInfo
 local GetNumFriends = GetNumFriends
@@ -534,7 +534,7 @@ local function OnEnter(self)
 								if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
 								if IsShiftKeyDown() then
-									if E:GetZoneText(C_Map_GetCurrentMapID()) == info[15] then zonec = activezone else zonec = inactivezone end
+									if E:GetZoneText(C_Map_GetBestMapForUnitPlayer()) == info[15] then zonec = activezone else zonec = inactivezone end
 									if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
 									TooltipAddXLine(true, header, info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 								end
