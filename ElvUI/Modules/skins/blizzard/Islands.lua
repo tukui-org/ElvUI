@@ -14,7 +14,22 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Islands ~= true then return end
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
-	IslandsFrame:StripTextures()
+	-- The Frame have some nice textures, so don't use :StripTextures()
+	IslandsFrame.TopWoodBorder:Hide()
+	IslandsFrame.LeftWoodBorder:Hide()
+	IslandsFrame.RightWoodBorder:Hide()
+	IslandsFrame.BottomWoodBorder:Hide()
+	IslandsFrame.TopBorder:Hide()
+	IslandsQueueFrameLeftBorder:Hide()
+	IslandsQueueFrameRightBorder:Hide()
+	IslandsQueueFrameBottomBorder:Hide()
+	IslandsQueueFrameTopRightCorner:Hide()
+	IslandsQueueFrameTopLeftCorner:Hide()
+	IslandsQueueFrameBotLeftCorner:Hide()
+	IslandsQueueFrameBotRightCorner:Hide()
+	IslandsQueueFramePortrait:Hide()
+	IslandsQueueFramePortraitFrame:Hide()
+
 	IslandsFrame:CreateBackdrop("Transparent")
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest
@@ -31,6 +46,8 @@ local function LoadSkin()
 
 	S:HandleCloseButton(IslandsQueueFrameCloseButton)
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
+
+	-- TO DO: Handle the Reward-Tooltip
 end
 
 S:AddCallbackForAddon("Blizzard_IslandsQueueUI", "Islands", LoadSkin)
