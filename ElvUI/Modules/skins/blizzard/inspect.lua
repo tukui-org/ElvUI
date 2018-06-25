@@ -50,17 +50,24 @@ local function LoadSkin()
 	end
 
 	-- PVP Talents
+	-- Probably needs some adjustments
+	local InspectPVPFrame = _G["InspectPVPFrame"]
+
 	local trinketSlot = InspectPVPFrame.TrinketSlot
-	--trinketSlot:StripTextures() -- WIP
+	trinketSlot.Border:Hide()
+	trinketSlot.Texture:SetTexCoord(unpack(E.TexCoords))
 
 	local talentSlot1 = InspectPVPFrame.TalentSlot1
-	--talentSlot1:StripTextures() -- WIP
+	talentSlot1.Border:Hide()
+	talentSlot1.Texture:SetTexCoord(unpack(E.TexCoords))
 
 	local talentSlot2 = InspectPVPFrame.TalentSlot2
-	--talentSlot2:StripTextures() -- WIP
+	talentSlot2.Border:Hide()
+	talentSlot2.Texture:SetTexCoord(unpack(E.TexCoords))
 
 	local talentSlot3 = InspectPVPFrame.TalentSlot3
-	--talentSlot3:StripTextures() -- WIP
+	talentSlot3.Border:Hide()
+	talentSlot3.Texture:SetTexCoord(unpack(E.TexCoords))
 
 	for i = 1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
