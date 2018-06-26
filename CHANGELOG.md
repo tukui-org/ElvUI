@@ -6,6 +6,7 @@
 **Bug Fixes:**  
 Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
 Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
+Fixed issue with Guild Bank which sometimes prevented icons from being desaturated during a search while swapping between bank tabs. This also corrects the strange delay it appeared to have.  
 
 
 **Misc. Changes:**  
