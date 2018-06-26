@@ -4,7 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs, select = unpack, pairs, select
+local unpack, select = unpack, select
+local pairs, ipairs = pairs, ipairs
 --WoW API / Variables
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetFactionInfo = GetFactionInfo
@@ -19,7 +20,7 @@ local UnitLevel = UnitLevel
 local UnitSex = UnitSex
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
--- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY
+-- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY, NUM_FACTIONS_DISPLAYED
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF;
 local IGNORESLOT_LOCATION = 0xFFFFFFFE;
