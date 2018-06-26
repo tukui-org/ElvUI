@@ -545,7 +545,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
