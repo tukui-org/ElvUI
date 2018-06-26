@@ -31,12 +31,15 @@ local function LoadSkin()
 				end
 
 				if reward.IconBorder then
-					reward.IconBorder:SetTexture()
+					reward.IconBorder:SetTexture(nil)
 				end
 			end
 
 			--Set border color according to rarity of item
 			for _, reward in pairs(self.Rewards) do
+				if reward.IconBorder then -- Hide the default blizzard .IconBorder
+					reward.IconBorder:SetTexture(nil)
+				end
 				if reward.border and reward.border.backdrop then
 					local r, g, b
 					if reward.IconBorder:IsShown() then
