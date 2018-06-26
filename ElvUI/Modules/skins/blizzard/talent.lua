@@ -132,7 +132,7 @@ local function LoadSkin()
 			bu:CreateBackdrop("Default")
 			bu.backdrop:SetOutside(ic)
 			bu.knownSelection:SetAlpha(0)
-			ic:SetDrawLayer("OVERLAY")
+			ic:SetDrawLayer("OVERLAY", 1)
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
@@ -140,9 +140,14 @@ local function LoadSkin()
 			bu.bg:SetFrameLevel(bu:GetFrameLevel() -2)
 			bu.bg:Point("TOPLEFT", 15, -1)
 			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
 			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
+
+			bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
+			bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
+			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.5)
 		end
 	end
 
@@ -150,11 +155,19 @@ local function LoadSkin()
 		for i = 1, MAX_TALENT_TIERS do
 			for j = 1, NUM_TALENT_COLUMNS do
 				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
-				if bu.knownSelection:IsShown() then
-					bu.bg.SelectedTexture:Show()
-					bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
-				else
-					bu.bg.SelectedTexture:Hide()
+				local ic = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j.."IconTexture"]
+				if bu.bg and bu.knownSelection then
+					if bu.knownSelection:IsShown() then
+						bu.bg.SelectedTexture:Show()
+						bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+						bu.ShadowedTexture:Hide()
+					else
+						bu.bg.SelectedTexture:Hide()
+						bu.ShadowedTexture:Show()
+
+						-- blizz sets the unselected ones to desaturate but with the shadow overlay we dont have to
+						ic:SetDesaturated(false)
+					end
 				end
 			end
 		end
@@ -236,7 +249,7 @@ local function LoadSkin()
 		bu.specIcon:SetSize(50, 50)
 		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
 		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
 	end
 
 	buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
@@ -247,7 +260,7 @@ local function LoadSkin()
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
 			local tex = bu:CreateTexture(nil, 'ARTWORK')
-			tex:SetColorTexture(1, 1, 1, 0.1)
+			tex:SetColorTexture(1, 1, 1, 0.2)
 			bu:SetHighlightTexture(tex)
 			bu.bg:SetAlpha(0)
 			bu.learnedTex:SetAlpha(0)
@@ -291,7 +304,7 @@ local function LoadSkin()
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
 		end
 
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1, 0.2)
@@ -327,7 +340,7 @@ local function LoadSkin()
 			button:SetFrameLevel(button:GetFrameLevel() + 5)
 			button:CreateBackdrop("Default")
 			button.backdrop:SetOutside(icon)
-			icon:SetDrawLayer("OVERLAY")
+			icon:SetDrawLayer("OVERLAY", 1)
 			icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 			button.bg = CreateFrame("Frame", nil, button)
@@ -335,9 +348,14 @@ local function LoadSkin()
 			button.bg:SetFrameLevel(button:GetFrameLevel() -2)
 			button.bg:Point("TOPLEFT", 15, -1)
 			button.bg:Point("BOTTOMRIGHT", -10, 1)
+
 			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
 			button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
 			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
+
+			button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, 2)
+			button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
+			button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.5)
 		end
 	end
 
@@ -346,12 +364,14 @@ local function LoadSkin()
 		for i = 1, MAX_PVP_TALENT_TIERS do
 			for j = 1, MAX_PVP_TALENT_COLUMNS do
 				local button = self.Talents["Tier"..i]["Talent"..j]
-				if button.knownSelection then
+				if button.bg and button.knownSelection then
 					if button.knownSelection:IsShown() then
 						button.bg.SelectedTexture:Show()
-						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
+						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+						button.ShadowedTexture:Hide()
 					else
 						button.bg.SelectedTexture:Hide()
+						button.ShadowedTexture:Show()
 					end
 				end
 			end
