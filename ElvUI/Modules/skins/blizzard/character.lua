@@ -78,6 +78,20 @@ local function LoadSkin()
 		end)
 	end
 
+	-- Give character frame model backdrop it's color back
+	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
+		local bg = _G["CharacterModelFrameBackground"..corner];
+		if bg then
+			bg:SetDesaturated(false);
+			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			hooksecurefunc(bg, "SetDesaturated", function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false);
+				end
+			end)
+		end
+	end
+
 	CharacterLevelText:FontTemplate()
 	CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
 
@@ -287,7 +301,8 @@ local function LoadSkin()
 	for _, object in pairs(charframe) do
 		_G[object]:StripTextures()
 	end
-	--Re-add the overlay texture which was removed right above
+
+	--Re-add the overlay texture which was removed right above via StripTextures
 	CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
 	CharacterModelFrame:CreateBackdrop("Default")
 	CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
@@ -369,7 +384,7 @@ local function LoadSkin()
 				tab.Icon:SetAllPoints()
 				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:SetAllPoints()
-				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
+				tab.Hider:SetColorTexture(0.0,0.0,0.0,0.8)
 				tab.Hider:SetAllPoints()
 				tab.TabBg:Kill()
 
