@@ -581,23 +581,25 @@ function S:HandleDropDownBox(frame, width)
 	frame:StripTextures()
 	frame:Width(width)
 
-	if(_G[frame:GetName().."Text"]) then
+	local frameText = _G[frame:GetName().."Text"]
+	if frameText then
 		_G[frame:GetName().."Text"]:ClearAllPoints()
 		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
 	end
 
-	if(button) then
+	if button then
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)
-		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
+		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
 			if not noReset then
-				self:ClearAllPoints()
-				self:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
+				btn:ClearAllPoints()
+				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
 			end
 		end)
 
 		self:HandleNextPrevButton(button, true)
 	end
+
 	frame:CreateBackdrop("Default")
 	frame.backdrop:Point("TOPLEFT", 20, -2)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
