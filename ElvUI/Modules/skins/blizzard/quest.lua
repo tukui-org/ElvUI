@@ -275,7 +275,7 @@ local function LoadSkin()
 			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if not child.IsSkinned then
 				if child.ButtonText then
-					S:HandleExpandOrCollapse(child)
+					S:HandleExpandOrCollapse(child, 'QuestLogQuests_Update')
 				end
 				child.IsSkinned = true
 			end

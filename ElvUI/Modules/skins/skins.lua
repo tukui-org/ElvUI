@@ -1142,7 +1142,10 @@ local function Handle_SetNormalTexture(self, texture)
 	self.settingTexture = nil
 end
 
-function S:HandleExpandOrCollapse(button)
+function S:HandleExpandOrCollapse(button, funcName)
+	-- `funcName` arg: for plugins to handle with specific usage.
+	-- (ie: our hook of `QuestLogQuests_Update` in `skins\blizzard\quest.lua`)
+
 	button:SetHighlightTexture("")
 	button:SetPushedTexture("")
 
