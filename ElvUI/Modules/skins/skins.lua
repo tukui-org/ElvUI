@@ -603,23 +603,29 @@ function S:HandleDropDownBox(frame, width)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
--- New BFA DropDown Template (Credits Aurora)
-function S:HandleDropDownFrame(Frame, Width)
-	local name = Frame:GetName()
+-- New BFA DropDown Template (Original Function Credits: Aurora) ~ was modified.
+function S:HandleDropDownFrame(frame, width)
+	if not width then width = 155 end
 
-	if not Width then Width = 155 end
+	local left = frame.Left
+	local middle = frame.Middle
+	local right = frame.Right
+	if left then
+		left:SetAlpha(0)
+		left:SetSize(25, 64)
+		left:SetPoint("TOPLEFT", 0, 17)
+	end
+	if middle then
+		middle:SetAlpha(0)
+		middle:SetHeight(64)
+	end
+	if right then
+		right:SetAlpha(0)
+		right:SetSize(25, 64)
+	end
 
-	local left, middle, right
-	left = Frame.Left
-	middle = Frame.Middle
-	right = Frame.Right
-
-	left:SetAlpha(0)
-	middle:SetAlpha(0)
-	right:SetAlpha(0)
-
-	local button = Frame.Button
-	if (button) then
+	local button = frame.Button
+	if button then
 		button:SetSize(24, 24)
 		button:ClearAllPoints()
 		button:Point("RIGHT", right, "RIGHT", -20, 0)
@@ -628,40 +634,39 @@ function S:HandleDropDownFrame(Frame, Width)
 		button.PushedTexture:SetTexture("")
 		button.HighlightTexture:SetTexture("")
 
-		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
+		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
 			if not noReset then
-				self:ClearAllPoints()
-				self:SetPoint("RIGHT", Frame, "RIGHT", E:Scale(-20), E:Scale(0), true)
+				btn:ClearAllPoints()
+				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-20), E:Scale(0), true)
 			end
 		end)
 
 		self:HandleNextPrevButton(button, true)
 	end
 
-	local disabled = button.DisabledTexture
-	disabled:SetAllPoints(button)
-	disabled:SetColorTexture(0, 0, 0, .3)
-	disabled:SetDrawLayer("OVERLAY")
+	local disabled = button and button.DisabledTexture
+	if disabled then
+		disabled:SetAllPoints(button)
+		disabled:SetColorTexture(0, 0, 0, .3)
+		disabled:SetDrawLayer("OVERLAY")
+	end
 
-	local bg = CreateFrame("Frame", nil, Frame)
-	bg:SetPoint("TOPLEFT", left, 20, -21)
-	bg:SetPoint("BOTTOMRIGHT", right, -19, 23)
-	bg:SetFrameLevel(Frame:GetFrameLevel())
+	local bg = CreateFrame("Frame", nil, frame)
+	if left then bg:SetPoint("TOPLEFT", left, 20, -21) end
+	if right then bg:SetPoint("BOTTOMRIGHT", right, -19, 23) end
+	bg:SetFrameLevel(frame:GetFrameLevel())
 	bg:CreateBackdrop("Default")
 
-	if not Frame.noResize then
-		Frame:SetWidth(40)
-		middle:SetWidth(Width)
+	frame:SetHeight(32)
+	if middle and (not frame.noResize) then
+		frame:SetWidth(40)
+		middle:SetWidth(width)
 	end
-	Frame:SetHeight(32)
 
-	left:SetSize(25, 64)
-	left:SetPoint("TOPLEFT", 0, 17)
-	middle:SetHeight(64)
-	right:SetSize(25, 64)
-
-	Frame.Text:SetSize(0, 10)
-	Frame.Text:SetPoint("RIGHT", right, -43, 2)
+	if right and frame.Text then
+		frame.Text:SetSize(0, 10)
+		frame.Text:SetPoint("RIGHT", right, -43, 2)
+	end
 end
 
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
