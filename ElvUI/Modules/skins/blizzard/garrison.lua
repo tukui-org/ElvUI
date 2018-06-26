@@ -80,17 +80,16 @@ local function LoadSkin()
 				local button = buttons[i];
 				local index = offset + i; -- adjust index
 				if ( index <= numItems ) then
-					local item = items[index];
-					local index = 1;
-					for id, reward in pairs(item.rewards) do
-						local Reward = button.Rewards[index];
+					local idx, item = 1, items[index];
+					for _, reward in pairs(item.rewards) do
+						local Reward = button.Rewards[idx];
 						if (reward.itemID) then
 							local r, g, b = Reward.IconBorder:GetVertexColor()
 							Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
 						else
 							Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 						end
-						index = index + 1;
+						idx = idx + 1;
 					end
 				end
 			end
@@ -142,7 +141,7 @@ local function LoadSkin()
 
 	do
 		local reagentIndex = 1
-		hooksecurefunc("GarrisonCapacitiveDisplayFrame_Update", function(self)
+		hooksecurefunc("GarrisonCapacitiveDisplayFrame_Update", function()
 			local reagents = CapacitiveDisplay.Reagents
 			local reagent = reagents[reagentIndex]
 			while reagent do
@@ -323,7 +322,7 @@ local function LoadSkin()
 
 	--LandingPage Tutorial
 	S:HandleCloseButton(GarrisonLandingPageTutorialBox.CloseButton)
-	
+
 	if E.private.skins.blizzard.tooltip ~= true then return end
 	-- ShipYard: Mission Tooltip
 	local tooltip = GarrisonShipyardMapMissionTooltip
