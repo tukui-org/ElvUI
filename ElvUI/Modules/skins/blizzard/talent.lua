@@ -197,22 +197,25 @@ local function LoadSkin()
 
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
 		local scrollChild = self.spellsScroll.child
-
 		scrollChild.specIcon:SetTexture(icon)
 
-		local index = 1
 		local bonuses
 		if self.isPet then
 			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet)}
 		else
 			bonuses = SPEC_SPELLS_DISPLAY[id]
 		end
+
 		if bonuses then
+			local index = 1
 			for i = 1, #bonuses, 2 do
 				local frame = scrollChild["abilityButton"..index]
-				local _, icon = GetSpellTexture(bonuses[i])
 				if frame then
-					frame.icon:SetTexture(icon)
+					local _, spellTex = GetSpellTexture(bonuses[i])
+					if spellTex then
+						frame.icon:SetTexture(spellTex)
+					end
+
 					if not frame.reskinned then
 						frame.reskinned = true
 						frame:Size(30, 30)
@@ -222,7 +225,6 @@ local function LoadSkin()
 						frame.icon:SetInside()
 					end
 				end
-
 				index = index + 1
 			end
 		end
@@ -248,6 +250,9 @@ local function LoadSkin()
 		bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		bu.specIcon:SetSize(50, 50)
 		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+		bu.specIcon:SetDrawLayer('ARTWORK', 2)
+		bu.roleIcon:SetDrawLayer('ARTWORK', 2)
+
 		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
 	end
@@ -259,9 +264,6 @@ local function LoadSkin()
 			local bu = _G[name..i]
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
-			local tex = bu:CreateTexture(nil, 'ARTWORK')
-			tex:SetColorTexture(1, 1, 1, 0.2)
-			bu:SetHighlightTexture(tex)
 			bu.bg:SetAlpha(0)
 			bu.learnedTex:SetAlpha(0)
 			bu.selectedTex:SetAlpha(0)
@@ -269,11 +271,17 @@ local function LoadSkin()
 			bu:CreateBackdrop("Overlay")
 			bu.backdrop:Point("TOPLEFT", 8, 2)
 			bu.backdrop:Point("BOTTOMRIGHT", 10, -2)
-			bu:GetHighlightTexture():SetInside(bu.backdrop)
+
+			local highlightTex = bu:CreateTexture(nil, 'ARTWORK')
+			highlightTex:SetColorTexture(1, 1, 1, 0.2)
+			highlightTex:SetInside(bu.backdrop)
+			bu:SetHighlightTexture(highlightTex)
 
 			bu.border = CreateFrame("Frame", nil, bu)
-			bu.border:CreateBackdrop("Default")
-			bu.border.backdrop:SetOutside(bu.specIcon)
+			bu.border:SetOutside(bu.specIcon)
+			bu.border:SetTemplate("Default", nil, true)
+			bu.border:SetBackdropColor(0, 0, 0, 0)
+			bu.border.backdropTexture:SetAlpha(0)
 		end
 	end
 
@@ -302,6 +310,8 @@ local function LoadSkin()
 			bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			bu.specIcon:SetSize(50, 50)
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+			bu.specIcon:SetDrawLayer('ARTWORK', 2)
+			bu.roleIcon:SetDrawLayer('ARTWORK', 2)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
 			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
