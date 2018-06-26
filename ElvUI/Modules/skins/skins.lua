@@ -1176,24 +1176,26 @@ function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, ancho
 	S[templateName](self.overlayFrames[#self.overlayFrames])
 end
 
-function S:HandleWorldMapDropDownMenu(Frame)
-	local name = Frame:GetName()
+function S:HandleWorldMapDropDownMenu(frame)
+	local left = frame.Left
+	local middle = frame.Middle
+	local right = frame.Right
+	if left then
+		left:SetAlpha(0)
+		left:SetSize(25, 64)
+		left:SetPoint("TOPLEFT", 0, 17)
+	end
+	if middle then
+		middle:SetAlpha(0)
+		middle:SetHeight(64)
+	end
+	if right then
+		right:SetAlpha(0)
+		right:SetSize(25, 64)
+	end
 
-	local left = Frame.Left
-	local middle = Frame.Middle
-	local right = Frame.Right
-
-	left:SetAlpha(0)
-	middle:SetAlpha(0)
-	right:SetAlpha(0)
-
-	left:SetSize(25, 64)
-	left:SetPoint("TOPLEFT", 0, 17)
-	middle:SetHeight(64)
-	right:SetSize(25, 64)
-
-	local button = Frame.Button
-	if(button) then
+	local button = frame.Button
+	if button then
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)
 		button:SetSize(20, 20)
@@ -1201,34 +1203,40 @@ function S:HandleWorldMapDropDownMenu(Frame)
 		button.NormalTexture:SetTexture("")
 		button.PushedTexture:SetTexture("")
 		button.HighlightTexture:SetTexture("")
-		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
+		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
 			if not noReset then
-				self:ClearAllPoints()
-				self:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
+				btn:ClearAllPoints()
+				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
 			end
 		end)
 
 		self:HandleNextPrevButton(button, true)
 	end
 
-	local disabled = button.DisabledTexture
-	disabled:SetAllPoints(button)
-	disabled:SetColorTexture(0, 0, 0, .3)
-	disabled:SetDrawLayer("OVERLAY")
+	local disabled = button and button.DisabledTexture
+	if disabled then
+		disabled:SetAllPoints(button)
+		disabled:SetColorTexture(0, 0, 0, .3)
+		disabled:SetDrawLayer("OVERLAY")
+	end
 
-	Frame.Text:FontTemplate(nil, 10)
-	Frame.Text:SetSize(0, 10)
-	Frame.Text:SetPoint("RIGHT", right, -43, 2)
+	if right and frame.Text then
+		frame.Text:FontTemplate(nil, 10)
+		frame.Text:SetSize(0, 10)
+		frame.Text:SetPoint("RIGHT", right, -43, 2)
+	end
 
-	if not Frame.noResize then
-		Frame:SetWidth(40)
+	if middle and (not frame.noResize) then
+		frame:SetWidth(40)
 		middle:SetWidth(115)
 	end
-	Frame:SetHeight(32)
 
-	Frame:CreateBackdrop("Default")
-	Frame.backdrop:Point("TOPLEFT", 20, -2)
-	Frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+	frame:SetHeight(32)
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 20, -2)
+	if button then
+		frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+	end
 end
 
 function S:ADDON_LOADED(_, addon)
