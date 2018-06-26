@@ -90,7 +90,9 @@ local function LoadSkin()
 	InspectModelFrameBorderBottomRight:Kill()
 	InspectModelFrameBorderBottom:Kill()
 	InspectModelFrameBorderBottom2:Kill()
-	InspectModelFrameBackgroundOverlay:Kill()
+
+	--Re-add the overlay texture which was removed via StripTextures
+	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
 
 	-- Give inspect frame model backdrop it's color back
 	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
