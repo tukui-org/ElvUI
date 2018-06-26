@@ -68,6 +68,7 @@ local function LoadSkin()
 	S:HandleEditBox(CalendarCreateEventInviteEdit)
 	S:HandleEditBox(CalendarCreateEventTitleEdit)
 	S:HandleDropDownBox(CalendarCreateEventTypeDropDown, 120)
+	S:HandleDropDownBox(CalendarCreateEventCommunityDropDown, 240)
 
 	CalendarCreateEventDescriptionContainer:StripTextures()
 	CalendarCreateEventDescriptionContainer:SetTemplate("Default")
@@ -126,11 +127,6 @@ local function LoadSkin()
 	CalendarMassInviteTitleFrame:StripTextures()
 
 	S:HandleCloseButton(CalendarMassInviteCloseButton)
-	S:HandleButton(CalendarMassInviteGuildAcceptButton)
-	S:HandleDropDownBox(CalendarMassInviteGuildRankMenu, 130)
-
-	S:HandleEditBox(CalendarMassInviteGuildMinLevelEdit)
-	S:HandleEditBox(CalendarMassInviteGuildMaxLevelEdit)
 
 	--Raid View
 	CalendarViewRaidFrame:StripTextures()
