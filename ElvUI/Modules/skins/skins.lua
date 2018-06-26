@@ -173,7 +173,6 @@ function S:HandleButton(f, strip, isDeclineButton)
 	if f.Left then f.Left:SetAlpha(0) end
 	if f.Middle then f.Middle:SetAlpha(0) end
 	if f.Right then f.Right:SetAlpha(0) end
-
 	if f.TopLeft then f.TopLeft:SetAlpha(0) end
 	if f.TopMiddle then f.TopMiddle:SetAlpha(0) end
 	if f.TopRight then f.TopRight:SetAlpha(0) end
@@ -183,7 +182,6 @@ function S:HandleButton(f, strip, isDeclineButton)
 	if f.BottomLeft then f.BottomLeft:SetAlpha(0) end
 	if f.BottomMiddle then f.BottomMiddle:SetAlpha(0) end
 	if f.BottomRight then f.BottomRight:SetAlpha(0) end
-
 	if f.LeftSeparator then f.LeftSeparator:SetAlpha(0) end
 	if f.RightSeparator then f.RightSeparator:SetAlpha(0) end
 
@@ -236,18 +234,9 @@ function S:HandleScrollBar(frame, thumbTrim)
 
 		if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
 		if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
-
-		if _G[frame:GetName().."Top"] then
-			_G[frame:GetName().."Top"]:SetTexture(nil)
-		end
-
-		if _G[frame:GetName().."Bottom"] then
-			_G[frame:GetName().."Bottom"]:SetTexture(nil)
-		end
-
-		if _G[frame:GetName().."Middle"] then
-			_G[frame:GetName().."Middle"]:SetTexture(nil)
-		end
+		if _G[frame:GetName().."Top"] then _G[frame:GetName().."Top"]:SetTexture(nil) end
+		if _G[frame:GetName().."Bottom"] then _G[frame:GetName().."Bottom"]:SetTexture(nil) end
+		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:SetTexture(nil) end
 
 		if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
 			_G[frame:GetName().."ScrollUpButton"]:StripTextures()
@@ -439,24 +428,24 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
 		btn.icon:SetTexCoord(0.01562500, 0.20312500, 0.01562500, 0.20312500)
 
-		btn:HookScript('OnMouseDown', function(self)
-			if self:IsEnabled() then
-				self.icon:Point("CENTER", -1, -1);
+		btn:HookScript('OnMouseDown', function(button)
+			if button:IsEnabled() then
+				button.icon:Point("CENTER", -1, -1);
 			end
 		end)
 
-		btn:HookScript('OnMouseUp', function(self)
-			self.icon:Point("CENTER", 0, 0);
+		btn:HookScript('OnMouseUp', function(button)
+			button.icon:Point("CENTER", 0, 0);
 		end)
 
-		btn:HookScript('OnDisable', function(self)
-			SetDesaturation(self.icon, true);
-			self.icon:SetAlpha(0.5);
+		btn:HookScript('OnDisable', function(button)
+			SetDesaturation(button.icon, true);
+			button.icon:SetAlpha(0.5);
 		end)
 
-		btn:HookScript('OnEnable', function(self)
-			SetDesaturation(self.icon, false);
-			self.icon:SetAlpha(1.0);
+		btn:HookScript('OnEnable', function(button)
+			SetDesaturation(button.icon, false);
+			button.icon:SetAlpha(1.0);
 		end)
 
 		if not btn:IsEnabled() then
@@ -662,7 +651,9 @@ end
 
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	assert(frame, 'does not exist.')
+
 	frame:StripTextures()
+
 	if noBackdrop then
 		frame:SetTemplate("Default")
 		frame:Size(16)
@@ -686,31 +677,23 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 			end
 		end
 
-		frame:HookScript('OnDisable', function(self)
-			if not self.SetDisabledTexture then return; end
-			if self:GetChecked() then
-				self:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+		frame:HookScript('OnDisable', function(checkbox)
+			if not checkbox.SetDisabledTexture then return; end
+			if checkbox:GetChecked() then
+				checkbox:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 			else
-				self:SetDisabledTexture("")
+				checkbox:SetDisabledTexture("")
 			end
 		end)
 
-		hooksecurefunc(frame, "SetNormalTexture", function(self, texPath)
-			if texPath ~= "" then
-				self:SetNormalTexture("");
-			end
+		hooksecurefunc(frame, "SetNormalTexture", function(checkbox, texPath)
+			if texPath ~= "" then checkbox:SetNormalTexture("") end
 		end)
-
-		hooksecurefunc(frame, "SetPushedTexture", function(self, texPath)
-			if texPath ~= "" then
-				self:SetPushedTexture("");
-			end
+		hooksecurefunc(frame, "SetPushedTexture", function(checkbox, texPath)
+			if texPath ~= "" then checkbox:SetPushedTexture("") end
 		end)
-
-		hooksecurefunc(frame, "SetHighlightTexture", function(self, texPath)
-			if texPath ~= "" then
-				self:SetHighlightTexture("");
-			end
+		hooksecurefunc(frame, "SetHighlightTexture", function(checkbox, texPath)
+			if texPath ~= "" then checkbox:SetHighlightTexture("") end
 		end)
 	end
 end
@@ -728,14 +711,14 @@ function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture
-	local texture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
 	elseif b:GetName() and _G[b:GetName()..'Icon'] then
 		icon = _G[b:GetName()..'Icon']
 	end
 
-	if(icon and icon:GetTexture()) then
+	local texture
+	if icon and icon.GetTexture and icon:GetTexture() then
 		texture = icon:GetTexture()
 	end
 
@@ -747,16 +730,16 @@ function S:HandleItemButton(b, shrinkIcon)
 		icon:SetTexCoord(unpack(E.TexCoords))
 
 		-- create a backdrop around the icon
-
 		if shrinkIcon then
 			b.backdrop:SetAllPoints()
 			icon:SetInside(b)
 		else
 			b.backdrop:SetOutside(icon)
 		end
+
 		icon:SetParent(b.backdrop)
 
-		if(texture) then
+		if texture then
 			icon:SetTexture(texture)
 		end
 	end
@@ -774,7 +757,9 @@ function S:HandleCloseButton(f, point, text)
 		f:HookScript('OnLeave', S.SetOriginalBackdrop)
 		f:SetHitRectInsets(6, 6, 7, 7)
 	end
+
 	if not text then text = 'x' end
+
 	if not f.text then
 		f.text = f:CreateFontString(nil, 'OVERLAY')
 		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
@@ -790,19 +775,22 @@ end
 
 function S:HandleSliderFrame(frame)
 	assert(frame)
+
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
+
 	frame:StripTextures()
 	frame:CreateBackdrop('Default')
 	frame.backdrop:SetAllPoints()
-	hooksecurefunc(frame, "SetBackdrop", function(self, backdrop)
-		if backdrop ~= nil then
-			frame:SetBackdrop(nil)
-		end
+
+	hooksecurefunc(frame, "SetBackdrop", function(slider, backdrop)
+		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
+
 	frame:SetThumbTexture(E["media"].blankTex)
 	frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
+
 	if orientation == 'VERTICAL' then
 		frame:Width(SIZE)
 	else
@@ -1088,19 +1076,19 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
 	local scrollFrame = _G[frameName.."ScrollFrame"]
 	local editBox = _G[frameName.."EditBox"]
-	local okayButton = _G[frameName.."OkayButton"] or _G[frameName.."Okay"]
-	local cancelButton = _G[frameName.."CancelButton"] or _G[frameName.."Cancel"]
+	-- We handle the skin in the files for now. (???)
+	--local okayButton = _G[frameName.."OkayButton"] or _G[frameName.."Okay"]
+	--local cancelButton = _G[frameName.."CancelButton"] or _G[frameName.."Cancel"]
 
 	frame:StripTextures()
 	frame.BorderBox:StripTextures()
 	scrollFrame:StripTextures()
-	editBox:DisableDrawLayer("BACKGROUND") --Removes textures around it
+	editBox:DisableDrawLayer("BACKGROUND") -- Removes textures around it
 
 	frame:SetTemplate("Transparent")
 	frame:Height(frame:GetHeight() + 10)
 	scrollFrame:Height(scrollFrame:GetHeight() + 10)
 
-	-- We handle the skin in the files for now.
 	--S:HandleButton(okayButton)
 	--S:HandleButton(CancelButton)
 	--S:HandleEditBox(editBox)
@@ -1230,6 +1218,7 @@ function S:HandleWorldMapDropDownMenu(frame)
 	frame:SetHeight(32)
 	frame:CreateBackdrop("Default")
 	frame.backdrop:Point("TOPLEFT", 20, -2)
+
 	if button then
 		frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 	end
