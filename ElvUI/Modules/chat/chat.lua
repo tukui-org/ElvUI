@@ -80,7 +80,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
-local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
@@ -2194,7 +2194,7 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 
 	if members then
 		local firstMember, numMembers, extraCount = members[1], #members, ''
-		playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
+		playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 		if numMembers > 1 then
 			extraCount = format(' +%s', numMembers - 1)
 		end

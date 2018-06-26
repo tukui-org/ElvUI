@@ -53,7 +53,7 @@ local function OnEvent(self)
 		playerName = ""
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
-			playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
+			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then
 				extraCount = format('[+%s]', numMembers - 1)
 			end
