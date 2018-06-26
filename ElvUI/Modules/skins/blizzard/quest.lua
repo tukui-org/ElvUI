@@ -275,16 +275,12 @@ local function LoadSkin()
 			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if not child.IsSkinned then
 				if child.ButtonText then
-					S:SkinExpandOrCollapse(child)
+					S:HandleExpandOrCollapse(child)
 				end
 				child.IsSkinned = true
 			end
 		end
 	end)
-
-	function S:SkinExpandOrCollapse(button) -- Maybe give it a better name
-		S:HandleExpandOrCollapse(button)
-	end
 end
 
 S:AddCallback("Quest", LoadSkin)

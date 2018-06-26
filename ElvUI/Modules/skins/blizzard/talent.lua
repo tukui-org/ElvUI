@@ -343,33 +343,6 @@ local function LoadSkin()
 		button.Arrow:SetSize(26, 13)
 	end
 
-	function S:HandleInsetFrameTemplate(Frame)
-		Frame.Bg:Hide()
-
-		Frame.InsetBorderTopLeft:Hide()
-		Frame.InsetBorderTopRight:Hide()
-
-		Frame.InsetBorderBottomLeft:Hide()
-		Frame.InsetBorderBottomRight:Hide()
-
-		Frame.InsetBorderTop:Hide()
-		Frame.InsetBorderBottom:Hide()
-		Frame.InsetBorderLeft:Hide()
-		Frame.InsetBorderRight:Hide()
-	end
-
-	function S:SkinTalentListButtons(Frame)
-		local name = Frame:GetName()
-
-		_G[name.."BtnCornerLeft"]:SetTexture("")
-		_G[name.."BtnCornerRight"]:SetTexture("")
-		_G[name.."ButtonBottomBorder"]:SetTexture("")
-		S:HandleInsetFrameTemplate(Frame.Inset)
-
-		Frame.Inset:SetPoint("TOPLEFT", 4, -60)
-		Frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
-	end
-
 	local PvpTalentFrame = PlayerTalentFrameTalents.PvpTalentFrame
 	PvpTalentFrame:StripTextures()
 

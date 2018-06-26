@@ -133,6 +133,37 @@ function S:SkinLibDropDownMenu(prefix)
 	end
 end
 
+function S:HandleInsetFrameTemplate(frame)
+	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
+	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
+	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
+	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
+	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
+	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
+	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
+	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
+	if frame.Bg then frame.Bg:Hide() end
+end
+
+function S:SkinTalentListButtons(frame)
+	local name = frame and frame.GetName and frame:GetName()
+	if name then
+		local bcl = _G[name.."BtnCornerLeft"]
+		local bcr = _G[name.."BtnCornerRight"]
+		local bbb = _G[name.."ButtonBottomBorder"]
+		if bcl then bcl:SetTexture("") end
+		if bcr then bcr:SetTexture("") end
+		if bbb then bbb:SetTexture("") end
+	end
+
+	if frame.Inset then
+		S:HandleInsetFrameTemplate(frame.Inset)
+
+		frame.Inset:SetPoint("TOPLEFT", 4, -60)
+		frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
+	end
+end
+
 function S:HandleButton(f, strip, isDeclineButton)
 	assert(f, "doesn't exist!")
 
