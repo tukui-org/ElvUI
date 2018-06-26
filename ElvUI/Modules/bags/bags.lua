@@ -83,6 +83,7 @@ local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
 local ToggleDropDownMenu = ToggleDropDownMenu
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -1810,19 +1811,18 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	self:Layout(true)
 end
 
---Update search when switching guild bank tab (slightly delayed, depending on how fast the event fires)
-function B:GUILDBANKBAGSLOTS_CHANGED()
-	self:SetGuildBankSearch(SEARCH_STRING);
+function B:GuildBankFrame_Update()
+	B:SetGuildBankSearch(SEARCH_STRING);
 end
 
 function B:CloseBank()
-	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
+	if not self.BankFrame then return end -- WHY??? WHO KNOWS!
 	self.BankFrame:Hide()
 	BankFrame:Hide()
 	self.BagFrame:Hide()
 end
 
-function B:GUILDBANKFRAME_OPENED()
+function B:GUILDBANKFRAME_OPENED(event)
 	--[[local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
 	button:StripTextures()
 	button:SetTemplate("Default", true)
@@ -1831,6 +1831,7 @@ function B:GUILDBANKFRAME_OPENED()
 	button:SetText(L["Sort Tab"])
 	button:SetScript("OnClick", function() B:CommandDecorator(B.SortBags, 'guild')() end)
 	E.Skins:HandleButton(button, true)]]
+
 	if GuildItemSearchBox then
 		GuildItemSearchBox:SetScript("OnEscapePressed", self.ResetAndClear);
 		GuildItemSearchBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end);
@@ -1838,7 +1839,10 @@ function B:GUILDBANKFRAME_OPENED()
 		GuildItemSearchBox:SetScript("OnTextChanged", self.UpdateSearch);
 		GuildItemSearchBox:SetScript('OnChar', self.UpdateSearch);
 	end
-	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
+
+	hooksecurefunc('GuildBankFrame_Update', B.GuildBankFrame_Update)
+
+	self:UnregisterEvent(event)
 end
 
 function B:PLAYER_ENTERING_WORLD()
@@ -2016,7 +2020,6 @@ function B:Initialize()
 	E.Bags = self;
 
 	self:DisableBlizzard();
-	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
