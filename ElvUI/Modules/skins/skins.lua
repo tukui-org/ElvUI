@@ -134,14 +134,17 @@ function S:SkinLibDropDownMenu(prefix)
 end
 
 function S:HandleInsetFrameTemplate(frame)
+	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
 	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
 	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
+
+	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
 	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
 	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
-	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
-	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
+
 	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
 	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
+
 	if frame.Bg then frame.Bg:Hide() end
 end
 
