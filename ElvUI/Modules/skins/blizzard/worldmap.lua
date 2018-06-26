@@ -28,8 +28,10 @@ local function LoadSkin()
 	WorldMapFrameHomeButton.text:FontTemplate()
 
 	-- Quest Frames
+	local QuestMapFrame = _G["QuestMapFrame"]
 	QuestMapFrame.VerticalSeparator:Hide()
 
+	local QuestScrollFrame = _G["QuestScrollFrame"]
 	QuestScrollFrame.DetailFrame:StripTextures()
 	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
@@ -63,18 +65,6 @@ local function LoadSkin()
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
 	end
-
-	--S:HandleCloseButton(WorldMapFrame.UIElementsFrame.BountyBoard.TutorialBox.CloseButton)
-
-	--WorldMapFrameAreaLabel:FontTemplate(nil,30)
-	--WorldMapFrameAreaLabel:SetShadowOffset(2,-2)
-	--WorldMapFrameAreaLabel:SetTextColor(0.9,0.8,0.6)
-	--WorldMapFrameAreaDescription:FontTemplate(nil,20)
-	--WorldMapFrameAreaDescription:SetShadowOffset(2,-2)
-	--WorldMapFrameAreaPetLevels:FontTemplate(nil,20)
-	--WorldMapFrameAreaPetLevels:SetShadowOffset(2,-2)
-	--WorldMapZoneInfo:FontTemplate(nil,25)
-	--WorldMapZoneInfo:SetShadowOffset(2,-2)
 
 	-- Floor Dropdown
 	local function WorldMapFloorNavigationDropDown(Frame)
