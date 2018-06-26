@@ -543,32 +543,21 @@ function S:HandleEditBox(frame)
 	if frame.LeftTex then frame.LeftTex:Kill() end
 	if frame.RightTex then frame.RightTex:Kill() end
 	if frame.MiddleTex then frame.MiddleTex:Kill() end
+	if frame.Left then frame.Left:Kill() end
+	if frame.Right then frame.Right:Kill() end
+	if frame.Middle then frame.Middle:Kill() end
+	if frame.Mid then frame.Mid:Kill() end
 
-	if frame:GetName() then
-		if _G[frame:GetName().."Left"] then _G[frame:GetName().."Left"]:Kill() end
-		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:Kill() end
-		if _G[frame:GetName().."Right"] then _G[frame:GetName().."Right"]:Kill() end
-		if _G[frame:GetName().."Mid"] then _G[frame:GetName().."Mid"]:Kill() end
+	local frameName = frame.GetName and frame:GetName()
+	if frameName then
+		if _G[frameName.."Left"] then _G[frameName.."Left"]:Kill() end
+		if _G[frameName.."Middle"] then _G[frameName.."Middle"]:Kill() end
+		if _G[frameName.."Right"] then _G[frameName.."Right"]:Kill() end
+		if _G[frameName.."Mid"] then _G[frameName.."Mid"]:Kill() end
 
-		if frame:GetName():find("Silver") or frame:GetName():find("Copper") then
+		if frameName:find("Silver") or frameName:find("Copper") then
 			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 		end
-	end
-
-	if(frame.Left) then
-		frame.Left:Kill()
-	end
-
-	if(frame.Right) then
-		frame.Right:Kill()
-	end
-
-	if(frame.Middle) then
-		frame.Middle:Kill()
-	end
-
-	if(frame.Mid) then
-		frame.Mid:Kill()
 	end
 end
 
