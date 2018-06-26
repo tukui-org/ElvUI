@@ -92,6 +92,20 @@ local function LoadSkin()
 	InspectModelFrameBorderBottom2:Kill()
 	InspectModelFrameBackgroundOverlay:Kill()
 
+	-- Give inspect frame model backdrop it's color back
+	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
+		local bg = _G["InspectModelFrameBackground"..corner];
+		if bg then
+			bg:SetDesaturated(false);
+			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			hooksecurefunc(bg, "SetDesaturated", function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false);
+				end
+			end)
+		end
+	end
+
 	local slots = {
 		"HeadSlot",
 		"NeckSlot",
