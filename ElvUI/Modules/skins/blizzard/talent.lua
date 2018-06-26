@@ -148,7 +148,7 @@ local function LoadSkin()
 
 			bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
 			bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
-			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.5)
+			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
 
