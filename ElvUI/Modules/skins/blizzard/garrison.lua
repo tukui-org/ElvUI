@@ -15,42 +15,31 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true then return end
 
 	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
+
 		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, _, numRewards)
-			if self.numRewardsStyled == nil then
-				self.numRewardsStyled = 0
-			end
-			while self.numRewardsStyled < numRewards do
-				self.numRewardsStyled = self.numRewardsStyled + 1
-				local reward = self.Rewards[self.numRewardsStyled]
-				reward:GetRegions():Hide()
+		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
+			--Set border color according to rarity of item
+			local firstRegion, r, g, b
+			for _, reward in pairs(self.Rewards) do
+				firstRegion = reward.GetRegions and reward:GetRegions()
+				if firstRegion then firstRegion:Hide() end
+
+				if reward.IconBorder then
+					reward.IconBorder:SetTexture(nil)
+				end
+
+				if reward.IconBorder and reward.IconBorder:IsShown() then
+					r, g, b = reward.IconBorder:GetVertexColor()
+				else
+					r, g, b = unpack(E["media"].bordercolor)
+				end
 
 				if not reward.border then
 					reward.border = CreateFrame("Frame", nil, reward)
 					S:HandleIcon(reward.Icon, reward.border)
 				end
 
-				if reward.IconBorder then
-					reward.IconBorder:SetTexture(nil)
-				end
-			end
-
-			--Set border color according to rarity of item
-			for _, reward in pairs(self.Rewards) do
-				if reward.IconBorder then -- Hide the default blizzard .IconBorder
-					reward.IconBorder:SetTexture(nil)
-				end
-				if reward.border and reward.border.backdrop then
-					local r, g, b
-					if reward.IconBorder:IsShown() then
-						--This is an item, use the color set by WoW
-						r, g, b = reward.IconBorder:GetVertexColor()
-					else
-						--This is a currency, use the default ElvUI border color
-						r, g, b = unpack(E["media"].bordercolor)
-					end
-					reward.border.backdrop:SetBackdropBorderColor(r, g, b)
-				end
+				reward.border.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 
