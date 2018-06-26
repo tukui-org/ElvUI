@@ -254,7 +254,7 @@ local function LoadSkin()
 		bu.roleIcon:SetDrawLayer('ARTWORK', 2)
 
 		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
+		bu.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 	end
 
 	buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
@@ -314,7 +314,7 @@ local function LoadSkin()
 			bu.roleIcon:SetDrawLayer('ARTWORK', 2)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.2)
+			bu.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 		end
 
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1, 0.2)
