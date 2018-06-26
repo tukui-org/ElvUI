@@ -11,6 +11,7 @@ Fixed error when attempting to right click a fake unitframe spawned from "Displa
 **Misc. Changes:**  
 Added button size and spacing options to the Micro Bar and fixed several issues with it.  
 In order to improve load times, ElvUI will no longer load `Blizzard_DebugTools`.  
+Reworked the Talent frame skin slightly, in order to improve determination of selected talents.  
 
 ___
 **Version 10.74 [ June 7th 2018 ]**
