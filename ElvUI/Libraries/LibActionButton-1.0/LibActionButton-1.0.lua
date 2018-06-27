@@ -665,7 +665,7 @@ function Generic:UpdateConfig(config)
 		error("LibActionButton-1.0: UpdateConfig requires a valid configuration!", 2)
 	end
 	local oldconfig = self.config
-	if not self.config then self.config = {} end
+	self.config = {}
 	-- merge the two configs
 	merge(self.config, config, DefaultConfig)
 
@@ -1026,19 +1026,19 @@ local function getKeys(binding, keys)
 		if keys ~= "" then
 			keys = keys .. ", "
 		end
-		keys = keys .. GetBindingText(hotKey, "KEY_")
+		keys = keys .. GetBindingText(hotKey)
 	end
 	return keys
 end
 
 function Generic:GetBindings()
-	local keys, binding
+	local keys
 
 	if self.config.keyBoundTarget then
 		keys = getKeys(self.config.keyBoundTarget)
 	end
 
-	keys = getKeys("CLICK "..self:GetName()..":LeftButton")
+	keys = getKeys("CLICK "..self:GetName()..":LeftButton", keys)
 
 	return keys
 end

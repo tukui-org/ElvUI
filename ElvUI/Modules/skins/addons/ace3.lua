@@ -101,6 +101,12 @@ local function SkinNextPrevButton(...)
 	S:HandleNextPrevButton(...)
 end
 
+local function SkinDropdownPullout(self)
+	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
+		self.obj.pullout.frame:SetTemplate('Default', true)
+	end
+end
+
 function S:SkinAce3()
 	local AceGUI = LibStub("AceGUI-3.0", true)
 	if not AceGUI then return end
@@ -139,6 +145,7 @@ function S:SkinAce3()
 		elseif TYPE == "Dropdown" then
 			local frame = widget.dropdown
 			local button = widget.button
+			local button_cover = widget.button_cover
 			local text = widget.text
 			frame:StripTextures()
 
@@ -154,11 +161,8 @@ function S:SkinAce3()
 			end
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			button:HookScript('OnClick', function(this)
-				if this and this.obj and this.obj.pullout and this.obj.pullout.frame and not this.obj.pullout.frame.template then
-					this.obj.pullout.frame:SetTemplate('Default', true)
-				end
-			end)
+			button:HookScript('OnClick', SkinDropdownPullout)
+			button_cover:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "LSM30_Font" or TYPE == "LSM30_Sound" or TYPE == "LSM30_Border" or TYPE == "LSM30_Background" or TYPE == "LSM30_Statusbar" then
 			local frame = widget.frame
 			local button = frame.dropButton
