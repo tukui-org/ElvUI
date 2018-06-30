@@ -87,6 +87,12 @@ local function LoadSkin()
 	if TalentFrame then
 		TalentFrame:StripTextures()
 		TalentFrame.LeftInset:StripTextures()
+		if TalentFrame.CornerLogo then
+			TalentFrame.CornerLogo:Hide()
+		end
+		if TalentFrame.StyleFrame then
+			TalentFrame.StyleFrame:Hide()
+		end
 		TalentFrame:SetTemplate("Transparent")
 		TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 		S:HandleCloseButton(TalentFrame.CloseButton)
