@@ -14,6 +14,7 @@ actionbars.lua
 auras.lua
 bags.lua
 chat.lua
+cooldown.lua
 datatexts.lua 
 DataBars.lua
 filters.lua

@@ -130,10 +130,10 @@ function E:OnSetCooldown(start, duration)
 end
 
 function E:RegisterCooldown(cooldown)
-	if(not E.private.cooldown.enable or cooldown.isHooked) then return end
+	if cooldown.isHooked or (not E.private.cooldown.enable) then return end
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
-	cooldown.isHooked = true
 	cooldown:SetHideCountdownNumbers(true)
+	cooldown.isHooked = true
 end
 
 function E:GetCooldownColors(db)
