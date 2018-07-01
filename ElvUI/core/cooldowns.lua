@@ -50,14 +50,12 @@ function E:Cooldown_OnUpdate(elapsed)
 end
 
 function E:Cooldown_OnSizeChanged(cd, width, force)
-	force = (force == "override")
-
 	local fontScale = floor(width + .5) / ICON_SIZE
 	if cd.SizeOverride then
 		fontScale = cd.SizeOverride / FONT_SIZE
 	end
 
-	if (fontScale == cd.fontScale) and not force then return end
+	if (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
 	if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
@@ -73,7 +71,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 			end
 		end
 
-		if not force then
+		if force ~= 'override' then
 			cd:Show()
 			if cd.enabled then
 				self:Cooldown_ForceUpdate(cd)
