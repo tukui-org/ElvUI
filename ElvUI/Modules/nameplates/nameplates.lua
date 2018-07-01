@@ -1096,9 +1096,6 @@ function mod:UpdateFonts(plate)
 	--buff fonts
 	if plate.Buffs and plate.Buffs.db and plate.Buffs.db.numAuras then
 		for i=1, plate.Buffs.db.numAuras do
-			if plate.Buffs.icons[i] and plate.Buffs.icons[i].cooldown and plate.Buffs.icons[i].cooldown.timer and plate.Buffs.icons[i].cooldown.timer.text then
-				plate.Buffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
 				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
@@ -1108,9 +1105,6 @@ function mod:UpdateFonts(plate)
 	--debuff fonts
 	if plate.Debuffs and plate.Debuffs.db and plate.Debuffs.db.numAuras then
 		for i=1, plate.Debuffs.db.numAuras do
-			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].cooldown and plate.Debuffs.icons[i].cooldown.timer and plate.Debuffs.icons[i].cooldown.timer.text then
-				plate.Debuffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
 				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end

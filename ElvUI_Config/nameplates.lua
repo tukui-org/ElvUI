@@ -3174,55 +3174,9 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
-						duration = {
-							type = "group",
-							order = 5,
-							name = L["Duration"],
-							guiInline = true,
-							args = {
-								durationFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 1,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontSize = {
-									order = 2,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontOutline = {
-									order = 3,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationPosition = {
-									order = 4,
-									name = L["Position"],
-									type = "select",
-									values = {
-										["CENTER"] = L["Center"],
-										["TOPLEFT"] = "TOPLEFT",
-										["BOTTOMLEFT"] = "BOTTOMLEFT",
-										["TOPRIGHT"] = "TOPRIGHT",
-									},
-								},
-							}
-						},
 						stacks = {
 							type = "group",
-							order = 6,
+							order = 5,
 							name = L["Stack Counter"],
 							guiInline = true,
 							args = {

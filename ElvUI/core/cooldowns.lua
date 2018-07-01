@@ -29,19 +29,18 @@ function E:Cooldown_OnUpdate(elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
-			if (self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
+			if self.fontScale and ((self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
-				local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
+				local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
 				if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-				local hhmmThreshold = self.hhmmThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-				local mmssThreshold = self.mmssThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+				local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+				local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 				local value1, formatid, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold)
 				self.nextUpdate = nextUpdate
-
 				self.text:SetFormattedText(("%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
 			end
 		else
@@ -50,31 +49,49 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 end
 
-function E:Cooldown_OnSizeChanged(cd, width)
-	local fontScale = floor(width +.5) / ICON_SIZE
-	local override = cd:GetParent():GetParent().SizeOverride
-	if override then
-		fontScale = override / FONT_SIZE
-	end
+function E:Cooldown_OnSizeChanged(cd, width, force)
+	local text = cd.text or cd.time
+	if text and (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) then
+		text:FontTemplate(E.LSM:Fetch("font", cd.cdOptions.fontOptions.font), cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
 
-	if fontScale == cd.fontScale then
-		return
-	end
-
-	cd.fontScale = fontScale
-	if fontScale < MIN_SCALE and not override then
-		cd:Hide()
+		if not force then
+			cd:Show()
+			if cd.enabled then
+				self:Cooldown_ForceUpdate(cd)
+			end
+		end
 	else
-		cd:Show()
-		cd.text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
-		if cd.enabled then
-			self:Cooldown_ForceUpdate(cd)
+		local fontScale = floor(width +.5) / ICON_SIZE
+		local override = cd:GetParent():GetParent().SizeOverride
+		if override then
+			fontScale = override / FONT_SIZE
+		end
+
+		if (fontScale == cd.fontScale) and not force then
+			return
+		end
+
+		cd.fontScale = fontScale
+		if fontScale < MIN_SCALE and not override then
+			cd:Hide()
+		else
+			if text then
+				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
+			end
+
+			if not force then
+				cd:Show()
+				if cd.enabled then
+					self:Cooldown_ForceUpdate(cd)
+				end
+			end
 		end
 	end
 end
 
 function E:Cooldown_IsEnabled(cd)
-	return cd.alwaysEnabled or (E.db.cooldown.enable and not cd.reverseToggle) or (not E.db.cooldown.enable and cd.reverseToggle)
+	local r = cd.cdOptions and cd.cdOptions.reverseToggle
+	return cd.alwaysEnabled or (E.db.cooldown.enable and not r) or (not E.db.cooldown.enable and r)
 end
 
 function E:Cooldown_ForceUpdate(cd)
@@ -100,33 +117,38 @@ function E:CreateCooldownTimer(parent)
 	text:SetJustifyH("CENTER")
 	timer.text = text
 
+	-- used by nameplate and bag module to override the cooldown color by its setting (if enabled)
+	if parent.ColorOverride then
+		local db = E.db[parent.ColorOverride]
+		if db and db.cooldown then
+			if not timer.cdOptions then
+				timer.cdOptions = {}
+			end
+
+			if db.cooldown.override and E.TimeColors[parent.ColorOverride] then
+				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
+			end
+
+			if db.cooldown.checkSeconds then
+				timer.cdOptions.hhmmThreshold, timer.cdOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+			end
+
+			if (db.cooldown ~= self.db.cooldown) and db.cooldown.fonts and db.cooldown.fonts.enable then
+				timer.cdOptions.fontOptions = db.cooldown.fonts
+			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+				timer.cdOptions.fontOptions = self.db.cooldown.fonts
+			end
+
+			timer.cdOptions.reverseToggle = db.cooldown.reverse
+		end
+	end
+
 	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
 	parent:SetScript('OnSizeChanged', function(_, ...)
 		self:Cooldown_OnSizeChanged(timer, ...)
 	end)
 
 	parent.timer = timer
-
-	-- used to style nameplate aura cooldown text with `cooldownFontOverride`
-	if parent.FontOverride then
-		parent.FontOverride(parent)
-	end
-
-	-- used by nameplate and bag module to override the cooldown color by its setting (if enabled)
-	if parent.ColorOverride then
-		local db = E.db[parent.ColorOverride]
-		if db and db.cooldown then
-			if db.cooldown.override and E.TimeColors[parent.ColorOverride] then
-				timer.timeColors, timer.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
-			end
-
-			if db.cooldown.checkSeconds then
-				timer.hhmmThreshold, timer.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
-			end
-
-			timer.reverseToggle = db.cooldown.reverse
-		end
-	end
 
 	return timer
 end
@@ -141,7 +163,9 @@ function E:OnSetCooldown(start, duration)
 		timer.duration = duration
 		timer.enabled = true
 		timer.nextUpdate = 0
-		if timer.fontScale >= MIN_SCALE then timer:Show() end
+		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
+			timer:Show()
+		end
 	else
 		local timer = self.timer
 		if timer then
@@ -184,7 +208,9 @@ function E:UpdateCooldownOverride(module)
 	if (not cooldowns) or not next(cooldowns) then return end
 
 	local timer, CD, db -- timer = cooldown from RegisterCooldown
-	local parent, unit -- used to resummon timer text on auras for unitframes
+	local unitframeFont = E.LSM:Fetch('font', E.db['unitframe'].font)
+	local aurasFont = E.LSM:Fetch('font', E.db['auras'].font)
+	local auraFontSize, text
 
 	for _, cd in ipairs(cooldowns) do
 		timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
@@ -192,35 +218,66 @@ function E:UpdateCooldownOverride(module)
 
 		if cd then
 			db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
+			db = db and db.cooldown
 
-			if db and db.cooldown then
+			if db then
+				if not CD.cdOptions then
+					CD.cdOptions = {}
+				end
+
+				CD.cdOptions.reverseToggle = db.reverse
+
 				if cd.ColorOverride then
-					if db.cooldown.override and E.TimeColors[cd.ColorOverride] then
-						CD.timeColors, CD.timeThreshold = E.TimeColors[cd.ColorOverride], db.cooldown.threshold
+					if db.override and E.TimeColors[cd.ColorOverride] then
+						CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
 					else
-						CD.timeColors, CD.timeThreshold = nil, nil
+						CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
 					end
+				end
 
-					if db.cooldown.checkSeconds then
-						CD.hhmmThreshold, CD.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
-					else
-						CD.hhmmThreshold, CD.mmssThreshold = nil, nil
+				if db.checkSeconds then
+					CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
+				else
+					CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = nil, nil
+				end
+
+				if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
+					CD.cdOptions.fontOptions = db.fonts
+				elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+					CD.cdOptions.fontOptions = self.db.cooldown.fonts
+				end
+
+				if timer and CD then
+					self:Cooldown_OnSizeChanged(CD, cd:GetSize(), true)
+				elseif CD.cdOptions.fontOptions then
+					text = CD.text or CD.time
+					if text then
+						if CD.cdOptions.fontOptions.enable then
+							text:FontTemplate(E.LSM:Fetch("font", cd.cdOptions.fontOptions.font), cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+						elseif cd.ColorOverride then
+							-- cd.auraType defined in `A:UpdateHeader`
+							if cd.auraType and (cd.ColorOverride == 'auras') then
+								auraFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
+								if aurasFont and auraFontSize then
+									text:FontTemplate(aurasFont, auraFontSize, E.db[cd.ColorOverride].fontOutline)
+								end
+							elseif unitframeFont and (cd.ColorOverride == 'unitframe') then
+								text:FontTemplate(unitframeFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
+							end
+						end
 					end
-
-					CD.reverseToggle = db.cooldown.reverse
 				end
 
 				if timer and CD then
 					E:Cooldown_ForceUpdate(CD)
-				elseif cd.ColorOverride then
+				elseif cd.ColorOverride and not (timer and CD) then
 					if cd.ColorOverride == 'auras' then
 						cd.nextUpdate = -1
 					elseif cd.ColorOverride == 'unitframe' then
 						cd.nextupdate = -1
 						if E.private.unitframe.enable then
-							parent = cd:GetParent():GetParent():GetParent()
-							unit = parent and parent.unit
-							E:GetModule('UnitFrames'):PostUpdateAura(unit, cd)
+							-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
+							E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
 						end
 					end
 				end

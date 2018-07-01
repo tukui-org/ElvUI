@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames');
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
+local type = type
 local select = select
 local pairs = pairs
 local ipairs = ipairs

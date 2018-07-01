@@ -243,9 +243,6 @@ P["nameplates"] = {
 	["healthFont"] = "PT Sans Narrow",
 	["healthFontSize"] = 11,
 	["healthFontOutline"] = "OUTLINE",
-	["durationFont"] = "PT Sans Narrow",
-	["durationFontSize"] = 10,
-	["durationFontOutline"] = "OUTLINE",
 	["durationPosition"] = "CENTER",
 	["stackFont"] = "PT Sans Narrow",
 	["stackFontSize"] = 9,
@@ -286,7 +283,7 @@ P["nameplates"] = {
 			['enable'] = false,
 			['font'] = 'PT Sans Narrow',
 			['fontOutline'] = 'OUTLINE',
-			['fontSize'] = 18,
+			['fontSize'] = 10,
 		},
 	},
 	["classbar"] = {
@@ -3087,7 +3084,6 @@ P['cooldown'] = {
 	['mmssColor'] = { r = 1, g = 1, b = 1 },
 	['hhmmThreshold'] = -1,
 	['mmssThreshold'] = -1,
-
 
 	['fonts'] = {
 		['enable'] = false,

@@ -8,6 +8,7 @@ local GetTime = GetTime
 local select, unpack = select, unpack
 local tinsert = table.insert
 local floor = math.floor
+local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
@@ -92,16 +93,15 @@ function A:UpdateTime(elapsed)
 		self.time:SetText("")
 		self:SetScript("OnUpdate", nil)
 	else
-		local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
+		local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
 		if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-		local hhmmThreshold = self.hhmmThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-		local mmssThreshold = self.mmssThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+		local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+		local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
 		self.nextUpdate = nextUpdate
-
-		self.time:SetFormattedText(("%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1]), value1, value2)
+		self.time:SetFormattedText(format("%s%s|r", timeColors[formatID], E.TimeFormats[formatID][1]), value1, value2)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
 			E:StopFlash(self)
@@ -266,17 +266,28 @@ function A:CooldownText_Update(button)
 	if not button then return end
 
 	button.alwaysEnabled = true
-	button.reverseToggle = self.db.cooldown.reverse
+
+	if not button.cdOptions then
+		button.cdOptions = {}
+	end
+
+	button.cdOptions.reverseToggle = self.db.cooldown.reverse
 
 	if self.db.cooldown.checkSeconds then
-		button.hhmmThreshold = self.db.cooldown.hhmmThreshold
-		button.mmssThreshold = self.db.cooldown.mmssThreshold
+		button.cdOptions.hhmmThreshold = self.db.cooldown.hhmmThreshold
+		button.cdOptions.mmssThreshold = self.db.cooldown.mmssThreshold
 	end
 
 	if self.db.cooldown.override and E.TimeColors['auras'] then
-		button.timeColors, button.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
+		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
 	else
-		button.timeColors, button.timeThreshold = nil, nil
+		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+	end
+
+	if self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+		button.cdOptions.fontOptions = self.db.cooldown.fonts
+	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+		button.cdOptions.fontOptions = E.db.cooldown.fonts
 	end
 end
 
@@ -293,8 +304,10 @@ end
 function A:UpdateHeader(header)
 	if not E.private.auras.enable then return end
 
+	local auraType = 'debuffs'
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
+		auraType = 'buffs'
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", 0)
 		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
@@ -332,6 +345,8 @@ function A:UpdateHeader(header)
 		if (floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size then
 			child:SetSize(db.size, db.size)
 		end
+
+		child.auraType = auraType -- used to update cooldown text
 
 		if child.time then
 			local font = LSM:Fetch("font", self.db.font)
