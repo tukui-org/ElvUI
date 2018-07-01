@@ -244,10 +244,10 @@ function E:UpdateCooldownOverride(module)
 
 			if timer and CD then
 				self:Cooldown_OnSizeChanged(CD, cd:GetSize(), true)
-			elseif CD.cdOptions.fontOptions then
+			else
 				text = CD.text or CD.time
 				if text then
-					if CD.cdOptions.fontOptions.enable then
+					if CD.cdOptions.fontOptions and CD.cdOptions.fontOptions.enable then
 						if not customFont then
 							customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 						end
