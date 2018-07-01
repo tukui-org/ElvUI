@@ -245,6 +245,7 @@ L["Wrap After"] = true
 L["Your Auras First"] = true
 
 --Cooldown
+L["Color Override"] = true
 L["Reverse Toggle"] = true
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 

@@ -247,6 +247,7 @@ L["Wrap After"] = "每行光環數"
 L["Your Auras First"] = "自身光環優先"
 
 --Cooldown
+L["Color Override"] = true
 L["Reverse Toggle"] = true
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 

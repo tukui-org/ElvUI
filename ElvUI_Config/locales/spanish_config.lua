@@ -247,6 +247,7 @@ L["Wrap After"] = "Auras por Fila/Columna"
 L["Your Auras First"] = "Tus Auras Primero"
 
 --Cooldown
+L["Color Override"] = true
 L["Reverse Toggle"] = true
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
