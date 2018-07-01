@@ -58,37 +58,42 @@ local function group(order, db, label)
 						type = "description",
 						name = ""
 					},
+					spacer2 = {
+						order = 4,
+						type = "description",
+						name = ""
+					},
 					expiringColor = {
 						type = 'color',
-						order = 4,
+						order = 5,
 						name = L["Expiring"],
 						desc = L["Color when the text is about to expire"],
 						disabled = function() return not (profile(db)).override end,
 					},
 					secondsColor = {
 						type = 'color',
-						order = 5,
+						order = 6,
 						name = L["Seconds"],
 						desc = L["Color when the text is in the seconds format."],
 						disabled = function() return not (profile(db)).override end,
 					},
 					minutesColor = {
 						type = 'color',
-						order = 6,
+						order = 7,
 						name = L["Minutes"],
 						desc = L["Color when the text is in the minutes format."],
 						disabled = function() return not (profile(db)).override end,
 					},
 					hoursColor = {
 						type = 'color',
-						order = 7,
+						order = 8,
 						name = L["Hours"],
 						desc = L["Color when the text is in the hours format."],
 						disabled = function() return not (profile(db)).override end,
 					},
 					daysColor = {
 						type = 'color',
-						order = 8,
+						order = 9,
 						name = L["Days"],
 						desc = L["Color when the text is in the days format."],
 						disabled = function() return not (profile(db)).override end,
@@ -108,7 +113,6 @@ local function group(order, db, label)
 
 	if db == 'global' then
 		-- clean up the main one
-		E.Options.args.cooldown.args[db].args.spacer1 = nil
 		E.Options.args.cooldown.args[db].args.reverse = nil
 		E.Options.args.cooldown.args[db].args.overrideGroup.args.override = nil
 
@@ -130,7 +134,11 @@ local function group(order, db, label)
 
 		-- delete the tab group
 		E.Options.args.cooldown.args[db].args.overrideGroup = nil
-	elseif db == 'auras' then
+	else
+		E.Options.args.cooldown.args[db].args.spacer2 = nil
+	end
+
+	if db == 'auras' then
 		-- even though the top auras can support hiding the text don't allow this to be a setting to prevent confusion
 		E.Options.args.cooldown.args[db].args.reverse = nil
 	end
