@@ -1930,7 +1930,7 @@ E.Options.args.unitframe = {
 			type = "execute",
 			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "cooldown") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "unitframe") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer2 = {

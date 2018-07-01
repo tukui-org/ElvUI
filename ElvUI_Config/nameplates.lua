@@ -2738,7 +2738,7 @@ E.Options.args.nameplate = {
 			type = "execute",
 			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "cooldown") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {

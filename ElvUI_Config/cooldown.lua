@@ -3,6 +3,8 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, Globa
 local COLORS = COLORS
 local pairs = pairs
 
+-- GLOBALS: AceGUIWidgetLSMlists
+
 local function profile(db)
 	return (db == 'global' and E.db.cooldown) or E.db[db].cooldown
 end
