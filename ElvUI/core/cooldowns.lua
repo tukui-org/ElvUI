@@ -72,7 +72,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 		if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
 			cd:Hide()
 		else
-			if text and fontScale then
+			if fontScale and text then
 				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
 			end
 
