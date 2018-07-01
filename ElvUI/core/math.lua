@@ -340,8 +340,8 @@ E.TimeColors = {
 	[2] = '|cffeeeeee',
 	[3] = '|cffeeeeee',
 	[4] = '|cfffe0000',
-	[5] = '|cffeeeeee', --mmss
-	[6] = '|cffeeeeee', --hhmm
+	[5] = '|cff909090', --mmss
+	[6] = '|cff707070', --hhmm
 }
 
 -- short and long aura time formats
