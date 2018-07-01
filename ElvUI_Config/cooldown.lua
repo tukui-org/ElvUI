@@ -29,26 +29,26 @@ local function group(order, db, label)
 				type = "header",
 				name = label,
 			},
-			override = {
-				type = "toggle",
-				order = 2,
-				name = L["Use Override"],
-				desc = L["This will override the global cooldown settings."],
-				get = function(info) return (profile(db))[ info[#info] ] end,
-				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
-			},
 			reverse = {
 				type = "toggle",
-				order = 3,
+				order = 2,
 				name = L["Reverse Toggle"],
 				desc = L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."],
 				get = function(info) return (profile(db))[ info[#info] ] end,
 				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
 			},
 			spacer1 = {
-				order = 4,
+				order = 3,
 				type = "description",
 				name = "",
+			},
+			override = {
+				type = "toggle",
+				order = 4,
+				name = L["Use Override"],
+				desc = L["This will override the global cooldown settings."],
+				get = function(info) return (profile(db))[ info[#info] ] end,
+				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
 			},
 			threshold = {
 				type = 'range',
@@ -108,6 +108,8 @@ local function group(order, db, label)
 		E.Options.args.cooldown.args[db].args.minutesColor.disabled = nil
 		E.Options.args.cooldown.args[db].args.hoursColor.disabled = nil
 		E.Options.args.cooldown.args[db].args.daysColor.disabled = nil
+	elseif db == 'auras' then
+		E.Options.args.cooldown.args[db].args.reverse = nil
 	end
 end
 
