@@ -373,7 +373,11 @@ function E:GetTimeInfo(s, threshhold, hhmm, mmss)
 			return s/MINUTE, 5, 0.51, s%MINUTE
 		else
 			local minutes = floor((s/MINUTE)+.5)
-			return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+			if hhmm and s < (hhmm * MINUTE) then
+				return s/HOUR, 6, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH), minutes%MINUTE
+			else
+				return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+			end
 		end
 	elseif s < DAY then
 		if mmss and s < mmss then
