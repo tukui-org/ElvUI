@@ -61,21 +61,18 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 			end
 		end
 	else
-		local fontScale = floor(width +.5) / ICON_SIZE
-		local override = cd:GetParent():GetParent().SizeOverride
-		if override then
-			fontScale = override / FONT_SIZE
+		local fontScale = floor(width + .5) / ICON_SIZE
+		if cd.SizeOverride then
+			fontScale = cd.SizeOverride / FONT_SIZE
 		end
 
-		if (fontScale == cd.fontScale) and not force then
-			return
-		end
-
+		if (fontScale == cd.fontScale) and not force then return end
 		cd.fontScale = fontScale
-		if fontScale < MIN_SCALE and not override then
+
+		if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
 			cd:Hide()
 		else
-			if text then
+			if text and fontScale then
 				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
 			end
 
