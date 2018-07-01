@@ -50,37 +50,31 @@ function E:Cooldown_OnUpdate(elapsed)
 end
 
 function E:Cooldown_OnSizeChanged(cd, width, force)
-	local text = cd.text or cd.time
-	if text and (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) then
-		text:FontTemplate(E.LSM:Fetch("font", cd.cdOptions.fontOptions.font), cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+	local fontScale = floor(width + .5) / ICON_SIZE
+	if cd.SizeOverride then
+		fontScale = cd.SizeOverride / FONT_SIZE
+	end
+
+	if (fontScale == cd.fontScale) and not force then return end
+	cd.fontScale = fontScale
+
+	if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
+		cd:Hide()
+	else
+		local text = cd.text or cd.time
+		if fontScale and text then
+			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
+			if useCustomFont then
+				text:FontTemplate(useCustomFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+			else
+				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
+			end
+		end
 
 		if not force then
 			cd:Show()
 			if cd.enabled then
 				self:Cooldown_ForceUpdate(cd)
-			end
-		end
-	else
-		local fontScale = floor(width + .5) / ICON_SIZE
-		if cd.SizeOverride then
-			fontScale = cd.SizeOverride / FONT_SIZE
-		end
-
-		if (fontScale == cd.fontScale) and not force then return end
-		cd.fontScale = fontScale
-
-		if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
-			cd:Hide()
-		else
-			if fontScale and text then
-				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
-			end
-
-			if not force then
-				cd:Show()
-				if cd.enabled then
-					self:Cooldown_ForceUpdate(cd)
-				end
 			end
 		end
 	end
@@ -205,77 +199,76 @@ function E:UpdateCooldownOverride(module)
 	if (not cooldowns) or not next(cooldowns) then return end
 
 	local timer, CD, db -- timer = cooldown from RegisterCooldown
-	local unitframeFont = E.LSM:Fetch('font', E.db['unitframe'].font)
-	local aurasFont = E.LSM:Fetch('font', E.db['auras'].font)
-	local auraFontSize, text
+	local customFont, customFontSize, text
 
 	for _, cd in ipairs(cooldowns) do
-		timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
-		CD = timer or cd
+		db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
+		db = db and db.cooldown
 
-		if cd then
-			db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
-			db = db and db.cooldown
+		if db then
+			timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
+			CD = timer or cd
 
-			if db then
-				if not CD.cdOptions then
-					CD.cdOptions = {}
-				end
+			if not CD.cdOptions then
+				CD.cdOptions = {}
+			end
 
-				CD.cdOptions.reverseToggle = db.reverse
+			CD.cdOptions.reverseToggle = db.reverse
 
-				if cd.ColorOverride then
-					if db.override and E.TimeColors[cd.ColorOverride] then
-						CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
-					else
-						CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
-					end
-				end
-
-				if db.checkSeconds then
-					CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
+			if cd.ColorOverride then
+				if db.override and E.TimeColors[cd.ColorOverride] then
+					CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
 				else
-					CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = nil, nil
+					CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
 				end
+			end
 
-				if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
-					CD.cdOptions.fontOptions = db.fonts
-				elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-					CD.cdOptions.fontOptions = self.db.cooldown.fonts
-				end
+			if db.checkSeconds then
+				CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
+			else
+				CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = nil, nil
+			end
 
-				if timer and CD then
-					self:Cooldown_OnSizeChanged(CD, cd:GetSize(), true)
-				elseif CD.cdOptions.fontOptions then
-					text = CD.text or CD.time
-					if text then
-						if CD.cdOptions.fontOptions.enable then
-							text:FontTemplate(E.LSM:Fetch("font", cd.cdOptions.fontOptions.font), cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
-						elseif cd.ColorOverride then
-							-- cd.auraType defined in `A:UpdateHeader`
-							if cd.auraType and (cd.ColorOverride == 'auras') then
-								auraFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
-								if aurasFont and auraFontSize then
-									text:FontTemplate(aurasFont, auraFontSize, E.db[cd.ColorOverride].fontOutline)
-								end
-							elseif unitframeFont and (cd.ColorOverride == 'unitframe') then
-								text:FontTemplate(unitframeFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
+			if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
+				CD.cdOptions.fontOptions = db.fonts
+			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+				CD.cdOptions.fontOptions = self.db.cooldown.fonts
+			end
+
+			if timer and CD then
+				self:Cooldown_OnSizeChanged(CD, cd:GetSize(), true)
+			elseif CD.cdOptions.fontOptions then
+				text = CD.text or CD.time
+				if text then
+					if not customFont then
+						customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
+					end
+					if customFont and CD.cdOptions.fontOptions.enable then
+						text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+					elseif cd.ColorOverride then
+						-- cd.auraType defined in `A:UpdateHeader`
+						if cd.auraType and (cd.ColorOverride == 'auras') then
+							customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
+							if customFont and customFontSize then
+								text:FontTemplate(customFont, customFontSize, E.db[cd.ColorOverride].fontOutline)
 							end
+						elseif customFont and (cd.ColorOverride == 'unitframe') then
+							text:FontTemplate(customFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
 						end
 					end
 				end
+			end
 
-				if timer and CD then
-					E:Cooldown_ForceUpdate(CD)
-				elseif cd.ColorOverride and not (timer and CD) then
-					if cd.ColorOverride == 'auras' then
-						cd.nextUpdate = -1
-					elseif cd.ColorOverride == 'unitframe' then
-						cd.nextupdate = -1
-						if E.private.unitframe.enable then
-							-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
-							E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
-						end
+			if timer and CD then
+				E:Cooldown_ForceUpdate(CD)
+			elseif cd.ColorOverride and not (timer and CD) then
+				if cd.ColorOverride == 'auras' then
+					cd.nextUpdate = -1
+				elseif cd.ColorOverride == 'unitframe' then
+					cd.nextupdate = -1
+					if E.private.unitframe.enable then
+						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
+						E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
 					end
 				end
 			end
