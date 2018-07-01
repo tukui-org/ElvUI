@@ -232,7 +232,7 @@ end
 
 E.Options.args.cooldown = {
 	type = 'group',
-	name = L["Cooldowns"],
+	name = L["Cooldown Text"],
 	childGroups = "tab",
 	get = function(info) return E.db.cooldown[ info[#info] ] end,
 	set = function(info, value) E.db.cooldown[ info[#info] ] = value; E:UpdateCooldownSettings('global'); end,
@@ -251,7 +251,7 @@ E.Options.args.cooldown = {
 	},
 }
 
-group(3, 'global', L["Cooldown Text"])
+group(3, 'global', L["Global"])
 group(4, 'auras', BUFFOPTIONS_LABEL)
 group(5, 'bags', L["Bags"])
 group(6, 'nameplates', L["NamePlates"])
