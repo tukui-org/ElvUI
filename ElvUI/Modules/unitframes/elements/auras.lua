@@ -70,20 +70,26 @@ function UF:Construct_AuraIcon(button)
 
 	button.cdOptions.reverseToggle = UF.db.cooldown.reverse
 
-	if UF.db.cooldown.checkSeconds then
-		button.cdOptions.hhmmThreshold = UF.db.cooldown.hhmmThreshold
-		button.cdOptions.mmssThreshold = UF.db.cooldown.mmssThreshold
-	end
-
 	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
 		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
+	else
+		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+	end
+
+	if UF.db.cooldown.checkSeconds then
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
+	else
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
 	end
 
 	if UF.db.cooldown.fonts and UF.db.cooldown.fonts.enable then
 		button.cdOptions.fontOptions = UF.db.cooldown.fonts
 	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
 		button.cdOptions.fontOptions = E.db.cooldown.fonts
+	else
+		button.cdOptions.fontOptions = nil
 	end
+	----------
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true

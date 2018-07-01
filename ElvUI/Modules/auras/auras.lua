@@ -265,6 +265,7 @@ end
 function A:CooldownText_Update(button)
 	if not button then return end
 
+	-- cooldown override settings
 	button.alwaysEnabled = true
 
 	if not button.cdOptions then
@@ -273,21 +274,24 @@ function A:CooldownText_Update(button)
 
 	button.cdOptions.reverseToggle = self.db.cooldown.reverse
 
-	if self.db.cooldown.checkSeconds then
-		button.cdOptions.hhmmThreshold = self.db.cooldown.hhmmThreshold
-		button.cdOptions.mmssThreshold = self.db.cooldown.mmssThreshold
-	end
-
 	if self.db.cooldown.override and E.TimeColors['auras'] then
 		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
 	else
 		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
 	end
 
+	if self.db.cooldown.checkSeconds then
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = self.db.cooldown.hhmmThreshold, self.db.cooldown.mmssThreshold
+	else
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
+	end
+
 	if self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
 		button.cdOptions.fontOptions = self.db.cooldown.fonts
 	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
 		button.cdOptions.fontOptions = E.db.cooldown.fonts
+	else
+		button.cdOptions.fontOptions = nil
 	end
 end
 

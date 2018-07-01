@@ -108,7 +108,7 @@ function E:CreateCooldownTimer(parent)
 	text:SetJustifyH("CENTER")
 	timer.text = text
 
-	-- used by nameplate and bag module to override the cooldown color by its setting (if enabled)
+	-- cooldown override settings
 	if parent.ColorOverride then
 		local db = E.db[parent.ColorOverride]
 		if db and db.cooldown then
@@ -116,23 +116,30 @@ function E:CreateCooldownTimer(parent)
 				timer.cdOptions = {}
 			end
 
+			timer.cdOptions.reverseToggle = db.cooldown.reverse
+
 			if db.cooldown.override and E.TimeColors[parent.ColorOverride] then
 				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
+			else
+				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = nil, nil
 			end
 
 			if db.cooldown.checkSeconds then
 				timer.cdOptions.hhmmThreshold, timer.cdOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+			else
+				timer.cdOptions.hhmmThreshold, timer.cdOptions.mmssThreshold = nil, nil
 			end
 
 			if (db.cooldown ~= self.db.cooldown) and db.cooldown.fonts and db.cooldown.fonts.enable then
 				timer.cdOptions.fontOptions = db.cooldown.fonts
 			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
 				timer.cdOptions.fontOptions = self.db.cooldown.fonts
+			else
+				timer.cdOptions.fontOptions = nil
 			end
-
-			timer.cdOptions.reverseToggle = db.cooldown.reverse
 		end
 	end
+	----------
 
 	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
 	parent:SetScript('OnSizeChanged', function(_, ...)
@@ -207,18 +214,17 @@ function E:UpdateCooldownOverride(module)
 			timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
 			CD = timer or cd
 
+			-- cooldown override settings
 			if not CD.cdOptions then
 				CD.cdOptions = {}
 			end
 
 			CD.cdOptions.reverseToggle = db.reverse
 
-			if cd.ColorOverride then
-				if db.override and E.TimeColors[cd.ColorOverride] then
-					CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
-				else
-					CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
-				end
+			if cd.ColorOverride and db.override and E.TimeColors[cd.ColorOverride] then
+				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
+			else
+				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
 			end
 
 			if db.checkSeconds then
@@ -231,7 +237,10 @@ function E:UpdateCooldownOverride(module)
 				CD.cdOptions.fontOptions = db.fonts
 			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
 				CD.cdOptions.fontOptions = self.db.cooldown.fonts
+			else
+				CD.cdOptions.fontOptions = nil
 			end
+			----------
 
 			if timer and CD then
 				self:Cooldown_OnSizeChanged(CD, cd:GetSize(), true)
