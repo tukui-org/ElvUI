@@ -7,6 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local unpack = unpack
 local find = string.find
 local format = string.format
+local tinsert = table.insert
 local strsplit = strsplit
 local tsort = table.sort
 local ceil = math.ceil
@@ -62,6 +63,12 @@ function UF:Construct_AuraIcon(button)
 
 	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
 
+	-- cooldown override settings
+	button.reverseToggle = UF.db.cooldown.reverse
+	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
+		button.timeColors, button.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
+	end
+
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse(true)
@@ -96,6 +103,15 @@ function UF:Construct_AuraIcon(button)
 	end)
 
 	UF:UpdateAuraIconSettings(button, true)
+
+	-- support cooldown override
+	if not button.isRegisteredCooldown then
+		button.ColorOverride = 'unitframe'
+		button.isRegisteredCooldown = true
+
+		if not E.RegisteredCooldowns['unitframe'] then E.RegisteredCooldowns['unitframe'] = {} end
+		tinsert(E.RegisteredCooldowns['unitframe'], button)
+	end
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -326,20 +342,23 @@ end
 function UF:UpdateAuraIconSettings(auras, noCycle)
 	local frame = auras:GetParent()
 	local type = auras.type
-	if(noCycle) then
+
+	if noCycle then
 		frame = auras:GetParent():GetParent()
 		type = auras:GetParent().type
 	end
-	if(not frame.db) then return end
+
+	if not frame.db then return end
 
 	local db = frame.db[type]
 	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
 	local unitframeFontOutline = E.db['unitframe'].fontOutline
 	local index = 1
 	auras.db = db
-	if(db) then
-		if(not noCycle) then
-			while(auras[index]) do
+
+	if db then
+		if not noCycle then
+			while auras[index] do
 				local button = auras[index]
 				button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
 				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
@@ -349,6 +368,7 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 				elseif not db.clickThrough and not button:IsMouseEnabled() then
 					button:EnableMouse(true)
 				end
+
 				index = index + 1
 			end
 		else
@@ -404,7 +424,7 @@ function UF:PostUpdateAura(unit, button)
 		button:SetSize(size, size)
 	end
 
-	if E.private.cooldown.enable then
+	if E:Cooldown_IsEnabled(button) then
 		if button.expiration and button.duration and (button.duration ~= 0) then
 			local getTime = GetTime()
 			if not button:GetScript('OnUpdate') then
@@ -438,23 +458,18 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
-	if self.expirationSaved <= 0 then
+	if (not E:Cooldown_IsEnabled(self)) or (self.expirationSaved <= 0) then
 		self:SetScript('OnUpdate', nil)
 
-		if(self.text:GetFont()) then
+		if self.text:GetFont() then
 			self.text:SetText('')
 		end
 
 		return
 	end
 
-	local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
-	if E.db.unitframe.cooldown.override and E.TimeColors['unitframe'] then
-		timeColors, timeThreshold = E.TimeColors['unitframe'], E.db.unitframe.cooldown.threshold
-	end
-	if not timeThreshold then
-		timeThreshold = E.TimeThreshold
-	end
+	local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
+	if not timeThreshold then timeThreshold = E.TimeThreshold end
 
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, timeThreshold)

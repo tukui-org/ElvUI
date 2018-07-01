@@ -87,7 +87,7 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
-			if(button.cooldown and E.private.cooldown.enable) then
+			if button.cooldown then
 				E:RegisterCooldown(button.cooldown)
 				button.cooldown:HookScript("OnShow", FixExtraActionCD)
 			end
@@ -103,7 +103,7 @@ function AB:SetupExtraButton()
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		button.Icon:SetInside()
 
-		if(button.Cooldown and E.private.cooldown.enable) then
+		if button.Cooldown then
 			E:RegisterCooldown(button.Cooldown)
 		end
 	end

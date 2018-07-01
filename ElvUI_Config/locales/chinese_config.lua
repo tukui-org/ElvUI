@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "修改单位框架设定"
 L["ACTIONBARS_DESC"] = "修改动作条设定"
 L["PANEL_DESC"] = "调整左、右聊天框的大小, 此设定将会影响聊天与背包框架的大小"
 L["SKINS_DESC"] = "调整外观设定"
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -242,6 +243,10 @@ L["Time yOffset"] = "时间Y偏移"
 L["Time"] = "时间"
 L["Wrap After"] = "每行行数"
 L["Your Auras First"] = "自身光环优先"
+
+--Cooldown
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "聊天框上方"

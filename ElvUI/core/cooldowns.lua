@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Cache global variables
 --Lua functions
+local next, ipairs, pairs = next, ipairs, pairs
 local floor = math.floor
+local tinsert = table.insert
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -16,33 +18,31 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
-local function Cooldown_OnUpdate(cd, elapsed)
-	if cd.nextUpdate > 0 then
-		cd.nextUpdate = cd.nextUpdate - elapsed
+function E:Cooldown_OnUpdate(elapsed)
+	if self.nextUpdate > 0 then
+		self.nextUpdate = self.nextUpdate - elapsed
 		return
 	end
 
-	local remain = cd.duration - (GetTime() - cd.start)
-
-	if remain > 0.05 then
-		if (cd.fontScale * cd:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
-			cd.text:SetText('')
-			cd.nextUpdate = 500
-		else
-			local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
-			if cd.ColorOverride and (E.db[cd.ColorOverride] and E.db[cd.ColorOverride].cooldown.override and E.TimeColors[cd.ColorOverride]) then
-				timeColors, timeThreshold = E.TimeColors[cd.ColorOverride], E.db[cd.ColorOverride].cooldown.threshold
-			end
-			if not timeThreshold then
-				timeThreshold = E.TimeThreshold
-			end
-
-			local timervalue, formatid
-			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, timeThreshold)
-			cd.text:SetFormattedText(("%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
-		end
+	if not E:Cooldown_IsEnabled(self) then
+		E:Cooldown_StopTimer(self)
 	else
-		E:Cooldown_StopTimer(cd)
+		local remain = self.duration - (GetTime() - self.start)
+		if remain > 0.05 then
+			if (self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
+				self.text:SetText('')
+				self.nextUpdate = 500
+			else
+				local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
+				if not timeThreshold then timeThreshold = E.TimeThreshold end
+
+				local timervalue, formatid
+				timervalue, formatid, self.nextUpdate = E:GetTimeInfo(remain, timeThreshold)
+				self.text:SetFormattedText(("%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+			end
+		else
+			E:Cooldown_StopTimer(self)
+		end
 	end
 end
 
@@ -69,6 +69,10 @@ function E:Cooldown_OnSizeChanged(cd, width)
 	end
 end
 
+function E:Cooldown_IsEnabled(cd)
+	return (E.db.cooldown.enable and not cd.reverseToggle) or (not E.db.cooldown.enable and cd.reverseToggle)
+end
+
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
 	cd:Show()
@@ -85,7 +89,7 @@ function E:CreateCooldownTimer(parent)
 
 	local timer = CreateFrame('Frame', nil, scaler); timer:Hide()
 	timer:SetAllPoints()
-	timer:SetScript('OnUpdate', Cooldown_OnUpdate)
+	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
 	text:Point('CENTER', 1, 1)
@@ -93,7 +97,9 @@ function E:CreateCooldownTimer(parent)
 	timer.text = text
 
 	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
-	parent:SetScript('OnSizeChanged', function(_, ...) self:Cooldown_OnSizeChanged(timer, ...) end)
+	parent:SetScript('OnSizeChanged', function(_, ...)
+		self:Cooldown_OnSizeChanged(timer, ...)
+	end)
 
 	parent.timer = timer
 
@@ -104,14 +110,22 @@ function E:CreateCooldownTimer(parent)
 
 	-- used by nameplate and bag module to override the cooldown color by its setting (if enabled)
 	if parent.ColorOverride then
-		timer.ColorOverride = parent.ColorOverride
+		local db = E.db[parent.ColorOverride]
+		if db and db.cooldown then
+			if db.cooldown.override and E.TimeColors[parent.ColorOverride] then
+				timer.timeColors, timer.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
+			end
+
+			timer.reverseToggle = db.cooldown.reverse
+		end
 	end
 
 	return timer
 end
 
+E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if(self.noOCC) then return end
+	if self.noOCC or not E:Cooldown_IsEnabled(self) then return end
 
 	if start > 0 and duration > MIN_DURATION then
 		local timer = self.timer or E:CreateCooldownTimer(self)
@@ -130,10 +144,19 @@ function E:OnSetCooldown(start, duration)
 end
 
 function E:RegisterCooldown(cooldown)
-	if cooldown.isHooked or (not E.private.cooldown.enable) then return end
-	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
-	cooldown:SetHideCountdownNumbers(true)
-	cooldown.isHooked = true
+	if not cooldown.isHooked then
+		hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
+		cooldown:SetHideCountdownNumbers(true)
+		cooldown.isHooked = true
+	end
+
+	if not cooldown.isRegisteredCooldown then
+		local module = (cooldown.ColorOverride or 'global')
+		if not E.RegisteredCooldowns[module] then E.RegisteredCooldowns[module] = {} end
+
+		tinsert(E.RegisteredCooldowns[module], cooldown)
+		cooldown.isRegisteredCooldown = true
+	end
 end
 
 function E:GetCooldownColors(db)
@@ -146,23 +169,76 @@ function E:GetCooldownColors(db)
 	return c0, c1, c2, c3, c4
 end
 
+function E:UpdateCooldownOverride(module)
+	local cooldowns = (module and E.RegisteredCooldowns[module])
+	if (not cooldowns) or not next(cooldowns) then return end
+
+	local timer, CD, db -- timer = cooldown from RegisterCooldown
+	local parent, unit -- used to resummon timer text on auras for unitframes
+
+	for _, cd in ipairs(cooldowns) do
+		timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
+		CD = timer or cd
+
+		if cd then
+			db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
+
+			if db and db.cooldown then
+				if cd.ColorOverride then
+					if db.cooldown.override and E.TimeColors[cd.ColorOverride] then
+						CD.timeColors, CD.timeThreshold = E.TimeColors[cd.ColorOverride], db.cooldown.threshold
+					else
+						CD.timeColors, CD.timeThreshold = nil, nil
+					end
+
+					CD.reverseToggle = db.cooldown.reverse
+				end
+
+				if timer and CD then
+					E:Cooldown_ForceUpdate(CD)
+				elseif cd.ColorOverride then
+					if cd.ColorOverride == 'auras' then
+						cd.nextUpdate = -1
+					elseif cd.ColorOverride == 'unitframe' then
+						cd.nextupdate = -1
+						if E.private.unitframe.enable then
+							parent = cd:GetParent():GetParent():GetParent()
+							unit = parent and parent.unit
+							E:GetModule('UnitFrames'):PostUpdateAura(unit, cd)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 function E:UpdateCooldownSettings(module)
 	local cooldownDB, timeColors = self.db.cooldown, E.TimeColors
 
 	-- update the module timecolors if the config called it but ignore "global" and "all":
 	-- global is the main call from config, all is the core file calls
-	if module and (module ~= 'global' and module ~= 'all') and self.db[module] and self.db[module].cooldown then
+	local isModule = module and (module ~= 'global' and module ~= 'all') and self.db[module] and self.db[module].cooldown
+	if isModule then
 		if not E.TimeColors[module] then E.TimeColors[module] = {} end
 		cooldownDB, timeColors = self.db[module].cooldown, E.TimeColors[module]
 	end
 
 	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4] = E:GetCooldownColors(cooldownDB)
 
+	if isModule then
+		E:UpdateCooldownOverride(module)
+	elseif module == 'global' then -- this is only a call from the config change
+		for key in pairs(E.RegisteredCooldowns) do
+			E:UpdateCooldownOverride(key)
+		end
+	end
+
 	-- okay update the other override settings if it was one of the core file calls
 	if module and (module == 'all') then
 		E:UpdateCooldownSettings('bags')
-		E:UpdateCooldownSettings('auras')
 		E:UpdateCooldownSettings('nameplates')
-		E:UpdateCooldownSettings('unitframe')
+		E:UpdateCooldownSettings('unitframe') -- has special OnUpdate
+		E:UpdateCooldownSettings('auras') -- has special OnUpdate
 	end
 end

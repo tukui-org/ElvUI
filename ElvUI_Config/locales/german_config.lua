@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster.
 L["ACTIONBARS_DESC"] = "Konfiguriere die Einstellungen für die Aktionsleisten."
 L["PANEL_DESC"] = "Stellt die Größe der linken und rechten Leisten ein, dies hat auch Einfluss auf den Chat und die Taschen."
 L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -245,6 +246,10 @@ L["Time yOffset"] = "Zeit Y-Versatz"
 L["Time"] = "Zeit"
 L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["Your Auras First"] = "Deine Auren zuerst"
+
+--Cooldown
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "Über dem Chat"

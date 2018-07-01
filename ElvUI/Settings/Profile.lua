@@ -202,6 +202,7 @@ P['bags'] = {
 	["cooldown"] = {
 		['threshold'] = 4,
 		['override'] = false,
+		['reverse'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -255,6 +256,7 @@ P["nameplates"] = {
 	["cooldown"] = {
 		['threshold'] = 4,
 		['override'] = true,
+		['reverse'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -756,6 +758,7 @@ P['auras'] = {
 	["cooldown"] = {
 		['threshold'] = 4,
 		['override'] = true,
+		['reverse'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -944,6 +947,7 @@ P['unitframe'] = {
 	["cooldown"] = {
 		['threshold'] = 4,
 		['override'] = true,
+		['reverse'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -3016,15 +3020,16 @@ P['unitframe'] = {
 	},
 }
 
-P["cooldown"] = {
-	threshold = 3,
-	expiringColor = { r = 1, g = 0, b = 0 },
-	secondsColor = { r = 1, g = 1, b = 0 },
-	minutesColor = { r = 1, g = 1, b = 1 },
-	hoursColor = { r = 0.4, g = 1, b = 1 },
-	daysColor = { r = 0.4, g = 0.4, b = 1 },
+--Cooldown
+P['cooldown'] = {
+	['enable'] = true,
+	['threshold'] = 3,
+	['expiringColor'] = { r = 1, g = 0, b = 0 },
+	['secondsColor'] = { r = 1, g = 1, b = 0 },
+	['minutesColor'] = { r = 1, g = 1, b = 1 },
+	['hoursColor'] = { r = 0.4, g = 1, b = 1 },
+	['daysColor'] = { r = 0.4, g = 0.4, b = 1 },
 }
-
 
 --Actionbar
 P["actionbar"] = {

@@ -1450,6 +1450,12 @@ function E:DBConversions()
 		E.db.auras.debuffs.durationFontSize = fontSize
 		E.db.auras.fontSize = nil
 	end
+
+	--Convert old private cooldown setting to profile setting
+	if E.private.cooldown then
+		E.db.cooldown.enable = E.private.cooldown.enable
+		E.private.cooldown.enable = nil
+	end
 end
 
 local CPU_USAGE = {}
