@@ -293,6 +293,10 @@ L["Wrap After"] = "한 줄에 표시할 오라 수"
 L["Your Auras First"] = "자기 주문 우선"
 
 --Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
 L["Color Override"] = true
 L["Reverse Toggle"] = true
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true

@@ -29,8 +29,48 @@ local function group(order, db, label)
 				type = "header",
 				name = label,
 			},
-			overrideGroup = {
+			reverse = {
+				type = "toggle",
 				order = 2,
+				name = L["Reverse Toggle"],
+				desc = L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."],
+				get = function(info) return (profile(db))[ info[#info] ] end,
+				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+			},
+			secondsGroup = {
+				order = 5,
+				type = "group",
+				name = L["Text Threshold"],
+				guiInline = true,
+				get = function(info) return (profile(db))[ info[#info] ] end,
+				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				disabled = function() return not (profile(db)).checkSeconds end,
+				args = {
+					checkSeconds = {
+						type = "toggle",
+						order = 1,
+						name = L["Enable"],
+						desc = L["This will override the global cooldown settings."],
+						disabled = E.noop,
+					},
+					mmssThreshold = {
+						order = 2,
+						type = 'range',
+						name = L['MM:SS Threshold'],
+						desc = L['Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format.'],
+						min = -1, max = 10800, step = 1,
+					},
+					hhmmThreshold = {
+						order = 3,
+						type = 'range',
+						name = L['HH:MM Threshold'],
+						desc = L['Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format.'],
+						min = -1, max = 1440, step = 1,
+					},
+				}
+			},
+			colorGroup = {
+				order = 10,
 				type = "group",
 				name = L["Color Override"],
 				guiInline = true,
@@ -98,38 +138,85 @@ local function group(order, db, label)
 						desc = L["Color when the text is in the days format."],
 						disabled = function() return not (profile(db)).override end,
 					},
+					mmssColor = {
+						type = 'color',
+						order = 10,
+						name = L["MM:SS"],
+						disabled = function() return not (profile(db)).override end,
+					},
+					hhmmColor = {
+						type = 'color',
+						order = 11,
+						name = L["HH:MM"],
+						disabled = function() return not (profile(db)).override end,
+					},
 				}
 			},
-			reverse = {
-				type = "toggle",
-				order = 3,
-				name = L["Reverse Toggle"],
-				desc = L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."],
-				get = function(info) return (profile(db))[ info[#info] ] end,
-				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
-			},
+			fontGroup = {
+				order = 20, -- keep this at the bottom
+				type = "group",
+				name = L["Fonts"],
+				guiInline = true,
+				get = function(info) return (profile(db)).fonts[ info[#info] ] end,
+				set = function(info, value) (profile(db)).fonts[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				disabled = function() return not (profile(db)).fonts.enable end,
+				args = {
+					enable = {
+						type = "toggle",
+						order = 1,
+						name = L["Enable"],
+						desc = L["This will override the global cooldown settings."],
+						disabled = E.noop,
+					},
+					spacer1 = {
+						order = 2,
+						type = "description",
+						name = " "
+					},
+					fontSize = {
+						order = 3,
+						type = 'range',
+						name = L['Font Size'],
+						desc = L['Sets the size of the timers.'],
+						min = 10, max = 30, step = 1,
+					},
+					font = {
+						order = 4,
+						type = 'select',
+						name = L["Font"],
+						dialogControl = 'LSM30_Font',
+						values = AceGUIWidgetLSMlists.font,
+					},
+					fontOutline = {
+						order = 5,
+						type = "select",
+						name = L["Font Outline"],
+						values = {
+							['NONE'] = L['None'],
+							['OUTLINE'] = 'OUTLINE',
+							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+							['THICKOUTLINE'] = 'THICKOUTLINE',
+						},
+					},
+				}
+			}
 		},
 	}
 
 	if db == 'global' then
 		-- clean up the main one
 		E.Options.args.cooldown.args[db].args.reverse = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.override = nil
+		E.Options.args.cooldown.args[db].args.colorGroup.args.override = nil
 
 		-- remove disables
-		for _, x in pairs(E.Options.args.cooldown.args[db].args.overrideGroup.args) do
+		for _, x in pairs(E.Options.args.cooldown.args[db].args.colorGroup.args) do
 			if x.disabled then x.disabled = nil end
 		end
 
-		-- move them out of the tab
-		for k, x in pairs(E.Options.args.cooldown.args[db].args.overrideGroup.args) do
-			E.Options.args.cooldown.args[db].args[k] = x
-		end
-
-		-- delete the tab group
-		E.Options.args.cooldown.args[db].args.overrideGroup = nil
+		-- rename the tab
+		E.Options.args.cooldown.args[db].args.colorGroup.name = COLORS
 	else
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.spacer2 = nil
+		E.Options.args.cooldown.args[db].args.colorGroup.args.spacer2 = nil
 	end
 
 	if db == 'auras' then

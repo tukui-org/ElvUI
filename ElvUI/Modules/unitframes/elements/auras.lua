@@ -65,6 +65,12 @@ function UF:Construct_AuraIcon(button)
 
 	-- cooldown override settings
 	button.reverseToggle = UF.db.cooldown.reverse
+
+	if UF.db.cooldown.checkSeconds then
+		button.hhmmThreshold = UF.db.cooldown.hhmmThreshold
+		button.mmssThreshold = UF.db.cooldown.mmssThreshold
+	end
+
 	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
 		button.timeColors, button.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
 	end
@@ -471,13 +477,17 @@ function UF:UpdateAuraTimer(elapsed)
 	local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
 	if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expirationSaved, timeThreshold)
+	local hhmmThreshold = self.hhmmThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+	local mmssThreshold = self.mmssThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+
+	local value1, formatid, nextupdate, value2 = E:GetTimeInfo(self.expirationSaved, timeThreshold, hhmmThreshold, mmssThreshold)
+	self.nextupdate = nextupdate
+
 	if self.text:GetFont() then
-		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
 	elseif self:GetParent():GetParent().db then
 		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
-		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
 	end
 end
 

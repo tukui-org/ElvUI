@@ -208,6 +208,19 @@ P['bags'] = {
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
 		['hoursColor'] = { r = 1, g = 1, b = 1 },
 		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 18,
+		},
 	},
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
@@ -262,6 +275,19 @@ P["nameplates"] = {
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
 		['hoursColor'] = { r = 1, g = 1, b = 1 },
 		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 18,
+		},
 	},
 	["classbar"] = {
 		["enable"] = true,
@@ -764,6 +790,19 @@ P['auras'] = {
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
 		['hoursColor'] = { r = 1, g = 1, b = 1 },
 		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 18,
+		},
 	},
 }
 
@@ -953,6 +992,19 @@ P['unitframe'] = {
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
 		['hoursColor'] = { r = 1, g = 1, b = 1 },
 		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 18,
+		},
 	},
 	['colors'] = {
 		["borderColor"] = {r = 0, g = 0, b = 0},
@@ -3029,6 +3081,20 @@ P['cooldown'] = {
 	['minutesColor'] = { r = 1, g = 1, b = 1 },
 	['hoursColor'] = { r = 0.4, g = 1, b = 1 },
 	['daysColor'] = { r = 0.4, g = 0.4, b = 1 },
+
+	['checkSeconds'] = false,
+	['hhmmColor'] = { r = 1, g = 1, b = 1 },
+	['mmssColor'] = { r = 1, g = 1, b = 1 },
+	['hhmmThreshold'] = -1,
+	['mmssThreshold'] = -1,
+
+
+	['fonts'] = {
+		['enable'] = false,
+		['font'] = 'PT Sans Narrow',
+		['fontOutline'] = 'OUTLINE',
+		['fontSize'] = 18,
+	},
 }
 
 --Actionbar
@@ -3058,6 +3124,19 @@ P["actionbar"] = {
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
 		['hoursColor'] = { r = 1, g = 1, b = 1 },
 		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 18,
+		},
 	},
 
 	['microbar'] = {

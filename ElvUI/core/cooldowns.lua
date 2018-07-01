@@ -36,9 +36,13 @@ function E:Cooldown_OnUpdate(elapsed)
 				local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
 				if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-				local timervalue, formatid
-				timervalue, formatid, self.nextUpdate = E:GetTimeInfo(remain, timeThreshold)
-				self.text:SetFormattedText(("%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+				local hhmmThreshold = self.hhmmThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+				local mmssThreshold = self.mmssThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+
+				local value1, formatid, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold)
+				self.nextUpdate = nextUpdate
+
+				self.text:SetFormattedText(("%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
 			end
 		else
 			E:Cooldown_StopTimer(self)
@@ -116,6 +120,10 @@ function E:CreateCooldownTimer(parent)
 				timer.timeColors, timer.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
 			end
 
+			if db.cooldown.checkSeconds then
+				timer.hhmmThreshold, timer.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+			end
+
 			timer.reverseToggle = db.cooldown.reverse
 		end
 	end
@@ -161,12 +169,14 @@ end
 
 function E:GetCooldownColors(db)
 	if not db then db = self.db.cooldown end -- just incase someone calls this without a first arg use the global
+	local c6 = E:RGBToHex(db.hhmmColor.r, db.hhmmColor.g, db.hhmmColor.b) -- HH:MM color
+	local c5 = E:RGBToHex(db.mmssColor.r, db.mmssColor.g, db.mmssColor.b) -- MM:SS color
 	local c4 = E:RGBToHex(db.expiringColor.r, db.expiringColor.g, db.expiringColor.b) -- color for timers that are soon to expire
 	local c3 = E:RGBToHex(db.secondsColor.r, db.secondsColor.g, db.secondsColor.b) -- color for timers that have seconds remaining
 	local c2 = E:RGBToHex(db.minutesColor.r, db.minutesColor.g, db.minutesColor.b) -- color for timers that have minutes remaining
 	local c1 = E:RGBToHex(db.hoursColor.r, db.hoursColor.g, db.hoursColor.b) -- color for timers that have hours remaining
 	local c0 = E:RGBToHex(db.daysColor.r, db.daysColor.g, db.daysColor.b) -- color for timers that have days remaining
-	return c0, c1, c2, c3, c4
+	return c0, c1, c2, c3, c4, c5, c6
 end
 
 function E:UpdateCooldownOverride(module)
@@ -189,6 +199,12 @@ function E:UpdateCooldownOverride(module)
 						CD.timeColors, CD.timeThreshold = E.TimeColors[cd.ColorOverride], db.cooldown.threshold
 					else
 						CD.timeColors, CD.timeThreshold = nil, nil
+					end
+
+					if db.cooldown.checkSeconds then
+						CD.hhmmThreshold, CD.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+					else
+						CD.hhmmThreshold, CD.mmssThreshold = nil, nil
 					end
 
 					CD.reverseToggle = db.cooldown.reverse
@@ -224,7 +240,7 @@ function E:UpdateCooldownSettings(module)
 		cooldownDB, timeColors = self.db[module].cooldown, E.TimeColors[module]
 	end
 
-	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4] = E:GetCooldownColors(cooldownDB)
+	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6] = E:GetCooldownColors(cooldownDB)
 
 	if isModule then
 		E:UpdateCooldownOverride(module)

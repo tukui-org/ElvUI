@@ -95,9 +95,13 @@ function A:UpdateTime(elapsed)
 		local timeColors, timeThreshold = (self.timeColors or E.TimeColors), (self.timeThreshold or E.db.cooldown.threshold)
 		if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-		local timerValue, formatID
-		timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, timeThreshold)
-		self.time:SetFormattedText(("%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1]), timerValue)
+		local hhmmThreshold = self.hhmmThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+		local mmssThreshold = self.mmssThreshold or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+
+		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
+		self.nextUpdate = nextUpdate
+
+		self.time:SetFormattedText(("%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1]), value1, value2)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
 			E:StopFlash(self)
@@ -263,6 +267,11 @@ function A:CooldownText_Update(button)
 
 	button.alwaysEnabled = true
 	button.reverseToggle = self.db.cooldown.reverse
+
+	if self.db.cooldown.checkSeconds then
+		button.hhmmThreshold = self.db.cooldown.hhmmThreshold
+		button.mmssThreshold = self.db.cooldown.mmssThreshold
+	end
 
 	if self.db.cooldown.override and E.TimeColors['auras'] then
 		button.timeColors, button.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
