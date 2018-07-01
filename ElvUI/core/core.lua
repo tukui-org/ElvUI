@@ -1452,9 +1452,10 @@ function E:DBConversions()
 	end
 
 	--Convert old private cooldown setting to profile setting
-	if E.private.cooldown then
+	if E.private.cooldown and E.private.cooldown.enable then
 		E.db.cooldown.enable = E.private.cooldown.enable
 		E.private.cooldown.enable = nil
+		E.private.cooldown = nil
 	end
 
 	--Convert Nameplate Aura Duration to new Cooldown system
