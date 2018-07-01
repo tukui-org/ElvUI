@@ -247,13 +247,18 @@ function E:UpdateCooldownOverride(module)
 			elseif CD.cdOptions.fontOptions then
 				text = CD.text or CD.time
 				if text then
-					if not customFont then
-						customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
-					end
-					if customFont then
-						if CD.cdOptions.fontOptions.enable then
+					if CD.cdOptions.fontOptions.enable then
+						if not customFont then
+							customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
+						end
+						if customFont then
 							text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
-						elseif cd.ColorOverride then
+						end
+					elseif cd.ColorOverride then
+						if not customFont then
+							customFont = E.LSM:Fetch("font", E.db[cd.ColorOverride].font)
+						end
+						if customFont then
 							-- cd.auraType defined in `A:UpdateHeader`
 							if cd.auraType and (cd.ColorOverride == 'auras') then
 								customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
