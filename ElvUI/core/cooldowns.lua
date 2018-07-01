@@ -198,9 +198,7 @@ function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
 	if (not cooldowns) or not next(cooldowns) then return end
 
-	local timer, CD, db -- timer = cooldown from RegisterCooldown
-	local customFont, customFontSize, text
-
+	local CD, db, customFont, customFontSize, timer, text
 	for _, cd in ipairs(cooldowns) do
 		db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
 		db = db and db.cooldown
@@ -243,17 +241,19 @@ function E:UpdateCooldownOverride(module)
 					if not customFont then
 						customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 					end
-					if customFont and CD.cdOptions.fontOptions.enable then
-						text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
-					elseif cd.ColorOverride then
-						-- cd.auraType defined in `A:UpdateHeader`
-						if cd.auraType and (cd.ColorOverride == 'auras') then
-							customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
-							if customFont and customFontSize then
-								text:FontTemplate(customFont, customFontSize, E.db[cd.ColorOverride].fontOutline)
+					if customFont then
+						if CD.cdOptions.fontOptions.enable then
+							text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+						elseif cd.ColorOverride then
+							-- cd.auraType defined in `A:UpdateHeader`
+							if cd.auraType and (cd.ColorOverride == 'auras') then
+								customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
+								if customFontSize then
+									text:FontTemplate(customFont, customFontSize, E.db[cd.ColorOverride].fontOutline)
+								end
+							elseif (cd.ColorOverride == 'unitframe') then
+								text:FontTemplate(customFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
 							end
-						elseif customFont and (cd.ColorOverride == 'unitframe') then
-							text:FontTemplate(customFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
 						end
 					end
 				end
