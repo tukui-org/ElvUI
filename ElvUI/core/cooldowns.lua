@@ -70,7 +70,7 @@ function E:Cooldown_OnSizeChanged(cd, width)
 end
 
 function E:Cooldown_IsEnabled(cd)
-	return (E.db.cooldown.enable and not cd.reverseToggle) or (not E.db.cooldown.enable and cd.reverseToggle)
+	return cd.alwaysEnabled or (E.db.cooldown.enable and not cd.reverseToggle) or (not E.db.cooldown.enable and cd.reverseToggle)
 end
 
 function E:Cooldown_ForceUpdate(cd)

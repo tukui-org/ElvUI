@@ -261,6 +261,7 @@ end
 function A:CooldownText_Update(button)
 	if not button then return end
 
+	button.alwaysEnabled = true
 	button.reverseToggle = self.db.cooldown.reverse
 
 	if self.db.cooldown.override and E.TimeColors['auras'] then
