@@ -56,12 +56,12 @@ local function group(order, db, label)
 					spacer1 = {
 						order = 3,
 						type = "description",
-						name = ""
+						name = " "
 					},
 					spacer2 = {
 						order = 4,
 						type = "description",
-						name = ""
+						name = " "
 					},
 					expiringColor = {
 						type = 'color',
@@ -117,25 +117,19 @@ local function group(order, db, label)
 		E.Options.args.cooldown.args[db].args.overrideGroup.args.override = nil
 
 		-- remove disables
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.threshold.disabled = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.expiringColor.disabled = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.secondsColor.disabled = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.minutesColor.disabled = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.hoursColor.disabled = nil
-		E.Options.args.cooldown.args[db].args.overrideGroup.args.daysColor.disabled = nil
+		for _, x in pairs(E.Options.args.cooldown.args[db].args.overrideGroup.args) do
+			if x.disabled then x.disabled = nil end
+		end
 
 		-- move them out of the tab
-		E.Options.args.cooldown.args[db].args.threshold = E.Options.args.cooldown.args[db].args.overrideGroup.args.threshold
-		E.Options.args.cooldown.args[db].args.expiringColor = E.Options.args.cooldown.args[db].args.overrideGroup.args.expiringColor
-		E.Options.args.cooldown.args[db].args.secondsColor = E.Options.args.cooldown.args[db].args.overrideGroup.args.secondsColor
-		E.Options.args.cooldown.args[db].args.minutesColor = E.Options.args.cooldown.args[db].args.overrideGroup.args.minutesColor
-		E.Options.args.cooldown.args[db].args.hoursColor = E.Options.args.cooldown.args[db].args.overrideGroup.args.hoursColor
-		E.Options.args.cooldown.args[db].args.daysColor = E.Options.args.cooldown.args[db].args.overrideGroup.args.daysColor
+		for k, x in pairs(E.Options.args.cooldown.args[db].args.overrideGroup.args) do
+			E.Options.args.cooldown.args[db].args[k] = x
+		end
 
 		-- delete the tab group
 		E.Options.args.cooldown.args[db].args.overrideGroup = nil
 	else
-		E.Options.args.cooldown.args[db].args.spacer2 = nil
+		E.Options.args.cooldown.args[db].args.overrideGroup.args.spacer2 = nil
 	end
 
 	if db == 'auras' then
