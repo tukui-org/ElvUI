@@ -699,6 +699,8 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if(not self.handledbuttons[button]) then
+		button.cooldown.ColorOverride = 'actionbar'
+
 		E:RegisterCooldown(button.cooldown)
 
 		self.handledbuttons[button] = true;

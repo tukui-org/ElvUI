@@ -3049,6 +3049,17 @@ P["actionbar"] = {
 	['keyDown'] = true,
 	['movementModifier'] = 'SHIFT',
 
+	["cooldown"] = {
+		['threshold'] = 4,
+		['override'] = false,
+		['reverse'] = false,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+	},
+
 	['microbar'] = {
 		['enabled'] = false,
 		['mouseover'] = false,

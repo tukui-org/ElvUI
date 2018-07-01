@@ -238,6 +238,7 @@ function E:UpdateCooldownSettings(module)
 	if module and (module == 'all') then
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
+		E:UpdateCooldownSettings('actionbar')
 		E:UpdateCooldownSettings('unitframe') -- has special OnUpdate
 		E:UpdateCooldownSettings('auras') -- has special OnUpdate
 	end
