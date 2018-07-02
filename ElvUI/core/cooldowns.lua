@@ -51,7 +51,7 @@ end
 
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
-	if parent and parent.SizeOverride then fontScale = parent.SizeOverride / FONT_SIZE end
+	if parent and parent.SizeOverride then fontScale = (parent.SizeOverride / FONT_SIZE) end
 	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
