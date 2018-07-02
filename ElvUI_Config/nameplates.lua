@@ -3209,6 +3209,32 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
+						duration = {
+							type = "group",
+							order = 6,
+							name = L["Duration"],
+							guiInline = true,
+							args = {
+								cooldownShortcut = {
+									order = 1,
+									type = "execute",
+									name = L["Cooldowns"],
+									buttonElvUI = true,
+									func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+								},
+								durationPosition = {
+									order = 2,
+									name = L["Position"],
+									type = "select",
+									values = {
+										["CENTER"] = L["Center"],
+										["TOPLEFT"] = "TOPLEFT",
+										["BOTTOMLEFT"] = "BOTTOMLEFT",
+										["TOPRIGHT"] = "TOPRIGHT",
+									},
+								},
+							}
+						},
 					},
 				},
 				classBarGroup = {
