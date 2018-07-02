@@ -99,14 +99,21 @@ function E:CreateCooldownTimer(parent)
 	local scaler = CreateFrame('Frame', nil, parent)
 	scaler:SetAllPoints()
 
-	local timer = CreateFrame('Frame', nil, scaler); timer:Hide()
+	local timer = CreateFrame('Frame', nil, scaler)
+	timer:Hide()
 	timer:SetAllPoints()
 	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
+	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
 	text:Point('CENTER', 1, 1)
 	text:SetJustifyH("CENTER")
 	timer.text = text
+
+	-- can be used to modify elements created from this function
+	if parent.CooldownPreHook then
+		parent.CooldownPreHook(parent)
+	end
 
 	-- cooldown override settings
 	if parent.ColorOverride then
@@ -145,8 +152,6 @@ function E:CreateCooldownTimer(parent)
 	parent:SetScript('OnSizeChanged', function(_, ...)
 		self:Cooldown_OnSizeChanged(timer, ...)
 	end)
-
-	parent.timer = timer
 
 	return timer
 end
