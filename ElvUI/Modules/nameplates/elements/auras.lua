@@ -203,8 +203,6 @@ end
 
 function mod:UpdateCooldownText()
 	if self.timer and self.timer.text then
-		self.timer.text:SetFont(LSM:Fetch("font", mod.db.font), mod.db.fontSize, mod.db.fontOutline)
-
 		self.timer.text:ClearAllPoints()
 		if mod.db.durationPosition == "TOPLEFT" then
 			self.timer.text:Point("TOPLEFT", 1, 1)
@@ -229,9 +227,16 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown = CreateFrame("Cooldown", nil, aura, "CooldownFrameTemplate")
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
+
 	aura.cooldown.SizeOverride = 10
-	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
 	aura.cooldown.ColorOverride = 'nameplates'
+	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
+	aura.cooldown.CooldownSettings = {
+		['font'] = LSM:Fetch("font", mod.db.font),
+		['fontSize'] = mod.db.fontSize,
+		['fontOutline'] = mod.db.fontOutline,
+	}
+
 	E:RegisterCooldown(aura.cooldown)
 
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
