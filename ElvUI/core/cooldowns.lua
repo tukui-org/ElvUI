@@ -49,16 +49,16 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 end
 
-function E:Cooldown_OnSizeChanged(cd, width, force)
+function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = floor(width + .5) / ICON_SIZE
-	if cd.SizeOverride then
-		fontScale = cd.SizeOverride / FONT_SIZE
+	if parent and parent.SizeOverride then
+		fontScale = parent.SizeOverride / FONT_SIZE
 	end
 
 	if (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
-	if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
+	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.SizeOverride) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
@@ -155,9 +155,9 @@ function E:CreateCooldownTimer(parent)
 	end
 	----------
 
-	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
+	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
 	parent:SetScript('OnSizeChanged', function(_, ...)
-		self:Cooldown_OnSizeChanged(timer, ...)
+		self:Cooldown_OnSizeChanged(timer, parent, ...)
 	end)
 
 	return timer
@@ -255,7 +255,7 @@ function E:UpdateCooldownOverride(module)
 			----------
 
 			if timer and CD then
-				self:Cooldown_OnSizeChanged(CD, cd:GetSize(), 'override')
+				self:Cooldown_OnSizeChanged(CD, cd, cd:GetSize(), 'override')
 			else
 				text = CD.text or CD.time
 				if text then
