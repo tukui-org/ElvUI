@@ -49,25 +49,24 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 end
 
-function E:Cooldown_OnSizeChanged(cd, width, force)
-	local fontScale = floor(width + .5) / ICON_SIZE
-	if cd.SizeOverride then
-		fontScale = cd.SizeOverride / FONT_SIZE
-	end
-
-	if (fontScale == cd.fontScale) and (force ~= 'override') then return end
+function E:Cooldown_OnSizeChanged(cd, parent, width, force)
+	local fontScale = width and (floor(width + .5) / ICON_SIZE)
+	if parent and parent.SizeOverride then fontScale = (parent.SizeOverride / FONT_SIZE) end
+	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
-	if fontScale and (fontScale < MIN_SCALE) and not cd.SizeOverride then
+	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.SizeOverride) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
-		if fontScale and text then
+		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
 				text:FontTemplate(useCustomFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
-			else
-				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
+			elseif fontScale and cd.CooldownSettings and cd.CooldownSettings.font and cd.CooldownSettings.fontOutline then
+				text:FontTemplate(cd.CooldownSettings.font, (fontScale * FONT_SIZE), cd.CooldownSettings.fontOutline)
+			elseif fontScale then
+				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
 		end
 
@@ -81,8 +80,13 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 end
 
 function E:Cooldown_IsEnabled(cd)
-	local r = cd.cdOptions and cd.cdOptions.reverseToggle
-	return cd.alwaysEnabled or (E.db.cooldown.enable and not r) or (not E.db.cooldown.enable and r)
+	if cd.alwaysEnabled then
+		return true
+	elseif cd.cdOptions and (cd.cdOptions.reverseToggle ~= nil) then
+		return (E.db.cooldown.enable and not cd.cdOptions.reverseToggle) or (not E.db.cooldown.enable and cd.cdOptions.reverseToggle)
+	else
+		return E.db.cooldown.enable
+	end
 end
 
 function E:Cooldown_ForceUpdate(cd)
@@ -148,9 +152,9 @@ function E:CreateCooldownTimer(parent)
 	end
 	----------
 
-	self:Cooldown_OnSizeChanged(timer, parent:GetSize())
+	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
 	parent:SetScript('OnSizeChanged', function(_, ...)
-		self:Cooldown_OnSizeChanged(timer, ...)
+		self:Cooldown_OnSizeChanged(timer, parent, ...)
 	end)
 
 	return timer
@@ -248,7 +252,7 @@ function E:UpdateCooldownOverride(module)
 			----------
 
 			if timer and CD then
-				self:Cooldown_OnSizeChanged(CD, cd:GetSize(), 'override')
+				self:Cooldown_OnSizeChanged(CD, cd, cd:GetSize(), 'override')
 			else
 				text = CD.text or CD.time
 				if text then
