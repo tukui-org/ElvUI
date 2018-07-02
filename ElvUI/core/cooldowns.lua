@@ -108,6 +108,10 @@ function E:CreateCooldownTimer(parent)
 	text:SetJustifyH("CENTER")
 	timer.text = text
 
+	if parent.FontOverride then
+		parent.FontOverride(parent)
+	end
+
 	-- cooldown override settings
 	if parent.ColorOverride then
 		local db = E.db[parent.ColorOverride]

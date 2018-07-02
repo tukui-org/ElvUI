@@ -201,6 +201,23 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
+function mod:cooldownFontOverride()
+	if self.timer and self.timer.text then
+		self.timer.text:SetFont(LSM:Fetch("font", mod.db.font), mod.db.fontSize, mod.db.fontOutline)
+
+		self.timer.text:ClearAllPoints()
+		if mod.db.durationPosition == "TOPLEFT" then
+			self.timer.text:Point("TOPLEFT", 1, 1)
+		elseif mod.db.durationPosition == "BOTTOMLEFT" then
+			self.timer.text:Point("BOTTOMLEFT", 1, 1)
+		elseif mod.db.durationPosition == "TOPRIGHT" then
+			self.timer.text:Point("TOPRIGHT", 1, 1)
+		else
+			self.timer.text:Point("CENTER", 0, 0)
+		end
+	end
+end
+
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura)
@@ -213,6 +230,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
+	aura.cooldown.FontOverride = self.cooldownFontOverride
 	aura.cooldown.ColorOverride = 'nameplates'
 	E:RegisterCooldown(aura.cooldown)
 
@@ -259,20 +277,7 @@ function mod:UpdateAuraIcons(auras)
 			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 		end
 
-		if auras.icons[i].cooldown.timer and auras.icons[i].cooldown.timer.text then
-			auras.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-
-			auras.icons[i].cooldown.timer.text:ClearAllPoints()
-			if self.db.durationPosition == "TOPLEFT" then
-				auras.icons[i].cooldown.timer.text:Point("TOPLEFT", 1, 1)
-			elseif self.db.durationPosition == "BOTTOMLEFT" then
-				auras.icons[i].cooldown.timer.text:Point("BOTTOMLEFT", 1, 1)
-			elseif self.db.durationPosition == "TOPRIGHT" then
-				auras.icons[i].cooldown.timer.text:Point("TOPRIGHT", 1, 1)
-			else
-				auras.icons[i].cooldown.timer.text:Point("CENTER", 0, 0)
-			end
-		end
+		self.cooldownFontOverride(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
