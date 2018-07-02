@@ -83,8 +83,13 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 end
 
 function E:Cooldown_IsEnabled(cd)
-	local r = cd.cdOptions and cd.cdOptions.reverseToggle
-	return cd.alwaysEnabled or (E.db.cooldown.enable and not r) or (not E.db.cooldown.enable and r)
+	if cd.alwaysEnabled then
+		return true
+	elseif cd.cdOptions and (cd.cdOptions.reverseToggle ~= nil) then
+		return (E.db.cooldown.enable and not cd.cdOptions.reverseToggle) or (not E.db.cooldown.enable and cd.cdOptions.reverseToggle)
+	else
+		return E.db.cooldown.enable
+	end
 end
 
 function E:Cooldown_ForceUpdate(cd)
