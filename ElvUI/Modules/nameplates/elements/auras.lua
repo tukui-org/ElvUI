@@ -201,23 +201,6 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
-local function cooldownFontOverride(cd)
-	if cd.timer and cd.timer.text then
-		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
-
-		cd.timer.text:ClearAllPoints()
-		if mod.db.durationPosition == "TOPLEFT" then
-			cd.timer.text:Point("TOPLEFT", 1, 1)
-		elseif mod.db.durationPosition == "BOTTOMLEFT" then
-			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
-		elseif mod.db.durationPosition == "TOPRIGHT" then
-			cd.timer.text:Point("TOPRIGHT", 1, 1)
-		else
-			cd.timer.text:Point("CENTER", 0, 0)
-		end
-	end
-end
-
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura)
@@ -230,7 +213,6 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
-	aura.cooldown.FontOverride = cooldownFontOverride
 	aura.cooldown.ColorOverride = 'nameplates'
 	E:RegisterCooldown(aura.cooldown)
 
@@ -276,7 +258,21 @@ function mod:UpdateAuraIcons(auras)
 		if auras.icons[i].count then
 			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 		end
-		cooldownFontOverride(auras.icons[i].cooldown)
+
+		if auras.icons[i].cooldown.timer and auras.icons[i].cooldown.timer.text then
+			auras.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+
+			auras.icons[i].cooldown.timer.text:ClearAllPoints()
+			if self.db.durationPosition == "TOPLEFT" then
+				auras.icons[i].cooldown.timer.text:Point("TOPLEFT", 1, 1)
+			elseif self.db.durationPosition == "BOTTOMLEFT" then
+				auras.icons[i].cooldown.timer.text:Point("BOTTOMLEFT", 1, 1)
+			elseif self.db.durationPosition == "TOPRIGHT" then
+				auras.icons[i].cooldown.timer.text:Point("TOPRIGHT", 1, 1)
+			else
+				auras.icons[i].cooldown.timer.text:Point("CENTER", 0, 0)
+			end
+		end
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then

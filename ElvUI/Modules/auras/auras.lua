@@ -6,7 +6,9 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local GetTime = GetTime
 local select, unpack = select, unpack
+local tinsert = table.insert
 local floor = math.floor
+local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
@@ -66,9 +68,9 @@ local IS_HORIZONTAL_GROWTH = {
 }
 
 function A:UpdateTime(elapsed)
-	if(self.offset) then
+	if self.offset then
 		local expiration = select(self.offset, GetWeaponEnchantInfo())
-		if(expiration) then
+		if expiration then
 			self.timeLeft = expiration / 1e3
 		else
 			self.timeLeft = 0
@@ -77,27 +79,35 @@ function A:UpdateTime(elapsed)
 		self.timeLeft = self.timeLeft - elapsed
 	end
 
-	if(self.nextUpdate > 0) then
+	if self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
 		return
 	end
 
-	local timeColors, timeThreshold = E.TimeColors, E.db.cooldown.threshold
-	if E.db.auras.cooldown.override and E.TimeColors['auras'] then
-		timeColors, timeThreshold = E.TimeColors['auras'], E.db.auras.cooldown.threshold
-	end
-	if not timeThreshold then
-		timeThreshold = E.TimeThreshold
-	end
+	if not E:Cooldown_IsEnabled(self) then
+		if self.offset then
+			self.offset = nil
+		end
 
-	local timerValue, formatID
-	timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, timeThreshold)
-	self.time:SetFormattedText(("%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1]), timerValue)
-
-	if self.timeLeft > E.db.auras.fadeThreshold then
-		E:StopFlash(self)
+		self.timeLeft = nil
+		self.time:SetText("")
+		self:SetScript("OnUpdate", nil)
 	else
-		E:Flash(self, 1)
+		local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
+		if not timeThreshold then timeThreshold = E.TimeThreshold end
+
+		local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+		local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+
+		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
+		self.nextUpdate = nextUpdate
+		self.time:SetFormattedText(format("%s%s|r", timeColors[formatID], E.TimeFormats[formatID][1]), value1, value2)
+
+		if self.timeLeft > E.db.auras.fadeThreshold then
+			E:StopFlash(self)
+		else
+			E:Flash(self, 1)
+		end
 	end
 end
 
@@ -130,6 +140,15 @@ function A:CreateIcon(button)
 	E:SetUpAnimGroup(button)
 
 	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
+
+	-- support cooldown override
+	if not button.isRegisteredCooldown then
+		button.ColorOverride = 'auras'
+		button.isRegisteredCooldown = true
+
+		if not E.RegisteredCooldowns['auras'] then E.RegisteredCooldowns['auras'] = {} end
+		tinsert(E.RegisteredCooldowns['auras'], button)
+	end
 
 	local ButtonData = {
 		FloatingBG = nil,
@@ -175,13 +194,13 @@ end
 
 function A:UpdateAura(button, index)
 	local filter = button:GetParent():GetAttribute('filter')
-	local unit = button:GetParent():GetAttribute("unit")
+	local unit = button:GetParent():GetAttribute('unit')
 	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, filter)
 
-	if(name) then
-		if(duration > 0 and expirationTime) then
+	if name then
+		if (duration > 0) and expirationTime then
 			local timeLeft = expirationTime - GetTime()
-			if(not button.timeLeft) then
+			if not button.timeLeft then
 				button.timeLeft = timeLeft
 				button:SetScript("OnUpdate", A.UpdateTime)
 			else
@@ -225,36 +244,74 @@ function A:UpdateTempEnchant(button, index)
 		offset = 6
 	end
 
-	if(quality) then
+	if quality then
 		button:SetBackdropBorderColor(GetItemQualityColor(quality))
 	end
 
 	local expirationTime = select(offset, GetWeaponEnchantInfo())
-	if(expirationTime) then
+	if expirationTime then
 		button.offset = offset
 		button:SetScript("OnUpdate", A.UpdateTime)
 		button.nextUpdate = -1
 		A.UpdateTime(button, 0)
 	else
-		button.timeLeft = nil
 		button.offset = nil
+		button.timeLeft = nil
 		button:SetScript("OnUpdate", nil)
 		button.time:SetText("")
 	end
 end
 
-function A:OnAttributeChanged(attribute, value)
-	if(attribute == "index") then
-		A:UpdateAura(self, value)
-	elseif(attribute == "target-slot") then
-		A:UpdateTempEnchant(self, value)
+function A:CooldownText_Update(button)
+	if not button then return end
+
+	-- cooldown override settings
+	button.alwaysEnabled = true
+
+	if not button.cdOptions then
+		button.cdOptions = {}
+	end
+
+	button.cdOptions.reverseToggle = self.db.cooldown.reverse
+
+	if self.db.cooldown.override and E.TimeColors['auras'] then
+		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
+	else
+		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+	end
+
+	if self.db.cooldown.checkSeconds then
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = self.db.cooldown.hhmmThreshold, self.db.cooldown.mmssThreshold
+	else
+		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
+	end
+
+	if self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+		button.cdOptions.fontOptions = self.db.cooldown.fonts
+	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+		button.cdOptions.fontOptions = E.db.cooldown.fonts
+	else
+		button.cdOptions.fontOptions = nil
 	end
 end
 
+function A:OnAttributeChanged(attribute, value)
+	if attribute == "index" then
+		A:UpdateAura(self, value)
+	elseif attribute == "target-slot" then
+		A:UpdateTempEnchant(self, value)
+	end
+
+	A:CooldownText_Update(self)
+end
+
 function A:UpdateHeader(header)
-	if(not E.private.auras.enable) then return end
+	if not E.private.auras.enable then return end
+
+	local auraType = 'debuffs'
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
+		auraType = 'buffs'
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", 0)
 		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
@@ -268,7 +325,7 @@ function A:UpdateHeader(header)
 
 	header:SetAttribute("point", DIRECTION_TO_POINT[db.growthDirection])
 
-	if(IS_HORIZONTAL_GROWTH[db.growthDirection]) then
+	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
 		header:SetAttribute("minWidth", ((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + db.size) * db.wrapAfter)
 		header:SetAttribute("minHeight", (db.verticalSpacing + db.size) * db.maxWraps)
 		header:SetAttribute("xOffset", DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + db.size))
@@ -285,14 +342,17 @@ function A:UpdateHeader(header)
 	end
 
 	header:SetAttribute("template", ("ElvUIAuraTemplate%d"):format(db.size))
+
 	local index = 1
 	local child = select(index, header:GetChildren())
-	while(child) do
-		if((floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size) then
+	while child do
+		if (floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size then
 			child:SetSize(db.size, db.size)
 		end
 
-		if(child.time) then
+		child.auraType = auraType -- used to update cooldown text
+
+		if child.time then
 			local font = LSM:Fetch("font", self.db.font)
 			child.time:ClearAllPoints()
 			child.time:Point("TOP", child, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
@@ -304,7 +364,7 @@ function A:UpdateHeader(header)
 		end
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
-		if(index > (db.maxWraps * db.wrapAfter) and child:IsShown()) then
+		if (index > (db.maxWraps * db.wrapAfter)) and child:IsShown() then
 			child:Hide()
 		end
 
@@ -341,12 +401,12 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	if(E.private.auras.disableBlizzard) then
+	if E.private.auras.disableBlizzard then
 		BuffFrame:Kill()
-		TemporaryEnchantFrame:Kill();
+		TemporaryEnchantFrame:Kill()
 	end
 
-	if(not E.private.auras.enable) then return end
+	if not E.private.auras.enable then return end
 
 	self.db = E.db.auras
 

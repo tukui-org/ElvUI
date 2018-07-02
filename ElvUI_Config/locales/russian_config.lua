@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Modify the unitframe settings."
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."
 L["PANEL_DESC"] = "Регулирование размеров левой и правой панелей. Это окажет эффект на чат и сумки."
 L["SKINS_DESC"] = "Установки скинов"
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "Включить/выключить этот скин."
 L["TOOLTIP_DESC"] = "Опций подсказки"
 L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibItemSearch, у вас появился доступ к большему количеству поисковых запросов. Здесь представлена документация по синтаксису поисковых запросов. Полная инструкция доступна по адресу: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -243,6 +244,15 @@ L["Time yOffset"] = "Отступ времени по Y"
 L["Time"] = "Время"
 L["Wrap After"] = "Размер ряда"
 L["Your Auras First"] = "Сначала свои"
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "Над чатом"

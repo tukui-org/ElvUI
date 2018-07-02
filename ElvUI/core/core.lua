@@ -1452,6 +1452,24 @@ function E:DBConversions()
 		E.db.auras.debuffs.durationFontSize = fontSize
 		E.db.auras.fontSize = nil
 	end
+
+	--Convert old private cooldown setting to profile setting
+	if E.private.cooldown and (E.private.cooldown.enable ~= nil) then
+		E.db.cooldown.enable = E.private.cooldown.enable
+		E.private.cooldown.enable = nil
+		E.private.cooldown = nil
+	end
+
+	--Convert Nameplate Aura Duration to new Cooldown system
+	if E.db.nameplates.durationFont then
+		E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
+		E.db.nameplates.cooldown.fonts.fontSize = E.db.nameplates.durationFontSize
+		E.db.nameplates.cooldown.fonts.fontOutline = E.db.nameplates.durationFontOutline
+
+		E.db.nameplates.durationFont = nil
+		E.db.nameplates.durationFontSize = nil
+		E.db.nameplates.durationFontOutline = nil
+	end
 end
 
 local CPU_USAGE = {}

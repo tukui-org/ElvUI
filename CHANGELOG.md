@@ -1,6 +1,7 @@
 **Version 10.75 [ ]**
 
 **New Additions:**  
+New Cooldown settings, they can be found in the Cooldowns category or by typing `/ec cooldown`.  
 
 
 **Bug Fixes:**  

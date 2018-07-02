@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Modify the unitframe settings."
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."
 L["PANEL_DESC"] = "Adjust the size of your left and right panels, this will effect your chat and bags."
 L["SKINS_DESC"] = "Adjust Skin settings."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -242,6 +243,15 @@ L["Time yOffset"] = true
 L["Time"] = true
 L["Wrap After"] = true
 L["Your Auras First"] = true
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = true

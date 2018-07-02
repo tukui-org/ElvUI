@@ -699,6 +699,8 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if(not self.handledbuttons[button]) then
+		button.cooldown.ColorOverride = 'actionbar'
+
 		E:RegisterCooldown(button.cooldown)
 
 		self.handledbuttons[button] = true;
@@ -915,11 +917,11 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
 	bar.buttonConfig.colors.usable = E:GetColorTable(self.db.usableColor)
 	bar.buttonConfig.colors.notUsable = E:GetColorTable(self.db.notUsableColor)
-	bar.buttonConfig.disableCountDownNumbers = E.private.cooldown.enable
 	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
 	for i, button in pairs(bar.buttons) do
+		bar.buttonConfig.disableCountDownNumbers = not E:Cooldown_IsEnabled(button.cooldown)
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
