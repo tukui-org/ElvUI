@@ -41,6 +41,7 @@ local function LoadSkin()
 		bu.Icon:SetParent(bu.border)
 	end
 
+	local PVPQueueFrame = _G["PVPQueueFrame"]
 	PVPQueueFrameBg:Hide()
 	PVPQueueFrameInsetRightBorder:Hide()
 	PVPQueueFrameInsetLeftBorder:Hide()
@@ -50,6 +51,8 @@ local function LoadSkin()
 	PVPQueueFrameInsetBotRightCorner:Hide()
 	PVPQueueFrameInsetTopRightCorner:Hide()
 	PVPQueueFrameInsetTopLeftCorner:Hide()
+
+	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
 
 	-- Honor Frame
 	local HonorFrame = _G["HonorFrame"]
