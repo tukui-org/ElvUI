@@ -260,12 +260,14 @@ function mod:UpdateAuraIcons(auras)
 		end
 
 		if auras.icons[i].cooldown.timer and auras.icons[i].cooldown.timer.text then
+			auras.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+
 			auras.icons[i].cooldown.timer.text:ClearAllPoints()
-			if mod.db.durationPosition == "TOPLEFT" then
+			if self.db.durationPosition == "TOPLEFT" then
 				auras.icons[i].cooldown.timer.text:Point("TOPLEFT", 1, 1)
-			elseif mod.db.durationPosition == "BOTTOMLEFT" then
+			elseif self.db.durationPosition == "BOTTOMLEFT" then
 				auras.icons[i].cooldown.timer.text:Point("BOTTOMLEFT", 1, 1)
-			elseif mod.db.durationPosition == "TOPRIGHT" then
+			elseif self.db.durationPosition == "TOPRIGHT" then
 				auras.icons[i].cooldown.timer.text:Point("TOPRIGHT", 1, 1)
 			else
 				auras.icons[i].cooldown.timer.text:Point("CENTER", 0, 0)
