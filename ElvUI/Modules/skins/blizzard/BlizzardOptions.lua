@@ -853,6 +853,11 @@ local function LoadSkin()
 	SplashFrame.RightTitle:FontTemplate(nil, 30)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
+
+	-- New Voice Sliders
+	S:HandleSliderFrame(UnitPopupVoiceSpeakerVolume.Slider)
+	S:HandleSliderFrame(UnitPopupVoiceMicrophoneVolume.Slider)
+	S:HandleSliderFrame(UnitPopupVoiceUserVolume.Slider)
 end
 
 S:AddCallback("SkinBlizzard", LoadSkin)
