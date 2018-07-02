@@ -59,14 +59,14 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
-		if fontScale and text then
+		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
 				text:FontTemplate(useCustomFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
-			elseif cd.CooldownSettings and cd.CooldownSettings.font and cd.CooldownSettings.fontOutline then
+			elseif fontScale and cd.CooldownSettings and cd.CooldownSettings.font and cd.CooldownSettings.fontOutline then
 				text:FontTemplate(cd.CooldownSettings.font, (fontScale * FONT_SIZE), cd.CooldownSettings.fontOutline)
-			else
-				text:FontTemplate(nil, fontScale * FONT_SIZE, 'OUTLINE')
+			elseif fontScale then
+				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
 		end
 
