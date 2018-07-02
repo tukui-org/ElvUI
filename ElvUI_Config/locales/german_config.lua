@@ -14,7 +14,7 @@ L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster.
 L["ACTIONBARS_DESC"] = "Konfiguriere die Einstellungen für die Aktionsleisten."
 L["PANEL_DESC"] = "Stellt die Größe der linken und rechten Leisten ein, dies hat auch Einfluss auf den Chat und die Taschen."
 L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an."
-L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
+L["COOLDOWN_DESC"] = "Passe Cooldown Einstellungen an."
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -248,13 +248,13 @@ L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["Your Auras First"] = "Deine Auren zuerst"
 
 --Cooldown
-L["MM:SS Threshold"] = true
-L["HH:MM Threshold"] = true
-L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
-L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
-L["Color Override"] = true
-L["Reverse Toggle"] = true
-L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
+L["MM:SS Threshold"] = "MM:SS Schwellenwert"
+L["HH:MM Threshold"] = "HH:MM Schwellenwert"
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Schwellenwert (in Sekunden) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Schwellenwert (in Minuten) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
+L["Color Override"] = "Farbüberschreibung"
+L["Reverse Toggle"] = "Umgekehrte Anzeige"
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = "Umgekehrte Anzeige aktiviert den Cooldown Text auf diesem Modul wenn die globale Einstellung deaktiviert ist und deaktiviert es wenn die globale Einstellung aktiviert ist."
 
 --Chat
 L["Above Chat"] = "Über dem Chat"
