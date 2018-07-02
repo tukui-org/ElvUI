@@ -368,7 +368,7 @@ function CH:GetSmileyReplacementText(msg)
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			endpos = find(msg,"|h]|r",startpos,-1) or find(msg,"|h",startpos,-1);
+			endpos = find(msg,"]|h|r",startpos,-1) or find(msg,"|h]|r",startpos,-1) or find(msg,"|h",startpos,-1);
 			endpos = endpos or origlen;
 			if(startpos < endpos) then
 				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
