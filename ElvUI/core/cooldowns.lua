@@ -50,12 +50,9 @@ function E:Cooldown_OnUpdate(elapsed)
 end
 
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
-	local fontScale = floor(width + .5) / ICON_SIZE
-	if parent and parent.SizeOverride then
-		fontScale = parent.SizeOverride / FONT_SIZE
-	end
-
-	if (fontScale == cd.fontScale) and (force ~= 'override') then return end
+	local fontScale = width and (floor(width + .5) / ICON_SIZE)
+	if parent and parent.SizeOverride then fontScale = parent.SizeOverride / FONT_SIZE end
+	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
 	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.SizeOverride) then
