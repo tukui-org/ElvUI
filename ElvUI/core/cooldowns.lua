@@ -108,8 +108,9 @@ function E:CreateCooldownTimer(parent)
 	text:SetJustifyH("CENTER")
 	timer.text = text
 
-	if parent.FontOverride then
-		parent.FontOverride(parent)
+	-- can be used to modify elements created from this function
+	if parent.CooldownPreHook then
+		parent.CooldownPreHook(parent)
 	end
 
 	-- cooldown override settings

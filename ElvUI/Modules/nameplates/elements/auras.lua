@@ -201,7 +201,7 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
-function mod:cooldownFontOverride()
+function mod:UpdateCooldownText()
 	if self.timer and self.timer.text then
 		self.timer.text:SetFont(LSM:Fetch("font", mod.db.font), mod.db.fontSize, mod.db.fontOutline)
 
@@ -230,7 +230,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
-	aura.cooldown.FontOverride = self.cooldownFontOverride
+	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
 	aura.cooldown.ColorOverride = 'nameplates'
 	E:RegisterCooldown(aura.cooldown)
 
@@ -277,7 +277,7 @@ function mod:UpdateAuraIcons(auras)
 			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 		end
 
-		self.cooldownFontOverride(auras.icons[i].cooldown)
+		self.UpdateCooldownText(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
