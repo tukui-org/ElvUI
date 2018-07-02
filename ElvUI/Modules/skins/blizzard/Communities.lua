@@ -121,7 +121,16 @@ local function LoadSkin()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:SetSize(120, 20)
 
-	-- ROSTER TAB
+	-- Member Details
+	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
+	CommunitiesFrame.GuildMemberDetailFrame:CreateBackdrop("Transparent")
+
+	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
+	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
+	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
+	--S:HandleEditBox(CommunitiesFrame.GuildMemberDetailFrame.Note)
+
+	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
 	local ColumnDisplay = MemberList.ColumnDisplay
 	ColumnDisplay:StripTextures()

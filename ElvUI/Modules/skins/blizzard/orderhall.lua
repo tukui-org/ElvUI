@@ -82,11 +82,17 @@ local function LoadSkin()
 	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
 	S:HandleButton(MissionComplete.NextMissionButton)
 
+	--[[FJX ME
 	-- TalentFrame
 	local TalentFrame = _G["OrderHallTalentFrame"]
 	if TalentFrame then
 		TalentFrame:StripTextures()
 		TalentFrame.LeftInset:StripTextures()
+		if TalentFrame.CornerLogo then TalentFrame.CornerLogo:Hide()
+		end
+		if TalentFrame.StyleFrame then
+			TalentFrame.StyleFrame:Hide()
+		end
 		TalentFrame:SetTemplate("Transparent")
 		TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 		S:HandleCloseButton(TalentFrame.CloseButton)
@@ -96,6 +102,7 @@ local function LoadSkin()
 		_G["OrderHallTalentFramePortrait"]:Hide()
 		S:HandleButton(_G["OrderHallTalentFrame"].BackButton)
 	end
+	]]
 end
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', "OrderHall", LoadSkin)

@@ -13,12 +13,17 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BFAMissions ~= true then return end
 
 	local MissionFrame = _G["BFAMissionFrame"]
-	MissionFrame:StripTextures()
-	MissionFrame:CreateBackdrop("Transparent")
-
+	--MissionFrame:StripTextures()
 	MissionFrame.GarrCorners:Hide()
 	MissionFrame.CloseButtonBorder:Hide()
 	MissionFrame.TitleScroll:Hide()
+	MissionFrame.BackgroundTile:Kill()
+	MissionFrame.Left:Hide()
+	MissionFrame.Bottom:Hide()
+	MissionFrame.Top:Hide()
+	MissionFrame.Right:Hide()
+
+	MissionFrame:CreateBackdrop("Transparent")
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
 

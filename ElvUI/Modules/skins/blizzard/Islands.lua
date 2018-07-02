@@ -15,6 +15,9 @@ local function LoadSkin()
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
 	-- The Frame have some nice textures, so don't use :StripTextures()
+	IslandsFrame.HelpButton:Hide()
+	IslandsFrame.ArtOverlayFrame.portrait:Hide()
+	IslandsFrame.ArtOverlayFrame.PortraitFrame:Hide()
 	IslandsFrame.TopWoodBorder:Hide()
 	IslandsFrame.LeftWoodBorder:Hide()
 	IslandsFrame.RightWoodBorder:Hide()
@@ -48,6 +51,11 @@ local function LoadSkin()
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 
 	-- TO DO: Handle the Reward-Tooltip
+
+	-- Maybe Adjust me
+	local TutorialFrame = IslandsFrame.TutorialFrame
+	S:HandleButton(TutorialFrame.Leave)
+	S:HandleCloseButton(TutorialFrame.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_IslandsQueueUI", "Islands", LoadSkin)

@@ -227,17 +227,6 @@ local function LoadSkin()
 		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
 		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
 		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-
-		button.Reward.WeeklyBonus:StripTextures()
-		button.Reward.WeeklyBonus:SetTemplate("Default")
-		button.Reward.WeeklyBonus:SetSize(20, 20)
-		button.Reward.WeeklyBonus:SetPoint("TOPRIGHT", 2, 2)
-
-		local WeeklyBonusIcon = button.Reward.WeeklyBonus:CreateTexture(nil, nil, self)
-		WeeklyBonusIcon:SetPoint("TOPLEFT", button.Reward.WeeklyBonus, "TOPLEFT", 2, -2)
-		WeeklyBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.WeeklyBonus, "BOTTOMRIGHT", -2, 2)
-		WeeklyBonusIcon:SetTexture("Interface\\Icons\\ability_skyreach_flash_bang")
-		WeeklyBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
 	handleButton(ConquestFrame.RatedBG)
@@ -248,7 +237,6 @@ local function LoadSkin()
 
 	if E.private.skins.blizzard.tooltip then
 		ConquestTooltip:SetTemplate("Transparent")
-		PVPRewardTooltip:SetTemplate("Transparent")
 	end
 
 	-- Honor Frame StatusBar
