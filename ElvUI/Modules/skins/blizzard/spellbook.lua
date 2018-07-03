@@ -79,6 +79,15 @@ local function LoadSkin()
 				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
 			end
 
+			--Button texture for bars not on AB
+			if button.SpellHighlightTexture then
+				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.4)
+				if icon then
+					button.SpellHighlightTexture:SetAllPoints(icon)
+				end
+				E:Flash(button.SpellHighlightTexture, 1, true)
+			end
+
 			if button.shine then
 				button.shine:ClearAllPoints()
 				button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
@@ -91,6 +100,7 @@ local function LoadSkin()
 				icon:SetAllPoints()
 
 				if not button.backdrop then
+					E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 					button:CreateBackdrop("Default", true)
 				end
 			end
