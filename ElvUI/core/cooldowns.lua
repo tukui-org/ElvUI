@@ -86,21 +86,13 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 end
 
 function E:Cooldown_IsEnabled(cd)
-	local enabled
-
 	if cd.alwaysEnabled then
-		enabled = true
+		return true
 	elseif cd.timerOptions and (cd.timerOptions.reverseToggle ~= nil) then
-		enabled = (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
+		return (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
 	else
-		enabled = E.db.cooldown.enable
+		return E.db.cooldown.enable
 	end
-
-	if cd.SetHideCountdownNumbers then
-		cd:SetHideCountdownNumbers(enabled)
-	end
-
-	return enabled
 end
 
 function E:Cooldown_ForceUpdate(cd)
@@ -166,6 +158,12 @@ function E:CreateCooldownTimer(parent)
 	end
 	----------
 
+	-- we should hide the blizzard cooldown text when ours are enabled
+	if parent.SetHideCountdownNumbers then
+		parent:SetHideCountdownNumbers(E:Cooldown_IsEnabled(timer))
+	end
+
+	-- keep an eye on the size so we can rescale the font if needed
 	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
 	parent:SetScript('OnSizeChanged', function(_, ...)
 		self:Cooldown_OnSizeChanged(timer, parent, ...)
@@ -297,6 +295,11 @@ function E:UpdateCooldownOverride(module)
 
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
+
+				-- we should hide the blizzard cooldown text when ours are enabled
+				if cd.SetHideCountdownNumbers then
+					cd:SetHideCountdownNumbers(E:Cooldown_IsEnabled(CD))
+				end
 			elseif cd.CooldownOverride and not (timer and CD) then
 				if cd.CooldownOverride == 'auras' then
 					cd.nextUpdate = -1
