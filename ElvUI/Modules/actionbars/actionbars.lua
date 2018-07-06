@@ -928,7 +928,6 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
 	for i, button in pairs(bar.buttons) do
-		bar.buttonConfig.disableCountDownNumbers = not E:Cooldown_IsEnabled(button.cooldown)
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
