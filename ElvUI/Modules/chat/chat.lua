@@ -243,15 +243,16 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
-	local IconPath  = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
-	local ElvBlue   = IconPath.."elvui_blue.tga:13:25|t"
-	local ElvPink   = IconPath.."elvui_pink.tga:13:25|t"
-	local ElvGreen  = IconPath.."elvui_green.tga:13:25|t"
-	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
-	local ElvRed    = IconPath.."elvui_red.tga:13:25|t"
-	local Bathrobe  = IconPath.."bathrobe.blp:15:15|t"
-	local MrHankey  = IconPath.."mr_hankey.tga:16:18|t"
+	local IconPath   = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	--local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
+	--local ElvPink    = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvBlue    = IconPath.."elvui_blue.tga:13:25|t"
+	local ElvGreen   = IconPath.."elvui_green.tga:13:25|t"
+	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
+	local ElvRed     = IconPath.."elvui_red.tga:13:25|t"
+	local ElvRainbow = IconPath.."elvui_rainbow.tga:13:25|t"
+	local Bathrobe   = IconPath.."bathrobe.blp:15:15|t"
+	local MrHankey   = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
 		-- Elv --
 		["Illidelv-Area52"] = ElvBlue,
@@ -276,24 +277,24 @@ do --this can save some main file locals
 		["Blazii-Silvermoon"] = ElvBlue, -- Priest
 		["Chazii-Silvermoon"] = ElvBlue, -- Shaman
 		-- Simpy's Toons --
-		["Arieva-Cenarius"]       = ElvGreen, -- Hunter
-		["Buddercup-Cenarius"]    = ElvGreen, -- Rogue
-		["Cutepally-Cenarius"]    = ElvGreen, -- Paladin
-		["Ezek-Cenarius"]         = ElvGreen, -- DK
-		["Glice-Cenarius"]        = ElvGreen, -- Warrior
-		["Kalline-Cenarius"]      = ElvGreen, -- Shaman
-		["Puttietat-Cenarius"]    = ElvGreen, -- Druid
-		["Simpy-Cenarius"]        = ElvGreen, -- Warlock
-		["Twigly-Cenarius"]       = ElvGreen, -- Monk
-		["Imsojelly-Cenarius"]    = ElvGreen, -- [horde] DK
-		["Imsojuicy-Cenarius"]    = ElvGreen, -- [horde] Druid
-		["Imsopeachy-Cenarius"]   = ElvGreen, -- [horde] DH
-		["Imsosalty-Cenarius"]    = ElvGreen, -- [horde] Paladin
-		["Imsospicy-Cenarius"]    = ElvGreen, -- [horde] Mage
-		["Bunne-CenarionCircle"]      = ElvPink, -- Warrior
-		["Loppybunny-CenarionCircle"] = ElvPink, -- Mage
-		["Rubee-CenarionCircle"]      = ElvPink, -- DH
-		["Wennie-CenarionCircle"]     = ElvPink, -- Priest
+		["Arieva-Cenarius"]       = ElvRainbow, -- Hunter
+		["Buddercup-Cenarius"]    = ElvRainbow, -- Rogue
+		["Cutepally-Cenarius"]    = ElvRainbow, -- Paladin
+		["Ezek-Cenarius"]         = ElvRainbow, -- DK
+		["Glice-Cenarius"]        = ElvRainbow, -- Warrior
+		["Kalline-Cenarius"]      = ElvRainbow, -- Shaman
+		["Puttietat-Cenarius"]    = ElvRainbow, -- Druid
+		["Simpy-Cenarius"]        = ElvRainbow, -- Warlock
+		["Twigly-Cenarius"]       = ElvRainbow, -- Monk
+		["Imsojelly-Cenarius"]    = ElvRainbow, -- [horde] DK
+		["Imsojuicy-Cenarius"]    = ElvRainbow, -- [horde] Druid
+		["Imsopeachy-Cenarius"]   = ElvRainbow, -- [horde] DH
+		["Imsosalty-Cenarius"]    = ElvRainbow, -- [horde] Paladin
+		["Imsospicy-Cenarius"]    = ElvRainbow, -- [horde] Mage
+		["Bunne-CenarionCircle"]      = ElvRainbow, -- Warrior
+		["Loppybunny-CenarionCircle"] = ElvRainbow, -- Mage
+		["Rubee-CenarionCircle"]      = ElvRainbow, -- DH
+		["Wennie-CenarionCircle"]     = ElvRainbow, -- Priest
 	}
 end
 
