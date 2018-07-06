@@ -33,11 +33,11 @@ function E:Cooldown_OnUpdate(elapsed)
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
-				local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
+				local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 				if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-				local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-				local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+				local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+				local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 				local value1, formatid, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold)
 				self.nextUpdate = nextUpdate
@@ -65,10 +65,10 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	else
 		local text = cd.text or cd.time
 		if text then
-			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
+			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
 			if useCustomFont then
-				local customSize = (parent and parent.CooldownFontSize and cd.cdOptions.fontOptions.fontSize) or (fontScale * cd.cdOptions.fontOptions.fontSize)
-				text:FontTemplate(useCustomFont, customSize, cd.cdOptions.fontOptions.fontOutline)
+				local customSize = (parent and parent.CooldownFontSize and cd.timerOptions.fontOptions.fontSize) or (fontScale * cd.timerOptions.fontOptions.fontSize)
+				text:FontTemplate(useCustomFont, customSize, cd.timerOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
 				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
@@ -90,8 +90,8 @@ function E:Cooldown_IsEnabled(cd)
 
 	if cd.alwaysEnabled then
 		enabled = true
-	elseif cd.cdOptions and (cd.cdOptions.reverseToggle ~= nil) then
-		enabled = (E.db.cooldown.enable and not cd.cdOptions.reverseToggle) or (not E.db.cooldown.enable and cd.cdOptions.reverseToggle)
+	elseif cd.timerOptions and (cd.timerOptions.reverseToggle ~= nil) then
+		enabled = (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
 	else
 		enabled = E.db.cooldown.enable
 	end
@@ -137,30 +137,30 @@ function E:CreateCooldownTimer(parent)
 	if parent.CooldownOverride then
 		local db = E.db[parent.CooldownOverride]
 		if db and db.cooldown then
-			if not timer.cdOptions then
-				timer.cdOptions = {}
+			if not timer.timerOptions then
+				timer.timerOptions = {}
 			end
 
-			timer.cdOptions.reverseToggle = db.cooldown.reverse
+			timer.timerOptions.reverseToggle = db.cooldown.reverse
 
 			if db.cooldown.override and E.TimeColors[parent.CooldownOverride] then
-				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], db.cooldown.threshold
+				timer.timerOptions.timeColors, timer.timerOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], db.cooldown.threshold
 			else
-				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = nil, nil
+				timer.timerOptions.timeColors, timer.timerOptions.timeThreshold = nil, nil
 			end
 
 			if db.cooldown.checkSeconds then
-				timer.cdOptions.hhmmThreshold, timer.cdOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+				timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
 			else
-				timer.cdOptions.hhmmThreshold, timer.cdOptions.mmssThreshold = nil, nil
+				timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = nil, nil
 			end
 
 			if (db.cooldown ~= self.db.cooldown) and db.cooldown.fonts and db.cooldown.fonts.enable then
-				timer.cdOptions.fontOptions = db.cooldown.fonts
+				timer.timerOptions.fontOptions = db.cooldown.fonts
 			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-				timer.cdOptions.fontOptions = self.db.cooldown.fonts
+				timer.timerOptions.fontOptions = self.db.cooldown.fonts
 			else
-				timer.cdOptions.fontOptions = nil
+				timer.timerOptions.fontOptions = nil
 			end
 		end
 	end
@@ -237,30 +237,30 @@ function E:UpdateCooldownOverride(module)
 			CD = timer or cd
 
 			-- cooldown override settings
-			if not CD.cdOptions then
-				CD.cdOptions = {}
+			if not CD.timerOptions then
+				CD.timerOptions = {}
 			end
 
-			CD.cdOptions.reverseToggle = db.reverse
+			CD.timerOptions.reverseToggle = db.reverse
 
 			if cd.CooldownOverride and db.override and E.TimeColors[cd.CooldownOverride] then
-				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.CooldownOverride], db.threshold
+				CD.timerOptions.timeColors, CD.timerOptions.timeThreshold = E.TimeColors[cd.CooldownOverride], db.threshold
 			else
-				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
+				CD.timerOptions.timeColors, CD.timerOptions.timeThreshold = nil, nil
 			end
 
 			if db.checkSeconds then
-				CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
+				CD.timerOptions.hhmmThreshold, CD.timerOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
 			else
-				CD.cdOptions.hhmmThreshold, CD.cdOptions.mmssThreshold = nil, nil
+				CD.timerOptions.hhmmThreshold, CD.timerOptions.mmssThreshold = nil, nil
 			end
 
 			if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
-				CD.cdOptions.fontOptions = db.fonts
+				CD.timerOptions.fontOptions = db.fonts
 			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-				CD.cdOptions.fontOptions = self.db.cooldown.fonts
+				CD.timerOptions.fontOptions = self.db.cooldown.fonts
 			else
-				CD.cdOptions.fontOptions = nil
+				CD.timerOptions.fontOptions = nil
 			end
 			----------
 
@@ -269,12 +269,12 @@ function E:UpdateCooldownOverride(module)
 			else
 				text = CD.text or CD.time
 				if text then
-					if CD.cdOptions.fontOptions and CD.cdOptions.fontOptions.enable then
+					if CD.timerOptions.fontOptions and CD.timerOptions.fontOptions.enable then
 						if not customFont then
-							customFont = E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
+							customFont = E.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
 						end
 						if customFont then
-							text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+							text:FontTemplate(customFont, cd.timerOptions.fontOptions.fontSize, cd.timerOptions.fontOptions.fontOutline)
 						end
 					elseif cd.CooldownOverride then
 						if not customFont then

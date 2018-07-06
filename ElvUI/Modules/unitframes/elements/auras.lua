@@ -64,30 +64,30 @@ function UF:Construct_AuraIcon(button)
 	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
 
 	-- cooldown override settings
-	if not button.cdOptions then
-		button.cdOptions = {}
+	if not button.timerOptions then
+		button.timerOptions = {}
 	end
 
-	button.cdOptions.reverseToggle = UF.db.cooldown.reverse
+	button.timerOptions.reverseToggle = UF.db.cooldown.reverse
 
 	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
 	else
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end
 
 	if UF.db.cooldown.checkSeconds then
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
 	else
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = nil, nil
 	end
 
 	if UF.db.cooldown.fonts and UF.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = UF.db.cooldown.fonts
+		button.timerOptions.fontOptions = UF.db.cooldown.fonts
 	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = E.db.cooldown.fonts
+		button.timerOptions.fontOptions = E.db.cooldown.fonts
 	else
-		button.cdOptions.fontOptions = nil
+		button.timerOptions.fontOptions = nil
 	end
 	----------
 
@@ -384,12 +384,12 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 			while auras[index] do
 				button = auras[index]
 
-				if button.cdOptions and button.cdOptions.fontOptions and (not cooldownFont) then
-					cooldownFont = LSM:Fetch("font", button.cdOptions.fontOptions.font)
+				if button.timerOptions and button.timerOptions.fontOptions and (not cooldownFont) then
+					cooldownFont = LSM:Fetch("font", button.timerOptions.fontOptions.font)
 				end
 
-				if button.cdOptions and button.cdOptions.fontOptions and button.cdOptions.fontOptions.enable and cooldownFont then
-					button.text:FontTemplate(cooldownFont, button.cdOptions.fontOptions.fontSize, button.cdOptions.fontOptions.fontOutline)
+				if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable and cooldownFont then
+					button.text:FontTemplate(cooldownFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
 				else
 					button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
 				end
@@ -406,12 +406,12 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 				index = index + 1
 			end
 		else
-			if auras.cdOptions and auras.cdOptions.fontOptions then
-				cooldownFont = LSM:Fetch("font", auras.cdOptions.fontOptions.font)
+			if auras.timerOptions and auras.timerOptions.fontOptions then
+				cooldownFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
 			end
 
-			if auras.cdOptions and auras.cdOptions.fontOptions and auras.cdOptions.fontOptions.enable and cooldownFont then
-				auras.text:FontTemplate(cooldownFont, auras.cdOptions.fontOptions.fontSize, auras.cdOptions.fontOptions.fontOutline)
+			if auras.timerOptions and auras.timerOptions.fontOptions and auras.timerOptions.fontOptions.enable and cooldownFont then
+				auras.text:FontTemplate(cooldownFont, auras.timerOptions.fontOptions.fontSize, auras.timerOptions.fontOptions.fontOutline)
 			else
 				auras.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
 			end
@@ -511,11 +511,11 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
-	local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
+	local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 	if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-	local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-	local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+	local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+	local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 	local value1, formatid, nextupdate, value2 = E:GetTimeInfo(self.expirationSaved, timeThreshold, hhmmThreshold, mmssThreshold)
 	self.nextupdate = nextupdate
