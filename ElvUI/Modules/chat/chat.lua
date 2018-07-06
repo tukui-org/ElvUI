@@ -261,6 +261,7 @@ do --this can save some main file locals
 		["Tirain-Spirestone"] = MrHankey,
 		["Sinth-Spirestone"]  = MrHankey,
 		-- Merathilis Toons --
+		["Maithilis-Shattrath"]  = ElvGreen,
 		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
 		["Merathilis-Shattrath"] = ElvOrange, -- [alliance] Druid
 		["Merathilîs-Shattrath"] = ElvBlue,	  -- Shaman
