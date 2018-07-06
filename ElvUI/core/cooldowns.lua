@@ -268,7 +268,7 @@ function E:UpdateCooldownOverride(module)
 							customFont = E.LSM:Fetch("font", E.db[cd.ColorOverride].font)
 						end
 						if customFont then
-							-- cd.auraType defined in `A:UpdateHeader`
+							-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
 							if cd.auraType and (cd.ColorOverride == 'auras') then
 								customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
 								if customFontSize then
