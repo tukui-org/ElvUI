@@ -128,7 +128,7 @@ function UF:Construct_AuraIcon(button)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
-		button.ColorOverride = 'unitframe'
+		button.CooldownOverride = 'unitframe'
 		button.isRegisteredCooldown = true
 
 		if not E.RegisteredCooldowns['unitframe'] then E.RegisteredCooldowns['unitframe'] = {} end

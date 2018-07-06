@@ -51,18 +51,24 @@ end
 
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
-	if parent and parent.SizeOverride then fontScale = (parent.SizeOverride / FONT_SIZE) end
+
+	-- .CooldownFontSize is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason. IE: nameplates
+	if parent and parent.CooldownFontSize then
+		fontScale = (parent.CooldownFontSize / FONT_SIZE)
+	end
+
 	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
-	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.SizeOverride) then
+	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.CooldownFontSize) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
 		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
-				text:FontTemplate(useCustomFont, (fontScale * cd.cdOptions.fontOptions.fontSize), cd.cdOptions.fontOptions.fontOutline)
+				local customSize = (parent and parent.CooldownFontSize and cd.cdOptions.fontOptions.fontSize) or (fontScale * cd.cdOptions.fontOptions.fontSize)
+				text:FontTemplate(useCustomFont, customSize, cd.cdOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
 				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
@@ -120,8 +126,8 @@ function E:CreateCooldownTimer(parent)
 	end
 
 	-- cooldown override settings
-	if parent.ColorOverride then
-		local db = E.db[parent.ColorOverride]
+	if parent.CooldownOverride then
+		local db = E.db[parent.CooldownOverride]
 		if db and db.cooldown then
 			if not timer.cdOptions then
 				timer.cdOptions = {}
@@ -129,8 +135,8 @@ function E:CreateCooldownTimer(parent)
 
 			timer.cdOptions.reverseToggle = db.cooldown.reverse
 
-			if db.cooldown.override and E.TimeColors[parent.ColorOverride] then
-				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = E.TimeColors[parent.ColorOverride], db.cooldown.threshold
+			if db.cooldown.override and E.TimeColors[parent.CooldownOverride] then
+				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], db.cooldown.threshold
 			else
 				timer.cdOptions.timeColors, timer.cdOptions.timeThreshold = nil, nil
 			end
@@ -190,7 +196,7 @@ function E:RegisterCooldown(cooldown)
 	end
 
 	if not cooldown.isRegisteredCooldown then
-		local module = (cooldown.ColorOverride or 'global')
+		local module = (cooldown.CooldownOverride or 'global')
 		if not E.RegisteredCooldowns[module] then E.RegisteredCooldowns[module] = {} end
 
 		tinsert(E.RegisteredCooldowns[module], cooldown)
@@ -216,7 +222,7 @@ function E:UpdateCooldownOverride(module)
 
 	local CD, db, customFont, customFontSize, timer, text
 	for _, cd in ipairs(cooldowns) do
-		db = (cd.ColorOverride and E.db[cd.ColorOverride]) or self.db
+		db = (cd.CooldownOverride and E.db[cd.CooldownOverride]) or self.db
 		db = db and db.cooldown
 
 		if db then
@@ -230,8 +236,8 @@ function E:UpdateCooldownOverride(module)
 
 			CD.cdOptions.reverseToggle = db.reverse
 
-			if cd.ColorOverride and db.override and E.TimeColors[cd.ColorOverride] then
-				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.ColorOverride], db.threshold
+			if cd.CooldownOverride and db.override and E.TimeColors[cd.CooldownOverride] then
+				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = E.TimeColors[cd.CooldownOverride], db.threshold
 			else
 				CD.cdOptions.timeColors, CD.cdOptions.timeThreshold = nil, nil
 			end
@@ -263,19 +269,19 @@ function E:UpdateCooldownOverride(module)
 						if customFont then
 							text:FontTemplate(customFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
 						end
-					elseif cd.ColorOverride then
+					elseif cd.CooldownOverride then
 						if not customFont then
-							customFont = E.LSM:Fetch("font", E.db[cd.ColorOverride].font)
+							customFont = E.LSM:Fetch("font", E.db[cd.CooldownOverride].font)
 						end
 						if customFont then
 							-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-							if cd.auraType and (cd.ColorOverride == 'auras') then
-								customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
+							if cd.auraType and (cd.CooldownOverride == 'auras') then
+								customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
 								if customFontSize then
-									text:FontTemplate(customFont, customFontSize, E.db[cd.ColorOverride].fontOutline)
+									text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
 								end
-							elseif (cd.ColorOverride == 'unitframe') then
-								text:FontTemplate(customFont, E.db[cd.ColorOverride].fontSize, E.db[cd.ColorOverride].fontOutline)
+							elseif (cd.CooldownOverride == 'unitframe') then
+								text:FontTemplate(customFont, E.db[cd.CooldownOverride].fontSize, E.db[cd.CooldownOverride].fontOutline)
 							end
 						end
 					end
@@ -284,10 +290,10 @@ function E:UpdateCooldownOverride(module)
 
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
-			elseif cd.ColorOverride and not (timer and CD) then
-				if cd.ColorOverride == 'auras' then
+			elseif cd.CooldownOverride and not (timer and CD) then
+				if cd.CooldownOverride == 'auras' then
 					cd.nextUpdate = -1
-				elseif cd.ColorOverride == 'unitframe' then
+				elseif cd.CooldownOverride == 'unitframe' then
 					cd.nextupdate = -1
 					if E.private.unitframe.enable then
 						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
