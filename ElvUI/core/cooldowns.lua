@@ -52,21 +52,22 @@ end
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
-	if parent and parent.SizeOverride then
-		fontScale = (parent.SizeOverride / FONT_SIZE)
+	-- .fontSizeOverride is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason. IE: nameplates
+	if parent and parent.fontSizeOverride then
+		fontScale = (parent.fontSizeOverride / FONT_SIZE)
 	end
 
 	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
-	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.SizeOverride) then
+	if fontScale and (fontScale < MIN_SCALE) and not (parent and parent.fontSizeOverride) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
 		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
-				local customSize = (parent and parent.SizeOverride and cd.cdOptions.fontOptions.fontSize) or (fontScale * cd.cdOptions.fontOptions.fontSize)
+				local customSize = (parent and parent.fontSizeOverride and cd.cdOptions.fontOptions.fontSize) or (fontScale * cd.cdOptions.fontOptions.fontSize)
 				text:FontTemplate(useCustomFont, customSize, cd.cdOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
 				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
