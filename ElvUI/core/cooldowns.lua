@@ -51,7 +51,11 @@ end
 
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
-	if parent and parent.SizeOverride then fontScale = (parent.SizeOverride / FONT_SIZE) end
+
+	if parent and parent.SizeOverride then
+		fontScale = (parent.SizeOverride / FONT_SIZE)
+	end
+
 	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
 	cd.fontScale = fontScale
 
@@ -62,7 +66,8 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
-				text:FontTemplate(useCustomFont, (fontScale * cd.cdOptions.fontOptions.fontSize), cd.cdOptions.fontOptions.fontOutline)
+				local customSize = (parent and parent.SizeOverride and cd.cdOptions.fontOptions.fontSize) or (fontScale * cd.cdOptions.fontOptions.fontSize)
+				text:FontTemplate(useCustomFont, customSize, cd.cdOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
 				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
