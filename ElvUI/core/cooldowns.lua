@@ -86,13 +86,21 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 end
 
 function E:Cooldown_IsEnabled(cd)
+	local enabled
+
 	if cd.alwaysEnabled then
-		return true
+		enabled = true
 	elseif cd.cdOptions and (cd.cdOptions.reverseToggle ~= nil) then
-		return (E.db.cooldown.enable and not cd.cdOptions.reverseToggle) or (not E.db.cooldown.enable and cd.cdOptions.reverseToggle)
+		enabled = (E.db.cooldown.enable and not cd.cdOptions.reverseToggle) or (not E.db.cooldown.enable and cd.cdOptions.reverseToggle)
 	else
-		return E.db.cooldown.enable
+		enabled = E.db.cooldown.enable
 	end
+
+	if cd.SetHideCountdownNumbers then
+		cd:SetHideCountdownNumbers(enabled)
+	end
+
+	return enabled
 end
 
 function E:Cooldown_ForceUpdate(cd)
@@ -191,7 +199,6 @@ end
 function E:RegisterCooldown(cooldown)
 	if not cooldown.isHooked then
 		hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
-		cooldown:SetHideCountdownNumbers(true)
 		cooldown.isHooked = true
 	end
 

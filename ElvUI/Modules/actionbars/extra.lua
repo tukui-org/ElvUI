@@ -17,7 +17,6 @@ local ExtraActionBarHolder, ZoneAbilityHolder
 
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
-	cd:SetHideCountdownNumbers(true)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
 end
 
