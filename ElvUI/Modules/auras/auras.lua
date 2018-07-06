@@ -146,7 +146,7 @@ function A:CreateIcon(button)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
-		button.ColorOverride = 'auras'
+		button.CooldownOverride = 'auras'
 		button.isRegisteredCooldown = true
 
 		if not E.RegisteredCooldowns['auras'] then E.RegisteredCooldowns['auras'] = {} end

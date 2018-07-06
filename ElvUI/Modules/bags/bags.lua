@@ -892,7 +892,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].searchOverlay:SetAllPoints();
 					f.Bags[bagID][slotID].cooldown = _G[f.Bags[bagID][slotID]:GetName()..'Cooldown'];
-					f.Bags[bagID][slotID].cooldown.ColorOverride = 'bags'
+					f.Bags[bagID][slotID].cooldown.CooldownOverride = 'bags'
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
 					f.Bags[bagID][slotID].bagID = bagID
 					f.Bags[bagID][slotID].slotID = slotID

@@ -229,7 +229,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetReverse(true)
 
 	aura.cooldown.fontSizeOverride = 12
-	aura.cooldown.ColorOverride = 'nameplates'
+	aura.cooldown.CooldownOverride = 'nameplates'
 	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
 	aura.cooldown.CooldownSettings = {
 		['font'] = LSM:Fetch("font", mod.db.font),
