@@ -5,11 +5,11 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local join = string.join
 --WoW API / Variables
-local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
-local C_Map_GetCurrentMapID = C_Map.GetCurrentMapID
+local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatInfo = GetBattlefieldStatInfo
 local GetBattlefieldStatData = GetBattlefieldStatData
+local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 
 local lastPanel
 local displayString = ''
@@ -36,18 +36,18 @@ local dataStrings = {
 	[11] = SHOW_COMBAT_HEALING,
 }
 
-local WSG = 443
-local TP = 626
-local AV = 401
-local SOTA = 512
-local IOC = 540
-local EOTS = 482
-local TBFG = 736
-local AB = 461
-local TOK = 856
-local SSM = 860
-local DG = 935
-local SS = 1186
+local WSG = 92
+local TP = 206
+local AV = 91
+local SOTA = 128
+local IOC = 169
+local EOTS = 112
+local TBFG = 275
+local AB = 93
+local TOK = 417
+local SSM = 423
+local DG = 519
+local SS = 907
 local name
 local select = select
 
@@ -65,7 +65,7 @@ end
 
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
-	local CurrentMapID = C_Map_GetCurrentMapID()
+	local CurrentMapID = C_Map_GetBestMapForUnit("player")
 	for index=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(index)
 		if name and name == E.myname then
