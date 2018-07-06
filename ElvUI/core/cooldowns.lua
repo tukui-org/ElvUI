@@ -62,7 +62,7 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 		if text then
 			local useCustomFont = (cd.cdOptions and cd.cdOptions.fontOptions and cd.cdOptions.fontOptions.enable) and E.LSM:Fetch("font", cd.cdOptions.fontOptions.font)
 			if useCustomFont then
-				text:FontTemplate(useCustomFont, cd.cdOptions.fontOptions.fontSize, cd.cdOptions.fontOptions.fontOutline)
+				text:FontTemplate(useCustomFont, (fontScale * cd.cdOptions.fontOptions.fontSize), cd.cdOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
 				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
@@ -268,7 +268,7 @@ function E:UpdateCooldownOverride(module)
 							customFont = E.LSM:Fetch("font", E.db[cd.ColorOverride].font)
 						end
 						if customFont then
-							-- cd.auraType defined in `A:UpdateHeader`
+							-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
 							if cd.auraType and (cd.ColorOverride == 'auras') then
 								customFontSize = E.db[cd.ColorOverride][cd.auraType] and E.db[cd.ColorOverride][cd.auraType].durationFontSize
 								if customFontSize then

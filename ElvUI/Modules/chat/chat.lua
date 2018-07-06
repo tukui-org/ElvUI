@@ -243,54 +243,57 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
-	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
-	local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
-	local ElvRed = IconPath.."elvui_red.tga:13:25|t"
-	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
+	local IconPath  = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	--local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
+	local ElvBlue   = IconPath.."elvui_blue.tga:13:25|t"
+	local ElvPink   = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvGreen  = IconPath.."elvui_green.tga:13:25|t"
 	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
-	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
-	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
+	local ElvRed    = IconPath.."elvui_red.tga:13:25|t"
+	local Bathrobe  = IconPath.."bathrobe.blp:15:15|t"
+	local MrHankey  = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
 		-- Elv --
 		["Illidelv-Area52"] = ElvBlue,
 		["Elvz-Kil'jaeden"] = ElvBlue,
-		["Elv-Spirestone"] = ElvBlue,
+		["Elv-Spirestone"]  = ElvBlue,
 		-- Tirain --
 		["Tirain-Spirestone"] = MrHankey,
-		["Sinth-Spirestone"] = MrHankey,
+		["Sinth-Spirestone"]  = MrHankey,
 		-- Merathilis Toons --
-		["Merathilis-Shattrath"] = ElvOrange, --Druid [alliance]
-		["Merathilîs-Shattrath"] = ElvBlue, --Shaman
-		["Merathilis-Garrosh"] = ElvOrange, -- Druid [horde]
-		["Damará-Shattrath"] = ElvRed, --Paladin
-		["Asragoth-Shattrath"] = ElvBlue, --Warlock
+		["Maithilis-Shattrath"]  = ElvGreen,
+		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
+		["Merathilis-Shattrath"] = ElvOrange, -- [alliance] Druid
+		["Merathilîs-Shattrath"] = ElvBlue,	  -- Shaman
+		["Asragoth-Shattrath"]   = ElvBlue,	  -- Warlock
+		["Damará-Shattrath"]     = ElvRed,	  -- Paladin
 		-- Affinity's Toons --
 		["Affinichi-Illidan"] = Bathrobe,
-		["Uplift-Illidan"] = Bathrobe,
 		["Affinitii-Illidan"] = Bathrobe,
-		["Affinity-Illidan"] = Bathrobe,
+		["Affinity-Illidan"]  = Bathrobe,
+		["Uplift-Illidan"]    = Bathrobe,
 		-- Blazeflack's Toons --
-		["Blazii-Silvermoon"] = ElvBlue, --Priest
-		["Chazii-Silvermoon"] = ElvBlue, --Shaman
+		["Blazii-Silvermoon"] = ElvBlue, -- Priest
+		["Chazii-Silvermoon"] = ElvBlue, -- Shaman
 		-- Simpy's Toons --
-		["Arieva-Cenarius"] = ElvPurple, --Hunter
-		["Buddercup-Cenarius"] = ElvPurple, --Rogue
-		["Cutepally-Cenarius"] = ElvPurple, --Paladin
-		["Ezek-Cenarius"] = ElvPurple, --DK
-		["Glice-Cenarius"] = ElvPurple, --Warrior
-		["Imsojelly-Cenarius"] = ElvPurple, --DK [horde]
-		["Imsopeachy-Cenarius"] = ElvPurple, --DH [horde]
-		["Imsosalty-Cenarius"] = ElvPurple, --Paladin [horde]
-		["Kalline-Cenarius"] = ElvPurple, --Shaman
-		["Puttietat-Cenarius"] = ElvPurple, --Druid
-		["Simpy-Cenarius"] = ElvPurple, --Warlock
-		["Twigly-Cenarius"] = ElvPurple, --Monk
-		["Bunne-CenarionCircle"] = ElvPink, --Warrior
-		["Loppybunny-CenarionCircle"] = ElvPink, --Mage
-		["Puttietat-CenarionCircle"] = ElvPink, --Druid [horde]
-		["Rubee-CenarionCircle"] = ElvPink, --DH
-		["Wennie-CenarionCircle"] = ElvPink, --Priest
+		["Arieva-Cenarius"]       = ElvGreen, -- Hunter
+		["Buddercup-Cenarius"]    = ElvGreen, -- Rogue
+		["Cutepally-Cenarius"]    = ElvGreen, -- Paladin
+		["Ezek-Cenarius"]         = ElvGreen, -- DK
+		["Glice-Cenarius"]        = ElvGreen, -- Warrior
+		["Kalline-Cenarius"]      = ElvGreen, -- Shaman
+		["Puttietat-Cenarius"]    = ElvGreen, -- Druid
+		["Simpy-Cenarius"]        = ElvGreen, -- Warlock
+		["Twigly-Cenarius"]       = ElvGreen, -- Monk
+		["Imsojelly-Cenarius"]    = ElvGreen, -- [horde] DK
+		["Imsojuicy-Cenarius"]    = ElvGreen, -- [horde] Druid
+		["Imsopeachy-Cenarius"]   = ElvGreen, -- [horde] DH
+		["Imsosalty-Cenarius"]    = ElvGreen, -- [horde] Paladin
+		["Imsospicy-Cenarius"]    = ElvGreen, -- [horde] Mage
+		["Bunne-CenarionCircle"]      = ElvPink, -- Warrior
+		["Loppybunny-CenarionCircle"] = ElvPink, -- Mage
+		["Rubee-CenarionCircle"]      = ElvPink, -- DH
+		["Wennie-CenarionCircle"]     = ElvPink, -- Priest
 	}
 end
 
