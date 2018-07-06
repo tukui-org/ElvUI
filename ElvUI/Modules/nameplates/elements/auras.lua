@@ -228,7 +228,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
 
-	aura.cooldown.fontSizeOverride = 12
+	aura.cooldown.CooldownFontSize = 12
 	aura.cooldown.CooldownOverride = 'nameplates'
 	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
 	aura.cooldown.CooldownSettings = {
