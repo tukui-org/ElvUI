@@ -172,8 +172,6 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if self.noOCC then return end -- here for other addons (or plugins) to override our cooldowns
-
 	if start > 0 and duration > MIN_DURATION then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
