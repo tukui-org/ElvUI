@@ -36,18 +36,25 @@ local dataStrings = {
 	[11] = SHOW_COMBAT_HEALING,
 }
 
-local WSG = 92
-local TP = 206
-local AV = 91
-local SOTA = 128
-local IOC = 169
-local EOTS = 112
-local TBFG = 275
-local AB = 93
-local TOK = 417
-local SSM = 423
-local DG = 519
-local SS = 907
+local mapObjectives = {
+	[112] = 1, -- EOTS
+	[423] = 1, -- SSM
+	[907] = 1, -- SS
+	[623] = 1, -- SSvsTM -- needs to confirm only 1 objective??
+
+	 [92] = 2, -- WSG
+	 [93] = 2, -- AB
+	[128] = 2, -- SOTA -- still listed and in game, so leaving it here
+	[169] = 2, -- IOC
+	[206] = 2, -- TP
+	[275] = 2, -- TBFG
+	[417] = 2, -- TOK
+	[837] = 2, -- WAB
+
+	 [91] = 4, -- AV
+	[519] = 4, -- DG
+}
+
 local name
 local select = select
 
@@ -65,7 +72,9 @@ end
 
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
+
 	local CurrentMapID = C_Map_GetBestMapForUnit("player")
+
 	for index=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(index)
 		if name and name == E.myname then
@@ -73,35 +82,12 @@ function DT:BattlegroundStats()
 			DT.tooltip:AddLine(" ")
 
 			--Add extra statistics to watch based on what BG you are in.
-			if CurrentMapID == WSG or CurrentMapID == TP then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-			elseif CurrentMapID == EOTS then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-			elseif CurrentMapID == AV then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(3), GetBattlefieldStatData(index, 3),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(4), GetBattlefieldStatData(index, 4),1,1,1)
-			elseif CurrentMapID == SOTA then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-			elseif CurrentMapID == IOC or CurrentMapID == TBFG or CurrentMapID == AB then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-			elseif CurrentMapID == TOK then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-			elseif CurrentMapID == SSM then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-			elseif CurrentMapID == DG then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(2), GetBattlefieldStatData(index, 2),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(3), GetBattlefieldStatData(index, 3),1,1,1)
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(4), GetBattlefieldStatData(index, 4),1,1,1)
-			elseif CurrentMapID == SS then
-				DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(1), GetBattlefieldStatData(index, 1),1,1,1)
+			if mapObjectives[CurrentMapID] then
+				for x=1, mapObjectives[CurrentMapID] do
+					DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(x), GetBattlefieldStatData(index, x), 1,1,1)
+				end
 			end
+
 			break
 		end
 	end
