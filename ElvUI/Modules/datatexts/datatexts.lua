@@ -11,6 +11,7 @@ local len = string.len
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitGUID = UnitGUID
+local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 
@@ -50,7 +51,7 @@ function DT:PLAYER_ENTERING_WORLD()
 end
 
 local function LoadDataTextsDelayed()
-	C_Timer.After(0.5, function() DT:LoadDataTexts() end)
+	C_Timer_After(0.5, function() DT:LoadDataTexts() end)
 end
 
 local hex = '|cffFFFFFF'
