@@ -13,7 +13,6 @@ local GetBattlefieldStatData = GetBattlefieldStatData
 
 local lastPanel
 local displayString = ''
-local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 
 local dataLayout = {
 	['LeftChatDataPanel'] = {
@@ -55,6 +54,7 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
+	local classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[E.myclass]
 	local numStatInfo = GetNumBattlefieldStats()
 	if numStatInfo then
 		for index = 1, GetNumBattlefieldScores() do
