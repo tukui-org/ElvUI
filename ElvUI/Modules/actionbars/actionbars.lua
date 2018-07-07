@@ -905,16 +905,28 @@ function AB:DisableBlizzard()
 	end
 end
 
-function AB:ToggleCountDownNumbers(bar, button)
-	if not (bar and bar.buttonConfig) then return end
-
-	if button and button.cooldown then
-		bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
-	elseif (not button) and bar.buttons then
+function AB:ToggleCountDownNumbers(bar, button, cd)
+	if (button and button.cooldown) and (bar and bar.buttonConfig) then
+		bar.buttonConfig.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
+		-- button.config will get updated from `button:UpdateConfig` in `AB:UpdateButtonConfig`
+	elseif (not button) and (bar and bar.buttons) then
 		for _, btn in pairs(bar.buttons) do
 			if btn and btn.cooldown then
-				bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
+				if btn.config then
+					-- update the buttons config
+					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
+				end
 			end
+		end
+		if bar.buttonConfig then
+			-- we can actually clear this variable because it wont get used when this code runs
+			bar.buttonConfig.disableCountDownNumbers = nil
+		end
+	elseif cd then
+		local b = cd.GetParent and cd:GetParent()
+		if b and b.config then
+			-- update the new cooldown timer button config with the new setting
+			b.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(cd, cd.timer, true)
 		end
 	end
 end
@@ -941,6 +953,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 
 	for i, button in pairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
+
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
