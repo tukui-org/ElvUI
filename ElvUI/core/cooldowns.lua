@@ -18,6 +18,8 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
+local AB -- used to store the ActionBars module when we need it to set the buttons `.disableCountDownNumbers`
+
 function E:Cooldown_OnUpdate(elapsed)
 	if self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
@@ -202,11 +204,15 @@ function E:RegisterCooldown(cooldown)
 	end
 end
 
-function E:ToggleBlizzardCooldownText(cd, timer)
+function E:ToggleBlizzardCooldownText(cd, timer, request)
 	-- we should hide the blizzard cooldown text when ours are enabled
 	if timer and cd and cd.SetHideCountdownNumbers then
 		local forceHide = (timer.timerOptions and timer.timerOptions.hideBlizzard) or E.db.cooldown.hideBlizzard
-		cd:SetHideCountdownNumbers(forceHide or E:Cooldown_IsEnabled(timer))
+		if request then
+			return forceHide or E:Cooldown_IsEnabled(timer)
+		else
+			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_IsEnabled(timer))
+		end
 	end
 end
 
@@ -226,7 +232,7 @@ function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
 	if (not cooldowns) or not next(cooldowns) then return end
 
-	local CD, db, customFont, customFontSize, timer, text
+	local CD, db, customFont, customFontSize, timer, text, updateActionBarsButtonConfig
 	for _, cd in ipairs(cooldowns) do
 		db = (cd.CooldownOverride and E.db[cd.CooldownOverride]) or self.db
 		db = db and db.cooldown
@@ -298,6 +304,9 @@ function E:UpdateCooldownOverride(module)
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
 				E:ToggleBlizzardCooldownText(cd, CD)
+				if AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
+					updateActionBarsButtonConfig = true
+				end
 			elseif cd.CooldownOverride and not (timer and CD) then
 				if cd.CooldownOverride == 'auras' then
 					cd.nextUpdate = -1
@@ -309,6 +318,14 @@ function E:UpdateCooldownOverride(module)
 						E:ToggleBlizzardCooldownText(cd.cd, cd)
 					end
 				end
+			end
+		end
+	end
+
+	if updateActionBarsButtonConfig then
+		for _, bar in pairs(AB.handledBars) do
+			if bar then
+				AB:ToggleCountDownNumbers(bar)
 			end
 		end
 	end
@@ -337,6 +354,7 @@ function E:UpdateCooldownSettings(module)
 
 	-- okay update the other override settings if it was one of the core file calls
 	if module and (module == 'all') then
+		if not AB then AB = E:GetModule('ActionBars') end
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
