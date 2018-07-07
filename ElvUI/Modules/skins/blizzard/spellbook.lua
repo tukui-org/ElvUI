@@ -91,6 +91,7 @@ local function LoadSkin()
 				icon:SetAllPoints()
 
 				if not button.backdrop then
+					E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 					button:CreateBackdrop("Default", true)
 				end
 			end
