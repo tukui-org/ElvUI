@@ -131,7 +131,7 @@ function AB:PositionAndSizeBar(barName)
 	local widthMult = self.db[barName].widthMult;
 	local heightMult = self.db[barName].heightMult;
 	local visibility = self.db[barName].visibility;
-	local bar = self["handledBars"][barName];
+	local bar = self.handledBars[barName];
 
 	bar.db = self.db[barName]
 	bar.db.position = nil; --Depreciated
@@ -404,7 +404,7 @@ function AB:CreateBar(id)
 		end
 	]]);
 
-	self["handledBars"]['bar'..id] = bar;
+	self.handledBars['bar'..id] = bar;
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
 	self:PositionAndSizeBar('bar'..id);
 	return bar
@@ -502,17 +502,18 @@ function AB:ReassignBindings(event)
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 
 	if InCombatLockdown() then return end
-	for _, bar in pairs(self["handledBars"]) do
-		if not bar then return end
 
-		ClearOverrideBindings(bar)
-		for i = 1, #bar.buttons do
-			local button = (bar.bindButtons.."%d"):format(i)
-			local real_button = (bar:GetName().."Button%d"):format(i)
-			for k=1, select('#', GetBindingKey(button)) do
-				local key = select(k, GetBindingKey(button))
-				if key and key ~= "" then
-					SetOverrideBindingClick(bar, false, key, real_button)
+	for _, bar in pairs(self.handledBars) do
+		if bar then
+			ClearOverrideBindings(bar)
+			for i = 1, #bar.buttons do
+				local button = (bar.bindButtons.."%d"):format(i)
+				local real_button = (bar:GetName().."Button%d"):format(i)
+				for k=1, select('#', GetBindingKey(button)) do
+					local key = select(k, GetBindingKey(button))
+					if key and key ~= "" then
+						SetOverrideBindingClick(bar, false, key, real_button)
+					end
 				end
 			end
 		end
@@ -521,10 +522,11 @@ end
 
 function AB:RemoveBindings()
 	if InCombatLockdown() then return end
-	for _, bar in pairs(self["handledBars"]) do
-		if not bar then return end
 
-		ClearOverrideBindings(bar)
+	for _, bar in pairs(self.handledBars) do
+		if bar then
+			ClearOverrideBindings(bar)
+		end
 	end
 
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", "ReassignBindings")
@@ -575,7 +577,7 @@ function AB:UpdateBar1Paging()
 end
 
 function AB:UpdateButtonSettingsForBar(barName)
-	local bar = self["handledBars"][barName]
+	local bar = self.handledBars[barName]
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 end
 
@@ -599,8 +601,11 @@ function AB:UpdateButtonSettings()
 
 	self:UpdatePetBindings()
 	self:UpdateStanceBindings()
-	for _, bar in pairs(self["handledBars"]) do
-		self:UpdateButtonConfig(bar, bar.bindButtons)
+
+	for _, bar in pairs(self.handledBars) do
+		if bar then
+			self:UpdateButtonConfig(bar, bar.bindButtons)
+		end
 	end
 
 	for i=1, 6 do
@@ -900,6 +905,18 @@ function AB:DisableBlizzard()
 	end
 end
 
+function AB:ToggleCountDownNumbers(bar, button)
+	if bar and button and button.cooldown then
+		bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
+	elseif bar and bar.buttons then
+		for _, btn in pairs(bar.buttons) do
+			if btn and btn.cooldown then
+				bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
+			end
+		end
+	end
+end
+
 function AB:UpdateButtonConfig(bar, buttonName)
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
@@ -921,6 +938,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
 	for i, button in pairs(bar.buttons) do
+		AB:ToggleCountDownNumbers(bar, button)
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
@@ -1083,7 +1101,7 @@ end
 
 function AB:VehicleFix()
 	local barName = 'bar1'
-	local bar = self["handledBars"][barName]
+	local bar = self.handledBars[barName]
 	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
 	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
 	local numButtons = self.db[barName].buttons;
