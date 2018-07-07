@@ -121,8 +121,6 @@ function UF:Construct_AuraIcon(button)
 		end
 	end)
 
-	UF:UpdateAuraIconSettings(button, true)
-
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
 		button.CooldownOverride = 'unitframe'
@@ -131,6 +129,8 @@ function UF:Construct_AuraIcon(button)
 		if not E.RegisteredCooldowns['unitframe'] then E.RegisteredCooldowns['unitframe'] = {} end
 		tinsert(E.RegisteredCooldowns['unitframe'], button)
 	end
+
+	UF:UpdateAuraIconSettings(button, true)
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -394,6 +394,8 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 				button.unit = frame.unit -- used to update cooldown text
 
+				E:ToggleBlizzardCooldownText(button.cd, button)
+
 				if db.clickThrough and button:IsMouseEnabled() then
 					button:EnableMouse(false)
 				elseif not db.clickThrough and not button:IsMouseEnabled() then
@@ -414,6 +416,8 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 			end
 			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 			auras.unit = frame.unit -- used to update cooldown text
+
+			E:ToggleBlizzardCooldownText(auras.cd, auras)
 
 			if db.clickThrough and auras:IsMouseEnabled() then
 				auras:EnableMouse(false)

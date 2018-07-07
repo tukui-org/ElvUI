@@ -158,10 +158,7 @@ function E:CreateCooldownTimer(parent)
 	end
 	----------
 
-	-- we should hide the blizzard cooldown text when ours are enabled
-	if parent.SetHideCountdownNumbers then
-		parent:SetHideCountdownNumbers(E:Cooldown_IsEnabled(timer))
-	end
+	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
 	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
@@ -206,6 +203,13 @@ function E:RegisterCooldown(cooldown)
 
 		tinsert(E.RegisteredCooldowns[module], cooldown)
 		cooldown.isRegisteredCooldown = true
+	end
+end
+
+function E:ToggleBlizzardCooldownText(cd, timer)
+	-- we should hide the blizzard cooldown text when ours are enabled
+	if timer and cd and cd.SetHideCountdownNumbers then
+		cd:SetHideCountdownNumbers(E:Cooldown_IsEnabled(timer))
 	end
 end
 
@@ -295,11 +299,7 @@ function E:UpdateCooldownOverride(module)
 
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
-
-				-- we should hide the blizzard cooldown text when ours are enabled
-				if cd.SetHideCountdownNumbers then
-					cd:SetHideCountdownNumbers(E:Cooldown_IsEnabled(CD))
-				end
+				E:ToggleBlizzardCooldownText(cd, CD)
 			elseif cd.CooldownOverride and not (timer and CD) then
 				if cd.CooldownOverride == 'auras' then
 					cd.nextUpdate = -1
