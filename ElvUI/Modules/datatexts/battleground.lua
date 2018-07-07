@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
+local select = select
 local join = string.join
 --WoW API / Variables
 local GetBattlefieldScore = GetBattlefieldScore
@@ -11,9 +12,9 @@ local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatInfo = GetBattlefieldStatInfo
 local GetBattlefieldStatData = GetBattlefieldStatData
 
+local name
 local lastPanel
 local displayString = ''
-
 local dataLayout = {
 	['LeftChatDataPanel'] = {
 		['left'] = 10,
@@ -35,9 +36,6 @@ local dataStrings = {
 	[3] = KILLS,
 	[11] = SHOW_COMBAT_HEALING,
 }
-
-local name
-local select = select
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
