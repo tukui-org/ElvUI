@@ -308,6 +308,7 @@ function E:UpdateCooldownOverride(module)
 					if E.private.unitframe.enable then
 						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
 						E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
+						E:ToggleBlizzardCooldownText(cd.cd, cd)
 					end
 				end
 			end
