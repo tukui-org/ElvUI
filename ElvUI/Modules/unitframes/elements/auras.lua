@@ -69,6 +69,7 @@ function UF:Construct_AuraIcon(button)
 	end
 
 	button.timerOptions.reverseToggle = UF.db.cooldown.reverse
+	button.timerOptions.hideBlizzard = UF.db.cooldown.hideBlizzard
 
 	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
 		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold

@@ -134,6 +134,7 @@ function E:CreateCooldownTimer(parent)
 			end
 
 			timer.timerOptions.reverseToggle = db.cooldown.reverse
+			timer.timerOptions.hideBlizzard = db.cooldown.hideBlizzard
 
 			if db.cooldown.override and E.TimeColors[parent.CooldownOverride] then
 				timer.timerOptions.timeColors, timer.timerOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], db.cooldown.threshold
@@ -209,7 +210,8 @@ end
 function E:ToggleBlizzardCooldownText(cd, timer)
 	-- we should hide the blizzard cooldown text when ours are enabled
 	if timer and cd and cd.SetHideCountdownNumbers then
-		cd:SetHideCountdownNumbers(E:Cooldown_IsEnabled(timer))
+		local forceHide = (timer.timerOptions and timer.timerOptions.hideBlizzard) or E.db.cooldown.hideBlizzard
+		cd:SetHideCountdownNumbers(forceHide or E:Cooldown_IsEnabled(timer))
 	end
 end
 
@@ -244,6 +246,7 @@ function E:UpdateCooldownOverride(module)
 			end
 
 			CD.timerOptions.reverseToggle = db.reverse
+			CD.timerOptions.hideBlizzard = db.hideBlizzard
 
 			if cd.CooldownOverride and db.override and E.TimeColors[cd.CooldownOverride] then
 				CD.timerOptions.timeColors, CD.timerOptions.timeThreshold = E.TimeColors[cd.CooldownOverride], db.threshold

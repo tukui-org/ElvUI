@@ -276,6 +276,7 @@ function A:CooldownText_Update(button)
 	end
 
 	button.timerOptions.reverseToggle = self.db.cooldown.reverse
+	button.timerOptions.hideBlizzard = self.db.cooldown.hideBlizzard
 
 	if self.db.cooldown.override and E.TimeColors['auras'] then
 		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
