@@ -358,6 +358,25 @@ function UF:SortAuras()
 	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
+function UF:AuraIconUpdate(frame, db, button, font, outline, customFont)
+	if customFont and (button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable) then
+		button.text:FontTemplate(customFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
+	else
+		button.text:FontTemplate(font, db.fontSize, outline)
+	end
+
+	button.count:FontTemplate(font, db.countFontSize or db.fontSize, outline)
+	button.unit = frame.unit -- used to update cooldown text
+
+	E:ToggleBlizzardCooldownText(button.cd, button)
+
+	if db.clickThrough and button:IsMouseEnabled() then
+		button:EnableMouse(false)
+	elseif not db.clickThrough and not button:IsMouseEnabled() then
+		button:EnableMouse(true)
+	end
+end
+
 function UF:UpdateAuraIconSettings(auras, noCycle)
 	local frame = auras:GetParent()
 	local type = auras.type
@@ -368,62 +387,30 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 	end
 
 	if not frame.db then return end
-
-	local db = frame.db[type]
-	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
-	local unitframeFontOutline = E.db['unitframe'].fontOutline
-	local button, cooldownFont
-	local index = 1
+	local index, db = 1, frame.db[type]
 	auras.db = db
 
 	if db then
+		local font = LSM:Fetch("font", E.db.unitframe.font)
+		local outline = E.db.unitframe.fontOutline
+		local customFont
+
 		if not noCycle then
 			while auras[index] do
-				button = auras[index]
-
-				if button.timerOptions and button.timerOptions.fontOptions and (not cooldownFont) then
-					cooldownFont = LSM:Fetch("font", button.timerOptions.fontOptions.font)
+				if (not customFont) and (auras[index].timerOptions and auras[index].timerOptions.fontOptions) then
+					customFont = LSM:Fetch("font", auras[index].timerOptions.fontOptions.font)
 				end
 
-				if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable and cooldownFont then
-					button.text:FontTemplate(cooldownFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
-				else
-					button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
-				end
-
-				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
-				button.unit = frame.unit -- used to update cooldown text
-
-				E:ToggleBlizzardCooldownText(button.cd, button)
-
-				if db.clickThrough and button:IsMouseEnabled() then
-					button:EnableMouse(false)
-				elseif not db.clickThrough and not button:IsMouseEnabled() then
-					button:EnableMouse(true)
-				end
+				UF:AuraIconUpdate(frame, db, auras[index], font, outline, customFont)
 
 				index = index + 1
 			end
 		else
 			if auras.timerOptions and auras.timerOptions.fontOptions then
-				cooldownFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
+				customFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
 			end
 
-			if auras.timerOptions and auras.timerOptions.fontOptions and auras.timerOptions.fontOptions.enable and cooldownFont then
-				auras.text:FontTemplate(cooldownFont, auras.timerOptions.fontOptions.fontSize, auras.timerOptions.fontOptions.fontOutline)
-			else
-				auras.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
-			end
-			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
-			auras.unit = frame.unit -- used to update cooldown text
-
-			E:ToggleBlizzardCooldownText(auras.cd, auras)
-
-			if db.clickThrough and auras:IsMouseEnabled() then
-				auras:EnableMouse(false)
-			elseif not db.clickThrough and not auras:IsMouseEnabled() then
-				auras:EnableMouse(true)
-			end
+			UF:AuraIconUpdate(frame, db, auras, font, outline, customFont)
 		end
 	end
 end
