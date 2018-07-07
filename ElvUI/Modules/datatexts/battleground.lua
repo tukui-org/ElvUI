@@ -6,14 +6,15 @@ local DT = E:GetModule('DataTexts')
 local join = string.join
 --WoW API / Variables
 local GetBattlefieldScore = GetBattlefieldScore
+local GetNumBattlefieldStats = GetNumBattlefieldStats
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatInfo = GetBattlefieldStatInfo
 local GetBattlefieldStatData = GetBattlefieldStatData
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 
 local lastPanel
 local displayString = ''
 local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
+
 local dataLayout = {
 	['LeftChatDataPanel'] = {
 		['left'] = 10,
@@ -36,25 +37,6 @@ local dataStrings = {
 	[11] = SHOW_COMBAT_HEALING,
 }
 
-local mapObjectives = {
-	[112] = 1, -- EOTS
-	[423] = 1, -- SSM
-	[907] = 1, -- SS
-	[623] = 1, -- SSvsTM -- needs to confirm only 1 objective??
-
-	 [92] = 2, -- WSG
-	 [93] = 2, -- AB
-	[128] = 2, -- SOTA -- still listed and in game, so leaving it here
-	[169] = 2, -- IOC
-	[206] = 2, -- TP
-	[275] = 2, -- TBFG
-	[417] = 2, -- TOK
-	[837] = 2, -- WAB
-
-	 [91] = 4, -- AV
-	[519] = 4, -- DG
-}
-
 local name
 local select = select
 
@@ -73,22 +55,21 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
-	local CurrentMapID = C_Map_GetBestMapForUnit("player")
+	local numStatInfo = GetNumBattlefieldStats()
+	if numStatInfo then
+		for index = 1, GetNumBattlefieldScores() do
+			name = GetBattlefieldScore(index)
+			if name and name == E.myname then
+				DT.tooltip:AddDoubleLine(L["Stats For:"], name, 1,1,1, classColor.r, classColor.g, classColor.b)
+				DT.tooltip:AddLine(" ")
 
-	for index=1, GetNumBattlefieldScores() do
-		name = GetBattlefieldScore(index)
-		if name and name == E.myname then
-			DT.tooltip:AddDoubleLine(L["Stats For:"], name, 1,1,1, classColor.r, classColor.g, classColor.b)
-			DT.tooltip:AddLine(" ")
-
-			--Add extra statistics to watch based on what BG you are in.
-			if mapObjectives[CurrentMapID] then
-				for x=1, mapObjectives[CurrentMapID] do
+				-- Add extra statistics to watch based on what BG you are in.
+				for x = 1, numStatInfo do
 					DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(x), GetBattlefieldStatData(index, x), 1,1,1)
 				end
-			end
 
-			break
+				break
+			end
 		end
 	end
 
