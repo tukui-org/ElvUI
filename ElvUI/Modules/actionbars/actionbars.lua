@@ -906,9 +906,11 @@ function AB:DisableBlizzard()
 end
 
 function AB:ToggleCountDownNumbers(bar, button)
-	if bar and button and button.cooldown then
+	if not (bar and bar.buttonConfig) then return end
+
+	if button and button.cooldown then
 		bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
-	elseif bar and bar.buttons then
+	elseif (not button) and bar.buttons then
 		for _, btn in pairs(bar.buttons) do
 			if btn and btn.cooldown then
 				bar.buttonConfig.disableCountDownNumbers = not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
