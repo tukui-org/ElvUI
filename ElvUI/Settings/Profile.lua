@@ -217,6 +217,7 @@ P['bags'] = {
 		['threshold'] = 4,
 		['override'] = false,
 		['reverse'] = false,
+		['hideBlizzard'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -281,6 +282,7 @@ P['nameplates'] = {
 		['threshold'] = 4,
 		['override'] = true,
 		['reverse'] = false,
+		['hideBlizzard'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -796,6 +798,7 @@ P['auras'] = {
 		['threshold'] = 4,
 		['override'] = true,
 		['reverse'] = false,
+		['hideBlizzard'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -981,6 +984,7 @@ P['tooltip'] = {
 		['8'] = {r = 0, g = 0.6, b = 0.1},
 	}
 }
+
 --UnitFrame
 P['unitframe'] = {
 	['smoothbars'] = false,
@@ -998,6 +1002,7 @@ P['unitframe'] = {
 		['threshold'] = 4,
 		['override'] = true,
 		['reverse'] = false,
+		['hideBlizzard'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -3087,6 +3092,7 @@ P['unitframe'] = {
 P['cooldown'] = {
 	['enable'] = true,
 	['threshold'] = 3,
+	['hideBlizzard'] = false,
 	['expiringColor'] = { r = 1, g = 0, b = 0 },
 	['secondsColor'] = { r = 1, g = 1, b = 0 },
 	['minutesColor'] = { r = 1, g = 1, b = 1 },
@@ -3129,6 +3135,7 @@ P['actionbar'] = {
 		['threshold'] = 4,
 		['override'] = false,
 		['reverse'] = false,
+		['hideBlizzard'] = false,
 		['expiringColor'] = { r = 1, g = 0, b = 0 },
 		['secondsColor'] = { r = 1, g = 1, b = 1 },
 		['minutesColor'] = { r = 1, g = 1, b = 1 },

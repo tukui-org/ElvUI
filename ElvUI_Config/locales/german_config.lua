@@ -253,6 +253,8 @@ L["HH:MM Threshold"] = "HH:MM Schwellenwert"
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Schwellenwert (in Sekunden) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Schwellenwert (in Minuten) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
 L["Color Override"] = "Farbüberschreibung"
+L["Force Hide Blizzard Text"] = true
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
 L["Reverse Toggle"] = "Umgekehrte Anzeige"
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = "Umgekehrte Anzeige aktiviert den Cooldown Text auf diesem Modul wenn die globale Einstellung deaktiviert ist und deaktiviert es wenn die globale Einstellung aktiviert ist."
 

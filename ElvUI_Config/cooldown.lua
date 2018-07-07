@@ -42,6 +42,21 @@ local function group(order, db, label)
 				get = function(info) return (profile(db))[ info[#info] ] end,
 				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
 			},
+			hideBlizzard = {
+				type = "toggle",
+				order = 3,
+				name = L["Force Hide Blizzard Text"],
+				desc = L["This option will force hide Blizzard's cooldown text if it's enabled at \n[Interface > ActionBars > Show Numbers on Cooldown]."],
+				get = function(info) return (profile(db))[ info[#info] ] end,
+				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				disabled = function()
+					if db == "global" then
+						return E.db.cooldown.enable
+					else
+						return (E.db.cooldown.enable and not profile(db).reverse) or (not E.db.cooldown.enable and profile(db).reverse)
+					end
+				end,
+			},
 			secondsGroup = {
 				order = 5,
 				type = "group",
@@ -220,6 +235,10 @@ local function group(order, db, label)
 
 		-- rename the tab
 		E.Options.args.cooldown.args[db].args.colorGroup.name = COLORS
+
+		-- move hide blizzard option into the top toggles, keeping order 3 is fine and correct.
+		E.Options.args.cooldown.args.hideBlizzard = E.Options.args.cooldown.args[db].args.hideBlizzard
+		E.Options.args.cooldown.args[db].args.hideBlizzard = nil
 	else
 		E.Options.args.cooldown.args[db].args.colorGroup.args.spacer2 = nil
 	end
@@ -227,6 +246,9 @@ local function group(order, db, label)
 	if db == 'auras' then
 		-- even though the top auras can support hiding the text don't allow this to be a setting to prevent confusion
 		E.Options.args.cooldown.args[db].args.reverse = nil
+
+		-- this text is different so just hide this option for top auras
+		E.Options.args.cooldown.args[db].args.hideBlizzard = nil
 	end
 end
 
@@ -251,9 +273,9 @@ E.Options.args.cooldown = {
 	},
 }
 
-group(3, 'global', L["Global"])
-group(4, 'auras', BUFFOPTIONS_LABEL)
-group(5, 'bags', L["Bags"])
-group(6, 'nameplates', L["NamePlates"])
-group(7, 'unitframe', L["UnitFrames"])
-group(8, 'actionbar', L["ActionBars"])
+group(5, 'global', L["Global"])
+group(6, 'auras', BUFFOPTIONS_LABEL)
+group(7, 'bags', L["Bags"])
+group(8, 'nameplates', L["NamePlates"])
+group(9, 'unitframe', L["UnitFrames"])
+group(10, 'actionbar', L["ActionBars"])

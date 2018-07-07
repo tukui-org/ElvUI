@@ -93,11 +93,11 @@ function A:UpdateTime(elapsed)
 		self.time:SetText("")
 		self:SetScript("OnUpdate", nil)
 	else
-		local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
+		local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 		if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-		local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-		local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+		local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+		local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
 		self.nextUpdate = nextUpdate
@@ -271,30 +271,31 @@ function A:CooldownText_Update(button)
 	-- cooldown override settings
 	button.alwaysEnabled = true
 
-	if not button.cdOptions then
-		button.cdOptions = {}
+	if not button.timerOptions then
+		button.timerOptions = {}
 	end
 
-	button.cdOptions.reverseToggle = self.db.cooldown.reverse
+	button.timerOptions.reverseToggle = self.db.cooldown.reverse
+	button.timerOptions.hideBlizzard = self.db.cooldown.hideBlizzard
 
 	if self.db.cooldown.override and E.TimeColors['auras'] then
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
 	else
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end
 
 	if self.db.cooldown.checkSeconds then
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = self.db.cooldown.hhmmThreshold, self.db.cooldown.mmssThreshold
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = self.db.cooldown.hhmmThreshold, self.db.cooldown.mmssThreshold
 	else
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = nil, nil
 	end
 
 	if self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = self.db.cooldown.fonts
+		button.timerOptions.fontOptions = self.db.cooldown.fonts
 	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = E.db.cooldown.fonts
+		button.timerOptions.fontOptions = E.db.cooldown.fonts
 	else
-		button.cdOptions.fontOptions = nil
+		button.timerOptions.fontOptions = nil
 	end
 end
 

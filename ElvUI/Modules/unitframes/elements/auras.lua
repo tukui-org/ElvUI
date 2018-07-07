@@ -64,38 +64,36 @@ function UF:Construct_AuraIcon(button)
 	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
 
 	-- cooldown override settings
-	if not button.cdOptions then
-		button.cdOptions = {}
+	if not button.timerOptions then
+		button.timerOptions = {}
 	end
 
-	button.cdOptions.reverseToggle = UF.db.cooldown.reverse
+	button.timerOptions.reverseToggle = UF.db.cooldown.reverse
+	button.timerOptions.hideBlizzard = UF.db.cooldown.hideBlizzard
 
 	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
 	else
-		button.cdOptions.timeColors, button.cdOptions.timeThreshold = nil, nil
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end
 
 	if UF.db.cooldown.checkSeconds then
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
 	else
-		button.cdOptions.hhmmThreshold, button.cdOptions.mmssThreshold = nil, nil
+		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = nil, nil
 	end
 
 	if UF.db.cooldown.fonts and UF.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = UF.db.cooldown.fonts
+		button.timerOptions.fontOptions = UF.db.cooldown.fonts
 	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		button.cdOptions.fontOptions = E.db.cooldown.fonts
+		button.timerOptions.fontOptions = E.db.cooldown.fonts
 	else
-		button.cdOptions.fontOptions = nil
+		button.timerOptions.fontOptions = nil
 	end
 	----------
 
-	button.cd.noOCC = true
-	button.cd.noCooldownCount = true
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button, offset, offset)
-	button.cd:SetHideCountdownNumbers(true)
 
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -124,8 +122,6 @@ function UF:Construct_AuraIcon(button)
 		end
 	end)
 
-	UF:UpdateAuraIconSettings(button, true)
-
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
 		button.CooldownOverride = 'unitframe'
@@ -134,6 +130,8 @@ function UF:Construct_AuraIcon(button)
 		if not E.RegisteredCooldowns['unitframe'] then E.RegisteredCooldowns['unitframe'] = {} end
 		tinsert(E.RegisteredCooldowns['unitframe'], button)
 	end
+
+	UF:UpdateAuraIconSettings(button, true)
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -361,6 +359,25 @@ function UF:SortAuras()
 	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
+function UF:AuraIconUpdate(frame, db, button, font, outline, customFont)
+	if customFont and (button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable) then
+		button.text:FontTemplate(customFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
+	else
+		button.text:FontTemplate(font, db.fontSize, outline)
+	end
+
+	button.count:FontTemplate(font, db.countFontSize or db.fontSize, outline)
+	button.unit = frame.unit -- used to update cooldown text
+
+	E:ToggleBlizzardCooldownText(button.cd, button)
+
+	if db.clickThrough and button:IsMouseEnabled() then
+		button:EnableMouse(false)
+	elseif not db.clickThrough and not button:IsMouseEnabled() then
+		button:EnableMouse(true)
+	end
+end
+
 function UF:UpdateAuraIconSettings(auras, noCycle)
 	local frame = auras:GetParent()
 	local type = auras.type
@@ -371,58 +388,30 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 	end
 
 	if not frame.db then return end
-
-	local db = frame.db[type]
-	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
-	local unitframeFontOutline = E.db['unitframe'].fontOutline
-	local button, cooldownFont
-	local index = 1
+	local index, db = 1, frame.db[type]
 	auras.db = db
 
 	if db then
+		local font = LSM:Fetch("font", E.db.unitframe.font)
+		local outline = E.db.unitframe.fontOutline
+		local customFont
+
 		if not noCycle then
 			while auras[index] do
-				button = auras[index]
-
-				if button.cdOptions and button.cdOptions.fontOptions and (not cooldownFont) then
-					cooldownFont = LSM:Fetch("font", button.cdOptions.fontOptions.font)
+				if (not customFont) and (auras[index].timerOptions and auras[index].timerOptions.fontOptions) then
+					customFont = LSM:Fetch("font", auras[index].timerOptions.fontOptions.font)
 				end
 
-				if button.cdOptions and button.cdOptions.fontOptions and button.cdOptions.fontOptions.enable and cooldownFont then
-					button.text:FontTemplate(cooldownFont, button.cdOptions.fontOptions.fontSize, button.cdOptions.fontOptions.fontOutline)
-				else
-					button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
-				end
-
-				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
-				button.unit = frame.unit -- used to update cooldown text
-
-				if db.clickThrough and button:IsMouseEnabled() then
-					button:EnableMouse(false)
-				elseif not db.clickThrough and not button:IsMouseEnabled() then
-					button:EnableMouse(true)
-				end
+				UF:AuraIconUpdate(frame, db, auras[index], font, outline, customFont)
 
 				index = index + 1
 			end
 		else
-			if auras.cdOptions and auras.cdOptions.fontOptions then
-				cooldownFont = LSM:Fetch("font", auras.cdOptions.fontOptions.font)
+			if auras.timerOptions and auras.timerOptions.fontOptions then
+				customFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
 			end
 
-			if auras.cdOptions and auras.cdOptions.fontOptions and auras.cdOptions.fontOptions.enable and cooldownFont then
-				auras.text:FontTemplate(cooldownFont, auras.cdOptions.fontOptions.fontSize, auras.cdOptions.fontOptions.fontOutline)
-			else
-				auras.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
-			end
-			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
-			auras.unit = frame.unit -- used to update cooldown text
-
-			if db.clickThrough and auras:IsMouseEnabled() then
-				auras:EnableMouse(false)
-			elseif not db.clickThrough and not auras:IsMouseEnabled() then
-				auras:EnableMouse(true)
-			end
+			UF:AuraIconUpdate(frame, db, auras, font, outline, customFont)
 		end
 	end
 end
@@ -511,11 +500,11 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
-	local timeColors, timeThreshold = (self.cdOptions and self.cdOptions.timeColors) or E.TimeColors, (self.cdOptions and self.cdOptions.timeThreshold) or E.db.cooldown.threshold
+	local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 	if not timeThreshold then timeThreshold = E.TimeThreshold end
 
-	local hhmmThreshold = (self.cdOptions and self.cdOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-	local mmssThreshold = (self.cdOptions and self.cdOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+	local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+	local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
 	local value1, formatid, nextupdate, value2 = E:GetTimeInfo(self.expirationSaved, timeThreshold, hhmmThreshold, mmssThreshold)
 	self.nextupdate = nextupdate
