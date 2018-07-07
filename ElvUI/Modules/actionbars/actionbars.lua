@@ -913,27 +913,29 @@ function AB:DisableBlizzard()
 end
 
 function AB:ToggleCountDownNumbers(bar, button, cd)
-	if (button and button.cooldown) and (bar and bar.buttonConfig) then
-		bar.buttonConfig.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
-		-- button.config will get updated from `button:UpdateConfig` in `AB:UpdateButtonConfig`
-	elseif (not button) and (bar and bar.buttons) then
-		for _, btn in pairs(bar.buttons) do
-			if btn and btn.cooldown then
-				if btn.config then
+	if cd then -- ref: E:CreateCooldownTimer
+		local b = cd.GetParent and cd:GetParent()
+		if cd.timer and (b and b.config) then
+			-- update the new cooldown timer button config with the new setting
+			b.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(cd, cd.timer, true)
+		end
+	elseif button then -- ref: AB:UpdateButtonConfig
+		if (button.cooldown and button.cooldown.timer) and (bar and bar.buttonConfig) then
+			-- button.config will get updated from `button:UpdateConfig` in `AB:UpdateButtonConfig`
+			bar.buttonConfig.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
+		end
+	elseif bar then -- ref: E:UpdateCooldownOverride
+		if bar.buttons then
+			for _, btn in pairs(bar.buttons) do
+				if (btn and btn.config) and (btn.cooldown and btn.cooldown.timer) then
 					-- update the buttons config
 					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
 				end
 			end
-		end
-		if bar.buttonConfig then
-			-- we can actually clear this variable because it wont get used when this code runs
-			bar.buttonConfig.disableCountDownNumbers = nil
-		end
-	elseif cd then
-		local b = cd.GetParent and cd:GetParent()
-		if b and b.config then
-			-- update the new cooldown timer button config with the new setting
-			b.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(cd, cd.timer, true)
+			if bar.buttonConfig then
+				-- we can actually clear this variable because it wont get used when this code runs
+				bar.buttonConfig.disableCountDownNumbers = nil
+			end
 		end
 	end
 end
