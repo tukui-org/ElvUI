@@ -157,6 +157,11 @@ function E:CreateCooldownTimer(parent)
 			else
 				timer.timerOptions.fontOptions = nil
 			end
+
+			-- prevent LibActionBar from showing blizzard CD when the CD timer is created
+			if AB and (parent.CooldownOverride == 'actionbar') then
+				AB:ToggleCountDownNumbers(nil, nil, parent)
+			end
 		end
 	end
 	----------
