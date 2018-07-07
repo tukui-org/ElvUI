@@ -172,21 +172,18 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if start > 0 and duration > MIN_DURATION then
+	if (start > 0) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
 		timer.nextUpdate = 0
+
 		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
 			timer:Show()
 		end
-	else
-		local timer = self.timer
-		if timer then
-			E:Cooldown_StopTimer(timer)
-			return
-		end
+	elseif self.timer then
+		E:Cooldown_StopTimer(self.timer)
 	end
 end
 
