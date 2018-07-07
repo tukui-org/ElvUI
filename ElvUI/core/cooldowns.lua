@@ -237,7 +237,7 @@ function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
 	if (not cooldowns) or not next(cooldowns) then return end
 
-	local CD, db, customFont, customFontSize, timer, text, updateActionBarsButtonConfig
+	local CD, db, customFont, customFontSize, timer, text, blizzTextAB
 	for _, cd in ipairs(cooldowns) do
 		db = (cd.CooldownOverride and E.db[cd.CooldownOverride]) or self.db
 		db = db and db.cooldown
@@ -309,8 +309,8 @@ function E:UpdateCooldownOverride(module)
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
 				E:ToggleBlizzardCooldownText(cd, CD)
-				if AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
-					updateActionBarsButtonConfig = true
+				if (not blizzTextAB) and AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
+					blizzTextAB = true
 				end
 			elseif cd.CooldownOverride and not (timer and CD) then
 				if cd.CooldownOverride == 'auras' then
@@ -327,7 +327,7 @@ function E:UpdateCooldownOverride(module)
 		end
 	end
 
-	if updateActionBarsButtonConfig then
+	if blizzTextAB then
 		for _, bar in pairs(AB.handledBars) do
 			if bar then
 				AB:ToggleCountDownNumbers(bar)
