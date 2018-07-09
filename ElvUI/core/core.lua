@@ -341,7 +341,7 @@ end
 local function LSMCallback()
 	E:UpdateMedia()
 end
-E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
+LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
 
 local MasqueGroupState = {}
 local MasqueGroupToTableElement = {
