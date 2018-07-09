@@ -154,7 +154,7 @@ function A:CreateIcon(button)
 	end
 
 	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
-		button.time:FontTemplate(E.LSM:Fetch("font", button.timerOptions.fontOptions.font), button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
+		button.time:FontTemplate(LSM:Fetch("font", button.timerOptions.fontOptions.font), button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
 	else
 		button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 	end
