@@ -906,7 +906,7 @@ function B:CommandDecorator(func, groupsDefaults)
 		if not groups or #groups == 0 then
 			groups = groupsDefaults
 		end
-		for bags in (groups or ""):gmatch("[^%s]+") do
+		for bags in (groups or ""):gmatch("%S+") do
 			if bags == "guild" then
 				bags = B:GetGroup(bags)
 				if bags then

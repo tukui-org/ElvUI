@@ -1830,7 +1830,7 @@ function CH:CheckKeyword(message)
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
-	for word in message:gmatch("%s-[^%s]+%s*") do
+	for word in message:gmatch("%s-%S+%s*") do
 		if not next(protectLinks) or not protectLinks[word:gsub("%s",""):gsub("|s"," ")] then
 			tempWord = word:gsub("[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
