@@ -179,18 +179,18 @@ local tabTexs = {
 
 
 local smileyPack = {
-	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.blp]],
-	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.blp]],
-	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
-	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
-	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
-	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
-	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
-	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
-	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
-	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
-	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.blp]],
-	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.blp]],
+	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.tga]],
+	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.tga]],
+	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.tga]],
+	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.tga]],
+	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.tga]],
+	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.tga]],
+	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.tga]],
+	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.tga]],
+	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.tga]],
+	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.tga]],
+	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.tga]],
+	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.tga]],
 }
 
 local smileyKeys = {
@@ -251,7 +251,7 @@ do --this can save some main file locals
 	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
 	local ElvRed     = IconPath.."elvui_red.tga:13:25|t"
 	local ElvRainbow = IconPath.."elvui_rainbow.tga:13:25|t"
-	local Bathrobe   = IconPath.."bathrobe.blp:15:15|t"
+	local Bathrobe   = IconPath.."bathrobe.tga:15:15|t"
 	local MrHankey   = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
 		-- Elv --
