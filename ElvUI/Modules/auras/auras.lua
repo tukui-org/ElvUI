@@ -154,12 +154,7 @@ function A:CreateIcon(button)
 	end
 
 	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
-		local customFont = E.LSM:Fetch("font", button.timerOptions.fontOptions.font)
-		if customFont then
-			button.time:FontTemplate(customFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
-		else
-			button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
-		end
+		button.time:FontTemplate(E.LSM:Fetch("font", button.timerOptions.fontOptions.font), button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
 	else
 		button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 	end
