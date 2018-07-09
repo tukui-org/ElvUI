@@ -275,6 +275,7 @@ function E:UpdateCooldownOverride(module)
 			end
 			----------
 
+			-- update font
 			if timer and CD then
 				self:Cooldown_OnSizeChanged(CD, cd, cd:GetSize(), 'override')
 			else
@@ -306,6 +307,7 @@ function E:UpdateCooldownOverride(module)
 				end
 			end
 
+			-- force update cooldown
 			if timer and CD then
 				E:Cooldown_ForceUpdate(CD)
 				E:ToggleBlizzardCooldownText(cd, CD)
