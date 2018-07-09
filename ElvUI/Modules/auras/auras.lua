@@ -134,7 +134,6 @@ function A:CreateIcon(button)
 
 	button.time = button:CreateFontString(nil, "ARTWORK")
 	button.time:Point("TOP", button, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
-	button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
 	button.highlight:SetColorTexture(1, 1, 1, 0.45)
@@ -142,7 +141,8 @@ function A:CreateIcon(button)
 
 	E:SetUpAnimGroup(button)
 
-	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
+	-- fetch cooldown settings
+	A:CooldownText_Update(button)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
@@ -152,6 +152,19 @@ function A:CreateIcon(button)
 		if not E.RegisteredCooldowns['auras'] then E.RegisteredCooldowns['auras'] = {} end
 		tinsert(E.RegisteredCooldowns['auras'], button)
 	end
+
+	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
+		local customFont = E.LSM:Fetch("font", button.timerOptions.fontOptions.font)
+		if customFont then
+			button.time:FontTemplate(customFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
+		else
+			button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
+		end
+	else
+		button.time:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
+	end
+
+	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
 
 	local ButtonData = {
 		FloatingBG = nil,
@@ -305,8 +318,6 @@ function A:OnAttributeChanged(attribute, value)
 	elseif attribute == "target-slot" then
 		A:UpdateTempEnchant(self, value)
 	end
-
-	A:CooldownText_Update(self)
 end
 
 function A:UpdateHeader(header)
