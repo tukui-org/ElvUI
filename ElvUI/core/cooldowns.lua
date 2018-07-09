@@ -282,10 +282,10 @@ function E:UpdateCooldownOverride(module)
 				if text then
 					if CD.timerOptions.fontOptions and CD.timerOptions.fontOptions.enable then
 						if not customFont then
-							customFont = E.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
+							customFont = E.LSM:Fetch("font", CD.timerOptions.fontOptions.font)
 						end
 						if customFont then
-							text:FontTemplate(customFont, cd.timerOptions.fontOptions.fontSize, cd.timerOptions.fontOptions.fontOutline)
+							text:FontTemplate(customFont, CD.timerOptions.fontOptions.fontSize, CD.timerOptions.fontOptions.fontOutline)
 						end
 					elseif cd.CooldownOverride then
 						if not customFont then
