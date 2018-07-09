@@ -97,6 +97,8 @@ local function LoadSkin()
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 	S:HandleCloseButton(CommunitiesFrameCloseButton)
 	S:HandleButton(CommunitiesFrame.InviteButton)
+	CommunitiesFrame.AddToChatButton:ClearAllPoints()
+	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
@@ -109,8 +111,7 @@ local function LoadSkin()
 
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
-	CommunitiesFrame.MemberList.InsetFrame:StripTextures()
-	CommunitiesFrame.MemberList.InsetFrame:SetTemplate("Transparent")
+	CommunitiesFrame.MemberList.InsetFrame:Hide()
 
 	CommunitiesFrame.Chat.InsetFrame:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate("Transparent")
