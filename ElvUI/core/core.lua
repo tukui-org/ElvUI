@@ -1510,7 +1510,7 @@ function E:GetTopCPUFunc(msg)
 		return
 	end
 
-	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
+	local module, showall, delay, minCalls = msg:match("^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$")
 	local checkCore, mod = (not module or module == "") and "E"
 
 	showall = (showall == "true" and true) or false
