@@ -660,7 +660,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 			if(UnitIsUnit(frame.unit, "player")) then
 				frame.displayedUnit = "vehicle"
 			else
-				local prefix, id, suffix = match(frame.unit, "([^%d]+)([%d]*)(.*)")
+				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
 			if(not noEvents) then
