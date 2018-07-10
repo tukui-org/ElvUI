@@ -25,6 +25,10 @@ local function LoadSkin()
 
 	CommunitiesFrame:CreateBackdrop("Transparent")
 
+	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
+	CommunitiesFrameCommunitiesList.Bg:Hide()
+	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
+	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	CommunitiesFrameTopTileStreaks:Hide()
 	CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 	CommunitiesFrameInsetBg:Hide()
@@ -156,6 +160,9 @@ local function LoadSkin()
 	GuildBenefitsFrame.InsetBorderBottomLeft:Hide()
 	GuildBenefitsFrame.InsetBorderTopRight:Hide()
 	GuildBenefitsFrame.InsetBorderTopLeft:Hide()
+	GuildBenefitsFrame.InsetBorderLeft2:Hide()
+	GuildBenefitsFrame.InsetBorderBottomLeft2:Hide()
+	GuildBenefitsFrame.InsetBorderTopLeft2:Hide()
 
 	GuildBenefitsFrame.Perks:StripTextures()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
@@ -213,12 +220,16 @@ local function LoadSkin()
 	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.backdrop:SetAllPoints()
 
 	-- [[ INFO TAB ]]
-	CommunitiesFrameGuildDetailsFrame.InsetBorderLeft:Hide()
-	CommunitiesFrameGuildDetailsFrame.InsetBorderRight:Hide()
-	CommunitiesFrameGuildDetailsFrame.InsetBorderBottomRight:Hide()
-	CommunitiesFrameGuildDetailsFrame.InsetBorderBottomLeft:Hide()
-	CommunitiesFrameGuildDetailsFrame.InsetBorderTopRight:Hide()
-	CommunitiesFrameGuildDetailsFrame.InsetBorderTopLeft:Hide()
+	local GuildDetails = _G["CommunitiesFrameGuildDetailsFrame"]
+	GuildDetails.InsetBorderLeft:Hide()
+	GuildDetails.InsetBorderRight:Hide()
+	GuildDetails.InsetBorderBottomRight:Hide()
+	GuildDetails.InsetBorderBottomLeft:Hide()
+	GuildDetails.InsetBorderTopRight:Hide()
+	GuildDetails.InsetBorderTopLeft:Hide()
+	GuildDetails.InsetBorderLeft2:Hide()
+	GuildDetails.InsetBorderBottomLeft2:Hide()
+	GuildDetails.InsetBorderTopLeft2:Hide()
 
 	local striptextures = {
 		"CommunitiesFrameGuildDetailsFrameInfo",
