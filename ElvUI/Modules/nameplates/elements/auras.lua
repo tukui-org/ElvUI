@@ -232,9 +232,9 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown.CooldownOverride = 'nameplates'
 	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
 	aura.cooldown.CooldownSettings = {
-		['font'] = LSM:Fetch("font", mod.db.font),
-		['fontSize'] = mod.db.fontSize,
-		['fontOutline'] = mod.db.fontOutline,
+		['font'] = LSM:Fetch("font", self.db.font),
+		['fontSize'] = self.db.fontSize,
+		['fontOutline'] = self.db.fontOutline,
 	}
 
 	E:RegisterCooldown(aura.cooldown)
@@ -277,9 +277,16 @@ function mod:UpdateAuraIcons(auras)
 		auras.icons[i]:Hide()
 		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
 
-		-- update stacks and cooldown font on NAME_PLATE_UNIT_ADDED
+		-- update stacks font on NAME_PLATE_UNIT_ADDED
 		if auras.icons[i].count then
 			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+		end
+
+		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED
+		if auras.icons[i].cooldown and auras.icons[i].cooldown.CooldownSettings then
+			auras.icons[i].cooldown.CooldownSettings.font = LSM:Fetch("font", self.db.font)
+			auras.icons[i].cooldown.CooldownSettings.fontSize = self.db.fontSize
+			auras.icons[i].cooldown.CooldownSettings.fontOutline = self.db.fontOutline
 		end
 
 		self.UpdateCooldownText(auras.icons[i].cooldown)
