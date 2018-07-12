@@ -45,7 +45,6 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local GetCVar = GetCVar
-local Saturate = Saturate
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 

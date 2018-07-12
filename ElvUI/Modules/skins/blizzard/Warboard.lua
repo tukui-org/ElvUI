@@ -15,11 +15,6 @@ local function LoadSkin()
 	local WarboardQuestChoiceFrame = _G["WarboardQuestChoiceFrame"]
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
 
-	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption1.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption2.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption3.OptionButton)
-
 	WarboardQuestChoiceFrame.Top:Hide()
 	WarboardQuestChoiceFrame.Bottom:Hide()
 	WarboardQuestChoiceFrame.Left:Hide()
@@ -37,6 +32,13 @@ local function LoadSkin()
 	WarboardQuestChoiceFrame.GarrCorners:Hide()
 
 	WarboardQuestChoiceFrame.Background:Hide()
+
+	for i = 1, 3 do
+		local button = WarboardQuestChoiceFrame["Option"..i].OptionButton
+		S:HandleButton(button)
+	end
+
+	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_WarboardUI", "Warboard", LoadSkin)
