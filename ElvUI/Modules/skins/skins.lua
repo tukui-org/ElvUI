@@ -327,11 +327,10 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
 	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
 
-	Slider.trackBG:SetAlpha(0)
-
-	Slider.ScrollBarTop:Hide()
-	Slider.ScrollBarMiddle:Hide()
-	Slider.ScrollBarBottom:Hide()
+	if Slider.trackBG then Slider.trackBG:Hide() end
+	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
+	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
+	if Slider.ScrollBarBottom then Slider.ScrollBarBottom:Hide() end
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
