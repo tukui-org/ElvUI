@@ -52,7 +52,18 @@ local function LoadSkin()
 	PVPQueueFrameInsetTopRightCorner:Hide()
 	PVPQueueFrameInsetTopLeftCorner:Hide()
 
+	PVPQueueFrame.HonorInset:StripTextures()
 	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
+
+	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
+	SeasonReward.CircleMask:Hide()
+	SeasonReward.Ring:Hide()
+	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
+	local RewardFrameBorder = CreateFrame("Frame", nil, SeasonReward)
+	RewardFrameBorder:SetTemplate("Default")
+	RewardFrameBorder:SetOutside(SeasonReward.Icon)
+	SeasonReward.Icon:SetParent(RewardFrameBorder)
+	SeasonReward.Icon:SetDrawLayer("OVERLAY")
 
 	-- Honor Frame
 	local HonorFrame = _G["HonorFrame"]
