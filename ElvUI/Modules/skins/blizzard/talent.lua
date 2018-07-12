@@ -144,9 +144,9 @@ local function LoadSkin()
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
 			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
+			bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 
 			bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
-			bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
 			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
@@ -159,9 +159,9 @@ local function LoadSkin()
 				if bu.bg and bu.knownSelection then
 					if bu.knownSelection:IsShown() then
 						bu.bg.SelectedTexture:Show()
-						bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 						bu.ShadowedTexture:Hide()
 					else
+						bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
 						bu.bg.SelectedTexture:Hide()
 						bu.ShadowedTexture:Show()
 
@@ -362,9 +362,9 @@ local function LoadSkin()
 			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
 			button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
 			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
+			button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 
 			button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, 2)
-			button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
 			button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
@@ -377,9 +377,9 @@ local function LoadSkin()
 				if button.bg and button.knownSelection then
 					if button.knownSelection:IsShown() then
 						button.bg.SelectedTexture:Show()
-						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 						button.ShadowedTexture:Hide()
 					else
+						button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
 						button.bg.SelectedTexture:Hide()
 						button.ShadowedTexture:Show()
 					end
