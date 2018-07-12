@@ -131,6 +131,7 @@ V['skins'] = {
 		['Communities'] = true,
 		['Scrapping'] = true,
 		['Islands'] = true,
+		['Widgets'] = false,
 	},
 }
 

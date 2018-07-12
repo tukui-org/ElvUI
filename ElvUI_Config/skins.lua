@@ -408,6 +408,11 @@ E.Options.args.skins = {
 					name = AZERITE_RESPEC_TITLE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				UIWidgets = {
+					type = "toggle",
+					name = L["UIWidgets"], -- Find better Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
