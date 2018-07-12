@@ -216,6 +216,17 @@ function mod:UpdateCooldownText()
 	end
 end
 
+function mod:UpdateCooldownSettings(cd)
+	if cd and cd.CooldownSettings then
+		cd.CooldownSettings.font = LSM:Fetch("font", self.db.font)
+		cd.CooldownSettings.fontSize = self.db.fontSize
+		cd.CooldownSettings.fontOutline = self.db.fontOutline
+		if cd.timer then
+			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
+		end
+	end
+end
+
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura)
@@ -283,15 +294,7 @@ function mod:UpdateAuraIcons(auras)
 		end
 
 		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED
-		if auras.icons[i].cooldown and auras.icons[i].cooldown.CooldownSettings then
-			auras.icons[i].cooldown.CooldownSettings.font = LSM:Fetch("font", self.db.font)
-			auras.icons[i].cooldown.CooldownSettings.fontSize = self.db.fontSize
-			auras.icons[i].cooldown.CooldownSettings.fontOutline = self.db.fontOutline
-			if auras.icons[i].cooldown.timer then
-				E:Cooldown_OnSizeChanged(auras.icons[i].cooldown.timer, auras.icons[i].cooldown, auras.icons[i].cooldown:GetSize(), 'override')
-			end
-		end
-
+		self:UpdateCooldownSettings(auras.icons[i].cooldown)
 		self.UpdateCooldownText(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
