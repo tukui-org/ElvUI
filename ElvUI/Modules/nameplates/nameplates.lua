@@ -1098,6 +1098,14 @@ function mod:UpdateFonts(plate)
 			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
 				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+			if plate.Buffs.icons[i].cooldown and plate.Buffs.icons[i].cooldown.CooldownSettings then
+				plate.Buffs.icons[i].cooldown.CooldownSettings.font = LSM:Fetch("font", self.db.font)
+				plate.Buffs.icons[i].cooldown.CooldownSettings.fontSize = self.db.fontSize
+				plate.Buffs.icons[i].cooldown.CooldownSettings.fontOutline = self.db.fontOutline
+				if plate.Buffs.icons[i].cooldown.timer then
+					E:Cooldown_OnSizeChanged(plate.Buffs.icons[i].cooldown.timer, plate.Buffs.icons[i].cooldown, plate.Buffs.icons[i].cooldown:GetSize(), 'override')
+				end
+			end
 		end
 	end
 
@@ -1106,6 +1114,14 @@ function mod:UpdateFonts(plate)
 		for i=1, plate.Debuffs.db.numAuras do
 			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
 				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+			end
+			if plate.Debuffs.icons[i].cooldown and plate.Debuffs.icons[i].cooldown.CooldownSettings then
+				plate.Debuffs.icons[i].cooldown.CooldownSettings.font = LSM:Fetch("font", self.db.font)
+				plate.Debuffs.icons[i].cooldown.CooldownSettings.fontSize = self.db.fontSize
+				plate.Debuffs.icons[i].cooldown.CooldownSettings.fontOutline = self.db.fontOutline
+				if plate.Debuffs.icons[i].cooldown.timer then
+					E:Cooldown_OnSizeChanged(plate.Debuffs.icons[i].cooldown.timer, plate.Debuffs.icons[i].cooldown, plate.Debuffs.icons[i].cooldown:GetSize(), 'override')
+				end
 			end
 		end
 	end

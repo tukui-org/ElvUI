@@ -287,6 +287,9 @@ function mod:UpdateAuraIcons(auras)
 			auras.icons[i].cooldown.CooldownSettings.font = LSM:Fetch("font", self.db.font)
 			auras.icons[i].cooldown.CooldownSettings.fontSize = self.db.fontSize
 			auras.icons[i].cooldown.CooldownSettings.fontOutline = self.db.fontOutline
+			if auras.icons[i].cooldown.timer then
+				E:Cooldown_OnSizeChanged(auras.icons[i].cooldown.timer, auras.icons[i].cooldown, auras.icons[i].cooldown:GetSize(), 'override')
+			end
 		end
 
 		self.UpdateCooldownText(auras.icons[i].cooldown)
