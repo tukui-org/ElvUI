@@ -334,6 +334,7 @@ local function LoadSkin()
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
 	EditStreamDialog:StripTextures()
 	EditStreamDialog:CreateBackdrop("Transparent")
+	EditStreamDialog.backdrop:SetAllPoints()
 
 	S:HandleEditBox(EditStreamDialog.NameEdit)
 	EditStreamDialog.NameEdit:SetSize(280, 20)
