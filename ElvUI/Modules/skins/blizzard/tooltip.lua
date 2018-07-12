@@ -97,7 +97,7 @@ local function LoadSkin()
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
-	-- WoW 8.0 Tooltip Backdrop [[FIX ME]]
+	-- WoW 8.0 Tooltip Backdrop [[FIX ME]] it applies double backdrops
 	hooksecurefunc("GameTooltip_SetBackdropStyle", function(self)
 		self:SetTemplate("Transparent")
 	end)
