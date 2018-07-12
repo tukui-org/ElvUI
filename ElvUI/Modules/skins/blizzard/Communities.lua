@@ -316,6 +316,33 @@ local function LoadSkin()
 		bu:SetBackdrop(nil)
 	end
 
+	-- Notification Settings Dialog
+	local NotificationSettings = _G["CommunitiesFrame"].NotificationSettingsDialog
+	NotificationSettings:StripTextures()
+	NotificationSettings:CreateBackdrop("Transparent")
+	NotificationSettings.backdrop:SetAllPoints()
+
+	S:HandleDropDownFrame(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
+	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+
+	-- Create Channel Dialog
+	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
+	EditStreamDialog:StripTextures()
+	EditStreamDialog:CreateBackdrop("Transparent")
+
+	S:HandleEditBox(EditStreamDialog.NameEdit)
+	EditStreamDialog.NameEdit:SetSize(280, 20)
+	S:HandleEditBox(EditStreamDialog.Description)
+	S:HandleCheckBox(EditStreamDialog.TypeCheckBox)
+
+	S:HandleButton(EditStreamDialog.Accept)
+	S:HandleButton(EditStreamDialog.Cancel)
+
 	-- Communities Settings
 	local Settings = _G["CommunitiesSettingsDialog"]
 	Settings:StripTextures()
