@@ -202,7 +202,7 @@ function mod:UpdateElement_Auras(frame)
 end
 
 function mod:UpdateCooldownText()
-	if self.timer and self.timer.text then
+	if self and self.timer and self.timer.text then
 		self.timer.text:ClearAllPoints()
 		if mod.db.durationPosition == "TOPLEFT" then
 			self.timer.text:Point("TOPLEFT", 1, 1)
