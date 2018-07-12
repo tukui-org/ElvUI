@@ -145,9 +145,9 @@ local function LoadSkin()
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
 			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
+			bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 
 			bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
-			bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
 			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
@@ -160,9 +160,9 @@ local function LoadSkin()
 				if bu.bg and bu.knownSelection then
 					if bu.knownSelection:IsShown() then
 						bu.bg.SelectedTexture:Show()
-						bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 						bu.ShadowedTexture:Hide()
 					else
+						bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
 						bu.bg.SelectedTexture:Hide()
 						bu.ShadowedTexture:Show()
 
