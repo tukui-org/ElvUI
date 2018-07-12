@@ -201,7 +201,7 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
-function mod:UpdateCooldownText()
+function mod:UpdateCooldownTextPosition()
 	if self and self.timer and self.timer.text then
 		self.timer.text:ClearAllPoints()
 		if mod.db.durationPosition == "TOPLEFT" then
@@ -241,7 +241,7 @@ function mod:CreateAuraIcon(parent)
 
 	aura.cooldown.CooldownFontSize = 12
 	aura.cooldown.CooldownOverride = 'nameplates'
-	aura.cooldown.CooldownPreHook = self.UpdateCooldownText
+	aura.cooldown.CooldownPreHook = self.UpdateCooldownTextPosition
 	aura.cooldown.CooldownSettings = {
 		['font'] = LSM:Fetch("font", self.db.font),
 		['fontSize'] = self.db.fontSize,
@@ -295,7 +295,7 @@ function mod:UpdateAuraIcons(auras)
 
 		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED
 		self:UpdateCooldownSettings(auras.icons[i].cooldown)
-		self.UpdateCooldownText(auras.icons[i].cooldown)
+		self.UpdateCooldownTextPosition(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
