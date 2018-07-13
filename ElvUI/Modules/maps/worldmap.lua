@@ -171,6 +171,11 @@ function M:Initialize()
 	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
 	--Enable/Disable map fading when moving
 	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
+
+	if WorldMapFrame.UIElementsFrame and WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown then
+		WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown.CooldownFontSize = 20
+		E:RegisterCooldown(WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown)
+	end
 end
 
 local function InitializeCallback()

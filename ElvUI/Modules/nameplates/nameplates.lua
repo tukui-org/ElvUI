@@ -1098,6 +1098,8 @@ function mod:UpdateFonts(plate)
 			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
 				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Buffs.icons[i].cooldown)
 		end
 	end
 
@@ -1107,6 +1109,8 @@ function mod:UpdateFonts(plate)
 			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
 				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Debuffs.icons[i].cooldown)
 		end
 	end
 
