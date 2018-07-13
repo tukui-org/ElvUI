@@ -72,10 +72,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local function UpdateTooltip(self)
-	local index = self:GetID()
-	if index and (index ~= 0) then
-		GameTooltip:SetUnitAura(self:GetParent().__owner.unit, index, self.filter)
-	end
+	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)

@@ -5,7 +5,7 @@ Handles the visibility and updating of an indicator based on the unit's PvP stat
 
 ## Widget
 
-PvPIndicator - A `Texture` used to display faction, FFA PvP status icon.
+PvPIndicator - A `Texture` used to display faction or FFA PvP status icon.
 
 ## Notes
 
@@ -18,12 +18,7 @@ This element updates by changing the texture.
     PvPIndicator:SetSize(30, 30)
     PvPIndicator:SetPoint('RIGHT', self, 'LEFT')
 
-    local Prestige = self:CreateTexture(nil, 'ARTWORK')
-    Prestige:SetSize(50, 52)
-    Prestige:SetPoint('CENTER', PvPIndicator, 'CENTER')
-
     -- Register it with oUF
-	PvPIndicator.Prestige = Prestige
     self.PvPIndicator = PvPIndicator
 --]]
 
@@ -73,10 +68,10 @@ local function Update(self, event, unit)
 	--[[ Callback: PvPIndicator:PostUpdate(unit, status)
 	Called after the element has been updated.
 
-	* self          - the PvPIndicator element
-	* unit          - the unit for which the update has been triggered (string)
-	* status        - the unit's current PvP status or faction accounting for mercenary mode (string)['ffa', 'Alliance',
-	                  'Horde']
+	* self   - the PvPIndicator element
+	* unit   - the unit for which the update has been triggered (string)
+	* status - the unit's current PvP status or faction accounting for mercenary mode (string)['FFA', 'Alliance',
+	           'Horde']
 	--]]
 	if(element.PostUpdate) then
 		return element:PostUpdate(unit, status)

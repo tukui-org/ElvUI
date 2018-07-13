@@ -140,6 +140,7 @@ local function Update(self, event)
 
 	--[[ Callback: Runes:PostUpdate(runemap)
 	Called after the element has been updated.
+
 	* self    - the Runes element
 	* runemap - the ordered list of runes' indices (table)
 	--]]
@@ -153,6 +154,7 @@ local function Path(self, event, ...)
 	if(event ~= 'RUNE_POWER_UPDATE') then
 		--[[ Override: Runes:UpdateColor(runeID)
 		Used to completely override the internal function for updating the widgets' colors.
+
 		* self   - the Runes element
 		* runeID - the index of the updated rune (number)
 		--]]
@@ -164,6 +166,7 @@ local function Path(self, event, ...)
 
 	--[[ Override: Runes.Override(self, event, ...)
 	Used to completely override the internal update function.
+
 	* self  - the parent object
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
