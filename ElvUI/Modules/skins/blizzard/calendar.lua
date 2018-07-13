@@ -4,10 +4,12 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local ipairs, select, unpack = ipairs, select, unpack
 --WoW API / Variables
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
@@ -19,21 +21,21 @@ local function LoadSkin()
 	CalendarCloseButton:Point("TOPRIGHT", CalendarFrame, "TOPRIGHT", -4, -4)
 
 	for i = 1, 9 do
-		select(i, _G.CalendarViewEventFrame:GetRegions()):Hide()
+		select(i, _G["CalendarViewEventFrame"]:GetRegions()):Hide()
 	end
-	select(15, _G.CalendarViewEventFrame:GetRegions()):Hide()
+	select(15, _G["CalendarViewEventFrame"]:GetRegions()):Hide()
 
 	for i = 1, 9 do
-		select(i, _G.CalendarViewHolidayFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewRaidFrame:GetRegions()):Hide()
+		select(i, _G["CalendarViewHolidayFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewRaidFrame"]:GetRegions()):Hide()
 	end
 
 	for i = 1, 3 do
-		select(i, _G.CalendarCreateEventTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewEventTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewHolidayTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewRaidTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarMassInviteTitleFrame:GetRegions()):Hide()
+		select(i, _G["CalendarCreateEventTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewEventTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewHolidayTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewRaidTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarMassInviteTitleFrame"]:GetRegions()):Hide()
 	end
 
 	for i = 1, 7 do
