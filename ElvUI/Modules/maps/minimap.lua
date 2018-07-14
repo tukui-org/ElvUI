@@ -38,7 +38,7 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: FeedbackUIButton, GameMenuFrame, GameTimeFrame, GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox
 -- GLOBALS: GetMinimapShape, GuildFrame, GuildFrame_LoadUI, HelpOpenTicketButton, HelpOpenWebTicketButton
 -- GLOBALS: InterfaceOptionsFrame, InterfaceOptionsFrameCancel, LeftMiniPanel
--- GLOBALS: Minimap, Minimap_OnClick, MinimapBackdrop, MinimapBorder, MinimapBorderTop, MiniMapChallengeMode, MinimapCluster
+-- GLOBALS: Minimap, Minimap_OnClick, MinimapBackdrop, MinimapBorder, MinimapBorderTop, MiniMapChallengeMode
 -- GLOBALS: MiniMapInstanceDifficulty, MiniMapMailBorder, MiniMapMailFrame, MiniMapMailIcon, MinimapMover, MinimapNorthTag
 -- GLOBALS: MiniMapTracking, MiniMapTrackingDropDown, MiniMapVoiceChatFrame, MiniMapWorldMapButton, MinimapZoneTextButton
 -- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
@@ -377,9 +377,6 @@ function M:UpdateSettings()
 end
 
 local function MinimapPostDrag()
-	--Make sure these invisible frames follow the minimap.
-	MinimapCluster:ClearAllPoints()
-	MinimapCluster:SetAllPoints(Minimap)
 	MinimapBackdrop:ClearAllPoints()
 	MinimapBackdrop:SetAllPoints(Minimap)
 end
