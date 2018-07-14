@@ -40,30 +40,25 @@ local function LoadSkin()
 	hooksecurefunc("GameTooltip_ShowProgressBar", function(self)
 		if not self.progressBarPool then return end
 		local sb = self.progressBarPool:Acquire()
+		if not sb or not sb.Bar then return end
 
-		if not (sb and sb.Bar and not sb.isSkinned) then return end
 		sb.Bar:StripTextures()
-		sb.Bar:CreateBackdrop('Transparent')
+		sb.Bar:CreateBackdrop('Transparent', nil, true)
 		sb.Bar:SetStatusBarTexture(E['media'].normTex)
-		E:RegisterStatusBar(sb.Bar)
-		sb.isSkinned = true
+
+		self.sbBar = sb.Bar
 	end)
 
 	-- Color GameTooltip QuestRewards Progress Bars
-	local function QuestRewardsBarColor(tooltip, questID)
-		if not tooltip or not questID then return end
-		local name, cur, max, sb, _ = tooltip.GetName and tooltip:GetName()
-		if name and name == 'WorldMapTooltip' then name = 'WorldMapTaskTooltip' end
-		sb = name and _G[name..'StatusBar']
-		if not sb or not sb.isSkinned then return end
-		if sb.Bar and sb.Bar.GetValue then
-			cur = sb.Bar:GetValue()
-			if cur then
-				if sb.Bar.GetMinMaxValues then
-					_, max = sb.Bar:GetMinMaxValues()
-				end
-				S:StatusBarColorGradient(sb.Bar, cur, max)
+	local function QuestRewardsBarColor(tt, questID)
+		if not (tt and questID and tt.sbBar and tt.sbBar.GetValue) then return end
+		local cur = tt.sbBar:GetValue()
+		if cur then
+			local max, _
+			if tt.sbBar.GetMinMaxValues then
+				_, max = tt.sbBar:GetMinMaxValues()
 			end
+			S:StatusBarColorGradient(tt.sbBar, cur, max)
 		end
 	end
 	hooksecurefunc('GameTooltip_AddQuestRewardsToTooltip', QuestRewardsBarColor)
