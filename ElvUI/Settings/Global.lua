@@ -196,7 +196,7 @@ G['unitframe'] = {
 				[117952] = true, -- Crackling Jade Lightning (40 yards)
 			},
 			['friendlySpells'] = {
-				[116694] = true, -- Effuse (40 yards)
+				[116670] = true, -- Vivify (40 yards)
 			},
 			['resSpells'] = {
 				[115178] = true, -- Resuscitate (40 yards)
