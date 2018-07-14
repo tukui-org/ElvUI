@@ -1,15 +1,20 @@
 --[[
-# Element: PvP Icon
+# Element: PvP and Honor Level Icons
 
-Handles the visibility and updating of an indicator based on the unit's PvP status.
+Handles the visibility and updating of an indicator based on the unit's PvP status and honor level.
 
 ## Widget
 
-PvPIndicator - A `Texture` used to display faction or FFA PvP status icon.
+PvPIndicator - A `Texture` used to display faction, FFA PvP status or honor level icon.
+
+## Sub-Widgets
+
+Badge - A `Texture` used to display the honor badge background image.
 
 ## Notes
 
 This element updates by changing the texture.
+The `Badge` sub-widget has to be on a lower sub-layer than the `PvP` texture.
 
 ## Examples
 
@@ -18,7 +23,12 @@ This element updates by changing the texture.
     PvPIndicator:SetSize(30, 30)
     PvPIndicator:SetPoint('RIGHT', self, 'LEFT')
 
+    local Badge = self:CreateTexture(nil, 'ARTWORK')
+    Badge:SetSize(50, 52)
+    Badge:SetPoint('CENTER', PvPIndicator, 'CENTER')
+
     -- Register it with oUF
+    PvPIndicator.Badge = Badge
     self.PvPIndicator = PvPIndicator
 --]]
 
@@ -42,6 +52,7 @@ local function Update(self, event, unit)
 
 	local status
 	local factionGroup = UnitFactionGroup(unit)
+	local honorRewardInfo = C_PvP.GetHonorRewardInfo(UnitHonorLevel(unit))
 
 	if(UnitIsPVPFreeForAll(unit)) then
 		status = 'FFA'
@@ -58,11 +69,27 @@ local function Update(self, event, unit)
 	end
 
 	if(status) then
-		element:SetTexture([[Interface\TargetingFrame\UI-PVP-]] .. status)
-		element:SetTexCoord(0, 0.65625, 0, 0.65625)
 		element:Show()
+
+		if(element.Badge and honorRewardInfo) then
+			if(honorRewardInfo) then
+				element:SetTexture(honorRewardInfo.badgeFileDataID)
+				element:SetTexCoord(0, 1, 0, 1)
+				element.Badge:SetAtlas('honorsystem-portrait-' .. factionGroup, false)
+				element.Badge:Show()
+			else
+				element.Badge:Hide()
+			end
+		else
+			element:SetTexture([[Interface\TargetingFrame\UI-PVP-]] .. status)
+			element:SetTexCoord(0, 0.65625, 0, 0.65625)
+		end
 	else
 		element:Hide()
+
+		if(element.Badge) then
+			element.Badge:Hide()
+		end
 	end
 
 	--[[ Callback: PvPIndicator:PostUpdate(unit, status)
@@ -100,6 +127,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('UNIT_FACTION', Path)
+		self:RegisterEvent('HONOR_LEVEL_UPDATE', Path)
 
 		return true
 	end
@@ -111,6 +139,7 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
+		self:UnregisterEvent('HONOR_LEVEL_UPDATE', Path)
 	end
 end
 
