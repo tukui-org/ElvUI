@@ -41,7 +41,7 @@ local function LoadSkin()
 		if not self.progressBarPool then return end
 		local sb = self.progressBarPool:Acquire()
 
-		if not (sb and not sb.isSkinned) then return end
+		if not (sb and sb.Bar and not sb.isSkinned) then return end
 		sb.Bar:StripTextures()
 		sb.Bar:CreateBackdrop('Transparent')
 		sb.Bar:SetStatusBarTexture(E['media'].normTex)
