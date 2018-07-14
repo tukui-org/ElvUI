@@ -601,6 +601,19 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	sb:SetStatusBarTexture(E['media'].normTex)
 end
 
+function TT:CheckBackdropColor()
+	if not tt or tt:IsForbidden() then return end
+	local r, g, b = tt:GetBackdropColor()
+	if r and g and b then
+		r, g, b = E:Round(r, 1), E:Round(g, 1), E:Round(b, 1)
+
+		local red, green, blue = unpack(E.media.backdropfadecolor)
+		if r ~= red or g ~= green or b ~= blue then
+			tt:SetBackdropColor(red, green, blue, self.db.colorAlpha)
+		end
+	end
+end
+
 function TT:SetStyle(tt)
 	if not tt or tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates

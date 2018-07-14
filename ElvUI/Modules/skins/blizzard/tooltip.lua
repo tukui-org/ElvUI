@@ -79,6 +79,9 @@ local function LoadSkin()
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Tooltip Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color GameTooltip QuestRewards Progress Bars
 	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle')
+
+	-- [Backdrop coloring] There has to be a more elegant way of doing this.
+	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 end
 
 S:AddCallback('SkinTooltip', LoadSkin)
