@@ -72,17 +72,17 @@ local function Update(self, event, unit)
 		element:Show()
 
 		if(element.Badge and honorRewardInfo) then
-			if(honorRewardInfo) then
-				element:SetTexture(honorRewardInfo.badgeFileDataID)
-				element:SetTexCoord(0, 1, 0, 1)
-				element.Badge:SetAtlas('honorsystem-portrait-' .. factionGroup, false)
-				element.Badge:Show()
-			else
-				element.Badge:Hide()
-			end
+			element:SetTexture(honorRewardInfo.badgeFileDataID)
+			element:SetTexCoord(0, 1, 0, 1)
+			element.Badge:SetAtlas('honorsystem-portrait-' .. factionGroup, false)
+			element.Badge:Show()
 		else
 			element:SetTexture([[Interface\TargetingFrame\UI-PVP-]] .. status)
 			element:SetTexCoord(0, 0.65625, 0, 0.65625)
+
+			if(element.Badge) then
+				element.Badge:Hide()
+			end
 		end
 	else
 		element:Hide()
