@@ -562,7 +562,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
-	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) then return end
+	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) or tt:IsForbidden() then return end
 	local cur = tt.pbBar:GetValue()
 	if cur then
 		local max, _
@@ -576,7 +576,7 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 end
 
 function TT:GameTooltip_ShowProgressBar(tt)
-	if tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() then return end
 	if not tt.progressBarPool then return end
 
 	local sb = tt.progressBarPool:Acquire()
@@ -590,7 +590,7 @@ function TT:GameTooltip_ShowProgressBar(tt)
 end
 
 function TT:GameTooltip_ShowStatusBar(tt)
-	if tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() then return end
 	if not self.statusBarPool then return end
 
 	local sb = self.statusBarPool:Acquire()
