@@ -109,6 +109,11 @@ local SlotName = {
 	"Trinket0","Trinket1","MainHand","SecondaryHand"
 }
 
+function TT:GameTooltip_UpdateStyle(tt)
+	if not tt or tt:IsForbidden() then return end
+	tt:SetTemplate("Transparent")
+end
+
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if tt:IsForbidden() then return end
 	if E.private.tooltip.enable ~= true then return end
@@ -573,8 +578,9 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:SetStyle(tt)
-	if tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates
+
 	local r, g, b = tt:GetBackdropColor()
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
@@ -637,21 +643,6 @@ function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= BNETMover then
 		frame:ClearAllPoints()
 		frame:SetPoint(BNETMover.anchorPoint or 'TOPLEFT', BNETMover, BNETMover.anchorPoint or 'TOPLEFT');
-	end
-end
-
-function TT:CheckBackdropColor()
-	if GameTooltip:IsForbidden() then return end
-	if not GameTooltip:IsShown() then return end
-	local r, g, b = GameTooltip:GetBackdropColor()
-	if (r and g and b) then
-		r = E:Round(r, 1)
-		g = E:Round(g, 1)
-		b = E:Round(b, 1)
-		local red, green, blue = unpack(E.media.backdropfadecolor)
-		if (r ~= red or g ~= green or b ~= blue) then
-			GameTooltip:SetBackdropColor(red, green, blue, self.db.colorAlpha)
-		end
 	end
 end
 

@@ -93,14 +93,10 @@ local function LoadSkin()
 		StoryTooltip,
 		EmbeddedItemTooltip,
 	}
+
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
-
-	-- WoW 8.0 Tooltip Backdrop [[FIX ME]] it applies double backdrops
-	hooksecurefunc("GameTooltip_SetBackdropStyle", function(self)
-		self:SetTemplate("Transparent")
-	end)
 
 	-- Skin GameTooltip Status Bar
 	GameTooltipStatusBar:SetStatusBarTexture(E['media'].normTex)
@@ -111,12 +107,8 @@ local function LoadSkin()
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 
 	-- Skin Additional GameTooltip Status Bars
-	TT:SecureHook('GameTooltip_ShowStatusBar', 'GameTooltip_ShowStatusBar')
-
-	-- Backdrop coloring
-	TT:SecureHookScript(GameTooltip, 'OnSizeChanged', 'CheckBackdropColor')
-	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor') --There has to be a more elegant way of doing this.
-	TT:RegisterEvent('CURSOR_UPDATE', 'CheckBackdropColor')
+	TT:SecureHook('GameTooltip_ShowStatusBar')
+	TT:SecureHook('GameTooltip_UpdateStyle')
 end
 
 S:AddCallback('SkinTooltip', LoadSkin)
