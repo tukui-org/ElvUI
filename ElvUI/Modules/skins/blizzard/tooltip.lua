@@ -108,7 +108,7 @@ local function LoadSkin()
 
 	-- Skin Additional GameTooltip Status Bars
 	TT:SecureHook('GameTooltip_ShowStatusBar')
-	TT:SecureHook('GameTooltip_UpdateStyle')
+	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
 end
 
 S:AddCallback('SkinTooltip', LoadSkin)

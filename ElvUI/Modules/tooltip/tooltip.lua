@@ -109,11 +109,6 @@ local SlotName = {
 	"Trinket0","Trinket1","MainHand","SecondaryHand"
 }
 
-function TT:GameTooltip_UpdateStyle(tt)
-	if not tt or tt:IsForbidden() then return end
-	tt:SetTemplate("Transparent")
-end
-
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if tt:IsForbidden() then return end
 	if E.private.tooltip.enable ~= true then return end
