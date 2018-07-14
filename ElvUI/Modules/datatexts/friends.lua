@@ -479,7 +479,7 @@ local function OnEnter(self)
 					shouldSkip = true
 				end
 				if not shouldSkip then
-					if E:GetZoneText(C_Map_GetCurrentMapID()) == info[4] then zonec = activezone else zonec = inactivezone end
+					if E:GetZoneText(C_Map_GetBestMapForUnitPlayer()) == info[4] then zonec = activezone else zonec = inactivezone end
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
 					classc = classc or GetQuestDifficultyColor(info[2])
