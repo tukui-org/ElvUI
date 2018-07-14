@@ -6,6 +6,7 @@ G['general'] = {
 	['minUiScale'] = 0.64,
 	['eyefinity'] = false,
 	['smallerWorldMap'] = true,
+	['smallerWorldMapScale'] = 0.8,
 	['fadeMapWhenMoving'] = true,
 	['mapAlphaWhenMoving'] = 0.35,
 	['WorldMapCoordinates'] = {

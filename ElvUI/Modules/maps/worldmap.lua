@@ -40,6 +40,10 @@ local tooltips = {
 	WorldMapCompareTooltip3
 }
 
+-- these will be updated later
+local smallerMapScale = 0.8
+local smallerSizeScale = 1.25 -- 1 / smallerMapScale
+
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
@@ -48,9 +52,9 @@ function M:SetLargeWorldMap()
 	WorldMapFrame:EnableMouse(true)
 	WorldMapFrame:SetScale(1)
 
-	WorldMapFrame.ScrollContainer.Child:SetScale(0.5)
+	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 	local width, height = WorldMapFrame.ScrollContainer.Child:GetSize()
-	WorldMapFrame:Size((width / 2) + 50, (height / 2) + 100)
+	WorldMapFrame:Size((width / smallerSizeScale) + 50, (height / smallerSizeScale) + 100)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -75,7 +79,7 @@ function M:SynchronizeDisplayState()
 
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("CENTER", E.UIParent, "CENTER", 0, 50)
+		WorldMapFrame:Point("CENTER", E.UIParent)
 	end
 end
 
@@ -164,6 +168,9 @@ function M:Initialize()
 	end
 
 	if E.global.general.smallerWorldMap then
+		smallerMapScale = E.global.general.smallerWorldMapScale
+		smallerSizeScale = 1 / smallerMapScale
+
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
 
 		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
