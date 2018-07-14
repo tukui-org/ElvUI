@@ -18,10 +18,7 @@ local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
--- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
--- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, WorldMapScrollFrame
--- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
+-- GLOBALS: UIParent, WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
