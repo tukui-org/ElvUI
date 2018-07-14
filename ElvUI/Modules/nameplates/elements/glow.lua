@@ -51,7 +51,7 @@ function mod:UpdatePosition_Glow(frame, shouldShow)
 	local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
 
 	if frame.Glow and (self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7") then -- original glow
-		local offset = (E.PixelMode and E.mult*6) or E.mult*8 -- edgeSize is 5 (not attached to the backdrop needs +1 for pixel mode or +3 for non pixel mode)
+		local offset = E:Scale(E.PixelMode and 6 or 8) -- edgeSize is 5 (not attached to the backdrop needs +1 for pixel mode or +3 for non pixel mode)
 		frame.Glow:SetOutside((iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, offset, offset, (iconPosition == "RIGHT" and castBar.Icon) or bottomBar)
 
 		if shouldShow then
