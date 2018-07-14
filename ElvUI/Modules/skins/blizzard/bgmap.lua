@@ -48,48 +48,19 @@ local function LoadSkin()
 	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
 	BattlefieldMapTab:Kill()
 
-	-- Custom dropdown to avoid using regular DropDownMenu code (taints)
-	local function BattlefieldMapTabDropDown_Initialize()
-		local info = UIDropDownMenu_CreateInfo();
-
-		-- Show battlefield players
-		info.text = SHOW_BATTLEFIELDMINIMAP_PLAYERS;
-		info.func = function()
-			BattlefieldMapOptions.showPlayers = not BattlefieldMapOptions.showPlayers;
-			BattlefieldMapFrame:UpdateUnitsVisibility()
-		end
-		info.checked = BattlefieldMapOptions and BattlefieldMapOptions.showPlayers or false;
-		info.isNotRadio = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-
-		-- Battlefield minimap lock
-		info.text = LOCK_BATTLEFIELDMINIMAP;
-		info.func = function()
-			BattlefieldMapOptions.locked = not BattlefieldMapOptions.locked
-		end
-		info.checked = BattlefieldMapOptions and BattlefieldMapOptions.locked or false;
-		info.isNotRadio = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-
-		-- Opacity
-		info.text = BATTLEFIELDMINIMAP_OPACITY_LABEL;
-		info.func = BattlefieldMapTab.ShowOpacity;
-		info.notCheckable = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+	local function InitializeOptionsDropDown()
+		BattlefieldMapTab:InitializeOptionsDropDown()
 	end
 
-	local ElvUIBattlefieldMapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMapTabDropDown", UIParent, "UIDropDownMenuTemplate")
-	ElvUIBattlefieldMapTabDropDown:SetID(1)
-	ElvUIBattlefieldMapTabDropDown:Hide()
-	UIDropDownMenu_Initialize(ElvUIBattlefieldMapTabDropDown, BattlefieldMapTabDropDown_Initialize, "MENU");
-
-	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
+	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(self, btn)
 		if btn == "LeftButton" then
 			BattlefieldMapTab:StopMovingOrSizing()
 			BattlefieldMapTab:SetUserPlaced(true)
 		elseif btn == "RightButton" then
-			ToggleDropDownMenu(1, nil, ElvUIBattlefieldMapTabDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+			UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
+			ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
 		end
+
 		if OpacityFrame:IsShown() then
 			OpacityFrame:Hide()
 		end
