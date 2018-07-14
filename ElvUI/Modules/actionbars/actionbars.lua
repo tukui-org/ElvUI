@@ -42,20 +42,15 @@ local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 
 --Global variables that we don't need to cache, list them here for mikk's FindGlobals script
--- GLOBALS: LeaveVehicleButton, Minimap, SpellFlyout, SpellFlyoutHorizontalBackground
--- GLOBALS: SpellFlyoutVerticalBackground, IconIntroTracker, MultiCastActionBarFrame
--- GLOBALS: PetActionBarFrame, PossessBarFrame, OverrideActionBar, StanceBarFrame
--- GLOBALS: MultiBarBottomLeft, MultiBarBottomRight, MultiBarLeft, MultiBarRight
--- GLOBALS: ActionBarController, MainMenuBar, MainMenuExpBar, ReputationWatchBar
--- GLOBALS: MainMenuBarArtFrame, InterfaceOptionsCombatPanelActionButtonUseKeyDown
--- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars
+-- GLOBALS: MainMenuBarArtFrame, PlayerTalentFrame, StanceBarFrame, PossessBarFrame, PetActionBarFrame
+-- GLOBALS: LeaveVehicleButton, StatusTrackingBarManager, MultiCastActionBarFrame
+-- GLOBALS: LOCK_ACTIONBAR, UIParent, Minimap, IconIntroTracker, MainMenuBar, OverrideActionBar, ActionBarController
+-- GLOBALS: SpellFlyout, SpellFlyoutBackgroundEnd, SpellFlyoutVerticalBackground, SpellFlyoutHorizontalBackground
+-- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight
 -- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
--- GLOBALS: InterfaceOptionsActionBarsPanelRight, InterfaceOptionsActionBarsPanelRightTwo
--- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
--- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, LOCK_ACTIONBAR
--- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
--- GLOBALS: InterfaceOptionsStatusTextPanelXP, ArtifactWatchBar, HonorWatchBar
--- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd, UIParent
+-- GLOBALS: InterfaceOptionsActionBarsPanelRightTwo, InterfaceOptionsActionBarsPanelRight
+-- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
+-- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
