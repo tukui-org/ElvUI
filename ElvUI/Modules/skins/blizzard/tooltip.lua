@@ -36,33 +36,6 @@ local function LoadSkin()
 	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
 	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 
-	-- Tooltip Progress Bars
-	hooksecurefunc("GameTooltip_ShowProgressBar", function(self)
-		if not self.progressBarPool then return end
-		local sb = self.progressBarPool:Acquire()
-		if not sb or not sb.Bar then return end
-
-		sb.Bar:StripTextures()
-		sb.Bar:CreateBackdrop('Transparent', nil, true)
-		sb.Bar:SetStatusBarTexture(E['media'].normTex)
-
-		self.sbBar = sb.Bar
-	end)
-
-	-- Color GameTooltip QuestRewards Progress Bars
-	local function QuestRewardsBarColor(tt, questID)
-		if not (tt and questID and tt.sbBar and tt.sbBar.GetValue) then return end
-		local cur = tt.sbBar:GetValue()
-		if cur then
-			local max, _
-			if tt.sbBar.GetMinMaxValues then
-				_, max = tt.sbBar:GetMinMaxValues()
-			end
-			S:StatusBarColorGradient(tt.sbBar, cur, max)
-		end
-	end
-	hooksecurefunc('GameTooltip_AddQuestRewardsToTooltip', QuestRewardsBarColor)
-
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G['GameTooltip']
 	local GameTooltipStatusBar =  _G['GameTooltipStatusBar']
@@ -104,6 +77,11 @@ local function LoadSkin()
 
 	-- Skin Additional GameTooltip Status Bars
 	TT:SecureHook('GameTooltip_ShowStatusBar')
+	-- Tooltip Progress Bars
+	TT:SecureHook('GameTooltip_ShowProgressBar')
+	-- Color GameTooltip QuestRewards Progress Bars
+	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip')
+
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
 end
 

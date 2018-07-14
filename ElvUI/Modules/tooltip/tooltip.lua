@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local S -- used to hold the skin module when we need it
 
 --Cache global variables
 --Lua functions
@@ -560,16 +561,44 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
+function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
+	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) then return end
+	local cur = tt.pbBar:GetValue()
+	if cur then
+		local max, _
+		if tt.pbBar.GetMinMaxValues then
+			_, max = tt.pbBar:GetMinMaxValues()
+		end
+
+		if not S then S = E:GetModule('Skins') end
+		S:StatusBarColorGradient(tt.pbBar, cur, max)
+	end
+end
+
+function TT:GameTooltip_ShowProgressBar(tt)
+	if tt:IsForbidden() then return end
+	if not tt.progressBarPool then return end
+
+	local sb = tt.progressBarPool:Acquire()
+	if not sb or not sb.Bar then return end
+
+	sb.Bar:StripTextures()
+	sb.Bar:CreateBackdrop('Default', nil, true)
+	sb.Bar:SetStatusBarTexture(E['media'].normTex)
+
+	tt.pbBar = sb.Bar
+end
+
 function TT:GameTooltip_ShowStatusBar(tt)
 	if tt:IsForbidden() then return end
-	local statusBar = _G[tt:GetName().."StatusBar"]
-	if statusBar and not statusBar.skinned then
-		statusBar:StripTextures()
-		statusBar:SetStatusBarTexture(E['media'].normTex)
-		E:RegisterStatusBar(statusBar)
-		statusBar:CreateBackdrop('Default')
-		statusBar.skinned = true;
-	end
+	if not self.statusBarPool then return end
+
+	local sb = self.statusBarPool:Acquire()
+	if not sb or not sb.Text then return end
+
+	sb:StripTextures()
+	sb:CreateBackdrop('Default', nil, true)
+	sb:SetStatusBarTexture(E['media'].normTex)
 end
 
 function TT:SetStyle(tt)
