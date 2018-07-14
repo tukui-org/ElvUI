@@ -52,7 +52,7 @@ local function LoadSkin()
 		BattlefieldMapTab:InitializeOptionsDropDown()
 	end
 
-	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(self, btn)
+	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
 		if btn == "LeftButton" then
 			BattlefieldMapTab:StopMovingOrSizing()
 			BattlefieldMapTab:SetUserPlaced(true)
