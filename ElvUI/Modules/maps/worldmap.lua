@@ -97,21 +97,23 @@ function M:UpdateCoords()
 		CoordsHolder.playerCoords:SetText("")
 	end
 
-	--local scale = WorldMapFrame:GetEffectiveScale()
-	--local width = WorldMapFrame:GetWidth()
-	--local height = WorldMapFrame:GetHeight()
-	--local centerX, centerY = WorldMapFrame:GetCenter()
-	--x, y = GetCursorPosition()
-	--local adjustedX = (x / scale - (centerX - (width/2))) / width
-	--local adjustedY = (centerY + (height/2) - y / scale) / height
+	--[[
+	local scale = WorldMapFrame:GetEffectiveScale()
+	local width = WorldMapFrame:GetWidth()
+	local height = WorldMapFrame:GetHeight()
+	local centerX, centerY = WorldMapFrame:GetCenter()
+	x, y = GetCursorPosition()
+	local adjustedX = (x / scale - (centerX - (width/2))) / width
+	local adjustedY = (centerY + (height/2) - y / scale) / height
 
-	--if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-		--adjustedX = E:Round(100 * adjustedX, 2)
-		--adjustedY = E:Round(100 * adjustedY, 2)
-		--CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
-	--else
-		--CoordsHolder.mouseCoords:SetText("")
-	--end
+	if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+		adjustedX = E:Round(100 * adjustedX, 2)
+		adjustedY = E:Round(100 * adjustedY, 2)
+		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+	else
+		CoordsHolder.mouseCoords:SetText("")
+	end
+	]]
 end
 
 function M:PositionCoords()

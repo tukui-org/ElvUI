@@ -6,6 +6,8 @@ local DT = E:GetModule('DataTexts')
 local join = string.join
 --WoW API / Variables
 local ToggleFrame = ToggleFrame
+local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
+local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame
@@ -20,9 +22,10 @@ local function Update(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		x, y = nil, nil --GetPlayerMapPosition("player")
-		x = E:Round(100 * x, 1)
-		y = E:Round(100 * y, 1)
+		x, y = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
+
+		x = x and E:Round(100 * x, 1) or 0
+		y = y and E:Round(100 * y, 1) or 0
 
 		self.text:SetFormattedText(displayString, x, y)
 		self.timeSinceUpdate = 0
@@ -30,8 +33,8 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	local x = nil --GetPlayerMapPosition("player")
-	if not x then
+	x, y = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
+	if not (x and y) then
 		inRestrictedArea = true
 		self.text:SetText("N/A")
 		self:Hide()
