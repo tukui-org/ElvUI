@@ -4,6 +4,8 @@ E.WorldMap = M
 
 --Cache global variables
 --Lua functions
+local _G = _G
+local pairs = pairs
 local find = string.find
 --WoW API / Variables
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
@@ -15,13 +17,11 @@ local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
-local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
-local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
 -- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
--- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
+-- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, WorldMapScrollFrame
 -- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
 
 local INVERTED_POINTS = {
@@ -33,16 +33,24 @@ local INVERTED_POINTS = {
 	["BOTTOM"] = "TOP",
 }
 
+local tooltips = {
+	WorldMapTooltip,
+	WorldMapCompareTooltip1,
+	WorldMapCompareTooltip2,
+	WorldMapCompareTooltip3
+}
+
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:EnableKeyboard(false)
-	WorldMapFrame:SetScale(1)
 	WorldMapFrame:EnableMouse(true)
-	WorldMapTooltip:SetFrameStrata("TOOLTIP")
-	WorldMapCompareTooltip1:SetFrameStrata("TOOLTIP")
-	WorldMapCompareTooltip2:SetFrameStrata("TOOLTIP")
+	WorldMapFrame:SetScale(1)
+
+	WorldMapFrame.ScrollContainer.Child:SetScale(0.5)
+	local width, height = WorldMapFrame.ScrollContainer.Child:GetSize()
+	WorldMapFrame:Size((width / 2) + 50, (height / 2) + 100)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -52,22 +60,26 @@ function M:SetLargeWorldMap()
 		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
 
-	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:Point("CENTER", E.UIParent, "CENTER", 0, 100)
-	WorldMapFrame:Size(1002, 668)
+	WorldMapFrame:OnFrameSizeChanged()
+	if WorldMapFrame:GetMapID() then
+		WorldMapFrame.NavBar:Refresh()
+	end
+
+	for _, tt in pairs(tooltips) do
+		if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
+	end
 end
 
-function M:SetSmallWorldMap()
-	if InCombatLockdown() then return; end
+function M:SynchronizeDisplayState()
+	if InCombatLockdown() then return end
+
+	if WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point("CENTER", E.UIParent, "CENTER", 0, 50)
+	end
 end
 
-function M:PLAYER_REGEN_ENABLED()
-
-end
-
-function M:PLAYER_REGEN_DISABLED()
-
-end
+function M:SetSmallWorldMap() end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
@@ -77,7 +89,7 @@ function M:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.CoordsTimer)
 		self.CoordsTimer = nil
 		CoordsHolder.playerCoords:SetText("")
-		--CoordsHolder.mouseCoords:SetText("")
+		CoordsHolder.mouseCoords:SetText("")
 	elseif not self.CoordsTimer then
 		inRestrictedArea = false
 		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
@@ -151,21 +163,23 @@ function M:Initialize()
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	end
 
-	--[[ FIX ME
-	if(E.global.general.smallerWorldMap) then
-		BlackoutWorld:SetTexture(nil)
-		self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')
-		self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		self:RegisterEvent('PLAYER_REGEN_DISABLED')
+	if E.global.general.smallerWorldMap then
+		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
 
-		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-			self:SetLargeWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-			self:SetSmallWorldMap()
-		end
+		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
+		self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
+		self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
+
+		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
+			if WorldMapFrame:IsMaximized() then
+				self:SetLargeWorldMap()
+			else
+				self:SetSmallWorldMap()
+			end
+
+			M:Unhook(WorldMapFrame, 'OnShow', nil)
+		end)
 	end
-	]]
 
 	--Set alpha used when moving
 	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
