@@ -12,7 +12,6 @@ local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
-local InCombatLockdown = InCombatLockdown
 local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local PLAYER = PLAYER
@@ -45,8 +44,6 @@ local smallerMapScale = 0.8
 local smallerSizeScale = 1.25 -- 1 / smallerMapScale
 
 function M:SetLargeWorldMap()
-	if InCombatLockdown() then return end
-
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:EnableKeyboard(false)
 	WorldMapFrame:EnableMouse(true)
@@ -75,15 +72,18 @@ function M:SetLargeWorldMap()
 end
 
 function M:SynchronizeDisplayState()
-	if InCombatLockdown() then return end
-
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point("CENTER", E.UIParent)
 	end
 end
 
-function M:SetSmallWorldMap() end
+function M:SetSmallWorldMap()
+	if not WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point("TOPLEFT", UIParent, "TOPLEFT", 16, -94)
+	end
+end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
@@ -148,7 +148,7 @@ function M:PositionCoords()
 end
 
 function M:Initialize()
-	if(E.global.general.WorldMapCoordinates.enable) then
+	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 1)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
@@ -191,6 +191,7 @@ function M:Initialize()
 	--Set alpha used when moving
 	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
 	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
+
 	--Enable/Disable map fading when moving
 	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
 
