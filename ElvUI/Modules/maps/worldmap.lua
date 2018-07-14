@@ -97,23 +97,22 @@ function M:UpdateCoords()
 		CoordsHolder.playerCoords:SetText("")
 	end
 
-	--[[
-	local scale = WorldMapFrame:GetEffectiveScale()
-	local width = WorldMapFrame:GetWidth()
-	local height = WorldMapFrame:GetHeight()
-	local centerX, centerY = WorldMapFrame:GetCenter()
+	local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
+	local width = WorldMapFrame.ScrollContainer:GetWidth()
+	local height = WorldMapFrame.ScrollContainer:GetHeight()
+	local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
 	x, y = GetCursorPosition()
-	local adjustedX = (x / scale - (centerX - (width/2))) / width
-	local adjustedY = (centerY + (height/2) - y / scale) / height
 
-	if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+	local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
+	local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
+
+	if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
 		adjustedX = E:Round(100 * adjustedX, 2)
 		adjustedY = E:Round(100 * adjustedY, 2)
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
 	else
 		CoordsHolder.mouseCoords:SetText("")
 	end
-	]]
 end
 
 function M:PositionCoords()
@@ -128,8 +127,8 @@ function M:PositionCoords()
 
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
-	--CoordsHolder.mouseCoords:ClearAllPoints()
-	--CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
+	CoordsHolder.mouseCoords:ClearAllPoints()
+	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:Initialize()
@@ -138,13 +137,13 @@ function M:Initialize()
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 1)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
-		--CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
+		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
-		--CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
+		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
-		--CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
+		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
-		--CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
+		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
 		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
 		M:PositionCoords()
