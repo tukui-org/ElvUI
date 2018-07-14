@@ -75,9 +75,9 @@ local function LoadSkin()
 	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 
-	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Additional GameTooltip Status Bars
-	TT:SecureHook('GameTooltip_ShowProgressBar') -- Tooltip Progress Bars
-	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color GameTooltip QuestRewards Progress Bars
+	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
+	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
+	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle')
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
