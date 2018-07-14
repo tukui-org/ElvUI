@@ -39,30 +39,23 @@ local UnitHealthMax = UnitHealthMax
 local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
-local PetActionBar_Update = PetActionBar_Update
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
-local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
-local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
-local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
-local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
-local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
-local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
-local SPELLBOOK_SPELL_NOT_ON_ACTION_BAR = SPELLBOOK_SPELL_NOT_ON_ACTION_BAR
-local LIGHTBLUE_FONT_COLOR = LIGHTBLUE_FONT_COLOR
 
 --Global variables that we don't need to cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, ActionBarController, IconIntroTracker, SpellBookFrame, StanceBarFrame
--- GLOBALS: PetActionBarFrame, MainMenuBarArtFrame, PlayerTalentFrame, PossessBarFrame
--- GLOBALS: LeaveVehicleButton, Minimap, UIParent, LOCK_ACTIONBAR, SpellFlyout
+-- GLOBALS: LeaveVehicleButton, Minimap, SpellFlyout, SpellFlyoutHorizontalBackground
+-- GLOBALS: SpellFlyoutVerticalBackground, IconIntroTracker, MultiCastActionBarFrame
+-- GLOBALS: PetActionBarFrame, PossessBarFrame, OverrideActionBar, StanceBarFrame
 -- GLOBALS: MultiBarBottomLeft, MultiBarBottomRight, MultiBarLeft, MultiBarRight
--- GLOBALS: MainMenuBar, OverrideActionBar, SPELLS_PER_PAGE, StatusTrackingBarManager, MultiCastActionBarFrame
--- GLOBALS: SpellFlyoutBackgroundEnd, SpellFlyoutVerticalBackground, SpellFlyoutHorizontalBackground
+-- GLOBALS: ActionBarController, MainMenuBar, MainMenuExpBar, ReputationWatchBar
+-- GLOBALS: MainMenuBarArtFrame, InterfaceOptionsCombatPanelActionButtonUseKeyDown
+-- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars
 -- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
--- GLOBALS: InterfaceOptionsActionBarsPanelRightTwo, InterfaceOptionsActionBarsPanelRight
--- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
--- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+-- GLOBALS: InterfaceOptionsActionBarsPanelRight, InterfaceOptionsActionBarsPanelRightTwo
+-- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
+-- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, LOCK_ACTIONBAR
+-- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+-- GLOBALS: InterfaceOptionsStatusTextPanelXP, ArtifactWatchBar, HonorWatchBar
+-- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd, UIParent
 
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
@@ -799,47 +792,6 @@ function AB:IconIntroTracker_Toggle()
 	end
 end
 
-function AB:SpellButton_OnEnter()
-	local slot = SpellBook_GetSpellBookSlot(self);
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	if ( GameTooltip:SetSpellBookItem(slot, SpellBookFrame.bookType) ) then
-		self.UpdateTooltip = AB.SpellButton_OnEnter;
-	else
-		self.UpdateTooltip = nil;
-	end
-
-	ClearOnBarHighlightMarks();
-	ClearPetActionHighlightMarks();
-	local slotType, actionID = GetSpellBookItemInfo(slot, SpellBookFrame.bookType);
-	if ( slotType == "SPELL" ) then
-		UpdateOnBarHighlightMarksBySpell(actionID);
-	elseif ( slotType == "FLYOUT" ) then
-		UpdateOnBarHighlightMarksByFlyout(actionID);
-	elseif ( slotType == "PETACTION" ) then
-		UpdateOnBarHighlightMarksByPetAction(actionID);
-		UpdatePetActionHighlightMarks(actionID);
-		PetActionBar_Update(PetActionBarFrame);
-	end
-
-	if ( self.SpellHighlightTexture and self.SpellHighlightTexture:IsShown() ) then
-		GameTooltip:AddLine(SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, LIGHTBLUE_FONT_COLOR.r, LIGHTBLUE_FONT_COLOR.g, LIGHTBLUE_FONT_COLOR.b);
-	end
-
-	-- Update action bar highlights
-	-- ActionBarController_UpdateAll(true);
-	GameTooltip:Show();
-end
- 
-function AB:SpellButton_OnLeave()
-	ClearOnBarHighlightMarks();
-	ClearPetActionHighlightMarks();
-
-	-- Update action bar highlights
-	-- ActionBarController_UpdateAll(true);
-	PetActionBar_Update(PetActionBarFrame);
-	GameTooltip:Hide();
-end
-
 function AB:DisableBlizzard()
 	-- Hidden parent frame
 	UIHider = CreateFrame("Frame")
@@ -891,12 +843,6 @@ function AB:DisableBlizzard()
 
 	ActionBarController:UnregisterAllEvents()
 	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
-
-	-- kill calls to `ActionBarController_UpdateAll`
-	for i = 1, SPELLS_PER_PAGE do
-		_G["SpellButton" .. i]:SetScript("OnEnter", AB.SpellButton_OnEnter)
-		_G["SpellButton" .. i]:SetScript("OnLeave", AB.SpellButton_OnLeave)
-	end
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
