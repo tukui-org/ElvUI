@@ -601,7 +601,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	sb:SetStatusBarTexture(E['media'].normTex)
 end
 
-function TT:CheckBackdropColor()
+function TT:CheckBackdropColor(tt)
 	if not tt or tt:IsForbidden() then return end
 	local r, g, b = tt:GetBackdropColor()
 	if r and g and b then
