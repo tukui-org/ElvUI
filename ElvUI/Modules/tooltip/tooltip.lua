@@ -583,7 +583,7 @@ function TT:GameTooltip_ShowProgressBar(tt)
 	if not sb or not sb.Bar then return end
 
 	sb.Bar:StripTextures()
-	sb.Bar:CreateBackdrop('Default', nil, true)
+	sb.Bar:CreateBackdrop('Transparent', nil, true)
 	sb.Bar:SetStatusBarTexture(E['media'].normTex)
 
 	tt.pbBar = sb.Bar
