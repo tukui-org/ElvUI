@@ -37,16 +37,17 @@ local function LoadSkin()
 	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 
 	-- Tooltip Progress Bars
-	local function SkinTooltipProgressBar(frame)
-		if not (frame and frame.Bar) then return end
-		frame.Bar:StripTextures()
-		frame.Bar:CreateBackdrop('Transparent')
-		frame.Bar:SetStatusBarTexture(E['media'].normTex)
-		E:RegisterStatusBar(frame.Bar)
-		frame.isSkinned = true
-	end
-	SkinTooltipProgressBar(ReputationParagonTooltipStatusBar)
-	SkinTooltipProgressBar(WorldMapTaskTooltipStatusBar)
+	hooksecurefunc("GameTooltip_ShowProgressBar", function(self)
+		if not self.progressBarPool then return end
+		local sb = self.progressBarPool:Acquire()
+
+		if not (sb and not sb.isSkinned) then return end
+		sb.Bar:StripTextures()
+		sb.Bar:CreateBackdrop('Transparent')
+		sb.Bar:SetStatusBarTexture(E['media'].normTex)
+		E:RegisterStatusBar(sb.Bar)
+		sb.isSkinned = true
+	end)
 
 	-- Color GameTooltip QuestRewards Progress Bars
 	local function QuestRewardsBarColor(tooltip, questID)
