@@ -24,6 +24,10 @@ local function LoadSkin()
 
 	-- World Quest Reward Icon
 	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	WorldMapTooltip.ItemTooltip:CreateBackdrop()
+	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
+	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
+	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(self, r, g, b)
 		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		self:SetTexture('')
@@ -31,10 +35,6 @@ local function LoadSkin()
 	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, 'Hide', function(self)
 		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
-	WorldMapTooltip.ItemTooltip:CreateBackdrop()
-	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
-	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
-	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G['GameTooltip']
@@ -75,14 +75,10 @@ local function LoadSkin()
 	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 
-	-- Skin Additional GameTooltip Status Bars
-	TT:SecureHook('GameTooltip_ShowStatusBar')
-	-- Tooltip Progress Bars
-	TT:SecureHook('GameTooltip_ShowProgressBar')
-	-- Color GameTooltip QuestRewards Progress Bars
-	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip')
-
-	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
+	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Additional GameTooltip Status Bars
+	TT:SecureHook('GameTooltip_ShowProgressBar') -- Tooltip Progress Bars
+	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color GameTooltip QuestRewards Progress Bars
+	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle')
 end
 
 S:AddCallback('SkinTooltip', LoadSkin)
