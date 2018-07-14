@@ -843,7 +843,9 @@ function CH:PositionChat(override)
 			end
 
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
-			FCF_SavePositionAndDimensions(chat, true)
+			if chat:GetLeft() then
+				FCF_SavePositionAndDimensions(chat, true)
+			end
 
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(RightChatPanel)
@@ -872,7 +874,9 @@ function CH:PositionChat(override)
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
-				FCF_SavePositionAndDimensions(chat, true)
+				if chat:GetLeft() then
+					FCF_SavePositionAndDimensions(chat, true)
+				end
 			end
 			chat:SetParent(LeftChatPanel)
 			if i > 2 then
