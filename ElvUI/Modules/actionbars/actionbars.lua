@@ -792,12 +792,6 @@ function AB:IconIntroTracker_Toggle()
 	end
 end
 
-function AB:MultiBarScaleFix(value)
-	if self.oldSetScale and value and value > 0 then
-		self:oldSetScale(value)
-	end
-end
-
 function AB:DisableBlizzard()
 	-- Hidden parent frame
 	UIHider = CreateFrame("Frame")
@@ -1219,14 +1213,6 @@ end
 
 function AB:Initialize()
 	self.db = E.db.actionbar
-
-	-- hack to fix error in MultiActionBar_Update when minimap is near bottom of the screen
-	-- line 85 `MultiBarRight:SetScale(scale);`: Scale must be > 0
-	MultiBarRight.oldSetScale = MultiBarRight.SetScale
-	MultiBarLeft.oldSetScale = MultiBarLeft.SetScale
-	MultiBarRight.SetScale = self.MultiBarScaleFix
-	MultiBarLeft.SetScale = self.MultiBarScaleFix
-
 	if E.private.actionbar.enable ~= true then return; end
 	E.ActionBars = AB;
 
