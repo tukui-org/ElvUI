@@ -99,7 +99,11 @@ end
 
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
-	local x, y = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
+
+	local x, y
+	local mapID = C_Map_GetBestMapForUnit("player")
+	local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
+	if mapPos then x, y = mapPos:GetXY() end
 
 	x = x and E:Round(100 * x, 2) or 0
 	y = y and E:Round(100 * y, 2) or 0
