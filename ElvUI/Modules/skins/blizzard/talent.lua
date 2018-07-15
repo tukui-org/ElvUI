@@ -386,10 +386,13 @@ local function LoadSkin()
 		end
 	end
 
+	local TalentList_CloseButton = select(4, PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
+	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then
+		HandleInsetButton(TalentList_CloseButton)
+	end
+
 	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("TOPLEFT", 5, -5)
 	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("BOTTOMRIGHT", -21, 32)
-	HandleInsetButton(select(4, PvpTalentFrame.TalentList:GetChildren()))
-
 	PvpTalentFrame.OrbModelScene:SetAlpha(0)
 
 	PvpTalentFrame:SetSize(131, 379)
@@ -405,15 +408,36 @@ local function LoadSkin()
 
 	for i = 1, 10 do
 		local bu = _G["PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameButton"..i]
-		local icon = bu.Icon
 		if bu then
-			bu:StripTextures()
-			bu:StyleButton()
+			local border = bu:GetRegions()
+			if border then border:SetTexture(nil) end
 
+			bu:StyleButton()
 			bu:CreateBackdrop("Overlay")
+
+			if bu.Selected then
+				bu.Selected:SetTexture(nil)
+
+				bu.selectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+				bu.selectedTexture:SetInside(bu)
+				bu.selectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				bu.selectedTexture:SetShown(bu.Selected:IsShown())
+
+				hooksecurefunc(bu, "Update", function(selectedHere)
+					if not bu.selectedTexture then return end
+					if bu.Selected:IsShown() then
+						bu.selectedTexture:SetShown(selectedHere)
+					else
+						bu.selectedTexture:Hide()
+					end
+				end)
+			end
+
 			bu.backdrop:SetAllPoints()
 
-			icon:SetTexCoord(unpack(E.TexCoords))
+			if bu.Icon then
+				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+			end
 		end
 	end
 
