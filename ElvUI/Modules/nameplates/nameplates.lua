@@ -155,8 +155,8 @@ function mod:ToggleNamePlateDriverEvents(lockedInstance)
 end
 
 function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
-	local inInstance, instanceType = IsInInstance()
-	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	local _, instanceType = IsInInstance()
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 	mod:SetBaseNamePlateSize(lockedInstance) -- workaround for #206
 end
 
@@ -164,7 +164,7 @@ function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
-	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
 		self:ToggleNamePlateDriverEvents(lockedInstance)
