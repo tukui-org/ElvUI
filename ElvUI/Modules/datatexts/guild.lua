@@ -6,7 +6,8 @@ local DT = E:GetModule('DataTexts')
 local select, unpack, sort, wipe, ceil = select, unpack, table.sort, wipe, math.ceil
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
-local C_Map_GetBestMapForUnitPlayer = function() return C_Map.GetBestMapForUnit("player") end
+local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
+local GetBestMapForUnitPlayer = function() return C_Map_GetBestMapForUnit("player") end
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetGuildInfo = GetGuildInfo
@@ -257,8 +258,11 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, classc, levelc, info, grouped, mapID
+	local zonec, classc, levelc, info, grouped
 	local shown = 0
+
+	local mapID = GetBestMapForUnitPlayer()
+	local zoneText = mapID and E:GetZoneText(mapID)
 
 	DT.tooltip:AddLine(' ')
 	for i = 1, #guildTable do
@@ -270,8 +274,7 @@ local function OnEnter(self, _, noUpdate)
 
 		info = guildTable[i]
 		-- FIX ME
-		mapID = C_Map_GetBestMapForUnitPlayer()
-		if mapID and (E:GetZoneText() == info[4]) then zonec = activezone else zonec = inactivezone end
+		if zoneText and (zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
