@@ -22,10 +22,12 @@ local function Update(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		x, y = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
+		local mapID = C_Map_GetBestMapForUnit("player")
+		local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
+		if mapPos then x, y = mapPos:GetXY() end
 
-		x = x and E:Round(100 * x, 1) or 0
-		y = y and E:Round(100 * y, 1) or 0
+		x = (mapPos and x) and E:Round(100 * x, 1) or 0
+		y = (mapPos and y) and E:Round(100 * y, 1) or 0
 
 		self.text:SetFormattedText(displayString, x, y)
 		self.timeSinceUpdate = 0
