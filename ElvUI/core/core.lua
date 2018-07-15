@@ -406,6 +406,8 @@ LocalizeZoneNames()
 
 -- Needs to be adjusted for 8.0 ?
 function E:GetZoneText(zoneAreaID)
+	if not zoneAreaID then return end
+
 	local zoneName = C_Map_GetMapInfo(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]
 
