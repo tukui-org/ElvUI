@@ -257,7 +257,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, classc, levelc, info, grouped
+	local zonec, classc, levelc, info, grouped, mapID
 	local shown = 0
 
 	DT.tooltip:AddLine(' ')
@@ -270,7 +270,8 @@ local function OnEnter(self, _, noUpdate)
 
 		info = guildTable[i]
 		-- FIX ME
-		if E:GetZoneText(C_Map_GetBestMapForUnitPlayer()) == info[4] then zonec = activezone else zonec = inactivezone end
+		mapID = C_Map_GetBestMapForUnitPlayer()
+		if mapID and (E:GetZoneText() == info[4]) then zonec = activezone else zonec = inactivezone end
 
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
