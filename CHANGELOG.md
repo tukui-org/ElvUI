@@ -8,12 +8,19 @@ New Cooldown settings, they can be found in the Cooldowns category or by typing 
 Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
 Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
 Fixed issue with Guild Bank which sometimes prevented icons from being desaturated during a search while swapping between bank tabs. This also corrects the strange delay it appeared to have.  
+Fixed issue which caused chat emojis to hijack hyperlinks.  
+Fixed icon border on black market auction house items.  
+Fixed `[namecolor]` not updating sometimes when it should.  
+Fixed skin issue when using a dropdown in the config.  
+Fixed friendly nameplates not showing in Garrisons.  
 
 
 **Misc. Changes:**  
 Added button size and spacing options to the Micro Bar and fixed several issues with it.  
 In order to improve load times, ElvUI will no longer load `Blizzard_DebugTools`.  
 Reworked the Talent frame skin slightly, in order to improve determination of selected talents.  
+Simplify how the Chat module handles Chat Filters. (Thanks Ellypse)  
+Changed how icons get shadowed in Guild bank and Bags module.  
 
 ___
 **Version 10.74 [ June 7th 2018 ]**
