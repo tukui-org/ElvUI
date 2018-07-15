@@ -119,6 +119,7 @@ local function LoadSkin()
 
 			BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
 			progressBar.isSkinned = true
+			ColorProgressBars(progressBar, bar:GetValue())
 		elseif icon and progressBar.backdrop then
 			progressBar.backdrop:SetShown(icon:IsShown())
 		end

@@ -33,14 +33,16 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	x, y = C_Map_GetPlayerMapPosition(C_Map_GetBestMapForUnit("player"), "player"):GetXY()
-	if not (x and y) then
+	local mapID = C_Map_GetBestMapForUnit("player")
+	local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
+	if mapPos then x, y = mapPos:GetXY() end
+	if mapPos and x and y then
+		inRestrictedArea = false
+		self:Show()
+	else
 		inRestrictedArea = true
 		self.text:SetText("N/A")
 		self:Hide()
-	else
-		inRestrictedArea = false
-		self:Show()
 	end
 end
 

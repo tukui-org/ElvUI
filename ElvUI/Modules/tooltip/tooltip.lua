@@ -576,11 +576,10 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 end
 
 function TT:GameTooltip_ShowProgressBar(tt)
-	if not tt or tt:IsForbidden() then return end
-	if not tt.progressBarPool then return end
+	if not tt or tt:IsForbidden() or not tt.progressBarPool then return end
 
-	local sb = tt.progressBarPool:Acquire()
-	if not sb or not sb.Bar then return end
+	local sb = tt.progressBarPool:GetNextActive()
+	if (not sb or not sb.Bar) or sb.Bar.backdrop then return end
 
 	sb.Bar:StripTextures()
 	sb.Bar:CreateBackdrop('Transparent', nil, true)
@@ -590,11 +589,10 @@ function TT:GameTooltip_ShowProgressBar(tt)
 end
 
 function TT:GameTooltip_ShowStatusBar(tt)
-	if not tt or tt:IsForbidden() then return end
-	if not self.statusBarPool then return end
+	if not tt or tt:IsForbidden() or not tt.statusBarPool then return end
 
-	local sb = self.statusBarPool:Acquire()
-	if not sb or not sb.Text then return end
+	local sb = tt.statusBarPool:GetNextActive()
+	if (not sb or not sb.Text) or sb.backdrop then return end
 
 	sb:StripTextures()
 	sb:CreateBackdrop('Default', nil, true)
