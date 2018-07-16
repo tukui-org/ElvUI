@@ -33,11 +33,13 @@ local function LoadSkin()
 	CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 	CommunitiesFrameInsetBg:Hide()
 	CommunitiesFrameInsetInsetBottomBorder:Hide()
+	CommunitiesFrameInsetInsetLeftBorder:Hide()
 	CommunitiesFrameInsetInsetBotLeftCorner:Hide()
 	CommunitiesFrameInsetInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetInsetRightBorder:Hide()
 	CommunitiesFrameInsetInsetLeftBorder:Hide()
 	CommunitiesFrameInsetInsetTopBorder:Hide()
+	CommunitiesFrameInsetInsetTopLeftCorner:Hide()
 	CommunitiesFrameInsetInsetTopRightCorner:Hide()
 	CommunitiesFrameCommunitiesListInsetBottomBorder:Hide()
 	CommunitiesFrameCommunitiesListInsetBotRightCorner:Hide()
@@ -55,12 +57,12 @@ local function LoadSkin()
 		if clubInfo then
 			self:SetSize(166, 67)
 
-			select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
+			--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
 			self.Background:Hide()
 			self:SetFrameLevel(self:GetFrameLevel()+5)
 
 			S:CropIcon(self.Icon)
-			self.CircleMask:Hide()
+			self.Icon:RemoveMaskTexture(self.CircleMask)
 			self.Icon:SetDrawLayer("OVERLAY", 1)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
@@ -68,8 +70,8 @@ local function LoadSkin()
 			self.bg = CreateFrame("Frame", nil, self)
 			self.bg:CreateBackdrop("Overlay")
 			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-			self.bg:Point("TOPLEFT", 4, -1)
-			self.bg:Point("BOTTOMRIGHT", -1, 1)
+			self.bg:Point("TOPLEFT", 4, -3)
+			self.bg:Point("BOTTOMRIGHT", -1, 3)
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
@@ -79,6 +81,10 @@ local function LoadSkin()
 				self.Selection:SetInside(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
+
+			local highlight = self:GetHighlightTexture()
+			highlight:SetColorTexture(1, 1, 1, 0.3)
+			highlight:SetInside(self.bg)
 		end
 	end)
 
@@ -97,8 +103,12 @@ local function LoadSkin()
 		self.bg = CreateFrame("Frame", nil, self)
 		self.bg:CreateBackdrop("Overlay")
 		self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-		self.bg:Point("TOPLEFT", 4, -1)
-		self.bg:Point("BOTTOMRIGHT", -1, 1)
+		self.bg:Point("TOPLEFT", 4, -3)
+		self.bg:Point("BOTTOMRIGHT", -1, 3)
+
+		local highlight = self:GetHighlightTexture()
+		highlight:SetColorTexture(1, 1, 1, 0.3)
+		highlight:SetInside(self.bg)
 	end)
 
 	local function SkinTab(tab)
