@@ -42,8 +42,6 @@ local smallerSizeScale = 1.25 -- 1 / smallerMapScale
 
 function M:SetLargeWorldMap()
 	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:EnableKeyboard(false)
-	WorldMapFrame:EnableMouse(true)
 	WorldMapFrame:SetScale(1)
 
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
@@ -173,6 +171,7 @@ function M:Initialize()
 		smallerSizeScale = 1 / smallerMapScale
 
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
+		WorldMapFrame.BlackoutFrame:EnableMouse(nil)
 
 		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
 		self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
