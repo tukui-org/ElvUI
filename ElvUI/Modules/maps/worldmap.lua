@@ -64,8 +64,8 @@ end
 
 function M:UpdateMaximizedSize()
 	local width, height = WorldMapFrame:GetSize()
-	local magicNumber = (40 / smallerMapScale) - 28
-	WorldMapFrame:Size((width * smallerMapScale) - magicNumber, height * smallerMapScale)
+	local magicNumber = (1 - smallerMapScale) * 100
+	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
 end
 
 function M:SynchronizeDisplayState()
