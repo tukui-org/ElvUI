@@ -46,7 +46,7 @@ function M:SetLargeWorldMap()
 
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 	local width, height = WorldMapFrame.ScrollContainer.Child:GetSize()
-	WorldMapFrame:Size((width / smallerSizeScale) + 50, (height / smallerSizeScale) + 100)
+	WorldMapFrame:Size((E:Scale(width) / smallerSizeScale) + 50, (E:Scale(height) / smallerSizeScale) + 100)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
