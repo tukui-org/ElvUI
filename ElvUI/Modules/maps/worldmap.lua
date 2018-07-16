@@ -14,8 +14,8 @@ local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
+local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
-local MOUSE_LABEL = MOUSE_LABEL
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
@@ -64,7 +64,8 @@ end
 
 function M:UpdateMaximizedSize()
 	local width, height = WorldMapFrame:GetSize()
-	WorldMapFrame:Size(width * smallerMapScale, height * smallerMapScale)
+	local magicNumber = (40 / smallerMapScale) - 28
+	WorldMapFrame:Size((width * smallerMapScale) - magicNumber, height * smallerMapScale)
 end
 
 function M:SynchronizeDisplayState()
