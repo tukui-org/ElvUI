@@ -36,17 +36,13 @@ local tooltips = {
 	WorldMapCompareTooltip3
 }
 
--- these will be updated later
+-- this will be updated later
 local smallerMapScale = 0.8
-local smallerSizeScale = 1.25 -- 1 / smallerMapScale
 
 function M:SetLargeWorldMap()
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetScale(1)
-
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
-	local width, height = WorldMapFrame.ScrollContainer.Child:GetSize()
-	WorldMapFrame:Size((width / smallerSizeScale) + 50, (height / smallerSizeScale) + 100)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -64,6 +60,11 @@ function M:SetLargeWorldMap()
 	for _, tt in pairs(tooltips) do
 		if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
 	end
+end
+
+function M:UpdateMaximizedSize()
+	local width, height = WorldMapFrame:GetSize()
+	WorldMapFrame:Size(width * smallerMapScale, height * smallerMapScale)
 end
 
 function M:SynchronizeDisplayState()
@@ -168,7 +169,6 @@ function M:Initialize()
 
 	if E.global.general.smallerWorldMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
-		smallerSizeScale = 1 / smallerMapScale
 
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
@@ -176,6 +176,7 @@ function M:Initialize()
 		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
 		self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 		self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
+		self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
 
 		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
 			if WorldMapFrame:IsMaximized() then
