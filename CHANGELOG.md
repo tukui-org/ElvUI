@@ -2,6 +2,7 @@
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category or by typing `/ec cooldown`.  
+Added Death Knight Rune sorting option under `/ec - Player Frame - Classbar - Sort Direction`.   
 
 
 **Bug Fixes:**  
