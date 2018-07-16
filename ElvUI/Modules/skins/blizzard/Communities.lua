@@ -51,6 +51,36 @@ local function LoadSkin()
 	CommunitiesFrameInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetBotLeftCorner:Hide()
 
+	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
+		if clubInfo then
+			self:SetSize(166, 67)
+
+			S:HandleButton(self)
+			self:StyleButton()
+
+			self.Icon:SetTexCoord(unpack(E.TexCoords))
+			self.IconRing:Hide()
+
+			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
+			if isGuild then
+				self.Selection:SetInside(self)
+				self.Selection:SetColorTexture(0, 1, 0, 0.2)
+			else
+				self.Selection:SetInside(self)
+				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
+			end
+		end
+	end)
+
+	hooksecurefunc(CommunitiesListEntryMixin, "SetAddCommunity", function(self)
+		self:SetSize(166, 67)
+
+		S:HandleButton(self)
+		self:StyleButton()
+
+		self.Icon:SetTexCoord(unpack(E.TexCoords))
+	end)
+
 	local function SkinTab(tab)
 		local normTex = tab:GetNormalTexture()
 		if normTex then
@@ -98,6 +128,7 @@ local function LoadSkin()
 	SkinTab(CommunitiesFrame.GuildBenefitsTab)
 	SkinTab(CommunitiesFrame.GuildInfoTab)
 
+	S:HandleInsetFrameTemplate(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 	S:HandleCloseButton(CommunitiesFrameCloseButton)
 	S:HandleButton(CommunitiesFrame.InviteButton)
@@ -143,9 +174,8 @@ local function LoadSkin()
 	ColumnDisplay.InsetBorderBottomLeft:Hide()
 	ColumnDisplay.InsetBorderTopLeft:Hide()
 	ColumnDisplay.InsetBorderTop:Hide()
-	ColumnDisplay.Background:Hide()
-	ColumnDisplay.TopTileStreaks:Hide()
 
+	S:HandleInsetFrameTemplate(CommunitiesFrame.MemberList.InsetFrame)
 	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberListDropDownMenu)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
