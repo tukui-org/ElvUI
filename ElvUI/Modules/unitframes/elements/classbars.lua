@@ -122,6 +122,10 @@ function UF:Configure_ClassBar(frame, cur)
 			cur = 0
 		end
 
+		if E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
+			bars.sortOrder = (db.classbar.sortDirection ~= "NONE") and db.classbar.sortDirection
+		end
+
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			bars[i]:Hide()
