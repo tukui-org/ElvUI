@@ -437,6 +437,7 @@ local function LoadSkin()
 
 			if bu.Icon then
 				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+				bu.Icon:SetDrawLayer('ARTWORK', 1)
 			end
 		end
 	end
