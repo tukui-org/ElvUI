@@ -55,18 +55,28 @@ local function LoadSkin()
 		if clubInfo then
 			self:SetSize(166, 67)
 
-			S:HandleButton(self)
-			self:StyleButton()
+			select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
+			self.Background:Hide()
+			self:SetFrameLevel(self:GetFrameLevel()+5)
 
+			S:CropIcon(self.Icon)
+			self.CircleMask:Hide()
+			self.Icon:SetDrawLayer("OVERLAY", 1)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
 
+			self.bg = CreateFrame("Frame", nil, self)
+			self.bg:CreateBackdrop("Overlay")
+			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+			self.bg:Point("TOPLEFT", 4, -1)
+			self.bg:Point("BOTTOMRIGHT", -1, 1)
+
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
-				self.Selection:SetInside(self)
+				self.Selection:SetInside(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
-				self.Selection:SetInside(self)
+				self.Selection:SetInside(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
 		end
@@ -75,10 +85,20 @@ local function LoadSkin()
 	hooksecurefunc(CommunitiesListEntryMixin, "SetAddCommunity", function(self)
 		self:SetSize(166, 67)
 
-		S:HandleButton(self)
-		self:StyleButton()
-
+		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
+		self.Background:Hide()
+		self:SetFrameLevel(self:GetFrameLevel()+5)
+		S:CropIcon(self.Icon)
+		self.CircleMask:Hide()
+		self.Icon:SetDrawLayer("OVERLAY", 1)
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
+		self.IconRing:Hide()
+
+		self.bg = CreateFrame("Frame", nil, self)
+		self.bg:CreateBackdrop("Overlay")
+		self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+		self.bg:Point("TOPLEFT", 4, -1)
+		self.bg:Point("BOTTOMRIGHT", -1, 1)
 	end)
 
 	local function SkinTab(tab)
