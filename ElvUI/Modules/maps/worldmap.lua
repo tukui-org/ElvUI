@@ -171,7 +171,7 @@ function M:Initialize()
 		smallerSizeScale = 1 / smallerMapScale
 
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
-		WorldMapFrame.BlackoutFrame:EnableMouse(nil)
+		WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
 		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
 		self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
