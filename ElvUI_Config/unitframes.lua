@@ -3195,12 +3195,12 @@ E.Options.args.unitframe.args.player = {
 					name = L["Additional Power Text"],
 				},
 				spacer = {
-					order = 9,
+					order = 10,
 					type = "description",
 					name = "",
 				},
 				detachGroup = {
-					order = 10,
+					order = 20,
 					type = "group",
 					name = L["Detach From Frame"],
 					get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
@@ -7317,6 +7317,22 @@ if P.unitframe.colors.classResources[E.myclass] then
 			order = ORDER,
 		}
 	end
+end
+
+if E.myclass == 'DEATHKNIGHT' then
+	E.Options.args.unitframe.args.player.args.classbar.args.sortDirection = {
+		name = L["Sort Direction"],
+		desc = L["Defines the sort order of the selected sort method."],
+		type = 'select',
+		order = 7,
+		values = {
+			['asc'] = L["Ascending"],
+			['desc'] = L["Descending"],
+			['NONE'] = NONE,
+		},
+		get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+	}
 end
 
 --Custom Texts

@@ -1272,6 +1272,7 @@ P['unitframe'] = {
 				['fill'] = 'fill',
 				['height'] = 10,
 				['autoHide'] = false,
+				['sortDirection'] = 'asc',
 				['additionalPowerText'] = true,
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
