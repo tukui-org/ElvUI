@@ -7,15 +7,17 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local floor = floor
 local format = string.format
 --WoW API / Variables
-local AZERITE_POWER_TOOLTIP_BODY = AZERITE_POWER_TOOLTIP_BODY
-local AZERITE_POWER_TOOLTIP_TITLE = AZERITE_POWER_TOOLTIP_TITLE
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local InCombatLockdown = InCombatLockdown
+local Item = Item
+local ARTIFACT_POWER = ARTIFACT_POWER
+local AZERITE_POWER_TOOLTIP_BODY = AZERITE_POWER_TOOLTIP_BODY
+local AZERITE_POWER_TOOLTIP_TITLE = AZERITE_POWER_TOOLTIP_TITLE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: GameTooltip, CreateFrame
 
 function mod:UpdateAzerite(event, unit)
 	if not mod.db.azerite.enable then return end
@@ -92,7 +94,7 @@ function mod:AzeriteBar_OnEnter()
 		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
 		]]
 
-		GameTooltip:AddDoubleLine(L["Azerite Power"], azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
+		GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		GameTooltip:AddLine(' ')
 
 		GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
