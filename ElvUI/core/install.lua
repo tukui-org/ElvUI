@@ -45,7 +45,7 @@ local MAX_PAGE = 8
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
 	InstallStepComplete:Show()
-	FCF_ResetChatWindows()
+	FCF_ResetChatWindows() -- Monitor this
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
@@ -669,12 +669,16 @@ local function SetupAuras(style)
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
 		E.db.unitframe.units.player.aurabar.enable = false
-		E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
+		if E.private.unitframe.enable then
+			E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
+		end
 
 		--TARGET
 		E.db.unitframe.units.target.debuffs.enable = true
 		E.db.unitframe.units.target.aurabar.enable = false
-		E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
+		if E.private.unitframe.enable then
+			E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
+		end
 	end
 
 	if InstallStepComplete then

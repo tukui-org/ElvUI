@@ -64,7 +64,6 @@ local function LoadSkin()
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton, true)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton, true)
 
-	-- S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
 
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton, nil, true)
@@ -146,30 +145,7 @@ local function LoadSkin()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
 	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
-
-	--BUGFIX: TradeSkillFrame.RecipeList.scrollBar
-	--Hide current scrollbar
-	TradeSkillFrame.RecipeList.scrollBar.ScrollBarTop:Hide()
-	TradeSkillFrame.RecipeList.scrollBar.ScrollBarTop = nil
-	TradeSkillFrame.RecipeList.scrollBar.ScrollBarBottom:Hide()
-	TradeSkillFrame.RecipeList.scrollBar.ScrollBarBottom = nil
-	TradeSkillFrame.RecipeList.scrollBar.ScrollBarMiddle:Hide()
-	TradeSkillFrame.RecipeList.scrollBar.thumbTexture:Hide()
-	TradeSkillFrame.RecipeList.scrollBar.thumbTexture = nil
-	TradeSkillFrameScrollUpButton:Hide()
-	TradeSkillFrameScrollUpButton = nil
-	TradeSkillFrameScrollDownButton:Hide()
-	TradeSkillFrameScrollDownButton = nil
-
-	--Create new one with fixed template
-	TradeSkillFrame.RecipeList.scrollBar = CreateFrame("Slider", nil, TradeSkillFrame.RecipeList, "HybridScrollBarTemplateFixed")
-	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
-	TradeSkillFrame.RecipeList.scrollBar:SetFrameLevel(TradeSkillFrame.RecipeList.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer_After(0.25, function()
-		--Scroll back to top
-		TradeSkillFrame.RecipeList.scrollBar:SetValue(1)
-		TradeSkillFrame.RecipeList.scrollBar:SetValue(0)
-	end)
+	S:HandleScrollSlider(TradeSkillFrame.RecipeList.scrollBar)
 end
 
 S:AddCallbackForAddon("Blizzard_TradeSkillUI", "TradeSkill", LoadSkin)

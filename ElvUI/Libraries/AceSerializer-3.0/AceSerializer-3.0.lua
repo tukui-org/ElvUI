@@ -10,7 +10,7 @@
 -- make into AceSerializer.
 -- @class file
 -- @name AceSerializer-3.0
--- @release $Id: AceSerializer-3.0.lua 1038 2011-10-03 01:39:58Z mikk $
+-- @release $Id: AceSerializer-3.0.lua 1135 2015-09-19 20:39:16Z nevcairiel $
 local MAJOR,MINOR = "AceSerializer-3.0", 5
 local AceSerializer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -62,7 +62,7 @@ local function SerializeValue(v, res, nres)
 	
 	elseif t=="number" then	-- ^N = number (just tostring()ed) or ^F (float components)
 		local str = tostring(v)
-		if tonumber(str)==v  --[[not in 4.3 or str==serNaN]] or str==serInf or str==serNegInf then
+		if tonumber(str)==v  --[[not in 4.3 or str==serNaN]] then
 			-- translates just fine, transmit as-is
 			res[nres+1] = "^N"
 			res[nres+2] = str

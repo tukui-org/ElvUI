@@ -11,7 +11,7 @@ local format, join = string.format, string.join
 --WoW API / Variables
 local C_LFGList = C_LFGList
 local C_SocialQueue = C_SocialQueue
-local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
@@ -53,7 +53,7 @@ local function OnEvent(self)
 		playerName = ""
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
-			playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
+			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then
 				extraCount = format('[+%s]', numMembers - 1)
 			end

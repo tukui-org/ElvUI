@@ -1,6 +1,9 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
+-- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
+local LibItemLevel = LibStub("LibItemLevel-ElvUI")
+
 
 --Cache global variables
 --Lua functions
@@ -83,6 +86,7 @@ local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
 local ToggleDropDownMenu = ToggleDropDownMenu
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -237,10 +241,12 @@ function B:SetSearch(query)
 				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if ( empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
+					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
 					SetItemButtonDesaturated(button, 1);
-					button:SetAlpha(0.4);
+					button.searchOverlay:Show();
+					button:SetAlpha(0.5);
 				end
 			end
 		end
@@ -253,10 +259,12 @@ function B:SetSearch(query)
 			local success, result = pcall(method, Search, link, query)
 			if ( empty or (success and result) ) then
 				SetItemButtonDesaturated(button);
+				button.searchOverlay:Hide();
 				button:SetAlpha(1);
 			else
 				SetItemButtonDesaturated(button, 1);
-				button:SetAlpha(0.4);
+				button.searchOverlay:Show();
+				button:SetAlpha(0.5);
 			end
 		end
 	end
@@ -290,10 +298,12 @@ function B:SetGuildBankSearch(query)
 				local success, result = pcall(method, Search, link, query, allowPartialMatch)
 				if (empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
+					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
 					SetItemButtonDesaturated(button, 1);
-					button:SetAlpha(0.4);
+					button.searchOverlay:Show();
+					button:SetAlpha(0.5);
 				end
 			end
 		end
@@ -429,14 +439,14 @@ function B:UpdateSlot(bagID, slotID)
 		return;
 	end
 
-	local slot, _ = self.Bags[bagID][slotID], nil;
+	local slot = self.Bags[bagID][slotID];
 	local bagType = self.Bags[bagID].type;
 
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
 	slot.name, slot.rarity = nil, nil;
-	local texture, count, locked, readable, noValue
+	local texture, count, locked, readable, noValue, _
 	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
 
 	local clink = GetContainerItemLink(bagID, slotID);
@@ -467,9 +477,11 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif (clink) then
-		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
+		local itemEquipLoc, itemClassID, itemSubClassID
 		slot.name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
-		iLvl = GetDetailedItemLevelInfo(clink)
+		-- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
+		local _, iLvl = LibItemLevel:GetItemInfo(clink)
+		-- iLvl = GetDetailedItemLevelInfo(clink)
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -543,7 +555,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+	SetItemButtonDesaturated(slot, locked);
 
 	if GameTooltip:GetOwner() == slot and not slot.hasItem then
 		B:Tooltip_Hide()
@@ -883,8 +895,9 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].iconTexture:SetInside(f.Bags[bagID][slotID]);
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
 
+					f.Bags[bagID][slotID].searchOverlay:SetAllPoints();
 					f.Bags[bagID][slotID].cooldown = _G[f.Bags[bagID][slotID]:GetName()..'Cooldown'];
-					f.Bags[bagID][slotID].cooldown.ColorOverride = 'bags'
+					f.Bags[bagID][slotID].cooldown.CooldownOverride = 'bags'
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
 					f.Bags[bagID][slotID].bagID = bagID
 					f.Bags[bagID][slotID].slotID = slotID
@@ -985,6 +998,7 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				f.reagentFrame.slots[i].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
+				f.reagentFrame.slots[i].searchOverlay:SetAllPoints();
 				f.reagentFrame.slots[i].iconTexture = _G[f.reagentFrame.slots[i]:GetName()..'IconTexture'];
 				f.reagentFrame.slots[i].iconTexture:SetInside(f.reagentFrame.slots[i]);
 				f.reagentFrame.slots[i].iconTexture:SetTexCoord(unpack(E.TexCoords));
@@ -1087,7 +1101,7 @@ function B:UpdateReagentSlot(slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+	SetItemButtonDesaturated(slot, locked);
 end
 
 function B:UpdateAll()
@@ -1802,19 +1816,18 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	self:Layout(true)
 end
 
---Update search when switching guild bank tab (slightly delayed, depending on how fast the event fires)
-function B:GUILDBANKBAGSLOTS_CHANGED()
-	self:SetGuildBankSearch(SEARCH_STRING);
+function B:GuildBankFrame_Update()
+	B:SetGuildBankSearch(SEARCH_STRING);
 end
 
 function B:CloseBank()
-	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
+	if not self.BankFrame then return end -- WHY??? WHO KNOWS!
 	self.BankFrame:Hide()
 	BankFrame:Hide()
 	self.BagFrame:Hide()
 end
 
-function B:GUILDBANKFRAME_OPENED()
+function B:GUILDBANKFRAME_OPENED(event)
 	--[[local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
 	button:StripTextures()
 	button:SetTemplate("Default", true)
@@ -1823,6 +1836,7 @@ function B:GUILDBANKFRAME_OPENED()
 	button:SetText(L["Sort Tab"])
 	button:SetScript("OnClick", function() B:CommandDecorator(B.SortBags, 'guild')() end)
 	E.Skins:HandleButton(button, true)]]
+
 	if GuildItemSearchBox then
 		GuildItemSearchBox:SetScript("OnEscapePressed", self.ResetAndClear);
 		GuildItemSearchBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end);
@@ -1830,7 +1844,10 @@ function B:GUILDBANKFRAME_OPENED()
 		GuildItemSearchBox:SetScript("OnTextChanged", self.UpdateSearch);
 		GuildItemSearchBox:SetScript('OnChar', self.UpdateSearch);
 	end
-	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
+
+	hooksecurefunc('GuildBankFrame_Update', B.GuildBankFrame_Update)
+
+	self:UnregisterEvent(event)
 end
 
 function B:PLAYER_ENTERING_WORLD()
@@ -2008,7 +2025,6 @@ function B:Initialize()
 	E.Bags = self;
 
 	self:DisableBlizzard();
-	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")

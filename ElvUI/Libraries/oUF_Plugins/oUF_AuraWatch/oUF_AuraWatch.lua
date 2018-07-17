@@ -257,7 +257,7 @@ local function Update(frame, event, unit)
 	end
 	
 	while true do
-		name, _, texture, count, _, duration, remaining, caster, _, _, spellID = UnitAura(unit, index, filter)
+		name, texture, count, _, duration, remaining, caster, _, _, spellID = UnitAura(unit, index, filter)
 		if not name then
 			if filter == "HELPFUL" then
 				filter = "HARMFUL"

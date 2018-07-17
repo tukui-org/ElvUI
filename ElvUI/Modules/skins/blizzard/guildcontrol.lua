@@ -21,6 +21,7 @@ local function LoadSkin()
 	GuildControlUI:SetTemplate("Transparent")
 	GuildControlUIRankBankFrameInset:StripTextures()
 	GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
+	S:HandleCloseButton(GuildControlUICloseButton)
 	S:HandleScrollBar(GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
 
 	local function SkinGuildRanks()

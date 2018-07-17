@@ -4,19 +4,79 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local ipairs, select, unpack = ipairs, select, unpack
 --WoW API / Variables
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
 
 	local CalendarFrame = _G["CalendarFrame"]
-	CalendarFrame:StripTextures()
+	CalendarFrame:DisableDrawLayer("BORDER")
 	CalendarFrame:SetTemplate("Transparent")
 	S:HandleCloseButton(CalendarCloseButton)
 	CalendarCloseButton:Point("TOPRIGHT", CalendarFrame, "TOPRIGHT", -4, -4)
+
+	for i = 1, 9 do
+		select(i, _G["CalendarViewEventFrame"]:GetRegions()):Hide()
+	end
+	select(15, _G["CalendarViewEventFrame"]:GetRegions()):Hide()
+
+	for i = 1, 9 do
+		select(i, _G["CalendarViewHolidayFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewRaidFrame"]:GetRegions()):Hide()
+	end
+
+	for i = 1, 3 do
+		select(i, _G["CalendarCreateEventTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewEventTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewHolidayTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarViewRaidTitleFrame"]:GetRegions()):Hide()
+		select(i, _G["CalendarMassInviteTitleFrame"]:GetRegions()):Hide()
+	end
+
+	for i = 1, 7 do
+		_G["CalendarWeekday"..i.."Background"]:SetAlpha(0)
+	end
+
+	_G["CalendarViewEventDivider"]:Hide()
+	_G["CalendarCreateEventDivider"]:Hide()
+	_G["CalendarViewEventInviteList"]:GetRegions():Hide()
+	_G["CalendarViewEventDescriptionContainer"]:GetRegions():Hide()
+	select(5, _G["CalendarCreateEventCloseButton"]:GetRegions()):Hide()
+	select(5, _G["CalendarViewEventCloseButton"]:GetRegions()):Hide()
+	select(5, _G["CalendarViewHolidayCloseButton"]:GetRegions()):Hide()
+	select(5, _G["CalendarViewRaidCloseButton"]:GetRegions()):Hide()
+	select(5, _G["CalendarMassInviteCloseButton"]:GetRegions()):Hide()
+	_G["CalendarCreateEventBackground"]:Hide()
+	_G["CalendarCreateEventFrameButtonBackground"]:Hide()
+	_G["CalendarCreateEventMassInviteButtonBorder"]:Hide()
+	_G["CalendarCreateEventCreateButtonBorder"]:Hide()
+	_G["CalendarEventPickerTitleFrameBackgroundLeft"]:Hide()
+	_G["CalendarEventPickerTitleFrameBackgroundMiddle"]:Hide()
+	_G["CalendarEventPickerTitleFrameBackgroundRight"]:Hide()
+	_G["CalendarEventPickerFrameButtonBackground"]:Hide()
+	_G["CalendarEventPickerCloseButtonBorder"]:Hide()
+	_G["CalendarCreateEventRaidInviteButtonBorder"]:Hide()
+	_G["CalendarMonthBackground"]:SetAlpha(0)
+	_G["CalendarYearBackground"]:SetAlpha(0)
+	_G["CalendarFrameModalOverlay"]:SetAlpha(.25)
+	_G["CalendarViewHolidayInfoTexture"]:SetAlpha(0)
+	_G["CalendarTexturePickerTitleFrameBackgroundLeft"]:Hide()
+	_G["CalendarTexturePickerTitleFrameBackgroundMiddle"]:Hide()
+	_G["CalendarTexturePickerTitleFrameBackgroundRight"]:Hide()
+	_G["CalendarTexturePickerFrameButtonBackground"]:Hide()
+	_G["CalendarTexturePickerAcceptButtonBorder"]:Hide()
+	_G["CalendarTexturePickerCancelButtonBorder"]:Hide()
+	_G["CalendarClassTotalsButtonBackgroundTop"]:Hide()
+	_G["CalendarClassTotalsButtonBackgroundMiddle"]:Hide()
+	_G["CalendarClassTotalsButtonBackgroundBottom"]:Hide()
+	_G["CalendarFilterFrameLeft"]:Hide()
+	_G["CalendarFilterFrameMiddle"]:Hide()
+	_G["CalendarFilterFrameRight"]:Hide()
 
 	S:HandleNextPrevButton(CalendarPrevMonthButton)
 	S:HandleNextPrevButton(CalendarNextMonthButton)
@@ -46,9 +106,52 @@ local function LoadSkin()
 	CalendarInviteStatusContextMenu.SetBackdropBorderColor = E.noop
 
 	--Boost frame levels
-	for i=1, 42 do
+	for i = 1, 42 do
+		_G["CalendarDayButton"..i.."DarkFrame"]:SetAlpha(.5)
 		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
+		local bu = _G["CalendarDayButton"..i]
+		--bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
+		bu:SetHighlightTexture(E["media"].glossTex)
+		local hl = bu:GetHighlightTexture()
+		hl:SetVertexColor(1, 1, 1, 0.3)
+		hl.SetAlpha = E.noop
+		hl:SetPoint("TOPLEFT", -1, 1)
+		hl:SetPoint("BOTTOMRIGHT")
 	end
+
+	_G["CalendarWeekdaySelectedTexture"]:SetDesaturated(true)
+	_G["CalendarWeekdaySelectedTexture"]:SetVertexColor(1, 1, 1, 0.6)
+
+	for i = 1, 6 do
+		local vline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
+		vline:SetHeight(548)
+		vline:SetWidth(1)
+		vline:SetPoint("TOP", _G["CalendarDayButton"..i], "TOPRIGHT")
+		vline:CreateBackdrop("Default")
+	end
+
+	for i = 1, 36, 7 do
+		local hline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
+		hline:SetWidth(637)
+		hline:SetHeight(1)
+		hline:SetPoint("LEFT", _G["CalendarDayButton"..i], "TOPLEFT")
+		hline:CreateBackdrop("Default")
+	end
+
+	hooksecurefunc("CalendarFrame_SetToday", function()
+		_G["CalendarTodayFrame"]:SetAllPoints()
+	end)
+
+	_G["CalendarTodayFrame"]:SetScript("OnUpdate", nil)
+	_G["CalendarTodayTextureGlow"]:Hide()
+	_G["CalendarTodayTexture"]:Hide()
+
+	_G["CalendarTodayFrame"]:SetBackdrop({
+		edgeFile = [[Interface\Buttons\WHITE8x8]],
+		edgeSize = 1,
+	})
+	_G["CalendarTodayFrame"]:SetBackdropBorderColor(1, 1, 1, 0.6)
+
 
 	--CreateEventFrame
 	CalendarCreateEventFrame:StripTextures()
@@ -68,6 +171,7 @@ local function LoadSkin()
 	S:HandleEditBox(CalendarCreateEventInviteEdit)
 	S:HandleEditBox(CalendarCreateEventTitleEdit)
 	S:HandleDropDownBox(CalendarCreateEventTypeDropDown, 120)
+	S:HandleDropDownBox(CalendarCreateEventCommunityDropDown, 240)
 
 	CalendarCreateEventDescriptionContainer:StripTextures()
 	CalendarCreateEventDescriptionContainer:SetTemplate("Default")
@@ -126,11 +230,6 @@ local function LoadSkin()
 	CalendarMassInviteTitleFrame:StripTextures()
 
 	S:HandleCloseButton(CalendarMassInviteCloseButton)
-	S:HandleButton(CalendarMassInviteGuildAcceptButton)
-	S:HandleDropDownBox(CalendarMassInviteGuildRankMenu, 130)
-
-	S:HandleEditBox(CalendarMassInviteGuildMinLevelEdit)
-	S:HandleEditBox(CalendarMassInviteGuildMaxLevelEdit)
 
 	--Raid View
 	CalendarViewRaidFrame:StripTextures()

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
@@ -13,17 +14,26 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
 
-	ObjectiveTrackerBlocksFrame.QuestHeader:StripTextures()
-	ObjectiveTrackerBlocksFrame.QuestHeader.Text:FontTemplate()
-	ObjectiveTrackerBlocksFrame.AchievementHeader:StripTextures()
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:FontTemplate()
-	ObjectiveTrackerBlocksFrame.ScenarioHeader:StripTextures()
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:FontTemplate()
+	local ObjectiveTrackerFrame = _G["ObjectiveTrackerFrame"]
 
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header:StripTextures()
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:FontTemplate()
-	WORLD_QUEST_TRACKER_MODULE.Header:StripTextures()
-	WORLD_QUEST_TRACKER_MODULE.Header.Text:FontTemplate()
+	local function SkinOjectiveTrackerHeaders()
+		local frame = ObjectiveTrackerFrame.MODULES
+
+		if frame then
+			for i = 1, #frame do
+				local modules = frame[i]
+				if modules then
+					local header = modules.Header
+					local background = modules.Header.Background
+					background:SetAtlas(nil)
+
+					local text = modules.Header.Text
+					text:FontTemplate()
+					text:SetParent(header)
+				end
+			end
+		end
+	end
 
 	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimizeButton:StripTextures()
@@ -109,6 +119,7 @@ local function LoadSkin()
 
 			BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
 			progressBar.isSkinned = true
+			ColorProgressBars(progressBar, bar:GetValue())
 		elseif icon and progressBar.backdrop then
 			progressBar.backdrop:SetShown(icon:IsShown())
 		end
@@ -143,6 +154,7 @@ local function LoadSkin()
 	hooksecurefunc("ObjectiveTrackerProgressBar_SetValue",ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc("ScenarioTrackerProgressBar_SetValue",ColorProgressBars)					--[Color]: Scenario Progress Bar
 	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton",PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
+	hooksecurefunc("ObjectiveTracker_Update",SkinOjectiveTrackerHeaders)					--[Skin]: Module Headers
 	hooksecurefunc("QuestObjectiveSetupBlockButton_FindGroup",SkinFindGroupButton)			--[Skin]: The eye
 	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar

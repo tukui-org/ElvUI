@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."
 L["PANEL_DESC"] = "좌우 패널의 크기를 조절합니다. 이 값에 따라 고정되어 있는 채팅창과 통합가방/은행 프레임의 크기도 변경됩니다."
 L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 시 스킨을 적용합니다."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["SEARCH_SYNTAX_DESC"] = [=[
@@ -290,6 +291,17 @@ L["Time yOffset"] = "시간 y 좌표"
 L["Time"] = "시간"
 L["Wrap After"] = "한 줄에 표시할 오라 수"
 L["Your Auras First"] = "자기 주문 우선"
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Force Hide Blizzard Text"] = true
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "채팅창 위에 배치"
@@ -1164,7 +1176,7 @@ L["Rest Icon"] = "휴식 아이콘"
 L["Restore Defaults"] = "기본값 복원"
 L["Resurrect Icon"] = true
 L["Right to Left"] = "오른쪽에서 왼쪽으로"
-L["RL / ML Icons"] = "공대장/전리품담당자 아이콘"
+L["RL Icon"] = true
 L["Role Icon"] = "역할 아이콘"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true
 L["Select a unit to copy settings from."] = "이 옵션에서 선택하는 유닛프레임의 설정을 복사하여 프레임에 적용합니다."

@@ -35,8 +35,22 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.smallerWorldMap end,
 							set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end,
 						},
-						fadeMapWhenMoving = {
+						smallerWorldMapScale = {
 							order = 2,
+							type = "range",
+							name = L["Smaller World Map Scale"],
+							isPercent = true,
+							min = 0.5, max = 0.9, step = 0.01,
+							get = function(info) return E.global.general.smallerWorldMapScale end,
+							set = function(info, value) E.global.general.smallerWorldMapScale = value; E:StaticPopup_Show("GLOBAL_RL") end,
+						},
+						spacer1 = {
+							order = 3,
+							type = "description",
+							name = ""
+						},
+						fadeMapWhenMoving = {
+							order = 4,
 							type = "toggle",
 							name = MAP_FADE_TEXT,
 							get = function(info) return E.global.general.fadeMapWhenMoving end,
@@ -46,7 +60,7 @@ E.Options.args.maps = {
 							end,
 						},
 						mapAlphaWhenMoving = {
-							order = 3,
+							order = 5,
 							type = "range",
 							name = L["Map Opacity When Moving"],
 							isPercent = true,

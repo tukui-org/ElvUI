@@ -17,8 +17,8 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.frequentUpdates - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER to update the bar. Only valid for the
-                   player and pet units (boolean)
+.frequentUpdates - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the bar. Only valid
+                   for the player and pet units (boolean)
 .displayAltPower - Use this to let the widget display alternate power if the unit has one. If no alternate power the
                    display will fall back to primary power (boolean)
 .useAtlas        - Use this to let the widget use an atlas for its texture if `.atlas` is defined on the widget or an
@@ -91,10 +91,10 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
-local updateFrequentUpdates
+local updateFrequentUpdates -- ElvUI
 
 -- sourced from FrameXML/UnitPowerBarAlt.lua
-local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX or 10
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function getDisplayPower(unit)
 	local _, min, _, _, _, _, showOnRaid = UnitAlternatePowerInfo(unit)
@@ -107,12 +107,13 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 	local parent = element.__owner
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
+	-- ElvUI block
 	if element.frequentUpdates ~= element.__frequentUpdates then
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
 	end
+	-- end block
 
-	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	local r, g, b, t
 	if(element.colorTapping and element.tapped) then
 		t = parent.colors.tapped
@@ -223,7 +224,7 @@ local function Update(self, event, unit)
 	* cur         - the unit's current power value (number)
 	* min         - the unit's minimum possible power value (number)
 	* max         - the unit's maximum possible power value (number)
-	* displayType - the alternative power display type if applicable (number?)[ALTERNATE_POWER_INDEX]
+	* displayType - the alternative power display type if applicable (number?)[Enum.PowerType.Alternate]
 	--]]
 	element:UpdateColor(unit, cur, min, max, displayType)
 
@@ -257,35 +258,39 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+-- ElvUI block
 function updateFrequentUpdates(self)
 	local power = self.Power
 	if power.frequentUpdates and not self:IsEventRegistered('UNIT_POWER_FREQUENT') then
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
-		if self:IsEventRegistered('UNIT_POWER') then
-			self:UnregisterEvent('UNIT_POWER', Path)
+		if self:IsEventRegistered('UNIT_POWER_UPDATE') then
+			self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		end
-	elseif not self:IsEventRegistered('UNIT_POWER') then
-		self:RegisterEvent('UNIT_POWER', Path)
+	elseif not self:IsEventRegistered('UNIT_POWER_UPDATE') then
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
 		if self:IsEventRegistered('UNIT_POWER_FREQUENT') then
 			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		end
 	end
 end
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Power
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		-- ElvUI block
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
+		-- end block
 
 		if(element.frequentUpdates and (unit == 'player' or unit == 'pet')) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		else
-			self:RegisterEvent('UNIT_POWER', Path)
+			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		end
 
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
@@ -316,7 +321,7 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)

@@ -373,6 +373,46 @@ E.Options.args.skins = {
 					name = L["Allied Races"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Channels  = {
+					type = "toggle",
+					name = CHANNELS,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				BFAMissions = {
+					type = "toggle",
+					name = L["BFAMission"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				AzeriteUI = {
+					type = "toggle",
+					name = L["AzeriteUI"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				Communities = {
+					type = "toggle",
+					name = COMMUNITIES,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				Scrapping = {
+					type = "toggle",
+					name = SCRAP_BUTTON,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				Islands = {
+					type = "toggle",
+					name = ISLANDS_HEADER,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				AzeriteRespec = {
+					type = "toggle",
+					name = AZERITE_RESPEC_TITLE,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				UIWidgets = {
+					type = "toggle",
+					name = L["UIWidgets"], -- Find better Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Modify the unitframe settings."
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."
 L["PANEL_DESC"] = "Ajusta el tamaño de los paneles izquierdo y derecho. Esto afectará las ventanas de chat y las bolsas."
 L["SKINS_DESC"] = "Configura los Ajustes de Cubiertas."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "Activa/Desactiva esta cubierta."
 L["TOOLTIP_DESC"] = "Configuración para las Descripciones Emergentes."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -244,6 +245,17 @@ L["Time yOffset"] = true
 L["Time"] = "Tiempo"
 L["Wrap After"] = "Auras por Fila/Columna"
 L["Your Auras First"] = "Tus Auras Primero"
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Force Hide Blizzard Text"] = true
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "Arriba del Chat"
@@ -1115,7 +1127,7 @@ L["Rest Icon"] = "Icono de Descanso"
 L["Restore Defaults"] = "Restaurar por Defecto"
 L["Resurrect Icon"] = true
 L["Right to Left"] = true
-L["RL / ML Icons"] = "Iconos LB / MD"
+L["RL Icon"] = true
 L["Role Icon"] = "Icono de Rol"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true
 L["Select a unit to copy settings from."] = "Selecciona una unidad desde la que copiar la configuración."

@@ -13,30 +13,25 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Warboard ~= true then return end
 
 	local WarboardQuestChoiceFrame = _G["WarboardQuestChoiceFrame"]
+	WarboardQuestChoiceFrame:StripTextures()
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
 
-	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption1.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption2.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption3.OptionButton)
-
-	WarboardQuestChoiceFrame.Top:Hide()
-	WarboardQuestChoiceFrame.Bottom:Hide()
-	WarboardQuestChoiceFrame.Left:Hide()
-	WarboardQuestChoiceFrame.Right:Hide()
-
-	WarboardQuestChoiceFrameTopRightCorner:Hide()
-	WarboardQuestChoiceFrame.topLeftCorner:Hide()
-	WarboardQuestChoiceFrame.topBorderBar:Hide()
-	WarboardQuestChoiceFrameBotRightCorner:Hide()
-	WarboardQuestChoiceFrameBotLeftCorner:Hide()
-	WarboardQuestChoiceFrameBottomBorder:Hide()
-	WarboardQuestChoiceFrame.leftBorderBar:Hide()
-	WarboardQuestChoiceFrameRightBorder:Hide()
-
-	WarboardQuestChoiceFrame.GarrCorners:Hide()
-
+	WarboardQuestChoiceFrame.BorderFrame:Hide()
+	WarboardQuestChoiceFrame.BorderFrame.Header:SetAlpha(0)
 	WarboardQuestChoiceFrame.Background:Hide()
+	WarboardQuestChoiceFrame.Title:DisableDrawLayer("BACKGROUND")
+
+	for i = 1, 3 do
+		local option = WarboardQuestChoiceFrame["Option"..i]
+		for i = 1, #option.OptionButtonsContainer.Buttons do
+			S:HandleButton(option.OptionButtonsContainer.Buttons[i])
+		end
+		option.ArtworkBorder:SetAlpha(0)
+		option.Header.Text:FontTemplate(nil, 16)
+		option.OptionText:FontTemplate(nil, 12)
+	end
+
+	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_WarboardUI", "Warboard", LoadSkin)

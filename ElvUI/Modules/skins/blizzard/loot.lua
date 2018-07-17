@@ -195,9 +195,17 @@ local function LoadSkin()
 	for i=1, LOOTFRAME_NUMBUTTONS do
 		local button = _G["LootButton"..i]
 		_G["LootButton"..i.."NameFrame"]:Hide()
+		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
 		S:HandleItemButton(button, true)
 
-		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
+		button.IconBorder:SetTexture(nil)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(button.IconBorder, 'Hide', function(self)
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		local point, attachTo, point2, x, y = button:GetPoint()
 		button:ClearAllPoints()

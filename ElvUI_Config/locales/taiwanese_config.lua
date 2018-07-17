@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "修改單位框架設定."
 L["ACTIONBARS_DESC"] = "修改動作條設定."
 L["PANEL_DESC"] = "調整左、右對話框的尺寸，此設定將會影響對話與背包框架的尺寸."
 L["SKINS_DESC"] = "調整外觀設定."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "啟用/停用此外觀."
 L["TOOLTIP_DESC"] = "浮動提示資訊設定選項."
 L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以使用更進階的物品搜尋. 下面是一份搜尋語法的文件. 想要看更完整的解釋請到: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -244,6 +245,17 @@ L["Time yOffset"] = "時間Y偏移"
 L["Time"] = "時間"
 L["Wrap After"] = "每行光環數"
 L["Your Auras First"] = "自身光環優先"
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Force Hide Blizzard Text"] = true
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "對話框上方"
@@ -1116,7 +1128,7 @@ L["Rest Icon"] = "充分休息圖示"
 L["Restore Defaults"] = "恢復預設"
 L["Resurrect Icon"] = true
 L["Right to Left"] = "右到左"
-L["RL / ML Icons"] = "團隊隊長/裝備分配圖示"
+L["RL Icon"] = true
 L["Role Icon"] = "角色定位圖示"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = true
 L["Select a unit to copy settings from."] = "選擇從哪單位複制."

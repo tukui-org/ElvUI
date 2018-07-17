@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames');
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
+local type = type
 local select = select
 local pairs = pairs
 local ipairs = ipairs
@@ -1927,9 +1928,9 @@ E.Options.args.unitframe = {
 		cooldownShortcut = {
 			order = 6,
 			type = "execute",
-			name = L['Cooldown Override'],
+			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "cooldownGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "unitframe") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer2 = {
@@ -2407,83 +2408,8 @@ E.Options.args.unitframe = {
 						},
 					}
 				},
-				cooldownGroup = {
-					type = "group",
-					order = 3,
-					name = L["Cooldown Override"],
-					get = function(info)
-						local t = E.db.unitframe.cooldown[ info[#info] ]
-						local d = P.unitframe.cooldown[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b;
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.unitframe.cooldown[ info[#info] ]
-						t.r, t.g, t.b = r, g, b;
-						E:UpdateCooldownSettings('unitframe');
-					end,
-					args = {
-						header = {
-							order = 1,
-							type = "header",
-							name = L["Cooldown Override"],
-						},
-						override = {
-							type = "toggle",
-							order = 2,
-							name = L["Use Override"],
-							desc = L["This will override the global cooldown settings."],
-							get = function(info) return E.db.unitframe.cooldown[ info[#info] ] end,
-							set = function(info, value) E.db.unitframe.cooldown[ info[#info] ] = value end,
-						},
-						threshold = {
-							type = 'range',
-							order = 3,
-							name = L["Low Threshold"],
-							desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
-							min = -1, max = 20, step = 1,
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-							get = function(info) return E.db.unitframe.cooldown[ info[#info] ] end,
-							set = function(info, value) E.db.unitframe.cooldown[ info[#info] ] = value end,
-						},
-						expiringColor = {
-							type = 'color',
-							order = 4,
-							name = L["Expiring"],
-							desc = L["Color when the text is about to expire"],
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-						},
-						secondsColor = {
-							type = 'color',
-							order = 5,
-							name = L["Seconds"],
-							desc = L["Color when the text is in the seconds format."],
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-						},
-						minutesColor = {
-							type = 'color',
-							order = 6,
-							name = L["Minutes"],
-							desc = L["Color when the text is in the minutes format."],
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-						},
-						hoursColor = {
-							type = 'color',
-							order = 7,
-							name = L["Hours"],
-							desc = L["Color when the text is in the hours format."],
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-						},
-						daysColor = {
-							type = 'color',
-							order = 8,
-							name = L["Days"],
-							desc = L["Color when the text is in the days format."],
-							disabled = function() return not E.db.unitframe.cooldown.override end,
-						},
-					},
-				},
 				allColorsGroup = {
-					order = 4,
+					order = 3,
 					type = 'group',
 					childGroups = "tree",
 					name = COLORS,
@@ -2952,7 +2878,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				disabledBlizzardFrames = {
-					order = 5,
+					order = 4,
 					type = "group",
 					name = L["Disabled Blizzard Frames"],
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
@@ -3004,7 +2930,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				raidDebuffIndicator = {
-					order = 6,
+					order = 5,
 					type = "group",
 					name = L["RaidDebuff Indicator"],
 					args = {
@@ -3091,7 +3017,7 @@ E.Options.args.unitframe.args.player = {
 				},
 				copyFrom = {
 					type = 'select',
-					order = 2,
+					order = 3,
 					name = L["Copy From"],
 					desc = L["Select a unit to copy settings from."],
 					values = UF['units'],
@@ -3099,12 +3025,12 @@ E.Options.args.unitframe.args.player = {
 				},
 				resetSettings = {
 					type = 'execute',
-					order = 3,
+					order = 4,
 					name = L["Restore Defaults"],
 					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player Frame"], nil, {unit='player', mover='Player Frame'}) end,
 				},
 				showAuras = {
-					order = 4,
+					order = 5,
 					type = 'execute',
 					name = L["Show Auras"],
 					func = function()
@@ -3119,7 +3045,7 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				width = {
-					order = 5,
+					order = 6,
 					name = L["Width"],
 					type = 'range',
 					min = 50, max = 500, step = 1,
@@ -3133,13 +3059,13 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				height = {
-					order = 6,
+					order = 7,
 					name = L["Height"],
 					type = 'range',
 					min = 10, max = 250, step = 1,
 				},
 				combatfade = {
-					order = 7,
+					order = 8,
 					name = L["Combat Fade"],
 					desc = L["Fade the unitframe when out of combat, not casting, no target exists."],
 					type = 'toggle',
@@ -3154,14 +3080,14 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				healPrediction = {
-					order = 8,
+					order = 9,
 					name = L["Heal Prediction"],
 					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
 					type = 'toggle',
-					order = 9,
+					order = 10,
 					name = L["Text Toggle On NPC"],
 					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
 					get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
@@ -3169,44 +3095,44 @@ E.Options.args.unitframe.args.player = {
 				},
 				threatStyle = {
 					type = 'select',
-					order = 10,
+					order = 11,
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
 				smartAuraPosition = {
-					order = 11,
+					order = 12,
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = smartAuraPositionValues,
 				},
 				orientation = {
-					order = 12,
+					order = 13,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
 				colorOverride = {
-					order = 13,
+					order = 14,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
 				},
 				spacer = {
-					order = 14,
+					order = 15,
 					type = "description",
 					name = "",
 				},
 				disableMouseoverGlow = {
-					order = 15,
+					order = 16,
 					type = "toggle",
 					name = L["Block Mouseover Glow"],
 					desc = L["Forces Mouseover Glow to be disabled for these frames"],
 				},
 				disableTargetGlow = {
-					order = 16,
+					order = 17,
 					type = "toggle",
 					name = L["Block Target Glow"],
 					desc = L["Forces Target Glow to be disabled for these frames"],
@@ -3269,12 +3195,12 @@ E.Options.args.unitframe.args.player = {
 					name = L["Additional Power Text"],
 				},
 				spacer = {
-					order = 9,
+					order = 10,
 					type = "description",
 					name = "",
 				},
 				detachGroup = {
-					order = 10,
+					order = 20,
 					type = "group",
 					name = L["Detach From Frame"],
 					get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
@@ -5509,14 +5435,14 @@ E.Options.args.unitframe.args.party = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -6123,14 +6049,14 @@ E.Options.args.unitframe.args.raid = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -6552,14 +6478,14 @@ E.Options.args.unitframe.args.raid40 = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -7391,6 +7317,22 @@ if P.unitframe.colors.classResources[E.myclass] then
 			order = ORDER,
 		}
 	end
+end
+
+if E.myclass == 'DEATHKNIGHT' then
+	E.Options.args.unitframe.args.player.args.classbar.args.sortDirection = {
+		name = L["Sort Direction"],
+		desc = L["Defines the sort order of the selected sort method."],
+		type = 'select',
+		order = 7,
+		values = {
+			['asc'] = L["Ascending"],
+			['desc'] = L["Descending"],
+			['NONE'] = NONE,
+		},
+		get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+	}
 end
 
 --Custom Texts

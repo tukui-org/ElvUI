@@ -44,7 +44,7 @@ end
 
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms();
-	local texture, name, isActive, isCastable, _;
+	local texture, spellID, isActive, isCastable, _;
 	local buttonName, button, icon, cooldown;
 	local stance = GetShapeshiftForm();
 
@@ -55,10 +55,10 @@ function AB:StyleShapeShift()
 		cooldown = _G[buttonName.."Cooldown"];
 
 		if i <= numForms then
-			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
+			texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i);
 
 			if self.db.stanceBar.style == 'darkenInactive' then
-				_,_, texture = GetSpellInfo(name)
+				_,_, texture = GetSpellInfo(spellID)
 			end
 
 			if not texture then

@@ -151,12 +151,12 @@ function E:GetScreenQuadrant(frame)
 	local x, y = frame:GetCenter()
 	local screenWidth = GetScreenWidth()
 	local screenHeight = GetScreenHeight()
-	local point
 
-	if not frame:GetCenter() then
+	if not (x and y) then
 		return "UNKNOWN", frame:GetName()
 	end
 
+	local point
 	if (x > (screenWidth / 3) and x < (screenWidth / 3)*2) and y > (screenHeight / 3)*2 then
 		point = "TOP"
 	elseif x < (screenWidth / 3) and y > (screenHeight / 3)*2 then
@@ -190,7 +190,7 @@ function E:GetXYOffset(position, override)
 		return x, y
 	elseif position == 'TOPRIGHT' then
 		return -x, y
-	elseif position == 'BOTTOM' then --or  or  then
+	elseif position == 'BOTTOM' then --or or then
 		return 0, -y
 	elseif position == 'BOTTOMLEFT' then
 		return x, -y
@@ -210,7 +210,7 @@ local styles = {
 	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
-	['CURRENT_PERCENT'] =  '%s - %.1f%%',
+	['CURRENT_PERCENT'] = '%s - %.1f%%',
 	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
 	['PERCENT'] = '%.1f%%',
 	['DEFICIT'] = '-%s'
@@ -237,9 +237,9 @@ function E:GetFormattedText(style, min, max)
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(styles['CURRENT'],  E:ShortValue(min))
+		return format(styles['CURRENT'], E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
-		return format(gftUseStyle,  E:ShortValue(min), E:ShortValue(max))
+		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
 		return format(gftUseStyle, E:ShortValue(min), min / max * 100)
 	elseif style == 'CURRENT_MAX_PERCENT' then
@@ -340,6 +340,8 @@ E.TimeColors = {
 	[2] = '|cffeeeeee',
 	[3] = '|cffeeeeee',
 	[4] = '|cfffe0000',
+	[5] = '|cff909090', --mmss
+	[6] = '|cff707070', --hhmm
 }
 
 -- short and long aura time formats
@@ -349,6 +351,8 @@ E.TimeFormats = {
 	[2] = { '%dm', '%dm' },
 	[3] = { '%ds', '%d' },
 	[4] = { '%.1fs', '%.1f' },
+	[5] = { '%d:%02d', '%d:%02d' }, --mmss
+	[6] = { '%d:%02d', '%d:%02d' }, --hhmm
 }
 
 
@@ -357,7 +361,7 @@ local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for c
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
 -- will return the the value to display, the formatter id to use and calculates the next update for the Aura
-function E:GetTimeInfo(s, threshhold)
+function E:GetTimeInfo(s, threshhold, hhmm, mmss)
 	if s < MINUTE then
 		if s >= threshhold then
 			return floor(s), 3, 0.51
@@ -365,14 +369,29 @@ function E:GetTimeInfo(s, threshhold)
 			return s, 4, 0.051
 		end
 	elseif s < HOUR then
-		local minutes = floor((s/MINUTE)+.5)
-		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+		if mmss and s < mmss then
+			return s/MINUTE, 5, 0.51, s%MINUTE
+		else
+			local minutes = floor((s/MINUTE)+.5)
+			if hhmm and s < (hhmm * MINUTE) then
+				return s/HOUR, 6, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH), minutes%MINUTE
+			else
+				return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+			end
+		end
 	elseif s < DAY then
-		local hours = floor((s/HOUR)+.5)
-		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+		if mmss and s < mmss then
+			return s/MINUTE, 5, 0.51, s%MINUTE
+		elseif hhmm and s < (hhmm * MINUTE) then
+			local minutes = floor((s/MINUTE)+.5)
+			return s/HOUR, 6, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH), minutes%MINUTE
+		else
+			local hours = floor((s/HOUR)+.5)
+			return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+		end
 	else
 		local days = floor((s/DAY)+.5)
-		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+		return ceil(s / DAY), 0, days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end
 

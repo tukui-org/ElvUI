@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Modifier les options des cadres d'unités."
 L["ACTIONBARS_DESC"] = "Modifier les options des barres d'actions."
 L["PANEL_DESC"] = "Ajuste la largeur et la hauteur des fenêtres de chat, cela ajuste aussi les sacs."
 L["SKINS_DESC"] = "Ajuste les paramètres d'habillage."
+L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["TOGGLESKIN_DESC"] = "Active ou désactive l'habillage ElvUI des éléments ci-dessous."
 L["TOOLTIP_DESC"] = "Configuration des infobulles."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -244,6 +245,17 @@ L["Time yOffset"] = "Décalage Y du temps"
 L["Time"] = "Temps"
 L["Wrap After"] = "Retour à la ligne après"
 L["Your Auras First"] = "Vos Auras en premier"
+
+--Cooldown
+L["MM:SS Threshold"] = true
+L["HH:MM Threshold"] = true
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
+L["Color Override"] = true
+L["Force Hide Blizzard Text"] = true
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
+L["Reverse Toggle"] = true
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = true
 
 --Chat
 L["Above Chat"] = "En-dessus du Chat"
@@ -1116,7 +1128,7 @@ L["Rest Icon"] = "Icône reposé"
 L["Restore Defaults"] = "Restaurer les paramètres par défaut" --Also used in Media and ActionBars sections
 L["Resurrect Icon"] = true
 L["Right to Left"] = "De droite à gauche"
-L["RL / ML Icons"] = "Icônes RL / ML"
+L["RL Icon"] = true
 L["Role Icon"] = "Icône de rôle"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = "Secondes restantes à l'aura avant que la barre ne commence à bouger. Mettez 0 pour désactiver cette option."
 L["Select a unit to copy settings from."] = "Sélectionnez les réglages d'un cadre à copier."

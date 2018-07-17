@@ -303,16 +303,16 @@ local elapsed = 0;
 function AB:Tooltip_OnUpdate(tooltip, e)
 	if tooltip:IsForbidden() then return; end
 
-	elapsed = elapsed + e;
-	if elapsed < .2 then return else elapsed = 0; end
-	if (not tooltip.comparing and IsModifiedClick("COMPAREITEMS")) then
-		GameTooltip_ShowCompareItem(tooltip);
-		tooltip.comparing = true;
-	elseif ( tooltip.comparing and not IsModifiedClick("COMPAREITEMS")) then
-		for _, frame in pairs(tooltip.shoppingTooltips) do
-			frame:Hide();
-		end
-		tooltip.comparing = false;
+	elapsed = elapsed + e
+	if elapsed < .2 then return else elapsed = 0 end
+
+	local compareItems = IsModifiedClick("COMPAREITEMS")
+	if not tooltip.comparing and compareItems and tooltip:GetItem() then
+		GameTooltip_ShowCompareItem(tooltip)
+		tooltip.comparing = true
+	elseif tooltip.comparing and not compareItems then
+		for _, frame in pairs(tooltip.shoppingTooltips) do frame:Hide() end
+		tooltip.comparing = false
 	end
 end
 
@@ -364,14 +364,12 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25);
 	bind:Hide();
 
-	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
+	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip)
 		if not tooltip:IsForbidden() then
-			for _, tt in pairs(tooltip.shoppingTooltips) do
-				tt:Hide();
-			end
+			for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide() end
 		end
-	end);
+	end)
 
 	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(self.button) end end)
 	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(self.button) end end)

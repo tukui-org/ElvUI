@@ -13,111 +13,93 @@ local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local ToggleDropDownMenu = ToggleDropDownMenu
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
--- GLOBALS: BattlefieldMinimapTabDropDown_TogglePlayers, BattlefieldMinimapTabDropDown_ToggleLock
--- GLOBALS: BattlefieldMinimapTabDropDown_ShowOpacity, BattlefieldMinimap_UpdateOpacity
--- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL
+-- GLOBALS: BattlefieldMapTab, BattlefieldMapOptions, OpacityFrame
+-- GLOBALS: SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
+-- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL, UIParent
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 
-	local BattlefieldMinimap = _G["BattlefieldMinimap"]
-	BattlefieldMinimap:SetClampedToScreen(true)
-	BattlefieldMinimapCorner:Kill()
-	BattlefieldMinimapBackground:Kill()
-	BattlefieldMinimapTab:Kill()
-	BattlefieldMinimapTabLeft:Kill()
-	BattlefieldMinimapTabMiddle:Kill()
-	BattlefieldMinimapTabRight:Kill()
-
-	BattlefieldMinimap:CreateBackdrop('Default')
-	BattlefieldMinimap.backdrop:Point('BOTTOMRIGHT', -4, 2)
-	BattlefieldMinimap:SetFrameStrata('LOW')
-	BattlefieldMinimapCloseButton:ClearAllPoints()
-	BattlefieldMinimapCloseButton:Point("TOPRIGHT", -4, 0)
-	S:HandleCloseButton(BattlefieldMinimapCloseButton)
-	BattlefieldMinimapCloseButton.text:ClearAllPoints()
-	BattlefieldMinimapCloseButton.text:Point('CENTER', BattlefieldMinimapCloseButton, 'CENTER', 0, 1)
-	BattlefieldMinimapCloseButton:SetFrameStrata('MEDIUM')
-
-	BattlefieldMinimap:EnableMouse(true)
-	BattlefieldMinimap:SetMovable(true)
-
-	--Custom dropdown to avoid using regular DropDownMenu code (taints)
-	local function BattlefieldMinimapTabDropDown_Initialize()
-		local info = UIDropDownMenu_CreateInfo();
-
-		-- Show battlefield players
-		info.text = SHOW_BATTLEFIELDMINIMAP_PLAYERS;
-		info.func = BattlefieldMinimapTabDropDown_TogglePlayers;
-		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.showPlayers or false;
-		info.isNotRadio = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-
-		-- Battlefield minimap lock
-		info.text = LOCK_BATTLEFIELDMINIMAP;
-		info.func = BattlefieldMinimapTabDropDown_ToggleLock;
-		info.checked = BattlefieldMinimapOptions and BattlefieldMinimapOptions.locked or false;
-		info.isNotRadio = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
-
-		-- Opacity
-		info.text = BATTLEFIELDMINIMAP_OPACITY_LABEL;
-		info.func = BattlefieldMinimapTabDropDown_ShowOpacity;
-		info.notCheckable = true;
-		UIDropDownMenu_AddButton(info, UIDROPDOWNMENU_MENU_LEVEL);
+	local function GetOpacity()
+		return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
 	end
-	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "UIDropDownMenuTemplate")
-	ElvUIBattlefieldMinimapTabDropDown:SetID(1)
-	ElvUIBattlefieldMinimapTabDropDown:Hide()
-	UIDropDownMenu_Initialize(ElvUIBattlefieldMinimapTabDropDown, BattlefieldMinimapTabDropDown_Initialize, "MENU");
 
-	BattlefieldMinimap:SetScript("OnMouseUp", function(self, btn)
+	local oldAlpha = GetOpacity()
+
+	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
+	BattlefieldMapFrame:SetClampedToScreen(true)
+	BattlefieldMapFrame:StripTextures()
+
+	BattlefieldMapFrame:CreateBackdrop('Default')
+	BattlefieldMapFrame:SetFrameStrata('LOW')
+	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
+	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
+
+	BattlefieldMapFrame.backdrop.backdropTexture:SetTexture(nil)
+	hooksecurefunc(BattlefieldMapFrame.backdrop.backdropTexture, "SetTexture", function(self, texture)
+		if texture ~= nil then self:SetTexture(nil) end
+	end)
+
+	BattlefieldMapFrame:EnableMouse(true)
+	BattlefieldMapFrame:SetMovable(true)
+
+	BattlefieldMapFrame.BorderFrame:StripTextures()
+	BattlefieldMapFrame.BorderFrame.CloseButton:SetFrameLevel(BattlefieldMapFrame.BorderFrame.CloseButton:GetFrameLevel()+1)
+	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
+	BattlefieldMapTab:Kill()
+
+	local function InitializeOptionsDropDown()
+		BattlefieldMapTab:InitializeOptionsDropDown()
+	end
+
+	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
 		if btn == "LeftButton" then
-			BattlefieldMinimapTab:StopMovingOrSizing()
-			BattlefieldMinimapTab:SetUserPlaced(true)
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
+			BattlefieldMapTab:StopMovingOrSizing()
+			BattlefieldMapTab:SetUserPlaced(true)
 		elseif btn == "RightButton" then
-			ToggleDropDownMenu(1, nil, ElvUIBattlefieldMinimapTabDropDown, self:GetName(), 0, -4)
-			if OpacityFrame:IsShown() then OpacityFrame:Hide() end -- seem to be a bug with default ui in 4.0, we hide it on next click
+			UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
+			ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+		end
+
+		if OpacityFrame:IsShown() then
+			OpacityFrame:Hide()
 		end
 	end)
 
-	BattlefieldMinimap:SetScript("OnMouseDown", function(self, btn)
-		if btn == "LeftButton" and (BattlefieldMinimapOptions and not BattlefieldMinimapOptions.locked) then
-			BattlefieldMinimapTab:StartMoving()
+	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseDown", function(_, btn)
+		if btn == "LeftButton" and (BattlefieldMapOptions and not BattlefieldMapOptions.locked) then
+			BattlefieldMapTab:StartMoving()
 		end
 	end)
 
-	hooksecurefunc('BattlefieldMinimap_UpdateOpacity', function()
-		local alpha = 1.0 - (BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0);
-		BattlefieldMinimap.backdrop:SetAlpha(alpha)
+	local function setBackdropAlpha()
+		if BattlefieldMapFrame.backdrop then
+			BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
+		end
+	end
+
+	hooksecurefunc(BattlefieldMapFrame, "SetGlobalAlpha", setBackdropAlpha)
+	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", function()
+		oldAlpha = GetOpacity()
 	end)
 
-	local oldAlpha
-	BattlefieldMinimap:HookScript('OnEnter', function()
-		oldAlpha = BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0;
-		BattlefieldMinimap_UpdateOpacity(0)
-	end)
-
-	BattlefieldMinimap:HookScript('OnLeave', function()
+	local function setOldAlpha()
 		if oldAlpha then
-			BattlefieldMinimap_UpdateOpacity(oldAlpha)
-			oldAlpha = nil;
+			BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
+			oldAlpha = nil
 		end
-	end)
+	end
 
-	BattlefieldMinimapCloseButton:HookScript('OnEnter', function()
-		oldAlpha = BattlefieldMinimapOptions and BattlefieldMinimapOptions.opacity or 0;
-		BattlefieldMinimap_UpdateOpacity(0)
-	end)
+	local function setRealAlpha()
+		oldAlpha = GetOpacity()
+		BattlefieldMapFrame:SetGlobalAlpha(1)
+	end
 
-	BattlefieldMinimapCloseButton:HookScript('OnLeave', function()
-		if oldAlpha then
-			BattlefieldMinimap_UpdateOpacity(oldAlpha)
-			oldAlpha = nil;
-		end
-	end)
+	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
+	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)
+	BattlefieldMapFrame.ScrollContainer:HookScript('OnEnter', setRealAlpha)
+	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnLeave', setOldAlpha)
+	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnEnter', setRealAlpha)
 end
 
-S:AddCallbackForAddon("Blizzard_BattlefieldMinimap", "BattlefieldMinimap", LoadSkin)
+S:AddCallbackForAddon("Blizzard_BattlefieldMap", "BattlefieldMap", LoadSkin)

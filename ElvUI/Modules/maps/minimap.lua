@@ -8,63 +8,43 @@ local _G = _G
 local tinsert = table.insert
 local strsub = strsub
 --WoW API / Variables
-local ClearAllTracking = ClearAllTracking
+local C_Timer_After = C_Timer.After
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
-local C_Timer_After = C_Timer.After
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
-local GetNumTrackingTypes = GetNumTrackingTypes
-local GetTrackingInfo = GetTrackingInfo
 local GetZonePVPInfo = GetZonePVPInfo
 local GuildInstanceDifficulty = GuildInstanceDifficulty
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
-local ToggleDropDownMenu = ToggleDropDownMenu
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local MiniMapTrackingDropDownButton_IsActive = MiniMapTrackingDropDownButton_IsActive
-local MiniMapTrackingDropDown_IsNoTrackingActive = MiniMapTrackingDropDown_IsNoTrackingActive
-local MiniMapTracking_SetTracking = MiniMapTracking_SetTracking
-local Minimap_OnClick = Minimap_OnClick
 local PlaySound = PlaySound
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleCharacter = ToggleCharacter
 local ToggleCollectionsJournal = ToggleCollectionsJournal
+local ToggleDropDownMenu = ToggleDropDownMenu
 local ToggleFrame = ToggleFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
-local UnitClass = UnitClass
-local HUNTER_TRACKING = HUNTER_TRACKING
-local HUNTER_TRACKING_TEXT = HUNTER_TRACKING_TEXT
-local MINIMAP_TRACKING_NONE = MINIMAP_TRACKING_NONE
-local TOWNSFOLK = TOWNSFOLK
-local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
--- GLOBALS: PlayerTalentFrame, TimeManagerFrame, HelpOpenTicketButton, HelpOpenWebTicketButton
--- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
--- GLOBALS: BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
--- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
--- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
--- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
--- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
--- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
--- GLOBALS: MinimapMover, AurasHolder, AurasMover
--- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
--- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
--- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
--- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
--- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
--- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
--- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop, UIDROPDOWNMENU_MENU_VALUE
+-- GLOBALS: AudioOptionsFrame, AudioOptionsFrameCancel
+-- GLOBALS: BottomLeftMiniPanel, BottomMiniPanel, BottomRightMiniPanel, EncounterJournal, EncounterJournal_LoadUI
+-- GLOBALS: FeedbackUIButton, GameMenuFrame, GameTimeFrame, GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox
+-- GLOBALS: GetMinimapShape, GuildFrame, GuildFrame_LoadUI, HelpOpenTicketButton, HelpOpenWebTicketButton
+-- GLOBALS: InterfaceOptionsFrame, InterfaceOptionsFrameCancel, LeftMiniPanel
+-- GLOBALS: Minimap, Minimap_OnClick, MinimapBackdrop, MinimapBorder, MinimapBorderTop, MiniMapChallengeMode
+-- GLOBALS: MiniMapInstanceDifficulty, MiniMapMailBorder, MiniMapMailFrame, MiniMapMailIcon, MinimapMover, MinimapNorthTag
+-- GLOBALS: MiniMapTracking, MiniMapTrackingDropDown, MiniMapVoiceChatFrame, MiniMapWorldMapButton, MinimapZoneTextButton
+-- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
+-- GLOBALS: QueueStatusMinimapButtonBorder, RightMiniPanel, SpellBookFrame, StoreMicroButton, TalentFrame_LoadUI
+-- GLOBALS: TimeManagerClockButton, TimeManagerFrame, TopLeftMiniPanel, TopMiniPanel, TopRightMiniPanel, UIParent
+-- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
@@ -105,7 +85,7 @@ local menuList = {
 	func = ToggleFriendsFrame},
 	{text = L["Calendar"],
 	func = function() GameTimeFrame:Click() end},
-	{text = GARRISON_LANDING_PAGE_TITLE,
+	{text = GARRISON_TYPE_8_0_LANDING_PAGE_TITLE,
 	func = function() GarrisonLandingPageMinimapButton_OnClick() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = ToggleGuildFrame},
@@ -397,9 +377,6 @@ function M:UpdateSettings()
 end
 
 local function MinimapPostDrag()
-	--Make sure these invisible frames follow the minimap.
-	MinimapCluster:ClearAllPoints()
-	MinimapCluster:SetAllPoints(Minimap)
 	MinimapBackdrop:ClearAllPoints()
 	MinimapBackdrop:SetAllPoints(Minimap)
 end
@@ -458,7 +435,7 @@ function M:Initialize()
 	MinimapZoomIn:Hide()
 	MinimapZoomOut:Hide()
 
-	MiniMapVoiceChatFrame:Hide()
+	-- MiniMapVoiceChatFrame:Hide()
 
 	MinimapNorthTag:Kill()
 

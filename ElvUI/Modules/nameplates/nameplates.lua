@@ -45,7 +45,6 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local GetCVar = GetCVar
-local Saturate = Saturate
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 
@@ -156,8 +155,8 @@ function mod:ToggleNamePlateDriverEvents(lockedInstance)
 end
 
 function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
-	local inInstance, instanceType = IsInInstance()
-	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	local _, instanceType = IsInInstance()
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 	mod:SetBaseNamePlateSize(lockedInstance) -- workaround for #206
 end
 
@@ -165,7 +164,7 @@ function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
-	local lockedInstance = inInstance and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
 		self:ToggleNamePlateDriverEvents(lockedInstance)
@@ -660,7 +659,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 			if(UnitIsUnit(frame.unit, "player")) then
 				frame.displayedUnit = "vehicle"
 			else
-				local prefix, id, suffix = match(frame.unit, "([^%d]+)([%d]*)(.*)")
+				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
 			if(not noEvents) then
@@ -839,12 +838,12 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
 		mod:UpdateElement_MaxPower(self)
-	elseif(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
+	elseif(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
 		local powerType, powerToken = UnitPowerType(self.displayedUnit)
 		local arg1 = ...
 		self.PowerToken = powerToken
 		self.PowerType = powerType
-		if(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT") then
+		if(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT") then
 			if mod.ClassBar and arg1 == powerToken then
 				mod:ClassBar_Update()
 			end
@@ -898,7 +897,7 @@ function mod:RegisterEvents(frame, unit)
 		end
 
 		if(self.db.units[frame.UnitType].powerbar.enable) then
-			frame:RegisterUnitEvent("UNIT_POWER", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_POWER_UPDATE", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit, displayedUnit)
@@ -1096,24 +1095,22 @@ function mod:UpdateFonts(plate)
 	--buff fonts
 	if plate.Buffs and plate.Buffs.db and plate.Buffs.db.numAuras then
 		for i=1, plate.Buffs.db.numAuras do
-			if plate.Buffs.icons[i] and plate.Buffs.icons[i].cooldown and plate.Buffs.icons[i].cooldown.timer and plate.Buffs.icons[i].cooldown.timer.text then
-				plate.Buffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
 				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Buffs.icons[i].cooldown)
 		end
 	end
 
 	--debuff fonts
 	if plate.Debuffs and plate.Debuffs.db and plate.Debuffs.db.numAuras then
 		for i=1, plate.Debuffs.db.numAuras do
-			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].cooldown and plate.Debuffs.icons[i].cooldown.timer and plate.Debuffs.icons[i].cooldown.timer.text then
-				plate.Debuffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
 				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Debuffs.icons[i].cooldown)
 		end
 	end
 

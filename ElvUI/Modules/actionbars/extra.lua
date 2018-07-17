@@ -17,7 +17,6 @@ local ExtraActionBarHolder, ZoneAbilityHolder
 
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
-	cd:SetHideCountdownNumbers(true)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
 end
 
@@ -87,7 +86,8 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
-			if(button.cooldown and E.private.cooldown.enable) then
+			if button.cooldown then
+				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
 				button.cooldown:HookScript("OnShow", FixExtraActionCD)
 			end
@@ -103,7 +103,8 @@ function AB:SetupExtraButton()
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		button.Icon:SetInside()
 
-		if(button.Cooldown and E.private.cooldown.enable) then
+		if button.Cooldown then
+			button.Cooldown.CooldownOverride = 'actionbar'
 			E:RegisterCooldown(button.Cooldown)
 		end
 	end

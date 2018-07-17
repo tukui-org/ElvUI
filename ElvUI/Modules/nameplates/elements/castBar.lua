@@ -82,7 +82,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, _, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
+		local name, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -113,7 +113,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( not frame.CastBar:IsVisible() ) then
 			frame.CastBar:Hide();
 		end
-		if ( (frame.CastBar.casting and event == "UNIT_SPELLCAST_STOP" and select(4, ...) == frame.CastBar.castID) or
+		if ( (frame.CastBar.casting and event == "UNIT_SPELLCAST_STOP" and select(2, ...) == frame.CastBar.castID) or
 		     (frame.CastBar.channeling and event == "UNIT_SPELLCAST_CHANNEL_STOP") ) then
 			if ( frame.CastBar.Spark ) then
 				frame.CastBar.Spark:Hide();
@@ -129,7 +129,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar:Hide()
 		end
 	elseif ( event == "UNIT_SPELLCAST_FAILED" or event == "UNIT_SPELLCAST_INTERRUPTED" ) then
-		if ( frame.CastBar:IsShown() and (frame.CastBar.casting and select(4, ...) == frame.CastBar.castID) ) then
+		if ( frame.CastBar:IsShown() and (frame.CastBar.casting and select(2, ...) == frame.CastBar.castID) ) then
 			frame.CastBar:SetValue(frame.CastBar.maxValue);
 			if ( frame.CastBar.Spark ) then
 				frame.CastBar.Spark:Hide();
@@ -147,7 +147,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
-			local name, _, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
+			local name, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
 			if ( not name ) then
 				-- if there is no name, there is no bar
 				frame.CastBar:Hide();
@@ -169,7 +169,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			end
 		end
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
-		local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
+		local name, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -195,7 +195,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar:Show();
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_UPDATE" ) then
 		if ( frame.CastBar:IsShown() ) then
-			local name, _, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
+			local name, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 			if ( not name ) then
 				frame.CastBar:Hide();
 				return;

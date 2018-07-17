@@ -205,7 +205,10 @@ function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
 
 	--Create main frame
-	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate")
+	RaidUtilityPanel:SetScript("OnMouseUp", function(panel, ...)
+		SecureHandler_OnClick(panel, "_onclick", ...);
+	end)
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)

@@ -22,7 +22,6 @@
 	<Script file="elements\castbar.lua"/>
 	<Script file="elements\threatindicator.lua"/>
 	<Script file="elements\tags.lua"/>
-	<Script file="elements\masterlooterindicator.lua"/>
 	<Script file="elements\assistantindicator.lua"/>
 	<Script file="elements\runes.lua"/>
 	<Script file="elements\grouproleindicator.lua"/>
@@ -46,15 +45,6 @@
 			<Attribute name="_onleave" type="string" value="local snippet = self:GetAttribute('clickcast_onleave'); if snippet then self:Run(snippet) end"/>
 		</Attributes>
 	</Button>
-
-	<!-- Pet Battle Hider Frame -->
-	<Frame name="oUF_PetBattleFrameHider" frameStrata="LOW" inherits="SecureHandlerStateTemplate" parent="UIParent" setAllPoints="true">
-		<Scripts>
-			<OnLoad>
-				RegisterStateDriver(self, "visibility", "[petbattle] hide; show")
-			</OnLoad>
-		</Scripts>
-	</Frame>
 
 	<!--
 		Sub-object as a child of the parent unit frame:

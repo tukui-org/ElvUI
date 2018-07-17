@@ -77,15 +77,17 @@ The following options are listed by priority. The first check that returns true 
 
 local _, ns = ...
 local oUF = ns.oUF
-local updateFrequentUpdates
+local updateFrequentUpdates -- ElvUI
 
 local function UpdateColor(element, unit, cur, max)
 	local parent = element.__owner
 
+	-- ElvUI block
 	if element.frequentUpdates ~= element.__frequentUpdates then
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(parent)
 	end
+	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
@@ -184,6 +186,7 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+-- ElvUI block
 function updateFrequentUpdates(self)
 	local health = self.Health
 	if health.frequentUpdates and not self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
@@ -204,14 +207,17 @@ function updateFrequentUpdates(self)
 		end	
 	end
 end
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		-- ElvUI block
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
+		-- end block
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)

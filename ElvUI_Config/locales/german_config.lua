@@ -14,6 +14,7 @@ L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster.
 L["ACTIONBARS_DESC"] = "Konfiguriere die Einstellungen für die Aktionsleisten."
 L["PANEL_DESC"] = "Stellt die Größe der linken und rechten Leisten ein, dies hat auch Einfluss auf den Chat und die Taschen."
 L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an."
+L["COOLDOWN_DESC"] = "Passe Cooldown Einstellungen an."
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
@@ -245,6 +246,17 @@ L["Time yOffset"] = "Zeit Y-Versatz"
 L["Time"] = "Zeit"
 L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["Your Auras First"] = "Deine Auren zuerst"
+
+--Cooldown
+L["MM:SS Threshold"] = "MM:SS Schwellenwert"
+L["HH:MM Threshold"] = "HH:MM Schwellenwert"
+L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Schwellenwert (in Sekunden) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
+L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Schwellenwert (in Minuten) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
+L["Color Override"] = "Farbüberschreibung"
+L["Force Hide Blizzard Text"] = "Ausblenden des Blizzard Text erzwingen"
+L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = "Diese Option erzwingt das Ausblenden des Blizzard's Cooldown Text, wenn er unter [Interface - Aktionsleisten - Zahlen für Abklingzeiten anzeigen] aktiviert ist."
+L["Reverse Toggle"] = "Umgekehrte Anzeige"
+L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = "Umgekehrte Anzeige aktiviert den Cooldown Text auf diesem Modul wenn die globale Einstellung deaktiviert ist und deaktiviert es wenn die globale Einstellung aktiviert ist."
 
 --Chat
 L["Above Chat"] = "Über dem Chat"
@@ -1118,7 +1130,7 @@ L["Rest Icon"] = "Ausgeruht-Symbol"
 L["Restore Defaults"] = "Standard wiederherstellen" --Also used in General and ActionBars sections
 L["Resurrect Icon"] = "Wiederbelebungssymbol"
 L["Right to Left"] = "Rechts nach Links"
-L["RL / ML Icons"] = "RL / ML Symbole"
+L["RL Icon"] = "RL Symbol"
 L["Role Icon"] = "Rollensymbol"
 L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."] = "Verbleibende Sekunden auf der Aura bis sie sich bewegt. Auf 0 setzen zum deaktivieren."
 L["Select a unit to copy settings from."] = "Wähle eine Einheit um Einstellungen zu kopieren."

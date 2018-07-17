@@ -11,6 +11,7 @@ local len = string.len
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitGUID = UnitGUID
+local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 
@@ -50,7 +51,7 @@ function DT:PLAYER_ENTERING_WORLD()
 end
 
 local function LoadDataTextsDelayed()
-	C_Timer.After(0.5, function() DT:LoadDataTexts() end)
+	C_Timer_After(0.5, function() DT:LoadDataTexts() end)
 end
 
 local hex = '|cffFFFFFF'
@@ -200,8 +201,6 @@ function DT:AssignPanelToDataText(panel, data)
 			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
 				panel:RegisterUnitEvent(event, 'player')
-			elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-				panel:RegisterUnitEvent(event, E.myguid, UnitGUID("pet"))
 			else
 				panel:RegisterEvent(event)
 			end
@@ -245,13 +244,17 @@ function DT:LoadDataTexts()
 		LDB:UnregisterAllCallbacks(self)
 	end
 
-	local inInstance, instanceType = IsInInstance()
 	local fontTemplate = LSM:Fetch("font", self.db.font)
-
+	local inInstance, instanceType = IsInInstance()
+	local isInPVP = inInstance and (instanceType == "pvp")
+	local pointIndex, isBGPanel, enableBGPanel
 	for panelName, panel in pairs(DT.RegisteredPanels) do
+		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
+		enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+
 		--Restore Panels
 		for i=1, panel.numPoints do
-			local pointIndex = DT.PointLocation[i]
+			pointIndex = DT.PointLocation[i]
 			panel.dataPanels[pointIndex]:UnregisterAllEvents()
 			panel.dataPanels[pointIndex]:SetScript('OnUpdate', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnEnter', nil)
@@ -262,14 +265,20 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 
-			if (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel') and (inInstance and (instanceType == "pvp")) and not DT.ForceHideBGStats and E.db.datatexts.battleground then
+			if enableBGPanel then
 				panel.dataPanels[pointIndex]:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
 				panel.dataPanels[pointIndex]:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
 				panel.dataPanels[pointIndex]:SetScript('OnEnter', DT.BattlegroundStats)
 				panel.dataPanels[pointIndex]:SetScript('OnLeave', DT.Data_OnLeave)
 				panel.dataPanels[pointIndex]:SetScript('OnClick', DT.HideBattlegroundTexts)
 				DT.UPDATE_BATTLEFIELD_SCORE(panel.dataPanels[pointIndex])
+				DT.ShowingBGStats = true
 			else
+				-- we aren't showing BGStats anymore
+				if (isBGPanel or not isInPVP) and DT.ShowingBGStats then
+					DT.ShowingBGStats = nil
+				end
+
 				--Register Panel to Datatext
 				for name, data in pairs(DT.RegisteredDataTexts) do
 					for option, value in pairs(self.db.panels) do

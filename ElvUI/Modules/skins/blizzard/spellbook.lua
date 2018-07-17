@@ -79,6 +79,15 @@ local function LoadSkin()
 				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
 			end
 
+			--Button texture for bars not on AB
+			if button.SpellHighlightTexture then
+				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.4)
+				if icon then
+					button.SpellHighlightTexture:SetAllPoints(icon)
+				end
+				E:Flash(button.SpellHighlightTexture, 1, true)
+			end
+
 			if button.shine then
 				button.shine:ClearAllPoints()
 				button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
@@ -91,6 +100,7 @@ local function LoadSkin()
 				icon:SetAllPoints()
 
 				if not button.backdrop then
+					E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 					button:CreateBackdrop("Default", true)
 				end
 			end
@@ -155,8 +165,6 @@ local function LoadSkin()
 		"SecondaryProfession2SpellButtonRight",
 		"SecondaryProfession3SpellButtonLeft",
 		"SecondaryProfession3SpellButtonRight",
-		"SecondaryProfession4SpellButtonLeft",
-		"SecondaryProfession4SpellButtonRight",
 	}
 
 	local professionheaders = {
@@ -165,7 +173,6 @@ local function LoadSkin()
 		"SecondaryProfession1",
 		"SecondaryProfession2",
 		"SecondaryProfession3",
-		"SecondaryProfession4",
 	}
 
 	for _, header in pairs(professionheaders) do
@@ -200,7 +207,6 @@ local function LoadSkin()
 		"SecondaryProfession1StatusBar",
 		"SecondaryProfession2StatusBar",
 		"SecondaryProfession3StatusBar",
-		"SecondaryProfession4StatusBar",
 	}
 
 	for _, statusbar in pairs(professionstatusbars) do
@@ -216,7 +222,7 @@ local function LoadSkin()
 	end
 
 	--Bottom Tabs
-	for i=1, 5 do
+	for i = 1, 5 do
 		S:HandleTab(_G["SpellBookFrameTabButton"..i])
 	end
 

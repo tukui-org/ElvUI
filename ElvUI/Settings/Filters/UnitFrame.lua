@@ -1144,6 +1144,68 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
 		[200227] = Defaults(), -- Tangled Web
+
+	-- Battle for Azeroth
+	-- Uldir
+		-- MOTHER
+		[268277] = Defaults(), -- Purifying Flame
+		[268253] = Defaults(), -- Surgical Beam
+		[268095] = Defaults(), -- Cleansing Purge
+		[267787] = Defaults(), -- Sundering Scalpel
+		[268198] = Defaults(), -- Clinging Corruption
+		[267821] = Defaults(), -- Defense Grid
+
+		-- Vectis
+		[265127] = Defaults(), -- Lingering Infection
+		[265178] = Defaults(), -- Mutagenic Pathogen
+		[265206] = Defaults(), -- Immunosuppression
+		[265212] = Defaults(), -- Gestate
+		[265129] = Defaults(), -- Omega Vector
+		[267160] = Defaults(), -- Omega Vector
+		[267161] = Defaults(), -- Omega Vector
+		[267162] = Defaults(), -- Omega Vector
+		[267163] = Defaults(), -- Omega Vector
+		[267164] = Defaults(), -- Omega Vector
+
+		-- Mythrax
+		--[272146] = Defaults(), -- Annihilation
+		[272536] = Defaults(), -- Imminent Ruin
+		[274693] = Defaults(), -- Essence Shear
+		[272407] = Defaults(), -- Oblivion Sphere
+
+		-- Fetid Devourer
+		[262313] = Defaults(), -- Malodorous Miasma
+		[262292] = Defaults(), -- Rotting Regurgitation
+		[262314] = Defaults(), -- Deadly Disease
+
+		-- Taloc
+		[270290] = Defaults(), -- Blood Storm
+		[275270] = Defaults(), -- Fixate
+		[271224] = Defaults(), -- Plasma Discharge
+		[271225] = Defaults(), -- Plasma Discharge
+
+		-- Zul
+		[273365] = Defaults(), -- Dark Revelation
+		[273434] = Defaults(), -- Pit of Despair
+		[274195] = Defaults(), -- Corrupted Blood
+		[272018] = Defaults(), -- Absorbed in Darkness
+
+		-- Zek'voz, Herald of N'zoth
+		[265237] = Defaults(), -- Shatter
+		[265264] = Defaults(), -- Void Lash
+		[265360] = Defaults(), -- Roiling Deceit
+		[265662] = Defaults(), -- Corruptor's Pact
+		[265646] = Defaults(), -- Will of the Corruptor
+
+		-- G'huun
+		[263436] = Defaults(), -- Imperfect Physiology
+		[263227] = Defaults(), -- Putrid Blood
+		[263372] = Defaults(), -- Power Matrix
+		[272506] = Defaults(), -- Explosive Corruption
+		[267409] = Defaults(), -- Dark Bargain
+		[267430] = Defaults(), -- Torment
+		[263235] = Defaults(), -- Blood Feast
+		[270287] = Defaults(), -- Blighted Ground
 	},
 }
 

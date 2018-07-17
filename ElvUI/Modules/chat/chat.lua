@@ -80,7 +80,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
-local SocialQueueUtil_GetNameAndColor = SocialQueueUtil_GetNameAndColor
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
@@ -130,18 +130,17 @@ local GlobalStrings = {
 -- GLOBALS: CopyChatScrollFrame, CopyChatScrollFrameScrollBar, RightChatDataPanel
 -- GLOBALS: GeneralDockManagerOverflowButton, CombatLogQuickButtonFrame_Custom
 -- GLOBALS: UIParent, GeneralDockManagerScrollFrameChild, GameTooltip, CHAT_OPTIONS
--- GLOBALS: LOCALIZED_CLASS_NAMES_MALE, LOCALIZED_CLASS_NAMES_FEMALE, QuickJoinToastButton
+-- GLOBALS: LOCALIZED_CLASS_NAMES_MALE, LOCALIZED_CLASS_NAMES_FEMALE
 -- GLOBALS: ICON_TAG_LIST, ICON_LIST, GROUP_TAG_LIST, DEFAULT_CHAT_FRAME, ChatFrameMenuButton
 -- GLOBALS: WIM, ChatTypeGroup, GeneralDockManagerOverflowButtonList, GeneralDockManagerScrollFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomAdditionalFilterButton, UISpecialFrames, ChatFontNormal
 -- GLOBALS: ChatFrame_AddMessageEventFilter, ChatFrame_GetMessageEventFilters, QuickJoinFrame
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: CombatLogQuickButtonFrame_CustomTexture, CUSTOM_CLASS_COLORS
 
 local CreatedFrames = 0;
 local lines = {};
 local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
-local chatFilters = {};
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
@@ -179,18 +178,18 @@ local tabTexs = {
 
 
 local smileyPack = {
-	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.blp]],
-	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.blp]],
-	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.blp]],
-	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.blp]],
-	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.blp]],
-	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.blp]],
-	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.blp]],
-	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.blp]],
-	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.blp]],
-	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.blp]],
-	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.blp]],
-	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.blp]],
+	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.tga]],
+	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.tga]],
+	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.tga]],
+	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.tga]],
+	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.tga]],
+	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.tga]],
+	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.tga]],
+	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.tga]],
+	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.tga]],
+	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.tga]],
+	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.tga]],
+	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.tga]],
 }
 
 local smileyKeys = {
@@ -243,54 +242,58 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
-	local IconPath = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	local ElvBlue = IconPath.."elvui_blue.tga:13:25|t"
-	local ElvPink = IconPath.."elvui_pink.tga:13:25|t"
-	local ElvRed = IconPath.."elvui_red.tga:13:25|t"
-	local ElvPurple = IconPath.."elvui_purple.tga:13:25|t"
-	local ElvOrange = IconPath.."elvui_orange.tga:13:25|t"
-	local Bathrobe = IconPath.."bathrobe.blp:15:15|t"
-	local MrHankey = IconPath.."mr_hankey.tga:16:18|t"
+	local IconPath   = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	--local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
+	--local ElvPink    = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvBlue    = IconPath.."elvui_blue.tga:13:25|t"
+	local ElvGreen   = IconPath.."elvui_green.tga:13:25|t"
+	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
+	local ElvRed     = IconPath.."elvui_red.tga:13:25|t"
+	local ElvRainbow = IconPath.."elvui_rainbow.tga:13:25|t"
+	local Bathrobe   = IconPath.."bathrobe.tga:15:15|t"
+	local MrHankey   = IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
 		-- Elv --
 		["Illidelv-Area52"] = ElvBlue,
 		["Elvz-Kil'jaeden"] = ElvBlue,
-		["Elv-Spirestone"] = ElvBlue,
+		["Elv-Spirestone"]  = ElvBlue,
 		-- Tirain --
 		["Tirain-Spirestone"] = MrHankey,
-		["Sinth-Spirestone"] = MrHankey,
+		["Sinth-Spirestone"]  = MrHankey,
 		-- Merathilis Toons --
-		["Merathilis-Shattrath"] = ElvOrange, --Druid [alliance]
-		["Merathilîs-Shattrath"] = ElvBlue, --Shaman
-		["Merathilis-Garrosh"] = ElvOrange, -- Druid [horde]
-		["Damará-Shattrath"] = ElvRed, --Paladin
-		["Asragoth-Shattrath"] = ElvBlue, --Warlock
+		["Maithilis-Shattrath"]  = ElvGreen,
+		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
+		["Merathilis-Shattrath"] = ElvOrange, -- [alliance] Druid
+		["Merathilîs-Shattrath"] = ElvBlue,	  -- Shaman
+		["Asragoth-Shattrath"]   = ElvBlue,	  -- Warlock
+		["Damará-Shattrath"]     = ElvRed,	  -- Paladin
 		-- Affinity's Toons --
 		["Affinichi-Illidan"] = Bathrobe,
-		["Uplift-Illidan"] = Bathrobe,
 		["Affinitii-Illidan"] = Bathrobe,
-		["Affinity-Illidan"] = Bathrobe,
+		["Affinity-Illidan"]  = Bathrobe,
+		["Uplift-Illidan"]    = Bathrobe,
 		-- Blazeflack's Toons --
-		["Blazii-Silvermoon"] = ElvBlue, --Priest
-		["Chazii-Silvermoon"] = ElvBlue, --Shaman
+		["Blazii-Silvermoon"] = ElvBlue, -- Priest
+		["Chazii-Silvermoon"] = ElvBlue, -- Shaman
 		-- Simpy's Toons --
-		["Arieva-Cenarius"] = ElvPurple, --Hunter
-		["Buddercup-Cenarius"] = ElvPurple, --Rogue
-		["Cutepally-Cenarius"] = ElvPurple, --Paladin
-		["Ezek-Cenarius"] = ElvPurple, --DK
-		["Glice-Cenarius"] = ElvPurple, --Warrior
-		["Imsojelly-Cenarius"] = ElvPurple, --DK [horde]
-		["Imsopeachy-Cenarius"] = ElvPurple, --DH [horde]
-		["Imsosalty-Cenarius"] = ElvPurple, --Paladin [horde]
-		["Kalline-Cenarius"] = ElvPurple, --Shaman
-		["Puttietat-Cenarius"] = ElvPurple, --Druid
-		["Simpy-Cenarius"] = ElvPurple, --Warlock
-		["Twigly-Cenarius"] = ElvPurple, --Monk
-		["Bunne-CenarionCircle"] = ElvPink, --Warrior
-		["Loppybunny-CenarionCircle"] = ElvPink, --Mage
-		["Puttietat-CenarionCircle"] = ElvPink, --Druid [horde]
-		["Rubee-CenarionCircle"] = ElvPink, --DH
-		["Wennie-CenarionCircle"] = ElvPink, --Priest
+		["Arieva-Cenarius"]       = ElvRainbow, -- Hunter
+		["Buddercup-Cenarius"]    = ElvRainbow, -- Rogue
+		["Cutepally-Cenarius"]    = ElvRainbow, -- Paladin
+		["Ezek-Cenarius"]         = ElvRainbow, -- DK
+		["Glice-Cenarius"]        = ElvRainbow, -- Warrior
+		["Kalline-Cenarius"]      = ElvRainbow, -- Shaman
+		["Puttietat-Cenarius"]    = ElvRainbow, -- Druid
+		["Simpy-Cenarius"]        = ElvRainbow, -- Warlock
+		["Twigly-Cenarius"]       = ElvRainbow, -- Monk
+		["Imsojelly-Cenarius"]    = ElvRainbow, -- [horde] DK
+		["Imsojuicy-Cenarius"]    = ElvRainbow, -- [horde] Druid
+		["Imsopeachy-Cenarius"]   = ElvRainbow, -- [horde] DH
+		["Imsosalty-Cenarius"]    = ElvRainbow, -- [horde] Paladin
+		["Imsospicy-Cenarius"]    = ElvRainbow, -- [horde] Mage
+		["Bunne-CenarionCircle"]      = ElvRainbow, -- Warrior
+		["Loppybunny-CenarionCircle"] = ElvRainbow, -- Mage
+		["Rubee-CenarionCircle"]      = ElvRainbow, -- DH
+		["Wennie-CenarionCircle"]     = ElvRainbow, -- Priest
 	}
 end
 
@@ -357,7 +360,7 @@ function CH:GetSmileyReplacementText(msg)
 	local outstr = "";
 	local origlen = strlen(msg);
 	local startpos = 1;
-	local endpos;
+	local endpos, _;
 
 	while(startpos <= origlen) do
 		endpos = origlen;
@@ -368,7 +371,7 @@ function CH:GetSmileyReplacementText(msg)
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			endpos = find(msg,"|h]|r",startpos,-1) or find(msg,"|h",startpos,-1);
+			_, endpos = find(msg,"|h.-|h",startpos);
 			endpos = endpos or origlen;
 			if(startpos < endpos) then
 				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
@@ -811,6 +814,11 @@ function CH:PositionChat(override)
 		isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
 		tab.owner = chat
+
+		-- Hide new Bfa Scroll bars
+		chat.ScrollBar:Kill()
+		chat.ScrollToBottomButton:Kill()
+
 		if id > NUM_CHAT_WINDOWS then
 			if select(2, tab:GetPoint()):GetName() ~= chatbg then
 				isDocked = true
@@ -834,7 +842,9 @@ function CH:PositionChat(override)
 			end
 
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
-			FCF_SavePositionAndDimensions(chat, true)
+			if chat:GetLeft() then
+				FCF_SavePositionAndDimensions(chat, true)
+			end
 
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(RightChatPanel)
@@ -863,7 +873,9 @@ function CH:PositionChat(override)
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
-				FCF_SavePositionAndDimensions(chat, true)
+				if chat:GetLeft() then
+					FCF_SavePositionAndDimensions(chat, true)
+				end
 			end
 			chat:SetParent(LeftChatPanel)
 			if i > 2 then
@@ -1235,10 +1247,11 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 		local info = ChatTypeInfo[type];
 		--Twitter link test
 		--arg1 = arg1 .. " " .. "|cffffd200|Hshareachieve:51:0|h|TInterface\\ChatFrame\\UI-ChatIcon-Share:18:18|t|h|r"
-		local filter
-		if ( chatFilters[event] ) then
-			local newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14;
-			for _, filterFunc in next, chatFilters[event] do
+
+		local chatFilters = ChatFrame_GetMessageEventFilters(event)
+		if chatFilters then
+			local filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14;
+			for _, filterFunc in next, chatFilters do
 				filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 = filterFunc(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 				if ( filter ) then
 					return true;
@@ -1821,7 +1834,7 @@ function CH:CheckKeyword(message)
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
-	for word in message:gmatch("%s-[^%s]+%s*") do
+	for word in message:gmatch("%s-%S+%s*") do
 		if not next(protectLinks) or not protectLinks[word:gsub("%s",""):gsub("|s"," ")] then
 			tempWord = word:gsub("[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
@@ -2046,39 +2059,6 @@ function CH:SaveChatHistory(event, ...)
 	temp = nil -- Destory!
 end
 
-function CH:ChatFrame_AddMessageEventFilter (event, filter)
-	assert(event and filter);
-
-	if ( chatFilters[event] ) then
-		-- Only allow a filter to be added once
-		for _, filterFunc in next, chatFilters[event] do
-			if ( filterFunc == filter ) then
-				return;
-			end
-		end
-	else
-		chatFilters[event] = {};
-	end
-
-	tinsert(chatFilters[event], filter);
-end
-
-function CH:ChatFrame_RemoveMessageEventFilter (event, filter)
-	assert(event and filter);
-
-	if ( chatFilters[event] ) then
-		for index, filterFunc in next, chatFilters[event] do
-			if ( filterFunc == filter ) then
-				tremove(chatFilters[event], index);
-			end
-		end
-
-		if ( #chatFilters[event] == 0 ) then
-			chatFilters[event] = nil;
-		end
-	end
-end
-
 function CH:FCF_SetWindowAlpha(frame, alpha)
 	frame.oldAlpha = alpha or 1;
 end
@@ -2189,7 +2169,7 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 
 	if members then
 		local firstMember, numMembers, extraCount = members[1], #members, ''
-		playerName, nameColor = SocialQueueUtil_GetNameAndColor(firstMember)
+		playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 		if numMembers > 1 then
 			extraCount = format(' +%s', numMembers - 1)
 		end
@@ -2298,8 +2278,6 @@ function CH:Initialize()
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
-	ChatFrameMenuButton:Kill()
-	QuickJoinToastButton:Kill()
 
 	if WIM then
 		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
@@ -2321,36 +2299,6 @@ function CH:Initialize()
 	if not E.db.chat.lockPositions then
 		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
 	end
-
-	--First get all pre-existing filters and copy them to our version of chatFilters using ChatFrame_GetMessageEventFilters
-	for name, _ in pairs(ChatTypeGroup) do
-		for i=1, #ChatTypeGroup[name] do
-			local filterFuncTable = ChatFrame_GetMessageEventFilters(ChatTypeGroup[name][i])
-			if filterFuncTable then
-				chatFilters[ChatTypeGroup[name][i]] = {};
-
-				for j=1, #filterFuncTable do
-					local filterFunc = filterFuncTable[j]
-					tinsert(chatFilters[ChatTypeGroup[name][i]], filterFunc);
-				end
-			end
-		end
-	end
-
-	--CHAT_MSG_CHANNEL isn't located inside ChatTypeGroup
-	local filterFuncTable = ChatFrame_GetMessageEventFilters("CHAT_MSG_CHANNEL")
-	if filterFuncTable then
-		chatFilters["CHAT_MSG_CHANNEL"] = {};
-
-		for j=1, #filterFuncTable do
-			local filterFunc = filterFuncTable[j]
-			tinsert(chatFilters["CHAT_MSG_CHANNEL"], filterFunc);
-		end
-	end
-
-	--Now hook onto Blizzards functions for other addons
-	self:SecureHook("ChatFrame_AddMessageEventFilter");
-	self:SecureHook("ChatFrame_RemoveMessageEventFilter");
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
@@ -2454,6 +2402,11 @@ function CH:Initialize()
 
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
+
+	ChatFrameMenuButton:Kill() -- We have it on your CopyChatButton via right click
+
+	-- The width got changed in Bfa
+	CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 
 local function InitializeCallback()

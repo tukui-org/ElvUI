@@ -4,7 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs, select = unpack, pairs, select
+local unpack, select = unpack, select
+local pairs, ipairs = pairs, ipairs
 --WoW API / Variables
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetFactionInfo = GetFactionInfo
@@ -19,7 +20,7 @@ local UnitLevel = UnitLevel
 local UnitSex = UnitSex
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
--- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY
+-- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY, NUM_FACTIONS_DISPLAYED
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF;
 local IGNORESLOT_LOCATION = 0xFFFFFFFE;
@@ -76,6 +77,20 @@ local function LoadSkin()
 		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
+	end
+
+	-- Give character frame model backdrop it's color back
+	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
+		local bg = _G["CharacterModelFrameBackground"..corner];
+		if bg then
+			bg:SetDesaturated(false);
+			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			hooksecurefunc(bg, "SetDesaturated", function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false);
+				end
+			end)
+		end
 	end
 
 	CharacterLevelText:FontTemplate()
@@ -287,7 +302,8 @@ local function LoadSkin()
 	for _, object in pairs(charframe) do
 		_G[object]:StripTextures()
 	end
-	--Re-add the overlay texture which was removed right above
+
+	--Re-add the overlay texture which was removed right above via StripTextures
 	CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
 	CharacterModelFrame:CreateBackdrop("Default")
 	CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
@@ -352,6 +368,9 @@ local function LoadSkin()
 
 	--Icon selection frame
 	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
+	S:HandleButton(GearManagerDialogPopupOkay)
+	S:HandleButton(GearManagerDialogPopupCancel)
+	S:HandleEditBox(GearManagerDialogPopupEditBox)
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do
@@ -366,7 +385,7 @@ local function LoadSkin()
 				tab.Icon:SetAllPoints()
 				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:SetAllPoints()
-				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
+				tab.Hider:SetColorTexture(0.0,0.0,0.0,0.8)
 				tab.Hider:SetAllPoints()
 				tab.TabBg:Kill()
 
@@ -437,7 +456,7 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = ReputationParagonTooltip
+		local tooltip = EmbeddedItemTooltip
 		local reward = tooltip.ItemTooltip
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")

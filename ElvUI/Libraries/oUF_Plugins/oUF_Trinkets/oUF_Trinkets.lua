@@ -30,7 +30,7 @@ local Update = function(self, event, ...)
 	if(self.Trinket.PreUpdate) then self.Trinket:PreUpdate(event) end
 	
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		local _, eventType, _, sourceGUID, _, _, _, _, _, _, _, spellID = ...
+		local _, eventType, _, sourceGUID, _, _, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo()
 		if eventType == "SPELL_CAST_SUCCESS" and sourceGUID == UnitGUID(self.unit) and trinketSpells[spellID] then
 			CooldownFrame_Set(self.Trinket.cooldownFrame, GetTime(), trinketSpells[spellID], 1)
 		end
@@ -57,7 +57,6 @@ local Enable = function(self)
 		if not self.Trinket.cooldownFrame then
 			self.Trinket.cooldownFrame = CreateFrame("Cooldown", nil, self.Trinket, "CooldownFrameTemplate")
 			self.Trinket.cooldownFrame:SetAllPoints(self.Trinket)
-			self.Trinket.cooldownFrame:SetHideCountdownNumbers(true)
 			ElvUI[1]:RegisterCooldown(self.Trinket.cooldownFrame)
 		end
 		

@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local getn = getn
 local pairs = pairs
 local unpack = unpack
 --WoW API / Variables
@@ -35,9 +34,11 @@ local function LoadSkin()
 		"DropDownList1MenuBackdrop",
 	}
 
-	for i = 1, getn(skins) do
+	for i = 1, #skins do
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
+
+	S:HandleButton(StaticPopup1ExtraButton)
 
 	QueueStatusFrame:StripTextures()
 
@@ -115,7 +116,7 @@ local function LoadSkin()
 		"VoiceMacroMenu",
 	}
 
-	for i = 1, getn(ChatMenus) do
+	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G["ChatMenu"] then
 			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
 		else

@@ -19,6 +19,7 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
 
 .colorSpec - Use `self.colors.runes[specID]` to color the bar based on player's spec. `specID` is defined by the return
              value of [GetSpecialization](http://wowprogramming.com/docs/api/GetSpecialization.html) (boolean)
+.sortOrder - Sorting order (string?)['asc', 'desc']
 
 ## Sub-Widgets Options
 
@@ -45,10 +46,37 @@ if(select(2, UnitClass('player')) ~= 'DEATHKNIGHT') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
+local runemap = {1, 2, 3, 4, 5, 6}
+local hasSortOrder = false
+
 local function onUpdate(self, elapsed)
 	local duration = self.duration + elapsed
 	self.duration = duration
 	self:SetValue(duration)
+end
+
+local function ascSort(runeAID, runeBID)
+	local runeAStart, _, runeARuneReady = GetRuneCooldown(runeAID)
+	local runeBStart, _, runeBRuneReady = GetRuneCooldown(runeBID)
+	if(runeARuneReady ~= runeBRuneReady) then
+		return runeARuneReady
+	elseif(runeAStart ~= runeBStart) then
+		return runeAStart < runeBStart
+	else
+		return runeAID < runeBID
+	end
+end
+
+local function descSort(runeAID, runeBID)
+	local runeAStart, _, runeARuneReady = GetRuneCooldown(runeAID)
+	local runeBStart, _, runeBRuneReady = GetRuneCooldown(runeBID)
+	if(runeARuneReady ~= runeBRuneReady) then
+		return runeBRuneReady
+	elseif(runeAStart ~= runeBStart) then
+		return runeAStart > runeBStart
+	else
+		return runeAID > runeBID
+	end
 end
 
 local function UpdateColor(element, runeID)
@@ -72,50 +100,70 @@ local function UpdateColor(element, runeID)
 	end
 end
 
-local function Update(self, event, runeID, energized)
+local function Update(self, event)
 	local element = self.Runes
-	local rune = element[runeID]
-	if(not rune) then return end
 
-	local start, duration, runeReady
-	if(UnitHasVehicleUI('player')) then
-		rune:Hide()
-	else
-		start, duration, runeReady = GetRuneCooldown(runeID)
-		if(not start) then return end
-
-		if(energized or runeReady) then
-			rune:SetMinMaxValues(0, 1)
-			rune:SetValue(1)
-			rune:SetScript('OnUpdate', nil)
-		else
-			rune.duration = GetTime() - start
-			rune.max = duration
-			rune:SetMinMaxValues(0, duration)
-			rune:SetValue(0)
-			rune:SetScript('OnUpdate', onUpdate)
-		end
-
-		rune:Show()
+	if(element.sortOrder == 'asc') then
+		table.sort(runemap, ascSort)
+		hasSortOrder = true
+	elseif(element.sortOrder == 'desc') then
+		table.sort(runemap, descSort)
+		hasSortOrder = true
+	elseif(hasSortOrder) then
+		table.sort(runemap)
+		hasSortOrder = false
 	end
 
-	--[[ Callback: Runes:PostUpdate(rune, runeID, start, duration, isReady)
+	local rune, start, duration, runeReady
+	for index, runeID in next, runemap do
+		rune = element[index]
+		if(not rune) then break end
+
+		if(UnitHasVehicleUI('player')) then
+			rune:Hide()
+		else
+			start, duration, runeReady = GetRuneCooldown(runeID)
+			if(runeReady) then
+				rune:SetMinMaxValues(0, 1)
+				rune:SetValue(1)
+				rune:SetScript('OnUpdate', nil)
+			elseif(start) then
+				rune.duration = GetTime() - start
+				rune:SetMinMaxValues(0, duration)
+				rune:SetValue(0)
+				rune:SetScript('OnUpdate', onUpdate)
+			end
+
+			rune:Show()
+		end
+	end
+
+	--[[ Callback: Runes:PostUpdate(runemap)
 	Called after the element has been updated.
 
-	* self     - the Runes element
-	* rune     - the updated rune (StatusBar)
-	* runeID   - the index of the updated rune (number)
-	* start    - the value of `GetTime()` when the rune cooldown started (0 for ready or energized runes) (number?)
-	* duration - the duration of the rune's cooldown (number?)
-	* isReady  - indicates if the rune is ready for use (boolean)
+	* self    - the Runes element
+	* runemap - the ordered list of runes' indices (table)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(rune, runeID, energized and 0 or start, duration, energized or runeReady)
+		return element:PostUpdate(runemap)
 	end
 end
 
 local function Path(self, event, ...)
 	local element = self.Runes
+	if(event ~= 'RUNE_POWER_UPDATE') then
+		--[[ Override: Runes:UpdateColor(runeID)
+		Used to completely override the internal function for updating the widgets' colors.
+
+		* self   - the Runes element
+		* runeID - the index of the updated rune (number)
+		--]]
+		local UpdateColorMethod = element.UpdateColor or UpdateColor
+		for index = 1, #element do
+			UpdateColorMethod(element, index)
+		end
+	end
+
 	--[[ Override: Runes.Override(self, event, ...)
 	Used to completely override the internal update function.
 
@@ -123,24 +171,10 @@ local function Path(self, event, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	local UpdateMethod = element.Override or Update
-	if(event == 'RUNE_POWER_UPDATE') then
-		return UpdateMethod(self, event, ...)
-	else
-		--[[ Override: Runes:UpdateColor(powerType)
-		Used to completely override the internal function for updating the widgets' colors.
-
-		* self  - the Runes element
-		* index - the index of the updated rune (number)
-		--]]
-		local UpdateColorMethod = element.UpdateColor or UpdateColor
-		for index = 1, #element do
-			UpdateColorMethod(element, index)
-			UpdateMethod(self, event, index)
-		end
-	end
+	return (element.Override or Update) (self, event, ...)
 end
 
+-- ElvUI block
 local function RunesEnable(self)
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
 	self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
@@ -192,10 +226,13 @@ end
 local VisibilityPath = function(self, ...)
 	return (self.Runes.OverrideVisibility or Visibility) (self, ...)
 end
+-- end block
 
+-- changed by ElvUI
 local ForceUpdate = function(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Runes
@@ -226,9 +263,9 @@ local function Disable(self)
 
 		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
-		
-		RunesDisable(self)
+
+		RunesDisable(self) -- ElvUI
 	end
 end
 
-oUF:AddElement('Runes', VisibilityPath, Enable, Disable)
+oUF:AddElement('Runes', VisibilityPath, Enable, Disable) -- changed by ElvUI

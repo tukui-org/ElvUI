@@ -7,8 +7,11 @@
 	<Script file='archaeology.lua'/>
 	<Script file='artifact.lua'/>
 	<Script file='auctionhouse.lua'/>
+	<Script file='Azerite.lua'/>
+	<Script file='AzeriteRespec.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='barber.lua'/>
+	<Script file='BFAMissions.lua'/>
 	<Script file='bgmap.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='binding.lua'/>
@@ -16,9 +19,11 @@
 	<Script file='BlizzardOptions.lua'/>
 	<Script file='BNet.lua'/>
 	<Script file='calendar.lua'/>
+	<Script file='Channels.lua'/>
 	<Script file='character.lua'/>
 	<Script file='collectables.lua'/>
 	<Script file='Contribution.lua'/>
+	<Script file='Communities.lua'/>
 	<Script file='deathRecap.lua'/>
 	<Script file='debug.lua'/>
 	<Script file='dressingroom.lua'/>
@@ -29,12 +34,13 @@
 	<Script file='garrison_template.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='gossip.lua'/>
-	<Script file='guild.lua'/>
+	<!-- <Script file='guild.lua'/> -->
 	<Script file='guildcontrol.lua'/>
-	<Script file='guildregistrar.lua'/>
+	<!-- <Script file='guildregistrar.lua'/> -->
 	<Script file='help.lua'/>
 	<Script file='inspect.lua'/>
 	<Script file='itemupgrade.lua'/>
+	<Script file='Islands.lua'/>
 	<Script file='lfg.lua'/>
 	<Script file='lfguild.lua'/>
 	<Script file='loot.lua'/>
@@ -54,6 +60,7 @@
 	<Script file='quest.lua'/>
 	<Script file='questchoice.lua'/>
 	<Script file='raid.lua'/>
+	<Script file='ScrappingMachine.lua'/>
 	<Script file='socket.lua'/>
 	<Script file='spellbook.lua'/>
 	<Script file='stable.lua'/>
@@ -66,6 +73,7 @@
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='trainer.lua'/>
+	<Script file='UIWidgets.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='Warboard.lua'/>
 	<Script file='worldmap.lua'/>

@@ -2736,9 +2736,9 @@ E.Options.args.nameplate = {
 		cooldownShortcut = {
 			order = 7,
 			type = "execute",
-			name = L["Cooldown Override"],
+			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cooldownGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
@@ -3174,55 +3174,9 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
-						duration = {
-							type = "group",
-							order = 5,
-							name = L["Duration"],
-							guiInline = true,
-							args = {
-								durationFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 1,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontSize = {
-									order = 2,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontOutline = {
-									order = 3,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationPosition = {
-									order = 4,
-									name = L["Position"],
-									type = "select",
-									values = {
-										["CENTER"] = L["Center"],
-										["TOPLEFT"] = "TOPLEFT",
-										["BOTTOMLEFT"] = "BOTTOMLEFT",
-										["TOPRIGHT"] = "TOPRIGHT",
-									},
-								},
-							}
-						},
 						stacks = {
 							type = "group",
-							order = 6,
+							order = 5,
 							name = L["Stack Counter"],
 							guiInline = true,
 							args = {
@@ -3255,80 +3209,31 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
-					},
-				},
-				cooldownGroup = {
-					type = "group",
-					order = 125,
-					name = L["Cooldown Override"],
-					get = function(info)
-						local t = E.db.nameplates.cooldown[ info[#info] ]
-						local d = P.nameplates.cooldown[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b;
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.nameplates.cooldown[ info[#info] ]
-						t.r, t.g, t.b = r, g, b;
-						E:UpdateCooldownSettings('nameplates');
-					end,
-					args = {
-						header = {
-							order = 1,
-							type = "header",
-							name = L["Cooldown Override"],
-						},
-						override = {
-							type = "toggle",
-							order = 2,
-							name = L["Use Override"],
-							desc = L["This will override the global cooldown settings."],
-							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.cooldown[ info[#info] ] = value end,
-						},
-						threshold = {
-							type = 'range',
-							order = 3,
-							name = L["Low Threshold"],
-							desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
-							min = -1, max = 20, step = 1,
-							disabled = function() return not E.db.nameplates.cooldown.override end,
-							get = function(info) return E.db.nameplates.cooldown[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.cooldown[ info[#info] ] = value end,
-						},
-						expiringColor = {
-							type = 'color',
-							order = 4,
-							name = L["Expiring"],
-							desc = L["Color when the text is about to expire"],
-							disabled = function() return not E.db.nameplates.cooldown.override end,
-						},
-						secondsColor = {
-							type = 'color',
-							order = 5,
-							name = L["Seconds"],
-							desc = L["Color when the text is in the seconds format."],
-							disabled = function() return not E.db.nameplates.cooldown.override end,
-						},
-						minutesColor = {
-							type = 'color',
+						duration = {
+							type = "group",
 							order = 6,
-							name = L["Minutes"],
-							desc = L["Color when the text is in the minutes format."],
-							disabled = function() return not E.db.nameplates.cooldown.override end,
-						},
-						hoursColor = {
-							type = 'color',
-							order = 7,
-							name = L["Hours"],
-							desc = L["Color when the text is in the hours format."],
-							disabled = function() return not E.db.nameplates.cooldown.override end,
-						},
-						daysColor = {
-							type = 'color',
-							order = 8,
-							name = L["Days"],
-							desc = L["Color when the text is in the days format."],
-							disabled = function() return not E.db.nameplates.cooldown.override end,
+							name = L["Duration"],
+							guiInline = true,
+							args = {
+								cooldownShortcut = {
+									order = 1,
+									type = "execute",
+									name = L["Cooldowns"],
+									buttonElvUI = true,
+									func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+								},
+								durationPosition = {
+									order = 2,
+									name = L["Position"],
+									type = "select",
+									values = {
+										["CENTER"] = L["Center"],
+										["TOPLEFT"] = "TOPLEFT",
+										["BOTTOMLEFT"] = "BOTTOMLEFT",
+										["TOPRIGHT"] = "TOPRIGHT",
+									},
+								},
+							}
 						},
 					},
 				},
