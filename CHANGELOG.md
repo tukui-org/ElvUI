@@ -1,8 +1,13 @@
-**Version 10.75 [ ]**
+**Version 10.75 for patch 8.0 [ July 17th 2018 ]**
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category or by typing `/ec cooldown`.  
 Added Death Knight Rune sorting option under `/ec - Player Frame - Classbar - Sort Direction`.   
+Added new Azerite DataBar (replaces Artifact DataBar).  
+Added button size and spacing options to the Micro Bar.  
+Added scale option for the smaller world map.  
+Added new skins for the new elements in patch 8.0.  
+Added the original chat buttons to a dedicated panel which can be toggled by right-clicking the "<" character in the left chat panel.  
 
 
 **Bug Fixes:**  
@@ -14,10 +19,13 @@ Fixed icon border on black market auction house items.
 Fixed `[namecolor]` not updating sometimes when it should.  
 Fixed skin issue when using a dropdown in the config.  
 Fixed friendly nameplates not showing in Garrisons.  
+Fixed issue with tooltip compare being activated when it should not (#471).  
+Fixed several issues with the Micro Bar.   
+Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap (#434).  
+Fixed various issues with tooltips (#472).  
 
 
 **Misc. Changes:**  
-Added button size and spacing options to the Micro Bar and fixed several issues with it.  
 In order to improve load times, ElvUI will no longer load `Blizzard_DebugTools`.  
 Reworked the Talent frame skin slightly, in order to improve determination of selected talents.  
 Simplify how the Chat module handles Chat Filters. (Thanks Ellypse)  
