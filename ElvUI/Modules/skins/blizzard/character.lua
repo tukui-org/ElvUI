@@ -368,6 +368,9 @@ local function LoadSkin()
 
 	--Icon selection frame
 	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
+	S:HandleButton(GearManagerDialogPopupOkay)
+	S:HandleButton(GearManagerDialogPopupCancel)
+	S:HandleEditBox(GearManagerDialogPopupEditBox)
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do
@@ -453,7 +456,7 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = ReputationParagonTooltip
+		local tooltip = EmbeddedItemTooltip
 		local reward = tooltip.ItemTooltip
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")

@@ -7,6 +7,7 @@ local _G = _G
 local assert = assert
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
@@ -53,14 +54,14 @@ function AB:HandleMicroButton(button)
 		button.Flash:SetTexture(nil)
 	end
 
-	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)
 	pushed:SetInside(f)
 
-	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	normal:SetTexCoord(0.22, 0.81, 0.21, 0.82)
 	normal:SetInside(f)
 
 	if disabled then
-		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+		disabled:SetTexCoord(0.22, 0.81, 0.21, 0.82)
 		disabled:SetInside(f)
 	end
 end
@@ -83,7 +84,7 @@ end
 local __buttonIndex = {
 	[8] = "CollectionsMicroButton",
 	[9] = "EJMicroButton",
-	[10] = "StoreMicroButton",
+	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton",
 	[11] = "MainMenuMicroButton"
 }
 
@@ -110,7 +111,7 @@ function AB:UpdateMicroPositionDimensions()
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 	local spacing = E:Scale(offset + self.db.microbar.buttonSpacing)
 
-	for i=1, #MICRO_BUTTONS do
+	for i=1, #MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
 		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]

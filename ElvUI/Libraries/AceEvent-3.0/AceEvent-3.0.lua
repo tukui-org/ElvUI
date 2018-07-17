@@ -9,8 +9,8 @@
 -- make into AceEvent.
 -- @class file
 -- @name AceEvent-3.0
--- @release $Id: AceEvent-3.0.lua 975 2010-10-23 11:26:18Z nevcairiel $
-local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
+-- @release $Id: AceEvent-3.0.lua 1161 2017-08-12 14:30:16Z funkydude $
+local CallbackHandler = LibStub("CallbackHandler-1.0")
 
 local MAJOR, MINOR = "AceEvent-3.0", 4
 local AceEvent = LibStub:NewLibrary(MAJOR, MINOR)

@@ -242,7 +242,7 @@ local function Update(self, event, unit)
 	local canAttack = UnitCanAttack("player", unit)
 	
 	for i = 1, 40 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId, canApplyAura, isBossDebuff = UnitAura(unit, i, 'HARMFUL')
+		local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId, canApplyAura, isBossDebuff = UnitAura(unit, i, 'HARMFUL')
 		if (not name) then break end
 		
 		--we coudln't dispell if the unit its charmed, or its not friendly

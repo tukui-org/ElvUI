@@ -33,7 +33,7 @@ local generateLog = function(prevTag, currentTag)
 
 	ti(out, sf('**Changes in %s:**\n', currentTag))
 
-	for line in io.popen(sf('git shortlog --no-merges %s..%s', prevTag, currentTag)):lines() do
+	for line in io.popen(sf('git shortlog --no-merges --reverse %s..%s', prevTag, currentTag)):lines() do
 		if(line:sub(1, 6) == '      ') then
 			local offset = line:match('()     ', 7)
 			if(offset) then

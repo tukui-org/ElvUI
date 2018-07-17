@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -19,7 +20,7 @@ local function LoadSkin()
 		S:HandleTab(_G["PVPUIFrameTab"..i])
 	end
 
-	for i = 1, 4 do
+	for i = 1, 3 do
 		local bu = _G["PVPQueueFrameCategoryButton"..i]
 
 		bu.Ring:Kill()
@@ -28,7 +29,7 @@ local function LoadSkin()
 		bu:SetTemplate()
 		bu:StyleButton(nil, true)
 
-		bu.Icon:SetTexCoord(.15, .85, .15, .85)
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		bu.Icon:Point("LEFT", bu, "LEFT")
 		bu.Icon:SetDrawLayer("OVERLAY")
 		bu.Icon:Size(45)
@@ -40,97 +41,96 @@ local function LoadSkin()
 		bu.Icon:SetParent(bu.border)
 	end
 
-	-- Honor Frame
-	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
+	local PVPQueueFrame = _G["PVPQueueFrame"]
+	PVPQueueFrameBg:Hide()
+	PVPQueueFrameInsetRightBorder:Hide()
+	PVPQueueFrameInsetLeftBorder:Hide()
+	PVPQueueFrameInsetTopBorder:Hide()
+	PVPQueueFrameInsetBottomBorder:Hide()
+	PVPQueueFrameInsetBotLeftCorner:Hide()
+	PVPQueueFrameInsetBotRightCorner:Hide()
+	PVPQueueFrameInsetTopRightCorner:Hide()
+	PVPQueueFrameInsetTopLeftCorner:Hide()
 
+	PVPQueueFrame.HonorInset:StripTextures()
+	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
+
+	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
+	SeasonReward.CircleMask:Hide()
+	SeasonReward.Ring:Hide()
+	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
+	local RewardFrameBorder = CreateFrame("Frame", nil, SeasonReward)
+	RewardFrameBorder:SetTemplate("Default")
+	RewardFrameBorder:SetOutside(SeasonReward.Icon)
+	SeasonReward.Icon:SetParent(RewardFrameBorder)
+	SeasonReward.Icon:SetDrawLayer("OVERLAY")
+
+	-- Honor Frame
 	local HonorFrame = _G["HonorFrame"]
-	HonorFrame.Inset:StripTextures()
+	local Inset = HonorFrame.Inset
+
+	for i = 1, 9 do
+		select(i, Inset:GetRegions()):Hide()
+	end
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
-	HonorFrame.BonusFrame:StripTextures()
-	HonorFrame.BonusFrame.ShadowOverlay:StripTextures()
-	HonorFrame.BonusFrame.RandomBGButton:StripTextures()
-	HonorFrame.BonusFrame.RandomBGButton:SetTemplate()
-	HonorFrame.BonusFrame.RandomBGButton:StyleButton(nil, true)
-	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	S:HandleDropDownBox(HonorFrameTypeDropDown, 180)
 
-	HonorFrame.BonusFrame.Arena1Button:StripTextures()
-	HonorFrame.BonusFrame.Arena1Button:SetTemplate()
-	HonorFrame.BonusFrame.Arena1Button:StyleButton(nil, true)
-	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	local BonusFrame = HonorFrame.BonusFrame
+	BonusFrame:StripTextures()
+	BonusFrame.ShadowOverlay:Hide()
+	BonusFrame.WorldBattlesTexture:Hide()
 
-	HonorFrame.BonusFrame.AshranButton:StripTextures()
-	HonorFrame.BonusFrame.AshranButton:SetTemplate()
-	HonorFrame.BonusFrame.AshranButton:StyleButton(nil, true)
-	HonorFrame.BonusFrame.AshranButton.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.AshranButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton"}) do
+		local bu = BonusFrame[bonusButton]
+		local reward = bu.Reward
 
-	HonorFrame.BonusFrame.BrawlButton:StripTextures()
-	HonorFrame.BonusFrame.BrawlButton:SetTemplate()
-	HonorFrame.BonusFrame.BrawlButton:StyleButton(nil, true)
-	HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.BrawlButton.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
+		bu:StyleButton(nil, true)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-	for _, button in pairs({HonorFrame.BonusFrame.RandomBGButton, HonorFrame.BonusFrame.Arena1Button, HonorFrame.BonusFrame.BrawlButton}) do
-		button.Reward:StripTextures()
-		button.Reward:SetTemplate("Default")
-		button.Reward:SetSize(40, 40)
-		button.Reward:SetPoint("RIGHT", button, "RIGHT", -8, 0)
+		reward:StripTextures()
+		reward:SetTemplate("Default")
+		reward:SetSize(40, 40)
+		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
 
-		button.Reward.Icon:SetAllPoints()
-		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		reward.Icon:SetAllPoints()
+		reward.Icon:SetPoint("TOPLEFT", 2, -2)
+		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
+		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
-		button.Reward.EnlistmentBonus:StripTextures()
-		button.Reward.EnlistmentBonus:SetTemplate("Default")
-		button.Reward.EnlistmentBonus:SetSize(20, 20)
-		button.Reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
+		reward.EnlistmentBonus:StripTextures()
+		reward.EnlistmentBonus:SetTemplate("Default")
+		reward.EnlistmentBonus:SetSize(20, 20)
+		reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
 
-		local EnlistmentBonusIcon = button.Reward.EnlistmentBonus:CreateTexture(nil, nil, self)
-		EnlistmentBonusIcon:SetPoint("TOPLEFT", button.Reward.EnlistmentBonus, "TOPLEFT", 2, -2)
-		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
+		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture(nil, nil, self)
+		EnlistmentBonusIcon:SetPoint("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
+		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
 		EnlistmentBonusIcon:SetTexture("Interface\\Icons\\achievement_guildperk_honorablemention_rank2")
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
-	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
-	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
+	-- Honor Frame Specific Buttons
+	for _, bu in pairs(HonorFrame.SpecificFrame.buttons) do
+		bu.Bg:Hide()
+		bu.Border:Hide()
 
-	HonorFrame.RoleInset:StripTextures()
-	S:HandleCheckBox(HonorFrame.RoleInset.DPSIcon.checkButton, true)
-	S:HandleCheckBox(HonorFrame.RoleInset.TankIcon.checkButton, true)
-	S:HandleCheckBox(HonorFrame.RoleInset.HealerIcon.checkButton, true)
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
+		bu:StyleButton(nil, true)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.TankIcon.bg = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HonorFrame.RoleInset.TankIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.TankIcon.bg:Size(80)
-	HonorFrame.RoleInset.TankIcon.bg:SetAlpha(0.5)
+		bu:SetNormalTexture("")
+		bu:SetHighlightTexture("")
 
-	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.HealerIcon.bg = HonorFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HonorFrame.RoleInset.HealerIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.HealerIcon.bg:Size(80)
-	HonorFrame.RoleInset.HealerIcon.bg:SetAlpha(0.5)
-
-	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("ARTWORK")
-	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("OVERLAY")
-	HonorFrame.RoleInset.DPSIcon.bg = HonorFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-	HonorFrame.RoleInset.DPSIcon.bg:Point('CENTER')
-	HonorFrame.RoleInset.DPSIcon.bg:Size(80)
-	HonorFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
+		bu.Icon:SetPoint("TOPLEFT", 5, -3)
+	end
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
@@ -138,44 +138,92 @@ local function LoadSkin()
 		end
 	end)
 
+	-- New tiny Role icons in Bfa
+	HonorFrame.TankIcon:StripTextures()
+	HonorFrame.TankIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.TankIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.TankIcon.bg = HonorFrame.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HonorFrame.TankIcon.bg:Point("CENTER")
+	HonorFrame.TankIcon.bg:Size(40)
+	HonorFrame.TankIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.TankIcon.checkButton)
+
+	HonorFrame.HealerIcon:StripTextures()
+	HonorFrame.HealerIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.HealerIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.HealerIcon.bg = HonorFrame.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HonorFrame.HealerIcon.bg:Point("CENTER")
+	HonorFrame.HealerIcon.bg:Size(40)
+	HonorFrame.HealerIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.HealerIcon.checkButton)
+
+	HonorFrame.DPSIcon:StripTextures()
+	HonorFrame.DPSIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.DPSIcon:DisableDrawLayer("OVERLAY")
+
+	HonorFrame.DPSIcon.bg = HonorFrame.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	HonorFrame.DPSIcon.bg:Point("CENTER")
+	HonorFrame.DPSIcon.bg:Size(40)
+	HonorFrame.DPSIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(HonorFrame.DPSIcon.checkButton)
+
 	-- Conquest Frame
 	local ConquestFrame = _G["ConquestFrame"]
-	ConquestFrame.Inset:StripTextures()
+	local Inset = ConquestFrame.Inset
+
 	ConquestFrame:StripTextures()
-	ConquestFrame.ShadowOverlay:StripTextures()
+	ConquestFrame.ShadowOverlay:Hide()
+
+	for i = 1, 9 do
+		select(i, Inset:GetRegions()):Hide()
+	end
+
 	S:HandleButton(ConquestJoinButton, true)
 
-	ConquestFrame.RoleInset:StripTextures()
-	S:HandleCheckBox(ConquestFrame.RoleInset.DPSIcon.checkButton, true)
-	S:HandleCheckBox(ConquestFrame.RoleInset.TankIcon.checkButton, true)
-	S:HandleCheckBox(ConquestFrame.RoleInset.HealerIcon.checkButton, true)
+	-- New tiny Role icons in Bfa
+	ConquestFrame.TankIcon:StripTextures()
+	ConquestFrame.TankIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.TankIcon:DisableDrawLayer("OVERLAY")
 
-	ConquestFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.TankIcon.bg = ConquestFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	ConquestFrame.RoleInset.TankIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.TankIcon.bg:Size(80)
-	ConquestFrame.RoleInset.TankIcon.bg:SetAlpha(0.5)
+	ConquestFrame.TankIcon.bg = ConquestFrame.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	ConquestFrame.TankIcon.bg:Point("CENTER")
+	ConquestFrame.TankIcon.bg:Size(40)
+	ConquestFrame.TankIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.TankIcon.checkButton)
 
-	ConquestFrame.RoleInset.HealerIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.HealerIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.HealerIcon.bg = ConquestFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	ConquestFrame.RoleInset.HealerIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.HealerIcon.bg:Size(80)
-	ConquestFrame.RoleInset.HealerIcon.bg:SetAlpha(0.5)
+	ConquestFrame.HealerIcon:StripTextures()
+	ConquestFrame.HealerIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.HealerIcon:DisableDrawLayer("OVERLAY")
 
-	ConquestFrame.RoleInset.DPSIcon:DisableDrawLayer("ARTWORK")
-	ConquestFrame.RoleInset.DPSIcon:DisableDrawLayer("OVERLAY")
-	ConquestFrame.RoleInset.DPSIcon.bg = ConquestFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
-	ConquestFrame.RoleInset.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	ConquestFrame.RoleInset.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-	ConquestFrame.RoleInset.DPSIcon.bg:Point('CENTER')
-	ConquestFrame.RoleInset.DPSIcon.bg:Size(80)
-	ConquestFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
+	ConquestFrame.HealerIcon.bg = ConquestFrame.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	ConquestFrame.HealerIcon.bg:Point("CENTER")
+	ConquestFrame.HealerIcon.bg:Size(40)
+	ConquestFrame.HealerIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.HealerIcon.checkButton)
+
+	ConquestFrame.DPSIcon:StripTextures()
+	ConquestFrame.DPSIcon:DisableDrawLayer("ARTWORK")
+	ConquestFrame.DPSIcon:DisableDrawLayer("OVERLAY")
+
+	ConquestFrame.DPSIcon.bg = ConquestFrame.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	ConquestFrame.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	ConquestFrame.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	ConquestFrame.DPSIcon.bg:Point("CENTER")
+	ConquestFrame.DPSIcon.bg:Size(40)
+	ConquestFrame.DPSIcon.bg:SetAlpha(0.6)
+	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
 
 	local function handleButton(button)
 		button:StripTextures()
@@ -193,17 +241,6 @@ local function LoadSkin()
 		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
 		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
 		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-
-		button.Reward.WeeklyBonus:StripTextures()
-		button.Reward.WeeklyBonus:SetTemplate("Default")
-		button.Reward.WeeklyBonus:SetSize(20, 20)
-		button.Reward.WeeklyBonus:SetPoint("TOPRIGHT", 2, 2)
-
-		local WeeklyBonusIcon = button.Reward.WeeklyBonus:CreateTexture(nil, nil, self)
-		WeeklyBonusIcon:SetPoint("TOPLEFT", button.Reward.WeeklyBonus, "TOPLEFT", 2, -2)
-		WeeklyBonusIcon:SetPoint("BOTTOMRIGHT", button.Reward.WeeklyBonus, "BOTTOMRIGHT", -2, 2)
-		WeeklyBonusIcon:SetTexture("Interface\\Icons\\ability_skyreach_flash_bang")
-		WeeklyBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
 	handleButton(ConquestFrame.RatedBG)
@@ -212,21 +249,37 @@ local function LoadSkin()
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
-	-- WarGames Frame
-	local WarGamesFrame = _G["WarGamesFrame"]
-	WarGamesFrame:StripTextures()
-	WarGamesFrame.RightInset:StripTextures()
-	S:HandleButton(WarGameStartButton, true)
-	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
-	WarGamesFrame.HorizontalBar:StripTextures()
-	S:HandleScrollBar(WarGamesFrameInfoScrollFrameScrollBar)
-	WarGamesFrameInfoScrollFrameScrollBar:StripTextures()
-	S:HandleCheckBox(WarGameTournamentModeCheckButton)
-	
 	if E.private.skins.blizzard.tooltip then
 		ConquestTooltip:SetTemplate("Transparent")
-		PVPRewardTooltip:SetTemplate("Transparent")
 	end
+
+	-- Honor Frame StatusBar
+	HonorFrame.ConquestBar:StripTextures()
+	HonorFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(HonorFrame.ConquestBar)
+	HonorFrame.ConquestBar:SetFrameLevel(HonorFrame.ConquestBar:GetFrameLevel() + 2)
+	HonorFrame.ConquestBar:CreateBackdrop("Default")
+
+	-- Icon
+	HonorFrame.ConquestBar.Reward.Ring:Hide()
+	HonorFrame.ConquestBar.Reward.CircleMask:Hide()
+	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
+	-- Conquest Frame StatusBar
+	ConquestFrame.ConquestBar:StripTextures()
+	ConquestFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(ConquestFrame.ConquestBar)
+	ConquestFrame.ConquestBar:SetFrameLevel(ConquestFrame.ConquestBar:GetFrameLevel() + 2)
+	ConquestFrame.ConquestBar:CreateBackdrop("Default")
+
+	-- Icon
+	ConquestFrame.ConquestBar.Reward.Ring:Hide()
+	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
+	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
+	-- OLD WAY!
+	--S:SkinPVPHonorXPBar(HonorFrame.ConquestBar)
+	--S:SkinPVPHonorXPBar('ConquestFrame')
 
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)
@@ -262,9 +315,6 @@ local function LoadSecondarySkin()
 
 		self.background:Hide()
 	end)
-
-	S:SkinPVPHonorXPBar('HonorFrame')
-	S:SkinPVPHonorXPBar('ConquestFrame')
 end
 
 S:AddCallback("PVP", LoadSecondarySkin)

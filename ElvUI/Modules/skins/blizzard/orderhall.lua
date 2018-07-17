@@ -14,19 +14,9 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
 
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-
-	-- CommandBar
-	local OrderHallCommandBar = _G["OrderHallCommandBar"]
-	OrderHallCommandBar:StripTextures()
-	OrderHallCommandBar:CreateBackdrop("Transparent")
-	OrderHallCommandBar.ClassIcon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
-	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
-	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
-	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
-	OrderHallCommandBar.WorldMapButton:Hide()
-
 	-- MissionFrame
+	local OrderHallMissionFrame = _G["OrderHallMissionFrame"]
+	OrderHallMissionFrame:StripTextures()
 	OrderHallMissionFrame.ClassHallIcon:Kill()
 	OrderHallMissionFrame:StripTextures()
 	OrderHallMissionFrame.GarrCorners:Hide()
@@ -92,18 +82,45 @@ local function LoadSkin()
 	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
 	S:HandleButton(MissionComplete.NextMissionButton)
 
+	--[[FJX ME
 	-- TalentFrame
 	local TalentFrame = _G["OrderHallTalentFrame"]
-	TalentFrame:StripTextures()
-	TalentFrame.LeftInset:StripTextures()
-	TalentFrame:SetTemplate("Transparent")
-	TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
-	S:HandleCloseButton(TalentFrame.CloseButton)
+	if TalentFrame then
+		TalentFrame:StripTextures()
+		TalentFrame.LeftInset:StripTextures()
+		if TalentFrame.CornerLogo then TalentFrame.CornerLogo:Hide()
+		end
+		if TalentFrame.StyleFrame then
+			TalentFrame.StyleFrame:Hide()
+		end
+		TalentFrame:SetTemplate("Transparent")
+		TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+		S:HandleCloseButton(TalentFrame.CloseButton)
 
-	-- Chromie Frame
-	_G["OrderHallTalentFramePortraitFrame"]:Hide()
-	_G["OrderHallTalentFramePortrait"]:Hide()
-	S:HandleButton(_G["OrderHallTalentFrame"].BackButton)
+		-- Chromie Frame
+		_G["OrderHallTalentFramePortraitFrame"]:Hide()
+		_G["OrderHallTalentFramePortrait"]:Hide()
+		S:HandleButton(_G["OrderHallTalentFrame"].BackButton)
+	end
+	]]
 end
 
-S:AddCallbackForAddon('Blizzard_OrderHallUI', "OrderHall", LoadSkin)
+S:AddCallbackForAddon('Blizzard_GarrisonUI', "OrderHall", LoadSkin)
+
+local function LoadSkinCommandBar()
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
+
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+
+	-- CommandBar
+	local OrderHallCommandBar = _G["OrderHallCommandBar"]
+	OrderHallCommandBar:StripTextures()
+	OrderHallCommandBar:CreateBackdrop("Transparent")
+	OrderHallCommandBar.ClassIcon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
+	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
+	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
+	OrderHallCommandBar.WorldMapButton:Hide()
+end
+
+S:AddCallbackForAddon('Blizzard_OrderHallUI', "OrderHallCommandBar", LoadSkinCommandBar)

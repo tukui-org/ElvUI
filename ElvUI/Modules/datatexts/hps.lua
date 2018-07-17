@@ -9,6 +9,7 @@ local max = math.max
 local join = string.join
 --WoW API / Variables
 local UnitGUID = UnitGUID
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
 local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 local playerID, petID
@@ -48,15 +49,13 @@ local function OnEvent(self, event, ...)
 		end
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-		if not events[select(2, ...)] then return end
+		local timestamp, Event, _, sourceGUID, _, _, _, _, _, _, _, _, _, _, lastHealAmount, overHeal = CombatLogGetCurrentEventInfo()
+		if not events[Event] then return end
 
-		local id = select(4, ...)
-		if id == playerID or id == petID then
-			if timeStamp == 0 then timeStamp = select(1, ...) end
-			local overHeal = select(16, ...)
+		if sourceGUID == playerID or sourceGUID == petID then
+			if timeStamp == 0 then timeStamp = timestamp end
 			lastSegment = timeStamp
-			combatTime = select(1, ...) - timeStamp
-			lastHealAmount = select(15, ...)
+			combatTime = timestamp - timeStamp
 			healTotal = healTotal + max(0, lastHealAmount - overHeal)
 		end
 	elseif event == "UNIT_PET" then

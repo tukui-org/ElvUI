@@ -151,12 +151,12 @@ function E:GetScreenQuadrant(frame)
 	local x, y = frame:GetCenter()
 	local screenWidth = GetScreenWidth()
 	local screenHeight = GetScreenHeight()
-	local point
 
-	if not frame:GetCenter() then
+	if not (x and y) then
 		return "UNKNOWN", frame:GetName()
 	end
 
+	local point
 	if (x > (screenWidth / 3) and x < (screenWidth / 3)*2) and y > (screenHeight / 3)*2 then
 		point = "TOP"
 	elseif x < (screenWidth / 3) and y > (screenHeight / 3)*2 then

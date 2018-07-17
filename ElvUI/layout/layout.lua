@@ -10,7 +10,7 @@ local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
 -- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
--- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel
+-- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, QuickJoinToastButton
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -24,6 +24,7 @@ end
 
 function LO:Initialize()
 	self:CreateChatPanels()
+	self:CreateChatButtonPanel()
 	self:CreateMinimapPanels()
 	self:SetDataPanelStyle()
 
@@ -83,6 +84,8 @@ local function ChatButton_OnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
+		GameTooltip:AddLine('')
+		GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Chat Buttons"], 1, 1, 1)
 		GameTooltip:Show()
 	end
 end
@@ -236,6 +239,16 @@ function LO:ToggleChatPanels()
 	end
 end
 
+function LO:ChatButtonPanel_OnClick()
+	GameTooltip:Hide()
+
+	if ChatButtonHolder:IsShown() then
+		ChatButtonHolder:Hide()
+	else
+		ChatButtonHolder:Show()
+	end
+end
+
 function LO:CreateChatPanels()
 	local SPACING = E.Border*3 - E.Spacing
 
@@ -248,7 +261,6 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
-
 
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -277,9 +289,16 @@ function LO:CreateChatPanels()
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', E.Border - E.Spacing*3, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	lchattb:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
-	lchattb:SetScript('OnClick', ChatButton_OnClick)
+	lchattb:SetScript('OnClick', function(self, btn)
+		if btn == "LeftButton" then
+			ChatButton_OnClick(self)
+		elseif btn == "RightButton" then
+			LO:ChatButtonPanel_OnClick(self)
+		end
+	end)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
 	lchattb.text:FontTemplate()
 	lchattb.text:Point('CENTER')
@@ -344,6 +363,32 @@ function LO:CreateChatPanels()
 	end
 
 	self:ToggleChatPanels()
+end
+
+function LO:CreateChatButtonPanel()
+	if E.private.chat.enable ~= true then return end
+
+	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", LeftChatPanel)
+	ChatButtonHolder:SetPoint("BOTTOMLEFT", LeftChatPanel, "TOPLEFT", 0, 0)
+	ChatButtonHolder:SetSize(27, 85)
+	ChatButtonHolder:Hide()
+
+	ChatFrameChannelButton:ClearAllPoints()
+	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")
+
+	-- We have to reparent the buttons to our ChatButtonHolder
+	ChatFrameChannelButton:SetParent(ChatButtonHolder)
+	ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
+	ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
+	--ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
+	QuickJoinToastButton:SetParent(ChatButtonHolder)
+
+	E:GetModule("Skins"):HandleButton(ChatFrameChannelButton)
+	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceDeafenButton)
+	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceMuteButton)
+
+	ChatAlertFrame:ClearAllPoints()
+	ChatAlertFrame:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", 1, 3)
 end
 
 function LO:CreateMinimapPanels()

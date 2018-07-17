@@ -171,6 +171,20 @@ P['databars'] = {
 		['hideInCombat'] = false,
 		['hideOutsidePvP'] = false,
 	},
+	['azerite'] = {
+		['enable'] = true,
+		['width'] = 10,
+		['height'] = 180,
+		['textFormat'] = 'NONE',
+		['textSize'] = 11,
+		["font"] = "PT Sans Narrow",
+		["fontOutline"] = "NONE",
+		['mouseover'] = false,
+		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
+		["hideInVehicle"] = false,
+		["hideInCombat"] = false,
+	},
 }
 
 --Bags

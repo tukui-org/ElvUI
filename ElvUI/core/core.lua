@@ -19,14 +19,14 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
-local GetMapNameByID = GetMapNameByID
+local C_Map_GetMapInfo = C_Map.GetMapInfo
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local SendAddonMessage = SendAddonMessage
+local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetNumGroupMembers = GetNumGroupMembers
@@ -389,7 +389,7 @@ local function LocalizeZoneNames()
 	local localizedZoneName
 
 	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = GetMapNameByID(mapID)
+		localizedZoneName = C_Map_GetMapInfo(mapID)
 		if localizedZoneName then
 			-- Add combination of English and localized name to lookup table
 			if not localizedMapNames[englishName] then
@@ -403,8 +403,12 @@ LocalizeZoneNames()
 --Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the " (Outland)" part unlike the GetRealZoneText() API.
+
+-- Needs to be adjusted for 8.0 ?
 function E:GetZoneText(zoneAreaID)
-	local zoneName = GetMapNameByID(zoneAreaID)
+	if not zoneAreaID then return end
+
+	local zoneName = C_Map_GetMapInfo(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]
 
 	if continent and continent == "Outland" then
@@ -914,9 +918,9 @@ end
 
 function E:SendMessage()
 	if IsInRaid() then
-		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	end
 
 	if E.SendMSGTimer then
@@ -954,7 +958,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	end
 end
 
-RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
+C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
@@ -1033,7 +1037,7 @@ function E:UpdateAll(ignoreInstall)
 	DataBars:UpdateDataBarDimensions()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_ReputationBar()
-	DataBars:EnableDisable_ArtifactBar()
+	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_HonorBar()
 
 	local T = self:GetModule('Threat')

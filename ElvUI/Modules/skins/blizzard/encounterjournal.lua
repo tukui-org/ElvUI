@@ -171,12 +171,7 @@ local function LoadSkin()
 
 	--Loot Frame
 	S:HandleScrollBar(EncounterJournalScrollBar)
-	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.ClassButton, true)
-	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.SlotButton, true)
 	S:HandleButton(EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
-	S:HandleDropDownBox(LootJournalViewDropDown)
-	LootJournalViewDropDownText:ClearAllPoints()
-	LootJournalViewDropDownText:Point("CENTER", LootJournalViewDropDown, "CENTER", 0, 3)
 
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do

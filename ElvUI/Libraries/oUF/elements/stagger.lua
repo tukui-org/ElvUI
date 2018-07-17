@@ -51,7 +51,7 @@ local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function UpdateColor(element, cur, max)
 	local colors = element.__owner.colors.power[BREWMASTER_POWER_BAR_NAME]
-	local perc = max > 0 and (cur / max) or 0
+	local perc = max > 0 and (cur / max) or 0 -- ElvUI changed
 
 	local t
 	if(perc >= STAGGER_RED_TRANSITION) then
@@ -91,8 +91,9 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
+	-- Blizzard code has nil checks for UnitStagger return
 	local cur = UnitStagger('player') or 0
-	local max = UnitHealthMax('player') or 0
+	local max = UnitHealthMax('player')
 
 	element:SetMinMaxValues(0, max)
 	element:SetValue(cur)
@@ -129,6 +130,7 @@ local function Path(self, ...)
 	return (self.Stagger.Override or Update)(self, ...)
 end
 
+-- ElvUI changed
 local function Visibility(self, event, unit)
 	local isShown = self.Stagger:IsShown()
 	local stateChanged = false
@@ -148,7 +150,7 @@ local function Visibility(self, event, unit)
 			self:RegisterEvent('UNIT_AURA', Path)
 			stateChanged = true
 		end
-		
+
 		if(self.Stagger.PostUpdateVisibility) then
 			self.Stagger.PostUpdateVisibility(self, event, unit, true, stateChanged)
 		end
@@ -156,6 +158,7 @@ local function Visibility(self, event, unit)
 		return Path(self, event, unit)
 	end
 end
+-- end block
 
 local function VisibilityPath(self, ...)
 	--[[ Override: Stagger.OverrideVisibility(self, event, unit)

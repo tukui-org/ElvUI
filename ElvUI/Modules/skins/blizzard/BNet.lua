@@ -22,24 +22,6 @@ local function LoadSkin()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
-	-- BNetReportFrame
-	_G["BNetReportFrameCommentTopLeft"]:Hide()
-	_G["BNetReportFrameCommentTopRight"]:Hide()
-	_G["BNetReportFrameCommentTop"]:Hide()
-	_G["BNetReportFrameCommentBottomLeft"]:Hide()
-	_G["BNetReportFrameCommentBottomRight"]:Hide()
-	_G["BNetReportFrameCommentBottom"]:Hide()
-	_G["BNetReportFrameCommentLeft"]:Hide()
-	_G["BNetReportFrameCommentRight"]:Hide()
-	_G["BNetReportFrameCommentMiddle"]:Hide()
-	S:HandleEditBox(_G["BNetReportFrameCommentScrollFrame"])
-
-	_G["BNetReportFrameCommentScrollFrame"]:StripTextures()
-	S:HandleScrollBar(_G["BNetReportFrameCommentScrollFrameScrollBar"])
-
-	S:HandleButton(_G["BNetReportFrameReportButton"])
-	S:HandleButton(_G["BNetReportFrameCancelButton"])
-
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()
 	S:HandleButton(ReportCheatingDialogReportButton)
@@ -50,7 +32,6 @@ local function LoadSkin()
 	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
-	--S:HandleEditBox(BattleTagInviteFrameScrollFrame)
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())

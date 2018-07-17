@@ -10,8 +10,12 @@ local pairs = pairs
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
-local function LoadSkin()
+local function SkinLFGuild()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
+
+	LookingForGuildFrame:StripTextures()
+	LookingForGuildFrame:SetTemplate("Transparent")
+	LookingForGuildFrameInset:StripTextures(false)
 
 	local checkbox = {
 		"LookingForGuildPvPButton",
@@ -33,10 +37,6 @@ local function LoadSkin()
 	S:HandleCheckBox(LookingForGuildHealerButton.checkButton)
 	S:HandleCheckBox(LookingForGuildDamagerButton.checkButton)
 
-	-- skinning other frames
-	LookingForGuildFrameInset:StripTextures(false)
-	LookingForGuildFrame:StripTextures()
-	LookingForGuildFrame:SetTemplate("Transparent")
 	LookingForGuildBrowseButton_LeftSeparator:Kill()
 	LookingForGuildRequestButton_RightSeparator:Kill()
 	S:HandleScrollBar(LookingForGuildBrowseFrameContainerScrollBar)
@@ -65,6 +65,16 @@ local function LoadSkin()
 	S:HandleButton(GuildFinderRequestMembershipFrameCancelButton)
 	GuildFinderRequestMembershipFrameInputFrame:StripTextures()
 	GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+end
+
+local function LoadSkin()
+	if LookingForGuildFrame then
+		--Frame already created
+		SkinLFGuild()
+	else
+		--Frame not created yet, wait until it is
+		hooksecurefunc("LookingForGuildFrame_CreateUIElements", SkinLFGuild)
+	end
 end
 
 S:AddCallbackForAddon("Blizzard_LookingForGuildUI", "LookingForGuild", LoadSkin)

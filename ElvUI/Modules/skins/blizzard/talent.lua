@@ -6,6 +6,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
+local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
@@ -27,7 +29,6 @@ local function LoadSkin()
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
 		PlayerTalentFrameTalents,
-		PlayerTalentFramePVPTalents.Talents
 	}
 
 	for _, object in pairs(objects) do
@@ -67,7 +68,7 @@ local function LoadSkin()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
 
-	for i=1, 4 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 
 		if i == 1 then
@@ -77,7 +78,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
-		for i=1, 4 do
+		for i = 1, 3 do
 			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
@@ -194,21 +195,24 @@ local function LoadSkin()
 	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
 		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
+		local numSpecs = GetNumSpecializations(nil, self.isPet);
 
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
 		local scrollChild = self.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
 		local bonuses
+		local bonusesIncrement = 1;
 		if self.isPet then
-			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet)}
+			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet, true)}
+			bonusesIncrement = 2;
 		else
-			bonuses = SPEC_SPELLS_DISPLAY[id]
+			bonuses = C_SpecializationInfo_GetSpellsDisplay(id)
 		end
 
 		if bonuses then
 			local index = 1
-			for i = 1, #bonuses, 2 do
+			for i = 1, #bonuses, bonusesIncrement do
 				local frame = scrollChild["abilityButton"..index]
 				if frame then
 					local _, spellTex = GetSpellTexture(bonuses[i])
@@ -229,7 +233,7 @@ local function LoadSkin()
 			end
 		end
 
-		for i = 1, GetNumSpecializations(nil, self.isPet) do
+		for i = 1, numSpecs do
 			local bu = self["specButton"..i]
 			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
@@ -329,99 +333,120 @@ local function LoadSkin()
 		end
 	end
 
-	--Skin talent rows and buttons
-	for i = 1, MAX_PVP_TALENT_TIERS do
-		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
-		row.Bg:Hide()
-		row:DisableDrawLayer("BORDER")
-		row:StripTextures()
-		row.GlowFrame:Kill() --We can either kill or reposition the glows. Not sure which is preferred.
-		-- row.GlowFrame.TopGlowLine:SetPoint("TOP", 0, 5)
-		-- row.GlowFrame.BottomGlowLine:SetPoint("BOTTOM", 0, -5)
+	-- PVP Talents
+	local function SkinPvpTalentSlots(button)
+		button._elvUIBG = S:CropIcon(button.Texture, button)
+		button.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+		button.Arrow:SetPoint("LEFT", button.Texture, "RIGHT", 5, 0)
+		button.Arrow:SetSize(26, 13)
+		button.Border:Hide()
 
-		row.TopLine:Point("TOP", 0, 4)
-		row.BottomLine:Point("BOTTOM", 0, -4)
+		button:SetSize(button:GetSize())
+		button.Texture:SetSize(32, 32)
+		button.TalentName:SetPoint("TOP", button, "BOTTOM", 0, 0)
+	end
 
-		for j = 1, MAX_PVP_TALENT_COLUMNS do
-			local button = row["Talent"..j];
-			local icon = button.Icon
+	local function SkinPvpTalentTrinketSlot(button)
+		SkinPvpTalentSlots(button)
+		button.Texture:SetTexture([[Interface\Icons\INV_Jewelry_Trinket_04]])
+		button.Texture:SetSize(48, 48)
+		button.Arrow:SetSize(26, 13)
+	end
 
-			button:StripTextures()
-			button:SetFrameLevel(button:GetFrameLevel() + 5)
-			button:CreateBackdrop("Default")
-			button.backdrop:SetOutside(icon)
-			icon:SetDrawLayer("OVERLAY", 1)
-			icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	local PvpTalentFrame = PlayerTalentFrameTalents.PvpTalentFrame
+	PvpTalentFrame:StripTextures()
 
-			button.bg = CreateFrame("Frame", nil, button)
-			button.bg:CreateBackdrop("Overlay")
-			button.bg:SetFrameLevel(button:GetFrameLevel() -2)
-			button.bg:Point("TOPLEFT", 15, -1)
-			button.bg:Point("BOTTOMRIGHT", -10, 1)
+	PvpTalentFrame.Swords:SetSize(72, 67)
+	PvpTalentFrame.Orb:Hide()
+	PvpTalentFrame.Ring:Hide()
 
-			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
-			button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
-			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
-			button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+	-- Skin the PvP Icons
+	SkinPvpTalentTrinketSlot(PvpTalentFrame.TrinketSlot)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot1)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot2)
+	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot3)
 
-			button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, 2)
-			button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
+	PvpTalentFrame.TalentList:StripTextures()
+	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
+
+	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
+	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
+	PvpTalentFrame.TalentList.MyTopLeftCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopRightCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopBorder:Hide()
+
+	local function HandleInsetButton(Button)
+		S:HandleButton(Button)
+
+		if Button.LeftSeparator then
+			Button.LeftSeparator:Hide()
+		end
+		if Button.RightSeparator then
+			Button.RightSeparator:Hide()
 		end
 	end
 
-	--Apply color to chosen talents
-	hooksecurefunc("PVPTalentFrame_Update", function(self)
-		for i = 1, MAX_PVP_TALENT_TIERS do
-			for j = 1, MAX_PVP_TALENT_COLUMNS do
-				local button = self.Talents["Tier"..i]["Talent"..j]
-				if button.bg and button.knownSelection then
-					if button.knownSelection:IsShown() then
-						button.bg.SelectedTexture:Show()
-						button.ShadowedTexture:Hide()
+	local TalentList_CloseButton = select(4, PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
+	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then
+		HandleInsetButton(TalentList_CloseButton)
+	end
+
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("TOPLEFT", 5, -5)
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("BOTTOMRIGHT", -21, 32)
+	PvpTalentFrame.OrbModelScene:SetAlpha(0)
+
+	PvpTalentFrame:SetSize(131, 379)
+	PvpTalentFrame:SetPoint("LEFT", PlayerTalentFrameTalents, "RIGHT", -135, 0)
+	PvpTalentFrame.Swords:SetPoint("BOTTOM", 0, 30)
+	PvpTalentFrame.Label:SetPoint("BOTTOM", 0, 104)
+	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
+
+	PvpTalentFrame.TrinketSlot:SetPoint("TOP", 0, -16)
+	PvpTalentFrame.TalentSlot1:SetPoint("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
+	PvpTalentFrame.TalentSlot2:SetPoint("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
+	PvpTalentFrame.TalentSlot3:SetPoint("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
+
+	for i = 1, 10 do
+		local bu = _G["PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameButton"..i]
+		if bu then
+			local border = bu:GetRegions()
+			if border then border:SetTexture(nil) end
+
+			bu:StyleButton()
+			bu:CreateBackdrop("Overlay")
+
+			if bu.Selected then
+				bu.Selected:SetTexture(nil)
+
+				bu.selectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+				bu.selectedTexture:SetInside(bu)
+				bu.selectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				bu.selectedTexture:SetShown(bu.Selected:IsShown())
+
+				hooksecurefunc(bu, "Update", function(selectedHere)
+					if not bu.selectedTexture then return end
+					if bu.Selected:IsShown() then
+						bu.selectedTexture:SetShown(selectedHere)
 					else
-						button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
-						button.bg.SelectedTexture:Hide()
-						button.ShadowedTexture:Show()
+						bu.selectedTexture:Hide()
 					end
-				end
+				end)
+			end
+
+			bu.backdrop:SetAllPoints()
+
+			if bu.Icon then
+				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+				bu.Icon:SetDrawLayer('ARTWORK', 1)
 			end
 		end
-	end)
+	end
 
-	--Create portrait element for the PvP Talent Frame so we can see prestige
-	local portrait = PlayerTalentFramePVPTalents:CreateTexture(nil, "OVERLAY")
-	portrait:SetSize(57,57);
-	portrait:SetPoint("CENTER", PlayerTalentFramePVPTalents.PortraitBackground, "CENTER", 0, 0);
-	--Kill background
-	PlayerTalentFramePVPTalents.PortraitBackground:Kill()
-	--Reposition portrait by repositioning the background
-	PlayerTalentFramePVPTalents.PortraitBackground:ClearAllPoints()
-	PlayerTalentFramePVPTalents.PortraitBackground:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", 5, -5)
-	--Reposition the wreath
-	PlayerTalentFramePVPTalents.SmallWreath:ClearAllPoints()
-	PlayerTalentFramePVPTalents.SmallWreath:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -2, -25)
-	--Update texture according to prestige
-	hooksecurefunc("PlayerTalentFramePVPTalents_SetUp", function()
-		local prestigeLevel = UnitPrestige("player");
-		if (prestigeLevel > 0) then
-			portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
-		end
-	end)
+	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
+	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)
 
-	-- Prestige Level Dialog
-	PVPTalentPrestigeLevelDialog:StripTextures()
-	PVPTalentPrestigeLevelDialog:CreateBackdrop('Transparent')
-	PVPTalentPrestigeLevelDialog.Laurel:SetAtlas("honorsystem-prestige-laurel", true) --Re-add textures removed by StripTextures()
-	PVPTalentPrestigeLevelDialog.TopDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	PVPTalentPrestigeLevelDialog.BottomDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
-	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
-
-	S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
-
-	-- Tutorial
-	S:HandleCloseButton(PlayerTalentFramePVPTalents.TutorialBox.CloseButton)
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)

@@ -25,6 +25,14 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 .timeToHold - indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
               event. Defaults to 0 (number)
 
+## Attributes
+
+.castID           - a globally unique identifier of the currently cast spell (string?)
+.casting          - indicates whether the current spell is an ordinary cast (boolean)
+.channeling       - indicates whether the current spell is a channeled cast (boolean)
+.notInterruptible - indicates whether the current spell is interruptible (boolean)
+.spellID          - the spell identifier of the currently cast/channeled spell (number)
+
 ## Examples
 
     -- Position and size
@@ -82,7 +90,7 @@ local GetNetStats = GetNetStats
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false -- ElvUI
 
 local function updateSafeZone(self)
 	local safeZone = self.SafeZone
@@ -97,20 +105,22 @@ local function updateSafeZone(self)
 	safeZone:SetWidth(width * safeZoneRatio)
 end
 
-local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, castid)
+-- ElvUI block
+local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
 
 	if castbar.isTradeSkill then
-		castbar.tradeSkillCastId = castid
+		castbar.tradeSkillCastId = castID
 	end
 end
+-- end block
 
 local function UNIT_SPELLCAST_START(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit) -- ElvUI adds isTradeSkill
 	if(not name) then
 		return element:Hide()
 	end
@@ -126,6 +136,9 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	element.casting = true
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
+	element.spellID = spellID
+
+	-- ElvUI block
 	element.isTradeSkill = isTradeSkill
 
 	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
@@ -138,9 +151,10 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 
 		element:SetValue(element.duration)
 	else
-		element:SetValue(0)		
+		element:SetValue(0)
 	end
 	element:SetMinMaxValues(0, element.max)
+	-- end block
 
 	if(element.Text) then element.Text:SetText(text) end
 	if(element.Icon) then element.Icon:SetTexture(texture) end
@@ -162,22 +176,20 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 		updateSafeZone(element)
 	end
 
-	--[[ Callback: Castbar:PostCastStart(unit, name, castID, spellID)
+	--[[ Callback: Castbar:PostCastStart(unit, name)
 	Called after the element has been updated upon a spell cast start.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the spell being cast (string)
-	* castID  - unique identifier of the current spell cast (string)
-	* spellID - spell identifier of the spell being cast (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	* name - name of the spell being cast (string)
 	--]]
 	if(element.PostCastStart) then
-		element:PostCastStart(unit, name, castID, spellID)
+		element:PostCastStart(unit, name)
 	end
 	element:Show()
 end
 
-local function UNIT_SPELLCAST_FAILED(self, event, unit, spellname, _, castID, spellID)
+local function UNIT_SPELLCAST_FAILED(self, event, unit, castID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
@@ -185,10 +197,12 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, spellname, _, castID, sp
 		return
 	end
 
+	-- ElvUI block
 	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
 		mergeTradeskill = false;
 		element.tradeSkillCastId = nil
 	end
+	-- end block
 
 	local text = element.Text
 	if(text) then
@@ -199,25 +213,23 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, spellname, _, castID, sp
 	element.notInterruptible = nil
 	element.holdTime = element.timeToHold or 0
 
-	--[[ Callback: Castbar:PostCastFailed(unit, name, castID, spellID)
+	--[[ Callback: Castbar:PostCastFailed(unit)
 	Called after the element has been updated upon a failed spell cast.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the failed spell (string)
-	* castID  - unique identifier of the failed spell cast (string)
-	* spellID - spell identifier of the failed spell (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
 	--]]
 	if(element.PostCastFailed) then
-		return element:PostCastFailed(unit, spellname, castID, spellID)
+		return element:PostCastFailed(unit)
 	end
 end
 
-local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, spellname, _, castid)
+-- ElvUI block
+local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, castID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
-	if (castbar.castID ~= castid) and (castbar.tradeSkillCastId ~= castid) then
+	if (castbar.castID ~= castID) and (castbar.tradeSkillCastId ~= castID) then
 		return
 	end
 
@@ -225,14 +237,15 @@ local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, spellname, _, ca
 		mergeTradeskill = false;
 		castbar.tradeSkillCastId = nil
 	end
-	
+
 	castbar.casting = nil
 	castbar.notInterruptible = nil
 	castbar:SetValue(0)
 	castbar:Hide()
 end
+-- end block
 
-local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, spellname, _, castID, spellID)
+local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
@@ -249,17 +262,14 @@ local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, spellname, _, castI
 	element.channeling = nil
 	element.holdTime = element.timeToHold or 0
 
-	--[[ Callback: Castbar:PostCastInterrupted(unit, name, castID, spellID)
+	--[[ Callback: Castbar:PostCastInterrupted(unit)
 	Called after the element has been updated upon an interrupted spell cast.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the interrupted spell (string)
-	* castID  - unique identifier of the interrupted spell cast (string)
-	* spellID - spell identifier of the interrupted spell (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
 	--]]
 	if(element.PostCastInterrupted) then
-		return element:PostCastInterrupted(unit, spellname, castID, spellID)
+		return element:PostCastInterrupted(unit)
 	end
 end
 
@@ -282,7 +292,6 @@ local function UNIT_SPELLCAST_INTERRUPTIBLE(self, event, unit)
 	--]]
 	if(element.PostCastInterruptible) then
 		return element:PostCastInterruptible(unit)
-
 	end
 end
 
@@ -308,11 +317,11 @@ local function UNIT_SPELLCAST_NOT_INTERRUPTIBLE(self, event, unit)
 	end
 end
 
-local function UNIT_SPELLCAST_DELAYED(self, event, unit, _, _, _, spellID)
+local function UNIT_SPELLCAST_DELAYED(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, _, _, startTime, _, _, castID = UnitCastingInfo(unit)
+	local name, _, _, startTime = UnitCastingInfo(unit)
 	if(not startTime or not element:IsShown()) then return end
 
 	local duration = GetTime() - (startTime / 1000)
@@ -323,21 +332,19 @@ local function UNIT_SPELLCAST_DELAYED(self, event, unit, _, _, _, spellID)
 
 	element:SetValue(duration)
 
-	--[[ Callback: Castbar:PostCastDelayed(unit, name, castID, spellID)
+	--[[ Callback: Castbar:PostCastDelayed(unit, name)
 	Called after the element has been updated when a spell cast has been delayed.
 
-	* self    - the Castbar widget
-	* unit    - unit that the update has been triggered (string)
-	* name    - name of the delayed spell (string)
-	* castID  - unique identifier of the delayed spell cast (string)
-	* spellID - spell identifier of the delayed spell (number)
+	* self - the Castbar widget
+	* unit - unit that the update has been triggered (string)
+	* name - name of the delayed spell (string)
 	--]]
 	if(element.PostCastDelayed) then
-		return element:PostCastDelayed(unit, name, castID, spellID)
+		return element:PostCastDelayed(unit, name)
 	end
 end
 
-local function UNIT_SPELLCAST_STOP(self, event, unit, spellname, _, castID, spellID)
+local function UNIT_SPELLCAST_STOP(self, event, unit, castID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
@@ -345,6 +352,7 @@ local function UNIT_SPELLCAST_STOP(self, event, unit, spellname, _, castID, spel
 		return
 	end
 
+	-- ElvUI block
 	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
 		if(tradeskillCurrent == tradeskillTotal) then
 			mergeTradeskill = false;
@@ -353,26 +361,24 @@ local function UNIT_SPELLCAST_STOP(self, event, unit, spellname, _, castID, spel
 		element.casting = nil
 		element.notInterruptible = nil
 	end
+	-- end block
 
-	--[[ Callback: Castbar:PostCastStop(unit, name, castID, spellID)
+	--[[ Callback: Castbar:PostCastStop(unit)
 	Called after the element has been updated when a spell cast has finished.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the spell (string)
-	* castID  - unique identifier of the finished spell cast (string)
-	* spellID - spell identifier of the spell (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
 	--]]
 	if(element.PostCastStop) then
-		return element:PostCastStop(unit, spellname, castID, spellID)
+		return element:PostCastStop(unit)
 	end
 end
 
-local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, _, _, spellID)
+local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, spellID)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit)
+	local name, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
@@ -385,12 +391,16 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, _, _, spellID)
 	element.duration = duration
 	element.max = max
 	element.delay = 0
-	element.startTime = startTime
-	element.endTime = endTime
-	element.extraTickRatio = 0
 	element.channeling = true
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
+	element.spellID = spellID
+
+	-- ElvUI block
+	element.startTime = startTime
+	element.endTime = endTime
+	element.extraTickRatio = 0
+	-- end block
 
 	-- We have to do this, as it's possible for spell casts to never have _STOP
 	-- executed or be fully completed by the OnUpdate handler before CHANNEL_START
@@ -421,25 +431,24 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, _, _, spellID)
 		updateSafeZone(element)
 	end
 
-	--[[ Callback: Castbar:PostChannelStart(unit, name, spellID)
+	--[[ Callback: Castbar:PostChannelStart(unit, name)
 	Called after the element has been updated upon a spell channel start.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the channeled spell (string)
-	* spellID - spell identifier of the channeled spell (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	* name - name of the channeled spell (string)
 	--]]
 	if(element.PostChannelStart) then
-		element:PostChannelStart(unit, name, spellID)
+		element:PostChannelStart(unit, name)
 	end
 	element:Show()
 end
 
-local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit, _, _, _, spellID)
+local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
-	local name, _, _, _, startTime, endTime = UnitChannelInfo(unit)
+	local name, _, _, startTime, endTime = UnitChannelInfo(unit)
 	if(not name or not element:IsShown()) then
 		return
 	end
@@ -449,26 +458,28 @@ local function UNIT_SPELLCAST_CHANNEL_UPDATE(self, event, unit, _, _, _, spellID
 	element.delay = element.delay + element.duration - duration
 	element.duration = duration
 	element.max = (endTime - startTime) / 1000
+
+	-- ElvUI block
 	element.startTime = startTime / 1000
 	element.endTime = endTime / 1000
+	-- end block
 
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(duration)
 
-	--[[ Callback: Castbar:PostChannelUpdate(unit, name, spellID)
+	--[[ Callback: Castbar:PostChannelUpdate(unit, name)
 	Called after the element has been updated after a channeled spell has been delayed or interrupted.
 
-	* self    - the Castbar widget
-	* unit    - unit for which the update has been triggered (string)
-	* name    - name of the channeled spell (string)
-	* spellID - spell identifier of the channeled spell (number)
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	* name - name of the channeled spell (string)
 	--]]
 	if(element.PostChannelUpdate) then
-		return element:PostChannelUpdate(unit, name, spellID)
+		return element:PostChannelUpdate(unit, name)
 	end
 end
 
-local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit, spellname, _, _, spellID)
+local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local element = self.Castbar
@@ -476,16 +487,14 @@ local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit, spellname, _, _, s
 		element.channeling = nil
 		element.notInterruptible = nil
 
-		--[[ Callback: Castbar:PostChannelUpdate(unit, name, spellID)
+		--[[ Callback: Castbar:PostChannelStop(unit)
 		Called after the element has been updated after a channeled spell has been completed.
 
-		* self    - the Castbar widget
-		* unit    - unit for which the update has been triggered (string)
-		* name    - name of the channeled spell (string)
-		* spellID - spell identifier of the channeled spell (number)
+		* self - the Castbar widget
+		* unit - unit for which the update has been triggered (string)
 		--]]
 		if(element.PostChannelStop) then
-			return element:PostChannelStop(unit, spellname, spellID)
+			return element:PostChannelStop(unit)
 		end
 	end
 end
@@ -608,8 +617,10 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
+			-- ElvUI block
 			self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
 			self:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
+			-- end block
 		end
 
 		element.horizontal = element:GetOrientation() == 'HORIZONTAL'
@@ -666,17 +677,21 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
+		-- ElvUI block
 		self:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 		self:UnregisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
+		-- end block
 
 		element:SetScript('OnUpdate', nil)
 	end
 end
 
+-- ElvUI block
 hooksecurefunc(C_TradeSkillUI, "CraftRecipe", function(_, num)
 	tradeskillCurrent = 0
 	tradeskillTotal = num or 1
 	mergeTradeskill = true
 end)
+-- end block
 
 oUF:AddElement('Castbar', Update, Enable, Disable)

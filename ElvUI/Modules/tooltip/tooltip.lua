@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local S -- used to hold the skin module when we need it
 
 --Cache global variables
 --Lua functions
@@ -560,21 +561,62 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
+function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
+	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) or tt:IsForbidden() then return end
+	local cur = tt.pbBar:GetValue()
+	if cur then
+		local max, _
+		if tt.pbBar.GetMinMaxValues then
+			_, max = tt.pbBar:GetMinMaxValues()
+		end
+
+		if not S then S = E:GetModule('Skins') end
+		S:StatusBarColorGradient(tt.pbBar, cur, max)
+	end
+end
+
+function TT:GameTooltip_ShowProgressBar(tt)
+	if not tt or tt:IsForbidden() or not tt.progressBarPool then return end
+
+	local sb = tt.progressBarPool:GetNextActive()
+	if (not sb or not sb.Bar) or sb.Bar.backdrop then return end
+
+	sb.Bar:StripTextures()
+	sb.Bar:CreateBackdrop('Transparent', nil, true)
+	sb.Bar:SetStatusBarTexture(E['media'].normTex)
+
+	tt.pbBar = sb.Bar
+end
+
 function TT:GameTooltip_ShowStatusBar(tt)
-	if tt:IsForbidden() then return end
-	local statusBar = _G[tt:GetName().."StatusBar"..tt.shownStatusBars];
-	if statusBar and not statusBar.skinned then
-		statusBar:StripTextures()
-		statusBar:SetStatusBarTexture(E['media'].normTex)
-		E:RegisterStatusBar(statusBar)
-		statusBar:CreateBackdrop('Default')
-		statusBar.skinned = true;
+	if not tt or tt:IsForbidden() or not tt.statusBarPool then return end
+
+	local sb = tt.statusBarPool:GetNextActive()
+	if (not sb or not sb.Text) or sb.backdrop then return end
+
+	sb:StripTextures()
+	sb:CreateBackdrop('Default', nil, true)
+	sb:SetStatusBarTexture(E['media'].normTex)
+end
+
+function TT:CheckBackdropColor(tt)
+	if (not tt) or tt:IsForbidden() or (tt:NumLines() ~= 1) then return end
+
+	local r, g, b = tt:GetBackdropColor()
+	if r and g and b then
+		r, g, b = E:Round(r, 1), E:Round(g, 1), E:Round(b, 1)
+
+		local red, green, blue = unpack(E.media.backdropfadecolor)
+		if r ~= red or g ~= green or b ~= blue then
+			tt:SetBackdropColor(red, green, blue, self.db.colorAlpha)
+		end
 	end
 end
 
 function TT:SetStyle(tt)
-	if tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates
+
 	local r, g, b = tt:GetBackdropColor()
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
@@ -587,7 +629,7 @@ end
 
 function TT:SetUnitAura(tt, unit, index, filter)
 	if tt:IsForbidden() then return end
-	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
+	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 	if id and self.db.spellID then
 		if caster then
 			local name = UnitName(caster)
@@ -605,7 +647,7 @@ end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	if tt:IsForbidden() then return end
-	local id = select(3, tt:GetSpell())
+	local id = select(2, tt:GetSpell())
 	if not id or not self.db.spellID then return end
 
 	local displayString = ("|cFFCA3C3C%s|r %d"):format(ID, id)
@@ -637,21 +679,6 @@ function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= BNETMover then
 		frame:ClearAllPoints()
 		frame:SetPoint(BNETMover.anchorPoint or 'TOPLEFT', BNETMover, BNETMover.anchorPoint or 'TOPLEFT');
-	end
-end
-
-function TT:CheckBackdropColor()
-	if GameTooltip:IsForbidden() then return end
-	if not GameTooltip:IsShown() then return end
-	local r, g, b = GameTooltip:GetBackdropColor()
-	if (r and g and b) then
-		r = E:Round(r, 1)
-		g = E:Round(g, 1)
-		b = E:Round(b, 1)
-		local red, green, blue = unpack(E.media.backdropfadecolor)
-		if (r ~= red or g ~= green or b ~= blue) then
-			GameTooltip:SetBackdropColor(red, green, blue, self.db.colorAlpha)
-		end
 	end
 end
 

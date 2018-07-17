@@ -124,6 +124,14 @@ V['skins'] = {
 		['BlizzardOptions'] = true,
 		['Warboard'] = true,
 		['AlliedRaces'] = true,
+		['Channels'] = true,
+		['BFAMissions'] = true,
+		['AzeriteUI'] = true,
+		['AzeriteRespec'] = true,
+		['Communities'] = true,
+		['Scrapping'] = true,
+		['Islands'] = true,
+		['Widgets'] = false,
 	},
 }
 

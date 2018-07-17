@@ -121,14 +121,16 @@ local function LoadSkin()
 	end
 
 	--Chat Config
+	local ChatConfigFrame = _G["ChatConfigFrame"]
+	-- TO DO: SKIN THE TABS
+	--S:HandleTab(ChatConfigFrame.ChatTabManager)
+
 	local StripAllTextures = {
 		"ChatConfigFrame",
 		"ChatConfigBackgroundFrame",
 		"ChatConfigCategoryFrame",
-		"ChatConfigChatSettingsClassColorLegend",
 		"ChatConfigChatSettingsLeft",
 		"ChatConfigChannelSettingsLeft",
-		"ChatConfigChannelSettingsClassColorLegend",
 		"ChatConfigOtherSettingsCombat",
 		"ChatConfigOtherSettingsPVP",
 		"ChatConfigOtherSettingsSystem",
@@ -153,8 +155,6 @@ local function LoadSkin()
 	ChatConfigBackgroundFrame:SetTemplate("Transparent")
 	ChatConfigCategoryFrame:SetTemplate("Transparent")
 	ChatConfigCombatSettingsFilters:SetTemplate("Transparent")
-	ChatConfigChannelSettingsClassColorLegend:SetTemplate("Transparent")
-	ChatConfigChatSettingsClassColorLegend:SetTemplate("Transparent")
 
 	local chatbuttons = {
 		"ChatConfigFrameDefaultButton",
@@ -198,8 +198,6 @@ local function LoadSkin()
 		"ChatConfigFrame",
 		"ChatConfigCategoryFrame",
 		"ChatConfigBackgroundFrame",
-		"ChatConfigChatSettingsClassColorLegend",
-		"ChatConfigChannelSettingsClassColorLegend",
 		"ChatConfigCombatSettingsFilters",
 		"ChatConfigCombatSettingsFiltersScrollFrame",
 		"CombatConfigColorsHighlighting",
@@ -236,13 +234,16 @@ local function LoadSkin()
 		local SkinFrames = _G[otherframe[i]]
 		SkinFrames:ClearAllPoints()
 		if SkinFrames == CombatConfigColorsColorizeSpellNames then
-			SkinFrames:Point("TOP",CombatConfigColorsColorizeUnitName,"BOTTOM",0,-2)
+			SkinFrames:Point("TOP", CombatConfigColorsColorizeUnitName, "BOTTOM" ,0, -2)
 		else
-			SkinFrames:Point("TOP",_G[otherframe[i-1]],"BOTTOM",0,-2)
+			SkinFrames:Point("TOP", _G[otherframe[i-1]], "BOTTOM", 0, -2)
 		end
 	end
 
 	-- >> Chat >> Channel Settings      /!\ I don't know why, but the skin works only after /reload ui, not at first login =(
+	-- This do nothing now in Bfa, and i assume it is releaded to the Channel Skin
+	-- Also maybe this table: CHAT_CONFIG_CHANNEL_LIST
+	--[[
 	ChatConfigChannelSettingsLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
 	ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self)
 		ChatConfigChannelSettingsLeft:UnregisterEvent("PLAYER_ENTERING_WORLD")
@@ -253,15 +254,12 @@ local function LoadSkin()
 			_G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
 			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
 			S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."Check"])
-			S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"])
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
 		end
 	end)
+	]]
 
 	--Makes the skin work, but only after /reload ui :o   (found in chatconfingframe.xml)
 	CreateChatChannelList(ChatConfigChannelSettings, GetChannelList())
-	ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchAndClassColorTemplate", CHANNELS)
-	ChatConfig_UpdateCheckboxes(ChatConfigChannelSettingsLeft)
 	ChatConfigBackgroundFrame:SetScript("OnShow", function(self)
 		-- >> Chat >> Chat Settings
 		for i = 1,#CHAT_CONFIG_CHAT_LEFT do
@@ -271,8 +269,6 @@ local function LoadSkin()
 			_G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
 			_G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
 			S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."Check"])
-			S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"])
-			_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
 		end
 		-- >> Other >> Combat
 		for i = 1,#CHAT_CONFIG_OTHER_COMBAT do
@@ -330,14 +326,14 @@ local function LoadSkin()
 			_G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
 		end
 		-- >> Combat >> Messages Types
-		for i=1,4 do
-			for j=1,4 do
+		for i = 1, 4 do
+			for j = 1, 4 do
 				if _G["CombatConfigMessageTypesLeftCheckBox"..i] and _G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j] then
 					S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i])
 					S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j])
 				end
 			end
-			for j=1,10 do
+			for j = 1, 10 do
 				if _G["CombatConfigMessageTypesRightCheckBox"..i] and _G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j] then
 					S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i])
 					S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j])
@@ -388,14 +384,13 @@ local function LoadSkin()
 		S:HandleCheckBox(ccbtn)
 	end
 
-	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton, true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton, true, true)
 	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton, true)
 	ChatConfigMoveFilterUpButton:ClearAllPoints()
 	ChatConfigMoveFilterDownButton:ClearAllPoints()
 	ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
 	ChatConfigMoveFilterDownButton:Point("LEFT",ChatConfigMoveFilterUpButton,24,0)
 	S:HandleEditBox(CombatConfigSettingsNameEditBox)
-	ChatConfigFrame:Size(680,596)
 	ChatConfigFrameHeader:ClearAllPoints()
 	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
@@ -490,6 +485,7 @@ local function LoadSkin()
 		"ActionBarsPanelBottomRight",
 		"ActionBarsPanelRight",
 		"ActionBarsPanelRightTwo",
+		"ActionBarsPanelStackRightBars",
 		"ActionBarsPanelCountdownCooldowns",
 		-- Names
 		"NamesPanelMyName",
@@ -508,6 +504,7 @@ local function LoadSkin()
 		"MousePanelInvertMouse",
 		"MousePanelClickToMove",
 		"MousePanelEnableMouseSpeed",
+		"MousePanelLockCursorToScreen",
 		-- Accessability
 		"AccessibilityPanelMovePad",
 		"AccessibilityPanelCinematicSubtitles",
@@ -518,7 +515,7 @@ local function LoadSkin()
 		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
 		if icheckbox then
 			S:HandleCheckBox(icheckbox)
-		 else
+		else
 			print(interfacecheckbox[i])
 		end
 	end
@@ -611,7 +608,6 @@ local function LoadSkin()
 		-- Graphics
 		"Display_DisplayModeDropDown",
 		"Display_ResolutionDropDown",
-		"Display_RefreshDropDown",
 		"Display_PrimaryMonitorDropDown",
 		"Display_AntiAliasingDropDown",
 		"Display_VerticalSyncDropDown",
@@ -642,26 +638,28 @@ local function LoadSkin()
 		-- Advanced
 		"Advanced_BufferingDropDown",
 		"Advanced_LagDropDown",
-		"Advanced_HardwareCursorDropDown",
 		"Advanced_GraphicsAPIDropDown",
 		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAlphaTest",
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
 		"Advanced_PhysicsInteractionDropDown",
+		"Advanced_AdapterDropDown",
 
 		-- Audio
 		"AudioOptionsSoundPanelHardwareDropDown",
 		"AudioOptionsSoundPanelSoundChannelsDropDown",
 		"AudioOptionsSoundPanelSoundCacheSizeDropDown",
-		"AudioOptionsVoicePanelInputDeviceDropDown",
-		"AudioOptionsVoicePanelChatModeDropDown",
-		"AudioOptionsVoicePanelOutputDeviceDropDown",
 
 		-- Raid Profiles
 		"CompactUnitFrameProfilesProfileSelector",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
 		"CompactUnitFrameProfilesGeneralOptionsFrameSortByDropdown",
+
+		-- VoiceChat
+		"AudioOptionsVoicePanelOutputDeviceDropdown",
+		"AudioOptionsVoicePanelMicDeviceDropdown",
+		"AudioOptionsVoicePanelChatModeDropdown",
 	}
 
 	for i = 1, #optiondropdown do
@@ -676,10 +674,9 @@ local function LoadSkin()
 	local buttons = {
 		"RecordLoopbackSoundButton",
 		"PlayLoopbackSoundButton",
-		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
 		"InterfaceOptionsSocialPanelTwitterLoginButton",
 		"InterfaceOptionsDisplayPanelResetTutorials",
-		"InterfaceOptionsSocialPanelRedockChat"
+		"InterfaceOptionsSocialPanelRedockChat",
 	}
 
 	for _, button in pairs(buttons) do
@@ -688,8 +685,37 @@ local function LoadSkin()
 		end
 	end
 
-	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
-	AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
+	local AudioOptionsVoicePanel = _G["AudioOptionsVoicePanel"]
+	local TestInputDevice = AudioOptionsVoicePanel.TestInputDevice
+
+	-- Toggle Test Audio Button - Wow 8.0
+	S:HandleButton(TestInputDevice.ToggleTest)
+
+	-- PushToTalk KeybindButton - Wow 8.0
+	local function HandlePushToTalkButton(button)
+		button:SetSize(button:GetSize())
+
+		button.TopLeft:Hide()
+		button.TopRight:Hide()
+		button.BottomLeft:Hide()
+		button.BottomRight:Hide()
+		button.TopMiddle:Hide()
+		button.MiddleLeft:Hide()
+		button.MiddleRight:Hide()
+		button.BottomMiddle:Hide()
+		button.MiddleMiddle:Hide()
+		button:SetHighlightTexture("")
+
+		button:SetTemplate("Default", true)
+		button:HookScript("OnEnter", S.SetModifiedBackdrop)
+		button:HookScript("OnLeave", S.SetOriginalBackdrop)
+	end
+
+	function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(self)
+		HandlePushToTalkButton(self.PushToTalkKeybindButton)
+	end
+	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
+
 	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
 		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
 		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
@@ -754,7 +780,10 @@ local function LoadSkin()
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
+		"Advanced_ContrastSlider",
+		"Advanced_BrightnessSlider",
 		"Advanced_RenderScaleSlider",
+		"Display_RenderScaleSlider",
 		"Advanced_GammaSlider",
 		"AudioOptionsSoundPanelMasterVolume",
 		"AudioOptionsSoundPanelSoundVolume",
@@ -774,7 +803,10 @@ local function LoadSkin()
 		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHeightSlider",
-		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider"
+		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider",
+		"AudioOptionsVoicePanelVoiceChatVolume",
+		"AudioOptionsVoicePanelVoiceChatMicVolume",
+		"AudioOptionsVoicePanelVoiceChatMicSensitivity",
 	}
 
 	for i = 1, #sliders do
@@ -821,6 +853,11 @@ local function LoadSkin()
 	SplashFrame.RightTitle:FontTemplate(nil, 30)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
+
+	-- New Voice Sliders
+	S:HandleSliderFrame(UnitPopupVoiceSpeakerVolume.Slider)
+	S:HandleSliderFrame(UnitPopupVoiceMicrophoneVolume.Slider)
+	S:HandleSliderFrame(UnitPopupVoiceUserVolume.Slider)
 end
 
 S:AddCallback("SkinBlizzard", LoadSkin)

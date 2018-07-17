@@ -18,7 +18,6 @@ local function LoadSkin()
 	S:HandleCloseButton(MacroFrameCloseButton)
 	S:HandleScrollBar(MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(MacroFrameScrollFrameScrollBar)
-	S:HandleScrollBar(MacroPopupScrollFrameScrollBar)
 
 	local MacroFrame = _G["MacroFrame"]
 	MacroFrame:Width(360)
@@ -32,8 +31,6 @@ local function LoadSkin()
 		"MacroEditButton",
 		"MacroFrameTab1",
 		"MacroFrameTab2",
-		"MacroPopupOkayButton",
-		"MacroPopupCancelButton",
 	}
 
 	for i = 1, #buttons do
@@ -54,10 +51,6 @@ local function LoadSkin()
 	MacroFrameTextBackground:StripTextures()
 	MacroFrameTextBackground:SetTemplate('Default')
 	MacroButtonScrollFrame:CreateBackdrop()
-	S:HandleEditBox(MacroPopupEditBox)
-	MacroPopupNameLeft:SetTexture(nil)
-	MacroPopupNameMiddle:SetTexture(nil)
-	MacroPopupNameRight:SetTexture(nil)
 	MacroFrameInset:Kill()
 
 	--Reposition edit button
@@ -101,6 +94,16 @@ local function LoadSkin()
 	HideUIPanel(MacroFrame);
 	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
 	MacroPopupFrame:Hide()
+
+	-- Popout Frame
+	S:HandleButton(MacroPopupFrame.BorderBox.OkayButton)
+	S:HandleButton(MacroPopupFrame.BorderBox.CancelButton)
+	S:HandleScrollBar(MacroPopupScrollFrameScrollBar)
+	S:HandleEditBox(MacroPopupEditBox)
+	MacroPopupNameLeft:SetTexture(nil)
+	MacroPopupNameMiddle:SetTexture(nil)
+	MacroPopupNameRight:SetTexture(nil)
+
 	S:HandleIconSelectionFrame(MacroPopupFrame, NUM_MACRO_ICONS_SHOWN, "MacroPopupButton", "MacroPopup")
 
 	MacroPopupFrame:HookScript("OnShow", function(self)
