@@ -15,7 +15,7 @@
 	<Script file='portrait.lua'/>
 	<Script file='power.lua'/>
 	<Script file='PvPIcon.lua'/>
-	<!-- <Script file='pvpindicator.lua'/> -->
+	<Script file='pvpindicator.lua'/>
 	<Script file='pvpspecicon.lua'/>
 	<Script file='raiddebuffs.lua'/>
 	<Script file='raidicon.lua'/>
