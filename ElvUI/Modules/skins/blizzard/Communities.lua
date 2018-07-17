@@ -271,13 +271,19 @@ local function LoadSkin()
 	end)
 
 	-- Guild Reputation Bar TO DO: Adjust me!
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Middle:Hide()
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Right:Hide()
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.Left:Hide()
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.BG:Hide()
-	E:RegisterStatusBar(CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar)
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar:CreateBackdrop()
-	CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar.backdrop:SetAllPoints()
+	local StatusBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
+	StatusBar.Middle:Hide()
+	StatusBar.Right:Hide()
+	StatusBar.Left:Hide()
+	StatusBar.BG:Hide()
+	StatusBar.Shadow:Hide()
+	E:RegisterStatusBar(StatusBar)
+
+	local bg = CreateFrame("Frame", nil, StatusBar)
+	bg:SetPoint("TOPLEFT", 0, -3)
+	bg:SetPoint("BOTTOMRIGHT", 0, 1)
+	bg:SetFrameLevel(StatusBar:GetFrameLevel())
+	bg:CreateBackdrop("Default")
 
 	-- [[ INFO TAB ]]
 	local GuildDetails = _G["CommunitiesFrameGuildDetailsFrame"]
