@@ -56,9 +56,8 @@ local function formatMem(memory)
 end
 
 local function sortByMemoryOrCPU(a, b)
-	if a and b then
-		return a[3] > b[3]
-	end
+	local a3,b3 = a[3],b[3]
+	return a3==b3 and a[1]<b[1] or b3 < a3
 end
 
 local memoryTable = {}
@@ -71,8 +70,8 @@ local function RebuildAddonList()
 	wipe(memoryTable)
 	wipe(cpuTable)
 	for i = 1, addOnCount do
-		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
-		cpuTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
+		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
+		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
 	end
 end
 
@@ -148,10 +147,11 @@ local function OnEnter(self)
 	if IsShiftKeyDown() or not cpuProfiling then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
-			if (memoryTable[i][4]) then
-				red = memoryTable[i][3] / totalMemory
+			local ele = memoryTable[i]
+			if IsAddOnLoaded(ele[1]) then
+				red = ele[3] / totalMemory
 				green = 1 - red
-				DT.tooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(ele[2], formatMem(ele[3]), 1, 1, 1, red, green + .5, 0)
 			end
 		end
 	end
@@ -159,10 +159,11 @@ local function OnEnter(self)
 	if cpuProfiling and not IsShiftKeyDown() then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
-			if (cpuTable[i][4]) then
-				red = cpuTable[i][3] / totalCPU
+			local ele = cpuTable[i]
+			if IsAddOnLoaded(ele[1]) then
+				red = ele[3] / totalCPU
 				green = 1 - red
-				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(ele[2], format(homeLatencyString, ele[3]), 1, 1, 1, red, green + .5, 0)
 			end
 		end
 		DT.tooltip:AddLine(" ")
