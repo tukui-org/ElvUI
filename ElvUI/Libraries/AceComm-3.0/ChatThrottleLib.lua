@@ -467,7 +467,7 @@ function ChatThrottleLib:SendAddonMessage(prio, prefix, text, chattype, target, 
 
 	local nSize = text:len();
 
-	if RegisterAddonMessagePrefix then
+	if C_ChatInfo or RegisterAddonMessagePrefix then
 		if nSize>255 then
 			error("ChatThrottleLib:SendAddonMessage(): message length cannot exceed 255 bytes", 2)
 		end
