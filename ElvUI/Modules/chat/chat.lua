@@ -521,8 +521,11 @@ function CH:StyleChat(frame)
 		editbox:AddHistoryLine(text)
 	end
 
-	hooksecurefunc("ChatEdit_UpdateHeader", function()
+	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
 		local type = editbox:GetAttribute("chatType")
+		if ( not type ) then
+			return;
+		end
 		if ( type == "CHANNEL" ) then
 			local id = GetChannelName(editbox:GetAttribute("channelTarget"))
 			if id == 0 then
