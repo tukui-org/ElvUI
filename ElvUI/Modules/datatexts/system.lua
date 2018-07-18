@@ -56,8 +56,9 @@ local function formatMem(memory)
 end
 
 local function sortByMemoryOrCPU(a, b)
-	local a3,b3 = a[3],b[3]
-	return a3==b3 and a[1]<b[1] or b3 < a3
+	if a and b then
+		return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
+	end
 end
 
 local memoryTable = {}
@@ -143,12 +144,12 @@ local function OnEnter(self)
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 
-	local red, green
+	local red, green, ele
 	if IsShiftKeyDown() or not cpuProfiling then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
-			local ele = memoryTable[i]
-			if IsAddOnLoaded(ele[1]) then
+			ele = memoryTable[i]
+			if ele and IsAddOnLoaded(ele[1]) then
 				red = ele[3] / totalMemory
 				green = 1 - red
 				DT.tooltip:AddDoubleLine(ele[2], formatMem(ele[3]), 1, 1, 1, red, green + .5, 0)
@@ -159,8 +160,8 @@ local function OnEnter(self)
 	if cpuProfiling and not IsShiftKeyDown() then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
-			local ele = cpuTable[i]
-			if IsAddOnLoaded(ele[1]) then
+			ele = cpuTable[i]
+			if ele and IsAddOnLoaded(ele[1]) then
 				red = ele[3] / totalCPU
 				green = 1 - red
 				DT.tooltip:AddDoubleLine(ele[2], format(homeLatencyString, ele[3]), 1, 1, 1, red, green + .5, 0)
