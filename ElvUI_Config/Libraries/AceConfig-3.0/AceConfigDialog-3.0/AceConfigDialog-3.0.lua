@@ -242,21 +242,21 @@ local function GetOptionsMemberValue(membername, option, options, path, appName,
 		info.uiType = "dialog"
 		info.uiName = MAJOR
 
-		local a, b, c ,d
+		local a,b,c,d,e,f,g,h -- ElvUI adds e,f,g,h for default color
 		--using 4 returns for the get of a color type, increase if a type needs more
 		if type(member) == "function" then
 			--Call the function
-			a,b,c,d = member(info, ...)
+			a,b,c,d,e,f,g,h = member(info, ...)
 		else
 			--Call the method
 			if handler and handler[member] then
-				a,b,c,d = handler[member](handler, info, ...)
+				a,b,c,d,e,f,g,h = handler[member](handler, info, ...)
 			else
 				error(format("Method %s doesn't exist in handler for type %s", member, membername))
 			end
 		end
 		del(info)
-		return a,b,c,d
+		return a,b,c,d,e,f,g,h
 	else
 		--The value isnt a function to call, return it
 		return member
