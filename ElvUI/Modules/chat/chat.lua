@@ -522,16 +522,18 @@ function CH:StyleChat(frame)
 	end
 
 	hooksecurefunc("ChatEdit_UpdateHeader", function()
-		local type = editbox:GetAttribute("chatType")
-		if ( type == "CHANNEL" ) then
-			local id = GetChannelName(editbox:GetAttribute("channelTarget"))
-			if id == 0 then
+		local chatType = editbox:GetAttribute("chatType")
+		if not chatType then return end
+
+		if chatType == "CHANNEL" then
+			local channelID = GetChannelName(editbox:GetAttribute("channelTarget"))
+			if channelID == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
-				editbox:SetBackdropBorderColor(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
+				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..channelID].r,ChatTypeInfo[chatType..channelID].g,ChatTypeInfo[chatType..channelID].b)
 			end
-		elseif type then
-			editbox:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
+		else
+			editbox:SetBackdropBorderColor(ChatTypeInfo[chatType].r,ChatTypeInfo[chatType].g,ChatTypeInfo[chatType].b)
 		end
 	end)
 
@@ -1891,11 +1893,13 @@ function CH:AddLines(lines, ...)
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
-	local type = editBox:GetAttribute("chatType");
-	local chatFrame = editBox:GetParent();
-	if not chatFrame.isTemporary and ChatTypeInfo[type].sticky == 1 then
-		if not self.db.sticky then type = 'SAY'; end
-		editBox:SetAttribute("chatType", type);
+	local chatType = editBox:GetAttribute("chatType")
+	if not chatType then return end
+
+	local chatFrame = editBox:GetParent()
+	if chatFrame and (not chatFrame.isTemporary) and (ChatTypeInfo[chatType].sticky == 1) then
+		if not self.db.sticky then chatType = 'SAY' end
+		editBox:SetAttribute("chatType", chatType)
 	end
 end
 

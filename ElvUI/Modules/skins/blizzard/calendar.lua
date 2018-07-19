@@ -138,20 +138,11 @@ local function LoadSkin()
 		hline:CreateBackdrop("Default")
 	end
 
-	hooksecurefunc("CalendarFrame_SetToday", function()
-		_G["CalendarTodayFrame"]:SetAllPoints()
-	end)
-
-	_G["CalendarTodayFrame"]:SetScript("OnUpdate", nil)
-	_G["CalendarTodayTextureGlow"]:Hide()
+	_G["CalendarTodayFrame"]:SetSize(CalendarDayButton1:GetWidth(), CalendarDayButton1:GetHeight())
+	_G["CalendarTodayFrame"]:SetBackdropBorderColor(0, 0.44, .87, 1)
+	_G["CalendarTodayFrame"]:SetBackdropColor(0, 0, 0, 0)
+	_G["CalendarTodayFrame"]:HookScript("OnUpdate", function(self) self:SetAlpha(CalendarTodayTextureGlow:GetAlpha()) end)
 	_G["CalendarTodayTexture"]:Hide()
-
-	_G["CalendarTodayFrame"]:SetBackdrop({
-		edgeFile = [[Interface\Buttons\WHITE8x8]],
-		edgeSize = 1,
-	})
-	_G["CalendarTodayFrame"]:SetBackdropBorderColor(1, 1, 1, 0.6)
-
 
 	--CreateEventFrame
 	CalendarCreateEventFrame:StripTextures()

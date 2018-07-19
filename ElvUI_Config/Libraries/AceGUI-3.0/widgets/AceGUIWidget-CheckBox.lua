@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 Checkbox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "CheckBox", 23
+local Type, Version = "CheckBox", 24
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -26,7 +26,7 @@ local function AlignImage(self)
 		self.text:SetPoint("LEFT", self.checkbg, "RIGHT")
 		self.text:SetPoint("RIGHT")
 	else
-		self.text:SetPoint("LEFT", self.image,"RIGHT", 1, 0)
+		self.text:SetPoint("LEFT", self.checkbg, "RIGHT", self.image:GetWidth() + 2, 0)
 		self.text:SetPoint("RIGHT")
 	end
 end
@@ -60,9 +60,9 @@ local function CheckBox_OnMouseUp(frame)
 		self:ToggleChecked()
 
 		if self.checked then
-			PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOn" or 856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
+			PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 		else -- for both nil and false (tristate)
-			PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOff" or 857) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF
+			PlaySound(857) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF
 		end
 
 		self:Fire("OnValueChanged", self.checked)
@@ -203,6 +203,7 @@ local methods = {
 				desc:ClearAllPoints()
 				desc:SetPoint("TOPLEFT", self.checkbg, "TOPRIGHT", 5, -21)
 				desc:SetWidth(self.frame.width - 30)
+				desc:SetPoint("RIGHT", self.frame, "RIGHT", -30, 0)
 				desc:SetJustifyH("LEFT")
 				desc:SetJustifyV("TOP")
 				self.desc = desc

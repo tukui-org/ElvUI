@@ -600,7 +600,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:CheckBackdropColor(tt)
-	if (not tt) or tt:IsForbidden() or (tt:NumLines() ~= 1) then return end
+	if (not tt) or tt:IsForbidden() then return end
 
 	local r, g, b = tt:GetBackdropColor()
 	if r and g and b then

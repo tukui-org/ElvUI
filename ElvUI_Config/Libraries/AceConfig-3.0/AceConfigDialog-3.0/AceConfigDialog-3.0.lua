@@ -1,13 +1,13 @@
 --- AceConfigDialog-3.0 generates AceGUI-3.0 based windows based on option tables.
 -- @class file
 -- @name AceConfigDialog-3.0
--- @release $Id: AceConfigDialog-3.0.lua 1126 2014-11-10 06:38:01Z nevcairiel $
+-- @release $Id: AceConfigDialog-3.0.lua 1169 2018-02-27 16:18:28Z nevcairiel $
 
 local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 2
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 66
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -28,14 +28,11 @@ local pairs, next, select, type, unpack, wipe, ipairs = pairs, next, select, typ
 local rawset, tostring, tonumber = rawset, tostring, tonumber
 local math_min, math_max, math_floor = math.min, math.max, math.floor
 
-local OKAY = OKAY
-local PlaySoundKitID = PlaySoundKitID
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
 -- GLOBALS: NORMAL_FONT_COLOR, GameTooltip, StaticPopupDialogs, ACCEPT, CANCEL, StaticPopup_Show
 -- GLOBALS: PlaySound, GameFontHighlight, GameFontHighlightSmall, GameFontHighlightLarge
 -- GLOBALS: CloseSpecialWindows, InterfaceOptions_AddCategory, geterrorhandler
--- GLOBALS: STATICPOPUP_NUMDIALOGS
 
 local emptyTbl = {}
 
@@ -245,21 +242,21 @@ local function GetOptionsMemberValue(membername, option, options, path, appName,
 		info.uiType = "dialog"
 		info.uiName = MAJOR
 
-		local a, b, c ,d, e, f, g, h
+		local a,b,c,d,e,f,g,h -- ElvUI adds e,f,g,h for default color
 		--using 4 returns for the get of a color type, increase if a type needs more
 		if type(member) == "function" then
 			--Call the function
-			a,b,c,d, e, f, g, h = member(info, ...)
+			a,b,c,d,e,f,g,h = member(info, ...)
 		else
 			--Call the method
 			if handler and handler[member] then
-				a,b,c,d,e, f, g, h = handler[member](handler, info, ...)
+				a,b,c,d,e,f,g,h = handler[member](handler, info, ...)
 			else
 				error(format("Method %s doesn't exist in handler for type %s", member, membername))
 			end
 		end
 		del(info)
-		return a,b,c,d,e, f, g, h
+		return a,b,c,d,e,f,g,h
 	else
 		--The value isnt a function to call, return it
 		return member
@@ -743,10 +740,11 @@ local function ActivateControl(widget, event, ...)
 		else
 			validationErrorPopup(validated)
 		end
-		PlaySound(PlaySoundKitID and "igPlayerInviteDecline" or 882) -- SOUNDKIT.IG_PLAYER_INVITE_DECLINE || XXX _DECLINE is actually missing from the table
+		PlaySound(882) -- SOUNDKIT.IG_PLAYER_INVITE_DECLINE || _DECLINE is actually missing from the table
 		del(info)
 		return true
 	else
+
 		local confirmText = option.confirmText
 		--call confirm func/method
 		if type(confirm) == "string" then
@@ -1036,6 +1034,7 @@ local function BuildGroups(group, options, path, appName, recurse)
 				entry.value = k
 				entry.text = GetOptionsMemberValue("name", v, options, path, appName)
 				entry.icon = GetOptionsMemberValue("icon", v, options, path, appName)
+				entry.iconCoords = GetOptionsMemberValue("iconCoords", v, options, path, appName)
 				entry.disabled = CheckOptionDisabled(v, options, path, appName)
 				tinsert(tree,entry)
 				if recurse and (v.childGroups or "tree") == "tree" then
@@ -1162,8 +1161,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 				elseif v.type == "toggle" then
 					control = gui:Create("CheckBox")
-					control.textWidth = GetOptionsMemberValue("textWidth",v,options,path,appName)
 					control:SetLabel(name)
+					control.textWidth = GetOptionsMemberValue("textWidth",v,options,path,appName)
 					if control.textWidth and control.frame and control.text then
 						local textWidth = control.text:GetWidth()+30
 						control.customWidth = (textWidth>=width_multiplier and textWidth<=width_multiplier*1.5) and textWidth
@@ -1234,6 +1233,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								radio:SetWidth(width_multiplier * 2)
 							elseif width == "half" then
 								radio:SetWidth(width_multiplier / 2)
+							elseif (type(width) == "number") then
+								radio:SetWidth(width_multiplier * width)
 							elseif width == "full" then
 								radio.width = "fill"
 							else
@@ -1298,6 +1299,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 							control:SetWidth(width_multiplier * 2)
 						elseif width == "half" then
 							control:SetWidth(width_multiplier / 2)
+						elseif (type(width) == "number") then
+							control:SetWidth(width_multiplier * width)
 						elseif width == "full" then
 							control.width = "fill"
 						else
@@ -1317,6 +1320,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:SetLayout("Flow")
 						control:SetTitle(name)
 						control.width = "fill"
+
 						control:PauseLayout()
 
 						for i = 1, #valuesort do
@@ -1344,6 +1348,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 									button:SetWidth(width_multiplier * 2)
 								elseif width == "half" then
 									button:SetWidth(width_multiplier / 2)
+								elseif (type(width) == "number") then
+									control:SetWidth(width_multiplier * width)
 								elseif width == "full" then
 									button.width = "fill"
 								else
@@ -1364,6 +1370,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 									check:SetWidth(width_multiplier * 2)
 								elseif width == "half" then
 									check:SetWidth(width_multiplier / 2)
+								elseif (type(width) == "number") then
+									control:SetWidth(width_multiplier * width)
 								elseif width == "full" then
 									check.width = "fill"
 								else
@@ -1450,6 +1458,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								control:SetWidth(width_multiplier * 2)
 							elseif width == "half" then
 								control:SetWidth(width_multiplier / 2)
+							elseif (type(width) == "number") then
+								control:SetWidth(width_multiplier * width)
 							elseif width == "full" then
 								control.width = "fill"
 							else
@@ -1889,6 +1899,7 @@ function AceConfigDialog:Open(appName, container, ...)
 		end
 		name = format("%s - %s", name, GetOptionsMemberValue("name", option, options, path, appName))
 	end
+
 	--if a container is given feed into that
 	if container then
 		f = container
