@@ -100,8 +100,8 @@ local function SetupChat()
 	end
 
 	ChatFrame_AddChannel(ChatFrame1, GENERAL)
-	ChatFrame_RemoveChannel(ChatFrame1, L["Trade"])
-	ChatFrame_AddChannel(ChatFrame3, L["Trade"])
+	ChatFrame_RemoveChannel(ChatFrame1, TRADE)
+	ChatFrame_AddChannel(ChatFrame3, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "ACHIEVEMENT", "GUILD_ACHIEVEMENT" }
