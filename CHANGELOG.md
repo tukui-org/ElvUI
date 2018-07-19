@@ -3,13 +3,16 @@
 **New Additions:**  
 
 
-
 **Bug Fixes:**  
-
+Fixed issue with backdrop on tooltips turning blue.  
+Fixed error when pressing 'Enter' to start typing in the chat (#485).  
 
 
 **Misc. Changes:**  
-
+Added skins from Simpy for Artifact Appearance and Orderhall Talents.  
+Added support for Load On Demand addons' memory/cpu usage display in tooltips (credit: cqwrteur).  
+Fixed a texture issue in the Quest Log skin.  
+Updated skinning of the 'TodayFrame' in the calendar. It uses skinning from Azilroka.  
 
 ___
 **Version 10.75 for patch 8.0 [ July 17th 2018 ]**
