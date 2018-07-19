@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs = pairs
+local select = select
 local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -271,6 +273,7 @@ local function LoadSkin()
 
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc("QuestLogQuests_Update", function()
+		local tex, texture
 		for i = 6, QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if child and child.ButtonText and not child.Text then
@@ -279,12 +282,15 @@ local function LoadSkin()
 					child.buttonSized = true
 				end
 
-				local tex = select(2, child:GetRegions())
+				tex = select(2, child:GetRegions())
 				if tex and tex.GetTexture then
-					if tex:GetTexture() == 'Interface\\Buttons\\UI-PlusButton-Up' then
-						tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
-					else -- GetTexture == 'Interface\Buttons\UI-MinusButton-Up'
-						tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+					texture = tex:GetTexture()
+					if texture then
+						if texture:find("PlusButton") then
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+						else
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+						end
 					end
 				end
 			end
