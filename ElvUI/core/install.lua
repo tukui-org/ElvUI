@@ -4,6 +4,8 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Import: Engine, Locales, Priv
 --Lua functions
 local _G = _G
 local format = format
+local ipairs = ipairs
+local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -37,7 +39,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
 -- GLOBALS: LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel, CreateAnimationGroup
 -- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS, MAX_WOW_CHAT_CHANNELS
 
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
@@ -83,88 +85,30 @@ local function SetupChat()
 		end
 	end
 
+	local channels = { "SAY", "EMOTE", "YELL", "GUILD", "OFFICER", "GUILD_ACHIEVEMENT", "WHISPER", "MONSTER_SAY", "MONSTER_EMOTE", "MONSTER_YELL", "MONSTER_BOSS_EMOTE", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "BATTLEGROUND", "BATTLEGROUND_LEADER", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "SYSTEM", "ERRORS", "AFK", "DND", "IGNORED", "ACHIEVEMENT", "BN_WHISPER", "BN_CONVERSATION", "BN_INLINE_TOAST_ALERT" }
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
-
+	for _, v in ipairs(channels) do
+		ChatFrame_AddMessageGroup(ChatFrame1, v)
+	end
 
 	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
-	ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
-	ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
-	ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame3, "CURRENCY")
+	channels = { "COMBAT_FACTION_CHANGE", "SKILL", "LOOT", "MONEY", "COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_GUILD_XP_GAIN", "CURRENCY" }
+	for _, v in ipairs(channels) do
+		ChatFrame_AddMessageGroup(ChatFrame3, v)
+	end
+
 	ChatFrame_AddChannel(ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(ChatFrame1, L["Trade"])
 	ChatFrame_AddChannel(ChatFrame3, L["Trade"])
 
-
-	if E.myname == "Elvz" then
-		SetCVar("scriptErrors", 1)
-	end
-
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
-	ToggleChatColorNamesByClassGroup(true, "SAY")
-	ToggleChatColorNamesByClassGroup(true, "EMOTE")
-	ToggleChatColorNamesByClassGroup(true, "YELL")
-	ToggleChatColorNamesByClassGroup(true, "GUILD")
-	ToggleChatColorNamesByClassGroup(true, "OFFICER")
-	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "WHISPER")
-	ToggleChatColorNamesByClassGroup(true, "PARTY")
-	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID")
-	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
-	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
+	channels = { "SAY", "EMOTE", "YELL", "GUILD", "OFFICER", "GUILD_ACHIEVEMENT", "ACHIEVEMENT", "WHISPER","PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER" }
+	for i = 1, MAX_WOW_CHAT_CHANNELS do
+		tinsert(channels, "CHANNEL"..i)
+	end
+	for _, v in ipairs(channels) do
+		ToggleChatColorNamesByClassGroup(true, v)
+	end
 
 	--Adjust Chat Colors
 	--General
@@ -183,6 +127,10 @@ local function SetupChat()
 		if E.db['LeftChatPanelFaded'] then
 			LeftChatToggleButton:Click()
 		end
+	end
+
+	if E.myname == "Elvz" then
+		SetCVar("scriptErrors", 1)
 	end
 end
 
