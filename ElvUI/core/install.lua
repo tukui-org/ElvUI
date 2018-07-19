@@ -85,15 +85,17 @@ local function SetupChat()
 		end
 	end
 
-	local channels = { "SAY", "EMOTE", "YELL", "GUILD", "OFFICER", "GUILD_ACHIEVEMENT", "WHISPER", "MONSTER_SAY", "MONSTER_EMOTE", "MONSTER_YELL", "MONSTER_BOSS_EMOTE", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "BATTLEGROUND", "BATTLEGROUND_LEADER", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "SYSTEM", "ERRORS", "AFK", "DND", "IGNORED", "ACHIEVEMENT", "BN_WHISPER", "BN_CONVERSATION", "BN_INLINE_TOAST_ALERT" }
+	-- keys taken from `ChatTypeGroup` but doesnt add: "OPENING", "TRADESKILLS", "PET_INFO", "COMBAT_MISC_INFO", "CHANNEL", "COMMUNITIES_CHANNEL", "PET_BATTLE_COMBAT_LOG", "PET_BATTLE_INFO"
+	local chatGroup = { "SYSTEM", "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "MONSTER_SAY", "MONSTER_YELL", "MONSTER_EMOTE", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER", "ERRORS", "AFK", "DND", "IGNORED", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "BN_WHISPER", "BN_INLINE_TOAST_ALERT" }
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	for _, v in ipairs(channels) do
+	for _, v in ipairs(chatGroup) do
 		ChatFrame_AddMessageGroup(ChatFrame1, v)
 	end
 
+	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
+	chatGroup = { "COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_FACTION_CHANGE", "SKILL", "LOOT", "CURRENCY", "MONEY" }
 	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-	channels = { "COMBAT_FACTION_CHANGE", "SKILL", "LOOT", "MONEY", "COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_GUILD_XP_GAIN", "CURRENCY" }
-	for _, v in ipairs(channels) do
+	for _, v in ipairs(chatGroup) do
 		ChatFrame_AddMessageGroup(ChatFrame3, v)
 	end
 
@@ -101,12 +103,12 @@ local function SetupChat()
 	ChatFrame_RemoveChannel(ChatFrame1, L["Trade"])
 	ChatFrame_AddChannel(ChatFrame3, L["Trade"])
 
-	-- enable classcolor automatically on login and on each character without doing /configure each time.
-	channels = { "SAY", "EMOTE", "YELL", "GUILD", "OFFICER", "GUILD_ACHIEVEMENT", "ACHIEVEMENT", "WHISPER","PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER" }
+	-- set the chat groups names in class color to enabled for all chat groups which players names appear
+	chatGroup = { "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "ACHIEVEMENT", "GUILD_ACHIEVEMENT" }
 	for i = 1, MAX_WOW_CHAT_CHANNELS do
-		tinsert(channels, "CHANNEL"..i)
+		tinsert(chatGroup, "CHANNEL"..i)
 	end
-	for _, v in ipairs(channels) do
+	for _, v in ipairs(chatGroup) do
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
 
