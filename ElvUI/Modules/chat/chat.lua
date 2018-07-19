@@ -525,10 +525,10 @@ function CH:StyleChat(frame)
 		local chatType = editbox:GetAttribute("chatType")
 		if not chatType then return end
 
-		local channelTarget = editbox:GetAttribute("channelTarget")
-		if channelTarget and (chatType == "CHANNEL") then
-			local chanName = GetChannelName(channelTarget)
-			if chanName and (chanName == 0) then
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
 				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..chanName].r,ChatTypeInfo[chatType..chanName].g,ChatTypeInfo[chatType..chanName].b)
