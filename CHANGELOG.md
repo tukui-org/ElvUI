@@ -1,3 +1,17 @@
+**Version 10.76 for patch 8.0 [ July 19th 2018 ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**  
+
+
+
+**Misc. Changes:**  
+
+
+___
 **Version 10.75 for patch 8.0 [ July 17th 2018 ]**
 
 **New Additions:**  
