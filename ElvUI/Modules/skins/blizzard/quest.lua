@@ -273,11 +273,20 @@ local function LoadSkin()
 	hooksecurefunc("QuestLogQuests_Update", function()
 		for i = 6, QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
-			if not child.IsSkinned then
-				if child.ButtonText then
-					S:HandleExpandOrCollapse(child, 'QuestLogQuests_Update')
+			if child and child.ButtonText and not child.Text then
+				if not child.buttonSized then
+					child:Size(16, 16)
+					child.buttonSized = true
 				end
-				child.IsSkinned = true
+
+				local tex = select(2, child:GetRegions())
+				if tex and tex.GetTexture then
+					if tex:GetTexture() == 'Interface\\Buttons\\UI-PlusButton-Up' then
+						tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+					else -- GetTexture == 'Interface\Buttons\UI-MinusButton-Up'
+						tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+					end
+				end
 			end
 		end
 	end)
