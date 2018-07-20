@@ -2259,6 +2259,7 @@ local FindURL_Events = {
 	"CHAT_MSG_EMOTE",
 	"CHAT_MSG_AFK",
 	"CHAT_MSG_DND",
+	"CHAT_MSG_COMMUNITIES_CHANNEL",
 }
 
 function CH:Initialize()
@@ -2322,7 +2323,7 @@ function CH:Initialize()
 	for _, event in pairs(FindURL_Events) do
 		ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		local nType = strsub(event, 10)
-		if nType ~= 'AFK' and nType ~= 'DND' then
+		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
 			self:RegisterEvent(event, 'SaveChatHistory')
 		end
 	end
