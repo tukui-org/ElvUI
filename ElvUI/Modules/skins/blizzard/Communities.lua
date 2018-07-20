@@ -191,10 +191,12 @@ local function LoadSkin()
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
 	CommunitiesFrame.GuildMemberDetailFrame:CreateBackdrop("Transparent")
 
+	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate("Transparent")
+	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate("Transparent")
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
-	--S:HandleEditBox(CommunitiesFrame.GuildMemberDetailFrame.Note)
+	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList

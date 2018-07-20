@@ -230,6 +230,7 @@ L["Left Click:"] = "왼 클릭 :"
 L["Raid Menu"] = "공대 도구"
 L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
+L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["AP:"] = "유물력" -- Artifact Power

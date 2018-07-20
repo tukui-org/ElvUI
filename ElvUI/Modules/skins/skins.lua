@@ -324,6 +324,7 @@ end
 -- HybridScrollFrame (Taken from Aurora)
 function S:HandleScrollSlider(Slider, thumbTrim)
 	local parent = Slider:GetParent()
+	if not parent then return end
 	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
 	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
 
@@ -331,6 +332,8 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
 	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
 	if Slider.ScrollBarBottom then Slider.ScrollBarBottom:Hide() end
+	if Slider.Top then Slider.Top:SetTexture(nil) end
+	if Slider.Bottom then Slider.Bottom:SetTexture(nil) end
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
@@ -348,6 +351,18 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 		if not Slider.ScrollDown.icon then
 			S:HandleNextPrevButton(Slider.ScrollDown, true)
 			Slider.ScrollDown:Size(Slider.ScrollDown:GetWidth() + 7, Slider.ScrollDown:GetHeight() + 7)
+		end
+	end
+
+	if Slider.ScrollUpButton  and Slider.ScrollDownButton then
+		if not Slider.ScrollUpButton.icon then
+			S:HandleNextPrevButton(Slider.ScrollUpButton, true, true)
+			Slider.ScrollUpButton:Size(Slider.ScrollUpButton:GetWidth() + 9, Slider.ScrollUpButton:GetHeight() + 7) -- Not perfect
+		end
+
+		if not Slider.ScrollDownButton.icon then
+			S:HandleNextPrevButton(Slider.ScrollDownButton, true)
+			Slider.ScrollDownButton:Size(Slider.ScrollDownButton:GetWidth() + 7, Slider.ScrollDownButton:GetHeight() + 7)
 		end
 	end
 
@@ -370,6 +385,21 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
 			Slider.thumbbg:Point("TOPLEFT", Slider.thumbTexture, "TOPLEFT", 2, -thumbTrim)
 			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
+			Slider.thumbbg:SetTemplate("Default", true, true)
+			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+			if Slider.trackbg then
+				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
+			end
+		end
+	end
+
+	if Slider.ThumbTexture then
+		if not thumbTrim then thumbTrim = 3 end
+		Slider.ThumbTexture:SetTexture(nil)
+		if not Slider.thumbbg then
+			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
+			Slider.thumbbg:Point("TOPLEFT", Slider.ThumbTexture, "TOPLEFT", 2, -thumbTrim)
+			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.ThumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
 			Slider.thumbbg:SetTemplate("Default", true, true)
 			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 			if Slider.trackbg then

@@ -16,7 +16,7 @@ local function LoadSkin()
 
 	local CalendarFrame = _G["CalendarFrame"]
 	CalendarFrame:DisableDrawLayer("BORDER")
-	CalendarFrame:SetTemplate("Transparent")
+	CalendarFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(CalendarCloseButton)
 	CalendarCloseButton:Point("TOPRIGHT", CalendarFrame, "TOPRIGHT", -4, -4)
 

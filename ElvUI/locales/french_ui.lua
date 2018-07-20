@@ -230,6 +230,7 @@ L["Left Click:"] = "Clic Gauche :" --layout\layout.lua
 L["Raid Menu"] = "Menu Raid"
 L["Remaining:"] = "Restant :"
 L["Rested:"] = "Reposé :"
+L["Toggle Chat Buttons"] = "Activer/Désactiver les boutons de discussion" --layout\layout.lua
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua
 L["AP:"] = true -- Artifact Power

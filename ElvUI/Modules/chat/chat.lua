@@ -5,12 +5,11 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Cache global variables
 --Lua functions
 local _G = _G
-local time, difftime = time, difftime
+local wipe, time, difftime = wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type, assert = pairs, unpack, select, tostring, pcall, next, tonumber, type, assert
 local tinsert, tremove, twipe, tconcat = table.insert, table.remove, table.wipe, table.concat
-local strtrim, strmatch = strtrim, strmatch
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
-local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
+local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local BetterDate = BetterDate
@@ -92,7 +91,10 @@ local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
-local wipe = wipe
+local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
+local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
+local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
+local GetPlayerCommunityLink = GetPlayerCommunityLink
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -243,8 +245,8 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local IconPath   = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
 	--local ElvPink    = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
 	local ElvBlue    = IconPath.."elvui_blue.tga:13:25|t"
 	local ElvGreen   = IconPath.."elvui_green.tga:13:25|t"
 	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
@@ -260,6 +262,8 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"] = MrHankey,
 		["Sinth-Spirestone"]  = MrHankey,
+		-- ChaoticVoid --
+		["Cyrizzak-WyrmrestAccord"] = ElvPurple,
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]  = ElvGreen,
 		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
@@ -525,12 +529,13 @@ function CH:StyleChat(frame)
 		local chatType = editbox:GetAttribute("chatType")
 		if not chatType then return end
 
-		if chatType == "CHANNEL" then
-			local channelID = GetChannelName(editbox:GetAttribute("channelTarget"))
-			if channelID == 0 then
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
-				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..channelID].r,ChatTypeInfo[chatType..channelID].g,ChatTypeInfo[chatType..channelID].b)
+				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..chanName].r,ChatTypeInfo[chatType..chanName].g,ChatTypeInfo[chatType..chanName].b)
 			end
 		else
 			editbox:SetBackdropBorderColor(ChatTypeInfo[chatType].r,ChatTypeInfo[chatType].g,ChatTypeInfo[chatType].b)
@@ -1247,8 +1252,6 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 
 		local type = strsub(event, 10);
 		local info = ChatTypeInfo[type];
-		--Twitter link test
-		--arg1 = arg1 .. " " .. "|cffffd200|Hshareachieve:51:0|h|TInterface\\ChatFrame\\UI-ChatIcon-Share:18:18|t|h|r"
 
 		local chatFilters = ChatFrame_GetMessageEventFilters(event)
 		if chatFilters then
@@ -1279,7 +1282,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 
 		local channelLength = strlen(arg4);
 		local infoType = type;
-		if ( (strsub(type, 1, 7) == "CHANNEL") and (type ~= "CHANNEL_LIST") and ((arg1 ~= "INVITE") or (type ~= "CHANNEL_NOTICE_USER")) ) then
+		if ( (type == "COMMUNITIES_CHANNEL") or ((strsub(type, 1, 7) == "CHANNEL") and (type ~= "CHANNEL_LIST") and ((arg1 ~= "INVITE") or (type ~= "CHANNEL_NOTICE_USER"))) ) then
 			if ( arg1 == "WRONG_PASSWORD" ) then
 				local staticPopup = _G[StaticPopup_Visible("CHAT_CHANNEL_PASSWORD") or ""];
 				if ( staticPopup and strupper(staticPopup.data) == strupper(arg9) ) then
@@ -1434,7 +1437,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring;
-			if( arg1 == "TRIAL_RESTRICTED" ) then
+			if ( arg1 == "TRIAL_RESTRICTED" ) then
 				globalstring = GlobalStrings.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
 				globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
@@ -1448,7 +1451,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
+			self:AddMessage(format(globalstring, arg8, ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
 			if not globalstring then
@@ -1496,45 +1499,6 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 		else
 			local body;
 
-			-- Add AFK/DND flags
-			local pflagName = arg2
-			if ( arg14 and nameWithRealm and nameWithRealm ~= arg2 ) then
-				pflagName = nameWithRealm -- make sure mobile has realm name
-			end
-			local pflag = specialChatIcons[pflagName]
-			local pluginIcon = CH:GetPluginIcon(pflagName)
-			if(arg6 ~= "") then
-				if ( arg6 == "GM" ) then
-					--If it was a whisper, dispatch it to the GMChat addon.
-					if ( type == "WHISPER" ) then
-						return;
-					end
-					--Add Blizzard Icon, this was sent by a GM
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-				elseif ( arg6 == "DEV" ) then
-					--Add Blizzard Icon, this was sent by a Dev
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-				elseif ( arg6 == "DND" or arg6 == "AFK") then
-					pflag = (pflag or pluginIcon or "").._G["CHAT_FLAG_"..arg6];
-				else
-					pflag = _G["CHAT_FLAG_"..arg6];
-				end
-			else
-				if not pflag and pluginIcon then
-					pflag = pluginIcon
-				end
-
-				if(pflag == true) then
-					pflag = ""
-				end
-
-				if(lfgRoles[pflagName] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-					pflag = lfgRoles[pflagName]..(pflag or "")
-				end
-			end
-
-			pflag = pflag or ""
-
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
 			end
@@ -1570,21 +1534,62 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				playerLinkDisplayText = ("[%s]"):format(coloredName);
 			end
 
-			if ( type == "TEXT_EMOTE" and realm ) then
-				-- make sure emote has realm link correct
-				playerLink = GetPlayerLink(arg2.."-"..realm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
-			elseif ( arg14 and nameWithRealm and nameWithRealm ~= arg2 ) then
-				-- make sure mobile has realm link correct
-				playerLink = GetPlayerLink(nameWithRealm, playerLinkDisplayText, arg11, chatGroup, chatTarget);
-			elseif ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then
-				playerLink = GetPlayerLink(arg2, playerLinkDisplayText, arg11, chatGroup, chatTarget);
+			local isCommunityType = type == "COMMUNITIES_CHANNEL";
+			local playerName, lineID, bnetIDAccount = arg2, arg11, arg13;
+			if ( isCommunityType ) then
+				local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0;
+				local messageInfo, clubId, streamId, clubType = C_Club_GetInfoFromLastCommunityChatLine();
+
+				if (messageInfo ~= nil) then
+					if ( isBattleNetCommunity ) then
+						playerLink = GetBNPlayerCommunityLink(playerName, playerLinkDisplayText, bnetIDAccount, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position);
+					else
+						playerLink = GetPlayerCommunityLink(playerName, playerLinkDisplayText, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position);
+					end
+				else
+					playerLink = playerLinkDisplayText;
+				end
 			else
-				playerLink = GetBNPlayerLink(arg2, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget);
+				if ( type == "TEXT_EMOTE" and realm ) then
+					-- make sure emote has realm link correct
+					playerName = playerName.."-"..realm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+				elseif ( arg14 and nameWithRealm and nameWithRealm ~= playerName ) then
+					-- make sure mobile has realm link correct
+					playerName = nameWithRealm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+				elseif ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
+					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget);
+				elseif ( type == "GUILD" and nameWithRealm and nameWithRealm ~= playerName ) then
+					playerName = nameWithRealm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+				else
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+				end
 			end
 
 			local message = arg1;
-			if ( arg14 ) then	--isMobile
+			if ( arg14 ) then --isMobile
 				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
+			end
+
+			-- Player Flags
+			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
+			if arg6 ~= "" then -- Blizzard Flags
+				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
+				else -- Away/Busy
+					pflag = _G["CHAT_FLAG_"..arg6] or ""
+				end
+			end
+			-- LFG Role Flags
+			local lfgRole = lfgRoles[playerName]
+			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
+				pflag = pflag..lfgRole
+			end
+			-- Plugin Flags
+			if chatIcon then
+				pflag = pflag..chatIcon
 			end
 
 			if ( usingDifferentLanguage ) then
@@ -1611,9 +1616,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 						else
 							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
 						end
-					elseif ( type == "TEXT_EMOTE" ) then
+					elseif (type == "TEXT_EMOTE") then
 						body = gsub(message, arg2, pflag..playerLink, 1);
-					elseif (type == "GUILD_ITEM_LOOTED" ) then
+					elseif (type == "GUILD_ITEM_LOOTED") then
 						body = gsub(message, "$s", GetPlayerLink(arg2, playerLinkDisplayText));
 					else
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink);
@@ -1622,9 +1627,8 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 
 			-- Add Channel
-			arg4 = gsub(arg4, "%s%-%s.*", "");
-			if(channelLength > 0) then
-				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
+			if (channelLength > 0) then
+				body = "|Hchannel:channel:"..arg8.."|h["..ChatFrame_ResolvePrefixedChannelName(arg4).."]|h "..body;
 			end
 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
@@ -1655,7 +1659,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 
 		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
-				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
+				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then --BN_WHISPER FIXME
 					if not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) then
 						FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 					end
@@ -2255,6 +2259,7 @@ local FindURL_Events = {
 	"CHAT_MSG_EMOTE",
 	"CHAT_MSG_AFK",
 	"CHAT_MSG_DND",
+	"CHAT_MSG_COMMUNITIES_CHANNEL",
 }
 
 function CH:Initialize()
@@ -2318,7 +2323,7 @@ function CH:Initialize()
 	for _, event in pairs(FindURL_Events) do
 		ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		local nType = strsub(event, 10)
-		if nType ~= 'AFK' and nType ~= 'DND' then
+		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
 			self:RegisterEvent(event, 'SaveChatHistory')
 		end
 	end
