@@ -38,6 +38,7 @@ local function LoadSkin()
 	S:HandleButton(ChannelFrame.SettingsButton)
 
 	S:HandleScrollSlider(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
+	S:HandleScrollSlider(ChannelFrame.ChannelList.ScrollBar)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
 	S:HandleButton(CreateChannelPopup.OKButton)
