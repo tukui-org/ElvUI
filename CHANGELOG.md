@@ -5,11 +5,13 @@ Added a mover for the Chat buttons.
 
 
 **Bug Fixes:**  
-
+Reworked the Microbar mouseover handler. (#523)  
+Fixed issue which caused community chats to be shown in all chat frames.  
 
 
 **Misc. Changes:**  
-
+Updated `Setup Chat` part of installer to enable class colors in all channels and communities.  
+Updated CommunitiesUI skin.  
 
 ___
 **Version 10.76 for patch 8.0 [ July 19th 2018 ]**
