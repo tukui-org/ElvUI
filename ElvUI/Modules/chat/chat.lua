@@ -245,8 +245,8 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local IconPath   = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
 	--local ElvPink    = IconPath.."elvui_pink.tga:13:25|t"
+	local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
 	local ElvBlue    = IconPath.."elvui_blue.tga:13:25|t"
 	local ElvGreen   = IconPath.."elvui_green.tga:13:25|t"
 	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
@@ -262,6 +262,8 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"] = MrHankey,
 		["Sinth-Spirestone"]  = MrHankey,
+		-- ChaoticVoid --
+		["Cyrizzak-WyrmrestAccord"] = ElvPurple,
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]  = ElvGreen,
 		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
@@ -1497,45 +1499,6 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 		else
 			local body;
 
-			-- Add AFK/DND flags
-			local pflagName = arg2
-			if ( arg14 and nameWithRealm and nameWithRealm ~= arg2 ) then
-				pflagName = nameWithRealm -- make sure mobile has realm name
-			end
-			local pflag = specialChatIcons[pflagName]
-			local pluginIcon = CH:GetPluginIcon(pflagName)
-			if(arg6 ~= "") then
-				if ( arg6 == "GM" ) then
-					--If it was a whisper, dispatch it to the GMChat addon.
-					if ( type == "WHISPER" ) then
-						return;
-					end
-					--Add Blizzard Icon, this was sent by a GM
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-				elseif ( arg6 == "DEV" ) then
-					--Add Blizzard Icon, this was sent by a Dev
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-				elseif ( arg6 == "DND" or arg6 == "AFK") then
-					pflag = (pflag or pluginIcon or "").._G["CHAT_FLAG_"..arg6];
-				else
-					pflag = _G["CHAT_FLAG_"..arg6];
-				end
-			else
-				if not pflag and pluginIcon then
-					pflag = pluginIcon
-				end
-
-				if(pflag == true) then
-					pflag = ""
-				end
-
-				if(lfgRoles[pflagName] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-					pflag = lfgRoles[pflagName]..(pflag or "")
-				end
-			end
-
-			pflag = pflag or ""
-
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
 			end
@@ -1589,12 +1552,17 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			else
 				if ( type == "TEXT_EMOTE" and realm ) then
 					-- make sure emote has realm link correct
-					playerLink = GetPlayerLink(playerName.."-"..realm, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+					playerName = playerName.."-"..realm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				elseif ( arg14 and nameWithRealm and nameWithRealm ~= playerName ) then
 					-- make sure mobile has realm link correct
-					playerLink = GetPlayerLink(nameWithRealm, playerLinkDisplayText, lineID, chatGroup, chatTarget);
+					playerName = nameWithRealm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				elseif ( type == "BN_WHISPER" or type == "BN_WHISPER_INFORM" ) then
 					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget);
+				elseif ( type == "GUILD" and nameWithRealm and nameWithRealm ~= playerName ) then
+					playerName = nameWithRealm
+					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				else
 					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				end
@@ -1603,6 +1571,27 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			local message = arg1;
 			if ( arg14 ) then --isMobile
 				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
+			end
+
+			-- Add AFK/DND flags
+			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
+			if arg6 ~= "" then -- Add Blizzard chat flags
+				if arg6 == "GM" then -- Add Blizzard Icon, this was sent by a GM
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
+				elseif arg6 == "DEV" then  -- Add Blizzard Icon, this was sent by a Dev
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
+				else -- Add AFK/Busy chat flag
+					pflag = _G["CHAT_FLAG_"..arg6]
+				end
+			end
+			-- Add LFG Role flags infront of
+			local lfgRole = lfgRoles[playerName]
+			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
+				pflag = pflag..lfgRole
+			end
+			-- Add Plugin flags
+			if chatIcon then
+				pflag = pflag..chatIcon
 			end
 
 			if ( usingDifferentLanguage ) then
