@@ -245,60 +245,60 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
-	local IconPath   = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPink    = IconPath.."elvui_pink.tga:13:25|t"
-	local ElvPurple  = IconPath.."elvui_purple.tga:13:25|t"
-	local ElvBlue    = IconPath.."elvui_blue.tga:13:25|t"
-	local ElvGreen   = IconPath.."elvui_green.tga:13:25|t"
-	local ElvOrange  = IconPath.."elvui_orange.tga:13:25|t"
-	local ElvRed     = IconPath.."elvui_red.tga:13:25|t"
-	local ElvRainbow = IconPath.."elvui_rainbow.tga:13:25|t"
-	local Bathrobe   = IconPath.."bathrobe.tga:15:15|t"
-	local MrHankey   = IconPath.."mr_hankey.tga:16:18|t"
+	local IconPath		= "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	--local ElvPink		= IconPath.."elvui_pink.tga:13:25|t"
+	local ElvPurple		= IconPath.."elvui_purple.tga:13:25|t"
+	local ElvBlue		= IconPath.."elvui_blue.tga:13:25|t"
+	local ElvGreen		= IconPath.."elvui_green.tga:13:25|t"
+	local ElvOrange		= IconPath.."elvui_orange.tga:13:25|t"
+	local ElvRed		= IconPath.."elvui_red.tga:13:25|t"
+	local ElvRainbow	= IconPath.."elvui_rainbow.tga:13:25|t"
+	local Bathrobe		= IconPath.."bathrobe.tga:15:15|t"
+	local MrHankey		= IconPath.."mr_hankey.tga:16:18|t"
 	specialChatIcons = {
 		-- Elv --
-		["Illidelv-Area52"] = ElvBlue,
-		["Elvz-Kil'jaeden"] = ElvBlue,
-		["Elv-Spirestone"]  = ElvBlue,
+		["Illidelv-Area52"]		= ElvBlue,
+		["Elvz-Kil'jaeden"]		= ElvBlue,
+		["Elv-Spirestone"]		= ElvBlue,
 		-- Tirain --
-		["Tirain-Spirestone"] = MrHankey,
-		["Sinth-Spirestone"]  = MrHankey,
+		["Tirain-Spirestone"]	= MrHankey,
+		["Sinth-Spirestone"]	= MrHankey,
 		-- ChaoticVoid --
-		["Cyrizzak-WyrmrestAccord"] = ElvPurple,
+		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
 		-- Merathilis Toons --
-		["Maithilis-Shattrath"]  = ElvGreen,
-		["Merathilis-Garrosh"]   = ElvOrange, -- [horde] Druid
-		["Merathilis-Shattrath"] = ElvOrange, -- [alliance] Druid
-		["Merathilîs-Shattrath"] = ElvBlue,	  -- Shaman
-		["Asragoth-Shattrath"]   = ElvBlue,	  -- Warlock
-		["Damará-Shattrath"]     = ElvRed,	  -- Paladin
+		["Maithilis-Shattrath"]		= ElvGreen,
+		["Merathilis-Garrosh"]		= ElvOrange, -- Druid [Horde]
+		["Merathilis-Shattrath"]	= ElvOrange, -- Druid [Alliance]
+		["Merathilîs-Shattrath"]	= ElvBlue,	 -- Shaman
+		["Asragoth-Shattrath"]		= ElvBlue,	 -- Warlock
+		["Damará-Shattrath"]		= ElvRed,	 -- Paladin
 		-- Affinity's Toons --
-		["Affinichi-Illidan"] = Bathrobe,
-		["Affinitii-Illidan"] = Bathrobe,
-		["Affinity-Illidan"]  = Bathrobe,
-		["Uplift-Illidan"]    = Bathrobe,
+		["Affinichi-Illidan"]	= Bathrobe,
+		["Affinitii-Illidan"]	= Bathrobe,
+		["Affinity-Illidan"]	= Bathrobe,
+		["Uplift-Illidan"]		= Bathrobe,
 		-- Blazeflack's Toons --
-		["Blazii-Silvermoon"] = ElvBlue, -- Priest
-		["Chazii-Silvermoon"] = ElvBlue, -- Shaman
+		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
+		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
 		-- Simpy's Toons --
-		["Arieva-Cenarius"]       = ElvRainbow, -- Hunter
-		["Buddercup-Cenarius"]    = ElvRainbow, -- Rogue
-		["Cutepally-Cenarius"]    = ElvRainbow, -- Paladin
-		["Ezek-Cenarius"]         = ElvRainbow, -- DK
-		["Glice-Cenarius"]        = ElvRainbow, -- Warrior
-		["Kalline-Cenarius"]      = ElvRainbow, -- Shaman
-		["Puttietat-Cenarius"]    = ElvRainbow, -- Druid
-		["Simpy-Cenarius"]        = ElvRainbow, -- Warlock
-		["Twigly-Cenarius"]       = ElvRainbow, -- Monk
-		["Imsojelly-Cenarius"]    = ElvRainbow, -- [horde] DK
-		["Imsojuicy-Cenarius"]    = ElvRainbow, -- [horde] Druid
-		["Imsopeachy-Cenarius"]   = ElvRainbow, -- [horde] DH
-		["Imsosalty-Cenarius"]    = ElvRainbow, -- [horde] Paladin
-		["Imsospicy-Cenarius"]    = ElvRainbow, -- [horde] Mage
-		["Bunne-CenarionCircle"]      = ElvRainbow, -- Warrior
-		["Loppybunny-CenarionCircle"] = ElvRainbow, -- Mage
-		["Rubee-CenarionCircle"]      = ElvRainbow, -- DH
-		["Wennie-CenarionCircle"]     = ElvRainbow, -- Priest
+		["Arieva-Cenarius"]		= ElvRainbow, -- Hunter
+		["Buddercup-Cenarius"]	= ElvRainbow, -- Rogue
+		["Cutepally-Cenarius"]	= ElvRainbow, -- Paladin
+		["Ezek-Cenarius"]		= ElvRainbow, -- DK
+		["Glice-Cenarius"]		= ElvRainbow, -- Warrior
+		["Kalline-Cenarius"]	= ElvRainbow, -- Shaman
+		["Puttietat-Cenarius"]	= ElvRainbow, -- Druid
+		["Simpy-Cenarius"]		= ElvRainbow, -- Warlock
+		["Twigly-Cenarius"]		= ElvRainbow, -- Monk
+		["Imsojelly-Cenarius"]	= ElvRainbow, -- [Horde] DK
+		["Imsojuicy-Cenarius"]	= ElvRainbow, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]	= ElvRainbow, -- [Horde] DH
+		["Imsosalty-Cenarius"]	= ElvRainbow, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]	= ElvRainbow, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= ElvRainbow, -- Warrior
+		["Loppybunny-CenarionCircle"]	= ElvRainbow, -- Mage
+		["Rubee-CenarionCircle"]		= ElvRainbow, -- DH
+		["Wennie-CenarionCircle"]		= ElvRainbow, -- Priest
 	}
 end
 
@@ -520,7 +520,7 @@ function CH:StyleChat(frame)
 	editbox:Hide()
 
 	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self.historyIndex = 0; self:Hide()  end)
+	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self.historyIndex = 0; self:Hide() end)
 
 	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
@@ -1825,7 +1825,7 @@ function CH:CheckKeyword(message)
 		protectLinks[hyperLink]=hyperLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if hyperLink == keyword then
-				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+				if self.db.keywordSound ~= 'None' and not self.SoundPlayed then
 					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
 					end
@@ -1849,7 +1849,7 @@ function CH:CheckKeyword(message)
 			for keyword, _ in pairs(CH.Keywords) do
 				if lowerCaseWord == keyword:lower() then
 					word = word:gsub(tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+					if self.db.keywordSound ~= 'None' and not self.SoundPlayed then
 						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
 						end
@@ -1890,12 +1890,12 @@ function CH:CheckKeyword(message)
 end
 
 function CH:AddLines(lines, ...)
-  for i=select("#", ...),1,-1 do
+	for i=select("#", ...),1,-1 do
 	local x = select(i, ...)
-	if x:GetObjectType() == "FontString" and not x:GetName() then
-		tinsert(lines, x:GetText())
+		if x:GetObjectType() == "FontString" and not x:GetName() then
+			tinsert(lines, x:GetText())
+		end
 	end
-  end
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
