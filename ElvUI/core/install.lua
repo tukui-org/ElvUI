@@ -85,8 +85,8 @@ local function SetupChat()
 		end
 	end
 
-	-- keys taken from `ChatTypeGroup` but doesnt add: "OPENING", "TRADESKILLS", "PET_INFO", "COMBAT_MISC_INFO", "CHANNEL", "COMMUNITIES_CHANNEL", "PET_BATTLE_COMBAT_LOG", "PET_BATTLE_INFO"
-	local chatGroup = { "SYSTEM", "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "MONSTER_SAY", "MONSTER_YELL", "MONSTER_EMOTE", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER", "ERRORS", "AFK", "DND", "IGNORED", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "BN_WHISPER", "BN_INLINE_TOAST_ALERT" }
+	-- keys taken from `ChatTypeGroup` but doesnt add: "OPENING", "TRADESKILLS", "PET_INFO", "COMBAT_MISC_INFO", "COMMUNITIES_CHANNEL", "PET_BATTLE_COMBAT_LOG", "PET_BATTLE_INFO", "TARGETICONS"
+	local chatGroup = { "SYSTEM", "CHANNEL", "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "MONSTER_SAY", "MONSTER_YELL", "MONSTER_EMOTE", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER", "ERRORS", "AFK", "DND", "IGNORED", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "BN_WHISPER", "BN_INLINE_TOAST_ALERT" }
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
 	for _, v in ipairs(chatGroup) do
 		ChatFrame_AddMessageGroup(ChatFrame1, v)
@@ -112,13 +112,10 @@ local function SetupChat()
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
 
-	--Adjust Chat Colors
-	--General
-	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
-	--Trade
-	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
-	--Local Defense
-	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
+	-- Adjust Chat Colors
+	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255) -- General
+	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255) -- Trade
+	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255) -- Local Defense
 
 	if E.Chat then
 		E.Chat:PositionChat(true)
