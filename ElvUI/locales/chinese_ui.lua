@@ -288,7 +288,6 @@ L["Raid-40 Frames"] = "40人团队框架"
 L["Reputation Bar"] = "声望条"
 L["Right Chat"] = "右侧对话框"
 L["Stance Bar"] = "姿态条" --Also in ActionBars
-L["Social Buttons"] = true
 L["Talking Head Frame"] = "剧情对话框"
 L["Target Castbar"] = "目标施法条"
 L["Target Frame"] = "目标框架"
