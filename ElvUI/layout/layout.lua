@@ -368,10 +368,11 @@ end
 function LO:CreateChatButtonPanel()
 	if E.private.chat.enable ~= true then return end
 
-	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", LeftChatPanel)
-	ChatButtonHolder:SetPoint("BOTTOMLEFT", LeftChatPanel, "TOPLEFT", 0, 0)
+	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
+	ChatButtonHolder:SetPoint("BOTTOMLEFT", LeftChatPanel, "TOPLEFT", 0, 1)
 	ChatButtonHolder:SetSize(27, 85)
 	ChatButtonHolder:Hide()
+	E:CreateMover(ChatButtonHolder, "SocialMenuMover", BINDING_HEADER_VOICE_CHAT)
 
 	ChatFrameChannelButton:ClearAllPoints()
 	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")
