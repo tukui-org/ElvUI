@@ -91,6 +91,7 @@ local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
+local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
@@ -1185,17 +1186,18 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		arg2 = Ambiguate(arg2, "none")
 	end
 
-	if ( info and info.colorNameByClass and arg12 ) then
-	local _, englishClass = GetPlayerInfoByGUID(arg12)
+	if ( arg12 and info and Chat_ShouldColorChatByClass(info) ) then
+		local _, englishClass = GetPlayerInfoByGUID(arg12)
 
-	if ( englishClass ) then
-		local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
-		if ( not classColorTable ) then
-			return arg2;
-		end
-		return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+		if ( englishClass ) then
+			local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
+			if ( not classColorTable ) then
+				return arg2;
+			end
+			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
 		end
 	end
+
 	return arg2;
 end
 
