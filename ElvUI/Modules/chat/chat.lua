@@ -1573,23 +1573,21 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 			end
 
-			-- Add AFK/DND flags
+			-- Player Flags
 			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
-			if arg6 ~= "" then -- Add Blizzard chat flags
-				if arg6 == "GM" then -- Add Blizzard Icon, this was sent by a GM
+			if arg6 ~= "" then -- Blizzard Flags
+				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
-				elseif arg6 == "DEV" then  -- Add Blizzard Icon, this was sent by a Dev
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
-				else -- Add AFK/Busy chat flag
-					pflag = _G["CHAT_FLAG_"..arg6]
+				else -- Away/Busy
+					pflag = _G["CHAT_FLAG_"..arg6] or ""
 				end
 			end
-			-- Add LFG Role flags infront of
+			-- LFG Role Flags
 			local lfgRole = lfgRoles[playerName]
 			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
 				pflag = pflag..lfgRole
 			end
-			-- Add Plugin flags
+			-- Plugin Flags
 			if chatIcon then
 				pflag = pflag..chatIcon
 			end
