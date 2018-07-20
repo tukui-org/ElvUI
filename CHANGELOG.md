@@ -1,7 +1,7 @@
 **Version 10.77 [  ]**
 
 **New Additions:**  
-
+Added a mover for the Chat buttons.  
 
 
 **Bug Fixes:**  
