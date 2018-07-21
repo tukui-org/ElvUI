@@ -14,7 +14,6 @@ local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HONOR = HONOR
-local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
 local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script

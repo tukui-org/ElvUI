@@ -1137,7 +1137,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 end
 
 -- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, anchorPoint, relativeTo, relativePoint, offsetX, offsetY)
+function S:WorldMapMixin_AddOverlayFrame(self, templateName)
 	S[templateName](self.overlayFrames[#self.overlayFrames])
 end
 

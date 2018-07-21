@@ -6,7 +6,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script

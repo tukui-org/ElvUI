@@ -10,7 +10,6 @@ local pairs, type, error = pairs, type, error
 local len = string.len
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitGUID = UnitGUID
 local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance

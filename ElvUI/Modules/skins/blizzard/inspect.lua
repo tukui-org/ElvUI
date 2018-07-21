@@ -6,9 +6,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
-local GetPrestigeInfo = GetPrestigeInfo
-local UnitPrestige = UnitPrestige
-local UnitLevel = UnitLevel
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: INSPECTED_UNIT, LE_EXPANSION_LEVEL_CURRENT, MAX_PLAYER_LEVEL_TABLE

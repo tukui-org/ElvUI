@@ -6,11 +6,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local ToggleDropDownMenu = ToggleDropDownMenu
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: BattlefieldMapTab, BattlefieldMapOptions, OpacityFrame

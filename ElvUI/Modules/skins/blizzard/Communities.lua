@@ -6,7 +6,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -53,7 +53,7 @@ local function LoadSkin()
 	CommunitiesFrameInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetBotLeftCorner:Hide()
 
-	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
+	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo)
 		if clubInfo then
 			self:SetSize(166, 67)
 
@@ -250,7 +250,6 @@ local function LoadSkin()
 		local buttons = scrollFrame.buttons
 		local button, index
 		local numButtons = #buttons
-		local numRewards = GetNumGuildRewards()
 
 		for i = 1, numButtons do
 			button = buttons[i]
