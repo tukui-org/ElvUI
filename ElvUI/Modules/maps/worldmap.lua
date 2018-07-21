@@ -99,7 +99,7 @@ function M:UpdateCoords()
 	if not WorldMapFrame:IsShown() or inRestrictedArea then return end
 
 	if E.MapInfo.x and E.MapInfo.y then
-		CoordsHolder.playerCoords:SetText(PLAYER..":   "..E.MapInfo.x..", "..E.MapInfo.y)
+		CoordsHolder.playerCoords:SetText(PLAYER..":   "..(E.MapInfo.xText or 0)..", "..(E.MapInfo.yText or 0))
 	else
 		CoordsHolder.playerCoords:SetText("")
 	end
