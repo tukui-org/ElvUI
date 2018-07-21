@@ -80,13 +80,13 @@ end
 -- Code taken from LibTourist-3.0 and rewritten to fit our purpose
 local localizedMapNames = {}
 local ZoneIDToContinentName = {
-	[473] = "Outland",
-	[477] = "Outland",
+	[104] = "Outland",
+	[107] = "Outland",
 }
 local MapIdLookupTable = {
-	[466] = "Outland",
-	[473] = "Shadowmoon Valley",
-	[477] = "Nagrand",
+	[101] = "Outland",
+	[104] = "Shadowmoon Valley",
+	[107] = "Nagrand",
 }
 local function LocalizeZoneNames()
 	local mapInfo
