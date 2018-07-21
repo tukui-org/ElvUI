@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local select = select
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local CreateVector2D = CreateVector2D
 local C_Map_GetMapInfo = C_Map.GetMapInfo
@@ -18,8 +19,22 @@ function E:Update_MapInfo()
 	E.MapInfo.mapType = (mapInfo and mapInfo.mapType) or nil
 	E.MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
 
-	if mapID then
-		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(mapID)
+	E.MapInfo.mapID = mapID or nil
+	E.MapInfo.zoneText = E:GetZoneText(mapID)
+end
+
+local coordsWatcher = CreateFrame("Frame")
+function E:MapInfo_CoordsStart()
+	coordsWatcher:SetScript("OnUpdate", E.Update_MapCoords)
+end
+
+function E:MapInfo_CoordsStop()
+	coordsWatcher:SetScript("OnUpdate", nil)
+end
+
+function E:Update_MapCoords()
+	if E.MapInfo.mapID then
+		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
 	else
 		E.MapInfo.x, E.MapInfo.y = nil, nil
 	end
@@ -30,9 +45,6 @@ function E:Update_MapInfo()
 	else
 		E.MapInfo.xText, E.MapInfo.yText = nil, nil
 	end
-
-	E.MapInfo.mapID = mapID or nil
-	E.MapInfo.zoneText = E:GetZoneText(mapID)
 end
 
 -- This code fixes C_Map.GetPlayerMapPosition memory leak.
@@ -96,6 +108,8 @@ function E:GetZoneText(mapID)
 	return zoneName
 end
 
+E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
+E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
 E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_MapInfo")
 E:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_MapInfo")
 E:RegisterEvent("ZONE_CHANGED", "Update_MapInfo")
