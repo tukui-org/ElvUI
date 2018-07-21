@@ -26,10 +26,10 @@ function E:MapInfo_Update(event)
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
 
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
+	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
 	E.MapInfo.continentName = (continent and continent.name) or nil
-	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 
 	E:MapInfo_CoordsUpdate()
 
