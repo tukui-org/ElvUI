@@ -21,34 +21,39 @@ function E:Update_MapInfo()
 
 	E.MapInfo.mapID = mapID or nil
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
+
+	E:Update_MapCoords()
 end
 
 local coordsWatcher = CreateFrame("Frame")
 function E:MapInfo_CoordsStart()
-	coordsWatcher:SetScript("OnUpdate", E.Update_MapCoords)
+	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
 end
 
 function E:MapInfo_CoordsStop()
 	coordsWatcher:SetScript("OnUpdate", nil)
 end
 
-function E:Update_MapCoords(watcher, elapsed)
-	watcher.lastUpdate = (watcher.lastUpdate or 0) + elapsed
-	if watcher.lastUpdate > 0.1 then
-		if E.MapInfo.mapID then
-			E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
-		else
-			E.MapInfo.x, E.MapInfo.y = nil, nil
-		end
+function E:Update_MapCoords()
+	if E.MapInfo.mapID then
+		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
+	else
+		E.MapInfo.x, E.MapInfo.y = nil, nil
+	end
 
-		if E.MapInfo.x and E.MapInfo.y then
-			E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
-			E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
-		else
-			E.MapInfo.xText, E.MapInfo.yText = nil, nil
-		end
+	if E.MapInfo.x and E.MapInfo.y then
+		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
+		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
+	else
+		E.MapInfo.xText, E.MapInfo.yText = nil, nil
+	end
+end
 
-		watcher.lastUpdate = 0
+function E:MapInfo_OnUpdate(elapsed)
+	self.lastUpdate = (self.lastUpdate or 0) + elapsed
+	if self.lastUpdate > 0.1 then
+		E:Update_MapCoords()
+		self.lastUpdate = 0
 	end
 end
 
