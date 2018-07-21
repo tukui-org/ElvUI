@@ -8,7 +8,6 @@ local _G = _G
 local pairs = pairs
 local find = string.find
 --WoW API / Variables
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local SetCVar = SetCVar
@@ -83,8 +82,7 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	local position = C_Map_GetBestMapForUnit("player")
-	if not position then
+	if not (E.MapInfo.x and E.MapInfo.y) then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
 		self.CoordsTimer = nil
@@ -97,16 +95,10 @@ function M:PLAYER_ENTERING_WORLD()
 end
 
 function M:UpdateCoords()
-	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
+	if not WorldMapFrame:IsShown() or inRestrictedArea then return end
 
-	local mapID = C_Map_GetBestMapForUnit("player")
-	local x, y = E:GetPlayerMapPos(mapID)
-
-	x = x and E:Round(100 * x, 2) or 0
-	y = y and E:Round(100 * y, 2) or 0
-
-	if x ~= 0 and y ~= 0 then
-		CoordsHolder.playerCoords:SetText(PLAYER..":   "..x..", "..y)
+	if E.MapInfo.x and E.MapInfo.y then
+		CoordsHolder.playerCoords:SetText(PLAYER..":   "..E.MapInfo.x..", "..E.MapInfo.y)
 	else
 		CoordsHolder.playerCoords:SetText("")
 	end
@@ -115,7 +107,7 @@ function M:UpdateCoords()
 	local width = WorldMapFrame.ScrollContainer:GetWidth()
 	local height = WorldMapFrame.ScrollContainer:GetHeight()
 	local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
-	x, y = GetCursorPosition()
+	local x, y = GetCursorPosition()
 
 	local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
 	local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
