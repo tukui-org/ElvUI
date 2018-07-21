@@ -32,18 +32,23 @@ function E:MapInfo_CoordsStop()
 	coordsWatcher:SetScript("OnUpdate", nil)
 end
 
-function E:Update_MapCoords()
-	if E.MapInfo.mapID then
-		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
-	else
-		E.MapInfo.x, E.MapInfo.y = nil, nil
-	end
+function E:Update_MapCoords(watcher, elapsed)
+	watcher.lastUpdate = (watcher.lastUpdate or 0) + elapsed
+	if watcher.lastUpdate > 0.1 then
+		if E.MapInfo.mapID then
+			E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
+		else
+			E.MapInfo.x, E.MapInfo.y = nil, nil
+		end
 
-	if E.MapInfo.x and E.MapInfo.y then
-		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
-		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
-	else
-		E.MapInfo.xText, E.MapInfo.yText = nil, nil
+		if E.MapInfo.x and E.MapInfo.y then
+			E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
+			E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
+		else
+			E.MapInfo.xText, E.MapInfo.yText = nil, nil
+		end
+
+		watcher.lastUpdate = 0
 	end
 end
 
