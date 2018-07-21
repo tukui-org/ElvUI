@@ -38,7 +38,7 @@ function E:MapInfo_Update(event)
 		E.MapInfo.continentParentMapID = nil
 	end
 
-	E:Update_MapCoords()
+	E:MapInfo_CoordsUpdate()
 
 	if event == 'PLAYER_ENTERING_WORLD' then
 		E.MapInfo.coordsFirst = true
@@ -57,7 +57,7 @@ function E:MapInfo_CoordsStop()
 	coordsWatcher:SetScript("OnUpdate", nil)
 end
 
-function E:Update_MapCoords()
+function E:MapInfo_CoordsUpdate()
 	if E.MapInfo.mapID then
 		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
 	else
@@ -75,7 +75,7 @@ end
 function E:MapInfo_OnUpdate(elapsed)
 	self.lastUpdate = (self.lastUpdate or 0) + elapsed
 	if self.lastUpdate > 0.1 then
-		E:Update_MapCoords()
+		E:MapInfo_CoordsUpdate()
 		self.lastUpdate = 0
 	end
 end
