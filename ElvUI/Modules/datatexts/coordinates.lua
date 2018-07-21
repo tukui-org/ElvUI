@@ -26,7 +26,7 @@ end
 
 local function OnEvent(self)
 	E:Update_MapInfo()
-	if E.MapInfo.x and E.MapInfo.y then
+	if E.MapInfo.mapID then
 		inRestrictedArea = false
 		self:Show()
 	else
