@@ -33,9 +33,9 @@ function E:Update_MapInfo(event)
 		E.MapInfo.continentParentMapID = continent.parentMapID
 	else
 		E.MapInfo.continentType = nil
-		E.MapInfo.continentID = nil
+		E.MapInfo.continentMapID = nil
 		E.MapInfo.continentName = nil
-		E.MapInfo.continentParentID = nil
+		E.MapInfo.continentParentMapID = nil
 	end
 
 	E:Update_MapCoords()
