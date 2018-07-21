@@ -10,21 +10,28 @@ local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 
 E.MapInfo = {}
-function E:Update_Coordinates()
+function E:Update_MapInfo()
 	local mapID = C_Map_GetBestMapForUnit("player")
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 
-	if mapInfo then
-		E.MapInfo.name = mapInfo.name
-		E.MapInfo.mapType = mapInfo.mapType
-		E.MapInfo.parentMapID = mapInfo.parentMapID
-	end
+	E.MapInfo.name = (mapInfo and mapInfo.name) or nil
+	E.MapInfo.mapType = (mapInfo and mapInfo.mapType) or nil
+	E.MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
 
 	if mapID then
 		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(mapID)
+	else
+		E.MapInfo.x, E.MapInfo.y = nil, nil
 	end
 
-	E.MapInfo.mapID = mapID
+	if E.MapInfo.x and E.MapInfo.y then
+		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
+		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
+	else
+		E.MapInfo.xText, E.MapInfo.yText = nil, nil
+	end
+
+	E.MapInfo.mapID = mapID or nil
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
 end
 
@@ -89,7 +96,7 @@ function E:GetZoneText(mapID)
 	return zoneName
 end
 
-E:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_Coordinates")
-E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_Coordinates")
-E:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_Coordinates")
-E:RegisterEvent("ZONE_CHANGED", "Update_Coordinates")
+E:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_MapInfo")
+E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_MapInfo")
+E:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_MapInfo")
+E:RegisterEvent("ZONE_CHANGED", "Update_MapInfo")
