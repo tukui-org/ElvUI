@@ -23,7 +23,7 @@ function E:MapInfo_Update(event)
 	E.MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
 
 	E.MapInfo.mapID = mapID or nil
-	E.MapInfo.zoneText = E:GetZoneText(mapID)
+	E.MapInfo.zoneText = (mapID and E:GetZoneText(mapID)) or nil
 
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
