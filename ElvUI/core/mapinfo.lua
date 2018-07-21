@@ -28,9 +28,9 @@ function E:Update_MapInfo(event)
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
 	if continent then
 		E.MapInfo.continentType = continent.mapType
-		E.MapInfo.continentID = continent.mapID
+		E.MapInfo.continentMapID = continent.mapID
 		E.MapInfo.continentName = continent.name
-		E.MapInfo.continentParentID = continent.parentMapID
+		E.MapInfo.continentParentMapID = continent.parentMapID
 	else
 		E.MapInfo.continentType = nil
 		E.MapInfo.continentID = nil
