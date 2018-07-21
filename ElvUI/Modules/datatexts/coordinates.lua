@@ -25,7 +25,7 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	E:Update_MapInfo('PLAYER_ENTERING_WORLD')
+	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
 	if E.MapInfo.mapID then
 		inRestrictedArea = false
 		self:Show()

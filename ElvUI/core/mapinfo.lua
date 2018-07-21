@@ -14,7 +14,7 @@ local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local MapUtil = MapUtil
 
 E.MapInfo = {}
-function E:Update_MapInfo(event)
+function E:MapInfo_Update(event)
 	local mapID = C_Map_GetBestMapForUnit("player")
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 
@@ -143,6 +143,6 @@ end
 
 E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
-E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_MapInfo")
-E:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_MapInfo")
-E:RegisterEvent("ZONE_CHANGED", "Update_MapInfo")
+E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
+E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
+E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")

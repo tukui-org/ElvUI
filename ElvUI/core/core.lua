@@ -385,7 +385,7 @@ end
 
 function E:PLAYER_ENTERING_WORLD()
 	self:CheckRole()
-	self:Update_MapInfo('PLAYER_ENTERING_WORLD')
+	self:MapInfo_Update('PLAYER_ENTERING_WORLD')
 
 	if not self.MediaUpdated then
 		self:UpdateMedia()
