@@ -9,7 +9,6 @@ local pairs = pairs
 local find = string.find
 --WoW API / Variables
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local SetCVar = SetCVar
@@ -100,10 +99,8 @@ end
 function M:UpdateCoords()
 	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
 
-	local x, y
 	local mapID = C_Map_GetBestMapForUnit("player")
-	local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
-	if mapPos then x, y = mapPos:GetXY() end
+	local x, y = E:GetPlayerMapPos(mapID)
 
 	x = x and E:Round(100 * x, 2) or 0
 	y = y and E:Round(100 * y, 2) or 0
