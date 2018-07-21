@@ -111,7 +111,7 @@ function M:UpdateCoords()
 		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
 			adjustedX = E:Round(100 * adjustedX, 2)
 			adjustedY = E:Round(100 * adjustedY, 2)
-			CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
 		else
 			CoordsHolder.mouseCoords:SetText("")
 		end
@@ -121,7 +121,7 @@ function M:UpdateCoords()
 
 	if E.MapInfo.coordsFirst or E.MapInfo.coordsWatching then
 		if E.MapInfo.x and E.MapInfo.y then
-			CoordsHolder.playerCoords:SetText(PLAYER..":   "..(E.MapInfo.xText or 0)..", "..(E.MapInfo.yText or 0))
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
 			CoordsHolder.playerCoords:SetText("")
 		end

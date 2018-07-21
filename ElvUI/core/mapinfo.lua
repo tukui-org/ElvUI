@@ -65,8 +65,8 @@ function E:Update_MapCoords()
 	end
 
 	if E.MapInfo.x and E.MapInfo.y then
-		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 1)
-		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 1)
+		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 2)
+		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 2)
 	else
 		E.MapInfo.xText, E.MapInfo.yText = nil, nil
 	end
