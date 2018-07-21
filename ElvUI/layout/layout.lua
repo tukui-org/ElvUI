@@ -8,9 +8,11 @@ local CreateFrame = CreateFrame
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
--- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
--- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, QuickJoinToastButton
+-- GLOBALS: Minimap, ChatAlertFrame, GameTooltip, ChatButtonHolder, LeftChatTab, RightChatTab
+-- GLOBALS: BINDING_HEADER_VOICE_CHAT, HideLeftChat, HideRightChat, HideBothChat
+-- GLOBALS: LeftMiniPanel, RightMiniPanel, LeftChatPanel, RightChatPanel, LeftChatDataPanel, RightChatDataPanel
+-- GLOBALS: ChatFrameChannelButton, QuickJoinToastButton, LeftChatToggleButton, RightChatToggleButton
+-- GLOBALS: ChatFrameToggleVoiceMuteButton, ChatFrameToggleVoiceDeafenButton
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
