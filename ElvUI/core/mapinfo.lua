@@ -16,8 +16,8 @@ local MapUtil = MapUtil
 E.MapInfo = {}
 function E:MapInfo_Update(event)
 	local mapID = C_Map_GetBestMapForUnit("player")
-	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 
+	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 	E.MapInfo.name = (mapInfo and mapInfo.name) or nil
 	E.MapInfo.mapType = (mapInfo and mapInfo.mapType) or nil
 	E.MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
@@ -26,17 +26,10 @@ function E:MapInfo_Update(event)
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
 
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
-	if continent then
-		E.MapInfo.continentMapType = continent.mapType
-		E.MapInfo.continentMapID = continent.mapID
-		E.MapInfo.continentName = continent.name
-		E.MapInfo.continentParentMapID = continent.parentMapID
-	else
-		E.MapInfo.continentMapType = nil
-		E.MapInfo.continentMapID = nil
-		E.MapInfo.continentName = nil
-		E.MapInfo.continentParentMapID = nil
-	end
+	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
+	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
+	E.MapInfo.continentName = (continent and continent.name) or nil
+	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 
 	E:MapInfo_CoordsUpdate()
 
