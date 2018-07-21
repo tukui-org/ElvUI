@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Cache global variables
 local select = select
+local pairs = pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
