@@ -138,7 +138,7 @@ function E:GetZoneText(mapID)
 		end
 	end
 
-	return zoneName
+	return zoneName or E.MapInfo.name
 end
 
 E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
