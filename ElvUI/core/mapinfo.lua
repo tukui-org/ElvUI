@@ -59,17 +59,13 @@ local MapIdLookupTable = {
 	[473] = "Shadowmoon Valley",
 	[477] = "Nagrand",
 }
-
 local function LocalizeZoneNames()
-	local localizedZoneName
-
+	local mapInfo
 	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = C_Map_GetMapInfo(mapID)
-		if localizedZoneName then
-			-- Add combination of English and localized name to lookup table
-			if not localizedMapNames[englishName] then
-				localizedMapNames[englishName] = localizedZoneName
-			end
+		mapInfo = C_Map_GetMapInfo(mapID)
+		-- Add combination of English and localized name to lookup table
+		if mapInfo and mapInfo.name and not localizedMapNames[englishName] then
+			localizedMapNames[englishName] = mapInfo.name
 		end
 	end
 end
