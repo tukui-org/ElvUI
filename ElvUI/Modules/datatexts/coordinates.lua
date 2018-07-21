@@ -14,7 +14,7 @@ local displayString = ""
 local inRestrictedArea = false
 
 local function Update(self, elapsed)
-	if inRestrictedArea or not (E.MapInfo.coordsFirst or E.MapInfo.coordsWatching) then return end
+	if inRestrictedArea or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 

@@ -119,7 +119,7 @@ function M:UpdateCoords()
 		CoordsHolder.mouseCoords:SetText("")
 	end
 
-	if E.MapInfo.coordsFirst or E.MapInfo.coordsWatching then
+	if E.MapInfo.coordsCalled or E.MapInfo.coordsWatching then
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
