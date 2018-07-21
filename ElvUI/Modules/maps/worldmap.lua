@@ -82,6 +82,7 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
+	E:Update_MapInfo()
 	if not (E.MapInfo.x and E.MapInfo.y) then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
