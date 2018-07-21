@@ -14,7 +14,7 @@ local displayString = ""
 local inRestrictedArea = false
 
 local function Update(self, elapsed)
-	if inRestrictedArea then return end
+	if inRestrictedArea or not (E.MapInfo.coordsFirst or E.MapInfo.coordsWatching) then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
@@ -25,7 +25,7 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	E:Update_MapInfo()
+	E:Update_MapInfo('PLAYER_ENTERING_WORLD')
 	if E.MapInfo.mapID then
 		inRestrictedArea = false
 		self:Show()

@@ -82,7 +82,7 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	E:Update_MapInfo()
+	E:Update_MapInfo('PLAYER_ENTERING_WORLD')
 	if not E.MapInfo.mapID then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
@@ -96,29 +96,35 @@ function M:PLAYER_ENTERING_WORLD()
 end
 
 function M:UpdateCoords()
-	if not WorldMapFrame:IsShown() or inRestrictedArea then return end
+	if inRestrictedArea or not WorldMapFrame:IsShown() then return end
 
-	if E.MapInfo.x and E.MapInfo.y then
-		CoordsHolder.playerCoords:SetText(PLAYER..":   "..(E.MapInfo.xText or 0)..", "..(E.MapInfo.yText or 0))
-	else
-		CoordsHolder.playerCoords:SetText("")
-	end
+	if WorldMapFrame.ScrollContainer:IsMouseOver() then
+		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
+		local width = WorldMapFrame.ScrollContainer:GetWidth()
+		local height = WorldMapFrame.ScrollContainer:GetHeight()
+		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
+		local x, y = GetCursorPosition()
 
-	local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
-	local width = WorldMapFrame.ScrollContainer:GetWidth()
-	local height = WorldMapFrame.ScrollContainer:GetHeight()
-	local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
-	local x, y = GetCursorPosition()
+		local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
+		local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
 
-	local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
-	local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
-
-	if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-		adjustedX = E:Round(100 * adjustedX, 2)
-		adjustedY = E:Round(100 * adjustedY, 2)
-		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+			adjustedX = E:Round(100 * adjustedX, 2)
+			adjustedY = E:Round(100 * adjustedY, 2)
+			CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+		else
+			CoordsHolder.mouseCoords:SetText("")
+		end
 	else
 		CoordsHolder.mouseCoords:SetText("")
+	end
+
+	if E.MapInfo.coordsFirst or E.MapInfo.coordsWatching then
+		if E.MapInfo.x and E.MapInfo.y then
+			CoordsHolder.playerCoords:SetText(PLAYER..":   "..(E.MapInfo.xText or 0)..", "..(E.MapInfo.yText or 0))
+		else
+			CoordsHolder.playerCoords:SetText("")
+		end
 	end
 end
 

@@ -11,7 +11,7 @@ local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 
 E.MapInfo = {}
-function E:Update_MapInfo()
+function E:Update_MapInfo(event)
 	local mapID = C_Map_GetBestMapForUnit("player")
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 
@@ -23,14 +23,21 @@ function E:Update_MapInfo()
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
 
 	E:Update_MapCoords()
+
+	if event == 'PLAYER_ENTERING_WORLD' then
+		E.MapInfo.coordsFirst = true
+	end
 end
 
 local coordsWatcher = CreateFrame("Frame")
 function E:MapInfo_CoordsStart()
+	E.MapInfo.coordsWatching = true
+	E.MapInfo.coordsFirst = nil
 	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
 end
 
 function E:MapInfo_CoordsStop()
+	E.MapInfo.coordsWatching = nil
 	coordsWatcher:SetScript("OnUpdate", nil)
 end
 
