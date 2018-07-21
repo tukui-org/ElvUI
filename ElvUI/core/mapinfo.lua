@@ -14,9 +14,6 @@ function E:Update_Coordinates()
 	local mapID = C_Map_GetBestMapForUnit("player")
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
 
-	E.MapInfo.mapID = mapID
-	E.MapInfo.zoneText = E:GetZoneText(mapID)
-
 	if mapInfo then
 		E.MapInfo.name = mapInfo.name
 		E.MapInfo.mapType = mapInfo.mapType
@@ -26,6 +23,9 @@ function E:Update_Coordinates()
 	if mapID then
 		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(mapID)
 	end
+
+	E.MapInfo.mapID = mapID
+	E.MapInfo.zoneText = E:GetZoneText(mapID)
 end
 
 -- This code fixes C_Map.GetPlayerMapPosition memory leak.
@@ -74,18 +74,14 @@ LocalizeZoneNames()
 --Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the " (Outland)" part unlike the GetRealZoneText() API.
+function E:GetZoneText(mapID)
+	if not (mapID and E.MapInfo.name) then return end
 
--- Needs to be adjusted for 8.0 ?
-function E:GetZoneText(zoneAreaID)
-	if not zoneAreaID then return end
-
-	local zoneName = C_Map_GetMapInfo(zoneAreaID)
-	local continent = ZoneIDToContinentName[zoneAreaID]
-
+	local continent, zoneName = ZoneIDToContinentName[mapID]
 	if continent and continent == "Outland" then
-		if zoneName == localizedMapNames["Nagrand"] or zoneName == "Nagrand"  then
+		if E.MapInfo.name == localizedMapNames["Nagrand"] or E.MapInfo.name == "Nagrand"  then
 			zoneName = localizedMapNames["Nagrand"].." ("..localizedMapNames["Outland"]..")"
-		elseif zoneName == localizedMapNames["Shadowmoon Valley"] or zoneName == "Shadowmoon Valley"  then
+		elseif E.MapInfo.name == localizedMapNames["Shadowmoon Valley"] or E.MapInfo.name == "Shadowmoon Valley"  then
 			zoneName = localizedMapNames["Shadowmoon Valley"].." ("..localizedMapNames["Outland"]..")"
 		end
 	end
