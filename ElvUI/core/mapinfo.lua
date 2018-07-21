@@ -4,12 +4,14 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local select = select
 local pairs = pairs
 --WoW API / Variables
+local Enum = Enum
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local CreateVector2D = CreateVector2D
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
+local MapUtil = MapUtil
 
 E.MapInfo = {}
 function E:Update_MapInfo(event)
@@ -22,6 +24,19 @@ function E:Update_MapInfo(event)
 
 	E.MapInfo.mapID = mapID or nil
 	E.MapInfo.zoneText = E:GetZoneText(mapID)
+
+	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
+	if continent then
+		E.MapInfo.continentType = continent.mapType
+		E.MapInfo.continentID = continent.mapID
+		E.MapInfo.continentName = continent.name
+		E.MapInfo.continentParentID = continent.parentMapID
+	else
+		E.MapInfo.continentType = nil
+		E.MapInfo.continentID = nil
+		E.MapInfo.continentName = nil
+		E.MapInfo.continentParentID = nil
+	end
 
 	E:Update_MapCoords()
 
