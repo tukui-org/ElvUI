@@ -96,7 +96,6 @@ function E:GetZoneText(mapID)
 	return zoneName
 end
 
-E:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_MapInfo")
 E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_MapInfo")
 E:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_MapInfo")
 E:RegisterEvent("ZONE_CHANGED", "Update_MapInfo")

@@ -385,6 +385,8 @@ end
 
 function E:PLAYER_ENTERING_WORLD()
 	self:CheckRole()
+	self:Update_MapInfo()
+
 	if not self.MediaUpdated then
 		self:UpdateMedia()
 		self.MediaUpdated = true;
