@@ -15,7 +15,7 @@ local displayString = ""
 local inRestrictedArea = false
 
 local function Update(self, elapsed)
-	if inRestrictedArea or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
+	if inRestrictedArea or not E.MapInfo.coordsWatching then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
@@ -26,10 +26,11 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
+	E:MapInfo_Update()
 
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
+		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 	else
 		inRestrictedArea = true
 		self.text:SetText("N/A")

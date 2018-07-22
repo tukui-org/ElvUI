@@ -82,13 +82,15 @@ end
 
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
-	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
-	if not (E.MapInfo.x and E.MapInfo.y) then
+	E:MapInfo_Update()
+
+	if E.MapInfo.x and E.MapInfo.y then
+		inRestrictedArea = false
+		CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+	else
 		inRestrictedArea = true
 		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 		CoordsHolder.mouseCoords:SetText("")
-	else
-		inRestrictedArea = false
 	end
 end
 
@@ -116,7 +118,7 @@ function M:UpdateCoords()
 		CoordsHolder.mouseCoords:SetText("")
 	end
 
-	if not inRestrictedArea and (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then
+	if not inRestrictedArea and E.MapInfo.coordsWatching then
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else

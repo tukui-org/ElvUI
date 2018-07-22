@@ -34,17 +34,12 @@ function E:MapInfo_Update(event)
 	E.MapInfo.continentName = (continent and continent.name) or nil
 
 	E:MapInfo_CoordsUpdate()
-
-	if event == 'PLAYER_ENTERING_WORLD' then
-		E.MapInfo.coordsCalled = true
-	end
 end
 
 local coordsWatcher = CreateFrame("Frame")
 function E:MapInfo_CoordsStart()
 	E.MapInfo.coordsWatching = true
 	E.MapInfo.coordsFalling = nil
-	E.MapInfo.coordsCalled = nil
 	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
 end
 
