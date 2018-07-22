@@ -83,11 +83,11 @@ end
 local inRestrictedArea = false
 function M:PLAYER_ENTERING_WORLD()
 	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
-	if not E.MapInfo.mapID then
+	if not (E.MapInfo.x and E.MapInfo.y) then
 		inRestrictedArea = true
 		self:CancelTimer(self.CoordsTimer)
 		self.CoordsTimer = nil
-		CoordsHolder.playerCoords:SetText("")
+		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 		CoordsHolder.mouseCoords:SetText("")
 	elseif not self.CoordsTimer then
 		inRestrictedArea = false
