@@ -18,7 +18,7 @@ local function LoadSkin()
 	WorldMapFrame.NavBar:StripTextures()
 	WorldMapFrame.NavBar.overlay:StripTextures()
 	WorldMapFrame.NavBar:SetPoint("TOPLEFT", 1, -40)
-	
+
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
 
@@ -45,6 +45,8 @@ local function LoadSkin()
 	QuestScrollFrame.Contents.StoryHeader.Background:SetWidth(251)
 	QuestScrollFrame.Contents.StoryHeader.Background:SetPoint("TOP", 0, -13)
 	QuestScrollFrame.Contents.StoryHeader.Text:SetPoint("TOPLEFT", 18, -20)
+	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAllPoints(QuestScrollFrame.Contents.StoryHeader.Background)
+	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAlpha(0)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
 	QuestScrollFrameScrollBar:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -19)
 	QuestScrollFrameScrollBar:SetPoint("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
