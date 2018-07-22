@@ -25,14 +25,6 @@ local function LoadSkin()
 		ContributionBuffTooltip.Border:SetAlpha(0)
 		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 		ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
-
-		--Contribution Tooltip
-		ContributionTooltip:StripTextures()
-		ContributionTooltip:CreateBackdrop("Transparent")
-		ContributionTooltip.ItemTooltip.IconBorder:SetAlpha(0)
-		ContributionTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-		ContributionTooltip.ItemTooltip:CreateBackdrop()
-		ContributionTooltip.ItemTooltip.backdrop:SetOutside(ContributionTooltip.ItemTooltip.Icon)
 	end
 
 	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(self)
