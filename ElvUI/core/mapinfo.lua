@@ -16,7 +16,7 @@ local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local MapUtil = MapUtil
 
 E.MapInfo = {}
-function E:MapInfo_Update(event)
+function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")
 
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
