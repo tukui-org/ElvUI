@@ -2239,6 +2239,8 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	end
 end
 
+
+
 local FindURL_Events = {
 	"CHAT_MSG_WHISPER",
 	"CHAT_MSG_WHISPER_INFORM",
@@ -2304,6 +2306,15 @@ function CH:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
+	
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "Test");
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "Test");
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "Test");
+	self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "Test");
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "Test");
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "Test");
+	self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "Test");
+
 
 	self:SetupChat()
 	self:UpdateAnchors()
@@ -2418,7 +2429,153 @@ function CH:Initialize()
 
 	-- The width got changed in Bfa
 	CombatLogQuickButtonFrame_CustomTexture:Hide()
+
+	--Chat Heads Frame
+	self.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
+	self.ChatHeadFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
+	self.ChatHeadFrame:Height(20)
+	self.ChatHeadFrame:Width(200)
+	E:CreateMover(self.ChatHeadFrame, 'VOICECHAT', L["Voice Chat"]);
+	self.maxHeads = 5
+	self.volumeBarHeight = 3
+
+	local CHAT_HEAD_HEIGHT = 40
+	for i=1, self.maxHeads do
+		self.ChatHeadFrame[i] = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, self.ChatHeadFrame)
+		self.ChatHeadFrame[i]:SetWidth(self.ChatHeadFrame:GetWidth())
+		self.ChatHeadFrame[i]:SetHeight(CHAT_HEAD_HEIGHT)
+
+		self.ChatHeadFrame[i].Portrait = CreateFrame("Frame", nil, self.ChatHeadFrame[i])
+		self.ChatHeadFrame[i].Portrait:Width(CHAT_HEAD_HEIGHT - self.volumeBarHeight)
+		self.ChatHeadFrame[i].Portrait:Height(CHAT_HEAD_HEIGHT - self.volumeBarHeight - E.Border*2)
+		self.ChatHeadFrame[i].Portrait:SetPoint("TOPLEFT", self.ChatHeadFrame[i], "TOPLEFT")
+		self.ChatHeadFrame[i].Portrait:SetTemplate()
+		self.ChatHeadFrame[i].Portrait.texture = self.ChatHeadFrame[i].Portrait:CreateTexture(nil, "OVERLAY")
+		self.ChatHeadFrame[i].Portrait.texture:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+		self.ChatHeadFrame[i].Portrait.texture:SetInside(self.ChatHeadFrame[i].Portrait)
+
+		self.ChatHeadFrame[i].Name = self.ChatHeadFrame[i]:CreateFontString(nil, "OVERLAY")
+		self.ChatHeadFrame[i].Name:FontTemplate(nil, 20)
+		self.ChatHeadFrame[i].Name:SetPoint("LEFT", self.ChatHeadFrame[i].Portrait, "RIGHT", 2, 0)
+
+
+		self.ChatHeadFrame[i].StatusBar = CreateFrame("StatusBar", nil, self.ChatHeadFrame[i])
+		self.ChatHeadFrame[i].StatusBar:SetPoint("TOPLEFT", self.ChatHeadFrame[i].Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
+		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
+		self.ChatHeadFrame[i].StatusBar:SetHeight(self.volumeBarHeight)
+		self.ChatHeadFrame[i].StatusBar:CreateBackdrop()
+		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E["media"].normTex)
+		self.ChatHeadFrame[i].StatusBar:SetMinMaxValues(0, 1)
+
+		self.ChatHeadFrame[i].StatusBar.anim = CreateAnimationGroup(self.ChatHeadFrame[i].StatusBar)
+		self.ChatHeadFrame[i].StatusBar.anim.progress = self.ChatHeadFrame[i].StatusBar.anim:CreateAnimation("Progress")
+		self.ChatHeadFrame[i].StatusBar.anim.progress:SetSmoothing("Out")
+		self.ChatHeadFrame[i].StatusBar.anim.progress:SetDuration(.3)
+
+
+		self.ChatHeadFrame[i]:Hide()
+	end 
+
+	self:SetChatHeadOrientation("TOP")
 end
+
+CH.TalkingList = {}
+function CH:GetAvailableHead()
+	for i=1, self.maxHeads do
+		if not self.ChatHeadFrame[i]:IsShown() then
+			return self.ChatHeadFrame[i]
+		end
+	end
+end
+
+function CH:GetHeadByID(memberID)
+	for i=1, self.maxHeads do
+		if self.ChatHeadFrame[i].memberID == memberID then
+			return self.ChatHeadFrame[i]
+		end
+	end
+end
+
+
+function CH:ConfigureHead(memberID, channelID)
+	local frame = self:GetAvailableHead()
+	if not frame then return end
+	frame.memberID = memberID
+	frame.channelID = channelID
+
+	C_VoiceChat.SetPortraitTexture(frame.Portrait.texture, memberID, channelID);
+
+	local memberName = C_VoiceChat.GetMemberName(memberID, channelID);
+	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID);
+	frame.Name:SetText(memberName or "")
+	frame.Name:SetVertexColor(r, g, b, 1);
+	
+	frame:Show()
+end
+
+function CH:DeconfigureHead(memberID, channelID)
+	local frame = self:GetHeadByID(memberID)
+	if not frame then return end
+
+	frame.memberID = nil
+	frame.channelID = nil
+	frame:Hide()
+end
+
+function CH:Test(event, ...)
+	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
+		local memberID, channelID, isTalking = ...
+
+		if isTalking then
+			CH.TalkingList[memberID] = channelID
+			self:ConfigureHead(memberID, channelID)
+		else
+			CH.TalkingList[memberID] = nil
+			self:DeconfigureHead(memberID, channelID)
+		end
+
+	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
+		local memberID, channelID, volume = ...
+		local frame = CH:GetHeadByID(memberID)
+		if frame and channelID == frame.channelID then
+			frame.StatusBar.anim.progress:SetChange(volume)
+			frame.StatusBar.anim.progress:Play()
+
+			frame.StatusBar:SetStatusBarColor(E:ColorGradient(volume, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+		end
+	--[[elseif event == "VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED" then
+		local channelID, isTransmitting = ...
+		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID);
+		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
+			CH.TalkingList[localPlayerMemberID] = channelID
+			self:ConfigureHead(localPlayerMemberID, channelID)
+		end]]
+	end
+end
+
+function CH:SetChatHeadOrientation(position)
+
+	if position == "TOP" then
+		for i=1, self.maxHeads do
+			self.ChatHeadFrame[i]:ClearAllPoints()
+			if i == 1 then
+				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
+			else
+				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
+			end
+		end
+	else 
+		for i=1, self.maxHeads do
+			self.ChatHeadFrame[i]:ClearAllPoints()
+			if i == 1 then
+				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
+			else
+				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
+			end
+		end	
+	end
+end
+
 
 local function InitializeCallback()
 	CH:Initialize()
