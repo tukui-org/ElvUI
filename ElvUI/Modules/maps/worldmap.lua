@@ -85,18 +85,15 @@ function M:PLAYER_ENTERING_WORLD()
 	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
 	if not (E.MapInfo.x and E.MapInfo.y) then
 		inRestrictedArea = true
-		self:CancelTimer(self.CoordsTimer)
-		self.CoordsTimer = nil
 		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 		CoordsHolder.mouseCoords:SetText("")
-	elseif not self.CoordsTimer then
+	else
 		inRestrictedArea = false
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.1)
 	end
 end
 
 function M:UpdateCoords()
-	if inRestrictedArea or not WorldMapFrame:IsShown() then return end
+	if not WorldMapFrame:IsShown() then return end
 
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
 		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
@@ -119,7 +116,7 @@ function M:UpdateCoords()
 		CoordsHolder.mouseCoords:SetText("")
 	end
 
-	if E.MapInfo.coordsCalled or E.MapInfo.coordsWatching then
+	if not inRestrictedArea and (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
@@ -158,7 +155,16 @@ function M:Initialize()
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+		WorldMapFrame:HookScript("OnShow", function()
+			if not M.CoordsTimer then
+				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
+			end
+		end)
+		WorldMapFrame:HookScript("OnHide", function()
+			M:CancelTimer(M.CoordsTimer)
+			M.CoordsTimer = nil
+		end)
+
 		M:PositionCoords()
 
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
