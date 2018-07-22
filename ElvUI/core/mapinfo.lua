@@ -5,6 +5,7 @@ local select = select
 local pairs = pairs
 --WoW API / Variables
 local Enum = Enum
+local IsFalling = IsFalling
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local CreateVector2D = CreateVector2D
@@ -45,7 +46,15 @@ function E:MapInfo_CoordsStart()
 	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
 end
 
-function E:MapInfo_CoordsStop()
+function E:MapInfo_CoordsStop(event)
+	if event == "CRITERIA_UPDATE" then
+		if not E.MapInfo.coordsFalling then return end -- stop if we weren't falling
+		E.MapInfo.coordsFalling = nil -- we were falling!
+	elseif event == "PLAYER_STOPPED_MOVING" and IsFalling() then
+		E.MapInfo.coordsFalling = true
+		return
+	end
+
 	E.MapInfo.coordsWatching = nil
 	coordsWatcher:SetScript("OnUpdate", nil)
 end
@@ -134,8 +143,9 @@ function E:GetZoneText(mapID)
 	return zoneName or E.MapInfo.name
 end
 
-E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
+E:RegisterEvent("CRITERIA_UPDATE", "MapInfo_CoordsStop") -- when the player goes into an animation (landing)
 E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
+E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
 E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
 E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
 E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")
