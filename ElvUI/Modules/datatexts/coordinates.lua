@@ -16,7 +16,7 @@ local inRestrictedArea = false
 local watcher = CreateFrame("Frame")
 
 local function Update(self, elapsed)
-	if inRestrictedArea or not watcher.dt or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
+	if inRestrictedArea or not self.dt or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
