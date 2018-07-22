@@ -6,7 +6,7 @@
 
 **Bug Fixes:**  
 Fixed CVar `chatClassColorOverride` not working correctly.  
-Fixed error which occurred in `OrderHallTalentFrame` skin.  
+Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
 Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia!)  
 Fixed bags not properly showing items when searched.  
 
