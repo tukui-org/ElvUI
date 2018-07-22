@@ -90,7 +90,6 @@ function M:PLAYER_ENTERING_WORLD()
 	else
 		inRestrictedArea = true
 		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
-		CoordsHolder.mouseCoords:SetText("")
 	end
 end
 
