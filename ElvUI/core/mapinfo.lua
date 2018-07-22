@@ -8,6 +8,7 @@ local Enum = Enum
 local IsFalling = IsFalling
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
+local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
@@ -42,6 +43,7 @@ end
 local coordsWatcher = CreateFrame("Frame")
 function E:MapInfo_CoordsStart()
 	E.MapInfo.coordsWatching = true
+	E.MapInfo.coordsFalling = nil
 	E.MapInfo.coordsCalled = nil
 	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
 end
@@ -49,6 +51,7 @@ end
 function E:MapInfo_CoordsStop(event)
 	if event == "CRITERIA_UPDATE" then
 		if not E.MapInfo.coordsFalling then return end -- stop if we weren't falling
+		if (GetUnitSpeed('player') or 0) > 0 then return end -- we are still moving!
 		E.MapInfo.coordsFalling = nil -- we were falling!
 	elseif event == "PLAYER_STOPPED_MOVING" and IsFalling() then
 		E.MapInfo.coordsFalling = true
