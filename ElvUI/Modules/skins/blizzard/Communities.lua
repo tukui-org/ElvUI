@@ -67,11 +67,13 @@ local function LoadSkin()
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
 
-			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Overlay")
-			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-			self.bg:Point("TOPLEFT", 4, -3)
-			self.bg:Point("BOTTOMRIGHT", -1, 3)
+			if not self.bg then
+				self.bg = CreateFrame("Frame", nil, self)
+				self.bg:CreateBackdrop("Overlay")
+				self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+				self.bg:Point("TOPLEFT", 4, -3)
+				self.bg:Point("BOTTOMRIGHT", -1, 3)
+			end
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
@@ -100,11 +102,13 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 		self.IconRing:Hide()
 
-		self.bg = CreateFrame("Frame", nil, self)
-		self.bg:CreateBackdrop("Overlay")
-		self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-		self.bg:Point("TOPLEFT", 4, -3)
-		self.bg:Point("BOTTOMRIGHT", -1, 3)
+		if not self.bg then
+			self.bg = CreateFrame("Frame", nil, self)
+			self.bg:CreateBackdrop("Overlay")
+			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+			self.bg:Point("TOPLEFT", 4, -3)
+			self.bg:Point("BOTTOMRIGHT", -1, 3)
+		end
 
 		local highlight = self:GetHighlightTexture()
 		highlight:SetColorTexture(1, 1, 1, 0.3)
