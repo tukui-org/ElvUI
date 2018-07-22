@@ -221,7 +221,7 @@ function S:CropIcon(texture, parent)
 	end
 end
 
-function S:HandleScrollBar(frame, thumbTrim)
+function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 	if frame:GetName() then
 		if frame.Background then frame.Background:SetTexture(nil) end
 		if frame.trackBG then frame.trackBG:SetTexture(nil) end
@@ -261,12 +261,13 @@ function S:HandleScrollBar(frame, thumbTrim)
 			end
 
 			if frame:GetThumbTexture() then
-				if not thumbTrim then thumbTrim = 3 end
+				if not thumbTrimY then thumbTrimY = 3 end
+				if not thumbTrimX then thumbTrimX = 2 end
 				frame:GetThumbTexture():SetTexture(nil)
 				if not frame.thumbbg then
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrimY)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
