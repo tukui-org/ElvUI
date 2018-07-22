@@ -13,15 +13,14 @@ local CreateFrame = CreateFrame
 
 local displayString = ""
 local inRestrictedArea = false
-local watcher = CreateFrame("Frame")
 
 local function Update(self, elapsed)
-	if inRestrictedArea or not self.dt or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
+	if inRestrictedArea or not (E.MapInfo.coordsCalled or E.MapInfo.coordsWatching) then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		self.dt.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
+		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 		self.timeSinceUpdate = 0
 	end
 end
@@ -29,17 +28,11 @@ end
 local function OnEvent(self)
 	E:MapInfo_Update('PLAYER_ENTERING_WORLD')
 
-	if watcher.dt ~= self then
-		watcher.dt = self
-	end
-
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		watcher:SetScript("OnUpdate", Update)
 	else
 		inRestrictedArea = true
 		self.text:SetText("N/A")
-		watcher:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -52,4 +45,4 @@ local function ValueColorUpdate(hex)
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', {"PLAYER_ENTERING_WORLD"}, OnEvent, nil, Click, nil, nil, L["Coords"])
+DT:RegisterDatatext('Coords', {"PLAYER_ENTERING_WORLD"}, OnEvent, Update, Click, nil, nil, L["Coords"])
