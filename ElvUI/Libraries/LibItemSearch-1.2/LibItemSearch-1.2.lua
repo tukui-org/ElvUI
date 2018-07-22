@@ -266,9 +266,9 @@ elseif IsAddOnLoaded('Wardrobe') then
 else
 	function Lib:BelongsToSet(id, search)
 		for i = 1, C_EquipmentSet.GetNumEquipmentSets() do
-			local name = C_EquipmentSet.GetEquipmentSetInfo(i)
+			local name, _, setID = C_EquipmentSet.GetEquipmentSetInfo(i)
 			if Search:Find(search, name) or search == "matchall" then
-				local items = C_EquipmentSet.GetItemIDs(name)
+				local items = C_EquipmentSet.GetItemIDs(setID)
 				for _, item in pairs(items) do
 					if id == item then
 						return true
