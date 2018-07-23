@@ -400,11 +400,20 @@ function CH:StyleChat(frame)
 
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
+	local scroll = frame.ScrollBar
+	local scrollToBottom = frame.ScrollToBottomButton
+	local scrollTex = _G[name.."ThumbTexture"]
 
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
 		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
 		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
+	end
+
+	if scroll then
+		scroll:Kill()
+		scrollToBottom:Kill()
+		scrollTex:Kill()
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
@@ -822,10 +831,6 @@ function CH:PositionChat(override)
 		isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
 		tab.owner = chat
-
-		-- Hide new Bfa Scroll bars
-		chat.ScrollBar:Kill()
-		chat.ScrollToBottomButton:Kill()
 
 		if id > NUM_CHAT_WINDOWS then
 			if select(2, tab:GetPoint()):GetName() ~= chatbg then
