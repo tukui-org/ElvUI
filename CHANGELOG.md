@@ -9,10 +9,11 @@ Fixed CVar `chatClassColorOverride` not working correctly.
 Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
 Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia!)  
 Fixed bags not properly showing items when searched.  
+Fixed an issue that sometimes the chat scrollBars where not hidden properly.  
 
 
 **Misc. Changes:**  
-
+Re-enable the old Guild skin back  
 
 ___
 **Version 10.77 [ July 20th 2018 ]**
