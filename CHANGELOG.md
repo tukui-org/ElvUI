@@ -13,7 +13,7 @@ Fixed an issue that sometimes the chat scrollBars where not hidden properly.
 
 
 **Misc. Changes:**  
-Re-enable the old Guild skin back  
+Re-enable the old Guild skin back.  
 
 ___
 **Version 10.77 [ July 20th 2018 ]**
