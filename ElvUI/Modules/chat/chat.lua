@@ -1103,7 +1103,7 @@ function CH:ShortChannel()
 	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[strupper(self)] or gsub(self, "channel:", ""))
 end
 
-local function getFirstToonClassColor(id)
+function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	local bnetIDAccount, isOnline, numGameAccounts, client, Class, _
 	local total = BNGetNumFriends();
@@ -1131,7 +1131,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	local Class
 
 	if not bnetIDGameAccount then --dont know how this is possible
-		local firstToonClass = getFirstToonClassColor(id)
+		local firstToonClass = CH:GetBNFirstToonClassColor(id)
 		if firstToonClass then
 			Class = firstToonClass
 		else
