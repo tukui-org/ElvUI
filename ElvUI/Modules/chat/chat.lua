@@ -2435,7 +2435,7 @@ function CH:Initialize()
 	self.ChatHeadFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
 	self.ChatHeadFrame:Height(20)
 	self.ChatHeadFrame:Width(200)
-	E:CreateMover(self.ChatHeadFrame, 'VOICECHAT', L["Voice Chat"]);
+	E:CreateMover(self.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"]);
 	self.maxHeads = 5
 	self.volumeBarHeight = 3
 
