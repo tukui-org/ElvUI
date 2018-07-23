@@ -330,8 +330,16 @@ local function LoadSkin()
 	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
 	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
 	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
-
 	S:HandleCloseButton(FiltersFrame.CloseButton)
+
+	-- Guild Message EditBox
+	CommunitiesGuildTextEditFrame:StripTextures()
+	CommunitiesGuildTextEditFrame:SetTemplate("Transparent")
+	CommunitiesGuildTextEditFrame.Container:SetTemplate("Transparent")
+	--S:HandleScrollSlider(GuildTextEditFrameScrollBar) -- FUCKING SCROLLBARS >.>
+	S:HandleButton(CommunitiesGuildTextEditFrameAcceptButton)
+	S:HandleButton(CommunitiesGuildTextEditFrameCloseButton) -- Same Name as the other Close Button, WTF?!
+	S:HandleCloseButton(CommunitiesGuildTextEditFrameCloseButton)
 
 	-- Guild Log
 	CommunitiesGuildLogFrame:StripTextures()
