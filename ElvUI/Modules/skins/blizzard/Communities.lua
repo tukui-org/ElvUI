@@ -6,6 +6,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
+local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
@@ -218,6 +219,49 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 
+	local function UpdateNames(self)
+		if not self.expanded then return end
+
+		local memberInfo = self:GetMemberInfo()
+		if memberInfo and memberInfo.classID then
+			local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
+			if classInfo then
+				local tcoords = CLASS_ICON_TCOORDS[classInfo.classFile]
+				self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			end
+		end
+	end
+
+	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(self)
+		for i = 1, self.ColumnDisplay:GetNumChildren() do
+			local child = select(i, self.ColumnDisplay:GetChildren())
+			if not child.IsSkinned then
+				child:StripTextures()
+				child:SetTemplate("Transparent")
+
+				child.IsSkinned = true
+			end
+		end
+
+		for _, button in ipairs(self.ListScrollFrame.buttons or {}) do
+			if button and not button.hooked then
+				hooksecurefunc(button, "RefreshExpandedColumns", UpdateNames)
+				if button.ProfessionHeader then
+					local header = button.ProfessionHeader
+					for i = 1, 3 do
+						select(i, header:GetRegions()):Hide()
+					end
+					header:SetTemplate("Transparent")
+				end
+
+				button.hooked = true
+			end
+			if button and button.bg then
+				button.bg:SetShown(button.Class:IsShown())
+			end
+		end
+	end)
+
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
 	GuildBenefitsFrame.InsetBorderLeft:Hide()
@@ -311,6 +355,12 @@ local function LoadSkin()
 	for _, frame in pairs(striptextures) do
 		_G[frame]:StripTextures()
 	end
+
+	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
+		if button.header:IsShown() then
+			button.header:SetAlpha(0)
+		end
+	end)
 
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
