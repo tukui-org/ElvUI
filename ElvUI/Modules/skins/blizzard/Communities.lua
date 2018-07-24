@@ -6,7 +6,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
+local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -53,7 +54,7 @@ local function LoadSkin()
 	CommunitiesFrameInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetBotLeftCorner:Hide()
 
-	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
+	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo)
 		if clubInfo then
 			self:SetSize(166, 67)
 
@@ -67,11 +68,13 @@ local function LoadSkin()
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
 
-			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Overlay")
-			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-			self.bg:Point("TOPLEFT", 4, -3)
-			self.bg:Point("BOTTOMRIGHT", -1, 3)
+			if not self.bg then
+				self.bg = CreateFrame("Frame", nil, self)
+				self.bg:CreateBackdrop("Overlay")
+				self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+				self.bg:Point("TOPLEFT", 4, -3)
+				self.bg:Point("BOTTOMRIGHT", -1, 3)
+			end
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
@@ -100,11 +103,13 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 		self.IconRing:Hide()
 
-		self.bg = CreateFrame("Frame", nil, self)
-		self.bg:CreateBackdrop("Overlay")
-		self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-		self.bg:Point("TOPLEFT", 4, -3)
-		self.bg:Point("BOTTOMRIGHT", -1, 3)
+		if not self.bg then
+			self.bg = CreateFrame("Frame", nil, self)
+			self.bg:CreateBackdrop("Overlay")
+			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+			self.bg:Point("TOPLEFT", 4, -3)
+			self.bg:Point("BOTTOMRIGHT", -1, 3)
+		end
 
 		local highlight = self:GetHighlightTexture()
 		highlight:SetColorTexture(1, 1, 1, 0.3)
@@ -191,10 +196,12 @@ local function LoadSkin()
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
 	CommunitiesFrame.GuildMemberDetailFrame:CreateBackdrop("Transparent")
 
+	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate("Transparent")
+	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate("Transparent")
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
-	--S:HandleEditBox(CommunitiesFrame.GuildMemberDetailFrame.Note)
+	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
@@ -211,6 +218,49 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
+
+	local function UpdateNames(self)
+		if not self.expanded then return end
+
+		local memberInfo = self:GetMemberInfo()
+		if memberInfo and memberInfo.classID then
+			local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
+			if classInfo then
+				local tcoords = CLASS_ICON_TCOORDS[classInfo.classFile]
+				self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			end
+		end
+	end
+
+	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(self)
+		for i = 1, self.ColumnDisplay:GetNumChildren() do
+			local child = select(i, self.ColumnDisplay:GetChildren())
+			if not child.IsSkinned then
+				child:StripTextures()
+				child:SetTemplate("Transparent")
+
+				child.IsSkinned = true
+			end
+		end
+
+		for _, button in ipairs(self.ListScrollFrame.buttons or {}) do
+			if button and not button.hooked then
+				hooksecurefunc(button, "RefreshExpandedColumns", UpdateNames)
+				if button.ProfessionHeader then
+					local header = button.ProfessionHeader
+					for i = 1, 3 do
+						select(i, header:GetRegions()):Hide()
+					end
+					header:SetTemplate("Transparent")
+				end
+
+				button.hooked = true
+			end
+			if button and button.bg then
+				button.bg:SetShown(button.Class:IsShown())
+			end
+		end
+	end)
 
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
@@ -248,7 +298,6 @@ local function LoadSkin()
 		local buttons = scrollFrame.buttons
 		local button, index
 		local numButtons = #buttons
-		local numRewards = GetNumGuildRewards()
 
 		for i = 1, numButtons do
 			button = buttons[i]
@@ -277,6 +326,8 @@ local function LoadSkin()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
 	StatusBar.Shadow:Hide()
+	StatusBar.Progress:SetTexture(E["media"].normTex)
+	StatusBar.Progress:SetAllPoints()
 	E:RegisterStatusBar(StatusBar)
 
 	local bg = CreateFrame("Frame", nil, StatusBar)
@@ -307,6 +358,12 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
+	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
+		if button.header:IsShown() then
+			button.header:SetAlpha(0)
+		end
+	end)
+
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
@@ -325,8 +382,16 @@ local function LoadSkin()
 	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
 	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
 	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
-
 	S:HandleCloseButton(FiltersFrame.CloseButton)
+
+	-- Guild Message EditBox
+	CommunitiesGuildTextEditFrame:StripTextures()
+	CommunitiesGuildTextEditFrame:SetTemplate("Transparent")
+	CommunitiesGuildTextEditFrame.Container:SetTemplate("Transparent")
+	--S:HandleScrollSlider(GuildTextEditFrameScrollBar) -- FUCKING SCROLLBARS >.>
+	S:HandleButton(CommunitiesGuildTextEditFrameAcceptButton)
+	S:HandleButton(CommunitiesGuildTextEditFrameCloseButton) -- Same Name as the other Close Button, WTF?!
+	S:HandleCloseButton(CommunitiesGuildTextEditFrameCloseButton)
 
 	-- Guild Log
 	CommunitiesGuildLogFrame:StripTextures()

@@ -221,7 +221,7 @@ function S:CropIcon(texture, parent)
 	end
 end
 
-function S:HandleScrollBar(frame, thumbTrim)
+function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 	if frame:GetName() then
 		if frame.Background then frame.Background:SetTexture(nil) end
 		if frame.trackBG then frame.trackBG:SetTexture(nil) end
@@ -261,12 +261,13 @@ function S:HandleScrollBar(frame, thumbTrim)
 			end
 
 			if frame:GetThumbTexture() then
-				if not thumbTrim then thumbTrim = 3 end
+				if not thumbTrimY then thumbTrimY = 3 end
+				if not thumbTrimX then thumbTrimX = 2 end
 				frame:GetThumbTexture():SetTexture(nil)
 				if not frame.thumbbg then
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrimY)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
@@ -324,6 +325,7 @@ end
 -- HybridScrollFrame (Taken from Aurora)
 function S:HandleScrollSlider(Slider, thumbTrim)
 	local parent = Slider:GetParent()
+	if not parent then return end
 	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
 	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
 
@@ -331,6 +333,8 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
 	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
 	if Slider.ScrollBarBottom then Slider.ScrollBarBottom:Hide() end
+	if Slider.Top then Slider.Top:SetTexture(nil) end
+	if Slider.Bottom then Slider.Bottom:SetTexture(nil) end
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
@@ -348,6 +352,18 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 		if not Slider.ScrollDown.icon then
 			S:HandleNextPrevButton(Slider.ScrollDown, true)
 			Slider.ScrollDown:Size(Slider.ScrollDown:GetWidth() + 7, Slider.ScrollDown:GetHeight() + 7)
+		end
+	end
+
+	if Slider.ScrollUpButton  and Slider.ScrollDownButton then
+		if not Slider.ScrollUpButton.icon then
+			S:HandleNextPrevButton(Slider.ScrollUpButton, true, true)
+			Slider.ScrollUpButton:Size(Slider.ScrollUpButton:GetWidth() + 9, Slider.ScrollUpButton:GetHeight() + 7) -- Not perfect
+		end
+
+		if not Slider.ScrollDownButton.icon then
+			S:HandleNextPrevButton(Slider.ScrollDownButton, true)
+			Slider.ScrollDownButton:Size(Slider.ScrollDownButton:GetWidth() + 7, Slider.ScrollDownButton:GetHeight() + 7)
 		end
 	end
 
@@ -370,6 +386,21 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
 			Slider.thumbbg:Point("TOPLEFT", Slider.thumbTexture, "TOPLEFT", 2, -thumbTrim)
 			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
+			Slider.thumbbg:SetTemplate("Default", true, true)
+			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+			if Slider.trackbg then
+				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
+			end
+		end
+	end
+
+	if Slider.ThumbTexture then
+		if not thumbTrim then thumbTrim = 3 end
+		Slider.ThumbTexture:SetTexture(nil)
+		if not Slider.thumbbg then
+			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
+			Slider.thumbbg:Point("TOPLEFT", Slider.ThumbTexture, "TOPLEFT", 2, -thumbTrim)
+			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.ThumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
 			Slider.thumbbg:SetTemplate("Default", true, true)
 			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 			if Slider.trackbg then
@@ -1106,56 +1137,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
--- Taken from Aurora
-local function Handle_SetNormalTexture(self, texture)
-	if self.settingTexture then return end
-	self.settingTexture = true
-	self:SetNormalTexture("")
-
-	if texture and texture ~= "" then
-		if texture:find("Plus") then
-			self._elvBG.plus:Show()
-		elseif texture:find("Minus") then
-			self._elvBG.plus:Hide()
-		end
-		self._elvBG:Show()
-	else
-		self._elvBG:Hide()
-	end
-	self.settingTexture = nil
-end
-
-function S:HandleExpandOrCollapse(button, funcName)
-	-- `funcName` arg: for plugins to handle with specific usage.
-	-- (ie: our hook of `QuestLogQuests_Update` in `skins\blizzard\quest.lua`)
-
-	button:SetHighlightTexture("")
-	button:SetPushedTexture("")
-
-	local bg = CreateFrame("Frame", nil, button)
-	bg:SetSize(13, 13)
-	bg:SetPoint("TOPLEFT", button:GetNormalTexture(), 0, -2)
-	bg:CreateBackdrop()
-	button._elvBG = bg
-
-	button._elvHightlight = {}
-	bg.minus = bg:CreateTexture(nil, "OVERLAY")
-	bg.minus:SetPoint("TOPLEFT", 2, -6)
-	bg.minus:SetPoint("BOTTOMRIGHT", -2, 6)
-	bg.minus:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
-	tinsert(button._elvHightlight, bg.minus)
-
-	bg.plus = bg:CreateTexture(nil, "OVERLAY")
-	bg.plus:SetPoint("TOPLEFT", 6, -2)
-	bg.plus:SetPoint("BOTTOMRIGHT", -6, 2)
-	bg.plus:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
-	tinsert(button._elvHightlight, bg.plus)
-
-	hooksecurefunc(button, "SetNormalTexture", Handle_SetNormalTexture)
-end
-
 -- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, anchorPoint, relativeTo, relativePoint, offsetX, offsetY)
+function S:WorldMapMixin_AddOverlayFrame(self, templateName)
 	S[templateName](self.overlayFrames[#self.overlayFrames])
 end
 

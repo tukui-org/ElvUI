@@ -8,10 +8,10 @@
 -- :IterateOptionsTables() (and :GetOptionsTable() if only given one argument) return a function reference that the requesting config handling addon must call with valid "uiType", "uiName".
 -- @class file
 -- @name AceConfigRegistry-3.0
--- @release $Id: AceConfigRegistry-3.0.lua 1105 2013-12-08 22:11:58Z nevcairiel $
-local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
+-- @release $Id: AceConfigRegistry-3.0.lua 1169 2018-02-27 16:18:28Z nevcairiel $
+local CallbackHandler = LibStub("CallbackHandler-1.0")
 
-local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 2
+local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 18
 local AceConfigRegistry = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigRegistry then return end
@@ -67,6 +67,7 @@ local optmethodbool={["nil"]=true,["string"]=true,["function"]=true,["boolean"]=
 local opttable={["nil"]=true,["table"]=true,  _="table"}
 local optbool={["nil"]=true,["boolean"]=true,  _="boolean"}
 local optboolnumber={["nil"]=true,["boolean"]=true,["number"]=true,  _="boolean or number"}
+local optstringnumber={["nil"]=true,["string"]=true,["number"]=true, _="string or number"}
 
 local basekeys={
 	type=isstring,
@@ -90,7 +91,7 @@ local basekeys={
 	set=optmethodfalse,
 	func=optmethodfalse,
 	arg={["*"]=true},
-	width=optstring,
+	width=optstringnumber,
 	-- below here were created by ElvUI --
 	customWidth=optnumber,
 	textWidth=optmethodbool,

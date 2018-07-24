@@ -1,7 +1,7 @@
 --- AceConfigCmd-3.0 handles access to an options table through the "command line" interface via the ChatFrames.
 -- @class file
 -- @name AceConfigCmd-3.0
--- @release $Id: AceConfigCmd-3.0.lua 1045 2011-12-09 17:58:40Z nevcairiel $
+-- @release $Id: AceConfigCmd-3.0.lua 1161 2017-08-12 14:30:16Z funkydude $
 
 --[[
 AceConfigCmd-3.0
@@ -16,7 +16,7 @@ REQUIRES: AceConsole-3.0 for command registration (loaded on demand)
 
 local cfgreg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigCmd-3.0-ElvUI", 2
+local MAJOR, MINOR = "AceConfigCmd-3.0-ElvUI", 14
 local AceConfigCmd = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigCmd then return end

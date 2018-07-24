@@ -230,6 +230,7 @@ L["Left Click:"] = "Clique Esquerdo:"
 L["Raid Menu"] = "Menu de Raide"
 L["Remaining:"] = "Restante:"
 L["Rested:"] = "Descansado:"
+L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Bat-papo"
 L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
 L["AP:"] = true -- Artifact Power

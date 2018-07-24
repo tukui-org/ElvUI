@@ -8,9 +8,11 @@ local CreateFrame = CreateFrame
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
--- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
--- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, QuickJoinToastButton
+-- GLOBALS: Minimap, ChatAlertFrame, GameTooltip, ChatButtonHolder, LeftChatTab, RightChatTab
+-- GLOBALS: BINDING_HEADER_VOICE_CHAT, HideLeftChat, HideRightChat, HideBothChat
+-- GLOBALS: LeftMiniPanel, RightMiniPanel, LeftChatPanel, RightChatPanel, LeftChatDataPanel, RightChatDataPanel
+-- GLOBALS: ChatFrameChannelButton, QuickJoinToastButton, LeftChatToggleButton, RightChatToggleButton
+-- GLOBALS: ChatFrameToggleVoiceMuteButton, ChatFrameToggleVoiceDeafenButton
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -368,10 +370,11 @@ end
 function LO:CreateChatButtonPanel()
 	if E.private.chat.enable ~= true then return end
 
-	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", LeftChatPanel)
-	ChatButtonHolder:SetPoint("BOTTOMLEFT", LeftChatPanel, "TOPLEFT", 0, 0)
+	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
+	ChatButtonHolder:SetPoint("BOTTOMLEFT", LeftChatPanel, "TOPLEFT", 0, 1)
 	ChatButtonHolder:SetSize(27, 85)
 	ChatButtonHolder:Hide()
+	E:CreateMover(ChatButtonHolder, "SocialMenuMover", BINDING_HEADER_VOICE_CHAT)
 
 	ChatFrameChannelButton:ClearAllPoints()
 	ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP")

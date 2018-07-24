@@ -10,8 +10,7 @@ local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
---Preload shit..
-E.mult = 1;
+E.mult = 1
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 local function GetTemplate(t, isUnitFrameElement)

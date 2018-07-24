@@ -225,27 +225,25 @@ local function LoadSkin()
 	ConquestFrame.DPSIcon.bg:SetAlpha(0.6)
 	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
 
-	local function handleButton(button)
-		button:StripTextures()
-		button:SetTemplate()
-		button:StyleButton(nil, true)
-		button.SelectedTexture:SetInside()
-		button.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
+		local reward = bu.Reward
 
-		button.Reward:StripTextures()
-		button.Reward:SetTemplate("Default")
-		button.Reward:SetSize(35, 35)
-		button.Reward:SetPoint("RIGHT", button, "RIGHT", -7, -1)
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
+		bu:StyleButton(nil, true)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		button.Reward.Icon:SetAllPoints()
-		button.Reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		button.Reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		button.Reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		reward:StripTextures()
+		reward:SetTemplate("Default")
+		reward:SetSize(40, 40)
+		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
+
+		reward.Icon:SetAllPoints()
+		reward.Icon:SetPoint("TOPLEFT", 2, -2)
+		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
+		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
-
-	handleButton(ConquestFrame.RatedBG)
-	handleButton(ConquestFrame.Arena2v2)
-	handleButton(ConquestFrame.Arena3v3)
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 

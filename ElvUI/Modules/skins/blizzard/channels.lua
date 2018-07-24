@@ -4,9 +4,9 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, select = pairs, select
+local pairs = pairs
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -38,6 +38,7 @@ local function LoadSkin()
 	S:HandleButton(ChannelFrame.SettingsButton)
 
 	S:HandleScrollSlider(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
+	S:HandleScrollSlider(ChannelFrame.ChannelList.ScrollBar)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
 	S:HandleButton(CreateChannelPopup.OKButton)

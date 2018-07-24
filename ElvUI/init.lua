@@ -13,13 +13,35 @@ To load the AddOn engine inside another addon add this to the top of your file:
 --Cache global variables
 local _G = _G
 local pairs = pairs
+local unpack = unpack
+local strsplit = string.split
 local format = string.format
+
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local issecurevariable = issecurevariable
+
+local CreateFrame = CreateFrame
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnMetadata = GetAddOnMetadata
+local GetTime = GetTime
+local HideUIPanel = HideUIPanel
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
+local LoadAddOn = LoadAddOn
+local ReloadUI = ReloadUI
+
 local GameMenuFrame = GameMenuFrame
-local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+
+-- GLOBALS: UIDROPDOWNMENU_OPEN_MENU, UIDROPDOWNMENU_MAXLEVELS, UIDROPDOWNMENU_MAXBUTTONS, UIDROPDOWNMENU_OPEN_PATCH_VERSION, UIDROPDOWNMENU_VALUE_PATCH_VERSION
+-- GLOBALS: GameTooltip, ElvData, ElvPrivateData, ElvCharacterData, ElvDB, ElvPrivateDB, ElvCharacterDB, BINDING_HEADER_ELVUI
 
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
+local LibStub = LibStub
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
 AddOn.callbacks = AddOn.callbacks or
@@ -211,7 +233,7 @@ function AddOn:ToggleConfig(msg)
 
 	local pages
 	if (msg and msg ~= "") then
-		pages = {string.split(",", msg)}
+		pages = {strsplit(",", msg)}
 	end
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] or (pages ~= nil) then
@@ -244,6 +266,25 @@ if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 					until issecurevariable(b, "value")
 				end
 			end
+		end
+	end)
+end
+
+--DisplayModeCommunitiesTaint workaround
+--credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeCommunitiesTaint
+if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
+	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
+		if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
+			return
+		end
+		if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
+		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
+			UIDROPDOWNMENU_OPEN_MENU = nil
+			local t, f, prefix, i = _G, issecurevariable, " \0", 1
+			repeat
+				i, t[prefix .. i] = i + 1
+			until f("UIDROPDOWNMENU_OPEN_MENU")
 		end
 	end)
 end

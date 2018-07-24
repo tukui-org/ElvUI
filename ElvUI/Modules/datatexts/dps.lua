@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local time = time
-local select = select
 local max = math.max
 local join = string.join
 --WoW API / Variables
@@ -37,7 +36,7 @@ local function GetDPS(self)
 	self.text:SetFormattedText(displayString, L["DPS"], E:ShortValue(DPS))
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	lastPanel = self
 
 	if event == "PLAYER_ENTERING_WORLD" then

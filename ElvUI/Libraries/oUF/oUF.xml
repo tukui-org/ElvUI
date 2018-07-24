@@ -39,10 +39,12 @@
 	<Script file="elements\raidroleindicator.lua"/>
 
 	<!-- Clique support -->
-	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate, SecureHandlerEnterLeaveTemplate">
+	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate">
 		<Attributes>
 			<Attribute name="_onenter" type="string" value="local snippet = self:GetAttribute('clickcast_onenter'); if snippet then self:Run(snippet) end"/>
 			<Attribute name="_onleave" type="string" value="local snippet = self:GetAttribute('clickcast_onleave'); if snippet then self:Run(snippet) end"/>
+			<Attribute name="refreshUnitChange" type="string" value="local unit = self:GetAttribute('unit'); if unit then RegisterStateDriver(self, 'vehicleui', ('[@%s,unithasvehicleui]vehicle; novehicle'):format(unit)) else UnregisterStateDriver(self, 'vehicleui') end"/>
+			<Attribute name="_onstate-vehicleui" type="string" value="local unit = self:GetAttribute('unit'); if unit and newstate == 'vehicle' and UnitPlayerOrPetInRaid(unit) and not UnitTargetsVehicleInRaidUI(unit) then self:SetAttribute('toggleForVehicle', false) else self:SetAttribute('toggleForVehicle', true) end"/>
 		</Attributes>
 	</Button>
 

@@ -34,9 +34,9 @@
 	<Script file='garrison_template.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='gossip.lua'/>
-	<!-- <Script file='guild.lua'/> -->
+	<Script file='guild.lua'/>
 	<Script file='guildcontrol.lua'/>
-	<!-- <Script file='guildregistrar.lua'/> -->
+	<Script file='guildregistrar.lua'/>
 	<Script file='help.lua'/>
 	<Script file='inspect.lua'/>
 	<Script file='itemupgrade.lua'/>

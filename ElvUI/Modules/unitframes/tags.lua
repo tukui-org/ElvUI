@@ -80,7 +80,7 @@ local function UnitName(unit)
 	return name, realm
 end
 
-ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpower:percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -92,7 +92,7 @@ ElvUF.Tags.Methods['altpower:percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER"
+ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER_UPDATE"
 ElvUF.Tags.Methods['altpower:current'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -102,7 +102,7 @@ ElvUF.Tags.Methods['altpower:current'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -114,7 +114,7 @@ ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpower:deficit'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -126,7 +126,7 @@ ElvUF.Tags.Methods['altpower:deficit'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpower:current-max'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -138,7 +138,7 @@ ElvUF.Tags.Methods['altpower:current-max'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -150,7 +150,7 @@ ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then

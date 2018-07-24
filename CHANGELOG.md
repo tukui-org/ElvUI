@@ -1,19 +1,88 @@
-**Version 10.75 [ ]**
+**Version 10.78 [  ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**  
+Fixed CVar `chatClassColorOverride` not working correctly.  
+Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
+Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia!)  
+Fixed bags not properly showing items when searched.  
+Fixed an issue that sometimes the chat scrollBars where not hidden properly.  
+
+
+**Misc. Changes:**  
+Re-enable the old Guild skin back.  
+Updated Communities, PVP & Tooltip skins.  
+
+___
+**Version 10.77 [ July 20th 2018 ]**
+
+**New Additions:**  
+Added a mover for the Chat buttons.  
+
+
+**Bug Fixes:**  
+Reworked the Microbar mouseover handler. (#523)  
+Fixed issue which caused community chats to be shown in all chat frames.  
+
+
+**Misc. Changes:**  
+Updated `Setup Chat` part of installer to enable class colors in all channels and communities.  
+Updated CommunitiesUI skin.  
+Added support for chat filters for community channels displayed in the real chat window.  
+
+___
+**Version 10.76 for patch 8.0 [ July 19th 2018 ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue with backdrop on tooltips turning blue.  
+Fixed error when pressing 'Enter' to start typing in the chat (#485).  
+
+
+**Misc. Changes:**  
+Added skins from Simpy for Artifact Appearance and Orderhall Talents.  
+Added support for Load On Demand addons' memory/cpu usage display in tooltips (credit: cqwrteur).  
+Fixed a texture issue in the Quest Log skin.  
+Updated skinning of the 'TodayFrame' in the calendar. It uses skinning from Azilroka.  
+
+___
+**Version 10.75 for patch 8.0 [ July 17th 2018 ]**
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category or by typing `/ec cooldown`.  
+Added Death Knight Rune sorting option under `/ec - Player Frame - Classbar - Sort Direction`.   
+Added new Azerite DataBar (replaces Artifact DataBar).  
+Added button size and spacing options to the Micro Bar.  
+Added scale option for the smaller world map.  
+Added new skins for the new elements in patch 8.0.  
+Added the original chat buttons to a dedicated panel which can be toggled by right-clicking the "<" character in the left chat panel.  
 
 
 **Bug Fixes:**  
 Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
 Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
 Fixed issue with Guild Bank which sometimes prevented icons from being desaturated during a search while swapping between bank tabs. This also corrects the strange delay it appeared to have.  
+Fixed issue which caused chat emojis to hijack hyperlinks.  
+Fixed icon border on black market auction house items.  
+Fixed `[namecolor]` not updating sometimes when it should.  
+Fixed skin issue when using a dropdown in the config.  
+Fixed friendly nameplates not showing in Garrisons.  
+Fixed issue with tooltip compare being activated when it should not (#471).  
+Fixed several issues with the Micro Bar.   
+Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap (#434).  
+Fixed various issues with tooltips (#472).  
 
 
 **Misc. Changes:**  
-Added button size and spacing options to the Micro Bar and fixed several issues with it.  
 In order to improve load times, ElvUI will no longer load `Blizzard_DebugTools`.  
 Reworked the Talent frame skin slightly, in order to improve determination of selected talents.  
+Simplify how the Chat module handles Chat Filters. (Thanks Ellypse)  
+Changed how icons get shadowed in Guild bank and Bags module.  
 
 ___
 **Version 10.74 [ June 7th 2018 ]**

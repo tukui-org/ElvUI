@@ -26,8 +26,10 @@ local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DE
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
-E.PopupDialogs = {};
-E.StaticPopup_DisplayedFrames = {};
+local LibStub = LibStub
+
+E.PopupDialogs = {}
+E.StaticPopup_DisplayedFrames = {}
 
 E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
 	text = L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],

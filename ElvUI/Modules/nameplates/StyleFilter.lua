@@ -826,7 +826,7 @@ function mod:StyleFilterConfigureEvents()
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterEvents["UNIT_POWER"] = true
+					self.StyleFilterEvents["UNIT_POWER_UPDATE"] = true
 					self.StyleFilterEvents["UNIT_POWER_FREQUENT"] = true
 					self.StyleFilterEvents["UNIT_DISPLAYPOWER"] = true
 				end
