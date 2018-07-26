@@ -305,16 +305,21 @@ local function LoadSkin()
 		for i = 1, numButtons do
 			button = buttons[i]
 			index = offset + i
-			button:CreateBackdrop("Default")
+
+			if not button.backdrop then
+				button:CreateBackdrop("Default")
+			end
 
 			button:SetNormalTexture("")
 			button:SetHighlightTexture("")
 
-			local hover = button:CreateTexture()
-			hover:SetColorTexture(1, 1, 1, 0.3)
-			hover:SetInside()
-			button.hover = hover
-			button:SetHighlightTexture(hover)
+			if not button.hover then
+				local hover = button:CreateTexture()
+				hover:SetColorTexture(1, 1, 1, 0.3)
+				hover:SetInside()
+				button.hover = hover
+				button:SetHighlightTexture(hover)
+			end
 
 			button.Icon:SetTexCoord(unpack(E.TexCoords))
 
