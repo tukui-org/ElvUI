@@ -388,9 +388,10 @@ local function LoadSkin()
 	CommunitiesGuildTextEditFrame:StripTextures()
 	CommunitiesGuildTextEditFrame:SetTemplate("Transparent")
 	CommunitiesGuildTextEditFrame.Container:SetTemplate("Transparent")
-	--S:HandleScrollSlider(GuildTextEditFrameScrollBar) -- FUCKING SCROLLBARS >.>
+	-- S:HandleScrollBar(GuildTextEditFrameScrollBar) -- FUCKING SCROLLBARS >.>
 	S:HandleButton(CommunitiesGuildTextEditFrameAcceptButton)
-	S:HandleButton(CommunitiesGuildTextEditFrameCloseButton) -- Same Name as the other Close Button, WTF?!
+	local closeButton = select(4, CommunitiesGuildTextEditFrame:GetChildren())
+	S:HandleButton(closeButton) -- Same Name as the other Close Button, WTF?!
 	S:HandleCloseButton(CommunitiesGuildTextEditFrameCloseButton)
 
 	-- Guild Log
@@ -400,7 +401,8 @@ local function LoadSkin()
 
 	S:HandleScrollBar(CommunitiesGuildLogFrameScrollBar, 4)
 	S:HandleCloseButton(CommunitiesGuildLogFrameCloseButton)
-	--S:HandleButton(CommunitiesGuildLogFrameCloseButton) -- The same name as the CloseButton dafuq?!
+	local closeButton = select(3, CommunitiesGuildLogFrame:GetChildren())
+	S:HandleButton(closeButton) -- The same name as the CloseButton dafuq?!
 
 	-- Recruitment Info
 	CommunitiesGuildRecruitmentFrame:StripTextures()
