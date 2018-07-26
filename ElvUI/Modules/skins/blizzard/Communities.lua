@@ -4,10 +4,12 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
-
+local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -26,6 +28,7 @@ local function LoadSkin()
 
 	CommunitiesFrame:CreateBackdrop("Transparent")
 
+	local CommunitiesFrameCommunitiesList = _G["CommunitiesFrameCommunitiesList"]
 	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
@@ -367,7 +370,6 @@ local function LoadSkin()
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
-
 	S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameInfoScrollBar)
 	S:HandleScrollSlider(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
@@ -385,26 +387,31 @@ local function LoadSkin()
 	S:HandleCloseButton(FiltersFrame.CloseButton)
 
 	-- Guild Message EditBox
-	CommunitiesGuildTextEditFrame:StripTextures()
-	CommunitiesGuildTextEditFrame:SetTemplate("Transparent")
-	CommunitiesGuildTextEditFrame.Container:SetTemplate("Transparent")
-	--S:HandleScrollSlider(GuildTextEditFrameScrollBar) -- FUCKING SCROLLBARS >.>
+	local EditFrame = _G["CommunitiesGuildTextEditFrame"]
+	EditFrame:StripTextures()
+	EditFrame:SetTemplate("Transparent")
+	EditFrame.Container:SetTemplate("Transparent")
+	S:HandleScrollBar(CommunitiesGuildTextEditFrameScrollBar)
 	S:HandleButton(CommunitiesGuildTextEditFrameAcceptButton)
-	S:HandleButton(CommunitiesGuildTextEditFrameCloseButton) -- Same Name as the other Close Button, WTF?!
+	local closeButton = select(4, CommunitiesGuildTextEditFrame:GetChildren())
+	S:HandleButton(closeButton)
 	S:HandleCloseButton(CommunitiesGuildTextEditFrameCloseButton)
 
 	-- Guild Log
-	CommunitiesGuildLogFrame:StripTextures()
-	CommunitiesGuildLogFrame.Container:StripTextures()
-	CommunitiesGuildLogFrame:CreateBackdrop("Transparent")
+	local GuildLogFrame = _G["CommunitiesGuildLogFrame"]
+	GuildLogFrame:StripTextures()
+	GuildLogFrame.Container:StripTextures()
+	GuildLogFrame:CreateBackdrop("Transparent")
 
 	S:HandleScrollBar(CommunitiesGuildLogFrameScrollBar, 4)
 	S:HandleCloseButton(CommunitiesGuildLogFrameCloseButton)
-	--S:HandleButton(CommunitiesGuildLogFrameCloseButton) -- The same name as the CloseButton dafuq?!
+	local closeButton = select(3, CommunitiesGuildLogFrame:GetChildren())
+	S:HandleButton(closeButton)
 
 	-- Recruitment Info
-	CommunitiesGuildRecruitmentFrame:StripTextures()
-	CommunitiesGuildRecruitmentFrame:CreateBackdrop("Transparent")
+	local RecruitmentFrame = _G["CommunitiesGuildRecruitmentFrame"]
+	RecruitmentFrame:StripTextures()
+	RecruitmentFrame:CreateBackdrop("Transparent")
 	CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
 
 	-- CheckBoxes
@@ -459,7 +466,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	S:HandleScrollSlider(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
@@ -506,7 +513,7 @@ local function LoadSkin()
 	S:HandleButton(Avatar.OkayButton)
 	S:HandleButton(Avatar.CancelButton)
 
-	-- Invite Frame (Ticket Manager - Blizz WTF?!)
+	-- Invite Frame
 	local TicketManager = _G["CommunitiesTicketManagerDialog"]
 	TicketManager:StripTextures()
 	TicketManager.InviteManager.ArtOverlay:Hide()
