@@ -7,8 +7,6 @@ local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
 local format, find, join, gsub = string.format, string.find, string.join, string.gsub
 --WoW API / Variables
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local GetBestMapForUnitPlayer = function() return C_Map_GetBestMapForUnit("player") end
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
 local BNGetFriendInfo = BNGetFriendInfo
@@ -469,9 +467,6 @@ local function OnEnter(self)
 	local totalfriends = numberOfFriends + totalBNet
 	local zonec, classc, levelc, realmc, info, grouped, shouldSkip
 
-	local mapID = GetBestMapForUnitPlayer()
-	local zoneText = mapID and E:GetZoneText(mapID)
-
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if (onlineFriends > 0) and not E.db.datatexts.friends['hideWoW'] then
 		for i = 1, #friendTable do
@@ -484,7 +479,7 @@ local function OnEnter(self)
 					shouldSkip = true
 				end
 				if not shouldSkip then
-					if zoneText and (zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
+					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
 					classc = classc or GetQuestDifficultyColor(info[2])
@@ -539,7 +534,7 @@ local function OnEnter(self)
 								if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
 								if IsShiftKeyDown() then
-									if zoneText and (zoneText == info[15]) then zonec = activezone else zonec = inactivezone end
+									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[15]) then zonec = activezone else zonec = inactivezone end
 									if GetRealmName() == info[11] then realmc = activezone else realmc = inactivezone end
 									TooltipAddXLine(true, header, info[15], info[11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 								end

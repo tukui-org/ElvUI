@@ -43,6 +43,8 @@ local function LoadSkin()
 	local StoryTooltip = QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 
+	local WarCampaignTooltip = QuestScrollFrame.WarCampaignTooltip
+
 	local tooltips = {
 		GameTooltip,
 		ItemRefTooltip,
@@ -61,6 +63,7 @@ local function LoadSkin()
 		ReputationParagonTooltip,
 		StoryTooltip,
 		EmbeddedItemTooltip,
+		WarCampaignTooltip,
 	}
 
 	for _, tt in pairs(tooltips) do

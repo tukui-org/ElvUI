@@ -8,8 +8,6 @@ local _G = _G
 local pairs = pairs
 local find = string.find
 --WoW API / Variables
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local SetCVar = SetCVar
@@ -83,52 +81,47 @@ function M:SetSmallWorldMap()
 end
 
 local inRestrictedArea = false
-function M:PLAYER_ENTERING_WORLD()
-	local position = C_Map_GetBestMapForUnit("player")
-	if not position then
-		inRestrictedArea = true
-		self:CancelTimer(self.CoordsTimer)
-		self.CoordsTimer = nil
-		CoordsHolder.playerCoords:SetText("")
-		CoordsHolder.mouseCoords:SetText("")
-	elseif not self.CoordsTimer then
+function M:UpdateRestrictedArea()
+	E:MapInfo_Update()
+
+	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+	else
+		inRestrictedArea = true
+		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 	end
 end
 
-function M:UpdateCoords()
-	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
+function M:UpdateCoords(OnShow)
+	if not WorldMapFrame:IsShown() then return end
 
-	local x, y
-	local mapID = C_Map_GetBestMapForUnit("player")
-	local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
-	if mapPos then x, y = mapPos:GetXY() end
+	if WorldMapFrame.ScrollContainer:IsMouseOver() then
+		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
+		local width = WorldMapFrame.ScrollContainer:GetWidth()
+		local height = WorldMapFrame.ScrollContainer:GetHeight()
+		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
+		local x, y = GetCursorPosition()
 
-	x = x and E:Round(100 * x, 2) or 0
-	y = y and E:Round(100 * y, 2) or 0
+		local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
+		local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
 
-	if x ~= 0 and y ~= 0 then
-		CoordsHolder.playerCoords:SetText(PLAYER..":   "..x..", "..y)
-	else
-		CoordsHolder.playerCoords:SetText("")
-	end
-
-	local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
-	local width = WorldMapFrame.ScrollContainer:GetWidth()
-	local height = WorldMapFrame.ScrollContainer:GetHeight()
-	local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
-	x, y = GetCursorPosition()
-
-	local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
-	local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
-
-	if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-		adjustedX = E:Round(100 * adjustedX, 2)
-		adjustedY = E:Round(100 * adjustedY, 2)
-		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+			adjustedX = E:Round(100 * adjustedX, 2)
+			adjustedY = E:Round(100 * adjustedY, 2)
+			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
+		else
+			CoordsHolder.mouseCoords:SetText("")
+		end
 	else
 		CoordsHolder.mouseCoords:SetText("")
+	end
+
+	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then
+		if E.MapInfo.x and E.MapInfo.y then
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+		else
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
+		end
 	end
 end
 
@@ -162,10 +155,22 @@ function M:Initialize()
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+		WorldMapFrame:HookScript("OnShow", function()
+			if not M.CoordsTimer then
+				M:UpdateCoords(true)
+				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
+			end
+		end)
+		WorldMapFrame:HookScript("OnHide", function()
+			M:CancelTimer(M.CoordsTimer)
+			M.CoordsTimer = nil
+		end)
+
 		M:PositionCoords()
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
 	end
 
 	if E.global.general.smallerWorldMap then

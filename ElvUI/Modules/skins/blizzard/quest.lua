@@ -10,10 +10,6 @@ local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local IsQuestComplete = IsQuestComplete
-local GetQuestLogTitle = GetQuestLogTitle
-local GetNumQuestLogEntries = GetNumQuestLogEntries
-local QuestLogQuests_GetHeaderButton = QuestLogQuests_GetHeaderButton
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 

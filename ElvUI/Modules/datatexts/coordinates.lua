@@ -6,45 +6,33 @@ local DT = E:GetModule('DataTexts')
 local join = string.join
 --WoW API / Variables
 local ToggleFrame = ToggleFrame
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame
 
 local displayString = ""
-local x, y = 0, 0
 local inRestrictedArea = false
 
 local function Update(self, elapsed)
-	if inRestrictedArea then return; end
+	if inRestrictedArea or not E.MapInfo.coordsWatching then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		local mapID = C_Map_GetBestMapForUnit("player")
-		local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
-		if mapPos then x, y = mapPos:GetXY() end
-
-		x = (mapPos and x) and E:Round(100 * x, 1) or 0
-		y = (mapPos and y) and E:Round(100 * y, 1) or 0
-
-		self.text:SetFormattedText(displayString, x, y)
+		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 		self.timeSinceUpdate = 0
 	end
 end
 
 local function OnEvent(self)
-	local mapID = C_Map_GetBestMapForUnit("player")
-	local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
-	if mapPos then x, y = mapPos:GetXY() end
-	if mapPos and x and y then
+	E:MapInfo_Update()
+
+	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		self:Show()
+		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 	else
 		inRestrictedArea = true
 		self.text:SetText("N/A")
-		self:Hide()
 	end
 end
 
@@ -53,8 +41,8 @@ local function Click()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", hex, "%.1f|r", " , ", hex, "%.1f|r")
+	displayString = join("", hex, "%.2f|r", " , ", hex, "%.2f|r")
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', {"PLAYER_ENTERING_WORLD"}, OnEvent, Update, Click, nil, nil, L["Coords"])
+DT:RegisterDatatext('Coords', {"ZONE_CHANGED","ZONE_CHANGED_INDOORS","ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"])

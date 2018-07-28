@@ -221,7 +221,7 @@ function S:CropIcon(texture, parent)
 	end
 end
 
-function S:HandleScrollBar(frame, thumbTrim)
+function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 	if frame:GetName() then
 		if frame.Background then frame.Background:SetTexture(nil) end
 		if frame.trackBG then frame.trackBG:SetTexture(nil) end
@@ -261,12 +261,13 @@ function S:HandleScrollBar(frame, thumbTrim)
 			end
 
 			if frame:GetThumbTexture() then
-				if not thumbTrim then thumbTrim = 3 end
+				if not thumbTrimY then thumbTrimY = 3 end
+				if not thumbTrimX then thumbTrimX = 2 end
 				frame:GetThumbTexture():SetTexture(nil)
 				if not frame.thumbbg then
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrimY)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
@@ -660,13 +661,6 @@ function S:HandleDropDownFrame(frame, width)
 		disabled:SetDrawLayer("OVERLAY")
 	end
 
-	local bg = CreateFrame("Frame", nil, frame)
-	if left then bg:SetPoint("TOPLEFT", left, 20, -21) end
-	if right then bg:SetPoint("BOTTOMRIGHT", right, -19, 23) end
-	bg:SetFrameLevel(frame:GetFrameLevel())
-	bg:CreateBackdrop("Default")
-
-	frame:SetHeight(32)
 	if middle and (not frame.noResize) then
 		frame:SetWidth(40)
 		middle:SetWidth(width)
@@ -676,6 +670,10 @@ function S:HandleDropDownFrame(frame, width)
 		frame.Text:SetSize(0, 10)
 		frame.Text:SetPoint("RIGHT", right, -43, 2)
 	end
+
+	frame:CreateBackdrop("Default")
+	frame.backdrop:Point("TOPLEFT", 20, -2)
+	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
@@ -1137,7 +1135,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 end
 
 -- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(self, templateName, templateType, anchorPoint, relativeTo, relativePoint, offsetX, offsetY)
+function S:WorldMapMixin_AddOverlayFrame(self, templateName)
 	S[templateName](self.overlayFrames[#self.overlayFrames])
 end
 

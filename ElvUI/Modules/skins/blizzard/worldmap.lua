@@ -17,7 +17,9 @@ local function LoadSkin()
 	WorldMapFrame.BorderFrame:SetFrameStrata(WorldMapFrame:GetFrameStrata())
 	WorldMapFrame.NavBar:StripTextures()
 	WorldMapFrame.NavBar.overlay:StripTextures()
+	WorldMapFrame.NavBar:SetPoint("TOPLEFT", 1, -40)
 
+	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
 
 	WorldMapFrameHomeButton:StripTextures()
@@ -33,14 +35,21 @@ local function LoadSkin()
 
 	local QuestScrollFrame = _G["QuestScrollFrame"]
 	QuestScrollFrame.DetailFrame:StripTextures()
-	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
-
+	
 	QuestScrollFrame.DetailFrame:CreateBackdrop("Default")
-	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 1, -3)
-	QuestScrollFrame.DetailFrame.backdrop:Point("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -1, 1)
-
-	S:HandleScrollBar(QuestScrollFrameScrollBar)
+	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
+	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
+	QuestScrollFrame.DetailFrame.backdrop:Point("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -2, -7)
+	QuestScrollFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
+	QuestScrollFrame.Contents.StoryHeader.Background:SetWidth(251)
+	QuestScrollFrame.Contents.StoryHeader.Background:SetPoint("TOP", 0, -9)
+	QuestScrollFrame.Contents.StoryHeader.Text:SetPoint("TOPLEFT", 18, -20)
+	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAllPoints(QuestScrollFrame.Contents.StoryHeader.Background)
+	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAlpha(0)
+	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
+	QuestScrollFrameScrollBar:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
+	QuestScrollFrameScrollBar:SetPoint("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
 
 	local QuestMapFrame = _G["QuestMapFrame"]
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)

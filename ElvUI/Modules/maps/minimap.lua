@@ -77,6 +77,8 @@ local menuList = {
 	func = function()
 		ToggleCollectionsJournal()
 	end},
+	{text = CHAT_CHANNELS,
+	func = ToggleChannelFrame},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},
 	{text = ACHIEVEMENT_BUTTON,

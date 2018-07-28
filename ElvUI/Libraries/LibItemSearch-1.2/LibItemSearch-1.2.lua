@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 6)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 7)
 if Lib then
 	Lib.Filters = {}
 else
@@ -133,7 +133,7 @@ Lib.Filters.usable = {
 			local lvl = select(5, GetItemInfo(link))
 			return lvl and (lvl ~= 0 and lvl <= UnitLevel('player'))
 		end
-	end	
+	end
 }
 
 
@@ -184,7 +184,7 @@ Lib.Filters.tipPhrases = {
 		if not id then
 			return
 		end
-		
+
 		local cached = self.cache[search][id]
 		if cached ~= nil then
 			return cached
@@ -239,7 +239,6 @@ Lib.Filters.tipPhrases = {
 
 if IsAddOnLoaded('ItemRack') then
 	local sameID = ItemRack.SameID
-
 	function Lib:BelongsToSet(id, search)
 		for name, set in pairs(ItemRackUser.Sets) do
 			if name:sub(1,1) ~= '' and Search:Find(search, name) then
@@ -251,7 +250,6 @@ if IsAddOnLoaded('ItemRack') then
 			end
 		end
 	end
-
 elseif IsAddOnLoaded('Wardrobe') then
 	function Lib:BelongsToSet(id, search)
 		for _, outfit in ipairs(Wardrobe.CurrentConfig.Outfit) do
@@ -265,13 +263,12 @@ elseif IsAddOnLoaded('Wardrobe') then
 			end
 		end
 	end
-
 else
 	function Lib:BelongsToSet(id, search)
-		for i = 1, GetNumEquipmentSets() do
-			local name = GetEquipmentSetInfo(i)
+		for _, setID in pairs(C_EquipmentSet.GetEquipmentSetIDs()) do
+			local name = C_EquipmentSet.GetEquipmentSetInfo(setID)
 			if Search:Find(search, name) or search == "matchall" then
-				local items = GetEquipmentSetItemIDs(name)
+				local items = C_EquipmentSet.GetItemIDs(setID)
 				for _, item in pairs(items) do
 					if id == item then
 						return true

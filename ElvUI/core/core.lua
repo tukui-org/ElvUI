@@ -19,7 +19,6 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
-local C_Map_GetMapInfo = C_Map.GetMapInfo
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
@@ -373,55 +372,6 @@ if Masque then
 	Masque:Register("ElvUI", MasqueCallback)
 end
 
--- Code taken from LibTourist-3.0 and rewritten to fit our purpose
-local localizedMapNames = {}
-local ZoneIDToContinentName = {
-	[473] = "Outland",
-	[477] = "Outland",
-}
-local MapIdLookupTable = {
-	[466] = "Outland",
-	[473] = "Shadowmoon Valley",
-	[477] = "Nagrand",
-}
-
-local function LocalizeZoneNames()
-	local localizedZoneName
-
-	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = C_Map_GetMapInfo(mapID)
-		if localizedZoneName then
-			-- Add combination of English and localized name to lookup table
-			if not localizedMapNames[englishName] then
-				localizedMapNames[englishName] = localizedZoneName
-			end
-		end
-	end
-end
-LocalizeZoneNames()
-
---Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
---We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
---which adds the " (Outland)" part unlike the GetRealZoneText() API.
-
--- Needs to be adjusted for 8.0 ?
-function E:GetZoneText(zoneAreaID)
-	if not zoneAreaID then return end
-
-	local zoneName = C_Map_GetMapInfo(zoneAreaID)
-	local continent = ZoneIDToContinentName[zoneAreaID]
-
-	if continent and continent == "Outland" then
-		if zoneName == localizedMapNames["Nagrand"] or zoneName == "Nagrand"  then
-			zoneName = localizedMapNames["Nagrand"].." ("..localizedMapNames["Outland"]..")"
-		elseif zoneName == localizedMapNames["Shadowmoon Valley"] or zoneName == "Shadowmoon Valley"  then
-			zoneName = localizedMapNames["Shadowmoon Valley"].." ("..localizedMapNames["Outland"]..")"
-		end
-	end
-
-	return zoneName
-end
-
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
@@ -435,6 +385,8 @@ end
 
 function E:PLAYER_ENTERING_WORLD()
 	self:CheckRole()
+	self:MapInfo_Update()
+
 	if not self.MediaUpdated then
 		self:UpdateMedia()
 		self.MediaUpdated = true;

@@ -141,7 +141,7 @@ local function LoadSkinCommandBar()
 			self.StyleFrame:Hide()
 		end
 		self:SetTemplate("Transparent")
-		self.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+		self.Currency.Icon:SetAtlas("legionmission-icon-currency", false)
 		S:HandleCloseButton(self.CloseButton)
 
 		OrderHallTalentFramePortraitFrame:Hide()
@@ -178,7 +178,7 @@ local function LoadSkinCommandBar()
 
 		for i=1, self:GetNumChildren() do
 			local child = select(i, self:GetChildren())
-			if child and child.Icon and not child.backdrop then
+			if child and child.Icon and child.DoneGlow and not child.backdrop then
 				child:StyleButton()
 				child:CreateBackdrop()
 				child.Border:SetAlpha(0)

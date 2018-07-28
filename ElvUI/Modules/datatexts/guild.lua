@@ -6,8 +6,6 @@ local DT = E:GetModule('DataTexts')
 local select, unpack, sort, wipe, ceil = select, unpack, table.sort, wipe, math.ceil
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local GetBestMapForUnitPlayer = function() return C_Map_GetBestMapForUnit("player") end
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetGuildInfo = GetGuildInfo
@@ -261,9 +259,6 @@ local function OnEnter(self, _, noUpdate)
 	local zonec, classc, levelc, info, grouped
 	local shown = 0
 
-	local mapID = GetBestMapForUnitPlayer()
-	local zoneText = mapID and E:GetZoneText(mapID)
-
 	DT.tooltip:AddLine(' ')
 	for i = 1, #guildTable do
 		-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
@@ -273,8 +268,8 @@ local function OnEnter(self, _, noUpdate)
 		end
 
 		info = guildTable[i]
-		-- FIX ME
-		if zoneText and (zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
+
+		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 

@@ -4,9 +4,12 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
+local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
+local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -25,6 +28,7 @@ local function LoadSkin()
 
 	CommunitiesFrame:CreateBackdrop("Transparent")
 
+	local CommunitiesFrameCommunitiesList = _G["CommunitiesFrameCommunitiesList"]
 	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
@@ -53,7 +57,7 @@ local function LoadSkin()
 	CommunitiesFrameInsetBotRightCorner:Hide()
 	CommunitiesFrameInsetBotLeftCorner:Hide()
 
-	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
+	hooksecurefunc(CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo)
 		if clubInfo then
 			self:SetSize(166, 67)
 
@@ -67,11 +71,13 @@ local function LoadSkin()
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
 
-			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Overlay")
-			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-			self.bg:Point("TOPLEFT", 4, -3)
-			self.bg:Point("BOTTOMRIGHT", -1, 3)
+			if not self.bg then
+				self.bg = CreateFrame("Frame", nil, self)
+				self.bg:CreateBackdrop("Overlay")
+				self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+				self.bg:Point("TOPLEFT", 4, -3)
+				self.bg:Point("BOTTOMRIGHT", -1, 3)
+			end
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
@@ -100,11 +106,13 @@ local function LoadSkin()
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
 		self.IconRing:Hide()
 
-		self.bg = CreateFrame("Frame", nil, self)
-		self.bg:CreateBackdrop("Overlay")
-		self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-		self.bg:Point("TOPLEFT", 4, -3)
-		self.bg:Point("BOTTOMRIGHT", -1, 3)
+		if not self.bg then
+			self.bg = CreateFrame("Frame", nil, self)
+			self.bg:CreateBackdrop("Overlay")
+			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
+			self.bg:Point("TOPLEFT", 4, -3)
+			self.bg:Point("BOTTOMRIGHT", -1, 3)
+		end
 
 		local highlight = self:GetHighlightTexture()
 		highlight:SetColorTexture(1, 1, 1, 0.3)
@@ -214,6 +222,49 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 
+	local function UpdateNames(self)
+		if not self.expanded then return end
+
+		local memberInfo = self:GetMemberInfo()
+		if memberInfo and memberInfo.classID then
+			local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
+			if classInfo then
+				local tcoords = CLASS_ICON_TCOORDS[classInfo.classFile]
+				self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			end
+		end
+	end
+
+	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(self)
+		for i = 1, self.ColumnDisplay:GetNumChildren() do
+			local child = select(i, self.ColumnDisplay:GetChildren())
+			if not child.IsSkinned then
+				child:StripTextures()
+				child:SetTemplate("Transparent")
+
+				child.IsSkinned = true
+			end
+		end
+
+		for _, button in ipairs(self.ListScrollFrame.buttons or {}) do
+			if button and not button.hooked then
+				hooksecurefunc(button, "RefreshExpandedColumns", UpdateNames)
+				if button.ProfessionHeader then
+					local header = button.ProfessionHeader
+					for i = 1, 3 do
+						select(i, header:GetRegions()):Hide()
+					end
+					header:SetTemplate("Transparent")
+				end
+
+				button.hooked = true
+			end
+			if button and button.bg then
+				button.bg:SetShown(button.Class:IsShown())
+			end
+		end
+	end)
+
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
 	GuildBenefitsFrame.InsetBorderLeft:Hide()
@@ -250,21 +301,25 @@ local function LoadSkin()
 		local buttons = scrollFrame.buttons
 		local button, index
 		local numButtons = #buttons
-		local numRewards = GetNumGuildRewards()
 
 		for i = 1, numButtons do
 			button = buttons[i]
 			index = offset + i
-			button:CreateBackdrop("Default")
+
+			if not button.backdrop then
+				button:CreateBackdrop("Default")
+			end
 
 			button:SetNormalTexture("")
 			button:SetHighlightTexture("")
 
-			local hover = button:CreateTexture()
-			hover:SetColorTexture(1, 1, 1, 0.3)
-			hover:SetInside()
-			button.hover = hover
-			button:SetHighlightTexture(hover)
+			if not button.hover then
+				local hover = button:CreateTexture()
+				hover:SetColorTexture(1, 1, 1, 0.3)
+				hover:SetInside()
+				button.hover = hover
+				button:SetHighlightTexture(hover)
+			end
 
 			button.Icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -279,6 +334,8 @@ local function LoadSkin()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
 	StatusBar.Shadow:Hide()
+	StatusBar.Progress:SetTexture(E["media"].normTex)
+	StatusBar.Progress:SetAllPoints()
 	E:RegisterStatusBar(StatusBar)
 
 	local bg = CreateFrame("Frame", nil, StatusBar)
@@ -309,9 +366,14 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
+	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
+		if button.header:IsShown() then
+			button.header:SetAlpha(0)
+		end
+	end)
+
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
-
 
 	S:HandleScrollBar(CommunitiesFrameGuildDetailsFrameInfoScrollBar)
 	S:HandleScrollSlider(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
@@ -327,21 +389,34 @@ local function LoadSkin()
 	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
 	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
 	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
-
 	S:HandleCloseButton(FiltersFrame.CloseButton)
 
+	-- Guild Message EditBox
+	local EditFrame = _G["CommunitiesGuildTextEditFrame"]
+	EditFrame:StripTextures()
+	EditFrame:SetTemplate("Transparent")
+	EditFrame.Container:SetTemplate("Transparent")
+	S:HandleScrollBar(CommunitiesGuildTextEditFrameScrollBar)
+	S:HandleButton(CommunitiesGuildTextEditFrameAcceptButton)
+	local closeButton = select(4, CommunitiesGuildTextEditFrame:GetChildren())
+	S:HandleButton(closeButton)
+	S:HandleCloseButton(CommunitiesGuildTextEditFrameCloseButton)
+
 	-- Guild Log
-	CommunitiesGuildLogFrame:StripTextures()
-	CommunitiesGuildLogFrame.Container:StripTextures()
-	CommunitiesGuildLogFrame:CreateBackdrop("Transparent")
+	local GuildLogFrame = _G["CommunitiesGuildLogFrame"]
+	GuildLogFrame:StripTextures()
+	GuildLogFrame.Container:StripTextures()
+	GuildLogFrame:CreateBackdrop("Transparent")
 
 	S:HandleScrollBar(CommunitiesGuildLogFrameScrollBar, 4)
 	S:HandleCloseButton(CommunitiesGuildLogFrameCloseButton)
-	--S:HandleButton(CommunitiesGuildLogFrameCloseButton) -- The same name as the CloseButton dafuq?!
+	local closeButton = select(3, CommunitiesGuildLogFrame:GetChildren())
+	S:HandleButton(closeButton)
 
 	-- Recruitment Info
-	CommunitiesGuildRecruitmentFrame:StripTextures()
-	CommunitiesGuildRecruitmentFrame:CreateBackdrop("Transparent")
+	local RecruitmentFrame = _G["CommunitiesGuildRecruitmentFrame"]
+	RecruitmentFrame:StripTextures()
+	RecruitmentFrame:CreateBackdrop("Transparent")
 	CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
 
 	-- CheckBoxes
@@ -396,7 +471,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	S:HandleScrollSlider(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
@@ -443,7 +518,7 @@ local function LoadSkin()
 	S:HandleButton(Avatar.OkayButton)
 	S:HandleButton(Avatar.CancelButton)
 
-	-- Invite Frame (Ticket Manager - Blizz WTF?!)
+	-- Invite Frame
 	local TicketManager = _G["CommunitiesTicketManagerDialog"]
 	TicketManager:StripTextures()
 	TicketManager.InviteManager.ArtOverlay:Hide()

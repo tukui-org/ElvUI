@@ -7,16 +7,13 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
-local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
-local GetPrestigeInfo = GetPrestigeInfo
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
-local UnitPrestige = UnitPrestige
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
 -- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
