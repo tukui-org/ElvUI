@@ -1,4 +1,18 @@
-**Version 10.78 [  ]**
+**Version 10.79 [  ]**
+
+**New Additions:**  
+
+
+
+**Bug Fixes:**  
+
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.78 [ July 28th 2018 ]**
 
 **New Additions:**  
 
