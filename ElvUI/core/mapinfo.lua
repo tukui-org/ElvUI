@@ -64,7 +64,9 @@ function E:MapInfo_CoordsStop(event)
 		return
 	end
 
-	E.MapInfo.coordsStopTimer = E:ScheduleTimer("MapInfo_CoordsStopWatching", 0.5)
+	if not E.MapInfo.coordsStopTimer then
+		E.MapInfo.coordsStopTimer = E:ScheduleTimer("MapInfo_CoordsStopWatching", 0.5)
+	end
 end
 
 function E:MapInfo_CoordsUpdate()
