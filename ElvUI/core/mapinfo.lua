@@ -41,6 +41,17 @@ function E:MapInfo_CoordsStart()
 	E.MapInfo.coordsWatching = true
 	E.MapInfo.coordsFalling = nil
 	coordsWatcher:SetScript("OnUpdate", E.MapInfo_OnUpdate)
+
+	if E.MapInfo.coordsStopWatchingTimer then
+		E:CancelTimer(E.MapInfo.coordsStopWatchingTimer)
+		E.MapInfo.coordsStopWatchingTimer = nil
+	end
+end
+
+function E:MapInfo_CoordsStopWatching()
+	E.MapInfo.coordsWatching = nil
+	E.MapInfo.coordsStopWatchingTimer = nil
+	coordsWatcher:SetScript("OnUpdate", nil)
 end
 
 function E:MapInfo_CoordsStop(event)
@@ -53,8 +64,7 @@ function E:MapInfo_CoordsStop(event)
 		return
 	end
 
-	E.MapInfo.coordsWatching = nil
-	coordsWatcher:SetScript("OnUpdate", nil)
+	E.MapInfo.coordsStopWatchingTimer = E:ScheduleTimer("MapInfo_CoordsStopWatching", 0.5)
 end
 
 function E:MapInfo_CoordsUpdate()
