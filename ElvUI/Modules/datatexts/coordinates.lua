@@ -6,7 +6,6 @@ local DT = E:GetModule('DataTexts')
 local join = string.join
 --WoW API / Variables
 local ToggleFrame = ToggleFrame
-local CreateFrame = CreateFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame
@@ -46,4 +45,4 @@ local function ValueColorUpdate(hex)
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', {"PLAYER_ENTERING_WORLD"}, OnEvent, Update, Click, nil, nil, L["Coords"])
+DT:RegisterDatatext('Coords', {"ZONE_CHANGED","ZONE_CHANGED_INDOORS","ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"])

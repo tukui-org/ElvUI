@@ -81,7 +81,7 @@ function M:SetSmallWorldMap()
 end
 
 local inRestrictedArea = false
-function M:PLAYER_ENTERING_WORLD()
+function M:UpdateRestrictedArea()
 	E:MapInfo_Update()
 
 	if E.MapInfo.x and E.MapInfo.y then
@@ -168,7 +168,9 @@ function M:Initialize()
 
 		M:PositionCoords()
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
 	end
 
 	if E.global.general.smallerWorldMap then
