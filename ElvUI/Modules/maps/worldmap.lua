@@ -86,10 +86,8 @@ function M:PLAYER_ENTERING_WORLD()
 
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 	end
 end
 
@@ -121,7 +119,7 @@ function M:UpdateCoords()
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetText("")
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 		end
 	end
 end
@@ -158,6 +156,12 @@ function M:Initialize()
 
 		WorldMapFrame:HookScript("OnShow", function()
 			if not M.CoordsTimer then
+				if E.MapInfo.x and E.MapInfo.y then
+					CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+				else
+					CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
+				end
+
 				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
 			end
 		end)
