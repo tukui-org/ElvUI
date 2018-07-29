@@ -27,8 +27,6 @@ local function LoadSkin()
 			S:HandleButton(option.OptionButtonsContainer.Buttons[i])
 		end
 		option.ArtworkBorder:SetAlpha(0)
-		option.Header.Text:FontTemplate(nil, 16)
-		option.OptionText:FontTemplate(nil, 12)
 	end
 
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
