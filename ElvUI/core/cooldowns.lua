@@ -114,7 +114,6 @@ function E:CreateCooldownTimer(parent)
 	local timer = CreateFrame('Frame', nil, scaler)
 	timer:Hide()
 	timer:SetAllPoints()
-	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
@@ -173,6 +172,9 @@ function E:CreateCooldownTimer(parent)
 	parent:SetScript('OnSizeChanged', function(_, ...)
 		self:Cooldown_OnSizeChanged(timer, parent, ...)
 	end)
+
+	-- keep this after Cooldown_OnSizeChanged
+	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 
 	return timer
 end
