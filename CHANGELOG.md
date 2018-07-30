@@ -6,7 +6,8 @@ Added Tranquility channel ticks (#586).
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin (#566).  
-Fixed the WorldMap Frame Strata (#592).  
+Fixed bags from being shown over the WorldMapFrame (#592).  
+Fixed an issue which caused the cooldown module to error: `Font not set`. (#548).  
 
 
 **Misc. Changes:**  
