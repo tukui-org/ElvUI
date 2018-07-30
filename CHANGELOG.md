@@ -12,6 +12,7 @@ Fixed the WorldMap Frame Strata (#592).
 **Misc. Changes:**  
 Updated spell id for Earth Shield (#527).  
 Updated SpellHighlightTexture in the Spellbook (#547).  
+Updated WarboardUI skin.  
 
 ___
 **Version 10.78 [ July 28th 2018 ]**
