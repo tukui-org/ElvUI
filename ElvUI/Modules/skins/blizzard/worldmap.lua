@@ -79,6 +79,7 @@ local function LoadSkin()
 
 	-- Floor Dropdown
 	local function WorldMapFloorNavigationDropDown(Frame)
+		Frame:SetFrameLevel(WorldMapFrame:GetFrameLevel()+3)
 		S:HandleWorldMapDropDownMenu(Frame)
 	end
 
@@ -91,6 +92,8 @@ local function LoadSkin()
 		Button.IconOverlay:SetAlpha(0)
 		Button.Border:Hide()
 
+		Button:SetFrameLevel(WorldMapFrame:GetFrameLevel()+2)
+
 		local tex = Button:GetHighlightTexture()
 		tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
 		tex:SetAllPoints(Button.Icon)
@@ -98,6 +101,7 @@ local function LoadSkin()
 
 	-- Bounty Board
 	local function WorldMapBountyBoard(Frame)
+		Frame:SetFrameLevel(WorldMapFrame:GetFrameLevel()+2)
 		Frame.BountyName:FontTemplate()
 
 		S:HandleCloseButton(Frame.TutorialBox.CloseButton)
