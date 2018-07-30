@@ -84,7 +84,7 @@ local function LoadSkin()
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1)
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
 
-	for i=1, 2 do
+	for i = 1, 2 do
 		local tab = _G['PlayerSpecTab'..i]
 		_G['PlayerSpecTab'..i..'Background']:Kill()
 
@@ -192,23 +192,22 @@ local function LoadSkin()
 	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
 		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
-		local numSpecs = GetNumSpecializations(nil, self.isPet);
-
+		local numSpecs = GetNumSpecializations(nil, self.isPet)
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
 		local scrollChild = self.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
+		local index = 1
 		local bonuses
-		local bonusesIncrement = 1;
+		local bonusesIncrement = 1
 		if self.isPet then
 			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet, true)}
-			bonusesIncrement = 2;
+			bonusesIncrement = 2
 		else
 			bonuses = C_SpecializationInfo_GetSpellsDisplay(id)
 		end
 
 		if bonuses then
-			local index = 1
 			for i = 1, #bonuses, bonusesIncrement do
 				local frame = scrollChild["abilityButton"..index]
 				if frame then
@@ -219,11 +218,8 @@ local function LoadSkin()
 
 					if not frame.reskinned then
 						frame.reskinned = true
-						frame:Size(30, 30)
 						frame.ring:Hide()
-						frame:SetTemplate("Default")
-						frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-						frame.icon:SetInside()
+						frame.icon:SetTexCoord(unpack(E.TexCoords))
 					end
 				end
 				index = index + 1
