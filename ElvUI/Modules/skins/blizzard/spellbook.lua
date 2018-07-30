@@ -83,7 +83,7 @@ local function LoadSkin()
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.4)
 				if icon then
-					button.SpellHighlightTexture:SetAllPoints(icon)
+					button.SpellHighlightTexture:SetOutside(button.backdrop)
 				end
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
