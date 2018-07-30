@@ -1278,7 +1278,7 @@ G.unitframe.buffwatch = {
 	},
 	SHAMAN = {
 		[61295]  = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),   	 -- Riptide
-		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), 	 -- Earth Shield (Honor Talent)
+		[974] = ClassBuff(974, "BOTTOMRIGHT", {0.2, 0.2, 1}), 	 -- Earth Shield
 	},
 	MONK = {
 		[119611] = ClassBuff(119611, "TOPLEFT", {0.3, 0.8, 0.6}),        -- Renewing Mist
