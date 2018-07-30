@@ -1,15 +1,17 @@
 **Version 10.79 [  ]**
 
 **New Additions:**  
-
+Added Tranquility channel ticks (#586).  
 
 
 **Bug Fixes:**  
-
+Fixed a texture issue on the Talent skin (#566).  
+Fixed the WorldMap frame Frame Strata (#592).  
 
 
 **Misc. Changes:**  
-
+Updated spell id for Earth Shield (#527).  
+Updated SpellHighlightTexture in the Spellbook (#547).  
 
 ___
 **Version 10.78 [ July 28th 2018 ]**
