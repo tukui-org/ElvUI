@@ -6,7 +6,7 @@ Added Tranquility channel ticks (#586).
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin (#566).  
-Fixed the WorldMap frame Frame Strata (#592).  
+Fixed the WorldMap Frame Strata (#592).  
 
 
 **Misc. Changes:**  
