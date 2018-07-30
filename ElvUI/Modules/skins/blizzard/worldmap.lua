@@ -22,8 +22,6 @@ local function LoadSkin()
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
 
-	WorldMapFrame:SetFrameStrata("HIGH")
-
 	WorldMapFrameHomeButton:StripTextures()
 	WorldMapFrameHomeButton:CreateBackdrop("Default", true)
 	WorldMapFrameHomeButton.backdrop:SetPoint("TOPLEFT", WorldMapFrameHomeButton, "TOPLEFT", 0, 0)
