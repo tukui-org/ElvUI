@@ -263,7 +263,7 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
-		-- ChaoticVoid --
+		-- Whiro --
 		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]		= ElvGreen,
@@ -1581,7 +1581,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 
 			-- Player Flags
-			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
+			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
@@ -1594,9 +1594,13 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
 				pflag = pflag..lfgRole
 			end
-			-- Plugin Flags
+			-- Special Chat Icon
 			if chatIcon then
 				pflag = pflag..chatIcon
+			end
+			-- Plugin Chat Icon
+			if pluginChatIcon then
+				pflag = pflag..pluginChatIcon
 			end
 
 			if ( usingDifferentLanguage ) then
