@@ -23,6 +23,11 @@ local function LoadSkin()
 	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
 
+	-- Lets hide this frame, probably from another AddOn, but yea.. go away!
+	if ItemSocketingDescription then
+		ItemSocketingDescription:Hide()
+	end
+
 	for i = 1, MAX_NUM_SOCKETS  do
 		local button = _G[("ItemSocketingSocket%d"):format(i)]
 		local button_bracket = _G[("ItemSocketingSocket%dBracketFrame"):format(i)]
