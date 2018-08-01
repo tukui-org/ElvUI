@@ -80,20 +80,18 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	local specIndex = GetSpecialization()
-
-	if specIndex then
-		for i = 1, GetNumSpecializations() do
-			local _, name = GetSpecializationInfo(i);
-			if name then
-				DT.tooltip:AddLine(join(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
-			end
+	for i = 1, GetNumSpecializations() do
+		local _, name = GetSpecializationInfo(i);
+		if name then
+			DT.tooltip:AddLine(join(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 
 	DT.tooltip:AddLine(' ')
+
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
+		local specIndex = GetSpecialization()
 		if specIndex then
 			local _, name = GetSpecializationInfo(specIndex);
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
