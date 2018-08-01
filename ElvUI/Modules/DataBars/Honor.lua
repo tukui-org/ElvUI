@@ -98,7 +98,7 @@ function mod:HonorBar_OnEnter()
 end
 
 function mod:HonorBar_OnClick()
-	ToggleTalentFrame(3) --3 is PvP
+	TogglePVPUI()
 end
 
 function mod:UpdateHonorDimensions()
