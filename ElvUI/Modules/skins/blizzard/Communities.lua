@@ -221,6 +221,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
+	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
 
 	local function UpdateNames(self)
 		if not self.expanded then return end
