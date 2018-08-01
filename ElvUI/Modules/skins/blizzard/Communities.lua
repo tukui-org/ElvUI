@@ -390,7 +390,7 @@ local function LoadSkin()
 	backdrop3:SetTemplate("Transparent")
 	backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
 	backdrop3:Point("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -236)
-	backdrop3:Point("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 1)
+	backdrop3:Point("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", -7, 1)
 
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
