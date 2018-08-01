@@ -373,6 +373,25 @@ local function LoadSkin()
 		end
 	end)
 
+	local GuildDetailsFrameInfo = _G["CommunitiesFrameGuildDetailsFrameInfo"]
+	local backdrop1 = CreateFrame("Frame", nil, GuildDetailsFrameInfo)
+	backdrop1:SetTemplate("Transparent")
+	backdrop1:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+	backdrop1:Point("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -22)
+	backdrop1:Point("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 200)
+
+	local backdrop2 = CreateFrame("Frame", nil, GuildDetailsFrameInfo)
+	backdrop2:SetTemplate("Transparent")
+	backdrop2:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+	backdrop2:Point("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -158)
+	backdrop2:Point("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 118)
+
+	local backdrop3 = CreateFrame("Frame", nil, GuildDetailsFrameInfo)
+	backdrop3:SetTemplate("Transparent")
+	backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+	backdrop3:Point("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -236)
+	backdrop3:Point("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 1)
+
 	CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
