@@ -22,7 +22,6 @@ P['general'] = {
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
 	['decimalLength'] = 1,
-	['voiceOverlay'] = false, -- TEMP
 
 	['fontSize'] = 12,
 	['font'] = 'PT Sans Narrow',
