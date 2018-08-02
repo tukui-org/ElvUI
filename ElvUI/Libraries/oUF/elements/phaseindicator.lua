@@ -37,7 +37,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isInSamePhase = UnitInPhase(self.unit)
+	local isInSamePhase = UnitInPhase(self.unit) or not UnitIsWarModePhased(self.unit)
 	if(isInSamePhase) then
 		element:Hide()
 	else
