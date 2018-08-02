@@ -249,6 +249,19 @@ function S:SkinAce3()
 
 			lowtext:Point("TOPLEFT", frame, "BOTTOMLEFT", 2, -2)
 			hightext:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -2, -2)
+		elseif TYPE == "Keybinding" then
+			local button = widget.button
+			local msgframe = widget.msgframe
+
+			SkinButton(button, nil, true)
+			button:StripTextures()
+			button:CreateBackdrop('Default', true)
+			button.backdrop:SetInside()
+
+			msgframe:StripTextures()
+			msgframe:SetTemplate('Transparent')
+			msgframe.msg:ClearAllPoints()
+			msgframe.msg:SetPoint("CENTER")
 
 
 		--[[elseif TYPE == "ColorPicker" then
