@@ -2532,6 +2532,8 @@ function CH:DeconfigureHead(memberID, channelID)
 end
 
 function CH:Test(event, ...)
+	if E.db.general.voiceOverlay ~= true then return end -- TEMP options (its disabled by default)
+
 	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
 		local memberID, channelID, isTalking = ...
 
