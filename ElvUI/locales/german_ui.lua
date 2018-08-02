@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "Konfiguration an-/ausschalten" --layout\layout.lua
 L["AP:"] = true -- No need to translate (Artifact Power)
 L["XP:"] = "EP:"
 L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Ziel zu markieren."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Alternative Energie"

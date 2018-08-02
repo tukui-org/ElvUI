@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "设置开关"
 L["AP:"] = "神器能量:" -- Artifact Power
 L["XP:"] = "经验:"
 L["You don't have permission to mark targets."] = "你没有标记目标的权限"
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "特殊能量条"

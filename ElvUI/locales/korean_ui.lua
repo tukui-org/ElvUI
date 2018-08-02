@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["AP:"] = "유물력" -- Artifact Power
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "특수상황 진행 바"

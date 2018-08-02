@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP :"
 L["You don't have permission to mark targets."] = "Vous n'avez pas la permission de marquer les cibles."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Puissance Alternative"

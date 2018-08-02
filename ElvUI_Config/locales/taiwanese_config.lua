@@ -508,6 +508,7 @@ L["Top Panel"] = "頂部面板"
 L["Unit Prefix Style"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "當你離開時顯示AFK界面"
+L["Replace Blizzard's Voice Overlay."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "把該字體設置應用到所有ElvUI設置中去,但是某些設置並不會被改變."

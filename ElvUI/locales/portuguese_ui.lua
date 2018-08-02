@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Você não tem permissão para marcar alvos."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Recurso Alternativo"

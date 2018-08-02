@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "經驗:"
 L["You don't have permission to mark targets."] = "你沒有標記目標的權限."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "特殊能量條框架"

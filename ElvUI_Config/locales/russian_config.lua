@@ -508,6 +508,7 @@ L["Top Panel"] = "Верхняя панель"
 L["Unit Prefix Style"] = "Стиль сокращений"
 L["Vendor Gray Detailed Report"] = "Подробности продажи"
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
+L["Replace Blizzard's Voice Overlay."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Применить этот шрифт ко всем элементам интерфейса. Некоторые шрифты будут пропущены из-за более мелкого размера по умолчанию."

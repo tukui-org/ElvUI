@@ -508,6 +508,7 @@ L["Top Panel"] = "Bandeau en haut"
 L["Unit Prefix Style"] = "Style des préfixes d'unités"
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial."
+L["Replace Blizzard's Voice Overlay."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true

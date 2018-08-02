@@ -180,8 +180,16 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.raidUtility end,
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				minUiScale = {
+				voiceOverlay = {
 					order = 22,
+					type = "toggle",
+					name = L["Voice Overlay"],
+					desc = L["Replaces Blizzard's Voice Overlay."],
+					get = function(info) return E.private.general.voiceOverlay end,
+					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
+				minUiScale = {
+					order = 23,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
 					softMin = 0.20, softMax = 0.64, step = 0.01,
@@ -189,7 +197,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				talkingHeadFrameScale = {
-					order = 23,
+					order = 24,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -198,7 +206,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
 				commandBarSetting = {
-					order = 24,
+					order = 25,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -211,7 +219,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 25,
+					order = 26,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
@@ -226,7 +234,7 @@ E.Options.args.general = {
 					},
 				},
 				decimalLength = {
-					order = 26,
+					order = 27,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],

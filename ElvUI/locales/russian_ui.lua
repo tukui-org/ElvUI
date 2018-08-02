@@ -236,6 +236,7 @@ L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
 L["AP:"] = "СА:" -- Artifact Power
 L["XP:"] = "Опыт:"
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Альтернативный ресурс"

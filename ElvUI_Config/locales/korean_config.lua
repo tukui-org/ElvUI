@@ -555,6 +555,7 @@ L["Top Panel"] = "상단 패널 표시"
 L["Unit Prefix Style"] = "단위 축약 방식"
 L["Vendor Gray Detailed Report"] = "자동판매시 목록 보기"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
+L["Replace Blizzard's Voice Overlay."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "글씨와 글씨 크기 설정을 전체 사용자 인터페이스에 두루 적용합니다. 알림: 일부 글씨 크기 설정은 작은 글씨 크기가 기본값으로 지정되어 예외가 될 것입니다."

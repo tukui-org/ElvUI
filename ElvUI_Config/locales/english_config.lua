@@ -497,6 +497,7 @@ L["Top Panel"] = true
 L["Unit Prefix Style"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
+L["Replace Blizzard's Voice Overlay."] = true
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
