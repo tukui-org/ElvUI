@@ -1372,15 +1372,21 @@ G.unitframe.DebuffHighlightColors = {
 }
 
 G.unitframe.specialFilters = {
+	-- Whitelists
 	['Boss'] = true,
 	['Personal'] = true,
 	['nonPersonal'] = true,
-	['blockNonPersonal'] = true,
 	['CastByUnit'] = true,
 	['notCastByUnit'] = true,
-	['blockNoDuration'] = true,
 	['Dispellable'] = true,
+	['notDispellable'] = true,
 	['CastByNPC'] = true,
 	['CastByPlayers'] = true,
+
+	-- Blacklists
+	['blockNonPersonal'] = true,
 	['blockCastByPlayers'] = true,
+	['blockNoDuration'] = true,
+	['blockDispellable'] = true,
+	['blockNotDispellable'] = true,
 };
