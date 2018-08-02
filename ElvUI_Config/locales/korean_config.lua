@@ -557,6 +557,24 @@ L["Vendor Gray Detailed Report"] = "자동판매시 목록 보기"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
 L["Replace Blizzard's Voice Overlay."] = true
 
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
+
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "글씨와 글씨 크기 설정을 전체 사용자 인터페이스에 두루 적용합니다. 알림: 일부 글씨 크기 설정은 작은 글씨 크기가 기본값으로 지정되어 예외가 될 것입니다."
 L["Applies the primary texture to all statusbars."] = "주 텍스쳐를 모든 상태바에 적용합니다."

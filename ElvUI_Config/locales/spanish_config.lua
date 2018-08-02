@@ -510,6 +510,24 @@ L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
 L["Replace Blizzard's Voice Overlay."] = true
 
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
+
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
 L["Applies the primary texture to all statusbars."] = true
