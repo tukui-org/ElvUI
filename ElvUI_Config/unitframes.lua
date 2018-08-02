@@ -1305,7 +1305,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			overlay = {
 				type = 'toggle',
 				name = L["Overlay"],
-				desc = L["Overlay the healthbar"],
+				desc = L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."],
 				order = 4,
 			},
 			rotation = {
