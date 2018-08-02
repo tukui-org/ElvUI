@@ -1368,6 +1368,13 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 1,
+			},
 			['pvpIcon'] = {
 				['enable'] = false,
 				['anchorPoint'] = 'CENTER',
@@ -2317,6 +2324,13 @@ P['unitframe'] = {
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel]',
 				['yOffset'] = 0,
 				['xOffset'] = 0,
+			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 1,
 			},
 			['portrait'] = {
 				['enable'] = false,

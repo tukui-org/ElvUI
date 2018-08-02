@@ -12,6 +12,7 @@
 	<Script file='health.lua'/>
 	<Script file='infopanel.lua'/>
 	<Script file='name.lua'/>
+	<Script file='phaseindicator.lua'/>
 	<Script file='portrait.lua'/>
 	<Script file='power.lua'/>
 	<Script file='PvPIcon.lua'/>
