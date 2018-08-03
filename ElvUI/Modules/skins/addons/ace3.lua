@@ -328,10 +328,11 @@ function S:SkinAce3()
 					local groupstatus = status.groups
 					local lines = self.lines
 					local buttons = self.buttons
+					local offset = status.scrollvalue
 
-					for i, line in pairs(lines) do
-						local button = buttons[i]
-						if groupstatus[line.uniquevalue] and button then
+					for i = offset + 1, #lines do
+						local button = buttons[i - offset]
+						if groupstatus[lines[i].uniquevalue] and button then
 							button.toggleText:SetText('-')
 						elseif button then
 							button.toggleText:SetText('+')
