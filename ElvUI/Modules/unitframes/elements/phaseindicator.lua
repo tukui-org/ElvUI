@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 --Lua functions
-
+local unpack = unpack
 --WoW API / Variables
 local UnitIsWarModePhased = UnitIsWarModePhased
 
@@ -12,9 +12,9 @@ local texCoords = {
     [2] = {34 / 128, 66 / 128, 1 / 64, 33 / 64},
 }
 
-function UF:PostUpdate_PhaseIcon(element, isInSamePhase)
+function UF:PostUpdate_PhaseIcon(isInSamePhase)
 	if not isInSamePhase then
-		element:SetTexCoord(texCoords[UnitIsWarModePhased(element.__owner.unit) and 2 or 1])
+		self:SetTexCoord(unpack(texCoords[UnitIsWarModePhased(self.__owner.unit) and 2 or 1]))
 	end
 end
 
