@@ -2175,11 +2175,12 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(_, text)
-									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
-									local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
-									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+								stateSwitchGetText = function(_, TEXT)
+									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local text = friend or enemy or TEXT
+									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function()
@@ -2347,11 +2348,12 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(_, text)
-									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
-									local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
-									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+								stateSwitchGetText = function(_, TEXT)
+									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local text = friend or enemy or TEXT
+									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function(info)
