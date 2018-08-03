@@ -64,7 +64,7 @@ local function BuildABConfig()
 				order = 5,
 				type = "toggle",
 				name = L["Color Keybind Text"],
-				desc = L["Color Keybind Text when Out of Range, insetad of the button."],
+				desc = L["Color Keybind Text when Out of Range, instead of the button."],
 			},
 			keyDown = {
 				order = 6,
