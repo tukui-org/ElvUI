@@ -118,7 +118,7 @@ local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.butto
 
 local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
-local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
+local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick, UpdateRange -- Sezz: new UpdateRange method
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
 
@@ -763,6 +763,7 @@ function OnEvent(frame, event, arg1, ...)
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
 				ClearNewActionHighlight(button._state_action, true, false)
+				UpdateRange(button) -- Sezz: [@mouseover] macros seem to raise ACTIONBAR_SLOT_CHANGED
 				Update(button)
 			end
 		end
@@ -919,28 +920,7 @@ function OnUpdate(_, elapsed)
 
 			-- Range
 			if rangeTimer <= 0 then
-				local inRange = button:IsInRange()
-				local oldRange = button.outOfRange
-				button.outOfRange = (inRange == false)
-				if oldRange ~= button.outOfRange then
-					if button.config.outOfRangeColoring == "button" then
-						UpdateUsable(button)
-					elseif button.config.outOfRangeColoring == "hotkey" then
-						local hotkey = button.HotKey
-						if hotkey:GetText() == RANGE_INDICATOR then
-							if inRange == false then
-								hotkey:Show()
-							else
-								hotkey:Hide()
-							end
-						end
-						if inRange == false then
-							hotkey:SetVertexColor(unpack(button.config.colors.range))
-						else
-							hotkey:SetVertexColor(0.75, 0.75, 0.75)
-						end
-					end
-				end
+				UpdateRange(button) -- Sezz
 			end
 		end
 
@@ -998,6 +978,31 @@ function UpdateGrid(self)
 		self:SetAlpha(1.0)
 	elseif gridCounter == 0 and self:IsShown() and not self:HasAction() then
 		self:SetAlpha(0.0)
+	end
+end
+
+function UpdateRange(self) -- Sezz: moved from OnUpdate
+	local inRange = self:IsInRange()
+	local oldRange = self.outOfRange
+	self.outOfRange = (inRange == false)
+	if oldRange ~= self.outOfRange then
+		if self.config.outOfRangeColoring == "button" then
+			UpdateUsable(self)
+		elseif self.config.outOfRangeColoring == "hotkey" then
+			local hotkey = self.HotKey
+			if hotkey:GetText() == RANGE_INDICATOR then
+				if inRange == false then
+					hotkey:Show()
+				else
+					hotkey:Hide()
+				end
+			end
+			if inRange == false then
+				hotkey:SetVertexColor(unpack(self.config.colors.range))
+			else
+				hotkey:SetVertexColor(0.75, 0.75, 0.75)
+			end
+		end
 	end
 end
 
@@ -1079,6 +1084,7 @@ function Generic:UpdateAction(force)
 			self._state_type = type
 		end
 		self._state_action = action
+		UpdateRange(self) -- Sezz: update range check on state change, is it safe to call it from here?
 		Update(self)
 	end
 end
