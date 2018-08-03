@@ -1100,7 +1100,6 @@ function Update(self)
 			NonActionButtons[self] = true
 		end
 		self:SetAlpha(1.0)
-		UpdateButtonState(self)
 		UpdateUsable(self)
 		UpdateCooldown(self)
 		UpdateFlash(self)
@@ -1191,6 +1190,8 @@ function Update(self)
 	UpdateOverlayGlow(self)
 
 	UpdateNewAction(self)
+
+	UpdateButtonState(self)
 
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
