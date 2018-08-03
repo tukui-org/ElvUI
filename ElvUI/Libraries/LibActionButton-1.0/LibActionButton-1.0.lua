@@ -121,7 +121,7 @@ local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, Updat
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
-local UpdateRange -- Sezz: new UpdateRange method
+local UpdateRange -- Sezz: new method
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
