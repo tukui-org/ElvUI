@@ -665,7 +665,7 @@ function Generic:UpdateConfig(config)
 	if config and type(config) ~= "table" then
 		error("LibActionButton-1.0: UpdateConfig requires a valid configuration!", 2)
 	end
-	local oldconfig = self.config
+
 	self.config = {}
 	-- merge the two configs
 	merge(self.config, config, DefaultConfig)
