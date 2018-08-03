@@ -509,7 +509,7 @@ L["Top Panel"] = "Obere Leiste"
 L["Unit Prefix Style"] = "Einheit Präfix Stil"
 L["Vendor Gray Detailed Report"] = "Graue Gegenstände detaillierter Report"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
-L["Replace Blizzard's Voice Overlay."] = true
+L["Replace Blizzard's Voice Overlay."] = "Ersetzt Blizzard's Voice Overlay."
 
 --Aura Filter
 ---Whitelists
