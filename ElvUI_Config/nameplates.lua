@@ -23,7 +23,7 @@ local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_W
 local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
-local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
+local BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -2176,9 +2176,11 @@ local function GetUnitSettings(unit, name)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(_, text)
-									local specialFilter = E.global.unitframe['specialFilters'][text]
 									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
+									local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
+									local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function()
 									filterPriority('buffs', unit, carryFilterFrom, nil, nil, true)
@@ -2346,9 +2348,11 @@ local function GetUnitSettings(unit, name)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(_, text)
-									local specialFilter = E.global.unitframe['specialFilters'][text]
 									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
+									local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
+									local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, nil, nil, true)

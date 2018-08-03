@@ -18,7 +18,7 @@ local gsub = string.gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
+local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
@@ -392,9 +392,11 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, text)
-			local specialFilter = E.global.unitframe['specialFilters'][text]
 			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
+			local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
+			local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
@@ -660,9 +662,11 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			filterPriority(auraType, groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, text)
-			local specialFilter = E.global.unitframe['specialFilters'][text]
 			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
+			local SF, localized = E.global.unitframe['specialFilters'][friend or enemy or text], L[friend or enemy or text]
+			local blockText = SF and localized and localized:match("^%["..BLOCK.."]%s?") and localized:gsub("^%["..BLOCK.."]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or (friend or enemy or text)
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
