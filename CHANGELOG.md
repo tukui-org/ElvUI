@@ -2,7 +2,7 @@
 
 **New Additions:**  
 Added Tranquility channel ticks (#586).  
-Added Phase Indicator for Target and Party frames.  
+Added Phase Indicator for Target, Party and Raid frames.  
 
 
 **Bug Fixes:**  
@@ -15,6 +15,7 @@ Fixed an issue which prevented the frame glow being shown on a UnitFrame with th
 Updated spell id for Earth Shield (#527).  
 Updated SpellHighlightTexture in the Spellbook (#547).  
 Updated WarboardUI skin.  
+Updated Communities skin.  
 Open PVP frame when you click on the Honor bar.  
 Updated the Spec Switch Datatext.  
 Skin Ace3 Keybinding Widget (Thanks @sezz).  
