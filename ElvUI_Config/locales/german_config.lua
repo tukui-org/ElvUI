@@ -513,21 +513,21 @@ L["Replace Blizzard's Voice Overlay."] = "Ersetzt Blizzard's Voice Overlay."
 
 --Aura Filter
 ---Whitelists
-L['Boss'] = true
-L['Personal'] = true
-L['nonPersonal'] = "Non Personal"
-L['notCastByUnit'] = "Not Cast By Unit"
-L['Dispellable'] = true
-L['notDispellable'] = "Not Dispellable"
-L['CastByNPC'] = "Cast By NPC"
-L['CastByUnit'] = "Cast By Unit"
-L['CastByPlayers'] = "Cast By Players"
+L['Boss'] = true -- No need to translate
+L['Personal'] = "Persönlich"
+L['nonPersonal'] = "Nicht Persönlich"
+L['notCastByUnit'] = "Nicht gezaubert von der Einheit"
+L['Dispellable'] = "Bannbar"
+L['notDispellable'] = "Nicht Bannbar"
+L['CastByNPC'] = "Gezaubert von NPC"
+L['CastByUnit'] = "Gezaubert von Einheit"
+L['CastByPlayers'] = "Gezaubert von Spieler"
 ---Blacklists
-L['blockNonPersonal'] = "[Block] Non Personal"
-L['blockCastByPlayers'] = "[Block] Cast By Players"
-L['blockNoDuration'] = "[Block] No Duration"
-L['blockDispellable'] = "[Block] Dispellable"
-L['blockNotDispellable'] = "[Block] Not Dispellable"
+L['blockNonPersonal'] = "[Blocke] Nicht Persönlich"
+L['blockCastByPlayers'] = "[Blocke] Gezaubert von Spieler"
+L['blockNoDuration'] = "[Blocke] Keine Dauer"
+L['blockDispellable'] = "[Blocke] Bannbar"
+L['blockNotDispellable'] = "[Blocke] Nicht Bannbar"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Wendet die Schrift und Schriftgröße überall im Interface an. Hinweis: Einige Schriftarten werden übersprungen, weil sie eine kleinere Schriftgröße als Standard haben."
