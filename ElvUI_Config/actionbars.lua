@@ -60,7 +60,7 @@ local function BuildABConfig()
 				desc = L["Display bind names on action buttons."],
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			noRangeColorText = {
+			useRangeColorText = {
 				order = 5,
 				type = "toggle",
 				name = L["Color Keybind Text"],
