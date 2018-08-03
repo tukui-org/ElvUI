@@ -678,7 +678,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		shine:SetAllPoints()
 	end
 
-	if self.db.hotkeytext then
+	if self.db.hotkeytext or self.db.noRangeColorText then
 		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		if button.config and (button.config.outOfRangeColoring ~= "hotkey") then
 			button.HotKey:SetTextColor(color.r, color.g, color.b)
