@@ -392,8 +392,9 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, text)
+			local specialFilter = E.global.unitframe['specialFilters'][text]
 			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
@@ -659,8 +660,9 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			filterPriority(auraType, groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, text)
+			local specialFilter = E.global.unitframe['specialFilters'][text]
 			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, (specialFilter and L[friend]) or friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, (specialFilter and L[enemy]) or enemy)) or (specialFilter and L[text])
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
