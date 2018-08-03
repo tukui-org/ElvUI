@@ -7,7 +7,6 @@ local select = select
 local format, join = string.format, string.join
 --WoW API / Variables
 local EasyMenu = EasyMenu
-local GetActiveSpecGroup = GetActiveSpecGroup
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -55,7 +54,7 @@ local function OnEvent(self)
 		return
 	end
 
-	active = GetActiveSpecGroup()
+	active = specIndex
 
 	local spec, loot, text = '', 'N/A', LOOT
 	local specialization = GetLootSpecialization()
