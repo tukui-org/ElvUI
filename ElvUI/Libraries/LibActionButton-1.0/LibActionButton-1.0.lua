@@ -59,6 +59,9 @@ local C_ToyBox = C_ToyBox
 -- GLOBALS: RANGE_INDICATOR, ATTACK_BUTTON_FLASH_TIME, TOOLTIP_UPDATE_TIME
 -- GLOBALS: ZoneAbilityFrame, HasZoneAbility, GetLastZoneAbilitySpellTexture
 
+-- GLOBALS: GetCVarBool, IsAltKeyDown, IsControlKeyDown, IsShiftKeyDown, COOLDOWN_TYPE_NORMAL, COOLDOWN_TYPE_LOSS_OF_CONTROL
+-- GLOBALS: GetSpellInfo, FlyoutHasSpell, GetModifiedClick, GetActionLossOfControlCooldown, CooldownFrame_Set
+
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
 local LBG = LibStub("LibButtonGlow-1.0", true)
