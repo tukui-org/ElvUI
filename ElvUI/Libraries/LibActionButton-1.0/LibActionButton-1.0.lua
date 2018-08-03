@@ -764,7 +764,6 @@ function OnEvent(frame, event, arg1, ...)
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
 				ClearNewActionHighlight(button._state_action, true, false)
-				UpdateRange(button) -- Sezz: [@mouseover] macros seem to raise ACTIONBAR_SLOT_CHANGED
 				Update(button)
 			end
 		end
