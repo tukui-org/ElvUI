@@ -1383,7 +1383,7 @@ G.unitframe.specialFilters = {
 	['CastByNPC'] = true,
 	['CastByPlayers'] = true,
 
-	-- Blacklists, keep these starting with `block`
+	-- Blacklists
 	['blockNonPersonal'] = true,
 	['blockCastByPlayers'] = true,
 	['blockNoDuration'] = true,
