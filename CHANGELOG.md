@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added Tranquility channel ticks (#586).  
+Added Phase Indicator for Target and Party frames.  
 
 
 **Bug Fixes:**  
@@ -18,6 +19,7 @@ Open PVP frame when you click on the Honor bar.
 Updated the Spec Switch Datatext.  
 Skin Ace3 Keybinding Widget (Thanks @sezz).  
 Added a toggle in General for Voice Overlay.  
+Allowed Special Aura filters to be localized.  
 
 ___
 **Version 10.78 [ July 28th 2018 ]**
