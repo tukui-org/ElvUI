@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = true
 L["Keybind Mode"] = true
 L["Keybind Text"] = true
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = true
 L["Macro Text"] = true
 L["Masque Support"] = true

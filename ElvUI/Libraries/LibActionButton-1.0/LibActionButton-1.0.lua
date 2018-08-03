@@ -670,15 +670,6 @@ function Generic:UpdateConfig(config)
 	-- merge the two configs
 	merge(self.config, config, DefaultConfig)
 
-	if self.config.outOfRangeColoring == "button" or (oldconfig and oldconfig.outOfRangeColoring == "button") then
-		UpdateUsable(self)
-	end
-	if self.config.outOfRangeColoring == "hotkey" then
-		self.outOfRange = nil
-	elseif oldconfig and oldconfig.outOfRangeColoring == "hotkey" then
-		self.HotKey:SetVertexColor(0.75, 0.75, 0.75)
-	end
-
 	if self.config.hideElements.macro then
 		self.Name:Hide()
 	else
@@ -689,7 +680,8 @@ function Generic:UpdateConfig(config)
 
 	UpdateHotkeys(self)
 	UpdateGrid(self)
-	Update(self)
+	Update(self, true)
+
 	self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
@@ -981,11 +973,11 @@ function UpdateGrid(self)
 	end
 end
 
-function UpdateRange(self) -- Sezz: moved from OnUpdate
+function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 	local inRange = self:IsInRange()
 	local oldRange = self.outOfRange
 	self.outOfRange = (inRange == false)
-	if oldRange ~= self.outOfRange then
+	if force or (oldRange ~= self.outOfRange) then
 		if self.config.outOfRangeColoring == "button" then
 			UpdateUsable(self)
 		elseif self.config.outOfRangeColoring == "hotkey" then
@@ -997,10 +989,11 @@ function UpdateRange(self) -- Sezz: moved from OnUpdate
 					hotkey:Hide()
 				end
 			end
+
 			if inRange == false then
 				hotkey:SetVertexColor(unpack(self.config.colors.range))
 			else
-				hotkey:SetVertexColor(0.75, 0.75, 0.75)
+				hotkey:SetVertexColor(unpack(self.config.colors.usable))
 			end
 		end
 	end
@@ -1076,9 +1069,9 @@ end
 
 function Generic:UpdateAction(force)
 	local type, action = self:GetAction()
-	if force or type ~= self._state_type or action ~= self._state_action then
+	if force or (type ~= self._state_type) or (action ~= self._state_action) then
 		-- type changed, update the metatable
-		if force or self._state_type ~= type then
+		if force or (self._state_type ~= type) then
 			local meta = type_meta_map[type] or type_meta_map.empty
 			setmetatable(self, meta)
 			self._state_type = type
@@ -1088,7 +1081,7 @@ function Generic:UpdateAction(force)
 	end
 end
 
-function Update(self)
+function Update(self, fromUpdateConfig)
 	if self:HasAction() then
 		ActiveButtons[self] = true
 		if self._state_type == "action" then
@@ -1160,6 +1153,7 @@ function Update(self)
 		self.icon:Show()
 		self.rangeTimer = - 1
 		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
+
 		if not self.LBFSkinned and not self.MasqueSkinned then
 			self.NormalTexture:SetTexCoord(0, 0, 0, 0)
 		end
@@ -1168,11 +1162,7 @@ function Update(self)
 		self.cooldown:Hide()
 		self.rangeTimer = nil
 		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
-		if self.HotKey:GetText() == RANGE_INDICATOR then
-			self.HotKey:Hide()
-		else
-			self.HotKey:SetVertexColor(0.75, 0.75, 0.75)
-		end
+
 		if not self.LBFSkinned and not self.MasqueSkinned then
 			self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
 		end
@@ -1180,7 +1170,7 @@ function Update(self)
 
 	self:UpdateLocal()
 
-	UpdateRange(self) -- Sezz: update range check on state change
+	UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
 
 	UpdateCount(self)
 

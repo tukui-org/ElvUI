@@ -120,6 +120,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Aktion bei Tastendruck"
 L["Keybind Mode"] = "Tastaturbelegung"
 L["Keybind Text"] = "Tastaturbelegungstext"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Niedrige CD-Schwelle"
 L["Macro Text"] = "Makrotext"
 L["Masque Support"] = "Masque Unterstützung"

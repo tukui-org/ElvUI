@@ -155,6 +155,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "단축키를 누를 때 실행"
 L["Keybind Mode"] = "단축키 설정 모드"
 L["Keybind Text"] = "단축키 표시"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "초읽기 시작 시점"
 L["Macro Text"] = "매크로 이름 표시"
 L["Masque Support"] = "Masque 지원"

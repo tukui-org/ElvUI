@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "При нажатии клавиши"
 L["Keybind Mode"] = "Назначить клавиши"
 L["Keybind Text"] = "Текст клавиш"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Минимальное значение"
 L["Macro Text"] = "Названия макросов"
 L["Masque Support"] = "Поддержка Masque"

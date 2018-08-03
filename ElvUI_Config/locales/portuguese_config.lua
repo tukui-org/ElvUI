@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Tecla pressionada"
 L["Keybind Mode"] = "Modo de Teclas de Atalho"
 L["Keybind Text"] = "Texto das Teclas de Atalho"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Baixo Limiar"
 L["Macro Text"] = "Texto das Macros"
 L["Masque Support"] = true

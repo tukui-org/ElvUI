@@ -117,6 +117,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "按下施法"
 L["Keybind Mode"] = "键位设置模式"
 L["Keybind Text"] = "键位文字"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "冷却时间阈值"
 L["Macro Text"] = "宏名称"
 L["Masque Support"] = "Masque支持"

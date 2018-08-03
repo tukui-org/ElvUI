@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Touche enfoncée"
 L["Keybind Mode"] = "Mode raccourcis"
 L["Keybind Text"] = "Texte des raccourcis"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Seuil minimal"
 L["Macro Text"] = "Texte sur Macro"
 L["Masque Support"] = "Support de Maque"
