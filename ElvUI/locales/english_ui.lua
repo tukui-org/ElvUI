@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = true --Not used, yet?
 L["Temporary Move"] = true
 L["Toggle Bags"] = true
+L["Vendor Grays"] = true
 L["Vendor / Delete Grays"] = true
 
 --Chat

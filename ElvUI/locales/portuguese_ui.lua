@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = "Aba de Organização"
 L["Temporary Move"] = "Mover Temporariamente"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
+L["Vendor Grays"] = "Vender Itens Cinzentos"
 L["Vendor / Delete Grays"] = true
 
 --Chat

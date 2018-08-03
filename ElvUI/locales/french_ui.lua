@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Afficher / Masquer les composants"
 L["Sort Tab"] = "Organiser les onglets" --Not used, yet?
 L["Temporary Move"] = "Déplacer temporairement"
 L["Toggle Bags"] = "Afficher les sacs"
+L["Vendor Grays"] = "Vendre les objets gris"
 L["Vendor / Delete Grays"] = true
 
 --Chat

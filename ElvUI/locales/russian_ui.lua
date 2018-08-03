@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Показать/скрыть материалы"
 L["Sort Tab"] = "Сортировать вкладки" --Not used, yet?
 L["Temporary Move"] = "Временное перемещение"
 L["Toggle Bags"] = "Показать сумки"
+L["Vendor Grays"] = "Продавать серые предметы"
 L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
 
 --Chat

@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "재료은행 표시"
 L["Sort Tab"] = "탭 정렬" --Not used, yet?
 L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
+L["Vendor Grays"] = "잡동사니 자동판매"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
 
 --Chat

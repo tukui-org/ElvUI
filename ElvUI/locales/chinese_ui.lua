@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
+L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/删除灰色物品"
 
 --Chat
