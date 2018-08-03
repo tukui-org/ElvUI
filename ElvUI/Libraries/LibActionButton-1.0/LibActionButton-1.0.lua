@@ -118,9 +118,10 @@ local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.butto
 
 local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
-local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick, UpdateRange -- Sezz: new UpdateRange method
+local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
+local UpdateRange -- Sezz: new UpdateRange method
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
@@ -1084,7 +1085,6 @@ function Generic:UpdateAction(force)
 			self._state_type = type
 		end
 		self._state_action = action
-		UpdateRange(self) -- Sezz: update range check on state change, is it safe to call it from here?
 		Update(self)
 	end
 end
@@ -1181,6 +1181,8 @@ function Update(self)
 	end
 
 	self:UpdateLocal()
+
+	UpdateRange(self) -- Sezz: update range check on state change
 
 	UpdateCount(self)
 
