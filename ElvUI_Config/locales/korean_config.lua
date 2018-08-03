@@ -1175,6 +1175,7 @@ L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Priority"] = "우선도"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = "PVP & 명성 아이콘"
+L["Phase Indicator"] = true
 L["PvP Text"] = "PVP 문자"
 L["PVP Trinket"] = "PvP 장신구"
 L["Raid Icon"] = "레이드 아이콘"

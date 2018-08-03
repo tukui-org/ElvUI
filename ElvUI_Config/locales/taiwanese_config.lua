@@ -1127,6 +1127,7 @@ L["Powers"] = "能量"
 L["Priority"] = "優先級"
 L["Profile Specific"] = "角色專用"
 L["PvP & Prestige Icon"] = "PvP和威望圖標"
+L["Phase Indicator"] = true
 L["PvP Text"] = "PvP文字"
 L["PVP Trinket"] = "PVP 飾品"
 L["Raid Icon"] = "團隊圖示"

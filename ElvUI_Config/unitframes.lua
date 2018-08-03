@@ -3525,7 +3525,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpIcon = {
-			order = 449,
+			order = 450,
 			type = 'group',
 			name = L["PvP & Prestige Icon"],
 			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
@@ -3574,7 +3574,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpText = {
-			order = 450,
+			order = 460,
 			type = 'group',
 			name = L["PvP Text"],
 			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
@@ -3768,6 +3768,55 @@ E.Options.args.unitframe.args.target = {
 					order = 1,
 					type = "header",
 					name = L["PvP & Prestige Icon"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
+		phaseIndicator = {
+			order = 450,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
 				},
 				enable = {
 					order = 2,
@@ -5657,6 +5706,55 @@ E.Options.args.unitframe.args.party = {
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		phaseIndicator = {
+			order = 5005,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 	},
 }
 

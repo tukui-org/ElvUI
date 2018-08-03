@@ -1127,6 +1127,7 @@ L["Powers"] = "Énergies"
 L["Priority"] = "Priorité"
 L["Profile Specific"] = "Profil spécifique"
 L["PvP & Prestige Icon"] = "Icône prestige de PVP"
+L["Phase Indicator"] = true
 L["PvP Text"] = "Texte PVP"
 L["PVP Trinket"] = "Bijou PVP"
 L["Raid Icon"] = "Icône de Raid"

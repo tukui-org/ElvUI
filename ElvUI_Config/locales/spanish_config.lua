@@ -1126,6 +1126,7 @@ L["Powers"] = "Poderes"
 L["Priority"] = "Prioridad"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true
+L["Phase Indicator"] = true
 L["PvP Text"] = true
 L["PVP Trinket"] = "Abalorio JcJ"
 L["Raid Icon"] = "Icono de Banda"

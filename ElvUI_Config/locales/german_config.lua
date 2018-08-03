@@ -1129,6 +1129,7 @@ L["Powers"] = "Kräfte"
 L["Priority"] = "Priorität"
 L["Profile Specific"] = "Profilspezifisch"
 L["PvP & Prestige Icon"] = "PvP & Prestige Symbol"
+L["Phase Indicator"] = true
 L["PvP Text"] = true --no need to translate
 L["PVP Trinket"] = "PVP Schmuck"
 L["Raid Icon"] = "Schlachtzugssymbol"

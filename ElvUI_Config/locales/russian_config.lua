@@ -1126,6 +1126,7 @@ L["Powers"] = "Ресурсы"
 L["Priority"] = "Приоритет"
 L["Profile Specific"] = "По профилю"
 L["PvP & Prestige Icon"] = "Иконки PvP и престижа"
+L["Phase Indicator"] = true
 L["PvP Text"] = "Текст PvP"
 L["PVP Trinket"] = "ПвП Аксессуар"
 L["Raid Icon"] = "Рейдовая иконка"
