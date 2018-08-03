@@ -1099,7 +1099,6 @@ function Update(self)
 			NonActionButtons[self] = true
 		end
 		self:SetAlpha(1.0)
-		UpdateUsable(self)
 		UpdateCooldown(self)
 		UpdateFlash(self)
 	else
@@ -1160,6 +1159,7 @@ function Update(self)
 		self.icon:Show()
 		self.rangeTimer = - 1
 		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
+
 		if not self.LBFSkinned and not self.MasqueSkinned then
 			self.NormalTexture:SetTexCoord(0, 0, 0, 0)
 		end
@@ -1168,11 +1168,7 @@ function Update(self)
 		self.cooldown:Hide()
 		self.rangeTimer = nil
 		self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
-		if self.HotKey:GetText() == RANGE_INDICATOR then
-			self.HotKey:Hide()
-		else
-			self.HotKey:SetVertexColor(0.75, 0.75, 0.75)
-		end
+
 		if not self.LBFSkinned and not self.MasqueSkinned then
 			self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
 		end
