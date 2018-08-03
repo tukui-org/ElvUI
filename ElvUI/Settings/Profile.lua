@@ -2641,6 +2641,13 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 1,
+			},
 		},
 		['raid40'] = {
 			['enable'] = true,
@@ -2807,6 +2814,13 @@ P['unitframe'] = {
 				['attachToObject'] = 'Frame',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 1,
 			},
 		},
 		['raidpet'] = {
