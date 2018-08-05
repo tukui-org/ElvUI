@@ -1,14 +1,13 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local S = E:GetModule('Skins')
+local E, L, DF = unpack(select(2, ...))
+local B = E:GetModule('Blizzard')
 
 --Cache global variables
 --Lua functions
-local _G = _G
-
---WoW API / Variables
-
+--WoW-Api
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+
 local function BelowMinimapContainer()
 	local container = _G["UIWidgetBelowMinimapContainerFrame"]
 	local holder = CreateFrame('Frame', 'BelowMinimapContainerHolder', UIParent)
@@ -30,15 +29,9 @@ local function BelowMinimapContainer()
 		self:SetPoint('CENTER', holder, 'CENTER')
 	end)
 
-	E:CreateMover(holder, 'BelowMinimapContainerMover', L["BelowMinimapContainer"])
+	E:CreateMover(holder, 'BelowMinimapContainerMover', L["BelowMinimapContainer"], nil, nil, nil,'ALL,SOLO')
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.UIWidgets ~= true then return end
-
-	-- TO DO: Fill me with love
-
+function B:Handle_UIWidgets()
 	BelowMinimapContainer()
 end
-
-S:AddCallbackForAddon("Blizzard_UIWidgets", "Widgets", LoadSkin)
