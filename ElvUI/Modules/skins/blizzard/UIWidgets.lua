@@ -12,7 +12,7 @@ local _G = _G
 local function BelowMinimapContainer()
 	local container = _G["UIWidgetBelowMinimapContainerFrame"]
 	local holder = CreateFrame('Frame', 'BelowMinimapContainerHolder', UIParent)
-	holder:Point("TOPRIGHT", _G["MinimapCluster"], "BOTTOMRIGHT", 0, -16)
+	holder:Point("TOPRIGHT", _G["Minimap"], "BOTTOMRIGHT", 0, -16)
 	holder:Size(128, 40)
 
 	container:ClearAllPoints()
