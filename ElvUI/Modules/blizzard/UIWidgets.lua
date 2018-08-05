@@ -3,6 +3,7 @@ local B = E:GetModule('Blizzard')
 
 --Cache global variables
 --Lua functions
+local _G = _G
 --WoW-Api
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
