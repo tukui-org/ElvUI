@@ -20,7 +20,7 @@ end
 
 function UF:Construct_PhaseIcon(frame)
 	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
-	PhaseIndicator:SetSize(20, 20)
+	PhaseIndicator:SetSize(30, 30)
 	PhaseIndicator:SetPoint('CENTER', frame.Health, 'CENTER')
 	PhaseIndicator:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\phaseIcons.tga')
 	PhaseIndicator:SetDrawLayer('OVERLAY', 7)
@@ -36,7 +36,7 @@ function UF:Configure_PhaseIcon(frame)
 	PhaseIndicator:Point(frame.db.phaseIndicator.anchorPoint, frame.Health, frame.db.phaseIndicator.anchorPoint, frame.db.phaseIndicator.xOffset, frame.db.phaseIndicator.yOffset)
 
 	local scale = frame.db.phaseIndicator.scale or 1
-	PhaseIndicator:Size(20 * scale)
+	PhaseIndicator:Size(30 * scale)
 
 	if frame.db.phaseIndicator.enable and not frame:IsElementEnabled('PhaseIndicator') then
 		frame:EnableElement('PhaseIndicator')

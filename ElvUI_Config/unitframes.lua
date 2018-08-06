@@ -3830,7 +3830,7 @@ E.Options.args.unitframe.args.target = {
 					type = "range",
 					name = L["Scale"],
 					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,
@@ -5730,7 +5730,7 @@ E.Options.args.unitframe.args.party = {
 					type = "range",
 					name = L["Scale"],
 					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,
@@ -6204,7 +6204,7 @@ E.Options.args.unitframe.args.raid = {
 					type = "range",
 					name = L["Scale"],
 					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,
@@ -6682,7 +6682,7 @@ E.Options.args.unitframe.args.raid40 = {
 					type = "range",
 					name = L["Scale"],
 					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,

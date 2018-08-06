@@ -1373,7 +1373,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'CENTER',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['scale'] = 1,
+				['scale'] = 0.8,
 			},
 			['pvpIcon'] = {
 				['enable'] = false,
@@ -2330,7 +2330,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'CENTER',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['scale'] = 1,
+				['scale'] = 0.8,
 			},
 			['portrait'] = {
 				['enable'] = false,
@@ -2646,7 +2646,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'CENTER',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['scale'] = 1,
+				['scale'] = 0.8,
 			},
 		},
 		['raid40'] = {
@@ -2820,7 +2820,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'CENTER',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['scale'] = 1,
+				['scale'] = 0.8,
 			},
 		},
 		['raidpet'] = {
