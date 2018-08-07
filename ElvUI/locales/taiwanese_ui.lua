@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "顯示/隱藏材料"
 L["Sort Tab"] = "選項排列" --Not used, yet?
 L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
+L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -236,6 +237,7 @@ L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "經驗:"
 L["You don't have permission to mark targets."] = "你沒有標記目標的權限."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "特殊能量條框架"

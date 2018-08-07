@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "При нажатии клавиши"
 L["Keybind Mode"] = "Назначить клавиши"
 L["Keybind Text"] = "Текст клавиш"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Минимальное значение"
 L["Macro Text"] = "Названия макросов"
 L["Masque Support"] = "Поддержка Masque"
@@ -508,6 +510,25 @@ L["Top Panel"] = "Верхняя панель"
 L["Unit Prefix Style"] = "Стиль сокращений"
 L["Vendor Gray Detailed Report"] = "Подробности продажи"
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Применить этот шрифт ко всем элементам интерфейса. Некоторые шрифты будут пропущены из-за более мелкого размера по умолчанию."
@@ -1082,7 +1103,7 @@ L["Only Match SpellID"] = "Сопостовлять только ID заклин
 L["OOR Alpha"] = "Прозрачность вне радиуса"
 L["Other Filter"] = "Другой фильтр"
 L["Others"] = "Чужое"
-L["Overlay the healthbar"] = "Отображение портрета на полосе здоровья."
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = "Наложение"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Игнорировать пользовательские настройки отображения в определенных ситуациях. Пример: показывать только группы 1 и 2 в подземелье на 10 человек."
 L["Override the default class color setting."] = "Перекрывает установки цвета класса по умолчанию."
@@ -1107,6 +1128,7 @@ L["Powers"] = "Ресурсы"
 L["Priority"] = "Приоритет"
 L["Profile Specific"] = "По профилю"
 L["PvP & Prestige Icon"] = "Иконки PvP и престижа"
+L["Phase Indicator"] = true
 L["PvP Text"] = "Текст PvP"
 L["PVP Trinket"] = "ПвП Аксессуар"
 L["Raid Icon"] = "Рейдовая иконка"

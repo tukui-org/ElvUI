@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = "Aba de Organização"
 L["Temporary Move"] = "Mover Temporariamente"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
+L["Vendor Grays"] = "Vender Itens Cinzentos"
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -236,6 +237,7 @@ L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Você não tem permissão para marcar alvos."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Recurso Alternativo"

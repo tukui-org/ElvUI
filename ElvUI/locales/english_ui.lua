@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = true --Not used, yet?
 L["Temporary Move"] = true
 L["Toggle Bags"] = true
+L["Vendor Grays"] = true
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -236,6 +237,7 @@ L["Toggle Configuration"] = true --layout\layout.lua
 L["AP:"] = true -- Artifact Power
 L["XP:"] = true
 L["You don't have permission to mark targets."] = true
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = true

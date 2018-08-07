@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "显示/隐藏材料"
 L["Sort Tab"] = "选项排列" --Not used, yet?
 L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
+L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/删除灰色物品"
 
 --Chat
@@ -230,12 +231,13 @@ L["Left Click:"] = "鼠标左键:"
 L["Raid Menu"] = "团队菜单"
 L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
-L["Toggle Chat Buttons"] = true --layout\layout.lua
+L["Toggle Chat Buttons"] = "开关聊天按钮" --layout\layout.lua
 L["Toggle Chat Frame"] = "开关聊天框架"
 L["Toggle Configuration"] = "设置开关"
 L["AP:"] = "神器能量:" -- Artifact Power
 L["XP:"] = "经验:"
 L["You don't have permission to mark targets."] = "你没有标记目标的权限"
+L["Voice Overlay"] = "语音界面"
 
 --Movers
 L["Alternative Power"] = "特殊能量条"

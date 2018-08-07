@@ -43,6 +43,7 @@ function UF:Construct_Raid40Frames()
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
+	self.PhaseIndicator = UF:Construct_PhaseIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
 	self.InfoPanel = UF:Construct_InfoPanel(self)
@@ -60,7 +61,6 @@ function UF:Construct_Raid40Frames()
 
 	return self
 end
-
 
 function UF:Raid40SmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then
@@ -229,6 +229,9 @@ function UF:Update_Raid40Frames(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
+
+	-- PhaseIndicator
+	UF:Configure_PhaseIcon(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

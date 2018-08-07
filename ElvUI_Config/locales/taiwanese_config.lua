@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "按下施法"
 L["Keybind Mode"] = "快捷鍵綁定模式"
 L["Keybind Text"] = "快捷鍵文字"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "冷卻時間低閥值"
 L["Macro Text"] = "巨集名稱"
 L["Masque Support"] = "Masque 支援"
@@ -508,6 +510,25 @@ L["Top Panel"] = "頂部面板"
 L["Unit Prefix Style"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "當你離開時顯示AFK界面"
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "把該字體設置應用到所有ElvUI設置中去,但是某些設置並不會被改變."
@@ -1083,7 +1104,7 @@ L["Only Match SpellID"] = true
 L["OOR Alpha"] = "超出距離透明度"
 L["Other Filter"] = true
 L["Others"] = "他人的"
-L["Overlay the healthbar"] = "頭像重疊顯示於生命條上"
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = "重疊顯示"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "複寫可見性的設定, 例如: 在10人副本里只顯示1隊和2隊."
 L["Override the default class color setting."] = "覆蓋默認職業色設置."
@@ -1108,6 +1129,7 @@ L["Powers"] = "能量"
 L["Priority"] = "優先級"
 L["Profile Specific"] = "角色專用"
 L["PvP & Prestige Icon"] = "PvP和威望圖標"
+L["Phase Indicator"] = true
 L["PvP Text"] = "PvP文字"
 L["PVP Trinket"] = "PVP 飾品"
 L["Raid Icon"] = "團隊圖示"

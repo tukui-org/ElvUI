@@ -81,9 +81,9 @@ local function LoadSkin()
 
 			--Button texture for bars not on AB
 			if button.SpellHighlightTexture then
-				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.4)
+				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
 				if icon then
-					button.SpellHighlightTexture:SetAllPoints(icon)
+					button.SpellHighlightTexture:SetOutside(button.backdrop)
 				end
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end

@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = true
 L["Keybind Mode"] = true
 L["Keybind Text"] = true
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = true
 L["Macro Text"] = true
 L["Masque Support"] = true
@@ -497,6 +499,25 @@ L["Top Panel"] = true
 L["Unit Prefix Style"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
@@ -1072,7 +1093,7 @@ L["Only Match SpellID"] = true
 L["OOR Alpha"] = true
 L["Other Filter"] = true
 L["Others"] = true
-L["Overlay the healthbar"] = true
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = true
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = true
 L["Override the default class color setting."] = true
@@ -1097,6 +1118,7 @@ L["Powers"] = true
 L["Priority"] = true
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true
+L["Phase Indicator"] = true
 L["PvP Text"] = true
 L["PVP Trinket"] = true
 L["Raid Icon"] = true

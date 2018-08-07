@@ -263,7 +263,7 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
-		-- ChaoticVoid --
+		-- Whiro --
 		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]		= ElvGreen,
@@ -1581,7 +1581,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 
 			-- Player Flags
-			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
+			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
@@ -1594,9 +1594,13 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
 				pflag = pflag..lfgRole
 			end
-			-- Plugin Flags
+			-- Special Chat Icon
 			if chatIcon then
 				pflag = pflag..chatIcon
+			end
+			-- Plugin Chat Icon
+			if pluginChatIcon then
+				pflag = pflag..pluginChatIcon
 			end
 
 			if ( usingDifferentLanguage ) then
@@ -2311,15 +2315,16 @@ function CH:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
-	
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "Test");
 
+	if E.private.general.voiceOverlay then
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "VoiceOverlay");
+	end
 
 	self:SetupChat()
 	self:UpdateAnchors()
@@ -2479,7 +2484,7 @@ function CH:Initialize()
 
 
 		self.ChatHeadFrame[i]:Hide()
-	end 
+	end
 
 	self:SetChatHeadOrientation("TOP")
 end
@@ -2505,6 +2510,7 @@ end
 function CH:ConfigureHead(memberID, channelID)
 	local frame = self:GetAvailableHead()
 	if not frame then return end
+
 	frame.memberID = memberID
 	frame.channelID = channelID
 
@@ -2514,7 +2520,6 @@ function CH:ConfigureHead(memberID, channelID)
 	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID);
 	frame.Name:SetText(memberName or "")
 	frame.Name:SetVertexColor(r, g, b, 1);
-	
 	frame:Show()
 end
 
@@ -2527,7 +2532,7 @@ function CH:DeconfigureHead(memberID, channelID)
 	frame:Hide()
 end
 
-function CH:Test(event, ...)
+function CH:VoiceOverlay(event, ...)
 	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
 		local memberID, channelID, isTalking = ...
 
@@ -2538,7 +2543,6 @@ function CH:Test(event, ...)
 			CH.TalkingList[memberID] = nil
 			self:DeconfigureHead(memberID, channelID)
 		end
-
 	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
 		local memberID, channelID, volume = ...
 		local frame = CH:GetHeadByID(memberID)
@@ -2569,7 +2573,7 @@ function CH:SetChatHeadOrientation(position)
 				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
 			end
 		end
-	else 
+	else
 		for i=1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
@@ -2577,7 +2581,7 @@ function CH:SetChatHeadOrientation(position)
 			else
 				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
 			end
-		end	
+		end
 	end
 end
 

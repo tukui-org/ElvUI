@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Touche enfoncée"
 L["Keybind Mode"] = "Mode raccourcis"
 L["Keybind Text"] = "Texte des raccourcis"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Seuil minimal"
 L["Macro Text"] = "Texte sur Macro"
 L["Masque Support"] = "Support de Maque"
@@ -508,6 +510,25 @@ L["Top Panel"] = "Bandeau en haut"
 L["Unit Prefix Style"] = "Style des préfixes d'unités"
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial."
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
@@ -1083,7 +1104,7 @@ L["Only Match SpellID"] = "Seulement les ID de sort correspondants"
 L["OOR Alpha"] = "Transparence Hors de portée"
 L["Other Filter"] = "Autre filtre"
 L["Others"] = "Autres"
-L["Overlay the healthbar"] = "Superposé sur la barre de vie"
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = "Superposition"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Remplace tout paramètre de visibilité dans certaines situations, Ex: afficher seulement le groupe 1 et 2 quand vous êtes dans un raid à 10 joueurs."
 L["Override the default class color setting."] = "Remplacer les réglages des couleurs de classes par défaut."
@@ -1108,6 +1129,7 @@ L["Powers"] = "Énergies"
 L["Priority"] = "Priorité"
 L["Profile Specific"] = "Profil spécifique"
 L["PvP & Prestige Icon"] = "Icône prestige de PVP"
+L["Phase Indicator"] = true
 L["PvP Text"] = "Texte PVP"
 L["PVP Trinket"] = "Bijou PVP"
 L["Raid Icon"] = "Icône de Raid"
@@ -1170,7 +1192,7 @@ L["Statusbar Fill Orientation"] = "Orientation la barre d'état."
 L["StatusBar Texture"] = "Texture de la barre d'état."
 L["Strata and Level"] = "Couche et niveau"
 L["Style"] = "Style"
-L["Tank Frames"] = "Cadre des tTanks"
+L["Tank Frames"] = "Cadre des Tanks"
 L["Tank Target"] = "Cible de tank"
 L["Tapped"] = "Collé"
 L["Targeting"] = true

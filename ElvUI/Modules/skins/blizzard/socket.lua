@@ -17,6 +17,8 @@ local function LoadSkin()
 
 	local ItemSocketingFrame = _G["ItemSocketingFrame"]
 	ItemSocketingFrame:StripTextures()
+	ItemSocketingDescription:DisableDrawLayer("BORDER")
+	ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
 	ItemSocketingFrame:SetTemplate("Transparent")
 	ItemSocketingFrameInset:Kill()
 	ItemSocketingScrollFrame:StripTextures()

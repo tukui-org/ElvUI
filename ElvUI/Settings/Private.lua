@@ -23,6 +23,7 @@ V['general'] = {
 	},
 	['classColorMentionsSpeech'] = true,
 	['raidUtility'] = true,
+	['voiceOverlay'] = false,
 }
 
 V['bags'] = {
@@ -131,7 +132,6 @@ V['skins'] = {
 		['Communities'] = true,
 		['Scrapping'] = true,
 		['Islands'] = true,
-		['Widgets'] = false,
 	},
 }
 

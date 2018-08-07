@@ -119,6 +119,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Tecla Pulsada"
 L["Keybind Mode"] = "Asignar Teclas"
 L["Keybind Text"] = "Mostrar Atajos"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Umbral Bajo"
 L["Macro Text"] = "Texto de Macro"
 L["Masque Support"] = true
@@ -508,6 +510,25 @@ L["Top Panel"] = "Panel Superior"
 L["Unit Prefix Style"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true
@@ -1082,7 +1103,7 @@ L["Only Match SpellID"] = true
 L["OOR Alpha"] = "Transparencia FDA"
 L["Other Filter"] = true
 L["Others"] = "Otros"
-L["Overlay the healthbar"] = "Recubrir la barra de salud"
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = "Recubrir"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Sobrescribir cualquier opción de visibilidad en ciertas situaciones, Ej: Sólo mostrar grupos 1 y 2 dentro de una mazmorra de banda de 10 personas."
 L["Override the default class color setting."] = "Ignorar el ajuste predeterminado del color de clase."
@@ -1107,6 +1128,7 @@ L["Powers"] = "Poderes"
 L["Priority"] = "Prioridad"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true
+L["Phase Indicator"] = true
 L["PvP Text"] = true
 L["PVP Trinket"] = "Abalorio JcJ"
 L["Raid Icon"] = "Icono de Banda"

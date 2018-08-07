@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Mostrar/Ocultar Componentes"
 L["Sort Tab"] = "Ordenar Pestaña"
 L["Temporary Move"] = "Movimiento Temporal"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
+L["Vendor Grays"] = "Vender Objetos Grises"
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -236,6 +237,7 @@ L["Toggle Configuration"] = "Mostrar/Ocultar Configuración"
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "No tienes permiso para marcar objetivos."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Poder Alternativo"

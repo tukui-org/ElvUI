@@ -1368,6 +1368,13 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 0.8,
+			},
 			['pvpIcon'] = {
 				['enable'] = false,
 				['anchorPoint'] = 'CENTER',
@@ -2318,6 +2325,13 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 0,
 			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 0.8,
+			},
 			['portrait'] = {
 				['enable'] = false,
 				['width'] = 45,
@@ -2627,6 +2641,13 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 0.8,
+			},
 		},
 		['raid40'] = {
 			['enable'] = true,
@@ -2793,6 +2814,13 @@ P['unitframe'] = {
 				['attachToObject'] = 'Frame',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			['phaseIndicator'] = {
+				['enable'] = true,
+				['anchorPoint'] = 'CENTER',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['scale'] = 0.8,
 			},
 		},
 		['raidpet'] = {
@@ -3123,6 +3151,7 @@ P['actionbar'] = {
 	['macrotext'] = false,
 	['hotkeytext'] = true,
 
+	['useRangeColorText'] = false,
 	['noRangeColor'] = { r = 0.8, g = 0.1, b = 0.1 },
 	['noPowerColor'] = { r = 0.5, g = 0.5, b = 1 },
 	['usableColor'] = { r = 1, g = 1, b = 1 },

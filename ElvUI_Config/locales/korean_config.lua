@@ -155,6 +155,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "단축키를 누를 때 실행"
 L["Keybind Mode"] = "단축키 설정 모드"
 L["Keybind Text"] = "단축키 표시"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "초읽기 시작 시점"
 L["Macro Text"] = "매크로 이름 표시"
 L["Masque Support"] = "Masque 지원"
@@ -555,6 +557,25 @@ L["Top Panel"] = "상단 패널 표시"
 L["Unit Prefix Style"] = "단위 축약 방식"
 L["Vendor Gray Detailed Report"] = "자동판매시 목록 보기"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
+L["Replace Blizzard's Voice Overlay."] = true
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true
+L['Personal'] = true
+L['nonPersonal'] = "Non Personal"
+L['notCastByUnit'] = "Not Cast By Unit"
+L['Dispellable'] = true
+L['notDispellable'] = "Not Dispellable"
+L['CastByNPC'] = "Cast By NPC"
+L['CastByUnit'] = "Cast By Unit"
+L['CastByPlayers'] = "Cast By Players"
+---Blacklists
+L['blockNonPersonal'] = "[Block] Non Personal"
+L['blockCastByPlayers'] = "[Block] Cast By Players"
+L['blockNoDuration'] = "[Block] No Duration"
+L['blockDispellable'] = "[Block] Dispellable"
+L['blockNotDispellable'] = "[Block] Not Dispellable"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "글씨와 글씨 크기 설정을 전체 사용자 인터페이스에 두루 적용합니다. 알림: 일부 글씨 크기 설정은 작은 글씨 크기가 기본값으로 지정되어 예외가 될 것입니다."
@@ -1131,7 +1152,7 @@ L["Only Match SpellID"] = "일치하는 주문ID만"
 L["OOR Alpha"] = "사거리 밖 투명도"
 L["Other Filter"] = true
 L["Others"] = "다른 유저"
-L["Overlay the healthbar"] = "생명력바에 덮어 씌워 표시합니다."
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["Overlay"] = "덮어씌우기"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "현재 입던해있는 던전의 상태에 맞춰 표시할 파티수를 자동으로 제한합니다.|n|n예로 10인 인스안에 있으면 1,2파티만 표시됩니다."
 L["Override the default class color setting."] = "이 유닛프레임의 체력바에만 직업색을 적용하도록 따로 설정하는 것이 가능합니다."
@@ -1156,6 +1177,7 @@ L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Priority"] = "우선도"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = "PVP & 명성 아이콘"
+L["Phase Indicator"] = true
 L["PvP Text"] = "PVP 문자"
 L["PVP Trinket"] = "PvP 장신구"
 L["Raid Icon"] = "레이드 아이콘"

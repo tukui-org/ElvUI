@@ -81,19 +81,18 @@ function M:SetSmallWorldMap()
 end
 
 local inRestrictedArea = false
-function M:PLAYER_ENTERING_WORLD()
+function M:UpdateRestrictedArea()
 	E:MapInfo_Update()
 
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 	else
 		inRestrictedArea = true
 		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 	end
 end
 
-function M:UpdateCoords()
+function M:UpdateCoords(OnShow)
 	if not WorldMapFrame:IsShown() then return end
 
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
@@ -117,11 +116,11 @@ function M:UpdateCoords()
 		CoordsHolder.mouseCoords:SetText("")
 	end
 
-	if not inRestrictedArea and E.MapInfo.coordsWatching then
+	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetText("")
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 		end
 	end
 end
@@ -145,7 +144,7 @@ end
 function M:Initialize()
 	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
-		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 1)
+		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 2)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
@@ -158,6 +157,7 @@ function M:Initialize()
 
 		WorldMapFrame:HookScript("OnShow", function()
 			if not M.CoordsTimer then
+				M:UpdateCoords(true)
 				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
 			end
 		end)
@@ -168,7 +168,9 @@ function M:Initialize()
 
 		M:PositionCoords()
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
 	end
 
 	if E.global.general.smallerWorldMap then

@@ -1,4 +1,31 @@
-**Version 10.78 [  ]**
+**Version 10.79 [  ]**
+
+**New Additions:**  
+Added Tranquility channel ticks (#586).  
+Added Phase Indicator for Target, Party and Raid frames.  
+
+
+**Bug Fixes:**  
+Fixed a texture issue on the Talent skin (#566).  
+Fixed bags from being shown over the WorldMapFrame (#592).  
+Fixed an issue which caused the cooldown module to error: `Font not set` (#548).  
+Fixed an issue which prevented the frame glow being shown on a UnitFrame with the Frame Orientation set to right (#558).  
+
+
+**Misc. Changes:**  
+Updated spell id for Earth Shield (#527).  
+Updated SpellHighlightTexture in the Spellbook (#547).  
+Updated WarboardUI skin.  
+Updated Communities skin.  
+Open PVP frame when you click on the Honor bar.  
+Updated the Spec Switch Datatext.  
+Added a toggle in General for Voice Overlay.  
+Allowed Special Aura filters to be localized.  
+Skin Ace3 Keybinding Widget (Thanks @sezz).  
+Updated `LibActionButton-1.0-ElvUI` to handle #375 (Thanks @sezz).  
+
+___
+**Version 10.78 [ July 28th 2018 ]**
 
 **New Additions:**  
 

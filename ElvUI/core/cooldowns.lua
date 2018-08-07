@@ -78,11 +78,8 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 			end
 		end
 
-		if force ~= 'override' then
-			cd:Show()
-			if cd.enabled then
-				self:Cooldown_ForceUpdate(cd)
-			end
+		if cd.enabled and (force ~= 'override') then
+			self:Cooldown_ForceUpdate(cd)
 		end
 	end
 end
@@ -99,7 +96,10 @@ end
 
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
-	cd:Show()
+
+	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
+		cd:Show()
+	end
 end
 
 function E:Cooldown_StopTimer(cd)
@@ -114,7 +114,6 @@ function E:CreateCooldownTimer(parent)
 	local timer = CreateFrame('Frame', nil, scaler)
 	timer:Hide()
 	timer:SetAllPoints()
-	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
@@ -173,6 +172,9 @@ function E:CreateCooldownTimer(parent)
 	parent:SetScript('OnSizeChanged', function(_, ...)
 		self:Cooldown_OnSizeChanged(timer, parent, ...)
 	end)
+
+	-- keep this after Cooldown_OnSizeChanged
+	timer:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 
 	return timer
 end

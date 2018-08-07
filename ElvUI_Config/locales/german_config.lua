@@ -120,6 +120,8 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["Key Down"] = "Aktion bei Tastendruck"
 L["Keybind Mode"] = "Tastaturbelegung"
 L["Keybind Text"] = "Tastaturbelegungstext"
+L["Color Keybind Text"] = true
+L["Color Keybind Text when Out of Range, instead of the button."] = true
 L["Low Threshold"] = "Niedrige CD-Schwelle"
 L["Macro Text"] = "Makrotext"
 L["Masque Support"] = "Masque Unterstützung"
@@ -509,6 +511,25 @@ L["Top Panel"] = "Obere Leiste"
 L["Unit Prefix Style"] = "Einheit Präfix Stil"
 L["Vendor Gray Detailed Report"] = "Graue Gegenstände detaillierter Report"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
+L["Replace Blizzard's Voice Overlay."] = "Ersetzt Blizzard's Voice Overlay."
+
+--Aura Filter
+---Whitelists
+L['Boss'] = true -- No need to translate
+L['Personal'] = "Persönlich"
+L['nonPersonal'] = "Nicht Persönlich"
+L['notCastByUnit'] = "Nicht gezaubert von der Einheit"
+L['Dispellable'] = "Bannbar"
+L['notDispellable'] = "Nicht Bannbar"
+L['CastByNPC'] = "Gezaubert von NPC"
+L['CastByUnit'] = "Gezaubert von Einheit"
+L['CastByPlayers'] = "Gezaubert von Spieler"
+---Blacklists
+L['blockNonPersonal'] = "[Blocke] Nicht Persönlich"
+L['blockCastByPlayers'] = "[Blocke] Gezaubert von Spieler"
+L['blockNoDuration'] = "[Blocke] Keine Dauer"
+L['blockDispellable'] = "[Blocke] Bannbar"
+L['blockNotDispellable'] = "[Blocke] Nicht Bannbar"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Wendet die Schrift und Schriftgröße überall im Interface an. Hinweis: Einige Schriftarten werden übersprungen, weil sie eine kleinere Schriftgröße als Standard haben."
@@ -1085,7 +1106,7 @@ L["Only Match SpellID"] = "Nur SpellID entsprechen"
 L["OOR Alpha"] = "Außer Reichweite Alpha"
 L["Other Filter"] = "Anderer Filter"
 L["Others"] = "Andere"
-L["Overlay the healthbar"] = "Überblendung der Gesundheitsleiste"
+L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = "Das Portrait wird die Lebensleiste überdecken. Dieses wird automatisch passieren wenn die Fensterausrichtung auf Mittel gesetzt ist."
 L["Overlay"] = "Überblenden"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Überschreibe alle benutzerdefinierten Einstellungen für die Sichtbarkeit in bestimmten Situationen. Beispiel: Zeige nur Gruppe 1 und 2 in einer 10er-Instanz."
 L["Override the default class color setting."] = "Überschreibe die Standard Klassenfarben Einstellungen"
@@ -1110,6 +1131,7 @@ L["Powers"] = "Kräfte"
 L["Priority"] = "Priorität"
 L["Profile Specific"] = "Profilspezifisch"
 L["PvP & Prestige Icon"] = "PvP & Prestige Symbol"
+L["Phase Indicator"] = "Phasen Indikator"
 L["PvP Text"] = true --no need to translate
 L["PVP Trinket"] = "PVP Schmuck"
 L["Raid Icon"] = "Schlachtzugssymbol"
