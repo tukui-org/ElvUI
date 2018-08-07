@@ -35,7 +35,7 @@ local function LoadSkin()
 		if color and self.itemLocation and not self.item:IsItemEmpty() and self.item:GetItemName() then
 			self.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
-			self.backdrop:SetBackdropBorderColor(nil)
+			self.backdrop:SetBackdropBorderColor(nil) -- Clear the BackdropBorderColor if no item is in the slot.
 		end
 	end
 
