@@ -199,10 +199,10 @@ function TT:GetItemLvL(items)
 			if(itemLevel and not (i == INVSLOT_BODY or i == INVSLOT_RANGED or i == INVSLOT_TABARD)) then
 				local _, _, itemRarity, itemLevelBlizz = GetItemInfo(itemLink)
 				totalItems = totalItems + 1
-				if itemLevelBlizz > itemLevel then
+				if itemLevelBlizz and (itemLevelBlizz > itemLevel) then
 					itemLevel = itemLevelBlizz
 				end
-				if itemRarity == 6 then
+				if itemRarity and (itemRarity == 6) then
 					if(not items[INVSLOT_OFFHAND] and i == INVSLOT_MAINHAND) then
 						totalScore = totalScore + itemLevel * 2
 						totalItems = totalItems + 1
