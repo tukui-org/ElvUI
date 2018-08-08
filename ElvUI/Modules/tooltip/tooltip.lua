@@ -243,7 +243,8 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if(inspectCache[unitGUID] and (GetTime() - inspectCache[unitGUID].age) < 900) then
 		local talent = inspectCache[unitGUID].talent
 		local itemLevel = inspectCache[unitGUID].itemLevel
-		tt:AddDoubleLine("ILvL: |cFFFFFFFF"..itemLevel.."|r", talent, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	else
 		LibInspect:RequestItems(unit, false)
 	end
