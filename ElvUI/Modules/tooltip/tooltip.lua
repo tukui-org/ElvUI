@@ -231,7 +231,7 @@ function TT:GetTalentSpec(talents)
 end
 
 function TT:InspectReady(guid, data)
-	if(not (data.items and data.talents)) then return end
+	if(not (guid and data and data.items and data.talents)) then return end
 	if(not inspectCache[guid]) then inspectCache[guid] = {} end
 
 	inspectCache[guid].age = GetTime()
