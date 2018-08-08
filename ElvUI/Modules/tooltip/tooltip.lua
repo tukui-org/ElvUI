@@ -227,7 +227,7 @@ function TT:GetItemLvL(items)
 end
 
 function TT:GetTalentSpec(talents)
-	return "|T"..talents.icon..":12:12:0:0:64:64:5:59:5:59|t "..talents.name
+	return (talents and talents.icon and talents.name) and ("|T"..talents.icon..":12:12:0:0:64:64:5:59:5:59|t "..talents.name) or "?"
 end
 
 function TT:InspectReady(guid, data)
