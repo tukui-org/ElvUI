@@ -195,9 +195,9 @@ function TT:GetItemLvL(items)
 	local totalItems, totalScore = 0, 0
 	for i, itemLink in pairs(items) do
 		if(itemLink) then
-			local _, _, itemRarity, itemLevelBlizz = GetItemInfo(itemLink)
 			local _, itemLevel = LibItemLevel:GetItemInfo(itemLink)
 			if(itemLevel and not (i == INVSLOT_BODY or i == INVSLOT_RANGED or i == INVSLOT_TABARD)) then
+				local _, _, itemRarity, itemLevelBlizz = GetItemInfo(itemLink)
 				totalItems = totalItems + 1
 				if itemLevelBlizz > itemLevel then
 					itemLevel = itemLevelBlizz
@@ -207,10 +207,13 @@ function TT:GetItemLvL(items)
 						totalScore = totalScore + itemLevel * 2
 						totalItems = totalItems + 1
 					elseif i == INVSLOT_MAINHAND then
-						if(itemLevel >= select(4, GetItemInfo(items[INVSLOT_OFFHAND]))) then
-							totalScore = totalScore + (itemLevel * 2)
-						else
-							totalScore = totalScore + (select(4, GetItemInfo(items[INVSLOT_OFFHAND])) * 2)
+						local _, _, _, offhandItemLevel = GetItemInfo(items[INVSLOT_OFFHAND])
+						if offhandItemLevel then
+							if(itemLevel >= offhandItemLevel) then
+								totalScore = totalScore + (itemLevel * 2)
+							else
+								totalScore = totalScore + (offhandItemLevel * 2)
+							end
 						end
 					end
 				else
@@ -230,21 +233,23 @@ end
 function TT:InspectReady(guid, data)
 	if(not (data.items and data.talents)) then return end
 	if(not inspectCache[guid]) then inspectCache[guid] = {} end
+
 	inspectCache[guid].age = GetTime()
 	inspectCache[guid].itemLevel = self:GetItemLvL(data.items)
 	inspectCache[guid].talent = self:GetTalentSpec(data.talents)
-	GameTooltip:SetUnit("mouseover")
+
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:SetUnit("mouseover")
+	end
 end
 
 function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if tt:IsForbidden() then return end
-
 	local unitGUID = UnitGUID(unit)
-	if(inspectCache[unitGUID] and (GetTime() - inspectCache[unitGUID].age) < 900) then
-		local talent = inspectCache[unitGUID].talent
-		local itemLevel = inspectCache[unitGUID].itemLevel
-		tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
-		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+
+	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < 900) then
+		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
 	else
 		LibInspect:RequestItems(unit, false)
 	end
