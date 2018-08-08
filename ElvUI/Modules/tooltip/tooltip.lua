@@ -183,7 +183,6 @@ function TT:RemoveTrashLines(tt)
 end
 
 function TT:GetLevelLine(tt, offset)
-	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
 		local tipText = _G["GameTooltipTextLeft"..i]
 		if(tipText:GetText() and tipText:GetText():find(LEVEL)) then
