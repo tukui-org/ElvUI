@@ -9,6 +9,7 @@ local CanDispel = {
 	PALADIN = { Magic = false, Poison = true, Disease = true },
 	DRUID = { Magic = false, Curse = true, Poison = true, Disease = false },
 	MONK = { Magic = false, Poison = true, Disease = true }
+	MAGE = { Curse = true }
 }
 
 local blackList = {

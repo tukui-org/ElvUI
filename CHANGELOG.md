@@ -23,6 +23,7 @@ Added a toggle in General for Voice Overlay.
 Allowed Special Aura filters to be localized.  
 Skin Ace3 Keybinding Widget (Thanks @sezz).  
 Updated `LibActionButton-1.0-ElvUI` to handle #375 (Thanks @sezz).  
+Added support for mages in Debuff Highlight, they can once again remove curses.  
 
 ___
 **Version 10.78 [ July 28th 2018 ]**
