@@ -8,8 +8,8 @@ local CanDispel = {
 	SHAMAN = { Magic = false, Curse = true },
 	PALADIN = { Magic = false, Poison = true, Disease = true },
 	DRUID = { Magic = false, Curse = true, Poison = true, Disease = false },
-	MONK = { Magic = false, Poison = true, Disease = true }
-	MAGE = { Curse = true }
+	MONK = { Magic = false, Poison = true, Disease = true },
+	MAGE = { Curse = true },
 }
 
 local blackList = {
