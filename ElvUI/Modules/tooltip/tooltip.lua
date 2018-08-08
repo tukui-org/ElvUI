@@ -223,7 +223,7 @@ function TT:GetItemLvL(items)
 		end
 	end
 
-	return floor(totalScore / totalItems)
+	return (totalItems > 0) and floor(totalScore / totalItems) or "?"
 end
 
 function TT:GetTalentSpec(talents)
