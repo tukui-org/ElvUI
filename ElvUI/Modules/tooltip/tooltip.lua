@@ -80,7 +80,7 @@ local TARGET = TARGET
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
 -- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
 -- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_BODY, INVSLOT_RANGED, INVSLOT_TABARD, INVSLOT_OFFHAND
--- GLOBALS: INVSLOT_MAINHAND
+-- GLOBALS: INVSLOT_MAINHAND, INVSLOT_NECK
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local targetList, inspectCache = {}, {}
@@ -203,7 +203,7 @@ function TT:GetItemLvL(items)
 				if itemLevelBlizz and (itemLevelBlizz > itemLevel) then
 					itemLevel = itemLevelBlizz
 				end
-				if itemRarity and (itemRarity == 6) then
+				if itemRarity and (itemRarity == 6) and i ~= INVSLOT_NECK then
 					if(not items[INVSLOT_OFFHAND] and i == INVSLOT_MAINHAND) then
 						totalScore = totalScore + itemLevel * 2
 						totalItems = totalItems + 1
