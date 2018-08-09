@@ -6,7 +6,7 @@ local LO = E:NewModule('Layout', 'AceEvent-3.0');
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
-
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: Minimap, ChatAlertFrame, GameTooltip, ChatButtonHolder, LeftChatTab, RightChatTab
 -- GLOBALS: BINDING_HEADER_VOICE_CHAT, HideLeftChat, HideRightChat, HideBothChat
@@ -384,7 +384,6 @@ function LO:CreateChatButtonPanel()
 	ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
 	ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
 	--ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
-	QuickJoinToastButton:SetParent(ChatButtonHolder)
 
 	E:GetModule("Skins"):HandleButton(ChatFrameChannelButton)
 	E:GetModule("Skins"):HandleButton(ChatFrameToggleVoiceDeafenButton)
@@ -392,6 +391,47 @@ function LO:CreateChatButtonPanel()
 
 	ChatAlertFrame:ClearAllPoints()
 	ChatAlertFrame:SetPoint("BOTTOM", ChatFrameChannelButton, "TOP", 1, 3)
+
+	-- Skin the QuickJoinToastButton
+	local QuickJoinToastButton = _G["QuickJoinToastButton"]
+	QuickJoinToastButton:SetParent(ChatButtonHolder)
+	QuickJoinToastButton:SetSize(24, 32)
+
+	QuickJoinToastButton:CreateBackdrop("Default")
+	QuickJoinToastButton.backdrop:SetAllPoints()
+
+	hooksecurefunc(QuickJoinToastButton, "UpdateQueueIcon", function(self)
+		self.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
+		if self.QueueButton:GetAlpha() > 0 then
+			self.FriendsButton:Hide()
+			self.FriendCount:Hide()
+		else
+			self.FriendsButton:Show()
+			self.FriendCount:Show()
+		end
+		if self.isLFGList then
+			self.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+			self.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+		else
+			self.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+			self.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+		end
+	end)
+
+	QuickJoinToastButton.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
+	QuickJoinToastButton.FriendsButton:ClearAllPoints()
+	QuickJoinToastButton.FriendsButton:SetPoint("CENTER", 0, 3)
+	QuickJoinToastButton.FriendsButton:SetSize(30, 30)
+
+	QuickJoinToastButton.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+	QuickJoinToastButton.QueueButton:ClearAllPoints()
+	QuickJoinToastButton.QueueButton:SetPoint("CENTER", 0, 3)
+	QuickJoinToastButton.QueueButton:SetSize(28, 28)
+
+	QuickJoinToastButton.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+	QuickJoinToastButton.FlashingLayer:ClearAllPoints()
+	QuickJoinToastButton.FlashingLayer:SetPoint("CENTER", 0, 3)
+	QuickJoinToastButton.FlashingLayer:SetSize(28, 28)
 end
 
 function LO:CreateMinimapPanels()
