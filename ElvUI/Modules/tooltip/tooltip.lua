@@ -216,8 +216,15 @@ function TT:GetItemLvL(items)
 			--If we have artifact equipped in main hand, then we should not count the offhand as it displays an incorrect item level
 			if (not artifactEquipped or (artifactEquipped and currentSlot ~= INVSLOT_OFFHAND)) then
 				local _, itemLevelLib = LibItemLevel:GetItemInfo(itemLink)
-				local itemLevelFinal = itemLevelOriginal > itemLevelLib and itemLevelOriginal or itemLevelLib
-				if(itemLevelFinal and itemLevelFinal > 0) then
+				local itemLevelFinal = 0
+				if(itemLevelOriginal and itemLevelLib) then
+				    itemLevelFinal = itemLevelOriginal > itemLevelLib and itemLevelOriginal or itemLevelLib
+				elseif(itemLevelOriginal and not itemLevelLib) then
+				    itemLevelFinal = itemLevelOriginal
+				elseif(not itemLevelOriginal and itemLevelLib) then
+					itemLevelFinal = itemLevelLib 		    
+				end
+				if(itemLevelFinal > 0) then
 					if((equipSlot == "INVTYPE_2HWEAPON")
 					or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)
 					or (currentSlot == INVSLOT_MAINHAND and not items[INVSLOT_OFFHAND])
