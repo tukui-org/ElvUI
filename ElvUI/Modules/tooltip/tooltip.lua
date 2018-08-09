@@ -79,8 +79,9 @@ local TARGET = TARGET
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
 -- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
--- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_BODY, INVSLOT_RANGED, INVSLOT_TABARD, INVSLOT_OFFHAND
--- GLOBALS: INVSLOT_MAINHAND, INVSLOT_NECK
+-- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_HEAD,INVSLOT_NECK,INVSLOT_SHOULDER,INVSLOT_BACK,INVSLOT_CHEST,
+-- GLOBALS: INVSLOT_WRIST,INVSLOT_HAND,INVSLOT_WAIST,INVSLOT_LEGS,INVSLOT_FEET, INVSLOT_FINGER1
+-- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local targetList, inspectCache = {}, {}
@@ -94,6 +95,13 @@ local classification = {
 	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
 	rare = format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
+}
+
+local SlotName = {
+	INVSLOT_HEAD, INVSLOT_NECK, INVSLOT_SHOULDER, INVSLOT_BACK, INVSLOT_CHEST,
+	INVSLOT_WRIST, INVSLOT_HAND, INVSLOT_WAIST, INVSLOT_LEGS, INVSLOT_FEET,
+	INVSLOT_FINGER1, INVSLOT_FINGER2, INVSLOT_TRINKET1, INVSLOT_TRINKET2,
+	INVSLOT_MAINHAND, INVSLOT_OFFHAND
 }
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
@@ -193,38 +201,45 @@ function TT:GetLevelLine(tt, offset)
 end
 
 function TT:GetItemLvL(items)
-	local totalItems, totalScore = 0, 0
-	for i, itemLink in pairs(items) do
+	local total = 0
+	local artifactEquipped = false
+	for i = 1, #SlotName do
+		local currentSlot = SlotName[i]
+		local itemLink = items[currentSlot]
 		if(itemLink) then
-			local _, itemLevel = LibItemLevel:GetItemInfo(itemLink)
-			if(itemLevel and not (i == INVSLOT_BODY or i == INVSLOT_RANGED or i == INVSLOT_TABARD)) then
-				local _, _, itemRarity, itemLevelBlizz = GetItemInfo(itemLink)
-				totalItems = totalItems + 1
-				if itemLevelBlizz and (itemLevelBlizz > itemLevel) then
-					itemLevel = itemLevelBlizz
-				end
-				if itemRarity and (itemRarity == 6) and i ~= INVSLOT_NECK then
-					if(not items[INVSLOT_OFFHAND] and i == INVSLOT_MAINHAND) then
-						totalScore = totalScore + itemLevel * 2
-						totalItems = totalItems + 1
-					elseif i == INVSLOT_MAINHAND then
-						local _, _, _, offhandItemLevel = GetItemInfo(items[INVSLOT_OFFHAND])
-						if offhandItemLevel then
-							if(itemLevel >= offhandItemLevel) then
-								totalScore = totalScore + (itemLevel * 2)
-							else
-								totalScore = totalScore + (offhandItemLevel * 2)
-							end
-						end
-					end
+			local _, _, rarity, itemLevelOriginal, _, _, _, _, equipSlot = GetItemInfo(itemLink)
+			--Check if we have an artifact equipped in main hand
+			if(currentSlot == INVSLOT_MAINHAND and rarity and rarity == 6) then
+				artifactEquipped = true
+			end
+
+			--If we have artifact equipped in main hand, then we should not count the offhand as it displays an incorrect item level
+			if (not artifactEquipped or (artifactEquipped and currentSlot ~= INVSLOT_OFFHAND)) then
+				local _, itemLevelLib = LibItemLevel:GetItemInfo(itemLink)
+				local itemLevelFinal = 0
+				if(itemLevelOriginal and itemLevelLib) then
+					itemLevelFinal = itemLevelOriginal ~= itemLevelLib and itemLevelLib or itemLevelOriginal
 				else
-					totalScore = totalScore + itemLevel
+					itemLevelFinal = itemLevelLib or itemLevelOriginal
+				end
+				if(itemLevelFinal > 0) then
+					if((equipSlot == "INVTYPE_2HWEAPON")
+					or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)
+					or (currentSlot == INVSLOT_MAINHAND and not items[INVSLOT_OFFHAND])
+					or (currentSlot == INVSLOT_OFFHAND and not items[INVSLOT_MAINHAND])) then
+						itemLevelFinal = itemLevelFinal * 2
+					end
+					total = total + itemLevelFinal
 				end
 			end
 		end
 	end
 
-	return (totalItems > 0) and floor(totalScore / totalItems) or "?"
+	if(total > 0) then
+		return floor(total / #SlotName)
+	else
+		return "?"
+	end
 end
 
 function TT:GetTalentSpec(talents)
@@ -251,7 +266,7 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < 900) then
 		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
-	else
+	elseif(InspectFrame and not InspectFrame:IsShown()) then
 		LibInspect:RequestItems(unit, false)
 	end
 end
