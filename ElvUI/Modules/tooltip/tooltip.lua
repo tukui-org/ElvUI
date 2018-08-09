@@ -207,7 +207,7 @@ function TT:GetItemLvL(items)
 		local currentSlot = SlotName[i]
 		local itemLink = items[currentSlot]
 		if(itemLink) then
-			local name, _, rarity, itemLevelOriginal, _, _, _, _, equipSlot = GetItemInfo(itemLink)
+			local _, _, rarity, itemLevelOriginal, _, _, _, _, equipSlot = GetItemInfo(itemLink)
 			--Check if we have an artifact equipped in main hand
 			if(currentSlot == INVSLOT_MAINHAND and rarity and rarity == 6) then
 				artifactEquipped = true
@@ -218,11 +218,9 @@ function TT:GetItemLvL(items)
 				local _, itemLevelLib = LibItemLevel:GetItemInfo(itemLink)
 				local itemLevelFinal = 0
 				if(itemLevelOriginal and itemLevelLib) then
-				    itemLevelFinal = itemLevelOriginal > itemLevelLib and itemLevelOriginal or itemLevelLib
-				elseif(itemLevelOriginal and not itemLevelLib) then
-				    itemLevelFinal = itemLevelOriginal
-				elseif(not itemLevelOriginal and itemLevelLib) then
-					itemLevelFinal = itemLevelLib 		    
+					itemLevelFinal = itemLevelOriginal ~= itemLevelLib and itemLevelLib or itemLevelOriginal
+				else
+					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
 				if(itemLevelFinal > 0) then
 					if((equipSlot == "INVTYPE_2HWEAPON")
