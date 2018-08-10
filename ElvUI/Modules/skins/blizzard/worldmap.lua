@@ -36,7 +36,7 @@ local function LoadSkin()
 	local QuestScrollFrame = _G["QuestScrollFrame"]
 	QuestScrollFrame.DetailFrame:StripTextures()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
-	
+
 	QuestScrollFrame.DetailFrame:CreateBackdrop("Default")
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)

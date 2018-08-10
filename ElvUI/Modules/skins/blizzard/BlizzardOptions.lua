@@ -248,7 +248,7 @@ local function LoadSkin()
 		end
 	end
 
-	-- >> Chat >> Channel Settings 
+	-- >> Chat >> Channel Settings
 	hooksecurefunc("ChatConfig_CreateCheckboxes", function(frame, checkBoxTable)
 		if frame.IsSkinned then return end
 

@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Profile.lua"/>
 	<Script file="Global.lua"/>
 	<Script file="Private.lua"/>

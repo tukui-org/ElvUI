@@ -4,13 +4,13 @@ ElvUI License
 
 	The author of this addon hereby grants you the following rights:
 
-	1. 	You may make modifications to this addon for private use only, you 
+	1. 	You may make modifications to this addon for private use only, you
 		may not publicize any portion of this addon. The only exception being you may
 		upload to the tukui.org or github website.
-	
+
 	2. 	Do not modify the name of this addon, including the addon folders.
-	
-	3. 	This copyright notice shall be included in all copies or substantial 
+
+	3. 	This copyright notice shall be included in all copies or substantial
 		portions of the Software.
 
 	All rights not explicitly addressed in this license are reserved by
