@@ -201,6 +201,8 @@ function TT:GetLevelLine(tt, offset)
 end
 
 function TT:GetItemLvL(items)
+	if not items then return "?" end
+
 	local total = 0
 	local artifactEquipped = false
 	for i = 1, #SlotName do
@@ -208,6 +210,7 @@ function TT:GetItemLvL(items)
 		local itemLink = items[currentSlot]
 		if(itemLink) then
 			local _, _, rarity, itemLevelOriginal, _, _, _, _, equipSlot = GetItemInfo(itemLink)
+
 			--Check if we have an artifact equipped in main hand
 			if(currentSlot == INVSLOT_MAINHAND and rarity and rarity == 6) then
 				artifactEquipped = true
@@ -218,7 +221,7 @@ function TT:GetItemLvL(items)
 				local _, itemLevelLib = LibItemLevel:GetItemInfo(itemLink)
 				local itemLevelFinal = 0
 				if(itemLevelOriginal and itemLevelLib) then
-					itemLevelFinal = itemLevelOriginal ~= itemLevelLib and itemLevelLib or itemLevelOriginal
+					itemLevelFinal = (itemLevelOriginal ~= itemLevelLib) and itemLevelLib or itemLevelOriginal
 				else
 					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
