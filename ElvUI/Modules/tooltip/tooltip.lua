@@ -84,7 +84,7 @@ local TARGET = TARGET
 -- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local targetList, inspectCache = {}, {}
+local targetList, inspectCache, inspectAge = {}, {}, 900
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
@@ -266,9 +266,10 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if tt:IsForbidden() then return end
 	local unitGUID = UnitGUID(unit)
 
-	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < 900) then
+	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < inspectAge) then
 		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
+		inspectCache[unitGUID] = nil
 	elseif(InspectFrame and not InspectFrame:IsShown()) then
 		LibInspect:RequestItems(unit, false)
 	end
@@ -749,7 +750,7 @@ function TT:Initialize()
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 
 	LibInspect:AddHook('ElvUI', 'items', function(guid, data, _) self:InspectReady(guid, data) end)
-	LibInspect:SetMaxAge(900)
+	LibInspect:SetMaxAge(inspectAge)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
