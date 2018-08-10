@@ -269,7 +269,6 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < inspectAge) then
 		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
-		inspectCache[unitGUID] = nil
 	elseif(InspectFrame and not InspectFrame:IsShown()) then
 		LibInspect:RequestItems(unit, false)
 	end
@@ -587,6 +586,12 @@ function TT:SetStyle(tt)
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
+function TT:PLAYER_ENTERING_WORLD()
+	if next(inspectCache) then
+		twipe(inspectCache)
+	end
+end
+
 function TT:MODIFIER_STATE_CHANGED(_, key)
 	if((key == "LSHIFT" or key == "RSHIFT") and UnitExists("mouseover")) then
 		GameTooltip:SetUnit('mouseover')
@@ -748,6 +753,7 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 	LibInspect:AddHook('ElvUI', 'items', function(guid, data, _) self:InspectReady(guid, data) end)
 	LibInspect:SetMaxAge(inspectAge)
