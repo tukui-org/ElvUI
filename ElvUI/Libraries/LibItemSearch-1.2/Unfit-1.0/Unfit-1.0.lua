@@ -105,7 +105,7 @@ do
 		for _, subclass in ipairs(Unusable[i]) do
 			list[subclass] = true
 		end
-		
+
 		Lib.unusable[class] = list
 	end
 end

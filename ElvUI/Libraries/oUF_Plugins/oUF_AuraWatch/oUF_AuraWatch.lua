@@ -4,14 +4,14 @@ Please leave comments, suggestions, and bug reports on this addon's WoWInterface
 
 To setup, create a table named AuraWatch in your unit frame. There are several options
 you can specify, as explained below.
-	
-	icons 
+
+	icons
 		Mandatory!
 		A table of frames to be used as icons. oUF_Aurawatch does not position
 		these frames, so you must do so yourself. Each icon needs a spellID entry,
 		which is the spell ID of the aura to watch. Table should be set up
 		such that values are icon frames, but the keys can be anything.
-		
+
 		Note each icon can have several options set as well. See below.
 	strictMatching
 		Default: false
@@ -44,7 +44,7 @@ you can specify, as explained below.
 		and "true" be the values.
 	anyUnit
 		Default false
-		Set to true for oUF_AW to to show an aura no matter what unit it 
+		Set to true for oUF_AW to to show an aura no matter what unit it
 		originates from. This will override any fromUnits setting.
 	decimalThreshold
 		Default 5
@@ -65,9 +65,9 @@ The following settings can be overridden from the AuraWatch table on a per-aura 
 	fromUnits
 	anyUnit
 	decimalThreshold
-		
+
 The following settings are unique to icons:
-	
+
 	spellID
 		Mandatory!
 		The spell id of the aura, as explained above.
@@ -80,17 +80,17 @@ The following settings are unique to icons:
 	count
 		Default A fontstring
 		An fontstring to show the stack count of an aura.
-	
+
 Here is an example of how to set oUF_AW up:
 
 	local createAuraWatch = function(self, unit)
 		local auras = {}
-		
+
 		-- A table of spellIDs to create icons for
 		-- To find spellIDs, look up a spell on www.wowhead.com and look at the URL
 		-- http://www.wowhead.com/?spell=SPELL_ID
 		local spellIDs = { ... }
-		
+
 		auras.presentAlpha = 1
 		auras.missingAlpha = .7
 		auras.PostCreateIcon = myCustomIconSkinnerFunction
@@ -124,7 +124,7 @@ local PLAYER_UNITS = {
 }
 
 local setupGUID
-do 
+do
 	local cache = setmetatable({}, {__type = "k"})
 
 	local frame = CreateFrame"Frame"
@@ -139,7 +139,7 @@ do
 	end)
 	frame:RegisterEvent"PLAYER_REGEN_ENABLED"
 	frame:RegisterEvent"PLAYER_ENTERING_WORLD"
-	
+
 	function setupGUID(guid)
 		local t = next(cache)
 		if t then
@@ -162,7 +162,7 @@ local function formatTime(s, threshold)
 	elseif s >= threshold then
 		return floor(s)
 	end
-	
+
 	return format("%.1f", s)
 end
 
@@ -247,7 +247,7 @@ local function Update(frame, event, unit)
 	local guid = UnitGUID(unit)
 	if not guid then return end
 	if not GUIDs[guid] then setupGUID(guid) end
-	
+
 	for key, icon in pairs(icons) do
 		if not icon.onlyShowMissing then
 			icon:Hide()
@@ -255,7 +255,7 @@ local function Update(frame, event, unit)
 			icon:Show()
 		end
 	end
-	
+
 	while true do
 		name, texture, count, _, duration, remaining, caster, _, _, spellID = UnitAura(unit, index, filter)
 		if not name then
@@ -281,13 +281,13 @@ local function Update(frame, event, unit)
 			index = index + 1
 		end
 	end
-	
+
 	for key in pairs(GUIDs[guid]) do
 		if icons[key] and not found[key] then
 			expireIcon(icons[key], watch)
 		end
 	end
-	
+
 	for k in pairs(found) do
 		found[k] = nil
 	end
@@ -298,14 +298,14 @@ local function setupIcons(self)
 	local watch = self.AuraWatch
 	local icons = watch.icons
 	watch.watched = {}
-	
+
 	for _,icon in pairs(icons) do
-	
+
 		local name, _, image = GetSpellInfo(icon.spellID)
 
 		if name then
 			icon.name = name
-		
+
 			if not icon.cd and not (watch.hideCooldown or icon.hideCooldown) then
 				local cd = CreateFrame("Cooldown", nil, icon, "CooldownFrameTemplate")
 				cd:SetAllPoints(icon)
@@ -345,14 +345,14 @@ local function setupIcons(self)
 			end
 			if icon.missingAlpha == nil then
 				icon.missingAlpha = watch.missingAlpha
-			end		
+			end
 			if icon.fromUnits == nil then
 				icon.fromUnits = watch.fromUnits or PLAYER_UNITS
 			end
 			if icon.anyUnit == nil then
 				icon.anyUnit = watch.anyUnit
 			end
-			
+
 			if watch.strictMatching then
 				watch.watched[icon.spellID] = icon
 			else

@@ -204,7 +204,7 @@ function updateFrequentUpdates(self)
 
 		if self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
 			self:UnregisterEvent("UNIT_HEALTH_FREQUENT", Path)
-		end	
+		end
 	end
 end
 -- end block
