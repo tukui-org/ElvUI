@@ -402,19 +402,23 @@ function LO:CreateChatButtonPanel()
 
 	hooksecurefunc(QuickJoinToastButton, "UpdateQueueIcon", function(self)
 		self.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
-		if self.QueueButton:GetAlpha() > 0 then
-			self.FriendsButton:Hide()
-			self.FriendCount:Hide()
+
+		if self:GetButtonState() == "PUSHED" then
+			if self.isLFGList then
+				self.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+				self.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+			else
+				self.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+				self.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+			end
 		else
-			self.FriendsButton:Show()
-			self.FriendCount:Show()
-		end
-		if self.isLFGList then
-			self.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-			self.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-		else
-			self.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-			self.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+			if self.isLFGList then
+				self.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+				self.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
+			else
+				self.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+				self.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
+			end
 		end
 	end)
 
