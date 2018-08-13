@@ -78,6 +78,7 @@ L["Arena"] = "Арена"
 L["AVD: "] = "Защита: "
 L["Avoidance Breakdown"] = "Распределение защиты"
 L["Bandwidth"] = "Канал"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = "Отчет зданий:"
 L["Character: "] = "Персонаж: "
 L["Chest"] = "Грудь"

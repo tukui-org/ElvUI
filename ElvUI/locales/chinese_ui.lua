@@ -78,6 +78,7 @@ L["Arena"] = "竞技场"
 L["AVD: "] = "免伤: "
 L["Avoidance Breakdown"] = "免伤统计"
 L["Bandwidth"] = "带宽"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = "建筑报告:"
 L["Character: "] = "角色: "
 L["Chest"] = "胸"

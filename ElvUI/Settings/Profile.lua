@@ -878,7 +878,7 @@ P['datatexts'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'Durability',
-			['right'] = 'Orderhall',
+			['right'] = 'BfA Missions',
 		},
 		['RightChatDataPanel'] = {
 			['left'] = 'System',

@@ -78,6 +78,7 @@ L["Arena"] = "투기장"
 L["AVD: "] = "방어율: "
 L["Avoidance Breakdown"] = "방어율 목록"
 L["Bandwidth"] = "대역폭"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = "건축 보고서"
 L["Character: "] = "캐릭터:"
 L["Chest"] = "가슴"

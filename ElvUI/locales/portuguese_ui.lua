@@ -78,6 +78,7 @@ L["Arena"] = true
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Separação de Anulação"
 L["Bandwidth"] = "Largura de Banda"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = true
 L["Character: "] = "Personagem: "
 L["Chest"] = "Torso"
