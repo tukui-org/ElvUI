@@ -78,6 +78,7 @@ L["Arena"] = true
 L["AVD: "] = true
 L["Avoidance Breakdown"] = true
 L["Bandwidth"] = true
+L["BfA Missions"] = true
 L["Building(s) Report:"] = true
 L["Character: "] = true
 L["Chest"] = true
