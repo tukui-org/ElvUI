@@ -381,12 +381,20 @@ local function LoadSkin()
 	local function FixSidebarTabCoords()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
+
 			if tab and not tab.backdrop then
+				tab:CreateBackdrop("Default")
 				tab.Icon:SetAllPoints()
 				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:SetAllPoints()
-				tab.Hider:SetColorTexture(0.0,0.0,0.0,0.8)
-				tab.Hider:SetAllPoints()
+
+				-- Check for DejaCharacterStats. Lets hide the Texture if the AddOn is loaded.
+				if IsAddOnLoaded("DejaCharacterStats") then
+					tab.Hider:SetTexture("")
+				else
+					tab.Hider:SetColorTexture(0.0, 0.0, 0.0, 0.8)
+				end
+				tab.Hider:SetAllPoints(tab.backdrop)
 				tab.TabBg:Kill()
 
 				if i == 1 then
@@ -400,7 +408,6 @@ local function LoadSkin()
 						end)
 					end
 				end
-				tab:CreateBackdrop("Default")
 			end
 		end
 	end
