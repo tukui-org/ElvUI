@@ -231,13 +231,13 @@ L["Left Click:"] = "ЛКМ:" --layout\layout.lua
 L["Raid Menu"] = "Рейдовое меню"
 L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
-L["Toggle Chat Buttons"] = true --layout\layout.lua
+L["Toggle Chat Buttons"] = "Показать/скрыть кнопки чата" --layout\layout.lua
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
 L["AP:"] = "СА:" -- Artifact Power
 L["XP:"] = "Опыт:"
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
-L["Voice Overlay"] = true
+L["Voice Overlay"] = "Индикатор голоса"
 
 --Movers
 L["Alternative Power"] = "Альтернативный ресурс"
