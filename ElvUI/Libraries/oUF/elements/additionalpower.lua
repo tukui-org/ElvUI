@@ -208,7 +208,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.AdditionalPower
-	if(element and unit == 'player') then
+	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

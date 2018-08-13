@@ -277,7 +277,7 @@ function updateFrequentUpdates(self)
 end
 -- end block
 
-local function Enable(self, unit)
+local function Enable(self)
 	local element = self.Power
 	if(element) then
 		element.__owner = self
@@ -287,7 +287,7 @@ local function Enable(self, unit)
 		updateFrequentUpdates(self)
 		-- end block
 
-		if(element.frequentUpdates and (unit == 'player' or unit == 'pet')) then
+		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		else
 			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
