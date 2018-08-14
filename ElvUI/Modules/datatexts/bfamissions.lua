@@ -19,6 +19,7 @@ local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local HideUIPanel = HideUIPanel
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
+local SecondsToTime = SecondsToTime
 local COMPLETE = COMPLETE
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
@@ -77,7 +78,7 @@ local function OnEnter(self, _, noUpdate)
 	local hasFollowers = false
 	if(followerShipments) then
 		for i = 1, #followerShipments do
-			local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments[i])
+			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments[i])
 			if(name and shipmentsReady and shipmentsTotal) then
 				if(hasFollowers == false) then
 					if not firstLine then
@@ -88,7 +89,12 @@ local function OnEnter(self, _, noUpdate)
 					hasFollowers = true
 				end
 
-				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				if timeleftString then
+					timeleftString = timeleftString.." "
+				else
+					timeleftString = ""
+				end
+				DT.tooltip:AddDoubleLine(name, timeleftString..format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
 			end
 		end
 	end
@@ -115,7 +121,12 @@ local function OnEnter(self, _, noUpdate)
 					end
 					firstLine = false
 					DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- "Research Time:"
-					DT.tooltip:AddDoubleLine(talent.name, format(GARRISON_LANDING_SHIPMENT_COUNT, talent.isBeingResearched and 0 or 1, 1), 1, 1, 1)
+					if(talent.researchTimeRemaining and talent.researchTimeRemaining == 0) then
+						DT.tooltip:AddDoubleLine(talent.name, COMPLETE, 1, 1, 1)
+					else
+						DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1)
+					end
+
 					hasTalent = true
 				end
 			end
