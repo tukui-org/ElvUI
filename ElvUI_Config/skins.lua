@@ -378,11 +378,6 @@ E.Options.args.skins = {
 					name = CHANNELS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				BFAMissions = {
-					type = "toggle",
-					name = L["BFAMission"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				AzeriteUI = {
 					type = "toggle",
 					name = L["AzeriteUI"],

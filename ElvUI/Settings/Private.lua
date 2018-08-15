@@ -126,7 +126,6 @@ V['skins'] = {
 		['Warboard'] = true,
 		['AlliedRaces'] = true,
 		['Channels'] = true,
-		['BFAMissions'] = true,
 		['AzeriteUI'] = true,
 		['AzeriteRespec'] = true,
 		['Communities'] = true,
