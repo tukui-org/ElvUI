@@ -14,26 +14,15 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
-	-- The Frame have some nice textures, so don't use :StripTextures()
-	IslandsFrame.HelpButton:Hide()
-	IslandsFrame.ArtOverlayFrame.portrait:Hide()
-	IslandsFrame.ArtOverlayFrame.PortraitFrame:Hide()
-	IslandsFrame.TopWoodBorder:Hide()
-	IslandsFrame.LeftWoodBorder:Hide()
-	IslandsFrame.RightWoodBorder:Hide()
-	IslandsFrame.BottomWoodBorder:Hide()
-	IslandsFrame.TopBorder:Hide()
-	IslandsQueueFrameLeftBorder:Hide()
-	IslandsQueueFrameRightBorder:Hide()
-	IslandsQueueFrameBottomBorder:Hide()
-	IslandsQueueFrameTopRightCorner:Hide()
-	IslandsQueueFrameTopLeftCorner:Hide()
-	IslandsQueueFrameBotLeftCorner:Hide()
-	IslandsQueueFrameBotRightCorner:Hide()
-	IslandsQueueFramePortrait:Hide()
-	IslandsQueueFramePortraitFrame:Hide()
+	IslandsFrame:StripTextures()
+	IslandsQueueFrame.ArtOverlayFrame.PortraitFrame:SetAlpha(0)
+	IslandsQueueFrame.ArtOverlayFrame.portrait:SetAlpha(0)
+	IslandsQueueFrame.portrait:Hide()
 
 	IslandsFrame:CreateBackdrop("Transparent")
+
+	S:HandleCloseButton(IslandsQueueFrameCloseButton)
+	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest
 	local StatusBar = WeeklyQuest.StatusBar
@@ -46,11 +35,6 @@ local function LoadSkin()
 
 	--StatusBar Icon
 	WeeklyQuest.QuestReward.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	S:HandleCloseButton(IslandsQueueFrameCloseButton)
-	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
-
-	-- TO DO: Handle the Reward-Tooltip
 
 	-- Maybe Adjust me
 	local TutorialFrame = IslandsFrame.TutorialFrame
