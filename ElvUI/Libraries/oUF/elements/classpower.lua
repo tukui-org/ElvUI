@@ -85,7 +85,7 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (self.unit == unit and (UnitIsUnit(unit, 'player') and powerType == ClassPowerType
+	if(not (unit and (UnitIsUnit(unit, 'player') and powerType == ClassPowerType
 		or unit == 'vehicle' and powerType == 'COMBO_POINTS'))) then
 		return
 	end
