@@ -845,6 +845,7 @@ L["Gossip Frame"] = "Fenêtre PNJ"
 L["Guild Control Frame"] = "Gestion de Guilde"
 L["Guild Registrar"] = "Bannière de Guilde"
 L["Help Frame"] = "Fenêtre d'Assistance clientèle"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "Amélioration d'objet"
 L["LF Guild Frame"] = "Recherche de Guilde"
 L["Loot Frames"] = "Fenêtre de butin"

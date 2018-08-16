@@ -39,7 +39,8 @@
 	<Script file='help.lua'/>
 	<Script file='inspect.lua'/>
 	<Script file='itemupgrade.lua'/>
-	<Script file='Islands.lua'/>
+	<Script file='IslandPartyPose.lua'/>
+	<Script file='IslandQueue.lua'/>
 	<Script file='lfg.lua'/>
 	<Script file='lfguild.lua'/>
 	<Script file='loot.lua'/>

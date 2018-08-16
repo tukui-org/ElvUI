@@ -130,7 +130,8 @@ V['skins'] = {
 		['AzeriteRespec'] = true,
 		['Communities'] = true,
 		['Scrapping'] = true,
-		['Islands'] = true,
+		['IslandQueue'] = true,
+		['IslandsPartyPose'] = true,
 	},
 }
 

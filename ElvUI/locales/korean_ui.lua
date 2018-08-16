@@ -252,6 +252,7 @@ L["Bags"] = "가방"
 L["Bank Mover (Grow Down)"] = "은행 조정자(아래로 성장)"
 L["Bank Mover (Grow Up)"] = "은행 조정자(위로 성장)'"
 L["Bar "] = "바 "
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "배틀넷 알림"
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
@@ -298,6 +299,7 @@ L["Target Powerbar"] = "대상 자원바"
 L["TargetTarget Frame"] = "대상의대상 프레임"
 L["TargetTargetTarget Frame"] = "대상의대상의대상 프레임"
 L["Tooltip"] = "툴팁"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.

@@ -844,6 +844,7 @@ L["Gossip Frame"] = "Actualidad"
 L["Guild Control Frame"] = "Control de Hermandad"
 L["Guild Registrar"] = "Registrar Hermandad"
 L["Help Frame"] = "Ayuda"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "Mejora de Objeto"
 L["LF Guild Frame"] = "Búsqueda de Hermandad"
 L["Loot Frames"] = "Despojo"

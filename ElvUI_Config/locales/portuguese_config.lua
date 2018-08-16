@@ -845,6 +845,7 @@ L["Gossip Frame"] = "Fofocas"
 L["Guild Control Frame"] = "Controle da Guilda"
 L["Guild Registrar"] = "Registrar Guilda"
 L["Help Frame"] = "Ajuda"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "Aprimorar Item"
 L["LF Guild Frame"] = "Localizador de Guildas"
 L["Loot Frames"] = "Saques"

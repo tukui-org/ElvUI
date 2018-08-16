@@ -252,6 +252,7 @@ L["Bags"] = "Sacs" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "Orientation de la banque (ajouter vers le bas)"
 L["Bank Mover (Grow Up)"] = "Orientation de la banque (ajouter vers le haut)"
 L["Bar "] = "Barre " --Also in ActionBars
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Cadre BNet"
 L["Boss Button"] = "Bouton du Boss"
 L["Boss Frames"] = "Cadre du Boss" --Also used in UnitFrames
@@ -298,6 +299,7 @@ L["Target Powerbar"] = "Barre de pouvoir de la cible"  --need review.
 L["TargetTarget Frame"] = "Cadre de la cible de votre cible" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Cadre de la cible de la cible de la cible"
 L["Tooltip"] = "Infobulle"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Cadre de siège du véhicule"
 L["Zone Ability"] = "Zone d'abilité"
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.

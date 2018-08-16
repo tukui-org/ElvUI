@@ -252,6 +252,7 @@ L["Bags"] = "背包" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "銀行錨點 (向下增長)"
 L["Bank Mover (Grow Up)"] = "銀行錨點 (向上增長)"
 L["Bar "] = "快捷列 " --Also in ActionBars
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "戰網提示資訊"
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架" --Also used in UnitFrames
@@ -298,6 +299,7 @@ L["Target Powerbar"] = "目標能量條"
 L["TargetTarget Frame"] = "目標的目標框架" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "目標的目標的目標框架"
 L["Tooltip"] = "浮動提示"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "載具座位框"
 L["Zone Ability"] = "區域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.

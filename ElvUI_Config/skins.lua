@@ -393,7 +393,12 @@ E.Options.args.skins = {
 					name = SCRAP_BUTTON,
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				Islands = {
+				IslandsPartyPose = {
+					type = "toggle",
+					name = L["Island Party Pose"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				IslandQueue = {
 					type = "toggle",
 					name = ISLANDS_HEADER,
 					desc = L["TOGGLESKIN_DESC"],

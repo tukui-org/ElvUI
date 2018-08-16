@@ -893,6 +893,7 @@ L["Gossip Frame"] = "NPC 대화 창"
 L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Registrar"] = "길드 등록"
 L["Help Frame"] = "도움말"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "아이템 강화 창"
 L["LF Guild Frame"] = "길드 찾기 창"
 L["Loot Frames"] = "루팅 창"

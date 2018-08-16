@@ -844,6 +844,7 @@ L["Gossip Frame"] = "Диалоги"
 L["Guild Control Frame"] = "Управление гильдией"
 L["Guild Registrar"] = "Регистратор гильдий"
 L["Help Frame"] = "Помощь"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "Улучшение предметов"
 L["LF Guild Frame"] = "Поиск гильдии"
 L["Loot Frames"] = "Добыча"

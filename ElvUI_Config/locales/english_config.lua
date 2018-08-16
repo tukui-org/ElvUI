@@ -834,6 +834,7 @@ L["Gossip Frame"] = true
 L["Guild Control Frame"] = true
 L["Guild Registrar"] = true
 L["Help Frame"] = true
+L["Island Party Pose"] = true
 L["Item Upgrade"] = true
 L["LF Guild Frame"] = true
 L["Loot Frames"] = true

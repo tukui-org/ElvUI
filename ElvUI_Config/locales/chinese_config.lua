@@ -843,6 +843,7 @@ L["Gossip Frame"] = "闲谈"
 L["Guild Control Frame"] = "公会控制"
 L["Guild Registrar"] = "公会注册"
 L["Help Frame"] = "帮助"
+L["Island Party Pose"] = true
 L["Item Upgrade"] = "装备升级"
 L["LF Guild Frame"] = "寻求公会"
 L["Loot Frames"] = "拾取"

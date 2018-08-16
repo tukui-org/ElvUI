@@ -11,7 +11,7 @@ local _G = _G
 -- GLOBALS:
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Islands ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
 	-- The Frame have some nice textures, so don't use :StripTextures()
@@ -58,4 +58,4 @@ local function LoadSkin()
 	S:HandleCloseButton(TutorialFrame.CloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_IslandsQueueUI", "Islands", LoadSkin)
+S:AddCallbackForAddon("Blizzard_IslandsQueueUI", "IslandQueue", LoadSkin)
