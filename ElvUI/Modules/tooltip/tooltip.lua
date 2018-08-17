@@ -222,14 +222,12 @@ function TT:GetItemLvL(items)
 				local itemLevelFinal = 0
 				if(itemLevelOriginal and itemLevelLib) then
 					itemLevelFinal = (itemLevelOriginal ~= itemLevelLib) and itemLevelLib or itemLevelOriginal
+					if itemLevelFinal == 0 then itemLevelFinal = itemLevelOriginal end
 				else
 					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
 				if(itemLevelFinal > 0) then
-					if((equipSlot == "INVTYPE_2HWEAPON")
-					or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)
-					or (currentSlot == INVSLOT_MAINHAND and not items[INVSLOT_OFFHAND])
-					or (currentSlot == INVSLOT_OFFHAND and not items[INVSLOT_MAINHAND])) then
+					if((equipSlot == "INVTYPE_2HWEAPON") or (currentSlot == INVSLOT_MAINHAND and artifactEquipped) then
 						itemLevelFinal = itemLevelFinal * 2
 					end
 					total = total + itemLevelFinal
@@ -269,7 +267,7 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < inspectAge) then
 		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
-	elseif(InspectFrame and not InspectFrame:IsShown()) then
+	elseif(not InspectFrame or (InspectFrame and not InspectFrame:IsShown())) then
 		LibInspect:RequestItems(unit, false)
 	end
 end
