@@ -7,7 +7,7 @@ local S -- used to hold the skin module when we need it
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, select, pairs = unpack, select, pairs
+local unpack, select, pairs, next = unpack, select, pairs, next
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor = math.floor
 local find, format, sub = string.find, string.format, string.sub
@@ -227,7 +227,7 @@ function TT:GetItemLvL(items)
 					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
 				if(itemLevelFinal > 0) then
-					if((equipSlot == "INVTYPE_2HWEAPON") or (currentSlot == INVSLOT_MAINHAND and artifactEquipped) then
+					if((equipSlot == "INVTYPE_2HWEAPON") or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)) then
 						itemLevelFinal = itemLevelFinal * 2
 					end
 					total = total + itemLevelFinal
