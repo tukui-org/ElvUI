@@ -200,8 +200,8 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:GetItemLvL(items)
-	if not items then return "?" end
+function TT:GetItemLvL(items, talents)
+	if not items or not talents then return "?" end
 
 	local total = 0
 	local artifactEquipped = false
@@ -227,7 +227,7 @@ function TT:GetItemLvL(items)
 					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
 				if(itemLevelFinal > 0) then
-					if((equipSlot == "INVTYPE_2HWEAPON") or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)) then
+					if((equipSlot == "INVTYPE_2HWEAPON" and talents.id ~= 72) or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)) then
 						itemLevelFinal = itemLevelFinal * 2
 					end
 					total = total + itemLevelFinal
@@ -252,7 +252,7 @@ function TT:InspectReady(guid, data)
 	if(not inspectCache[guid]) then inspectCache[guid] = {} end
 
 	inspectCache[guid].age = GetTime()
-	inspectCache[guid].itemLevel = self:GetItemLvL(data.items)
+	inspectCache[guid].itemLevel = self:GetItemLvL(data.items, data.talents)
 	inspectCache[guid].talent = self:GetTalentSpec(data.talents)
 
 	if not GameTooltip:IsForbidden() then
