@@ -227,7 +227,7 @@ function TT:GetItemLvL(items, talents)
 					itemLevelFinal = itemLevelLib or itemLevelOriginal
 				end
 				if(itemLevelFinal > 0) then
-					if((equipSlot == "INVTYPE_2HWEAPON" and talents.id ~= 72) or (currentSlot == INVSLOT_MAINHAND and artifactEquipped)) then
+					if ((currentSlot == INVSLOT_MAINHAND and artifactEquipped) or ((equipSlot == "INVTYPE_2HWEAPON" or equipSlot == "INVTYPE_RANGEDRIGHT" or equipSlot == "INVTYPE_RANGED") and talents.id ~= 72)) and (not items[INVSLOT_OFFHAND] or artifactEquipped) then
 						itemLevelFinal = itemLevelFinal * 2
 					end
 					total = total + itemLevelFinal
@@ -268,7 +268,7 @@ function TT:ShowInspectInfo(tt, unit, r, g, b)
 		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
 		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif(not InspectFrame or (InspectFrame and not InspectFrame:IsShown())) then
-		LibInspect:RequestItems(unit, false)
+		LibInspect:RequestItems(unit, true)
 	end
 end
 
