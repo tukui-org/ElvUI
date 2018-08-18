@@ -1629,4 +1629,6 @@ function E:Initialize(loginFrame)
 			end
 		end)
 	end
+
+	DisableAddOn("ElvUI_EverySecondCounts")
 end
