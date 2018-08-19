@@ -75,14 +75,6 @@ local function LoadSkin()
 			end
 		end
 
-		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
-		if self.PortraitFrame then self.PortraitFrame:Hide() end
-		if self.portrait then self.portrait:Hide() end
-		if self.skinned then return end
-
-		self:StripTextures()
-		if self.CornerLogo then self.CornerLogo:Hide() end
-
 		local TalentInset = self.LeftInset
 		local TalentClassBG = self.Background
 		if TalentInset then
@@ -99,6 +91,14 @@ local function LoadSkin()
 			TalentClassBG:SetDrawLayer("ARTWORK")
 			TalentClassBG:SetAlpha(0.8)
 		end
+
+		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
+		if self.PortraitFrame then self.PortraitFrame:Hide() end
+		if self.portrait then self.portrait:Hide() end
+		if self.skinned then return end
+
+		self:StripTextures()
+		if self.CornerLogo then self.CornerLogo:Hide() end
 
 		self:SetTemplate("Transparent")
 		S:HandleCloseButton(self.CloseButton)
