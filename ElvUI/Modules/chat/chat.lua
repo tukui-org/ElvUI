@@ -6,7 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local _G = _G
 local wipe, time, difftime = wipe, time, difftime
-local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
+local ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type = ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type
 local tinsert, tremove, twipe, tconcat = table.insert, table.remove, table.wipe, table.concat
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
@@ -34,12 +34,16 @@ local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local Chat_GetChatCategory = Chat_GetChatCategory
 local CreateFrame = CreateFrame
+local CreateAnimationGroup = CreateAnimationGroup
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_SocialGetLastItem = C_Social.GetLastItem
 local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
+local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
+local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
+local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
 local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
 local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
@@ -2634,9 +2638,9 @@ function CH:ConfigureHead(memberID, channelID)
 	frame.memberID = memberID
 	frame.channelID = channelID
 
-	C_VoiceChat.SetPortraitTexture(frame.Portrait.texture, memberID, channelID);
+	C_VoiceChat_SetPortraitTexture(frame.Portrait.texture, memberID, channelID);
 
-	local memberName = C_VoiceChat.GetMemberName(memberID, channelID);
+	local memberName = C_VoiceChat_GetMemberName(memberID, channelID);
 	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID);
 	frame.Name:SetText(memberName or "")
 	frame.Name:SetVertexColor(r, g, b, 1);
