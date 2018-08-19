@@ -85,12 +85,16 @@ local function LoadSkin()
 
 		local TalentInset = self.LeftInset
 		local TalentClassBG = self.Background
-		TalentInset:StripTextures()
-		TalentInset:CreateBackdrop("Transparent")
-		TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
-		TalentInset.backdrop:Point('TOPLEFT', TalentClassBG, 'TOPLEFT', E.Border-1, -E.Border+1)
-		TalentInset.backdrop:Point('BOTTOMRIGHT', TalentClassBG, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
-		if self.backgroundTexture then
+		if TalentInset then
+			TalentInset:StripTextures()
+			if TalentClassBG and not TalentInset.backdrop then
+				TalentInset:CreateBackdrop("Transparent")
+				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
+				TalentInset.backdrop:Point('TOPLEFT', TalentClassBG, 'TOPLEFT', E.Border-1, -E.Border+1)
+				TalentInset.backdrop:Point('BOTTOMRIGHT', TalentClassBG, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
+			end
+		end
+		if TalentClassBG and self.backgroundTexture then
 			TalentClassBG:SetTexture(self.backgroundTexture)
 			TalentClassBG:SetDrawLayer("ARTWORK")
 			TalentClassBG:SetAlpha(0.8)
