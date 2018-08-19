@@ -7,7 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local _G = _G
 local wipe, time, difftime = wipe, time, difftime
 local ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type = ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type
-local tinsert, tremove, twipe, tconcat = table.insert, table.remove, table.wipe, table.concat
+local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
@@ -1091,7 +1091,9 @@ function CH:DisableHyperlink()
 end
 
 function CH:DisableChatThrottle()
-	twipe(msgList); twipe(msgCount); twipe(msgTime)
+	wipe(msgList)
+	wipe(msgCount)
+	wipe(msgTime)
 end
 
 function CH:ShortChannel()
@@ -1942,7 +1944,8 @@ function CH:ChatEdit_AddHistory(editBox, line)
 end
 
 function CH:UpdateChatKeywords()
-	twipe(CH.Keywords)
+	wipe(CH.Keywords)
+
 	local keywords = self.db.keywords
 	keywords = gsub(keywords,',%s',',')
 
@@ -2074,9 +2077,10 @@ end
 
 function CH:CheckLFGRoles()
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
-	local unit = isInRaid and "raid" or "party"
-	local name, realm
-	twipe(lfgRoles)
+	local unit, name, realm = (isInRaid and "raid" or "party")
+
+	wipe(lfgRoles)
+
 	if(not isInGroup or not self.db.lfgIcons) then return end
 
 	local role = UnitGroupRolesAssigned("player")
