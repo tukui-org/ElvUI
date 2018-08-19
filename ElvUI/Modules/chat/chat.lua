@@ -2427,6 +2427,7 @@ function CH:Initialize()
 	self:DefaultEmojis()
 	self:UpdateChatKeywords()
 	self:UpdateFading()
+
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 
@@ -2523,7 +2524,6 @@ function CH:Initialize()
 	end)
 	frame:SetFrameStrata("DIALOG")
 
-
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
@@ -2597,7 +2597,6 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].Name:FontTemplate(nil, 20)
 		self.ChatHeadFrame[i].Name:SetPoint("LEFT", self.ChatHeadFrame[i].Portrait, "RIGHT", 2, 0)
 
-
 		self.ChatHeadFrame[i].StatusBar = CreateFrame("StatusBar", nil, self.ChatHeadFrame[i])
 		self.ChatHeadFrame[i].StatusBar:SetPoint("TOPLEFT", self.ChatHeadFrame[i].Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
 		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
@@ -2610,7 +2609,6 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].StatusBar.anim.progress = self.ChatHeadFrame[i].StatusBar.anim:CreateAnimation("Progress")
 		self.ChatHeadFrame[i].StatusBar.anim.progress:SetSmoothing("Out")
 		self.ChatHeadFrame[i].StatusBar.anim.progress:SetDuration(.3)
-
 
 		self.ChatHeadFrame[i]:Hide()
 	end
@@ -2634,7 +2632,6 @@ function CH:GetHeadByID(memberID)
 		end
 	end
 end
-
 
 function CH:ConfigureHead(memberID, channelID)
 	local frame = self:GetAvailableHead()
@@ -2713,7 +2710,6 @@ function CH:SetChatHeadOrientation(position)
 		end
 	end
 end
-
 
 local function InitializeCallback()
 	CH:Initialize()
