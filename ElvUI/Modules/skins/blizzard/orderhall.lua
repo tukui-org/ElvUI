@@ -58,27 +58,42 @@ local function LoadSkin()
 	end
 
 	OrderHallTalentFrame:HookScript("OnShow", function(self)
-		local currencyIconAtlas = self.Currency.Icon:GetAtlas()
-		if currencyIconAtlas and (currencyIconAtlas ~= self.currencyIconAtlas) then
-			self.currencyIconAtlas = currencyIconAtlas
+		if self.Currency and self.Currency.Icon and self.Currency.Icon.GetAtlas then
+			local currencyIconAtlas = self.Currency.Icon:GetAtlas()
+			if currencyIconAtlas and (currencyIconAtlas ~= self.currencyIconAtlas) then
+				self.currencyIconAtlas = currencyIconAtlas
+			end
+			if self.currencyIconAtlas then
+				self.Currency.Icon:SetAtlas(self.currencyIconAtlas, false)
+			end
 		end
 
-		if self.currencyIconAtlas then
-			self.Currency.Icon:SetAtlas(self.currencyIconAtlas, false)
+		if self.Background and self.Background.GetTexture then
+			local backgroundTexture = self.Background:GetTexture()
+			if backgroundTexture and (backgroundTexture ~= self.backgroundTexture) then
+				self.backgroundTexture = backgroundTexture
+			end
 		end
 
-		if self.StyleFrame then
-			self.StyleFrame:SetAlpha(0)
-		end
-
-		if self.skinned then
-			return
-		end
+		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
+		if self.PortraitFrame then self.PortraitFrame:Hide() end
+		if self.portrait then self.portrait:Hide() end
+		if self.skinned then return end
 
 		self:StripTextures()
-		self.LeftInset:StripTextures()
-		if self.CornerLogo then
-			self.CornerLogo:Hide()
+		if self.CornerLogo then self.CornerLogo:Hide() end
+
+		local TalentInset = self.LeftInset
+		local TalentClassBG = self.Background
+		TalentInset:StripTextures()
+		TalentInset:CreateBackdrop("Transparent")
+		TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
+		TalentInset.backdrop:Point('TOPLEFT', TalentClassBG, 'TOPLEFT', E.Border-1, -E.Border+1)
+		TalentInset.backdrop:Point('BOTTOMRIGHT', TalentClassBG, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
+		if self.backgroundTexture then
+			TalentClassBG:SetTexture(self.backgroundTexture)
+			TalentClassBG:SetDrawLayer("ARTWORK")
+			TalentClassBG:SetAlpha(0.8)
 		end
 
 		self:SetTemplate("Transparent")
