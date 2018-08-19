@@ -2267,7 +2267,7 @@ local FindURL_Events = {
 	"CHAT_MSG_COMMUNITIES_CHANNEL",
 }
 
-function CH:DefaultEmojis()
+function CH:DefaultSmileys()
 	if next(CH.Smileys.Keys) then
 		wipe(CH.Smileys.Keys)
 		wipe(CH.Smileys.Textures)
@@ -2424,7 +2424,7 @@ function CH:Initialize()
 		ElvCharacterDB.ChatHistoryLog = {};
 	end
 
-	self:DefaultEmojis()
+	self:DefaultSmileys()
 	self:UpdateChatKeywords()
 	self:UpdateFading()
 
