@@ -58,19 +58,30 @@ local function LoadSkin()
 	end
 
 	OrderHallTalentFrame:HookScript("OnShow", function(self)
-		if self.skinned then return end
+		local currencyIconAtlas = self.Currency.Icon:GetAtlas()
+		if currencyIconAtlas and (currencyIconAtlas ~= self.currencyIconAtlas) then
+			self.currencyIconAtlas = currencyIconAtlas
+		end
+
+		if self.currencyIconAtlas then
+			self.Currency.Icon:SetAtlas(self.currencyIconAtlas, false)
+		end
+
+		if self.StyleFrame then
+			self.StyleFrame:SetAlpha(0)
+		end
+
+		if self.skinned then
+			return
+		end
 
 		self:StripTextures()
 		self.LeftInset:StripTextures()
 		if self.CornerLogo then
 			self.CornerLogo:Hide()
 		end
-		if self.StyleFrame then
-			self.StyleFrame:SetAlpha(0)
-			self.StyleFrame.SetAlpha = function() end
-		end
+
 		self:SetTemplate("Transparent")
-		self.Currency.Icon:SetAtlas("legionmission-icon-currency", false)
 		S:HandleCloseButton(self.CloseButton)
 
 		OrderHallTalentFramePortraitFrame:Hide()
