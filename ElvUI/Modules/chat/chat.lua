@@ -469,14 +469,14 @@ end
 function CH:InsertEmotions(msg)
 	for i, v in ipairs(CH.Smileys.Keys) do
 		if CH.Smileys.Textures[i] then
-			if strmatch(msg, '%f[%S]'..v..'%f[%s]') then -- whole word
-				msg = gsub(msg, '%f[%S]'..v..'%f[%s]', '|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '^'..v..'$') then -- only word
+			if strmatch(msg, '^'..v..'$') then -- only word
 				msg = gsub(msg, v, '|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '[%s%p]-'..v..'$') then -- end of string
-				msg = gsub(msg, '([%s%p]-)'..v..'$', '%1|T'..CH.Smileys.Textures[i]..':16:16|t');
 			elseif strmatch(msg, '^'..v..'[%s%p]+') then -- start of string
 				msg = gsub(msg, '^'..v..'([%s%p]+)', '|T'..CH.Smileys.Textures[i]..':16:16|t%1');
+			elseif strmatch(msg, '[%s%p]-'..v..'$') then -- end of string
+				msg = gsub(msg, '([%s%p]-)'..v..'$', '%1|T'..CH.Smileys.Textures[i]..':16:16|t');
+			elseif strmatch(msg, '[%s%p]-'..v..'[%s%p]+') then -- whole word
+				msg = gsub(msg, '([%s%p]-)'..v..'([%s%p]+)', '%1|T'..CH.Smileys.Textures[i]..':16:16|t%2');
 			end
 		end
 	end
