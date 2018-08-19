@@ -84,9 +84,10 @@ local function LoadSkin()
 			if TalentBackground and not TalentInset.backdrop then
 				TalentInset:CreateBackdrop("Transparent")
 				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
-				TalentInset.backdrop:Point('TOPLEFT', TalentBackground, 'TOPLEFT', E.Border-1, -E.Border+1)
-				TalentInset.backdrop:Point('BOTTOMRIGHT', TalentBackground, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 			end
+
+			TalentInset.backdrop:Point('TOPLEFT', TalentBackground, 'TOPLEFT', E.Border-1, -E.Border+1)
+			TalentInset.backdrop:Point('BOTTOMRIGHT', TalentBackground, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 		end
 		if TalentBackground then
 			TalentBackground:SetDrawLayer("ARTWORK")
