@@ -179,62 +179,129 @@ local tabTexs = {
 	'Highlight'
 }
 
+do
+	local emojiPath = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\"
+	CH.SmileyPack = {
+		["angry"]				= emojiPath.."angry.tga",
+		["blush"]				= emojiPath.."blush.tga",
+		["broken_heart"]		= emojiPath.."broken_heart.tga",
+		["call_me"]				= emojiPath.."call_me.tga",
+		["cry"]					= emojiPath.."cry.tga",
+		["facepalm"]			= emojiPath.."facepalm.tga",
+		["grin"]				= emojiPath.."grin.tga",
+		["heart"]				= emojiPath.."heart.tga",
+		["heart_eyes"]			= emojiPath.."heart_eyes.tga",
+		["joy"]					= emojiPath.."joy.tga",
+		["middle_finger"]		= emojiPath.."middle_finger.tga",
+		["murloc"]				= emojiPath.."murloc.tga",
+		["ok_hand"]				= emojiPath.."ok_hand.tga",
+		["open_mouth"]			= emojiPath.."open_mouth.tga",
+		["poop"]				= emojiPath.."poop.tga",
+		["rage"]				= emojiPath.."rage.tga",
+		["sadkitty"]			= emojiPath.."sadkitty.tga",
+		["scream"]				= emojiPath.."scream.tga",
+		["scream_cat"]			= emojiPath.."scream_cat.tga",
+		["slight_frown"]		= emojiPath.."slight_frown.tga",
+		["smile"]				= emojiPath.."smile.tga",
+		["smirk"]				= emojiPath.."smirk.tga",
+		["sob"]					= emojiPath.."sob.tga",
+		["stuck_out_tongue"]	= emojiPath.."stuck_out_tongue.tga",
+		["stuck_out_tongue_closed_eyes"]	= emojiPath.."stuck_out_tongue_closed_eyes.tga",
+		["sunglasses"]			= emojiPath.."sunglasses.tga",
+		["thinking"]			= emojiPath.."thinking.tga",
+		["thumbs_up"]			= emojiPath.."thumbs_up.tga",
+		["wink"]				= emojiPath.."wink.tga",
+		["zzz"]					= emojiPath.."zzz.tga",
+	}
+end
 
-local smileyPack = {
-	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.tga]],
-	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.tga]],
-	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.tga]],
-	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.tga]],
-	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.tga]],
-	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.tga]],
-	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.tga]],
-	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.tga]],
-	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.tga]],
-	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.tga]],
-	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.tga]],
-	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.tga]],
-}
+CH.SmileyKeys = {
+	-- new keys
+	[":angry:"]				= "angry",
+	[":blush:"]				= "blush",
+	[":broken_heart:"]		= "broken_heart",
+	[":call_me:"]			= "call_me",
+	[":cry:"]				= "cry",
+	[":facepalm:"]			= "facepalm",
+	[":grin:"]				= "grin",
+	[":heart:"]				= "heart",
+	[":heart_eyes:"]		= "heart_eyes",
+	[":joy:"]				= "joy",
+	[":middle_finger:"]		= "middle_finger",
+	[":murloc:"]			= "murloc",
+	[":ok_hand:"]			= "ok_hand",
+	[":open_mouth:"]		= "open_mouth",
+	[":poop:"]				= "poop",
+	[":rage:"]				= "rage",
+	[":sadkitty:"]			= "sadkitty",
+	[":scream:"]			= "scream",
+	[":scream_cat:"]		= "scream_cat",
+	[":slight_frown:"]		= "slight_frown",
+	[":smile:"]				= "smile",
+	[":smirk:"]				= "smirk",
+	[":sob:"]				= "sob",
+	[":stuck_out_tongue:"]	= "stuck_out_tongue",
+	[":stuck_out_tongue_closed_eyes:"]	= "stuck_out_tongue_closed_eyes",
+	[":sunglasses:"]		= "sunglasses",
+	[":thinking:"]			= "thinking",
+	[":thumbs_up:"]			= "thumbs_up",
+	[":wink:"]				= "wink",
+	[":zzz:"]				= "zzz",
 
-local smileyKeys = {
-	["%:%-%@"] = "Angry",
-	["%:%@"] = "Angry",
-	["%:%-%)"]="Happy",
-	["%:%)"]="Happy",
-	["%:D"]="Grin",
-	["%:%-D"]="Grin",
-	["%;%-D"]="Grin",
-	["%;D"]="Grin",
-	["%=D"]="Grin",
-	["xD"]="Grin",
-	["XD"]="Grin",
-	["%:%-%("]="Sad",
-	["%:%("]="Sad",
-	["%:o"]="Surprise",
-	["%:%-o"]="Surprise",
-	["%:%-O"]="Surprise",
-	["%:O"]="Surprise",
-	["%:%-0"]="Surprise",
-	["%:P"]="Tongue",
-	["%:%-P"]="Tongue",
-	["%:p"]="Tongue",
-	["%:%-p"]="Tongue",
-	["%=P"]="Tongue",
-	["%=p"]="Tongue",
-	["%;%-p"]="Tongue",
-	["%;p"]="Tongue",
-	["%;P"]="Tongue",
-	["%;%-P"]="Tongue",
-	["%;%-%)"]="Wink",
-	["%;%)"]="Wink",
-	["%:S"]="Hmm",
-	["%:%-S"]="Hmm",
-	["%:%,%("]="Cry",
-	["%:%,%-%("]="Cry",
-	["%:%'%("]="Cry",
-	["%:%'%-%("]="Cry",
-	["%:%F"]="MiddleFinger",
-	["<3"]="Heart",
-	["</3"]="BrokenHeart",
+	-- Simpy's keys
+	[">:%("]	= "rage",
+	[":%$"]		= "blush",
+	["<\3"]		= "broken_heart",
+	[":'%)"]	= "joy",
+	[";'%)"]	= "joy",
+	[",,!,,"]	= "middle_finger",
+	["D:<"]		= "rage",
+	[":o3"]		= "scream_cat",
+	["XP"]		= "stuck_out_tongue_closed_eyes",
+	["8%-%)"]	= "sunglasses",
+	["8%)"]		= "sunglasses",
+	[":%+1:"]	= "thumbs_up",
+
+	-- old keys
+	[":%-@"]	= "angry",
+	[":@"]		= "angry",
+	[":%-%)"]	= "smile",
+	[":%)"]		= "smile",
+	[":D"]		= "grin",
+	[":%-D"]	= "grin",
+	[";%-D"]	= "grin",
+	[";D"]		= "grin",
+	["=D"]		= "grin",
+	["xD"]		= "grin",
+	["XD"]		= "grin",
+	[":%-%("]	= "slight_frown",
+	[":%("]		= "slight_frown",
+	[":o"]		= "open_mouth",
+	[":%-o"]	= "open_mouth",
+	[":%-O"]	= "open_mouth",
+	[":O"]		= "open_mouth",
+	[":%-0"]	= "open_mouth",
+	[":P"]		= "stuck_out_tongue",
+	[":%-P"]	= "stuck_out_tongue",
+	[":p"]		= "stuck_out_tongue",
+	[":%-p"]	= "stuck_out_tongue",
+	["=P"]		= "stuck_out_tongue",
+	["=p"]		= "stuck_out_tongue",
+	[";%-p"]	= "stuck_out_tongue_closed_eyes",
+	[";p"]		= "stuck_out_tongue_closed_eyes",
+	[";P"]		= "stuck_out_tongue_closed_eyes",
+	[";%-P"]	= "stuck_out_tongue_closed_eyes",
+	[";%-%)"]	= "wink",
+	[";%)"]		= "wink",
+	[":S"]		= "smirk",
+	[":%-S"]	= "smirk",
+	[":,%("]	= "cry",
+	[":,%-%("]	= "cry",
+	[":'%("]	= "cry",
+	[":'%-%("]	= "cry",
+	[":F"]		= "middle_finger",
+	["<3"]		= "heart",
+	["</3"]		= "broken_heart",
 };
 
 local rolePaths = {
@@ -354,9 +421,20 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for k,v in pairs(smileyKeys) do
-		msg = gsub(msg,k,"|T"..smileyPack[v]..":16|t");
+	for k, v in pairs(CH.SmileyKeys) do
+		if CH.SmileyPack[v] then
+			if strmatch(msg, '%f[%S]'..k..'%f[%s]') then -- whole word
+				msg = gsub(msg, '%f[%S]'..k..'%f[%s]', '|T'..CH.SmileyPack[v]..':16:16|t');
+			elseif strmatch(msg, '^'..k..'$') then -- only word
+				msg = gsub(msg, k, '|T'..CH.SmileyPack[v]..':16:16|t');
+			elseif strmatch(msg, '[%s%p]-'..k..'$') then -- end of string
+				msg = gsub(msg, '([%s%p]-)'..k..'$', '%1|T'..CH.SmileyPack[v]..':16:16|t');
+			elseif strmatch(msg, '^'..k..'[%s%p]+') then -- start of string
+				msg = gsub(msg, '^'..k..'([%s%p]+)', '|T'..CH.SmileyPack[v]..':16:16|t%1');
+			end
+		end
 	end
+
 	return msg;
 end
 
