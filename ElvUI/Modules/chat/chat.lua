@@ -248,6 +248,7 @@ do -- add ElvUI default emojis into the smiley tables
 		["sunglasses"]			= EmojiPath.."sunglasses.tga",
 		["thinking"]			= EmojiPath.."thinking.tga",
 		["thumbs_up"]			= EmojiPath.."thumbs_up.tga",
+		["semi_colon"]			= EmojiPath.."semi_colon.tga",
 		["wink"]				= EmojiPath.."wink.tga",
 		["zzz"]					= EmojiPath.."zzz.tga",
 	}
@@ -281,6 +282,7 @@ do -- add ElvUI default emojis into the smiley tables
 	CH:AddSmiley(':sunglasses:', 'sunglasses', EmojiPack['sunglasses'])
 	CH:AddSmiley(':thinking:', 'thinking', EmojiPack['thinking'])
 	CH:AddSmiley(':thumbs_up:', 'thumbs_up', EmojiPack['thumbs_up'])
+	CH:AddSmiley(':semi_colon:', 'semi_colon', EmojiPack['semi_colon'])
 	CH:AddSmiley(':wink:', 'wink', EmojiPack['wink'])
 	CH:AddSmiley(':zzz:', 'zzz', EmojiPack['zzz'])
 
@@ -297,6 +299,7 @@ do -- add ElvUI default emojis into the smiley tables
 	CH:AddSmiley('8%-%)', 'sunglasses', EmojiPack['sunglasses'])
 	CH:AddSmiley('8%)', 'sunglasses', EmojiPack['sunglasses'])
 	CH:AddSmiley(':%+1:', 'thumbs_up', EmojiPack['thumbs_up'])
+	CH:AddSmiley(':;:', 'semi_colon', EmojiPack['semi_colon'])
 
 	-- old keys
 	CH:AddSmiley(':%-@', 'angry', EmojiPack['angry'])
