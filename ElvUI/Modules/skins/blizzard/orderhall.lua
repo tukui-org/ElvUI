@@ -68,23 +68,29 @@ local function LoadSkin()
 			end
 		end
 
-		if self.Background and self.Background.GetTexture then
-			local backgroundTexture = self.Background:GetTexture()
-			if backgroundTexture and (backgroundTexture ~= self.backgroundTexture) then
-				self.backgroundTexture = backgroundTexture
+		local StyleFrameBackground = self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture()
+		local TalentFrameBackground = self.Background and self.Background.GetTexture and self.Background:GetTexture()
+		local TalentBackgroundTexture = StyleFrameBackground or TalentFrameBackground
+		local TalentBackground = (StyleFrameBackground and self.StyleFrame.Background) or (TalentFrameBackground and self.Background)
+		if TalentBackground and TalentBackgroundTexture then
+			if TalentBackgroundTexture ~= self.backgroundTexture then
+				self.backgroundTexture = TalentBackgroundTexture
 			end
 		end
 
 		local TalentInset = self.LeftInset
-		local TalentClassBG = self.Background
 		if TalentInset then
 			TalentInset:StripTextures()
-			if TalentClassBG and not TalentInset.backdrop then
+			if TalentBackground and not TalentInset.backdrop then
 				TalentInset:CreateBackdrop("Transparent")
 				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
-				TalentInset.backdrop:Point('TOPLEFT', TalentClassBG, 'TOPLEFT', E.Border-1, -E.Border+1)
-				TalentInset.backdrop:Point('BOTTOMRIGHT', TalentClassBG, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
+				TalentInset.backdrop:Point('TOPLEFT', TalentBackground, 'TOPLEFT', E.Border-1, -E.Border+1)
+				TalentInset.backdrop:Point('BOTTOMRIGHT', TalentBackground, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 			end
+		end
+		if TalentBackground then
+			TalentBackground:SetDrawLayer("ARTWORK")
+			TalentBackground:SetAlpha(0.8)
 		end
 
 		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
@@ -94,10 +100,8 @@ local function LoadSkin()
 
 		self:StripTextures()
 		if self.CornerLogo then self.CornerLogo:Hide() end
-		if TalentClassBG and self.backgroundTexture then
-			TalentClassBG:SetTexture(self.backgroundTexture)
-			TalentClassBG:SetDrawLayer("ARTWORK")
-			TalentClassBG:SetAlpha(0.8)
+		if TalentBackground and self.backgroundTexture then
+			TalentBackground:SetTexture(self.backgroundTexture)
 		end
 
 		self:SetTemplate("Transparent")
