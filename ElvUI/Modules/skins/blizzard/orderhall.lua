@@ -72,10 +72,8 @@ local function LoadSkin()
 		local TalentFrameBackground = self.Background and self.Background.GetTexture and self.Background:GetTexture()
 		local TalentBackgroundTexture = StyleFrameBackground or TalentFrameBackground
 		local TalentBackground = (StyleFrameBackground and self.StyleFrame.Background) or (TalentFrameBackground and self.Background)
-		if TalentBackground and TalentBackgroundTexture then
-			if TalentBackgroundTexture ~= self.backgroundTexture then
-				self.backgroundTexture = TalentBackgroundTexture
-			end
+		if TalentBackground and TalentBackgroundTexture and (TalentBackgroundTexture ~= self.backgroundTexture) then
+			self.backgroundTexture = TalentBackgroundTexture
 		end
 
 		local TalentInset = self.LeftInset
@@ -96,18 +94,19 @@ local function LoadSkin()
 
 		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
 		if self.PortraitFrame then self.PortraitFrame:Hide() end
+		if self.CornerLogo then self.CornerLogo:Hide() end
 		if self.portrait then self.portrait:Hide() end
 		if self.skinned then return end
 
 		self:StripTextures()
-		if self.CornerLogo then self.CornerLogo:Hide() end
+		self:SetTemplate("Transparent")
+
+		S:HandleCloseButton(self.CloseButton)
+		S:HandleButton(self.BackButton)
+
 		if TalentBackground and self.backgroundTexture then
 			TalentBackground:SetTexture(self.backgroundTexture)
 		end
-
-		self:SetTemplate("Transparent")
-		S:HandleCloseButton(self.CloseButton)
-		S:HandleButton(self.BackButton)
 
 		for i = 1, self:GetNumChildren() do
 			local child = select(i, self:GetChildren())
@@ -135,7 +134,9 @@ local function LoadSkin()
 				end)
 			end
 		end
+
 		self.choiceTexturePool:ReleaseAll()
+
 		hooksecurefunc(self, "RefreshAllData", function(frame)
 			frame.choiceTexturePool:ReleaseAll()
 			for i = 1, frame:GetNumChildren() do
@@ -145,6 +146,7 @@ local function LoadSkin()
 				end
 			end
 		end)
+
 		self.skinned = true
 	end)
 end
