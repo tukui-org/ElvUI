@@ -225,18 +225,15 @@ do -- add ElvUI default emojis into the smiley tables
 		["broken_heart"]		= EmojiPath.."broken_heart.tga",
 		["call_me"]				= EmojiPath.."call_me.tga",
 		["cry"]					= EmojiPath.."cry.tga",
-		["facepalm"]			= EmojiPath.."facepalm.tga",
 		["grin"]				= EmojiPath.."grin.tga",
 		["heart"]				= EmojiPath.."heart.tga",
 		["heart_eyes"]			= EmojiPath.."heart_eyes.tga",
 		["joy"]					= EmojiPath.."joy.tga",
 		["middle_finger"]		= EmojiPath.."middle_finger.tga",
-		["murloc"]				= EmojiPath.."murloc.tga",
 		["ok_hand"]				= EmojiPath.."ok_hand.tga",
 		["open_mouth"]			= EmojiPath.."open_mouth.tga",
 		["poop"]				= EmojiPath.."poop.tga",
 		["rage"]				= EmojiPath.."rage.tga",
-		["sadkitty"]			= EmojiPath.."sadkitty.tga",
 		["scream"]				= EmojiPath.."scream.tga",
 		["scream_cat"]			= EmojiPath.."scream_cat.tga",
 		["slight_frown"]		= EmojiPath.."slight_frown.tga",
@@ -248,9 +245,14 @@ do -- add ElvUI default emojis into the smiley tables
 		["sunglasses"]			= EmojiPath.."sunglasses.tga",
 		["thinking"]			= EmojiPath.."thinking.tga",
 		["thumbs_up"]			= EmojiPath.."thumbs_up.tga",
-		["semi_colon"]			= EmojiPath.."semi_colon.tga",
 		["wink"]				= EmojiPath.."wink.tga",
 		["zzz"]					= EmojiPath.."zzz.tga",
+
+		-- custom emojis
+		["semi_colon"]			= EmojiPath.."semi_colon.tga",
+		["sadkitty"]			= EmojiPath.."sadkitty.tga",
+		["facepalm"]			= EmojiPath.."facepalm.tga",
+		["murloc"]				= EmojiPath.."murloc.tga",
 	}
 
 	-- new keys
@@ -300,6 +302,7 @@ do -- add ElvUI default emojis into the smiley tables
 	CH:AddSmiley('8%)', 'sunglasses', EmojiPack['sunglasses'])
 	CH:AddSmiley(':%+1:', 'thumbs_up', EmojiPack['thumbs_up'])
 	CH:AddSmiley(':;:', 'semi_colon', EmojiPack['semi_colon'])
+	CH:AddSmiley(';o;', 'sob', EmojiPack['sob'])
 
 	-- old keys
 	CH:AddSmiley(':%-@', 'angry', EmojiPack['angry'])
