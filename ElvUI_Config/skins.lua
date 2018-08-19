@@ -330,17 +330,17 @@ E.Options.args.skins = {
 				},
 				orderhall = {
 					type = "toggle",
-					name = L["Orderhall"], -- Temp Name
+					name = L["Orderhall"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				artifact = {
 					type = "toggle",
-					name = ITEM_QUALITY6_DESC, -- Temp Name
+					name = ITEM_QUALITY6_DESC,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				talkinghead = {
 					type = "toggle",
-					name = L["TalkingHead"], -- Temp Name
+					name = L["TalkingHead"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				AdventureMap = {
