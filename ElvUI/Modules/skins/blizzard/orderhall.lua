@@ -66,7 +66,8 @@ local function LoadSkin()
 			self.CornerLogo:Hide()
 		end
 		if self.StyleFrame then
-			self.StyleFrame:Hide()
+			self.StyleFrame:SetAlpha(0)
+			self.StyleFrame.SetAlpha = function() end
 		end
 		self:SetTemplate("Transparent")
 		self.Currency.Icon:SetAtlas("legionmission-icon-currency", false)
@@ -107,7 +108,6 @@ local function LoadSkin()
 			frame.choiceTexturePool:ReleaseAll()
 			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
-				if self.StyleFrame then self.StyleFrame:Hide() end -- Double check to hide the StyleFrame
 				if child and child.Icon and child.backdrop then
 					colorBorder(child, child.backdrop, child.Border:GetAtlas())
 				end
