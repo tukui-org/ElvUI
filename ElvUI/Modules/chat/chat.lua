@@ -257,6 +257,7 @@ do -- add ElvUI default emojis into the smiley tables
 		["sadkitty"]			= EmojiPath.."sadkitty.tga",
 		["facepalm"]			= EmojiPath.."facepalm.tga",
 		["murloc"]				= EmojiPath.."murloc.tga",
+		["kappa"]				= EmojiPath.."kappa.tga",
 	}
 
 	-- new keys
@@ -270,6 +271,7 @@ do -- add ElvUI default emojis into the smiley tables
 	CH:AddSmiley(':heart:', 'heart', EmojiPack['heart'])
 	CH:AddSmiley(':heart_eyes:', 'heart_eyes', EmojiPack['heart_eyes'])
 	CH:AddSmiley(':joy:', 'joy', EmojiPack['joy'])
+	CH:AddSmiley(':kappa:', 'kappa', EmojiPack['kappa'])
 	CH:AddSmiley(':middle_finger:', 'middle_finger', EmojiPack['middle_finger'])
 	CH:AddSmiley(':murloc:', 'murloc', EmojiPack['murloc'])
 	CH:AddSmiley(':ok_hand:', 'ok_hand', EmojiPack['ok_hand'])
