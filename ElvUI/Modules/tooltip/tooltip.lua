@@ -131,7 +131,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				GameTooltipStatusBar:ClearAllPoints()
 				GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 				GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
-				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
 				GameTooltipStatusBar.anchoredToTop = nil
 			end
 		else
@@ -139,7 +139,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				GameTooltipStatusBar:ClearAllPoints()
 				GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltip, "TOPLEFT", E.Border, (E.Spacing * 3))
 				GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltip, "TOPRIGHT", -E.Border, (E.Spacing * 3))
-				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 3)
+				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
 				GameTooltipStatusBar.anchoredToTop = true
 			end
 		end
@@ -722,7 +722,7 @@ function TT:Initialize()
 	GameTooltipStatusBar:Height(self.db.healthBar.height)
 	GameTooltipStatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
-	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
