@@ -465,13 +465,14 @@ local function SkinTooltip()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
 	local function SkinFollowerTooltip(frame)
-		for i = 1, 9 do
-			select(i, frame:GetRegions()):Hide()
-		end
-		frame:SetTemplate("Transparent")
+		if not frame then return end
+
+		S:HandleTooltipBorderedFrame(frame)
 	end
 
 	local function SkinAbilityTooltip(frame)
+		if not frame then return end
+
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end

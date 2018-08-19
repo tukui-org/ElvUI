@@ -1095,6 +1095,26 @@ function S:HandleGarrisonPortrait(portrait)
 	end
 end
 
+-- Interface\SharedXML\SharedUIPanelTemplatex.xml - line 780
+function S:HandleTooltipBorderedFrame(frame)
+	assert(frame, "doesn't exist!")
+
+	if frame.BorderTopLeft then frame.BorderTopLeft:Hide() end
+	if frame.BorderTopRight then frame.BorderTopRight:Hide() end
+
+	if frame.BorderBottomLeft then frame.BorderBottomLeft:Hide() end
+	if frame.BorderBottomRight then frame.BorderBottomRight:Hide() end
+
+	if frame.BorderTop then frame.BorderTop:Hide() end
+	if frame.BorderBottom then frame.BorderBottom:Hide() end
+	if frame.BorderLeft then frame.BorderLeft:Hide() end
+	if frame.BorderRight then frame.BorderRight:Hide() end
+
+	if frame.Background then frame.Background:Hide() end
+
+	frame:SetTemplate("Transparent")
+end
+
 function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
 	assert(frame, "HandleIconSelectionFrame: frame argument missing")
 	assert(numIcons and type(numIcons) == "number", "HandleIconSelectionFrame: numIcons argument missing or not a number")
