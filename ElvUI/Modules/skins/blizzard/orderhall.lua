@@ -107,9 +107,6 @@ local function LoadSkin()
 
 		self:SetTemplate("Transparent")
 		S:HandleCloseButton(self.CloseButton)
-
-		OrderHallTalentFramePortraitFrame:Hide()
-		OrderHallTalentFramePortrait:Hide()
 		S:HandleButton(self.BackButton)
 
 		for i = 1, self:GetNumChildren() do
