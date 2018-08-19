@@ -86,11 +86,6 @@ local function LoadSkin()
 				TalentInset.backdrop:Point('BOTTOMRIGHT', TalentClassBG, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 			end
 		end
-		if TalentClassBG and self.backgroundTexture then
-			TalentClassBG:SetTexture(self.backgroundTexture)
-			TalentClassBG:SetDrawLayer("ARTWORK")
-			TalentClassBG:SetAlpha(0.8)
-		end
 
 		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
 		if self.PortraitFrame then self.PortraitFrame:Hide() end
@@ -99,6 +94,11 @@ local function LoadSkin()
 
 		self:StripTextures()
 		if self.CornerLogo then self.CornerLogo:Hide() end
+		if TalentClassBG and self.backgroundTexture then
+			TalentClassBG:SetTexture(self.backgroundTexture)
+			TalentClassBG:SetDrawLayer("ARTWORK")
+			TalentClassBG:SetAlpha(0.8)
+		end
 
 		self:SetTemplate("Transparent")
 		S:HandleCloseButton(self.CloseButton)
