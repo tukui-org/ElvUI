@@ -64,15 +64,17 @@ local function LoadSkin()
 
 			for i = 1, self.StyleFrame:GetNumRegions() do
 				local region = select(i, self.StyleFrame:GetRegions())
-				if region == self.StyleFrame.Background then
-					region:SetAllPoints()
-					region:SetDrawLayer("ARTWORK", 1)
-					region:SetAlpha(0.8)
-				elseif region == self.StyleFrame.CurrencyBG then
-					region:SetDrawLayer("ARTWORK", 2)
-					region:SetAlpha(0.4)
-				else
-					region:Hide()
+				if region and region:GetObjectType() == "Texture" then
+					if region == self.StyleFrame.Background then
+						region:SetAllPoints()
+						region:SetDrawLayer("ARTWORK", 1)
+						region:SetAlpha(0.8)
+					elseif region == self.StyleFrame.CurrencyBG then
+						region:SetDrawLayer("ARTWORK", 2)
+						region:SetAlpha(0.4)
+					else
+						region:Hide()
+					end
 				end
 			end
 		elseif self.Background then
