@@ -3,7 +3,7 @@
 **New Additions:**  
 Added Tranquility channel ticks (#586).  
 Added Phase Indicator for Target, Party and Raid frames.  
-
+Added Cutaway Health to nameplates (part of #331)
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin (#566).  
