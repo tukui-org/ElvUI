@@ -5,8 +5,8 @@ Added Tranquility channel ticks (#586).
 Added Phase Indicator for Target, Party and Raid frames (Thanks @ls-).  
 Added Cutaway Health to nameplates (part of #331).  
 Added BFA Mission Datatext (Thanks @AcidWeb).  
-Added Skin for Alternative Power Bar.  
-Option to color Keybind Text instead of Button for ActionBars.  
+Added ActionBar option to color Keybind Text instead of Button.  
+Added Alternative Power Bar. The settings are located under `/ec - General - Alternative Power`.  
 
 
 **Bug Fixes:**  

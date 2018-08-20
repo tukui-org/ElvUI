@@ -29,7 +29,10 @@ P['general'] = {
 		['font'] = 'PT Sans Narrow',
 		['fontSize'] = 12,
 		['fontOutline'] = 'OUTLINE',
-		['statusBar'] = 'ElvUI Norm'
+		['statusBar'] = 'ElvUI Norm',
+		['textFormat'] = 'NAMECURMAX',
+		['statusBarColorGradient'] = false,
+		['statusBarColor'] = { r = 0.2, g = 0.4, b = 0.8, a = 1 },
 	},
 
 	['fontSize'] = 12,
