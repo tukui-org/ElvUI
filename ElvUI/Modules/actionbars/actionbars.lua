@@ -843,7 +843,13 @@ function AB:DisableBlizzard()
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
+	MainMenuBar:SetScale(0.00001)
 
+	MicroButtonAndBagsBar:SetScale(0.00001)
+	MicroButtonAndBagsBar:EnableMouse(false)
+
+	-- This can taint
+	--[[
 	for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
 		if child then
@@ -852,6 +858,7 @@ function AB:DisableBlizzard()
 			child:SetParent(UIHider)
 		end
 	end
+	]]
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
