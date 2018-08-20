@@ -24,6 +24,7 @@ function B:Initialize()
 
 	if not IsAddOnLoaded("SimplePowerBar") then
 		self:PositionAltPowerBar()
+		self:SkinAltPowerBar()
 	end
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])

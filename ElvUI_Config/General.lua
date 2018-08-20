@@ -645,5 +645,68 @@ E.Options.args.general = {
 				},
 			},
 		},
+		alternativePowerGroup = {
+			order = 10,
+			type = "group",
+			name = L["Alternative Power"],
+			get = function(info) return E.db.general.altPowerBar[ info[#info] ] end,
+			set = function(info, value) E.db.general.altPowerBar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			args = {
+				alternativePowerHeader = {
+					order = 1,
+					type = "header",
+					name = L["Alternative Power"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Replace Blizzard's Alternative Power Bar"],
+					width = 'full',
+				},
+				height = {
+					order = 3,
+					type = "range",
+					name = L["Height"],
+					min = 20, max = 100, step = 5,
+
+				},
+				width = {
+					order = 4,
+					type = "range",
+					name = L["Width"],
+					min = 50, max = 500, step = 5,
+				},
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 5,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 6,
+					name = FONT_SIZE,
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},
+				fontOutline = {
+					order = 7,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = NONE,
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
+				statusBar = {
+					order = 7,
+					type = "select", dialogControl = 'LSM30_Statusbar',
+					name = L["StatusBar Texture"],
+					values = AceGUIWidgetLSMlists.statusbar,
+				},
+			},
+		},
 	},
 }

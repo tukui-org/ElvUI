@@ -22,6 +22,15 @@ P['general'] = {
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
 	['decimalLength'] = 1,
+	['altPowerBar'] = {
+		['enable'] = true,
+		['width'] = 200,
+		['height'] = 20,
+		['font'] = 'PT Sans Narrow',
+		['fontSize'] = 12,
+		['fontOutline'] = 'OUTLINE',
+		['statusBar'] = 'ElvUI Norm'
+	},
 
 	['fontSize'] = 12,
 	['font'] = 'PT Sans Narrow',
