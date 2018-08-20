@@ -671,14 +671,14 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
-					min = 20, max = 100, step = 5,
+					min = 20, max = 100, step = 1,
 
 				},
 				width = {
 					order = 4,
 					type = "range",
 					name = L["Width"],
-					min = 50, max = 500, step = 5,
+					min = 50, max = 500, step = 1,
 				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
