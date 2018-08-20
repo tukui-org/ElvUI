@@ -2,14 +2,22 @@
 
 **New Additions:**  
 Added Tranquility channel ticks (#586).  
-Added Phase Indicator for Target, Party and Raid frames.  
-Added Cutaway Health to nameplates (part of #331)
+Added Phase Indicator for Target, Party and Raid frames (Thanks @ls-).  
+Added Cutaway Health to nameplates (part of #331).  
+Added BFA Mission Datatext (Thanks @AcidWeb).  
+Added Skin for Alternative Power Bar.  
+Option to color Keybind Text instead of Button for ActionBars.  
+
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin (#566).  
 Fixed bags from being shown over the WorldMapFrame (#592).  
 Fixed an issue which caused the cooldown module to error: `Font not set` (#548).  
 Fixed an issue which prevented the frame glow being shown on a UnitFrame with the Frame Orientation set to right (#558).  
+Fixed skin issue with Mission Talent Frame.  
+Fixed issue which prevented clicking in the top-right of screen where Minimap is by default (when the Minimap is not actually there).  
+Fixed Stagger class bar auto-hide (Thanks to Jimmy Pruitt).  
+Fixed Ace3 plus/minus on some scrollbars (#631 - Thanks @sezz).  
 
 
 **Misc. Changes:**  
@@ -24,7 +32,11 @@ Allowed Special Aura filters to be localized.
 Skin Ace3 Keybinding Widget (Thanks @sezz).  
 Updated `LibActionButton-1.0-ElvUI` to handle #375 (Thanks @sezz).  
 Added support for mages in Debuff Highlight, they can once again remove curses.  
+Updated code which shows item level in tooltip (Thanks @AcidWeb).  
+Auto-Disable ElvUI_EverySecondCounts as it is retired now.  
+Aura Special Filters can now be localized.  
 Skin the QuickJoinToastButton.  
+Updated Chat Emojis.  
 
 ___
 **Version 10.78 [ July 28th 2018 ]**
