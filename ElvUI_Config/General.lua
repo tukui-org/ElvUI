@@ -671,7 +671,7 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Height"],
-					min = 20, max = 100, step = 1,
+					min = 5, max = 100, step = 1,
 
 				},
 				width = {
