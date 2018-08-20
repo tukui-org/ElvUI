@@ -1,4 +1,4 @@
-**Version 10.79 [  ]**
+**Version 10.79 [ August 20th 2018 ]**
 
 **New Additions:**  
 Added Tranquility channel ticks (#586).  
