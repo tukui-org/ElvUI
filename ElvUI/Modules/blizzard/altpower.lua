@@ -85,7 +85,7 @@ function B:UpdateAltPowerBarColors()
 end
 
 function B:UpdateAltPowerBarSettings()
-	local width = E.db.general.altPowerBar.width or 200
+	local width = E.db.general.altPowerBar.width or 250
 	local height = E.db.general.altPowerBar.height or 20
 	local fontOutline = E.db.general.altPowerBar.fontOutline or 'OUTLINE'
 	local fontSize = E.db.general.altPowerBar.fontSize or 12
