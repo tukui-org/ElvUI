@@ -82,7 +82,7 @@ function B:UpdateAltPowerBarColors()
 		end
 	else
 		local color = E.db.general.altPowerBar.statusBarColor
-		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+		bar:SetStatusBarColor(color.r, color.g, color.b)
 	end
 end
 
