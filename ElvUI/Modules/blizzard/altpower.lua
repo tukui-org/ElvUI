@@ -172,7 +172,7 @@ function B:SkinAltPowerBar()
 				local value = (maxPower > 0 and power / maxPower) or 0
 				bar.colorGradientValue = value
 
-				local r, g, b = E:ColorGradient(value, 0,0.8,0, 0.8,0.8,0, 0.8,0,0)
+				local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
 				bar.colorGradientR, bar.colorGradientG, bar.colorGradientB = r, g, b
 
 				bar:SetStatusBarColor(r, g, b)
