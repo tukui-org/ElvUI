@@ -58,54 +58,56 @@ local function LoadSkin()
 	end
 
 	OrderHallTalentFrame:HookScript("OnShow", function(self)
-		if self.Currency and self.Currency.Icon and self.Currency.Icon.GetAtlas then
-			local currencyIconAtlas = self.Currency.Icon:GetAtlas()
-			if currencyIconAtlas and (currencyIconAtlas ~= self.currencyIconAtlas) then
-				self.currencyIconAtlas = currencyIconAtlas
-			end
-			if self.currencyIconAtlas then
-				self.Currency.Icon:SetAtlas(self.currencyIconAtlas, false)
-			end
-		end
-
 		local StyleFrameBackground = self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture()
-		local TalentFrameBackground = self.Background and self.Background.GetTexture and self.Background:GetTexture()
-		local TalentBackgroundTexture = StyleFrameBackground or TalentFrameBackground
-		local TalentBackground = (StyleFrameBackground and self.StyleFrame.Background) or (TalentFrameBackground and self.Background)
-		if TalentBackground and TalentBackgroundTexture and (TalentBackgroundTexture ~= self.backgroundTexture) then
-			self.backgroundTexture = TalentBackgroundTexture
-		end
-
-		local TalentInset = self.LeftInset
-		if TalentInset then
-			TalentInset:StripTextures()
-			if TalentBackground and not TalentInset.backdrop then
-				TalentInset:CreateBackdrop("Transparent")
-				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
+		if StyleFrameBackground then
+			self.StyleFrame:SetFrameLevel(1)
+			for i = 1, self.StyleFrame:GetNumRegions() do
+				local region = select(i, self.StyleFrame:GetRegions())
+				if region == self.StyleFrame.Background then
+					region:SetAllPoints()
+					region:SetDrawLayer("ARTWORK", 1)
+					region:SetAlpha(0.8)
+				elseif region == self.StyleFrame.CurrencyBG then
+					region:SetDrawLayer("ARTWORK", 2)
+					region:SetAlpha(0.4)
+				else
+					region:Hide()
+				end
 			end
-
-			TalentInset.backdrop:Point('TOPLEFT', TalentBackground, 'TOPLEFT', E.Border-1, -E.Border+1)
-			TalentInset.backdrop:Point('BOTTOMRIGHT', TalentBackground, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
-		end
-		if TalentBackground then
-			TalentBackground:SetDrawLayer("ARTWORK")
-			TalentBackground:SetAlpha(0.8)
+		elseif self.Background then
+			self.Background:SetDrawLayer("ARTWORK")
+			self.Background:SetAlpha(0.8)
 		end
 
-		if self.StyleFrame then self.StyleFrame:SetAlpha(0) end
 		if self.PortraitFrame then self.PortraitFrame:Hide() end
 		if self.CornerLogo then self.CornerLogo:Hide() end
 		if self.portrait then self.portrait:Hide() end
 		if self.skinned then return end
 
-		self:StripTextures()
+		for i=1, self:GetNumRegions() do
+			local region = select(i, self:GetRegions())
+			if region and region:GetObjectType() == "Texture" then
+				if not ((region == self.Background) or (self.Currency and self.Currency.Icon and region == self.Currency.Icon)) then
+					region:SetTexture(nil)
+				end
+			end
+		end
+
 		self:SetTemplate("Transparent")
 
 		S:HandleCloseButton(self.CloseButton)
 		S:HandleButton(self.BackButton)
 
-		if TalentBackground and self.backgroundTexture then
-			TalentBackground:SetTexture(self.backgroundTexture)
+		local TalentInset = self.LeftInset
+		if TalentInset then
+			TalentInset:StripTextures()
+			if self.Background and not TalentInset.backdrop then
+				TalentInset:CreateBackdrop("Transparent")
+				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
+			end
+
+			TalentInset.backdrop:Point('TOPLEFT', self.Background, 'TOPLEFT', E.Border-1, -E.Border+1)
+			TalentInset.backdrop:Point('BOTTOMRIGHT', self.Background, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 		end
 
 		for i = 1, self:GetNumChildren() do
