@@ -72,19 +72,22 @@ function B:PositionAltPowerBar()
 end
 
 function B:UpdateAltPowerBarColors()
+	local bar = ElvUI_AltPowerBar
+
 	if E.db.general.altPowerBar.statusBarColorGradient then
-		local power = ElvUI_AltPowerBar:GetValue() or 0
-		local _, maxPower = ElvUI_AltPowerBar:GetMinMaxValues()
-		local value = (maxPower and maxPower > 0 and power / maxPower) or 0
-		local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
-		ElvUI_AltPowerBar:SetStatusBarColor(r, g, b)
+		if bar.colorGradientR and bar.colorGradientG and bar.colorGradientB then
+			bar:SetStatusBarColor(bar.colorGradientR, bar.colorGradientG, bar.colorGradientB)
+		else
+			bar:SetStatusBarColor(0.6, 0.6, 0.6) -- uh, fallback!
+		end
 	else
 		local color = E.db.general.altPowerBar.statusBarColor
-		ElvUI_AltPowerBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 	end
 end
 
 function B:UpdateAltPowerBarSettings()
+	local bar = ElvUI_AltPowerBar
 	local width = E.db.general.altPowerBar.width or 250
 	local height = E.db.general.altPowerBar.height or 20
 	local fontOutline = E.db.general.altPowerBar.fontOutline or 'OUTLINE'
@@ -92,20 +95,18 @@ function B:UpdateAltPowerBarSettings()
 	local statusBar = E.db.general.altPowerBar.statusBar
 	local font = E.db.general.altPowerBar.font
 
-	ElvUI_AltPowerBar:SetSize(width, height)
-	ElvUI_AltPowerBar:SetStatusBarTexture(E.LSM:Fetch("statusbar", statusBar))
-	ElvUI_AltPowerBar.text:SetFont(E.LSM:Fetch("font", font), fontSize, fontOutline)
-	AltPowerBarHolder:SetSize(ElvUI_AltPowerBar.backdrop:GetSize())
+	bar:SetSize(width, height)
+	bar:SetStatusBarTexture(E.LSM:Fetch("statusbar", statusBar))
+	bar.text:SetFont(E.LSM:Fetch("font", font), fontSize, fontOutline)
+	AltPowerBarHolder:SetSize(bar.backdrop:GetSize())
 
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
-		ElvUI_AltPowerBar.text:SetText("")
+		bar.text:SetText("")
 	else
-		local power = ElvUI_AltPowerBar:GetValue() or 0
-		local _, maxPower = ElvUI_AltPowerBar:GetMinMaxValues()
-		local perc = (maxPower and maxPower > 0 and floor(power / maxPower * 100)) or 0
-		local text = B:SetAltPowerBarText(ElvUI_AltPowerBar.powerName or "", power, maxPower or 0, perc)
-		ElvUI_AltPowerBar.text:SetText(text)
+		local power, maxPower, perc = bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0
+		local text = B:SetAltPowerBarText(bar.powerName or "", power, maxPower, perc)
+		bar.text:SetText(text)
 	end
 end
 
@@ -147,8 +148,12 @@ function B:SkinAltPowerBar()
 
 		if barType then
 			local power = UnitPower("player", ALTERNATE_POWER_INDEX)
-			local maxPower = UnitPowerMax("player", ALTERNATE_POWER_INDEX)
+			local maxPower = UnitPowerMax("player", ALTERNATE_POWER_INDEX) or 0
 			local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
+
+			bar.powerValue = power
+			bar.powerMaxValue = maxPower
+			bar.powerPercent = perc
 
 			bar:Show()
 			bar:SetMinMaxValues(min, maxPower)
@@ -156,7 +161,10 @@ function B:SkinAltPowerBar()
 
 			if E.db.general.altPowerBar.statusBarColorGradient then
 				local value = (maxPower > 0 and power / maxPower) or 0
+				bar.colorGradientValue = value
+
 				local r, g, b = E:ColorGradient(value, 0,0.8,0, 0.8,0.8,0, 0.8,0,0)
+				bar.colorGradientR, bar.colorGradientG, bar.colorGradientB = r, g, b
 				bar:SetStatusBarColor(r, g, b)
 			end
 
