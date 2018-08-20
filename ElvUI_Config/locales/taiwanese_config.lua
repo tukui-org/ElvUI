@@ -454,6 +454,7 @@ L["Bottom Panel"] = "底部面板"
 L["Chat Bubbles Style"] = "聊天氣泡樣式"
 L["Chat Bubbles"] = "聊天氣泡"
 L["Chat Bubble Names"] = "聊天氣泡姓名"
+L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = "小數位數"

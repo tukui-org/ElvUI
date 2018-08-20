@@ -453,6 +453,7 @@ L["Bottom Panel"] = "Нижняя панель"
 L["Chat Bubbles Style"] = "Стиль облачков сообщений"
 L["Chat Bubbles"] = "Облачка сообщений"
 L["Chat Bubble Names"] = "Имена на облачках сообщений"
+L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = "Десятичные доли"

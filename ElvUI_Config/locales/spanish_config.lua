@@ -454,6 +454,7 @@ L["Bottom Panel"] = "Panel Inferior"
 L["Chat Bubbles Style"] = true
 L["Chat Bubbles"] = true
 L["Chat Bubble Names"] = true
+L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = true

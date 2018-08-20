@@ -501,6 +501,7 @@ L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
 L["Chat Bubbles"] = "말풍선"
 L["Chat Bubble Names"] = "말풍성에 이름 표시"
+L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = "소숫점 자릿수"
