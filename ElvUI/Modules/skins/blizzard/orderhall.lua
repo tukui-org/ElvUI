@@ -58,9 +58,10 @@ local function LoadSkin()
 	end
 
 	OrderHallTalentFrame:HookScript("OnShow", function(self)
-		local StyleFrameBackground = self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture()
-		if StyleFrameBackground then
+		local StyleFrameBackgroundTexture = self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture()
+		if StyleFrameBackgroundTexture then
 			self.StyleFrame:SetFrameLevel(1)
+
 			for i = 1, self.StyleFrame:GetNumRegions() do
 				local region = select(i, self.StyleFrame:GetRegions())
 				if region == self.StyleFrame.Background then
@@ -94,13 +95,13 @@ local function LoadSkin()
 		end
 
 		self:SetTemplate("Transparent")
-
 		S:HandleCloseButton(self.CloseButton)
 		S:HandleButton(self.BackButton)
 
 		local TalentInset = self.LeftInset
 		if TalentInset then
 			TalentInset:StripTextures()
+
 			if self.Background and not TalentInset.backdrop then
 				TalentInset:CreateBackdrop("Transparent")
 				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
