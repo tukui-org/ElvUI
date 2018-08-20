@@ -77,6 +77,15 @@ function B:UpdateAltPowerBarColors()
 	if E.db.general.altPowerBar.statusBarColorGradient then
 		if bar.colorGradientR and bar.colorGradientG and bar.colorGradientB then
 			bar:SetStatusBarColor(bar.colorGradientR, bar.colorGradientG, bar.colorGradientB)
+		elseif bar.powerValue then
+			local power, maxPower = bar.powerValue or 0, bar.powerMaxValue or 0
+			local value = (maxPower > 0 and power / maxPower) or 0
+			bar.colorGradientValue = value
+
+			local r, g, b = E:ColorGradient(value, 0,0.8,0, 0.8,0.8,0, 0.8,0,0)
+			bar.colorGradientR, bar.colorGradientG, bar.colorGradientB = r, g, b
+
+			bar:SetStatusBarColor(r, g, b)
 		else
 			bar:SetStatusBarColor(0.6, 0.6, 0.6) -- uh, fallback!
 		end
@@ -165,6 +174,7 @@ function B:SkinAltPowerBar()
 
 				local r, g, b = E:ColorGradient(value, 0,0.8,0, 0.8,0.8,0, 0.8,0,0)
 				bar.colorGradientR, bar.colorGradientG, bar.colorGradientB = r, g, b
+
 				bar:SetStatusBarColor(r, g, b)
 			end
 
