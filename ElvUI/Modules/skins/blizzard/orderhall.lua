@@ -58,13 +58,12 @@ local function LoadSkin()
 	end
 
 	OrderHallTalentFrame:HookScript("OnShow", function(self)
-		local StyleFrameBackgroundTexture = self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture()
-		if StyleFrameBackgroundTexture then
+		if self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture() then
 			self.StyleFrame:SetFrameLevel(1)
 
 			for i = 1, self.StyleFrame:GetNumRegions() do
 				local region = select(i, self.StyleFrame:GetRegions())
-				if region and region:GetObjectType() == "Texture" then
+				if region and region:IsObjectType('Texture') then
 					if region == self.StyleFrame.Background then
 						region:SetAllPoints()
 						region:SetDrawLayer("ARTWORK", 1)
@@ -89,7 +88,7 @@ local function LoadSkin()
 
 		for i=1, self:GetNumRegions() do
 			local region = select(i, self:GetRegions())
-			if region and region:GetObjectType() == "Texture" then
+			if region and region:IsObjectType('Texture') then
 				if not ((region == self.Background) or (self.Currency and self.Currency.Icon and region == self.Currency.Icon)) then
 					region:SetTexture(nil)
 				end
@@ -100,17 +99,16 @@ local function LoadSkin()
 		S:HandleCloseButton(self.CloseButton)
 		S:HandleButton(self.BackButton)
 
-		local TalentInset = self.LeftInset
-		if TalentInset then
-			TalentInset:StripTextures()
+		if self.LeftInset then
+			self.LeftInset:StripTextures()
 
-			if self.Background and not TalentInset.backdrop then
-				TalentInset:CreateBackdrop("Transparent")
-				TalentInset.backdrop:SetFrameLevel(TalentInset.backdrop:GetFrameLevel()+1)
+			if self.Background and not self.LeftInset.backdrop then
+				self.LeftInset:CreateBackdrop("Transparent")
+				self.LeftInset.backdrop:SetFrameLevel(self.LeftInset.backdrop:GetFrameLevel()+1)
 			end
 
-			TalentInset.backdrop:Point('TOPLEFT', self.Background, 'TOPLEFT', E.Border-1, -E.Border+1)
-			TalentInset.backdrop:Point('BOTTOMRIGHT', self.Background, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
+			self.LeftInset.backdrop:Point('TOPLEFT', self.Background, 'TOPLEFT', E.Border-1, -E.Border+1)
+			self.LeftInset.backdrop:Point('BOTTOMRIGHT', self.Background, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 		end
 
 		for i = 1, self:GetNumChildren() do
