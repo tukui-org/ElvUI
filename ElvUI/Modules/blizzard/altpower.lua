@@ -35,13 +35,13 @@ function B:SkinAltPowerBar()
 	local fontOutline = E.db.general.altPowerBar.fontOutline or 'OUTLINE'
 	local statusBar = E.db.general.altPowerBar.statusBar
 
-	local powerbar = CreateFrame("StatusBar", "Alt Powerbar", UIParent)
+	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", UIParent)
 	powerbar:SetTemplate("Transparent")
 	powerbar:SetStatusBarTexture(E.LSM:Fetch("statusbar", statusBar))
 	powerbar:SetMinMaxValues(0, 200)
 	powerbar:SetSize(width, height)
 	powerbar:SetStatusBarColor(.2, .4, 0.8, 1)
-	powerbar:SetPoint("CENTER", AltPowerBarMover)
+	powerbar:SetPoint("CENTER", AltPowerBarHolder)
 	powerbar:Hide()
 
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
