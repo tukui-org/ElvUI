@@ -142,6 +142,7 @@ local function LoadSkin()
 
 		hooksecurefunc(self, "RefreshAllData", function(frame)
 			frame.choiceTexturePool:ReleaseAll()
+
 			for i = 1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
 				if child and child.Icon and child.backdrop then
