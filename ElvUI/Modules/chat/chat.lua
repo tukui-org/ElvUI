@@ -468,12 +468,6 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(self, 0)
 			end
 		end
-
-		local new, found = gsub(text, "|Kf(%S+)|k(%S+)%s(%S+)|k", "%2 %3")
-		if found > 0 then
-			new = new:gsub('|', '')
-			self:SetText(new)
-		end
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
