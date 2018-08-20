@@ -1,7 +1,7 @@
 --- = Background =
 -- Blizzard's IsSpellInRange API has always been very limited - you either must have the name of the spell, or its spell book ID. Checking directly by spellID is simply not possible.
 -- Now, in Mists of Pandaria, Blizzard changed the way that many talents and specialization spells work - instead of giving you a new spell when leaned, they replace existing spells. These replacement spells do not work with Blizzard's IsSpellInRange function whatsoever; this limitation is what prompted the creation of this lib.
--- = Usage = 
+-- = Usage =
 -- **LibSpellRange-1.0** exposes an enhanced version of IsSpellInRange that:
 -- * Allows ranged checking based on both spell name and spellID.
 -- * Works correctly with replacement spells that will not work using Blizzard's IsSpellInRange method alone.
@@ -81,32 +81,32 @@ local function UpdateBook(bookType)
 	if numspells == 0 then
 		-- New characters pre level 10 only have 2 tabs.
 		local _, _, offs, numspells = GetSpellTabInfo(2)
-		max = offs + numspells 
+		max = offs + numspells
 	end
 
 	local spellsByName = Lib["spellsByName_" .. bookType]
 	local spellsByID = Lib["spellsByID_" .. bookType]
-	
+
 	wipe(spellsByName)
 	wipe(spellsByID)
-	
+
 	for spellBookID = 1, max do
 		local type, baseSpellID = GetSpellBookItemInfo(spellBookID, bookType)
-		
+
 		if type == "SPELL" then
 			local currentSpellName = GetSpellBookItemName(spellBookID, bookType)
 			local link = GetSpellLink(currentSpellName)
 			local currentSpellID = tonumber(link and link:gsub("|", "||"):match("spell:(%d+)"))
-			
+
 			local baseSpellName = GetSpellInfo(baseSpellID)
-			
+
 			if currentSpellName then
 				spellsByName[strlower(currentSpellName)] = spellBookID
 			end
 			if baseSpellName then
 				spellsByName[strlower(baseSpellName)] = spellBookID
 			end
-			
+
 			if currentSpellID then
 				spellsByID[currentSpellID] = spellBookID
 			end
@@ -159,7 +159,7 @@ function Lib.IsSpellInRange(spellInput, unit)
 		end
 	else
 		local spellInput = strlowerCache[spellInput]
-		
+
 		local spell = spellsByName_spell[spellInput]
 		if spell then
 			return IsSpellInRange(spell, "spell", unit)
@@ -169,10 +169,10 @@ function Lib.IsSpellInRange(spellInput, unit)
 				return IsSpellInRange(spell, "pet", unit)
 			end
 		end
-		
+
 		return IsSpellInRange(spellInput, unit)
 	end
-	
+
 end
 
 
@@ -202,7 +202,7 @@ function Lib.SpellHasRange(spellInput)
 		end
 	else
 		local spellInput = strlowerCache[spellInput]
-		
+
 		local spell = spellsByName_spell[spellInput]
 		if spell then
 			return SpellHasRange(spell, "spell")
@@ -212,8 +212,8 @@ function Lib.SpellHasRange(spellInput)
 				return SpellHasRange(spell, "pet")
 			end
 		end
-		
+
 		return SpellHasRange(spellInput)
 	end
-	
+
 end

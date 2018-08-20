@@ -12,92 +12,85 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: SquareButton_SetIcon
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true then return end
-
-	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
 		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
+	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
 			--Set border color according to rarity of item
-			local firstRegion, r, g, b
-			for _, reward in pairs(self.Rewards) do
-				firstRegion = reward.GetRegions and reward:GetRegions()
-				if firstRegion then firstRegion:Hide() end
+		local firstRegion, r, g, b
+		for _, reward in pairs(self.Rewards) do
+			firstRegion = reward.GetRegions and reward:GetRegions()
+			if firstRegion then firstRegion:Hide() end
 
-				if reward.IconBorder then
-					reward.IconBorder:SetTexture(nil)
-				end
-
-				if reward.IconBorder and reward.IconBorder:IsShown() then
-					r, g, b = reward.IconBorder:GetVertexColor()
-				else
-					r, g, b = unpack(E["media"].bordercolor)
-				end
-
-				if not reward.border then
-					reward.border = CreateFrame("Frame", nil, reward)
-					S:HandleIcon(reward.Icon, reward.border)
-				end
-
-				reward.border.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		end)
-
-		hooksecurefunc("GarrisonMissionPage_SetReward", function(frame)
-			frame.BG:SetTexture()
-			if not frame.backdrop then
-				S:HandleIcon(frame.Icon)
-			end
-			if frame.IconBorder then
-				frame.IconBorder:SetTexture()
+			if reward.IconBorder then
+				reward.IconBorder:SetTexture(nil)
 			end
 
-			--[[ Set border color according to rarity of item
-			-- for _, reward in pairs(frame.Rewards) do -- WIP
-				local r, g, b
-				if frame.IconBorder:IsShown() then
-					-- This is an item, use the color set by WoW
-					r, g, b = frame.IconBorder:GetVertexColor()
-				else
-					-- This is a currency, use the default ElvUI border color
-					r, g, b = unpack(E["media"].bordercolor)
-				end
-			-- end
-			frame.backdrop:SetBackdropBorderColor(r, g, b)]]
-			frame.Icon:SetDrawLayer("BORDER", 0)
-		end)
+			if reward.IconBorder and reward.IconBorder:IsShown() then
+				r, g, b = reward.IconBorder:GetVertexColor()
+			else
+				r, g, b = unpack(E["media"].bordercolor)
+			end
 
-		--This handles border color for rewards on Garrison/Order Hall Report Frame
-		hooksecurefunc("GarrisonLandingPageReportList_UpdateAvailable", function()
-			local items = GarrisonLandingPageReport.List.AvailableItems;
-			local numItems = #items;
-			local scrollFrame = GarrisonLandingPageReport.List.listScroll;
-			local offset = HybridScrollFrame_GetOffset(scrollFrame);
-			local buttons = scrollFrame.buttons;
-			local numButtons = #buttons;
+			if not reward.border then
+				reward.border = CreateFrame("Frame", nil, reward)
+				S:HandleIcon(reward.Icon, reward.border)
+			end
+			reward.border.backdrop:SetBackdropBorderColor(r, g, b)
+		end
+	end)
 
-			for i = 1, numButtons do
-				local button = buttons[i];
-				local index = offset + i; -- adjust index
-				if ( index <= numItems ) then
-					local idx, item = 1, items[index];
-					for _, reward in pairs(item.rewards) do
-						local Reward = button.Rewards[idx];
-						if (reward.itemID) then
-							local r, g, b = Reward.IconBorder:GetVertexColor()
-							Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
-						else
-							Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-						end
-						idx = idx + 1;
+	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame)
+		frame.BG:SetTexture()
+		if not frame.backdrop then
+			S:HandleIcon(frame.Icon)
+		end
+		if frame.IconBorder then
+			frame.IconBorder:SetTexture()
+		end
+
+		--[[ Set border color according to rarity of item
+		-- for _, reward in pairs(frame.Rewards) do -- WIP
+			local r, g, b
+			if frame.IconBorder:IsShown() then
+				-- This is an item, use the color set by WoW
+				r, g, b = frame.IconBorder:GetVertexColor()
+			else
+				-- This is a currency, use the default ElvUI border color
+				r, g, b = unpack(E["media"].bordercolor)
+			end
+		-- end
+		frame.backdrop:SetBackdropBorderColor(r, g, b)]]
+		frame.Icon:SetDrawLayer("BORDER", 0)
+	end)
+
+	--This handles border color for rewards on Garrison/Order Hall Report Frame
+	hooksecurefunc("GarrisonLandingPageReportList_UpdateAvailable", function()
+		local items = GarrisonLandingPageReport.List.AvailableItems;
+		local numItems = #items;
+		local scrollFrame = GarrisonLandingPageReport.List.listScroll;
+		local offset = HybridScrollFrame_GetOffset(scrollFrame);
+		local buttons = scrollFrame.buttons;
+		local numButtons = #buttons
+
+		for i = 1, numButtons do
+			local button = buttons[i];
+			local index = offset + i; -- adjust index
+			if ( index <= numItems ) then
+				local idx, item = 1, items[index];
+				for _, reward in pairs(item.rewards) do
+					local Reward = button.Rewards[idx];
+					if (reward.itemID) then
+						local r, g, b = Reward.IconBorder:GetVertexColor()
+						Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
+					else
+						Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 					end
+					idx = idx + 1;
 				end
 			end
-		end)
-	end
-
-	--Stop here if Garrison skin is disabled
-	if E.private.skins.blizzard.garrison ~= true then return end
+		end
+	end)
 
 	-- Building frame
 	GarrisonBuildingFrame:StripTextures(true)
@@ -319,7 +312,6 @@ local function LoadSkin()
 	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
-
 	--LandingPage Tutorial
 	S:HandleCloseButton(GarrisonLandingPageTutorialBox.CloseButton)
 
@@ -348,19 +340,139 @@ local function LoadSkin()
 	S:HookScript(GarrisonMissionMechanicTooltip, "OnShow", function(self)
 		self:SetTemplate("Transparent")
 	end)
+
+	-- MissionFrame
+	local OrderHallMissionFrame = _G["OrderHallMissionFrame"]
+	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame.ClassHallIcon:Kill()
+	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame.GarrCorners:Hide()
+	OrderHallMissionFrame:CreateBackdrop("Transparent")
+	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
+	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
+	S:HandleCloseButton(_G["OrderHallMissionTutorialFrame"].GlowBox.CloseButton)
+
+	for i = 1, 3 do
+		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
+	end
+
+	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
+		if not Button.isSkinned then
+			Button:StripTextures()
+			Button:SetTemplate()
+			S:HandleButton(Button)
+			Button:SetBackdropBorderColor(0, 0, 0, 0)
+			Button.LocBG:Hide()
+			Button.isSkinned = true
+		end
+	end
+
+	-- Followers
+	local Follower = _G["OrderHallMissionFrameFollowers"]
+	local FollowerList = OrderHallMissionFrame.FollowerList
+	local FollowerTab = OrderHallMissionFrame.FollowerTab
+	Follower:StripTextures()
+	Follower:SetTemplate("Transparent")
+	FollowerList:StripTextures()
+	FollowerList.MaterialFrame:StripTextures()
+	S:HandleEditBox(FollowerList.SearchBox)
+	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
+	hooksecurefunc(FollowerList, "ShowFollower", function(self)
+		S:HandleFollowerPage(self, true, true)
+	end)
+	FollowerTab:StripTextures()
+	FollowerTab.Class:SetSize(50, 43)
+	FollowerTab.XPBar:StripTextures()
+	FollowerTab.XPBar:SetStatusBarTexture(E["media"].normTex)
+	FollowerTab.XPBar:CreateBackdrop()
+
+	-- Orderhall Portraits
+	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
+	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to garrison landing page
+
+	-- Missions
+	local MissionTab = OrderHallMissionFrame.MissionTab
+	local MissionComplete = OrderHallMissionFrame.MissionComplete
+	local MissionList = MissionTab.MissionList
+	local MissionPage = MissionTab.MissionPage
+	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
+	S:HandleScrollBar(MissionList.listScroll.scrollBar)
+	MissionList.CompleteDialog:StripTextures()
+	MissionList.CompleteDialog:SetTemplate("Transparent")
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	MissionList:StripTextures()
+	MissionList.listScroll:StripTextures()
+	S:HandleButton(_G["OrderHallMissionFrameMissions"].CombatAllyUI.InProgress.Unassign)
+	S:HandleCloseButton(MissionPage.CloseButton)
+	S:HandleButton(MissionPage.StartMissionButton)
+	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
+	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
+	S:HandleButton(MissionComplete.NextMissionButton)
+
+	-- BFA Mission
+
+	local MissionFrame = _G["BFAMissionFrame"]
+	--MissionFrame:StripTextures()
+	MissionFrame.GarrCorners:Hide()
+	MissionFrame.CloseButtonBorder:Hide()
+	MissionFrame.TitleScroll:Hide()
+	MissionFrame.BackgroundTile:Kill()
+	MissionFrame.Left:Hide()
+	MissionFrame.Bottom:Hide()
+	MissionFrame.Top:Hide()
+	MissionFrame.Right:Hide()
+
+	MissionFrame:CreateBackdrop("Transparent")
+
+	S:HandleCloseButton(MissionFrame.CloseButton)
+
+	for i = 1, 3 do
+		S:HandleTab(_G["BFAMissionFrameTab"..i])
+	end
+
+	-- Missions
+	S:HandleButton(BFAMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton)
+
+	-- Mission Tab
+	local MissionTab = MissionFrame.MissionTab
+
+	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
+	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
+	S:HandleScrollBar(_G["BFAMissionFrameMissionsListScrollFrameScrollBar"])
+
+	-- Follower Tab
+	local Follower = _G["BFAMissionFrameFollowers"]
+	local XPBar = MissionFrame.FollowerTab.XPBar
+	local Class = MissionFrame.FollowerTab.Class
+	Follower:StripTextures()
+	Follower:SetTemplate("Transparent")
+	S:HandleEditBox(Follower.SearchBox)
+	hooksecurefunc(Follower, "ShowFollower", function(self)
+		S:HandleFollowerPage(self, true, true)
+	end)
+	S:HandleScrollBar(_G["BFAMissionFrameFollowersListScrollFrameScrollBar"])
+
+	S:HandleFollowerListOnUpdateData("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
+
+	XPBar:StripTextures()
+	XPBar:SetStatusBarTexture(E["media"].normTex)
+	XPBar:CreateBackdrop()
+
+	Class:SetSize(50, 43)
 end
 
 local function SkinTooltip()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
 	local function SkinFollowerTooltip(frame)
-		for i = 1, 9 do
-			select(i, frame:GetRegions()):Hide()
-		end
-		frame:SetTemplate("Transparent")
+		if not frame then return end
+
+		S:HandleTooltipBorderedFrame(frame)
 	end
 
 	local function SkinAbilityTooltip(frame)
+		if not frame then return end
+
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end

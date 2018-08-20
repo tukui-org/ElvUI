@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Reagenzien anzeigen/ausblenden"
 L["Sort Tab"] = "Tab sortieren" --Not used, yet?
 L["Temporary Move"] = "Temporäres Bewegen"
 L["Toggle Bags"] = "Taschen umschalten"
+L["Vendor Grays"] = "Graue Gegenstände verkaufen"
 L["Vendor / Delete Grays"] = "Verkaufe / Lösche graue Gegenstände"
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = "Arena"
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Vermeidung Aufgliederung"
 L["Bandwidth"] = "Bandbreite"
+L["BfA Missions"] = "BfA Missionen"
 L["Building(s) Report:"] = "Gebäude Bericht:"
 L["Character: "] = "Charakter: "
 L["Chest"] = "Brust"
@@ -236,6 +238,7 @@ L["Toggle Configuration"] = "Konfiguration an-/ausschalten" --layout\layout.lua
 L["AP:"] = true -- No need to translate (Artifact Power)
 L["XP:"] = "EP:"
 L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Ziel zu markieren."
+L["Voice Overlay"] = true -- No need to translate
 
 --Movers
 L["Alternative Power"] = "Alternative Energie"
@@ -249,6 +252,7 @@ L["Bags"] = "Taschen" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "Bank Anker (Nach unten wachsen)"
 L["Bank Mover (Grow Up)"] = "Bank Anker (Nach oben wachsen)"
 L["Bar "] = "Leiste " --Also in ActionBars
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "BNet-Fenster"
 L["Boss Button"] = "Boss Button"
 L["Boss Frames"] = "Boss Fenster" --Also used in UnitFrames
@@ -295,6 +299,7 @@ L["Target Powerbar"] = "Ziel Kraftleiste"
 L["TargetTarget Frame"] = "Ziel des Ziels Fenster" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Ziel des Ziels des Ziels Fenster"
 L["Tooltip"] = "Tooltip"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 L["Zone Ability"] = "Zonen Fähigkeit"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.

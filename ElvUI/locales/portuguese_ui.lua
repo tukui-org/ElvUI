@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = "Aba de Organização"
 L["Temporary Move"] = "Mover Temporariamente"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
+L["Vendor Grays"] = "Vender Itens Cinzentos"
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = true
 L["AVD: "] = "AVD: "
 L["Avoidance Breakdown"] = "Separação de Anulação"
 L["Bandwidth"] = "Largura de Banda"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = true
 L["Character: "] = "Personagem: "
 L["Chest"] = "Torso"
@@ -236,6 +238,7 @@ L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Você não tem permissão para marcar alvos."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Recurso Alternativo"
@@ -249,6 +252,7 @@ L["Bags"] = "Bolsas"
 L["Bank Mover (Grow Down)"] = true
 L["Bank Mover (Grow Up)"] = true
 L["Bar "] = "Barra "
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Quadro do Bnet"
 L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"
@@ -295,6 +299,7 @@ L["Target Powerbar"] = true
 L["TargetTarget Frame"] = "Quadro do Alvo do Alvo"
 L["TargetTargetTarget Frame"] = true
 L["Tooltip"] = "Tooltip"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
 L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.

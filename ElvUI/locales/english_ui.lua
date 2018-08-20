@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = true
 L["Sort Tab"] = true --Not used, yet?
 L["Temporary Move"] = true
 L["Toggle Bags"] = true
+L["Vendor Grays"] = true
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = true
 L["AVD: "] = true
 L["Avoidance Breakdown"] = true
 L["Bandwidth"] = true
+L["BfA Missions"] = true
 L["Building(s) Report:"] = true
 L["Character: "] = true
 L["Chest"] = true
@@ -236,6 +238,7 @@ L["Toggle Configuration"] = true --layout\layout.lua
 L["AP:"] = true -- Artifact Power
 L["XP:"] = true
 L["You don't have permission to mark targets."] = true
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = true
@@ -249,6 +252,7 @@ L["Bags"] = true --Also in DataTexts
 L["Bank Mover (Grow Down)"] = true
 L["Bank Mover (Grow Up)"] = true
 L["Bar "] = true --Also in ActionBars
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = true
 L["Boss Button"] = true
 L["Boss Frames"] = true --Also used in UnitFrames
@@ -295,6 +299,7 @@ L["Target Powerbar"] = true
 L["TargetTarget Frame"] = true --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = true --Also used in UnitFrames
 L["Tooltip"] = true
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = true
 L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.

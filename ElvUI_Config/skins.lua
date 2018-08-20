@@ -330,17 +330,17 @@ E.Options.args.skins = {
 				},
 				orderhall = {
 					type = "toggle",
-					name = L["Orderhall"], -- Temp Name
+					name = L["Orderhall"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				artifact = {
 					type = "toggle",
-					name = ITEM_QUALITY6_DESC, -- Temp Name
+					name = ITEM_QUALITY6_DESC,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				talkinghead = {
 					type = "toggle",
-					name = L["TalkingHead"], -- Temp Name
+					name = L["TalkingHead"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				AdventureMap = {
@@ -378,11 +378,6 @@ E.Options.args.skins = {
 					name = CHANNELS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				BFAMissions = {
-					type = "toggle",
-					name = L["BFAMission"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				AzeriteUI = {
 					type = "toggle",
 					name = L["AzeriteUI"],
@@ -398,7 +393,12 @@ E.Options.args.skins = {
 					name = SCRAP_BUTTON,
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				Islands = {
+				IslandsPartyPose = {
+					type = "toggle",
+					name = L["Island Party Pose"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				IslandQueue = {
 					type = "toggle",
 					name = ISLANDS_HEADER,
 					desc = L["TOGGLESKIN_DESC"],
@@ -406,11 +406,6 @@ E.Options.args.skins = {
 				AzeriteRespec = {
 					type = "toggle",
 					name = AZERITE_RESPEC_TITLE,
-					desc = L["TOGGLESKIN_DESC"],
-				},
-				UIWidgets = {
-					type = "toggle",
-					name = L["UIWidgets"], -- Find better Name
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

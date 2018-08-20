@@ -15,7 +15,7 @@ auras.lua
 bags.lua
 chat.lua
 cooldown.lua
-datatexts.lua 
+datatexts.lua
 DataBars.lua
 filters.lua
 skins.lua
@@ -24,5 +24,4 @@ unitframes.lua
 tag_info.lua
 nameplates.lua
 profiles.lua
-
 maps.lua

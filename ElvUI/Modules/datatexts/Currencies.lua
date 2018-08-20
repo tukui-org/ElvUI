@@ -9,7 +9,7 @@ local format = string.format
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
-local EXPANSION_NAME6 = EXPANSION_NAME6
+local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -17,16 +17,11 @@ local OTHER = OTHER
 
 -- Currencies we care about
 local Currencies = {
-	-- Legion
-	["ANCIENT_MANA"] = {ID = 1155, NAME = GetCurrencyInfo(1155), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1155)))},
-	["CURIOUS_COIN"] = {ID = 1275, NAME = GetCurrencyInfo(1275), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1275)))},
-	["ORDER_RESOURCES"] = {ID = 1220, NAME = GetCurrencyInfo(1220), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1220)))},
-	["LEGIONFALL_WAR_SUPPLIES"] = {ID = 1342, NAME = GetCurrencyInfo(1342), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1342)))},
-	["SIGHTLESS_EYE"] = {ID = 1149, NAME = GetCurrencyInfo(1149), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1149)))},
-	["SEAL_OF_BROKEN_FATE"] = {ID = 1273, NAME = GetCurrencyInfo(1273), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1273)))},
-	["NETHERSHARD"] = {ID = 1226, NAME = GetCurrencyInfo(1226), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1226)))},
-	["SHADOWY_COIN"] = {ID = 1154, NAME = GetCurrencyInfo(1154), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1154)))},
-	["VEILED_ARGUNITE"] = {ID = 1508, NAME = GetCurrencyInfo(1508), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1508)))},
+	--BfA
+	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1560)))},
+	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1565)))},
+	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1580)))},
+	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1587)))},
 	-- Other
 	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(515)))},
 }
@@ -67,16 +62,11 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(L["Gold"]..":", goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
-	DT.tooltip:AddLine(EXPANSION_NAME6) --"Legion"
-	DT.tooltip:AddDoubleLine(Currencies["ANCIENT_MANA"].NAME, select(2, GetCurrencyInfo(Currencies["ANCIENT_MANA"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["CURIOUS_COIN"].NAME, select(2, GetCurrencyInfo(Currencies["CURIOUS_COIN"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["ORDER_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["ORDER_RESOURCES"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["LEGIONFALL_WAR_SUPPLIES"].NAME, select(2, GetCurrencyInfo(Currencies["LEGIONFALL_WAR_SUPPLIES"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["SIGHTLESS_EYE"].NAME, select(2, GetCurrencyInfo(Currencies["SIGHTLESS_EYE"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["SEAL_OF_BROKEN_FATE"].NAME, select(2, GetCurrencyInfo(Currencies["SEAL_OF_BROKEN_FATE"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["NETHERSHARD"].NAME, select(2, GetCurrencyInfo(Currencies["NETHERSHARD"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["SHADOWY_COIN"].NAME, select(2, GetCurrencyInfo(Currencies["SHADOWY_COIN"].ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies["VEILED_ARGUNITE"].NAME, select(2, GetCurrencyInfo(Currencies["VEILED_ARGUNITE"].ID)), 1, 1, 1)
+	DT.tooltip:AddLine(EXPANSION_NAME7) --"BfA"
+	DT.tooltip:AddDoubleLine(Currencies["WAR_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_RESOURCES"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["RICH_AZERITE_FRAGMENT"].NAME, select(2, GetCurrencyInfo(Currencies["RICH_AZERITE_FRAGMENT"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["SEAL_OF_WARTORN_FATE"].NAME, select(2, GetCurrencyInfo(Currencies["SEAL_OF_WARTORN_FATE"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["WAR_SUPPLIES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)

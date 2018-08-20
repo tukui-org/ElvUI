@@ -59,7 +59,7 @@ function E:MapInfo_CoordsStop(event)
 		if not E.MapInfo.coordsFalling then return end -- stop if we weren't falling
 		if (GetUnitSpeed('player') or 0) > 0 then return end -- we are still moving!
 		E.MapInfo.coordsFalling = nil -- we were falling!
-	elseif event == "PLAYER_STOPPED_MOVING" and IsFalling() then
+	elseif (event == "PLAYER_STOPPED_MOVING" or event == "PLAYER_CONTROL_GAINED") and IsFalling() then
 		E.MapInfo.coordsFalling = true
 		return
 	end
@@ -154,8 +154,10 @@ function E:GetZoneText(mapID)
 end
 
 E:RegisterEvent("CRITERIA_UPDATE", "MapInfo_CoordsStop") -- when the player goes into an animation (landing)
-E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
 E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
+E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
+E:RegisterEvent("PLAYER_CONTROL_LOST", "MapInfo_CoordsStart")
+E:RegisterEvent("PLAYER_CONTROL_GAINED", "MapInfo_CoordsStop")
 E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
 E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
 E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")

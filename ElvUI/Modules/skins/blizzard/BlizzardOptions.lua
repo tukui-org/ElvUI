@@ -122,8 +122,16 @@ local function LoadSkin()
 
 	--Chat Config
 	local ChatConfigFrame = _G["ChatConfigFrame"]
-	-- TO DO: SKIN THE TABS
-	--S:HandleTab(ChatConfigFrame.ChatTabManager)
+
+	hooksecurefunc(ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
+		for tab in self.tabPool:EnumerateActive() do
+			if not tab.IsSkinned then
+				tab:StripTextures()
+
+				tab.IsSkinned = true
+			end
+		end
+	end)
 
 	local StripAllTextures = {
 		"ChatConfigFrame",
@@ -240,23 +248,27 @@ local function LoadSkin()
 		end
 	end
 
-	-- >> Chat >> Channel Settings      /!\ I don't know why, but the skin works only after /reload ui, not at first login =(
-	-- This do nothing now in Bfa, and i assume it is releaded to the Channel Skin
-	-- Also maybe this table: CHAT_CONFIG_CHANNEL_LIST
-	--[[
-	ChatConfigChannelSettingsLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
-	ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self)
-		ChatConfigChannelSettingsLeft:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		for i = 1,#ChatConfigChannelSettingsLeft.checkBoxTable do
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:StripTextures()
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:CreateBackdrop()
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
-			S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."Check"])
+	-- >> Chat >> Channel Settings
+	hooksecurefunc("ChatConfig_CreateCheckboxes", function(frame, checkBoxTable)
+		if frame.IsSkinned then return end
+
+		frame:SetBackdrop(nil)
+		for index in ipairs(checkBoxTable) do
+			local checkBoxName = frame:GetName().."CheckBox"..index
+			local checkbox = _G[checkBoxName]
+
+			checkbox:SetBackdrop(nil)
+			local bg = CreateFrame("Frame", nil, checkbox)
+			bg:SetPoint("TOPLEFT")
+			bg:SetPoint("BOTTOMRIGHT", 0, 1)
+			bg:SetFrameLevel(checkbox:GetFrameLevel()-1)
+			bg:CreateBackdrop("Default")
+
+			S:HandleCheckBox(_G[checkBoxName.."Check"])
 		end
+
+		frame.IsSkinned = true
 	end)
-	]]
 
 	--Makes the skin work, but only after /reload ui :o   (found in chatconfingframe.xml)
 	CreateChatChannelList(ChatConfigChannelSettings, GetChannelList())

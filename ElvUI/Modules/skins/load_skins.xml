@@ -1,9 +1,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">	
+..\FrameXML\UI.xsd">
 	<Script file='skins.lua'/>
 	<Include file='addons\load_addons.xml'/>
 	<Include file='blizzard\load_blizzard.xml'/>
-	
+
 	<Slider name="HybridScrollBarTemplateFixed" parentKey="scrollBar" virtual="true">
 		<Size x="20" y="0"/>
 		<Anchors>
@@ -38,7 +38,7 @@
 					</Anchors>
 					<TexCoords left="0" right="0.484375" top="0.1640625" bottom="1"/>
 				</Texture>
-			</Layer>	
+			</Layer>
 		</Layers>
 		<Frames>
 			<Button name="$parentScrollUpButton" parentKey="ScrollUpButton" inherits="UIPanelScrollUpButtonTemplate">
@@ -66,6 +66,6 @@
 		<ThumbTexture name="$parentThumbTexture" inherits="HybridScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob" parentKey="thumbTexture">
 			<Size x="18" y="24"/>
 			<TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
-		</ThumbTexture>		
+		</ThumbTexture>
 	</Slider>
 </Ui>

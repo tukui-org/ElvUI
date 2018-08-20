@@ -60,15 +60,21 @@ local function BuildABConfig()
 				desc = L["Display bind names on action buttons."],
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			keyDown = {
+			useRangeColorText = {
 				order = 5,
+				type = "toggle",
+				name = L["Color Keybind Text"],
+				desc = L["Color Keybind Text when Out of Range, instead of the button."],
+			},
+			keyDown = {
+				order = 6,
 				type = 'toggle',
 				name = L["Key Down"],
 				desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			lockActionBars = {
-				order = 6,
+				order = 7,
 				type = "toggle",
 				name = LOCK_ACTIONBAR_TEXT,
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
@@ -82,7 +88,7 @@ local function BuildABConfig()
 				end,
 			},
 			hideCooldownBling = {
-				order = 7,
+				order = 8,
 				type = "toggle",
 				name = L["Hide Cooldown Bling"],
 				desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
@@ -95,7 +101,7 @@ local function BuildABConfig()
 				end,
 			},
 			useDrawSwipeOnCharges = {
-				order = 8,
+				order = 9,
 				type = "toggle",
 				name = L["Use Draw Swipe"],
 				desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
@@ -107,14 +113,14 @@ local function BuildABConfig()
 				end,
 			},
 			addNewSpells = {
-				order = 9,
+				order = 10,
 				type = "toggle",
 				name = L["Auto Add New Spells"],
 				desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
 				set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
 			},
 			rightClickSelfCast = {
-				order = 10,
+				order = 11,
 				type = "toggle",
 				name = L["RightClick Self-Cast"],
 				set = function(info, value)
@@ -125,7 +131,7 @@ local function BuildABConfig()
 				end,
 			},
 			desaturateOnCooldown = {
-				order = 11,
+				order = 12,
 				type = "toggle",
 				name = L["Desaturate On Cooldown"],
 				set = function(info, value)
@@ -134,7 +140,7 @@ local function BuildABConfig()
 				end,
 			},
 			movementModifier = {
-				order = 12,
+				order = 13,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -147,7 +153,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 13,
+				order = 14,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
@@ -182,7 +188,6 @@ local function BuildABConfig()
 						order = 2,
 						name = L["Out of Power"],
 						desc = L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."],
-
 					},
 					usableColor = {
 						type = 'color',

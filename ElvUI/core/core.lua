@@ -58,6 +58,7 @@ E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gx
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
 E.isMacClient = IsMacClient();
 E.LSM = LSM;
+E.NewSign = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t" -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 
 --Tables
 E["media"] = {};
@@ -1628,4 +1629,6 @@ function E:Initialize(loginFrame)
 			end
 		end)
 	end
+
+	DisableAddOn("ElvUI_EverySecondCounts")
 end

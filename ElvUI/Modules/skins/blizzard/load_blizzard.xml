@@ -11,7 +11,6 @@
 	<Script file='AzeriteRespec.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='barber.lua'/>
-	<Script file='BFAMissions.lua'/>
 	<Script file='bgmap.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='binding.lua'/>
@@ -40,7 +39,8 @@
 	<Script file='help.lua'/>
 	<Script file='inspect.lua'/>
 	<Script file='itemupgrade.lua'/>
-	<Script file='Islands.lua'/>
+	<Script file='IslandPartyPose.lua'/>
+	<Script file='IslandQueue.lua'/>
 	<Script file='lfg.lua'/>
 	<Script file='lfguild.lua'/>
 	<Script file='loot.lua'/>
@@ -73,7 +73,6 @@
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='trainer.lua'/>
-	<Script file='UIWidgets.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='Warboard.lua'/>
 	<Script file='worldmap.lua'/>

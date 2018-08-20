@@ -6,8 +6,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local _G = _G
 local wipe, time, difftime = wipe, time, difftime
-local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
-local tinsert, tremove, twipe, tconcat = table.insert, table.remove, table.wipe, table.concat
+local ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type = ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type
+local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
@@ -34,12 +34,16 @@ local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local Chat_GetChatCategory = Chat_GetChatCategory
 local CreateFrame = CreateFrame
+local CreateAnimationGroup = CreateAnimationGroup
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_SocialGetLastItem = C_Social.GetLastItem
 local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
+local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
+local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
+local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
 local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
 local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
@@ -179,63 +183,38 @@ local tabTexs = {
 	'Highlight'
 }
 
-
-local smileyPack = {
-	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.tga]],
-	["Grin"] = [[Interface\AddOns\ElvUI\media\textures\smileys\grin.tga]],
-	["Hmm"] = [[Interface\AddOns\ElvUI\media\textures\smileys\hmm.tga]],
-	["MiddleFinger"] = [[Interface\AddOns\ElvUI\media\textures\smileys\middle_finger.tga]],
-	["Sad"] = [[Interface\AddOns\ElvUI\media\textures\smileys\sad.tga]],
-	["Surprise"] = [[Interface\AddOns\ElvUI\media\textures\smileys\surprise.tga]],
-	["Tongue"] = [[Interface\AddOns\ElvUI\media\textures\smileys\tongue.tga]],
-	["Cry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\weepy.tga]],
-	["Wink"] = [[Interface\AddOns\ElvUI\media\textures\smileys\winky.tga]],
-	["Happy"] = [[Interface\AddOns\ElvUI\media\textures\smileys\happy.tga]],
-	["Heart"] = [[Interface\AddOns\ElvUI\media\textures\smileys\heart.tga]],
-	['BrokenHeart'] = [[Interface\AddOns\ElvUI\media\textures\smileys\broken_heart.tga]],
+CH.Smileys = {
+	Keys = {},
+	Textures = {}
 }
 
-local smileyKeys = {
-	["%:%-%@"] = "Angry",
-	["%:%@"] = "Angry",
-	["%:%-%)"]="Happy",
-	["%:%)"]="Happy",
-	["%:D"]="Grin",
-	["%:%-D"]="Grin",
-	["%;%-D"]="Grin",
-	["%;D"]="Grin",
-	["%=D"]="Grin",
-	["xD"]="Grin",
-	["XD"]="Grin",
-	["%:%-%("]="Sad",
-	["%:%("]="Sad",
-	["%:o"]="Surprise",
-	["%:%-o"]="Surprise",
-	["%:%-O"]="Surprise",
-	["%:O"]="Surprise",
-	["%:%-0"]="Surprise",
-	["%:P"]="Tongue",
-	["%:%-P"]="Tongue",
-	["%:p"]="Tongue",
-	["%:%-p"]="Tongue",
-	["%=P"]="Tongue",
-	["%=p"]="Tongue",
-	["%;%-p"]="Tongue",
-	["%;p"]="Tongue",
-	["%;P"]="Tongue",
-	["%;%-P"]="Tongue",
-	["%;%-%)"]="Wink",
-	["%;%)"]="Wink",
-	["%:S"]="Hmm",
-	["%:%-S"]="Hmm",
-	["%:%,%("]="Cry",
-	["%:%,%-%("]="Cry",
-	["%:%'%("]="Cry",
-	["%:%'%-%("]="Cry",
-	["%:%F"]="MiddleFinger",
-	["<3"]="Heart",
-	["</3"]="BrokenHeart",
-};
+function CH:RemoveSmiley(keyOrIndex)
+	if type(keyOrIndex) == 'number' then
+		tremove(CH.Smileys.Keys, keyOrIndex)
+		tremove(CH.Smileys.Textures, keyOrIndex)
+	elseif type(keyOrIndex) == 'string' then
+		for i, v in ipairs(CH.Smileys.Keys) do
+			if v == keyOrIndex then
+				tremove(CH.Smileys.Keys, i)
+				tremove(CH.Smileys.Textures, i)
+				break
+			end
+		end
+	end
+end
+
+-- `top` will be picked before others, use this for cases such as ">:(" and ":(". where you would want ">:(" selected before ":(".
+function CH:AddSmiley(key, texture, top)
+	if key and texture then
+		if top then
+			tinsert(CH.Smileys.Keys, 1, key)
+			tinsert(CH.Smileys.Textures, 1, texture)
+		else
+			tinsert(CH.Smileys.Keys, key)
+			tinsert(CH.Smileys.Textures, texture)
+		end
+	end
+end
 
 local rolePaths = {
 	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank.tga:15:15:0:0:64:64:2:56:2:56|t]],
@@ -263,7 +242,7 @@ do --this can save some main file locals
 		-- Tirain --
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
-		-- ChaoticVoid --
+		-- Whiro --
 		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]		= ElvGreen,
@@ -354,9 +333,20 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for k,v in pairs(smileyKeys) do
-		msg = gsub(msg,k,"|T"..smileyPack[v]..":16|t");
+	for i, v in ipairs(CH.Smileys.Keys) do
+		if CH.Smileys.Textures[i] then
+			if strmatch(msg, '^'..v..'$') then -- only word
+				msg = gsub(msg, v, '|T'..CH.Smileys.Textures[i]..':16:16|t');
+			elseif strmatch(msg, '^'..v..'[%s%p]+') then -- start of string
+				msg = gsub(msg, '^'..v..'([%s%p]+)', '|T'..CH.Smileys.Textures[i]..':16:16|t%1');
+			elseif strmatch(msg, '[%s%p]-'..v..'$') then -- end of string
+				msg = gsub(msg, '([%s%p]-)'..v..'$', '%1|T'..CH.Smileys.Textures[i]..':16:16|t');
+			elseif strmatch(msg, '[%s%p]-'..v..'[%s%p]+') then -- whole word
+				msg = gsub(msg, '([%s%p]-)'..v..'([%s%p]+)', '%1|T'..CH.Smileys.Textures[i]..':16:16|t%2');
+			end
+		end
 	end
+
 	return msg;
 end
 
@@ -477,12 +467,6 @@ function CH:StyleChat(frame)
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5));
 				ChatEdit_ParseText(self, 0)
 			end
-		end
-
-		local new, found = gsub(text, "|Kf(%S+)|k(%S+)%s(%S+)|k", "%2 %3")
-		if found > 0 then
-			new = new:gsub('|', '')
-			self:SetText(new)
 		end
 	end
 
@@ -1101,7 +1085,9 @@ function CH:DisableHyperlink()
 end
 
 function CH:DisableChatThrottle()
-	twipe(msgList); twipe(msgCount); twipe(msgTime)
+	wipe(msgList)
+	wipe(msgCount)
+	wipe(msgTime)
 end
 
 function CH:ShortChannel()
@@ -1581,7 +1567,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 
 			-- Player Flags
-			local pflag, chatIcon = "", specialChatIcons[playerName] or CH:GetPluginIcon(playerName)
+			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
@@ -1594,9 +1580,13 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if lfgRole and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER") then
 				pflag = pflag..lfgRole
 			end
-			-- Plugin Flags
+			-- Special Chat Icon
 			if chatIcon then
 				pflag = pflag..chatIcon
+			end
+			-- Plugin Chat Icon
+			if pluginChatIcon then
+				pflag = pflag..pluginChatIcon
 			end
 
 			if ( usingDifferentLanguage ) then
@@ -1948,7 +1938,8 @@ function CH:ChatEdit_AddHistory(editBox, line)
 end
 
 function CH:UpdateChatKeywords()
-	twipe(CH.Keywords)
+	wipe(CH.Keywords)
+
 	local keywords = self.db.keywords
 	keywords = gsub(keywords,',%s',',')
 
@@ -2080,9 +2071,10 @@ end
 
 function CH:CheckLFGRoles()
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
-	local unit = isInRaid and "raid" or "party"
-	local name, realm
-	twipe(lfgRoles)
+	local unit, name, realm = (isInRaid and "raid" or "party")
+
+	wipe(lfgRoles)
+
 	if(not isInGroup or not self.db.lfgIcons) then return end
 
 	local role = UnitGroupRolesAssigned("player")
@@ -2244,8 +2236,6 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	end
 end
 
-
-
 local FindURL_Events = {
 	"CHAT_MSG_WHISPER",
 	"CHAT_MSG_WHISPER_INFORM",
@@ -2271,6 +2261,106 @@ local FindURL_Events = {
 	"CHAT_MSG_COMMUNITIES_CHANNEL",
 }
 
+function CH:DefaultSmileys()
+	if next(CH.Smileys.Keys) then
+		wipe(CH.Smileys.Keys)
+		wipe(CH.Smileys.Textures)
+	end
+
+	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s.tga"
+
+	-- new keys
+	CH:AddSmiley(':angry:',			format(t,'angry'))
+	CH:AddSmiley(':blush:',			format(t,'blush'))
+	CH:AddSmiley(':broken_heart:',	format(t,'broken_heart'))
+	CH:AddSmiley(':call_me:',		format(t,'call_me'))
+	CH:AddSmiley(':cry:',			format(t,'cry'))
+	CH:AddSmiley(':facepalm:',		format(t,'facepalm'))
+	CH:AddSmiley(':grin:',			format(t,'grin'))
+	CH:AddSmiley(':heart:',			format(t,'heart'))
+	CH:AddSmiley(':heart_eyes:',	format(t,'heart_eyes'))
+	CH:AddSmiley(':joy:',			format(t,'joy'))
+	CH:AddSmiley(':kappa:',			format(t,'kappa'))
+	CH:AddSmiley(':middle_finger:',	format(t,'middle_finger'))
+	CH:AddSmiley(':murloc:',		format(t,'murloc'))
+	CH:AddSmiley(':ok_hand:',		format(t,'ok_hand'))
+	CH:AddSmiley(':open_mouth:',	format(t,'open_mouth'))
+	CH:AddSmiley(':poop:',			format(t,'poop'))
+	CH:AddSmiley(':rage:',			format(t,'rage'))
+	CH:AddSmiley(':sadkitty:',		format(t,'sadkitty'))
+	CH:AddSmiley(':scream:',		format(t,'scream'))
+	CH:AddSmiley(':scream_cat:',	format(t,'scream_cat'))
+	CH:AddSmiley(':slight_frown:',	format(t,'slight_frown'))
+	CH:AddSmiley(':smile:',			format(t,'smile'))
+	CH:AddSmiley(':smirk:',			format(t,'smirk'))
+	CH:AddSmiley(':sob:',			format(t,'sob'))
+	CH:AddSmiley(':sunglasses:',	format(t,'sunglasses'))
+	CH:AddSmiley(':thinking:',		format(t,'thinking'))
+	CH:AddSmiley(':thumbs_up:',		format(t,'thumbs_up'))
+	CH:AddSmiley(':semi_colon:',	format(t,'semi_colon'))
+	CH:AddSmiley(':wink:',			format(t,'wink'))
+	CH:AddSmiley(':zzz:',			format(t,'zzz'))
+	CH:AddSmiley(':stuck_out_tongue:',				format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':stuck_out_tongue_closed_eyes:',	format(t,'stuck_out_tongue_closed_eyes'))
+
+	-- Simpy's keys
+	CH:AddSmiley('>:%(',	format(t,'rage'))
+	CH:AddSmiley(':%$',		format(t,'blush'))
+	CH:AddSmiley('<\\3',	format(t,'broken_heart'))
+	CH:AddSmiley(':\'%)',	format(t,'joy'))
+	CH:AddSmiley(';\'%)',	format(t,'joy'))
+	CH:AddSmiley(',,!,,',	format(t,'middle_finger'))
+	CH:AddSmiley('D:<',		format(t,'rage'))
+	CH:AddSmiley(':o3',		format(t,'scream_cat'))
+	CH:AddSmiley('XP',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley('8%-%)',	format(t,'sunglasses'))
+	CH:AddSmiley('8%)',		format(t,'sunglasses'))
+	CH:AddSmiley(':%+1:',	format(t,'thumbs_up'))
+	CH:AddSmiley(':;:',		format(t,'semi_colon'))
+	CH:AddSmiley(';o;',		format(t,'sob'))
+
+	-- old keys
+	CH:AddSmiley(':%-@',	format(t,'angry'))
+	CH:AddSmiley(':@',		format(t,'angry'))
+	CH:AddSmiley(':%-%)',	format(t,'smile'))
+	CH:AddSmiley(':%)',		format(t,'smile'))
+	CH:AddSmiley(':D',		format(t,'grin'))
+	CH:AddSmiley(':%-D',	format(t,'grin'))
+	CH:AddSmiley(';%-D',	format(t,'grin'))
+	CH:AddSmiley(';D',		format(t,'grin'))
+	CH:AddSmiley('=D',		format(t,'grin'))
+	CH:AddSmiley('xD',		format(t,'grin'))
+	CH:AddSmiley('XD',		format(t,'grin'))
+	CH:AddSmiley(':%-%(',	format(t,'slight_frown'))
+	CH:AddSmiley(':%(',		format(t,'slight_frown'))
+	CH:AddSmiley(':o',		format(t,'open_mouth'))
+	CH:AddSmiley(':%-o',	format(t,'open_mouth'))
+	CH:AddSmiley(':%-O',	format(t,'open_mouth'))
+	CH:AddSmiley(':O',		format(t,'open_mouth'))
+	CH:AddSmiley(':%-0',	format(t,'open_mouth'))
+	CH:AddSmiley(':P',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':%-P',	format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':p',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':%-p',	format(t,'stuck_out_tongue'))
+	CH:AddSmiley('=P',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley('=p',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(';%-p',	format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';p',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';P',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';%-P',	format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';%-%)',	format(t,'wink'))
+	CH:AddSmiley(';%)',		format(t,'wink'))
+	CH:AddSmiley(':S',		format(t,'smirk'))
+	CH:AddSmiley(':%-S',	format(t,'smirk'))
+	CH:AddSmiley(':,%(',	format(t,'cry'))
+	CH:AddSmiley(':,%-%(',	format(t,'cry'))
+	CH:AddSmiley(':\'%(',	format(t,'cry'))
+	CH:AddSmiley(':\'%-%(',	format(t,'cry'))
+	CH:AddSmiley(':F',		format(t,'middle_finger'))
+	CH:AddSmiley('<3',		format(t,'heart'))
+	CH:AddSmiley('</3',		format(t,'broken_heart'))
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -2292,8 +2382,10 @@ function CH:Initialize()
 		ElvCharacterDB.ChatHistoryLog = {};
 	end
 
+	self:DefaultSmileys()
 	self:UpdateChatKeywords()
 	self:UpdateFading()
+
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 
@@ -2311,15 +2403,16 @@ function CH:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
-	
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "Test");
-	self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "Test");
 
+	if E.private.general.voiceOverlay then
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "VoiceOverlay");
+		self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "VoiceOverlay");
+	end
 
 	self:SetupChat()
 	self:UpdateAnchors()
@@ -2388,7 +2481,6 @@ function CH:Initialize()
 		end
 	end)
 	frame:SetFrameStrata("DIALOG")
-
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
@@ -2463,7 +2555,6 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].Name:FontTemplate(nil, 20)
 		self.ChatHeadFrame[i].Name:SetPoint("LEFT", self.ChatHeadFrame[i].Portrait, "RIGHT", 2, 0)
 
-
 		self.ChatHeadFrame[i].StatusBar = CreateFrame("StatusBar", nil, self.ChatHeadFrame[i])
 		self.ChatHeadFrame[i].StatusBar:SetPoint("TOPLEFT", self.ChatHeadFrame[i].Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
 		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
@@ -2477,9 +2568,8 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].StatusBar.anim.progress:SetSmoothing("Out")
 		self.ChatHeadFrame[i].StatusBar.anim.progress:SetDuration(.3)
 
-
 		self.ChatHeadFrame[i]:Hide()
-	end 
+	end
 
 	self:SetChatHeadOrientation("TOP")
 end
@@ -2501,20 +2591,19 @@ function CH:GetHeadByID(memberID)
 	end
 end
 
-
 function CH:ConfigureHead(memberID, channelID)
 	local frame = self:GetAvailableHead()
 	if not frame then return end
+
 	frame.memberID = memberID
 	frame.channelID = channelID
 
-	C_VoiceChat.SetPortraitTexture(frame.Portrait.texture, memberID, channelID);
+	C_VoiceChat_SetPortraitTexture(frame.Portrait.texture, memberID, channelID);
 
-	local memberName = C_VoiceChat.GetMemberName(memberID, channelID);
+	local memberName = C_VoiceChat_GetMemberName(memberID, channelID);
 	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID);
 	frame.Name:SetText(memberName or "")
 	frame.Name:SetVertexColor(r, g, b, 1);
-	
 	frame:Show()
 end
 
@@ -2527,7 +2616,7 @@ function CH:DeconfigureHead(memberID, channelID)
 	frame:Hide()
 end
 
-function CH:Test(event, ...)
+function CH:VoiceOverlay(event, ...)
 	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
 		local memberID, channelID, isTalking = ...
 
@@ -2538,7 +2627,6 @@ function CH:Test(event, ...)
 			CH.TalkingList[memberID] = nil
 			self:DeconfigureHead(memberID, channelID)
 		end
-
 	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
 		local memberID, channelID, volume = ...
 		local frame = CH:GetHeadByID(memberID)
@@ -2569,7 +2657,7 @@ function CH:SetChatHeadOrientation(position)
 				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
 			end
 		end
-	else 
+	else
 		for i=1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
@@ -2577,10 +2665,9 @@ function CH:SetChatHeadOrientation(position)
 			else
 				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
 			end
-		end	
+		end
 	end
 end
-
 
 local function InitializeCallback()
 	CH:Initialize()

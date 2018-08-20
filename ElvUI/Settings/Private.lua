@@ -23,6 +23,7 @@ V['general'] = {
 	},
 	['classColorMentionsSpeech'] = true,
 	['raidUtility'] = true,
+	['voiceOverlay'] = false,
 }
 
 V['bags'] = {
@@ -125,13 +126,12 @@ V['skins'] = {
 		['Warboard'] = true,
 		['AlliedRaces'] = true,
 		['Channels'] = true,
-		['BFAMissions'] = true,
 		['AzeriteUI'] = true,
 		['AzeriteRespec'] = true,
 		['Communities'] = true,
 		['Scrapping'] = true,
-		['Islands'] = true,
-		['Widgets'] = false,
+		['IslandQueue'] = true,
+		['IslandsPartyPose'] = true,
 	},
 }
 

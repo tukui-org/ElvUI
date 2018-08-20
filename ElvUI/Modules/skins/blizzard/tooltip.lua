@@ -85,6 +85,25 @@ local function LoadSkin()
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
+
+	-- Used for Island Skin
+	local function style(self)
+		if not self.IsSkinned then
+			self:SetBackdrop(nil)
+			self:SetTemplate("Transparent")
+
+			self.IsSkinned = true
+		end
+	end
+
+	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
+		if addon == "Blizzard_IslandsQueueUI" then
+			local IslandTooltip = _G["IslandsQueueFrameTooltip"]
+			IslandTooltip:GetParent():GetParent():HookScript("OnShow", style)
+			IslandTooltip:GetParent().IconBorder:SetAlpha(0)
+			IslandTooltip:GetParent().Icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end)
 end
 
 S:AddCallback('SkinTooltip', LoadSkin)

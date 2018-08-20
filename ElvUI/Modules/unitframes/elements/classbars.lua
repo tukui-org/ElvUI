@@ -546,7 +546,7 @@ function UF:Construct_Stagger(frame)
 	return stagger
 end
 
-function UF:PostUpdateStagger(_, stagger)
+function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 

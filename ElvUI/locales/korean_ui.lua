@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "재료은행 표시"
 L["Sort Tab"] = "탭 정렬" --Not used, yet?
 L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
+L["Vendor Grays"] = "잡동사니 자동판매"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = "투기장"
 L["AVD: "] = "방어율: "
 L["Avoidance Breakdown"] = "방어율 목록"
 L["Bandwidth"] = "대역폭"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = "건축 보고서"
 L["Character: "] = "캐릭터:"
 L["Chest"] = "가슴"
@@ -236,6 +238,7 @@ L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["AP:"] = "유물력" -- Artifact Power
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "특수상황 진행 바"
@@ -249,6 +252,7 @@ L["Bags"] = "가방"
 L["Bank Mover (Grow Down)"] = "은행 조정자(아래로 성장)"
 L["Bank Mover (Grow Up)"] = "은행 조정자(위로 성장)'"
 L["Bar "] = "바 "
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "배틀넷 알림"
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
@@ -295,6 +299,7 @@ L["Target Powerbar"] = "대상 자원바"
 L["TargetTarget Frame"] = "대상의대상 프레임"
 L["TargetTargetTarget Frame"] = "대상의대상의대상 프레임"
 L["Tooltip"] = "툴팁"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.

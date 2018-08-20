@@ -1278,7 +1278,7 @@ G.unitframe.buffwatch = {
 	},
 	SHAMAN = {
 		[61295]  = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),   	 -- Riptide
-		[204288] = ClassBuff(204288, "BOTTOMRIGHT", {0.2, 0.2, 1}), 	 -- Earth Shield (Honor Talent)
+		[974] = ClassBuff(974, "BOTTOMRIGHT", {0.2, 0.2, 1}), 	 -- Earth Shield
 	},
 	MONK = {
 		[119611] = ClassBuff(119611, "TOPLEFT", {0.3, 0.8, 0.6}),        -- Renewing Mist
@@ -1324,6 +1324,8 @@ G.unitframe.ChannelTicks = {
 	[SpellName(5143)]   = 5,  -- Arcane Missiles
 	[SpellName(12051)]  = 3,  -- Evocation
 	[SpellName(205021)] = 10, -- Ray of Frost
+	--Druid
+	[SpellName(740)]    = 4, -- Tranquility
 }
 
 local priestTier17 = {115560,115561,115562,115563,115564}
@@ -1370,15 +1372,21 @@ G.unitframe.DebuffHighlightColors = {
 }
 
 G.unitframe.specialFilters = {
+	-- Whitelists
 	['Boss'] = true,
 	['Personal'] = true,
 	['nonPersonal'] = true,
-	['blockNonPersonal'] = true,
 	['CastByUnit'] = true,
 	['notCastByUnit'] = true,
-	['blockNoDuration'] = true,
 	['Dispellable'] = true,
+	['notDispellable'] = true,
 	['CastByNPC'] = true,
 	['CastByPlayers'] = true,
+
+	-- Blacklists
+	['blockNonPersonal'] = true,
 	['blockCastByPlayers'] = true,
+	['blockNoDuration'] = true,
+	['blockDispellable'] = true,
+	['blockNotDispellable'] = true,
 };

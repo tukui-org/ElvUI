@@ -88,7 +88,7 @@ local function UpdateColor(element, cur, max)
 end
 
 local function Update(self, event, unit, powertype)
-	if(unit ~= 'player' or (powertype and powertype ~= ADDITIONAL_POWER_BAR_NAME)) then return end
+	if(not (unit and UnitIsUnit(unit, 'player') and powertype == ADDITIONAL_POWER_BAR_NAME)) then return end
 
 	local element = self.AdditionalPower
 	--[[ Callback: AdditionalPower:PreUpdate(unit)
@@ -208,7 +208,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.AdditionalPower
-	if(element and unit == 'player') then
+	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

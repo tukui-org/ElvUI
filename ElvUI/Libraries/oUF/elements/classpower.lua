@@ -85,7 +85,7 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (self.unit == unit and (unit == 'player' and powerType == ClassPowerType
+	if(not (unit and (UnitIsUnit(unit, 'player') and powerType == ClassPowerType
 		or unit == 'vehicle' and powerType == 'COMBO_POINTS'))) then
 		return
 	end
@@ -284,10 +284,8 @@ do
 end
 
 local function Enable(self, unit)
-	if(unit ~= 'player') then return end
-
 	local element = self.ClassPower
-	if(element) then
+	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate

@@ -4,10 +4,10 @@
   </Binding>
    <Binding name="Toggle Chat (Left)" runOnUp="false" category="BINDING_HEADER_ELVUI">
     HideLeftChat()
-  </Binding> 
+  </Binding>
    <Binding name="Toggle Chat (Right)" runOnUp="false" category="BINDING_HEADER_ELVUI">
     HideRightChat()
-  </Binding> 
+  </Binding>
    <Binding name="Toggle Chat (Both)" runOnUp="false" category="BINDING_HEADER_ELVUI">
     HideBothChat()
   </Binding>

@@ -221,11 +221,11 @@ local methods = {
 			self:SetHeight(24)
 		end
 	end,
-	
+
 	["SetImage"] = function(self, path, ...)
 		local image = self.image
 		image:SetTexture(path)
-		
+
 		if image:GetTexture() then
 			local n = select("#", ...)
 			if n == 4 or n == 8 then

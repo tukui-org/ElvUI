@@ -222,6 +222,8 @@ function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 				return true
 			elseif filterName == 'Dispellable' and canDispell and allowDuration then
 				return true
+			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
+				return true
 			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
 				return true
 			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
@@ -231,6 +233,10 @@ function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 			elseif filterName == 'blockNoDuration' and noDuration then
 				return false
 			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
+				return false
+			elseif filterName == 'blockDispellable' and canDispell then
+				return false
+			elseif filterName == 'blockNotDispellable' and (not canDispell) then
 				return false
 			end
 		end

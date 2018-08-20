@@ -45,7 +45,7 @@ local pcall, error, type, pairs = pcall, error, type, pairs
 function AceConfig:RegisterOptionsTable(appName, options, slashcmd)
 	local ok,msg = pcall(cfgreg.RegisterOptionsTable, self, appName, options)
 	if not ok then error(msg, 2) end
-	
+
 	if slashcmd then
 		if type(slashcmd) == "table" then
 			for _,cmd in pairs(slashcmd) do

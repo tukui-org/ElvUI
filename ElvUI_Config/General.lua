@@ -180,8 +180,16 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.raidUtility end,
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				minUiScale = {
+				voiceOverlay = {
 					order = 22,
+					type = "toggle",
+					name = E.NewSign..L["Voice Overlay"],
+					desc = L["Replace Blizzard's Voice Overlay. |cffFF0000WARNING: WORK IN PROGRESS|r"],
+					get = function(info) return E.private.general.voiceOverlay end,
+					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
+				minUiScale = {
+					order = 23,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
 					softMin = 0.20, softMax = 0.64, step = 0.01,
@@ -189,7 +197,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				talkingHeadFrameScale = {
-					order = 23,
+					order = 24,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -197,8 +205,17 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
+				decimalLength = {
+					order = 25,
+					type = "range",
+					name = L["Decimal Length"],
+					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
+					min = 0, max = 4, step = 1,
+					get = function(info) return E.db.general.decimalLength end,
+					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
 				commandBarSetting = {
-					order = 24,
+					order = 26,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -211,7 +228,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 25,
+					order = 27,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
@@ -224,15 +241,6 @@ E.Options.args.general = {
 						["KOREAN"] = "Korean (천, 만, 억)",
 						["GERMAN"] = "German (Tsd, Mio, Mrd)"
 					},
-				},
-				decimalLength = {
-					order = 26,
-					type = "range",
-					name = L["Decimal Length"],
-					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
-					min = 0, max = 4, step = 1,
-					get = function(info) return E.db.general.decimalLength end,
-					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 			},
 		},
@@ -633,6 +641,118 @@ E.Options.args.general = {
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
+			},
+		},
+		alternativePowerGroup = {
+			order = 10,
+			type = "group",
+			name = L["Alternative Power"],
+			get = function(info) return E.db.general.altPowerBar[ info[#info] ] end,
+			set = function(info, value)
+				E.db.general.altPowerBar[ info[#info] ] = value;
+				B:UpdateAltPowerBarSettings();
+			end,
+			args = {
+				alternativePowerHeader = {
+					order = 1,
+					type = "header",
+					name = L["Alternative Power"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Replace Blizzard's Alternative Power Bar"],
+					width = 'full',
+				},
+				height = {
+					order = 3,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 100, step = 1,
+
+				},
+				width = {
+					order = 4,
+					type = "range",
+					name = L["Width"],
+					min = 50, max = 500, step = 1,
+				},
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 5,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 6,
+					name = FONT_SIZE,
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},
+				fontOutline = {
+					order = 7,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = NONE,
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
+				statusBar = {
+					order = 7,
+					type = "select", dialogControl = 'LSM30_Statusbar',
+					name = L["StatusBar Texture"],
+					values = AceGUIWidgetLSMlists.statusbar,
+				},
+				statusBarColorGradient = {
+					order = 8,
+					name = L["Color Gradient"],
+					type = 'toggle',
+					get = function(info)
+						return E.db.general.altPowerBar[ info[#info] ]
+					end,
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						B:UpdateAltPowerBarColors();
+					end,
+				},
+				statusBarColor = {
+					type = 'color',
+					order = 9,
+					name = COLOR,
+					disabled = function()
+						return E.db.general.altPowerBar.statusBarColorGradient
+					end,
+					get = function(info)
+						local t = E.db.general.altPowerBar[ info[#info] ]
+						local d = P.general.altPowerBar[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.general.altPowerBar[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						B:UpdateAltPowerBarColors();
+					end,
+				},
+				textFormat = {
+					order = 10,
+					type = 'select',
+					name = L["Text Format"],
+					sortByValue = true,
+					values = {
+						NONE = NONE,
+						NAME = NAME,
+						NAMEPERC = L["Name: Percent"],
+						NAMECURMAX = L["Name: Current / Max"],
+						NAMECURMAXPERC = L["Name: Current / Max - Percent"],
+						PERCENT = L["Percent"],
+						CURMAX = L["Current / Max"],
+						CURMAXPERC = L["Current / Max - Percent"],
 					},
 				},
 			},

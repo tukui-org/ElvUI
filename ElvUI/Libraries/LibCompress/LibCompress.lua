@@ -101,10 +101,10 @@ local function encode(x)
 	for k = 1, #bytes do
 		bytes[k] = nil
 	end
-	
+
 	bytes[#bytes + 1] = x % 255
 	x=math.floor(x/255)
-	
+
 	while x > 0 do
 		bytes[#bytes + 1] = x % 255
 		x=math.floor(x/255)
@@ -148,15 +148,15 @@ function LibCompress:CompressLZW(uncompressed)
 		for k in pairs(dict) do
 			dict[k] = nil
 		end
-		
+
 		local result = {"\002"}
 		local w = ''
 		local ressize = 1
-		
+
 		for i = 0, 255 do
 			dict[string_char(i)] = i
 		end
-		
+
 		for i = 1, #uncompressed do
 			local c = uncompressed:sub(i, i)
 			local wc = w..c
@@ -171,13 +171,13 @@ function LibCompress:CompressLZW(uncompressed)
 				w = c
 			end
 		end
-		
+
 		if w then
 			local r = encode(dict[w])
 			ressize = ressize + #r
 			result[#result + 1] = r
 		end
-		
+
 		if (#uncompressed + 1) > ressize then
 			return table_concat(result)
 		else
@@ -196,25 +196,25 @@ function LibCompress:DecompressLZW(compressed)
 		if compressed:sub(1, 1) ~= "\002" then
 			return nil, "Can only decompress LZW compressed data ("..tostring(compressed:sub(1, 1))..")"
 		end
-		
+
 		compressed = compressed:sub(2)
 		local dict_size = 256
-		
+
 		for k in pairs(dict) do
 			dict[k] = nil
 		end
-		
+
 		for i = 0, 255 do
 			dict[i] = string_char(i)
 		end
-		
+
 		local result = {}
 		local t = 1
 		local delta, k
 		k, delta = decode(compressed, t)
 		t = t + delta
 		result[#result + 1] = dict[k]
-		
+
 		local w = dict[k]
 		local entry
 		while t <= #compressed do
@@ -277,7 +277,7 @@ local function addBits(tbl, code, length)
 		remainder = remainder + bit_lshift(code, remainder_length) -- this overflows! Top part of code is lost (but we handle it below)
 		-- remainder now holds 4 full bytes to store. So lets do it.
 		compressed_size = compressed_size + 1
-		tbl[compressed_size] = string_char(bit_band(remainder, 255)) .. 
+		tbl[compressed_size] = string_char(bit_band(remainder, 255)) ..
 			string_char(bit_band(bit_rshift(remainder, 8), 255)) ..
 			string_char(bit_band(bit_rshift(remainder, 16), 255)) ..
 			string_char(bit_band(bit_rshift(remainder, 24), 255))
@@ -317,7 +317,7 @@ function LibCompress:CompressHuffman(uncompressed)
 	if #uncompressed == 0 then
 		return "\001"
 	end
-	
+
 	-- make histogram
 	local hist = {}
 	local n = 0
@@ -338,7 +338,7 @@ function LibCompress:CompressHuffman(uncompressed)
 		symbols[symbol] = leaf
 		table_insert(leafs, leaf)
 	end
-	
+
 	--Enqueue all leaf nodes into the first queue (by probability in increasing order so that the least likely item is in the head of the queue).
 	sort(leafs, function(a, b)
 		if a.weight < b.weight then
@@ -351,7 +351,7 @@ function LibCompress:CompressHuffman(uncompressed)
 	end)
 
 	local nLeafs = #leafs
-	
+
 	-- create tree
 	local huff = {}
 	--While there is more than one node in the queues:
@@ -377,7 +377,7 @@ function LibCompress:CompressHuffman(uncompressed)
 				table_remove(huff, hi)
 			end
 		end
-		
+
 		-- Dequeue second
 		if not next(huff) then
 			li, leaf2 = next(leafs)
@@ -405,7 +405,7 @@ function LibCompress:CompressHuffman(uncompressed)
 		}
 		table_insert(huff,newNode)
 	end
-	
+
 	if #leafs > 0 then
 		li, length = next(leafs)
 		table_insert(huff, length)
@@ -423,7 +423,7 @@ function LibCompress:CompressHuffman(uncompressed)
 		huff.bcode = 0
 		huff.blength = 1
 	end
-	
+
 	-- READING
 	-- bitfield = 0
 	-- bitfield_len = 0
@@ -440,17 +440,17 @@ function LibCompress:CompressHuffman(uncompressed)
 	-- read byte3
 	-- bitfield = bitfield + bit_lshift(byte3, bitfield_len)
 	-- bitfield_len = bitfield_len + 8
-	
+
 	-- WRITING
 	remainder = 0
 	remainder_length = 0
-	
+
 	local compressed = tables.Huffman_compressed
 	--compressed_size = 0
 
 	-- first byte is version info. 0 = uncompressed, 1 = 8 - bit word huffman compressed
 	compressed[1] = "\003"
-	
+
 	-- Header: byte 0 = #leafs, bytes 1-3 = size of uncompressed data
 	-- max 2^24 bytes
 	local length = string_len(uncompressed)
@@ -478,29 +478,29 @@ function LibCompress:CompressHuffman(uncompressed)
 	local ulimit
 	for i = 1, length, 200 do
 		ulimit = length < (i + 199) and length or (i + 199)
-		
+
 		for sub_i = i, ulimit do
 			c = string_byte(uncompressed, sub_i)
 			addBits(compressed, symbols[c].bcode, symbols[c].blength)
 		end
-		
+
 		large_compressed_size = large_compressed_size + 1
 		large_compressed[large_compressed_size] = table_concat(compressed, "", 1, compressed_size)
 		compressed_size = 0
 	end
-	
+
 	-- add remaining bits (if any)
 	if remainder_length > 0 then
 		large_compressed_size = large_compressed_size + 1
 		large_compressed[large_compressed_size] = string_char(remainder)
 	end
 	local compressed_string = table_concat(large_compressed, "", 1, large_compressed_size)
-	
+
 	-- is compression worth it? If not, return uncompressed data.
 	if (#uncompressed + 1) <= #compressed_string then
 		return "\001"..uncompressed
 	end
-	
+
 	setCleanupTables("Huffman_compressed", "Huffman_large_compressed")
 	return compressed_string
 end
@@ -543,7 +543,7 @@ local function lshift64(value_high, value, lshift_amount)
 		return 0, 0
 	end
 	if lshift_amount < 32 then
-		return bit_bor(bit_lshift(value_high, lshift_amount), bit_rshift(value, 32-lshift_amount)), 
+		return bit_bor(bit_lshift(value_high, lshift_amount), bit_rshift(value, 32-lshift_amount)),
 			bit_lshift(value, lshift_amount)
 	end
 	-- 32-63 bit shift
@@ -649,7 +649,7 @@ function LibCompress:DecompressHuffman(compressed)
 			return v
 		end
 	})
-	
+
 	local i = 6 -- byte 1-5 are header bytes
 	local c, cl
 	local minCodeLen = 1000
@@ -666,7 +666,7 @@ function LibCompress:DecompressHuffman(compressed)
 		temp_high, temp = lshift64(0, c, bitfield_len)
 		bitfield_high, bitfield = bor64(bitfield_high, bitfield, temp_high, temp)
 		bitfield_len = bitfield_len + 8
-		
+
 		if state == 0 then
 			symbol = bit_band(bitfield, 255)
 			bitfield_high, bitfield = rshift64(bitfield_high, bitfield, 8)
@@ -690,16 +690,16 @@ function LibCompress:DecompressHuffman(compressed)
 		end
 		i = i + 1
 	end
-	
+
 	-- don't create new subtables for entries not in the map. Waste of space.
 	-- But do return an empty table to prevent runtime errors. (instead of returning nil)
 	local mt = {}
 	setmetatable(map, {
 		__index = function (t, k)
-			return mt 
+			return mt
 		end
 	})
-	
+
 	local uncompressed = tables.Huffman_uncompressed
 	local large_uncompressed = tables.Huffman_large_uncompressed
 	local uncompressed_size = 0
@@ -711,12 +711,12 @@ function LibCompress:DecompressHuffman(compressed)
 	compressed_size = compressed_size + 1
 	local temp_limit = 200 -- first limit of uncompressed data. large_uncompressed will hold strings of length 200
 	temp_limit = temp_limit > orig_size and orig_size or temp_limit
-	
+
 	while true do
-		if test_code_len <= bitfield_len then 
+		if test_code_len <= bitfield_len then
 			test_code = bit_band( bitfield, lshiftMinusOneMask[test_code_len])
 			symbol = map[test_code_len][test_code]
-			
+
 			if symbol then
 				uncompressed_size = uncompressed_size + 1
 				uncompressed[uncompressed_size] = symbol
@@ -732,7 +732,7 @@ function LibCompress:DecompressHuffman(compressed)
 					temp_limit = temp_limit + 200 -- repeated chunk size is 200 uncompressed bytes
 					temp_limit = temp_limit > orig_size and orig_size or temp_limit
 				end
-				
+
 				bitfield = bit_rshift(bitfield, test_code_len)
 				bitfield_len = bitfield_len - test_code_len
 				test_code_len = minCodeLen
@@ -826,29 +826,29 @@ end
 	Howto: Encode and Decode:
 
 	3 functions are supplied, 2 of them are variants of the first.  They return a table with functions to encode and decode text.
-	
+
 	table, msg = LibCompress:GetEncodeTable(reservedChars, escapeChars,  mapChars)
-	
+
 		reservedChars: The characters in this string will not appear in the encoded data.
 		escapeChars: A string of characters used as escape-characters (don't supply more than needed). #escapeChars >= 1
 		mapChars: First characters in reservedChars maps to first characters in mapChars.  (#mapChars <= #reservedChars)
-	
+
 	return value:
 		table
 			if nil then msg holds an error message, otherwise use like this:
-	
+
 			encoded_message = table:Encode(message)
 			message = table:Decode(encoded_message)
-			
+
 	GetAddonEncodeTable: Sets up encoding for the addon channel (\000 is encoded)
 	GetChatEncodeTable: Sets up encoding for the chat channel (many bytes encoded, see the function for details)
-	
+
 	Except for the mapped characters, all encoding will be with 1 escape character followed by 1 suffix, i.e. 2 bytes.
 ]]
 -- to be able to match any requested byte value, the search string must be preprocessed
 -- characters to escape with %:
 -- ( ) . % + - * ? [ ] ^ $
--- "illegal" byte values: 
+-- "illegal" byte values:
 -- 0 is replaces %z
 local gsub_escape_table = {
 	['\000'] = "%z",
@@ -874,35 +874,35 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 	reservedChars = reservedChars or ""
 	escapeChars = escapeChars or ""
 	mapChars = mapChars or ""
-	
+
 	-- select a default escape character
 	if escapeChars == "" then
 		return nil, "No escape characters supplied"
 	end
-	
+
 	if #reservedChars < #mapChars then
 		return nil, "Number of reserved characters must be at least as many as the number of mapped chars"
 	end
-	
+
 	if reservedChars == "" then
 		return nil, "No characters to encode"
 	end
-	
+
 	-- list of characters that must be encoded
 	local encodeBytes = reservedChars..escapeChars..mapChars
-	
+
 	-- build list of bytes not available as a suffix to a prefix byte
 	local taken = {}
-	for i = 1, string_len(encodeBytes) do 
+	for i = 1, string_len(encodeBytes) do
 		taken[string_sub(encodeBytes, i, i)] = true
 	end
-	
+
 	-- allocate a table to hold encode/decode strings/functions
 	local codecTable = {}
-	
+
 	-- the encoding can be a single gsub, but the decoding can require multiple gsubs
 	local decode_func_string = {}
-	
+
 	local encode_search = {}
 	local encode_translate = {}
 	local encode_func
@@ -911,7 +911,7 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 	local decode_func
 	local c, r, i, to, from
 	local escapeCharIndex, escapeChar = 0
-	
+
 	-- map single byte to single byte
 	if #mapChars > 0 then
 		for i = 1, #mapChars do
@@ -927,7 +927,7 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 		table_insert(decode_func_string, "str = str:gsub(self.decode_search"..tostring(escapeCharIndex)..", self.decode_translate"..tostring(escapeCharIndex)..");")
 
 	end
-	
+
 	-- map single byte to double-byte
 	escapeCharIndex = escapeCharIndex + 1
 	escapeChar = string_sub(escapeChars, escapeCharIndex, escapeCharIndex)
@@ -944,14 +944,14 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 					if escapeChar == "" then -- we are out of escape chars and we need more!
 						return nil, "Out of escape characters"
 					end
-					
+
 					codecTable["decode_search"..tostring(escapeCharIndex)] = escape_for_gsub(escapeChar).."([".. escape_for_gsub(table_concat(decode_search)).."])"
 					codecTable["decode_translate"..tostring(escapeCharIndex)] = decode_translate
 					table_insert(decode_func_string, "str = str:gsub(self.decode_search"..tostring(escapeCharIndex)..", self.decode_translate"..tostring(escapeCharIndex)..");")
-					
+
 					escapeCharIndex  = escapeCharIndex + 1
 					escapeChar = string_sub(escapeChars, escapeCharIndex, escapeCharIndex)
-					
+
 					r = 0
 					decode_search = {}
 					decode_translate = {}
@@ -964,23 +964,23 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 			r = r + 1
 		end
 	end
-	
+
 	if r > 0 then
 		codecTable["decode_search"..tostring(escapeCharIndex)] = escape_for_gsub(escapeChar).."([".. escape_for_gsub(table_concat(decode_search)).."])"
 		codecTable["decode_translate"..tostring(escapeCharIndex)] = decode_translate
 		table_insert(decode_func_string, "str = str:gsub(self.decode_search"..tostring(escapeCharIndex)..", self.decode_translate"..tostring(escapeCharIndex)..");")
 	end
-	
+
 	-- change last line from "str = ...;" to "return ...;";
 	decode_func_string[#decode_func_string] = decode_func_string[#decode_func_string]:gsub("str = (.*);", "return %1;")
 	decode_func_string = "return function(self, str) "..table_concat(decode_func_string).." end"
-	
+
 	encode_search = "([".. escape_for_gsub(table_concat(encode_search)).."])"
 	decode_search = escape_for_gsub(escapeChars).."([".. escape_for_gsub(table_concat(decode_search)).."])"
-	
+
 	encode_func = assert(loadstring("return function(self, str) return str:gsub(self.encode_search, self.encode_translate); end"))()
 	decode_func = assert(loadstring(decode_func_string))()
-	
+
 	codecTable.encode_search = encode_search
 	codecTable.encode_translate = encode_translate
 	codecTable.Encode = encode_func
@@ -992,7 +992,7 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 	return codecTable
 end
 
--- Addons: Call this only once and reuse the returned table for all encodings/decodings. 
+-- Addons: Call this only once and reuse the returned table for all encodings/decodings.
 function LibCompress:GetAddonEncodeTable(reservedChars, escapeChars, mapChars )
 	reservedChars = reservedChars or ""
 	escapeChars = escapeChars or ""
@@ -1015,26 +1015,26 @@ function LibCompress:GetChatEncodeTable(reservedChars, escapeChars, mapChars)
 	-- Because SendChatMessage will error if an UTF8 multibyte character is incomplete,
 	-- all character values above 127 have to be encoded to avoid this. This costs quite a bit of bandwidth (about 13-14%)
 	-- Also, because drunken status is unknown for the received, strings used with SendChatMessage should be terminated with
-	-- an identifying byte value, after which the server MAY add "...hic!" or as much as it can fit(!). 
+	-- an identifying byte value, after which the server MAY add "...hic!" or as much as it can fit(!).
 	-- Pass the identifying byte as a reserved character to this function to ensure the encoding doesn't contain that value.
 	--  or use this: local message, match = arg1:gsub("^(.*)\029.-$", "%1")
 	--  arg1 is message from channel, \029 is the string terminator, but may be used in the encoded datastream as well. :-)
 	-- This encoding will expand data anywhere from:
 	-- 0% (average with pure ascii text)
-	-- 53.5% (average with random data valued zero to 255) 
+	-- 53.5% (average with random data valued zero to 255)
 	-- 100% (only encoding data that encodes to two bytes)
 	local i
 	local r = {}
-	
+
 	for i = 128, 255 do
 		table_insert(r, string_char(i))
 	end
-	
+
 	reservedChars = "sS\000\010\013\124%"..table_concat(r)..(reservedChars or "")
 	if escapeChars == "" then
 		escapeChars = "\029\031"
 	end
-	
+
 	if mapChars == "" then
 		mapChars = "\015\020";
 	end
@@ -1067,7 +1067,7 @@ function LibCompress:Encode7bit(str)
 			remainder_length = remainder_length -7
 		end
 	end
-	
+
 	if remainder_length > 0 then
 		encoded_size = encoded_size + 1
 		tbl[encoded_size] = string_char(remainder)
@@ -1139,7 +1139,7 @@ and/or fitness for purpose.
 --// FCS-16 algorithm implemented as described in RFC 1331
 local FCSINIT16 = 65535
 --// Fast 16 bit FCS lookup table
-local fcs16tab = { [0]=0, 4489, 8978, 12955, 17956, 22445, 25910, 29887, 
+local fcs16tab = { [0]=0, 4489, 8978, 12955, 17956, 22445, 25910, 29887,
 	35912, 40385, 44890, 48851, 51820, 56293, 59774, 63735,
 	4225, 264, 13203, 8730, 22181, 18220, 30135, 25662,
 	40137, 36160, 49115, 44626, 56045, 52068, 63999, 59510,

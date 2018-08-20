@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='altpower.lua'/>
 	<Script file='aurabars.lua'/>
 	<Script file='auras.lua'/>
@@ -12,6 +12,7 @@
 	<Script file='health.lua'/>
 	<Script file='infopanel.lua'/>
 	<Script file='name.lua'/>
+	<Script file='phaseindicator.lua'/>
 	<Script file='portrait.lua'/>
 	<Script file='power.lua'/>
 	<Script file='PvPIcon.lua'/>

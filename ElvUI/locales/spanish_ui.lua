@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Mostrar/Ocultar Componentes"
 L["Sort Tab"] = "Ordenar Pestaña"
 L["Temporary Move"] = "Movimiento Temporal"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
+L["Vendor Grays"] = "Vender Objetos Grises"
 L["Vendor / Delete Grays"] = true
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = true
 L["AVD: "] = "EVA: "
 L["Avoidance Breakdown"] = "Desglose de Evasión"
 L["Bandwidth"] = "Ancho de Banda"
+L["BfA Missions"] = true
 L["Building(s) Report:"] = "Informe de Edificio(s)"
 L["Character: "] = "Personaje: "
 L["Chest"] = "Pecho"
@@ -236,6 +238,7 @@ L["Toggle Configuration"] = "Mostrar/Ocultar Configuración"
 L["AP:"] = true -- Artifact Power
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "No tienes permiso para marcar objetivos."
+L["Voice Overlay"] = true
 
 --Movers
 L["Alternative Power"] = "Poder Alternativo"
@@ -249,6 +252,7 @@ L["Bags"] = "Bolsas"
 L["Bank Mover (Grow Down)"] = "Fijador de Banco (Crecer hacia abajo)"
 L["Bank Mover (Grow Up)"] = "Fijador de Banco (Crecer hacia arriba)"
 L["Bar "] = "Barra "
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Marco BNet"
 L["Boss Button"] = "Botón de Jefe"
 L["Boss Frames"] = "Marco de Jefe"
@@ -295,6 +299,7 @@ L["Target Powerbar"] = "Barra de Poder del Objetivo"
 L["TargetTarget Frame"] = "Marco de Objetivo de Objetivo"
 L["TargetTargetTarget Frame"] = "Marco del Objetivo del Objetivo del Objetivo"
 L["Tooltip"] = "Descripción Emergente"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Marco del Asiento del Vehículo"
 L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.

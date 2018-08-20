@@ -16,6 +16,7 @@ function B:Initialize()
 	self:PositionVehicleFrame()
 	self:PositionTalkingHead()
 	self:Handle_LevelUpDisplay_BossBanner()
+	self:Handle_UIWidgets()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
@@ -23,6 +24,7 @@ function B:Initialize()
 
 	if not IsAddOnLoaded("SimplePowerBar") then
 		self:PositionAltPowerBar()
+		self:SkinAltPowerBar()
 	end
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])

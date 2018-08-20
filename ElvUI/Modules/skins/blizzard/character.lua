@@ -34,6 +34,24 @@ local function LoadSkin()
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
 	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
 
+	-- Azerite Items
+	local function UpdateAzeriteItem(self)
+		if not self.styled then
+			self.AzeriteTexture:SetAlpha(0)
+			self.RankFrame.Texture:SetTexture("")
+
+			self.styled = true
+		end
+		self:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+		self:GetHighlightTexture():SetAllPoints()
+	end
+
+	local function UpdateAzeriteEmpoweredItem(self)
+		self.AzeriteTexture:SetAtlas("AzeriteIconFrame")
+		self.AzeriteTexture:SetAllPoints()
+		self.AzeriteTexture:SetDrawLayer("BORDER", 1)
+	end
+
 	local slots = {
 		"HeadSlot",
 		"NeckSlot",
@@ -77,6 +95,9 @@ local function LoadSkin()
 		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
+
+		hooksecurefunc(slot, "DisplayAsAzeriteItem", UpdateAzeriteItem)
+		hooksecurefunc(slot, "DisplayAsAzeriteEmpoweredItem", UpdateAzeriteEmpoweredItem)
 	end
 
 	-- Give character frame model backdrop it's color back
@@ -381,12 +402,20 @@ local function LoadSkin()
 	local function FixSidebarTabCoords()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
+
 			if tab and not tab.backdrop then
+				tab:CreateBackdrop("Default")
 				tab.Icon:SetAllPoints()
 				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:SetAllPoints()
-				tab.Hider:SetColorTexture(0.0,0.0,0.0,0.8)
-				tab.Hider:SetAllPoints()
+
+				-- Check for DejaCharacterStats. Lets hide the Texture if the AddOn is loaded.
+				if IsAddOnLoaded("DejaCharacterStats") then
+					tab.Hider:SetTexture("")
+				else
+					tab.Hider:SetColorTexture(0.0, 0.0, 0.0, 0.8)
+				end
+				tab.Hider:SetAllPoints(tab.backdrop)
 				tab.TabBg:Kill()
 
 				if i == 1 then
@@ -400,7 +429,6 @@ local function LoadSkin()
 						end)
 					end
 				end
-				tab:CreateBackdrop("Default")
 			end
 		end
 	end

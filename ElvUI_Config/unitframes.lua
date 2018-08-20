@@ -18,7 +18,7 @@ local gsub = string.gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
+local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
@@ -325,15 +325,16 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	}
 	config.args.filters.args.specialPriority = {
 		order = 19,
+		sortByValue = true,
+		type = 'select',
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		type = 'select',
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
-				filters[filter] = filter
+				filters[filter] = L[filter]
 			end
 			return filters
 		end,
@@ -390,9 +391,13 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		dragOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
 		end,
-		stateSwitchGetText = function(_, text)
-			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+		stateSwitchGetText = function(_, TEXT)
+			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local text = friend or enemy or TEXT
+			local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
@@ -591,15 +596,16 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	}
 	config.args.filters.args.specialPriority = {
 		order = 19,
+		sortByValue = true,
+		type = 'select',
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		type = 'select',
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
-				filters[filter] = filter
+				filters[filter] = L[filter]
 			end
 			return filters
 		end,
@@ -656,9 +662,13 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 		dragOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, true)
 		end,
-		stateSwitchGetText = function(_, text)
-			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+		stateSwitchGetText = function(_, TEXT)
+			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local text = friend or enemy or TEXT
+			local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
@@ -1305,7 +1315,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			overlay = {
 				type = 'toggle',
 				name = L["Overlay"],
-				desc = L["Overlay the healthbar"],
+				desc = L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."],
 				order = 4,
 			},
 			rotation = {
@@ -3517,7 +3527,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpIcon = {
-			order = 449,
+			order = 450,
 			type = 'group',
 			name = L["PvP & Prestige Icon"],
 			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
@@ -3566,7 +3576,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpText = {
-			order = 450,
+			order = 460,
 			type = 'group',
 			name = L["PvP Text"],
 			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
@@ -3772,6 +3782,55 @@ E.Options.args.unitframe.args.target = {
 					name = L["Scale"],
 					isPercent = true,
 					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
+		phaseIndicator = {
+			order = 450,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,
@@ -5649,6 +5708,55 @@ E.Options.args.unitframe.args.party = {
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		phaseIndicator = {
+			order = 5005,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 	},
 }
 
@@ -6071,6 +6179,55 @@ E.Options.args.unitframe.args.raid = {
 						['TOPLEFT'] = 'TOPLEFT',
 						['TOPRIGHT'] = 'TOPRIGHT',
 					},
+				},
+			},
+		},
+		phaseIndicator = {
+			order = 5006,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['raid']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
 				},
 			},
 		},
@@ -6500,6 +6657,55 @@ E.Options.args.unitframe.args.raid40 = {
 						['TOPLEFT'] = 'TOPLEFT',
 						['TOPRIGHT'] = 'TOPRIGHT',
 					},
+				},
+			},
+		},
+		phaseIndicator = {
+			order = 5007,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['raid40']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid40']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
 				},
 			},
 		},

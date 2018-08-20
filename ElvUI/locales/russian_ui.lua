@@ -43,6 +43,7 @@ L["Show/Hide Reagents"] = "Показать/скрыть материалы"
 L["Sort Tab"] = "Сортировать вкладки" --Not used, yet?
 L["Temporary Move"] = "Временное перемещение"
 L["Toggle Bags"] = "Показать сумки"
+L["Vendor Grays"] = "Продавать серые предметы"
 L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
 
 --Chat
@@ -77,6 +78,7 @@ L["Arena"] = "Арена"
 L["AVD: "] = "Защита: "
 L["Avoidance Breakdown"] = "Распределение защиты"
 L["Bandwidth"] = "Канал"
+L["BfA Missions"] = "Миссии BfA"
 L["Building(s) Report:"] = "Отчет зданий:"
 L["Character: "] = "Персонаж: "
 L["Chest"] = "Грудь"
@@ -230,12 +232,13 @@ L["Left Click:"] = "ЛКМ:" --layout\layout.lua
 L["Raid Menu"] = "Рейдовое меню"
 L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
-L["Toggle Chat Buttons"] = true --layout\layout.lua
+L["Toggle Chat Buttons"] = "Показать/скрыть кнопки чата" --layout\layout.lua
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
 L["AP:"] = "СА:" -- Artifact Power
 L["XP:"] = "Опыт:"
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
+L["Voice Overlay"] = "Индикатор голоса"
 
 --Movers
 L["Alternative Power"] = "Альтернативный ресурс"
@@ -249,6 +252,7 @@ L["Bags"] = "Сумки" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "Банк (Рост вниз)"
 L["Bank Mover (Grow Up)"] = "Банк (Рост вверх)"
 L["Bar "] = "Панель " --Also in ActionBars
+L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Оповещения BNet"
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы" --Also used in UnitFrames
@@ -295,6 +299,7 @@ L["Target Powerbar"] = "Полоса ресурса цели"
 L["TargetTarget Frame"] = "Цель цели" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
+L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Техника"
 L["Zone Ability"] = "Способность зоны"
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.

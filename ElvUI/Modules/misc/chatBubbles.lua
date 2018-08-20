@@ -4,7 +4,7 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
-local select, unpack, pairs = select, unpack, pairs
+local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 local format = string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
@@ -243,8 +243,8 @@ function M:ToggleChatBubbleScript()
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 		--Clear caches
-		messageToGUID = {}
-		messageToSender = {}
+		wipe(messageToGUID)
+		wipe(messageToSender)
 	end
 end
 

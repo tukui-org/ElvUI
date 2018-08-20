@@ -89,11 +89,11 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 
 	local portrait = (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) and (frame.Portrait and frame.Portrait.backdrop)
 	if (power and power.backdrop and power:IsVisible()) and ((power == frame.AlternativePower) or not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR)) then
-		glow:Point('TOPLEFT', portrait or power.backdrop, -offset, offset)
-		glow:Point('TOPRIGHT', power.backdrop, offset, offset)
+		glow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or power.backdrop, -offset, offset)
+		glow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or power.backdrop, offset, offset)
 	elseif frame.Health and frame.Health.backdrop then
-		glow:Point('TOPLEFT', portrait or frame.Health.backdrop, -offset, offset)
-		glow:Point('TOPRIGHT', frame.Health.backdrop, offset, offset)
+		glow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or frame.Health.backdrop, -offset, offset)
+		glow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or frame.Health.backdrop, offset, offset)
 	end
 end
 
@@ -110,8 +110,8 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local offset = (E.PixelMode and E.mult*3) or E.mult*4 -- edgeSize is 3
 
 	mainGlow:ClearAllPoints()
-	mainGlow:Point('TOPLEFT', portrait or health, -offset, offset)
-	mainGlow:Point('TOPRIGHT', health, offset, offset)
+	mainGlow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or health, -offset, offset)
+	mainGlow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or health, offset, offset)
 
 	if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 		mainGlow:Point('BOTTOMLEFT', health, -offset, -offset)
