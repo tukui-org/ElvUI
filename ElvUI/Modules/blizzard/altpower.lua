@@ -76,7 +76,7 @@ function B:UpdateAltPowerBarColors()
 		local power = ElvUI_AltPowerBar:GetValue() or 0
 		local _, maxPower = ElvUI_AltPowerBar:GetMinMaxValues()
 		local value = (maxPower and maxPower > 0 and power / maxPower) or 0
-		local r, g, b = E:ColorGradient(value, 0,0.8,0, 0.8,0.8,0, 0.8,0,0)
+		local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
 		ElvUI_AltPowerBar:SetStatusBarColor(r, g, b)
 	else
 		local color = E.db.general.altPowerBar.statusBarColor
