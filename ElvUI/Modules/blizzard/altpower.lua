@@ -103,7 +103,7 @@ function B:UpdateAltPowerBarSettings()
 	else
 		local power = ElvUI_AltPowerBar:GetValue() or 0
 		local _, maxPower = ElvUI_AltPowerBar:GetMinMaxValues()
-		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
+		local perc = (maxPower and maxPower > 0 and floor(power / maxPower * 100)) or 0
 		local text = B:SetAltPowerBarText(ElvUI_AltPowerBar.powerName or "", power, maxPower or 0, perc)
 		ElvUI_AltPowerBar.text:SetText(text)
 	end
