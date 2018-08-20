@@ -2267,134 +2267,98 @@ function CH:DefaultSmileys()
 		wipe(CH.Smileys.Textures)
 	end
 
-	local EmojiPath = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\"
-	local EmojiPack = {
-		["angry"]				= EmojiPath.."angry.tga",
-		["blush"]				= EmojiPath.."blush.tga",
-		["broken_heart"]		= EmojiPath.."broken_heart.tga",
-		["call_me"]				= EmojiPath.."call_me.tga",
-		["cry"]					= EmojiPath.."cry.tga",
-		["grin"]				= EmojiPath.."grin.tga",
-		["heart"]				= EmojiPath.."heart.tga",
-		["heart_eyes"]			= EmojiPath.."heart_eyes.tga",
-		["joy"]					= EmojiPath.."joy.tga",
-		["middle_finger"]		= EmojiPath.."middle_finger.tga",
-		["ok_hand"]				= EmojiPath.."ok_hand.tga",
-		["open_mouth"]			= EmojiPath.."open_mouth.tga",
-		["poop"]				= EmojiPath.."poop.tga",
-		["rage"]				= EmojiPath.."rage.tga",
-		["scream"]				= EmojiPath.."scream.tga",
-		["scream_cat"]			= EmojiPath.."scream_cat.tga",
-		["slight_frown"]		= EmojiPath.."slight_frown.tga",
-		["smile"]				= EmojiPath.."smile.tga",
-		["smirk"]				= EmojiPath.."smirk.tga",
-		["sob"]					= EmojiPath.."sob.tga",
-		["stuck_out_tongue"]	= EmojiPath.."stuck_out_tongue.tga",
-		["stuck_out_tongue_closed_eyes"]	= EmojiPath.."stuck_out_tongue_closed_eyes.tga",
-		["sunglasses"]			= EmojiPath.."sunglasses.tga",
-		["thinking"]			= EmojiPath.."thinking.tga",
-		["thumbs_up"]			= EmojiPath.."thumbs_up.tga",
-		["wink"]				= EmojiPath.."wink.tga",
-		["zzz"]					= EmojiPath.."zzz.tga",
-
-		-- custom emojis
-		["semi_colon"]			= EmojiPath.."semi_colon.tga",
-		["sadkitty"]			= EmojiPath.."sadkitty.tga",
-		["facepalm"]			= EmojiPath.."facepalm.tga",
-		["murloc"]				= EmojiPath.."murloc.tga",
-		["kappa"]				= EmojiPath.."kappa.tga",
-	}
+	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s.tga"
 
 	-- new keys
-	CH:AddSmiley(':angry:', EmojiPack['angry'])
-	CH:AddSmiley(':blush:', EmojiPack['blush'])
-	CH:AddSmiley(':broken_heart:', EmojiPack['broken_heart'])
-	CH:AddSmiley(':call_me:', EmojiPack['call_me'])
-	CH:AddSmiley(':cry:', EmojiPack['cry'])
-	CH:AddSmiley(':facepalm:', EmojiPack['facepalm'])
-	CH:AddSmiley(':grin:', EmojiPack['grin'])
-	CH:AddSmiley(':heart:', EmojiPack['heart'])
-	CH:AddSmiley(':heart_eyes:', EmojiPack['heart_eyes'])
-	CH:AddSmiley(':joy:', EmojiPack['joy'])
-	CH:AddSmiley(':kappa:', EmojiPack['kappa'])
-	CH:AddSmiley(':middle_finger:', EmojiPack['middle_finger'])
-	CH:AddSmiley(':murloc:', EmojiPack['murloc'])
-	CH:AddSmiley(':ok_hand:', EmojiPack['ok_hand'])
-	CH:AddSmiley(':open_mouth:', EmojiPack['open_mouth'])
-	CH:AddSmiley(':poop:', EmojiPack['poop'])
-	CH:AddSmiley(':rage:', EmojiPack['rage'])
-	CH:AddSmiley(':sadkitty:', EmojiPack['sadkitty'])
-	CH:AddSmiley(':scream:', EmojiPack['scream'])
-	CH:AddSmiley(':scream_cat:', EmojiPack['scream_cat'])
-	CH:AddSmiley(':slight_frown:', EmojiPack['slight_frown'])
-	CH:AddSmiley(':smile:', EmojiPack['smile'])
-	CH:AddSmiley(':smirk:', EmojiPack['smirk'])
-	CH:AddSmiley(':sob:', EmojiPack['sob'])
-	CH:AddSmiley(':stuck_out_tongue:', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley(':stuck_out_tongue_closed_eyes:', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley(':sunglasses:', EmojiPack['sunglasses'])
-	CH:AddSmiley(':thinking:', EmojiPack['thinking'])
-	CH:AddSmiley(':thumbs_up:', EmojiPack['thumbs_up'])
-	CH:AddSmiley(':semi_colon:', EmojiPack['semi_colon'])
-	CH:AddSmiley(':wink:', EmojiPack['wink'])
-	CH:AddSmiley(':zzz:', EmojiPack['zzz'])
+	CH:AddSmiley(':angry:',			format(t,'angry'))
+	CH:AddSmiley(':blush:',			format(t,'blush'))
+	CH:AddSmiley(':broken_heart:',	format(t,'broken_heart'))
+	CH:AddSmiley(':call_me:',		format(t,'call_me'))
+	CH:AddSmiley(':cry:',			format(t,'cry'))
+	CH:AddSmiley(':facepalm:',		format(t,'facepalm'))
+	CH:AddSmiley(':grin:',			format(t,'grin'))
+	CH:AddSmiley(':heart:',			format(t,'heart'))
+	CH:AddSmiley(':heart_eyes:',	format(t,'heart_eyes'))
+	CH:AddSmiley(':joy:',			format(t,'joy'))
+	CH:AddSmiley(':kappa:',			format(t,'kappa'))
+	CH:AddSmiley(':middle_finger:',	format(t,'middle_finger'))
+	CH:AddSmiley(':murloc:',		format(t,'murloc'))
+	CH:AddSmiley(':ok_hand:',		format(t,'ok_hand'))
+	CH:AddSmiley(':open_mouth:',	format(t,'open_mouth'))
+	CH:AddSmiley(':poop:',			format(t,'poop'))
+	CH:AddSmiley(':rage:',			format(t,'rage'))
+	CH:AddSmiley(':sadkitty:',		format(t,'sadkitty'))
+	CH:AddSmiley(':scream:',		format(t,'scream'))
+	CH:AddSmiley(':scream_cat:',	format(t,'scream_cat'))
+	CH:AddSmiley(':slight_frown:',	format(t,'slight_frown'))
+	CH:AddSmiley(':smile:',			format(t,'smile'))
+	CH:AddSmiley(':smirk:',			format(t,'smirk'))
+	CH:AddSmiley(':sob:',			format(t,'sob'))
+	CH:AddSmiley(':sunglasses:',	format(t,'sunglasses'))
+	CH:AddSmiley(':thinking:',		format(t,'thinking'))
+	CH:AddSmiley(':thumbs_up:',		format(t,'thumbs_up'))
+	CH:AddSmiley(':semi_colon:',	format(t,'semi_colon'))
+	CH:AddSmiley(':wink:',			format(t,'wink'))
+	CH:AddSmiley(':zzz:',			format(t,'zzz'))
+	CH:AddSmiley(':stuck_out_tongue:',				format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':stuck_out_tongue_closed_eyes:',	format(t,'stuck_out_tongue_closed_eyes'))
 
 	-- Simpy's keys
-	CH:AddSmiley('>:%(', EmojiPack['rage'])
-	CH:AddSmiley(':%$', EmojiPack['blush'])
-	CH:AddSmiley('<\\3', EmojiPack['broken_heart'])
-	CH:AddSmiley(':\'%)', EmojiPack['joy'])
-	CH:AddSmiley(';\'%)', EmojiPack['joy'])
-	CH:AddSmiley(',,!,,', EmojiPack['middle_finger'])
-	CH:AddSmiley('D:<', EmojiPack['rage'])
-	CH:AddSmiley(':o3', EmojiPack['scream_cat'])
-	CH:AddSmiley('XP', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley('8%-%)', EmojiPack['sunglasses'])
-	CH:AddSmiley('8%)', EmojiPack['sunglasses'])
-	CH:AddSmiley(':%+1:', EmojiPack['thumbs_up'])
-	CH:AddSmiley(':;:', EmojiPack['semi_colon'])
-	CH:AddSmiley(';o;', EmojiPack['sob'])
+	CH:AddSmiley('>:%(',	format(t,'rage'))
+	CH:AddSmiley(':%$',		format(t,'blush'))
+	CH:AddSmiley('<\\3',	format(t,'broken_heart'))
+	CH:AddSmiley(':\'%)',	format(t,'joy'))
+	CH:AddSmiley(';\'%)',	format(t,'joy'))
+	CH:AddSmiley(',,!,,',	format(t,'middle_finger'))
+	CH:AddSmiley('D:<',		format(t,'rage'))
+	CH:AddSmiley(':o3',		format(t,'scream_cat'))
+	CH:AddSmiley('XP',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley('8%-%)',	format(t,'sunglasses'))
+	CH:AddSmiley('8%)',		format(t,'sunglasses'))
+	CH:AddSmiley(':%+1:',	format(t,'thumbs_up'))
+	CH:AddSmiley(':;:',		format(t,'semi_colon'))
+	CH:AddSmiley(';o;',		format(t,'sob'))
 
 	-- old keys
-	CH:AddSmiley(':%-@', EmojiPack['angry'])
-	CH:AddSmiley(':@', EmojiPack['angry'])
-	CH:AddSmiley(':%-%)', EmojiPack['smile'])
-	CH:AddSmiley(':%)', EmojiPack['smile'])
-	CH:AddSmiley(':D', EmojiPack['grin'])
-	CH:AddSmiley(':%-D', EmojiPack['grin'])
-	CH:AddSmiley(';%-D', EmojiPack['grin'])
-	CH:AddSmiley(';D', EmojiPack['grin'])
-	CH:AddSmiley('=D', EmojiPack['grin'])
-	CH:AddSmiley('xD', EmojiPack['grin'])
-	CH:AddSmiley('XD', EmojiPack['grin'])
-	CH:AddSmiley(':%-%(', EmojiPack['slight_frown'])
-	CH:AddSmiley(':%(', EmojiPack['slight_frown'])
-	CH:AddSmiley(':o', EmojiPack['open_mouth'])
-	CH:AddSmiley(':%-o', EmojiPack['open_mouth'])
-	CH:AddSmiley(':%-O', EmojiPack['open_mouth'])
-	CH:AddSmiley(':O', EmojiPack['open_mouth'])
-	CH:AddSmiley(':%-0', EmojiPack['open_mouth'])
-	CH:AddSmiley(':P', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley(':%-P', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley(':p', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley(':%-p', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley('=P', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley('=p', EmojiPack['stuck_out_tongue'])
-	CH:AddSmiley(';%-p', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley(';p', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley(';P', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley(';%-P', EmojiPack['stuck_out_tongue_closed_eyes'])
-	CH:AddSmiley(';%-%)', EmojiPack['wink'])
-	CH:AddSmiley(';%)', EmojiPack['wink'])
-	CH:AddSmiley(':S', EmojiPack['smirk'])
-	CH:AddSmiley(':%-S', EmojiPack['smirk'])
-	CH:AddSmiley(':,%(', EmojiPack['cry'])
-	CH:AddSmiley(':,%-%(', EmojiPack['cry'])
-	CH:AddSmiley(':\'%(', EmojiPack['cry'])
-	CH:AddSmiley(':\'%-%(', EmojiPack['cry'])
-	CH:AddSmiley(':F', EmojiPack['middle_finger'])
-	CH:AddSmiley('<3', EmojiPack['heart'])
-	CH:AddSmiley('</3', EmojiPack['broken_heart'])
+	CH:AddSmiley(':%-@',	format(t,'angry'))
+	CH:AddSmiley(':@',		format(t,'angry'))
+	CH:AddSmiley(':%-%)',	format(t,'smile'))
+	CH:AddSmiley(':%)',		format(t,'smile'))
+	CH:AddSmiley(':D',		format(t,'grin'))
+	CH:AddSmiley(':%-D',	format(t,'grin'))
+	CH:AddSmiley(';%-D',	format(t,'grin'))
+	CH:AddSmiley(';D',		format(t,'grin'))
+	CH:AddSmiley('=D',		format(t,'grin'))
+	CH:AddSmiley('xD',		format(t,'grin'))
+	CH:AddSmiley('XD',		format(t,'grin'))
+	CH:AddSmiley(':%-%(',	format(t,'slight_frown'))
+	CH:AddSmiley(':%(',		format(t,'slight_frown'))
+	CH:AddSmiley(':o',		format(t,'open_mouth'))
+	CH:AddSmiley(':%-o',	format(t,'open_mouth'))
+	CH:AddSmiley(':%-O',	format(t,'open_mouth'))
+	CH:AddSmiley(':O',		format(t,'open_mouth'))
+	CH:AddSmiley(':%-0',	format(t,'open_mouth'))
+	CH:AddSmiley(':P',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':%-P',	format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':p',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(':%-p',	format(t,'stuck_out_tongue'))
+	CH:AddSmiley('=P',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley('=p',		format(t,'stuck_out_tongue'))
+	CH:AddSmiley(';%-p',	format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';p',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';P',		format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';%-P',	format(t,'stuck_out_tongue_closed_eyes'))
+	CH:AddSmiley(';%-%)',	format(t,'wink'))
+	CH:AddSmiley(';%)',		format(t,'wink'))
+	CH:AddSmiley(':S',		format(t,'smirk'))
+	CH:AddSmiley(':%-S',	format(t,'smirk'))
+	CH:AddSmiley(':,%(',	format(t,'cry'))
+	CH:AddSmiley(':,%-%(',	format(t,'cry'))
+	CH:AddSmiley(':\'%(',	format(t,'cry'))
+	CH:AddSmiley(':\'%-%(',	format(t,'cry'))
+	CH:AddSmiley(':F',		format(t,'middle_finger'))
+	CH:AddSmiley('<3',		format(t,'heart'))
+	CH:AddSmiley('</3',		format(t,'broken_heart'))
 end
 
 function CH:Initialize()
