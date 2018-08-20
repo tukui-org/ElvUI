@@ -113,6 +113,7 @@ function mod:UpdateElement_HealthColor(frame)
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		if not frame.HealthColorChanged then
 			frame.HealthBar:SetStatusBarColor(r, g, b);
+			frame.CutawayHealth:SetStatusBarColor(r * 1.2, g * 1.2, b * 1.2, .6)
 		end
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
 	end
@@ -214,11 +215,38 @@ end
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
+	frame.CutawayHealth:SetMinMaxValues(0, maxHealth)
 end
 
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
+
+	local oldValue = frame.HealthBar:GetValue();
+	change = oldValue - health;
+	if (change > 0 and not frame.CutawayHealth.isPlaying) then
+		local cutawayHealth = frame.CutawayHealth;
+		cutawayHealth:SetValue(oldValue);
+		cutawayHealth.value = oldValue;
+		cutawayHealth:SetScript('OnUpdate', function(self, elapsed)
+			self.elapsed = (self.elapsed or 0) + elapsed;
+			if (self.elapsed > .4) then
+				local changePerc = ((self.value - frame.HealthBar:GetValue()) / maxHealth) / (3 * (frame.HealthBar:GetValue() / maxHealth));
+				self.value = self.value - (self.value * changePerc);
+				self:SetValue(self.value);
+				if (self.value < frame.HealthBar:GetValue()) then
+					self.value = nil;
+					self.isPlaying = nil;
+					self:SetScript('OnUpdate', nil);
+					self:Hide();
+					return;
+				end
+				self.elapsed = 0;	
+			end
+		end);
+		cutawayHealth.isPlaying = true;
+		cutawayHealth:Show();
+	end
 
 	frame.HealthBar:SetValue(health)
 	frame.FlashTexture:Point("TOPRIGHT", frame.HealthBar:GetStatusBarTexture(), "TOPRIGHT") --idk why this fixes this
@@ -236,6 +264,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 	local healAbsorbBar = frame.HealAbsorbBar
 	local otherHeals = frame.HealPrediction
 	local myHeals = frame.PersonalHealPrediction
+	local cutawayHealth = frame.CutawayHealth
 
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
@@ -246,9 +275,12 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 		healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
 		healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width)
 	end
+	cutawayHealth:SetAllPoints(healthBar);
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+	cutawayHealth:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+
 	if (not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()
 	end
@@ -282,6 +314,9 @@ function mod:ConstructElement_HealthBar(parent)
 
 	parent.PersonalHealPrediction = CreateFrame("StatusBar", "$parentPersonalHealPrediction", frame)
 	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
+
+	parent.CutawayHealth = CreateFrame("StatusBar", "$parentCutawayHealth", frame)
+	parent.CutawayHealth:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 
 	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
 	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))
