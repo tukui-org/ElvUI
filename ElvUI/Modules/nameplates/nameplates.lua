@@ -121,31 +121,7 @@ function mod:CheckArenaHealers()
 	end
 end
 
-local namePlateDriverEvents = {
-	--"NAME_PLATE_CREATED", -- Leave this on always to prevent errors
-	"FORBIDDEN_NAME_PLATE_CREATED",
-	"NAME_PLATE_UNIT_ADDED",
-	"FORBIDDEN_NAME_PLATE_UNIT_ADDED",
-	"NAME_PLATE_UNIT_REMOVED",
-	"FORBIDDEN_NAME_PLATE_UNIT_REMOVED",
-	"PLAYER_TARGET_CHANGED",
-	"DISPLAY_SIZE_CHANGED",
-	"UNIT_AURA",
-	"VARIABLES_LOADED",
-	"CVAR_UPDATE",
-	"RAID_TARGET_UPDATE",
-	"UNIT_FACTION"
-}
-
-function mod:ToggleNamePlateDriverEvents(lockedInstance)
-	for _, event in pairs(namePlateDriverEvents) do
-		if lockedInstance then
-			NamePlateDriverFrame:RegisterEvent(event)
-		else
-			NamePlateDriverFrame:UnregisterEvent(event)
-		end
-	end
-
+function mod:LockdownInstancePlateCVars(lockedInstance)
 	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 	else
@@ -167,7 +143,7 @@ function mod:PLAYER_ENTERING_WORLD()
 	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
-		self:ToggleNamePlateDriverEvents(lockedInstance)
+		self:LockdownInstancePlateCVars(lockedInstance)
 	end
 
 	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
