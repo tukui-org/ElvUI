@@ -8,6 +8,7 @@ Added dedicated backdrop color option to chat panels.
 **Bug Fixes:**  
 Fixed Nameplate Cutaway health not following Style Filter Health Color changes.  
 Fixed the AltPowerBar enable toggle not requiring a reload.  
+Fixed Blizzard Forbidden Nameplates not spawning in the world when Nameplate module was enabled.  
 
 
 **Misc. Changes:**  
