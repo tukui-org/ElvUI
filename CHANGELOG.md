@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added toggle option for Cutaway health on Nameplates.  
+Added dedicated backdrop color option to chat panels.  
 
 
 **Bug Fixes:**  

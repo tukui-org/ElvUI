@@ -878,6 +878,7 @@ P['chat'] = {
 	['tabFontOutline'] = 'NONE',
 	['copyChatLines'] = false,
 	['useBTagName'] = false,
+	["panelColor"] = {r = .06,g = .06,b = .06, a = 0.8},
 }
 
 --Datatexts

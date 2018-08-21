@@ -1425,6 +1425,12 @@ function E:DBConversions()
 		E.db.nameplates.durationFontSize = nil
 		E.db.nameplates.durationFontOutline = nil
 	end
+	
+	if not E.db.chat.panelColorConverted then
+		local color = E.db.general.backdropfadecolor
+		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
+		E.db.chat.panelColorConverted = true
+	end
 end
 
 local CPU_USAGE = {}
