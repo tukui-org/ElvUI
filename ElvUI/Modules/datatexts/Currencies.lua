@@ -18,9 +18,10 @@ local OTHER = OTHER
 -- Currencies we care about
 local Currencies = {
 	--BfA
-	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1560)))},
 	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1565)))},
+	["SEAFARERS_DUBLOON"] = {ID = 1710, NAME = GetCurrencyInfo(1710), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1710)))},
 	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1580)))},
+	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1560)))},
 	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1587)))},
 	-- Other
 	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(515)))},
@@ -63,9 +64,10 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME7) --"BfA"
-	DT.tooltip:AddDoubleLine(Currencies["WAR_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_RESOURCES"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["RICH_AZERITE_FRAGMENT"].NAME, select(2, GetCurrencyInfo(Currencies["RICH_AZERITE_FRAGMENT"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["SEAFARERS_DUBLOON"].NAME, select(2, GetCurrencyInfo(Currencies["SEAFARERS_DUBLOON"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["SEAL_OF_WARTORN_FATE"].NAME, select(2, GetCurrencyInfo(Currencies["SEAL_OF_WARTORN_FATE"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["WAR_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_RESOURCES"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["WAR_SUPPLIES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
