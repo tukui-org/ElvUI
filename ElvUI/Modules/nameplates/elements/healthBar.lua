@@ -113,7 +113,7 @@ function mod:UpdateElement_HealthColor(frame)
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		if not frame.HealthColorChanged then
 			frame.HealthBar:SetStatusBarColor(r, g, b);
-			frame.CutawayHealth:SetStatusBarColor(r * 1.4, g * 1.4, b * 1.4, .9)
+			frame.CutawayHealth:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, 1);
 		end
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
 	end
