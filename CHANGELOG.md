@@ -5,7 +5,8 @@ Added toggle option for Cutaway health on Nameplates.
 Added dedicated backdrop color option to chat panels.  
 Added backdrop color option to Chat Panels.  
 Added Seafarer's Dubloon to the Currency Datatext.  
-Added Strata option for the Bags.  
+Added Strata option for the Bags.
+Added a temp mover for the Scrapping Machine Frame.
 
 
 **Bug Fixes:**  
