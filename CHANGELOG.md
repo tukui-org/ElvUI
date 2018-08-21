@@ -1,11 +1,12 @@
 **Version 10.80 [  ]**
 
 **New Additions:**  
-
+Added toggle option for Cutaway health on Nameplates.  
 
 
 **Bug Fixes:**  
-
+Fixed Nameplate Cutaway health not following Style Filter Health Color changes.  
+Fixed the AltPowerBar enable toggle not requiring a reload.  
 
 
 **Misc. Changes:**  
