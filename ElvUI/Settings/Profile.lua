@@ -224,6 +224,7 @@ P['bags'] = {
 	['clearSearchOnClose'] = false,
 	['disableBagSort'] = false,
 	['disableBankSort'] = false,
+	['strata'] = 'MEDIUM',
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = false,
