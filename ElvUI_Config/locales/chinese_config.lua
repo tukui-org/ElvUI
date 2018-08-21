@@ -642,6 +642,7 @@ L["Cooldowns"] = "冷却"
 L["Copy settings from another unit."] = "从其他框架中复制设置"
 L["Copy Settings From"] = "复制设置"
 L["Current Level"] = "当前等级"
+L["Cutaway Health"] = true
 L["Default Settings"] = "默认设置"
 L["Detection"] = "探测"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "战场或竞技场中, 为已确认为治疗的玩家标上补职图标"

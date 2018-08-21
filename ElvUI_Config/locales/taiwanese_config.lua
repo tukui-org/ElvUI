@@ -644,6 +644,7 @@ L["Cooldowns"] = "冷卻"
 L["Copy settings from another unit."] = "從其他框架中複製設置"
 L["Copy Settings From"] = "複製設置"
 L["Current Level"] = "當前等級"
+L["Cutaway Health"] = true
 L["Default Settings"] = "默認設置"
 L["Detection"] = "探測"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "戰場或競技場中，為已確認為補職的玩家標上補職圖示."

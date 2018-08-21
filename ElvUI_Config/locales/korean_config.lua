@@ -691,6 +691,7 @@ L["Cooldowns"] = true
 L["Copy settings from another unit."] = "다른 부분에서 설정을 복사하여 가져옵니다."
 L["Copy Settings From"] = "설정 복사해서 가져오기"
 L["Current Level"] = true
+L["Cutaway Health"] = true
 L["Default Settings"] = "기본 설정"
 L["Detection"] = "감지"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "전장이나 투기장에서 유닛이 힐러인 경우 이름표에 힐러 아이콘을 표시합니다."

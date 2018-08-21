@@ -666,6 +666,10 @@ E.Options.args.general = {
 					name = L["Enable"],
 					desc = L["Replace Blizzard's Alternative Power Bar"],
 					width = 'full',
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						E:StaticPopup_Show("PRIVATE_RL");
+					end,
 				},
 				height = {
 					order = 3,
@@ -678,7 +682,7 @@ E.Options.args.general = {
 					order = 4,
 					type = "range",
 					name = L["Width"],
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',

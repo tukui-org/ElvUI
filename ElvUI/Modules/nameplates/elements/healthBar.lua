@@ -113,7 +113,7 @@ function mod:UpdateElement_HealthColor(frame)
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		if not frame.HealthColorChanged then
 			frame.HealthBar:SetStatusBarColor(r, g, b);
-			frame.CutawayHealth:SetStatusBarColor(r * 1.4, g * 1.4, b * 1.4, .9)
+			frame.CutawayHealth:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, 1);
 		end
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
 	end
@@ -236,7 +236,7 @@ function mod:UpdateElement_CutawayHealth(cutawayHealth, elapsed)
 			cutawayHealth:Hide();
 			return;
 		end
-		cutawayHealth.elapsed = 0;	
+		cutawayHealth.elapsed = 0;
 	end
 end
 
@@ -246,16 +246,23 @@ function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
 
-	local oldValue = frame.HealthBar:GetValue();
-	change = oldValue - health;
-	if (change > 0 and not frame.CutawayHealth.isPlaying) then
-		local cutawayHealth = frame.CutawayHealth;
-		cutawayHealth:SetValue(oldValue);
-		cutawayHealth.value = oldValue;
-		cutawayHealth.owningFrame = frame;
-		cutawayHealth:SetScript('OnUpdate', mod.CutawayHealth_OnUpdate);
-		cutawayHealth.isPlaying = true;
-		cutawayHealth:Show();
+	if self.db.cutawayHealth then
+		local oldValue = frame.HealthBar:GetValue();
+		local change = oldValue - health;
+		if (change > 0 and not frame.CutawayHealth.isPlaying) then
+			local cutawayHealth = frame.CutawayHealth;
+			cutawayHealth:SetValue(oldValue);
+			cutawayHealth.value = oldValue;
+			cutawayHealth:SetScript('OnUpdate', mod.CutawayHealth_OnUpdate);
+			cutawayHealth.isPlaying = true;
+			cutawayHealth:Show();
+		end
+	else
+		if frame.CutawayHealth.isPlaying then
+			frame.CutawayHealth.isPlaying = nil;
+			frame.CutawayHealth:SetScript('OnUpdate', nil);
+		end
+		frame.CutawayHealth:Hide();
 	end
 
 	frame.HealthBar:SetValue(health)
@@ -328,6 +335,7 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.CutawayHealth = CreateFrame("StatusBar", "$parentCutawayHealth", frame)
 	parent.CutawayHealth:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.CutawayHealth:SetFrameLevel(frame:GetFrameLevel() - 1);
+	parent.CutawayHealth.owningFrame = parent;
 
 	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
 	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))

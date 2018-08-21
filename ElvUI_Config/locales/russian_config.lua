@@ -643,6 +643,7 @@ L["Cooldowns"] = "Восстановление"
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
 L["Current Level"] = "Текущий уровень"
+L["Cutaway Health"] = true
 L["Default Settings"] = "Умолчания"
 L["Detection"] = "Обнаружение"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Отображать иконки лекаря над известными целителями на полях боя и аренах"

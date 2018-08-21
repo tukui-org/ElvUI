@@ -3001,8 +3001,13 @@ E.Options.args.nameplate = {
 							name = L["Name Colored Glow"],
 							desc = L["Use the Name Color of the unit for the Name Glow."],
 						},
-						targetedNamePlate = {
+						cutawayHealth = {
 							order = 14,
+							type = "toggle",
+							name = L["Cutaway Health"],
+						},
+						targetedNamePlate = {
+							order = 15,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -3081,7 +3086,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 15,
+							order = 16,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
