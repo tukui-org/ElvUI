@@ -206,6 +206,58 @@ function M:Initialize()
 		WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown.CooldownFontSize = 20
 		E:RegisterCooldown(WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown)
 	end
+
+	--World map :OnMaximize callback function
+	local function OnMaximize()
+		--Original action
+		WorldMapFrame:HandleUserActionMaximizeSelf();
+
+		--Our modifications
+		WorldMapFrame.oldFrameLevel = WorldMapFrame.oldFrameLevel or WorldMapFrame:GetFrameLevel()
+		WorldMapFrame.oldFrameStrata = WorldMapFrame.oldFrameStrata or WorldMapFrame:GetFrameStrata()
+		WorldMapFrame.overlayFrames[1].oldFrameLevel = WorldMapFrame.overlayFrames[1].oldFrameLevel or WorldMapFrame.overlayFrames[1]:GetFrameLevel()
+		WorldMapFrame.overlayFrames[1].oldFrameStrata = WorldMapFrame.overlayFrames[1].oldFrameStrata or WorldMapFrame.overlayFrames[1]:GetFrameStrata()
+		WorldMapFrame.overlayFrames[2].oldFrameLevel = WorldMapFrame.overlayFrames[2].oldFrameLevel or WorldMapFrame.overlayFrames[2]:GetFrameLevel()
+		WorldMapFrame.overlayFrames[2].oldFrameStrata = WorldMapFrame.overlayFrames[1].oldFrameStrata or WorldMapFrame.overlayFrames[1]:GetFrameStrata()
+		WorldMapFrame.overlayFrames[3].oldFrameLevel = WorldMapFrame.overlayFrames[3].oldFrameLevel or WorldMapFrame.overlayFrames[3]:GetFrameLevel()
+		WorldMapFrame.overlayFrames[3].oldFrameStrata = WorldMapFrame.overlayFrames[1].oldFrameStrata or WorldMapFrame.overlayFrames[1]:GetFrameStrata()
+		
+		WorldMapFrame:SetFrameStrata("FULLSCREEN");
+		WorldMapFrame.overlayFrames[1]:SetFrameStrata("FULLSCREEN");
+		WorldMapFrame.overlayFrames[1]:SetFrameLevel(4000)
+		WorldMapFrame.overlayFrames[2]:SetFrameStrata("FULLSCREEN");
+		WorldMapFrame.overlayFrames[2]:SetFrameLevel(4000)
+		WorldMapFrame.overlayFrames[3]:SetFrameStrata("FULLSCREEN");
+		WorldMapFrame.overlayFrames[3]:SetFrameLevel(4000)
+	end
+
+	--World map :OnMinimize callback function
+	local function OnMinimize()
+		--Original action
+		WorldMapFrame:HandleUserActionMinimizeSelf();
+
+		--Our modifications
+		if WorldMapFrame.oldFrameStrata then
+			WorldMapFrame:SetFrameStrata(WorldMapFrame.oldFrameStrata);
+			WorldMapFrame:SetFrameLevel(WorldMapFrame.oldFrameLevel)
+		end
+		if WorldMapFrame.overlayFrames[1].oldFrameStrata then
+			WorldMapFrame.overlayFrames[1]:SetFrameStrata(WorldMapFrame.overlayFrames[1].oldFrameStrata);
+			WorldMapFrame.overlayFrames[1]:SetFrameLevel(WorldMapFrame.overlayFrames[1].oldFrameLevel)
+		end
+		if WorldMapFrame.overlayFrames[2].oldFrameStrata then
+			WorldMapFrame.overlayFrames[2]:SetFrameStrata(WorldMapFrame.overlayFrames[2].oldFrameStrata);
+			WorldMapFrame.overlayFrames[2]:SetFrameLevel(WorldMapFrame.overlayFrames[2].oldFrameLevel)
+		end
+		if WorldMapFrame.overlayFrames[3].oldFrameStrata then
+			WorldMapFrame.overlayFrames[3]:SetFrameStrata(WorldMapFrame.overlayFrames[3].oldFrameStrata);
+			WorldMapFrame.overlayFrames[3]:SetFrameLevel(WorldMapFrame.overlayFrames[3].oldFrameLevel)
+		end
+	end
+
+	--Set new maximize/minimize callbacks
+	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:SetOnMaximizedCallback(OnMaximize)
+	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:SetOnMinimizedCallback(OnMinimize);
 end
 
 local function InitializeCallback()

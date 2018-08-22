@@ -1316,7 +1316,7 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
-	local strata = E.db.bags.strata or 'MEDIUM'
+	local strata = E.db.bags.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
