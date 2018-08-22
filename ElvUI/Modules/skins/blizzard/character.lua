@@ -39,6 +39,7 @@ local function LoadSkin()
 		if not self.styled then
 			self.AzeriteTexture:SetAlpha(0)
 			self.RankFrame.Texture:SetTexture("")
+			self.RankFrame.Label:FontTemplate(nil, nil, "OUTLINE")
 
 			self.styled = true
 		end
