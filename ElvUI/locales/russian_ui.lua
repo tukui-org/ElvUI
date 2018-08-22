@@ -298,8 +298,8 @@ L["Target Powerbar"] = "Полоса ресурса цели"
 L["TargetTarget Frame"] = "Цель цели" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
-L["UIWidgetBelowMinimapContainer"] = true
-L["UIWidgetTopContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = "Виджет миникарты"
+L["UIWidgetTopContainer"] = "Верхний виджет"
 L["Vehicle Seat Frame"] = "Техника"
 L["Zone Ability"] = "Способность зоны"
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.
