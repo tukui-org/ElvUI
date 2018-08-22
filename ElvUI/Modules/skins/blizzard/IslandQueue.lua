@@ -29,8 +29,6 @@ local function LoadSkin()
 	WeeklyQuest.OverlayFrame:StripTextures()
 
 	-- StatusBar
-	StatusBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(StatusBar)
 	StatusBar:CreateBackdrop("Default")
 
 	--StatusBar Icon
