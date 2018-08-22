@@ -246,7 +246,7 @@ function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
 
-	if self.db.cutawayHealth then
+	if self.db.cutawayHealth and not UnitIsTapDenied(frame.displayedUnit) then
 		local oldValue = frame.HealthBar:GetValue();
 		local change = oldValue - health;
 		if (change > 0 and not frame.CutawayHealth.isPlaying) then
