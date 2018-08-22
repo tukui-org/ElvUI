@@ -52,8 +52,8 @@ local function BelowMinimapContainer()
 		self:SetPoint('CENTER', belowMiniMapHolder, 'CENTER')
 	end)
 
-	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["TopCenterContainer"], nil, nil, nil,'ALL,SOLO')
-	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["BelowMinimapContainer"], nil, nil, nil,'ALL,SOLO')
+	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["UIWidgetTopContainer"], nil, nil, nil,'ALL,SOLO')
+	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["UIWidgetBelowMinimapContainer"], nil, nil, nil,'ALL,SOLO')
 end
 
 function B:Handle_UIWidgets()

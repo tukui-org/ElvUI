@@ -252,7 +252,6 @@ L["Bags"] = "Taschen" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "Bank Anker (Nach unten wachsen)"
 L["Bank Mover (Grow Up)"] = "Bank Anker (Nach oben wachsen)"
 L["Bar "] = "Leiste " --Also in ActionBars
-L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "BNet-Fenster"
 L["Boss Button"] = "Boss Button"
 L["Boss Frames"] = "Boss Fenster" --Also used in UnitFrames
@@ -299,8 +298,9 @@ L["Target Powerbar"] = "Ziel Kraftleiste"
 L["TargetTarget Frame"] = "Ziel des Ziels Fenster" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Ziel des Ziels des Ziels Fenster"
 L["Tooltip"] = "Tooltip"
-L["TopCenterContainer"] = true
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
+L["UIWidgetBelowMinimapContainer"] = true
+L["UIWidgetTopContainer"] = true
 L["Zone Ability"] = "Zonen Fähigkeit"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
