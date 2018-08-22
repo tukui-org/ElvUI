@@ -892,6 +892,8 @@ function CH:PositionChat(override)
 		end
 	end
 
+	E.Layout:RepositionChatDataPanels() --Bugfix: #686
+
 	self.initialMove = true;
 end
 
