@@ -78,7 +78,7 @@ L["Arena"] = "투기장"
 L["AVD: "] = "방어율: "
 L["Avoidance Breakdown"] = "방어율 목록"
 L["Bandwidth"] = "대역폭"
-L["BfA Missions"] = true
+L["BfA Missions"] = "격아 임무"
 L["Building(s) Report:"] = "건축 보고서"
 L["Character: "] = "캐릭터:"
 L["Chest"] = "가슴"
@@ -238,7 +238,7 @@ L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["AP:"] = "유물력" -- Artifact Power
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
-L["Voice Overlay"] = true
+L["Voice Overlay"] = "음성 오버레이"
 
 --Movers
 L["Alternative Power"] = "특수상황 진행 바"
