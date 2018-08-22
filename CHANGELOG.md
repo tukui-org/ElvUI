@@ -5,14 +5,15 @@ Added toggle option for Cutaway health on Nameplates.
 Added dedicated backdrop color option to chat panels.  
 Added backdrop color option to Chat Panels.  
 Added Seafarer's Dubloon to the Currency Datatext.  
-Added Strata option for the Bags.
-Added a temp mover for the Scrapping Machine Frame.
+Added Strata option for the Bags.  
+Added a temp mover for the Scrapping Machine Frame.  
 
 
 **Bug Fixes:**  
 Fixed Nameplate Cutaway health not following Style Filter Health Color changes.  
 Fixed the AltPowerBar enable toggle not requiring a reload.  
 Fixed Blizzard Forbidden Nameplates not spawning in the world when Nameplate module was enabled.  
+Fixed the default position for the UIWidgetTopCenter mover.  
 
 
 **Misc. Changes:**  
