@@ -14,7 +14,7 @@ local function UIWidgets()
 	local belowMiniMapcontainer = _G["UIWidgetBelowMinimapContainerFrame"]
 
 	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', UIParent)
-	topCenterHolder:Point("TOP", UIParent, "TOP", -0, -30)
+	topCenterHolder:Point("TOP", UIParent, "TOP", 0, -30)
 	topCenterHolder:Size(10, 58)
 
 	local belowMiniMapHolder = CreateFrame('Frame', 'BelowMinimapContainerHolder', UIParent)
