@@ -289,7 +289,7 @@ P['nameplates'] = {
 	['targetGlow'] = 'style2',
 	['glowColor'] = { r = 77/255, g = 179/255, b = 255/255, a = 1 },
 	['nameColoredGlow'] = false,
-	['cutawayHealth'] = true,
+	['cutawayHealth'] = false,
 	['alwaysShowTargetHealth'] = true,
 	['cooldown'] = {
 		['threshold'] = 4,
