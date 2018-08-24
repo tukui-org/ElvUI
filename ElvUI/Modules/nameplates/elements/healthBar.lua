@@ -23,6 +23,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local C_Timer_After = C_Timer.After
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_HealthColor(frame)
@@ -234,7 +235,7 @@ function mod:UpdateElement_Health(frame)
 			local cutawayHealth = frame.CutawayHealth;
 			cutawayHealth:SetValue(oldValue);
 			cutawayHealth:SetAlpha(1);
-			C_Timer.After(self.db.cutawayHealthLength, function() mod:UpdateElement_CutawayHealthFadeOut(frame) end);
+			C_Timer_After(self.db.cutawayHealthLength, function() mod:UpdateElement_CutawayHealthFadeOut(frame) end);
 			cutawayHealth.isPlaying = true;
 			cutawayHealth:Show();
 		end
