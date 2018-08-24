@@ -114,6 +114,9 @@ E.DispelClasses = {
 		['Magic'] = false,
 		['Disease'] = true,
 		['Poison'] = true
+	},
+	['MAGE'] = {
+		['Curse'] = true
 	}
 }
 
