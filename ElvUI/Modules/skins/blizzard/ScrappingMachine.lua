@@ -57,6 +57,7 @@ local function LoadSkin()
 	
 	-- Temp mover
 	MachineFrame:SetMovable(true)
+	MachineFrame:RegisterForDrag("LeftButton")
 	MachineFrame:SetScript("OnDragStart", function(self) self:StartMoving() end)
 	MachineFrame:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
 end
