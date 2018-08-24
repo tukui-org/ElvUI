@@ -290,6 +290,8 @@ P['nameplates'] = {
 	['glowColor'] = { r = 77/255, g = 179/255, b = 255/255, a = 1 },
 	['nameColoredGlow'] = false,
 	['cutawayHealth'] = false,
+	['cutawayHealthLength'] = 0.3,
+	['cutawayHealthFadeOutTime'] = 0.6,
 	['alwaysShowTargetHealth'] = true,
 	['cooldown'] = {
 		['threshold'] = 4,

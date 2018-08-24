@@ -211,36 +211,17 @@ function mod:UpdateElement_HealPrediction(frame)
 	mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, absorb);
 end
 
+function mod:UpdateElement_CutawayHealthFadeOut(frame)
+	local cutawayHealth = frame.CutawayHealth;
+	E:UIFrameFadeOut(cutawayHealth, self.db.cutawayHealthFadeOutTime, cutawayHealth:GetAlpha(), 0);
+	cutawayHealth.isPlaying = nil;
+end
 
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
 	frame.CutawayHealth:SetMinMaxValues(0, maxHealth)
 end
-
-function mod:UpdateElement_CutawayHealth(cutawayHealth, elapsed)
-	local healthBar = cutawayHealth.owningFrame.HealthBar;
-
-	local health = healthBar:GetValue();
-	local _, maxHealth = healthBar:GetMinMaxValues();
-
-	cutawayHealth.elapsed = (cutawayHealth.elapsed or 0) + elapsed;
-	if (cutawayHealth.elapsed > .4) then
-		local changePerc = ((cutawayHealth.value - health) / maxHealth) / (3 * (health / maxHealth));
-		cutawayHealth.value = cutawayHealth.value - (cutawayHealth.value * changePerc);
-		cutawayHealth:SetValue(cutawayHealth.value);
-		if (cutawayHealth.value < health) then
-			cutawayHealth.value = nil;
-			cutawayHealth.isPlaying = nil;
-			cutawayHealth:SetScript('OnUpdate', nil);
-			cutawayHealth:Hide();
-			return;
-		end
-		cutawayHealth.elapsed = 0;
-	end
-end
-
-mod.CutawayHealth_OnUpdate = function(self, elapsed) mod:UpdateElement_CutawayHealth(self, elapsed) end
 
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
@@ -252,8 +233,8 @@ function mod:UpdateElement_Health(frame)
 		if (change > 0 and not frame.CutawayHealth.isPlaying) then
 			local cutawayHealth = frame.CutawayHealth;
 			cutawayHealth:SetValue(oldValue);
-			cutawayHealth.value = oldValue;
-			cutawayHealth:SetScript('OnUpdate', mod.CutawayHealth_OnUpdate);
+			cutawayHealth:SetAlpha(1);
+			C_Timer.After(self.db.cutawayHealthLength, function() mod:UpdateElement_CutawayHealthFadeOut(frame) end);
 			cutawayHealth.isPlaying = true;
 			cutawayHealth:Show();
 		end
