@@ -227,7 +227,7 @@ end
 local function CutawayHealthClosure(frame)
 	return function() mod:UpdateElement_CutawayHealthFadeOut(frame) end;
 end
-  
+
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
@@ -324,7 +324,6 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.CutawayHealth = CreateFrame("StatusBar", "$parentCutawayHealth", frame)
 	parent.CutawayHealth:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.CutawayHealth:SetFrameLevel(frame:GetFrameLevel() - 1);
-	parent.CutawayHealth.owningFrame = parent;
 
 	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
 	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))
