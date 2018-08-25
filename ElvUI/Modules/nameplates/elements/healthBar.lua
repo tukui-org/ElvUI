@@ -224,6 +224,10 @@ function mod:UpdateElement_MaxHealth(frame)
 	frame.CutawayHealth:SetMinMaxValues(0, maxHealth)
 end
 
+local function CutawayHealthClosure(frame)
+	return function() mod:UpdateElement_CutawayHealthFadeOut(frame) end;
+end
+  
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
@@ -235,7 +239,10 @@ function mod:UpdateElement_Health(frame)
 			local cutawayHealth = frame.CutawayHealth;
 			cutawayHealth:SetValue(oldValue);
 			cutawayHealth:SetAlpha(1);
-			C_Timer_After(self.db.cutawayHealthLength, function() mod:UpdateElement_CutawayHealthFadeOut(frame) end);
+			if (not cutawayHealth.closure) then
+				cutawayHealth.closure = CutawayHealthClosure(frame);
+			end
+			C_Timer_After(self.db.cutawayHealthLength, cutawayHealth.closure);
 			cutawayHealth.isPlaying = true;
 			cutawayHealth:Show();
 		end
