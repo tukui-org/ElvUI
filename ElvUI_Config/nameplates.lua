@@ -3534,6 +3534,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							order = 2,
 							name = L["Health Length"],
+							desc = L["How much time before the CutawayHealth starts to fade."],
 							min = 0.1, max = 1, step = 0.1,
 							get = function(info) return E.db.nameplates.cutawayHealthLength end,
 							set = function(info, value) E.db.nameplates.cutawayHealthLength = value; end,
@@ -3541,7 +3542,8 @@ E.Options.args.nameplate = {
 						healthFadeOutTime = {
 							type = 'range',
 							order = 3,
-							name = L["Fade Out Time"],
+							name = L["Fade Out"],
+							desc = L["How long the CutawayHealth will take to fade out."],
 							min = 0.1, max = 1, step = 0.1,
 							get = function(info) return E.db.nameplates.cutawayHealthFadeOutTime end,
 							set = function(info, value) E.db.nameplates.cutawayHealthFadeOutTime = value; end,
