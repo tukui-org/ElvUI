@@ -15,6 +15,7 @@ Fixed the AltPowerBar enable toggle not requiring a reload.
 Fixed Blizzard Forbidden Nameplates not spawning in the world when Nameplate module was enabled.  
 Fixed the default position for the UIWidgetTopCenter mover.  
 Fixed issue with chat frames and data panels disappearing (#686).  
+Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
 
 
 **Misc. Changes:**  
