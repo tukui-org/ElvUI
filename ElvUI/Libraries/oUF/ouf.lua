@@ -749,7 +749,13 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
 			local nameplate = C_NamePlate.GetNamePlateForUnit('target')
-			if(not nameplate) then return end
+			if(not nameplate) then
+				if(nameplateCallback) then
+					nameplateCallback(nil, event, 'target')
+				end
+
+				return
+			end
 
 			nameplate.unitFrame:UpdateAllElements(event)
 

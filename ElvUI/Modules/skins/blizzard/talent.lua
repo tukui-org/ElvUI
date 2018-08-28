@@ -220,6 +220,7 @@ local function LoadSkin()
 						frame.reskinned = true
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
+						frame.icon:SetSize(40, 40)
 					end
 				end
 				index = index + 1

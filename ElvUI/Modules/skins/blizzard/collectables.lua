@@ -244,8 +244,15 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
 	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
-	ToyBox.progressBar:StripTextures()
 	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
+
+	local progressBar = ToyBox.progressBar
+	progressBar.border:Hide()
+	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:CreateBackdrop("Default")
+	E:RegisterStatusBar(progressBar)
+
 
 	local function TextColorModified(self, r, g, b)
 		if(r == 0.33 and g == 0.27 and b == 0.2) then
@@ -278,9 +285,15 @@ local function LoadSkin()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
 	SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
-	HeirloomsJournal.progressBar:StripTextures()
 	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
 	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
+
+	local progressBar = HeirloomsJournal.progressBar
+	progressBar.border:Hide()
+	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:CreateBackdrop("Default")
+	E:RegisterStatusBar(progressBar)
 
 	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
 		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
