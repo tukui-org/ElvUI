@@ -2424,7 +2424,7 @@ P['unitframe'] = {
 				},
 			},
 			['castbar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 256,
 				['height'] = 18,
 				['icon'] = true,
