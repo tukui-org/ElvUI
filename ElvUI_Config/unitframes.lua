@@ -717,6 +717,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Match Frame Width"],
 				func = function() E.db.unitframe.units[groupName]['castbar']['width'] = E.db.unitframe.units[groupName]['width']; updateFunc(UF, groupName, numUnits) end,
 			},
+			--[[ -- The forceShow function need to be redone for the Party Frame
 			forceshow = {
 				order = 3,
 				name = SHOW..' / '..HIDE,
@@ -727,7 +728,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 					if numUnits then
 						for i=1, numUnits do
-							local castbar = _G[frameName..i].Castbar
+							local castbar = _G[frameName.."UnitButton"..i].Castbar
 							if not castbar.oldHide then
 								castbar.oldHide = castbar.Hide
 								castbar.Hide = castbar.Show
@@ -753,6 +754,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				end,
 				type = 'execute',
 			},
+			--]]
 			configureButton = {
 				order = 4,
 				name = L["Coloring"],
