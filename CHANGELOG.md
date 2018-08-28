@@ -16,6 +16,7 @@ Fixed Blizzard Forbidden Nameplates not spawning in the world when Nameplate mod
 Fixed the default position for the UIWidgetTopCenter mover.  
 Fixed issue with chat frames and data panels disappearing (#686).  
 Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
+Fixed issue which prevented debuff highlight from working for shadow priests and diseases.  
 
 
 **Misc. Changes:**  
