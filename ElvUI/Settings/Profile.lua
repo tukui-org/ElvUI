@@ -2423,6 +2423,21 @@ P['unitframe'] = {
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
+			['castbar'] = {
+				['enable'] = true,
+				['width'] = 256,
+				['height'] = 18,
+				['icon'] = true,
+				['format'] = 'REMAINING',
+				['spark'] = true,
+				['iconSize'] = 32,
+				['iconAttached'] = true,
+				['insideInfoPanel'] = true,
+				['iconAttachedTo'] = 'Frame',
+				['iconPosition'] = 'LEFT',
+				['iconXOffset'] = -10,
+				['iconYOffset'] = 0,
+			},
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'TOPRIGHT',
