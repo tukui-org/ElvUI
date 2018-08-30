@@ -17,10 +17,12 @@ Fixed the default position for the UIWidgetTopCenter mover.
 Fixed issue with chat frames and data panels disappearing (#686).  
 Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
 Fixed issue which prevented debuff highlight from working for shadow priests and diseases.  
+Fixed channel ticks for Penance with talent 'Castigation'  
 
 
 **Misc. Changes:**  
-
+Removed Legion debuffs  
+Updated BfA consumables buffs  
 
 ___
 **Version 10.79 [ August 20th 2018 ]**
