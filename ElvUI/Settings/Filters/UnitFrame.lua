@@ -842,24 +842,14 @@ G.unitframe.ChannelTicks = {
 	[SpellName(740)]    = 4, -- Tranquility
 }
 
-local priestTier17 = {115560,115561,115562,115563,115564}
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+f:RegisterEvent("PLAYER_TALENT_UPDATE")
 f:SetScript("OnEvent", function()
 	local class = select(2, UnitClass("player"))
 	if lower(class) ~= "priest" then return; end
 
-	local penanceTicks = 3
-	local equippedPriestTier17 = 0
-	for _, item in pairs(priestTier17) do
-		if IsEquippedItem(item) then
-			equippedPriestTier17 = equippedPriestTier17 + 1
-		end
-	end
-	if equippedPriestTier17 >= 2 then
-		penanceTicks = 4
-	end
+	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
 	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
 end)
 
