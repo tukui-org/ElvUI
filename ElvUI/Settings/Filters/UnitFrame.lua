@@ -1,15 +1,15 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
+local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Cache global variables
 --Lua functions
-local print, unpack, select, pairs = print, unpack, select, pairs
+local print, unpack, select = print, unpack, select
 local lower = string.lower
 --WoW API / Variables
 local GetSpellInfo = GetSpellInfo
-local UnitClass, IsEquippedItem = UnitClass, IsEquippedItem
+local IsPlayerSpell, UnitClass = IsPlayerSpell, UnitClass
 
 local function SpellName(id)
-	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
+	local name = GetSpellInfo(id)
 	if not name then
 		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
 		return 'Impale'
