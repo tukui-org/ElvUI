@@ -305,7 +305,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	--Racial
 		[65116]  = Defaults(), -- Stoneform
 	--Potion
-		[188029] = Defaults(), -- Unbending Potion (Legion Armor Potion)
+		[251231] = Defaults(), -- Steelskin Potion (BfA Armor Potion)
 	},
 }
 
@@ -579,12 +579,15 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[68992] = Defaults(), -- Darkflight
 		[58984] = Defaults(), -- Shadowmeld
 	--Consumables
-		[188029] = Defaults(), -- Unbending Potion (Legion Armor)
-		[188028] = Defaults(), -- Potion of the Old War (Legion Melee)
-		[188027] = Defaults(), -- Potion of Deadly Grace (Legion Caster)
-		[229206] = Defaults(), -- Potion of Prolonged Power (Legion)
+		[251231] = Defaults(), -- Steelskin Potion (BfA Armor)
+		[251316] = Defaults(), -- Potion of Bursting Blood (BfA Melee)
+		[269853] = Defaults(), -- Potion of Rising Death (BfA Caster)
+		[279151] = Defaults(), -- Battle Potion of Intellect (BfA Intellect)
+		[279152] = Defaults(), -- Battle Potion of Agility (BfA Agility)
+		[279153] = Defaults(), -- Battle Potion of Strength (BfA Strength)
 		[178207] = Defaults(), -- Drums of Fury
-		[230935] = Defaults(), -- Drums of the Mountain
+		[230935] = Defaults(), -- Drums of the Mountain (Legion)
+		[256740] = Defaults(), -- Drums of the Maelstrom (BfA)
 	},
 }
 
