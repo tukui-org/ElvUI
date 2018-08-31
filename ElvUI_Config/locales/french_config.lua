@@ -589,6 +589,7 @@ L["Smaller World Map"] = "Carte du monde plus petite"
 L["Top Left"] = "En haut à gauche"
 L["Top Right"] = "En haut à droite"
 L["Top"] = "En haut"
+L["Vehicle Exit"] = true
 L["World Map Coordinates"] = "Coordonnées de la carte du Monde"
 L["X-Offset"] = "Décalage X"
 L["Y-Offset"] = "Décalage Y"
