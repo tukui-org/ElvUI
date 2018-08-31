@@ -658,8 +658,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 
 	-- Battle for Azeroth
 	-- Dungeons
-	
-	
+		[267626] = Defaults(), -- Dessication (King's Rest)
+		[260741] = Defaults(), -- Jagged Nettles (Waycrest Manor)
+
 	-- Uldir
 		-- MOTHER
 		[268277] = Defaults(), -- Purifying Flame
