@@ -24,7 +24,7 @@ function mod:UpdateHonor(event, unit)
 	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then return end
 
 	local bar = self.honorBar
-	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
+	local showHonor = true
 
 	if (self.db.honor.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		showHonor = false
@@ -32,43 +32,47 @@ function mod:UpdateHonor(event, unit)
 		showHonor = false
 	end
 
-	bar:Show()
-
-	local current = UnitHonor("player");
-	local max = UnitHonorMax("player");
-
-	--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
-	if max == 0 then max = 1 end
-
-	bar.statusBar:SetMinMaxValues(0, max)
-	bar.statusBar:SetValue(current)
-
-	if self.db.honor.hideInVehicle then
-		E:RegisterObjectForVehicleLock(bar, E.UIParent)
+	if not showHonor then
+		bar:Hide()
 	else
-		E:UnregisterObjectForVehicleLock(bar)
+		bar:Show()
+
+		local current = UnitHonor("player");
+		local max = UnitHonorMax("player");
+
+		--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
+		if max == 0 then max = 1 end
+
+		bar.statusBar:SetMinMaxValues(0, max)
+		bar.statusBar:SetValue(current)
+
+		if self.db.honor.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
+
+		local text = ''
+		local textFormat = self.db.honor.textFormat
+
+		if textFormat == 'PERCENT' then
+			text = format('%d%%', current / max * 100)
+		elseif textFormat == 'CURMAX' then
+			text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
+		elseif textFormat == 'CURPERC' then
+			text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
+		elseif textFormat == 'CUR' then
+			text = format('%s', E:ShortValue(current))
+		elseif textFormat == 'REM' then
+			text = format('%s', E:ShortValue(max-current))
+		elseif textFormat == 'CURREM' then
+			text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
+		elseif textFormat == 'CURPERCREM' then
+			text = format('%s - %d%% (%s)', E:ShortValue(current), current / max * 100, E:ShortValue(max - current))
+		end
+
+		bar.text:SetText(text)
 	end
-
-	local text = ''
-	local textFormat = self.db.honor.textFormat
-
-	if textFormat == 'PERCENT' then
-		text = format('%d%%', current / max * 100)
-	elseif textFormat == 'CURMAX' then
-		text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
-	elseif textFormat == 'CURPERC' then
-		text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
-	elseif textFormat == 'CUR' then
-		text = format('%s', E:ShortValue(current))
-	elseif textFormat == 'REM' then
-		text = format('%s', E:ShortValue(max-current))
-	elseif textFormat == 'CURREM' then
-		text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
-	elseif textFormat == 'CURPERCREM' then
-		text = format('%s - %d%% (%s)', E:ShortValue(current), current / max * 100, E:ShortValue(max - current))
-	end
-
-	bar.text:SetText(text)
 end
 
 function mod:HonorBar_OnEnter()
