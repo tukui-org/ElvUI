@@ -575,6 +575,7 @@ L["Reset Zoom"] = true
 L["Right"] = true
 L["Scale"] = true
 L["Smaller World Map"] = true
+L["Smaller World Map Scale"] = true
 L["Top Left"] = true
 L["Top Right"] = true
 L["Top"] = true

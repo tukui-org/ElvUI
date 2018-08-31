@@ -633,6 +633,7 @@ L["Reset Zoom"] = "배율 초기화"
 L["Right"] = "오른쪽"
 L["Scale"] = "크기"
 L["Smaller World Map"] = "월드맵 축소"
+L["Smaller World Map Scale"] = true
 L["Top Left"] = "상단 좌측"
 L["Top Right"] = "상단 우측"
 L["Top"] = "상단 중앙"

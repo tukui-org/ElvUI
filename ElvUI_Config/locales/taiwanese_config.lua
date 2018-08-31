@@ -586,6 +586,7 @@ L["Reset Zoom"] = "重置縮放"
 L["Right"] = "右"
 L["Scale"] = "縮放"
 L["Smaller World Map"] = "更小的世界地圖"
+L["Smaller World Map Scale"] = true
 L["Top Left"] = "左上"
 L["Top Right"] = "右上"
 L["Top"] = "上"

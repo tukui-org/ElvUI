@@ -586,6 +586,7 @@ L["Reset Zoom"] = "Réinitialiser le zoom"
 L["Right"] = "Droite"
 L["Scale"] = "Echelle"
 L["Smaller World Map"] = "Carte du monde plus petite"
+L["Smaller World Map Scale"] = true
 L["Top Left"] = "En haut à gauche"
 L["Top Right"] = "En haut à droite"
 L["Top"] = "En haut"
