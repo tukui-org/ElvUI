@@ -578,6 +578,7 @@ L["Smaller World Map"] = true
 L["Top Left"] = true
 L["Top Right"] = true
 L["Top"] = true
+L["Vehicle Exit"] = true
 L["World Map Coordinates"] = true
 L["X-Offset"] = true
 L["Y-Offset"] = true

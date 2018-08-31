@@ -589,6 +589,7 @@ L["Smaller World Map"] = "更小的世界地圖"
 L["Top Left"] = "左上"
 L["Top Right"] = "右上"
 L["Top"] = "上"
+L["Vehicle Exit"] = true
 L["World Map Coordinates"] = "世界地圖坐標"
 L["X-Offset"] = "X偏移"
 L["Y-Offset"] = "Y偏移"

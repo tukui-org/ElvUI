@@ -588,6 +588,7 @@ L["Scale"] = "Масштаб"
 L["Top Left"] = "Вверху слева"
 L["Top Right"] = "Вверху справа"
 L["Top"] = "Вверху"
+L["Vehicle Exit"] = true
 L["World Map Coordinates"] = "Координаты карты мира"
 L["X-Offset"] = "Отступ по X"
 L["Y-Offset"] = "Отступ по Y"

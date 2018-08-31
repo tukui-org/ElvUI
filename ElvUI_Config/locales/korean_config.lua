@@ -636,6 +636,7 @@ L["Smaller World Map"] = "월드맵 축소"
 L["Top Left"] = "상단 좌측"
 L["Top Right"] = "상단 우측"
 L["Top"] = "상단 중앙"
+L["Vehicle Exit"] = true
 L["World Map Coordinates"] = "세계 지도 좌표"
 L["X-Offset"] = "가로 조정"
 L["Y-Offset"] = "세로 조정"
