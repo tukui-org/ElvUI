@@ -605,6 +605,21 @@ L["Toggle Anchors"] = "Ankerpunkte umschalten"
 L["Unlock various elements of the UI to be repositioned."] = "Schalte verschiedene Elemente der Benutzeroberfläche frei um sie neu zu positionieren."
 L["Version"] = "Version"
 
+-- Module Reset
+L["Are you sure you want to reset ActionBars settings?"] = "Bist du dir sicher dass du die Actionsleisten Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset Auras settings?"] = "Bist du dir sicher dass du die Auren Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset Bags settings?"] = "Bist du dir sicher dass du die Taschen Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset Chat settings?"] = "Bist du dir sicher dass du die Chat Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset Cooldown settings?"] = "Bist du dir sicher dass du die Abklingzeiten Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset DataBars settings?"] = "Bist du dir sicher dass du die Informationsleisten Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset DataTexts settings?"] = "Bist du dir sicher dass du die Infotexte Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset General settings?"] = "Bist du dir sicher dass du die Allgemeinen Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset NamePlates settings?"] = "Bist du dir sicher dass du die Namensplaketten Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset Tooltip settings?"] = "Bist du dir sicher dass du die Tooltip Einstellungen zurücksetzen möchtest?"
+L["Are you sure you want to reset UnitFrames settings?"] = "Bist du dir sicher dass du die Einheitenfenster Einstellungen zurücksetzen möchtest?"
+L["Module Reset"] = "Module zurücksetzen"
+L["This section will help reset specfic settings back to default."] = "Diese Sektion wird dir dabei helfen spezifische Einstellungen zurückzusetzen."
+
 --NamePlates
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["Actions"] = "Aktionen"

@@ -603,6 +603,21 @@ L["Toggle Anchors"] = "Afficher les ancres"
 L["Unlock various elements of the UI to be repositioned."] = "Déverrouille divers éléments de l'interface utilisateur pour être repositionné."
 L["Version"] = "Version"
 
+-- Module Reset
+L["Are you sure you want to reset ActionBars settings?"] = true
+L["Are you sure you want to reset Auras settings?"] = true
+L["Are you sure you want to reset Bags settings?"] = true
+L["Are you sure you want to reset Chat settings?"] = true
+L["Are you sure you want to reset Cooldown settings?"] = true
+L["Are you sure you want to reset DataBars settings?"] = true
+L["Are you sure you want to reset DataTexts settings?"] = true
+L["Are you sure you want to reset General settings?"] = true
+L["Are you sure you want to reset NamePlates settings?"] = true
+L["Are you sure you want to reset Tooltip settings?"] = true
+L["Are you sure you want to reset UnitFrames settings?"] = true
+L["Module Reset"] = true
+L["This section will help reset specfic settings back to default."] = true
+
 --NamePlates
 L["# Displayed Auras"] = "Auras affichées"
 L["Actions"] = "Actions"

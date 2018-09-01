@@ -650,6 +650,21 @@ L["Toggle Anchors"] = "프레임 이동 모드"
 L["Unlock various elements of the UI to be repositioned."] = "ElvUI에서 위치를 조정할 수 있는 프레임들을 움직이는 이동 모드를 실행합니다."
 L["Version"] = "버전"
 
+-- Module Reset
+L["Are you sure you want to reset ActionBars settings?"] = true
+L["Are you sure you want to reset Auras settings?"] = true
+L["Are you sure you want to reset Bags settings?"] = true
+L["Are you sure you want to reset Chat settings?"] = true
+L["Are you sure you want to reset Cooldown settings?"] = true
+L["Are you sure you want to reset DataBars settings?"] = true
+L["Are you sure you want to reset DataTexts settings?"] = true
+L["Are you sure you want to reset General settings?"] = true
+L["Are you sure you want to reset NamePlates settings?"] = true
+L["Are you sure you want to reset Tooltip settings?"] = true
+L["Are you sure you want to reset UnitFrames settings?"] = true
+L["Module Reset"] = true
+L["This section will help reset specfic settings back to default."] = true
+
 --NamePlates
 L["# Displayed Auras"] = "표시되는 효과 갯수"
 L["Actions"] = true
