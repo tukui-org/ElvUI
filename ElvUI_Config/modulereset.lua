@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames');
+local NP = E:GetModule("NamePlates")
 
 E.Options.args.modulereset = {
 	type = "group",
@@ -96,7 +98,7 @@ E.Options.args.modulereset = {
 			name = 'UnitFrames',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset UnitFrames settings?',
-			func = function() E:CopyTable(E.db.uniframes, P.uniframes) end,
+			func = function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end,
 		},
 	},
 }
