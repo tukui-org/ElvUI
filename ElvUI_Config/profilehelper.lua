@@ -16,7 +16,7 @@ E.Options.args.profilehelper = {
 			name = 'General',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset General settings?',
-			func = function() E.db.general = P.general end,
+			func = function() E:CopyTable(E.db.general, P.general) end,
 		},
 		actionbar = {
 			order = 2,
@@ -24,7 +24,7 @@ E.Options.args.profilehelper = {
 			name = 'ActionBar',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset ActionBar settings?',
-			func = function() E.db.actionbar = P.actionbar end,
+			func = function() E:CopyTable(E.db.actionbar, P.actionbar) end,
 		},
 		bags = {
 			order = 3,
@@ -32,7 +32,7 @@ E.Options.args.profilehelper = {
 			name = 'Bags',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Bags settings?',
-			func = function() E.db.bags = P.bags end,
+			func = function() E:CopyTable(E.db.bags, P.bags) end,
 		},
 		auras = {
 			order = 4,
@@ -40,7 +40,7 @@ E.Options.args.profilehelper = {
 			name = 'Auras',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Auras settings?',
-			func = function() E.db.auras = P.auras end,
+			func = function() E:CopyTable(E.db.auras, P.auras) end,
 		},
 		chat = {
 			order = 5,
@@ -48,7 +48,7 @@ E.Options.args.profilehelper = {
 			name = 'Chat',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Chat settings?',
-			func = function() E.db.chat = P.chat end,
+			func = function() E:CopyTable(E.db.chat, P.chat) end,
 		},
 		cooldown = {
 			order = 6,
@@ -56,7 +56,7 @@ E.Options.args.profilehelper = {
 			name = 'Cooldown',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Cooldown settings?',
-			func = function() E.db.cooldown = P.cooldown end,
+			func = function() E:CopyTable(E.db.cooldown, P.cooldown) end,
 		},
 		databars = {
 			order = 7,
@@ -64,7 +64,7 @@ E.Options.args.profilehelper = {
 			name = 'Databars',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Databars settings?',
-			func = function() E.db.databars = P.databars end,
+			func = function() E:CopyTable(E.db.databars, P.databars) end,
 		},
 		datatexts = {
 			order = 8,
@@ -72,7 +72,7 @@ E.Options.args.profilehelper = {
 			name = 'DataTexts',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset DataTexts settings?',
-			func = function() E.db.datatexts = P.datatexts end,
+			func = function() E:CopyTable(E.db.datatexts, P.datatexts) end,
 		},
 		nameplates = {
 			order = 9,
@@ -80,7 +80,7 @@ E.Options.args.profilehelper = {
 			name = 'Nameplates',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Nameplates settings?',
-			func = function() E.db.nameplates = P.nameplates end,
+			func = function() E:CopyTable(E.db.nameplates, P.nameplates) end,
 		},
 		tooltip = {
 			order = 10,
@@ -88,7 +88,7 @@ E.Options.args.profilehelper = {
 			name = 'Tooltip',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset Tooltip settings?',
-			func = function() E.db.tooltip = P.tooltip end,
+			func = function() E:CopyTable(E.db.tooltip, P.tooltip) end,
 		},
 		uniframes = {
 			order = 11,
@@ -96,7 +96,7 @@ E.Options.args.profilehelper = {
 			name = 'UnitFrames',
 			confirm = true,
 			confirmText = 'Are you sure you want to reset UnitFrames settings?',
-			func = function() E.db.unitframe = P.unitframe end,
+			func = function() E:CopyTable(E.db.uniframes, P.uniframes) end,
 		},
 	},
 }
