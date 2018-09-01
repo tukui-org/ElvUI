@@ -25,4 +25,4 @@ tag_info.lua
 nameplates.lua
 profiles.lua
 maps.lua
-profilehelper.lua
+modulereset.lua
