@@ -1,4 +1,16 @@
-**Version 10.80 [  ]**
+**Version 10.81 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.80 [ September 2nd 2018 ]**
 
 **New Additions:**  
 Added toggle option for Cutaway health on Nameplates.  
