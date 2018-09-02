@@ -96,8 +96,12 @@ local function createAuraIcon(element, index)
 	local icon = button:CreateTexture(nil, 'BORDER')
 	icon:SetAllPoints()
 
-	local count = button:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
-	count:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -1, 0)
+	local countFrame = CreateFrame('Frame', nil, button)
+	countFrame:SetAllPoints(button)
+	countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
+
+	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
 
 	local overlay = button:CreateTexture(nil, 'OVERLAY')
 	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
