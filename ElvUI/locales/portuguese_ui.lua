@@ -252,7 +252,6 @@ L["Bags"] = "Bolsas"
 L["Bank Mover (Grow Down)"] = true
 L["Bank Mover (Grow Up)"] = true
 L["Bar "] = "Barra "
-L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Quadro do Bnet"
 L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"
@@ -299,7 +298,8 @@ L["Target Powerbar"] = true
 L["TargetTarget Frame"] = "Quadro do Alvo do Alvo"
 L["TargetTargetTarget Frame"] = true
 L["Tooltip"] = "Tooltip"
-L["TopCenterContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = true
+L["UIWidgetTopContainer"] = true
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
 L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.

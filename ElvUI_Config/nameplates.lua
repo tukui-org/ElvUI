@@ -2801,12 +2801,12 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "healPrediction") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		playerShortcut = {
+		cutawayHealthShortcut = {
 			order = 15,
 			type = "execute",
-			name = L["Player Frame"],
+			name = L["Cutaway Health"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -2814,8 +2814,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		healerShortcut = {
+		playerShortcut = {
 			order = 17,
+			type = "execute",
+			name = L["Player Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		healerShortcut = {
+			order = 18,
 			type = "execute",
 			name = L["Healer Frames"],
 			buttonElvUI = true,
@@ -2823,19 +2831,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyPlayerShortcut = {
-			order = 18,
+			order = 19,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		enemyPlayerShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Enemy Player Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
@@ -2843,8 +2843,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		friendlyNPCShortcut = {
+		enemyPlayerShortcut = {
 			order = 21,
+			type = "execute",
+			name = L["Enemy Player Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyNPCShortcut = {
+			order = 22,
 			type = "execute",
 			name = L["Friendly NPC Frames"],
 			buttonElvUI = true,
@@ -2852,15 +2860,20 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		enemyNPCShortcut = {
-			order = 22,
+			order = 23,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
+		spacer6 = {
+			order = 24,
+			type = "description",
+			name = " ",
+		},
 		filtersShortcut = {
-			order = 23,
+			order = 25,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
@@ -2868,7 +2881,7 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
-			order = 24,
+			order = 26,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -3001,13 +3014,8 @@ E.Options.args.nameplate = {
 							name = L["Name Colored Glow"],
 							desc = L["Use the Name Color of the unit for the Name Glow."],
 						},
-						cutawayHealth = {
-							order = 14,
-							type = "toggle",
-							name = L["Cutaway Health"],
-						},
 						targetedNamePlate = {
-							order = 15,
+							order = 14,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -3086,7 +3094,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 16,
+							order = 15,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
@@ -3507,6 +3515,38 @@ E.Options.args.nameplate = {
 							name = L["Heal Absorbs"],
 							type = 'color',
 							hasAlpha = true,
+						},
+					},
+				},
+				cutawayHealth = {
+					order = 226,
+					name = L["Cutaway Health"],
+					type = 'group',
+					args = {
+						enabled = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							get = function(info) return E.db.nameplates.cutawayHealth end,
+							set = function(info, value) E.db.nameplates.cutawayHealth = value; end,
+						},
+						healthLength = {
+							type = 'range',
+							order = 2,
+							name = L["Health Length"],
+							desc = L["How much time before the CutawayHealth starts to fade."],
+							min = 0.1, max = 1, step = 0.1,
+							get = function(info) return E.db.nameplates.cutawayHealthLength end,
+							set = function(info, value) E.db.nameplates.cutawayHealthLength = value; end,
+						},
+						healthFadeOutTime = {
+							type = 'range',
+							order = 3,
+							name = L["Fade Out"],
+							desc = L["How long the CutawayHealth will take to fade out."],
+							min = 0.1, max = 1, step = 0.1,
+							get = function(info) return E.db.nameplates.cutawayHealthFadeOutTime end,
+							set = function(info, value) E.db.nameplates.cutawayHealthFadeOutTime = value; end,
 						},
 					},
 				},

@@ -252,7 +252,6 @@ L["Bags"] = "Сумки" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "Банк (Рост вниз)"
 L["Bank Mover (Grow Up)"] = "Банк (Рост вверх)"
 L["Bar "] = "Панель " --Also in ActionBars
-L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "Оповещения BNet"
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы" --Also used in UnitFrames
@@ -299,7 +298,8 @@ L["Target Powerbar"] = "Полоса ресурса цели"
 L["TargetTarget Frame"] = "Цель цели" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
-L["TopCenterContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = "Виджет миникарты"
+L["UIWidgetTopContainer"] = "Верхний виджет"
 L["Vehicle Seat Frame"] = "Техника"
 L["Zone Ability"] = "Способность зоны"
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.

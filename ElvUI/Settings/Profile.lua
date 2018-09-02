@@ -224,6 +224,7 @@ P['bags'] = {
 	['clearSearchOnClose'] = false,
 	['disableBagSort'] = false,
 	['disableBankSort'] = false,
+	['strata'] = 'HIGH',
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = false,
@@ -288,7 +289,9 @@ P['nameplates'] = {
 	['targetGlow'] = 'style2',
 	['glowColor'] = { r = 77/255, g = 179/255, b = 255/255, a = 1 },
 	['nameColoredGlow'] = false,
-	['cutawayHealth'] = true,
+	['cutawayHealth'] = false,
+	['cutawayHealthLength'] = 0.3,
+	['cutawayHealthFadeOutTime'] = 0.6,
 	['alwaysShowTargetHealth'] = true,
 	['cooldown'] = {
 		['threshold'] = 4,
@@ -878,6 +881,7 @@ P['chat'] = {
 	['tabFontOutline'] = 'NONE',
 	['copyChatLines'] = false,
 	['useBTagName'] = false,
+	["panelColor"] = {r = .06,g = .06,b = .06, a = 0.8},
 }
 
 --Datatexts
@@ -2418,6 +2422,21 @@ P['unitframe'] = {
 					['yOffset'] = 2,
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
+			},
+			['castbar'] = {
+				['enable'] = false,
+				['width'] = 256,
+				['height'] = 18,
+				['icon'] = true,
+				['format'] = 'REMAINING',
+				['spark'] = true,
+				['iconSize'] = 32,
+				['iconAttached'] = true,
+				['insideInfoPanel'] = true,
+				['iconAttachedTo'] = 'Frame',
+				['iconPosition'] = 'LEFT',
+				['iconXOffset'] = -10,
+				['iconYOffset'] = 0,
 			},
 			['roleIcon'] = {
 				['enable'] = true,

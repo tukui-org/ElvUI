@@ -562,7 +562,7 @@ E.Options.args.maps = {
 						vehicleLeave = {
 							order = 7,
 							type = "group",
-							name = LEAVE_VEHICLE,
+							name = L["Vehicle Exit"],
 							get = function(info) return E.db.general.minimap.icons.vehicleLeave[ info[#info] ] end,
 							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[ info[#info] ] = value; E:GetModule('ActionBars'):UpdateVehicleLeave() end,
 							args = {

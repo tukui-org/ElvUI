@@ -252,7 +252,6 @@ L["Bags"] = true --Also in DataTexts
 L["Bank Mover (Grow Down)"] = true
 L["Bank Mover (Grow Up)"] = true
 L["Bar "] = true --Also in ActionBars
-L["BelowMinimapContainer"] = true
 L["BNet Frame"] = true
 L["Boss Button"] = true
 L["Boss Frames"] = true --Also used in UnitFrames
@@ -299,7 +298,8 @@ L["Target Powerbar"] = true
 L["TargetTarget Frame"] = true --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = true --Also used in UnitFrames
 L["Tooltip"] = true
-L["TopCenterContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = true
+L["UIWidgetTopContainer"] = true
 L["Vehicle Seat Frame"] = true
 L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.

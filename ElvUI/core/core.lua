@@ -114,6 +114,9 @@ E.DispelClasses = {
 		['Magic'] = false,
 		['Disease'] = true,
 		['Poison'] = true
+	},
+	['MAGE'] = {
+		['Curse'] = true
 	}
 }
 
@@ -874,6 +877,8 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+	elseif IsInGuild() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	end
 
 	if E.SendMSGTimer then
@@ -1424,6 +1429,12 @@ function E:DBConversions()
 		E.db.nameplates.durationFont = nil
 		E.db.nameplates.durationFontSize = nil
 		E.db.nameplates.durationFontOutline = nil
+	end
+	
+	if not E.db.chat.panelColorConverted then
+		local color = E.db.general.backdropfadecolor
+		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
+		E.db.chat.panelColorConverted = true
 	end
 end
 

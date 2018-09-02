@@ -704,7 +704,8 @@ Used to create nameplates and apply the currently active style to them.
 * self      - the global oUF object
 * prefix    - prefix for the global name of the nameplate. Defaults to an auto-generated prefix (string?)
 * callback  - function to be called after a nameplate unit or the player's target has changed. The arguments passed to
-              the callback are the updated nameplate, the event that triggered the update and the new unit (function?)
+              the callback are the updated nameplate, if any, the event that triggered the update, and the new unit
+              (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
 --]]
 function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
@@ -749,12 +750,12 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
 			local nameplate = C_NamePlate.GetNamePlateForUnit('target')
-			if(not nameplate) then return end
-
-			nameplate.unitFrame:UpdateAllElements(event)
+			if(nameplate) then
+				nameplate.unitFrame:UpdateAllElements(event)
+			end
 
 			if(nameplateCallback) then
-				nameplateCallback(nameplate.unitFrame, event, 'target')
+				nameplateCallback(nameplate and nameplate.unitFrame, event, 'target')
 			end
 		elseif(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)

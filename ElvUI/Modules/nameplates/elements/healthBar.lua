@@ -23,6 +23,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local C_Timer_After = C_Timer.After
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_HealthColor(frame)
@@ -211,6 +212,12 @@ function mod:UpdateElement_HealPrediction(frame)
 	mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, absorb);
 end
 
+function mod:UpdateElement_CutawayHealthFadeOut(frame)
+	local cutawayHealth = frame.CutawayHealth;
+	cutawayHealth.fading = true;
+	E:UIFrameFadeOut(cutawayHealth, self.db.cutawayHealthFadeOutTime, cutawayHealth:GetAlpha(), 0);
+	cutawayHealth.isPlaying = nil;
+end
 
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
@@ -218,42 +225,29 @@ function mod:UpdateElement_MaxHealth(frame)
 	frame.CutawayHealth:SetMinMaxValues(0, maxHealth)
 end
 
-function mod:UpdateElement_CutawayHealth(cutawayHealth, elapsed)
-	local healthBar = cutawayHealth.owningFrame.HealthBar;
-
-	local health = healthBar:GetValue();
-	local _, maxHealth = healthBar:GetMinMaxValues();
-
-	cutawayHealth.elapsed = (cutawayHealth.elapsed or 0) + elapsed;
-	if (cutawayHealth.elapsed > .4) then
-		local changePerc = ((cutawayHealth.value - health) / maxHealth) / (3 * (health / maxHealth));
-		cutawayHealth.value = cutawayHealth.value - (cutawayHealth.value * changePerc);
-		cutawayHealth:SetValue(cutawayHealth.value);
-		if (cutawayHealth.value < health) then
-			cutawayHealth.value = nil;
-			cutawayHealth.isPlaying = nil;
-			cutawayHealth:SetScript('OnUpdate', nil);
-			cutawayHealth:Hide();
-			return;
-		end
-		cutawayHealth.elapsed = 0;
-	end
+local function CutawayHealthClosure(frame)
+	return function() mod:UpdateElement_CutawayHealthFadeOut(frame) end;
 end
-
-mod.CutawayHealth_OnUpdate = function(self, elapsed) mod:UpdateElement_CutawayHealth(self, elapsed) end
 
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
 
-	if self.db.cutawayHealth then
+	if self.db.cutawayHealth and not UnitIsTapDenied(frame.displayedUnit) then
 		local oldValue = frame.HealthBar:GetValue();
 		local change = oldValue - health;
 		if (change > 0 and not frame.CutawayHealth.isPlaying) then
 			local cutawayHealth = frame.CutawayHealth;
+			if (cutawayHealth.fading) then
+				E:UIFrameFadeRemoveFrame(cutawayHealth);
+			end
+			cutawayHealth.fading = false;
 			cutawayHealth:SetValue(oldValue);
-			cutawayHealth.value = oldValue;
-			cutawayHealth:SetScript('OnUpdate', mod.CutawayHealth_OnUpdate);
+			cutawayHealth:SetAlpha(1);
+			if (not cutawayHealth.closure) then
+				cutawayHealth.closure = CutawayHealthClosure(frame);
+			end
+			C_Timer_After(self.db.cutawayHealthLength, cutawayHealth.closure);
 			cutawayHealth.isPlaying = true;
 			cutawayHealth:Show();
 		end
@@ -335,7 +329,6 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.CutawayHealth = CreateFrame("StatusBar", "$parentCutawayHealth", frame)
 	parent.CutawayHealth:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.CutawayHealth:SetFrameLevel(frame:GetFrameLevel() - 1);
-	parent.CutawayHealth.owningFrame = parent;
 
 	parent.FlashTexture = frame:CreateTexture(nil, "OVERLAY")
 	parent.FlashTexture:SetTexture(LSM:Fetch("background", "ElvUI Blank"))

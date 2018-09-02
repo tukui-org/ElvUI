@@ -113,8 +113,22 @@ E.Options.args.bags = {
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
-				countGroup = {
+				strata = {
 					order = 12,
+					type = "select",
+					name = L["Frame Strata"],
+					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					values = {
+						["BACKGROUND"] = "BACKGROUND",
+						["LOW"] = "LOW",
+						["MEDIUM"] = "MEDIUM",
+						["HIGH"] = "HIGH",
+						["DIALOG"] = "DIALOG",
+						["TOOLTIP"] = "TOOLTIP",
+					},
+				},
+				countGroup = {
+					order = 13,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -164,7 +178,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 13,
+					order = 14,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,

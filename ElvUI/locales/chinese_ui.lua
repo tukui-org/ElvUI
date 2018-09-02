@@ -252,7 +252,6 @@ L["Bags"] = "背包" --Also in DataTexts
 L["Bank Mover (Grow Down)"] = "银行框架(向下)"
 L["Bank Mover (Grow Up)"] = "银行框架(向上)"
 L["Bar "] = "动作条 " --Also in ActionBars
-L["BelowMinimapContainer"] = true
 L["BNet Frame"] = "战网提示信息"
 L["Boss Button"] = "特殊技能键"
 L["Boss Frames"] = "首领框架"
@@ -299,7 +298,8 @@ L["Target Powerbar"] = "目标能量条"
 L["TargetTarget Frame"] = "目标的目标框架"
 L["TargetTargetTarget Frame"] = "目标的目标的目标框架"
 L["Tooltip"] = "鼠标提示"
-L["TopCenterContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = true
+L["UIWidgetTopContainer"] = true
 L["Vehicle Seat Frame"] = "载具座位框"
 L["Zone Ability"] = "区域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.

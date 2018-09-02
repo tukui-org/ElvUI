@@ -370,13 +370,29 @@ E.Options.args.chat = {
 					end,
 					min = 50, max = 1000, step = 1,
 				},
-				spacer2 = {
+				panelColor = {
 					order = 10,
+					type = "color",
+					name = L["Backdrop Color"],
+					hasAlpha = true,
+					get = function(info)
+						local t = E.db.chat.panelColor
+						local d = P.chat.panelColor
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+					end,
+					set = function(info, r, g, b, a)
+						local t = E.db.chat.panelColor
+						t.r, t.g, t.b, t.a = r, g, b, a
+						CH:Panels_ColorUpdate()
+					end,
+				},
+				spacer2 = {
+					order = 15,
 					type = 'description',
 					name = '',
 				},
 				panelHeightRight = {
-					order = 11,
+					order = 16,
 					type = 'range',
 					name = L["Right Panel Height"],
 					desc = L["Adjust the height of your right chat panel."],
@@ -386,7 +402,7 @@ E.Options.args.chat = {
 					min = 60, max = 600, step = 1,
 				},
 				panelWidthRight = {
-					order = 12,
+					order = 17,
 					type = 'range',
 					name = L["Right Panel Width"],
 					desc = L["Adjust the width of your right chat panel."],
@@ -400,7 +416,7 @@ E.Options.args.chat = {
 					min = 50, max = 1000, step = 1,
 				},
 				panelBackdropNameLeft = {
-					order = 13,
+					order = 18,
 					type = 'input',
 					width = 'full',
 					name = L["Panel Texture (Left)"],
@@ -411,7 +427,7 @@ E.Options.args.chat = {
 					end,
 				},
 				panelBackdropNameRight = {
-					order = 14,
+					order = 19,
 					type = 'input',
 					width = 'full',
 					name = L["Panel Texture (Right)"],

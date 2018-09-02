@@ -54,6 +54,12 @@ local function LoadSkin()
 			button.styled = true
 		end
 	end
+	
+	-- Temp mover
+	MachineFrame:SetMovable(true)
+	MachineFrame:RegisterForDrag("LeftButton")
+	MachineFrame:SetScript("OnDragStart", function(self) self:StartMoving() end)
+	MachineFrame:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
 end
 
 S:AddCallbackForAddon('Blizzard_ScrappingMachineUI', "ScrappingMachine", LoadSkin)

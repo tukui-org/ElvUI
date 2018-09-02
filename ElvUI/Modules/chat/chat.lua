@@ -892,7 +892,15 @@ function CH:PositionChat(override)
 		end
 	end
 
+	E.Layout:RepositionChatDataPanels() --Bugfix: #686
+
 	self.initialMove = true;
+end
+
+function CH:Panels_ColorUpdate()
+	local panelColor = E.db.chat.panelColor
+	LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+	RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 end
 
 local function UpdateChatTabColor(_, r, g, b)
@@ -2572,6 +2580,7 @@ function CH:Initialize()
 	end
 
 	self:SetChatHeadOrientation("TOP")
+	self:Panels_ColorUpdate()
 end
 
 CH.TalkingList = {}

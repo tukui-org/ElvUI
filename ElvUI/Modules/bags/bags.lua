@@ -21,6 +21,7 @@ local CreateFrame = CreateFrame
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
+local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
@@ -455,6 +456,10 @@ function B:UpdateSlot(bagID, slotID)
 	if(slot.questIcon) then
 		slot.questIcon:Hide();
 	end
+	
+	if(slot.Azerite) then
+		slot.Azerite:Hide();
+	end
 
 	if (slot.JunkIcon) then
 		if (slot.rarity) and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
@@ -514,6 +519,7 @@ function B:UpdateSlot(bagID, slotID)
 			slot.newItemGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
+			if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
 		elseif B.AssignmentColors[assignedBag] then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
@@ -889,6 +895,14 @@ function B:Layout(isBank)
 						JunkIcon:Point("TOPLEFT", 1, 0)
 						JunkIcon:Hide()
 						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
+					if not f.Bags[bagID][slotID].Azerite then
+						f.Bags[bagID][slotID].Azerite = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						f.Bags[bagID][slotID].Azerite:SetAtlas("AzeriteIconFrame")
+						f.Bags[bagID][slotID].Azerite:SetTexCoord(0,1,0,1);
+						f.Bags[bagID][slotID].Azerite:SetInside();
+						f.Bags[bagID][slotID].Azerite:Hide();
 					end
 
 					f.Bags[bagID][slotID].iconTexture = _G[f.Bags[bagID][slotID]:GetName()..'IconTexture'];
@@ -1316,9 +1330,11 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
+	local strata = E.db.bags.strata or 'HIGH'
+
 	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
-	f:SetFrameStrata('MEDIUM');
+	f:SetFrameStrata(strata);
 	f.UpdateSlot = B.UpdateSlot;
 	f.UpdateAllSlots = B.UpdateAllSlots;
 	f.UpdateBagSlots = B.UpdateBagSlots;

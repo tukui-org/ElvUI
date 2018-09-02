@@ -1,15 +1,15 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
+local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Cache global variables
 --Lua functions
-local print, unpack, select, pairs = print, unpack, select, pairs
+local print, unpack, select = print, unpack, select
 local lower = string.lower
 --WoW API / Variables
 local GetSpellInfo = GetSpellInfo
-local UnitClass, IsEquippedItem = UnitClass, IsEquippedItem
+local IsPlayerSpell, UnitClass = IsPlayerSpell, UnitClass
 
 local function SpellName(id)
-	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
+	local name = GetSpellInfo(id)
 	if not name then
 		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
 		return 'Impale'
@@ -305,7 +305,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	--Racial
 		[65116]  = Defaults(), -- Stoneform
 	--Potion
-		[188029] = Defaults(), -- Unbending Potion (Legion Armor Potion)
+		[251231] = Defaults(), -- Steelskin Potion (BfA Armor Potion)
 	},
 }
 
@@ -579,12 +579,15 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[68992] = Defaults(), -- Darkflight
 		[58984] = Defaults(), -- Shadowmeld
 	--Consumables
-		[188029] = Defaults(), -- Unbending Potion (Legion Armor)
-		[188028] = Defaults(), -- Potion of the Old War (Legion Melee)
-		[188027] = Defaults(), -- Potion of Deadly Grace (Legion Caster)
-		[229206] = Defaults(), -- Potion of Prolonged Power (Legion)
+		[251231] = Defaults(), -- Steelskin Potion (BfA Armor)
+		[251316] = Defaults(), -- Potion of Bursting Blood (BfA Melee)
+		[269853] = Defaults(), -- Potion of Rising Death (BfA Caster)
+		[279151] = Defaults(), -- Battle Potion of Intellect (BfA Intellect)
+		[279152] = Defaults(), -- Battle Potion of Agility (BfA Agility)
+		[279153] = Defaults(), -- Battle Potion of Strength (BfA Strength)
 		[178207] = Defaults(), -- Drums of Fury
-		[230935] = Defaults(), -- Drums of the Mountain
+		[230935] = Defaults(), -- Drums of the Mountain (Legion)
+		[256740] = Defaults(), -- Drums of the Maelstrom (BfA)
 	},
 }
 
@@ -639,8 +642,6 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[33206]  = Defaults(), -- Pain Suppression
 		[116849] = Defaults(), -- Life Cocoon
 		[22812]  = Defaults(), -- Barkskin
-		[192132] = Defaults(), -- Mystic Empowerment: Thunder (Hyrja, Halls of Valor)
-		[192133] = Defaults(), -- Mystic Empowerment: Holy (Hyrja, Halls of Valor)
 	},
 }
 
@@ -648,504 +649,18 @@ G.unitframe.aurafilters['Whitelist'] = {
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-	-- Legion
-	-- Antorus, the Burning Throne
-		-- Garothi Worldbreaker
-		[244590] = Defaults(), -- Molten Hot Fel
-		[244761] = Defaults(), -- Annihilation
-		[246920] = Defaults(), -- Haywire Decimation
-		[246369] = Defaults(), -- Searing Barrage
-		[246848] = Defaults(), -- Luring Destruction
-		[246220] = Defaults(), -- Fel Bombardment
-		[247159] = Defaults(), -- Luring Destruction
-		[244122] = Defaults(), -- Carnage
-		[244410] = Defaults(), -- Decimation
-		[245294] = Defaults(), -- Empowered Decimation
-		[246368] = Defaults(), -- Searing Barrage
-
-		-- Felhounds of Sargeras
-		[245022] = Defaults(), -- Burning Remnant
-		[251445] = Defaults(), -- Smouldering
-		[251448] = Defaults(), -- Burning Maw
-		[244086] = Defaults(), -- Molten Touch
-		[244091] = Defaults(), -- Singed
-		[244768] = Defaults(), -- Desolate Gaze
-		[244767] = Defaults(), -- Desolate Path
-		[244471] = Defaults(), -- Enflame Corruption
-		[248815] = Defaults(), -- Enflamed
-		[244517] = Defaults(), -- Lingering Flames
-		[245098] = Defaults(), -- Decay
-		[251447] = Defaults(), -- Corrupting Maw
-		[244131] = Defaults(), -- Consuming Sphere
-		[245024] = Defaults(), -- Consumed
-		[244071] = Defaults(), -- Weight of Darkness
-		[244578] = Defaults(), -- Siphon Corruption
-		[248819] = Defaults(), -- Siphoned
-		[254429] = Defaults(), -- Weight of Darkness
-		[244072] = Defaults(), -- Molten Touch
-
-		-- Antoran High Command
-		[245121] = Defaults(), -- Entropic Blast
-		[244748] = Defaults(), -- Shocked
-		[244824] = Defaults(), -- Warp Field
-		[244892] = Defaults(), -- Exploit Weakness
-		[244172] = Defaults(), -- Psychic Assault
-		[244388] = Defaults(), -- Psychic Scarring
-		[244420] = Defaults(), -- Chaos Pulse
-		[254771] = Defaults(), -- Disruption Field
-		[257974] = Defaults(), -- Chaos Pulse
-		[244910] = Defaults(), -- Felshield
-		[244737] = Defaults(), -- Shock Grenade
-
-		-- Portal Keeper Hasabel
-		[244016] = Defaults(), -- Reality Tear
-		[245157] = Defaults(), -- Everburning Light
-		[245075] = Defaults(), -- Hungering Gloom
-		[245240] = Defaults(), -- Oppressive Gloom
-		[244709] = Defaults(), -- Fiery Detonation
-		[246208] = Defaults(), -- Acidic Web
-		[246075] = Defaults(), -- Catastrophic Implosion
-		[244826] = Defaults(), -- Fel Miasma
-		[246316] = Defaults(), -- Poison Essence
-		[244849] = Defaults(), -- Caustic Slime
-		[245118] = Defaults(), -- Cloying Shadows
-		[245050] = Defaults(), -- Delusions
-		[245040] = Defaults(), -- Corrupt
-		[244607] = Defaults(), -- Flames of Xoroth
-		[244915] = Defaults(), -- Leech Essence
-		[244926] = Defaults(), -- Felsilk Wrap
-		[244949] = Defaults(), -- Felsilk Wrap
-		[244613] = Defaults(), -- Everburning Flames
-
-		-- Eonar the Life-Binder
-		[248326] = Defaults(), -- Rain of Fel
-		[248861] = Defaults(), -- Spear of Doom
-		[249016] = Defaults(), -- Feedback - Targeted
-		[249015] = Defaults(), -- Feedback - Burning Embers
-		[249014] = Defaults(), -- Feedback - Foul Steps
-		[249017] = Defaults(), -- Feedback - Arcane Singularity
-		[250693] = Defaults(), -- Arcane Buildup
-		[250691] = Defaults(), -- Burning Embers
-		[248795] = Defaults(), -- Fel Wake
-		[248332] = Defaults(), -- Rain of Fel
-		[250140] = Defaults(), -- Foul Steps
-
-		-- Imonar the Soulhunter
-		[248424] = Defaults(), -- Gathering Power
-		[247552] = Defaults(), -- Sleep Canister
-		[247565] = Defaults(), -- Slumber Gas
-		[250224] = Defaults(), -- Shocked
-		[248252] = Defaults(), -- Infernal Rockets
-		[247687] = Defaults(), -- Sever
-		[247716] = Defaults(), -- Charged Blasts
-		[247367] = Defaults(), -- Shock Lance
-		[250255] = Defaults(), -- Empowered Shock Lance
-		[247641] = Defaults(), -- Stasis Trap
-		[255029] = Defaults(), -- Sleep Canister
-		[248321] = Defaults(), -- Conflagration
-		[247932] = Defaults(), -- Shrapnel Blast
-		[248070] = Defaults(), -- Empowered Shrapnel Blast
-		[254183] = Defaults(), -- Seared Skin
-
-		-- Kin'garoth
-		[244312] = Defaults(), -- Forging Strike
-		[254919] = Defaults(), -- Forging Strike
-		[246840] = Defaults(), -- Ruiner
-		[248061] = Defaults(), -- Purging Protocol
-		[249686] = Defaults(), -- Reverberating Decimation
-		[246706] = Defaults(), -- Demolish
-		[246698] = Defaults(), -- Demolish
-		[245919] = Defaults(), -- Meteor Swarm
-		[245770] = Defaults(), -- Decimation
-
-		-- Varimathras
-		[244042] = Defaults(), -- Marked Prey
-		[243961] = Defaults(), -- Misery
-		[248732] = Defaults(), -- Echoes of Doom
-		[243973] = Defaults(), -- Torment of Shadows
-		[244005] = Defaults(), -- Dark Fissure
-		[244093] = Defaults(), -- Necrotic Embrace
-		[244094] = Defaults(), -- Necrotic Embrace
-
-		-- The Coven of Shivarra
-		[244899] = Defaults(), -- Fiery Strike
-		[245518] = Defaults(), -- Flashfreeze
-		[245586] = Defaults(), -- Chilled Blood
-		[246763] = Defaults(), -- Fury of Golganneth
-		[245674] = Defaults(), -- Flames of Khaz'goroth
-		[245671] = Defaults(), -- Flames of Khaz'goroth
-		[245910] = Defaults(), -- Spectral Army of Norgannon
-		[253520] = Defaults(), -- Fulminating Pulse
-		[245634] = Defaults(), -- Whirling Saber
-		[253020] = Defaults(), -- Storm of Darkness
-		[245921] = Defaults(), -- Spectral Army of Norgannon
-		[250757] = Defaults(), -- Cosmic Glare
-
-		-- Aggramar
-		[244291] = Defaults(), -- Foe Breaker
-		[255060] = Defaults(), -- Empowered Foe Breaker
-		[245995] = Defaults(), -- Scorching Blaze
-		[246014] = Defaults(), -- Searing Tempest
-		[244912] = Defaults(), -- Blazing Eruption
-		[247135] = Defaults(), -- Scorched Earth
-		[247091] = Defaults(), -- Catalyzed
-		[245631] = Defaults(), -- Unchecked Flame
-		[245916] = Defaults(), -- Molten Remnants
-		[245990] = Defaults(), -- Taeshalach's Reach
-		[254452] = Defaults(), -- Ravenous Blaze
-		[244736] = Defaults(), -- Wake of Flame
-		[247079] = Defaults(), -- Empowered Flame Rend
-
-		-- Argus the Unmaker
-		[251815] = Defaults(), -- Edge of Obliteration
-		[248499] = Defaults(), -- Sweeping Scythe
-		[250669] = Defaults(), -- Soulburst
-		[251570] = Defaults(), -- Soulbomb
-		[248396] = Defaults(), -- Soulblight
-		[258039] = Defaults(), -- Deadly Scythe
-		[252729] = Defaults(), -- Cosmic Ray
-		[256899] = Defaults(), -- Soul Detonation
-		[252634] = Defaults(), -- Cosmic Smash
-		[252616] = Defaults(), -- Cosmic Beacon
-		[255200] = Defaults(), -- Aggramar's Boon
-		[255199] = Defaults(), -- Avatar of Aggramar
-		[258647] = Defaults(), -- Gift of the Sea
-		[253901] = Defaults(), -- Strength of the Sea
-		[257299] = Defaults(), -- Ember of Rage
-		[248167] = Defaults(), -- Death Fog
-		[258646] = Defaults(), -- Gift of the Sky
-		[253903] = Defaults(), -- Strength of the Sky
-
-	-- Tomb of Sargeras
-		-- Goroth
-		[233279] = Defaults(), -- Shattering Star
-		[230345] = Defaults(), -- Crashing Comet (Dot)
-		[232249] = Defaults(), -- Crashing Comet
-		[231363] = Defaults(), -- Burning Armor
-		[234264] = Defaults(), -- Melted Armor
-		[233062] = Defaults(), -- Infernal Burning
-		[230348] = Defaults(), -- Fel Pool
-
-		-- Demonic Inquisition
-		[233430] = Defaults(), -- Ubearable Torment
-		[233983] = Defaults(), -- Echoing Anguish
-		[248713] = Defaults(), -- Soul Corruption
-
-		-- Harjatan
-		[231770] = Defaults(), -- Drenched
-		[231998] = Defaults(), -- Jagged Abrasion
-		[231729] = Defaults(), -- Aqueous Burst
-		[234128] = Defaults(), -- Driven Assault
-		[234016] = Defaults(), -- Driven Assault
-
-		-- Sisters of the Moon
-		[236603] = Defaults(), -- Rapid Shot
-		[236596] = Defaults(), -- Rapid Shot
-		[234995] = Defaults(), -- Lunar Suffusion
-		[234996] = Defaults(), -- Umbra Suffusion
-		[236519] = Defaults(), -- Moon Burn
-		[236697] = Defaults(), -- Deathly Screech
-		[239264] = Defaults(), -- Lunar Flare (Tank)
-		[236712] = Defaults(), -- Lunar Beacon
-		[236304] = Defaults(), -- Incorporeal Shot
-		[236305] = Defaults(), -- Incorporeal Shot (Heroic)
-		[236306] = Defaults(), -- Incorporeal Shot
-		[237570] = Defaults(), -- Incorporeal Shot
-		[248911] = Defaults(), -- Incorporeal Shot
-		[236550] = Defaults(), -- Discorporate (Tank)
-		[236330] = Defaults(), -- Astral Vulnerability
-		[236529] = Defaults(), -- Twilight Glaive
-		[236541] = Defaults(), -- Twilight Glaive
-		[237561] = Defaults(), -- Twilight Glaive (Heroic)
-		[237633] = Defaults(), -- Spectral Glaive
-		[233263] = Defaults(), -- Embrace of the Eclipse
-
-		-- Mistress Sassz'ine
-		[230959] = Defaults(), -- Concealing Murk
-		[232732] = Defaults(), -- Slicing Tornado
-		[232913] = Defaults(), -- Befouling Ink
-		[234621] = Defaults(), -- Devouring Maw
-		[230201] = Defaults(), -- Burden of Pain (Tank)
-		[230139] = Defaults(), -- Hydra Shot
-		[232754] = Defaults(), -- Hydra Acid
-		[230920] = Defaults(), -- Consuming Hunger
-		[230358] = Defaults(), -- Thundering Shock
-		[230362] = Defaults(), -- Thundering Shock
-
-		-- The Desolate Host
-		[236072] = Defaults(), -- Wailing Souls
-		[236449] = Defaults(), -- Soulbind
-		[236515] = Defaults(), -- Shattering Scream
-		[235989] = Defaults(), -- Tormented Cries
-		[236241] = Defaults(), -- Soul Rot
-		[236361] = Defaults(), -- Spirit Chains
-		[235968] = Defaults(), -- Grasping Darkness
-
-		-- Maiden of Vigilance
-		[235117] = Defaults(), -- Unstable Soul
-		[240209] = Defaults(), -- Unstable Soul
-		[243276] = Defaults(), -- Unstable Soul
-		[249912] = Defaults(), -- Unstable Soul
-		[235534] = Defaults(), -- Creator's Grace
-		[235538] = Defaults(), -- Demon's Vigor
-		[234891] = Defaults(), -- Wrath of the Creators
-		[235569] = Defaults(), -- Hammer of Creation
-		[235573] = Defaults(), -- Hammer of Obliteration
-		[235213] = Defaults(), -- Light Infusion
-		[235240] = Defaults(), -- Fel Infusion
-
-		-- Fallen Avatar
-		[239058] = Defaults(), -- Touch of Sargeras
-		[239739] = Defaults(), -- Dark Mark
-		[234059] = Defaults(), -- Unbound Chaos
-		[240213] = Defaults(), -- Chaos Flames
-		[236604] = Defaults(), -- Shadowy Blades
-		[236494] = Defaults(), -- Desolate (Tank)
-		[240728] = Defaults(), -- Tainted Essence
-
-		-- Kil'jaeden
-		[238999] = Defaults(), -- Darkness of a Thousand Souls
-		[239216] = Defaults(), -- Darkness of a Thousand Souls (Dot)
-		[239155] = Defaults(), -- Gravity Squeeze
-		[234295] = Defaults(), -- Armageddon Rain
-		[240908] = Defaults(), -- Armageddon Blast
-		[239932] = Defaults(), -- Felclaws (Tank)
-		[240911] = Defaults(), -- Armageddon Hail
-		[238505] = Defaults(), -- Focused Dreadflame
-		[238429] = Defaults(), -- Bursting Dreadflame
-		[236710] = Defaults(), -- Shadow Reflection: Erupting
-		[241822] = Defaults(), -- Choking Shadow
-		[236555] = Defaults(), -- Deceiver's Veil
-		[234310] = Defaults(), -- Armageddon Rain
-
-	-- The Nighthold
-		-- Skorpyron
-		[204766] = Defaults(), -- Energy Surge
-		[214718] = Defaults(), -- Acidic Fragments
-		[211801] = Defaults(), -- Volatile Fragments
-		[204284] = Defaults(), -- Broken Shard (Protection)
-		[204275] = Defaults(), -- Arcanoslash (Tank)
-		[211659] = Defaults(), -- Arcane Tether (Tank debuff)
-		[204483] = Defaults(), -- Focused Blast (Stun)
-
-		-- Chronomatic Anomaly
-		[206607] = Defaults(), -- Chronometric Particles (Tank stack debuff)
-		[206609] = Defaults(), -- Time Release (Heal buff/debuff)
-		[219966] = Defaults(), -- Time Release (Heal Absorb Red)
-		[219965] = Defaults(), -- Time Release (Heal Absorb Yellow)
-		[219964] = Defaults(), -- Time Release (Heal Absorb Green)
-		[205653] = Defaults(), -- Passage of Time
-		[207871] = Defaults(), -- Vortex (Mythic)
-		[212099] = Defaults(), -- Temporal Charge
-
-		-- Trilliax
-		[206488] = Defaults(), -- Arcane Seepage
-		[206641] = Defaults(), -- Arcane Spear (Tank)
-		[206798] = Defaults(), -- Toxic Slice
-		[214672] = Defaults(), -- Annihilation
-		[214573] = Defaults(), -- Stuffed
-		[214583] = Defaults(), -- Sterilize
-		[208910] = Defaults(), -- Arcing Bonds
-		[206838] = Defaults(), -- Succulent Feast
-
-		-- Spellblade Aluriel
-		[212492] = Defaults(), -- Annihilate (Tank)
-		[212494] = Defaults(), -- Annihilated (Main Tank debuff)
-		[212587] = Defaults(), -- Mark of Frost
-		[212531] = Defaults(), -- Mark of Frost (marked)
-		[212530] = Defaults(), -- Replicate: Mark of Frost
-		[212647] = Defaults(), -- Frostbitten
-		[212736] = Defaults(), -- Pool of Frost
-		[213085] = Defaults(), -- Frozen Tempest
-		[213621] = Defaults(), -- Entombed in Ice
-		[213148] = Defaults(), -- Searing Brand Chosen
-		[213181] = Defaults(), -- Searing Brand Stunned
-		[213166] = Defaults(), -- Searing Brand
-		[213278] = Defaults(), -- Burning Ground
-		[213504] = Defaults(), -- Arcane Fog
-
-		-- Tichondrius
-		[206480] = Defaults(), -- Carrion Plague
-		[215988] = Defaults(), -- Carrion Nightmare
-		[208230] = Defaults(), -- Feast of Blood
-		[212794] = Defaults(), -- Brand of Argus
-		[216685] = Defaults(), -- Flames of Argus
-		[206311] = Defaults(), -- Illusionary Night
-		[206466] = Defaults(), -- Essence of Night
-		[216024] = Defaults(), -- Volatile Wound
-		[216027] = Defaults(), -- Nether Zone
-		[216039] = Defaults(), -- Fel Storm
-		[216726] = Defaults(), -- Ring of Shadows
-		[216040] = Defaults(), -- Burning Soul
-
-		-- Krosus
-		[206677] = Defaults(), -- Searing Brand
-		[205344] = Defaults(), -- Orb of Destruction
-
-		-- High Botanist Tel'arn
-		[218503] = Defaults(), -- Recursive Strikes (Tank)
-		[219235] = Defaults(), -- Toxic Spores
-		[218809] = Defaults(), -- Call of Night
-		[218342] = Defaults(), -- Parasitic Fixate
-		[218304] = Defaults(), -- Parasitic Fetter
-		[218780] = Defaults(), -- Plasma Explosion
-
-		-- Star Augur Etraeus
-		[205984] = Defaults(), -- Gravitaional Pull
-		[214167] = Defaults(), -- Gravitaional Pull
-		[214335] = Defaults(), -- Gravitaional Pull
-		[206936] = Defaults(), -- Icy Ejection
-		[206388] = Defaults(), -- Felburst
-		[206585] = Defaults(), -- Absolute Zero
-		[206398] = Defaults(), -- Felflame
-		[206589] = Defaults(), -- Chilled
-		[205649] = Defaults(), -- Fel Ejection
-		[206965] = Defaults(), -- Voidburst
-		[206464] = Defaults(), -- Coronal Ejection
-		[207143] = Defaults(), -- Void Ejection
-		[206603] = Defaults(), -- Frozen Solid
-		[207720] = Defaults(), -- Witness the Void
-		[216697] = Defaults(), -- Frigid Pulse
-
-		-- Grand Magistrix Elisande
-		[209166] = Defaults(), -- Fast Time
-		[211887] = Defaults(), -- Ablated
-		[209615] = Defaults(), -- Ablation
-		[209244] = Defaults(), -- Delphuric Beam
-		[209165] = Defaults(), -- Slow Time
-		[209598] = Defaults(), -- Conflexive Burst
-		[209433] = Defaults(), -- Spanning Singularity
-		[209973] = Defaults(), -- Ablating Explosion
-		[209549] = Defaults(), -- Lingering Burn
-		[211261] = Defaults(), -- Permaliative Torment
-		[208659] = Defaults(), -- Arcanetic Ring
-
-		-- Gul'dan
-		[210339] = Defaults(), -- Time Dilation
-		[180079] = Defaults(), -- Felfire Munitions
-		[206875] = Defaults(), -- Fel Obelisk (Tank)
-		[206840] = Defaults(), -- Gaze of Vethriz
-		[206896] = Defaults(), -- Torn Soul
-		[206221] = Defaults(), -- Empowered Bonds of Fel
-		[208802] = Defaults(), -- Soul Corrosion
-		[212686] = Defaults(), -- Flames of Sargeras
-
-	-- The Emerald Nightmare
-		-- Nythendra
-		[204504] = Defaults(), -- Infested
-		[205043] = Defaults(), -- Infested mind
-		[203096] = Defaults(), -- Rot
-		[204463] = Defaults(), -- Volatile Rot
-		[203045] = Defaults(), -- Infested Ground
-		[203646] = Defaults(), -- Burst of Corruption
-
-		-- Elerethe Renferal
-		[210228] = Defaults(), -- Dripping Fangs
-		[215307] = Defaults(), -- Web of Pain
-		[215300] = Defaults(), -- Web of Pain
-		[215460] = Defaults(), -- Necrotic Venom
-		[213124] = Defaults(), -- Venomous Pool
-		[210850] = Defaults(), -- Twisting Shadows
-		[215489] = Defaults(), -- Venomous Pool
-		[218519] = Defaults(), -- Wind Burn (Mythic)
-
-		-- Il'gynoth, Heart of the Corruption
-		[208929] = Defaults(),  -- Spew Corruption
-		[210984] = Defaults(),  -- Eye of Fate
-		[209469] = Defaults(5), -- Touch of Corruption
-		[208697] = Defaults(),  -- Mind Flay
-		[215143] = Defaults(),  -- Cursed Blood
-
-		-- Ursoc
-		[198108] = Defaults(), -- Unbalanced
-		[197943] = Defaults(), -- Overwhelm
-		[204859] = Defaults(), -- Rend Flesh
-		[205611] = Defaults(), -- Miasma
-		[198006] = Defaults(), -- Focused Gaze
-		[197980] = Defaults(), -- Nightmarish Cacophony
-
-		-- Dragons of Nightmare
-		[203102] = Defaults(),  -- Mark of Ysondre
-		[203121] = Defaults(),  -- Mark of Taerar
-		[203125] = Defaults(),  -- Mark of Emeriss
-		[203124] = Defaults(),  -- Mark of Lethon
-		[204731] = Defaults(5), -- Wasting Dread
-		[203110] = Defaults(5), -- Slumbering Nightmare
-		[207681] = Defaults(5), -- Nightmare Bloom
-		[205341] = Defaults(5), -- Sleeping Fog
-		[203770] = Defaults(5), -- Defiled Vines
-		[203787] = Defaults(5), -- Volatile Infection
-
-		-- Cenarius
-		[210279] = Defaults(), -- Creeping Nightmares
-		[213162] = Defaults(), -- Nightmare Blast
-		[210315] = Defaults(), -- Nightmare Brambles
-		[212681] = Defaults(), -- Cleansed Ground
-		[211507] = Defaults(), -- Nightmare Javelin
-		[211471] = Defaults(), -- Scorned Touch
-		[211612] = Defaults(), -- Replenishing Roots
-		[216516] = Defaults(), -- Ancient Dream
-
-		-- Xavius
-		[206005] = Defaults(), -- Dream Simulacrum
-		[206651] = Defaults(), -- Darkening Soul
-		[209158] = Defaults(), -- Blackening Soul
-		[211802] = Defaults(), -- Nightmare Blades
-		[206109] = Defaults(), -- Awakening to the Nightmare
-		[209034] = Defaults(), -- Bonds of Terror
-		[210451] = Defaults(), -- Bonds of Terror
-		[208431] = Defaults(), -- Corruption: Descent into Madness
-		[207409] = Defaults(), -- Madness
-		[211634] = Defaults(), -- The Infinite Dark
-		[208385] = Defaults(), -- Tainted Discharge
-
-	-- Trial of Valor
-		-- Odyn
-		[227959] = Defaults(), -- Storm of Justice
-		[227807] = Defaults(), -- Storm of Justice
-		[227475] = Defaults(), -- Cleansing Flame
-		[192044] = Defaults(), -- Expel Light
-		[228030] = Defaults(), -- Expel Light
-		[227781] = Defaults(), -- Glowing Fragment
-		[228918] = Defaults(), -- Stormforged Spear
-		[227490] = Defaults(), -- Branded
-		[227491] = Defaults(), -- Branded
-		[227498] = Defaults(), -- Branded
-		[227499] = Defaults(), -- Branded
-		[227500] = Defaults(), -- Branded
-		[231297] = Defaults(), -- Runic Brand (Mythic Only)
-
-		-- Guarm
-		[228228] = Defaults(), -- Flame Lick
-		[228248] = Defaults(), -- Frost Lick
-		[228253] = Defaults(), -- Shadow Lick
-		[227539] = Defaults(), -- Fiery Phlegm
-		[227566] = Defaults(), -- Salty Spittle
-		[227570] = Defaults(), -- Dark Discharge
-
-		-- Helya
-		[228883] = Defaults(5), -- Unholy Reckoning (Trash)
-		[227903] = Defaults(),  -- Orb of Corruption
-		[228058] = Defaults(),  -- Orb of Corrosion
-		[229119] = Defaults(),  -- Orb of Corrosion
-		[228054] = Defaults(),  -- Taint of the Sea
-		[193367] = Defaults(),  -- Fetid Rot
-		[227982] = Defaults(),  -- Bilewater Redox
-		[228519] = Defaults(),  -- Anchor Slam
-		[202476] = Defaults(),  -- Rabid
-		[232450] = Defaults(),  -- Corrupted Axion
-
-	-- Mythic Dungeons
-		[226303] = Defaults(), -- Piercing Shards (Neltharion's Lair)
-		[227742] = Defaults(), -- Garrote (Karazhan)
+	-- Mythic+ Dungeons
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
-		[200227] = Defaults(), -- Tangled Web
 
 	-- Battle for Azeroth
+	-- Dungeons
+		[267626] = Defaults(), -- Dessication (King's Rest)
+		[260741] = Defaults(), -- Jagged Nettles (Waycrest Manor)
+
 	-- Uldir
 		-- MOTHER
 		[268277] = Defaults(), -- Purifying Flame
@@ -1328,24 +843,14 @@ G.unitframe.ChannelTicks = {
 	[SpellName(740)]    = 4, -- Tranquility
 }
 
-local priestTier17 = {115560,115561,115562,115563,115564}
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+f:RegisterEvent("PLAYER_TALENT_UPDATE")
 f:SetScript("OnEvent", function()
 	local class = select(2, UnitClass("player"))
 	if lower(class) ~= "priest" then return; end
 
-	local penanceTicks = 3
-	local equippedPriestTier17 = 0
-	for _, item in pairs(priestTier17) do
-		if IsEquippedItem(item) then
-			equippedPriestTier17 = equippedPriestTier17 + 1
-		end
-	end
-	if equippedPriestTier17 >= 2 then
-		penanceTicks = 4
-	end
+	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
 	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
 end)
 
