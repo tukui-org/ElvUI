@@ -771,6 +771,7 @@ end
 G.unitframe.buffwatch = {
 	PRIEST = {
 		[194384] = ClassBuff(194384, "TOPRIGHT", {1, 1, 0.66}),          -- Atonement
+		[214206] = ClassBuff(214206, "TOPRIGHT", {1, 1, 0.66}),          -- Atonement (PvP)
 		[41635]  = ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),     -- Prayer of Mending
 		[193065] = ClassBuff(193065, "BOTTOMRIGHT", {0.54, 0.21, 0.78}), -- Masochism
 		[139]    = ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}),        -- Renew
