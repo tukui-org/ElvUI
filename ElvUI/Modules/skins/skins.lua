@@ -1223,6 +1223,12 @@ function S:HandleWorldMapDropDownMenu(frame)
 	end
 end
 
+function S:SkinIconAndTextWidget(widgetFrame)
+end
+
+function S:SkinCaptureBarWidget(widgetFrame)
+end
+
 function S:SkinStatusBarWidget(widgetFrame)
 	local bar = widgetFrame.Bar;
 	if bar then print("bar") end
@@ -1230,8 +1236,51 @@ function S:SkinStatusBarWidget(widgetFrame)
 	bar:StripTextures()
 end
 
+function S:SkinDoubleStatusBarWidget(widgetFrame)
+end
+
+function S:SkinIconTextAndBackgroundWidget(widgetFrame)
+end
+
+function S:SkinDoubleIconAndTextWidget(widgetFrame)
+end
+
+function S:SKinStackedResourceTrackerWidget(widgetFrame)
+end
+
+function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
+end
+
+function S:SkinTextWithStateWidget(widgetFrame)
+end
+
+function S:SkinHorizontalCurrenciesWidget(widgetFrame)
+end
+
+function S:SkinBulletTextListWidget(widgetFrame)
+end
+
+function S:SkinScenarioHeaderCurrenciesAndBackgroundWidget(widgetFrame)
+end
+
+function S:SkinTextureWithStateWidget(widgetFrame)
+end
+
+local W = Enum.UIWidgetVisualizationType;
 S.WidgetSkinningFuncs = {
-	[Enum.UIWidgetVisualizationType.StatusBar] = "SkinStatusBarWidget"
+	[W.IconAndText] = "SkinIconAndTextWidget",
+	[W.CaptureBar] = "SkinCaptureBarWidget",
+	[W.StatusBar] = "SkinStatusBarWidget",
+	[W.DoubleStatusBar] = "SkinDoubleStatusBarWidget",
+	[W.IconTextAndBackground] = "SkinIconTextAndBackgroundWidget",
+	[W.DoubleIconAndText] = "SkinDoubleIconAndTextWidget",
+	[W.StackedResourceTracker] = "SKinStackedResourceTrackerWidget",
+	[W.IconTextAndCurrencies] = "SkinIconTextAndCurrenciesWidget",
+	[W.TextWithState] = "SkinTextWithStateWidget",
+	[W.HorizontalCurrencies] = "SkinHorizontalCurrenciesWidget",
+	[W.BulletTextList] = "SkinBulletTextListWidget",
+	[W.ScenarioHeaderCurrenciesAndBackground] = "SkinScenarioHeaderCurrenciesAndBackgroundWidget",
+	[W.TextureWithState] = "SkinTextureWithStateWidget"
 }
 
 function S:SkinWidgetContainer(widgetContainer)
