@@ -1231,9 +1231,19 @@ end
 
 function S:SkinStatusBarWidget(widgetFrame)
 	local bar = widgetFrame.Bar;
-	if bar then print("bar") end
-	-- skin the bar
-	bar:StripTextures()
+	if bar then
+		-- Hide StatusBar textures
+		if bar.BorderLeft then bar.BorderLeft:Hide() end
+		if bar.BorderRight then bar.BorderRight:Hide() end
+		if bar.BorderCenter then bar.BorderCenter:Hide() end
+		if bar.BGLeft then bar.BGLeft:Hide() end
+		if bar.BGRight then bar.BGRight:Hide() end
+		if bar.BGCenter then bar.BGCenter:Hide() end
+
+		bar:CreateBackdrop("Default")
+		bar.backdrop:Point("TOPLEFT", -2, 2)
+		bar.backdrop:Point("BOTTOMRIGHT", 2, -2)
+	end
 end
 
 function S:SkinDoubleStatusBarWidget(widgetFrame)
