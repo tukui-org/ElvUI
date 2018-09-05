@@ -28,8 +28,11 @@ local function LoadSkin()
 		end
 		option.ArtworkBorder:SetAlpha(0)
 	end
-	S:SkinWidgetContainer(WarboardQuestChoiceFrame.Option1.WidgetContainer)
-
+	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
+		for i = 1, 3 do
+			E:Delay(.5, function() S:SkinWidgetContainer(self["Option"..i].WidgetContainer) end);
+		end
+	end);
 
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
