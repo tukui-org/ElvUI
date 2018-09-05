@@ -1223,6 +1223,25 @@ function S:HandleWorldMapDropDownMenu(frame)
 	end
 end
 
+function S:SkinStatusBarWidget(widgetFrame)
+	local bar = widgetFrame.Bar;
+	if bar then print("bar") end
+	-- skin the bar
+	bar:StripTextures()
+end
+
+S.WidgetSkinningFuncs = {
+	[Enum.UIWidgetVisualizationType.StatusBar] = "SkinStatusBarWidget"
+}
+
+function S:SkinWidgetContainer(widgetContainer)
+	for _, child in ipairs({widgetContainer:GetChildren()}) do
+		if S.WidgetSkinningFuncs[child.widgetType] then
+			S[S.WidgetSkinningFuncs[child.widgetType]](S, child)
+		end
+	end
+end
+
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu

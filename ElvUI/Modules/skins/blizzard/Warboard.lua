@@ -28,6 +28,8 @@ local function LoadSkin()
 		end
 		option.ArtworkBorder:SetAlpha(0)
 	end
+	S:SkinWidgetContainer(WarboardQuestChoiceFrame.Option1.WidgetContainer)
+
 
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
