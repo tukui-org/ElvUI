@@ -182,7 +182,7 @@ function UF:UpdateRange()
 				self:SetAlpha(range.outsideAlpha)
 			end
 		else
-			if friendlyIsInRange(unit) and UnitIsConnected(unit) then
+			if UnitIsConnected(unit) and friendlyIsInRange(unit) then
 				self:SetAlpha(range.insideAlpha)
 			else
 				self:SetAlpha(range.outsideAlpha)
