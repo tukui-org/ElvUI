@@ -261,10 +261,10 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 			end
 
 			if frame:GetThumbTexture() then
-				if not thumbTrimY then thumbTrimY = 3 end
-				if not thumbTrimX then thumbTrimX = 2 end
 				frame:GetThumbTexture():SetTexture(nil)
 				if not frame.thumbbg then
+					if not thumbTrimY then thumbTrimY = 3 end
+					if not thumbTrimX then thumbTrimX = 2 end
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
 					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrimY)
 					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
