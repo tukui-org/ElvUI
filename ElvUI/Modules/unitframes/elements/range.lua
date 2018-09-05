@@ -104,7 +104,7 @@ local function friendlyIsInRange(unit)
 
 		if unit then
 			local inRange, checkedRange = UnitInRange(unit)
-			return (checkedRange and inRange)
+			return (not checkedRange) or inRange -- If we weren't able to check the range for some reason, we'll just treat them as in-range (for example, enemy units)
 		end
 	else
 		for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
