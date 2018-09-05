@@ -90,6 +90,11 @@ local function friendlyIsInRange(unit)
 		return false
 	end
 
+	local inRange, checkedRange = UnitInRange(unit)
+	if checkedRange and not inRange then
+		return false
+	end
+
 	if CheckInteractDistance(unit, 1) then --Inspect (28 yards)
 		return true
 	end
@@ -110,11 +115,6 @@ local function friendlyIsInRange(unit)
 				return true
 			end
 		end
-	end
-
-	local inRange, checkedRange = UnitInRange(unit)
-	if (not checkedRange) or inRange then --If we weren't able to check the range for some reason, we'll just treat them as in-range (for example, enemy units)
-		return true
 	end
 
 	return false
