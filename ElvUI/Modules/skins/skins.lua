@@ -1240,7 +1240,10 @@ function S:SkinStatusBarWidget(widgetFrame)
 		if bar.BGRight then bar.BGRight:Hide() end
 		if bar.BGCenter then bar.BGCenter:Hide() end
 
-		bar:CreateBackdrop("Default")
+		if not bar.backdrop then
+			bar:CreateBackdrop("Default")
+		end
+
 		bar.backdrop:Point("TOPLEFT", -2, 2)
 		bar.backdrop:Point("BOTTOMRIGHT", 2, -2)
 	end
