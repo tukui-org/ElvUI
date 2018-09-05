@@ -305,12 +305,11 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 			end
 
 			if frame.thumbTexture then
-				if not thumbTrim then thumbTrim = 3 end
 				frame.thumbTexture:SetTexture(nil)
 				if not frame.thumbbg then
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame.thumbTexture, "TOPLEFT", 2, -thumbTrim)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:Point("TOPLEFT", frame.thumbTexture, "TOPLEFT", 2, -3)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame.thumbTexture, "BOTTOMRIGHT", -2, 3)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then
@@ -1155,8 +1154,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 end
 
 -- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(self, templateName)
-	S[templateName](self.overlayFrames[#self.overlayFrames])
+function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
+	S[templateName](frame.overlayFrames[#frame.overlayFrames])
 end
 
 function S:HandleWorldMapDropDownMenu(frame)
