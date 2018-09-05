@@ -23,8 +23,8 @@ local function LoadSkin()
 
 	for i = 1, 3 do
 		local option = WarboardQuestChoiceFrame["Option"..i]
-		for i = 1, #option.OptionButtonsContainer.Buttons do
-			S:HandleButton(option.OptionButtonsContainer.Buttons[i])
+		for x = 1, #option.OptionButtonsContainer.Buttons do
+			S:HandleButton(option.OptionButtonsContainer.Buttons[x])
 		end
 		option.ArtworkBorder:SetAlpha(0)
 	end
