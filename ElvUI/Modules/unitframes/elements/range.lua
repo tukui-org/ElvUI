@@ -15,6 +15,7 @@ local UnitInRaid = UnitInRaid
 local UnitInRange = UnitInRange
 local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsWarModePhased = UnitIsWarModePhased
 local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Range()
@@ -85,7 +86,7 @@ local function friendlyIsInRange(unit)
 		unit = getUnit(unit) --Swap the unit with 'raid#' or 'party#' when UnitIsUnit and its not using 'raid#' or 'party#' already
 	end
 
-	if not UnitInPhase(unit) then --Different phase
+	if UnitIsWarModePhased(unit) or not UnitInPhase(unit) then --Different phase
 		return false
 	end
 
