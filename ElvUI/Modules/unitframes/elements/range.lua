@@ -101,7 +101,11 @@ local function friendlyIsInRange(unit)
 
 	if #SpellRangeTable[class].friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
 		unit = getUnit(unit)
-		return unit and UnitInRange(unit)
+
+		if unit then
+			local inRange, checkedRange = UnitInRange(unit)
+			return (checkedRange and inRange)
+		end
 	else
 		for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
 			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
