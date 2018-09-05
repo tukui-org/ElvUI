@@ -81,6 +81,10 @@ local function getUnit(unit)
 end
 
 local function friendlyIsInRange(unit)
+	if UnitInParty(unit) or UnitInRaid(unit) then
+		unit = getUnit(unit) --Swap the unit with 'raid#' or 'party#' when UnitIsUnit and its not using 'raid#' or 'party#' already
+	end
+
 	if not UnitInPhase(unit) then --Different phase
 		return false
 	end
@@ -99,19 +103,17 @@ local function friendlyIsInRange(unit)
 		return false
 	end
 
-	if #SpellRangeTable[class].friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
-		unit = getUnit(unit)
-
-		if unit then
-			local inRange, checkedRange = UnitInRange(unit)
-			return (not checkedRange) or inRange -- If we weren't able to check the range for some reason, we'll just treat them as in-range (for example, enemy units)
-		end
-	else
+	if #SpellRangeTable[class].friendlySpells > 0 then
 		for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
 			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true
 			end
 		end
+	end
+
+	local inRange, checkedRange = UnitInRange(unit)
+	if (not checkedRange) or inRange then --If we weren't able to check the range for some reason, we'll just treat them as in-range (for example, enemy units)
+		return true
 	end
 
 	return false
