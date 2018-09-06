@@ -1,4 +1,4 @@
-**Version 10.81 [  ]**
+**Version 10.82 [  ]**
 
 **New Additions:**  
 
@@ -8,6 +8,21 @@
 
 **Misc. Changes:**  
 
+
+___
+**Version 10.81 [ September 6th 2018 ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue with display of Attonement in Buff Indicators when the Trinity talent is active (#346).  
+Fixed issue with "out of range" display on UnitFrames on the Mother encounter in Uldir (#767).  
+
+
+**Misc. Changes:**  
+Added BfA Dungeon debuffs to RaidDebuff filter. Credit: Dharwin & Rubgrsch.  
+Removed T-18 4 PC Bonus from the Druid Buff Indicator.  
 
 ___
 **Version 10.80 [ September 2nd 2018 ]**
