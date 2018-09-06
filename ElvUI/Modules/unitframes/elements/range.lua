@@ -82,7 +82,7 @@ local function getUnit(unit)
 end
 
 local function friendlyIsInRange(unit)
-	if UnitInParty(unit) or UnitInRaid(unit) then
+	if (unit ~= 'player' and UnitInParty(unit)) or UnitInRaid(unit) then
 		unit = getUnit(unit) -- swap the unit with 'raid#' or 'party#' when UnitIsUnit and its not using 'raid#' or 'party#' already
 	end
 
