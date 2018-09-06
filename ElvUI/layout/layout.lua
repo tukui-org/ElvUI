@@ -400,7 +400,13 @@ function LO:CreateChatPanels()
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
-	rchattb:SetScript('OnClick', ChatButton_OnClick)
+	rchattb:SetScript('OnClick', function(self, btn)
+		if btn == "LeftButton" then
+			ChatButton_OnClick(self)
+		elseif btn == "RightButton" then
+			LO:ChatButtonPanel_OnClick(self)
+		end
+	end)
 	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
 	rchattb.text:FontTemplate()
 	rchattb.text:Point('CENTER')

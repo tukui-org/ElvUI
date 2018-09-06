@@ -38,17 +38,17 @@ local function Update(self, event)
 	end
 
 	local isInSamePhase = UnitInPhase(self.unit) and not UnitIsWarModePhased(self.unit)
-	if(isInSamePhase) then
-		element:Hide()
-	else
+	if(not isInSamePhase and UnitIsPlayer(self.unit) and UnitIsConnected(self.unit)) then
 		element:Show()
+	else
+		element:Hide()
 	end
 
 	--[[ Callback: PhaseIndicator:PostUpdate(isInSamePhase)
 	Called after the element has been updated.
 
 	* self          - the PhaseIndicator element
-	* isInSamePhase - indicates whether the element is hidden (boolean)
+	* isInSamePhase - indicates whether the unit is in the same phase as the player (boolean)
 	--]]
 	if(element.PostUpdate) then
 		return element:PostUpdate(isInSamePhase)

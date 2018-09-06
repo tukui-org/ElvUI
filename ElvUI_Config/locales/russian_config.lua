@@ -603,19 +603,19 @@ L["Unlock various elements of the UI to be repositioned."] = "Разблокир
 L["Version"] = "Версия"
 
 -- Module Reset
-L["Are you sure you want to reset ActionBars settings?"] = true
-L["Are you sure you want to reset Auras settings?"] = true
-L["Are you sure you want to reset Bags settings?"] = true
-L["Are you sure you want to reset Chat settings?"] = true
-L["Are you sure you want to reset Cooldown settings?"] = true
-L["Are you sure you want to reset DataBars settings?"] = true
-L["Are you sure you want to reset DataTexts settings?"] = true
-L["Are you sure you want to reset General settings?"] = true
-L["Are you sure you want to reset NamePlates settings?"] = true
-L["Are you sure you want to reset Tooltip settings?"] = true
-L["Are you sure you want to reset UnitFrames settings?"] = true
-L["Module Reset"] = true
-L["This section will help reset specfic settings back to default."] = true
+L["Are you sure you want to reset ActionBars settings?"] = "Вы уверены, что хотите сбросить настройки панелей команд?"
+L["Are you sure you want to reset Auras settings?"] = "Вы уверены, что хотите сбросить настройки аур?"
+L["Are you sure you want to reset Bags settings?"] = "Вы уверены, что хотите сбросить настройки сумок?"
+L["Are you sure you want to reset Chat settings?"] = "Вы уверены, что хотите сбросить настройки чата?"
+L["Are you sure you want to reset Cooldown settings?"] = "Вы уверены, что хотите сбросить настройки текста восстановления?"
+L["Are you sure you want to reset DataBars settings?"] = "Вы уверены, что хотите сбросить настройки инфо-полос?"
+L["Are you sure you want to reset DataTexts settings?"] = "Вы уверены, что хотите сбросить настройки инфо-текстов?"
+L["Are you sure you want to reset General settings?"] = "Вы уверены, что хотите сбросить общие настройки?"
+L["Are you sure you want to reset NamePlates settings?"] = "Вы уверены, что хотите сбросить настройки индикаторов здоровья?"
+L["Are you sure you want to reset Tooltip settings?"] = "Вы уверены, что хотите сбросить настройки подсказки?"
+L["Are you sure you want to reset UnitFrames settings?"] = "Вы уверены, что хотите сбросить настройки рамок юнитов?"
+L["Module Reset"] = "Сброс модуля"
+L["This section will help reset specfic settings back to default."] = "Эта секция поможет вернуть настройки конкретного модуля на умолчания."
 
 --NamePlates
 L["# Displayed Auras"] = "Кол-во аур"

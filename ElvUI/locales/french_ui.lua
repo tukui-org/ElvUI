@@ -7,7 +7,7 @@ if not L then return end
 L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. Merci de sélectionner soit l'addon, soit le module d'ElvUI, pour le désactiver."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "Bienvenue sur %sElvUI|r version %s%s|r, tapez /ec afin d'accéder au menu de configuration en jeu. Si vous avez besoin d'un support technique, vous pouvez nous rejoindre sur https://www.tukui.org"
+L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
 
 --ActionBars
 L["Binding"] = "Raccourcis"
@@ -99,7 +99,7 @@ L["Hands"] = "Mains"
 L["Head"] = "Tête"
 L["Hold Shift + Right Click:"] = "Maintenir Majuscule + Clic droit"
 L["Home Latency:"] = "Latence du Domicile :"
-L["Home Protocol:"] = true
+L["Home Protocol:"] = "Protocole du Domicile :"
 L["HP"] = "PV"
 L["HPS"] = "HPS"
 L["Legs"] = "Jambes"
@@ -108,7 +108,7 @@ L["Main Hand"] = "Main droite"
 L["Mission(s) Report:"] = "Rapport de mission :"
 L["Mitigation By Level: "] = "Réduction par niveau : "
 L["Mobile"] = true
-L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
+L["Mov. Speed:"] = "Vitesse :"
 L["Naval Mission(s) Report:"] = "Rapport de mission(s) navale(s) :"
 L["No Guild"] = "Pas de Guilde"
 L["Offhand"] = "Main gauche"
@@ -235,7 +235,7 @@ L["Rested:"] = "Reposé :"
 L["Toggle Chat Buttons"] = "Activer/Désactiver les boutons de discussion" --layout\layout.lua
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua
-L["AP:"] = true -- Artifact Power
+L["AP:"] = "PA : " -- Artifact Power
 L["XP:"] = "XP :"
 L["You don't have permission to mark targets."] = "Vous n'avez pas la permission de marquer les cibles."
 L["Voice Overlay"] = true
