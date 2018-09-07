@@ -210,6 +210,7 @@ P['bags'] = {
 	['moneyCoins'] = true,
 	['junkIcon'] = false,
 	['upgradeIcon'] = true,
+	['newItemGlow'] = true,
 	['ignoredItems'] = {},
 	['itemLevel'] = true,
 	['itemLevelThreshold'] = 1,

@@ -421,7 +421,7 @@ end
 
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
-		if show then
+		if show and E.db.bags.newItemGlow then
 			slot.newItemGlow:Show()
 			E:Flash(slot.newItemGlow, 0.5, true)
 		else
