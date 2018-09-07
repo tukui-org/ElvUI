@@ -243,7 +243,7 @@ do --this can save some main file locals
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 		-- Whiro --
-		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
+		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]		= ElvGreen,
 		["Merathilis-Garrosh"]		= ElvOrange, -- Druid [Horde]
