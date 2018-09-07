@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Fixed a rare nil error in the range code.  
 
 **Misc. Changes:**  
 
