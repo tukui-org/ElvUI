@@ -1204,6 +1204,7 @@ function mod:Initialize()
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
 	if(self.ClassBar) then
 		self.ClassBar:SetScale(1.35)
+		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
 
