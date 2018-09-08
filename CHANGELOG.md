@@ -1,7 +1,7 @@
 **Version 10.82 [  ]**
 
 **New Additions:**  
-
+Added toggle option for the New Item Glow in your bags. (#452)  
 
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
