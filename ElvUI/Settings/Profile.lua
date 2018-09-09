@@ -181,6 +181,7 @@ P['databars'] = {
 		['hideInVehicle'] = false,
 		['hideInCombat'] = false,
 		['hideOutsidePvP'] = false,
+		['hideBelowMaxLevel'] = false,
 	},
 	['azerite'] = {
 		['enable'] = true,

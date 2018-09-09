@@ -263,13 +263,19 @@ E.Options.args.databars = {
 					name = L["Hide Outside PvP"],
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
-				reverseFill = {
+				hideBelowMaxLevel = {
 					order = 5,
+					type = "toggle",
+					name = L["Hide Below Max Level"],
+					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
+				},
+				reverseFill = {
+					order = 6,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
-					order = 6,
+					order = 7,
 					type = "select",
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -279,31 +285,31 @@ E.Options.args.databars = {
 					}
 				},
 				width = {
-					order = 7,
+					order = 8,
 					type = "range",
 					name = L["Width"],
 					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
-					order = 8,
+					order = 9,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				font = {
-					order = 9,
+					order = 10,
 					type = "select", dialogControl = "LSM30_Font",
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				textSize = {
-					order = 10,
+					order = 11,
 					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
 				fontOutline = {
-					order = 11,
+					order = 12,
 					type = "select",
 					name = L["Font Outline"],
 					values = {
@@ -314,7 +320,7 @@ E.Options.args.databars = {
 					},
 				},
 				textFormat = {
-					order = 12,
+					order = 13,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",
