@@ -419,6 +419,7 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 L["Current - Percent (Remaining)"] = "현재값 - 백분율(남은값)"
 L["Current - Remaining"] = "현재값 - 남은값"
 L["DataBars"] = "정보막대"
+L["Hide Below Max Level"] = true
 L["Hide In Combat"] = "전투시 숨김"
 L["Hide Outside PvP"] = "PVP가 아닐때 숨김"
 L["Setup on-screen display of information bars."] = "화면에 표시되는 각종 정보막대들을 설정합니다."

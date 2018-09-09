@@ -361,6 +361,7 @@ L["Testing:"] = true
 L["Current - Percent (Remaining)"] = true
 L["Current - Remaining"] = true
 L["DataBars"] = true
+L["Hide Below Max Level"] = true
 L["Hide In Combat"] = true
 L["Hide Outside PvP"] = true
 L["Setup on-screen display of information bars."] = true

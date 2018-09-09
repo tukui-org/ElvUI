@@ -372,6 +372,7 @@ L["Testing:"] = "Testeurs :"
 L["Current - Percent (Remaining)"] = "Actuel - Pourcentage (restant)"
 L["Current - Remaining"] = "Actuel - Restant"
 L["DataBars"] = "Barres d'expériences"
+L["Hide Below Max Level"] = true
 L["Hide In Combat"] = "Cacher en combat"
 L["Hide Outside PvP"] = "Cacher en dehors du PVP"
 L["Setup on-screen display of information bars."] = "Configuration de l'affichage des différentes barres d'expérience"

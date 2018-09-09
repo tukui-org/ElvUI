@@ -370,6 +370,7 @@ L["Testing:"] = "测试:"
 L["Current - Percent (Remaining)"] = "当前值 - 百分比(剩余)"
 L["Current - Remaining"] = "当前值 - 剩余值"
 L["DataBars"] = "数据条"
+L["Hide Below Max Level"] = true
 L["Hide In Combat"] = "战斗中隐藏"
 L["Hide Outside PvP"] = "PvP外隐藏"
 L["Setup on-screen display of information bars."] = "设置各种数据条"

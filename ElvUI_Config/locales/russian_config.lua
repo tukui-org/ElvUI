@@ -371,6 +371,7 @@ L["Testing:"] = "Тестирование:"
 L["Current - Percent (Remaining)"] = "Текущий - Процент (Осталось)"
 L["Current - Remaining"] = "Текущий - Осталось"
 L["DataBars"] = "Инфо-полосы"
+L["Hide Below Max Level"] = true
 L["Hide In Combat"] = "Скрывать в бою"
 L["Hide Outside PvP"] = "Скрывать вне PvP"
 L["Setup on-screen display of information bars."] = "Контролирует отображение информационных полос."
