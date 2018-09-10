@@ -328,11 +328,14 @@ local function LoadSkin()
 	end
 
 	local function UpdatePvpTalentSlot(self)
-		local slotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo(self.slotIndex);
+		local slotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo(self.slotIndex)
+		local selectedTalentID = self.predictedSetting:Get()
+
 		if (not slotInfo) then
-			return;
+			return
 		end
 
+		self.Texture:Show()
 		if (slotInfo.enabled) then
 			if (not slotInfo.selectedTalentID) then
 				self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
