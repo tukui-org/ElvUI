@@ -1,6 +1,6 @@
 local LSM = LibStub("LibSharedMedia-3.0")
 
-LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8.blp]])
+LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex]])
 LSM:Register("font", "Continuum Medium", [[Interface\AddOns\ElvUI\media\fonts\Continuum_Medium.ttf]])
 LSM:Register("font","Die Die Die!", [[Interface\AddOns\ElvUI\media\fonts\DieDieDie.ttf]])
@@ -20,4 +20,4 @@ LSM:Register("sound","Whisper Alert", [[Interface\AddOns\ElvUI\media\sounds\whis
 LSM:Register("statusbar","ElvUI Gloss", [[Interface\AddOns\ElvUI\media\textures\normTex]])
 LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex2]])
 LSM:Register("statusbar","Minimalist", [[Interface\AddOns\ElvUI\media\textures\Minimalist]])
-LSM:Register("statusbar","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8.blp]])
+LSM:Register("statusbar","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
