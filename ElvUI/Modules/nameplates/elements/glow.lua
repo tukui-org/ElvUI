@@ -132,24 +132,24 @@ function mod:ConstructElement_Glow(frame)
 	f:Hide()
 
 	local glow = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	glow:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	glow:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	glow:Hide()
 	frame.Glow2 = glow
 
 	local top = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	top:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
+	top:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
 	top:Size(45)
 	top:Hide()
 	frame.TopArrow = top
 
 	local left = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	left:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft.tga]])
+	left:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
 	left:Size(45)
 	left:Hide()
 	frame.LeftArrow = left
 
 	local right = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	right:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight.tga]])
+	right:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
 	right:Size(45)
 	right:Hide()
 	frame.RightArrow = right

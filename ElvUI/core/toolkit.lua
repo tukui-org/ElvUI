@@ -336,7 +336,7 @@ end
 local function CreateCloseButton(frame, size, offset, texture, backdrop)
 	size = (size or 16)
 	offset = (offset or -6)
-	texture = (texture or "Interface\\AddOns\\ElvUI\\media\\textures\\close.tga")
+	texture = (texture or "Interface\\AddOns\\ElvUI\\media\\textures\\close")
 
 	local CloseButton = CreateFrame("Button", nil, frame)
 	CloseButton:Size(size)

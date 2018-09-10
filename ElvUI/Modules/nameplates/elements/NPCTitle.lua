@@ -64,7 +64,7 @@ function mod:ConstructElement_NPCTitle(frame)
 	local title = frame:CreateFontString(nil, "OVERLAY")
 
 	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	g:SetVertexColor(1, 1, 1, .3)
 	g:Hide()
 	g:SetPoint("TOPLEFT", title, -20, 8)

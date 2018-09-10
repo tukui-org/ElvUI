@@ -288,7 +288,7 @@ function AFK:Initialize()
 	self.AFKMode.bottom.logo = self.AFKMode:CreateTexture(nil, 'OVERLAY')
 	self.AFKMode.bottom.logo:SetSize(320, 150)
 	self.AFKMode.bottom.logo:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
-	self.AFKMode.bottom.logo:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga")
+	self.AFKMode.bottom.logo:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo")
 
 	local factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = E.myfaction, 140, -20, -16, -10, -28;
 	if factionGroup == "Neutral" then

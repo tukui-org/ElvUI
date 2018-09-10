@@ -82,7 +82,7 @@ function mod:ConstructElement_Name(frame)
 	name:SetWordWrap(false)
 
 	local g = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
-	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark.tga]])
+	g:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	g:Hide()
 	g:SetPoint("TOPLEFT", name, -20, 8)
 	g:SetPoint("BOTTOMRIGHT", name, 20, -8)
