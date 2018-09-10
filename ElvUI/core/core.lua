@@ -46,6 +46,7 @@ local UnitFactionGroup = UnitFactionGroup
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
+E.title = format("|cfffe7b2c%s |r", "ElvUI")
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
 E.myLocalizedRace, E.myrace = UnitRace("player");
