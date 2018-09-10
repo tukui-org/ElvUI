@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added toggle option for the New Item Glow in your bags. (#452)  
+Added an option to hide the honor databar below max level. Disabled by default.  
 
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
