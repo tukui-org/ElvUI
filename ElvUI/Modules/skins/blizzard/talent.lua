@@ -327,6 +327,21 @@ local function LoadSkin()
 		end
 	end
 
+	local function UpdatePvpTalentSlot(self)
+		local slotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo(self.slotIndex);
+		if (not slotInfo) then
+			return;
+		end
+
+		if (slotInfo.enabled) then
+			if (not slotInfo.selectedTalentID) then
+				self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+			end
+		else
+			-- Do something for locked talents here
+		end
+	end
+
 	-- PVP Talents
 	local function SkinPvpTalentSlots(button)
 		button._elvUIBG = S:CropIcon(button.Texture, button)
@@ -338,6 +353,7 @@ local function LoadSkin()
 		button:SetSize(button:GetSize())
 		button.Texture:SetSize(32, 32)
 		button.TalentName:SetPoint("TOP", button, "BOTTOM", 0, 0)
+		hooksecurefunc(button, "Update", UpdatePvpTalentSlot);
 	end
 
 	local function SkinPvpTalentTrinketSlot(button)
