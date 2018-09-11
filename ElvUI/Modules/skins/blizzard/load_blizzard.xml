@@ -75,5 +75,6 @@
 	<Script file='trainer.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='Warboard.lua'/>
+	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='worldmap.lua'/>
 </Ui>
