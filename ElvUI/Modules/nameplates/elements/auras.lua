@@ -266,11 +266,11 @@ end
 function mod:Auras_SizeChanged()
 	local numAuras = #self.icons
 	for i = 1, numAuras do
-		self.icons[i]:SetWidth((self.db.width or 20)* (self:GetParent().HealthBar.currentScale or 1))
+		self.icons[i]:SetWidth((self.db.width or 20) * (self:GetParent().HealthBar.currentScale or 1))
 		self.icons[i]:SetHeight((self.db.height or 20) * (self:GetParent().HealthBar.currentScale or 1))
 	end
-	self:SetHeight((self.db.height or 18) * (self:GetParent().HealthBar.currentScale or 1))
-	self:SetWidth((self.db.width or 18)* (self:GetParent().HealthBar.currentScale or 1))
+	self:SetHeight((self.db.height or 20) * (self:GetParent().HealthBar.currentScale or 1))
+	self:SetWidth((self.db.width or 20)* (self:GetParent().HealthBar.currentScale or 1))
 end
 
 function mod:UpdateAuraIcons(auras)
