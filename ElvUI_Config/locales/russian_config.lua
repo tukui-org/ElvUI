@@ -745,6 +745,7 @@ L["Is Not Targeting Player"] = "Не целится в игрока"
 L["Is PvP Talents"] = "PvP талант"
 L["Is Targeted"] = "Взят в цель"
 L["Is Targeting Player"] = "Целится в игрока"
+L["Keep Aspect Ratio"] = true
 L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения."
 L["Load Distance"] = "Дистанция показа"
 L["Low Health Threshold"] = "Пороговое значение здоровья"

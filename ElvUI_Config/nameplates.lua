@@ -2083,10 +2083,18 @@ local function GetUnitSettings(unit, name)
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+						disabled = function() return E.db.nameplates.units[unit].buffs.aspectRatio end,
+					},
+					aspectRatio = {
+						order = 5,
+						name = L["Keep Aspect Ratio"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order =5,
+						order = 6,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2265,10 +2273,18 @@ local function GetUnitSettings(unit, name)
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+						disabled = function() return E.db.nameplates.units[unit].debuffs.aspectRatio end,
+					},
+					aspectRatio = {
+						order = 5,
+						name = L["Keep Aspect Ratio"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 6,
 						type = "group",
 						guiInline = true,
 						args = {

@@ -265,12 +265,28 @@ end
 
 function mod:Auras_SizeChanged()
 	local numAuras = #self.icons
+	local width = self.db.width or 20
+	local height = self.db.height or 20
+
 	for i = 1, numAuras do
-		self.icons[i]:SetWidth((self.db.width or 20) * (self:GetParent().HealthBar.currentScale or 1))
-		self.icons[i]:SetHeight((self.db.height or 20) * (self:GetParent().HealthBar.currentScale or 1))
+		if self.db.aspectRatio then
+			width = height
+			self.icons[i]:SetWidth((width) * (self:GetParent().HealthBar.currentScale or 1))
+			self.icons[i]:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		else
+			self.icons[i]:SetWidth((width) * (self:GetParent().HealthBar.currentScale or 1))
+			self.icons[i]:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		end
 	end
-	self:SetHeight((self.db.height or 20) * (self:GetParent().HealthBar.currentScale or 1))
-	self:SetWidth((self.db.width or 20)* (self:GetParent().HealthBar.currentScale or 1))
+
+	if self.db.aspectRatio then
+		width = height
+		self:SetHeight((width) * (self:GetParent().HealthBar.currentScale or 1))
+		self:SetWidth((height)* (self:GetParent().HealthBar.currentScale or 1))
+	else
+		self:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		self:SetWidth((width)* (self:GetParent().HealthBar.currentScale or 1))
+	end
 end
 
 function mod:UpdateAuraIcons(auras)
