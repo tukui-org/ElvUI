@@ -21,7 +21,7 @@ local function LoadSkin()
 	WarboardQuestChoiceFrame.Background:Hide()
 	WarboardQuestChoiceFrame.Title:DisableDrawLayer("BACKGROUND")
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		local option = WarboardQuestChoiceFrame["Option"..i]
 		for x = 1, #option.OptionButtonsContainer.Buttons do
 			S:HandleButton(option.OptionButtonsContainer.Buttons[x])
@@ -33,7 +33,7 @@ local function LoadSkin()
 		if not self then return end
 
 		local frame
-		for i = 1, 3 do
+		for i = 1, 4 do
 			frame = self["Option"..i]
 			if frame and frame.WidgetContainer then
 				S:SkinWidgetContainer(frame.WidgetContainer)
