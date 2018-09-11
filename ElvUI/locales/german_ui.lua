@@ -169,6 +169,7 @@ L["CVars Set"] = "CVars gesetzt"
 L["CVars"] = "CVars"
 L["Dark"] = "Dunkel"
 L["Disable"] = "Deaktivieren"
+L["Discord"] = true -- No need to translate
 L["ElvUI Installation"] = "ElvUI Installation"
 L["Finished"] = "Beendet"
 L["Grid Size:"] = "Rastergröße:"

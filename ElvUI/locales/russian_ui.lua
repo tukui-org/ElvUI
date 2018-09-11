@@ -169,6 +169,7 @@ L["CVars Set"] = "Настройки сброшены"
 L["CVars"] = "Настройки игры"
 L["Dark"] = "Темная"
 L["Disable"] = "Выключить"
+L["Discord"] = true
 L["ElvUI Installation"] = "Установка ElvUI"
 L["Finished"] = "Завершить"
 L["Grid Size:"] = "Размер сетки"
