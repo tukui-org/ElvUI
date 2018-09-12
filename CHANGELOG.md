@@ -8,7 +8,7 @@ Added an option to hide the honor databar below max level. Disabled by default.
 Fixed a rare nil error in the range code.  
 
 **Misc. Changes:**  
-
+Updated ArenaPrepFrame functions (Thanks oUF!).  
 
 ___
 **Version 10.81 [ September 6th 2018 ]**
