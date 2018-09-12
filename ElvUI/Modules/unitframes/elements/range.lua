@@ -166,9 +166,13 @@ end
 
 function UF:UpdateRange()
 	local range = self.Range
+	if not range then return end
+
 	local unit = self.unit
-	if(unit) then
-		if UnitCanAttack("player", unit) then
+	if unit then
+		if self.ArenaPrepIcon and self.ArenaPrepIcon:IsShown() then
+			self:SetAlpha(range.insideAlpha)
+		elseif UnitCanAttack("player", unit) then
 			if enemyIsInRange(unit) then
 				self:SetAlpha(range.insideAlpha)
 			elseif enemyIsInLongRange(unit) then
