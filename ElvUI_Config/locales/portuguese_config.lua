@@ -746,7 +746,6 @@ L["Is Not Targeting Player"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = true
 L["Is Targeting Player"] = true
-L["Keep Aspect Ratio"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["Load Distance"] = true
 L["Low Health Threshold"] = "Limiar de Vida Baixa"

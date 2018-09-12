@@ -744,7 +744,6 @@ L["Is Not Targeting Player"] = "目标不为玩家"
 L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "当前目标"
 L["Is Targeting Player"] = "目标为玩家"
-L["Keep Aspect Ratio"] = true
 L["LEVEL_BOSS"] = "对首领请设置为-1, 或者设为0以禁用."
 L["Load Distance"] = "读取距离"
 L["Low Health Threshold"] = "低生命值阈值"
