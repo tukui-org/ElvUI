@@ -23,20 +23,10 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
-function UF:UpdatePrep(event, unit, status)
-	if (event == "ARENA_OPPONENT_UPDATE" or event == "UNIT_NAME_UPDATE") and unit ~= self.unit then return end
-
-	local _, instanceType = IsInInstance();
-	if not UF.db.units.arena.enable or instanceType ~= "arena" or (UnitExists(self.unit) and status ~= "unseen") then
-		self:Hide()
-		return
-	end
-
-	local s = GetArenaOpponentSpec(UF[self.unit]:GetID())
+function UF:PostUpdateArenaPreparation(_, specID)
 	local _, spec, texture, class
-
-	if s and s > 0 then
-		_, spec, _, texture, _, class = GetSpecializationInfoByID(s)
+	if specID and specID > 0 then
+		_, spec, _, texture, _, class = GetSpecializationInfoByID(specID)
 	end
 
 	if class and spec then
@@ -88,10 +78,13 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
 		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
 		frame.ArenaPrepIcon:SetInside(frame.ArenaPrepIcon.bg)
+		frame.ArenaPrepIcon:Hide()
 
 		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, "OVERLAY")
 		frame.ArenaPrepSpec:Point("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
+
+		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
@@ -206,8 +199,8 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
 
-	if not frame:IsElementEnabled('ArenaPreparation') then
-		frame:EnableElement('ArenaPreparation')
+	if not frame:IsElementEnabled("ArenaPreparation") then
+		frame:EnableElement("ArenaPreparation")
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
