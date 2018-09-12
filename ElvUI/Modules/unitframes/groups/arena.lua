@@ -24,6 +24,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
 function UF:PostUpdateArenaPreparation(_, specID)
+	if not (self.ArenaPrepSpec and self.ArenaPrepIcon) then return end
+
 	local _, spec, texture, class
 	if specID and specID > 0 then
 		_, spec, _, texture, _, class = GetSpecializationInfoByID(specID)
