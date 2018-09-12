@@ -73,9 +73,9 @@ function UF:Construct_ArenaFrames(frame)
 		frame.unitframeType = "arena"
 	end
 
-	if not frame.isChild then
-		frame.ArenaPrepIcon = frame.RaisedElementParent:CreateTexture(nil, 'OVERLAY')
-		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame.RaisedElementParent)
+	if not frame and not frame.isChild then
+		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
+		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
 		frame.ArenaPrepIcon.bg:Point('TOPLEFT', frame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
 		frame.ArenaPrepIcon.bg:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, 0)
 		frame.ArenaPrepIcon.bg:SetTemplate('Default')
@@ -85,7 +85,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon.bg:Hide()
 		frame.ArenaPrepIcon:Hide()
 
-		frame.ArenaPrepSpec = frame.RaisedElementParent:CreateFontString(nil, "OVERLAY")
+		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, "OVERLAY")
 		frame.ArenaPrepSpec:Point("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
