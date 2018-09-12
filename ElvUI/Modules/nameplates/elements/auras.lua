@@ -269,16 +269,28 @@ function mod:Auras_SizeChanged()
 	local height = self.db.height or 20
 
 	for i = 1, numAuras do
-		self.icons[i]:SetWidth((width) * (self:GetParent().HealthBar.currentScale or 1))
-		self.icons[i]:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		if self.db.aspectRatio then
+			width = height
+			self.icons[i]:SetWidth((width) * (self:GetParent().HealthBar.currentScale or 1))
+			self.icons[i]:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		else
+			self.icons[i]:SetWidth((width) * (self:GetParent().HealthBar.currentScale or 1))
+			self.icons[i]:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		end
 	end
-	self:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
-	self:SetWidth((width)* (self:GetParent().HealthBar.currentScale or 1))
+
+	if self.db.aspectRatio then
+		width = height
+		self:SetHeight((width) * (self:GetParent().HealthBar.currentScale or 1))
+		self:SetWidth((height)* (self:GetParent().HealthBar.currentScale or 1))
+	else
+		self:SetHeight((height) * (self:GetParent().HealthBar.currentScale or 1))
+		self:SetWidth((width)* (self:GetParent().HealthBar.currentScale or 1))
+	end
 end
 
 function mod:UpdateAuraIcons(auras)
 	local maxAuras = auras.db.numAuras
-	local spacing = auras.db.spacing or 2
 	local numCurrentAuras = #auras.icons
 	if numCurrentAuras > maxAuras then
 		for i = maxAuras, numCurrentAuras do
@@ -313,13 +325,13 @@ function mod:UpdateAuraIcons(auras)
 			if(i == 1) then
 				auras.icons[i]:SetPoint("BOTTOMLEFT", auras, "BOTTOMLEFT")
 			else
-				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", spacing, 0)
+				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", E.Border + E.Spacing*3, 0)
 			end
 		else
 			if(i == 1) then
 				auras.icons[i]:SetPoint("BOTTOMRIGHT", auras, "BOTTOMRIGHT")
 			else
-				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -spacing, 0)
+				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -(E.Border + E.Spacing*3), 0)
 			end
 		end
 	end
