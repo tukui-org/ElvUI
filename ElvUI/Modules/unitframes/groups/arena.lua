@@ -85,7 +85,7 @@ function UF:Construct_ArenaFrames(frame)
 	if not frame.isChild then
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
-		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon)
+		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon.bg)
 		frame.ArenaPrepIcon.bg:SetTemplate('Default')
 		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
 		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
