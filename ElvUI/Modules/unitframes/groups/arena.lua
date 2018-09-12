@@ -40,13 +40,12 @@ function UF:UpdatePrep(event, unit, status)
 	end
 
 	if class and spec then
-		local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-		self.SpecClass:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
-		self.Health:SetStatusBarColor(color.r, color.g, color.b)
-		self.Icon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-		self:Show()
+		self.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
+		self.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		self.ArenaPrepIcon:Show()
 	else
-		self:Hide()
+		self.ArenaPrepSpec:SetText('')
+		self.ArenaPrepIcon:Hide()
 	end
 end
 
@@ -80,38 +79,19 @@ function UF:Construct_ArenaFrames(frame)
 		frame.unitframeType = "arena"
 	end
 
-	if not frame.PrepFrame and not frame.isChild then
-		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
-		frame.prepFrame:SetFrameStrata('BACKGROUND')
-		frame.prepFrame:SetAllPoints(frame)
-		frame.prepFrame:SetID(frame:GetID())
-		frame.prepFrame:SetScript("OnEvent", UF.UpdatePrep)
-		frame.prepFrame.unit = frame.unit
+	if not frame and not frame.isChild then
+		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
+		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
+		frame.ArenaPrepIcon.bg:Point('TOPLEFT', frame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
+		frame.ArenaPrepIcon.bg:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, 0)
+		frame.ArenaPrepIcon.bg:SetTemplate('Default')
+		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
+		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
+		frame.ArenaPrepIcon:SetInside(frame.ArenaPrepIcon.bg)
 
-		frame.prepFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-		frame.prepFrame:RegisterEvent("ARENA_OPPONENT_UPDATE")
-		frame.prepFrame:RegisterEvent("UNIT_NAME_UPDATE")
-		frame.prepFrame:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
-
-		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
-		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', E.Border, E.Border)
-		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(E.Border + E.db.unitframe.units.arena.height), -E.Border)
-		frame.prepFrame.Health:CreateBackdrop()
-
-		frame.prepFrame.Icon = frame.prepFrame:CreateTexture(nil, 'OVERLAY')
-		frame.prepFrame.Icon.bg = CreateFrame('Frame', nil, frame.prepFrame)
-		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
-		frame.prepFrame.Icon.bg:Point('BOTTOMRIGHT', frame.prepFrame, 'BOTTOMRIGHT', 0, 0)
-		frame.prepFrame.Icon.bg:SetTemplate('Default')
-		frame.prepFrame.Icon:SetParent(frame.prepFrame.Icon.bg)
-		frame.prepFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame.prepFrame.Icon:SetInside(frame.prepFrame.Icon.bg)
-		UF['statusbars'][frame.prepFrame.Health] = true;
-
-		frame.prepFrame.SpecClass = frame.prepFrame.Health:CreateFontString(nil, "OVERLAY")
-		frame.prepFrame.SpecClass:Point("CENTER")
-		UF:Configure_FontString(frame.prepFrame.SpecClass)
-		--frame.prepFrame:Hide()
+		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, "OVERLAY")
+		frame.ArenaPrepSpec:Point("CENTER")
+		UF:Configure_FontString(frame.ArenaPrepSpec)
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
@@ -224,6 +204,10 @@ function UF:Update_ArenaFrames(frame, db)
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
 		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
+	end
+
+	if not frame:IsElementEnabled('ArenaPreparation') then
+		frame:EnableElement('ArenaPreparation')
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
