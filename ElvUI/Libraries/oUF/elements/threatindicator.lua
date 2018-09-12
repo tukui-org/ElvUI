@@ -30,6 +30,9 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 local _, ns = ...
 local oUF = ns.oUF
+local Private = oUF.Private
+
+local UnitExists = Private.UnitExists
 
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end

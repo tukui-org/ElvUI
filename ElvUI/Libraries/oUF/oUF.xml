@@ -7,7 +7,6 @@
 	<Script file="blizzard.lua"/>
 	<Script file="units.lua"/>
 	<Script file="colors.lua"/>
-	<Script file="finalize.lua"/>
 
 	<Script file="elements\power.lua"/>
 	<Script file="elements\auras.lua"/>
@@ -37,6 +36,8 @@
 	<Script file="elements\classpower.lua"/>
 	<Script file="elements\stagger.lua"/>
 	<Script file="elements\raidroleindicator.lua"/>
+
+	<Script file="finalize.lua"/>
 
 	<!-- Clique support -->
 	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate">
