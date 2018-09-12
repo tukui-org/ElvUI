@@ -34,17 +34,19 @@ function UF:PostUpdateArenaPreparation(_, specID)
 	local pvpIconEnabled = self.__owner.db.pvpSpecIcon and self.__owner:IsElementEnabled('PVPSpecIcon')
 	if class and spec then
 		self.__owner.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
-		self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-		self.__owner.ArenaPrepIcon.bg:Show()
-		self.__owner.ArenaPrepIcon:Show()
+
 		if pvpIconEnabled then
+			self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+			self.__owner.ArenaPrepIcon.bg:Show()
+			self.__owner.ArenaPrepIcon:Show()
 			self.__owner.PVPSpecIcon:Hide()
 		end
 	else
 		self.__owner.ArenaPrepSpec:SetText('')
-		self.__owner.ArenaPrepIcon.bg:Hide()
-		self.__owner.ArenaPrepIcon:Hide()
+
 		if pvpIconEnabled then
+			self.__owner.ArenaPrepIcon.bg:Hide()
+			self.__owner.ArenaPrepIcon:Hide()
 			self.__owner.PVPSpecIcon:Show()
 		end
 	end
