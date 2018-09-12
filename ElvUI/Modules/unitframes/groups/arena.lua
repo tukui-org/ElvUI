@@ -23,33 +23,44 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
+function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
+	if not (frame and frame.ArenaPrepSpec and frame.ArenaPrepIcon) then return end
+
+	local specIcon = (frame.db and frame.db.pvpSpecIcon) and frame:IsElementEnabled('PVPSpecIcon')
+
+	if show then -- during `PostUpdateArenaPreparation` this means spec class and name exist
+		frame.ArenaPrepSpec:SetText(specName.."  -  "..LOCALIZED_CLASS_NAMES_MALE[specClass])
+
+		if specIcon then
+			frame.ArenaPrepIcon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+			frame.ArenaPrepIcon.bg:Show()
+			frame.ArenaPrepIcon:Show()
+			frame.PVPSpecIcon:Hide()
+		end
+	else -- mainly called from `PostUpdateArenaFrame` to hide them
+		frame.ArenaPrepSpec:SetText('')
+
+		if specIcon then
+			frame.ArenaPrepIcon.bg:Hide()
+			frame.ArenaPrepIcon:Hide()
+			frame.PVPSpecIcon:Show()
+		end
+	end
+end
+
+function UF:PostUpdateArenaFrame(event)
+	if self and event and (event ~= 'ARENA_PREP_OPPONENT_SPECIALIZATIONS' and event ~= 'PLAYER_ENTERING_WORLD') then
+		UF:ToggleArenaPreparationInfo(self)
+	end
+end
+
 function UF:PostUpdateArenaPreparation(_, specID)
-	if not (self.__owner and self.__owner.ArenaPrepSpec and self.__owner.ArenaPrepIcon) then return end
-
-	local _, spec, texture, class
+	local _, specName, specTexture, specClass
 	if specID and specID > 0 then
-		_, spec, _, texture, _, class = GetSpecializationInfoByID(specID)
+		_, specName, _, specTexture, _, specClass = GetSpecializationInfoByID(specID)
 	end
 
-	local pvpIconEnabled = (self.__owner.db and self.__owner.db.pvpSpecIcon) and self.__owner:IsElementEnabled('PVPSpecIcon')
-	if class and spec then
-		self.__owner.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
-
-		if pvpIconEnabled then
-			self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-			self.__owner.ArenaPrepIcon.bg:Show()
-			self.__owner.ArenaPrepIcon:Show()
-			self.__owner.PVPSpecIcon:Hide()
-		end
-	else
-		self.__owner.ArenaPrepSpec:SetText('')
-
-		if pvpIconEnabled then
-			self.__owner.ArenaPrepIcon.bg:Hide()
-			self.__owner.ArenaPrepIcon:Hide()
-			self.__owner.PVPSpecIcon:Show()
-		end
-	end
+	UF:ToggleArenaPreparationInfo(self and self.__owner, specClass and specName, specName, specTexture, specClass)
 end
 
 function UF:Construct_ArenaFrames(frame)
@@ -60,7 +71,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Name = self:Construct_NameText(frame)
 
-	if(not frame.isChild) then
+	if not frame.isChild then
 		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -80,9 +91,8 @@ function UF:Construct_ArenaFrames(frame)
 		frame.customTexts = {}
 		frame.InfoPanel = self:Construct_InfoPanel(frame)
 		frame.unitframeType = "arena"
-	end
 
-	if not frame.isChild then
+		-- Arena Preparation
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
 		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon.bg)
@@ -97,7 +107,8 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepSpec:Point("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
-		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
+		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation -- used to update arena prep info
+		frame.PostUpdate = self.PostUpdateArenaFrame -- used to hide arena prep info
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
