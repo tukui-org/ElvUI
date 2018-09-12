@@ -24,7 +24,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
 function UF:PostUpdateArenaPreparation(_, specID)
-	if not (self.ArenaPrepSpec and self.ArenaPrepIcon) then return end
+	if not (self.__owner and self.__owner.ArenaPrepSpec and self.__owner.ArenaPrepIcon) then return end
 
 	local _, spec, texture, class
 	if specID and specID > 0 then
@@ -32,12 +32,12 @@ function UF:PostUpdateArenaPreparation(_, specID)
 	end
 
 	if class and spec then
-		self.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
-		self.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-		self.ArenaPrepIcon:Show()
+		self.__owner.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
+		self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		self.__owner.ArenaPrepIcon:Show()
 	else
-		self.ArenaPrepSpec:SetText('')
-		self.ArenaPrepIcon:Hide()
+		self.__owner.ArenaPrepSpec:SetText('')
+		self.__owner.ArenaPrepIcon:Hide()
 	end
 end
 
