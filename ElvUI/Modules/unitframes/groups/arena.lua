@@ -36,10 +36,12 @@ function UF:PostUpdateArenaPreparation(_, specID)
 		self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 		self.__owner.ArenaPrepIcon.bg:Show()
 		self.__owner.ArenaPrepIcon:Show()
+		self.__owner.PVPSpecIcon:Hide()
 	else
 		self.__owner.ArenaPrepSpec:SetText('')
 		self.__owner.ArenaPrepIcon.bg:Hide()
 		self.__owner.ArenaPrepIcon:Hide()
+		self.__owner.PVPSpecIcon:Show()
 	end
 end
 
@@ -76,8 +78,7 @@ function UF:Construct_ArenaFrames(frame)
 	if not frame.isChild then
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
-		frame.ArenaPrepIcon.bg:Point('TOPLEFT', frame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
-		frame.ArenaPrepIcon.bg:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, 0)
+		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon)
 		frame.ArenaPrepIcon.bg:SetTemplate('Default')
 		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
 		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
