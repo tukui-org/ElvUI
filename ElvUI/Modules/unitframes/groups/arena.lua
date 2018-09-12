@@ -28,7 +28,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 
 	local specIcon = (frame.db and frame.db.pvpSpecIcon) and frame:IsElementEnabled('PVPSpecIcon')
 
-	frame.forceInsideAlpha = show -- used to force unitframe range
+	frame.forceInRange = show -- used to force unitframe range
 
 	if show then -- during `PostUpdateArenaPreparation` this means spec class and name exist
 		frame.ArenaPrepSpec:SetText(specName.."  -  "..LOCALIZED_CLASS_NAMES_MALE[specClass])
