@@ -422,6 +422,7 @@ P['nameplates'] = {
 				['height'] = 20,
 				['width'] = 20,
 				['spacing'] = 2,
+				['spacing'] = 2,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 300,
