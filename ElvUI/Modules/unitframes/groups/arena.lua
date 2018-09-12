@@ -86,7 +86,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepSpec:Point("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
-		frame.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
+		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
