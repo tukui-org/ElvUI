@@ -2075,18 +2075,9 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					sizeOverride = {
-						order = 4,
-						name = L["Size Override"],
-						desc = L["If not set to 0 then override the size of the aura icon to this."],
-						type = "range",
-						min = 0, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
-					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 4,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2257,18 +2248,9 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					sizeOverride = {
-						order = 4,
-						name = L["Size Override"],
-						desc = L["If not set to 0 then override the size of the aura icon to this."],
-						type = "range",
-						min = 0, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
-					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 4,
 						type = "group",
 						guiInline = true,
 						args = {
