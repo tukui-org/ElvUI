@@ -2060,25 +2060,16 @@ local function GetUnitSettings(unit, name)
 					numAuras = {
 						order = 2,
 						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed."],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					height = {
+					baseHeight = {
 						order = 3,
-						name = L["Icon Height"],
-						desc = L["Height for the Aura Icon"],
-						type = "range",
-						min = 6, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
-					},
-					width = {
-						order = 4,
-						name = L["Icon Width"],
-						desc = L["Width for the Aura Icon"],
+						name = L["Icon Base Height"],
+						desc = L["Base Height for the Aura Icon"],
 						type = "range",
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
@@ -2086,7 +2077,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order =5,
+						order = 4,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2242,25 +2233,16 @@ local function GetUnitSettings(unit, name)
 					numAuras = {
 						order = 2,
 						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed."],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					height = {
+					baseHeight = {
 						order = 3,
-						name = L["Icon Height"],
-						desc = L["Height for the Aura Icon"],
-						type = "range",
-						min = 6, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
-					},
-					width = {
-						order = 4,
-						name = L["Icon Width"],
-						desc = L["Width for the Aura Icon"],
+						name = L["Icon Base Height"],
+						desc = L["Base Height for the Aura Icon"],
 						type = "range",
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
@@ -2268,7 +2250,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 4,
 						type = "group",
 						guiInline = true,
 						args = {

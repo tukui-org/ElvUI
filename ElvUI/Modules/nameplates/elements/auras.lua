@@ -263,14 +263,13 @@ function mod:CreateAuraIcon(parent)
 	return aura
 end
 
-function mod:Auras_SizeChanged()
+function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
-	for i = 1, numAuras do
-		self.icons[i]:SetWidth((self.db.width or 20)* (self:GetParent().HealthBar.currentScale or 1))
-		self.icons[i]:SetHeight((self.db.height or 20) * (self:GetParent().HealthBar.currentScale or 1))
+	for i=1, numAuras do
+		self.icons[i]:SetWidth(((width - (mod.mult*numAuras)) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+		self.icons[i]:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
 	end
-	self:SetHeight((self.db.height or 18) * (self:GetParent().HealthBar.currentScale or 1))
-	self:SetWidth((self.db.width or 18)* (self:GetParent().HealthBar.currentScale or 1))
+	self:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
 end
 
 function mod:UpdateAuraIcons(auras)
@@ -288,13 +287,12 @@ function mod:UpdateAuraIcons(auras)
 		self.Auras_SizeChanged(auras, auras:GetWidth(), auras:GetHeight())
 	end
 
-	for i = 1, maxAuras do
+	for i=1, maxAuras do
 		auras.icons[i] = auras.icons[i] or tremove(auraCache) or mod:CreateAuraIcon(auras)
 		auras.icons[i]:SetParent(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
-		auras.icons[i]:SetHeight(auras.db.height or 20)
-		auras.icons[i]:SetWidth(auras.db.width or 20)
+		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
 
 		-- update stacks font on NAME_PLATE_UNIT_ADDED
 		if auras.icons[i].count then
