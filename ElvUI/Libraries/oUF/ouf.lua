@@ -9,8 +9,6 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
-
-local argcheck = Private.argcheck
 local error = Private.error
 local print = Private.print
 local UnitExists = Private.UnitExists
