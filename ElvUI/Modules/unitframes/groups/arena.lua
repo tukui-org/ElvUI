@@ -84,7 +84,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepSpec:Point("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
-		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
+		frame.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
@@ -197,10 +197,6 @@ function UF:Update_ArenaFrames(frame, db)
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
 		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
-	end
-
-	if not frame:IsElementEnabled("ArenaPreparation") then
-		frame:EnableElement("ArenaPreparation")
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
