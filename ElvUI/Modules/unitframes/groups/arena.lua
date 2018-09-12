@@ -73,7 +73,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.unitframeType = "arena"
 	end
 
-	if not frame and not frame.isChild then
+	if not frame.isChild then
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
 		frame.ArenaPrepIcon.bg:Point('TOPLEFT', frame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
