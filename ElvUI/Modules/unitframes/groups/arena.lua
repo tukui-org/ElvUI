@@ -31,7 +31,7 @@ function UF:PostUpdateArenaPreparation(_, specID)
 		_, spec, _, texture, _, class = GetSpecializationInfoByID(specID)
 	end
 
-	local pvpIconEnabled = self.__owner.db.pvpSpecIcon and self.__owner:IsElementEnabled('PVPSpecIcon')
+	local pvpIconEnabled = (self.__owner.db and self.__owner.db.pvpSpecIcon) and self.__owner:IsElementEnabled('PVPSpecIcon')
 	if class and spec then
 		self.__owner.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
 
