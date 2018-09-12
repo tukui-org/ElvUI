@@ -34,9 +34,11 @@ function UF:PostUpdateArenaPreparation(_, specID)
 	if class and spec then
 		self.__owner.ArenaPrepSpec:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
 		self.__owner.ArenaPrepIcon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		self.__owner.ArenaPrepIcon.bg:Show()
 		self.__owner.ArenaPrepIcon:Show()
 	else
 		self.__owner.ArenaPrepSpec:SetText('')
+		self.__owner.ArenaPrepIcon.bg:Hide()
 		self.__owner.ArenaPrepIcon:Hide()
 	end
 end
@@ -80,6 +82,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
 		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
 		frame.ArenaPrepIcon:SetInside(frame.ArenaPrepIcon.bg)
+		frame.ArenaPrepIcon.bg:Hide()
 		frame.ArenaPrepIcon:Hide()
 
 		frame.ArenaPrepSpec = frame.RaisedElementParent:CreateFontString(nil, "OVERLAY")
