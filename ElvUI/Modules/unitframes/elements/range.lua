@@ -170,9 +170,9 @@ function UF:UpdateRange()
 
 	local unit = self.unit
 	if unit then
-		if self.forceInsideAlpha then
+		if self.forceInRange then
 			self:SetAlpha(range.insideAlpha)
-		elseif self.forceOutsideAlpha then
+		elseif self.forceNotInRange then
 			self:SetAlpha(range.outsideAlpha)
 		elseif UnitCanAttack("player", unit) then
 			if enemyIsInRange(unit) then
