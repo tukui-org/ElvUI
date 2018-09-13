@@ -14,6 +14,7 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
 -- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
@@ -327,57 +328,38 @@ local function LoadSkin()
 		end
 	end
 
-	local function UpdatePvpTalentSlot(self)
-		local slotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo(self.slotIndex)
-		local selectedTalentID = self.predictedSetting:Get()
-
-		if (not slotInfo) then
-			return
-		end
-
-		self.Texture:Show()
-		if (slotInfo.enabled) then
-			if (not slotInfo.selectedTalentID) then
-				self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-			end
-		else
-			-- Do something for locked talents here
-		end
-	end
-
-	-- PVP Talents
-	local function SkinPvpTalentSlots(button)
-		button._elvUIBG = S:CropIcon(button.Texture, button)
-		button.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-		button.Arrow:SetPoint("LEFT", button.Texture, "RIGHT", 5, 0)
-		button.Arrow:SetSize(26, 13)
-		button.Border:Hide()
-
-		button:SetSize(button:GetSize())
-		button.Texture:SetSize(32, 32)
-		button.TalentName:SetPoint("TOP", button, "BOTTOM", 0, 0)
-		hooksecurefunc(button, "Update", UpdatePvpTalentSlot);
-	end
-
-	local function SkinPvpTalentTrinketSlot(button)
-		SkinPvpTalentSlots(button)
-		button.Texture:SetTexture([[Interface\Icons\INV_Jewelry_Trinket_04]])
-		button.Texture:SetSize(48, 48)
-		button.Arrow:SetSize(26, 13)
-	end
-
-	local PvpTalentFrame = PlayerTalentFrameTalents.PvpTalentFrame
+	local PvpTalentFrame = _G["PlayerTalentFrameTalents"].PvpTalentFrame
 	PvpTalentFrame:StripTextures()
 
-	PvpTalentFrame.Swords:SetSize(72, 67)
-	PvpTalentFrame.Orb:Hide()
-	PvpTalentFrame.Ring:Hide()
+	for _, button in pairs(PvpTalentFrame.Slots) do
+		button:CreateBackdrop()
+		button.backdrop:SetOutside(button.Texture)
 
-	-- Skin the PvP Icons
-	SkinPvpTalentTrinketSlot(PvpTalentFrame.TrinketSlot)
-	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot1)
-	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot2)
-	SkinPvpTalentSlots(PvpTalentFrame.TalentSlot3)
+		button.Arrow:SetAlpha(0)
+		button.Border:Hide()
+
+		hooksecurefunc(button, "Update", function(self)
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(self.slotIndex);
+			if (not slotInfo) then
+				return;
+			end
+
+			if (slotInfo.enabled) then
+				S:HandleTexture(self.Texture)
+				if (not slotInfo.selectedTalentID) then
+					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+					self.backdrop:SetBackdropBorderColor(1, 1, 0, 1)
+				else
+					self.backdrop:SetBackdropBorderColor(unpack(E['media'].bordercolor))
+				end
+			else
+				self.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
+				self.Texture:SetTexCoord(0, 1, 0, 1)
+				self.Texture:SetDesaturated(true)
+				self.Texture:Show()
+			end
+		end)
+	end
 
 	PvpTalentFrame.TalentList:StripTextures()
 	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
@@ -413,6 +395,10 @@ local function LoadSkin()
 	PvpTalentFrame.Swords:SetPoint("BOTTOM", 0, 30)
 	PvpTalentFrame.Label:SetPoint("BOTTOM", 0, 104)
 	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
+
+	PvpTalentFrame.Swords:SetSize(72, 67)
+	PvpTalentFrame.Orb:Hide()
+	PvpTalentFrame.Ring:Hide()
 
 	PvpTalentFrame.TrinketSlot:SetPoint("TOP", 0, -16)
 	PvpTalentFrame.TalentSlot1:SetPoint("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
