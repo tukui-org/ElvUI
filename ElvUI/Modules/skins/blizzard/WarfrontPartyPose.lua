@@ -17,7 +17,19 @@ local function LoadSkin()
 	WarfrontsPartyPoseFrame:StripTextures()
 	WarfrontsPartyPoseFrame:CreateBackdrop("Transparent")
 
+	WarfrontsPartyPoseFrame.ModelScene:StripTextures()
+	WarfrontsPartyPoseFrame.ModelScene:CreateBackdrop("Transparent")
+
 	S:HandleButton(WarfrontsPartyPoseFrame.LeaveButton)
+
+	local rewardFrame = WarfrontsPartyPoseFrame.RewardAnimations.RewardFrame
+	rewardFrame:CreateBackdrop("Transparent")
+	rewardFrame.backdrop:SetPoint("TOPLEFT", -5, 5)
+	rewardFrame.backdrop:SetPoint("BOTTOMRIGHT", rewardFrame.NameFrame, 0, -5)
+
+	rewardFrame.NameFrame:SetAlpha(0)
+	rewardFrame.IconBorder:SetAlpha(0)
+	rewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 
 S:AddCallbackForAddon("Blizzard_WarfrontsPartyPoseUI", "WarfrontPartyPose", LoadSkin)
