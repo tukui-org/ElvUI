@@ -118,6 +118,7 @@ local function LoadSkin()
 		_G["PlayerTalentFrameTalentsTalentRow"..i.."Bg"]:Hide()
 		row:DisableDrawLayer("BORDER")
 		row:StripTextures()
+		row.GlowFrame:Kill()
 
 		row.TopLine:Point("TOP", 0, 4)
 		row.BottomLine:Point("BOTTOM", 0, -4)
@@ -136,9 +137,17 @@ local function LoadSkin()
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
-			bu.bg:SetFrameLevel(bu:GetFrameLevel() -2)
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 2)
 			bu.bg:Point("TOPLEFT", 15, -1)
 			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+			bu.bg.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+
+			bu.GlowFrame.TopGlowLine = bu.bg.backdrop
+			bu.GlowFrame.TopGlowLine:Hide()
+			bu.GlowFrame.BottomGlowLine:Kill()
+
+			bu.GlowFrame:HookScript('OnShow', function(self) self.TopGlowLine:Show() bu.bg.backdrop:Show() end)
+			bu.GlowFrame:HookScript('OnHide', function(self) self.TopGlowLine:Hide() bu.bg.backdrop:Hide() end)
 
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
@@ -348,15 +357,16 @@ local function LoadSkin()
 				S:HandleTexture(self.Texture)
 				if (not slotInfo.selectedTalentID) then
 					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					self.backdrop:SetBackdropBorderColor(1, 1, 0, 1)
+					self.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					self.backdrop:SetBackdropBorderColor(unpack(E['media'].bordercolor))
+					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 				end
 			else
 				self.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
 				self.Texture:SetTexCoord(0, 1, 0, 1)
 				self.Texture:SetDesaturated(true)
 				self.Texture:Show()
+				self.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
 			end
 		end)
 	end
