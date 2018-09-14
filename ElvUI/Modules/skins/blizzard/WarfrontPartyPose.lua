@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-
+local unpack = unpack
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -17,8 +17,9 @@ local function LoadSkin()
 	WarfrontsPartyPoseFrame:StripTextures()
 	WarfrontsPartyPoseFrame:CreateBackdrop("Transparent")
 
-	WarfrontsPartyPoseFrame.ModelScene:StripTextures()
-	WarfrontsPartyPoseFrame.ModelScene:CreateBackdrop("Transparent")
+	local modelScene = WarfrontsPartyPoseFrame.ModelScene
+	modelScene:StripTextures()
+	modelScene:CreateBackdrop("Transparent")
 
 	S:HandleButton(WarfrontsPartyPoseFrame.LeaveButton)
 
