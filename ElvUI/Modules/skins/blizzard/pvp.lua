@@ -252,11 +252,23 @@ local function LoadSkin()
 	end
 
 	-- Honor Frame StatusBar
-	HonorFrame.ConquestBar:StripTextures()
-	HonorFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(HonorFrame.ConquestBar)
-	HonorFrame.ConquestBar:SetFrameLevel(HonorFrame.ConquestBar:GetFrameLevel() + 2)
-	HonorFrame.ConquestBar:CreateBackdrop("Default")
+	local bar = HonorFrame.ConquestBar
+	if bar then
+		if bar.Border then bar.Border:Hide() end
+		if bar.Background then bar.Background:Hide() end
+
+		if (factionGroup == "Alliance") then
+			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+		else
+			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+		end
+
+		if not bar.backdrop then
+			bar:CreateBackdrop("Default")
+			bar.backdrop:SetOutside()
+		end
+		E:RegisterStatusBar(bar)
+	end
 
 	-- Icon
 	HonorFrame.ConquestBar.Reward.Ring:Hide()
@@ -264,20 +276,28 @@ local function LoadSkin()
 	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	-- Conquest Frame StatusBar
-	ConquestFrame.ConquestBar:StripTextures()
-	ConquestFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(ConquestFrame.ConquestBar)
-	ConquestFrame.ConquestBar:SetFrameLevel(ConquestFrame.ConquestBar:GetFrameLevel() + 2)
-	ConquestFrame.ConquestBar:CreateBackdrop("Default")
+	local bar = ConquestFrame.ConquestBar
+	if bar then
+		if bar.Border then bar.Border:Hide() end
+		if bar.Background then bar.Background:Hide() end
+
+		if (factionGroup == "Alliance") then
+			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+		else
+			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+		end
+
+		if not bar.backdrop then
+			bar:CreateBackdrop("Default")
+			bar.backdrop:SetOutside()
+		end
+		E:RegisterStatusBar(bar)
+	end
 
 	-- Icon
 	ConquestFrame.ConquestBar.Reward.Ring:Hide()
 	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
 	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	-- OLD WAY!
-	--S:SkinPVPHonorXPBar(HonorFrame.ConquestBar)
-	--S:SkinPVPHonorXPBar('ConquestFrame')
 
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)
