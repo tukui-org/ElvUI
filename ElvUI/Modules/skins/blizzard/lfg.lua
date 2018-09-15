@@ -215,24 +215,14 @@ local function LoadSkin()
 
 	for i = 1, 4 do
 		local bu = GroupFinderFrame["groupButton"..i]
+		bu.ring:Kill()
+		bu.bg:Kill()
+		S:HandleButton(bu)
 
-		bu.ring:Hide()
-		bu.bg:SetTexture("")
-		bu.bg:SetAllPoints()
-
-		bu:SetTemplate()
-		bu:StyleButton()
-
-		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:Point("LEFT", bu, "LEFT")
-		bu.icon:SetDrawLayer("OVERLAY")
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		bu.border = CreateFrame("Frame", nil, bu)
-		bu.border:SetTemplate('Default')
-		bu.border:SetOutside(bu.icon)
-		bu.icon:SetParent(bu.border)
+		S:CropIcon(bu.icon, bu)
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")

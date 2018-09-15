@@ -22,23 +22,14 @@ local function LoadSkin()
 
 	for i = 1, 3 do
 		local bu = _G["PVPQueueFrameCategoryButton"..i]
-
 		bu.Ring:Kill()
 		bu.Background:Kill()
+		S:HandleButton(bu)
 
-		bu:SetTemplate()
-		bu:StyleButton(nil, true)
-
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point("LEFT", bu, "LEFT")
-		bu.Icon:SetDrawLayer("OVERLAY")
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:Point("LEFT", 10, 0)
-		bu.border = CreateFrame("Frame", nil, bu)
-		bu.border:SetTemplate("Default")
-		bu.border:SetOutside(bu.Icon)
-		bu.Icon:SetParent(bu.border)
+		S:CropIcon(bu.Icon, bu)
 	end
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
@@ -85,22 +76,12 @@ local function LoadSkin()
 	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton"}) do
 		local bu = BonusFrame[bonusButton]
 		local reward = bu.Reward
-
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
+		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		reward:SetTemplate("Default")
-		reward:SetSize(40, 40)
-		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
-
-		reward.Icon:SetAllPoints()
-		reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		S:CropIcon(reward.Icon, reward)
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate("Default")
@@ -227,22 +208,12 @@ local function LoadSkin()
 
 	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
-
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
+		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		reward:SetTemplate("Default")
-		reward:SetSize(40, 40)
-		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
-
-		reward.Icon:SetAllPoints()
-		reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		S:CropIcon(reward.Icon, reward)
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
