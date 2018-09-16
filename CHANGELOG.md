@@ -9,6 +9,7 @@ Fixed a rare nil error in the range code.
 
 **Misc. Changes:**  
 Updated ArenaPrepFrame functions (Thanks oUF!).  
+Added Infested affix buff to RaidBuffsElvUI filter.  
 
 ___
 **Version 10.81 [ September 6th 2018 ]**
