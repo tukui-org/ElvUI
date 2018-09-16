@@ -561,6 +561,9 @@ local function LoadSkin()
 	end
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 	hooksecurefunc(TokenFrameContainer, "update", UpdateCurrencySkins)
+
+	-- Tutorials
+	S:HandleCloseButton(PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton)
 end
 
 S:AddCallback("Character", LoadSkin)
