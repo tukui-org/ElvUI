@@ -3,13 +3,15 @@
 **New Additions:**  
 Added toggle option for the New Item Glow in your bags. (#452)  
 Added an option to hide the honor databar below max level. Disabled by default.  
+Add width override for nameplate auras. (#142)  
 
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
 
 **Misc. Changes:**  
-Updated ArenaPrepFrame functions (Thanks oUF!).  
 Added Infested affix buff to RaidBuffsElvUI filter.  
+Updated ArenaPrepFrame functions (Thanks oUF!).  
+Updated PvP, LFG & Talent skins.  
 
 ___
 **Version 10.81 [ September 6th 2018 ]**
