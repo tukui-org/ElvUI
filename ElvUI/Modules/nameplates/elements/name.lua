@@ -5,6 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Cache global variables
 --Lua functions
 --WoW API / Variables
+local UNKNOWN = UNKNOWN
 local UnitClass = UnitClass
 local UnitName = UnitName
 local UnitReaction = UnitReaction
@@ -15,14 +16,14 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_Name(frame, triggered)
-	local name = UnitName(frame.displayedUnit)
+	local name = frame.displayedUnit and UnitName(frame.displayedUnit)
 
 	if not triggered then
 		if((not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name) then return end
 		if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end
 	end
 
-	frame.Name:SetText(name)
+	frame.Name:SetText(name or UNKNOWN)
 
 	local r, g, b = 1, 1, 1
 	local useClassColor = self.db.units[frame.UnitType].name and self.db.units[frame.UnitType].name.useClassColor
