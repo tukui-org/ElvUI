@@ -19,8 +19,14 @@ function mod:UpdateElement_Name(frame, triggered)
 	local name = frame.displayedUnit and UnitName(frame.displayedUnit)
 
 	if not triggered then
-		if (not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name then return end
-		if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end
+		if (not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name then
+			return
+		end
+
+		if frame.UnitType and (frame.UnitType == "PLAYER") and not self.db.units[frame.UnitType].showName then
+			frame.Name:SetText()
+			return
+		end
 	end
 
 	frame.Name:SetText(name or UNKNOWN)
