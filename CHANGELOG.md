@@ -1,4 +1,16 @@
-**Version 10.82 [  ]**
+**Version 10.83 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.82 [ September 18th 2018 ]**
 
 **New Additions:**  
 Added toggle option for the New Item Glow in your bags. (#452)  
