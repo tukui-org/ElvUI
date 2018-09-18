@@ -169,6 +169,7 @@ L["CVars Set"] = "參數設定"
 L["CVars"] = "參數"
 L["Dark"] = "黑暗"
 L["Disable"] = "停用"
+L["Discord"] = true
 L["ElvUI Installation"] = "安裝 ElvUI"
 L["Finished"] = "設定完畢"
 L["Grid Size:"] = "網格尺寸:"

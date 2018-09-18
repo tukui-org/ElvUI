@@ -22,7 +22,7 @@ function UF:Construct_PhaseIcon(frame)
 	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
 	PhaseIndicator:SetSize(30, 30)
 	PhaseIndicator:SetPoint('CENTER', frame.Health, 'CENTER')
-	PhaseIndicator:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\phaseIcons.tga')
+	PhaseIndicator:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\phaseIcons')
 	PhaseIndicator:SetDrawLayer('OVERLAY', 7)
 
 	PhaseIndicator.PostUpdate = UF.PostUpdate_PhaseIcon

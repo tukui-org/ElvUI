@@ -22,23 +22,14 @@ local function LoadSkin()
 
 	for i = 1, 3 do
 		local bu = _G["PVPQueueFrameCategoryButton"..i]
-
 		bu.Ring:Kill()
 		bu.Background:Kill()
+		S:HandleButton(bu)
 
-		bu:SetTemplate()
-		bu:StyleButton(nil, true)
-
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point("LEFT", bu, "LEFT")
-		bu.Icon:SetDrawLayer("OVERLAY")
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:Point("LEFT", 10, 0)
-		bu.border = CreateFrame("Frame", nil, bu)
-		bu.border:SetTemplate("Default")
-		bu.border:SetOutside(bu.Icon)
-		bu.Icon:SetParent(bu.border)
+		S:CropIcon(bu.Icon, bu)
 	end
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
@@ -85,22 +76,12 @@ local function LoadSkin()
 	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton"}) do
 		local bu = BonusFrame[bonusButton]
 		local reward = bu.Reward
-
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
+		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		reward:SetTemplate("Default")
-		reward:SetSize(40, 40)
-		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
-
-		reward.Icon:SetAllPoints()
-		reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		S:CropIcon(reward.Icon, reward)
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate("Default")
@@ -227,22 +208,12 @@ local function LoadSkin()
 
 	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
-
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
+		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		reward:SetTemplate("Default")
-		reward:SetSize(40, 40)
-		reward:SetPoint("RIGHT", bu, "RIGHT", -8, 0)
-
-		reward.Icon:SetAllPoints()
-		reward.Icon:SetPoint("TOPLEFT", 2, -2)
-		reward.Icon:SetPoint("BOTTOMRIGHT", -2, 2)
-		reward.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		S:CropIcon(reward.Icon, reward)
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
@@ -252,11 +223,23 @@ local function LoadSkin()
 	end
 
 	-- Honor Frame StatusBar
-	HonorFrame.ConquestBar:StripTextures()
-	HonorFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(HonorFrame.ConquestBar)
-	HonorFrame.ConquestBar:SetFrameLevel(HonorFrame.ConquestBar:GetFrameLevel() + 2)
-	HonorFrame.ConquestBar:CreateBackdrop("Default")
+	local bar = HonorFrame.ConquestBar
+	if bar then
+		if bar.Border then bar.Border:Hide() end
+		if bar.Background then bar.Background:Hide() end
+
+		if (factionGroup == "Alliance") then
+			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+		else
+			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+		end
+
+		if not bar.backdrop then
+			bar:CreateBackdrop("Default")
+			bar.backdrop:SetOutside()
+		end
+		E:RegisterStatusBar(bar)
+	end
 
 	-- Icon
 	HonorFrame.ConquestBar.Reward.Ring:Hide()
@@ -264,20 +247,28 @@ local function LoadSkin()
 	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	-- Conquest Frame StatusBar
-	ConquestFrame.ConquestBar:StripTextures()
-	ConquestFrame.ConquestBar:SetStatusBarTexture(E["media"].normTex)
-	E:RegisterStatusBar(ConquestFrame.ConquestBar)
-	ConquestFrame.ConquestBar:SetFrameLevel(ConquestFrame.ConquestBar:GetFrameLevel() + 2)
-	ConquestFrame.ConquestBar:CreateBackdrop("Default")
+	local bar = ConquestFrame.ConquestBar
+	if bar then
+		if bar.Border then bar.Border:Hide() end
+		if bar.Background then bar.Background:Hide() end
+
+		if (factionGroup == "Alliance") then
+			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+		else
+			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+		end
+
+		if not bar.backdrop then
+			bar:CreateBackdrop("Default")
+			bar.backdrop:SetOutside()
+		end
+		E:RegisterStatusBar(bar)
+	end
 
 	-- Icon
 	ConquestFrame.ConquestBar.Reward.Ring:Hide()
 	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
 	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	-- OLD WAY!
-	--S:SkinPVPHonorXPBar(HonorFrame.ConquestBar)
-	--S:SkinPVPHonorXPBar('ConquestFrame')
 
 	--Tutorials
 	S:HandleCloseButton(PremadeGroupsPvPTutorialAlert.CloseButton)

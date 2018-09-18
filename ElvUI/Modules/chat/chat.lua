@@ -217,23 +217,23 @@ function CH:AddSmiley(key, texture, top)
 end
 
 local rolePaths = {
-	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank.tga:15:15:0:0:64:64:2:56:2:56|t]],
-	HEALER = [[|TInterface\AddOns\ElvUI\media\textures\healer.tga:15:15:0:0:64:64:2:56:2:56|t]],
-	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
+	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank:15:15:0:0:64:64:2:56:2:56|t]],
+	HEALER = [[|TInterface\AddOns\ElvUI\media\textures\healer:15:15:0:0:64:64:2:56:2:56|t]],
+	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps:15:15|t]]
 }
 
 local specialChatIcons
 do --this can save some main file locals
 	local IconPath		= "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPink		= IconPath.."elvui_pink.tga:13:25|t"
-	local ElvPurple		= IconPath.."elvui_purple.tga:13:25|t"
-	local ElvBlue		= IconPath.."elvui_blue.tga:13:25|t"
-	local ElvGreen		= IconPath.."elvui_green.tga:13:25|t"
-	local ElvOrange		= IconPath.."elvui_orange.tga:13:25|t"
-	local ElvRed		= IconPath.."elvui_red.tga:13:25|t"
-	local ElvRainbow	= IconPath.."elvui_rainbow.tga:13:25|t"
-	local Bathrobe		= IconPath.."bathrobe.tga:15:15|t"
-	local MrHankey		= IconPath.."mr_hankey.tga:16:18|t"
+	--local ElvPink		= IconPath.."elvui_pink:13:25|t"
+	local ElvPurple		= IconPath.."elvui_purple:13:25|t"
+	local ElvBlue		= IconPath.."elvui_blue:13:25|t"
+	local ElvGreen		= IconPath.."elvui_green:13:25|t"
+	local ElvOrange		= IconPath.."elvui_orange:13:25|t"
+	local ElvRed		= IconPath.."elvui_red:13:25|t"
+	local ElvRainbow	= IconPath.."elvui_rainbow:13:25|t"
+	local Bathrobe		= IconPath.."bathrobe:15:15|t"
+	local MrHankey		= IconPath.."mr_hankey:16:18|t"
 	specialChatIcons = {
 		-- Elv --
 		["Illidelv-Area52"]		= ElvBlue,
@@ -243,7 +243,7 @@ do --this can save some main file locals
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 		-- Whiro --
-		["Cyrizzak-WyrmrestAccord"]	= ElvPurple,
+		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis Toons --
 		["Maithilis-Shattrath"]		= ElvGreen,
 		["Merathilis-Garrosh"]		= ElvOrange, -- Druid [Horde]
@@ -552,7 +552,7 @@ function CH:StyleChat(frame)
 
 	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
 	frame.button.tex:SetInside()
-	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy.tga]])
+	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy]])
 
 	frame.button:SetScript("OnMouseUp", function(self, btn)
 		if btn == "RightButton" and id == 1 then
@@ -2275,7 +2275,7 @@ function CH:DefaultSmileys()
 		wipe(CH.Smileys.Textures)
 	end
 
-	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s.tga"
+	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s"
 
 	-- new keys
 	CH:AddSmiley(':angry:',			format(t,'angry'))

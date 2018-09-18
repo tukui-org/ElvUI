@@ -269,9 +269,9 @@ function AB:PositionAndSizeBar(barName)
 
 				if newstate == 1 then
 					if(HasVehicleActionBar()) then
-						bar:SetAttribute("state", 12)
-						bar:ChildUpdate("state", 12)
-						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", 12) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
+						bar:SetAttribute("state", GetVehicleBarIndex()) -- This should update the bar correctly for King's Rest now.
+						bar:ChildUpdate("state", GetVehicleBarIndex())
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", GetVehicleBarIndex()) --Update MainMenuBarArtFrame too.
 					else
 						if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 							ParsedText = GetTempShapeshiftBarIndex() or ParsedText

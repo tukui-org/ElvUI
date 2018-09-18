@@ -18,9 +18,13 @@ local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsWarModePhased = UnitIsWarModePhased
 local UnitIsUnit = UnitIsUnit
 
+local SpellRangeTable = {}
+
 function UF:Construct_Range()
 	local Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
 	Range.Override = UF.UpdateRange
+
+	SpellRangeTable[class] = SpellRangeTable[class] or {}
 
 	return Range
 end
@@ -40,10 +44,7 @@ function UF:Configure_Range(frame)
 	end
 end
 
-local SpellRangeTable = {}
-
 local function AddTable(tbl)
-	SpellRangeTable[class] = SpellRangeTable[class] or {}
 	SpellRangeTable[class][tbl] = {}
 end
 
@@ -165,8 +166,14 @@ end
 
 function UF:UpdateRange()
 	local range = self.Range
+	if not range then return end
 	local unit = self.unit
-	if(unit) then
+
+	if self.forceInRange then
+		self:SetAlpha(range.insideAlpha)
+	elseif self.forceNotInRange then
+		self:SetAlpha(range.outsideAlpha)
+	elseif unit then
 		if UnitCanAttack("player", unit) then
 			if enemyIsInRange(unit) then
 				self:SetAlpha(range.insideAlpha)

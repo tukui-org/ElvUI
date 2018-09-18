@@ -169,6 +169,7 @@ L["CVars Set"] = "CVars configuradas"
 L["CVars"] = "CVars"
 L["Dark"] = "Escuro"
 L["Disable"] = "Desativar"
+L["Discord"] = true
 L["ElvUI Installation"] = "Instalação do ElvUI"
 L["Finished"] = "Terminado"
 L["Grid Size:"] = "Tamanho da Grade"

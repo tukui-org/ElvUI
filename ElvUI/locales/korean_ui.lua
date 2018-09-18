@@ -169,6 +169,7 @@ L["CVars Set"] = "CVars 설정"
 L["CVars"] = "게임 인터페이스 설정(CVars)"
 L["Dark"] = "어두운 느낌"
 L["Disable"] = "비활성화"
+L["Discord"] = true
 L["ElvUI Installation"] = "ElvUI 설치"
 L["Finished"] = "마침"
 L["Grid Size:"] = "격자 크기 :"

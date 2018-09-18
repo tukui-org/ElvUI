@@ -169,6 +169,7 @@ L["CVars Set"] = true
 L["CVars"] = true
 L["Dark"] = true
 L["Disable"] = true
+L["Discord"] = true
 L["ElvUI Installation"] = true
 L["Finished"] = true
 L["Grid Size:"] = true

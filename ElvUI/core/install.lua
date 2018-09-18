@@ -775,8 +775,11 @@ local function SetPage(PageNum)
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript("OnClick", InstallComplete)
-		InstallOption1Button:SetText(L["Finished"])
+		InstallOption1Button:SetScript("OnClick", function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://discord.gg/xFWcfgE") end)
+		InstallOption1Button:SetText(L["Discord"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript("OnClick", InstallComplete)
+		InstallOption2Button:SetText(L["Finished"])
 		ElvUIInstallFrame:Size(550, 350)
 	end
 end
@@ -971,7 +974,7 @@ function E:Install()
 
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
 		f.tutorialImage:Size(256, 128)
-		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga')
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo')
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 	end
 

@@ -735,6 +735,18 @@ function S:HandleIcon(icon, parent)
 	parent.backdrop:SetOutside(icon)
 end
 
+function S:HandleTexture(icon, parent)
+	icon:SetTexCoord(unpack(E.TexCoords))
+	if parent then
+		local layer, subLevel = icon:GetDrawLayer()
+		local iconBorder = parent:CreateTexture(nil, layer, nil, subLevel - 1)
+		iconBorder:SetPoint("TOPLEFT", icon, -1, 1)
+		iconBorder:SetPoint("BOTTOMRIGHT", icon, 1, -1)
+		iconBorder:SetColorTexture(0, 0, 0)
+		return iconBorder
+	end
+end
+
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 

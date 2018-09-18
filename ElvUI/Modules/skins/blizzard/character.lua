@@ -132,7 +132,7 @@ local function LoadSkin()
 		frame.rightGrad:SetWidth(80)
 		frame.rightGrad:SetHeight(frame:GetHeight())
 		frame.rightGrad:SetPoint("RIGHT", frame, "CENTER")
-		frame.rightGrad:SetTexture([[Interface\BUTTONS\WHITE8X8.blp]])
+		frame.rightGrad:SetTexture([[Interface\BUTTONS\WHITE8X8]])
 		frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
 	end
 	CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
@@ -561,6 +561,9 @@ local function LoadSkin()
 	end
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 	hooksecurefunc(TokenFrameContainer, "update", UpdateCurrencySkins)
+
+	-- Tutorials
+	S:HandleCloseButton(PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton)
 end
 
 S:AddCallback("Character", LoadSkin)

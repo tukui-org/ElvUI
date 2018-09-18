@@ -86,14 +86,21 @@ E.Options.args.bags = {
 					desc = L["Display the upgrade icon on items that WoW considers an upgrade for your character."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
-				clearSearchOnClose = {
+				newItemGlow = {
 					order = 8,
+					type = 'toggle',
+					name = L["Show New Item Glow"],
+					desc = L["Display the New Item Glow"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				clearSearchOnClose = {
+					order = 9,
 					type = 'toggle',
 					name = L["Clear Search On Close"],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
 				},
 				reverseLoot = {
-					order = 9,
+					order = 10,
 					type = "toggle",
 					name = REVERSE_NEW_LOOT_TEXT,
 					set = function(info, value)
@@ -102,19 +109,19 @@ E.Options.args.bags = {
 					end,
 				},
 				disableBagSort = {
-					order = 10,
+					order = 11,
 					type = "toggle",
 					name = L["Disable Bag Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
 				},
 				disableBankSort = {
-					order = 11,
+					order = 12,
 					type = "toggle",
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
 				strata = {
-					order = 12,
+					order = 13,
 					type = "select",
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
@@ -128,7 +135,7 @@ E.Options.args.bags = {
 					},
 				},
 				countGroup = {
-					order = 13,
+					order = 14,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -178,7 +185,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 14,
+					order = 15,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,

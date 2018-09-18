@@ -30,6 +30,8 @@ function mod:UpdateHonor(event, unit)
 		showHonor = false
 	elseif (self.db.honor.hideOutsidePvP and not UnitIsPVP("player")) then
 		showHonor = false
+	elseif (self.db.honor.hideBelowMaxLevel and UnitLevel("player") < MAX_PLAYER_LEVEL) then
+		showHonor = false
 	end
 
 	if not showHonor then

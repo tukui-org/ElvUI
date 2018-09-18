@@ -911,6 +911,7 @@ G.unitframe.aurafilters['RaidBuffsElvUI'] = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
+		[277242] = Defaults(), -- Symbiote of G'huun (Infested)
 
 		--Raids
 	},
