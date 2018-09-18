@@ -1004,6 +1004,7 @@ G.unitframe.ChannelTicks = {
 	-- Warlock
 	[SpellName(198590)] = 6, -- Drain Soul
 	[SpellName(755)]    = 6, -- Health Funnel
+	[SpellName(234153)] = 6, -- Drain Life
 	-- Priest
 	[SpellName(64843)]  = 4, -- Divine Hymn
 	[SpellName(15407)]  = 4, -- Mind Flay
