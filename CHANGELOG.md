@@ -1,13 +1,14 @@
 **Version 10.83 [  ]**
 
 **New Additions:**  
+Added Drain Life to channel ticks.  
 
 
 **Bug Fixes:**  
 
 
 **Misc. Changes:**  
-
+Updated CCDebuffs list.  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
