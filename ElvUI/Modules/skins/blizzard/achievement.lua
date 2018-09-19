@@ -118,24 +118,42 @@ local function LoadSkin(event)
 		return;
 	end
 
-	local frames = {
-		"AchievementFrame",
-		"AchievementFrameCategories",
-		"AchievementFrameSummary",
-		"AchievementFrameHeader",
-		"AchievementFrameSummaryCategoriesHeader",
-		"AchievementFrameSummaryAchievementsHeader",
-		"AchievementFrameStatsBG",
-		"AchievementFrameAchievements",
-		"AchievementFrameComparison",
-		"AchievementFrameComparisonHeader",
-		"AchievementFrameComparisonSummaryPlayer",
-		"AchievementFrameComparisonSummaryFriend",
-	}
-
-	for _, frame in pairs(frames) do
-		_G[frame]:StripTextures(true)
+	AchievementFrameCategories:SetBackdrop(nil)
+	AchievementFrameSummary:SetBackdrop(nil)
+	for i = 1, 17 do
+		select(i, AchievementFrame:GetRegions()):Hide()
 	end
+	AchievementFrameSummaryBackground:Hide()
+	AchievementFrameSummary:GetChildren():Hide()
+	AchievementFrameCategoriesContainerScrollBarBG:SetAlpha(0)
+	for i = 1, 4 do
+		select(i, AchievementFrameHeader:GetRegions()):Hide()
+	end
+	AchievementFrameHeaderRightDDLInset:SetAlpha(0)
+	AchievementFrameHeaderLeftDDLInset:SetAlpha(0)
+	select(2, AchievementFrameAchievements:GetChildren()):Hide()
+	AchievementFrameAchievementsBackground:Hide()
+	select(3, AchievementFrameAchievements:GetRegions()):Hide()
+	AchievementFrameStatsBG:Hide()
+	AchievementFrameSummaryAchievementsHeaderHeader:Hide()
+	AchievementFrameSummaryCategoriesHeaderTexture:Hide()
+	select(3, AchievementFrameStats:GetChildren()):Hide()
+	select(5, AchievementFrameComparison:GetChildren()):Hide()
+	AchievementFrameComparisonHeaderBG:Hide()
+	AchievementFrameComparisonHeaderPortrait:Hide()
+	AchievementFrameComparisonHeaderPortraitBg:Hide()
+	AchievementFrameComparisonBackground:Hide()
+	AchievementFrameComparisonDark:SetAlpha(0)
+	AchievementFrameComparisonSummaryPlayerBackground:Hide()
+	AchievementFrameComparisonSummaryFriendBackground:Hide()
+	AchievementFrameMetalBorderTopLeft:Hide()
+	AchievementFrameWoodBorderTopLeft:Hide()
+	AchievementFrameMetalBorderTopRight:Hide()
+	AchievementFrameWoodBorderTopRight:Hide()
+	AchievementFrameMetalBorderBottomRight:Hide()
+	AchievementFrameWoodBorderBottomRight:Hide()
+	AchievementFrameMetalBorderBottomLeft:Hide()
+	AchievementFrameWoodBorderBottomLeft:Hide()
 
 	local noname_frames = {
 		"AchievementFrameStats",
@@ -166,6 +184,7 @@ local function LoadSkin(event)
 	AchievementFrameCategoriesContainer:CreateBackdrop("Default")
 	AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	AchievementFrameCategoriesContainer.backdrop:SetFrameStrata("BACKGROUND")
 	AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
 	AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
 	AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
