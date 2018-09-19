@@ -3,10 +3,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 --Cache global variables
 --Lua functions
 local print, unpack, select = print, unpack, select
-local lower = string.lower
+local strlower = string.lower
 --WoW API / Variables
 local GetSpellInfo = GetSpellInfo
-local IsPlayerSpell, UnitClass = IsPlayerSpell, UnitClass
+local IsPlayerSpell = IsPlayerSpell
 
 local function SpellName(id)
 	local name = GetSpellInfo(id)
@@ -1021,8 +1021,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_TALENT_UPDATE")
 f:SetScript("OnEvent", function()
-	local class = select(2, UnitClass("player"))
-	if lower(class) ~= "priest" then return; end
+	if strlower(E.myclass) ~= "priest" then return end
 
 	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
 	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
