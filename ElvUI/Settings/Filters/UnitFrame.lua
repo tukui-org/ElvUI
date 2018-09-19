@@ -532,6 +532,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[114052] = Defaults(), -- Ascendance (Resto)
 		[79206]  = Defaults(), -- Spiritwalker's Grace
 		[58875]  = Defaults(), -- Spirit Walk
+		[157384] = Defaults(), -- Eye of the Storm
 		[192082] = Defaults(), -- Wind Rush
 		[2645]   = Defaults(), -- Ghost Wolf
 		[32182]  = Defaults(), -- Heroism
