@@ -96,10 +96,10 @@ local function friendlyIsInRange(unit)
 	end
 
 	if CheckInteractDistance(unit, 1) then
-		return true -- within 28 yards (arg2 as 1 is compare achievements)
+		return true -- within 28 yards (arg2 as 1 is Compare Achievements distance)
 	end
 
-	if UnitIsDeadOrGhost(unit) and #SpellRangeTable[E.myclass].resSpells > 0 then -- dead with rez spells
+	if UnitIsDeadOrGhost(unit) and (#SpellRangeTable[E.myclass].resSpells > 0) then -- dead with rez spells
 		for _, spellID in ipairs(SpellRangeTable[E.myclass].resSpells) do
 			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true -- within rez range
@@ -122,41 +122,50 @@ end
 
 local function petIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
-		return true
+		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
-		end
-	end
-	for _, spellID in ipairs(SpellRangeTable[E.myclass].petSpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if #SpellRangeTable[E.myclass].friendlySpells > 0 then -- you have some healy spell
+		for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+				return true
+			end
 		end
 	end
 
-	return false
+	if #SpellRangeTable[E.myclass].petSpells > 0 then -- you have some pet spell
+		for _, spellID in ipairs(SpellRangeTable[E.myclass].petSpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+				return true
+			end
+		end
+	end
+
+	return false -- not within 8 yards and no spells in range
 end
 
 local function enemyIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
-		return true
+		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	for _, spellID in ipairs(SpellRangeTable[E.myclass].enemySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if #SpellRangeTable[E.myclass].enemySpells > 0 then -- you have some damage spell
+		for _, spellID in ipairs(SpellRangeTable[E.myclass].enemySpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+				return true
+			end
 		end
 	end
 
-	return false
+	return false -- not within 8 yards and no spells in range
 end
 
 local function enemyIsInLongRange(unit)
-	for _, spellID in ipairs(SpellRangeTable[E.myclass].longEnemySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if #SpellRangeTable[E.myclass].longEnemySpells > 0 then -- you have some 30+ range damage spell
+		for _, spellID in ipairs(SpellRangeTable[E.myclass].longEnemySpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+				return true
+			end
 		end
 	end
 
