@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local format, join = string.format, string.join
+local format = string.format
 local tsort = table.sort
 local ipairs = ipairs
 --WoW API / Variables
@@ -19,7 +19,7 @@ local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQu
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
 local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
-local GetRGB = GetRGB
+local UnitLevel = UnitLevel
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local HideUIPanel = HideUIPanel
 local GetCurrencyInfo = GetCurrencyInfo
@@ -42,8 +42,6 @@ local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 
 local WARRESOURCES_CURRENCY = 1560
 local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(WARRESOURCES_CURRENCY)))
-
-local displayModifierString = ''
 local lastPanel
 
 local function sortFunction(a, b)
@@ -152,8 +150,7 @@ local function OnEnter(self, _, noUpdate)
 		local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
 		if questID then
 			local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false);
-			local text = ""
-			local r1, g1 ,b1
+			local text, r1, g1 ,b1
 
 			if finished or IsQuestFlaggedCompleted(questID) then
 				text = GOAL_COMPLETED
@@ -208,9 +205,7 @@ local function OnEvent(self, event)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
-	displayModifierString = join("", "%s: ", hex, "%d/%d|r")
-
+local function ValueColorUpdate()
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
