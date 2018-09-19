@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local format = string.format
+local format, join = string.format, string.join
 local tsort = table.sort
 local ipairs = ipairs
 --WoW API / Variables
@@ -15,23 +15,36 @@ local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassI
 local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
+local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
+local GetQuestObjectiveInfo = GetQuestObjectiveInfo
+local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
+local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
+local GetRGB = GetRGB
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local HideUIPanel = HideUIPanel
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local SecondsToTime = SecondsToTime
-local COMPLETE = COMPLETE
+local GOAL_COMPLETED = GOAL_COMPLETED
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
+local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
+local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
+local ISLANDS_HEADER = ISLANDS_HEADER
+local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
+local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GarrisonLandingPage
 
 local WARRESOURCES_CURRENCY = 1560
 local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(WARRESOURCES_CURRENCY)))
+
+local displayModifierString = ''
+local lastPanel
 
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
@@ -66,7 +79,7 @@ local function OnEnter(self, _, noUpdate)
 			end
 
 			if(timeLeft and timeLeft == "0") then
-				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
+				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, 0, 1, 0)
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
 			end
@@ -122,7 +135,7 @@ local function OnEnter(self, _, noUpdate)
 					firstLine = false
 					DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- "Research Time:"
 					if(talent.researchTimeRemaining and talent.researchTimeRemaining == 0) then
-						DT.tooltip:AddDoubleLine(talent.name, COMPLETE, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1)
 					else
 						DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1)
 					end
@@ -133,7 +146,31 @@ local function OnEnter(self, _, noUpdate)
 		end
 	end
 
-	if(numMissions > 0 or hasFollowers or hasTalent) then
+	-- Island Expeditions
+	local hasIsland = false
+	if(UnitLevel("player") >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH)) then
+		local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
+		if questID then
+			local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false);
+			local text = ""
+			local r1, g1 ,b1
+
+			if finished or IsQuestFlaggedCompleted(questID) then
+				text = GOAL_COMPLETED
+				r1, g1, b1 = GREEN_FONT_COLOR:GetRGB()
+			else
+				text = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS:format(numFulfilled, numRequired)
+				r1, g1, b1 = 1, 1, 1
+			end
+
+			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(ISLANDS_HEADER..":")
+			DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
+			hasIsland = true
+		end
+	end
+
+	if(numMissions > 0 or hasFollowers or hasTalent or hasIsland) then
 		DT.tooltip:Show()
 	else
 		DT.tooltip:Hide()
@@ -167,6 +204,17 @@ local function OnEvent(self, event)
 
 	local _, numGarrisonResources = GetCurrencyInfo(WARRESOURCES_CURRENCY)
 	self.text:SetFormattedText("%s %s", WARRESOURCES_ICON, numGarrisonResources)
+
+	lastPanel = self
 end
 
-DT:RegisterDatatext('BfA Missions', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter, nil, L["BfA Missions"])
+local function ValueColorUpdate(hex)
+	displayModifierString = join("", "%s: ", hex, "%d/%d|r")
+
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
+	end
+end
+E["valueColorUpdateFuncs"][ValueColorUpdate] = true
+
+DT:RegisterDatatext('BfA Missions', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS", "GARRISON_MISSION_LIST_UPDATE", "GARRISON_MISSION_STARTED", "GARRISON_MISSION_FINISHED", "ZONE_CHANGED_NEW_AREA", "GARRISON_MISSION_COMPLETE_RESPONSE"}, OnEvent, nil, OnClick, OnEnter, nil, L["BfA Missions"])
