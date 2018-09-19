@@ -212,4 +212,4 @@ local function ValueColorUpdate()
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext('BfA Missions', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS", "GARRISON_MISSION_LIST_UPDATE", "GARRISON_MISSION_STARTED", "GARRISON_MISSION_FINISHED", "ZONE_CHANGED_NEW_AREA", "GARRISON_MISSION_COMPLETE_RESPONSE"}, OnEvent, nil, OnClick, OnEnter, nil, L["BfA Missions"])
+DT:RegisterDatatext('BfA Missions', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter, nil, L["BfA Missions"])
