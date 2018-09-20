@@ -62,13 +62,13 @@ local function OnEnter(self, _, noUpdate)
 	--Missions
 	local inProgressMissions = {}
 	C_Garrison_GetInProgressMissions(inProgressMissions, LE_FOLLOWER_TYPE_GARRISON_8_0)
+	DT.tooltip:AddLine(L["Mission(s) Report:"]) -- always show the header
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
 		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		firstLine = false
-		DT.tooltip:AddLine(L["Mission(s) Report:"])
-		for i=1, numMissions do
+		for i = 1, numMissions do
 			local mission = inProgressMissions[i]
 			local timeLeft = mission.timeLeft:match("%d")
 			local r, g, b = 1, 1, 1
