@@ -99,20 +99,22 @@ local function friendlyIsInRange(unit)
 		return true -- within 28 yards (arg2 as 1 is Compare Achievements distance)
 	end
 
-	if UnitIsDeadOrGhost(unit) and (#SpellRangeTable[E.myclass].resSpells > 0) then -- dead with rez spells
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].resSpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true -- within rez range
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].resSpells and UnitIsDeadOrGhost(unit) and (#SpellRangeTable[E.myclass].resSpells > 0) then -- dead with rez spells
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].resSpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true -- within rez range
+				end
 			end
+
+			return false -- dead but no spells are in range
 		end
 
-		return false -- dead but no spells are in range
-	end
-
-	if #SpellRangeTable[E.myclass].friendlySpells > 0 then -- you have some healy spell
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true -- within healy spell range
+		if SpellRangeTable[E.myclass].friendlySpells and (#SpellRangeTable[E.myclass].friendlySpells > 0) then -- you have some healy spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true -- within healy spell range
+				end
 			end
 		end
 	end
@@ -125,18 +127,20 @@ local function petIsInRange(unit)
 		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	if #SpellRangeTable[E.myclass].friendlySpells > 0 then -- you have some healy spell
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].friendlySpells and (#SpellRangeTable[E.myclass].friendlySpells > 0) then -- you have some healy spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
 			end
 		end
-	end
 
-	if #SpellRangeTable[E.myclass].petSpells > 0 then -- you have some pet spell
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].petSpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true
+		if SpellRangeTable[E.myclass].petSpells and (#SpellRangeTable[E.myclass].petSpells > 0) then -- you have some pet spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].petSpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
 			end
 		end
 	end
@@ -149,10 +153,12 @@ local function enemyIsInRange(unit)
 		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	if #SpellRangeTable[E.myclass].enemySpells > 0 then -- you have some damage spell
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].enemySpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].enemySpells and (#SpellRangeTable[E.myclass].enemySpells > 0) then -- you have some damage spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].enemySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
 			end
 		end
 	end
@@ -161,10 +167,12 @@ local function enemyIsInRange(unit)
 end
 
 local function enemyIsInLongRange(unit)
-	if #SpellRangeTable[E.myclass].longEnemySpells > 0 then -- you have some 30+ range damage spell
-		for _, spellID in ipairs(SpellRangeTable[E.myclass].longEnemySpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].longEnemySpells and (#SpellRangeTable[E.myclass].longEnemySpells > 0) then -- you have some 30+ range damage spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].longEnemySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
 			end
 		end
 	end
