@@ -77,7 +77,7 @@ local function OnEnter(self, _, noUpdate)
 			end
 
 			if(timeLeft and timeLeft == "0") then
-				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, 0, 1, 0)
+				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, GREEN_FONT_COLOR:GetRGB())
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
 			end
@@ -133,7 +133,7 @@ local function OnEnter(self, _, noUpdate)
 					firstLine = false
 					DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- "Research Time:"
 					if(talent.researchTimeRemaining and talent.researchTimeRemaining == 0) then
-						DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 					else
 						DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1)
 					end
