@@ -13,6 +13,7 @@ local floor = math.floor
 local find, format, sub = string.find, string.format, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -344,7 +345,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			lineOffset = 3
 		end
 
-
 		local levelLine = self:GetLevelLine(tt, lineOffset)
 		if(levelLine) then
 			local diffColor = GetCreatureDifficultyColor(level)
@@ -436,6 +436,16 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if (numList > 0) then
 			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 			twipe(targetList);
+		end
+	end
+
+	-- NPC ID's
+	if unit and self.db.spellID then
+		if C_PetBattles_IsInBattle() then return end
+		local guid = UnitGUID(unit) or ""
+		local id = tonumber(guid:match("-(%d+)-%x+$"), 10)
+		if id and guid:match("%a+") ~= "Player" then
+			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 		end
 	end
 
