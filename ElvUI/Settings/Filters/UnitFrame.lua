@@ -747,6 +747,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[265881] = Defaults(), -- Decaying Touch
 		[261438] = Defaults(), -- Wasting Strike
 		[268202] = Defaults(), -- Death Lens
+		[278456] = Defaults(), -- Infest
 
 		-- Atal'Dazar
 		[252781] = Defaults(), -- Unstable Hex
