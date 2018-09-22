@@ -3,6 +3,7 @@
 **New Additions:**  
 Added Drain Life to channel ticks.  
 Added Island Expedition progress to the BfA Mission Datatext.  
+Added NPC Id's to our Tooltip.  
 
 **Bug Fixes:**  
 
