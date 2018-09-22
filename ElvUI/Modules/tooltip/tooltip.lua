@@ -443,7 +443,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if unit and self.db.spellID then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
-		local id = tonumber(guid:match("-(%d+)-%x+$"), 10)
+		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)
 		if id and guid:match("%a+") ~= "Player" then
 			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 		end
