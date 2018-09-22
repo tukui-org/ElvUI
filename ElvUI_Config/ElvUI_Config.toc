@@ -26,3 +26,4 @@ nameplates.lua
 profiles.lua
 maps.lua
 modulereset.lua
+modulecopy.lua

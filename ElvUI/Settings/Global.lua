@@ -217,3 +217,22 @@ G['unitframe'] = {
 		},
 	},
 }
+
+G["profileCopy"] = {
+	["selected"] = "Minimalistic",
+	["actionbar"] = {},
+	["auras"] = {
+		["general"] = true,
+		["buffs"] = true,
+		["debuffs"] = true,
+		["cooldown"] = true,
+	},
+	["bags"] = {},
+	["chat"] = {},
+	["cooldown"] = {},
+	["databars"] = {},
+	["datatexts"] = {},
+	["nameplates"] = {},
+	["tooltip"] = {},
+	["uniframes"] = {},
+}
