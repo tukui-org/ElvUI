@@ -237,6 +237,64 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
+--Keys that should not be exported
+local blacklistedKeys = {
+	["profile"] = {
+		["actionbar"] = {
+			--[[
+			["bar1"] = {
+				["paging"] = true,
+			},
+			["bar2"] = {
+				["paging"] = true,
+			},
+			["bar3"] = {
+				["paging"] = true,
+			},
+			["bar4"] = {
+				["paging"] = true,
+			},
+			["bar5"] = {
+				["paging"] = true,
+			},
+			["bar6"] = {
+				["paging"] = true,
+			},
+			["bar7"] = {
+				["paging"] = true,
+			},
+			["bar8"] = {
+				["paging"] = true,
+			},
+			["bar9"] = {
+				["paging"] = true,
+			},
+			["bar10"] = {
+				["paging"] = true,
+			},
+			--]]
+		},
+	},
+	["private"] = {},
+	["global"] = {
+		["uiScale"] = true,
+		["userInformedNewChanges1"] = true,
+		["general"] = {
+			["autoScale"] = true,
+			["minUiScale"] = true,
+			["eyefinity"] = true,
+			["disableTutorialButtons"] = true,
+			["showMissingTalentAlert"] = true,
+		},
+		["chat"] = {
+			["classColorMentionExcludedNames"] = true,
+		},
+		["unitframe"] = {
+			["spellRangeCheck"] = true,
+		},
+	},
+}
+
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= "string" then
 		E:Print("Bad argument #1 to 'GetProfileData' (string expected)")
@@ -257,6 +315,7 @@ local function GetProfileData(profileType)
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P)
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["profile"])
 
 	elseif profileType == "private" then
 		local privateProfileKey = E.myname..' - '..E.myrealm
@@ -264,12 +323,14 @@ local function GetProfileData(profileType)
 
 		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
 		profileData = E:RemoveTableDuplicates(profileData, V)
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["private"])
 
 	elseif profileType == "global" then
 		profileKey = "global"
 
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["global"])
 
 	elseif profileType == "filters" then
 		profileKey = "filters"
