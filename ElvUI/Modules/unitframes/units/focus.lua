@@ -37,6 +37,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
+	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
@@ -117,6 +118,9 @@ function UF:Update_FocusFrame(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
+
+	--Debuff Highlight
+	UF:Configure_DebuffHighlight(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
