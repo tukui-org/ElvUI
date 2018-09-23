@@ -220,14 +220,31 @@ G['unitframe'] = {
 
 G["profileCopy"] = {
 	["selected"] = "Minimalistic",
-	["actionbar"] = {},
+	["actionbar"] = {
+		["general"] = true,
+		['bar1'] = true,
+		['bar2'] = true,
+		['bar3'] = true,
+		['bar4'] = true,
+		['bar5'] = true,
+		['bar6'] = true,
+		['barPet'] = true,
+		['stanceBar'] = true,
+		['microbar'] = true,
+		['extraActionButton'] = true,
+		["cooldown"] = true,
+	},
 	["auras"] = {
 		["general"] = true,
 		["buffs"] = true,
 		["debuffs"] = true,
 		["cooldown"] = true,
 	},
-	["bags"] = {},
+	["bags"] = {
+		["general"] = true,
+		['bagBar'] = true,
+		['cooldown'] = true,
+	},
 	["chat"] = {},
 	["cooldown"] = {},
 	["databars"] = {},
