@@ -697,6 +697,9 @@ local function LoadSkin()
 		end
 	end
 
+	-- Put back Twitter Birdy (only if your Real ID is enabled in your WoW Account)
+	InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
+
 	local AudioOptionsVoicePanel = _G["AudioOptionsVoicePanel"]
 	local TestInputDevice = AudioOptionsVoicePanel.TestInputDevice
 
