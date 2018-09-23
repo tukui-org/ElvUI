@@ -16,7 +16,7 @@ E.Options.args.modulecopy = {
 		intro = {
 			order = 1,
 			type = "description",
-			name = L["This section will allow you to copy settings to a select module from a different profile."],
+			name = L["This section will allow you to copy settings to a select module from or to a different profile."],
 		},
 		pluginInfo = {
 			order = 2,
@@ -27,6 +27,7 @@ E.Options.args.modulecopy = {
 			order = 3,
 			type = "select",
 			name = L["Profile"],
+			desc = L["Select a profile to copy from/to."],
 			get = function(info) return E.global.profileCopy.selected end,
 			set = function(info, value) return E.global.profileCopy.selected == value end,
 			-- values = E.Options.args.profiles.args.choose.values,
@@ -38,9 +39,15 @@ E.Options.args.modulecopy = {
 			order = 10,
 			type = 'group',
 			name = "|cfffe7b2cElvUI|r",
+			desc = L["Core |cfffe7b2cElvUI|r options."],
 			childGroups = "tab",
 			disabled = E.Options.args.profiles.args.copyfrom.disabled,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Core |cfffe7b2cElvUI|r options."],
+				},
 				actionbar = CP:CreateModuleConfigGroup(L["ActionBars"], "actionbar"),
 				auras = CP:CreateModuleConfigGroup(L["Auras"], "auras"),
 				bags = CP:CreateModuleConfigGroup(L["Bags"], "bags"),
@@ -56,6 +63,52 @@ E.Options.args.modulecopy = {
 	},
 }
 
+--Actionbars
+for i = 1, 6 do
+	E.Options.args.modulecopy.args.elvui.args.actionbar.args["bar"..i] = {
+		order = i+1,
+		type = "toggle",
+		name = L["Bar "]..i,
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+end
+E.Options.args.modulecopy.args.elvui.args.actionbar.args.barPet = {
+	order = 8,
+	type = "toggle",
+	name = L["Pet Bar"],
+	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+}
+E.Options.args.modulecopy.args.elvui.args.actionbar.args.stanceBar = {
+	order = 9,
+	type = "toggle",
+	name = L["Stance Bar"],
+	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+}
+E.Options.args.modulecopy.args.elvui.args.actionbar.args.microbar = {
+	order = 10,
+	type = "toggle",
+	name = L["Micro Bar"],
+	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+}
+E.Options.args.modulecopy.args.elvui.args.actionbar.args.extraActionButton = {
+	order = 11,
+	type = "toggle",
+	name = L["Boss Button"],
+	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+}
+E.Options.args.modulecopy.args.elvui.args.actionbar.args.cooldown = {
+	order = 12,
+	type = "toggle",
+	name = L["Cooldown Text"],
+	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+}
+--Auras
 E.Options.args.modulecopy.args.elvui.args.auras.args.buffs = {
 	order = 2,
 	type = "toggle",
@@ -76,4 +129,19 @@ E.Options.args.modulecopy.args.elvui.args.auras.args.cooldown = {
 	name = L["Cooldown Text"],
 	get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
 	set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
+}
+--Bags
+E.Options.args.modulecopy.args.elvui.args.bags.args.bagBar = {
+	order = 2,
+	type = "toggle",
+	name = L["Bag-Bar"],
+	get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
+}
+E.Options.args.modulecopy.args.elvui.args.bags.args.cooldown = {
+	order = 3,
+	type = "toggle",
+	name = L["Cooldown Text"],
+	get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+	set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
 }
