@@ -711,6 +711,7 @@ local function LoadSecondarySkin()
 				local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
 				frame.Portrait:SetTexture(filedataid)
 			end
+			frame.Portrait:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
 
