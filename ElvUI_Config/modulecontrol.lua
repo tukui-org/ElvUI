@@ -147,7 +147,7 @@ E.Options.args.modulecontrol= {
 					name = L["Profile"],
 					desc = L["Select a profile to copy from/to."],
 					get = function(info) return E.global.profileCopy.selected end,
-					set = function(info, value) return E.global.profileCopy.selected == value end,
+					set = function(info, value) E.global.profileCopy.selected = value end,
 					-- values = E.Options.args.profiles.args.choose.values,
 					values = E.Options.args.profiles.args.copyfrom.values,
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
