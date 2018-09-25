@@ -48,6 +48,44 @@ function CP:CreateModuleConfigGroup(Name, section)
 	return config
 end
 
+function CP:CreateMoversConfigGroup()
+	local config = {
+		header = {
+			order = 0,
+			type = "header",
+			name = L["On screen positions for different elements."],
+		},
+		PreButtonSpacer = {
+			order = 200,
+			type = "description",
+			name = "",
+		},
+		import = {
+			order = 201,
+			type = "execute",
+			name = L["Import Now"],
+			func = function() CP:CopyMovers("import") end,
+		},
+		export = {
+			order = 202,
+			type = "execute",
+			name = L["Export Now"],
+			func = function() CP:CopyMovers("export") end,
+		},
+	}
+	for moverName, data in pairs(E.CreatedMovers) do
+		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
+		config[moverName] = {
+			order = 1,
+			type = "toggle",
+			name = data.text,
+			get = function(info) return E.global.profileCopy.movers[moverName] end,
+			set = function(info, value) E.global.profileCopy.movers[moverName] = value; end
+		}
+	end
+	return config
+end
+
 function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 	for key, value in pairs(CopyTo) do
 		print(key)
@@ -101,11 +139,11 @@ any particular subcategory from your settings table.
 
 function CP:ImportFromProfile(section)
 	--Some checks for the occasion someone passes wrong stuff
-	if not section then error("No profile section provided. Usage CP:ImportFromProfile(section)") end
-	if section == "selected" then error('Section name could not be "selected". This name is reserved for internal setting') end
+	if not section then error("No profile section provided. Usage CP:ImportFromProfile(\"section\")") end
+	if section == "selected" or section == "movers" then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
 	print(section)
 	local module = E.global.profileCopy[section]
-	if not module then error(format('Provided section name "%s" does not have a template for profile copy.', section)) end
+	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
 	--Starting digging through the settings
 	local CopyFrom = ElvDB["profiles"][E.global.profileCopy.selected][section]
 	local CopyTo = E.db[section]
@@ -118,18 +156,18 @@ function CP:ImportFromProfile(section)
 		-- E:CopyTable(CopyTo, CopyDefault)
 		-- E:CopyTable(CopyTo, CopyFrom)
 	else
-		error(format('Provided section name "%s" does not have a valid copy template.', section))
+		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
 	-- E:UpdateAll(true)
 end
 
 function CP:ExportToProfile(section)
 	--Some checks for the occasion someone passes wrong stuff
-	if not section then error("No profile section provided. Usage CP:ImportFromProfile(section)") end
-	if section == "selected" then error('Section name could not be "selected". This name is reserved for internal setting') end
+	if not section then error("No profile section provided. Usage CP:ExportToProfile(\"section\")") end
+	if section == "selected" or section == "movers" then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
 	print(section)
 	local module = E.global.profileCopy[section]
-	if not module then error(format('Provided section name "%s" does not have a template for profile copy.', section)) end
+	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
 	--Starting digging through the settings
 	local CopyFrom = E.db[section]
 	local CopyTo = ElvDB["profiles"][E.global.profileCopy.selected][section]
@@ -142,9 +180,25 @@ function CP:ExportToProfile(section)
 		-- E:CopyTable(CopyTo, CopyDefault)
 		-- E:CopyTable(CopyTo, CopyFrom)
 	else
-		error(format('Provided section name "%s" does not have a valid copy template.', section))
+		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
 	-- E:UpdateAll(true)
+end
+
+function CP:CopyMovers(mode)
+	if not E.db.movers then E.db.movers = {} end --Nothing was moved in cutrrent profile
+	if not ElvDB["profiles"][E.global.profileCopy.selected].movers then ElvDB["profiles"][E.global.profileCopy.selected].movers = {} end --Nothing was moved in selected profile
+	local CopyFrom, CopyTo
+	if mode == "export" then
+		CopyFrom, CopyTo = E.db.movers, ElvDB["profiles"][E.global.profileCopy.selected].movers
+	else
+		CopyFrom, CopyTo = ElvDB["profiles"][E.global.profileCopy.selected].movers or {}, E.db.movers
+	end
+	--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
+	-- if E.global.profileCopy.movers[moverName] then
+		-- CopyTo[moverName] = CopyFrom[moverName]
+	-- end
+	E:SetMoversPositions()
 end
 
 --Maybe actually not needed at all

@@ -252,4 +252,5 @@ G["profileCopy"] = {
 	["nameplates"] = {},
 	["tooltip"] = {},
 	["uniframes"] = {},
+	["movers"] = {},
 }
