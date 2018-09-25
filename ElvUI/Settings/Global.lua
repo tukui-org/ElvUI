@@ -219,19 +219,22 @@ G['unitframe'] = {
 }
 
 G["profileCopy"] = {
+	--Specific values
 	["selected"] = "Minimalistic",
+	["movers"] = {},
+	--Modules
 	["actionbar"] = {
 		["general"] = true,
-		['bar1'] = true,
-		['bar2'] = true,
-		['bar3'] = true,
-		['bar4'] = true,
-		['bar5'] = true,
-		['bar6'] = true,
-		['barPet'] = true,
-		['stanceBar'] = true,
-		['microbar'] = true,
-		['extraActionButton'] = true,
+		["bar1"] = true,
+		["bar2"] = true,
+		["bar3"] = true,
+		["bar4"] = true,
+		["bar5"] = true,
+		["bar6"] = true,
+		["barPet"] = true,
+		["stanceBar"] = true,
+		["microbar"] = true,
+		["extraActionButton"] = true,
 		["cooldown"] = true,
 	},
 	["auras"] = {
@@ -242,15 +245,46 @@ G["profileCopy"] = {
 	},
 	["bags"] = {
 		["general"] = true,
-		['bagBar'] = true,
-		['cooldown'] = true,
+		["bagBar"] = true,
+		["cooldown"] = true,
 	},
-	["chat"] = {},
-	["cooldown"] = {},
-	["databars"] = {},
-	["datatexts"] = {},
-	["nameplates"] = {},
-	["tooltip"] = {},
+	["chat"] = {
+		["general"] = true,
+	},
+	["cooldown"] = {
+		["general"] = true,
+		["fonts"] = true,
+	},
+	["databars"] = {
+		["experience"] = true,
+		["reputation"] = true,
+		["honor"] = true,
+		["azerite"] = true,
+	},
+	["datatexts"] = {
+		["general"] = true,
+		["panels"] = true,
+	},
+	["nameplates"] = {
+		["general"] = true,
+		["cooldown"] = true,
+		["classbar"] = true,
+		["reactions"] = true,
+		["healPrediction"] = true,
+		["threat"] = true,
+		["units"] = {
+			["PLAYER"] = true,
+			["HEALER"] = true,
+			["FRIENDLY_PLAYER"] = true,
+			["ENEMY_PLAYER"] = true,
+			["FRIENDLY_NPC"] = true,
+			["ENEMY_NPC"] = true,
+		},
+	},
+	["tooltip"] = {
+		["general"] = true,
+		["visibility"] = true,
+		["healthBar"] = true,
+	},
 	["uniframes"] = {},
-	["movers"] = {},
 }

@@ -3,6 +3,289 @@ local UF = E:GetModule('UnitFrames');
 local NP = E:GetModule("NamePlates")
 local CP = E:GetModule('CopyProfile')
 
+--Actionbars
+local function CreateActionbarsConfig()
+	local config = CP:CreateModuleConfigGroup(L["ActionBars"], "actionbar")
+	for i = 1, 6 do
+		config.args["bar"..i] = {
+			order = i+1,
+			type = "toggle",
+			name = L["Bar "]..i,
+			get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+			set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+		}
+	end
+	config.args.barPet = {
+		order = 8,
+		type = "toggle",
+		name = L["Pet Bar"],
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+	config.args.stanceBar = {
+		order = 9,
+		type = "toggle",
+		name = L["Stance Bar"],
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+	config.args.microbar = {
+		order = 10,
+		type = "toggle",
+		name = L["Micro Bar"],
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+	config.args.extraActionButton = {
+		order = 11,
+		type = "toggle",
+		name = L["Boss Button"],
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+	config.args.cooldown = {
+		order = 12,
+		type = "toggle",
+		name = L["Cooldown Text"],
+		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
+	}
+	
+	return config
+end
+
+--Auras
+local function CreateAurasConfig()
+	local config = CP:CreateModuleConfigGroup(L["Auras"], "auras")
+	config.args.buffs = {
+		order = 2,
+		type = "toggle",
+		name = L["Buffs"],
+		get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
+	}
+	config.args.debuffs = {
+		order = 3,
+		type = "toggle",
+		name = L["Debuffs"],
+		get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
+	}
+	config.args.cooldown = {
+		order = 4,
+		type = "toggle",
+		name = L["Cooldown Text"],
+		get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
+	}
+	
+	return config
+end
+
+--Bags
+local function CreateBagsConfig()
+	local config = CP:CreateModuleConfigGroup(L["Bags"], "bags")
+	config.args.bagBar = {
+		order = 2,
+		type = "toggle",
+		name = L["Bag-Bar"],
+		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
+	}
+	config.args.cooldown = {
+		order = 3,
+		type = "toggle",
+		name = L["Cooldown Text"],
+		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--Chat
+local function CreateChatConfig()
+	local config = CP:CreateModuleConfigGroup(L["Chat"], "chat")
+	
+	return config
+end
+
+--Cooldowns
+local function CreateCooldownConfig()
+	local config = CP:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown")
+	config.args.fonts = {
+		order = 2,
+		type = "toggle",
+		name = L["Fonts"],
+		get = function(info) return E.global.profileCopy.cooldown[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.cooldown[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--DataBars
+local function CreateDatatbarsConfig()
+	local config = CP:CreateModuleConfigGroup(L["DataBars"], "databars")
+	
+	config.args.experience = {
+		order = 2,
+		type = "toggle",
+		name = XPBAR_LABEL,
+		get = function(info) return E.global.profileCopy.databars[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.databars[ info[#info] ] = value; end
+	}
+	config.args.reputation = {
+		order = 3,
+		type = "toggle",
+		name = REPUTATION,
+		get = function(info) return E.global.profileCopy.databars[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.databars[ info[#info] ] = value; end
+	}
+	config.args.honor = {
+		order = 4,
+		type = "toggle",
+		name = HONOR,
+		get = function(info) return E.global.profileCopy.databars[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.databars[ info[#info] ] = value; end
+	}
+	config.args.azerite = {
+		order = 5,
+		type = "toggle",
+		name = L["Azerite Bar"],
+		get = function(info) return E.global.profileCopy.databars[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.databars[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--DataTexts
+local function CreateDatatextsConfig()
+	local config = CP:CreateModuleConfigGroup(L["DataTexts"], "datatexts")
+	config.args.panels = {
+		order = 2,
+		type = "toggle",
+		name = L["Panels"],
+		get = function(info) return E.global.profileCopy.datatexts[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.datatexts[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--NamePlates
+local function CreateNamePlatesConfig()
+	local config = CP:CreateModuleConfigGroup(L["NamePlates"], "nameplates")
+	config.args.cooldown = {
+		order = 2,
+		type = "toggle",
+		name = L["Cooldown Text"],
+		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
+	}
+	config.args.classbar = {
+		order = 3,
+		type = "toggle",
+		name = L["Classbar"],
+		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
+	}
+	
+	config.args.reactions = {
+		order = 4,
+		type = "toggle",
+		name = L["Reaction Colors"],
+		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
+	}
+	
+	config.args.healPrediction = {
+		order = 5,
+		type = "toggle",
+		name = L["Heal Prediction"],
+		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
+	}
+	config.args.threat = {
+		order = 6,
+		type = "toggle",
+		name = L["Threat"],
+		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
+	}
+	config.args.units = {
+		order = 7,
+		type = "group",
+		guiInline = true,
+		name = L["UnitFrames"],
+		get = function(info) return E.global.profileCopy.nameplates[info[#info - 1]][ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.nameplates[info[#info - 1]][ info[#info] ] = value; end,
+		args = {
+			["PLAYER"] = {
+				order = 1,
+				type = "toggle",
+				name = L["Player Frame"],
+			},
+			["HEALER"] = {
+				order = 2,
+				type = "toggle",
+				name = L["Healer Frames"],
+			},
+			["FRIENDLY_PLAYER"] = {
+				order = 3,
+				type = "toggle",
+				name = L["Friendly Player Frames"],
+			},
+			["ENEMY_PLAYER"] = {
+				order = 4,
+				type = "toggle",
+				name = L["Enemy Player Frames"],
+			},
+			["FRIENDLY_NPC"] = {
+				order = 5,
+				type = "toggle",
+				name = L["Friendly NPC Frames"],
+			},
+			["ENEMY_NPC"] = {
+				order = 6,
+				type = "toggle",
+				name = L["Enemy NPC Frames"],
+			},
+		},
+	}
+	
+	return config
+end
+
+--Tooltip
+local function CreateTooltipConfig()
+	local config = CP:CreateModuleConfigGroup(L["Tooltip"], "tooltip")
+	config.args.visibility = {
+		order = 2,
+		type = "toggle",
+		name = L["Visibility"],
+		get = function(info) return E.global.profileCopy.tooltip[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.tooltip[ info[#info] ] = value; end
+	}
+	config.args.healthBar = {
+		order = 3,
+		type = "toggle",
+		name =L["Health Bar"],
+		get = function(info) return E.global.profileCopy.tooltip[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.tooltip[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--UnitFrames
+local function CreateUnitframesConfig()
+	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "uniframes")
+	
+	return config
+end
+
 E.Options.args.modulecontrol= {
 	order = -2,
 	type = "group",
@@ -166,16 +449,16 @@ E.Options.args.modulecontrol= {
 							type = "header",
 							name = L["Core |cfffe7b2cElvUI|r options."],
 						},
-						actionbar = CP:CreateModuleConfigGroup(L["ActionBars"], "actionbar"),
-						auras = CP:CreateModuleConfigGroup(L["Auras"], "auras"),
-						bags = CP:CreateModuleConfigGroup(L["Bags"], "bags"),
-						-- chat = CP:CreateModuleConfigGroup(L["Chat"], "chat"),
-						-- cooldown = CP:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown"),
-						-- databars = CP:CreateModuleConfigGroup(L["DataBars"], "databars"),
-						-- datatexts = CP:CreateModuleConfigGroup(L["DataTexts"], "datatexts"),
-						-- nameplates = CP:CreateModuleConfigGroup(L["NamePlates"], "nameplates"),
-						-- tooltip = CP:CreateModuleConfigGroup(L["Tooltip"], "tooltip"),
-						-- uniframes = CP:CreateModuleConfigGroup(L["UnitFrames"], "uniframes"),
+						actionbar = CreateActionbarsConfig(),
+						auras = CreateAurasConfig(),
+						bags = CreateBagsConfig(),
+						chat = CreateChatConfig(),
+						cooldown = CreateCooldownConfig(),
+						databars = CreateDatatbarsConfig(),
+						datatexts = CreateDatatextsConfig(),
+						nameplates = CreateNamePlatesConfig(),
+						tooltip = CreateTooltipConfig(),
+						-- uniframes = CreateUnitframesConfig(),
 					},
 				},
 				movers = {
@@ -192,85 +475,3 @@ E.Options.args.modulecontrol= {
 	},
 }
 
---Actionbars
-for i = 1, 6 do
-	E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args["bar"..i] = {
-		order = i+1,
-		type = "toggle",
-		name = L["Bar "]..i,
-		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-	}
-end
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args.barPet = {
-	order = 8,
-	type = "toggle",
-	name = L["Pet Bar"],
-	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args.stanceBar = {
-	order = 9,
-	type = "toggle",
-	name = L["Stance Bar"],
-	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args.microbar = {
-	order = 10,
-	type = "toggle",
-	name = L["Micro Bar"],
-	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args.extraActionButton = {
-	order = 11,
-	type = "toggle",
-	name = L["Boss Button"],
-	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar.args.cooldown = {
-	order = 12,
-	type = "toggle",
-	name = L["Cooldown Text"],
-	get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
-}
---Auras
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.auras.args.buffs = {
-	order = 2,
-	type = "toggle",
-	name = L["Buffs"],
-	get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.auras.args.debuffs = {
-	order = 3,
-	type = "toggle",
-	name = L["Debuffs"],
-	get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.auras.args.cooldown = {
-	order = 4,
-	type = "toggle",
-	name = L["Cooldown Text"],
-	get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
-}
---Bags
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.bags.args.bagBar = {
-	order = 2,
-	type = "toggle",
-	name = L["Bag-Bar"],
-	get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
-}
-E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.bags.args.cooldown = {
-	order = 3,
-	type = "toggle",
-	name = L["Cooldown Text"],
-	get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
-	set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
-}
