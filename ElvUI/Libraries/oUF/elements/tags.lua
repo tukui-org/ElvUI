@@ -424,12 +424,14 @@ local tagStrings = {
 
 	['runes'] = [[function()
 		local amount = 0
+
 		for i = 1, 6 do
 			local _, _, ready = GetRuneCooldown(i)
 			if(ready) then
 				amount = amount + 1
 			end
 		end
+
 		return amount
 	end]],
 
@@ -583,6 +585,7 @@ end
 
 --[[ Tags: frame:UpdateTags()
 Used to update all tags on a frame.
+
 * self - the unit frame from which to update the tags
 --]]
 local function Update(self)

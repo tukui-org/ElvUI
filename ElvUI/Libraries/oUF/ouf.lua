@@ -99,7 +99,7 @@ for k, v in next, {
 	-- ElvUI block
 	UpdateElement = function(self, name)
 		local unit = self.unit
-		if(not unit or not UnitExists(unit)) then return end
+		if(not unit or not UnitExists(unit)) then return end	
 
 		local element = elements[name]
 		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
@@ -153,12 +153,6 @@ for k, v in next, {
 		end
 
 		activeElements[self][name] = nil
-
-		-- We need to run a new update cycle in-case we knocked ourself out of sync.
-		-- The main reason we do this is to make sure the full update is completed
-		-- if an element for some reason removes itself _during_ the update
-		-- progress.
-		self:UpdateAllElements('DisableElement')
 
 		return elements[name].disable(self)
 	end,
@@ -219,6 +213,7 @@ for k, v in next, {
 		if(self.PreUpdate) then
 			--[[ Callback: frame:PreUpdate(event)
 			Fired before the frame is updated.
+
 			* self  - the unit frame
 			* event - the event triggering the update (string)
 			--]]
@@ -232,6 +227,7 @@ for k, v in next, {
 		if(self.PostUpdate) then
 			--[[ Callback: frame:PostUpdate(event)
 			Fired after the frame is updated.
+
 			* self  - the unit frame
 			* event - the event triggering the update (string)
 			--]]
@@ -308,12 +304,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 
 			-- No need to enable this for *target frames.
 			if(not (unit:match('target') or suffix == 'target')) then
-				if(unit:match('raid') or unit:match('party')) then
-					-- See issue #404
-					object:SetAttribute('toggleForVehicle', false)
-				else
-					object:SetAttribute('toggleForVehicle', true)
-				end
+				object:SetAttribute('toggleForVehicle', true)
 			end
 
 			-- Other boss and target units are handled by :HandleUnit().
