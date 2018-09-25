@@ -91,27 +91,32 @@ function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 		print(key)
 		if type(value) ~= "table" then
 			if module == true or (type(module) == "table" and module.general == nil or (not CopyTo.general and module.general)) then --Some dark magic of a logic to figure out stuff
-				-- print(key)
 				print("Debug, copy module option "..key)
-				-- print("Key:", key, "CopyFrom:",  CopyFrom[key], "CopyTo:", CopyTo[key], "CopyDefault:", CopyDefault[key])
 				--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
 				--This check is to see if the profile we are copying from has keys absent from defaults.
 				--If key exists, then copy. If not, then clear obsolite key from the profile.
-				-- if CopyDefault[key] then 
-					-- CopyTo[key] = CopyFrom[key] or CopyDefault[key]
-				-- else
-					-- CopyFrom[key] = nil
-				-- end
+				if CopyDefault[key] then 
+					CopyTo[key] = CopyFrom[key] or CopyDefault[key]
+				else
+					CopyFrom[key] = nil
+				end
 			end
 		else
 			if module == true then
 				print("CP:CopyTable - I should copy over the whole section.", key)
 				--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
-				-- E:CopyTable(CopyTo, CopyDefault)
-				-- E:CopyTable(CopyTo, CopyFrom)
+				E:CopyTable(CopyTo, CopyDefault)
+				E:CopyTable(CopyTo, CopyFrom)
 			elseif module[key] then
-				print("Debug, copy module table "..key)
-				CP:CopyTable(CopyFrom[key], CopyTo[key], CopyDefault[key], module[key])
+				--Making sure tables actually exist in profiles (e.g absent values in ElvDB["profiles"] are for default values)
+				CopyFrom[key], CopyTo[key] = CP:TablesExist(CopyFrom[key], CopyTo[key], CopyDefault[key])
+				--If key exists, then copy. If not, then clear obsolite key from the profile.
+				--Someone should double check this logic. Cause for single keys it is fine, but I'm no sure bout whole tables @Darth
+				if CopyFrom[key] then
+					CP:CopyTable(CopyFrom[key], CopyTo[key], CopyDefault[key], module[key])
+				else
+					CopyTo[key] = nil
+				end
 			end
 		end
 	end
@@ -137,10 +142,17 @@ G["profileCopy"]["auras"] = {
 any particular subcategory from your settings table.
 ]]
 
+function CP:TablesExist(CopyFrom, CopyTo, CopyDefault)
+	if not CopyFrom then CopyFrom = CopyDefault end
+	if not CopyTo then CopyTo = CopyDefault end
+	return CopyFrom, CopyTo
+end
+
 function CP:ImportFromProfile(section)
 	--Some checks for the occasion someone passes wrong stuff
 	if not section then error("No profile section provided. Usage CP:ImportFromProfile(\"section\")") end
 	if section == "selected" or section == "movers" then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
+	print("======")
 	print(section)
 	local module = E.global.profileCopy[section]
 	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
@@ -148,17 +160,19 @@ function CP:ImportFromProfile(section)
 	local CopyFrom = ElvDB["profiles"][E.global.profileCopy.selected][section]
 	local CopyTo = E.db[section]
 	local CopyDefault = P[section]
+	--Making sure tables actually exist in profiles (e.g absent values in ElvDB["profiles"] are for default values)
+	CopyFrom, CopyTo = CP:TablesExist(CopyFrom, CopyTo, CopyDefault)
 	if type(module) == "table" and next(module) then
 		CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 	elseif type(module) == "boolean" then
 		print("I should copy over the whole section.")
 		--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
-		-- E:CopyTable(CopyTo, CopyDefault)
-		-- E:CopyTable(CopyTo, CopyFrom)
+		E:CopyTable(CopyTo, CopyDefault)
+		E:CopyTable(CopyTo, CopyFrom)
 	else
 		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
-	-- E:UpdateAll(true)
+	E:UpdateAll(true)
 end
 
 function CP:ExportToProfile(section)
@@ -168,6 +182,9 @@ function CP:ExportToProfile(section)
 	print(section)
 	local module = E.global.profileCopy[section]
 	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
+	--Making sure tables actually exist
+	if not ElvDB["profiles"][E.global.profileCopy.selected][section] then ElvDB["profiles"][E.global.profileCopy.selected][section] = {} end
+	if not E.db[section] then E.db[section] = {} end
 	--Starting digging through the settings
 	local CopyFrom = E.db[section]
 	local CopyTo = ElvDB["profiles"][E.global.profileCopy.selected][section]
@@ -177,15 +194,16 @@ function CP:ExportToProfile(section)
 	elseif type(module) == "boolean" then
 		print("I should copy over the whole section.")
 		--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
-		-- E:CopyTable(CopyTo, CopyDefault)
-		-- E:CopyTable(CopyTo, CopyFrom)
+		E:CopyTable(CopyTo, CopyDefault)
+		E:CopyTable(CopyTo, CopyFrom)
 	else
 		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
-	-- E:UpdateAll(true)
+	E:UpdateAll(true)
 end
 
 function CP:CopyMovers(mode)
+	print(mode)
 	if not E.db.movers then E.db.movers = {} end --Nothing was moved in cutrrent profile
 	if not ElvDB["profiles"][E.global.profileCopy.selected].movers then ElvDB["profiles"][E.global.profileCopy.selected].movers = {} end --Nothing was moved in selected profile
 	local CopyFrom, CopyTo
@@ -195,9 +213,12 @@ function CP:CopyMovers(mode)
 		CopyFrom, CopyTo = ElvDB["profiles"][E.global.profileCopy.selected].movers or {}, E.db.movers
 	end
 	--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
-	-- if E.global.profileCopy.movers[moverName] then
-		-- CopyTo[moverName] = CopyFrom[moverName]
-	-- end
+	for moverName, data in pairs(E.CreatedMovers) do
+		if E.global.profileCopy.movers[moverName] then
+			print(moverName)
+			CopyTo[moverName] = CopyFrom[moverName]
+		end
+	end
 	E:SetMoversPositions()
 end
 
