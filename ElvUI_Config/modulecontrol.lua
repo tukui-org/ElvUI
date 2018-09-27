@@ -281,8 +281,150 @@ end
 
 --UnitFrames
 local function CreateUnitframesConfig()
-	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "uniframes")
-	
+	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "unitframes")
+	config.args.cooldown = {
+		order = 2,
+		type = "toggle",
+		name = L["Cooldown Text"],
+		get = function(info) return E.global.profileCopy.unitframes[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframes[ info[#info] ] = value; end
+	}
+	config.args.colors = {
+		order = 3,
+		type = "group",
+		guiInline = true,
+		name = COLORS,
+		get = function(info) return E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] = value; end,
+		args = {
+			["general"] = {
+				order = 1,
+				type = "toggle",
+				name = L["General"],
+			},
+			["power"] = {
+				order = 2,
+				type = "toggle",
+				name = L["Powers"],
+			},
+			["reaction"] = {
+				order = 3,
+				type = "toggle",
+				name = L["Reactions"],
+			},
+			["healPrediction"] = {
+				order = 4,
+				type = "toggle",
+				name = L["Heal Prediction"],
+			},
+			["classResources"] = {
+				order = 5,
+				type = "toggle",
+				name = L["Class Resources"],
+			},
+			["frameGlow"] = {
+				order = 6,
+				type = "toggle",
+				name = L['Frame Glow'],
+			},
+			["debuffHighlight"] = {
+				order = 7,
+				type = "toggle",
+				name = L["Debuff Highlighting"],
+			},
+		},
+	}
+	config.args.units = {
+		order = 4,
+		type = "group",
+		guiInline = true,
+		name = L["UnitFrames"],
+		get = function(info) return E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] = value; end,
+		args = {
+			["player"] = {
+				order = 1,
+				type = "toggle",
+				name = L["Player Frame"],
+			},
+			["target"] = {
+				order = 2,
+				type = "toggle",
+				name = L["Target Frame"],
+			},
+			["targettarget"] = {
+				order = 3,
+				type = "toggle",
+				name = L["TargetTarget Frame"],
+			},
+			["targettargettarget"] = {
+				order = 4,
+				type = "toggle",
+				name = L["TargetTargetTarget Frame"],
+			},
+			["focus"] = {
+				order = 5,
+				type = "toggle",
+				name = L["Focus Frame"],
+			},
+			["focustarget"] = {
+				order = 6,
+				type = "toggle",
+				name = L["FocusTarget Frame"],
+			},
+			["pet"] = {
+				order = 7,
+				type = "toggle",
+				name = L["Pet Frame"],
+			},
+			["pettarget"] = {
+				order = 8,
+				type = "toggle",
+				name = L["PetTarget Frame"],
+			},
+			["boss"] = {
+				order = 9,
+				type = "toggle",
+				name = L["Boss Frames"],
+			},
+			["arena"] = {
+				order = 10,
+				type = "toggle",
+				name = L["Arena Frames"],
+			},
+			["party"] = {
+				order = 11,
+				type = "toggle",
+				name = L["Party Frames"],
+			},
+			["raid"] = {
+				order = 12,
+				type = "toggle",
+				name = L["Raid Frames"],
+			},
+			["raid40"] = {
+				order = 13,
+				type = "toggle",
+				name = L["Raid-40 Frames"],
+			},
+			["raidpet"] = {
+				order = 14,
+				type = "toggle",
+				name = L["Raid Pet Frames"],
+			},
+			["tank"] = {
+				order = 15,
+				type = "toggle",
+				name = L["Tank Frames"],
+			},
+			["assist"] = {
+				order = 16,
+				type = "toggle",
+				name = L["Assist Frames"],
+			},
+		},
+	}
+
 	return config
 end
 
@@ -431,7 +573,6 @@ E.Options.args.modulecontrol= {
 					desc = L["Select a profile to copy from/to."],
 					get = function(info) return E.global.profileCopy.selected end,
 					set = function(info, value) E.global.profileCopy.selected = value end,
-					-- values = E.Options.args.profiles.args.choose.values,
 					values = E.Options.args.profiles.args.copyfrom.values,
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					arg = E.Options.args.profiles.args.copyfrom.arg,
@@ -458,7 +599,7 @@ E.Options.args.modulecontrol= {
 						datatexts = CreateDatatextsConfig(),
 						nameplates = CreateNamePlatesConfig(),
 						tooltip = CreateTooltipConfig(),
-						-- uniframes = CreateUnitframesConfig(),
+						uniframes = CreateUnitframesConfig(),
 					},
 				},
 				movers = {
