@@ -7,7 +7,7 @@ Added NPC Id's to our Tooltip.
 Added Debuff Highlighting on our Focus Frame.  
 
 **Bug Fixes:**  
-
+Fixed display castbar for Arena & Boss Frames.  
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
