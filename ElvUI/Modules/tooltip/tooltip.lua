@@ -9,7 +9,7 @@ local S -- used to hold the skin module when we need it
 local _G = _G
 local unpack, select, pairs, next = unpack, select, pairs, next
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
-local floor = math.floor
+local floor, tonumber = math.floor, tonumber
 local find, format, sub = string.find, string.format, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
