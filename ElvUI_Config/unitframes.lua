@@ -745,8 +745,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 							end
 						end
 					elseif numUnits then
-						for i=1, numUnits do
-							local castbar = _G[frameName.."UnitButton"..i].Castbar
+						for i = 1, numUnits do
+							local castbar = _G[frameName..i].Castbar
 							if not castbar.oldHide then
 								castbar.oldHide = castbar.Hide
 								castbar.Hide = castbar.Show
