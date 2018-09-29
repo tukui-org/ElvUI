@@ -66,7 +66,7 @@ local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: PowerBarColor, _TAGS
+-- GLOBALS: Hex, PowerBarColor, _TAGS
 
 ------------------------------------------------------------------------
 --	Tags
@@ -160,7 +160,7 @@ ElvUF.Tags.Methods['altpowercolor'] = function(u)
 			r, g, b = 1, 1, 1
 		end
 
-		return E:RGBToHex(r,g,b)
+		return Hex(r,g,b)
 	else
 		return nil
 	end
@@ -179,10 +179,10 @@ end
 ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
-		return E:RGBToHex(0.84, 0.75, 0.65)
+		return Hex(0.84, 0.75, 0.65)
 	else
 		local r, g, b = ElvUF.ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-		return E:RGBToHex(r, g, b)
+		return Hex(r, g, b)
 	end
 end
 
@@ -440,9 +440,9 @@ ElvUF.Tags.Methods['manacolor'] = function()
 	local altR, altG, altB = PowerBarColor["MANA"].r, PowerBarColor["MANA"].g, PowerBarColor["MANA"].b
 	local color = ElvUF['colors'].power["MANA"]
 	if color then
-		return E:RGBToHex(color[1], color[2], color[3])
+		return Hex(color[1], color[2], color[3])
 	else
-		return E:RGBToHex(altR, altG, altB)
+		return Hex(altR, altG, altB)
 	end
 end
 
@@ -542,7 +542,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 		end
 	end
 
-	return E:RGBToHex(r, g, b)
+	return Hex(r, g, b)
 end
 
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
@@ -552,10 +552,10 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		local class = ElvUF.colors.class[unitClass]
 		if not class then return "" end
-		return E:RGBToHex(class[1], class[2], class[3])
+		return Hex(class[1], class[2], class[3])
 	elseif (unitReaction) then
 		local reaction = ElvUF['colors'].reaction[unitReaction]
-		return E:RGBToHex(reaction[1], reaction[2], reaction[3])
+		return Hex(reaction[1], reaction[2], reaction[3])
 	else
 		return '|cFFC2C2C2'
 	end
@@ -685,7 +685,7 @@ ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
 	if (status) and (IsInGroup() or UnitExists('pet')) then
-		return E:RGBToHex(GetThreatStatusColor(status))
+		return Hex(GetThreatStatusColor(status))
 	else
 		return nil
 	end
@@ -800,7 +800,7 @@ end
 ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
 ElvUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
-	return E:RGBToHex(r, g, b)
+	return Hex(r, g, b)
 end
 
 ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
@@ -1071,9 +1071,9 @@ ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
 ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	local c = UnitClassification(unit)
 	if(c == 'rare' or c == 'elite') then
-		return E:RGBToHex(1, 0.5, 0.25) --Orange
+		return Hex(1, 0.5, 0.25) --Orange
 	elseif(c == 'rareelite' or c == 'worldboss') then
-		return E:RGBToHex(1, 0, 0) --Red
+		return Hex(1, 0, 0) --Red
 	end
 end
 
