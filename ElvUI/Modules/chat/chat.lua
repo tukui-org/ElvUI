@@ -252,6 +252,7 @@ do --this can save some main file locals
 		["Merathilîs-Shattrath"]	= ElvBlue,	 -- Shaman [Alliance]
 		["Asragoth-Shattrath"]		= ElvPurple, -- Warlock [Alliance]
 		["Damará-Shattrath"]		= ElvRed,	 -- Paladin [Alliance]
+		["Mattdemôn-Shattrath"]		= ElvPurple, -- Demon Hunter [Alliance]
 		-- Affinity's Toons --
 		["Affinichi-Illidan"]	= Bathrobe,
 		["Affinitii-Illidan"]	= Bathrobe,
