@@ -11,6 +11,7 @@ Fixed display castbar for Arena & Boss Frames.
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
+Updated the macro text on the ActionBars to use the ActionBar font.  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
