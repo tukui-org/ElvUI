@@ -631,7 +631,7 @@ end
 
 function AB:StyleButton(button, noBackdrop, useMasque)
 	local name = button:GetName();
-	local macroText = _G[name.."Name"]
+	local macroText = _G[name.."Name"];
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
 	local flash	 = _G[name.."Flash"];
@@ -666,8 +666,8 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if macroText then
-		macroText:ClearAllPoints()
-		macroText:Point("BOTTOM", 0, 1)
+		macroText:ClearAllPoints();
+		macroText:Point("BOTTOM", 0, 1);
 		macroText:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		macroText:SetTextColor(color.r, color.g, color.b)
 	end
