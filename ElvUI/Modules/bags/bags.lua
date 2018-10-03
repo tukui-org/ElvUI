@@ -456,7 +456,7 @@ function B:UpdateSlot(bagID, slotID)
 	if(slot.questIcon) then
 		slot.questIcon:Hide();
 	end
-	
+
 	if(slot.Azerite) then
 		slot.Azerite:Hide();
 	end
@@ -1789,6 +1789,8 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:OpenBags()
+	if self.BagFrame:IsShown() then return end -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
+
 	self.BagFrame:Show();
 	self.BagFrame:UpdateAllSlots();
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
