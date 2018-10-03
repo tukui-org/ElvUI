@@ -377,13 +377,7 @@ function AB:LoadKeyBinder()
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseWheel", function(_, delta) if delta>0 then self:BindListener("MOUSEWHEELUP") else self:BindListener("MOUSEWHEELDOWN"); end end);
 
-	local b = EnumerateFrames();
-	while b do
-		self:RegisterButton(b);
-		b = EnumerateFrames(b);
-	end
-
-	for i=1, 12 do
+	for i = 1, 12 do
 		local b = _G["SpellButton"..i];
 		b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "SPELL"); end);
 	end
