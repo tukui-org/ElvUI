@@ -903,8 +903,6 @@ function B:GetGroup(id)
 end
 
 function B:CommandDecorator(func, groupsDefaults)
-	local bagGroups = {}
-
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
 			B:StopStacking(L["Already Running.. Bailing Out!"], true)
