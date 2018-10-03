@@ -26,17 +26,20 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 
 		local title = ElvUI_NPCTitleTextLeft2:GetText();
 		tooltip:Hide()
-		if not title or title:find('^Level ') then return end
 
+		if not title or title:find('^Level ') then return end
 		frame.NPCTitle:SetText(title)
-		local reactionType = UnitReaction(frame.unit, "player")
-		local r, g, b
-		if(reactionType == 4) then
-			r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
-		elseif(reactionType > 4) then
-			r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
-		else
-			r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+
+		local r, g, b = 1, 1, 1
+		local reactionType = frame.displayedUnit and UnitReaction(frame.displayedUnit, "player")
+		if reactionType then
+			if reactionType == 4 then
+				r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
+			elseif reactionType > 4 then
+				r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
+			else
+				r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+			end
 		end
 
 		frame.NPCTitle:SetTextColor(r - 0.1, g - 0.1, b - 0.1)
