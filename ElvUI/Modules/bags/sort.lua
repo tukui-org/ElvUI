@@ -722,7 +722,16 @@ local function RegisterUpdateDelayed()
 			--call update and re-register BAG_UPDATE event
 			bagFrame.registerUpdate = nil
 			bagFrame:UpdateAllSlots()
+			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+			bagFrame:RegisterEvent("ITEM_LOCK_CHANGED")
+			bagFrame:RegisterEvent("ITEM_UNLOCKED")
+			bagFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 			bagFrame:RegisterEvent("BAG_UPDATE")
+			bagFrame:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
+			bagFrame:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
+			bagFrame:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+			bagFrame:RegisterEvent("QUEST_ACCEPTED")
+			bagFrame:RegisterEvent("QUEST_REMOVED")
 		end
 	end
 end
