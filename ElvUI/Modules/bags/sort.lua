@@ -719,7 +719,7 @@ end
 local function RegisterUpdateDelayed()
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.registerUpdate then
-			--call update and re-register BAG_UPDATE event
+			--call update and re-register events
 			bagFrame.registerUpdate = nil
 			bagFrame:UpdateAllSlots()
 			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
