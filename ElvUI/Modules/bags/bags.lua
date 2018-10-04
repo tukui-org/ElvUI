@@ -1163,7 +1163,7 @@ function B:OnEvent(event, ...)
 		if B:IsSearching() then
 			B:RefreshSearch()
 		end
-	elseif (event == 'BAG_UPDATE_COOLDOWN') and self:IsShown() then
+	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		self:UpdateAllSlots()
