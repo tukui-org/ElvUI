@@ -199,7 +199,7 @@ function B:UpdateSearch()
 
 	SEARCH_STRING = searchString
 
-	B:SetSearch(SEARCH_STRING);
+	B:RefreshSearch()
 	B:SetGuildBankSearch(SEARCH_STRING);
 end
 
@@ -585,8 +585,8 @@ function B:UpdateBagSlots(bagID)
 	end
 end
 
-function B:ForceBagSearchUpdate()
-	B:SetSearch(SEARCH_STRING);
+function B:RefreshSearch()
+	B:SetSearch(SEARCH_STRING)
 end
 
 function B:SortingFadeBags(bagFrame)
@@ -625,7 +625,7 @@ function B:UpdateAllSlots()
 
 	--Refresh search in case we moved items around
 	if B:IsSearching() then
-		B:SetSearch(SEARCH_STRING);
+		B:RefreshSearch()
 	end
 end
 
@@ -1161,7 +1161,7 @@ function B:OnEvent(event, ...)
 
 		--Refresh search in case we moved items around
 		if B:IsSearching() then
-			B:SetSearch(SEARCH_STRING);
+			B:RefreshSearch()
 		end
 	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
