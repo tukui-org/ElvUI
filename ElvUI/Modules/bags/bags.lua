@@ -941,7 +941,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].JunkIcon:Size(buttonSize/2)
 				end
 
-				-- f:UpdateSlot(bagID, slotID); -- We update this when the bags get opened for the first time. Not needed.
+				f:UpdateSlot(bagID, slotID); -- We update this when the bags get opened for the first time. Not needed.
 
 				if f.Bags[bagID][slotID]:GetPoint() then
 					f.Bags[bagID][slotID]:ClearAllPoints();
@@ -1789,11 +1789,10 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:OpenBags()
-	if not self.BagFrame:IsShown() then  -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
-		self.BagFrame:UpdateAllSlots();
-	end
+	if self.BagFrame:IsShown() then return end -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
 
 	self.BagFrame:Show();
+	self.BagFrame:UpdateAllSlots();
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
