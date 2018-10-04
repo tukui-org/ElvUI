@@ -1752,10 +1752,10 @@ end
 function B:ToggleBags(id)
 	if id and GetContainerNumSlots(id) == 0 then return; end --Closes a bag when inserting a new container..
 
-	if self.BagFrame:IsShown() then
-		self:CloseBags();
+	if IsBagOpen(0) then
+		self:OpenBags()
 	else
-		self:OpenBags();
+		self:CloseBags()
 	end
 end
 
@@ -1789,7 +1789,7 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:OpenBags()
-	if self.BagFrame:IsShown() then return end -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
+	if not IsBagOpen(0) then return end -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
 
 	self.BagFrame:Show();
 	self.BagFrame:UpdateAllSlots();
@@ -2036,6 +2036,7 @@ function B:Initialize()
 	self:SecureHook('ToggleBag', 'ToggleBags')
 	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
 	self:SecureHook('ToggleBackpack')
+
 	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
 
 	self:Layout();
