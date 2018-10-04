@@ -66,6 +66,7 @@ L["whispers"] = "chuchote"
 L["yells"] = "crie"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "Niveau actuel :"
 L["Honor Remaining:"] = "Honneur restant :"
 L["Honor XP:"] = "Niveau d'honneur :"
@@ -233,6 +234,7 @@ L["Left Click:"] = "Clic Gauche :" --layout\layout.lua
 L["Raid Menu"] = "Menu Raid"
 L["Remaining:"] = "Restant :"
 L["Rested:"] = "Reposé :"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = "Activer/Désactiver les boutons de discussion" --layout\layout.lua
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua

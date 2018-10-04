@@ -2259,7 +2259,7 @@ local function GetUnitSettings(unit, name)
 					},
 					widthOverride = {
 						order = 4,
-						name = L["Width Override"],
+						name = L["Icon Width Override"],
 						desc = L["If not set to 0 then set the width of the Aura Icon to this"],
 						type = "range",
 						min = 0, max = 60, step = 1,

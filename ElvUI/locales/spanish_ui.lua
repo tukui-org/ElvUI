@@ -66,6 +66,7 @@ L["whispers"] = "susurra"
 L["yells"] = "grita"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
@@ -233,6 +234,7 @@ L["Left Click:"] = "Click Izquierdo"
 L["Raid Menu"] = "Menú de Banda"
 L["Remaining:"] = "Restante"
 L["Rested:"] = "Descansado:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Marco de Chat"
 L["Toggle Configuration"] = "Mostrar/Ocultar Configuración"

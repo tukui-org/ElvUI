@@ -66,6 +66,7 @@ L["whispers"] = "귓"
 L["yells"] = "외침"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "현재 레벨"
 L["Honor Remaining:"] = "남은 명예"
 L["Honor XP:"] = "명예 경험치"
@@ -233,6 +234,7 @@ L["Left Click:"] = "왼 클릭 :"
 L["Raid Menu"] = "공대 도구"
 L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"

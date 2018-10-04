@@ -66,6 +66,7 @@ L["whispers"] = true
 L["yells"] = true
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
@@ -233,6 +234,7 @@ L["Left Click:"] = true --layout\layout.lua
 L["Raid Menu"] = true
 L["Remaining:"] = true
 L["Rested:"] = true
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = true --layout\layout.lua
 L["Toggle Configuration"] = true --layout\layout.lua

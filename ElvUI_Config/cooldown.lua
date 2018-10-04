@@ -196,8 +196,8 @@ local function group(order, db, label)
 					fontSize = {
 						order = 3,
 						type = 'range',
-						name = L["Font Size"],
-						desc = L['Sets the size of the timers.'],
+						name = L["Text Font Size"],
+						desc = L["Sets the size of the timers."],
 						min = 10, max = 50, step = 1,
 					},
 					font = {

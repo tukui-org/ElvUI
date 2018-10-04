@@ -66,6 +66,7 @@ L["whispers"] = "密語"
 L["yells"] = "大喊"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "目前等級"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
@@ -233,6 +234,7 @@ L["Left Click:"] = "滑鼠左鍵：" --layout\layout.lua
 L["Raid Menu"] = "團隊選單"
 L["Remaining:"] = "剩餘:"
 L["Rested:"] = "休息:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = "開關對話按鈕" --layout\layout.lua
 L["Toggle Chat Frame"] = "開關對話框架" --layout\layout.lua
 L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua

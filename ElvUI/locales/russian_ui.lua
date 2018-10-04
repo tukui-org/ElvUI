@@ -66,6 +66,7 @@ L["whispers"] = "шепчет"
 L["yells"] = "кричит"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "Текущий уровень:"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
@@ -233,6 +234,7 @@ L["Left Click:"] = "ЛКМ:" --layout\layout.lua
 L["Raid Menu"] = "Рейдовое меню"
 L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = "Показать/скрыть кнопки чата" --layout\layout.lua
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
