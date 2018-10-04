@@ -240,6 +240,7 @@ do --this can save some main file locals
 		["Elvz-Kil'jaeden"]		= ElvBlue,
 		["Elv-Spirestone"]		= ElvBlue,
 		-- Tirain --
+		["Tierone-Spirestone"] = "Dr. ", -- lol
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 		-- Whiro --
