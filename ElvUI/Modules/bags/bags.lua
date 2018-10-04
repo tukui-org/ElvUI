@@ -1773,10 +1773,8 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:OpenBags()
-	if self.BagFrame:IsShown() then return end -- ToggleBags fires 1 and ToggleBackpack fires 2... This results in 3x the Update per slot. Bad Mkay?
+	self.BagFrame:Show()
 
-	self.BagFrame:Show();
-	self.BagFrame:UpdateAllSlots();
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
@@ -1799,8 +1797,8 @@ function B:OpenBank()
 	self:Layout(true)
 
 	BankFrame:Show()
-	self.BankFrame:Show();
-	self.BankFrame:UpdateAllSlots();
+	self.BankFrame:Show()
+
 	self:OpenBags()
 	self:UpdateTokens()
 
