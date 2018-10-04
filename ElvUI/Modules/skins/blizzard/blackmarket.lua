@@ -58,6 +58,20 @@ local function LoadSkin()
 				S:HandleItemButton(button.Item)
 				button:StripTextures('BACKGROUND')
 				button:StyleButton()
+
+				local cR, cG, cB = button.Item.IconBorder:GetVertexColor()
+				if not cR then cR, cG, cB = unpack(E.media.bordercolor) end
+				button.Item.backdrop:SetBackdropBorderColor(cR, cG, cB)
+				button.Item.IconBorder:SetTexture(nil)
+
+				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(self, r, g, b)
+					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+					self:SetTexture("")
+				end)
+				hooksecurefunc(button.Item.IconBorder, 'Hide', function(self)
+					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end)
+
 				button.skinned = true
 			end
 

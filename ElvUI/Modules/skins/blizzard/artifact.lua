@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local select = select
+local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
 --WoW API / Variables
 
@@ -31,25 +34,36 @@ local function LoadSkin()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 
-	-- Netherlight Crucible
-	local ArtifactRelicForgeFrame = _G["ArtifactRelicForgeFrame"]
-	ArtifactRelicForgeFrame:StripTextures()
-	ArtifactRelicForgeFrame:CreateBackdrop("Transparent")
-	ArtifactRelicForgeFrame.PreviewRelicFrame:StripTextures()
-	ArtifactRelicForgeFrame.PreviewRelicCover:StripTextures()
-	S:HandleCloseButton(_G["ArtifactRelicForgeFrameCloseButton"])
+	--Tutorial
+	S:HandleCloseButton(ArtifactFrame.KnowledgeLevelHelpBox.CloseButton)
+	S:HandleCloseButton(ArtifactFrame.AppearanceTabHelpBox.CloseButton)
 
-	ArtifactFrame.PerksTab.RelicTalentAlert:StripTextures()
-	ArtifactFrame.PerksTab.RelicTalentAlert:CreateBackdrop("Transparent")
-	ArtifactFrame.PerksTab.RelicTalentAlert:SetPoint("TOPRIGHT", ArtifactFrame, "TOPRIGHT", -20, 0)
-
-	ArtifactFrame.KnowledgeLevelHelpBox:StripTextures()
-	ArtifactFrame.KnowledgeLevelHelpBox.Arrow:Hide()
-	ArtifactFrame.KnowledgeLevelHelpBox:CreateBackdrop("Transparent")
-
-	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:StripTextures()
-	ArtifactRelicForgeFrame.TutorialFrame.GlowBox:CreateBackdrop("Transparent")
-	S:HandleButton(ArtifactRelicForgeFrame.TutorialFrame.GlowBox.Button)
+	ArtifactFrame.AppearancesTab:HookScript("OnShow", function(self)
+		for i=1, self:GetNumChildren() do
+			local child = select(i, self:GetChildren())
+			if child and child.appearanceID and not child.backdrop then
+				child:CreateBackdrop("Transparent")
+				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)
+				child.SwatchTexture:SetInside(child.backdrop)
+				child.Border:SetAlpha(0)
+				child.Background:SetAlpha(0)
+				child.HighlightTexture:SetAlpha(0)
+				child.HighlightTexture.SetAlpha = E.noop
+				if child.Selected:IsShown() then
+					child.backdrop:SetBackdropBorderColor(1,1,1)
+				end
+				child.Selected:SetAlpha(0)
+				child.Selected.SetAlpha = E.noop
+				hooksecurefunc(child.Selected, "SetShown", function(_, isActive)
+					if isActive then
+						child.backdrop:SetBackdropBorderColor(1,1,1)
+					else
+						child.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
+				end)
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)

@@ -12,6 +12,7 @@ local format = string.format
 local match = string.match
 local tonumber = tonumber
 --WoW API / Variables
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
@@ -44,7 +45,6 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local GetCVar = GetCVar
-local Saturate = Saturate
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 
@@ -121,52 +121,35 @@ function mod:CheckArenaHealers()
 	end
 end
 
-local namePlateDriverEvents = {
-	--"NAME_PLATE_CREATED", -- Leave this on always to prevent errors
-	"FORBIDDEN_NAME_PLATE_CREATED",
-	"NAME_PLATE_UNIT_ADDED",
-	"FORBIDDEN_NAME_PLATE_UNIT_ADDED",
-	"NAME_PLATE_UNIT_REMOVED",
-	"FORBIDDEN_NAME_PLATE_UNIT_REMOVED",
-	"PLAYER_TARGET_CHANGED",
-	"DISPLAY_SIZE_CHANGED",
-	"UNIT_AURA",
-	"VARIABLES_LOADED",
-	"CVAR_UPDATE",
-	"RAID_TARGET_UPDATE",
-	"UNIT_FACTION"
-}
-
-function mod:ToggleNamePlateDriverEvents(instanceType)
-	for _, event in pairs(namePlateDriverEvents) do
-		if instanceType == "none" then
-			NamePlateDriverFrame:UnregisterEvent(event)
-		else
-			NamePlateDriverFrame:RegisterEvent(event)
-		end
-	end
-
-	if instanceType == "none" then
-		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil
-		SetCVar("nameplateShowDebuffsOnFriendly", true)
-	else
+function mod:LockdownInstancePlateCVars(lockedInstance)
+	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
+	else
+		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil;
+		SetCVar("nameplateShowDebuffsOnFriendly", true)
 	end
+end
+
+function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
+	local _, instanceType = IsInInstance()
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
+	mod:SetBaseNamePlateSize(lockedInstance) -- workaround for #206
 end
 
 function mod:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
+	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
 
 	if not self.db.hideBlizzardPlates then
-		self:ToggleNamePlateDriverEvents(instanceType)
+		self:LockdownInstancePlateCVars(lockedInstance)
 	end
 
-	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
+	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
-	elseif inInstance and instanceType == 'arena' and self.db.units.ENEMY_PLAYER.markHealers then
+	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
 		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
 		self:CheckArenaHealers()
@@ -182,6 +165,9 @@ function mod:PLAYER_ENTERING_WORLD()
 	if self.db.units.PLAYER.useStaticPosition then
 		mod:UpdateVisibility()
 	end
+
+	-- workaround for #206
+	mod:SetBaseNamePlateSize(lockedInstance)
 end
 
 function mod:ClassBar_Update()
@@ -335,6 +321,7 @@ function mod:SetTargetFrame(frame)
 			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = nil, nil, nil
 			frame.CastBar:Hide()
 			self:ConfigureElement_HealthBar(frame)
+			self:ConfigureElement_CutawayHealth(frame)
 			self:ConfigureElement_PowerBar(frame)
 			self:ConfigureElement_CastBar(frame)
 			self:ConfigureElement_Glow(frame)
@@ -409,19 +396,24 @@ function mod:CheckUnitType(frame)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		self:UpdateAllFrame(frame)
+		return true
 	elseif(role ~= "HEALER" and frame.UnitType == "HEALER") then
 		self:UpdateAllFrame(frame)
+		return true
 	elseif frame.UnitType == "FRIENDLY_PLAYER" then
 		--This line right here is likely the cause of the fps drop when entering world
 		--CheckUnitType is being called about 1000 times because the "UNIT_FACTION" event is being triggered this amount of times for some insane reason
 		self:UpdateAllFrame(frame)
+		return true
 	elseif(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
 		if(CanAttack) then
 			self:UpdateAllFrame(frame)
+			return true
 		end
 	elseif(frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "ENEMY_NPC") then
 		if(not CanAttack) then
 			self:UpdateAllFrame(frame)
+			return true
 		end
 	end
 end
@@ -470,6 +462,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 
 	if(self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
 		self:ConfigureElement_HealthBar(frame.unitFrame)
+		self:ConfigureElement_CutawayHealth(frame.unitFrame)
 		self:ConfigureElement_PowerBar(frame.unitFrame)
 		self:ConfigureElement_CastBar(frame.unitFrame)
 		self:ConfigureElement_Glow(frame.unitFrame)
@@ -614,19 +607,27 @@ function mod:ForEachPlate(functionToRun, ...)
 	end
 end
 
-function mod:SetBaseNamePlateSize()
-	local baseWidth = self.db.clickableWidth
-	local baseHeight = self.db.clickableHeight
-	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
+function mod:SetBaseNamePlateSize(lockedInstance)
+	local clickWidth = self.db.clickableWidth + ((E.PixelMode and 2) or 6)
+	local clickHeight = self.db.clickableHeight
 
-	-- this wont taint like NamePlateDriverFrame.SetBaseNamePlateSize
-	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
-	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
-	local zeroBasedScale = namePlateVerticalScale - 1.0
-	local clampedZeroBasedScale = Saturate(zeroBasedScale)
-	C_NamePlate_SetNamePlateFriendlySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
-	C_NamePlate_SetNamePlateEnemySize(baseWidth * horizontalScale, baseHeight * Lerp(1.0, 1.25, zeroBasedScale))
-	C_NamePlate_SetNamePlateSelfSize(baseWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale), baseHeight)
+	self.PlayerFrame__:SetSize(clickWidth, clickHeight)
+	C_NamePlate_SetNamePlateSelfSize(clickWidth, clickHeight)
+	C_NamePlate_SetNamePlateEnemySize(clickWidth, clickHeight)
+
+	-- workaround for #206
+	local friendlyWidth, friendlyHeight
+	if lockedInstance then
+		-- handle it just like blizzard does when using blizzard friendly plates
+		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+		local zeroBasedScale = namePlateVerticalScale - 1.0
+
+		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
+		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
+	end
+
+	C_NamePlate_SetNamePlateFriendlySize(friendlyWidth or clickWidth, friendlyHeight or clickHeight)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
@@ -636,7 +637,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 			if(UnitIsUnit(frame.unit, "player")) then
 				frame.displayedUnit = "vehicle"
 			else
-				local prefix, id, suffix = match(frame.unit, "([^%d]+)([%d]*)(.*)")
+				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
 			if(not noEvents) then
@@ -662,7 +663,9 @@ local function HidePlayerNamePlate()
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
-	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
+	local healthShown = (frame.UnitType and self.db.units[frame.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth)
+
+	if healthShown then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
@@ -675,15 +678,8 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		else
 			frame.PowerBar:Hide()
 		end
-		mod:UpdateElement_Glow(frame) -- this needs to run after we show the powerbar or not to place the new glow2 properly
-	else
-		-- make sure we hide the arrows and/or glow after disabling the healthbar
-		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
-		if frame.LeftArrow and frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
-		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
-		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
-		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
 	end
+
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
@@ -693,6 +689,17 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 	mod:UpdateElement_Detection(frame)
 	mod:UpdateElement_Highlight(frame)
 	mod:UpdateElement_Portrait(frame)
+
+	if healthShown then
+		mod:UpdateElement_Glow(frame)
+	else
+		-- make sure we hide the arrows and/or glow after disabling the healthbar
+		if frame.TopArrow and frame.TopArrow:IsShown() then frame.TopArrow:Hide() end
+		if frame.LeftArrow and frame.LeftArrow:IsShown() then frame.LeftArrow:Hide() end
+		if frame.RightArrow and frame.RightArrow:IsShown() then frame.RightArrow:Hide() end
+		if frame.Glow2 and frame.Glow2:IsShown() then frame.Glow2:Hide() end
+		if frame.Glow and frame.Glow:IsShown() then frame.Glow:Hide() end
+	end
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
@@ -720,6 +727,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.plateID = plateID
 
 	frame.unitFrame.HealthBar = self:ConstructElement_HealthBar(frame.unitFrame)
+	frame.unitFrame.CutawayHealth = self:ConstructElement_CutawayHealth(frame.unitFrame)
 	frame.unitFrame.PowerBar = self:ConstructElement_PowerBar(frame.unitFrame)
 	frame.unitFrame.Level = self:ConstructElement_Level(frame.unitFrame)
 	frame.unitFrame.Name = self:ConstructElement_Name(frame.unitFrame)
@@ -738,8 +746,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
 			blizzPlate:Hide() --Hide Blizzard's Nameplate
+			blizzPlate:UnregisterAllEvents() --Remove any events
+			CompactUnitFrame_UnregisterEvents(blizzPlate) --Let Blizzard remove any OnEvent and OnUpdate scripts
 		end)
-		--print('Hooked on NAME_PLATE_CREATED')
 		frame.unitFrame.onShowHooked = true
 	end
 end
@@ -799,17 +808,21 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Filters(self, event)
 	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
-		mod:CheckUnitType(self)
+		local wasUpdated = mod:CheckUnitType(self)
+		if not wasUpdated then
+			mod:UpdateElement_HealthColor(self)
+			mod:UpdateElement_Filters(self, event)
+		end
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
 		mod:UpdateElement_MaxPower(self)
-	elseif(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
+	elseif(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
 		local powerType, powerToken = UnitPowerType(self.displayedUnit)
 		local arg1 = ...
 		self.PowerToken = powerToken
 		self.PowerType = powerType
-		if(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT") then
+		if(event == "UNIT_POWER_UPDATE" or event == "UNIT_POWER_FREQUENT") then
 			if mod.ClassBar and arg1 == powerToken then
 				mod:ClassBar_Update()
 			end
@@ -863,7 +876,7 @@ function mod:RegisterEvents(frame, unit)
 		end
 
 		if(self.db.units[frame.UnitType].powerbar.enable) then
-			frame:RegisterUnitEvent("UNIT_POWER", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_POWER_UPDATE", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit, displayedUnit)
 			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit, displayedUnit)
@@ -905,7 +918,7 @@ end
 
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	if(frame) then
+	if frame then
 		frame:SetScale(1.35)
 	end
 end
@@ -935,7 +948,7 @@ end
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
-		if(type(value) == "table") then
+		if(type(value) == "table" and to[setting] ~= nil) then
 			CopySettings(from[setting], to[setting])
 		else
 			if(to[setting] ~= nil) then
@@ -1061,24 +1074,22 @@ function mod:UpdateFonts(plate)
 	--buff fonts
 	if plate.Buffs and plate.Buffs.db and plate.Buffs.db.numAuras then
 		for i=1, plate.Buffs.db.numAuras do
-			if plate.Buffs.icons[i] and plate.Buffs.icons[i].cooldown and plate.Buffs.icons[i].cooldown.timer and plate.Buffs.icons[i].cooldown.timer.text then
-				plate.Buffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Buffs.icons[i] and plate.Buffs.icons[i].count then
 				plate.Buffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Buffs.icons[i].cooldown)
 		end
 	end
 
 	--debuff fonts
 	if plate.Debuffs and plate.Debuffs.db and plate.Debuffs.db.numAuras then
 		for i=1, plate.Debuffs.db.numAuras do
-			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].cooldown and plate.Debuffs.icons[i].cooldown.timer and plate.Debuffs.icons[i].cooldown.timer.text then
-				plate.Debuffs.icons[i].cooldown.timer.text:SetFont(LSM:Fetch("font", self.db.durationFont), self.db.durationFontSize, self.db.durationFontOutline)
-			end
 			if plate.Debuffs.icons[i] and plate.Debuffs.icons[i].count then
 				plate.Debuffs.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 			end
+
+			self:UpdateCooldownSettings(plate.Debuffs.icons[i].cooldown)
 		end
 	end
 
@@ -1103,6 +1114,12 @@ function mod:UpdateFonts(plate)
 	end
 	if plate.NPCTitle then
 		plate.NPCTitle:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+
+	--update glow incase name font changes
+	local healthShown = (plate.UnitType and self.db.units[plate.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (plate.isTarget and self.db.alwaysShowTargetHealth)
+	if healthShown then
+		self:UpdateElement_Glow(plate)
 	end
 end
 
@@ -1166,7 +1183,9 @@ function mod:Initialize()
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
 		NamePlateDriverFrame:UnregisterAllEvents()
-		NamePlateDriverFrame.ApplyFrameOptions = E.noop --This taints and prevents default nameplates in dungeons and raids
+		--This taints and prevents default nameplates in dungeons and raids
+		NamePlateDriverFrame.ApplyFrameOptions = E.noop
+		NamePlateDriverFrame.SetupClassNameplateBars = E.noop
 	else
 		InterfaceOptionsNamesPanelUnitNameplatesAggroFlash:Kill()
 		InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Kill()
@@ -1181,10 +1200,14 @@ function mod:Initialize()
 		InterfaceOptionsNamesPanelUnitNameplatesEnemies:Point("TOPLEFT", InterfaceOptionsNamesPanelUnitNameplates, "TOPLEFT", 0, -80)
 	end
 
+	-- Update NamePlate clickable range when the blizzard CVars change (workaround for #206)
+	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", mod.NamePlateDriverFrame_UpdateNamePlateOptions)
+
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
 	if(self.ClassBar) then
 		self.ClassBar:SetScale(1.35)
+		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
 

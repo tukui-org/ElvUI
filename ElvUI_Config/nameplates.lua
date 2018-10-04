@@ -23,7 +23,7 @@ local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_W
 local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
-local FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
+local BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
@@ -2075,9 +2075,18 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
+					widthOverride = {
+						order = 4,
+						name = L["Icon Width Override"],
+						desc = L["If not set to 0 then set the width of the Aura Icon to this"],
+						type = "range",
+						min = 0, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info]] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 4,
+						order = 5,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2110,6 +2119,7 @@ local function GetUnitSettings(unit, name)
 							specialFilters = {
 								order = 5,
 								type = "select",
+								sortByValue = true,
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
@@ -2117,7 +2127,7 @@ local function GetUnitSettings(unit, name)
 									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
-										filters[filter] = filter
+										filters[filter] = L[filter]
 									end
 									return filters
 								end,
@@ -2174,9 +2184,13 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info)
 									filterPriority('buffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(_, text)
-									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+								stateSwitchGetText = function(_, TEXT)
+									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local text = friend or enemy or TEXT
+									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function()
 									filterPriority('buffs', unit, carryFilterFrom, nil, nil, true)
@@ -2243,9 +2257,18 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
+					widthOverride = {
+						order = 4,
+						name = L["Icon Width Override"],
+						desc = L["If not set to 0 then set the width of the Aura Icon to this"],
+						type = "range",
+						min = 0, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info]] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 4,
+						order = 5,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2278,6 +2301,7 @@ local function GetUnitSettings(unit, name)
 							specialFilters = {
 								order = 5,
 								type = "select",
+								sortByValue = true,
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
@@ -2285,7 +2309,7 @@ local function GetUnitSettings(unit, name)
 									local list = E.global.unitframe['specialFilters']
 									if not list then return end
 									for filter in pairs(list) do
-										filters[filter] = filter
+										filters[filter] = L[filter]
 									end
 									return filters
 								end,
@@ -2342,9 +2366,13 @@ local function GetUnitSettings(unit, name)
 								dragOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, true)
 								end,
-								stateSwitchGetText = function(_, text)
-									local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-									return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+								stateSwitchGetText = function(_, TEXT)
+									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local text = friend or enemy or TEXT
+									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 								end,
 								stateSwitchOnClick = function(info)
 									filterPriority('debuffs', unit, carryFilterFrom, nil, nil, true)
@@ -2491,6 +2519,7 @@ local function GetUnitSettings(unit, name)
 							order = 2,
 							type = "toggle",
 							name = L["Show With Target"],
+							desc = L["When using Static Position, this option also requires the target to be attackable."],
 							get = function(info) return E.db.nameplates.units[unit].visibility.showWithTarget end,
 							set = function(info, value) E.db.nameplates.units[unit].visibility.showWithTarget = value; NP:ConfigureAll() end,
 							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
@@ -2732,12 +2761,12 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "fontGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		classBarShortcut = {
+		cooldownShortcut = {
 			order = 7,
 			type = "execute",
-			name = L["Classbar"],
+			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
@@ -2745,8 +2774,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		threatShortcut = {
+		classBarShortcut = {
 			order = 9,
+			type = "execute",
+			name = L["Classbar"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		threatShortcut = {
+			order = 10,
 			type = "execute",
 			name = L["Threat"],
 			buttonElvUI = true,
@@ -2754,19 +2791,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		castBarShortcut = {
-			order = 10,
+			order = 11,
 			type = "execute",
 			name = L["Cast Bar"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "castGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		reactionShortcut = {
-			order = 11,
-			type = "execute",
-			name = L["Reaction Colors"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
@@ -2774,28 +2803,28 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		healPredictionShortcut = {
+		reactionShortcut = {
 			order = 13,
+			type = "execute",
+			name = L["Reaction Colors"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "reactions") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		healPredictionShortcut = {
+			order = 14,
 			type = "execute",
 			name = L["Heal Prediction"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "healPrediction") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		playerShortcut = {
-			order = 14,
-			type = "execute",
-			name = L["Player Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		healerShortcut = {
+		cutawayHealthShortcut = {
 			order = 15,
 			type = "execute",
-			name = L["Healer Frames"],
+			name = L["Cutaway Health"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -2803,28 +2832,28 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		friendlyPlayerShortcut = {
+		playerShortcut = {
 			order = 17,
+			type = "execute",
+			name = L["Player Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		healerShortcut = {
+			order = 18,
+			type = "execute",
+			name = L["Healer Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyPlayerShortcut = {
+			order = 19,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		enemyPlayerShortcut = {
-			order = 18,
-			type = "execute",
-			name = L["Enemy Player Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		friendlyNPCShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Friendly NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
@@ -2832,16 +2861,37 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		enemyNPCShortcut = {
+		enemyPlayerShortcut = {
 			order = 21,
+			type = "execute",
+			name = L["Enemy Player Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyNPCShortcut = {
+			order = 22,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		enemyNPCShortcut = {
+			order = 23,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
+		spacer6 = {
+			order = 24,
+			type = "description",
+			name = " ",
+		},
 		filtersShortcut = {
-			order = 22,
+			order = 25,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
@@ -2849,7 +2899,7 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
-			order = 23,
+			order = 26,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -2976,8 +3026,14 @@ E.Options.args.nameplate = {
 								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
 							end,
 						},
-						targetedNamePlate = {
+						nameColoredGlow = {
 							order = 13,
+							type = "toggle",
+							name = L["Name Colored Glow"],
+							desc = L["Use the Name Color of the unit for the Name Glow."],
+						},
+						targetedNamePlate = {
+							order = 14,
 							type = "group",
 							guiInline = true,
 							name = L["Targeted Nameplate"],
@@ -3032,7 +3088,7 @@ E.Options.args.nameplate = {
 									order = 6,
 									type = "select",
 									customWidth = 225,
-									name = L["Target Indicator"],
+									name = L["Target/Low Health Indicator"],
 									get = function(info) return E.db.nameplates.targetGlow end,
 									set = function(info, value) E.db.nameplates.targetGlow = value; NP:ConfigureAll() end,
 									values = {
@@ -3056,7 +3112,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 14,
+							order = 15,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
@@ -3159,55 +3215,9 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
-						duration = {
-							type = "group",
-							order = 5,
-							name = L["Duration"],
-							guiInline = true,
-							args = {
-								durationFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 1,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontSize = {
-									order = 2,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationFontOutline = {
-									order = 3,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:UpdatePlateFonts() end,
-								},
-								durationPosition = {
-									order = 4,
-									name = L["Position"],
-									type = "select",
-									values = {
-										["CENTER"] = L["Center"],
-										["TOPLEFT"] = "TOPLEFT",
-										["BOTTOMLEFT"] = "BOTTOMLEFT",
-										["TOPRIGHT"] = "TOPRIGHT",
-									},
-								},
-							}
-						},
 						stacks = {
 							type = "group",
-							order = 6,
+							order = 5,
 							name = L["Stack Counter"],
 							guiInline = true,
 							args = {
@@ -3240,10 +3250,36 @@ E.Options.args.nameplate = {
 								},
 							}
 						},
+						duration = {
+							type = "group",
+							order = 6,
+							name = L["Duration"],
+							guiInline = true,
+							args = {
+								cooldownShortcut = {
+									order = 1,
+									type = "execute",
+									name = L["Cooldowns"],
+									buttonElvUI = true,
+									func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+								},
+								durationPosition = {
+									order = 2,
+									name = L["Position"],
+									type = "select",
+									values = {
+										["CENTER"] = L["Center"],
+										["TOPLEFT"] = "TOPLEFT",
+										["BOTTOMLEFT"] = "BOTTOMLEFT",
+										["TOPRIGHT"] = "TOPRIGHT",
+									},
+								},
+							}
+						},
 					},
 				},
 				classBarGroup = {
-					order = 125,
+					order = 130,
 					type = "group",
 					name = L["Classbar"],
 					get = function(info) return E.db.nameplates.classbar[ info[#info] ] end,
@@ -3500,6 +3536,38 @@ E.Options.args.nameplate = {
 						},
 					},
 				},
+				cutawayHealth = {
+					order = 226,
+					name = L["Cutaway Health"],
+					type = 'group',
+					args = {
+						enabled = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							get = function(info) return E.db.nameplates.cutawayHealth end,
+							set = function(info, value) E.db.nameplates.cutawayHealth = value; end,
+						},
+						healthLength = {
+							type = 'range',
+							order = 2,
+							name = L["Health Length"],
+							desc = L["How much time before the CutawayHealth starts to fade."],
+							min = 0.1, max = 1, step = 0.1,
+							get = function(info) return E.db.nameplates.cutawayHealthLength end,
+							set = function(info, value) E.db.nameplates.cutawayHealthLength = value; end,
+						},
+						healthFadeOutTime = {
+							type = 'range',
+							order = 3,
+							name = L["Fade Out"],
+							desc = L["How long the CutawayHealth will take to fade out."],
+							min = 0.1, max = 1, step = 0.1,
+							get = function(info) return E.db.nameplates.cutawayHealthFadeOutTime end,
+							set = function(info, value) E.db.nameplates.cutawayHealthFadeOutTime = value; end,
+						},
+					},
+				},
 			},
 		},
 		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
@@ -3539,6 +3607,7 @@ E.Options.args.nameplate = {
 					name = L["Select Filter"],
 					type = 'select',
 					order = 2,
+					sortByValue = true,
 					get = function(info) return selectedNameplateFilter end,
 					set = function(info, value) selectedNameplateFilter = value; UpdateFilterGroup() end,
 					values = function()

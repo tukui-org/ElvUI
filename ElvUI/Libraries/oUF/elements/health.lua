@@ -25,13 +25,13 @@ The following options are listed by priority. The first check that returns true 
 .colorTapping      - Use `self.colors.tapping` to color the bar if the unit isn't tapped by the player (boolean)
 .colorDisconnected - Use `self.colors.disconnected` to color the bar if the unit is offline (boolean)
 .colorClass        - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
-                     second return of [UnitClass](http://wowprogramming.com/docs/api/UnitClass) (boolean)
+                     second return of [UnitClass](http://wowprogramming.com/docs/api/UnitClass.html) (boolean)
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
 .colorClassPet     - Use `self.colors.class[class]` to color the bar if the unit is player controlled, but not a player
                      (boolean)
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
-                     [UnitReaction](http://wowprogramming.com/docs/api/UnitReaction) (boolean)
+                     [UnitReaction](http://wowprogramming.com/docs/api/UnitReaction.html) (boolean)
 .colorSmooth       - Use `smoothGradient` if present or `self.colors.smooth` to color the bar with a smooth gradient
                      based on the player's current health percentage (boolean)
 .colorHealth       - Use `self.colors.health` to color the bar. This flag is used to reset the bar color back to default
@@ -77,15 +77,17 @@ The following options are listed by priority. The first check that returns true 
 
 local _, ns = ...
 local oUF = ns.oUF
-local updateFrequentUpdates
+local updateFrequentUpdates -- ElvUI
 
 local function UpdateColor(element, unit, cur, max)
 	local parent = element.__owner
 
+	-- ElvUI block
 	if element.frequentUpdates ~= element.__frequentUpdates then
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(parent)
 	end
+	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
@@ -184,6 +186,7 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+-- ElvUI block
 function updateFrequentUpdates(self)
 	local health = self.Health
 	if health.frequentUpdates and not self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
@@ -201,17 +204,20 @@ function updateFrequentUpdates(self)
 
 		if self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
 			self:UnregisterEvent("UNIT_HEALTH_FREQUENT", Path)
-		end	
+		end
 	end
 end
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		-- ElvUI block
 		element.__frequentUpdates = element.frequentUpdates
 		updateFrequentUpdates(self)
+		-- end block
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)

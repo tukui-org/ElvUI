@@ -13,38 +13,39 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Warboard ~= true then return end
 
 	local WarboardQuestChoiceFrame = _G["WarboardQuestChoiceFrame"]
+	WarboardQuestChoiceFrame:StripTextures()
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
 
-	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption1.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption2.OptionButton)
-	S:HandleButton(WarboardQuestChoiceFrameOption3.OptionButton)
-
-	WarboardQuestChoiceFrame.Top:Hide()
-	WarboardQuestChoiceFrame.Bottom:Hide()
-	WarboardQuestChoiceFrame.Left:Hide()
-	WarboardQuestChoiceFrame.Right:Hide()
-
-	WarboardQuestChoiceFrameTopRightCorner:Hide()
-	WarboardQuestChoiceFrame.topLeftCorner:Hide()
-	WarboardQuestChoiceFrame.topBorderBar:Hide()
-	WarboardQuestChoiceFrameBotRightCorner:Hide()
-	WarboardQuestChoiceFrameBotLeftCorner:Hide()
-	WarboardQuestChoiceFrameBottomBorder:Hide()
-	WarboardQuestChoiceFrame.leftBorderBar:Hide()
-	WarboardQuestChoiceFrameRightBorder:Hide()
-
-	WarboardQuestChoiceFrame.GarrCorners:Hide()
-
+	WarboardQuestChoiceFrame.BorderFrame:Hide()
+	WarboardQuestChoiceFrame.BorderFrame.Header:SetAlpha(0)
 	WarboardQuestChoiceFrame.Background:Hide()
-	WarboardQuestChoiceFrame.Title.Left:Hide()
-	WarboardQuestChoiceFrame.Title.Right:Hide()
-	WarboardQuestChoiceFrame.Title.Middle:Hide()
+	WarboardQuestChoiceFrame.Title:DisableDrawLayer("BACKGROUND")
 
-	WarboardQuestChoiceFrame.Header:SetSize(354, 105)
-	WarboardQuestChoiceFrame.Header:SetPoint("TOP", 0, 80)
-	WarboardQuestChoiceFrame.Title:SetSize(500, 85)
-	WarboardQuestChoiceFrame.Title.Text:FontTemplate(nil, 22)
+	for i = 1, 4 do
+		local option = WarboardQuestChoiceFrame["Option"..i]
+		for x = 1, #option.OptionButtonsContainer.Buttons do
+			S:HandleButton(option.OptionButtonsContainer.Buttons[x])
+		end
+		option.ArtworkBorder:SetAlpha(0)
+	end
+
+	local WarboardQuestChoiceDelayed = function(self)
+		if not self then return end
+
+		local frame
+		for i = 1, 4 do
+			frame = self["Option"..i]
+			if frame and frame.WidgetContainer then
+				S:SkinWidgetContainer(frame.WidgetContainer)
+			end
+		end
+	end
+
+	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
+		E:Delay(.5, WarboardQuestChoiceDelayed, self);
+	end)
+
+	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_WarboardUI", "Warboard", LoadSkin)

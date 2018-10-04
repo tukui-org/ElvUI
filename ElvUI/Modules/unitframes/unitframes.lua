@@ -70,7 +70,7 @@ UF['classMaxResourceBar'] = {
 	["DRUID"] = 5
 }
 
-UF['mapIDs'] = {
+UF['instanceMapIDs'] = {
 	[30] = 40, -- Alterac Valley
 	[489] = 10, -- Warsong Gulch
 	[529] = 15, -- Arathi Basin
@@ -78,12 +78,16 @@ UF['mapIDs'] = {
 	[607] = 15, -- Strand of the Ancients
 	[628] = 40, -- Isle of Conquest
 	[726] = 10, -- Twin Peaks
-	[727] = 10, -- Silvershard mines
-	[761] = 10, -- The Battle for Gilneas
+	[727] = 10, -- Silvershard Mines [STVDiamondMineBG]
+	[761] = 10, -- The Battle for Gilneas [GilneasBattleground2]
 	[968] = 10, -- Rated Eye of the Storm
 	[998] = 10, -- Temple of Kotmogu
-	[1105] = 15, -- Deepwind Gourge
-	[1280] = 40, -- Southshore vs. Tarren Mill
+	[1105] = 15, -- Deepwind Gourge [GoldRush]
+	[1280] = 40, -- Tarren Mill vs Southshore [HillsbradFoothillsBG]
+	[1681] = 15, -- Arathi Blizzard [ArathiBasinWinter]
+	[1803] = 10, -- Seething Shore [AzeriteBG]
+	--[1715] = 5, -- Battle for Blackrock Mountain
+	--do not have enough information on this one yet, going to store the instanceID for now.
 }
 
 UF['headerGroupBy'] = {
@@ -352,16 +356,16 @@ function UF:UpdateColors()
 	local bad = E:GetColorTable(db.reaction.BAD)
 	local neutral = E:GetColorTable(db.reaction.NEUTRAL)
 
-	ElvUF.colors.tapped = E:GetColorTable(db.tapped);
-	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected);
-	ElvUF.colors.health = E:GetColorTable(db.health);
-	ElvUF.colors.power.MANA = E:GetColorTable(db.power.MANA);
-	ElvUF.colors.power.RAGE = E:GetColorTable(db.power.RAGE);
-	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS);
-	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
-	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
-	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
-	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
+	ElvUF.colors.tapped = E:GetColorTable(db.tapped)
+	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected)
+	ElvUF.colors.health = E:GetColorTable(db.health)
+	ElvUF.colors.power.MANA = E:GetColorTable(db.power.MANA)
+	ElvUF.colors.power.RAGE = E:GetColorTable(db.power.RAGE)
+	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS)
+	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY)
+	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER)
+	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN)
+	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY)
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:GetColorTable(db.power.MAELSTROM)
@@ -374,8 +378,8 @@ function UF:UpdateColors()
 	--Monk, Mage, Paladin and Warlock, Death Knight
 	ElvUF.colors.ClassBars = {}
 	ElvUF.colors.ClassBars.MONK = {}
-	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
-	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE);
+	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN)
+	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE)
 	ElvUF.colors.ClassBars.MONK[1] = E:GetColorTable(db.classResources.MONK[1])
 	ElvUF.colors.ClassBars.MONK[2] = E:GetColorTable(db.classResources.MONK[2])
 	ElvUF.colors.ClassBars.MONK[3] = E:GetColorTable(db.classResources.MONK[3])
@@ -393,12 +397,16 @@ function UF:UpdateColors()
 	ElvUF.colors.reaction[6] = good
 	ElvUF.colors.reaction[7] = good
 	ElvUF.colors.reaction[8] = good
-	ElvUF.colors.smooth = {1, 0, 0,
-	1, 1, 0,
-	unpack(E:GetColorTable(db.health))}
+	ElvUF.colors.smooth = {1, 0, 0,	1, 1, 0, unpack(E:GetColorTable(db.health))}
 
-	ElvUF.colors.castColor = E:GetColorTable(db.castColor);
-	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt);
+	ElvUF.colors.castColor = E:GetColorTable(db.castColor)
+	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt)
+
+	ElvUF.colors.DebuffHighlight = {}
+	ElvUF.colors.DebuffHighlight["Magic"] = E:GetColorTable(db.debuffHighlight.Magic)
+	ElvUF.colors.DebuffHighlight["Curse"] = E:GetColorTable(db.debuffHighlight.Curse)
+	ElvUF.colors.DebuffHighlight["Disease"] = E:GetColorTable(db.debuffHighlight.Disease)
+	ElvUF.colors.DebuffHighlight["Poison"] = E:GetColorTable(db.debuffHighlight.Poison)
 end
 
 function UF:Update_StatusBars()
@@ -525,6 +533,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local UNIT_HEIGHT = db.infoPanel and db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
+	local groupSpacing = db.groupSpacing
 
 	local numGroups = self.numGroups
 	for i=1, numGroups do
@@ -588,13 +597,13 @@ function UF.groupPrototype:Configure_Groups(self)
 				if group then
 					group:Point(point, self, point, 0, height * yMult)
 				end
-				height = height + UNIT_HEIGHT + db.verticalSpacing
+				height = height + UNIT_HEIGHT + db.verticalSpacing + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then
 					group:Point(point, self, point, width * xMult, 0)
 				end
-				width = width + db.width + db.horizontalSpacing
+				width = width + db.width + db.horizontalSpacing + groupSpacing
 
 				newCols = newCols + 1
 			end
@@ -604,34 +613,34 @@ function UF.groupPrototype:Configure_Groups(self)
 					if group then
 						group:Point(point, self, point, width * xMult, 0)
 					end
-					width = width + ((db.width + db.horizontalSpacing) * 5)
+					width = width + ((db.width + db.horizontalSpacing) * 5) + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((UNIT_HEIGHT + db.verticalSpacing) * (newRows - 1)) * yMult)
+					group:Point(point, self, point, ((((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + db.verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
 						group:Point(point, self, point, 0, height * yMult)
 					end
-					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
+					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, ((db.width + db.horizontalSpacing) * (newCols - 1)) * xMult, (((UNIT_HEIGHT + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:Point(point, self, point, (((db.width + db.horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
+			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) +groupSpacing
 		elseif width == 0 then
-			width = width + ((db.width + db.horizontalSpacing) * 5)
+			width = width + ((db.width + db.horizontalSpacing) * 5) +groupSpacing
 		end
 	end
 
 	if not self.isInstanceForced then
-		self.dirtyWidth = width - db.horizontalSpacing
-		self.dirtyHeight = height - db.verticalSpacing
+		self.dirtyWidth = width - db.horizontalSpacing -groupSpacing
+		self.dirtyHeight = height - db.verticalSpacing -groupSpacing
 	end
 
 	if self.mover then
@@ -640,7 +649,7 @@ function UF.groupPrototype:Configure_Groups(self)
 		self:GetScript("OnSizeChanged")(self) --Mover size is not updated if frame is hidden, so call an update manually
 	end
 
-	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
+	self:SetSize(width - db.horizontalSpacing -groupSpacing, height - db.verticalSpacing -groupSpacing)
 end
 
 function UF.groupPrototype:Update(self)
@@ -761,10 +770,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, mapID = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
 
-			if UF.mapIDs[mapID] then
-				maxPlayers = UF.mapIDs[mapID]
+			if UF.instanceMapIDs[instanceMapID] then
+				maxPlayers = UF.instanceMapIDs[instanceMapID]
 			end
 
 			if maxPlayers > 0 then

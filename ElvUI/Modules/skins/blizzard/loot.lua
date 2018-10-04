@@ -127,6 +127,20 @@ local function LoadSkin()
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
+	hooksecurefunc(BonusRollFrame.SpecIcon, "Hide", function(specIcon)
+		if specIcon.b and specIcon.b:IsShown() then
+			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			specIcon.b:Hide()
+		end
+	end)
+	hooksecurefunc(BonusRollFrame.SpecIcon, "Show", function(specIcon)
+		if specIcon.b and not specIcon.b:IsShown() and specIcon:GetTexture() ~= nil then
+			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
+			BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			specIcon.b:Show()
+		end
+	end)
 
 	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
 		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
@@ -181,9 +195,17 @@ local function LoadSkin()
 	for i=1, LOOTFRAME_NUMBUTTONS do
 		local button = _G["LootButton"..i]
 		_G["LootButton"..i.."NameFrame"]:Hide()
+		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
 		S:HandleItemButton(button, true)
 
-		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
+		button.IconBorder:SetTexture(nil)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(button.IconBorder, 'Hide', function(self)
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		local point, attachTo, point2, x, y = button:GetPoint()
 		button:ClearAllPoints()

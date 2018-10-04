@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='player.lua'/>
 	<Script file='target.lua'/>
 	<Script file='targettarget.lua'/>

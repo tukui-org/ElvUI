@@ -8,20 +8,23 @@ local sort, wipe = table.sort, wipe
 local floor = math.floor
 local format = string.format
 --WoW API / Variables
-local GetNumAddOns = GetNumAddOns
-local GetAddOnInfo = GetAddOnInfo
-local IsAddOnLoaded = IsAddOnLoaded
-local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
-local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
-local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAddOnCPUUsage = GetAddOnCPUUsage
-local ResetCPUUsage = ResetCPUUsage
-local GetCVar = GetCVar
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAvailableBandwidth = GetAvailableBandwidth
-local GetNetStats = GetNetStats
+local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
 local GetDownloadedPercentage = GetDownloadedPercentage
-local IsShiftKeyDown = IsShiftKeyDown
 local GetFramerate = GetFramerate
+local GetNetIpTypes = GetNetIpTypes
+local GetNetStats = GetNetStats
+local GetNumAddOns = GetNumAddOns
+local IsAddOnLoaded = IsAddOnLoaded
+local IsShiftKeyDown = IsShiftKeyDown
+local ResetCPUUsage = ResetCPUUsage
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
+local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
+local UNKNOWN = UNKNOWN
 
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5
@@ -54,7 +57,7 @@ end
 
 local function sortByMemoryOrCPU(a, b)
 	if a and b then
-		return a[3] > b[3]
+		return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
 	end
 end
 
@@ -68,8 +71,8 @@ local function RebuildAddonList()
 	wipe(memoryTable)
 	wipe(cpuTable)
 	for i = 1, addOnCount do
-		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
-		cpuTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
+		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
+		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
 	end
 end
 
@@ -109,9 +112,12 @@ local function Click()
 	ResetCPUUsage();
 end
 
+local ipTypes = {"IPv4", "IPv6"}
+local ipTypeHome, ipTypeWorld
+local cpuProfiling
 local function OnEnter(self)
 	enteredFrame = true;
-	local cpuProfiling = GetCVar("scriptProfile") == "1"
+	cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
 	UpdateMemory()
@@ -119,27 +125,34 @@ local function OnEnter(self)
 
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
+	if GetCVarBool("useIPv6") then
+		ipTypeHome, ipTypeWorld = GetNetIpTypes();
+		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	end
+
 	if bandwidth ~= 0 then
 		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		DT.tooltip:AddLine(" ")
 	end
 
-	local totalCPU = nil
+	local totalCPU
 	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 
-	local red, green
+	local red, green, ele
 	if IsShiftKeyDown() or not cpuProfiling then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
-			if (memoryTable[i][4]) then
-				red = memoryTable[i][3] / totalMemory
+			ele = memoryTable[i]
+			if ele and IsAddOnLoaded(ele[1]) then
+				red = ele[3] / totalMemory
 				green = 1 - red
-				DT.tooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(ele[2], formatMem(ele[3]), 1, 1, 1, red, green + .5, 0)
 			end
 		end
 	end
@@ -147,10 +160,11 @@ local function OnEnter(self)
 	if cpuProfiling and not IsShiftKeyDown() then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
-			if (cpuTable[i][4]) then
-				red = cpuTable[i][3] / totalCPU
+			ele = cpuTable[i]
+			if ele and IsAddOnLoaded(ele[1]) then
+				red = ele[3] / totalCPU
 				green = 1 - red
-				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(ele[2], format(homeLatencyString, ele[3]), 1, 1, 1, red, green + .5, 0)
 			end
 		end
 		DT.tooltip:AddLine(" ")

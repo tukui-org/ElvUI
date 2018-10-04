@@ -4,24 +4,19 @@ E.WorldMap = M
 
 --Cache global variables
 --Lua functions
+local _G = _G
+local pairs = pairs
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
-local GetPlayerMapPosition = GetPlayerMapPosition
-local InCombatLockdown = InCombatLockdown
 local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
+local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
-local MOUSE_LABEL = MOUSE_LABEL
-local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
-local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
--- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, WORLD_MAP_MIN_ALPHA
--- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
--- GLOBALS: WorldMapTooltip, WorldMapCompareTooltip1, WorldMapCompareTooltip2
+-- GLOBALS: UIParent, WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -32,16 +27,20 @@ local INVERTED_POINTS = {
 	["BOTTOM"] = "TOP",
 }
 
-function M:SetLargeWorldMap()
-	if InCombatLockdown() then return end
+local tooltips = {
+	WorldMapTooltip,
+	WorldMapCompareTooltip1,
+	WorldMapCompareTooltip2,
+	WorldMapCompareTooltip3
+}
 
+-- this will be updated later
+local smallerMapScale = 0.8
+
+function M:SetLargeWorldMap()
 	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:EnableKeyboard(false)
 	WorldMapFrame:SetScale(1)
-	WorldMapFrame:EnableMouse(true)
-	WorldMapTooltip:SetFrameStrata("TOOLTIP")
-	WorldMapCompareTooltip1:SetFrameStrata("TOOLTIP")
-	WorldMapCompareTooltip2:SetFrameStrata("TOOLTIP")
+	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -51,64 +50,78 @@ function M:SetLargeWorldMap()
 		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
 
-	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
-	WorldMapFrame:SetSize(1002, 668)
+	WorldMapFrame:OnFrameSizeChanged()
+	if WorldMapFrame:GetMapID() then
+		WorldMapFrame.NavBar:Refresh()
+	end
+
+	for _, tt in pairs(tooltips) do
+		if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
+	end
+end
+
+function M:UpdateMaximizedSize()
+	local width, height = WorldMapFrame:GetSize()
+	local magicNumber = (1 - smallerMapScale) * 100
+	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
+end
+
+function M:SynchronizeDisplayState()
+	if WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point("CENTER", E.UIParent)
+	end
 end
 
 function M:SetSmallWorldMap()
-	if InCombatLockdown() then return; end
-end
-
-function M:PLAYER_REGEN_ENABLED()
-
-end
-
-function M:PLAYER_REGEN_DISABLED()
-
+	if not WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point("TOPLEFT", UIParent, "TOPLEFT", 16, -94)
+	end
 end
 
 local inRestrictedArea = false
-function M:PLAYER_ENTERING_WORLD()
-	local x = GetPlayerMapPosition("player")
-	if not x then
-		inRestrictedArea = true
-		self:CancelTimer(self.CoordsTimer)
-		self.CoordsTimer = nil
-		CoordsHolder.playerCoords:SetText("")
-		CoordsHolder.mouseCoords:SetText("")
-	elseif not self.CoordsTimer then
+function M:UpdateRestrictedArea()
+	E:MapInfo_Update()
+
+	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+	else
+		inRestrictedArea = true
+		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
 	end
 end
 
-function M:UpdateCoords()
-	if (not WorldMapFrame:IsShown() or inRestrictedArea) then return end
-	local x, y = GetPlayerMapPosition("player")
-	x = x and E:Round(100 * x, 2) or 0
-	y = y and E:Round(100 * y, 2) or 0
+function M:UpdateCoords(OnShow)
+	if not WorldMapFrame:IsShown() then return end
 
-	if x ~= 0 and y ~= 0 then
-		CoordsHolder.playerCoords:SetText(PLAYER..":   "..x..", "..y)
-	else
-		CoordsHolder.playerCoords:SetText("")
-	end
+	if WorldMapFrame.ScrollContainer:IsMouseOver() then
+		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
+		local width = WorldMapFrame.ScrollContainer:GetWidth()
+		local height = WorldMapFrame.ScrollContainer:GetHeight()
+		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
+		local x, y = GetCursorPosition()
 
-	local scale = WorldMapDetailFrame:GetEffectiveScale()
-	local width = WorldMapDetailFrame:GetWidth()
-	local height = WorldMapDetailFrame:GetHeight()
-	local centerX, centerY = WorldMapDetailFrame:GetCenter()
-	x, y = GetCursorPosition()
-	local adjustedX = (x / scale - (centerX - (width/2))) / width
-	local adjustedY = (centerY + (height/2) - y / scale) / height
+		local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
+		local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
 
-	if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-		adjustedX = E:Round(100 * adjustedX, 2)
-		adjustedY = E:Round(100 * adjustedY, 2)
-		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
+		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+			adjustedX = E:Round(100 * adjustedX, 2)
+			adjustedY = E:Round(100 * adjustedY, 2)
+			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
+		else
+			CoordsHolder.mouseCoords:SetText("")
+		end
 	else
 		CoordsHolder.mouseCoords:SetText("")
+	end
+
+	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then
+		if E.MapInfo.x and E.MapInfo.y then
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+		else
+			CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
+		end
 	end
 end
 
@@ -123,16 +136,16 @@ function M:PositionCoords()
 	if find(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:Point(position, WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:Initialize()
-	if(E.global.general.WorldMapCoordinates.enable) then
+	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
-		CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
-		CoordsHolder:SetFrameStrata(WorldMapDetailFrame:GetFrameStrata())
+		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 2)
+		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
@@ -142,31 +155,57 @@ function M:Initialize()
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
-		self.CoordsTimer = self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+		WorldMapFrame:HookScript("OnShow", function()
+			if not M.CoordsTimer then
+				M:UpdateCoords(true)
+				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
+			end
+		end)
+		WorldMapFrame:HookScript("OnHide", function()
+			M:CancelTimer(M.CoordsTimer)
+			M.CoordsTimer = nil
+		end)
+
 		M:PositionCoords()
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
+		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
 	end
 
-	if(E.global.general.smallerWorldMap) then
-		BlackoutWorld:SetTexture(nil)
-		self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')
-		self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		self:RegisterEvent('PLAYER_REGEN_DISABLED')
+	if E.global.general.smallerWorldMap then
+		smallerMapScale = E.global.general.smallerWorldMapScale
 
-		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-			self:SetLargeWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-			self:SetSmallWorldMap()
-		end
+		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
+		WorldMapFrame.BlackoutFrame:EnableMouse(false)
+
+		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
+		self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
+		self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
+		self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
+
+		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
+			if WorldMapFrame:IsMaximized() then
+				self:SetLargeWorldMap()
+			else
+				self:SetSmallWorldMap()
+			end
+
+			M:Unhook(WorldMapFrame, 'OnShow', nil)
+		end)
 	end
 
 	--Set alpha used when moving
 	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
 	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
+
 	--Enable/Disable map fading when moving
 	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
+
+	if WorldMapFrame.UIElementsFrame and WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown then
+		WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown.CooldownFontSize = 20
+		E:RegisterCooldown(WorldMapFrame.UIElementsFrame.ActionButton.SpellButton.Cooldown)
+	end
 end
 
 local function InitializeCallback()

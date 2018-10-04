@@ -3,13 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select = select
 local format, join = string.format, string.join
 --WoW API / Variables
-local L_EasyMenu = L_EasyMenu
-local GetActiveSpecGroup = GetActiveSpecGroup
+local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
-local GetNumSpecGroups = GetNumSpecGroups
+local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -29,7 +27,7 @@ local lastPanel, active
 local displayString = '';
 local activeString = join("", "|cff00FF00" , ACTIVE_PETS, "|r")
 local inactiveString = join("", "|cffFF0000", FACTION_INACTIVE, "|r")
-local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "L_UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
 	{ notCheckable = true, func = function() SetLootSpecialization(0) end },
@@ -55,27 +53,18 @@ local function OnEvent(self)
 		return
 	end
 
-	active = GetActiveSpecGroup()
+	active = specIndex
 
-	local talent, loot = '', 'N/A'
-	local i = GetSpecialization(false, false, active)
-	if i then
-		i = select(4, GetSpecializationInfo(i))
-		if(i) then
-			talent = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', i)
-		end
+	local spec, loot, text = '', 'N/A', LOOT
+	local specialization = GetLootSpecialization()
+
+	local _, _, _, specTex = GetSpecializationInfo(specIndex)
+	if specTex then
+		spec = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', specTex)
 	end
 
-	local specialization = GetLootSpecialization()
 	if specialization == 0 then
-		local specIndex = GetSpecialization();
-
-		if specIndex then
-			local _, _, _, texture = GetSpecializationInfo(specIndex);
-			if texture then
-				loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
-			end
-		end
+		loot, text = spec, '|cFF54FF00'..text..'|r'
 	else
 		local _, _, _, texture = GetSpecializationInfoByID(specialization);
 		if texture then
@@ -83,23 +72,24 @@ local function OnEvent(self)
 		end
 	end
 
-	self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], talent, LOOT, loot)
+	self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, text, loot)
 end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	for i = 1, GetNumSpecGroups() do
-		if GetSpecialization(false, false, i) then
-			DT.tooltip:AddLine(join(" ", format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
+	for i = 1, GetNumSpecializations() do
+		local _, name = GetSpecializationInfo(i);
+		if name then
+			DT.tooltip:AddLine(join(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 
 	DT.tooltip:AddLine(' ')
+
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
-		local specIndex = GetSpecialization();
-
+		local specIndex = GetSpecialization()
 		if specIndex then
 			local _, name = GetSpecializationInfo(specIndex);
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
@@ -144,7 +134,7 @@ local function OnClick(self, button)
 					specList[index + 1] = nil
 				end
 			end
-			L_EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
 		end
 	else
 		DT.tooltip:Hide()
@@ -161,7 +151,7 @@ local function OnClick(self, button)
 			end
 		end
 
-		L_EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
 	end
 end
 

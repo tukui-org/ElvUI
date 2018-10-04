@@ -4,11 +4,11 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local time = time
-local select = select
 local max = math.max
 local join = string.join
 --WoW API / Variables
 local UnitGUID = UnitGUID
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
 local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 local playerID, petID
@@ -29,14 +29,14 @@ end
 local function GetDPS(self)
 	local DPS
 	if DMGTotal == 0 or combatTime == 0 then
-		DPS = "0.0"
+		DPS = 0
 	else
-		DPS = (DMGTotal) / (combatTime)
+		DPS = DMGTotal / combatTime
 	end
 	self.text:SetFormattedText(displayString, L["DPS"], E:ShortValue(DPS))
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	lastPanel = self
 
 	if event == "PLAYER_ENTERING_WORLD" then
@@ -48,22 +48,22 @@ local function OnEvent(self, event, ...)
 		end
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-		if not events[select(2, ...)] then return end
+		local timestamp, Event, _, sourceGUID, _, _, _, _, _, _, _, arg12, _, _, arg15, arg16 = CombatLogGetCurrentEventInfo()
+		if not events[Event] then return end
 
 		-- only use events from the player
-		local id = select(4, ...)
 		local overKill
 
-		if id == playerID or id == petID then
-			if timeStamp == 0 then timeStamp = select(1, ...) end
+		if sourceGUID == playerID or sourceGUID == petID then
+			if timeStamp == 0 then timeStamp = timestamp end
 			lastSegment = timeStamp
-			combatTime = select(1, ...) - timeStamp
-			if select(2, ...) == "SWING_DAMAGE" then
-				lastDMGAmount = select(12, ...)
+			combatTime = timestamp - timeStamp
+			if Event == "SWING_DAMAGE" then
+				lastDMGAmount = arg12
 			else
-				lastDMGAmount = select(15, ...)
+				lastDMGAmount = arg15
 			end
-			if select(16, ...) == nil then overKill = 0 else overKill = select(16, ...) end
+			if arg16 == nil then overKill = 0 else overKill = arg16 end
 			DMGTotal = DMGTotal +  max(0, lastDMGAmount - overKill)
 		end
 	elseif event == "UNIT_PET" then

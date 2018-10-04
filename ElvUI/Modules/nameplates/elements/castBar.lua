@@ -82,7 +82,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, _, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
+		local name, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -113,7 +113,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( not frame.CastBar:IsVisible() ) then
 			frame.CastBar:Hide();
 		end
-		if ( (frame.CastBar.casting and event == "UNIT_SPELLCAST_STOP" and select(4, ...) == frame.CastBar.castID) or
+		if ( (frame.CastBar.casting and event == "UNIT_SPELLCAST_STOP" and select(2, ...) == frame.CastBar.castID) or
 		     (frame.CastBar.channeling and event == "UNIT_SPELLCAST_CHANNEL_STOP") ) then
 			if ( frame.CastBar.Spark ) then
 				frame.CastBar.Spark:Hide();
@@ -129,7 +129,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar:Hide()
 		end
 	elseif ( event == "UNIT_SPELLCAST_FAILED" or event == "UNIT_SPELLCAST_INTERRUPTED" ) then
-		if ( frame.CastBar:IsShown() and (frame.CastBar.casting and select(4, ...) == frame.CastBar.castID) ) then
+		if ( frame.CastBar:IsShown() and (frame.CastBar.casting and select(2, ...) == frame.CastBar.castID) ) then
 			frame.CastBar:SetValue(frame.CastBar.maxValue);
 			if ( frame.CastBar.Spark ) then
 				frame.CastBar.Spark:Hide();
@@ -147,7 +147,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
-			local name, _, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
+			local name, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
 			if ( not name ) then
 				-- if there is no name, there is no bar
 				frame.CastBar:Hide();
@@ -169,7 +169,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			end
 		end
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
-		local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
+		local name, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -195,7 +195,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar:Show();
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_UPDATE" ) then
 		if ( frame.CastBar:IsShown() ) then
-			local name, _, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
+			local name, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 			if ( not name ) then
 				frame.CastBar:Hide();
 				return;
@@ -290,25 +290,9 @@ function mod:ConfigureElement_CastBar(frame)
 end
 
 function mod:ConstructElement_CastBar(parent)
-	local function updateGlowPosition(castBar)
-		if not parent.Glow2 then return end
-		local scale = 1;
-		if mod.db.useTargetScale then
-			if mod.db.targetScale >= 0.75 then
-				scale = mod.db.targetScale
-			else
-				scale = 0.75
-			end
-		end
-		local powerBar = parent.PowerBar:IsShown() and parent.PowerBar;
-		local size = E.Border*(10+(powerBar and 3 or 0))*scale;
-		if castBar:IsShown() then
-			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(2+size*2), E:Scale(2+size))
-			parent.Glow2:SetPoint("BOTTOMRIGHT", castBar, "BOTTOMRIGHT", E:Scale(4+size*2), -E:Scale(4+size))
-		else
-			parent.Glow2:SetPoint("TOPLEFT", parent.HealthBar, "TOPLEFT", -E:Scale(size*2), E:Scale(size))
-			parent.Glow2:SetPoint("BOTTOMRIGHT", powerBar or parent.HealthBar, "BOTTOMRIGHT", E:Scale(size*2), -E:Scale(size))
-		end
+	local function updateGlowPosition()
+		if not parent then return end
+		mod:UpdatePosition_Glow(parent)
 	end
 
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)

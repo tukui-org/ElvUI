@@ -233,7 +233,7 @@ function lib:Register(mediatype, key, data, langmask)
 	if not mediaTable[mediatype] then mediaTable[mediatype] = {} end
 	local mtable = mediaTable[mediatype]
 	if mtable[key] then return false end
-	
+
 	mtable[key] = data
 	rebuildMediaList(mediatype)
 	self.callbacks:Fire("LibSharedMedia_Registered", mediatype, key)

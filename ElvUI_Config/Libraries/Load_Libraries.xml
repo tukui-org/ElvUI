@@ -1,1 +1,1 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">			<Include file="AceGUI-3.0\AceGUI-3.0.xml"/>	<Include file="AceConfig-3.0\AceConfig-3.0.xml"/>	<Include file="AceDBOptions-3.0\AceDBOptions-3.0.xml"/>	<Include file="AceGUI-3.0-SharedMediaWidgets\widget.xml"/></Ui>
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	<Include file="AceGUI-3.0\AceGUI-3.0.xml"/>	<Include file="AceConfig-3.0\AceConfig-3.0.xml"/>	<Include file="AceDBOptions-3.0\AceDBOptions-3.0.xml"/>	<Include file="AceGUI-3.0-SharedMediaWidgets\widget.xml"/></Ui>

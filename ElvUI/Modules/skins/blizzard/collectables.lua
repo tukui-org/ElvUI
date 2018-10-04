@@ -199,21 +199,23 @@ local function LoadSkin()
 	PetJournalPetCardPetInfo.backdrop:SetOutside(PetJournalPetCardPetInfoIcon)
 	PetJournalPetCardPetInfoIcon:SetParent(PetJournalPetCardPetInfo.backdrop)
 
-	local tt = PetJournalPrimaryAbilityTooltip
-	tt.Background:SetTexture(nil)
-	if tt.Delimiter1 then
-		tt.Delimiter1:SetTexture(nil)
-		tt.Delimiter2:SetTexture(nil)
+	if E.private.skins.blizzard.tooltip then
+		local tt = PetJournalPrimaryAbilityTooltip
+		tt.Background:SetTexture(nil)
+		if tt.Delimiter1 then
+			tt.Delimiter1:SetTexture(nil)
+			tt.Delimiter2:SetTexture(nil)
+		end
+		tt.BorderTop:SetTexture(nil)
+		tt.BorderTopLeft:SetTexture(nil)
+		tt.BorderTopRight:SetTexture(nil)
+		tt.BorderLeft:SetTexture(nil)
+		tt.BorderRight:SetTexture(nil)
+		tt.BorderBottom:SetTexture(nil)
+		tt.BorderBottomRight:SetTexture(nil)
+		tt.BorderBottomLeft:SetTexture(nil)
+		tt:SetTemplate("Transparent")
 	end
-	tt.BorderTop:SetTexture(nil)
-	tt.BorderTopLeft:SetTexture(nil)
-	tt.BorderTopRight:SetTexture(nil)
-	tt.BorderLeft:SetTexture(nil)
-	tt.BorderRight:SetTexture(nil)
-	tt.BorderBottom:SetTexture(nil)
-	tt.BorderBottomRight:SetTexture(nil)
-	tt.BorderBottomLeft:SetTexture(nil)
-	tt:SetTemplate("Transparent")
 
 	for i=1, 6 do
 		local frame = _G['PetJournalPetCardSpell'..i]
@@ -242,7 +244,15 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
 	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
-	ToyBox.progressBar:StripTextures()
+	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
+
+	local progressBar = ToyBox.progressBar
+	progressBar.border:Hide()
+	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:CreateBackdrop("Default")
+	E:RegisterStatusBar(progressBar)
+
 
 	local function TextColorModified(self, r, g, b)
 		if(r == 0.33 and g == 0.27 and b == 0.2) then
@@ -267,7 +277,6 @@ local function LoadSkin()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
 	HeirloomsJournalFilterButton:Point("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
@@ -276,8 +285,15 @@ local function LoadSkin()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
 	SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
-	HeirloomsJournal.progressBar:StripTextures()
 	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
+	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
+
+	local progressBar = HeirloomsJournal.progressBar
+	progressBar.border:Hide()
+	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:CreateBackdrop("Default")
+	E:RegisterStatusBar(progressBar)
 
 	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
 		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
@@ -366,6 +382,7 @@ local function LoadSkin()
 	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
 	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
 	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
+	S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	--Skin set buttons
 	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do

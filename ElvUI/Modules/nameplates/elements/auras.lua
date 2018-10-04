@@ -14,7 +14,6 @@ local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
-local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
 
 local auraCache = {}
 
@@ -24,12 +23,8 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 	aura.spellID = spellID
 	aura.expirationTime = expirationTime
 	if ( count > 1 ) then
-		local countText = count;
-		if ( count >= 10 ) then
-			countText = BUFF_STACKS_OVERFLOW;
-		end
 		aura.count:Show();
-		aura.count:SetText(countText);
+		aura.count:SetText(count);
 	else
 		aura.count:Hide();
 	end
@@ -101,6 +96,8 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 				return true
 			elseif filterName == 'Dispellable' and canDispell and allowDuration then
 				return true
+			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
+				return true
 			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
 				return true
 			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
@@ -111,12 +108,16 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 				return false
 			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
 				return false
+			elseif filterName == 'blockDispellable' and canDispell then
+				return false
+			elseif filterName == 'blockNotDispellable' and (not canDispell) then
+				return false
 			end
 		end
 	end
 end
 
-function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, _, texture, count, dispelType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDuration, priority, name, texture, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
 	local isFriend, filterCheck, isUnit, isPlayer, canDispell, allowDuration, noDuration = false
 
@@ -127,7 +128,7 @@ function mod:AuraFilter(frame, frameNum, index, buffType, minDuration, maxDurati
 		isFriend = frame.unit and UnitIsFriend('player', frame.unit) and not UnitCanAttack('player', frame.unit)
 		isPlayer = (caster == 'player' or caster == 'vehicle')
 		isUnit = frame.unit and caster and UnitIsUnit(frame.unit, caster)
-		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and dispelType and E:IsDispellableByMe(dispelType))
+		canDispell = (buffType == 'Buffs' and isStealable) or (buffType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck = mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
@@ -206,19 +207,28 @@ function mod:UpdateElement_Auras(frame)
 	end
 end
 
-local function cooldownFontOverride(cd)
-	if cd.timer and cd.timer.text then
-		cd.timer.text:SetFont(LSM:Fetch("font", mod.db.durationFont), mod.db.durationFontSize, mod.db.durationFontOutline)
-
-		cd.timer.text:ClearAllPoints()
+function mod:UpdateCooldownTextPosition()
+	if self and self.timer and self.timer.text then
+		self.timer.text:ClearAllPoints()
 		if mod.db.durationPosition == "TOPLEFT" then
-			cd.timer.text:Point("TOPLEFT", 1, 1)
+			self.timer.text:Point("TOPLEFT", 1, 1)
 		elseif mod.db.durationPosition == "BOTTOMLEFT" then
-			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
+			self.timer.text:Point("BOTTOMLEFT", 1, 1)
 		elseif mod.db.durationPosition == "TOPRIGHT" then
-			cd.timer.text:Point("TOPRIGHT", 1, 1)
+			self.timer.text:Point("TOPRIGHT", 1, 1)
 		else
-			cd.timer.text:Point("CENTER", 0, 0)
+			self.timer.text:Point("CENTER", 0, 0)
+		end
+	end
+end
+
+function mod:UpdateCooldownSettings(cd)
+	if cd and cd.CooldownSettings then
+		cd.CooldownSettings.font = LSM:Fetch("font", self.db.font)
+		cd.CooldownSettings.fontSize = self.db.fontSize
+		cd.CooldownSettings.fontOutline = self.db.fontOutline
+		if cd.timer then
+			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
 		end
 	end
 end
@@ -234,8 +244,16 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown = CreateFrame("Cooldown", nil, aura, "CooldownFrameTemplate")
 	aura.cooldown:SetAllPoints(aura)
 	aura.cooldown:SetReverse(true)
-	aura.cooldown.SizeOverride = 10
-	aura.cooldown.FontOverride = cooldownFontOverride
+
+	aura.cooldown.CooldownFontSize = 12
+	aura.cooldown.CooldownOverride = 'nameplates'
+	aura.cooldown.CooldownPreHook = self.UpdateCooldownTextPosition
+	aura.cooldown.CooldownSettings = {
+		['font'] = LSM:Fetch("font", self.db.font),
+		['fontSize'] = self.db.fontSize,
+		['fontOutline'] = self.db.fontOutline,
+	}
+
 	E:RegisterCooldown(aura.cooldown)
 
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
@@ -248,7 +266,7 @@ end
 function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
 	for i=1, numAuras do
-		self.icons[i]:SetWidth(((width - (mod.mult*numAuras)) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+		self.icons[i]:SetWidth(self.db.widthOverride > 0 and self.db.widthOverride or (((width - (mod.mult*numAuras)) / numAuras) - (E.private.general.pixelPerfect and 0 or 3)))
 		self.icons[i]:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
 	end
 	self:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
@@ -276,11 +294,14 @@ function mod:UpdateAuraIcons(auras)
 		auras.icons[i]:Hide()
 		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
 
-		-- update stacks and cooldown font on NAME_PLATE_UNIT_ADDED
+		-- update stacks font on NAME_PLATE_UNIT_ADDED
 		if auras.icons[i].count then
 			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
 		end
-		cooldownFontOverride(auras.icons[i].cooldown)
+
+		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED
+		self:UpdateCooldownSettings(auras.icons[i].cooldown)
+		self.UpdateCooldownTextPosition(auras.icons[i].cooldown)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then

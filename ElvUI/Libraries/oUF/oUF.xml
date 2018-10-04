@@ -7,7 +7,6 @@
 	<Script file="blizzard.lua"/>
 	<Script file="units.lua"/>
 	<Script file="colors.lua"/>
-	<Script file="finalize.lua"/>
 
 	<Script file="elements\power.lua"/>
 	<Script file="elements\auras.lua"/>
@@ -22,7 +21,6 @@
 	<Script file="elements\castbar.lua"/>
 	<Script file="elements\threatindicator.lua"/>
 	<Script file="elements\tags.lua"/>
-	<Script file="elements\masterlooterindicator.lua"/>
 	<Script file="elements\assistantindicator.lua"/>
 	<Script file="elements\runes.lua"/>
 	<Script file="elements\grouproleindicator.lua"/>
@@ -39,22 +37,17 @@
 	<Script file="elements\stagger.lua"/>
 	<Script file="elements\raidroleindicator.lua"/>
 
+	<Script file="finalize.lua"/>
+
 	<!-- Clique support -->
-	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate, SecureHandlerEnterLeaveTemplate">
+	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate">
 		<Attributes>
 			<Attribute name="_onenter" type="string" value="local snippet = self:GetAttribute('clickcast_onenter'); if snippet then self:Run(snippet) end"/>
 			<Attribute name="_onleave" type="string" value="local snippet = self:GetAttribute('clickcast_onleave'); if snippet then self:Run(snippet) end"/>
+			<Attribute name="refreshUnitChange" type="string" value="local unit = self:GetAttribute('unit'); if unit then RegisterStateDriver(self, 'vehicleui', ('[@%s,unithasvehicleui]vehicle; novehicle'):format(unit)) else UnregisterStateDriver(self, 'vehicleui') end"/>
+			<Attribute name="_onstate-vehicleui" type="string" value="local unit = self:GetAttribute('unit'); if unit and newstate == 'vehicle' and UnitPlayerOrPetInRaid(unit) and not UnitTargetsVehicleInRaidUI(unit) then self:SetAttribute('toggleForVehicle', false) else self:SetAttribute('toggleForVehicle', true) end"/>
 		</Attributes>
 	</Button>
-
-	<!-- Pet Battle Hider Frame -->
-	<Frame name="oUF_PetBattleFrameHider" frameStrata="LOW" inherits="SecureHandlerStateTemplate" parent="UIParent" setAllPoints="true">
-		<Scripts>
-			<OnLoad>
-				RegisterStateDriver(self, "visibility", "[petbattle] hide; show")
-			</OnLoad>
-		</Scripts>
-	</Frame>
 
 	<!--
 		Sub-object as a child of the parent unit frame:

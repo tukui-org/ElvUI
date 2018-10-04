@@ -13,7 +13,7 @@ local function Round(number, decimalPlaces)
 		local mult = 10^decimalPlaces
 		return floor(number * mult + .5) / mult
 	end
-	return floor(num + .5)
+	return floor(number + .5)
 end
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
@@ -30,7 +30,9 @@ local function FormatTime(s)
 end
 
 local function UpdateTooltip(self)
-	GameTooltip:SetUnitAura(self.__unit, self:GetParent().aura.name, self:GetParent().aura.rank, self:GetParent().aura.filter)
+	if self:GetParent().aura.index then
+		GameTooltip:SetUnitAura(self.__unit, self:GetParent().aura.index, self:GetParent().aura.filter)
+	end
 end
 
 local function OnEnter(self)
@@ -177,7 +179,7 @@ local function UpdateBars(auraBars)
 	end
 end
 
-local function DefaultFilter(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+local function DefaultFilter(self, unit, name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
 	if unitCaster == 'player' and not shouldConsolidate then
 		return true
 	end
@@ -212,13 +214,12 @@ local function Update(self, event, unit)
 	if(auraBars.forceShow) then
 		for index = 1, auraBars.maxBars do
 			local spellID = 47540
-			local name, rank, icon = GetSpellInfo(spellID)
+			local name, _, icon = GetSpellInfo(spellID)
 			local count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, canApplyAura, isBossDebuff = 5, 'Magic', 0, 0, 'player', nil, nil, nil, nil
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
 			auras[lastAuraIndex].spellID = spellID
 			auras[lastAuraIndex].name = name
-			auras[lastAuraIndex].rank = rank
 			auras[lastAuraIndex].icon = icon
 			auras[lastAuraIndex].count = count
 			auras[lastAuraIndex].debuffType = debuffType
@@ -232,15 +233,15 @@ local function Update(self, event, unit)
 		end
 	else
 		for index = 1, 40 do
-			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer = UnitAura(unit, index, helpOrHarm)
+			local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer = UnitAura(unit, index, helpOrHarm)
 			if not name then break end
 
-			if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer) then
+			if (auraBars.filter or DefaultFilter)(self, unit, name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApply, isBossDebuff, casterIsPlayer) then
 				lastAuraIndex = lastAuraIndex + 1
 				auras[lastAuraIndex] = {}
+				auras[lastAuraIndex].index = index
 				auras[lastAuraIndex].spellID = spellID
 				auras[lastAuraIndex].name = name
-				auras[lastAuraIndex].rank = rank
 				auras[lastAuraIndex].icon = icon
 				auras[lastAuraIndex].count = count
 				auras[lastAuraIndex].debuffType = debuffType

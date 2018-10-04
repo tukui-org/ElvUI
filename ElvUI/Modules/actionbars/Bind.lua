@@ -9,7 +9,6 @@ local floor = math.floor
 local format = string.format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local EnumerateFrames = EnumerateFrames
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
@@ -85,6 +84,9 @@ function AB:BindListener(key)
 		return;
 	end
 
+	--Check if this button can open a flyout menu
+	local isFlyout = (bind.button.FlyoutArrow and bind.button.FlyoutArrow:IsShown())
+
 	if key == "LSHIFT"
 	or key == "RSHIFT"
 	or key == "LCTRL"
@@ -92,8 +94,13 @@ function AB:BindListener(key)
 	or key == "LALT"
 	or key == "RALT"
 	or key == "UNKNOWN"
-	or key == "LeftButton"
+	or (key == "LeftButton" and not isFlyout)
 	then return; end
+
+	--Redirect LeftButton click to open flyout
+	if key == "LeftButton" and isFlyout then
+		SecureActionButton_OnClick(bind.button)
+	end
 
 	if key == "MiddleButton" then key = "BUTTON3"; end
 	if key:find('Button%d') then
@@ -103,15 +110,22 @@ function AB:BindListener(key)
 	local alt = IsAltKeyDown() and "ALT-" or "";
 	local ctrl = IsControlKeyDown() and "CTRL-" or "";
 	local shift = IsShiftKeyDown() and "SHIFT-" or "";
+	local allowBinding = (not isFlyout or (isFlyout and key ~= "LeftButton")) --Don't attempt to bind left mouse button for flyout buttons
 
 	if not bind.spellmacro or bind.spellmacro == "PET" or bind.spellmacro == "STANCE" or bind.spellmacro == "FLYOUT" then
-		SetBinding(alt..ctrl..shift..key, bind.button.bindstring);
+		if allowBinding then
+			SetBinding(alt..ctrl..shift..key, bind.button.bindstring);
+		end
 	else
-		SetBinding(alt..ctrl..shift..key, bind.spellmacro.." "..bind.button.name);
+		if allowBinding then
+			SetBinding(alt..ctrl..shift..key, bind.spellmacro.." "..bind.button.name);
+		end
 	end
-	E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.button.name..".");
+	if allowBinding then
+		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.button.name..".");
+	end
 	self:BindUpdate(bind.button, bind.spellmacro);
-	if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then
+	if bind.spellmacro~="MACRO" and bind.spellmacro~="FLYOUT" and not GameTooltip:IsForbidden() then
 		GameTooltip:Hide();
 	end
 end
@@ -128,35 +142,24 @@ function AB:BindUpdate(button, spellmacro)
 
 	ShoppingTooltip1:Hide();
 
-	local flyoutArrow = button.FlyoutArrow
-	if flyoutArrow and flyoutArrow:IsShown() then
-		bind:EnableMouse(false)
-	elseif not bind:IsMouseEnabled() then
-		bind:EnableMouse(true)
-	end
-
 	if spellmacro == "FLYOUT" then
 		bind.button.name = GetSpellInfo(button.spellID);
 		bind.button.bindstring = "SPELL "..bind.button.name
 
-		GameTooltip:AddLine(L["Trigger"]);
-		GameTooltip:Show();
-		GameTooltip:SetScript("OnHide", function(tt)
-			tt:SetOwner(bind, "ANCHOR_TOP");
-			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1);
-			tt:AddLine(bind.button.name, 1, 1, 1);
-			bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
+		GameTooltip:SetOwner(bind, "ANCHOR_TOP");
+		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
+		bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
 			if #bind.button.bindings == 0 then
-				tt:AddLine(L["No bindings set."], .6, .6, .6);
+				GameTooltip:AddLine(L["No bindings set."], .6, .6, .6);
 			else
-				tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6);
+				GameTooltip:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6);
 				for i = 1, #bind.button.bindings do
-					tt:AddDoubleLine(i, bind.button.bindings[i]);
+					GameTooltip:AddDoubleLine(i, bind.button.bindings[i]);
 				end
 			end
-			tt:Show();
-			tt:SetScript("OnHide", nil);
-		end);
+		GameTooltip:Show();
+
 	elseif spellmacro == "SPELL" then
 		bind.button.id = SpellBook_GetSpellBookSlot(bind.button);
 		bind.button.name = GetSpellBookItemName(bind.button.id, SpellBookFrame.bookType);
@@ -206,13 +209,15 @@ function AB:BindUpdate(button, spellmacro)
 
 		if not bind.button.name then return; end
 
-		if not bind.button.id or bind.button.id < 1 or bind.button.id > (spellmacro=="STANCE" and 10 or 12) then
+		if not bind.button.id or bind.button.id < 1 or bind.button.id > 10 then
 			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
 		else
 			bind.button.bindstring = (spellmacro=="STANCE" and "StanceButton" or "BONUSACTIONBUTTON")..bind.button.id;
 		end
 
-		GameTooltip:AddLine(L["Trigger"]);
+		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
+		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_NONE");
@@ -281,12 +286,14 @@ function AB:RegisterButton(b, override)
 	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.GetObjectType and b.GetScript and b:GetObjectType()=="CheckButton" and b:IsProtected() then
 		local script = b:GetScript("OnClick");
-		if script==button or override then
+		if override then
 			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);
-		elseif script==stance then
-			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "STANCE"); end);
 		elseif script==pet then
 			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "PET"); end);
+		elseif script==stance then
+			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "STANCE"); end);
+		elseif (script==button) then
+			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);
 		end
 	end
 end
@@ -295,16 +302,16 @@ local elapsed = 0;
 function AB:Tooltip_OnUpdate(tooltip, e)
 	if tooltip:IsForbidden() then return; end
 
-	elapsed = elapsed + e;
-	if elapsed < .2 then return else elapsed = 0; end
-	if (not tooltip.comparing and IsModifiedClick("COMPAREITEMS")) then
-		GameTooltip_ShowCompareItem(tooltip);
-		tooltip.comparing = true;
-	elseif ( tooltip.comparing and not IsModifiedClick("COMPAREITEMS")) then
-		for _, frame in pairs(tooltip.shoppingTooltips) do
-			frame:Hide();
-		end
-		tooltip.comparing = false;
+	elapsed = elapsed + e
+	if elapsed < .2 then return else elapsed = 0 end
+
+	local compareItems = IsModifiedClick("COMPAREITEMS")
+	if not tooltip.comparing and compareItems and tooltip:GetItem() then
+		GameTooltip_ShowCompareItem(tooltip)
+		tooltip.comparing = true
+	elseif tooltip.comparing and not compareItems then
+		for _, frame in pairs(tooltip.shoppingTooltips) do frame:Hide() end
+		tooltip.comparing = false
 	end
 end
 
@@ -356,14 +363,12 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25);
 	bind:Hide();
 
-	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
+	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip)
 		if not tooltip:IsForbidden() then
-			for _, tt in pairs(tooltip.shoppingTooltips) do
-				tt:Hide();
-			end
+			for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide() end
 		end
-	end);
+	end)
 
 	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(self.button) end end)
 	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(self.button) end end)
@@ -371,13 +376,7 @@ function AB:LoadKeyBinder()
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseWheel", function(_, delta) if delta>0 then self:BindListener("MOUSEWHEELUP") else self:BindListener("MOUSEWHEELDOWN"); end end);
 
-	local b = EnumerateFrames();
-	while b do
-		self:RegisterButton(b);
-		b = EnumerateFrames(b);
-	end
-
-	for i=1, 12 do
+	for i = 1, 12 do
 		local b = _G["SpellButton"..i];
 		b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "SPELL"); end);
 	end

@@ -717,13 +717,30 @@ function B:StartStacking()
 end
 
 local function RegisterUpdateDelayed()
+	local shouldUpdateFade
+
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.registerUpdate then
-			--call update and re-register BAG_UPDATE event
-			bagFrame.registerUpdate = nil
 			bagFrame:UpdateAllSlots()
+
+			bagFrame.registerUpdate = nil -- call update and re-register events, keep this after UpdateAllSlots
+			shouldUpdateFade = true -- we should refresh the bag search after sorting
+
+			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+			bagFrame:RegisterEvent("ITEM_LOCK_CHANGED")
+			bagFrame:RegisterEvent("ITEM_UNLOCKED")
+			bagFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 			bagFrame:RegisterEvent("BAG_UPDATE")
+			bagFrame:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
+			bagFrame:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
+			bagFrame:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+			bagFrame:RegisterEvent("QUEST_ACCEPTED")
+			bagFrame:RegisterEvent("QUEST_REMOVED")
 		end
+	end
+
+	if shouldUpdateFade then
+		B:RefreshSearch() -- this will clear the bag lock look during a sort
 	end
 end
 
@@ -894,8 +911,6 @@ function B:GetGroup(id)
 end
 
 function B:CommandDecorator(func, groupsDefaults)
-	local bagGroups = {}
-
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
 			B:StopStacking(L["Already Running.. Bailing Out!"], true)
@@ -906,7 +921,7 @@ function B:CommandDecorator(func, groupsDefaults)
 		if not groups or #groups == 0 then
 			groups = groupsDefaults
 		end
-		for bags in (groups or ""):gmatch("[^%s]+") do
+		for bags in (groups or ""):gmatch("%S+") do
 			if bags == "guild" then
 				bags = B:GetGroup(bags)
 				if bags then

@@ -4,8 +4,11 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs = pairs
+local select = select
 local unpack = unpack
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
@@ -43,7 +46,7 @@ local function LoadSkin()
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer("OVERLAY")
 	QuestInfoSkillPointFrameIconTexture:Point("TOPLEFT", 2, -2)
 	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
-	QuestInfoSkillPointFrame:SetTemplate("Default")
+	QuestInfoSkillPointFrame:CreateBackdrop("Default")
 	QuestInfoSkillPointFrameCount:SetDrawLayer("OVERLAY")
 
 	QuestInfoItemHighlight:StripTextures()
@@ -97,10 +100,46 @@ local function LoadSkin()
 		end
 	end)
 
-	-- The Icon Border should be in Quality Color
+	local rewardFrames = {
+		["MoneyFrame"] = true,
+		["XPFrame"] = true,
+		["SkillPointFrame"] = true, -- this may have extra textures.. need to check on it when possible
+		["HonorFrame"] = true,
+		["ArtifactXPFrame"] = true,
+		["TitleFrame"] = true,
+	}
+
+	local function HandleReward(frame)
+		if frame.backdrop then return end
+		frame.NameFrame:SetAlpha(0)
+		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame:CreateBackdrop()
+		frame.backdrop:SetOutside(frame.Icon)
+		frame.Name:FontTemplate()
+		frame.Count:ClearAllPoints()
+		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+
+		if(frame.CircleBackground) then
+			frame.CircleBackground:SetAlpha(0)
+			frame.CircleBackgroundGlow:SetAlpha(0)
+		end
+	end
+
+	for frame, _ in pairs(rewardFrames) do
+		HandleReward(MapQuestInfoRewardsFrame[frame])
+	end
+
+	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
-		local rewardButton = rewardsFrame.RewardButtons[index];
-		if(not rewardButton.skinned) then
+		local rewardButton = rewardsFrame.RewardButtons[index]
+		local mapButton = MapQuestInfoRewardsFrame.RewardButtons[index]
+
+		if(mapButton and not mapButton.IsSkinned) then
+			HandleReward(mapButton)
+			mapButton.IsSkinned = true
+		end
+
+		if(rewardButton and not rewardButton.skinned) then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
 			rewardButton.IconBorder:SetAlpha(0)
@@ -108,6 +147,14 @@ local function LoadSkin()
 			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 			rewardButton.Icon:SetDrawLayer("OVERLAY")
 			rewardButton.Count:SetDrawLayer("OVERLAY")
+
+			hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(rewardButton.IconBorder, "Hide", function(self)
+				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 
 			rewardButton.skinned = true
 		end
@@ -188,10 +235,10 @@ local function LoadSkin()
 	--QuestLogDetailScrollFrame:StripTextures()
 	--S:HandleCloseButton(QuestLogDetailFrameCloseButton)
 
-	hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
-		QuestNPCModel:ClearAllPoints();
-		QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
-	end)
+	--hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
+		--QuestNPCModel:ClearAllPoints();
+		--QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
+	--end)
 
 	QuestLogPopupDetailFrame:StripTextures()
 	QuestLogPopupDetailFrameInset:StripTextures()
@@ -212,12 +259,39 @@ local function LoadSkin()
 	end)
 
 	S:HandleCloseButton(QuestLogPopupDetailFrameCloseButton)
+	S:HandleScrollBar(QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
 	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:Point("CENTER")
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
+
+	-- Skin the +/- buttons in the QuestLog
+	hooksecurefunc("QuestLogQuests_Update", function()
+		local tex, texture
+		for i = 6, QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
+			local child = select(i, QuestMapFrame.QuestsFrame.Contents:GetChildren())
+			if child and child.ButtonText and not child.Text then
+				if not child.buttonSized then
+					child:Size(16, 16)
+					child.buttonSized = true
+				end
+
+				tex = select(2, child:GetRegions())
+				if tex and tex.GetTexture then
+					texture = tex:GetTexture()
+					if texture then
+						if texture:find("PlusButton") then
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+						else
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+						end
+					end
+				end
+			end
+		end
+	end)
 end
 
 S:AddCallback("Quest", LoadSkin)

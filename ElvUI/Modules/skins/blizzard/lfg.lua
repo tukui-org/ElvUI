@@ -15,6 +15,8 @@ local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
@@ -179,16 +181,16 @@ local function LoadSkin()
 	end)
 
 	LFDQueueFrameRoleButtonLeader.leadIcon = LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-	LFDQueueFrameRoleButtonLeader.leadIcon:Point(LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\leader")
+	LFDQueueFrameRoleButtonLeader.leadIcon:Point(LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
-	LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon = RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\leader")
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
-	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
 		if button.checkButton:GetChecked() then
@@ -215,24 +217,14 @@ local function LoadSkin()
 
 	for i = 1, 4 do
 		local bu = GroupFinderFrame["groupButton"..i]
+		bu.ring:Kill()
+		bu.bg:Kill()
+		S:HandleButton(bu)
 
-		bu.ring:Hide()
-		bu.bg:SetTexture("")
-		bu.bg:SetAllPoints()
-
-		bu:SetTemplate()
-		bu:StyleButton()
-
-		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:Point("LEFT", bu, "LEFT")
-		bu.icon:SetDrawLayer("OVERLAY")
-		bu.icon:Size(40)
+		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		bu.border = CreateFrame("Frame", nil, bu)
-		bu.border:SetTemplate('Default')
-		bu.border:SetOutside(bu.icon)
-		bu.icon:SetParent(bu.border)
+		S:CropIcon(bu.icon, bu)
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")
@@ -269,6 +261,16 @@ local function LoadSkin()
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton, nil, true)
 	end
+
+	hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button)
+		if button and button.expandOrCollapseButton:IsShown() then
+			if button.isCollapsed then
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+			else
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+			end
+		end
+	end)
 
 	hooksecurefunc("ScenarioQueueFrameSpecific_Update", function()
 
@@ -323,6 +325,14 @@ local function LoadSkin()
 			item.border = CreateFrame("Frame", nil, item)
 			item.border:SetTemplate()
 			item.border:SetOutside(item.Icon)
+
+			hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().border:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(item.IconBorder, "Hide", function(self)
+				self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 
 			item.Icon:SetTexCoord(unpack(E.TexCoords))
 			item.Icon:SetDrawLayer("OVERLAY")
@@ -472,7 +482,7 @@ local function LoadSkin()
 	LFGListFrame.EntryCreation.CancelButton:Point("BOTTOMLEFT", -1, 3)
 	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
 	LFGListFrame.EntryCreation.ListGroupButton:Point("BOTTOMRIGHT", -6, 3)
-	S:HandleEditBox(LFGListEntryCreationDescription)
+	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
@@ -546,23 +556,9 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
-	local function handleLFGListCancelDeclineButton(button)
-		S:HandleButton(button)
-		if button.Icon then
-			button.Icon:Hide()
-		end
-		if not button.text then
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-			button.text:SetText('x')
-			button.text:SetJustifyH('CENTER')
-			button.text:Point('CENTER', button, 'CENTER')
-		end
-	end
-
 	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
 		if not button.DeclineButton.template then
-			handleLFGListCancelDeclineButton(button.DeclineButton)
+			S:HandleButton(button.DeclineButton, nil, true)
 		end
 		if not button.InviteButton.template then
 			S:HandleButton(button.InviteButton)
@@ -571,7 +567,7 @@ local function LoadSkin()
 
 	hooksecurefunc("LFGListSearchEntry_Update", function(button)
 		if not button.CancelButton.template then
-			handleLFGListCancelDeclineButton(button.CancelButton)
+			S:HandleButton(button.CancelButton, nil, true)
 		end
 	end)
 
@@ -670,7 +666,10 @@ local function LoadSkin()
 				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
 		end
-	end);
+	end)
+
+	-- Tutorial
+	S:HandleCloseButton(PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
 S:AddCallback("LFG", LoadSkin)
@@ -681,24 +680,13 @@ local function LoadSecondarySkin()
 	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
-	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
 
-	-- Mythic Dungeon Tab
-	ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
-	ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
-	ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -27)
-	ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
-	ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
-	ChallengesFrame.GuildBest:StripTextures()
-	ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
-	ChallengesFrame.GuildBest.Line:Hide()
-	ChallengesFrame.GuildBest:ClearAllPoints()
-	ChallengesFrame.GuildBest:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 50)
-
 	-- Mythic+ KeyStoneFrame
-	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
-	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)
+	local KeyStoneFrame = _G["ChallengesKeystoneFrame"]
+	KeyStoneFrame:CreateBackdrop("Transparent")
+	S:HandleCloseButton(KeyStoneFrame.CloseButton)
+	S:HandleButton(KeyStoneFrame.StartButton, true)
 
 	hooksecurefunc("ChallengesFrame_Update", function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
@@ -711,6 +699,35 @@ local function LoadSecondarySkin()
 			end
 		end
 	end)
+
+	local function HandleAffixIcons(self)
+		for _, frame in ipairs(self.Affixes) do
+			frame.Border:SetTexture(nil)
+			frame.Portrait:SetTexture(nil)
+
+			if frame.info then
+				frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+			elseif frame.affixID then
+				local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
+				frame.Portrait:SetTexture(filedataid)
+			end
+			frame.Portrait:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	hooksecurefunc(ChallengesFrame.WeeklyInfo, "SetUp", function(self)
+		local affixes = C_MythicPlus_GetCurrentAffixes()
+		if affixes then
+			HandleAffixIcons(self.Child)
+		end
+	end)
+
+	hooksecurefunc(KeyStoneFrame, "Reset", function(self)
+		self:GetRegions():SetAlpha(0)
+		self.InstructionBackground:SetAlpha(0)
+	end)
+
+	hooksecurefunc(KeyStoneFrame, "OnKeystoneSlotted", HandleAffixIcons)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)

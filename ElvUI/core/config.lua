@@ -13,10 +13,10 @@ local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
 local RESET = RESET
 
-local L_UIDropDownMenu_SetSelectedValue = L_UIDropDownMenu_SetSelectedValue
-local L_UIDropDownMenu_CreateInfo = L_UIDropDownMenu_CreateInfo
-local L_UIDropDownMenu_AddButton = L_UIDropDownMenu_AddButton
-local L_UIDropDownMenu_Initialize = L_UIDropDownMenu_Initialize
+local UIDropDownMenu_SetSelectedValue = UIDropDownMenu_SetSelectedValue
+local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
+local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
+local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, GameTooltip, EditBox_ClearFocus, SquareButton_SetIcon
@@ -158,20 +158,20 @@ end
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
-	L_UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
 end
 
 local function ConfigMode_Initialize()
-	local info = L_UIDropDownMenu_CreateInfo();
+	local info = UIDropDownMenu_CreateInfo();
 	info.func = ConfigMode_OnClick;
 
 	for _, configMode in ipairs(E.ConfigModeLayouts) do
 		info.text = E.ConfigModeLocalizedStrings[configMode];
 		info.value = configMode;
-		L_UIDropDownMenu_AddButton(info);
+		UIDropDownMenu_AddButton(info);
 	end
 
-	L_UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
+	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
@@ -220,7 +220,7 @@ function E:CreateMoverPopup()
 	f:Point("BOTTOM", UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if ElvUIMoverPopupWindowDropDown then
-			L_UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
+			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:Hide()
@@ -268,7 +268,7 @@ function E:CreateMoverPopup()
 		E:ToggleConfigMode(true)
 		if IsAddOnLoaded("ElvUI_Config") then LibStub("AceConfigDialog-3.0-ElvUI"):Open('ElvUI') end
 		selectedValue = 'ALL'
-		L_UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
+		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
@@ -324,14 +324,14 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'L_UIDropDownMenuTemplate')
+	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
 	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(configMode, 148)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
 
-	L_UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
+	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata("DIALOG")

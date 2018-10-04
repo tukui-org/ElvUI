@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, select, pairs = unpack, select, pairs
+local unpack, select = unpack, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
@@ -101,6 +101,12 @@ local function SkinNextPrevButton(...)
 	S:HandleNextPrevButton(...)
 end
 
+local function SkinDropdownPullout(self)
+	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
+		self.obj.pullout.frame:SetTemplate('Default', true)
+	end
+end
+
 function S:SkinAce3()
 	local AceGUI = LibStub("AceGUI-3.0", true)
 	if not AceGUI then return end
@@ -139,6 +145,7 @@ function S:SkinAce3()
 		elseif TYPE == "Dropdown" then
 			local frame = widget.dropdown
 			local button = widget.button
+			local button_cover = widget.button_cover
 			local text = widget.text
 			frame:StripTextures()
 
@@ -154,10 +161,8 @@ function S:SkinAce3()
 			end
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			button:HookScript('OnClick', function(this)
-				local self = this.obj
-				self.pullout.frame:SetTemplate('Default', true)
-			end)
+			button:HookScript('OnClick', SkinDropdownPullout)
+			button_cover:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "LSM30_Font" or TYPE == "LSM30_Sound" or TYPE == "LSM30_Border" or TYPE == "LSM30_Background" or TYPE == "LSM30_Statusbar" then
 			local frame = widget.frame
 			local button = frame.dropButton
@@ -193,9 +198,8 @@ function S:SkinAce3()
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
 			button:HookScript('OnClick', function(this)
-				local self = this.obj
-				if self.dropdown then
-					self.dropdown:SetTemplate('Default', true)
+				if this and this.obj and this.obj.dropdown and not this.obj.dropdown.template then
+					this.obj.dropdown:SetTemplate('Default', true)
 				end
 			end)
 		elseif TYPE == "EditBox" then
@@ -245,6 +249,19 @@ function S:SkinAce3()
 
 			lowtext:Point("TOPLEFT", frame, "BOTTOMLEFT", 2, -2)
 			hightext:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -2, -2)
+		elseif TYPE == "Keybinding" then
+			local button = widget.button
+			local msgframe = widget.msgframe
+
+			SkinButton(button, nil, true)
+			button:StripTextures()
+			button:CreateBackdrop('Default', true)
+			button.backdrop:SetInside()
+
+			msgframe:StripTextures()
+			msgframe:SetTemplate('Transparent')
+			msgframe.msg:ClearAllPoints()
+			msgframe.msg:SetPoint("CENTER")
 
 
 		--[[elseif TYPE == "ColorPicker" then
@@ -311,10 +328,11 @@ function S:SkinAce3()
 					local groupstatus = status.groups
 					local lines = self.lines
 					local buttons = self.buttons
+					local offset = status.scrollvalue
 
-					for i, line in pairs(lines) do
-						local button = buttons[i]
-						if groupstatus[line.uniquevalue] and button then
+					for i = offset + 1, #lines do
+						local button = buttons[i - offset]
+						if groupstatus[lines[i].uniquevalue] and button then
 							button.toggleText:SetText('-')
 						elseif button then
 							button.toggleText:SetText('+')

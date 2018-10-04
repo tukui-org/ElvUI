@@ -10,7 +10,7 @@ local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 -- GLOBALS: GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, CreateFrame
 
 function mod:OnLeave()
-	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) then
+	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) or (self == ElvUI_AzeriteBar and mod.db.azerite.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
 	GameTooltip:Hide()
@@ -42,8 +42,9 @@ end
 function mod:UpdateDataBarDimensions()
 	self:UpdateExperienceDimensions()
 	self:UpdateReputationDimensions()
-	self:UpdateArtifactDimensions()
+	--self:UpdateArtifactDimensions()
 	self:UpdateHonorDimensions()
+	self:UpdateAzeriteDimensions()
 end
 
 function mod:PLAYER_LEVEL_UP(level)
@@ -67,7 +68,8 @@ function mod:Initialize()
 	self:LoadExperienceBar()
 	self:LoadReputationBar()
 	self:LoadHonorBar()
-	self:LoadArtifactBar()
+	--self:LoadArtifactBar()
+	self:LoadAzeriteBar()
 
 	self:RegisterEvent("PLAYER_LEVEL_UP")
 end

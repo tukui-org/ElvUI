@@ -45,7 +45,6 @@ local function LoadSkin()
 
 	S:HandleScrollBar(FriendsFrameFriendsScrollFrameScrollBar, 5)
 	S:HandleScrollBar(WhoListScrollFrameScrollBar, 5)
-	S:HandleScrollBar(ChannelRosterScrollFrameScrollBar, 5)
 	S:HandleScrollBar(FriendsFriendsScrollFrameScrollBar)
 
 	local StripAllTextures = {
@@ -58,9 +57,6 @@ local function LoadSkin()
 		"WhoFrameColumnHeader2",
 		"WhoFrameColumnHeader3",
 		"WhoFrameColumnHeader4",
-		"ChannelListScrollFrame",
-		"ChannelRoster",
-		"ChannelFrameDaughterFrame",
 		"AddFriendFrame",
 		"AddFriendNoteFrame",
 	}
@@ -71,13 +67,9 @@ local function LoadSkin()
 		"FriendsFrameBroadcastInputMiddle",
 	}
 
-	S:HandleEditBox(ChannelFrameDaughterFrameChannelName)
-	S:HandleEditBox(ChannelFrameDaughterFrameChannelPassword)
 	FriendsFrameInset:StripTextures()
 	WhoFrameListInset:StripTextures()
 	WhoFrameEditBoxInset:StripTextures()
-	ChannelFrameRightInset:StripTextures()
-	ChannelFrameLeftInset:StripTextures()
 	LFRQueueFrameListInset:StripTextures()
 	LFRQueueFrameRoleInset:StripTextures()
 	LFRQueueFrameCommentInset:StripTextures()
@@ -88,11 +80,8 @@ local function LoadSkin()
 		"WhoFrameWhoButton",
 		"WhoFrameAddFriendButton",
 		"WhoFrameGroupInviteButton",
-		"ChannelFrameNewButton",
 		"FriendsFrameIgnorePlayerButton",
 		"FriendsFrameUnsquelchButton",
-		"ChannelFrameDaughterFrameOkayButton",
-		"ChannelFrameDaughterFrameCancelButton",
 		"AddFriendEntryFrameAcceptButton",
 		"AddFriendEntryFrameCancelButton",
 		"AddFriendInfoFrameContinueButton",
@@ -182,18 +171,6 @@ local function LoadSkin()
 		end
 	end)
 
-	--[[
-	-- We don't need this anymore since we have an infobox in the FriendsFrame.
-	FriendsFrameBattlenetFrame.BroadcastButton:CreateBackdrop()
-	FriendsFrameBattlenetFrame.BroadcastButton:Size(17)
-	FriendsFrameBattlenetFrame.BroadcastButton:ClearAllPoints()
-	FriendsFrameBattlenetFrame.BroadcastButton:Point('RIGHT', FriendsFrameStatusDropDown.backdrop, 'LEFT', -23, 0)
-	FriendsFrameBattlenetFrame.BroadcastButton:GetNormalTexture():SetTexCoord(.28, .72, .28, .72)
-	FriendsFrameBattlenetFrame.BroadcastButton:GetPushedTexture():SetTexCoord(.28, .72, .28, .72)
-	FriendsFrameBattlenetFrame.BroadcastButton:GetHighlightTexture():SetTexCoord(.28, .72, .28, .72)
-	FriendsFrameBattlenetFrame.BroadcastButton:SetScript('OnClick', function() E:StaticPopup_Show("SET_BN_BROADCAST") end)
-	--]]
-
 	S:HandleEditBox(AddFriendNameEditBox)
 	AddFriendFrame:SetTemplate("Transparent")
 	ScrollOfResurrectionSelectionFrame:SetTemplate('Transparent')
@@ -206,7 +183,7 @@ local function LoadSkin()
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
 	local function SkinFriendRequest(frame)
 		if frame.isSkinned then return; end
-		S:HandleButton(frame.DeclineButton)
+		S:HandleButton(frame.DeclineButton, nil, true)
 		S:HandleButton(frame.AcceptButton)
 		frame.isSkinned = true
 	end
@@ -220,16 +197,6 @@ local function LoadSkin()
 	local function UpdateWhoSkins()
 		WhoListScrollFrame:StripTextures()
 	end
-	--Channel Frame
-	local function UpdateChannel()
-		ChannelRosterScrollFrame:StripTextures()
-	end
-	--BNet Frame
-	ChannelFrameDaughterFrameChannelName:CreateBackdrop("Default")
-	ChannelFrameDaughterFrameChannelPassword:CreateBackdrop("Default")
-
-	ChannelFrame:HookScript("OnShow", UpdateChannel)
-	hooksecurefunc("FriendsFrame_OnEvent", UpdateChannel)
 
 	WhoFrame:HookScript("OnShow", UpdateWhoSkins)
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
@@ -243,33 +210,17 @@ local function LoadSkin()
 		end
 	end
 
-	ChannelFrameDaughterFrame:CreateBackdrop("Transparent")
-
-	S:HandleCloseButton(ChannelFrameDaughterFrameDetailCloseButton,ChannelFrameDaughterFrame)
 	S:HandleCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
 	S:HandleDropDownBox(WhoFrameDropDown,150)
 
 	--Bottom Tabs
-	for i=1, 4 do
+	for i = 1, 4 do
 		S:HandleTab(_G["FriendsFrameTab"..i])
 	end
 
 	for i=1, 3 do
 		SkinSocialHeaderTab(_G["FriendsTabHeaderTab"..i])
 	end
-
-	local function Channel()
-		for i=1, MAX_DISPLAY_CHANNEL_BUTTONS do
-			local button = _G["ChannelButton"..i]
-			if button then
-				button:StripTextures()
-				button:SetHighlightTexture("Interface\\PaperDollInfoFrame\\UI-Character-Tab-Highlight")
-
-				_G["ChannelButton"..i.."Text"]:FontTemplate(nil, 12)
-			end
-		end
-	end
-	hooksecurefunc("ChannelList_Update", Channel)
 
 	--View Friends BN Frame
 	FriendsFriendsFrame:CreateBackdrop("Transparent")
@@ -315,6 +266,15 @@ local function LoadSkin()
 	RecruitAFriendNoteFrame:StripTextures()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
 
+	RecruitAFriendSentFrame:StripTextures()
+	RecruitAFriendSentFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(RecruitAFriendSentFrameCloseButton)
+	S:HandleButton(RecruitAFriendSentFrame.OKButton)
+	hooksecurefunc("RecruitAFriend_Send", function()
+		RecruitAFriendSentFrame:ClearAllPoints()
+		RecruitAFriendSentFrame:Point("CENTER", E.UIParent, "CENTER", 0, 100)
+	end)
+
 	--Quick join
 	S:HandleScrollBar(QuickJoinScrollFrameScrollBar, 5)
 	S:HandleButton(QuickJoinFrame.JoinQueueButton)
@@ -345,6 +305,9 @@ local function LoadSkin()
 		icon:Point("RIGHT", button, "RIGHT", -24, 0)
 		icon.SetPoint = E.noop
 	end
+
+	--Tutorial
+	S:HandleCloseButton(FriendsTabHeader.FriendsFrameQuickJoinHelpTip.CloseButton)
 end
 
 S:AddCallback("Friends", LoadSkin)

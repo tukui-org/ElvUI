@@ -171,12 +171,7 @@ local function LoadSkin()
 
 	--Loot Frame
 	S:HandleScrollBar(EncounterJournalScrollBar)
-	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.ClassButton, true)
-	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.SlotButton, true)
 	S:HandleButton(EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
-	S:HandleDropDownBox(LootJournalViewDropDown)
-	LootJournalViewDropDownText:ClearAllPoints()
-	LootJournalViewDropDownText:Point("CENTER", LootJournalViewDropDown, "CENTER", 0, 3)
 
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
@@ -191,14 +186,16 @@ local function LoadSkin()
 	end
 
 	--Suggestion Reward Tooltips
-	local tooltip = EncounterJournalTooltip
-	local item1 = tooltip.Item1
-	local item2 = tooltip.Item2
-	tooltip:SetTemplate("Transparent")
-	S:HandleIcon(item1.icon)
-	S:HandleIcon(item2.icon)
-	item1.IconBorder:SetTexture(nil)
-	item2.IconBorder:SetTexture(nil)
+	if E.private.skins.blizzard.tooltip then
+		local tooltip = EncounterJournalTooltip
+		local item1 = tooltip.Item1
+		local item2 = tooltip.Item2
+		tooltip:SetTemplate("Transparent")
+		S:HandleIcon(item1.icon)
+		S:HandleIcon(item2.icon)
+		item1.IconBorder:SetTexture(nil)
+		item2.IconBorder:SetTexture(nil)
+	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	local function SkinDungeons()
@@ -246,27 +243,41 @@ local function LoadSkin()
 	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 
-	--Loot buttons
+	-- Loot buttons
 	local items = EncounterJournal.encounter.info.lootScroll.buttons
 	for i = 1, #items do
 		local item = items[i]
 
-		item.boss:SetTextColor(1, 1, 1)
-		item.boss:ClearAllPoints()
-		item.boss:Point("BOTTOMLEFT", 4, 7)
-		item.slot:SetTextColor(1, 1, 1)
-		item.armorType:SetTextColor(1, 1, 1)
-		item.armorType:ClearAllPoints()
-		item.armorType:Point("BOTTOMRIGHT", item.name, "TOPLEFT", 264, -25)
-
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
 
-		item.icon:SetSize(36, 36)
-		item.icon:Point("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
+		item.icon:SetSize(32, 32)
+		item.icon:Point("TOPLEFT", E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+		item.icon:SetDrawLayer("ARTWORK")
+		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		S:HandleIcon(item.icon)
-		item.icon:SetDrawLayer("OVERLAY")
+		item.IconBackdrop = CreateFrame("Frame", nil, item)
+		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
+		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
+		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
+		item.IconBackdrop:SetTemplate("Default")
+
+		item.name:ClearAllPoints()
+		item.name:Point("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
+		item.boss:SetTextColor(1, 1, 1)
+		item.boss:ClearAllPoints()
+		item.boss:Point("BOTTOMLEFT", 4, 6)
+		item.slot:ClearAllPoints()
+		item.slot:Point("TOPLEFT", item.name, "BOTTOMLEFT", 0, -3)
+		item.slot:SetTextColor(1, 1, 1)
+		item.armorType:SetTextColor(1, 1, 1)
+		item.armorType:ClearAllPoints()
+		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
+
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
 
 		item:CreateBackdrop("Transparent")
 		item.backdrop:Point("TOPLEFT", 0, -4)

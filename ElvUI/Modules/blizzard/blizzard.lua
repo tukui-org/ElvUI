@@ -16,6 +16,7 @@ function B:Initialize()
 	self:PositionVehicleFrame()
 	self:PositionTalkingHead()
 	self:Handle_LevelUpDisplay_BossBanner()
+	self:Handle_UIWidgets()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
@@ -23,6 +24,7 @@ function B:Initialize()
 
 	if not IsAddOnLoaded("SimplePowerBar") then
 		self:PositionAltPowerBar()
+		self:SkinAltPowerBar()
 	end
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
@@ -32,6 +34,26 @@ function B:Initialize()
 			LFRBrowseFrame.timeToClear = nil
 		end
 	end)
+
+	-- MicroButton Talent Alert
+	if TalentMicroButtonAlert then -- why do we need to check this?
+		if E.global.general.showMissingTalentAlert then
+			TalentMicroButtonAlert:ClearAllPoints()
+			TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
+			TalentMicroButtonAlert:StripTextures()
+			TalentMicroButtonAlert.Arrow:Hide()
+			TalentMicroButtonAlert.Text:FontTemplate()
+			TalentMicroButtonAlert:CreateBackdrop("Transparent")
+			E:GetModule("Skins"):HandleCloseButton(TalentMicroButtonAlert.CloseButton)
+
+			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
+			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
+			TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
+			TalentMicroButtonAlert.tex:SetSize(32, 32)
+		else
+			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
+		end
+	end
 end
 
 local function InitializeCallback()

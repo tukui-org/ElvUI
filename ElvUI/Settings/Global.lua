@@ -2,215 +2,218 @@
 
 --Global Settings
 G['general'] = {
-	["autoScale"] = true,
-	["minUiScale"] = 0.64,
-	["eyefinity"] = false,
+	['autoScale'] = true,
+	['minUiScale'] = 0.64,
+	['eyefinity'] = false,
 	['smallerWorldMap'] = true,
-	["fadeMapWhenMoving"] = true,
-	["mapAlphaWhenMoving"] = 0.35,
+	['smallerWorldMapScale'] = 0.9,
+	['fadeMapWhenMoving'] = true,
+	['mapAlphaWhenMoving'] = 0.35,
 	['WorldMapCoordinates'] = {
-		["enable"] = true,
-		["position"] = "BOTTOMLEFT",
-		["xOffset"] = 0,
-		["yOffset"] = 0,
+		['enable'] = true,
+		['position'] = 'BOTTOMLEFT',
+		['xOffset'] = 0,
+		['yOffset'] = 0,
 	},
-	["disableTutorialButtons"] = true,
-	["showMissingTalentAlert"] = false,
-	["commandBarSetting"] = "ENABLED_RESIZEPARENT",
+	['disableTutorialButtons'] = true,
+	['showMissingTalentAlert'] = false,
+	['commandBarSetting'] = 'ENABLED_RESIZEPARENT',
 }
 
 G['classtimer'] = {}
 
-G["chat"] = {
-	["classColorMentionExcludedNames"] = {},
+G['chat'] = {
+	['classColorMentionExcludedNames'] = {},
 }
 
-G["bags"] = {
-	["ignoredItems"] = {},
+G['bags'] = {
+	['ignoredItems'] = {},
 }
 
-G["datatexts"] = {
-	["customCurrencies"] = {},
+G['datatexts'] = {
+	['customCurrencies'] = {},
 }
 
-G["nameplate"] = {}
+G['nameplate'] = {}
 
 G['unitframe'] = {
 	['aurafilters'] = {},
 	['buffwatch'] = {},
-	["raidDebuffIndicator"] = {
-		["instanceFilter"] = "RaidDebuffs",
-		["otherFilter"] = "CCDebuffs",
+	['raidDebuffIndicator'] = {
+		['instanceFilter'] = 'RaidDebuffs',
+		['otherFilter'] = 'CCDebuffs',
 	},
-	["spellRangeCheck"] = {
-		["PRIEST"] = {
-			["enemySpells"] = {
+	['spellRangeCheck'] = {
+		['PRIEST'] = {
+			['enemySpells'] = {
 				[585] = true, -- Smite (40 yards)
 				[589] = true, -- Shadow Word: Pain (40 yards)
 			},
-			["longEnemySpells"] = {},
-			["friendlySpells"] = {
+			['longEnemySpells'] = {},
+			['friendlySpells'] = {
 				[2061] = true, -- Flash Heal (40 yards)
 				[17] = true, -- Power Word: Shield (40 yards)
 			},
-			["resSpells"] = {
+			['resSpells'] = {
 				[2006] = true, -- Resurrection (40 yards)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["DRUID"] = {
-			["enemySpells"] = {
+		['DRUID'] = {
+			['enemySpells'] = {
 				[8921] = true, -- Moonfire (40 yards, all specs, lvl 3)
 			},
-			["longEnemySpells"] = {},
-			["friendlySpells"] = {
+			['longEnemySpells'] = {},
+			['friendlySpells'] = {
 				[8936] = true, -- Regrowth (40 yards, all specs, lvl 5)
 			},
-			["resSpells"] = {
+			['resSpells'] = {
 				[50769] = true, -- Revive (40 yards, all specs, lvl 14)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["PALADIN"] = {
-			["enemySpells"] = {
-				[20271] = true, -- Judgement (30 yards)
+		['PALADIN'] = {
+			['enemySpells'] = {
+				[62124] = true, -- Hand of Reckoning (30 yards)
+				[183218] = true, -- Hand of Hindrance (30 yards)
+				[20271] = true, -- Judgement (30 yards) (does not work for retribution below lvl 78)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[20473] = true, -- Holy Shock (40 yards)
 			},
-			["friendlySpells"] = {
+			['friendlySpells'] = {
 				[19750] = true, -- Flash of Light (40 yards)
 			},
-			["resSpells"] = {
+			['resSpells'] = {
 				[7328] = true, -- Redemption (40 yards)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["SHAMAN"] = {
-			["enemySpells"] = {
+		['SHAMAN'] = {
+			['enemySpells'] = {
 				[188196] = true, -- Lightning Bolt (Elemental) (40 yards)
 				[187837] = true, -- Lightning Bolt (Enhancement) (40 yards)
 				[403] = true, -- Lightning Bolt (Resto) (40 yards)
 			},
-			["longEnemySpells"] = {},
-			["friendlySpells"] = {
+			['longEnemySpells'] = {},
+			['friendlySpells'] = {
 				[8004] = true, -- Healing Surge (Resto/Elemental) (40 yards)
 				[188070] = true, -- Healing Surge (Enhancement) (40 yards)
 			},
-			["resSpells"] = {
+			['resSpells'] = {
 				[2008] = true, -- Ancestral Spirit (40 yards)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["WARLOCK"] = {
-			["enemySpells"] = {
+		['WARLOCK'] = {
+			['enemySpells'] = {
 				[5782] = true, -- Fear (30 yards)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[234153] = true, -- Drain Life (40 yards)
 				[198590] = true, --Drain Soul (40 yards)
 				[232670] = true, --Shadow Bolt (40 yards, lvl 1 spell)
 				[686] = true, --Shadow Bolt (Demonology) (40 yards, lvl 1 spell)
 			},
-			["friendlySpells"] = {
+			['friendlySpells'] = {
 				[20707] = true, -- Soulstone (40 yards)
 			},
-			["resSpells"] = {},
-			["petSpells"] = {
+			['resSpells'] = {},
+			['petSpells'] = {
 				[755] = true, -- Health Funnel (45 yards)
 			},
 		},
-		["MAGE"] = {
-			["enemySpells"] = {
+		['MAGE'] = {
+			['enemySpells'] = {
 				[118] = true, -- Polymorph (30 yards)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[116] = true, -- Frostbolt (Frost) (40 yards)
 				[44425] = true, -- Arcane Barrage (Arcane) (40 yards)
 				[133] = true, -- Fireball (Fire) (40 yards)
 			},
-			["friendlySpells"] = {
+			['friendlySpells'] = {
 				[130] = true, -- Slow Fall (40 yards)
 			},
-			["resSpells"] = {},
-			["petSpells"] = {},
+			['resSpells'] = {},
+			['petSpells'] = {},
 		},
-		["HUNTER"] = {
-			["enemySpells"] = {
+		['HUNTER'] = {
+			['enemySpells'] = {
 				[75] = true, -- Auto Shot (40 yards)
 			},
-			["longEnemySpells"] = {},
-			["friendlySpells"] = {},
-			["resSpells"] = {},
-			["petSpells"] = {
+			['longEnemySpells'] = {},
+			['friendlySpells'] = {},
+			['resSpells'] = {},
+			['petSpells'] = {
 				[982] = true, -- Mend Pet (45 yards)
 			},
 		},
-		["DEATHKNIGHT"] = {
-			["enemySpells"] = {
+		['DEATHKNIGHT'] = {
+			['enemySpells'] = {
 				[49576] = true, -- Death Grip
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[47541] = true, -- Death Coil (Unholy) (40 yards)
 			},
-			["friendlySpells"] = {},
-			["resSpells"] = {
+			['friendlySpells'] = {},
+			['resSpells'] = {
 				[61999] = true, -- Raise Ally (40 yards)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["ROGUE"] = {
-			["enemySpells"] = {
+		['ROGUE'] = {
+			['enemySpells'] = {
 				[185565] = true, -- Poisoned Knife (Assassination) (30 yards)
 				[185763] = true, -- Pistol Shot (Outlaw) (20 yards)
 				[114014] = true, -- Shuriken Toss (Sublety) (30 yards)
 				[1725] = true, -- Distract (30 yards)
 			},
-			["longEnemySpells"] = {},
-			["friendlySpells"] = {
+			['longEnemySpells'] = {},
+			['friendlySpells'] = {
 				[57934] = true, -- Tricks of the Trade (100 yards)
 			},
-			["resSpells"] = {},
-			["petSpells"] = {},
+			['resSpells'] = {},
+			['petSpells'] = {},
 		},
-		["WARRIOR"] = {
-			["enemySpells"] = {
+		['WARRIOR'] = {
+			['enemySpells'] = {
 				[5246] = true, -- Intimidating Shout (Arms/Fury) (8 yards)
 				[100] = true, -- Charge (Arms/Fury) (8-25 yards)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[355] = true, -- Taunt (30 yards)
 			},
-			["friendlySpells"] = {},
-			["resSpells"] = {},
-			["petSpells"] = {},
+			['friendlySpells'] = {},
+			['resSpells'] = {},
+			['petSpells'] = {},
 		},
-		["MONK"] = {
-			["enemySpells"] = {
+		['MONK'] = {
+			['enemySpells'] = {
 				[115546] = true, -- Provoke (30 yards)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[117952] = true, -- Crackling Jade Lightning (40 yards)
 			},
-			["friendlySpells"] = {
-				[116694] = true, -- Effuse (40 yards)
+			['friendlySpells'] = {
+				[116670] = true, -- Vivify (40 yards)
 			},
-			["resSpells"] = {
+			['resSpells'] = {
 				[115178] = true, -- Resuscitate (40 yards)
 			},
-			["petSpells"] = {},
+			['petSpells'] = {},
 		},
-		["DEMONHUNTER"] = {
-			["enemySpells"] = {
+		['DEMONHUNTER'] = {
+			['enemySpells'] = {
 				[183752] = true, -- Consume Magic (20 yards)
 			},
-			["longEnemySpells"] = {
+			['longEnemySpells'] = {
 				[185123] = true, -- Throw Glaive (Havoc) (30 yards)
 				[204021] = true, -- Fiery Brand (Vengeance) (30 yards)
 			},
-			["friendlySpells"] = {},
-			["resSpells"] = {},
-			["petSpells"] = {},
+			['friendlySpells'] = {},
+			['resSpells'] = {},
+			['petSpells'] = {},
 		},
 	},
 }

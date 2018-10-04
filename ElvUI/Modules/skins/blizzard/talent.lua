@@ -6,15 +6,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
+local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
-local GetPrestigeInfo = GetPrestigeInfo
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
-local UnitPrestige = UnitPrestige
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
 -- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
@@ -27,7 +27,6 @@ local function LoadSkin()
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
 		PlayerTalentFrameTalents,
-		PlayerTalentFramePVPTalents.Talents
 	}
 
 	for _, object in pairs(objects) do
@@ -67,7 +66,7 @@ local function LoadSkin()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
 
-	for i=1, 4 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 
 		if i == 1 then
@@ -77,7 +76,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
-		for i=1, 4 do
+		for i = 1, 3 do
 			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
@@ -86,7 +85,7 @@ local function LoadSkin()
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1)
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
 
-	for i=1, 2 do
+	for i = 1, 2 do
 		local tab = _G['PlayerSpecTab'..i]
 		_G['PlayerSpecTab'..i..'Background']:Kill()
 
@@ -119,6 +118,7 @@ local function LoadSkin()
 		_G["PlayerTalentFrameTalentsTalentRow"..i.."Bg"]:Hide()
 		row:DisableDrawLayer("BORDER")
 		row:StripTextures()
+		row.GlowFrame:Kill()
 
 		row.TopLine:Point("TOP", 0, 4)
 		row.BottomLine:Point("BOTTOM", 0, -4)
@@ -132,17 +132,30 @@ local function LoadSkin()
 			bu:CreateBackdrop("Default")
 			bu.backdrop:SetOutside(ic)
 			bu.knownSelection:SetAlpha(0)
-			ic:SetDrawLayer("OVERLAY")
+			ic:SetDrawLayer("OVERLAY", 1)
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
-			bu.bg:SetFrameLevel(bu:GetFrameLevel() -2)
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 2)
 			bu.bg:Point("TOPLEFT", 15, -1)
 			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+			bu.bg.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+
+			bu.GlowFrame.TopGlowLine = bu.bg.backdrop
+			bu.GlowFrame.TopGlowLine:Hide()
+			bu.GlowFrame.BottomGlowLine:Kill()
+
+			bu.GlowFrame:HookScript('OnShow', function(self) self.TopGlowLine:Show() bu.bg.backdrop:Show() end)
+			bu.GlowFrame:HookScript('OnHide', function(self) self.TopGlowLine:Hide() bu.bg.backdrop:Hide() end)
+
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
 			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
+			bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+
+			bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
+			bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
 
@@ -150,11 +163,19 @@ local function LoadSkin()
 		for i = 1, MAX_TALENT_TIERS do
 			for j = 1, NUM_TALENT_COLUMNS do
 				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
-				if bu.knownSelection:IsShown() then
-					bu.bg.SelectedTexture:Show()
-					bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
-				else
-					bu.bg.SelectedTexture:Hide()
+				local ic = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j.."IconTexture"]
+				if bu.bg and bu.knownSelection then
+					if bu.knownSelection:IsShown() then
+						bu.bg.SelectedTexture:Show()
+						bu.ShadowedTexture:Hide()
+					else
+						bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
+						bu.bg.SelectedTexture:Hide()
+						bu.ShadowedTexture:Show()
+
+						-- blizz sets the unselected ones to desaturate but with the shadow overlay we dont have to
+						ic:SetDesaturated(false)
+					end
 				end
 			end
 		end
@@ -181,40 +202,42 @@ local function LoadSkin()
 	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
 		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
-
+		local numSpecs = GetNumSpecializations(nil, self.isPet)
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
 		local scrollChild = self.spellsScroll.child
-
 		scrollChild.specIcon:SetTexture(icon)
 
 		local index = 1
 		local bonuses
+		local bonusesIncrement = 1
 		if self.isPet then
-			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet)}
+			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet, true)}
+			bonusesIncrement = 2
 		else
-			bonuses = SPEC_SPELLS_DISPLAY[id]
+			bonuses = C_SpecializationInfo_GetSpellsDisplay(id)
 		end
+
 		if bonuses then
-			for i = 1, #bonuses, 2 do
+			for i = 1, #bonuses, bonusesIncrement do
 				local frame = scrollChild["abilityButton"..index]
-				local _, icon = GetSpellTexture(bonuses[i])
 				if frame then
-					frame.icon:SetTexture(icon)
+					local _, spellTex = GetSpellTexture(bonuses[i])
+					if spellTex then
+						frame.icon:SetTexture(spellTex)
+					end
+
 					if not frame.reskinned then
 						frame.reskinned = true
-						frame:Size(30, 30)
 						frame.ring:Hide()
-						frame:SetTemplate("Default")
-						frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-						frame.icon:SetInside()
+						frame.icon:SetTexCoord(unpack(E.TexCoords))
+						frame.icon:SetSize(40, 40)
 					end
 				end
-
 				index = index + 1
 			end
 		end
 
-		for i = 1, GetNumSpecializations(nil, self.isPet) do
+		for i = 1, numSpecs do
 			local bu = self["specButton"..i]
 			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
@@ -235,8 +258,11 @@ local function LoadSkin()
 		bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		bu.specIcon:SetSize(50, 50)
 		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+		bu.specIcon:SetDrawLayer('ARTWORK', 2)
+		bu.roleIcon:SetDrawLayer('ARTWORK', 2)
+
 		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		bu.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 	end
 
 	buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
@@ -246,9 +272,6 @@ local function LoadSkin()
 			local bu = _G[name..i]
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
-			local tex = bu:CreateTexture(nil, 'ARTWORK')
-			tex:SetColorTexture(1, 1, 1, 0.1)
-			bu:SetHighlightTexture(tex)
 			bu.bg:SetAlpha(0)
 			bu.learnedTex:SetAlpha(0)
 			bu.selectedTex:SetAlpha(0)
@@ -256,11 +279,17 @@ local function LoadSkin()
 			bu:CreateBackdrop("Overlay")
 			bu.backdrop:Point("TOPLEFT", 8, 2)
 			bu.backdrop:Point("BOTTOMRIGHT", 10, -2)
-			bu:GetHighlightTexture():SetInside(bu.backdrop)
+
+			local highlightTex = bu:CreateTexture(nil, 'ARTWORK')
+			highlightTex:SetColorTexture(1, 1, 1, 0.2)
+			highlightTex:SetInside(bu.backdrop)
+			bu:SetHighlightTexture(highlightTex)
 
 			bu.border = CreateFrame("Frame", nil, bu)
-			bu.border:CreateBackdrop("Default")
-			bu.border.backdrop:SetOutside(bu.specIcon)
+			bu.border:SetOutside(bu.specIcon)
+			bu.border:SetTemplate("Default", nil, true)
+			bu.border:SetBackdropColor(0, 0, 0, 0)
+			bu.border.backdropTexture:SetAlpha(0)
 		end
 	end
 
@@ -289,9 +318,11 @@ local function LoadSkin()
 			bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			bu.specIcon:SetSize(50, 50)
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+			bu.specIcon:SetDrawLayer('ARTWORK', 2)
+			bu.roleIcon:SetDrawLayer('ARTWORK', 2)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+			bu.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 		end
 
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1, 0.2)
@@ -306,89 +337,125 @@ local function LoadSkin()
 		end
 	end
 
-	--Skin talent rows and buttons
-	for i = 1, MAX_PVP_TALENT_TIERS do
-		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
-		row.Bg:Hide()
-		row:DisableDrawLayer("BORDER")
-		row:StripTextures()
-		row.GlowFrame:Kill() --We can either kill or reposition the glows. Not sure which is preferred.
-		-- row.GlowFrame.TopGlowLine:SetPoint("TOP", 0, 5)
-		-- row.GlowFrame.BottomGlowLine:SetPoint("BOTTOM", 0, -5)
+	local PvpTalentFrame = _G["PlayerTalentFrameTalents"].PvpTalentFrame
+	PvpTalentFrame:StripTextures()
 
-		row.TopLine:Point("TOP", 0, 4)
-		row.BottomLine:Point("BOTTOM", 0, -4)
+	for _, button in pairs(PvpTalentFrame.Slots) do
+		button:CreateBackdrop()
+		button.backdrop:SetOutside(button.Texture)
 
-		for j = 1, MAX_PVP_TALENT_COLUMNS do
-			local button = row["Talent"..j];
-			local icon = button.Icon
+		button.Arrow:SetAlpha(0)
+		button.Border:Hide()
 
-			button:StripTextures()
-			button:SetFrameLevel(button:GetFrameLevel() + 5)
-			button:CreateBackdrop("Default")
-			button.backdrop:SetOutside(icon)
-			icon:SetDrawLayer("OVERLAY")
-			icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		hooksecurefunc(button, "Update", function(self)
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(self.slotIndex);
+			if (not slotInfo) then
+				return;
+			end
 
-			button.bg = CreateFrame("Frame", nil, button)
-			button.bg:CreateBackdrop("Overlay")
-			button.bg:SetFrameLevel(button:GetFrameLevel() -2)
-			button.bg:Point("TOPLEFT", 15, -1)
-			button.bg:Point("BOTTOMRIGHT", -10, 1)
-			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
-			button.bg.SelectedTexture:Point("TOPLEFT", button, "TOPLEFT", 15, -1)
-			button.bg.SelectedTexture:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -10, 1)
+			if (slotInfo.enabled) then
+				S:HandleTexture(self.Texture)
+				if (not slotInfo.selectedTalentID) then
+					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+					self.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+				else
+					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				end
+			else
+				self.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
+				self.Texture:SetTexCoord(0, 1, 0, 1)
+				self.Texture:SetDesaturated(true)
+				self.Texture:Show()
+				self.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+			end
+		end)
+	end
+
+	PvpTalentFrame.TalentList:StripTextures()
+	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
+
+	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
+	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
+	PvpTalentFrame.TalentList.MyTopLeftCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopRightCorner:Hide()
+	PvpTalentFrame.TalentList.MyTopBorder:Hide()
+
+	local function HandleInsetButton(Button)
+		S:HandleButton(Button)
+
+		if Button.LeftSeparator then
+			Button.LeftSeparator:Hide()
+		end
+		if Button.RightSeparator then
+			Button.RightSeparator:Hide()
 		end
 	end
 
-	--Apply color to chosen talents
-	hooksecurefunc("PVPTalentFrame_Update", function(self)
-		for i = 1, MAX_PVP_TALENT_TIERS do
-			for j = 1, MAX_PVP_TALENT_COLUMNS do
-				local button = self.Talents["Tier"..i]["Talent"..j]
-				if button.knownSelection then
-					if button.knownSelection:IsShown() then
-						button.bg.SelectedTexture:Show()
-						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
+	local TalentList_CloseButton = select(4, PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
+	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then
+		HandleInsetButton(TalentList_CloseButton)
+	end
+
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("TOPLEFT", 5, -5)
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint("BOTTOMRIGHT", -21, 32)
+	PvpTalentFrame.OrbModelScene:SetAlpha(0)
+
+	PvpTalentFrame:SetSize(131, 379)
+	PvpTalentFrame:SetPoint("LEFT", PlayerTalentFrameTalents, "RIGHT", -135, 0)
+	PvpTalentFrame.Swords:SetPoint("BOTTOM", 0, 30)
+	PvpTalentFrame.Label:SetPoint("BOTTOM", 0, 104)
+	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
+
+	PvpTalentFrame.Swords:SetSize(72, 67)
+	PvpTalentFrame.Orb:Hide()
+	PvpTalentFrame.Ring:Hide()
+
+	PvpTalentFrame.TrinketSlot:SetPoint("TOP", 0, -16)
+	PvpTalentFrame.TalentSlot1:SetPoint("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
+	PvpTalentFrame.TalentSlot2:SetPoint("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
+	PvpTalentFrame.TalentSlot3:SetPoint("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
+
+	for i = 1, 10 do
+		local bu = _G["PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameButton"..i]
+		if bu then
+			local border = bu:GetRegions()
+			if border then border:SetTexture(nil) end
+
+			bu:StyleButton()
+			bu:CreateBackdrop("Overlay")
+
+			if bu.Selected then
+				bu.Selected:SetTexture(nil)
+
+				bu.selectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+				bu.selectedTexture:SetInside(bu)
+				bu.selectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				bu.selectedTexture:SetShown(bu.Selected:IsShown())
+
+				hooksecurefunc(bu, "Update", function(selectedHere)
+					if not bu.selectedTexture then return end
+					if bu.Selected:IsShown() then
+						bu.selectedTexture:SetShown(selectedHere)
 					else
-						button.bg.SelectedTexture:Hide()
+						bu.selectedTexture:Hide()
 					end
-				end
+				end)
+			end
+
+			bu.backdrop:SetAllPoints()
+
+			if bu.Icon then
+				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+				bu.Icon:SetDrawLayer('ARTWORK', 1)
 			end
 		end
-	end)
+	end
 
-	--Create portrait element for the PvP Talent Frame so we can see prestige
-	local portrait = PlayerTalentFramePVPTalents:CreateTexture(nil, "OVERLAY")
-	portrait:SetSize(57,57);
-	portrait:SetPoint("CENTER", PlayerTalentFramePVPTalents.PortraitBackground, "CENTER", 0, 0);
-	--Kill background
-	PlayerTalentFramePVPTalents.PortraitBackground:Kill()
-	--Reposition portrait by repositioning the background
-	PlayerTalentFramePVPTalents.PortraitBackground:ClearAllPoints()
-	PlayerTalentFramePVPTalents.PortraitBackground:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", 5, -5)
-	--Reposition the wreath
-	PlayerTalentFramePVPTalents.SmallWreath:ClearAllPoints()
-	PlayerTalentFramePVPTalents.SmallWreath:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -2, -25)
-	--Update texture according to prestige
-	hooksecurefunc("PlayerTalentFramePVPTalents_SetUp", function()
-		local prestigeLevel = UnitPrestige("player");
-		if (prestigeLevel > 0) then
-			portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
-		end
-	end)
+	S:HandleButton(PlayerTalentFrameTalentsPvpTalentButton)
+	S:HandleScrollBar(PlayerTalentFrameTalentsPvpTalentFrameTalentListScrollFrameScrollBar)
 
-	-- Prestige Level Dialog
-	PVPTalentPrestigeLevelDialog:StripTextures()
-	PVPTalentPrestigeLevelDialog:CreateBackdrop('Transparent')
-	PVPTalentPrestigeLevelDialog.Laurel:SetAtlas("honorsystem-prestige-laurel", true) --Re-add textures removed by StripTextures()
-	PVPTalentPrestigeLevelDialog.TopDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	PVPTalentPrestigeLevelDialog.BottomDivider:SetAtlas("honorsystem-prestige-rewardline", true)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
-	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
-	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton) --There are 2 buttons with the exact same name, may not be able to skin it properly until fixed by Blizzard.
-
-	S:SkinPVPHonorXPBar('PlayerTalentFramePVPTalents')
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
+	S:HandleCloseButton(PlayerTalentFrameTalentsPvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)

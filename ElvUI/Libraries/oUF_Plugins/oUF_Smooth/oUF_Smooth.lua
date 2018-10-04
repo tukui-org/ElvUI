@@ -58,7 +58,7 @@ f:SetScript('OnUpdate', function()
 			smoothing[bar] = nil
 		elseif not bar.Smooth then
 			bar:SetValue_(value)
-			smoothing[bar] = nil		
+			smoothing[bar] = nil
 		end
 	end
 end)

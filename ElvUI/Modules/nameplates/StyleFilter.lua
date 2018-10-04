@@ -177,6 +177,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.HealthColorChanged = true
 		frame.HealthBar:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+		frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a);
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
@@ -267,6 +268,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
 		end
+		--show the npc title
+		self:UpdateElement_NPCTitle(frame, true)
 		--position the portrait
 		self:ConfigureElement_Portrait(frame, true)
 		--position suramar detection
@@ -295,6 +298,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.HealthBar:SetStatusBarColor(frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b);
+		frame.CutawayHealth:SetStatusBarColor(frame.HealthBar.r * 1.5, frame.HealthBar.g * 1.5, frame.HealthBar.b * 1.5, 1);
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
@@ -369,7 +373,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 			self:ConfigureElement_Name(frame)
 			self:UpdateElement_Name(frame)
 		else
-			frame.Name:SetText()
+			frame.Name:SetText("")
+		end
+		if self.db.showNPCTitles then
+			self:UpdateElement_NPCTitle(frame)
+		else
+			frame.NPCTitle:SetText("")
 		end
 		if self.db.units[frame.UnitType].portrait.enable then
 			self:ConfigureElement_Portrait(frame)
@@ -786,21 +795,27 @@ function mod:StyleFilterConfigureEvents()
 				self.StyleFilterEvents["AuraWaitTimer_Update"] = true -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
-				if next(filter.triggers.casting.spells) then
-					for _, value in pairs(filter.triggers.casting.spells) do
-						if value == true then
-							self.StyleFilterEvents["UpdateElement_Cast"] = 1
-							break
+				if filter.triggers.casting then
+					if next(filter.triggers.casting.spells) then
+						for _, value in pairs(filter.triggers.casting.spells) do
+							if value == true then
+								self.StyleFilterEvents["UpdateElement_Cast"] = 1
+								break
+							end
 						end
 					end
-				end
 
-				if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-					self.StyleFilterEvents["UpdateElement_Cast"] = 1
+					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
+						self.StyleFilterEvents["UpdateElement_Cast"] = 1
+					end
 				end
 
 				-- real events
 				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
+
+				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
+					self.StyleFilterEvents["UNIT_FACTION"] = true
+				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
 					self.StyleFilterEvents["UNIT_TARGET"] = true
@@ -813,7 +828,7 @@ function mod:StyleFilterConfigureEvents()
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterEvents["UNIT_POWER"] = true
+					self.StyleFilterEvents["UNIT_POWER_UPDATE"] = true
 					self.StyleFilterEvents["UNIT_POWER_FREQUENT"] = true
 					self.StyleFilterEvents["UNIT_DISPLAYPOWER"] = true
 				end

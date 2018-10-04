@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 20
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 21
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -11,8 +11,8 @@ local CreateFrame = CreateFrame
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local GetAddOnMetadata = GetAddOnMetadata
 local IsAddOnLoaded = IsAddOnLoaded
-local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
-local SendAddonMessage = SendAddonMessage
+local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
+local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
@@ -77,7 +77,7 @@ function lib:RegisterPlugin(name,callback, isLib)
 	local loaded = IsAddOnLoaded("ElvUI_Config")
 
 	if not lib.vcframe then
-		RegisterAddonMessagePrefix(lib.prefix)
+		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		local f = CreateFrame('Frame')
 		f:RegisterEvent("GROUP_ROSTER_UPDATE")
 		f:RegisterEvent("CHAT_MSG_ADDON")
@@ -214,7 +214,7 @@ end
 function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, "^%s-$") then return end
 
-	local ChatType = ((not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) or (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE))) and "INSTANCE_CHAT" or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or nil
+	local ChatType = ((not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) or (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE))) and "INSTANCE_CHAT" or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or (IsInGuild() and 'GUILD') or nil
 	if not ChatType then return end
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
@@ -224,12 +224,12 @@ function lib:SendPluginVersionCheck(message)
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
-				ElvUI[1]:Delay(delay, SendAddonMessage, lib.prefix, splitMessage, ChatType)
+				ElvUI[1]:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
 		end
 	else
-		SendAddonMessage(lib.prefix, message, ChatType)
+		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType)
 	end
 end
 

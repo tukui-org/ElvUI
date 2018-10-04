@@ -46,7 +46,8 @@ local function LoadSkin()
 	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameReportBugScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
-	for i=1, HelpFrameReportBug:GetNumChildren() do
+
+	for i = 1, HelpFrameReportBug:GetNumChildren() do
 		local child = select(i, HelpFrameReportBug:GetChildren())
 		if not child:GetName() then
 			child:StripTextures()
@@ -118,7 +119,6 @@ local function LoadSkin()
 	-- skin misc items
 	HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 	HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", HelpFrameMainInset, "TOPLEFT", 13, -10)
-	HelpFrameKnowledgebaseNavBarOverlay:Kill()
 	HelpFrameKnowledgebaseNavBar:StripTextures()
 
 	local HelpFrame = _G["HelpFrame"]

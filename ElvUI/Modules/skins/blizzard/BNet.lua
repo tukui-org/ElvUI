@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local select = select
-local getn = getn
 --WoW API / Variables
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -19,27 +18,9 @@ local function LoadSkin()
 		"TicketStatusFrameButton",
 	}
 
-	for i = 1, getn(skins) do
+	for i = 1, #skins do
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
-
-	-- BNetReportFrame
-	_G["BNetReportFrameCommentTopLeft"]:Hide()
-	_G["BNetReportFrameCommentTopRight"]:Hide()
-	_G["BNetReportFrameCommentTop"]:Hide()
-	_G["BNetReportFrameCommentBottomLeft"]:Hide()
-	_G["BNetReportFrameCommentBottomRight"]:Hide()
-	_G["BNetReportFrameCommentBottom"]:Hide()
-	_G["BNetReportFrameCommentLeft"]:Hide()
-	_G["BNetReportFrameCommentRight"]:Hide()
-	_G["BNetReportFrameCommentMiddle"]:Hide()
-	S:HandleEditBox(_G["BNetReportFrameCommentScrollFrame"])
-
-	_G["BNetReportFrameCommentScrollFrame"]:StripTextures()
-	S:HandleScrollBar(_G["BNetReportFrameCommentScrollFrameScrollBar"])
-
-	S:HandleButton(_G["BNetReportFrameReportButton"])
-	S:HandleButton(_G["BNetReportFrameCancelButton"])
 
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()
@@ -51,7 +32,6 @@ local function LoadSkin()
 	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
-	--S:HandleEditBox(BattleTagInviteFrameScrollFrame)
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())

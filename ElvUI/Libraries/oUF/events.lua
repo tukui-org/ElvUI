@@ -39,7 +39,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 end
 
 local function onEvent(self, event, ...)
-	if(self:IsVisible() or event == 'UNIT_COMBO_POINTS') then
+	if(self:IsVisible()) then
 		return self[event](self, event, ...)
 	end
 end

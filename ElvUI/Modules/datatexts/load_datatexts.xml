@@ -32,4 +32,5 @@
 	<Script file='Currencies.lua'/>
 	<Script file='CustomCurrency.lua'/>
 	<Script file='quickjoin.lua'/>
+	<Script file='bfamissions.lua'/>
 </Ui>

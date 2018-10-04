@@ -4,6 +4,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
+local ipairs = ipairs
+local tinsert = tinsert
 local max = math.max
 --WoW API / Variables
 local CreateAnimationGroup = CreateAnimationGroup
@@ -28,14 +30,15 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
 
-	local r, g, b;
-	local scale = 1
+	local r, g, b, scale = 1, 1, 1, 1
 	if ( not UnitIsConnected(frame.unit) ) then
 		r, g, b = self.db.reactions.offline.r, self.db.reactions.offline.g, self.db.reactions.offline.b
 	else
 		if ( frame.HealthBar.ColorOverride ) then
-			--[[local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
-			r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;]]
+			--[[
+				local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
+				r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;
+			]]
 		else
 			--Try to color it by class.
 			local _, class = UnitClass(frame.displayedUnit);
@@ -96,14 +99,15 @@ function mod:UpdateElement_HealthColor(frame)
 				end
 
 				if (not status) or (status and not self.db.threat.useThreatColor) then
-					--By Reaction
-					local reactionType = UnitReaction(frame.unit, "player")
-					if(reactionType == 4) then
-						r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
-					elseif(reactionType > 4) then
-						r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
-					else
-						r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+					local reactionType = UnitReaction(frame.displayedUnit, "player")
+					if reactionType then
+						if reactionType == 4 then
+							r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
+						elseif reactionType > 4 then
+							r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
+						else
+							r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+						end
 					end
 				end
 			end
@@ -113,6 +117,11 @@ function mod:UpdateElement_HealthColor(frame)
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		if not frame.HealthColorChanged then
 			frame.HealthBar:SetStatusBarColor(r, g, b);
+			if frame.HealthColorChangeCallbacks then
+				for _, cb in ipairs(frame.HealthColorChangeCallbacks) do
+					cb(self, frame, r, g, b);
+				end
+			end
 		end
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
 	end
@@ -211,14 +220,26 @@ function mod:UpdateElement_HealPrediction(frame)
 end
 
 
+
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
+	if frame.MaxHealthChangeCallbacks then
+		for _, cb in ipairs(frame.MaxHealthChangeCallbacks) do
+			cb(self, frame, maxHealth);
+		end
+	end
 end
 
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
 	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
+
+	if frame.HealthValueChangeCallbacks then
+		for _, cb in ipairs(frame.HealthValueChangeCallbacks) do
+			cb(self, frame, health);
+		end
+	end
 
 	frame.HealthBar:SetValue(health)
 	frame.FlashTexture:Point("TOPRIGHT", frame.HealthBar:GetStatusBarTexture(), "TOPRIGHT") --idk why this fixes this
@@ -227,6 +248,23 @@ function mod:UpdateElement_Health(frame)
 		frame.HealthBar.text:SetText(E:GetFormattedText(self.db.units[frame.UnitType].healthbar.text.format, health, maxHealth))
 	else
 		frame.HealthBar.text:SetText("")
+	end
+end
+
+function mod:RegisterHealthBarCallbacks(frame, valueChangeCB, colorChangeCB, maxHealthChangeCB)
+	if (valueChangeCB) then
+		frame.HealthValueChangeCallbacks = frame.HealthValueChangeCallbacks or {};
+		tinsert(frame.HealthValueChangeCallbacks, valueChangeCB);
+	end
+
+	if (colorChangeCB) then
+		frame.HealthColorChangeCallbacks = frame.HealthColorChangeCallbacks or {};
+		tinsert(frame.HealthColorChangeCallbacks, colorChangeCB);
+	end
+
+	if (maxHealthChangeCB) then
+		frame.MaxHealthChangeCallbacks = frame.MaxHealthChangeCallbacks or {};
+		tinsert(frame.MaxHealthChangeCallbacks, maxHealthChangeCB)
 	end
 end
 
@@ -249,6 +287,8 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+
+
 	if (not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()
 	end

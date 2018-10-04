@@ -6,9 +6,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
-local GetPrestigeInfo = GetPrestigeInfo
-local UnitPrestige = UnitPrestige
-local UnitLevel = UnitLevel
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: INSPECTED_UNIT, LE_EXPANSION_LEVEL_CURRENT, MAX_PLAYER_LEVEL_TABLE
@@ -35,16 +32,6 @@ local function LoadSkin()
 	--Reposition the wreath
 	InspectPVPFrame.SmallWreath:ClearAllPoints()
 	InspectPVPFrame.SmallWreath:SetPoint("TOPLEFT", -2, -25)
-	--Update texture according to prestige
-	hooksecurefunc("InspectPVPFrame_Update", function()
-		local level = UnitLevel(INSPECTED_UNIT);
-		if not (level < MAX_PLAYER_LEVEL_TABLE[LE_EXPANSION_LEVEL_CURRENT]) then
-			local prestigeLevel = UnitPrestige(INSPECTED_UNIT);
-			if (prestigeLevel > 0) then
-				portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
-			end
-		end
-	end)
 
 	-- PVE Talents
 	for i = 1, 7 do
@@ -60,17 +47,24 @@ local function LoadSkin()
 	end
 
 	-- PVP Talents
-	for i = 1, 6 do
-		for j = 1, 3 do
-			local button = _G["InspectPVPFrameTalentRow"..i.."Talent"..j]
+	-- Probably needs some adjustments
+	local InspectPVPFrame = _G["InspectPVPFrame"]
 
-			button:StripTextures()
-			button:CreateBackdrop("Default")
+	local trinketSlot = InspectPVPFrame.TrinketSlot
+	trinketSlot.Border:Hide()
+	trinketSlot.Texture:SetTexCoord(unpack(E.TexCoords))
 
-			button.Icon:SetAllPoints()
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
-		end
-	end
+	local talentSlot1 = InspectPVPFrame.TalentSlot1
+	talentSlot1.Border:Hide()
+	talentSlot1.Texture:SetTexCoord(unpack(E.TexCoords))
+
+	local talentSlot2 = InspectPVPFrame.TalentSlot2
+	talentSlot2.Border:Hide()
+	talentSlot2.Texture:SetTexCoord(unpack(E.TexCoords))
+
+	local talentSlot3 = InspectPVPFrame.TalentSlot3
+	talentSlot3.Border:Hide()
+	talentSlot3.Texture:SetTexCoord(unpack(E.TexCoords))
 
 	for i = 1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
@@ -90,7 +84,23 @@ local function LoadSkin()
 	InspectModelFrameBorderBottomRight:Kill()
 	InspectModelFrameBorderBottom:Kill()
 	InspectModelFrameBorderBottom2:Kill()
-	InspectModelFrameBackgroundOverlay:Kill()
+
+	--Re-add the overlay texture which was removed via StripTextures
+	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
+
+	-- Give inspect frame model backdrop it's color back
+	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
+		local bg = _G["InspectModelFrameBackground"..corner];
+		if bg then
+			bg:SetDesaturated(false);
+			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			hooksecurefunc(bg, "SetDesaturated", function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false);
+				end
+			end)
+		end
+	end
 
 	local slots = {
 		"HeadSlot",

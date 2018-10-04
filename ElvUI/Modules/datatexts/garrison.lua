@@ -26,8 +26,8 @@ local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
 
 local GARRISON_CURRENCY = 824
 local OIL_CURRENCY = 1101
-local GARRISON_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)), 16, 16)
-local OIL_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(OIL_CURRENCY)), 16, 16)
+local GARRISON_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)))
+local OIL_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(OIL_CURRENCY)))
 
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime

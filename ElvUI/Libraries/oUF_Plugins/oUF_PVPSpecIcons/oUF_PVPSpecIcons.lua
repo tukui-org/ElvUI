@@ -6,10 +6,10 @@ assert(oUF, 'oUF not loaded')
 local Update = function(self, event, unit)
 	if event == 'ARENA_OPPONENT_UPDATE' and unit ~= self.unit then return; end
 	local specIcon = self.PVPSpecIcon
-	
+
 	local _, instanceType = IsInInstance();
 	specIcon.instanceType = instanceType
-	
+
 	if(specIcon.PreUpdate) then specIcon:PreUpdate(event) end
 
 	if instanceType == 'arena' then
@@ -41,7 +41,7 @@ local Enable = function(self)
 	if specIcon then
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
-		
+
 		if not specIcon.Icon then
 			specIcon.Icon = specIcon:CreateTexture(nil, "OVERLAY")
 			specIcon.Icon:SetAllPoints(specIcon)
@@ -51,15 +51,15 @@ local Enable = function(self)
 		return true
 	end
 end
- 
+
 local Disable = function(self)
 	local specIcon = self.PVPSpecIcon
 	if specIcon then
 		self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)		
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
 		specIcon:Hide()
 	end
 end
- 
+
 oUF:AddElement('PVPSpecIcon', Update, Enable, Disable)

@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local getn = getn
 local pairs = pairs
 local unpack = unpack
 --WoW API / Variables
@@ -12,7 +11,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS, L_UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -33,19 +32,17 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
-
-		--DropDownMenu library support
-		"L_DropDownList1Backdrop",
-		"L_DropDownList1MenuBackdrop"
 	}
 
-	for i = 1, getn(skins) do
+	for i = 1, #skins do
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
+	S:HandleButton(StaticPopup1ExtraButton)
+
 	QueueStatusFrame:StripTextures()
 
-	if not IsAddOnLoaded("ConsolePort") then
+	if not IsAddOnLoaded("ConsolePortUI_Menu") then
 		-- reskin all esc/menu buttons
 		local BlizzardMenuButtons = {
 			"GameMenuButtonOptions",
@@ -74,9 +71,7 @@ local function LoadSkin()
 
 		-- Skin the ElvUI Menu Button
 		S:HandleButton(GameMenuFrame.ElvUI)
-	end
 
-	if not IsAddOnLoaded("ConsolePort") then
 		GameMenuFrame:SetTemplate("Transparent")
 		GameMenuFrameHeader:SetTexture("")
 		GameMenuFrameHeader:ClearAllPoints()
@@ -121,7 +116,7 @@ local function LoadSkin()
 		"VoiceMacroMenu",
 	}
 
-	for i = 1, getn(ChatMenus) do
+	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G["ChatMenu"] then
 			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
 		else
@@ -152,20 +147,13 @@ local function LoadSkin()
 		StaticPopup:HookScript("OnShow", function() -- UpdateRecapButton is created OnShow
 			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
 				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
-				hooksecurefunc(_G["StaticPopup"..i], "UpdateRecapButton", function(self)
-					-- when UpdateRecapButton runs and enables the button, it unsets OnEnter
-					-- we need to reset it with ours. blizzard will replace it when the button
-					-- is disabled. so, we don't have to worry about anything else.
-					if self.button4 and self.button4:IsEnabled() then
-						self.button4:SetScript("OnEnter", S.SetModifiedBackdrop)
-						self.button4:SetScript("OnLeave", S.SetOriginalBackdrop)
-					end
-				end)
+				hooksecurefunc(_G["StaticPopup"..i], "UpdateRecapButton", S.UpdateRecapButton)
 			end
 		end)
 		for j = 1, 4 do
 			S:HandleButton(StaticPopup["button"..j])
 		end
+		_G["StaticPopup"..i.."EditBox"]:SetFrameLevel(_G["StaticPopup"..i.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
@@ -242,14 +230,6 @@ local function LoadSkin()
 		end
 	end)
 
-	--LibUIDropDownMenu
-	hooksecurefunc("L_UIDropDownMenu_CreateFrames", function()
-		if not _G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["L_DropDownList"..L_UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
-		end
-	end)
-
 	--[[local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
 			local button = _G["WatchFrameItem"..i]
@@ -300,22 +280,6 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
-
-	-- MicroButton Talent Alert
-	if TalentMicroButtonAlert then
-		TalentMicroButtonAlert:ClearAllPoints()
-		TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
-		TalentMicroButtonAlert:StripTextures()
-		TalentMicroButtonAlert.Arrow:Hide()
-		TalentMicroButtonAlert.Text:FontTemplate()
-		TalentMicroButtonAlert:CreateBackdrop("Transparent")
-		S:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
-
-		TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
-		TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
-		TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
-		TalentMicroButtonAlert.tex:SetSize(32, 32)
-	end
 end
 
 S:AddCallback("SkinMisc", LoadSkin)

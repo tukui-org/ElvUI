@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames');
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
+local type = type
 local select = select
 local pairs = pairs
 local ipairs = ipairs
@@ -17,7 +18,7 @@ local gsub = string.gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
+local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
@@ -25,9 +26,10 @@ local FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = FRIEN
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
 -- The variables below aren't caught by mikk's Find Globals script
+local CUSTOM, DISABLE, DEFAULT, COLORS = CUSTOM, DISABLE, DEFAULT, COLORS
 local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
 local HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP = HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP
-local RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
+local CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
 local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
 ------------------------------
 
@@ -247,13 +249,6 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					['NONE'] = NONE,
 				},
 			},
-			filters = {
-				name = FILTERS,
-				guiInline = true,
-				type = 'group',
-				order = 500,
-				args = {},
-			},
 			friendlyAuraType = {
 				type = 'select',
 				order = 16,
@@ -287,6 +282,19 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["yOffset"],
 				min = -1000, max = 1000, step = 1,
 			},
+			spacing = {
+				order = 20,
+				type = "range",
+				name = L["Spacing"],
+				min = 0, softMax = 20, step = 1,
+			},
+			filters = {
+				name = FILTERS,
+				guiInline = true,
+				type = 'group',
+				order = 500,
+				args = {},
+			},
 		},
 	}
 
@@ -317,15 +325,16 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	}
 	config.args.filters.args.specialPriority = {
 		order = 19,
+		sortByValue = true,
+		type = 'select',
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		type = 'select',
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
-				filters[filter] = filter
+				filters[filter] = L[filter]
 			end
 			return filters
 		end,
@@ -382,9 +391,13 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		dragOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
 		end,
-		stateSwitchGetText = function(_, text)
-			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+		stateSwitchGetText = function(_, TEXT)
+			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local text = friend or enemy or TEXT
+			local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
@@ -527,6 +540,10 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				["HEALTH"] = L["Health"],
 				["POWER"] = L["Power"],
 			},
+			disabled = function()
+				local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
+				return (smartAuraPosition and (smartAuraPosition == "BUFFS_ON_DEBUFFS" or smartAuraPosition == "FLUID_BUFFS_ON_DEBUFFS"))
+			end,
 		}
 	else
 		config.args.attachTo = {
@@ -540,6 +557,10 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				["HEALTH"] = L["Health"],
 				["POWER"] = L["Power"],
 			},
+			disabled = function()
+				local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
+				return (smartAuraPosition and (smartAuraPosition == "DEBUFFS_ON_BUFFS" or smartAuraPosition == "FLUID_DEBUFFS_ON_BUFFS"))
+			end,
 		}
 	end
 
@@ -575,15 +596,16 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	}
 	config.args.filters.args.specialPriority = {
 		order = 19,
+		sortByValue = true,
+		type = 'select',
 		name = L["Add Special Filter"],
 		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		type = 'select',
 		values = function()
 			local filters = {}
 			local list = E.global.unitframe['specialFilters']
 			if not list then return end
 			for filter in pairs(list) do
-				filters[filter] = filter
+				filters[filter] = L[filter]
 			end
 			return filters
 		end,
@@ -640,9 +662,13 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 		dragOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, true)
 		end,
-		stateSwitchGetText = function(_, text)
-			local friend, enemy = match(text, "^Friendly:([^,]*)"), match(text, "^Enemy:([^,]*)")
-			return (friend and format("|cFF33FF33%s|r %s", FRIEND, friend)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, enemy))
+		stateSwitchGetText = function(_, TEXT)
+			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local text = friend or enemy or TEXT
+			local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+			local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
+			return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
 		end,
 		stateSwitchOnClick = function(info)
 			filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
@@ -699,8 +725,27 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					frameName = "ElvUF_"..frameName
 					frameName = frameName:gsub('t(arget)', 'T%1')
 
-					if numUnits then
-						for i=1, numUnits do
+					if groupName == "party" then
+						local header = UF.headers[groupName]
+						for i = 1, header:GetNumChildren() do
+							local group = select(i, header:GetChildren())
+							for j = 1, group:GetNumChildren() do
+								--Party unitbutton
+								local unitbutton = select(j, group:GetChildren())
+								local castbar = unitbutton.Castbar
+								if not castbar.oldHide then
+									castbar.oldHide = castbar.Hide
+									castbar.Hide = castbar.Show
+									castbar:Show()
+								else
+									castbar.Hide = castbar.oldHide
+									castbar.oldHide = nil
+									castbar:Hide()
+								end
+							end
+						end
+					elseif numUnits then
+						for i = 1, numUnits do
 							local castbar = _G[frameName..i].Castbar
 							if not castbar.oldHide then
 								castbar.oldHide = castbar.Hide
@@ -1052,46 +1097,55 @@ local function CreateCustomTextGroup(unit, objectName)
 					if unit == 'boss' or unit == 'arena' then
 						for i=1, 5 do
 							if UF[unit..i] then
-								UF[unit..i]:Tag(UF[unit..i]["customTexts"][objectName], '');
+								UF[unit..i]:Untag(UF[unit..i]["customTexts"][objectName]);
 								UF[unit..i]["customTexts"][objectName]:Hide();
+								UF[unit..i]["customTexts"][objectName] = nil
 							end
 						end
 					elseif unit == 'party' or unit:find('raid') then
 						for i=1, UF[unit]:GetNumChildren() do
 							local child = select(i, UF[unit]:GetChildren())
-							if child.Tag then
-								child:Tag(child["customTexts"][objectName], '');
+							if child.Untag then
+								child:Untag(child["customTexts"][objectName]);
 								child["customTexts"][objectName]:Hide();
+								child["customTexts"][objectName] = nil
 							else
 								for x=1, child:GetNumChildren() do
 									local c2 = select(x, child:GetChildren())
-									if(c2.Tag) then
-										c2:Tag(c2["customTexts"][objectName], '');
+									if(c2.Untag) then
+										c2:Untag(c2["customTexts"][objectName]);
 										c2["customTexts"][objectName]:Hide();
+										c2["customTexts"][objectName] = nil
 									end
 								end
 							end
 						end
 					elseif UF[unit] then
-						UF[unit]:Tag(UF[unit]["customTexts"][objectName], '');
+						UF[unit]:Untag(UF[unit]["customTexts"][objectName]);
 						UF[unit]["customTexts"][objectName]:Hide();
+						UF[unit]["customTexts"][objectName] = nil
 					end
 				end,
 			},
+			enable = {
+				order = 3,
+				type = "toggle",
+				name = L["Enable"],
+			},
 			font = {
 				type = "select", dialogControl = 'LSM30_Font',
-				order = 3,
+				order = 4,
 				name = L["Font"],
 				values = AceGUIWidgetLSMlists.font,
 			},
 			size = {
-				order = 4,
+				order = 5,
 				name = FONT_SIZE,
 				type = "range",
 				min = 4, max = 212, step = 1,
 			},
 			fontOutline = {
-				order = 5,
+				order = 6,
 				name = L["Font Outline"],
 				desc = L["Set the font outline."],
 				type = "select",
@@ -1103,7 +1157,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				},
 			},
 			justifyH = {
-				order = 6,
+				order = 7,
 				type = 'select',
 				name = L["JustifyH"],
 				desc = L["Sets the font instance's horizontal text alignment style."],
@@ -1114,20 +1168,20 @@ local function CreateCustomTextGroup(unit, objectName)
 				},
 			},
 			xOffset = {
-				order = 7,
+				order = 8,
 				type = 'range',
 				name = L["xOffset"],
 				min = -400, max = 400, step = 1,
 			},
 			yOffset = {
-				order = 8,
+				order = 9,
 				type = 'range',
 				name = L["yOffset"],
 				min = -400, max = 400, step = 1,
 			},
 			attachTextTo = {
 				type = 'select',
-				order = 9,
+				order = 10,
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
@@ -1280,7 +1334,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			overlay = {
 				type = 'toggle',
 				name = L["Overlay"],
-				desc = L["Overlay the healthbar"],
+				desc = L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."],
 				order = 4,
 			},
 			rotation = {
@@ -1458,7 +1512,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 12,
 				name = L["Detached Width"],
 				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-				min = 15, max = 450, step = 1,
+				min = 15, max = 1000, step = 1,
 			}
 			config.args.parent = {
 				type = 'select',
@@ -1567,6 +1621,60 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 			},
 			yOffset = {
 				order = 6,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
+	local config = {
+		order = 5001,
+		type = 'group',
+		name = L["Resurrect Icon"],
+		get = function(info) return E.db.unitframe.units[groupName]['resurrectIcon'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['resurrectIcon'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Resurrect Icon"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			attachTo = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
+			},
+			size = {
+				order = 5,
+				type = 'range',
+				name = L["Size"],
+				min = 8, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 6,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 7,
 				type = 'range',
 				name = L["yOffset"],
 				min = -300, max = 300, step = 1,
@@ -1838,20 +1946,20 @@ E.Options.args.unitframe = {
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "generalGroup") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
-		colorsShortcut = {
+		frameGlowShortcut = {
 			order = 5,
 			type = "execute",
-			name = COLORS,
+			name = L["Frame Glow"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "frameGlowGroup") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
-		blizzardShortcut = {
+		cooldownShortcut = {
 			order = 6,
 			type = "execute",
-			name = L["Disabled Blizzard Frames"],
+			name = L["Cooldowns"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "disabledBlizzardFrames") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "unitframe") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer2 = {
@@ -1859,28 +1967,28 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		playerShortcut = {
+		colorsShortcut = {
 			order = 8,
+			type = "execute",
+			name = COLORS,
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		blizzardShortcut = {
+			order = 9,
+			type = "execute",
+			name = L["Disabled Blizzard Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "disabledBlizzardFrames") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		playerShortcut = {
+			order = 10,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "player") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		targetShortcut = {
-			order = 9,
-			type = "execute",
-			name = L["Target Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "target") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		targettargetShortcut = {
-			order = 10,
-			type = "execute",
-			name = L["TargetTarget Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettarget") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer3 = {
@@ -1888,28 +1996,28 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		targettargettargetShortcut = {
+		targetShortcut = {
 			order = 12,
+			type = "execute",
+			name = L["Target Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "target") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		targettargetShortcut = {
+			order = 13,
+			type = "execute",
+			name = L["TargetTarget Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettarget") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		targettargettargetShortcut = {
+			order = 14,
 			type = "execute",
 			name = L["TargetTargetTarget Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettargettarget") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		focusShortcut = {
-			order = 13,
-			type = "execute",
-			name = L["Focus Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focus") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		focustargetShortcut = {
-			order = 14,
-			type = "execute",
-			name = L["FocusTarget Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focustarget") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer4 = {
@@ -1917,28 +2025,28 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		petShortcut = {
+		focusShortcut = {
 			order = 16,
+			type = "execute",
+			name = L["Focus Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focus") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		focustargetShortcut = {
+			order = 17,
+			type = "execute",
+			name = L["FocusTarget Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focustarget") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		petShortcut = {
+			order = 18,
 			type = "execute",
 			name = L["Pet Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pet") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		pettargetShortcut = {
-			order = 17,
-			type = "execute",
-			name = L["PetTarget Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pettarget") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		arenaShortcut = {
-			order = 18,
-			type = "execute",
-			name = L["Arena Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "arena") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer5 = {
@@ -1946,28 +2054,28 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		bossShortcut = {
+		pettargetShortcut = {
 			order = 20,
+			type = "execute",
+			name = L["PetTarget Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pettarget") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		arenaShortcut = {
+			order = 21,
+			type = "execute",
+			name = L["Arena Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "arena") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		bossShortcut = {
+			order = 22,
 			type = "execute",
 			name = L["Boss Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "boss") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		partyShortcut = {
-			order = 21,
-			type = "execute",
-			name = L["Party Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "party") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		raidShortcut = {
-			order = 22,
-			type = "execute",
-			name = L["Raid Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer6 = {
@@ -1975,28 +2083,28 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		raid40Shortcut = {
+		partyShortcut = {
 			order = 24,
+			type = "execute",
+			name = L["Party Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "party") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		raidShortcut = {
+			order = 25,
+			type = "execute",
+			name = L["Raid Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		raid40Shortcut = {
+			order = 26,
 			type = "execute",
 			name = L["Raid-40 Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid40") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		raidpetShortcut = {
-			order = 25,
-			type = "execute",
-			name = L["Raid Pet Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raidpet") end,
-			disabled = function() return not E.UnitFrames; end,
-		},
-		assistShortcut = {
-			order = 26,
-			type = "execute",
-			name = L["Assist Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "unitframe", "assist") end,
 			disabled = function() return not E.UnitFrames; end,
 		},
 		spacer7 = {
@@ -2004,8 +2112,24 @@ E.Options.args.unitframe = {
 			type = "description",
 			name = " ",
 		},
-		tankShortcut = {
+		raidpetShortcut = {
 			order = 28,
+			type = "execute",
+			name = L["Raid Pet Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raidpet") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		assistShortcut = {
+			order = 29,
+			type = "execute",
+			name = L["Assist Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "unitframe", "assist") end,
+			disabled = function() return not E.UnitFrames; end,
+		},
+		tankShortcut = {
+			order = 30,
 			type = "execute",
 			name = L["Tank Frames"],
 			buttonElvUI = true,
@@ -2013,7 +2137,7 @@ E.Options.args.unitframe = {
 			disabled = function() return not E.UnitFrames; end,
 		},
 		generalOptionsGroup = {
-			order = 29,
+			order = 31,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -2150,8 +2274,171 @@ E.Options.args.unitframe = {
 						},
 					},
 				},
-				allColorsGroup = {
+				frameGlowGroup = {
 					order = 2,
+					type = 'group',
+					childGroups = "tree",
+					name = L["Frame Glow"],
+					args = {
+						mainGlow = {
+							order = 1,
+							type = 'group',
+							guiInline = true,
+							name = L["Mouseover Glow"],
+							get = function(info)
+								local t = E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
+								if type(t) == "boolean" then return t end
+								local d = P.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ]
+								if type(t) == "boolean" then
+									E.db.unitframe.colors.frameGlow.mainGlow[ info[#info] ] = r
+								else
+									t.r, t.g, t.b, t.a = r, g, b, a
+								end
+								UF:FrameGlow_UpdateFrames();
+							end,
+							disabled = function() return not E.db.unitframe.colors.frameGlow.mainGlow.enable end,
+							args = {
+								enable = {
+									order = 1,
+									type = 'toggle',
+									name = L["Enable"],
+									disabled = false,
+								},
+								spacer = {
+									order = 2,
+									type = "description",
+									name = "",
+								},
+								class = {
+									order = 3,
+									type = 'toggle',
+									name = L["Use Class Color"],
+									desc = L["Alpha channel is taken from the color option."],
+								},
+								color = {
+									order = 4,
+									name = COLOR,
+									type = 'color',
+									hasAlpha = true,
+								},
+							}
+						},
+						targetGlow = {
+							order = 3,
+							type = 'group',
+							guiInline = true,
+							name = L["Targeted Glow"],
+							get = function(info)
+								local t = E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
+								if type(t) == "boolean" then return t end
+								local d = P.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ]
+								if type(t) == "boolean" then
+									E.db.unitframe.colors.frameGlow.targetGlow[ info[#info] ] = r
+								else
+									t.r, t.g, t.b, t.a = r, g, b, a
+								end
+								UF:FrameGlow_UpdateFrames();
+							end,
+							disabled = function() return not E.db.unitframe.colors.frameGlow.targetGlow.enable end,
+							args = {
+								enable = {
+									order = 1,
+									type = 'toggle',
+									name = L["Enable"],
+									disabled = false,
+								},
+								spacer = {
+									order = 2,
+									type = "description",
+									name = "",
+								},
+								class = {
+									order = 3,
+									type = 'toggle',
+									name = L["Use Class Color"],
+									desc = L["Alpha channel is taken from the color option."],
+								},
+								color = {
+									order = 4,
+									name = COLOR,
+									type = 'color',
+									hasAlpha = true,
+								},
+							}
+						},
+						mouseoverGlow = {
+							order = 5,
+							type = 'group',
+							guiInline = true,
+							name = L["Mouseover Highlight"],
+							get = function(info)
+								local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
+								if type(t) == "boolean" then return t end
+								local d = P.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
+								if type(t) == "boolean" then
+									E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ] = r
+								else
+									t.r, t.g, t.b, t.a = r, g, b, a
+								end
+								UF:FrameGlow_UpdateFrames();
+							end,
+							disabled = function() return not E.db.unitframe.colors.frameGlow.mouseoverGlow.enable end,
+							args = {
+								enable = {
+									order = 1,
+									type = 'toggle',
+									name = L["Enable"],
+									disabled = false,
+								},
+								texture = {
+									type = "select",
+									dialogControl = 'LSM30_Statusbar',
+									order = 2,
+									name = L["Texture"],
+									values = AceGUIWidgetLSMlists.statusbar,
+									get = function(info)
+										return E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ]
+									end,
+									set = function(info, value)
+										E.db.unitframe.colors.frameGlow.mouseoverGlow[ info[#info] ] = value;
+										UF:FrameGlow_UpdateFrames();
+									end,
+								},
+								spacer = {
+									order = 3,
+									type = "description",
+									name = "",
+								},
+								class = {
+									order = 4,
+									type = 'toggle',
+									name = L["Use Class Color"],
+									desc = L["Alpha channel is taken from the color option."],
+								},
+								color = {
+									order = 5,
+									name = COLOR,
+									type = 'color',
+									hasAlpha = true,
+								},
+							}
+						},
+					}
+				},
+				allColorsGroup = {
+					order = 3,
 					type = 'group',
 					childGroups = "tree",
 					name = COLORS,
@@ -2576,10 +2863,51 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
+						debuffHighlight = {
+							order = 8,
+							name = L["Debuff Highlighting"],
+							type = 'group',
+							get = function(info)
+								local t = E.db.unitframe.colors.debuffHighlight[ info[#info] ]
+								local d = P.unitframe.colors.debuffHighlight[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.debuffHighlight[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								UF:Update_AllFrames()
+							end,
+							args = {
+								Magic = {
+									order = 1,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Curse = {
+									order = 2,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Disease = {
+									order = 3,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Poison = {
+									order = 4,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+							},
+						},
 					},
 				},
 				disabledBlizzardFrames = {
-					order = 3,
+					order = 4,
 					type = "group",
 					name = L["Disabled Blizzard Frames"],
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
@@ -2631,7 +2959,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				raidDebuffIndicator = {
-					order = 4,
+					order = 5,
 					type = "group",
 					name = L["RaidDebuff Indicator"],
 					args = {
@@ -2718,7 +3046,7 @@ E.Options.args.unitframe.args.player = {
 				},
 				copyFrom = {
 					type = 'select',
-					order = 2,
+					order = 3,
 					name = L["Copy From"],
 					desc = L["Select a unit to copy settings from."],
 					values = UF['units'],
@@ -2726,12 +3054,12 @@ E.Options.args.unitframe.args.player = {
 				},
 				resetSettings = {
 					type = 'execute',
-					order = 3,
+					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('player'); E:ResetMovers('Player Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player Frame"], nil, {unit='player', mover='Player Frame'}) end,
 				},
 				showAuras = {
-					order = 4,
+					order = 5,
 					type = 'execute',
 					name = L["Show Auras"],
 					func = function()
@@ -2746,10 +3074,10 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				width = {
-					order = 5,
+					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 					set = function(info, value)
 						if E.db.unitframe.units['player'].castbar.width == E.db.unitframe.units['player'][ info[#info] ] then
 							E.db.unitframe.units['player'].castbar.width = value;
@@ -2760,13 +3088,13 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				height = {
-					order = 6,
+					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				combatfade = {
-					order = 7,
+					order = 8,
 					name = L["Combat Fade"],
 					desc = L["Fade the unitframe when out of combat, not casting, no target exists."],
 					type = 'toggle',
@@ -2781,14 +3109,14 @@ E.Options.args.unitframe.args.player = {
 					end,
 				},
 				healPrediction = {
-					order = 8,
+					order = 9,
 					name = L["Heal Prediction"],
 					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 					type = 'toggle',
 				},
 				hideonnpc = {
 					type = 'toggle',
-					order = 9,
+					order = 10,
 					name = L["Text Toggle On NPC"],
 					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
 					get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
@@ -2796,30 +3124,47 @@ E.Options.args.unitframe.args.player = {
 				},
 				threatStyle = {
 					type = 'select',
-					order = 10,
+					order = 11,
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
 				smartAuraPosition = {
-					order = 11,
+					order = 12,
 					type = "select",
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = smartAuraPositionValues,
 				},
 				orientation = {
-					order = 12,
+					order = 13,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
 				colorOverride = {
-					order = 13,
+					order = 14,
 					name = L["Class Color Override"],
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 15,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 17,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -2878,87 +3223,120 @@ E.Options.args.unitframe.args.player = {
 					type = "toggle",
 					name = L["Additional Power Text"],
 				},
-				detachFromFrame = {
-					type = 'toggle',
-					order = 7,
-					name = L["Detach From Frame"],
-					set = function(info, value)
-						if value == true then
-							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
-						else
-							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
-						end
-						E.db.unitframe.units['player']['classbar'][ info[#info] ] = value;
-						UF:CreateAndUpdateUF('player')
-					end,
-				},
-				verticalOrientation = {
-					order = 8,
-					type = "toggle",
-					name = L["Vertical Orientation"],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-				},
-				detachedWidth = {
-					type = 'range',
-					order = 9,
-					name = L["Detached Width"],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
-				},
-				parent = {
-					type = 'select',
+				spacer = {
 					order = 10,
-					name = L["Parent"],
-					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					values = {
-						["FRAME"] = "FRAME",
-						["UIPARENT"] = "UIPARENT",
-					},
+					type = "description",
+					name = "",
 				},
-				strataAndLevel = {
+				detachGroup = {
 					order = 20,
 					type = "group",
-					name = L["Strata and Level"],
-					get = function(info) return E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] end,
-					set = function(info, value) E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+					name = L["Detach From Frame"],
+					get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+					set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 					guiInline = true,
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					hidden = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 					args = {
-						useCustomStrata = {
+						detachFromFrame = {
+							type = 'toggle',
 							order = 1,
-							type = "toggle",
-							name = L["Use Custom Strata"],
+							name = ENABLE,
+							width = 'full',
+							set = function(info, value)
+								if value == true then
+									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
+								else
+									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
+								end
+								E.db.unitframe.units['player']['classbar'][ info[#info] ] = value;
+								UF:CreateAndUpdateUF('player')
+							end,
 						},
-						frameStrata = {
+						detachedWidth = {
+							type = 'range',
 							order = 2,
-							type = "select",
-							name = L["Frame Strata"],
+							name = L["Detached Width"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
+						},
+						orientation = {
+							type = 'select',
+							order = 3,
+							name = L["Frame Orientation"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 							values = {
-								["BACKGROUND"] = "BACKGROUND",
-								["LOW"] = "LOW",
-								["MEDIUM"] = "MEDIUM",
-								["HIGH"] = "HIGH",
-								["DIALOG"] = "DIALOG",
-								["TOOLTIP"] = "TOOLTIP",
+								['HORIZONTAL'] = L["Horizontal"],
+								['VERTICAL'] = L["Vertical"],
 							},
 						},
-						spacer = {
-							order = 3,
-							type = "description",
-							name = "",
-						},
-						useCustomLevel = {
+						verticalOrientation = {
 							order = 4,
 							type = "toggle",
-							name = L["Use Custom Level"],
+							name = L["Vertical Fill Direction"],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 						},
-						frameLevel = {
+						spacing = {
 							order = 5,
 							type = "range",
-							name = L["Frame Level"],
-							min = 2, max = 128, step = 1,
+							name = L["Spacing"],
+							min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1,
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+						},
+						parent = {
+							type = 'select',
+							order = 6,
+							name = L["Parent"],
+							desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							values = {
+								["FRAME"] = "FRAME",
+								["UIPARENT"] = "UIPARENT",
+							},
+						},
+						strataAndLevel = {
+							order = 10,
+							type = "group",
+							name = L["Strata and Level"],
+							get = function(info) return E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] end,
+							set = function(info, value) E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+							guiInline = true,
+							disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							hidden = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+							args = {
+								useCustomStrata = {
+									order = 1,
+									type = "toggle",
+									name = L["Use Custom Strata"],
+								},
+								frameStrata = {
+									order = 2,
+									type = "select",
+									name = L["Frame Strata"],
+									values = {
+										["BACKGROUND"] = "BACKGROUND",
+										["LOW"] = "LOW",
+										["MEDIUM"] = "MEDIUM",
+										["HIGH"] = "HIGH",
+										["DIALOG"] = "DIALOG",
+										["TOOLTIP"] = "TOOLTIP",
+									},
+								},
+								spacer = {
+									order = 3,
+									type = "description",
+									name = "",
+								},
+								useCustomLevel = {
+									order = 4,
+									type = "toggle",
+									name = L["Use Custom Level"],
+								},
+								frameLevel = {
+									order = 5,
+									type = "range",
+									name = L["Frame Level"],
+									min = 2, max = 128, step = 1,
+								},
+							},
 						},
 					},
 				},
@@ -3035,11 +3413,26 @@ E.Options.args.unitframe.args.player = {
 					name = L["Anchor Point"],
 					values = positionValues,
 				},
+				texture = {
+					order = 10,
+					type = "select",
+					sortByValue = true,
+					name = L["Texture"],
+					values = {
+						["CUSTOM"] = CUSTOM,
+						["DEFAULT"] = DEFAULT,
+						["RESTING"] = [[|TInterface\AddOns\ElvUI\media\textures\resting:14|t]],
+						["RESTING1"] = [[|TInterface\AddOns\ElvUI\media\textures\resting1:14|t]],
+					},
+				},
 				customTexture = {
 					type = 'input',
-					order = 10,
+					order = 11,
 					customWidth = 250,
 					name = L["Custom Texture"],
+					disabled = function()
+						return E.db.unitframe.units['player']['RestIcon'].texture ~= "CUSTOM"
+					end,
 					set = function(_, value)
 						E.db.unitframe.units['player']['RestIcon'].customTexture = (value and (not value:match("^%s-$")) and value) or nil
 						UF:CreateAndUpdateUF('player');
@@ -3122,10 +3515,12 @@ E.Options.args.unitframe.args.player = {
 				texture = {
 					order = 10,
 					type = "select",
+					sortByValue = true,
 					name = L["Texture"],
 					values = {
 						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
+						["COMBAT"] = [[|TInterface\AddOns\ElvUI\media\textures\combat:14|t]],
 						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
 						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
 						["ALERT"] = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
@@ -3151,7 +3546,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpIcon = {
-			order = 449,
+			order = 450,
 			type = 'group',
 			name = L["PvP & Prestige Icon"],
 			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
@@ -3200,7 +3595,7 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		pvpText = {
-			order = 450,
+			order = 460,
 			type = 'group',
 			name = L["PvP Text"],
 			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
@@ -3267,7 +3662,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('target'); E:ResetMovers('Target Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, {unit='target', mover='Target Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3288,7 +3683,7 @@ E.Options.args.unitframe.args.target = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 					set = function(info, value)
 						if E.db.unitframe.units['target'].castbar.width == E.db.unitframe.units['target'][ info[#info] ] then
 							E.db.unitframe.units['target'].castbar.width = value;
@@ -3302,7 +3697,7 @@ E.Options.args.unitframe.args.target = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -3358,6 +3753,18 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				disableMouseoverGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 17,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
 			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
@@ -3394,6 +3801,55 @@ E.Options.args.unitframe.args.target = {
 					name = L["Scale"],
 					isPercent = true,
 					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
+		phaseIndicator = {
+			order = 450,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
 				},
 				spacer = {
 					order = 4,
@@ -3461,7 +3917,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('targettarget'); E:ResetMovers('TargetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, {unit='targettarget', mover='TargetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3482,13 +3938,13 @@ E.Options.args.unitframe.args.targettarget = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -3534,6 +3990,23 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3587,7 +4060,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('targettargettarget'); E:ResetMovers('TargetTargetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, {unit='targettargettarget', mover='TargetTargetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3608,13 +4081,13 @@ E.Options.args.unitframe.args.targettargettarget = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -3656,6 +4129,23 @@ E.Options.args.unitframe.args.targettargettarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3709,7 +4199,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('focus'); E:ResetMovers('Focus Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, {unit='focus', mover='Focus Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3730,13 +4220,13 @@ E.Options.args.unitframe.args.focus = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -3784,6 +4274,18 @@ E.Options.args.unitframe.args.focus = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3839,7 +4341,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('focustarget'); E:ResetMovers('FocusTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, {unit='focustarget', mover='FocusTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3860,13 +4362,13 @@ E.Options.args.unitframe.args.focustarget = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -3908,6 +4410,23 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -3961,7 +4480,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('pet'); E:ResetMovers('Pet Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, {unit='pet', mover='Pet Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -3982,13 +4501,13 @@ E.Options.args.unitframe.args.pet = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -4036,6 +4555,18 @@ E.Options.args.unitframe.args.pet = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4121,7 +4652,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('pettarget'); E:ResetMovers('PetTarget Frame') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, {unit='pettarget', mover='PetTarget Frame'}) end,
 				},
 				showAuras = {
 					order = 5,
@@ -4142,13 +4673,13 @@ E.Options.args.unitframe.args.pettarget = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -4190,6 +4721,23 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				spacer = {
+					order = 14,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 15,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 16,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4245,7 +4793,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('boss'); E:ResetMovers('Boss Frames') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end,
 				},
 				displayFrames = {
 					type = 'execute',
@@ -4258,7 +4806,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 					set = function(info, value)
 						if E.db.unitframe.units['boss'].castbar.width == E.db.unitframe.units['boss'][ info[#info] ] then
 							E.db.unitframe.units['boss'].castbar.width = value;
@@ -4272,7 +4820,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -4332,10 +4880,17 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 16,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 17,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4393,7 +4948,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'execute',
 					order = 4,
 					name = L["Restore Defaults"],
-					func = function(info) UF:ResetUnitSettings('arena'); E:ResetMovers('Arena Frames') end,
+					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, {unit='arena', mover='Arena Frames'}) end,
 				},
 				displayFrames = {
 					type = 'execute',
@@ -4406,7 +4961,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 6,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 					set = function(info, value)
 						if E.db.unitframe.units['arena'].castbar.width == E.db.unitframe.units['arena'][ info[#info] ] then
 							E.db.unitframe.units['arena'].castbar.width = value;
@@ -4420,7 +4975,7 @@ E.Options.args.unitframe.args.arena = {
 					order = 7,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				rangeCheck = {
 					order = 8,
@@ -4491,10 +5046,22 @@ E.Options.args.unitframe.args.arena = {
 						["RIGHT"] = L["Right"],
 					},
 				},
-				targetGlow = {
+				spacer = {
 					order = 17,
+					type = "description",
+					name = "",
+				},
+				disableMouseoverGlow = {
+					order = 18,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 19,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -4578,7 +5145,7 @@ E.Options.args.unitframe.args.party = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('party'); E:ResetMovers('Party Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, {unit='party', mover='Party Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4647,10 +5214,17 @@ E.Options.args.unitframe.args.party = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -4725,6 +5299,13 @@ E.Options.args.unitframe.args.party = {
 							type = 'range',
 							name = L["Vertical Spacing"],
 							min = -1, max = 50, step = 1,
+						},
+						groupSpacing = {
+							order = 11,
+							type = "range",
+							name = L["Group Spacing"],
+							desc = L["Additional spacing between each individual group."],
+							min = 0, softMax = 50, step = 1,
 						},
 					},
 				},
@@ -4932,14 +5513,14 @@ E.Options.args.unitframe.args.party = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['party']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -4965,6 +5546,7 @@ E.Options.args.unitframe.args.party = {
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'party'),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateHeaderGroup, 'party', 5),
 		petsGroup = {
 			order = 850,
 			type = 'group',
@@ -4992,7 +5574,7 @@ E.Options.args.unitframe.args.party = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -5081,7 +5663,7 @@ E.Options.args.unitframe.args.party = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -5145,6 +5727,56 @@ E.Options.args.unitframe.args.party = {
 		},
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		phaseIndicator = {
+			order = 5005,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 	},
 }
 
@@ -5170,7 +5802,7 @@ E.Options.args.unitframe.args.raid = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raid'); E:ResetMovers('Raid Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Frames"], nil, {unit='raid', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -5239,10 +5871,17 @@ E.Options.args.unitframe.args.raid = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -5317,6 +5956,13 @@ E.Options.args.unitframe.args.raid = {
 							type = 'range',
 							name = L["Vertical Spacing"],
 							min = -1, max = 50, step = 1,
+						},
+						groupSpacing = {
+							order = 11,
+							type = "range",
+							name = L["Group Spacing"],
+							desc = L["Additional spacing between each individual group."],
+							min = 0, softMax = 50, step = 1,
 						},
 					},
 				},
@@ -5531,14 +6177,14 @@ E.Options.args.unitframe.args.raid = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -5556,9 +6202,59 @@ E.Options.args.unitframe.args.raid = {
 				},
 			},
 		},
+		phaseIndicator = {
+			order = 5006,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['raid']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
 
@@ -5584,7 +6280,7 @@ E.Options.args.unitframe.args.raid40 = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raid40'); E:ResetMovers('Raid Frames') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid-40 Frames"], nil, {unit='raid40', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -5653,10 +6349,17 @@ E.Options.args.unitframe.args.raid40 = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				targetGlow = {
+				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
-					name = L["Target Glow"],
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -5731,6 +6434,13 @@ E.Options.args.unitframe.args.raid40 = {
 							type = 'range',
 							name = L["Vertical Spacing"],
 							min = -1, max = 50, step = 1,
+						},
+						groupSpacing = {
+							order = 11,
+							type = "range",
+							name = L["Group Spacing"],
+							desc = L["Additional spacing between each individual group."],
+							min = 0, softMax = 50, step = 1,
 						},
 					},
 				},
@@ -5945,14 +6655,14 @@ E.Options.args.unitframe.args.raid40 = {
 		raidRoleIcons = {
 			order = 703,
 			type = 'group',
-			name = L["RL / ML Icons"],
+			name = L["RL Icon"],
 			get = function(info) return E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['raid40']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["RL / ML Icons"],
+					name = L["RL Icon"],
 				},
 				enable = {
 					type = 'toggle',
@@ -5970,9 +6680,59 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 			},
 		},
+		phaseIndicator = {
+			order = 5007,
+			type = 'group',
+			name = L["Phase Indicator"],
+			get = function(info) return E.db.unitframe.units['raid40']['phaseIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid40']['phaseIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Phase Indicator"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 5,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 6,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
 
@@ -5998,7 +6758,7 @@ E.Options.args.unitframe.args.raidpet = {
 			type = 'execute',
 			order = 2,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('raidpet'); E:ResetMovers('Raid Pet Frames'); UF:CreateAndUpdateHeaderGroup('raidpet', nil, nil, true); end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit='raidpet', mover='Raid Pet Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -6058,6 +6818,18 @@ E.Options.args.unitframe.args.raidpet = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
+				},
+				disableMouseoverGlow = {
+					order = 8,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -6132,6 +6904,13 @@ E.Options.args.unitframe.args.raidpet = {
 							type = 'range',
 							name = L["Vertical Spacing"],
 							min = -1, max = 50, step = 1,
+						},
+						groupSpacing = {
+							order = 11,
+							type = "range",
+							name = L["Group Spacing"],
+							desc = L["Additional spacing between each individual group."],
+							min = 0, softMax = 50, step = 1,
 						},
 					},
 				},
@@ -6271,7 +7050,7 @@ E.Options.args.unitframe.args.tank = {
 			type = 'execute',
 			order = 1,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('tank') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, {unit='tank'}) end,
 		},
 		generalGroup = {
 			order = 2,
@@ -6292,13 +7071,13 @@ E.Options.args.unitframe.args.tank = {
 					order = 3,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				verticalSpacing = {
 					order = 5,
@@ -6326,6 +7105,18 @@ E.Options.args.unitframe.args.tank = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -6356,7 +7147,7 @@ E.Options.args.unitframe.args.tank = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -6458,7 +7249,7 @@ E.Options.args.unitframe.args.assist = {
 			type = 'execute',
 			order = 1,
 			name = L["Restore Defaults"],
-			func = function(info) UF:ResetUnitSettings('assist') end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, {unit='assist'}) end,
 		},
 		generalGroup = {
 			order = 2,
@@ -6479,13 +7270,13 @@ E.Options.args.unitframe.args.assist = {
 					order = 3,
 					name = L["Width"],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				height = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				verticalSpacing = {
 					order = 5,
@@ -6513,6 +7304,18 @@ E.Options.args.unitframe.args.assist = {
 					desc = L["Override the default class color setting."],
 					type = 'select',
 					values = colorOverrideValues,
+				},
+				disableMouseoverGlow = {
+					order = 9,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 10,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 			},
 		},
@@ -6543,7 +7346,7 @@ E.Options.args.unitframe.args.assist = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -6740,6 +7543,22 @@ if P.unitframe.colors.classResources[E.myclass] then
 			order = ORDER,
 		}
 	end
+end
+
+if E.myclass == 'DEATHKNIGHT' then
+	E.Options.args.unitframe.args.player.args.classbar.args.sortDirection = {
+		name = L["Sort Direction"],
+		desc = L["Defines the sort order of the selected sort method."],
+		type = 'select',
+		order = 7,
+		values = {
+			['asc'] = L["Ascending"],
+			['desc'] = L["Descending"],
+			['NONE'] = NONE,
+		},
+		get = function(info) return E.db.unitframe.units['player']['classbar'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units['player']['classbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+	}
 end
 
 --Custom Texts

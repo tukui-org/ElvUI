@@ -23,7 +23,6 @@ local GetTexCoordsForRole = GetTexCoordsForRole
 local GetRaidRosterInfo = GetRaidRosterInfo
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -34,7 +33,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, CLOSE
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLockedModeToggle, RaidUtility_CloseButton
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
--- GLOBALS: RaidUtilityRoleIcons, NUM_RAID_GROUPS, CUSTOM_CLASS_COLORS
+-- GLOBALS: GameTooltip, RaidUtilityRoleIcons, NUM_RAID_GROUPS, CUSTOM_CLASS_COLORS
 
 E.RaidUtility = RU
 local PANEL_HEIGHT = 100
@@ -205,7 +204,10 @@ function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
 
 	--Create main frame
-	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerClickTemplate")
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate")
+	RaidUtilityPanel:SetScript("OnMouseUp", function(panel, ...)
+		SecureHandler_OnClick(panel, "_onclick", ...);
+	end)
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)

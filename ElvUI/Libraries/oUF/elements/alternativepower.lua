@@ -30,7 +30,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- sourced from FrameXML/UnitPowerBarAlt.lua
-local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX or 10
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function updateTooltip(self)
 	GameTooltip:SetText(self.powerName, 1, 1, 1)
@@ -106,14 +106,15 @@ local function Visibility(self, event, unit)
 	local element = self.AlternativePower
 
 	local barType, _, _, _, _, hideFromOthers, showOnRaid = UnitAlternatePowerInfo(unit)
-	if(barType and (showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not hideFromOthers or unit == 'player' or self.realUnit == 'player')) then
-		self:RegisterEvent('UNIT_POWER', Path)
+	if(barType and (showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not hideFromOthers
+		or UnitIsUnit(unit, 'player') or UnitIsUnit(self.realUnit, 'player'))) then
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		element:Show()
 		Path(self, event, unit, 'ALTERNATE')
 	else
-		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		element:Hide()

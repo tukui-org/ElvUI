@@ -67,17 +67,23 @@ E.Options.args.general = {
 					order = 6,
 					name = L["Vendor Grays"],
 					desc = L["Automatically vendor gray items when visiting a vendor."],
-					type = 'toggle',
+					type = "toggle",
+				},
+				vendorGraysDetails = {
+					order = 7,
+					name = L["Vendor Gray Detailed Report"],
+					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
 				},
 				autoRoll = {
-					order = 7,
+					order = 8,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
-					order = 8,
+					order = 9,
 					type = "toggle",
 					name = L["Loot"],
 					desc = L["Enable/Disable the loot frame."],
@@ -85,7 +91,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 9,
+					order = 10,
 					type = "toggle",
 					name = L["Loot Roll"],
 					desc = L["Enable/Disable the loot roll frame."],
@@ -135,7 +141,6 @@ E.Options.args.general = {
 					desc = L["When you go AFK display the AFK screen."],
 					get = function(info) return E.db.general.afk end,
 					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
-
 				},
 				enhancedPvpMessages = {
 					order = 17,
@@ -175,16 +180,24 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.raidUtility end,
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				minUiScale = {
+				voiceOverlay = {
 					order = 22,
+					type = "toggle",
+					name = E.NewSign..L["Voice Overlay"],
+					desc = L["Replace Blizzard's Voice Overlay. |cffFF0000WARNING: WORK IN PROGRESS|r"],
+					get = function(info) return E.private.general.voiceOverlay end,
+					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
+				minUiScale = {
+					order = 23,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
-					min = 0.32, max = 0.64, step = 0.01,
+					softMin = 0.20, softMax = 0.64, step = 0.01,
 					get = function(info) return E.global.general.minUiScale end,
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				talkingHeadFrameScale = {
-					order = 23,
+					order = 24,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -192,8 +205,17 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
+				decimalLength = {
+					order = 25,
+					type = "range",
+					name = L["Decimal Length"],
+					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
+					min = 0, max = 4, step = 1,
+					get = function(info) return E.db.general.decimalLength end,
+					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
 				commandBarSetting = {
-					order = 24,
+					order = 26,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -206,7 +228,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 25,
+					order = 27,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
@@ -219,15 +241,6 @@ E.Options.args.general = {
 						["KOREAN"] = "Korean (천, 만, 억)",
 						["GERMAN"] = "German (Tsd, Mio, Mrd)"
 					},
-				},
-				decimalLength = {
-					order = 26,
-					type = "range",
-					name = L["Decimal Length"],
-					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
-					min = 0, max = 4, step = 1,
-					get = function(info) return E.db.general.decimalLength end,
-					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 			},
 		},
@@ -482,80 +495,8 @@ E.Options.args.general = {
 				},
 			},
 		},
-		cooldown = {
-			type = "group",
-			order = 7,
-			name = L["Cooldown Text"],
-			get = function(info)
-				local t = E.db.cooldown[ info[#info] ]
-				local d = P.cooldown[info[#info]]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				local t = E.db.cooldown[ info[#info] ]
-				t.r, t.g, t.b = r, g, b
-				E:UpdateCooldownSettings();
-			end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Cooldown Text"],
-				},
-				enable = {
-					type = "toggle",
-					order = 2,
-					name = L["Enable"],
-					desc = L["Display cooldown text on anything with the cooldown spiral."],
-					get = function(info) return E.private.cooldown[ info[#info] ] end,
-					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},
-				threshold = {
-					type = 'range',
-					order = 3,
-					name = L["Low Threshold"],
-					desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
-					min = -1, max = 20, step = 1,
-					get = function(info) return E.db.cooldown[ info[#info] ] end,
-					set = function(info, value)
-						E.db.cooldown[ info[#info] ] = value
-						E:UpdateCooldownSettings();
-					end,
-				},
-				expiringColor = {
-					type = 'color',
-					order = 4,
-					name = L["Expiring"],
-					desc = L["Color when the text is about to expire"],
-				},
-				secondsColor = {
-					type = 'color',
-					order = 5,
-					name = L["Seconds"],
-					desc = L["Color when the text is in the seconds format."],
-				},
-				minutesColor = {
-					type = 'color',
-					order = 6,
-					name = L["Minutes"],
-					desc = L["Color when the text is in the minutes format."],
-				},
-				hoursColor = {
-					type = 'color',
-					order = 7,
-					name = L["Hours"],
-					desc = L["Color when the text is in the hours format."],
-				},
-				daysColor = {
-					type = 'color',
-					order = 8,
-					name = L["Days"],
-					desc = L["Color when the text is in the days format."],
-				},
-			},
-		},
 		chatBubbles = {
-			order = 8,
+			order = 7,
 			type = "group",
 			name = L["Chat Bubbles"],
 			args = {
@@ -608,10 +549,18 @@ E.Options.args.general = {
 						["THICKOUTLINE"] = "THICKOUTLINE",
 					},
 				},
+				name = {
+					order = 6,
+					type = "toggle",
+					name = L["Chat Bubble Names"],
+					desc = L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."],
+					get = function(info) return E.private.general.chatBubbleName end,
+					set = function(info, value) E.private.general.chatBubbleName = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
 			},
 		},
 		objectiveFrameGroup = {
-			order = 9,
+			order = 8,
 			type = "group",
 			name = L["Objective Frame"],
 			args = {
@@ -645,7 +594,7 @@ E.Options.args.general = {
 			},
 		},
 		threatGroup = {
-			order = 10,
+			order = 9,
 			type = "group",
 			name = L["Threat"],
 			args = {
@@ -692,6 +641,122 @@ E.Options.args.general = {
 						["OUTLINE"] = "OUTLINE",
 						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
+			},
+		},
+		alternativePowerGroup = {
+			order = 10,
+			type = "group",
+			name = L["Alternative Power"],
+			get = function(info) return E.db.general.altPowerBar[ info[#info] ] end,
+			set = function(info, value)
+				E.db.general.altPowerBar[ info[#info] ] = value;
+				B:UpdateAltPowerBarSettings();
+			end,
+			args = {
+				alternativePowerHeader = {
+					order = 1,
+					type = "header",
+					name = L["Alternative Power"],
+				},
+				enable = {
+					order = 2,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Replace Blizzard's Alternative Power Bar"],
+					width = 'full',
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						E:StaticPopup_Show("PRIVATE_RL");
+					end,
+				},
+				height = {
+					order = 3,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 100, step = 1,
+
+				},
+				width = {
+					order = 4,
+					type = "range",
+					name = L["Width"],
+					min = 50, max = 1000, step = 1,
+				},
+				font = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 5,
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				fontSize = {
+					order = 6,
+					name = FONT_SIZE,
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},
+				fontOutline = {
+					order = 7,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = NONE,
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
+				statusBar = {
+					order = 7,
+					type = "select", dialogControl = 'LSM30_Statusbar',
+					name = L["StatusBar Texture"],
+					values = AceGUIWidgetLSMlists.statusbar,
+				},
+				statusBarColorGradient = {
+					order = 8,
+					name = L["Color Gradient"],
+					type = 'toggle',
+					get = function(info)
+						return E.db.general.altPowerBar[ info[#info] ]
+					end,
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						B:UpdateAltPowerBarColors();
+					end,
+				},
+				statusBarColor = {
+					type = 'color',
+					order = 9,
+					name = COLOR,
+					disabled = function()
+						return E.db.general.altPowerBar.statusBarColorGradient
+					end,
+					get = function(info)
+						local t = E.db.general.altPowerBar[ info[#info] ]
+						local d = P.general.altPowerBar[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.general.altPowerBar[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						B:UpdateAltPowerBarColors();
+					end,
+				},
+				textFormat = {
+					order = 10,
+					type = 'select',
+					name = L["Text Format"],
+					sortByValue = true,
+					values = {
+						NONE = NONE,
+						NAME = NAME,
+						NAMEPERC = L["Name: Percent"],
+						NAMECURMAX = L["Name: Current / Max"],
+						NAMECURMAXPERC = L["Name: Current / Max - Percent"],
+						PERCENT = L["Percent"],
+						CURMAX = L["Current / Max"],
+						CURMAXPERC = L["Current / Max - Percent"],
 					},
 				},
 			},

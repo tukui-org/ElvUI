@@ -174,7 +174,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 	if not top then top = 0 end
 	if not right then right = 0 end
 	if not bottom then bottom = 0 end
-	
+
 	-- Lets translate B's coords into A's scale
 	if not xB or not yB or not sB or not sA or not sB then return end
 	xB, yB = (xB*sB) / sA, (yB*sB) / sA
@@ -202,7 +202,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Left
 		if lA <= (lB + StickyFrames.rangeX) and lA >= (lB - StickyFrames.rangeX) then
 			newX = lB + wA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
+			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
 				newX = newX + 4
 			end
 			snap = true
@@ -211,7 +211,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Right
 		if rA <= (rB + StickyFrames.rangeX) and rA >= (rB - StickyFrames.rangeX) then
 			newX = rB - wA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
+			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
 				newX = newX - 4
 			end
 			snap = true
@@ -243,7 +243,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Top
 		if tA <= (tB + StickyFrames.rangeY) and tA >= (tB - StickyFrames.rangeY) then
 			newY = tB - hA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
+			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
 				newY = newY - 4
 			end
 			snap = true
@@ -252,7 +252,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Bottom
 		if bA <= (bB + StickyFrames.rangeY) and bA >= (bB - StickyFrames.rangeY) then
 			newY = bB + hA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then 
+			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
 				newY = newY + 4
 			end
 			snap = true

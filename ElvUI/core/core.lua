@@ -15,19 +15,17 @@ local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
-local GetBonusBarOffset = GetBonusBarOffset
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
-local GetMapNameByID = GetMapNameByID
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local SendAddonMessage = SendAddonMessage
+local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetNumGroupMembers = GetNumGroupMembers
@@ -37,6 +35,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitFactionGroup = UnitFactionGroup
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
@@ -47,19 +46,20 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
-E.myclass = select(2, UnitClass("player"));
-E.myClassID = select(3, UnitClass("player"));
-E.myspec = GetSpecialization();
-E.myrace = select(2, UnitRace("player"));
-E.myfaction = select(2, UnitFactionGroup('player'));
+E.title = format("|cfffe7b2c%s |r", "ElvUI")
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
+E.myLocalizedRace, E.myrace = UnitRace("player");
 E.myname = UnitName("player");
-E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
-E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
+E.myspec = GetSpecialization();
+E.version = GetAddOnMetadata("ElvUI", "Version");
+E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize();
 E.isMacClient = IsMacClient();
 E.LSM = LSM;
+E.NewSign = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t" -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 
 --Tables
 E["media"] = {};
@@ -115,6 +115,9 @@ E.DispelClasses = {
 		['Magic'] = false,
 		['Disease'] = true,
 		['Poison'] = true
+	},
+	['MAGE'] = {
+		['Curse'] = true
 	}
 }
 
@@ -342,7 +345,7 @@ end
 local function LSMCallback()
 	E:UpdateMedia()
 end
-E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
+LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
 
 local MasqueGroupState = {}
 local MasqueGroupToTableElement = {
@@ -374,57 +377,21 @@ if Masque then
 	Masque:Register("ElvUI", MasqueCallback)
 end
 
--- Code taken from LibTourist-3.0 and rewritten to fit our purpose
-local localizedMapNames = {}
-local ZoneIDToContinentName = {
-	[473] = "Outland",
-	[477] = "Outland",
-}
-local MapIdLookupTable = {
-	[466] = "Outland",
-	[473] = "Shadowmoon Valley",
-	[477] = "Nagrand",
-}
-
-local function LocalizeZoneNames()
-	local localizedZoneName
-
-	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = GetMapNameByID(mapID)
-		if localizedZoneName then
-			-- Add combination of English and localized name to lookup table
-			if not localizedMapNames[englishName] then
-				localizedMapNames[englishName] = localizedZoneName
-			end
-		end
-	end
-end
-LocalizeZoneNames()
-
---Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
---We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
---which adds the " (Outland)" part unlike the GetRealZoneText() API.
-function E:GetZoneText(zoneAreaID)
-	local zoneName = GetMapNameByID(zoneAreaID)
-	local continent = ZoneIDToContinentName[zoneAreaID]
-
-	if continent and continent == "Outland" then
-		if zoneName == localizedMapNames["Nagrand"] or zoneName == "Nagrand"  then
-			zoneName = localizedMapNames["Nagrand"].." ("..localizedMapNames["Outland"]..")"
-		elseif zoneName == localizedMapNames["Shadowmoon Valley"] or zoneName == "Shadowmoon Valley"  then
-			zoneName = localizedMapNames["Shadowmoon Valley"].." ("..localizedMapNames["Outland"]..")"
-		end
-	end
-
-	return zoneName
-end
-
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
 
+function E:NEUTRAL_FACTION_SELECT_RESULT()
+	local newFaction, newLocalizedFaction = UnitFactionGroup("player")
+	if E.myfaction ~= newFaction then
+		E.myfaction, E.myLocalizedFaction = newFaction, newLocalizedFaction
+	end
+end
+
 function E:PLAYER_ENTERING_WORLD()
 	self:CheckRole()
+	self:MapInfo_Update()
+
 	if not self.MediaUpdated then
 		self:UpdateMedia()
 		self.MediaUpdated = true;
@@ -614,8 +581,8 @@ function E:CheckRole()
 		role = self.ClassRole[self.myclass][talentTree]
 	end
 
-	--Check for PvP gear or gladiator stance
-	if role == "Tank" and (IsInPvPGear or (E.myclass == "WARRIOR" and GetBonusBarOffset() == 3)) then
+	--Check for PvP gear
+	if role == "Tank" and IsInPvPGear then
 		role = "Melee"
 	end
 
@@ -739,6 +706,38 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 		else
 			-- Add unique data to our clean table
 			if (cleanTable[option] ~= checkTable[option]) then
+				cleaned[option] = value
+			end
+		end
+	end
+
+	--Clean out empty sub-tables
+	self:RemoveEmptySubTables(cleaned)
+
+	return cleaned
+end
+
+--Compare 2 tables and remove blacklisted key/value pairs
+--param cleanTable : table you want cleaned
+--param blacklistTable : table you want to check against.
+--return : a copy of cleanTable with blacklisted key/value pairs removed
+function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
+	if type(cleanTable) ~= "table" then
+		E:Print("Bad argument #1 to 'FilterTableFromBlacklist' (table expected)")
+		return
+	end
+	if type(blacklistTable) ~=  "table" then
+		E:Print("Bad argument #2 to 'FilterTableFromBlacklist' (table expected)")
+		return
+	end
+
+	local cleaned = {}
+	for option, value in pairs(cleanTable) do
+		if type(value) == "table" and blacklistTable[option] and type(blacklistTable[option]) == "table" then
+			cleaned[option] = self:FilterTableFromBlacklist(value, blacklistTable[option])
+		else
+			-- Filter out blacklisted keys
+			if (blacklistTable[option] ~= true) then
 				cleaned[option] = value
 			end
 		end
@@ -908,9 +907,11 @@ end
 
 function E:SendMessage()
 	if IsInRaid() then
-		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+	elseif IsInGuild() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	end
 
 	if E.SendMSGTimer then
@@ -948,7 +949,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	end
 end
 
-RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
+C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
@@ -976,7 +977,7 @@ function E:UpdateAll(ignoreInstall)
 	self:SetMoversPositions()
 
 	self:UpdateMedia()
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	if self.RefreshGUI then self:RefreshGUI() end --Refresh Config
 
 	local UF = self:GetModule('UnitFrames')
@@ -1027,7 +1028,7 @@ function E:UpdateAll(ignoreInstall)
 	DataBars:UpdateDataBarDimensions()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_ReputationBar()
-	DataBars:EnableDisable_ArtifactBar()
+	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_HonorBar()
 
 	local T = self:GetModule('Threat')
@@ -1261,9 +1262,9 @@ function E:UnregisterEventForObject(event, object, func)
 
 	--Find the specified function for the specified object and remove it from the register
 	if EventRegister[event] and EventRegister[event][object] then
-		for _, registeredFunc in ipairs(EventRegister[event][object]) do
+		for index, registeredFunc in ipairs(EventRegister[event][object]) do
 			if func == registeredFunc then
-				tremove(EventRegister[event][object], registeredFunc)
+				tremove(EventRegister[event][object], index)
 				break
 			end
 		end
@@ -1434,6 +1435,40 @@ function E:DBConversions()
 		auraFilterStrip(name, content, '^Friendly:')
 		auraFilterStrip(name, content, '^Enemy:')
 	end
+
+	--Convert old "Buffs and Debuffs" font size option to individual options
+	if E.db.auras.fontSize then
+		local fontSize = E.db.auras.fontSize
+		E.db.auras.buffs.countFontSize = fontSize
+		E.db.auras.buffs.durationFontSize = fontSize
+		E.db.auras.debuffs.countFontSize = fontSize
+		E.db.auras.debuffs.durationFontSize = fontSize
+		E.db.auras.fontSize = nil
+	end
+
+	--Convert old private cooldown setting to profile setting
+	if E.private.cooldown and (E.private.cooldown.enable ~= nil) then
+		E.db.cooldown.enable = E.private.cooldown.enable
+		E.private.cooldown.enable = nil
+		E.private.cooldown = nil
+	end
+
+	--Convert Nameplate Aura Duration to new Cooldown system
+	if E.db.nameplates.durationFont then
+		E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
+		E.db.nameplates.cooldown.fonts.fontSize = E.db.nameplates.durationFontSize
+		E.db.nameplates.cooldown.fonts.fontOutline = E.db.nameplates.durationFontOutline
+
+		E.db.nameplates.durationFont = nil
+		E.db.nameplates.durationFontSize = nil
+		E.db.nameplates.durationFontOutline = nil
+	end
+	
+	if not E.db.chat.panelColorConverted then
+		local color = E.db.general.backdropfadecolor
+		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
+		E.db.chat.panelColorConverted = true
+	end
 end
 
 local CPU_USAGE = {}
@@ -1452,8 +1487,8 @@ local function CompareCPUDiff(showall, minCalls)
 			end
 			newUsage, calls = GetFunctionCPUUsage(mod[newFunc], true)
 			differance = newUsage - oldUsage
-			if showall and calls > minCalls then
-				E:Print(calls, name, differance)
+			if showall and (calls > minCalls) then
+				E:Print('Name('..name..')  Calls('..calls..') Diff('..(differance > 0 and format("%.3f", differance) or 0)..')')
 			end
 			if (differance > greatestDiff) and calls > minCalls then
 				greatestName, greatestUsage, greatestCalls, greatestDiff = name, newUsage, calls, differance
@@ -1462,46 +1497,55 @@ local function CompareCPUDiff(showall, minCalls)
 	end
 
 	if greatestName then
-		E:Print(greatestName.. " had the CPU usage difference of: "..greatestUsage.."ms. And has been called ".. greatestCalls.." times.")
+		E:Print(greatestName.. " had the CPU usage difference of: "..(greatestUsage > 0 and format("%.3f", greatestUsage) or 0).."ms. And has been called ".. greatestCalls.." times.")
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
+
+	twipe(CPU_USAGE)
 end
 
 function E:GetTopCPUFunc(msg)
-	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
-	local mod
-
-	module = (module == "nil" and nil) or module
-	if not module then
-		E:Print('cpuusage: module (arg1) is required! This can be set as "all" too.')
+	if not GetCVarBool("scriptProfile") then
+		E:Print("For `/cpuusage` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
 		return
 	end
+
+	local module, showall, delay, minCalls = msg:match("^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$")
+	local checkCore, mod = (not module or module == "") and "E"
+
 	showall = (showall == "true" and true) or false
 	delay = (delay == "nil" and nil) or tonumber(delay) or 5
 	minCalls = (minCalls == "nil" and nil) or tonumber(minCalls) or 15
 
 	twipe(CPU_USAGE)
 	if module == "all" then
-		for _, registeredModule in pairs(self['RegisteredModules']) do
-			mod = self:GetModule(registeredModule, true) or self
-			for name in pairs(mod) do
-				if type(mod[name]) == "function" and name ~= "GetModule" then
-					CPU_USAGE[registeredModule..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		for moduName, modu in pairs(self.modules) do
+			for funcName, func in pairs(modu) do
+				if (funcName ~= "GetModule") and (type(func) == "function") then
+					CPU_USAGE[moduName..":"..funcName] = GetFunctionCPUUsage(func, true)
 				end
 			end
 		end
 	else
-		mod = self:GetModule(module, true) or self
-		for name in pairs(mod) do
-			if type(mod[name]) == "function" and name ~= "GetModule" then
-				CPU_USAGE[module..":"..name] = GetFunctionCPUUsage(mod[name], true)
+		if not checkCore then
+			mod = self:GetModule(module, true)
+			if not mod then
+				self:Print(module.." not found, falling back to checking core.")
+				mod, checkCore = self, "E"
+			end
+		else
+			mod = self
+		end
+		for name, func in pairs(mod) do
+			if (name ~= "GetModule") and type(func) == "function" then
+				CPU_USAGE[(checkCore or module)..":"..name] = GetFunctionCPUUsage(func, true)
 			end
 		end
 	end
 
 	self:Delay(delay, CompareCPUDiff, showall, minCalls)
-	self:Print("Calculating CPU Usage differences (module: "..(module or "?")..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
+	self:Print("Calculating CPU Usage differences (module: "..(checkCore or module)..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
 end
 
 local function SetOriginalHeight()
@@ -1519,7 +1563,7 @@ local function SetModifiedHeight()
 		return
 	end
 	E:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+	local height = E.UIParent.origHeight - (OrderHallCommandBar:GetHeight() + E.Border)
 	E.UIParent:SetHeight(height)
 end
 
@@ -1538,7 +1582,7 @@ local function HandleCommandBar()
 	end
 end
 
-function E:Initialize()
+function E:Initialize(loginFrame)
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
@@ -1557,12 +1601,12 @@ function E:Initialize()
 	self:DBConversions()
 
 	self:CheckRole()
-	self:UIScale('PLAYER_LOGIN');
+	self:UIScale('PLAYER_LOGIN', loginFrame);
 
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules
 	self:LoadMovers(); --Load Movers
-	self:UpdateCooldownSettings()
+	self:UpdateCooldownSettings('all')
 	self.initialized = true
 
 	if self.private.install_complete == nil then
@@ -1587,8 +1631,9 @@ function E:Initialize()
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");
-	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")
@@ -1628,4 +1673,6 @@ function E:Initialize()
 			end
 		end)
 	end
+
+	DisableAddOn("ElvUI_EverySecondCounts")
 end

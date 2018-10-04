@@ -205,6 +205,11 @@ function PI:CreateFrame()
 	f:SetTemplate("Transparent")
 	f:SetPoint("CENTER")
 	f:SetFrameStrata('TOOLTIP')
+	f:SetMovable(true)
+
+	f.MoveFrame = CreateFrame("Frame", nil, f, "TitleDragAreaTemplate")
+	f.MoveFrame:Size(450, 50)
+	f.MoveFrame:Point("TOP", f, "TOP")
 
 	f.Title = f:CreateFontString(nil, 'OVERLAY')
 	f.Title:FontTemplate(nil, 17, nil)
@@ -418,7 +423,7 @@ function PI:RunInstall()
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage.." / "..f.MaxPage)
-		f.tutorialImage:SetTexture(db.tutorialImage or [[Interface\AddOns\ElvUI\media\textures\logo.tga]])
+		f.tutorialImage:SetTexture(db.tutorialImage or [[Interface\AddOns\ElvUI\media\textures\logo]])
 
 		f.Pages = db.Pages
 
