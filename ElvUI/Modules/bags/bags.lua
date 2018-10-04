@@ -989,7 +989,7 @@ function B:Layout(isBank)
 			f.reagentFrame.cover:Hide();
 		end
 
-		local totalSlots, lastRowButton = 0
+		local totalSlots, lastBankRowButton = 0
 		numContainerRows = 1
 		for i = 1, 98 do
 			totalSlots = totalSlots + 1;
@@ -1027,15 +1027,15 @@ function B:Layout(isBank)
 			f.reagentFrame.slots[i]:Size(buttonSize)
 			if f.reagentFrame.slots[i-1] then
 				if(totalSlots - 1) % numContainerColumns == 0 then
-					f.reagentFrame.slots[i]:Point('TOP', lastRowButton, 'BOTTOM', 0, -buttonSpacing);
-					lastRowButton = f.reagentFrame.slots[i];
+					f.reagentFrame.slots[i]:Point('TOP', lastBankRowButton, 'BOTTOM', 0, -buttonSpacing);
+					lastBankRowButton = f.reagentFrame.slots[i];
 					numContainerRows = numContainerRows + 1;
 				else
 					f.reagentFrame.slots[i]:Point('LEFT', f.reagentFrame.slots[i-1], 'RIGHT', buttonSpacing, 0);
 				end
 			else
 				f.reagentFrame.slots[i]:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT');
-				lastRowButton = f.reagentFrame.slots[i]
+				lastBankRowButton = f.reagentFrame.slots[i]
 			end
 
 			self:UpdateReagentSlot(i)
