@@ -30,12 +30,7 @@ local function LoadSkin()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
 	PVEFrameBg:Hide()
-	PVEFrameTitleBg:Hide()
 	PVEFramePortrait:Hide()
-	PVEFramePortraitFrame:Hide()
-	PVEFrameTopRightCorner:Hide()
-	PVEFrameTopBorder:Hide()
-	PVEFrameLeftInsetBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
@@ -296,11 +291,7 @@ local function LoadSkin()
 
 	-- Raid Finder
 	RaidFinderFrame:StripTextures()
-	RaidFinderFrameBottomInset:StripTextures()
 	RaidFinderFrameRoleInset:StripTextures()
-	RaidFinderFrameBottomInsetBg:Hide()
-	RaidFinderFrameBtnCornerRight:Hide()
-	RaidFinderFrameButtonBottomBorder:Hide()
 	S:HandleDropDownBox(RaidFinderQueueFrameSelectionDropDown)
 	RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
@@ -310,9 +301,6 @@ local function LoadSkin()
 
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
-	ScenarioFinderFrame.TopTileStreaks:Hide()
-	ScenarioFinderFrameBtnCornerRight:Hide()
-	ScenarioFinderFrameButtonBottomBorder:Hide()
 	ScenarioQueueFrame.Bg:Hide()
 	ScenarioFinderFrameInset:GetRegions():Hide()
 
@@ -373,16 +361,9 @@ local function LoadSkin()
 	RaidBrowserFrameBg:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
-	LFRBrowseFrameRoleInsetBg:Hide()
 	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
 	LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
 	LFRBrowseFrameColumnHeader2:Width(38)
-
-	for i = 1, 14 do
-		if i ~= 6 and i ~= 8 then
-			select(i, RaidBrowserFrame:GetRegions()):Hide()
-		end
-	end
 
 	RaidBrowserFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(RaidBrowserFrameCloseButton)
