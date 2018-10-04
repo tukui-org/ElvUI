@@ -166,7 +166,7 @@ function B:SearchReset()
 end
 
 function B:IsSearching()
-	return (SEARCH_STRING ~= "" and SEARCH_STRING ~= SEARCH and true) or false
+	return (SEARCH_STRING ~= "" and SEARCH_STRING ~= SEARCH)
 end
 
 function B:UpdateSearch()
