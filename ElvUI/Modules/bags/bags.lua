@@ -237,7 +237,7 @@ function B:SetSearch(query)
 				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
 				local success, result = pcall(method, Search, link, query, allowPartialMatch)
-				if ( empty or (success and result) ) then
+				if empty or (success and result) then
 					SetItemButtonDesaturated(button);
 					button.searchOverlay:Hide();
 					button:SetAlpha(1);
@@ -581,6 +581,23 @@ function B:UpdateBagSlots(bagID)
 			else
 				self:GetParent():GetParent():UpdateSlot(bagID, slotID);
 			end
+		end
+	end
+end
+
+function B:AfterSortingFadeUpdate()
+	B:SetSearch(SEARCH_STRING);
+end
+
+function B:SortingFadeBags(bagFrame)
+	if not (bagFrame and bagFrame.BagIDs) then return end
+
+	for _, bagID in ipairs(bagFrame.BagIDs) do
+		for slotID = 1, GetContainerNumSlots(bagID) do
+			local button = bagFrame.Bags[bagID][slotID];
+			SetItemButtonDesaturated(button, 1);
+			button.searchOverlay:Show();
+			button:SetAlpha(0.5);
 		end
 	end
 end
@@ -1482,6 +1499,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
 				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+				B:SortingFadeBags(f)
 				f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
 				B:CommandDecorator(B.SortBags, 'bank')();
 			else
@@ -1617,6 +1635,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+			B:SortingFadeBags(f)
 			f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
 			B:CommandDecorator(B.SortBags, 'bags')();
 		end)

@@ -717,10 +717,15 @@ function B:StartStacking()
 end
 
 local function RegisterUpdateDelayed()
+	local shouldUpdateFade
+
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.registerUpdate then
 			--call update and re-register events
 			bagFrame.registerUpdate = nil
+
+			shouldUpdateFade = true
+
 			bagFrame:UpdateAllSlots()
 			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
 			bagFrame:RegisterEvent("ITEM_LOCK_CHANGED")
@@ -733,6 +738,10 @@ local function RegisterUpdateDelayed()
 			bagFrame:RegisterEvent("QUEST_ACCEPTED")
 			bagFrame:RegisterEvent("QUEST_REMOVED")
 		end
+	end
+
+	if shouldUpdateFade then
+		B:AfterSortingFadeUpdate()
 	end
 end
 
