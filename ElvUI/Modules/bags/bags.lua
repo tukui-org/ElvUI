@@ -1499,7 +1499,9 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
 				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-				B:SortingFadeBags(f)
+				if not f.registerUpdate then
+					B:SortingFadeBags(f)
+				end
 				f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
 				B:CommandDecorator(B.SortBags, 'bank')();
 			else
@@ -1635,7 +1637,9 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-			B:SortingFadeBags(f)
+			if not f.registerUpdate then
+				B:SortingFadeBags(f)
+			end
 			f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
 			B:CommandDecorator(B.SortBags, 'bags')();
 		end)
