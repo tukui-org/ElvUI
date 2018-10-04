@@ -623,8 +623,8 @@ function B:UpdateAllSlots()
 		end
 	end
 
-	--Refresh search in case we moved items around
-	if B:IsSearching() then
+	-- Refresh search in case we moved items around
+	if (not self.registerUpdate) and B:IsSearching() then
 		B:RefreshSearch()
 	end
 end

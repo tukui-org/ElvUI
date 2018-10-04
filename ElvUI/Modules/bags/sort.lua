@@ -721,12 +721,11 @@ local function RegisterUpdateDelayed()
 
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.registerUpdate then
-			--call update and re-register events
-			bagFrame.registerUpdate = nil
-
-			shouldUpdateFade = true
-
 			bagFrame:UpdateAllSlots()
+
+			bagFrame.registerUpdate = nil -- call update and re-register events, keep this after UpdateAllSlots
+			shouldUpdateFade = true -- we should refresh the search
+
 			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
 			bagFrame:RegisterEvent("ITEM_LOCK_CHANGED")
 			bagFrame:RegisterEvent("ITEM_UNLOCKED")
@@ -740,8 +739,8 @@ local function RegisterUpdateDelayed()
 		end
 	end
 
-	if shouldUpdateFade and not B:IsSearching() then
-		B:RefreshSearch() -- this will clear the bag lock look during a sort but this will happen if `B:IsSearching()` is true already.
+	if shouldUpdateFade then
+		B:RefreshSearch() -- this will clear the bag lock look during a sort
 	end
 end
 
