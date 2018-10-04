@@ -54,7 +54,7 @@ local function LoadSkin()
 			button.styled = true
 		end
 	end
-	
+
 	-- Temp mover
 	MachineFrame:SetMovable(true)
 	MachineFrame:RegisterForDrag("LeftButton")

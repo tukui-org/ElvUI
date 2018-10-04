@@ -9,7 +9,6 @@ local floor = math.floor
 local format = string.format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local EnumerateFrames = EnumerateFrames
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded

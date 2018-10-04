@@ -7,7 +7,7 @@ local S -- used to hold the skin module when we need it
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, select, pairs, next = unpack, select, pairs, next
+local unpack, select, next = unpack, select, next
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor, tonumber = math.floor, tonumber
 local find, format, sub = string.find, string.format, string.sub

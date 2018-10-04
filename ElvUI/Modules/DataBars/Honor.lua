@@ -6,7 +6,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local format = format
 --WoW API / Variables
-local ToggleTalentFrame = ToggleTalentFrame
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax

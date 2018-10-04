@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select = select
 local format, join = string.format, string.join
 --WoW API / Variables
 local EasyMenu = EasyMenu

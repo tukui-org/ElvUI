@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
-local NP = E:GetModule("NamePlates")
+local UF = E:GetModule('UnitFrames')
 
 E.Options.args.modulereset = {
 	type = "group",
