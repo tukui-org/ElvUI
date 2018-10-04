@@ -194,7 +194,7 @@ function M:LOOT_OPENED(_, autoloot)
 	local items = GetNumLootItems()
 
 	if IsFishingLoot() then
-		lootFrame.title:SetText(L['Fishy Loot'])
+		lootFrame.title:SetText(L["Fishy Loot"])
 	elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
 		lootFrame.title:SetText(UnitName('target'))
 	else
@@ -275,7 +275,7 @@ function M:LOOT_OPENED(_, autoloot)
 		local slot = lootFrame.slots[1] or createSlot(1)
 		local color = ITEM_QUALITY_COLORS[0]
 
-		slot.name:SetText(L['Empty Slot'])
+		slot.name:SetText(L["Empty Slot"])
 		if color then
 			slot.name:SetTextColor(color.r, color.g, color.b)
 		end
@@ -326,7 +326,7 @@ function M:LoadLoot()
 	self:RegisterEvent('LOOT_SLOT_CLEARED')
 	self:RegisterEvent('LOOT_CLOSED')
 
-	E:CreateMover(lootFrameHolder, 'LootFrameMover', L['Loot Frame'])
+	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"])
 
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()
