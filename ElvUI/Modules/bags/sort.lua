@@ -740,7 +740,7 @@ local function RegisterUpdateDelayed()
 		end
 	end
 
-	if shouldUpdateFade then
+	if shouldUpdateFade and not B:IsSearching() then
 		B:AfterSortingFadeUpdate()
 	end
 end
