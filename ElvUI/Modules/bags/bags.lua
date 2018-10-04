@@ -570,7 +570,7 @@ function B:UpdateSlot(bagID, slotID)
 end
 
 function B:UpdateBagSlots(bagID)
-	if(bagID == REAGENTBANK_CONTAINER) then
+	if bagID == REAGENTBANK_CONTAINER then
 		for i=1, 98 do
 			self:UpdateReagentSlot(i);
 		end
@@ -585,7 +585,7 @@ function B:UpdateBagSlots(bagID)
 	end
 end
 
-function B:AfterSortingFadeUpdate()
+function B:ForceBagSearchUpdate()
 	B:SetSearch(SEARCH_STRING);
 end
 

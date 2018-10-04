@@ -741,7 +741,7 @@ local function RegisterUpdateDelayed()
 	end
 
 	if shouldUpdateFade and not B:IsSearching() then
-		B:AfterSortingFadeUpdate()
+		B:ForceBagSearchUpdate() -- this will clear the bag lock look during a sort
 	end
 end
 
