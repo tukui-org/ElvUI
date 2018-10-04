@@ -941,7 +941,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].JunkIcon:Size(buttonSize/2)
 				end
 
-				f:UpdateSlot(bagID, slotID); -- We update this when the bags get opened for the first time. Not needed.
+				f:UpdateSlot(bagID, slotID);
 
 				if f.Bags[bagID][slotID]:GetPoint() then
 					f.Bags[bagID][slotID]:ClearAllPoints();
