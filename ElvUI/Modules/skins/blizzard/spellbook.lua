@@ -18,6 +18,8 @@ local function LoadSkin()
 	S:HandleCloseButton(SpellBookFrameCloseButton)
 
 	local SpellBookFrame = _G["SpellBookFrame"]
+	SpellBookFrame.NineSlice:Hide()
+	SpellBookFrameInset.NineSlice:Hide()
 	SpellBookFrame:SetTemplate("Transparent")
 
 	local StripAllTextures = {
