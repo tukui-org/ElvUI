@@ -1169,7 +1169,7 @@ function B:OnEvent(event, ...)
 		local slot = ...
 		local bagID = (slot <= NUM_BANKGENERIC_SLOTS) and -1 or (slot - NUM_BANKGENERIC_SLOTS)
 		if bagID > -1 then
-			B:Layout(self.isBank)
+			B:Layout(true)
 		else
 			self:UpdateBagSlots(-1)
 		end
