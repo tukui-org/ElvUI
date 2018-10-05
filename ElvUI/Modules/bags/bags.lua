@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
 -- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
@@ -1149,14 +1149,15 @@ function B:OnEvent(event, ...)
 			self:UpdateSlot(...);
 		end
 	elseif event == 'BAG_UPDATE' then
-		local bagID = ...
-		local numSlots = GetContainerNumSlots(bagID)
-		if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
-			B:Layout(self.isBank);
-			return;
+		for _, bagID in ipairs(self.BagIDs) do
+			local numSlots = GetContainerNumSlots(bagID)
+			if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
+				B:Layout(self.isBank);
+				return;
+			end
 		end
 
-		self:UpdateBagSlots(bagID);
+		self:UpdateBagSlots(...);
 
 		--Refresh search in case we moved items around
 		if B:IsSearching() then
