@@ -9,5 +9,4 @@
 	<Script file='threat.lua'/>
 	<Script file='totemBar.lua'/>
 	<Script file='afk.lua'/>
-	<Script file='character_ilvl.lua'/>
 </Ui>
