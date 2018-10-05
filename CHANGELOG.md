@@ -11,6 +11,7 @@ Fixed display castbar for Arena & Boss Frames.
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
+Updated Frenzy buff Id for pets. (#816)  
 Updated the macro text on the ActionBars to use the ActionBar font.  
 Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
 
