@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CP = E:NewModule('CopyProfile', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 
-local pairs, next = pairs, next
-local format = format
+local pairs, next, type = pairs, next, type
+local format, error = format, error
 
 --Default template for a config group for a single module.
 --Contains header, general group toggle (shown only if the setting actually exists) and imports button.
@@ -88,11 +88,8 @@ end
 
 function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 	for key, value in pairs(CopyTo) do
-		print(key)
 		if type(value) ~= "table" then
 			if module == true or (type(module) == "table" and module.general == nil or (not CopyTo.general and module.general)) then --Some dark magic of a logic to figure out stuff
-				print("Debug, copy module option "..key)
-				--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
 				--This check is to see if the profile we are copying from has keys absent from defaults.
 				--If key exists, then copy. If not, then clear obsolite key from the profile.
 				if CopyDefault[key] then 
@@ -102,9 +99,7 @@ function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 				end
 			end
 		else
-			if module == true then
-				print("CP:CopyTable - I should copy over the whole section.", key)
-				--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
+			if module == true then --Copy over entire section of profile subgroup
 				E:CopyTable(CopyTo, CopyDefault)
 				E:CopyTable(CopyTo, CopyFrom)
 			elseif module[key] then
@@ -152,8 +147,7 @@ function CP:ImportFromProfile(section)
 	--Some checks for the occasion someone passes wrong stuff
 	if not section then error("No profile section provided. Usage CP:ImportFromProfile(\"section\")") end
 	if section == "selected" or section == "movers" then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
-	print("======")
-	print(section)
+
 	local module = E.global.profileCopy[section]
 	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
 	--Starting digging through the settings
@@ -162,11 +156,9 @@ function CP:ImportFromProfile(section)
 	local CopyDefault = P[section]
 	--Making sure tables actually exist in profiles (e.g absent values in ElvDB["profiles"] are for default values)
 	CopyFrom, CopyTo = CP:TablesExist(CopyFrom, CopyTo, CopyDefault)
-	if type(module) == "table" and next(module) then
+	if type(module) == "table" and next(module) then --This module is not an empty table
 		CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
-	elseif type(module) == "boolean" then
-		print("I should copy over the whole section.")
-		--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
+	elseif type(module) == "boolean" then --Copy over entire section of profile subgroup
 		E:CopyTable(CopyTo, CopyDefault)
 		E:CopyTable(CopyTo, CopyFrom)
 	else
@@ -179,7 +171,7 @@ function CP:ExportToProfile(section)
 	--Some checks for the occasion someone passes wrong stuff
 	if not section then error("No profile section provided. Usage CP:ExportToProfile(\"section\")") end
 	if section == "selected" or section == "movers" then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
-	print(section)
+
 	local module = E.global.profileCopy[section]
 	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
 	--Making sure tables actually exist
@@ -189,21 +181,17 @@ function CP:ExportToProfile(section)
 	local CopyFrom = E.db[section]
 	local CopyTo = ElvDB["profiles"][E.global.profileCopy.selected][section]
 	local CopyDefault = P[section]
-	if type(module) == "table" and next(module) then
+	if type(module) == "table" and next(module) then --This module is not an empty table
 		CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
-	elseif type(module) == "boolean" then
-		print("I should copy over the whole section.")
-		--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
+	elseif type(module) == "boolean" then --Copy over entire section of profile subgroup
 		E:CopyTable(CopyTo, CopyDefault)
 		E:CopyTable(CopyTo, CopyFrom)
 	else
 		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
-	E:UpdateAll(true)
 end
 
 function CP:CopyMovers(mode)
-	print(mode)
 	if not E.db.movers then E.db.movers = {} end --Nothing was moved in cutrrent profile
 	if not ElvDB["profiles"][E.global.profileCopy.selected].movers then ElvDB["profiles"][E.global.profileCopy.selected].movers = {} end --Nothing was moved in selected profile
 	local CopyFrom, CopyTo
@@ -212,10 +200,9 @@ function CP:CopyMovers(mode)
 	else
 		CopyFrom, CopyTo = ElvDB["profiles"][E.global.profileCopy.selected].movers or {}, E.db.movers
 	end
-	--This is actually copying stuff. Don't uncomment unless testing on bogus profiles
+
 	for moverName, data in pairs(E.CreatedMovers) do
 		if E.global.profileCopy.movers[moverName] then
-			print(moverName)
 			CopyTo[moverName] = CopyFrom[moverName]
 		end
 	end
