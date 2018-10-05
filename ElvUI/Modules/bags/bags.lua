@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
 -- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
@@ -1149,15 +1149,14 @@ function B:OnEvent(event, ...)
 			self:UpdateSlot(...);
 		end
 	elseif event == 'BAG_UPDATE' then
-		for _, bagID in ipairs(self.BagIDs) do
-			local numSlots = GetContainerNumSlots(bagID)
-			if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
-				B:Layout(self.isBank);
-				return;
-			end
+		local bagID = ...
+		local numSlots = GetContainerNumSlots(bagID)
+		if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
+			B:Layout(self.isBank);
+			return;
 		end
 
-		self:UpdateBagSlots(...);
+		self:UpdateBagSlots(bagID);
 
 		--Refresh search in case we moved items around
 		if B:IsSearching() then
@@ -1166,7 +1165,7 @@ function B:OnEvent(event, ...)
 	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
-		self:UpdateAllSlots()
+		self:UpdateBagSlots(-1)
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
 	elseif (event == "QUEST_ACCEPTED" or event == "QUEST_REMOVED") and self:IsShown() then
@@ -1349,16 +1348,20 @@ function B:ContructContainerFrame(name, isBank)
 	f.UpdateAllSlots = B.UpdateAllSlots;
 	f.UpdateBagSlots = B.UpdateBagSlots;
 	f.UpdateCooldowns = B.UpdateCooldowns;
-	f:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED");
-	f:RegisterEvent("ITEM_LOCK_CHANGED");
-	f:RegisterEvent("ITEM_UNLOCKED");
+	f:RegisterEvent("ITEM_LOCK_CHANGED")
+	f:RegisterEvent("ITEM_UNLOCKED")
 	f:RegisterEvent("BAG_UPDATE_COOLDOWN")
-	f:RegisterEvent("BAG_UPDATE");
-	f:RegisterEvent("BAG_SLOT_FLAGS_UPDATED");
-	f:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED");
-	f:RegisterEvent("PLAYERBANKSLOTS_CHANGED");
-	f:RegisterEvent("QUEST_ACCEPTED");
-	f:RegisterEvent("QUEST_REMOVED");
+	f:RegisterEvent("BAG_UPDATE")
+	f:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
+	f:RegisterEvent("QUEST_ACCEPTED")
+	f:RegisterEvent("QUEST_REMOVED")
+
+	if isBank then
+		f:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+		f:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
+		f:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+	end
+
 	f:SetScript('OnEvent', B.OnEvent);
 	f:Hide();
 

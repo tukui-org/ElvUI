@@ -726,16 +726,20 @@ local function RegisterUpdateDelayed()
 			bagFrame.registerUpdate = nil -- call update and re-register events, keep this after UpdateAllSlots
 			shouldUpdateFade = true -- we should refresh the bag search after sorting
 
-			bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
 			bagFrame:RegisterEvent("ITEM_LOCK_CHANGED")
 			bagFrame:RegisterEvent("ITEM_UNLOCKED")
 			bagFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 			bagFrame:RegisterEvent("BAG_UPDATE")
 			bagFrame:RegisterEvent("BAG_SLOT_FLAGS_UPDATED")
-			bagFrame:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
-			bagFrame:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 			bagFrame:RegisterEvent("QUEST_ACCEPTED")
 			bagFrame:RegisterEvent("QUEST_REMOVED")
+
+			if bagFrame.isBank then
+				bagFrame:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+				bagFrame:RegisterEvent("BANK_BAG_SLOT_FLAGS_UPDATED")
+				bagFrame:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+			end
+
 		end
 	end
 
