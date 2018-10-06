@@ -606,7 +606,7 @@ L["Toggle Anchors"] = "Показать фиксаторы"
 L["Unlock various elements of the UI to be repositioned."] = "Разблокировать элементы интерфейса для их перемещения."
 L["Version"] = "Версия"
 
--- Module Reset
+--Module Control
 L["Are you sure you want to reset ActionBars settings?"] = "Вы уверены, что хотите сбросить настройки панелей команд?"
 L["Are you sure you want to reset Auras settings?"] = "Вы уверены, что хотите сбросить настройки аур?"
 L["Are you sure you want to reset Bags settings?"] = "Вы уверены, что хотите сбросить настройки сумок?"
@@ -618,7 +618,15 @@ L["Are you sure you want to reset General settings?"] = "Вы уверены, ч
 L["Are you sure you want to reset NamePlates settings?"] = "Вы уверены, что хотите сбросить настройки индикаторов здоровья?"
 L["Are you sure you want to reset Tooltip settings?"] = "Вы уверены, что хотите сбросить настройки подсказки?"
 L["Are you sure you want to reset UnitFrames settings?"] = "Вы уверены, что хотите сбросить настройки рамок юнитов?"
+L["Core |cfffe7b2cElvUI|r options."] = true
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = true
+L["Module Control"] = true
+L["Module Copy"] = true
 L["Module Reset"] = "Сброс модуля"
+L["Movers"] = true
+L["On screen positions for different elements."] = true
+L["Select a profile to copy from/to."] = true
+L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = "Эта секция поможет вернуть настройки конкретного модуля на умолчания."
 
 --NamePlates

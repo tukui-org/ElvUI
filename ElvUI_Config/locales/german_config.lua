@@ -609,7 +609,7 @@ L["Toggle Anchors"] = "Ankerpunkte umschalten"
 L["Unlock various elements of the UI to be repositioned."] = "Schalte verschiedene Elemente der Benutzeroberfläche frei um sie neu zu positionieren."
 L["Version"] = "Version"
 
--- Module Reset
+-- Module Control
 L["Are you sure you want to reset ActionBars settings?"] = "Bist du dir sicher dass du die Actionsleisten Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Auras settings?"] = "Bist du dir sicher dass du die Auren Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Bags settings?"] = "Bist du dir sicher dass du die Taschen Einstellungen zurücksetzen möchtest?"
@@ -621,7 +621,15 @@ L["Are you sure you want to reset General settings?"] = "Bist du dir sicher dass
 L["Are you sure you want to reset NamePlates settings?"] = "Bist du dir sicher dass du die Namensplaketten Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Tooltip settings?"] = "Bist du dir sicher dass du die Tooltip Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset UnitFrames settings?"] = "Bist du dir sicher dass du die Einheitenfenster Einstellungen zurücksetzen möchtest?"
+L["Core |cfffe7b2cElvUI|r options."] = "|cfffe7b2cElvUI|r Einstellungen"
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = "Wenn du ein Plugin installiert hast, was diese Einstellungen unterstützt, findest du sie im Dropdown rechts."
+L["Module Control"] = "Modulkontrolle"
+L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
+L["Movers"] = "Ankerpunkte"
+L["On screen positions for different elements."] = "Position der verschiedenen Elemente."
+L["Select a profile to copy from/to."] = "Wähle ein Profil um zu kopieren von/zu."
+L["This section will allow you to copy settings to a select module from or to a different profile."] = "Diese Sektion erlaubt dir die Einstellungen von einem ausgewählten Module zu oder von einen anderen Profil zu kopieren."
 L["This section will help reset specfic settings back to default."] = "Diese Sektion wird dir dabei helfen spezifische Einstellungen zurückzusetzen."
 
 --NamePlates
