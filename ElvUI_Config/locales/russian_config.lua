@@ -213,6 +213,7 @@ L["Item Level"] = "Уровень предметов"
 L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
 L["Panel Width (Bank)"] = "Ширина банка"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = "Синтаксис поиска"
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Установите размер кнопок на панели."

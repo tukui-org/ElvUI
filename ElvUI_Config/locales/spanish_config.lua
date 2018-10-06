@@ -214,6 +214,7 @@ L["Item Level"] = true
 L["Money Format"] = true
 L["Panel Width (Bags)"] = "Ancho del Panel (Bolsas)"
 L["Panel Width (Bank)"] = "Ancho del Panel (Banco)"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = true
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Establece el tamaño de tus botones de la bolsa."

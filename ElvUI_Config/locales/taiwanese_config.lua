@@ -214,6 +214,7 @@ L["Item Level"] = "物品等級"
 L["Money Format"] = "金幣格式"
 L["Panel Width (Bags)"] = "框架寬度 (背包)"
 L["Panel Width (Bank)"] = "框架寬度 (銀行)"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = "搜尋語法"
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "設定你的背包格子大小."

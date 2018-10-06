@@ -111,7 +111,7 @@ E.Options.args.bags = {
 				reverseSlots = {
 					order = 11,
 					type = "toggle",
-					name = 'Reverse Bag Slots',
+					name = L["Reverse Bag Slots"],
 					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
 				},
 				disableBagSort = {
