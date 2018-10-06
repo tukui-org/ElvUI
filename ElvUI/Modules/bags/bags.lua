@@ -763,8 +763,13 @@ function B:Layout(isBank)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
+	local numBags = 0;
+	local numBagSlots = 0;
+	local bagSpacing = self.db.split.bagSpacing
 	local countColor = E.db.bags.countFontColor
 	f.holderFrame:Width(holderWidth);
+
+	local isSplit = self.db.split[isBank and 'bank' or 'player']
 
 	if isBank then
 		f.reagentFrame:Width(holderWidth)
@@ -775,8 +780,12 @@ function B:Layout(isBank)
 	local lastRowButton;
 	local lastContainerButton;
 	local numContainerSlots = GetNumBankSlots();
+	local newBag
 	for i, bagID in ipairs(f.BagIDs) do
 		local assignedBag
+		if isSplit then
+			newBag = (bagID ~= -1 or bagID ~= 0) and self.db.split['bag'..bagID] or false;
+		end
 
 		--Bag Containers
 		if (not isBank and bagID <= 3 ) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
@@ -961,21 +970,36 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:ClearAllPoints();
 				end
 
+				local anchorPoint, relativePoint
 				if lastButton then
-					if (f.totalSlots - 1) % numContainerColumns == 0 then
-						f.Bags[bagID][slotID]:Point('TOP', lastRowButton, 'BOTTOM', 0, -buttonSpacing);
+					anchorPoint, relativePoint = (self.db.reverseSlots and 'BOTTOM' or 'TOP'), (self.db.reverseSlots and 'TOP' or 'BOTTOM')
+					if isSplit and newBag and slotID == 1 then
+						f.Bags[bagID][slotID]:Point(anchorPoint, lastRowButton, relativePoint, 0, self.db.reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing));
+						lastRowButton = f.Bags[bagID][slotID];
+						numContainerRows = numContainerRows + 1;
+						numBags = numBags + 1;
+						numBagSlots = 0;
+					elseif isSplit and numBagSlots % numContainerColumns == 0 then
+						f.Bags[bagID][slotID]:Point(anchorPoint, lastRowButton, relativePoint, 0, self.db.reverseSlots and buttonSpacing or -buttonSpacing);
+						lastRowButton = f.Bags[bagID][slotID];
+						numContainerRows = numContainerRows + 1;
+					elseif (not isSplit) and (f.totalSlots - 1) % numContainerColumns == 0 then
+						f.Bags[bagID][slotID]:Point(anchorPoint, lastRowButton, relativePoint, 0, self.db.reverseSlots and buttonSpacing or -buttonSpacing);
 						lastRowButton = f.Bags[bagID][slotID];
 						numContainerRows = numContainerRows + 1;
 					else
-						f.Bags[bagID][slotID]:Point('LEFT', lastButton, 'RIGHT', buttonSpacing, 0);
+						anchorPoint, relativePoint = (self.db.reverseSlots and 'RIGHT' or 'LEFT'), (self.db.reverseSlots and 'LEFT' or 'RIGHT')
+						f.Bags[bagID][slotID]:Point(anchorPoint, lastButton, relativePoint, self.db.reverseSlots and -buttonSpacing or buttonSpacing, 0);
 					end
 				else
-					f.Bags[bagID][slotID]:Point('TOPLEFT', f.holderFrame, 'TOPLEFT');
+					anchorPoint = self.db.reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
+					f.Bags[bagID][slotID]:Point(anchorPoint, f.holderFrame, anchorPoint);
 					lastRowButton = f.Bags[bagID][slotID];
 					numContainerRows = numContainerRows + 1;
 				end
 
 				lastButton = f.Bags[bagID][slotID];
+				numBagSlots = numBagSlots + 1;
 			end
 		else
 			--Hide unused slots
@@ -1059,7 +1083,7 @@ function B:Layout(isBank)
 		end
 	end
 
-	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
+	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + (isSplit and (numBags * bagSpacing) or 0 ) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
 end
 
 function B:UpdateReagentSlot(slotID)
