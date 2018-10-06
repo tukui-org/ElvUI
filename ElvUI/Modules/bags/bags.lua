@@ -2085,9 +2085,6 @@ function B:Initialize()
 
 	self:Layout()
 
-	self:UpdateItemLevelDisplay()
-	self:UpdateCountDisplay()
-
 	E.Bags = self;
 
 	self:DisableBlizzard();
