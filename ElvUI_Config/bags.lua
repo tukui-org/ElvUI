@@ -384,7 +384,7 @@ E.Options.args.bags = {
 		split = {
 			order = 6,
 			type = "group",
-			name = L['Split'],
+			name = L["Split"],
 			get = function(info) return E.db.bags.split[ info[#info] ] end,
 			set = function(info, value) E.db.bags.split[ info[#info] ] = value B:UpdateAll() end,
 			args = {
@@ -500,7 +500,7 @@ E.Options.args.bags = {
 					order = 2,
 					type = "range",
 					name = L["Sell Interval"],
-					desc = L["Will attenpt to sell another item in set interval after previous one was sold."],
+					desc = L["Will attempt to sell another item in set interval after previous one was sold."],
 					min = 0.1, max = 1, step = 0.1,
 				},
 				details = {
