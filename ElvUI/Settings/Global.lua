@@ -245,6 +245,8 @@ G["profileCopy"] = {
 	},
 	["bags"] = {
 		["general"] = true,
+		["split"] = true,
+		["vendorGrays"] = true,
 		["bagBar"] = true,
 		["cooldown"] = true,
 	},

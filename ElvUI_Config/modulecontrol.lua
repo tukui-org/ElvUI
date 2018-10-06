@@ -99,6 +99,20 @@ local function CreateBagsConfig()
 		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
 	}
+	config.args.split = {
+		order = 4,
+		type = "toggle",
+		name = L['Split'],
+		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
+	}
+	config.args.vendorGrays = {
+		order = 5,
+		type = "toggle",
+		name = L["Vendor Grays"],
+		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
+	}
 
 	return config
 end
