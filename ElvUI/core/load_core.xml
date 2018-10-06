@@ -18,5 +18,5 @@
 	<Script file='dropdown.lua'/>
 	<Script file='cooldowns.lua'/>
 	<Script file='mapinfo.lua'/>
-	<Script file='copymodule.lua'/>
+	<Script file='modulecopy.lua'/>
 </Ui>
