@@ -8,7 +8,7 @@ local LibItemLevel = LibStub("LibItemLevel-ElvUI")
 --Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert = table.insert
+local tinsert, tremove, twipe, tmaxn = table.insert, table.remove, table.wipe, table.maxn
 local floor, ceil, abs, mod = math.floor, math.ceil, math.abs, math.fmod
 local format, len, sub = string.format, string.len, string.sub
 --WoW API / Variables
@@ -1321,39 +1321,42 @@ function B:GetGraysValue()
 end
 
 function B:VendorGrays(delete)
+	if B.SellFrame:IsShown() then return end
 	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
 		E:Print(L["You must be at a vendor."])
 		return
 	end
 
-	local goldGained, itemID, link, itype, rarity, itemPrice, stackCount, stackPrice, _ = 0
+	local link, rarity, itype, itemPrice
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			itemID = GetContainerItemID(bag, slot)
 			if itemID then
 				_, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
-				stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 
 				if (rarity and rarity == 0) and (itype and itype ~= "Quest") then
-					if delete then
-						PickupContainerItem(bag, slot)
-						DeleteCursorItem()
-					else
-						stackPrice = (itemPrice or 0) * stackCount
-						goldGained = goldGained + stackPrice
-						if E.db.general.vendorGraysDetails and link then
-							E:Print(format("%s|cFF00DDDDx%d|r %s", link, stackCount, B:FormatMoney(stackPrice)))
-						end
-						UseContainerItem(bag, slot)
-					end
+					tinsert(B.SellFrame.Info.itemList, {bag,slot,itemPrice})
 				end
 			end
 		end
 	end
 
-	if goldGained > 0 then
-		E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(goldGained)))
-	end
+	if (not B.SellFrame.Info.itemList) then return; end
+	if (tmaxn(B.SellFrame.Info.itemList) < 1) then return; end
+	--Resetting stuff
+	B.SellFrame.Info.delete = delete or false
+	B.SellFrame.Info.ProgressTimer = 0
+	B.SellFrame.Info.SellInterval = 0.2
+	B.SellFrame.Info.ProgressMax = tmaxn(B.SellFrame.Info.itemList)
+	B.SellFrame.Info.goldGained = 0
+	B.SellFrame.Info.itemsSold = 0
+
+	B.SellFrame.statusbar:SetValue(0)
+	B.SellFrame.statusbar:SetMinMaxValues(0, B.SellFrame.Info.ProgressMax)
+	B.SellFrame.statusbar.ValueText:SetText("0 / "..B.SellFrame.Info.ProgressMax)
+
+	--Time to sell
+	B.SellFrame:Show()
 end
 
 function B:VendorGrayCheck()
@@ -2021,6 +2024,98 @@ function B:PostBagMove()
 	end
 end
 
+function B:MERCHANT_CLOSED()
+	B.SellFrame:Hide()
+
+	twipe(B.SellFrame.Info.itemList)
+	B.SellFrame.Info.delete = false
+	B.SellFrame.Info.ProgressTimer = 0
+	B.SellFrame.Info.SellInterval = 0.2
+	B.SellFrame.Info.ProgressMax = 0
+	B.SellFrame.Info.goldGained = 0
+	B.SellFrame.Info.itemsSold = 0
+end
+
+function B:ProgressQuickVendor()
+	local item = B.SellFrame.Info.itemList[1]
+	if not item then return nil, true end --No more to sell
+	local bag, slot,itemPrice = unpack(item)
+	
+	local goldGained, stackPrice, _ = 0
+	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+	if B.SellFrame.Info.delete then
+		PickupContainerItem(bag, slot)
+		DeleteCursorItem()
+	else
+		stackPrice = (itemPrice or 0) * stackCount
+		if E.db.general.vendorGraysDetails and link then
+			E:Print(format("%s|cFF00DDDDx%d|r %s", link, stackCount, B:FormatMoney(stackPrice)))
+		end
+		UseContainerItem(bag, slot)
+	end
+
+	tremove(B.SellFrame.Info.itemList, 1)
+
+	return stackPrice
+end
+
+function B:VendorGreys_OnUpdate(elapsed)
+	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.ProgressTimer - elapsed;
+	if (B.SellFrame.Info.ProgressTimer > 0) then return; end
+	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.SellInterval
+
+	local goldGained, lastItem = B:ProgressQuickVendor();
+	if (goldGained) then
+		B.SellFrame.Info.goldGained = B.SellFrame.Info.goldGained + goldGained
+		B.SellFrame.Info.itemsSold = B.SellFrame.Info.itemsSold + 1
+		B.SellFrame.statusbar:SetValue(B.SellFrame.Info.itemsSold);
+		local timeLeft = (B.SellFrame.Info.ProgressMax - B.SellFrame.Info.itemsSold)*B.SellFrame.Info.SellInterval
+		B.SellFrame.statusbar.ValueText:SetText(B.SellFrame.Info.itemsSold.." / "..B.SellFrame.Info.ProgressMax.." ( "..timeLeft.."s )")
+	elseif lastItem then
+		B.SellFrame:Hide()
+		if B.SellFrame.Info.goldGained > 0 then
+			E:Print((L["Vendored gray items for: %s"]):format(B:FormatMoney(B.SellFrame.Info.goldGained)))
+		end
+	end
+end
+
+function B:CreateSellFrame()
+	B.SellFrame = CreateFrame("Frame", "ElvUIVendorGraysFrame", E.UIParent)
+	B.SellFrame:Size(200,40)
+	B.SellFrame:Point("CENTER", UIParent)
+	B.SellFrame:CreateBackdrop("Transparent")
+
+	B.SellFrame.title = B.SellFrame:CreateFontString(nil, "OVERLAY")
+	B.SellFrame.title:FontTemplate(nil, 12, "OUTLINE")
+	B.SellFrame.title:Point('TOP', B.SellFrame, 'TOP', 0, -2)
+	B.SellFrame.title:SetText(L["Vendoring Grays"])
+
+	B.SellFrame.statusbar = CreateFrame("StatusBar", "ElvUIVendorGraysFrameStatusbar", B.SellFrame)
+	B.SellFrame.statusbar:Size(180, 16)
+	B.SellFrame.statusbar:Point("BOTTOM", B.SellFrame, "BOTTOM", 0, 4)
+	B.SellFrame.statusbar:SetStatusBarTexture(E["media"].normTex)
+	B.SellFrame.statusbar:CreateBackdrop("Transparent")
+
+	B.SellFrame.statusbar.ValueText = B.SellFrame.statusbar:CreateFontString(nil, "OVERLAY")
+	B.SellFrame.statusbar.ValueText:FontTemplate(nil, 12, "OUTLINE")
+	B.SellFrame.statusbar.ValueText:Point("CENTER", B.SellFrame.statusbar)
+	B.SellFrame.statusbar.ValueText:SetText("0 / 0 ( 0s )")
+	
+	B.SellFrame.Info = {
+		delete = false,
+		ProgressTimer = 0,
+		SellInterval = 0.2,
+		ProgressMax = 0,
+		goldGained = 0,
+		itemsSold = 0,
+		itemList = {},
+	}
+
+	B.SellFrame:SetScript("OnUpdate", B.VendorGreys_OnUpdate)
+
+	SellFrame:Hide()
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -2082,8 +2177,7 @@ function B:Initialize()
 	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
 	self:SecureHook('ToggleBackpack')
 	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
-
-	self:Layout()
+	self:Layout();
 
 	E.Bags = self;
 
@@ -2096,6 +2190,7 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+	self:RegisterEvent("MERCHANT_CLOSED")
 
 	BankFrame:SetScale(0.0001)
 	BankFrame:SetAlpha(0)
@@ -2104,6 +2199,9 @@ function B:Initialize()
 
 	--Enable/Disable "Loot to Leftmost Bag"
 	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)
+
+	--Creating vendor grays frame
+	B:CreateSellFrame()
 end
 
 local function InitializeCallback()
