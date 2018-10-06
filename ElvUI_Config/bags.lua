@@ -483,6 +483,35 @@ E.Options.args.bags = {
 				},
 			},
 		},
+		vendorGrays = {
+			order = 7,
+			type = "group",
+			name = L["Vendor Grays"],
+			get = function(info) return E.db.bags.vendorGrays[ info[#info] ] end,
+			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Automatically vendor gray items when visiting a vendor."],
+				},
+				interval = {
+					order = 2,
+					type = "range",
+					name = L["Sell Interval"],
+					desc = L["Will attenpt to sell another item in set interval after previous one was sold."],
+					min = 0.1, max = 1, step = 0.1,
+				},
+				details = {
+					order = 3,
+					name = L["Vendor Gray Detailed Report"],
+					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
+				},
+			},
+		},
+				
 		bagSortingGroup = {
 			order = 7,
 			type = "group",

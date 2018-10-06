@@ -2030,7 +2030,7 @@ function B:MERCHANT_CLOSED()
 	twipe(B.SellFrame.Info.itemList)
 	B.SellFrame.Info.delete = false
 	B.SellFrame.Info.ProgressTimer = 0
-	B.SellFrame.Info.SellInterval = 0.2
+	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
 	B.SellFrame.Info.ProgressMax = 0
 	B.SellFrame.Info.goldGained = 0
 	B.SellFrame.Info.itemsSold = 0
@@ -2048,7 +2048,7 @@ function B:ProgressQuickVendor()
 		DeleteCursorItem()
 	else
 		stackPrice = (itemPrice or 0) * stackCount
-		if E.db.general.vendorGraysDetails and link then
+		if E.db.bags.vendorGrays.details and link then
 			E:Print(format("%s|cFF00DDDDx%d|r %s", link, stackCount, B:FormatMoney(stackPrice)))
 		end
 		UseContainerItem(bag, slot)
@@ -2104,7 +2104,7 @@ function B:CreateSellFrame()
 	B.SellFrame.Info = {
 		delete = false,
 		ProgressTimer = 0,
-		SellInterval = 0.2,
+		SellInterval = E.db.bags.vendorGrays.interval,
 		ProgressMax = 0,
 		goldGained = 0,
 		itemsSold = 0,
