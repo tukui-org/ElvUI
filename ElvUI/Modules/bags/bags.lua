@@ -2082,7 +2082,11 @@ function B:Initialize()
 	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
 	self:SecureHook('ToggleBackpack')
 	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
-	self:Layout();
+
+	self:Layout()
+
+	self:UpdateItemLevelDisplay()
+	self:UpdateCountDisplay()
 
 	E.Bags = self;
 
