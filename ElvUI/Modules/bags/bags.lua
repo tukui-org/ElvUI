@@ -2113,7 +2113,7 @@ function B:CreateSellFrame()
 
 	B.SellFrame:SetScript("OnUpdate", B.VendorGreys_OnUpdate)
 
-	SellFrame:Hide()
+	B.SellFrame:Hide()
 end
 
 function B:Initialize()
