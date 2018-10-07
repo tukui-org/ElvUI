@@ -1327,12 +1327,12 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local link, rarity, itype, itemPrice
+	local rarity, itype, itemPrice, _
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			itemID = GetContainerItemID(bag, slot)
 			if itemID then
-				_, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+				_, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
 
 				if (rarity and rarity == 0) and (itype and itype ~= "Quest") then
 					tinsert(B.SellFrame.Info.itemList, {bag,slot,itemPrice})
@@ -2040,8 +2040,8 @@ function B:ProgressQuickVendor()
 	local item = B.SellFrame.Info.itemList[1]
 	if not item then return nil, true end --No more to sell
 	local bag, slot,itemPrice = unpack(item)
-	
-	local goldGained, stackPrice, _ = 0
+
+	local stackPrice
 	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 	if B.SellFrame.Info.delete then
 		PickupContainerItem(bag, slot)
@@ -2100,7 +2100,7 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar.ValueText:FontTemplate(nil, 12, "OUTLINE")
 	B.SellFrame.statusbar.ValueText:Point("CENTER", B.SellFrame.statusbar)
 	B.SellFrame.statusbar.ValueText:SetText("0 / 0 ( 0s )")
-	
+
 	B.SellFrame.Info = {
 		delete = false,
 		ProgressTimer = 0,

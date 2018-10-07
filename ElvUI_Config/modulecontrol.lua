@@ -50,7 +50,7 @@ local function CreateActionbarsConfig()
 		get = function(info) return E.global.profileCopy.actionbar[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.actionbar[ info[#info] ] = value; end
 	}
-	
+
 	return config
 end
 
@@ -78,7 +78,7 @@ local function CreateAurasConfig()
 		get = function(info) return E.global.profileCopy.auras[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.auras[ info[#info] ] = value; end
 	}
-	
+
 	return config
 end
 
@@ -120,7 +120,7 @@ end
 --Chat
 local function CreateChatConfig()
 	local config = CP:CreateModuleConfigGroup(L["Chat"], "chat")
-	
+
 	return config
 end
 
@@ -141,7 +141,7 @@ end
 --DataBars
 local function CreateDatatbarsConfig()
 	local config = CP:CreateModuleConfigGroup(L["DataBars"], "databars")
-	
+
 	config.args.experience = {
 		order = 2,
 		type = "toggle",
@@ -205,7 +205,6 @@ local function CreateNamePlatesConfig()
 		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
 	}
-	
 	config.args.reactions = {
 		order = 4,
 		type = "toggle",
@@ -213,7 +212,6 @@ local function CreateNamePlatesConfig()
 		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
 	}
-	
 	config.args.healPrediction = {
 		order = 5,
 		type = "toggle",
@@ -268,7 +266,7 @@ local function CreateNamePlatesConfig()
 			},
 		},
 	}
-	
+
 	return config
 end
 

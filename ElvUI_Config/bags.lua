@@ -513,7 +513,6 @@ E.Options.args.bags = {
 				},
 			},
 		},
-				
 		bagSortingGroup = {
 			order = 8,
 			type = "group",
