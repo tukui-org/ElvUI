@@ -104,7 +104,7 @@ function M:LoadRaidMarker()
 			button:Point("CENTER");
 		else
 			local angle = (math.rad(360) / 7) * (i - 1)
-			button:Point("CENTER", cos(angle) * 60, sin(angle) * 60);
+			button:Point("CENTER", sin(angle) * 60, cos(angle) * 60);
 		end
 	end
 
