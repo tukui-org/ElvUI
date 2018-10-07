@@ -169,8 +169,21 @@ L["Add Item or Search Syntax"] = "Füge Gegenstand oder Suchoperator hinzu"
 L["Adjust the width of the bag frame."] = "Passe die Breite des Taschenfensters an."
 L["Adjust the width of the bank frame."] = "Passe die Breite des Bankfensters an."
 L["Ascending"] = "Aufsteigend"
+L["Bag"] = "Tasche"
+L["Bag 1"] = "Tasche 1"
+L["Bag 2"] = "Tasche 2"
+L["Bag 3"] = "Tasche 3"
+L["Bag 4"] = "Tasche 4"
 L["Bag Sorting"] = "Taschen Sortierung"
+L["Bag Spacing"] = "Taschen Abstand"
 L["Bag-Bar"] = "Taschenleiste"
+L["Bank 1"] = true
+L["Bank 2"] = true
+L["Bank 3"] = true
+L["Bank 4"] = true
+L["Bank 5"] = true
+L["Bank 6"] = true
+L["Bank 7"] = true
 L["Bar Direction"] = "Ausrichtung Leiste"
 L["Blizzard Style"] = "Blizzard Stil"
 L["Bottom to Top"] = "Von unten nach oben"
@@ -203,7 +216,9 @@ L["Item Level"] = "Itemlevel"
 L["Money Format"] = "Geldformat"
 L["Panel Width (Bags)"] = "Leistenbreite (Taschen)"
 L["Panel Width (Bank)"] = "Leistenbreite (Bank)"
+L["Reverse Bag Slots"] = "Umgekehrte Taschenslots"
 L["Search Syntax"] = "Suchsyntax"
+L["Sell Interval"] = "Verkaufsintervall"
 L["Set the size of your bag buttons."] = "Setze die Größe der Taschen Taste."
 L["Short (Whole Numbers)"] = "Kurz (ganze Zahlen)"
 L["Show Coins"] = "Währungssymbole anzeigen"
@@ -213,6 +228,7 @@ L["Show Upgrade Icon"] = "Zeige Aufwertungs-Symbol"
 L["Smart"] = "Elegant"
 L["Sort Direction"] = "Sortierrichtung" --Also used in Buffs and Debuffs
 L["Sort Inverted"] = "Umgekehrtes sortieren"
+L["Split"] = "Aufteilen"
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "Die Ausrichtung der Leiste (Horizontal oder Vertikal)."
 L["The direction that the bag frames will grow from the anchor."] = "Die Richtung in welche das Fenster vom Ankerpunkt aus wächst (Horizontal oder Vertikal)."
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "Das Anzeigeformat für die Währungssymbole, welche unter der Haupttasche angezeigt werden. (Du musst eine Währung beobachten, damit diese angezeigt wird)"
@@ -224,6 +240,7 @@ L["The size of the individual buttons on the bank frame."] = "Die Größe der ei
 L["The spacing between buttons."] = "Der Abstand zwischen den Tasten."
 L["Top to Bottom"] = "Von oben nach unten"
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
+L["Will attempt to sell another item in set interval after previous one was sold."] = "Versucht einen anderen Gegenstand in einem bestimmten Intervall zu verkaufen, nachdem der vorherige verkauft wurde."
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Beginne nach so vielen Stärkungszaubern eine neue Reihe oder Spalte."
@@ -609,7 +626,7 @@ L["Toggle Anchors"] = "Ankerpunkte umschalten"
 L["Unlock various elements of the UI to be repositioned."] = "Schalte verschiedene Elemente der Benutzeroberfläche frei um sie neu zu positionieren."
 L["Version"] = "Version"
 
--- Module Reset
+-- Module Control
 L["Are you sure you want to reset ActionBars settings?"] = "Bist du dir sicher dass du die Actionsleisten Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Auras settings?"] = "Bist du dir sicher dass du die Auren Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Bags settings?"] = "Bist du dir sicher dass du die Taschen Einstellungen zurücksetzen möchtest?"
@@ -621,7 +638,15 @@ L["Are you sure you want to reset General settings?"] = "Bist du dir sicher dass
 L["Are you sure you want to reset NamePlates settings?"] = "Bist du dir sicher dass du die Namensplaketten Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset Tooltip settings?"] = "Bist du dir sicher dass du die Tooltip Einstellungen zurücksetzen möchtest?"
 L["Are you sure you want to reset UnitFrames settings?"] = "Bist du dir sicher dass du die Einheitenfenster Einstellungen zurücksetzen möchtest?"
+L["Core |cfffe7b2cElvUI|r options."] = "|cfffe7b2cElvUI|r Einstellungen"
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = "Wenn du ein Plugin installiert hast, was diese Einstellungen unterstützt, findest du sie im Dropdown rechts."
+L["Module Control"] = "Modulkontrolle"
+L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
+L["Movers"] = "Ankerpunkte"
+L["On screen positions for different elements."] = "Position der verschiedenen Elemente."
+L["Select a profile to copy from/to."] = "Wähle ein Profil um zu kopieren von/zu."
+L["This section will allow you to copy settings to a select module from or to a different profile."] = "Diese Sektion erlaubt dir die Einstellungen von einem ausgewählten Module zu oder von einen anderen Profil zu kopieren."
 L["This section will help reset specfic settings back to default."] = "Diese Sektion wird dir dabei helfen spezifische Einstellungen zurückzusetzen."
 
 --NamePlates

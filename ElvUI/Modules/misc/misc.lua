@@ -156,7 +156,7 @@ function M:MERCHANT_CLOSED()
 end
 
 function M:MERCHANT_SHOW()
-	if E.db.general.vendorGrays then
+	if E.db.bags.vendorGrays.enable then
 		C_Timer_After(0.5, VendorGrays)
 	end
 
@@ -289,6 +289,9 @@ function M:PLAYER_ENTERING_WORLD()
 end
 
 function M:Initialize()
+	--DB conversion
+	if E.db.general.vendorGrays then E.db.bags.vendorGrays.enable = E.db.general.vendorGrays end
+
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()

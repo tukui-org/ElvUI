@@ -166,8 +166,20 @@ L["Add Item or Search Syntax"] = "添加物品或者匹配语法"
 L["Adjust the width of the bag frame."] = "调整背包框架宽度"
 L["Adjust the width of the bank frame."] = "调整银行框架宽度"
 L["Ascending"] = "升序"
+L["Bag"] = true
+L["Bag 1"] = true
+L["Bag 2"] = true
+L["Bag 3"] = true
+L["Bag 4"] = true
 L["Bag Sorting"] = "背包排序"
 L["Bag-Bar"] = "背包条"
+L["Bank 1"] = true
+L["Bank 2"] = true
+L["Bank 3"] = true
+L["Bank 4"] = true
+L["Bank 5"] = true
+L["Bank 6"] = true
+L["Bank 7"] = true
 L["Bar Direction"] = "背包条排序方向"
 L["Blizzard Style"] = "暴雪样式"
 L["Bottom to Top"] = "底部到顶部"
@@ -200,7 +212,9 @@ L["Item Level"] = "物品等级"
 L["Money Format"] = "金币格式"
 L["Panel Width (Bags)"] = "背包面板宽度"
 L["Panel Width (Bank)"] = "银行面板宽度"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = "搜索语法"
+L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "设置背包按钮尺寸"
 L["Short (Whole Numbers)"] = "短(完整数字)"
 L["Show Coins"] = "显示硬币"
@@ -210,6 +224,7 @@ L["Show Upgrade Icon"] = "显示升级图标"
 L["Smart"] = "智能"
 L["Sort Direction"] = "排列方向"
 L["Sort Inverted"] = "倒序"
+L["Split"] = true
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "此方向决定框架是横排还是竖排"
 L["The direction that the bag frames will grow from the anchor."] = "背包框架将从此方向开始排列"
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "背包底部的货币显示格式(你需要在货币页中勾选显示)"
@@ -221,6 +236,7 @@ L["The size of the individual buttons on the bank frame."] = "银行框架单个
 L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = "顶部到底部"
 L["Use coin icons instead of colored text."] = "显示硬币图标而不是颜色文字"
+L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "在这些光环旁开始新的行或列"
@@ -605,7 +621,7 @@ L["Toggle Anchors"] = "切换定位开关"
 L["Unlock various elements of the UI to be repositioned."] = "解锁界面上的各种框架来更改位置"
 L["Version"] = "版本"
 
---Module Reset
+--Module Control
 L["Are you sure you want to reset ActionBars settings?"] = "你确定要重置‘动作条’的设置吗？"
 L["Are you sure you want to reset Auras settings?"] = "你确定要重置‘光环’的设置吗？"
 L["Are you sure you want to reset Bags settings?"] = "你确定要重置‘背包’的设置吗？"
@@ -617,7 +633,15 @@ L["Are you sure you want to reset General settings?"] = "你确定要重置‘�
 L["Are you sure you want to reset NamePlates settings?"] = "你确定要重置‘姓名版’的设置吗？"
 L["Are you sure you want to reset Tooltip settings?"] = "你确定要重置‘鼠标提示’的设置吗？"
 L["Are you sure you want to reset UnitFrames settings?"] = "你确定要重置‘单位框架’的设置吗？"
+L["Core |cfffe7b2cElvUI|r options."] = true
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = true
+L["Module Control"] = true
+L["Module Copy"] = true
 L["Module Reset"] = "模块重置"
+L["Movers"] = true
+L["On screen positions for different elements."] = true
+L["Select a profile to copy from/to."] = true
+L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = "这部分将帮助你重置特定设置为默认."
 
 --NamePlates

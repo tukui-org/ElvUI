@@ -108,20 +108,26 @@ E.Options.args.bags = {
 						SetInsertItemsLeftToRight(value)
 					end,
 				},
-				disableBagSort = {
+				reverseSlots = {
 					order = 11,
+					type = "toggle",
+					name = L["Reverse Bag Slots"],
+					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
+				},
+				disableBagSort = {
+					order = 12,
 					type = "toggle",
 					name = L["Disable Bag Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
 				},
 				disableBankSort = {
-					order = 12,
+					order = 13,
 					type = "toggle",
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
 				strata = {
-					order = 13,
+					order = 14,
 					type = "select",
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
@@ -135,7 +141,7 @@ E.Options.args.bags = {
 					},
 				},
 				countGroup = {
-					order = 14,
+					order = 15,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -185,7 +191,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 15,
+					order = 16,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,
@@ -375,8 +381,140 @@ E.Options.args.bags = {
 				},
 			},
 		},
-		bagSortingGroup = {
+		split = {
 			order = 6,
+			type = "group",
+			name = L["Split"],
+			get = function(info) return E.db.bags.split[ info[#info] ] end,
+			set = function(info, value) E.db.bags.split[ info[#info] ] = value B:UpdateAll() end,
+			args = {
+				bagSpacing = {
+					order = 1,
+					type = "range",
+					name = L["Bag Spacing"],
+					min = 0, max = 20, step = 1,
+				},
+				player = {
+					order = 2,
+					type = "toggle",
+					set = function(info, value) E.db.bags.split[ info[#info] ] = value B:Layout() end,
+					name = L["Bag"],
+				},
+				bank = {
+					order = 3,
+					type = "toggle",
+					set = function(info, value) E.db.bags.split[ info[#info] ] = value B:Layout(true) end,
+					name = L["Bank"],
+				},
+				splitbags = {
+					order = 4,
+					type = "group",
+					name = L["Player"],
+					get = function(info) return E.db.bags.split[ info[#info] ] end,
+					set = function(info, value) E.db.bags.split[ info[#info] ] = value B:Layout() end,
+					guiInline = true,
+					args = {
+						bag1 = {
+							order = 2,
+							type = "toggle",
+							name = L["Bag 1"],
+						},
+						bag2 = {
+							order = 3,
+							type = "toggle",
+							name = L["Bag 2"],
+						},
+						bag3 = {
+							order = 4,
+							type = "toggle",
+							name = L["Bag 3"],
+						},
+						bag4 = {
+							order = 5,
+							type = "toggle",
+							name = L["Bag 4"],
+						},
+					},
+					disabled = function() return not E.db.bags.split.player end,
+				},
+				splitbank = {
+					order = 5,
+					type = "group",
+					name = L["Bank"],
+					get = function(info) return E.db.bags.split[ info[#info] ] end,
+					set = function(info, value) E.db.bags.split[ info[#info] ] = value B:Layout(true) end,
+					guiInline = true,
+					args = {
+						bag5 = {
+							order = 2,
+							type = "toggle",
+							name = L["Bank 1"],
+						},
+						bag6 = {
+							order = 3,
+							type = "toggle",
+							name = L["Bank 2"],
+						},
+						bag7 = {
+							order = 4,
+							type = "toggle",
+							name = L["Bank 3"],
+						},
+						bag8 = {
+							order = 5,
+							type = "toggle",
+							name = L["Bank 4"],
+						},
+						bag9 = {
+							order = 6,
+							type = "toggle",
+							name = L["Bank 5"],
+						},
+						bag10 = {
+							order = 7,
+							type = "toggle",
+							name = L["Bank 6"],
+						},
+						bag11 = {
+							order = 8,
+							type = "toggle",
+							name = L["Bank 7"],
+						},
+					},
+					disabled = function() return not E.db.bags.split.bank end,
+				},
+			},
+		},
+		vendorGrays = {
+			order = 7,
+			type = "group",
+			name = L["Vendor Grays"],
+			get = function(info) return E.db.bags.vendorGrays[ info[#info] ] end,
+			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+					desc = L["Automatically vendor gray items when visiting a vendor."],
+				},
+				interval = {
+					order = 2,
+					type = "range",
+					name = L["Sell Interval"],
+					desc = L["Will attempt to sell another item in set interval after previous one was sold."],
+					min = 0.1, max = 1, step = 0.1,
+				},
+				details = {
+					order = 3,
+					name = L["Vendor Gray Detailed Report"],
+					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
+				},
+			},
+		},
+		bagSortingGroup = {
+			order = 8,
 			type = "group",
 			name = L["Bag Sorting"],
 			args = {
@@ -473,7 +611,7 @@ E.Options.args.bags = {
 			},
 		},
 		search_syntax = {
-			order = 7,
+			order = 9,
 			type = "group",
 			name = L["Search Syntax"],
 			disabled = function() return not E.bags end,

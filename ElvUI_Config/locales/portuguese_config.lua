@@ -168,8 +168,20 @@ L["Add Item or Search Syntax"] = true
 L["Adjust the width of the bag frame."] = "Ajusta a largura do quadro das bolsas."
 L["Adjust the width of the bank frame."] = "Ajusta a largura do quadro do banco."
 L["Ascending"] = "Ascendente"
+L["Bag"] = true
+L["Bag 1"] = true
+L["Bag 2"] = true
+L["Bag 3"] = true
+L["Bag 4"] = true
 L["Bag Sorting"] = true
 L["Bag-Bar"] = "Barra das Bolsas"
+L["Bank 1"] = true
+L["Bank 2"] = true
+L["Bank 3"] = true
+L["Bank 4"] = true
+L["Bank 5"] = true
+L["Bank 6"] = true
+L["Bank 7"] = true
 L["Bar Direction"] = "Direção da Barra"
 L["Blizzard Style"] = true
 L["Bottom to Top"] = "De baixo para cima"
@@ -202,7 +214,9 @@ L["Item Level"] = true
 L["Money Format"] = true
 L["Panel Width (Bags)"] = "Largura do Painel (Bolsas)"
 L["Panel Width (Bank)"] = "Largura do Painel (Banco)"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = true
+L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Define o tamanho dos botões das Bolsas"
 L["Short (Whole Numbers)"] = true
 L["Show Coins"] = true
@@ -212,6 +226,7 @@ L["Show Upgrade Icon"] = true
 L["Smart"] = true
 L["Sort Direction"] = "Direção de organização"
 L["Sort Inverted"] = "Oganizar Invertido"
+L["Split"] = true
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "Direcção em que os quadros das bolsas são (Horizontal ou Vertical)."
 L["The direction that the bag frames will grow from the anchor."] = "Direcção para qual as barras crescerão a partir do seu Fixador."
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "O formato de exibição dos ícones de moeda exibidos abaixo da bolsa principal. (Para isto ser exibido é necessário que selecione 'Mostrar na Mochila' na moeda desejada na aba Moeda dentro do Quadro do Personagem)."
@@ -223,6 +238,7 @@ L["The size of the individual buttons on the bank frame."] = "O tamanho individu
 L["The spacing between buttons."] = "Espaçamento entre botões."
 L["Top to Bottom"] = "De cima para baixo"
 L["Use coin icons instead of colored text."] = true
+L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Começar uma nova coluna ou linha depois dessa quantia de auras."
@@ -607,7 +623,7 @@ L["Toggle Anchors"] = "Mostrar/Ocultar Fixadores"
 L["Unlock various elements of the UI to be repositioned."] = "Destravar vários elementos da interface para serem reposicionados."
 L["Version"] = "Versão"
 
--- Module Reset
+--Module Control
 L["Are you sure you want to reset ActionBars settings?"] = true
 L["Are you sure you want to reset Auras settings?"] = true
 L["Are you sure you want to reset Bags settings?"] = true
@@ -619,7 +635,15 @@ L["Are you sure you want to reset General settings?"] = true
 L["Are you sure you want to reset NamePlates settings?"] = true
 L["Are you sure you want to reset Tooltip settings?"] = true
 L["Are you sure you want to reset UnitFrames settings?"] = true
+L["Core |cfffe7b2cElvUI|r options."] = true
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = true
+L["Module Control"] = true
+L["Module Copy"] = true
 L["Module Reset"] = true
+L["Movers"] = true
+L["On screen positions for different elements."] = true
+L["Select a profile to copy from/to."] = true
+L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = true
 
 --NamePlates

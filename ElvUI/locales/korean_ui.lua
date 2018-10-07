@@ -70,7 +70,6 @@ L["Azerite Bar"] = true
 L["Current Level:"] = "현재 레벨"
 L["Honor Remaining:"] = "남은 명예"
 L["Honor XP:"] = "명예 경험치"
-L["In Bags:"] = "가방 속에"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
@@ -247,7 +246,6 @@ L["Voice Overlay"] = "음성 오버레이"
 L["Alternative Power"] = "특수상황 진행 바"
 L["Archeology Progress Bar"] = "고고학 진척도 바"
 L["Arena Frames"] = "투기장 프레임"
-L["Artifact Bar"] = "유물력바"
 L["Bag Mover (Grow Down)"] = "가방 조정자(아래로 성장)"
 L["Bag Mover (Grow Up)"] = "가방 조정자(위로 성장)"
 L["Bag Mover"] = "가방 조정자"

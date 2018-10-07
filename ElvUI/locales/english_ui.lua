@@ -70,7 +70,6 @@ L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
-L["In Bags:"] = true
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = true
@@ -247,7 +246,6 @@ L["Voice Overlay"] = true
 L["Alternative Power"] = true
 L["Archeology Progress Bar"] = true
 L["Arena Frames"] = true --Also used in UnitFrames
-L["Artifact Bar"] = true
 L["Bag Mover (Grow Down)"] = true
 L["Bag Mover (Grow Up)"] = true
 L["Bag Mover"] = true

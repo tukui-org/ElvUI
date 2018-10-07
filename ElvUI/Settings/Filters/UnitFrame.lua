@@ -875,8 +875,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		-- Zul
 		[273365] = Defaults(), -- Dark Revelation
 		[273434] = Defaults(), -- Pit of Despair
-		[274195] = Defaults(), -- Corrupted Blood
+		--[274195] = Defaults(), -- Corrupted Blood
 		[272018] = Defaults(), -- Absorbed in Darkness
+		[274358] = Defaults(), -- Rupturing Blood
 
 		-- Zek'voz, Herald of N'zoth
 		[265237] = Defaults(), -- Shatter
@@ -986,7 +987,7 @@ G.unitframe.buffwatch = {
 		-- Warlock Pets
 		[193396] = ClassBuff(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true), -- Demonic Empowerment
 		-- Hunter Pets
-		[19615] = ClassBuff(19615, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
+		[272790] = ClassBuff(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
 		[136]   = ClassBuff(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)      -- Mend Pet
 	},
 	HUNTER = {}, --Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error

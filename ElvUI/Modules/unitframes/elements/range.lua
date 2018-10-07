@@ -186,9 +186,7 @@ function UF:UpdateRange()
 
 	local unit = self.unit
 
-	if unit == 'player' then return end -- Because you are always in range. Casting on yourself is ALL you though.
-
-	if self.forceInRange then
+	if self.forceInRange or unit == 'player' then
 		self:SetAlpha(range.insideAlpha)
 	elseif self.forceNotInRange then
 		self:SetAlpha(range.outsideAlpha)

@@ -70,7 +70,6 @@ L["Azerite Bar"] = true
 L["Current Level:"] = "目前等級"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
-L["In Bags:"] = "背包內:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 記憶體使用量"
@@ -247,7 +246,6 @@ L["Voice Overlay"] = "語音浮層"
 L["Alternative Power"] = "特殊能量條框架"
 L["Archeology Progress Bar"] = "考古進度條"
 L["Arena Frames"] = "競技場框架" --Also used in UnitFrames
-L["Artifact Bar"] = "神器能量條"
 L["Bag Mover (Grow Down)"] = "背包錨點 (向下增長)"
 L["Bag Mover (Grow Up)"] = "背包錨點 (向上增長)"
 L["Bag Mover"] = "背包錨點"

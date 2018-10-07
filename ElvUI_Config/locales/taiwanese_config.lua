@@ -168,8 +168,20 @@ L["Add Item or Search Syntax"] = "增加物品或是搜尋語法"
 L["Adjust the width of the bag frame."] = "調整背包框架寬度."
 L["Adjust the width of the bank frame."] = "調整銀行框架寬度."
 L["Ascending"] = "升序"
+L["Bag"] = true
+L["Bag 1"] = true
+L["Bag 2"] = true
+L["Bag 3"] = true
+L["Bag 4"] = true
 L["Bag Sorting"] = "背包排序"
 L["Bag-Bar"] = "背包條"
+L["Bank 1"] = true
+L["Bank 2"] = true
+L["Bank 3"] = true
+L["Bank 4"] = true
+L["Bank 5"] = true
+L["Bank 6"] = true
+L["Bank 7"] = true
 L["Bar Direction"] = "背包條排序方向"
 L["Blizzard Style"] = "暴雪風格"
 L["Bottom to Top"] = "底部至頂部"
@@ -202,7 +214,9 @@ L["Item Level"] = "物品等級"
 L["Money Format"] = "金幣格式"
 L["Panel Width (Bags)"] = "框架寬度 (背包)"
 L["Panel Width (Bank)"] = "框架寬度 (銀行)"
+L["Reverse Bag Slots"] = true
 L["Search Syntax"] = "搜尋語法"
+L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "設定你的背包格子大小."
 L["Short (Whole Numbers)"] = "短 (完整數字)"
 L["Show Coins"] = "顯示硬幣"
@@ -212,6 +226,7 @@ L["Show Upgrade Icon"] = "顯示升級圖標"
 L["Smart"] = "智慧"
 L["Sort Direction"] = "排序方向"
 L["Sort Inverted"] = "倒序排列"
+L["Split"] = true
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "背包框架排序方向 (水平或垂直)."
 L["The direction that the bag frames will grow from the anchor."] = "新增的背包框架將從錨點依此方向增加."
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "背包主框架下方的兌換通貨圖示顯示格式.需先設定監控特定兌換通貨，才會顯示於背包框架."
@@ -223,6 +238,7 @@ L["The size of the individual buttons on the bank frame."] = "銀行框架單個
 L["The spacing between buttons."] = "兩個按鈕間的距離."
 L["Top to Bottom"] = "頂部至底部"
 L["Use coin icons instead of colored text."] = "使用硬幣圖示取代上色文字"
+L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "在這些光環旁開始新的行或列."
@@ -607,7 +623,7 @@ L["Toggle Anchors"] = "解鎖元件定位"
 L["Unlock various elements of the UI to be repositioned."] = "解鎖介面上的各種元件, 以便更改位置."
 L["Version"] = "版本"
 
--- Module Reset
+--Module Control
 L["Are you sure you want to reset ActionBars settings?"] = true
 L["Are you sure you want to reset Auras settings?"] = true
 L["Are you sure you want to reset Bags settings?"] = true
@@ -619,7 +635,15 @@ L["Are you sure you want to reset General settings?"] = true
 L["Are you sure you want to reset NamePlates settings?"] = true
 L["Are you sure you want to reset Tooltip settings?"] = true
 L["Are you sure you want to reset UnitFrames settings?"] = true
+L["Core |cfffe7b2cElvUI|r options."] = true
+L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = true
+L["Module Control"] = true
+L["Module Copy"] = true
 L["Module Reset"] = true
+L["Movers"] = true
+L["On screen positions for different elements."] = true
+L["Select a profile to copy from/to."] = true
+L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = true
 
 --NamePlates
