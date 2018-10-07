@@ -435,6 +435,7 @@ E.Options.args.bags = {
 							name = L["Bag 4"],
 						},
 					},
+					disabled = function() return not E.db.bags.split.player end,
 				},
 				splitbank = {
 					order = 5,
@@ -480,6 +481,7 @@ E.Options.args.bags = {
 							name = L["Bank 7"],
 						},
 					},
+					disabled = function() return not E.db.bags.split.bank end,
 				},
 			},
 		},
@@ -513,7 +515,7 @@ E.Options.args.bags = {
 		},
 				
 		bagSortingGroup = {
-			order = 7,
+			order = 8,
 			type = "group",
 			name = L["Bag Sorting"],
 			args = {
@@ -610,7 +612,7 @@ E.Options.args.bags = {
 			},
 		},
 		search_syntax = {
-			order = 8,
+			order = 9,
 			type = "group",
 			name = L["Search Syntax"],
 			disabled = function() return not E.bags end,
