@@ -1906,7 +1906,7 @@ function B:GUILDBANKFRAME_OPENED(event)
 	self:UnregisterEvent(event)
 end
 
-local playerEnteringWorldFunc = function() B:UpdateBagTypes() end
+local playerEnteringWorldFunc = function() B:UpdateBagTypes() B:Layout() end
 function B:PLAYER_ENTERING_WORLD()
 	self:UpdateGoldText()
 
