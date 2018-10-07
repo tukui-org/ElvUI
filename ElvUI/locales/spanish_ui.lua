@@ -70,7 +70,6 @@ L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
-L["In Bags:"] = true
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
@@ -247,7 +246,6 @@ L["Voice Overlay"] = true
 L["Alternative Power"] = "Poder Alternativo"
 L["Archeology Progress Bar"] = "Barra de Progreso de Arqueología"
 L["Arena Frames"] = "Marcos de Arena"
-L["Artifact Bar"] = "Barra de Artefacto"
 L["Bag Mover (Grow Down)"] = "Fijador de Bolsa (Crecer hacia abajo)"
 L["Bag Mover (Grow Up)"] = "Fijador de Bolsa (Crecer hacia arriba)"
 L["Bag Mover"] = "Fijador de Bolsa"

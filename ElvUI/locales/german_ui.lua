@@ -70,7 +70,6 @@ L["Azerite Bar"] = "Azerit Leiste"
 L["Current Level:"] = "Derzeitiges Level:"
 L["Honor Remaining:"] = "Ehre verbleibend:"
 L["Honor XP:"] = "Ehre XP:"
-L["In Bags:"] = "In Tasche:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
@@ -247,7 +246,6 @@ L["Voice Overlay"] = true -- No need to translate
 L["Alternative Power"] = "Alternative Energie"
 L["Archeology Progress Bar"] = "Archeologie Fortschrittsleiste"
 L["Arena Frames"] = "Arena Fenster" --Also used in UnitFrames
-L["Artifact Bar"] = "Artefaktleiste"
 L["Bag Mover (Grow Down)"] = "Taschen Anker (Nach unten wachsen)"
 L["Bag Mover (Grow Up)"] = "Taschen Anker (Nach oben wachsen)"
 L["Bag Mover"] = "Taschen Anker"

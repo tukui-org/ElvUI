@@ -70,7 +70,6 @@ L["Azerite Bar"] = true
 L["Current Level:"] = "Текущий уровень:"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
-L["In Bags:"] = "В сумках:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
@@ -247,7 +246,6 @@ L["Voice Overlay"] = "Индикатор голоса"
 L["Alternative Power"] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L["Arena Frames"] = "Арена" --Also used in UnitFrames
-L["Artifact Bar"] = "Полоса Артефакта"
 L["Bag Mover (Grow Down)"] = "Сумки (Рост вниз)"
 L["Bag Mover (Grow Up)"] = "Сумки (Рост вверх)"
 L["Bag Mover"] = "Фиксатор сумок"
