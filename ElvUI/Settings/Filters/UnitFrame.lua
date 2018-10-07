@@ -875,8 +875,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		-- Zul
 		[273365] = Defaults(), -- Dark Revelation
 		[273434] = Defaults(), -- Pit of Despair
-		[274195] = Defaults(), -- Corrupted Blood
+		--[274195] = Defaults(), -- Corrupted Blood
 		[272018] = Defaults(), -- Absorbed in Darkness
+		[274358] = Defaults(), -- Rupturing Blood
 
 		-- Zek'voz, Herald of N'zoth
 		[265237] = Defaults(), -- Shatter
