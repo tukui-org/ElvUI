@@ -358,7 +358,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "移动鼠标到动作条或技能书按钮上绑定快捷键. 按ESC或鼠标右键取消目前快捷键"
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = '我承诺'
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起来你使用的一个插件使得Blizzard_CompactRaidFrames停用了。这会产生错误与问题。这个插件现在会被重新启用"
 L["No, Revert Changes!"] = "不，撤销修改！"

@@ -607,11 +607,6 @@ function B:UpdateCooldowns()
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 			CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable)
-			if ( duration > 0 and enable == 0 ) then
-				SetItemButtonTextureVertexColor(self.Bags[bagID][slotID], 0.4, 0.4, 0.4);
-			else
-				SetItemButtonTextureVertexColor(self.Bags[bagID][slotID], 1, 1, 1);
-			end
 		end
 	end
 end
@@ -1906,7 +1901,7 @@ function B:GUILDBANKFRAME_OPENED(event)
 	self:UnregisterEvent(event)
 end
 
-local playerEnteringWorldFunc = function() B:UpdateBagTypes() end
+local playerEnteringWorldFunc = function() B:UpdateBagTypes() B:Layout() end
 function B:PLAYER_ENTERING_WORLD()
 	self:UpdateGoldText()
 

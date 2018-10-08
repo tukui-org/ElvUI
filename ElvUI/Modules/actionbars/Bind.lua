@@ -69,7 +69,7 @@ end
 
 function AB:BindListener(key)
 	AB.bindingsChanged = true
-	if key == "ESCAPE" or key == "RightButton" then
+	if key == "ESCAPE" then
 
 		if bind.button.bindings then
 			for i = 1, #bind.button.bindings do
@@ -94,7 +94,6 @@ function AB:BindListener(key)
 	or key == "LALT"
 	or key == "RALT"
 	or key == "UNKNOWN"
-	or (key == "LeftButton" and not isFlyout)
 	then return; end
 
 	--Redirect LeftButton click to open flyout
@@ -428,7 +427,7 @@ function AB:LoadKeyBinder()
 	desc:SetJustifyH("LEFT")
 	desc:SetPoint("TOPLEFT", 18, -32)
 	desc:SetPoint("BOTTOMRIGHT", -18, 48)
-	desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."])
+	desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
 	local perCharCheck = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
 	_G[perCharCheck:GetName() .. "Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
