@@ -358,7 +358,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI está desactualizado. Puedes descargar la versión más nueva de www.tukui.org. ¡Obtén la suscripción premium y ElvUI se actualizará automáticamente con el cliente Tukui!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI necesita realizar optimizaciones de base de datos por favor se paciente."
 L["Error resetting UnitFrame."] = true
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Pasa tu ratón por encima de un botón de acción o de un botón del libro de hechizos para ligarlo. Pulsa escape o botón derecho para limpiar la asignación actual del botón de acción."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "Lo Juro"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Parece ser que uno de tus addons ha desactivado el addon Blizzard_CompactRaidFrames. Esto puede causar errores y otros problemas. El addon será ahora reactivado."
 L["No, Revert Changes!"] = "¡No, Revierte los Cambios!"
