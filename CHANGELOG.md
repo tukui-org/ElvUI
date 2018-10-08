@@ -5,9 +5,14 @@ Added Drain Life to channel ticks.
 Added Island Expedition progress to the BfA Mission Datatext.  
 Added NPC Id's to our Tooltip.  
 Added Debuff Highlighting on our Focus Frame.  
+Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
+Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
+Added Reverse Slots to the Bags. (#203)  
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
+Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)  
+Fixed Raidmarker spacing. (#791)  
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
@@ -15,6 +20,7 @@ Updated Frenzy buff Id for pets. (#816)
 Updated Zul debuff list.  
 Updated the macro text on the ActionBars to use the ActionBar font.  
 Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
+Removed ArtifactBar from the DataBars.  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
