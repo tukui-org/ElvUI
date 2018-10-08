@@ -13,4 +13,5 @@
 	<Script file='TalkingHeadFrame.lua'/>
 	<Script file='LevelUpBossBanner.lua'/>
 	<Script file='UIWidgets.lua'/>
+	<Script file='garrison.lua'/>
 </Ui>
