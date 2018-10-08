@@ -14,7 +14,7 @@ CP.InternalOptions = {
 --Default template for a config group for a single module.
 --Contains header, general group toggle (shown only if the setting actually exists) and imports button.
 --Usage as seen in ElvUI_Config\modulecopy.lua
-function CP:CreateModuleConfigGroup(Name, section)
+function CP:CreateModuleConfigGroup(Name, section, pluginSection)
 	local config = {
 		order = 10,
 		type = 'group',
@@ -29,9 +29,6 @@ function CP:CreateModuleConfigGroup(Name, section)
 				order = 1,
 				type = "toggle",
 				name = L["General"],
-				hidden = function(info) return E.global.profileCopy[section][ info[#info] ] == nil end,
-				get = function(info) return E.global.profileCopy[section][ info[#info] ] end,
-				set = function(info, value) E.global.profileCopy[section][ info[#info] ] = value; end
 			},
 			PreButtonSpacer = {
 				order = 200,
@@ -42,16 +39,25 @@ function CP:CreateModuleConfigGroup(Name, section)
 				order = 201,
 				type = "execute",
 				name = L["Import Now"],
-				func = function() CP:ImportFromProfile(section) end,
+				func = function() CP:ImportFromProfile(section, pluginSection) end,
 			},
 			export = {
 				order = 202,
 				type = "execute",
 				name = L["Export Now"],
-				func = function() CP:ExportToProfile(section) end,
+				func = function() CP:ExportToProfile(section, pluginSection) end,
 			},
 		},
 	}
+	if pluginSection then
+		config.args.general.hidden = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] == nil end
+		config.args.general.get = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] end
+		config.args.general.set = function(info, value) E.global.profileCopy[pluginSection][section][ info[#info] ] = value end
+	else
+		config.args.general.hidden = function(info) return E.global.profileCopy[section][ info[#info] ] == nil end
+		config.args.general.get = function(info) return E.global.profileCopy[section][ info[#info] ] end
+		config.args.general.set = function(info, value) E.global.profileCopy[section][ info[#info] ] = value end
+	end
 	return config
 end
 
