@@ -428,6 +428,11 @@ function B:NewItemGlowSlotSwitch(slot, show)
 		else
 			slot.newItemGlow:Hide()
 			E:StopFlash(slot.newItemGlow)
+
+			-- also clear them on blizzard's side
+			if slot.bagID and slot.slotID then
+				C_NewItems_RemoveNewItem(slot.bagID, slot.slotID)
+			end
 		end
 	end
 end
