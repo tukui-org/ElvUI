@@ -55,7 +55,7 @@ function B:GarrisonDropDown()
 				MaybeStopSound(self.openSoundID)
 				MaybeStopSound(self.closeSoundID)
 				if not landingChoiceMenu then
-					landingChoiceMenu = CreateFrame("Frame", "WPLandingChoicesDrop", UIParent, "UIDropDownMenuTemplate")
+					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", UIParent, "UIDropDownMenuTemplate")
 					local function ShowLanding_(_, ...)
 						return ShowLanding(...)
 					end
