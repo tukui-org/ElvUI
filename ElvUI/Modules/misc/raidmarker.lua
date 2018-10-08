@@ -82,6 +82,7 @@ function M:RaidMarkButton_OnClick(arg1)
 	self:GetParent():Hide();
 end
 
+local ANG_RAD = rad(360) / 7
 function M:LoadRaidMarker()
 	local marker = CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
@@ -103,7 +104,7 @@ function M:LoadRaidMarker()
 		if i == 8 then
 			button:Point("CENTER");
 		else
-			local angle = (rad(360) / 7) * (i - 1)
+			local angle = ANG_RAD * (i - 1)
 			button:Point("CENTER", sin(angle) * 60, cos(angle) * 60);
 		end
 	end
