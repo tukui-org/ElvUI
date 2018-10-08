@@ -490,10 +490,11 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
+	local textHasFont = self.text and self.text:GetFont()
 	if (not E:Cooldown_IsEnabled(self)) or (self.expirationSaved <= 0) then
 		self:SetScript('OnUpdate', nil)
 
-		if self.text:GetFont() then
+		if textHasFont then
 			self.text:SetText('')
 		end
 
@@ -508,7 +509,10 @@ function UF:UpdateAuraTimer(elapsed)
 
 	local value1, formatid, nextupdate, value2 = E:GetTimeInfo(self.expirationSaved, timeThreshold, hhmmThreshold, mmssThreshold)
 	self.nextupdate = nextupdate
-	self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
+
+	if textHasFont then
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
+	end
 end
 
 function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
