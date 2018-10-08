@@ -431,6 +431,18 @@ function B:NewItemGlowSlotSwitch(slot, show)
 	end
 end
 
+function B:NewItemGlowBagClear(bagFrame)
+	if not (bagFrame and bagFrame.BagIDs) then return end
+
+	for _, bagID in ipairs(bagFrame.BagIDs) do
+		for slotID = 1, GetContainerNumSlots(bagID) do
+			if bagFrame.Bags[bagID][slotID] then
+				B:NewItemGlowSlotSwitch(bagFrame.Bags[bagID][slotID])
+			end
+		end
+	end
+end
+
 local function hideNewItemGlow(slot)
 	B:NewItemGlowSlotSwitch(slot)
 end
@@ -1610,6 +1622,8 @@ function B:ContructContainerFrame(name, isBank)
 		f:SetScript('OnHide', function()
 			CloseBankFrame()
 
+			B:NewItemGlowBagClear(f)
+
 			if E.db.bags.clearSearchOnClose then
 				B.ResetAndClear(f.editBox);
 			end
@@ -1760,10 +1774,7 @@ function B:ContructContainerFrame(name, isBank)
 				CloseBag(i)
 			end
 
-			-- hide new item glow on bag 0 fix [note: closebag handles the others correctly]
-			for slotID = 1, GetContainerNumSlots(0) do
-				C_NewItems_RemoveNewItem(0, slotID);
-			end
+			B:NewItemGlowBagClear(f)
 
 			if ElvUIBags and ElvUIBags.buttons then
 				for _, bagButton in pairs(ElvUIBags.buttons) do
