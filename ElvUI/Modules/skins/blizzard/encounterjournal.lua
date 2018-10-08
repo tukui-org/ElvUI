@@ -16,7 +16,9 @@ local function LoadSkin()
 
 	local EJ = _G["EncounterJournal"]
 	EJ:StripTextures(true)
+	EJ.NineSlice:Hide()
 	EJ.inset:StripTextures(true)
+	EncounterJournalInset.NineSlice:Hide()
 	EJ:CreateBackdrop("Transparent")
 
 	EJ.navBar:StripTextures(true)

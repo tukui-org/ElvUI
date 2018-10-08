@@ -114,8 +114,10 @@ local function LoadSkin()
 
 	-- Capacitive display frame
 	GarrisonCapacitiveDisplayFrame:StripTextures(true)
+	GarrisonCapacitiveDisplayFrame.NineSlice:Hide()
 	GarrisonCapacitiveDisplayFrame:CreateBackdrop("Transparent")
 	GarrisonCapacitiveDisplayFrame.Inset:StripTextures()
+	GarrisonCapacitiveDisplayFrameInset.NineSlice:Hide()
 	S:HandleCloseButton(GarrisonCapacitiveDisplayFrame.CloseButton, GarrisonCapacitiveDisplayFrame.backdrop)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton, true)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
@@ -414,7 +416,6 @@ local function LoadSkin()
 	local MissionFrame = _G["BFAMissionFrame"]
 	--MissionFrame:StripTextures()
 	MissionFrame.GarrCorners:Hide()
-	MissionFrame.CloseButtonBorder:Hide()
 	MissionFrame.TitleScroll:Hide()
 	MissionFrame.BackgroundTile:Kill()
 	MissionFrame.Left:Hide()

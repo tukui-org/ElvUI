@@ -15,7 +15,9 @@ local function LoadSkin()
 
 	local InspectFrame = _G["InspectFrame"]
 	InspectFrame:StripTextures(true)
+	InspectFrame.NineSlice:Hide()
 	InspectFrameInset:StripTextures(true)
+	InspectFrameInset.NineSlice:Hide()
 	InspectFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(InspectFrameCloseButton)
 	S:HandleButton(InspectPaperDollFrame.ViewButton)

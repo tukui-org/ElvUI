@@ -67,9 +67,13 @@ local function LoadSkin()
 		"FriendsFrameBroadcastInputMiddle",
 	}
 
+	FriendsFrame.NineSlice:Hide()
 	FriendsFrameInset:StripTextures()
+	FriendsFrameInset.NineSlice:Hide()
 	WhoFrameListInset:StripTextures()
+	WhoFrameListInset.NineSlice:Hide()
 	WhoFrameEditBoxInset:StripTextures()
+	WhoFrameEditBoxInset.NineSlice:Hide()
 	LFRQueueFrameListInset:StripTextures()
 	LFRQueueFrameRoleInset:StripTextures()
 	LFRQueueFrameCommentInset:StripTextures()

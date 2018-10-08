@@ -170,6 +170,7 @@ local function LoadSkin()
 
 	--Quest Frame
 	QuestFrame:StripTextures(true)
+	QuestFrame.NineSlice:Hide()
 	QuestFrameInset:Kill()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)

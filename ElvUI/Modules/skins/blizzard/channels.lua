@@ -27,6 +27,7 @@ local function LoadSkin()
 	end
 
 	ChannelFrameInset:Hide()
+	ChannelFrame.NineSlice:Hide()
 	ChannelFrame.LeftInset:Hide()
 	ChannelFrame.RightInset:Hide()
 
