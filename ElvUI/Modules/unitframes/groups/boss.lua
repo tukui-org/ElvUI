@@ -14,7 +14,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: BossHeaderMover
 
-local BossHeader = CreateFrame('Frame', 'BossHeader', UIParent)
+local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
 	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)

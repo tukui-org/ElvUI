@@ -15,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 --Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: LibStub, UIParent, ElvDB, ElvPrivateDB, ReloadUI
+-- GLOBALS: LibStub, ElvDB, ElvPrivateDB, ReloadUI
 
 ----------------------------------
 -- CONSTANTS
@@ -34,7 +34,7 @@ function D:Initialize()
 	self:RegisterComm(REQUEST_PREFIX)
 	self:RegisterEvent("CHAT_MSG_ADDON")
 
-	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", UIParent)
+	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", E.UIParent)
 	E:RegisterStatusBar(self.statusBar)
 	self.statusBar:CreateBackdrop('Default')
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
