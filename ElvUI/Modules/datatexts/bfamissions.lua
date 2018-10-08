@@ -30,6 +30,7 @@ local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
+local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
 local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
@@ -174,19 +175,31 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
-local function OnClick()
+local function OnClick(self, button)
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_8_0)) then
 		return
 	end
 
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown()
-	if (not isShown) then
-		ShowGarrisonLandingPage(LE_GARRISON_TYPE_8_0)
-	elseif (GarrisonLandingPage) then
-		local currentGarrType = GarrisonLandingPage.garrTypeID
-		HideUIPanel(GarrisonLandingPage)
-		if (currentGarrType ~= LE_GARRISON_TYPE_8_0) then
+	if button == "LeftButton" then
+		if (not isShown) then
 			ShowGarrisonLandingPage(LE_GARRISON_TYPE_8_0)
+		elseif (GarrisonLandingPage) then
+			local currentGarrType = GarrisonLandingPage.garrTypeID
+			HideUIPanel(GarrisonLandingPage)
+			if (currentGarrType ~= LE_GARRISON_TYPE_8_0) then
+				ShowGarrisonLandingPage(LE_GARRISON_TYPE_8_0)
+			end
+		end
+	elseif button == "RightButton" then
+		if (not isShown) then
+			ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0)
+		elseif (GarrisonLandingPage) then
+			local currentGarrType = GarrisonLandingPage.garrTypeID
+			HideUIPanel(GarrisonLandingPage)
+			if (currentGarrType ~= LE_GARRISON_TYPE_7_0) then
+				ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0)
+			end
 		end
 	end
 end
