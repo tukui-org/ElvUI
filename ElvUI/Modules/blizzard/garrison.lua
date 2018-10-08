@@ -6,14 +6,23 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 --WoW API / Variables
 local C_Garrison_GetLandingPageGarrisonType = C_Garrison.GetLandingPageGarrisonType
+local ShowGarrisonLandingPage = ShowGarrisonLandingPage
+local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
-local IsAddOnLoaded = IsAddOnLoaded
 local PlaySound = PlaySound
-local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local StopSound = StopSound
+local EasyMenu = EasyMenu
+
+local SOUNDKIT_UI_GARRISON_GARRISON_REPORT_OPEN = SOUNDKIT.UI_GARRISON_GARRISON_REPORT_OPEN
+local SOUNDKIT_UI_GARRISON_GARRISON_REPORT_CLOSE = SOUNDKIT.UI_GARRISON_GARRISON_REPORT_CLOSE
+
+local WAR_CAMPAIGN = WAR_CAMPAIGN
+local GARRISON_LANDING_PAGE_TITLE = GARRISON_LANDING_PAGE_TITLE
+local ORDER_HALL_LANDING_PAGE_TITLE = ORDER_HALL_LANDING_PAGE_TITLE
+
 --No point caching anything else here, but list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: GarrisonLandingPage, DropDownList1
 
 function B:GarrisonDropDown()
 	-- Right click Menu for Garrision Button all Credits to Foxlit (WarPlan)
@@ -33,8 +42,8 @@ function B:GarrisonDropDown()
 	_G["GarrisonLandingPageMinimapButton"]:HookScript("PreClick", function(self, b)
 		self.landingVisiblePriorToClick = _G["GarrisonLandingPage"] and _G["GarrisonLandingPage"]:IsVisible() and _G["GarrisonLandingPage"].garrTypeID
 		if b == "RightButton" then
-			local openOK, openID = PlaySound(SOUNDKIT.UI_GARRISON_GARRISON_REPORT_OPEN)
-			local closeOK, closeID = PlaySound(SOUNDKIT.UI_GARRISON_GARRISON_REPORT_CLOSE)
+			local openOK, openID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_OPEN)
+			local closeOK, closeID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_CLOSE)
 			self.openSoundID = openOK and openID
 			self.closeSoundID = closeOK and closeID
 		end
@@ -55,7 +64,7 @@ function B:GarrisonDropDown()
 				MaybeStopSound(self.openSoundID)
 				MaybeStopSound(self.closeSoundID)
 				if not landingChoiceMenu then
-					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", UIParent, "UIDropDownMenuTemplate")
+					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", E.UIParent, "UIDropDownMenuTemplate")
 					local function ShowLanding_(_, ...)
 						return ShowLanding(...)
 					end
