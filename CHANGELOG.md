@@ -9,6 +9,7 @@ Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)
 Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
 Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
 Added Right Click menu for the Orderhall Mission Report on the BfAMission Datatext.  
+Added Tooltip offsets while using anchor on mouse.
 
 
 **Bug Fixes:**  
