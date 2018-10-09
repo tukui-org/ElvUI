@@ -20,7 +20,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF, UIParent
+-- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 E.Threat = THREAT
@@ -152,7 +152,7 @@ function THREAT:Initialize()
 
 	self.db = E.db.general.threat
 
-	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', UIParent)
+	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)
 	self.bar:SetStatusBarTexture(E['media'].normTex)
 	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)

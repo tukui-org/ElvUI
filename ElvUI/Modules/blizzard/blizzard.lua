@@ -17,6 +17,7 @@ function B:Initialize()
 	self:PositionTalkingHead()
 	self:Handle_LevelUpDisplay_BossBanner()
 	self:Handle_UIWidgets()
+	self:GarrisonDropDown()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()

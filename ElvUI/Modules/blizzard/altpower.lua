@@ -6,7 +6,7 @@ local format = string.format
 local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
--- GLOBALS: CreateFrame, UIParent, PlayerPowerBarAlt, ALTERNATE_POWER_INDEX, hooksecurefunc
+-- GLOBALS: CreateFrame, PlayerPowerBarAlt, ALTERNATE_POWER_INDEX, hooksecurefunc
 -- GLOBALS: GameTooltip, GameTooltip_SetDefaultAnchor, ElvUI_AltPowerBar, AltPowerBarHolder
 
 local function updateTooltip(self)
@@ -53,7 +53,7 @@ function B:SetAltPowerBarText(name, value, max, percent)
 end
 
 function B:PositionAltPowerBar()
-	local holder = CreateFrame('Frame', 'AltPowerBarHolder', UIParent)
+	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
 	holder:Size(128, 50)
 

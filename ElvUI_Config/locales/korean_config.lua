@@ -977,6 +977,7 @@ L["Warboard"] = "영웅의 부름 게시판"
 
 --Tooltip
 L["Always Hide"] = "표시하지 않음"
+L["Always Show Realm"] = true
 L["Bags Only"] = "가방 안에만"
 L["Bags/Bank"] = "가방/은행"
 L["Bank Only"] = "은행 안에만"
@@ -984,6 +985,8 @@ L["Both"] = "가방, 은행 모두"
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "툴팁을 언제 보이게 할 지 선택합니다. 조절키를 선택하면, 해당 키를 누르고 있는 동안에만 툴팁을 표시합니다."
 L["Comparison Font Size"] = "비교 글씨 크기"
 L["Cursor Anchor"] = "툴팁을 마우스에 표시"
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
 L["Custom Faction Colors"] = "반응색 개인설정"
 L["Display guild ranks if a unit is guilded."] = "길드명과 함께 길드 등급도 표시합니다."
 L["Display how many of a certain item you have in your possession."] = "현재 툴팁으로 보고있는 아이템을 여러개 갖고 있다면 갯수를 표시합니다."

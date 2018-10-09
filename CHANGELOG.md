@@ -5,9 +5,20 @@ Added Drain Life to channel ticks.
 Added Island Expedition progress to the BfA Mission Datatext.  
 Added NPC Id's to our Tooltip.  
 Added Debuff Highlighting on our Focus Frame.  
+Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
+Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
+Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
+Added Tooltip offsets while using anchor on mouse. (#204)  
+Added Tooltip option to alway show the realm name. (#372)  
+
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
+Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)  
+Fixed Raidmarker spacing. (#791)  
+Fixed issue which would sometimes keep Player UnitFrame out of range.  
+Fixed error with UnitFrame Tags when enter Arena. (#821)  
+
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
@@ -15,6 +26,9 @@ Updated Frenzy buff Id for pets. (#816)
 Updated Zul debuff list.  
 Updated the macro text on the ActionBars to use the ActionBar font.  
 Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
+Removed ArtifactBar from the DataBars.  
+Reworked vendor greys code to resolve issues with the previous versions.  
+Allow left & right mouse button when using Keybind. (#234)  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
@@ -24,8 +38,10 @@ Added toggle option for the New Item Glow in your bags. (#452)
 Added an option to hide the honor databar below max level. Disabled by default.  
 Add width override for nameplate auras. (#142)  
 
+
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
+
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
@@ -119,7 +135,6 @@ ___
 **Version 10.78 [ July 28th 2018 ]**
 
 **New Additions:**  
-
 
 
 **Bug Fixes:**  
@@ -532,7 +547,6 @@ Added ability to match players own health in the "Health Threshold" trigger for 
 Added role icons to the RaidUtility frame when in a raid.  
 
 
-
 **Bug Fixes:**  
 Attempt more fixes towards the unit errors on nameplates.  
 Fixed a divide by 0 error in Artifact DataBars.  
@@ -544,7 +558,6 @@ Fixed issue with healer icon position when portrait is enabled on nameplates.
 Fixed issue which caused the "Hide" action on nameplate style filters to incorrectly show hidden nameplates if "Hide" was disabled.  
 Fixed issue with portrait position on nameplates when healthbar is disabled but forced to be shown on targeted nameplate.  
 Fixed issue with chat editbox position when backdrop was enabled/disabled.  
-
 
 
 **Misc. Changes:**  

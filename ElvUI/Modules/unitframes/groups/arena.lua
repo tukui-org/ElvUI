@@ -14,9 +14,9 @@ local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, ArenaHeaderMover
+-- GLOBALS: ArenaHeaderMover
 
-local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
+local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
 	if not (frame and frame.ArenaPrepSpec and frame.ArenaPrepIcon) then return end

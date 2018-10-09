@@ -23,13 +23,29 @@ function UF:Construct_HealComm(frame)
 	healAbsorbBar:SetReverseFill(true)
 	healAbsorbBar:Hide()
 
+	local overAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
+	overAbsorb:SetPoint('TOP')
+	overAbsorb:SetPoint('BOTTOM')
+	overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
+	overAbsorb:SetWidth(10)
+	overAbsorb:Hide()
+
+	local overHealAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
+	overHealAbsorb:SetPoint('TOP')
+	overHealAbsorb:SetPoint('BOTTOM')
+	overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+	overHealAbsorb:SetWidth(10)
+	overHealAbsorb:Hide(10)
+
 	local HealthPrediction = {
 		myBar = mhpb,
 		otherBar = ohpb,
 		absorbBar = absorbBar,
 		healAbsorbBar = healAbsorbBar,
 		maxOverflow = 1,
-		PostUpdate = UF.UpdateHealComm
+		overAbsorb = overAbsorb,
+		overHealAbsorb = overHealAbsorb,
+        PostUpdate = UF.UpdateHealComm
 	}
 	HealthPrediction.parent = frame
 

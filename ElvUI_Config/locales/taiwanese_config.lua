@@ -929,6 +929,7 @@ L["Warboard"] = "Hero's Call Board"
 
 --Tooltip
 L["Always Hide"] = "總是隱藏"
+L["Always Show Realm"] = true
 L["Bags Only"] = "僅背包"
 L["Bags/Bank"] = "背包/銀行"
 L["Bank Only"] = "僅銀行"
@@ -936,6 +937,8 @@ L["Both"] = "兩者"
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "選擇何時顯示提示.如果選擇了設置鍵，你需要按住它來顯示提示"
 L["Comparison Font Size"] = "比較字體大小"
 L["Cursor Anchor"] = "指針錨點"
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
 L["Custom Faction Colors"] = "自定義聲望顏色"
 L["Display guild ranks if a unit is guilded."] = "當目標有公會時顯示其位階."
 L["Display how many of a certain item you have in your possession."] = "顯示當前物品在你身上的數量"

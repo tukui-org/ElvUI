@@ -928,6 +928,7 @@ L["Warboard"] = "Доска объявлений для героев"
 
 --Tooltip
 L["Always Hide"] = "Всегда скрывать"
+L["Always Show Realm"] = true
 L["Bags Only"] = "Только в сумках"
 L["Bags/Bank"] = "Сумки/Банк"
 L["Bank Only"] = "Только в банке"
@@ -935,6 +936,8 @@ L["Both"] = "Оба"
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "Выберите, когда Вы хотите видеть подсказку. Если выбран модификатор, то подсказка будет показана только, если он зажат."
 L["Comparison Font Size"] = "Размер шрифта сравнения"
 L["Cursor Anchor"] = "Около курсора"
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
 L["Custom Faction Colors"] = "Свои цвета отношения"
 L["Display guild ranks if a unit is guilded."] = "Отображать ранг в гильдии."
 L["Display how many of a certain item you have in your possession."] = "Отображать количество предметов в сумках"
