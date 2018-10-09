@@ -144,6 +144,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				GameTooltipStatusBar.anchoredToTop = true
 			end
 		end
+
 		if(self.db.cursorAnchor) then
 			tt:SetOwner(parent, "ANCHOR_CURSOR")
 			return
@@ -720,6 +721,14 @@ local function PostBNToastMove(mover)
 	BNToastFrame:Point(anchorPoint, mover)
 end
 
+function TT:CursorOnUpdate(tt, elapsed)
+	if self.db.cursorAnchor and tt:GetAnchorType() == 'ANCHOR_CURSOR' then
+		local mX, mY = GetCursorPosition()
+		tt:ClearAllPoints();
+		tt:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', (mX / E.uiScale + self.db.cursorAnchorX) - (tt:GetWidth() / 2), (mY / E.uiScale + self.db.cursorAnchorY))
+	end
+end
+
 function TT:Initialize()
 	self.db = E.db.tooltip
 
@@ -763,6 +772,8 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+	GameTooltip:HookScript('OnUpdate', function(self, elapsed) TT:CursorOnUpdate(self, elapsed) end) -- Can't AceHook because it's being used in Tooltip skin.
 
 	LibInspect:AddHook('ElvUI', 'items', function(guid, data, _) self:InspectReady(guid, data) end)
 	LibInspect:SetMaxAge(inspectAge)

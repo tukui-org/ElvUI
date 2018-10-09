@@ -151,20 +151,6 @@ P['databars'] = {
 		['hideInVehicle'] = false,
 		['hideInCombat'] = false,
 	},
-	-- ['artifact'] = {
-		-- ['enable'] = true,
-		-- ['width'] = 10,
-		-- ['height'] = 180,
-		-- ['textFormat'] = 'NONE',
-		-- ['textSize'] = 11,
-		-- ['font'] = 'PT Sans Narrow',
-		-- ['fontOutline'] = 'NONE',
-		-- ['mouseover'] = false,
-		-- ['orientation'] = 'VERTICAL',
-		-- ['reverseFill'] = false,
-		-- ['hideInVehicle'] = false,
-		-- ['hideInCombat'] = false,
-	-- },
 	['honor'] = {
 		['enable'] = true,
 		['width'] = 10,
@@ -997,6 +983,8 @@ P['datatexts'] = {
 --Tooltip
 P['tooltip'] = {
 	['cursorAnchor'] = false,
+	['cursorAnchorX'] = 0,
+	['cursorAnchorY'] = 0,
 	['targetInfo'] = true,
 	['playerTitles'] = true,
 	['guildRanks'] = true,
