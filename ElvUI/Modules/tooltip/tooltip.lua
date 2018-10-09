@@ -315,7 +315,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 
 		if(realm and realm ~= "") then
-			if(isShiftKeyDown) then
+			if(isShiftKeyDown) or self.db.alwaysShowRealm then
 				name = name.."-"..realm
 			elseif(relationship == LE_REALM_RELATION_COALESCED) then
 				name = name..FOREIGN_SERVER_LABEL

@@ -985,6 +985,7 @@ P['tooltip'] = {
 	['cursorAnchor'] = false,
 	['cursorAnchorX'] = 0,
 	['cursorAnchorY'] = 0,
+	['alwaysShowRealm'] = false,
 	['targetInfo'] = true,
 	['playerTitles'] = true,
 	['guildRanks'] = true,
