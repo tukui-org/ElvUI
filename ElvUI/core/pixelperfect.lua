@@ -63,8 +63,6 @@ function E:UIScale(event, loginFrame)
 		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()));
 	end
 
-	E.uiScale = scale
-
 	if width < 1600 then
 		E.lowversion = true;
 	elseif width >= 3840 and E.global.general.eyefinity then
