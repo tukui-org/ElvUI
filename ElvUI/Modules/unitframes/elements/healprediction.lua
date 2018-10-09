@@ -24,18 +24,20 @@ function UF:Construct_HealComm(frame)
 	healAbsorbBar:Hide()
 
 	local overAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
+	overAbsorb:SetTexture(E["media"].blankTex)
 	overAbsorb:SetPoint('TOP')
 	overAbsorb:SetPoint('BOTTOM')
 	overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
-	overAbsorb:SetWidth(10)
+	overAbsorb:SetWidth(2) -- Maybe set this to the same size as maxOverflow?
 	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
+	overHealAbsorb:SetTexture(E["media"].blankTex)
 	overHealAbsorb:SetPoint('TOP')
 	overHealAbsorb:SetPoint('BOTTOM')
 	overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
-	overHealAbsorb:SetWidth(10)
-	overHealAbsorb:Hide(10)
+	overHealAbsorb:SetWidth(2)  -- Maybe set this to the same size as maxOverflow?
+	overHealAbsorb:Hide()
 
 	local HealthPrediction = {
 		myBar = mhpb,
@@ -130,12 +132,12 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	return bar:GetStatusBarTexture();
 end
 
-function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, healAbsorb)
+function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
 	local frame = self.parent
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
 	UF:UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb, true);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
-	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
+	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb, true); -- Reverse the fill on this show it shows on the frame.
 end
