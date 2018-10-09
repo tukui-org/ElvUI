@@ -27,7 +27,7 @@ Updated the macro text on the ActionBars to use the ActionBar font.
 Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
 Removed ArtifactBar from the DataBars.  
 Reworked vendor greys code to resolve issues with the previous versions.  
-KeyBind: Allow Left & Right Mouse Button on Bind. (#234)  
+Allow left & right mouse button when using Keybind. (#234)  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
