@@ -7,12 +7,17 @@ Added NPC Id's to our Tooltip.
 Added Debuff Highlighting on our Focus Frame.  
 Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
 Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
-Added Reverse Slots to the Bags. (#203)  
+Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
+Added Right Click menu for the Orderhall Mission Report on the BfAMission Datatext.  
+
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
 Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)  
 Fixed Raidmarker spacing. (#791)  
+Fixed issue which would sometimes keep Player UnitFrame out of range.  
+Fixed error with UnitFrame Tags when enter Arena. (#821)  
+
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
@@ -21,6 +26,8 @@ Updated Zul debuff list.
 Updated the macro text on the ActionBars to use the ActionBar font.  
 Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
 Removed ArtifactBar from the DataBars.  
+Reworked vendor greys code to resolve issues with the previous versions.  
+KeyBind: Allow Left & Right Mouse Button on Bind. (#234)  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
@@ -30,8 +37,10 @@ Added toggle option for the New Item Glow in your bags. (#452)
 Added an option to hide the honor databar below max level. Disabled by default.  
 Add width override for nameplate auras. (#142)  
 
+
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
+
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
