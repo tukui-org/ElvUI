@@ -63,7 +63,6 @@ E.Options.args.tooltip = {
 					order = 5,
 					type = 'toggle',
 					name = L["Always Show Realm"],
-					desc = L["Always Show Realm"],
 				},
 				playerTitles = {
 					order = 6,

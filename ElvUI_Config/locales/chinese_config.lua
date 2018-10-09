@@ -927,6 +927,7 @@ L["Warboard"] = "布告牌"
 
 --Tooltip
 L["Always Hide"] = "总是隐藏"
+L["Always Show Realm"] = true
 L["Bags Only"] = "仅背包"
 L["Bags/Bank"] = "背包/银行"
 L["Bank Only"] = "仅银行"
@@ -934,6 +935,8 @@ L["Both"] = "两者"
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "选择何时显示提示.如果选择了设置键, 你需要按住它来显示提示"
 L["Comparison Font Size"] = "比较字体大小"
 L["Cursor Anchor"] = "鼠标锚点"
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
 L["Custom Faction Colors"] = "自定义声望颜色"
 L["Display guild ranks if a unit is guilded."] = "当目标有公会时显示其在公会内的等级"
 L["Display how many of a certain item you have in your possession."] = "显示当前物品在你身上的数量."

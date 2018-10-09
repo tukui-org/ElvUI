@@ -928,6 +928,7 @@ L["Warboard"] = "Tablero de ¡Se busca héroe!"
 
 --Tooltip
 L["Always Hide"] = "Ocultar Siempre"
+L["Always Show Realm"] = true
 L["Bags Only"] = true
 L["Bags/Bank"] = true
 L["Bank Only"] = true
@@ -935,6 +936,8 @@ L["Both"] = true
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
 L["Comparison Font Size"] = true
 L["Cursor Anchor"] = true
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
 L["Custom Faction Colors"] = true
 L["Display guild ranks if a unit is guilded."] = "Mostrar rangos de hermandad si el jugador pertenece a una."
 L["Display how many of a certain item you have in your possession."] = "Despliega la cantidad de un determinado objeto que posees."
