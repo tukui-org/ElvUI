@@ -28,12 +28,14 @@ function UF:Construct_HealComm(frame)
 	overAbsorb:SetPoint('BOTTOM')
 	overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
 	overAbsorb:SetWidth(10)
+	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
 	overHealAbsorb:SetPoint('TOP')
 	overHealAbsorb:SetPoint('BOTTOM')
 	overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
 	overHealAbsorb:SetWidth(10)
+	overHealAbsorb:Hide(10)
 
 	local HealthPrediction = {
 		myBar = mhpb,
