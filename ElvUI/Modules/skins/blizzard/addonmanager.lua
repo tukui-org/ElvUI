@@ -15,6 +15,7 @@ local function LoadSkin()
 
 	--Addon List (From AddOnSkins)
 	local AddonList = _G["AddonList"]
+	AddonList.NineSlice:Hide()
 	AddonList:StripTextures()
 	AddonList:SetTemplate("Transparent")
 
@@ -26,6 +27,7 @@ local function LoadSkin()
 	AddonListScrollFrame:SetSize(499, 382)
 
 	AddonListInset:StripTextures()
+	AddonListInset.NineSlice:Hide()
 
 	S:HandleButton(AddonListEnableAllButton, true)
 	S:HandleButton(AddonListDisableAllButton, true)

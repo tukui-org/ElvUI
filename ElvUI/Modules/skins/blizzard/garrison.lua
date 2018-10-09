@@ -414,7 +414,7 @@ local function LoadSkin()
 	-- BFA Mission
 
 	local MissionFrame = _G["BFAMissionFrame"]
-	--MissionFrame:StripTextures()
+	MissionFrame.OverlayElements:Hide()
 	MissionFrame.GarrCorners:Hide()
 	MissionFrame.TitleScroll:Hide()
 	MissionFrame.BackgroundTile:Kill()

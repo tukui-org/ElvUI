@@ -20,6 +20,7 @@ local function LoadSkin()
 	S:HandleScrollBar(MacroFrameScrollFrameScrollBar)
 
 	local MacroFrame = _G["MacroFrame"]
+	MacroFrame.NineSlice:Hide()
 	MacroFrame:Width(360)
 
 	local buttons = {
