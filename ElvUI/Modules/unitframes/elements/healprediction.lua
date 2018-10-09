@@ -139,5 +139,5 @@ function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, heal
 	UF:UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb, true);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
-	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb, true); -- Reverse the fill on this show it shows on the frame.
+	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb, true); -- Reverse the fill on this statusbar so it shows on the frame.
 end
