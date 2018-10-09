@@ -136,7 +136,6 @@ ___
 **New Additions:**  
 
 
-
 **Bug Fixes:**  
 Fixed CVar `chatClassColorOverride` not working correctly.  
 Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
@@ -547,7 +546,6 @@ Added ability to match players own health in the "Health Threshold" trigger for 
 Added role icons to the RaidUtility frame when in a raid.  
 
 
-
 **Bug Fixes:**  
 Attempt more fixes towards the unit errors on nameplates.  
 Fixed a divide by 0 error in Artifact DataBars.  
@@ -559,7 +557,6 @@ Fixed issue with healer icon position when portrait is enabled on nameplates.
 Fixed issue which caused the "Hide" action on nameplate style filters to incorrectly show hidden nameplates if "Hide" was disabled.  
 Fixed issue with portrait position on nameplates when healthbar is disabled but forced to be shown on targeted nameplate.  
 Fixed issue with chat editbox position when backdrop was enabled/disabled.  
-
 
 
 **Misc. Changes:**  
