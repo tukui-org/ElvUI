@@ -107,7 +107,7 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	bar:ClearAllPoints()
 
 	if orientation == 'HORIZONTAL' then
-		if (inverted) or frame.db.Health.reverseFill then
+		if (inverted) or self.db.health.reverseFill then
 			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
 			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
 		else
@@ -115,7 +115,7 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
 		end
 	else
-		if (inverted) or frame.db.Health.reverseFill then
+		if (inverted) or self.db.health.reverseFill then
 			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
 			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
 		else
@@ -143,30 +143,48 @@ function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, heal
 	previousTexture = UF:UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
 	UF:UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb)
 
-	local orientation = frame.Health:GetOrientation()
-	local size = (1 + (self.db.colors.healPrediction.maxOverflow or 0))
+	local size = self.maxOverflow
 
-	if orientation == 'HORIZONTAL' then
-		self.overAbsorb:SetPoint('TOP')
-		self.overAbsorb:SetPoint('BOTTOM')
-		self.overAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+	if frame.db then
+		self.overHealAbsorb:ClearAllPoints()
+		self.overAbsorb:ClearAllPoints()
 
-		self.overHealAbsorb:SetPoint('TOP')
-		self.overHealAbsorb:SetPoint('BOTTOM')
-		self.overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+		local orientation, reverseFill = frame.Health:GetOrientation(), frame.db.health.reverseFill
 
-		self.overHealAbsorb:SetWidth(size)
-		self.overAbsorb:SetWidth(size)
-	else
-		self.overAbsorb:SetPoint('LEFT')
-		self.overAbsorb:SetPoint('RIGHT')
-		self.overAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
+		if orientation == 'HORIZONTAL' then
+			self.overAbsorb:SetPoint('TOP')
+			self.overAbsorb:SetPoint('BOTTOM')
 
-		self.overHealAbsorb:SetPoint('LEFT')
-		self.overHealAbsorb:SetPoint('RIGHT')
-		self.overHealAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
+			self.overHealAbsorb:SetPoint('TOP')
+			self.overHealAbsorb:SetPoint('BOTTOM')
 
-		self.overHealAbsorb:SetHeight(size)
-		self.overAbsorb:SetHeight(size)
+			if reverseFill then
+				self.overAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+				self.overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+			else
+				self.overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
+				self.overHealAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
+			end
+
+			self.overHealAbsorb:SetWidth(size)
+			self.overAbsorb:SetWidth(size)
+		else
+			self.overAbsorb:SetPoint('LEFT')
+			self.overAbsorb:SetPoint('RIGHT')
+
+			self.overHealAbsorb:SetPoint('LEFT')
+			self.overHealAbsorb:SetPoint('RIGHT')
+
+			if reverseFill then
+				self.overAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
+				self.overHealAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
+			else
+				self.overAbsorb:SetPoint('TOP', frame.Health, 'BOTTOM')
+				self.overHealAbsorb:SetPoint('TOP', frame.Health, 'BOTTOM')
+			end
+
+			self.overHealAbsorb:SetHeight(size)
+			self.overAbsorb:SetHeight(size)
+		end
 	end
 end
