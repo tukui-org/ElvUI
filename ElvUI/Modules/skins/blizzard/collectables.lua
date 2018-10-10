@@ -436,7 +436,9 @@ local function LoadSkin()
 	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC
+	local WardrobeFrame = _G["WardrobeFrame"]
 	WardrobeFrame:StripTextures()
+	WardrobeFrame.NineSlice:Hide()
 	WardrobeFrame:SetTemplate("Transparent")
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
@@ -451,6 +453,7 @@ local function LoadSkin()
 
 	WardrobeTransmogFrame:StripTextures()
 	WardrobeTransmogFrame.Inset:StripTextures()
+	WardrobeTransmogFrame.Inset.NineSlice:Hide()
 
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
@@ -469,6 +472,7 @@ local function LoadSkin()
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
+	WardrobeCollectionFrame.SetsTransmogFrame.NineSlice:Hide()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
