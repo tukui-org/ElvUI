@@ -1313,6 +1313,7 @@ P['unitframe'] = {
 				['iconYOffset'] = 0,
 				['tickWidth'] = 1,
 				['tickColor'] = {r = 0, g = 0, b = 0, a = 0.8},
+				['timeToHold'] = 0,
 			},
 			['classbar'] = {
 				['enable'] = true,
@@ -1488,6 +1489,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -1800,6 +1802,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -2021,6 +2024,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 		},
 		['pettarget'] = {
@@ -2210,6 +2214,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -2325,6 +2330,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['pvpTrinket'] = {
 				['enable'] = true,
@@ -2488,6 +2494,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['roleIcon'] = {
 				['enable'] = true,

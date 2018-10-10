@@ -885,6 +885,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					},
 				},
 			},
+			timeToHold = {
+				order = 8,
+				name = L["Failed / Interrupted Hold Time"],
+				desc = L["How many seconds the castbar should be visible."],
+				type = "range",
+				min = 0, max = 10, step = .1,
+			},
 		},
 	}
 
