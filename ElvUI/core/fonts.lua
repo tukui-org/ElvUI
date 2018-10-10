@@ -81,7 +81,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(SubZoneTextString,					NORMAL, 25, MONOCHROME.."OUTLINE")
 		SetFont(PVPInfoTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
 		SetFont(PVPArenaTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
-		SetFont(CombatTextFont,                     COMBAT, 200, MONOCHROME.."OUTLINE") -- number here just increase the font quality.
 		SetFont(FriendsFont_Normal, NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_Small, NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_Large, NORMAL, self.db.general.fontSize)
