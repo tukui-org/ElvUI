@@ -496,9 +496,10 @@ L["This feature will allow you to transfer settings to other characters."] = "�
 L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시도해야 합니다."
 
 --Filters
-L["Quick Search"] = true
+L["Filter Search"] = true
 L["Reset Aura Filters"] = "오라 필터 초기화" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "필터 초기화"
+L["Search for a spell name inside of a filter."] = true
 L["Used as RaidDebuff Indicator"] = true
 
 --General

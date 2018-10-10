@@ -448,9 +448,10 @@ L["This feature will allow you to transfer settings to other characters."] = "Э
 L["You must be targeting a player."] = "Целью должен быть игрок."
 
 --Filters
-L["Quick Search"] = true
+L["Filter Search"] = true
 L["Reset Aura Filters"] = "Сбросить фильтры аур" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "Сбросить фильтр"
+L["Search for a spell name inside of a filter."] = true
 L["Used as RaidDebuff Indicator"] = "Использовать как индикатор рейдовых дебаффов"
 
 --General

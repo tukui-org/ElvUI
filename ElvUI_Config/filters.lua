@@ -105,7 +105,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 3,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
@@ -281,7 +282,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 3,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
@@ -456,7 +458,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 3,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
@@ -701,7 +704,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 3,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
@@ -954,7 +958,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 3,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
@@ -1230,7 +1235,8 @@ local function UpdateFilterGroup()
 				},
 				quickSearch = {
 					order = 4,
-					name = L["Quick Search"],
+					name = L["Filter Search"],
+					desc = L["Search for a spell name inside of a filter."],
 					type = "input",
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,

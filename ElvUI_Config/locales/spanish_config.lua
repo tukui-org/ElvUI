@@ -452,6 +452,7 @@ L["You must be targeting a player."] = "Debes enfocar a un jugador."
 L["Quick Search"] = true
 L["Reset Aura Filters"] = true --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true
+L["Search for a spell name inside of a filter."] = true
 L["Used as RaidDebuff Indicator"] = true
 
 --General
