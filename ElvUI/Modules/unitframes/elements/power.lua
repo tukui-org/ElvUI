@@ -70,7 +70,9 @@ function UF:Configure_Power(frame)
 		end
 
 		if db.power.reverseFill then
-			power:SetReverseFill(db.power.reverseFill)
+			power:SetReverseFill(true)
+		else
+			power:SetReverseFill(false)
 		end
 
 		--Colors
