@@ -181,35 +181,35 @@ function UF:UpdateHealComm(_, myIncomingHeal, allIncomingHeal, totalAbsorb, heal
 		local orientation, reverseFill = frame.Health:GetOrientation(), frame.db.health.reverseFill
 
 		if orientation == 'HORIZONTAL' then
-			self.overAbsorb:SetPoint('TOP')
-			self.overAbsorb:SetPoint('BOTTOM')
-
-			self.overHealAbsorb:SetPoint('TOP')
-			self.overHealAbsorb:SetPoint('BOTTOM')
-
 			if reverseFill then
-				self.overAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
-				self.overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
+				self.overAbsorb:SetPoint('TOPRIGHT', frame.Health, 'TOPLEFT')
+				self.overAbsorb:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMLEFT')
+
+				self.overHealAbsorb:SetPoint('TOPRIGHT', frame.Health, 'TOPLEFT')
+				self.overHealAbsorb:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMLEFT')
 			else
-				self.overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
-				self.overHealAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
+				self.overAbsorb:SetPoint('TOPLEFT', frame.Health, 'TOPRIGHT')
+				self.overAbsorb:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMRIGHT')
+
+				self.overHealAbsorb:SetPoint('TOPLEFT', frame.Health, 'BOTTOMRIGHT')
+				self.overHealAbsorb:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMRIGHT')
 			end
 
 			self.overHealAbsorb:SetWidth(size)
 			self.overAbsorb:SetWidth(size)
 		else
-			self.overAbsorb:SetPoint('LEFT')
-			self.overAbsorb:SetPoint('RIGHT')
-
-			self.overHealAbsorb:SetPoint('LEFT')
-			self.overHealAbsorb:SetPoint('RIGHT')
-
 			if reverseFill then
-				self.overAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
-				self.overHealAbsorb:SetPoint('BOTTOM', frame.Health, 'TOP')
+				self.overAbsorb:SetPoint('TOPLEFT', frame.Health, 'BOTTOMLEFT')
+				self.overAbsorb:SetPoint('TOPRIGHT', frame.Health, 'BOTTOMRIGHT')
+
+				self.overHealAbsorb:SetPoint('TOPLEFT', frame.Health, 'BOTTOMLEFT')
+				self.overHealAbsorb:SetPoint('TOPRIGHT', frame.Health, 'BOTTOMRIGHT')
 			else
-				self.overAbsorb:SetPoint('TOP', frame.Health, 'BOTTOM')
-				self.overHealAbsorb:SetPoint('TOP', frame.Health, 'BOTTOM')
+				self.overAbsorb:SetPoint('BOTTOMLEFT', frame.Health, 'TOPLEFT')
+				self.overAbsorb:SetPoint('BOTTOMRIGHT', frame.Health, 'TOPRIGHT')
+
+				self.overHealAbsorb:SetPoint('BOTTOMLEFT', frame.Health, 'TOPLEFT')
+				self.overHealAbsorb:SetPoint('BOTTOMRIGHT', frame.Health, 'TOPRIGHT')
 			end
 
 			self.overHealAbsorb:SetHeight(size)
