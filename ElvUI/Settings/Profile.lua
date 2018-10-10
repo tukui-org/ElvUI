@@ -1228,6 +1228,10 @@ P['unitframe'] = {
 				['size'] = 22,
 				['texture'] = 'DEFAULT',
 			},
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
+			},
 			['CombatIcon'] = {
 				['enable'] = true,
 				['defaultColor'] = true,
