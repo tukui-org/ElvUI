@@ -77,10 +77,15 @@ function UF:Configure_HealComm(frame)
 			end
 
 			if reverseFill then
-				healPrediction.myBar:SetReverseFill(reverseFill)
-				healPrediction.otherBar:SetReverseFill(reverseFill)
-				healPrediction.absorbBar:SetReverseFill(reverseFill)
-				healPrediction.healAbsorbBar:SetReverseFill(not reverseFill)
+				healPrediction.myBar:SetReverseFill(true)
+				healPrediction.otherBar:SetReverseFill(true)
+				healPrediction.absorbBar:SetReverseFill(true)
+				healPrediction.healAbsorbBar:SetReverseFill(false)
+			else
+				healPrediction.myBar:SetReverseFill(false)
+				healPrediction.otherBar:SetReverseFill(false)
+				healPrediction.absorbBar:SetReverseFill(false)
+				healPrediction.healAbsorbBar:SetReverseFill(true)
 			end
 		end
 
@@ -108,21 +113,43 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	local orientation = frame.Health:GetOrientation()
 	bar:ClearAllPoints()
 
+	local reverse = (db.health and db.health.reverseFill)
+
 	if orientation == 'HORIZONTAL' then
-		if (inverted) or (db.health and db.health.reverseFill) then
-			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
+		if reverse then
+			if (inverted) then
+				bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
+				bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMLEFT");
+			else
+				bar:Point("TOPRIGHT", previousTexture, "TOPLEFT");
+				bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMLEFT");
+			end
 		else
-			bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+			if (inverted) then
+				bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+				bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
+			else
+				bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+				bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+			end
 		end
 	else
-		if (inverted) or (db.health and db.health.reverseFill) then
-			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
+		if reverse then
+			if (inverted) then
+				bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
+				bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMLEFT");
+			else
+				bar:Point("TOPRIGHT", previousTexture, "BOTTOMRIGHT");
+				bar:Point("TOPLEFT", previousTexture, "BOTTOMLEFT");
+			end
 		else
-			bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+			if (inverted) then
+				bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+				bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
+			else
+				bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+				bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+			end
 		end
 	end
 
