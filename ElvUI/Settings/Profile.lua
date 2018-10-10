@@ -4,6 +4,7 @@ P.gridSize = 64
 
 --Core
 P['general'] = {
+	['messageRedirect'] = DEFAULT_CHAT_FRAME:GetName(),
 	['taintLog'] = false,
 	['stickyFrames'] = true,
 	['loginmessage'] = true,

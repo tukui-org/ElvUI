@@ -28,7 +28,7 @@ function UF:Construct_HealComm(frame)
 	overAbsorb:SetPoint('TOP')
 	overAbsorb:SetPoint('BOTTOM')
 	overAbsorb:SetPoint('LEFT', frame.Health, 'RIGHT')
-	overAbsorb:SetWidth(2) -- Maybe set this to the same size as maxOverflow?
+	overAbsorb:SetWidth(1) -- Maybe set this to the same size as maxOverflow?
 	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "OVERLAY")
@@ -36,7 +36,7 @@ function UF:Construct_HealComm(frame)
 	overHealAbsorb:SetPoint('TOP')
 	overHealAbsorb:SetPoint('BOTTOM')
 	overHealAbsorb:SetPoint('RIGHT', frame.Health, 'LEFT')
-	overHealAbsorb:SetWidth(2)  -- Maybe set this to the same size as maxOverflow?
+	overHealAbsorb:SetWidth(1)  -- Maybe set this to the same size as maxOverflow?
 	overHealAbsorb:Hide()
 
 	local HealthPrediction = {
