@@ -994,30 +994,30 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = "header",
 				name = L["Health"],
 			},
-			reverseFill = {
-				type = "toggle",
-				order = 1,
-				name = L["Reverse Fill"],
-			},
 			position = {
 				type = 'select',
-				order = 2,
+				order = 1,
 				name = L["Text Position"],
 				values = positionValues,
 			},
 			xOffset = {
-				order = 3,
+				order = 2,
 				type = 'range',
 				name = L["Text xOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 4,
+				order = 3,
 				type = 'range',
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
+			},
+			reverseFill = {
+				type = "toggle",
+				order = 4,
+				name = L["Reverse Fill"],
 			},
 			attachTextTo = {
 				type = 'select',
@@ -1405,14 +1405,9 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = "header",
 				name = L["Power"],
 			},
-			reverseFill = {
-				type = "toggle",
-				order = 1,
-				name = L["Reverse Fill"],
-			},
 			enable = {
 				type = 'toggle',
-				order = 2,
+				order = 1,
 				name = L["Enable"],
 			},
 			text_format = {
@@ -1489,21 +1484,26 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "powerGroup") end,
 			},
+			reverseFill = {
+				type = "toggle",
+				order = 7,
+				name = L["Reverse Fill"],
+			},
 			position = {
 				type = 'select',
-				order = 7,
+				order = 8,
 				name = L["Text Position"],
 				values = positionValues,
 			},
 			xOffset = {
-				order = 8,
+				order = 9,
 				type = 'range',
 				name = L["Text xOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 9,
+				order = 10,
 				type = 'range',
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
@@ -1511,7 +1511,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			},
 			attachTextTo = {
 				type = 'select',
-				order = 10,
+				order = 11,
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},

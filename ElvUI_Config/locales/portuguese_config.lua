@@ -1215,6 +1215,7 @@ L["Remove SpellID"] = "Remover SpellID"
 L["Rest Icon"] = "ìcone de descansar"
 L["Restore Defaults"] = "Restaurar ao Padrão"
 L["Resurrect Icon"] = true
+L["Reverse Fill"] = true
 L["Right to Left"] = true
 L["RL Icon"] = true
 L["Role Icon"] = "Ícone do papel"

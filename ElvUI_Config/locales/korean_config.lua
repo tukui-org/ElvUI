@@ -1263,6 +1263,7 @@ L["Remove SpellID"] = "주문 ID 삭제"
 L["Rest Icon"] = "휴식 아이콘"
 L["Restore Defaults"] = "기본값 복원"
 L["Resurrect Icon"] = "부활 아이콘"
+L["Reverse Fill"] = true
 L["Right to Left"] = "오른쪽에서 왼쪽으로"
 L["RL Icon"] = true
 L["Role Icon"] = "역할 아이콘"
