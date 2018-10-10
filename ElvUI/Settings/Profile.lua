@@ -4,6 +4,7 @@ P.gridSize = 64
 
 --Core
 P['general'] = {
+	['messageRedirect'] = DEFAULT_CHAT_FRAME:GetName(),
 	['taintLog'] = false,
 	['stickyFrames'] = true,
 	['loginmessage'] = true,
@@ -1178,9 +1179,11 @@ P['unitframe'] = {
 				['xOffset'] = 2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 10,
@@ -1227,6 +1230,10 @@ P['unitframe'] = {
 				['yOffset'] = 6,
 				['size'] = 22,
 				['texture'] = 'DEFAULT',
+			},
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
 			},
 			['CombatIcon'] = {
 				['enable'] = true,
@@ -1306,6 +1313,7 @@ P['unitframe'] = {
 				['iconYOffset'] = 0,
 				['tickWidth'] = 1,
 				['tickColor'] = {r = 0, g = 0, b = 0, a = 0.8},
+				['timeToHold'] = 0,
 			},
 			['classbar'] = {
 				['enable'] = true,
@@ -1375,9 +1383,11 @@ P['unitframe'] = {
 				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 10,
@@ -1479,6 +1489,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -1521,9 +1532,11 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1612,9 +1625,11 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1704,9 +1719,11 @@ P['unitframe'] = {
 				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1785,6 +1802,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -1827,9 +1845,11 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1918,9 +1938,11 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
 				['xOffset'] = -2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2002,6 +2024,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 		},
 		['pettarget'] = {
@@ -2020,9 +2043,11 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
 				['xOffset'] = -2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2104,9 +2129,11 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2187,6 +2214,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -2217,9 +2245,11 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2300,6 +2330,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['pvpTrinket'] = {
 				['enable'] = true,
@@ -2341,9 +2372,11 @@ P['unitframe'] = {
 				['frequentUpdates'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['attachTextTo'] = 'Health',
 				['width'] = 'fill',
@@ -2461,6 +2494,7 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -2560,9 +2594,11 @@ P['unitframe'] = {
 				['frequentUpdates'] = false,
 				['yOffset'] = 2,
 				['xOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2734,9 +2770,11 @@ P['unitframe'] = {
 				['attachTextTo'] = 'Health',
 				['yOffset'] = 2,
 				['xOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2910,6 +2948,7 @@ P['unitframe'] = {
 				['yOffset'] = 2,
 				['xOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['name'] = {
 				['position'] = 'TOP',

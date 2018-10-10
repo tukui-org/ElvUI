@@ -1213,6 +1213,7 @@ L["Remove SpellID"] = "移除技能ID"
 L["Rest Icon"] = "充分休息图标"
 L["Restore Defaults"] = "恢复预设"
 L["Resurrect Icon"] = "复活图标"
+L["Reverse Fill"] = true
 L["Right to Left"] = "右到左"
 L["RL Icon"] = "团队领袖图标"
 L["Role Icon"] = "角色定位图标"

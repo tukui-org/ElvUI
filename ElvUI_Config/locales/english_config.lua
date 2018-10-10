@@ -1203,6 +1203,7 @@ L["Remove SpellID"] = true
 L["Rest Icon"] = true
 L["Restore Defaults"] = true --Also used in Media and ActionBars sections
 L["Resurrect Icon"] = true
+L["Reverse Fill"] = true
 L["Right to Left"] = true
 L["RL Icon"] = true
 L["Role Icon"] = true

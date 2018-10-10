@@ -1214,6 +1214,7 @@ L["Remove SpellID"] = "Eliminar ID de Hechizo"
 L["Rest Icon"] = "Icono de Descanso"
 L["Restore Defaults"] = "Restaurar por Defecto"
 L["Resurrect Icon"] = true
+L["Reverse Fill"] = true
 L["Right to Left"] = true
 L["RL Icon"] = true
 L["Role Icon"] = "Icono de Rol"

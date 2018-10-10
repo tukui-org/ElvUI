@@ -110,6 +110,8 @@ function UF:Configure_Castbar(frame)
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 	end
 
+	castbar.timeToHold = db.castbar.holdTime
+
 	--Latency
 	if db.castbar.latency then
 		castbar.SafeZone = castbar.LatencyTexture

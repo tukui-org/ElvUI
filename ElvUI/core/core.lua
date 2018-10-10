@@ -182,7 +182,7 @@ E.noop = function() end;
 local hexvaluecolor
 function E:Print(...)
 	hexvaluecolor = self["media"].hexvaluecolor or "|cff00b3ff"
-	print(hexvaluecolor..'ElvUI:|r', ...)
+	(_G[self.db.general.messageRedirect] or DEFAULT_CHAT_FRAME):AddMessage(format('%sElvUI:|r %s', hexvaluecolor, ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.

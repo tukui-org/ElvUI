@@ -885,6 +885,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					},
 				},
 			},
+			timeToHold = {
+				order = 8,
+				name = L["Time To Hold"],
+				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
+				type = "range",
+				min = 0, max = 10, step = .1,
+			},
 		},
 	}
 
@@ -983,29 +990,34 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
-				order = 1,
+				order = 0,
 				type = "header",
 				name = L["Health"],
 			},
 			position = {
 				type = 'select',
-				order = 2,
+				order = 1,
 				name = L["Text Position"],
 				values = positionValues,
 			},
 			xOffset = {
-				order = 3,
+				order = 2,
 				type = 'range',
 				name = L["Text xOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 4,
+				order = 3,
 				type = 'range',
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
+			},
+			reverseFill = {
+				type = "toggle",
+				order = 4,
+				name = L["Reverse Fill"],
 			},
 			attachTextTo = {
 				type = 'select',
@@ -1389,13 +1401,13 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		set = function(info, value) E.db.unitframe.units[groupName]['power'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
-				order = 1,
+				order = 0,
 				type = "header",
 				name = L["Power"],
 			},
 			enable = {
 				type = 'toggle',
-				order = 2,
+				order = 1,
 				name = L["Enable"],
 			},
 			text_format = {
@@ -1472,21 +1484,26 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "powerGroup") end,
 			},
+			reverseFill = {
+				type = "toggle",
+				order = 7,
+				name = L["Reverse Fill"],
+			},
 			position = {
 				type = 'select',
-				order = 7,
+				order = 8,
 				name = L["Text Position"],
 				values = positionValues,
 			},
 			xOffset = {
-				order = 8,
+				order = 9,
 				type = 'range',
 				name = L["Text xOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 9,
+				order = 10,
 				type = 'range',
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
@@ -1494,7 +1511,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			},
 			attachTextTo = {
 				type = 'select',
-				order = 10,
+				order = 11,
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
@@ -3618,6 +3635,34 @@ E.Options.args.unitframe.args.player = {
 					type = 'input',
 					width = 'full',
 					desc = L["TEXT_FORMAT_DESC"],
+				},
+			},
+		},
+		raidRoleIcons = {
+			order = 703,
+			type = 'group',
+			name = L["RL Icon"],
+			get = function(info) return E.db.unitframe.units['player']['raidRoleIcons'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["RL Icon"],
+				},
+				enable = {
+					type = 'toggle',
+					name = L["Enable"],
+					order = 2,
+				},
+				position = {
+					type = 'select',
+					order = 3,
+					name = L["Position"],
+					values = {
+						['TOPLEFT'] = 'TOPLEFT',
+						['TOPRIGHT'] = 'TOPRIGHT',
+					},
 				},
 			},
 		},

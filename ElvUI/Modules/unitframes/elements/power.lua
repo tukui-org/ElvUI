@@ -69,6 +69,12 @@ function UF:Configure_Power(frame)
 			power.value:SetParent(frame.RaisedElementParent)
 		end
 
+		if db.power.reverseFill then
+			power:SetReverseFill(true)
+		else
+			power:SetReverseFill(false)
+		end
+
 		--Colors
 		power.colorClass = nil
 		power.colorReaction = nil

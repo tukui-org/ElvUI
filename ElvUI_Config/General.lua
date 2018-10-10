@@ -1,6 +1,14 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule("Blizzard")
 
+local function GetChatWindowInfo()
+	local ChatTabInfo = {}
+	for i = 1, FCF_GetNumActiveChatFrames() do
+		ChatTabInfo["ChatFrame"..i] = _G["ChatFrame"..i.."Tab"]:GetText()
+	end
+	return ChatTabInfo
+end
+
 E.Options.args.general = {
 	type = "group",
 	name = L["General"],
@@ -20,9 +28,16 @@ E.Options.args.general = {
 			name = L["General"],
 			args = {
 				generalHeader = {
-					order = 1,
+					order = 0,
 					type = "header",
 					name = L["General"],
+				},
+				messageRedirect = {
+					order = 1,
+					name = L["ElvUI: Chat Output"],
+					desc = L["The selects the Chat Frame to use as the output of ElvUI messages."],
+					type = 'select',
+					values = GetChatWindowInfo()
 				},
 				pixelPerfect = {
 					order = 2,
