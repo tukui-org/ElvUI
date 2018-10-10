@@ -983,9 +983,14 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
-				order = 1,
+				order = 0,
 				type = "header",
 				name = L["Health"],
+			},
+			reverseFill = {
+				type = "toggle",
+				order = 1,
+				name = L["Reverse Fill"],
 			},
 			position = {
 				type = 'select',
@@ -1389,9 +1394,14 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		set = function(info, value) E.db.unitframe.units[groupName]['power'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
-				order = 1,
+				order = 0,
 				type = "header",
 				name = L["Power"],
+			},
+			reverseFill = {
+				type = "toggle",
+				order = 1,
+				name = L["Reverse Fill"],
 			},
 			enable = {
 				type = 'toggle',
