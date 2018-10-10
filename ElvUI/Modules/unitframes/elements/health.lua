@@ -148,7 +148,9 @@ function UF:Configure_HealthBar(frame)
 
 	if db.health then
 		if db.health.reverseFill then
-			health:SetReverseFill(db.health.reverseFill)
+			health:SetReverseFill(true)
+		else
+			health:SetReverseFill(false)
 		end
 
 		--Party/Raid Frames allow to change statusbar orientation
