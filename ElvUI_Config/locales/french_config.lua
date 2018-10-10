@@ -449,6 +449,7 @@ L["This feature will allow you to transfer settings to other characters."] = "Ce
 L["You must be targeting a player."] = "Vous devez cibler un joueur."
 
 --Filters
+L["Quick Search"] = true
 L["Reset Aura Filters"] = "Réinitialiser les filtres des auras" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "Réinitialiser les filtres"
 L["Used as RaidDebuff Indicator"] = "Utiliser comme indicateur d'affaiblissement en raid"

@@ -449,6 +449,7 @@ L["This feature will allow you to transfer settings to other characters."] = "�
 L["You must be targeting a player."] = "你必須以一名玩家為目標."
 
 --Filters
+L["Quick Search"] = true
 L["Reset Aura Filters"] = "重置光環過濾器" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "重置過濾器"
 L["Used as RaidDebuff Indicator"] = "作為團隊 Debuff 指示器"
