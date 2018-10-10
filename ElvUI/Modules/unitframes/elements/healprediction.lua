@@ -38,7 +38,7 @@ function UF:Construct_HealComm(frame)
 		maxOverflow = 1,
 		overAbsorb = overAbsorb,
 		overHealAbsorb = overHealAbsorb,
-        PostUpdate = UF.UpdateHealComm
+		PostUpdate = UF.UpdateHealComm
 	}
 	HealthPrediction.parent = frame
 
