@@ -98,6 +98,8 @@ function UF:Configure_HealComm(frame)
 end
 
 function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
+	local db = frame.db
+
 	if ( amount == 0 ) then
 		bar:Hide();
 		return previousTexture;
@@ -107,7 +109,7 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	bar:ClearAllPoints()
 
 	if orientation == 'HORIZONTAL' then
-		if (inverted) or self.db.health.reverseFill then
+		if (inverted) or db.health.reverseFill then
 			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
 			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
 		else
@@ -115,7 +117,7 @@ function UF:UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
 		end
 	else
-		if (inverted) or self.db.health.reverseFill then
+		if (inverted) or db.health.reverseFill then
 			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
 			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
 		else
