@@ -449,8 +449,10 @@ L["This feature will allow you to transfer settings to other characters."] = "Ce
 L["You must be targeting a player."] = "Vous devez cibler un joueur."
 
 --Filters
+L["Filter Search"] = true
 L["Reset Aura Filters"] = "Réinitialiser les filtres des auras" --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = "Réinitialiser les filtres"
+L["Search for a spell name inside of a filter."] = true
 L["Used as RaidDebuff Indicator"] = "Utiliser comme indicateur d'affaiblissement en raid"
 
 --General
@@ -1232,6 +1234,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = "Définir le type d'auras à afficher quand l'unité est hostile."
 L["Set the type of auras to show when a unit is friendly."] = "Définir le type d'auras à afficher quand l'unité est amical."
 L["Sets the font instance's horizontal text alignment style."] = "Réglages de l'alignement horizontal du texte de la police d'écriture."
+L["Show Absorb Amount"] = true
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
 L["Show Aura From Other Players"] = "N'importe quelle unité"
 L["Show Auras"] = "Afficher les auras"
@@ -1239,6 +1242,7 @@ L["Show Dispellable Debuffs"] = "Voir les affaiblissements dissipables"
 L["Show For DPS"] = "Voir pour les DPS"
 L["Show For Healers"] = "Voir pour les soigneurs"
 L["Show For Tanks"] = "Voir pour les tanks"
+L["Show Over Absorbs"] = true
 L["Show When Not Active"] = "Afficher les manquants"
 L["Size and Positions"] = "Taille et positions"
 L["Size of the indicator icon."] = "Taille de l'indicateur de l'icône."

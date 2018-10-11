@@ -2135,6 +2135,9 @@ function B:CreateSellFrame()
 end
 
 function B:Initialize()
+	--Creating vendor grays frame
+	B:CreateSellFrame()
+
 	self:LoadBagBar();
 
 	--Bag Mover (We want it created even if Bags module is disabled, so we can use it for default bags too)
@@ -2217,9 +2220,6 @@ function B:Initialize()
 
 	--Enable/Disable "Loot to Leftmost Bag"
 	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)
-
-	--Creating vendor grays frame
-	B:CreateSellFrame()
 end
 
 local function InitializeCallback()

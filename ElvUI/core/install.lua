@@ -390,9 +390,9 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.health.frequentUpdates = true
 			E.db.unitframe.units.raid40.health.frequentUpdates = true
 
-			E.db.unitframe.units.party.healPrediction = true
-			E.db.unitframe.units.raid.healPrediction = true
-			E.db.unitframe.units.raid40.healPrediction = true
+			E.db.unitframe.units.party.healPrediction.enable = true
+			E.db.unitframe.units.raid.healPrediction.enable = true
+			E.db.unitframe.units.raid40.healPrediction.enable = true
 			E.db.unitframe.units.player.castbar.insideInfoPanel = false
 			E.db.actionbar.bar2.enabled = true
 			if not E.db.lowresolutionset then

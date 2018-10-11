@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
-local floor, gsub, match = floor, string.gsub, string.match
+local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local UnitGUID = UnitGUID
@@ -22,8 +22,8 @@ local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
-local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local IsAddOnLoaded, DisableAddOn = IsAddOnLoaded, DisableAddOn
+local IsInInstance, IsInGroup, IsInRaid, IsInGuild = IsInInstance, IsInGroup, IsInRaid, IsInGuild
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -43,7 +43,7 @@ local UnitFactionGroup = UnitFactionGroup
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 -- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
--- GLOBALS: CUSTOM_CLASS_COLORS, ElvDB
+-- GLOBALS: DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, ElvDB
 
 --Constants
 E.title = format("|cfffe7b2c%s |r", "ElvUI")
@@ -182,7 +182,7 @@ E.noop = function() end;
 local hexvaluecolor
 function E:Print(...)
 	hexvaluecolor = self["media"].hexvaluecolor or "|cff00b3ff"
-	(_G[self.db.general.messageRedirect] or DEFAULT_CHAT_FRAME):AddMessage(format('%sElvUI:|r %s', hexvaluecolor, ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
+	(_G[self.db.general.messageRedirect] or DEFAULT_CHAT_FRAME):AddMessage(strjoin('', hexvaluecolor, 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.

@@ -496,6 +496,11 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
+
+			if group == 'arena' then
+				self[unit]:SetAttribute('oUF-enableArenaPrep', true)
+			end
+
 			self[unit].Update()
 
 			if self[unit].isForced then
@@ -504,6 +509,11 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+
+			if group == 'arena' then
+				self[unit]:SetAttribute('oUF-enableArenaPrep', false)
+			end
+
 			E:DisableMover(self[unit].mover:GetName())
 		end
 	end

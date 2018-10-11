@@ -438,8 +438,10 @@ L["This feature will allow you to transfer settings to other characters."] = tru
 L["You must be targeting a player."] = true
 
 --Filters
+L["Filter Search"] = true
 L["Reset Aura Filters"] = true --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true
+L["Search for a spell name inside of a filter."] = true
 L["Used as RaidDebuff Indicator"] = true
 
 --General
@@ -1220,6 +1222,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = true
 L["Set the type of auras to show when a unit is friendly."] = true
 L["Sets the font instance's horizontal text alignment style."] = true
+L["Show Absorb Amount"] = true
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true
 L["Show Aura From Other Players"] = true
 L["Show Auras"] = true
@@ -1227,6 +1230,7 @@ L["Show Dispellable Debuffs"] = true
 L["Show For DPS"] = true
 L["Show For Healers"] = true
 L["Show For Tanks"] = true
+L["Show Over Absorbs"] = true
 L["Show When Not Active"] = true
 L["Size and Positions"] = true
 L["Size of the indicator icon."] = true

@@ -4,22 +4,37 @@ local B = E:GetModule('Blizzard');
 --No point caching anything here, but list them here for mikk's FindGlobals script
 -- GLOBALS: hooksecurefunc, VehicleSeatIndicator, MinimapCluster, _G, VehicleSeatMover
 
+function B:UpdateVehicleFrame()
+	VehicleSeatIndicator_SetUpVehicle(VehicleSeatIndicator.currSkin)
+end
+
 function B:PositionVehicleFrame()
 	local function VehicleSeatIndicator_SetPosition(_,_, parent)
 		if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 			VehicleSeatIndicator:ClearAllPoints()
-
-			if VehicleSeatMover then
-				VehicleSeatIndicator:SetPoint("TOPLEFT", VehicleSeatMover, "TOPLEFT", 0, 0)
-			else
-				VehicleSeatIndicator:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 22, -45)
-				E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"])
-			end
-
-			VehicleSeatIndicator:SetScale(0.8)
+			VehicleSeatIndicator:SetPoint("TOPLEFT", VehicleSeatMover, "TOPLEFT", 0, 0)
 		end
 	end
+
+	local function VehicleSetUp(vehicleID)
+		VehicleSeatIndicator:SetSize(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
+		local backgroundTexture, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
+		for i = 1, numSeatIndicators do
+			local button = _G["VehicleSeatIndicatorButton"..i];
+			button:SetSize(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
+			local virtualSeatIndex, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i);
+			button:ClearAllPoints()
+			button:SetPoint("CENTER", button:GetParent(), "TOPLEFT", xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
+		end
+	end
+
 	hooksecurefunc(VehicleSeatIndicator,"SetPoint", VehicleSeatIndicator_SetPosition)
 
-	VehicleSeatIndicator:Point('TOPLEFT', Minimap, 'TOPLEFT', 2, 2) -- initialize mover
+	hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+
+	VehicleSeatIndicator:SetSize(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
+
+	E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"])
+
+    if VehicleSeatIndicator.currSkin then VehicleSetUp(VehicleSeatIndicator.currSkin) end
 end

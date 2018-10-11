@@ -53,6 +53,11 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 		end
 	elseif (self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
+
+		if self.interruptedBy and self.Name and (self.Name:GetText() == INTERRUPTED) then
+			self.Name:SetText(INTERRUPTED .. " > " .. self.interruptedBy)
+			self.interruptedBy = nil
+		end
 	else
 		self:Hide()
 	end
@@ -61,7 +66,7 @@ end
 function mod:UpdateElement_Cast(frame, event, ...)
 	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
 
-	local arg1 = ...;
+	local arg1, arg2 = ...;
 	local unit = frame.displayedUnit
 	if ( event == "PLAYER_ENTERING_WORLD" ) then
 		local nameChannel = UnitChannelInfo(unit);
@@ -75,6 +80,10 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		else
 		    frame.CastBar:Hide()
 		end
+	end
+
+	if ( event == "UNIT_SPELLCAST_SENT" ) then
+		frame.CastBar.curTarget = (arg2 and arg2 ~= "" and self.db.units[frame.UnitType].castbar.displayTarget) and arg2 or nil
 	end
 
 	if ( arg1 ~= unit ) then
@@ -93,7 +102,13 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
-		frame.CastBar.Name:SetText(name)
+
+		if frame.CastBar.curTarget then
+			frame.CastBar.Name:SetText(name .. " > " .. frame.CastBar.curTarget)
+		else
+			frame.CastBar.Name:SetText(name)
+		end
+
 		frame.CastBar.value = (GetTime() - (startTime / 1000));
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -135,11 +150,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar.Spark:Hide();
 			end
 
-			if ( event == "UNIT_SPELLCAST_FAILED" ) then
+			if event == "UNIT_SPELLCAST_FAILED" then
 				frame.CastBar.Name:SetText(FAILED);
 			else
 				frame.CastBar.Name:SetText(INTERRUPTED);
 			end
+
 			frame.CastBar.casting = nil;
 			frame.CastBar.channeling = nil;
 			frame.CastBar.canInterrupt = nil

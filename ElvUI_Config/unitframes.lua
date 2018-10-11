@@ -825,6 +825,12 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
 			},
+			displayTarget = {
+				order = 12,
+				type = 'toggle',
+				name = L["Display Target"],
+				desc = L["Display the target of your current cast. Useful for mouseover casts."],
+			},
 			iconSettings = {
 				order = 13,
 				type = "group",
@@ -897,12 +903,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 
 	if hasTicks then
-		config.args.displayTarget = {
-			order = 11,
-			type = 'toggle',
-			name = L["Display Target"],
-			desc = L["Display the target of your current cast. Useful for mouseover casts."],
-		}
 		config.args.ticks = {
 			order = 12,
 			type = "group",
@@ -1926,6 +1926,50 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	return config
 end
 
+local function GetOptionsTable_HealPrediction(updateFunc, groupName)
+	local config = {
+		order = 101,
+		type = "group",
+		name = L["Heal Prediction"],
+		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+		get = function(info) return E.db.unitframe.units[groupName]["healPrediction"][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]["healPrediction"][ info[#info] ] = value; updateFunc(UF, groupName) end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["Heal Prediction"],
+			},
+			enable = {
+				order = 1,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			showOverAbsorbs = {
+				order = 2,
+				type = "toggle",
+				name = L["Show Over Absorbs"],
+			},
+			showAbsorbAmount = {
+				order = 3,
+				type = "toggle",
+				name = L["Show Absorb Amount"],
+				disabled = function() return not E.db.unitframe.units[groupName]["healPrediction"]["showOverAbsorbs"] end,
+			},
+			colors = {
+				order = 4,
+				type = "execute",
+				name = COLORS,
+				buttonElvUI = true,
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				disabled = function() return not E.UnitFrames; end,
+			},
+		},
+	}
+
+	return config
+end
+
 E.Options.args.unitframe = {
 	type = "group",
 	name = L["UnitFrames"],
@@ -2868,8 +2912,20 @@ E.Options.args.unitframe = {
 									type = 'color',
 									hasAlpha = true,
 								},
-								maxOverflow = {
+								overabsorbs = {
 									order = 4,
+									name = L["Over Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								overhealabsorbs = {
+									order = 4,
+									name = L["Over Heal Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								maxOverflow = {
+									order = 6,
 									type = "range",
 									name = L["Max Overflow"],
 									desc = L["Max amount of overflow allowed to extend past the end of the health bar."],
@@ -3125,12 +3181,6 @@ E.Options.args.unitframe.args.player = {
 						end
 					end,
 				},
-				healPrediction = {
-					order = 9,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 10,
@@ -3185,6 +3235,7 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
@@ -3750,12 +3801,6 @@ E.Options.args.unitframe.args.target = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 9,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 10,
@@ -3812,6 +3857,7 @@ E.Options.args.unitframe.args.target = {
 				},
 			},
 		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),
@@ -4279,12 +4325,6 @@ E.Options.args.unitframe.args.focus = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 9,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 10,
@@ -4334,6 +4374,7 @@ E.Options.args.unitframe.args.focus = {
 				},
 			},
 		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'focus'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus'),
@@ -4560,12 +4601,6 @@ E.Options.args.unitframe.args.pet = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 9,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 10,
@@ -4647,6 +4682,7 @@ E.Options.args.unitframe.args.pet = {
 				},
 			},
 		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
@@ -5028,12 +5064,6 @@ E.Options.args.unitframe.args.arena = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 9,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 10,
@@ -5156,6 +5186,7 @@ E.Options.args.unitframe.args.arena = {
 				},
 			},
 		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -5232,12 +5263,6 @@ E.Options.args.unitframe.args.party = {
 					name = L["Range Check"],
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
-				},
-				healPrediction = {
-					order = 5,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
 				},
 				threatStyle = {
 					type = 'select',
@@ -5584,6 +5609,7 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -5890,12 +5916,6 @@ E.Options.args.unitframe.args.raid = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 5,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				threatStyle = {
 					type = 'select',
 					order = 6,
@@ -6094,6 +6114,7 @@ E.Options.args.unitframe.args.raid = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -6368,12 +6389,6 @@ E.Options.args.unitframe.args.raid40 = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 5,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				threatStyle = {
 					type = 'select',
 					order = 6,
@@ -6572,6 +6587,7 @@ E.Options.args.unitframe.args.raid40 = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
@@ -6838,12 +6854,6 @@ E.Options.args.unitframe.args.raidpet = {
 					desc = L["Check if you are in range to cast spells on this specific unit."],
 					type = "toggle",
 				},
-				healPrediction = {
-					order = 4,
-					name = L["Heal Prediction"],
-					desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-					type = 'toggle',
-				},
 				threatStyle = {
 					type = 'select',
 					order = 5,
@@ -7034,6 +7044,7 @@ E.Options.args.unitframe.args.raidpet = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),

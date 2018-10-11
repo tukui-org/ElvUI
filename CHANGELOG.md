@@ -10,6 +10,11 @@ Added a Module Copy option. This allows you to copy module settings to/from your
 Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
 Added Tooltip offsets while using anchor on mouse. (#204)  
 Added Tooltip option to alway show the realm name. (#372)  
+Added quick search for spells in filters. (#30)  
+Added "Display Target" to NamePlate castbars.  
+Added "Display Interrupt Source" to NamePlate castbars.  
+Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
+Added option to scale the Vehicle display. (#715)  
 
 
 **Bug Fixes:**  

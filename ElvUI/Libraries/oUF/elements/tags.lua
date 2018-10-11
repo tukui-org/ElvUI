@@ -589,10 +589,10 @@ Used to update all tags on a frame.
 * self - the unit frame from which to update the tags
 --]]
 local function Update(self)
-	if not self.__tags then return end
-
-	for _, fs in next, self.__tags do
-		fs:UpdateTag()
+	if(self.__tags) then
+		for _, fs in next, self.__tags do
+			fs:UpdateTag()
+		end
 	end
 end
 
