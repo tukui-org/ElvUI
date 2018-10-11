@@ -123,6 +123,7 @@ local function UpdateFilterGroup()
 						local filters = {}
 						local list = E.global.unitframe.DebuffHighlightColors
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for filter in pairs(list) do
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -132,7 +133,7 @@ local function UpdateFilterGroup()
 									filter = tostring(filter)
 								end
 							end
-							if filter:find(quickSearchText) then filters[filter] = filter end
+							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
 						if not next(filters) then filters[''] = NONE end
 						return filters
@@ -303,6 +304,7 @@ local function UpdateFilterGroup()
 						local filters = {}
 						local list = E.global.unitframe.AuraBarColors
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for filter in pairs(list) do
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -312,7 +314,7 @@ local function UpdateFilterGroup()
 									filter = tostring(filter)
 								end
 							end
-							if filter:find(quickSearchText) then filters[filter] = filter end
+							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
 						if not next(filters) then filters[''] = NONE end
 						return filters
@@ -473,10 +475,11 @@ local function UpdateFilterGroup()
 						local values = {}
 						local list = E.global.unitframe.buffwatch.PET
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:find(quickSearchText) then values[spell.id] = name end
+								if name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values
@@ -719,10 +722,11 @@ local function UpdateFilterGroup()
 						local values = {}
 						local list = E.global.unitframe.buffwatch[E.myclass]
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:find(quickSearchText) then values[spell.id] = name end
+								if name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values
@@ -973,10 +977,11 @@ local function UpdateFilterGroup()
 						local values = {}
 						local list = E.db.unitframe.filters.buffwatch
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:find(quickSearchText) then values[spell.id] = name end
+								if name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values
@@ -1256,6 +1261,7 @@ local function UpdateFilterGroup()
 						local filters = {}
 						local list = E.global.unitframe['aurafilters'][selectedFilter]['spells']
 						if not list then return end
+						local searchText = quickSearchText:lower()
 						for filter in pairs(list) do
 							if tonumber(filter) then
 								local spellName = GetSpellInfo(filter)
@@ -1265,7 +1271,7 @@ local function UpdateFilterGroup()
 									filter = tostring(filter)
 								end
 							end
-							if filter:find(quickSearchText) then filters[filter] = filter end
+							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
 						if not next(filters) then filters[''] = NONE end
 						return filters
