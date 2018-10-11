@@ -1993,20 +1993,31 @@ local function GetUnitSettings(unit, name)
 						name = L["Hide Time"],
 						type = "toggle",
 					},
-					displayTarget = {
+					sourceInterrupt = {
 						order = 4,
+						type = 'toggle',
+						name = L["Display Interrupt Source"],
+					},
+					sourceInterruptClassColor = {
+						order = 4,
+						type = 'toggle',
+						name = L["Show Interrupt Source in Class Color"],
+						disabled = function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end,
+					},
+					displayTarget = {
+						order = 5,
 						type = 'toggle',
 						name = L["Display Target"],
 						desc = L["Display the target of your current cast. Useful for mouseover casts."],
 					},
 					height = {
-						order = 5,
+						order = 6,
 						name = L["Height"],
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
 					castTimeFormat = {
-						order = 6,
+						order = 7,
 						type = "select",
 						name = L["Cast Time Format"],
 						values = {
@@ -2016,7 +2027,7 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					channelTimeFormat = {
-						order = 7,
+						order = 8,
 						type = "select",
 						name = L["Channel Time Format"],
 						values = {
@@ -2026,14 +2037,14 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					timeToHold = {
-						order = 8,
+						order = 9,
 						type = "range",
 						name = L["Time To Hold"],
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
 					iconPosition = {
-						order = 9,
+						order = 10,
 						type = "select",
 						name = L["Icon Position"],
 						values = {

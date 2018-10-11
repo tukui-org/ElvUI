@@ -1186,15 +1186,22 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
 		local plate = self.PlateGUIDs[targetGUID]
 		if plate and (plate.unitFrame and plate.unitFrame.CastBar) then
-			local holdTime = plate.unitFrame.UnitType and self.db.units[plate.unitFrame.UnitType] and self.db.units[plate.unitFrame.UnitType].castbar.timeToHold
-			if holdTime > 0 then
-				local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
-				if sourceClass then
-					local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
-					sourceClass = classColor and classColor.colorStr
-				end
+			local db = plate.unitFrame.UnitType and self.db and self.db.units and self.db.units[plate.unitFrame.UnitType]
+			if db and db.castbar and db.castbar.sourceInterrupt then
+				local holdTime = db.castbar.timeToHold
+				if holdTime > 0 then
+					if db.castbar.sourceInterruptClassColor then
+						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
+						if sourceClass then
+							local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
+							sourceClass = classColor and classColor.colorStr
+						end
 
-				plate.unitFrame.CastBar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+						plate.unitFrame.CastBar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+					else
+						plate.unitFrame.CastBar.interruptedBy = sourceName
+					end
+				end
 			end
 		end
 	end
