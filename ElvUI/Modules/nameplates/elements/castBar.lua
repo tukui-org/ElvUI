@@ -66,7 +66,7 @@ end
 function mod:UpdateElement_Cast(frame, event, ...)
 	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
 
-	local arg1 = ...;
+	local arg1, arg2 = ...;
 	local unit = frame.displayedUnit
 	if ( event == "PLAYER_ENTERING_WORLD" ) then
 		local nameChannel = UnitChannelInfo(unit);
@@ -80,6 +80,10 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		else
 		    frame.CastBar:Hide()
 		end
+	end
+
+	if ( event == "UNIT_SPELLCAST_SENT" ) then
+		frame.CastBar.curTarget = (arg2 and arg2 ~= "") and arg2 or nil
 	end
 
 	if ( arg1 ~= unit ) then
@@ -98,7 +102,13 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
-		frame.CastBar.Name:SetText(name)
+
+		if frame.CastBar.curTarget then
+			frame.CastBar.Name:SetText(name .. " > " .. frame.CastBar.curTarget)
+		else
+			frame.CastBar.Name:SetText(name)
+		end
+
 		frame.CastBar.value = (GetTime() - (startTime / 1000));
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);

@@ -939,6 +939,7 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
 			frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit, displayedUnit);
