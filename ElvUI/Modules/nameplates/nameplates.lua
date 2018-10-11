@@ -571,6 +571,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.namePlateUnitToken = nil
 	frame.unitFrame.StyleFilterWaitTime = nil
 	frame.unitFrame.CastBar.interruptedBy = nil
+	frame.unitFrame.CastBar.curTarget = nil
 
 	frame.unitFrame.plateID = nil
 	if frame.unitFrame.plateGUID then
