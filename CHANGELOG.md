@@ -13,6 +13,7 @@ Added Tooltip option to alway show the realm name. (#372)
 Added quick search for spells in filters. (#30)  
 Added "Display Interrupt Source" to NamePlate castbars.  
 Added "Display Target" to NamePlate castbars.  
+Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
 Added option to scale the Vehicle display. (#715)  
 
 
