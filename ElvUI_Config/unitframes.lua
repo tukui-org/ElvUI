@@ -2918,6 +2918,12 @@ E.Options.args.unitframe = {
 									type = 'color',
 									hasAlpha = true,
 								},
+								overhealabsorbs = {
+									order = 4,
+									name = L["Over Heal Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
 								maxOverflow = {
 									order = 6,
 									type = "range",

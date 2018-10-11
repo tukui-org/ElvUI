@@ -62,8 +62,9 @@ function UF:UpdateAuraWatchFromHeader(group, petOverride)
 	end
 end
 
+local buffs = {};
 function UF:UpdateAuraWatch(frame, petOverride, db)
-	local buffs = {};
+	wipe(buffs)
 	local auras = frame.AuraWatch;
 	db = db and db.buffIndicator or frame.db.buffIndicator
 

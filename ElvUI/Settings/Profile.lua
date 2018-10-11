@@ -18,6 +18,7 @@ P['general'] = {
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
+	['vehicleSeatIndicatorSize'] = 128,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
 	['decimalLength'] = 1,
@@ -346,6 +347,7 @@ P['nameplates'] = {
 		['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 		['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 		['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+		['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 	},
 	['threat'] = {
 		['goodColor'] = {r = 75/255,  g = 175/255, b = 76/255},
@@ -1117,6 +1119,7 @@ P['unitframe'] = {
 			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 			['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+			['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 			['maxOverflow'] = 0,
 		},
 		['classResources'] = {

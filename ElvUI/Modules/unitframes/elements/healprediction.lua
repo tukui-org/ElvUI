@@ -47,8 +47,6 @@ function UF:Construct_HealComm(frame)
 end
 
 function UF:Configure_HealComm(frame)
-	if frame.db and frame.db.healPrediction and type(frame.db.healPrediction) == "boolean" then frame.db.healPrediction = nil end -- Hopefully I did this correctly?
-
 	if (frame.db.healPrediction and frame.db.healPrediction.enable) then
 		local healPrediction = frame.HealthPrediction
 		local myBar = healPrediction.myBar
@@ -123,7 +121,7 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:ClearAllPoints()
 					healPrediction.overAbsorb:Point("TOP")
 					healPrediction.overAbsorb:Point("BOTTOM")
-					healPrediction.overAbsorb:Point(p1, frame.Health, p2)
+					healPrediction.overAbsorb:Point(p2, frame.Health, p2)
 					healPrediction.overAbsorb:Size(4, 0)
 				end
 

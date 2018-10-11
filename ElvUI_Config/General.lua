@@ -208,8 +208,16 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
-				decimalLength = {
+				vehicleSeatIndicatorSize = {
 					order = 25,
+					type = "range",
+					name = L["Vehicle Seat Indicator Size"],
+					min = 64, max = 128, step = 4,
+					get = function(info) return E.db.general.vehicleSeatIndicatorSize end,
+					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
+				},
+				decimalLength = {
+					order = 26,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -218,7 +226,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 26,
+					order = 27,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -231,7 +239,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 27,
+					order = 28,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
