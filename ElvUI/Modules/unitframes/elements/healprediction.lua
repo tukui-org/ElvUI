@@ -46,7 +46,7 @@ function UF:Configure_HealComm(frame)
 
 	if frame.db and frame.db.healPrediction and type(frame.db.healPrediction) == "boolean" then frame.db.healPrediction = nil end -- Hopefully I did this correctly?
 
-	if frame.db.healPrediction.enable then
+	if (frame.db.healPrediction and frame.db.healPrediction.enable) then
 		if not frame:IsElementEnabled('HealthPrediction') then
 			frame:EnableElement('HealthPrediction')
 		end
