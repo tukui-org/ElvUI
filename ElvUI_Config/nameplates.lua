@@ -1993,14 +1993,20 @@ local function GetUnitSettings(unit, name)
 						name = L["Hide Time"],
 						type = "toggle",
 					},
-					height = {
+					displayTarget = {
 						order = 4,
+						type = 'toggle',
+						name = L["Display Target"],
+						desc = L["Display the target of your current cast. Useful for mouseover casts."],
+					},
+					height = {
+						order = 5,
 						name = L["Height"],
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
 					castTimeFormat = {
-						order = 5,
+						order = 6,
 						type = "select",
 						name = L["Cast Time Format"],
 						values = {
@@ -2010,7 +2016,7 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					channelTimeFormat = {
-						order = 6,
+						order = 7,
 						type = "select",
 						name = L["Channel Time Format"],
 						values = {
@@ -2020,14 +2026,14 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					timeToHold = {
-						order = 7,
+						order = 8,
 						type = "range",
 						name = L["Time To Hold"],
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
 					iconPosition = {
-						order = 8,
+						order = 9,
 						type = "select",
 						name = L["Icon Position"],
 						values = {

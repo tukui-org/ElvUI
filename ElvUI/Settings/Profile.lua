@@ -417,6 +417,7 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
