@@ -322,7 +322,7 @@ function UF:PostCastStart(unit, name)
 	if unit == "vehicle" then unit = "player" end
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(name..' --> '..self.curTarget)
+		self.Text:SetText(name..' > '..self.curTarget)
 	else
 		self.Text:SetText(name)
 	end

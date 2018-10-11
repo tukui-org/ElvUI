@@ -53,6 +53,11 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 		end
 	elseif (self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
+
+		if self.interruptedBy and self.Name and (self.Name:GetText() == INTERRUPTED) then
+			self.Name:SetText(INTERRUPTED .. " > " .. self.interruptedBy)
+			self.interruptedBy = nil
+		end
 	else
 		self:Hide()
 	end
@@ -135,11 +140,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar.Spark:Hide();
 			end
 
-			if ( event == "UNIT_SPELLCAST_FAILED" ) then
+			if event == "UNIT_SPELLCAST_FAILED" then
 				frame.CastBar.Name:SetText(FAILED);
 			else
 				frame.CastBar.Name:SetText(INTERRUPTED);
 			end
+
 			frame.CastBar.casting = nil;
 			frame.CastBar.channeling = nil;
 			frame.CastBar.canInterrupt = nil
