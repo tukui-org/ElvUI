@@ -181,11 +181,12 @@ function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, h
 				local damage = UnitGetTotalAbsorbs(unit) or 0
 				local healing = UnitGetTotalHealAbsorbs(unit) or 0
 				local maxHealth = UnitHealthMax(unit)
+				local frameSize = orientation == 'VERTICAL' and frame.Health:GetHeight() or frame.Health:GetWidth()
 
 				if ((damage - healing) >= maxHealth) then
-					size = frame.Health:GetSize()
+					size = frameSize
 				else
-					size = ((damage - healing) / maxHealth) * 100
+					size = (((damage - healing) / maxHealth) * frameSize)
 				end
 			end
 
