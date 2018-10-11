@@ -679,6 +679,10 @@ Used to create a single unit frame and apply the currently active style to it.
 * unit         - the frame's unit (string)
 * overrideName - unique global name to use for the unit frame. Defaults to an auto-generated name based on the unit
                  (string?)
+
+oUF implements some of its own attributes. These can be supplied by the layout, but are optional.
+
+* oUF-enableArenaPrep - can be used to toggle arena prep support (boolean, enabled by default)
 --]]
 function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideTemplate
 	argcheck(unit, 2, 'string')
