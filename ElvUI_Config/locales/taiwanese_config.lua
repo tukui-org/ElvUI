@@ -1234,6 +1234,7 @@ L["Set the priority order of the spell, please note that prioritys are only used
 L["Set the type of auras to show when a unit is a foe."] = "當單位是敵對時設定光環顯示的類型."
 L["Set the type of auras to show when a unit is friendly."] = "當單位是友好時設定光環顯示的類型."
 L["Sets the font instance's horizontal text alignment style."] = "設定橫向字體的對齊方式."
+L["Show Absorb Amount"] = true
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "在單位框架中顯示即將回复的的預測治療量, 過量治療則以不同顏色顯示. "
 L["Show Aura From Other Players"] = "顯示其他玩家的光環"
 L["Show Auras"] = "顯示光環"
@@ -1241,6 +1242,7 @@ L["Show Dispellable Debuffs"] = "顯示無法驅散的debuff"
 L["Show For DPS"] = "為輸出顯示"
 L["Show For Healers"] = "為治療顯示"
 L["Show For Tanks"] = "為坦克顯示"
+L["Show Over Absorbs"] = true
 L["Show When Not Active"] = "顯示當前無效的光環"
 L["Size and Positions"] = "大小和位置"
 L["Size of the indicator icon."] = "提示圖示尺寸"
