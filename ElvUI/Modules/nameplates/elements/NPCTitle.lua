@@ -24,7 +24,7 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()
 
-		local title = ElvUI_NPCTitleTextLeft2:GetText();
+		local title = GetCVarBool('colorblindmode') and ElvUI_NPCTitleTextLeft3:GetText() or ElvUI_NPCTitleTextLeft2:GetText();
 		tooltip:Hide()
 
 		if not title or title:find('^Level ') then return end
