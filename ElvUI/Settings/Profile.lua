@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 P.gridSize = 64
 
@@ -345,6 +345,7 @@ P['nameplates'] = {
 		['others'] = {r = 0, g = 1, b = 0, a = 0.25},
 		['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 		['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+		['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 	},
 	['threat'] = {
 		['goodColor'] = {r = 75/255,  g = 175/255, b = 76/255},
@@ -1112,6 +1113,7 @@ P['unitframe'] = {
 			['others'] = {r = 0, g = 1, b = 0, a = 0.25},
 			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+			['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['maxOverflow'] = 0,
 		},
 		['classResources'] = {
@@ -1167,7 +1169,11 @@ P['unitframe'] = {
 			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['threatStyle'] = 'GLOW',
 			['smartAuraPosition'] = 'DISABLED',
 			['colorOverride'] = 'USE_DEFAULT',
@@ -1373,7 +1379,11 @@ P['unitframe'] = {
 			['smartAuraPosition'] = 'DISABLED',
 			['colorOverride'] = 'USE_DEFAULT',
 			['rangeCheck'] = true,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['middleClickFocus'] = true,
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = true,
@@ -1710,7 +1720,11 @@ P['unitframe'] = {
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 190,
 			['height'] = 36,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = false,
 			['health'] = {
@@ -1930,7 +1944,11 @@ P['unitframe'] = {
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 130,
 			['height'] = 36,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = true,
 			['health'] = {
@@ -2235,7 +2253,11 @@ P['unitframe'] = {
 			['width'] = 246,
 			['height'] = 47,
 			['pvpSpecIcon'] = true,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = false,
@@ -2357,7 +2379,11 @@ P['unitframe'] = {
 			['invertGroupingOrder'] = false,
 			['startFromCenter'] = false,
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 184,
 			['height'] = 54,
@@ -2579,7 +2605,11 @@ P['unitframe'] = {
 			['groupBy'] = 'GROUP',
 			['sortDir'] = 'ASC',
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 44,
@@ -2755,7 +2785,11 @@ P['unitframe'] = {
 			['groupBy'] = 'GROUP',
 			['sortDir'] = 'ASC',
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 27,
@@ -2933,7 +2967,11 @@ P['unitframe'] = {
 			['raidWideSorting'] = true,
 			['invertGroupingOrder'] = false,
 			['startFromCenter'] = false,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 30,
