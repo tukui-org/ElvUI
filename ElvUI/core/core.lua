@@ -1481,7 +1481,8 @@ function E:DBConversions()
 	for unit in pairs(healPredictionUnits) do
 		if type(E.db.unitframe.units[unit].healPrediction) ~= "table" then
 			local enabled = E.db.unitframe.units[unit].healPrediction
-			E.db.unitframe.units[unit].healPrediction = {["enable"] = enabled, ["showOverAbsorbs"] = true, ["showAbsorbAmount"] = false}
+			E.db.unitframe.units[unit].healPrediction = nil
+			E.db.unitframe.units[unit].healPrediction.enable = enabled
 		end
 	end
 end
