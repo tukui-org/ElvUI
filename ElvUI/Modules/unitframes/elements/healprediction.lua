@@ -4,18 +4,16 @@ local UF = E:GetModule('UnitFrames');
 --Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
-local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 
 function UF:Construct_HealComm(frame)
-	local mhpb = CreateFrame('StatusBar', nil, frame.Health)
-	mhpb:SetStatusBarTexture(E["media"].blankTex)
-	mhpb:Hide()
+	local myBar = CreateFrame('StatusBar', nil, frame.Health)
+	myBar:SetStatusBarTexture(E["media"].blankTex)
+	myBar:Hide()
 
-	local ohpb = CreateFrame('StatusBar', nil, frame.Health)
-	ohpb:SetStatusBarTexture(E["media"].blankTex)
-	ohpb:Hide()
+	local otherBar = CreateFrame('StatusBar', nil, frame.Health)
+	otherBar:SetStatusBarTexture(E["media"].blankTex)
+	otherBar:Hide()
 
 	local absorbBar = CreateFrame('StatusBar', nil, frame.Health)
 	absorbBar:SetStatusBarTexture(E["media"].blankTex)
@@ -34,8 +32,8 @@ function UF:Construct_HealComm(frame)
 	overHealAbsorb:Hide()
 
 	return {
-		myBar = mhpb,
-		otherBar = ohpb,
+		myBar = myBar,
+		otherBar = otherBar,
 		absorbBar = absorbBar,
 		healAbsorbBar = healAbsorbBar,
 		maxOverflow = 1,
@@ -73,13 +71,14 @@ function UF:Configure_HealComm(frame)
 		 if frame.db.health then
 			local orientation = frame.db.health.orientation or frame.Health:GetOrientation()
 			local reverseFill = not not frame.db.health.reverseFill
+			local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount
 
 			myBar:SetOrientation(orientation)
 			otherBar:SetOrientation(orientation)
 			absorbBar:SetOrientation(orientation)
 			healAbsorbBar:SetOrientation(orientation)
 
-			if frame.db.healPrediction.showOverAbsorbs and not frame.db.healPrediction.showAbsorbAmount then
+			if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
 				healPrediction.overAbsorb = healPrediction.overAbsorb_
 			else
 				if healPrediction.overAbsorb then
@@ -108,7 +107,13 @@ function UF:Configure_HealComm(frame)
 				absorbBar:ClearAllPoints()
 				absorbBar:Point("TOP")
 				absorbBar:Point("BOTTOM")
-				absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
+
+				if showAbsorbAmount then
+					healAbsorbBar:Point(p2, frame.Health, p2)
+				else
+					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
+				end
+
 				absorbBar:Size(width, 0)
 
 				healAbsorbBar:ClearAllPoints()
@@ -121,7 +126,7 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:ClearAllPoints()
 					healPrediction.overAbsorb:Point("TOP")
 					healPrediction.overAbsorb:Point("BOTTOM")
-					healPrediction.overAbsorb:Point(p2, frame.Health, p2)
+					healPrediction.overAbsorb:Point(p1, frame.Health, p2)
 					healPrediction.overAbsorb:Size(4, 0)
 				end
 
@@ -150,7 +155,13 @@ function UF:Configure_HealComm(frame)
 				absorbBar:ClearAllPoints()
 				absorbBar:Point("LEFT")
 				absorbBar:Point("RIGHT")
-				absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
+
+				if showAbsorbAmount then
+					healAbsorbBar:Point(p2, frame.Health, p2)
+				else
+					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
+				end
+
 				absorbBar:Size(0, height)
 
 				healAbsorbBar:ClearAllPoints()
@@ -176,7 +187,7 @@ function UF:Configure_HealComm(frame)
 
 			myBar:SetReverseFill(reverseFill)
 			otherBar:SetReverseFill(reverseFill)
-			absorbBar:SetReverseFill(reverseFill)
+			absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill or reverseFill)
 			healAbsorbBar:SetReverseFill(not reverseFill)
 		end
 
@@ -201,38 +212,11 @@ function UF:Configure_HealComm(frame)
 	end
 end
 
-function UF:UpdateHealComm(unit, _, _, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
+function UF:UpdateHealComm(unit, _, _, _, _, hasOverAbsorb)
 	local frame = self.parent
-	if frame.db then
-		if frame.db.healPrediction.showOverAbsorbs and frame.db.healPrediction.showAbsorbAmount then
-			if hasOverAbsorb then
-				self.absorbBar:SetValue(UnitGetTotalAbsorbs(unit))
-
-				-- this one takes maxOverflow into account, however, if it's 1, the bar's value will be 0, so there's no
-				-- need to do anything about it
-				-- if self.maxOverflow > 1 then
-				-- 	self.absorbBar:SetValue(math.min(UnitGetTotalAbsorbs(unit), absorb + UnitHealthMax(unit) * (self.maxOverflow - 1)))
-				-- end
-			end
-
-			if hasOverHealAbsorb then
-				local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
-				local fullHealAbsorb = UnitGetTotalHealAbsorbs(unit)
-
-				if fullHealAbsorb > allIncomingHeal then
-					fullHealAbsorb = fullHealAbsorb - allIncomingHeal
-				else
-					fullHealAbsorb = 0
-				end
-
-				self.healAbsorbBar:SetValue(fullHealAbsorb)
-
-				-- this one takes maxOverflow into account, however, if it's 1, the bar's value will be 0, so there's no
-				-- need to do anything about it
-				-- if self.maxOverflow > 1 then
-				-- 	self.healAbsorbBar:SetValue(math.min(fullHealAbsorb, healAbsorb + UnitHealthMax(unit) * (self.maxOverflow - 1)))
-				-- end
-			end
+	if frame.db and frame.db.healPrediction and frame.db.healPrediction.showOverAbsorbs and frame.db.healPrediction.showAbsorbAmount then
+		if hasOverAbsorb then
+			self.absorbBar:SetValue(UnitGetTotalAbsorbs(unit))
 		end
 	end
 end
