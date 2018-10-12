@@ -145,7 +145,6 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)

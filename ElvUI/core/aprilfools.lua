@@ -26,7 +26,6 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame
 -- GLOBALS: HelloKittyLeft, HelloKittyRight
 
-
 --Harlem Shake (Activate with command: /harlemshake)
 --People really seemed to like this one. We got a lot of positive responses.
 do

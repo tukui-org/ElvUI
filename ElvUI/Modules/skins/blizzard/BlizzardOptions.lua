@@ -843,7 +843,6 @@ local function LoadSkin()
 	MacOptionsITunesRemote:StripTextures()
 	MacOptionsFrameMisc:StripTextures()
 
-
 	S:HandleDropDownBox(MacOptionsFrameResolutionDropDown)
 	S:HandleDropDownBox(MacOptionsFrameFramerateDropDown)
 	S:HandleDropDownBox(MacOptionsFrameCodecDropDown)

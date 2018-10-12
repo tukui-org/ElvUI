@@ -149,7 +149,6 @@ local eventHandlers = {
 	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
 
-
 local function OnEvent(self, event, ...)
 	lastPanel = self
 

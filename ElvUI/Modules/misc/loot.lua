@@ -255,7 +255,6 @@ function M:LOOT_OPENED(_, autoloot)
 			end
 			w = max(w, slot.name:GetStringWidth())
 
-
 			local questTexture = slot.questTexture
 			if ( questId and not isActive ) then
 				questTexture:Show()

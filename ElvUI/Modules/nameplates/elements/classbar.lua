@@ -58,7 +58,6 @@ function mod:UpdateElement_ClassBar(frame, event, unit ...)
 
 	local element = self.ClassPower
 
-
 	local cur, max, mod, oldMax
 	if(unit == 'vehicle') then
 		-- BUG: UnitPower always returns 0 combo points for vehicles
@@ -182,7 +181,6 @@ function mod:ClassBar_Disable()
 	self:UpdateElement_ClassBar()
 end
 
-
 function mod:ConfigureElement_ClassBar(frame)
 	local classBar = frame.ClassBar
 
@@ -211,7 +209,6 @@ function mod:ConstructElement_CastBar(parent)
 	self:StyleFrame(frame)
 
 	self.ClassPower = frame
-
 
 	frame:Hide()
 

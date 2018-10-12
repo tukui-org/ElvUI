@@ -303,7 +303,6 @@ function AB:CreateBarPet()
 		end
 	end);
 
-
 	PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
@@ -323,7 +322,6 @@ function AB:CreateBarPet()
 	self:RegisterEvent('UNIT_AURA', 'UpdatePet');
 	self:RegisterEvent('PLAYER_FARSIGHT_FOCUS_CHANGED', 'UpdatePet');
 	self:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns);
-
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
 	self:PositionAndSizeBarPet();

@@ -191,7 +191,6 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
 	local _, instanceType = IsInInstance()

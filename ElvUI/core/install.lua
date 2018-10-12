@@ -382,7 +382,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
 
-
 			E.db.unitframe.units.raid40.height = 30
 			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
 
@@ -575,7 +574,6 @@ function E:SetupLayout(layout, noDataReset)
 
 	E:UpdateAll(true)
 end
-
 
 local function SetupAuras(style)
 	local UF = E:GetModule('UnitFrames')

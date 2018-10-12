@@ -64,7 +64,6 @@ local function SetTip(frame)
 	GameTooltip:Show()
 end
 
-
 local function SetItemTip(frame)
 	if not frame.link then return end
 	GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT")
@@ -73,12 +72,10 @@ local function SetItemTip(frame)
 	if IsModifiedClick("DRESSUP") then ShowInspectCursor() else ResetCursor() end
 end
 
-
 local function ItemOnUpdate(self)
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 	CursorOnUpdate(self)
 end
-
 
 local function LootClick(frame)
 	if IsControlKeyDown() then DressUpItemLink(frame.link)

@@ -220,7 +220,6 @@ function mod:UpdateElement_HealPrediction(frame)
 end
 
 
-
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
@@ -287,7 +286,6 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-
 
 	if (not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()

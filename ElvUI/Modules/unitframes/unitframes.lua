@@ -34,7 +34,6 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 -- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
 -- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles, PartyMemberBackground
 
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -233,7 +232,6 @@ function UF:ConvertGroupDB(group)
 		db.growthDirection = "DOWN_RIGHT"
 	end
 end
-
 
 
 function UF:Construct_UF(frame, unit)

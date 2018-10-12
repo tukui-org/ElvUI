@@ -539,7 +539,6 @@ E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
-
 function E:CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
 	if type(tree) == 'number' then

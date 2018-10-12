@@ -393,7 +393,6 @@ function mod:StyleFrame(frame, useMainFrame)
 	parent:CreateBackdrop("Transparent")
 end
 
-
 function mod:DISPLAY_SIZE_CHANGED()
 	self.mult = E.mult --[[* UIParent:GetScale()]]
 end

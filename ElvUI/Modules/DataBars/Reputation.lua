@@ -173,7 +173,6 @@ function mod:EnableDisable_ReputationBar()
 	end
 end
 
-
 function mod:LoadReputationBar()
 	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)

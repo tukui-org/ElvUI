@@ -356,7 +356,6 @@ E.TimeFormats = {
 	[6] = { '%d:%02d', '%d:%02d' }, --hhmm
 }
 
-
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
 local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
