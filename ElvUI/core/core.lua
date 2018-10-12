@@ -1478,10 +1478,10 @@ function E:DBConversions()
 
 	--Heal Prediction is now a table instead of a bool
 	local healPredictionUnits = {"player","target","focus","pet","arena","party","raid","raid40","raidpet"}
-	for unit in pairs(healPredictionUnits) do
+	for _, unit in pairs(healPredictionUnits) do
 		if type(E.db.unitframe.units[unit].healPrediction) ~= "table" then
 			local enabled = E.db.unitframe.units[unit].healPrediction
-			E.db.unitframe.units[unit].healPrediction = nil
+			E.db.unitframe.units[unit].healPrediction = {}
 			E.db.unitframe.units[unit].healPrediction.enable = enabled
 		end
 	end
