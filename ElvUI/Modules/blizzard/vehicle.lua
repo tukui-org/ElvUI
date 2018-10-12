@@ -3,9 +3,10 @@ local B = E:GetModule('Blizzard');
 
 --No point caching anything here, but list them here for mikk's FindGlobals script
 -- GLOBALS: VehicleSeatIndicator, VehicleSeatIndicator_SetUpVehicle
--- GLOBALS: GetVehicleUIIndicatorSeat, GetVehicleUIIndicator
 -- GLOBALS: MinimapCluster, VehicleSeatMover
 
+local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
+local GetVehicleUIIndicator = GetVehicleUIIndicator
 local hooksecurefunc = hooksecurefunc
 local _G = _G
 
