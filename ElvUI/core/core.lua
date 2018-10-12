@@ -1462,11 +1462,17 @@ function E:DBConversions()
 		E.db.nameplates.durationFontSize = nil
 		E.db.nameplates.durationFontOutline = nil
 	end
-	
+
 	if not E.db.chat.panelColorConverted then
 		local color = E.db.general.backdropfadecolor
 		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
 		E.db.chat.panelColorConverted = true
+	end
+
+	--Vendor Greys option is now in bags table
+	if E.db.general.vendorGrays then
+		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
+		E.db.general.vendorGrays = nil
 	end
 end
 
