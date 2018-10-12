@@ -1473,6 +1473,7 @@ function E:DBConversions()
 	if E.db.general.vendorGrays then
 		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
 		E.db.general.vendorGrays = nil
+		E.db.general.vendorGraysDetails = nil
 	end
 
 	--Heal Prediction is now a table instead of a bool
