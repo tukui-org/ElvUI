@@ -231,17 +231,9 @@ local function LoadSkin()
 	QuestNPCModelTextFrame:StripTextures()
 	QuestNPCModelTextFrame:CreateBackdrop("Default")
 	QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
-	--QuestLogDetailFrame:StripTextures()
-	--QuestLogDetailFrame:SetTemplate("Transparent")
-	--QuestLogDetailScrollFrame:StripTextures()
-	--S:HandleCloseButton(QuestLogDetailFrameCloseButton)
-
-	--hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
-		--QuestNPCModel:ClearAllPoints();
-		--QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
-	--end)
 
 	QuestLogPopupDetailFrame:StripTextures()
+	QuestLogPopupDetailFrame.NineSlice:Hide()
 	QuestLogPopupDetailFrameInset:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrameAbandonButton)
 	S:HandleButton(QuestLogPopupDetailFrameShareButton)

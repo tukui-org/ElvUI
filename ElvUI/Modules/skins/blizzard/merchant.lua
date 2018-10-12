@@ -25,6 +25,7 @@ local function LoadSkin()
 	end
 
 	MerchantExtraCurrencyInset:StripTextures()
+	MerchantExtraCurrencyInset.NineSlice:Hide()
 	MerchantExtraCurrencyBg:StripTextures()
 	MerchantFrameInset:StripTextures()
 	MerchantMoneyBg:StripTextures()
