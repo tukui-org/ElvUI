@@ -1474,6 +1474,15 @@ function E:DBConversions()
 		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
 		E.db.general.vendorGrays = nil
 	end
+
+	--Heal Prediction is now a table instead of a bool
+	local healPredictionUnits = {"player","target","focus","pet","arena","party","raid","raid40","raidpet"}
+	for unit in pairs(healPredictionUnits) do
+		if type(E.db.unitframe.units[unit].healPrediction) ~= "table" then
+			local enabled = E.db.unitframe.units[unit].healPrediction
+			E.db.unitframe.units[unit].healPrediction = {["enable"] = enabled, ["showOverAbsorbs"] = true, ["showAbsorbAmount"] = false}
+		end
+	end
 end
 
 local CPU_USAGE = {}
