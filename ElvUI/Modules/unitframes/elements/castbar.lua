@@ -240,6 +240,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.max, self.delay))
 		end
 	else
 		if db.castbar.format == 'CURRENT' then
@@ -248,6 +250,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), "+", self.delay))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), self.max, "+", self.delay))
 		end
 	end
 end
