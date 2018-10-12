@@ -109,7 +109,7 @@ function UF:Configure_HealComm(frame)
 				absorbBar:Point("BOTTOM")
 
 				if showAbsorbAmount then
-					healAbsorbBar:Point(p2, frame.Health, p2)
+					absorbBar:Point(p2, frame.Health, p2)
 				else
 					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
 				end
@@ -157,7 +157,7 @@ function UF:Configure_HealComm(frame)
 				absorbBar:Point("RIGHT")
 
 				if showAbsorbAmount then
-					healAbsorbBar:Point(p2, frame.Health, p2)
+					absorbBar:Point(p2, frame.Health, p2)
 				else
 					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
 				end
