@@ -4,7 +4,10 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
+local _G = _G
+local format = format
 --WoW API / Variables
+local GetCVarBool = GetCVarBool
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
@@ -24,7 +27,7 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()
 
-		local title = GetCVarBool('colorblindmode') and ElvUI_NPCTitleTextLeft3:GetText() or ElvUI_NPCTitleTextLeft2:GetText();
+		local title = _G[format('ElvUI_NPCTitleTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 		tooltip:Hide()
 
 		if not title or title:find('^Level ') then return end
