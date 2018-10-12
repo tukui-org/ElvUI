@@ -418,7 +418,6 @@ E.PopupDialogs["HELLO_KITTY_END"] = {
 	whileDead = 1,
 }
 
-
 E.PopupDialogs["DISBAND_RAID"] = {
 	text = L["Are you sure you want to disband the group?"],
 	button1 = ACCEPT,

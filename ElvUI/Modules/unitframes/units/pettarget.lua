@@ -12,7 +12,6 @@ local tinsert = table.insert
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Pet
 
-
 function UF:Construct_PetTargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 

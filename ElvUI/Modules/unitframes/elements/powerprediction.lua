@@ -6,31 +6,24 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_PowerPrediction(frame)
-	local PowerPrediction = {}
-
 	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
 	mainBar:SetReverseFill(true)
-	mainBar:SetPoint('TOP')
-	mainBar:SetPoint('BOTTOM')
-	mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
-	mainBar:SetWidth(200)
 	mainBar:SetStatusBarTexture(E["media"].blankTex)
 	mainBar:Hide()
 
-	PowerPrediction.mainBar = mainBar
+	local PowerPrediction = {
+		mainBar = mainBar,
+		parent = frame
+	}
 
-	local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
-	altBar:SetReverseFill(true)
-	altBar:SetPoint('TOP')
-	altBar:SetPoint('BOTTOM')
-	altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
-	altBar:SetWidth(200)
-	altBar:SetStatusBarTexture(E["media"].blankTex)
-	altBar:Hide()
+	if frame.AdditionalPower then
+		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
+		altBar:SetReverseFill(true)
+		altBar:SetStatusBarTexture(E["media"].blankTex)
+		altBar:Hide()
 
-	PowerPrediction.altBar = altBar
-
-	PowerPrediction.parent = frame
+		PowerPrediction.altBar = altBar
+	end
 
 	return PowerPrediction
 end
@@ -44,8 +37,24 @@ function UF:Configure_PowerPrediction(frame)
 			frame:EnableElement('PowerPrediction')
 		end
 
-		powerPrediction.mainBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
-		powerPrediction.altBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
+		local reverseFill = not not frame.db.power.reverseFill
+
+		mainBar:SetPoint('TOP')
+		mainBar:SetPoint('BOTTOM')
+		mainBar:SetWidth(200)
+		mainBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+
+		mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
+
+		if altBar then
+			altBar:SetPoint('TOP')
+			altBar:SetPoint('BOTTOM')
+			altBar:SetWidth(200)
+			altBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+
+			altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+		end
 	else
 		if frame:IsElementEnabled('PowerPrediction') then
 			frame:DisableElement('PowerPrediction')

@@ -23,6 +23,7 @@ Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)
 Fixed Raidmarker spacing. (#791)  
 Fixed issue which would sometimes keep Player UnitFrame out of range.  
 Fixed error with UnitFrame Tags when enter Arena. (#821)  
+Fixed issue which would show a NPC Reputation instead of NPC Title on NamePlates when Colorblind mode was enabled. (#826)  
 
 
 **Misc. Changes:**  

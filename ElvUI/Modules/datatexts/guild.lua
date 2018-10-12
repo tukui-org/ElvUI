@@ -106,7 +106,6 @@ local function BuildGuildTable()
 	end
 end
 
-
 local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
@@ -148,7 +147,6 @@ local eventHandlers = {
 	["ELVUI_FORCE_RUN"] = E.noop,
 	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
-
 
 local function OnEvent(self, event, ...)
 	lastPanel = self

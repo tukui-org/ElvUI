@@ -378,7 +378,6 @@ function AB:CreateBar(id)
 		bar:SetAttribute("hasTempBar", false)
 	end
 
-
 	bar:SetAttribute("_onstate-page", [[
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 			newstate = GetTempShapeshiftBarIndex() or newstate

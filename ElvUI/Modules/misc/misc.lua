@@ -191,7 +191,6 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
 	local _, instanceType = IsInInstance()
@@ -289,9 +288,6 @@ function M:PLAYER_ENTERING_WORLD()
 end
 
 function M:Initialize()
-	--DB conversion
-	if E.db.general.vendorGrays then E.db.bags.vendorGrays.enable = E.db.general.vendorGrays end
-
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()

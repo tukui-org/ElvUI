@@ -59,6 +59,7 @@ local SetBagSlotFlag = SetBagSlotFlag
 local SetBankBagSlotFlag = SetBankBagSlotFlag
 local GetBagSlotFlag = GetBagSlotFlag
 local GetBankBagSlotFlag = GetBankBagSlotFlag
+local CreateAnimationGroup = CreateAnimationGroup
 local UseContainerItem = UseContainerItem
 local ContainerIDToInventoryID = ContainerIDToInventoryID
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag

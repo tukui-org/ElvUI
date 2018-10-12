@@ -6,7 +6,6 @@ local UF = E:GetModule('UnitFrames');
 local pairs = pairs
 --WoW API / Variables
 
-
 function UF:Configure_CustomTexts(frame)
 	local db = frame.db
 

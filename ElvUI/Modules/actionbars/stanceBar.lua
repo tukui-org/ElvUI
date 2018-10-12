@@ -337,7 +337,6 @@ function AB:UpdateStanceBindings()
 	end
 end
 
-
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();

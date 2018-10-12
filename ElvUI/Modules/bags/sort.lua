@@ -196,7 +196,6 @@ local function DefaultSort(a, b)
 		end
 	end
 
-
 	local aOrder, bOrder = initialOrder[a], initialOrder[b]
 
 	if aID == bID then
@@ -213,7 +212,6 @@ local function DefaultSort(a, b)
 	local _, _, _, _, _, _, _, _, bEquipLoc, _, _, bItemClassId, bItemSubClassId = GetItemInfo(bID)
 
 	local aRarity, bRarity = bagQualities[a], bagQualities[b]
-
 
 	if bagPetIDs[a] then
 		aRarity = 1

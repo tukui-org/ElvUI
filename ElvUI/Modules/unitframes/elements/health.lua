@@ -145,7 +145,6 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
@@ -165,7 +164,7 @@ function UF:Configure_HealthBar(frame)
 	end
 
 	--Transparency Settings
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true, nil, (db.health and db.health.reverseFill))
 
 	--Highlight Texture
 	UF:Configure_HighlightGlow(frame)

@@ -539,7 +539,6 @@ E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
-
 function E:CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
 	if type(tree) == 'number' then
@@ -1463,11 +1462,28 @@ function E:DBConversions()
 		E.db.nameplates.durationFontSize = nil
 		E.db.nameplates.durationFontOutline = nil
 	end
-	
+
 	if not E.db.chat.panelColorConverted then
 		local color = E.db.general.backdropfadecolor
 		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
 		E.db.chat.panelColorConverted = true
+	end
+
+	--Vendor Greys option is now in bags table
+	if E.db.general.vendorGrays then
+		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
+		E.db.general.vendorGrays = nil
+		E.db.general.vendorGraysDetails = nil
+	end
+
+	--Heal Prediction is now a table instead of a bool
+	local healPredictionUnits = {"player","target","focus","pet","arena","party","raid","raid40","raidpet"}
+	for _, unit in pairs(healPredictionUnits) do
+		if type(E.db.unitframe.units[unit].healPrediction) ~= "table" then
+			local enabled = E.db.unitframe.units[unit].healPrediction
+			E.db.unitframe.units[unit].healPrediction = {}
+			E.db.unitframe.units[unit].healPrediction.enable = enabled
+		end
 	end
 end
 

@@ -4,12 +4,15 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
+local _G = _G
+local format = format
 --WoW API / Variables
+local GetCVarBool = GetCVarBool
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
-
+local LEVEL = LEVEL
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent, ElvUI_NPCTitleTextLeft2
 
@@ -24,10 +27,10 @@ function mod:UpdateElement_NPCTitle(frame, triggered)
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()
 
-		local title = ElvUI_NPCTitleTextLeft2:GetText();
+		local title = _G[format('ElvUI_NPCTitleTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 		tooltip:Hide()
 
-		if not title or title:find('^Level ') then return end
+		if not title or title:find('^'..LEVEL) then return end
 		frame.NPCTitle:SetText(title)
 
 		local r, g, b = 1, 1, 1

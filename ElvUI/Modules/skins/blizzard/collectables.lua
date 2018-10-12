@@ -154,7 +154,6 @@ local function LoadSkin()
 		petButton.backdrop:SetAllPoints()
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
-
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
 
@@ -259,7 +258,6 @@ local function LoadSkin()
 	progressBar:SetStatusBarTexture(E["media"].normTex)
 	progressBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(progressBar)
-
 
 	local function TextColorModified(self, r, g, b)
 		if(r == 0.33 and g == 0.27 and b == 0.2) then

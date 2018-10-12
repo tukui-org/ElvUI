@@ -247,13 +247,11 @@ function UF:HeaderConfig(header, configMode)
 
 				OnAttributeChanged(group)
 
-
 				group:Update()
 			else
 				for key in pairs(attributeBlacklist) do
 					group:SetAttribute(key, true)
 				end
-
 
 				UF:UnshowChildUnits(group, group:GetChildren())
 				group:SetAttribute('startingIndex', 1)

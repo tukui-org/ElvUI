@@ -263,7 +263,6 @@ function S:SkinAce3()
 			msgframe.msg:ClearAllPoints()
 			msgframe.msg:SetPoint("CENTER")
 
-
 		--[[elseif TYPE == "ColorPicker" then
 			local frame = widget.frame
 			local colorSwatch = widget.colorSwatch

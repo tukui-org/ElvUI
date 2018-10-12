@@ -204,7 +204,6 @@ local function LoadSkin()
 			UpdateBorderColors(button)
 		end
 
-
 		--[[if highlight and not highlight.skinned then
 			highlight:SetColorTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 			hooksecurefunc(highlight, "SetTexture", function(self, r, g, b, a)

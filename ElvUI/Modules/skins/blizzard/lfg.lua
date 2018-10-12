@@ -448,7 +448,6 @@ local function LoadSkin()
 	S:HandleScrollBar(LFDQueueFrameRandomScrollFrameScrollBar)
 	S:HandleScrollBar(ScenarioQueueFrameSpecificScrollFrameScrollBar)
 
-
 	--LFGListFrame
 	local LFGListFrame = _G["LFGListFrame"]
 	LFGListFrame.CategorySelection.Inset:StripTextures()

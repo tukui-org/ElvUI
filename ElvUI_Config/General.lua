@@ -1,6 +1,9 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule("Blizzard")
 
+local _G = _G
+local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
+
 local function GetChatWindowInfo()
 	local ChatTabInfo = {}
 	for i = 1, FCF_GetNumActiveChatFrames() do

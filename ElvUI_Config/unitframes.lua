@@ -810,6 +810,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					['CURRENTMAX'] = L["Current / Max"],
 					['CURRENT'] = L["Current"],
 					['REMAINING'] = L["Remaining"],
+					['REMAININGMAX'] = L["Remaining / Max"],
 				},
 			},
 			spark = {

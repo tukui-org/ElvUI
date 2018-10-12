@@ -410,7 +410,6 @@ local function LoadSkin(event)
 		_G[frame.."HeaderMiddle"]:Kill()
 	end
 
-
 	hooksecurefunc("AchievementButton_GetProgressBar", function(index)
 		local frame = _G["AchievementFrameProgressBar"..index]
 		if frame then

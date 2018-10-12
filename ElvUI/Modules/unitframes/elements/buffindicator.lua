@@ -5,7 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 --Cache global variables
 --Lua functions
 local assert, select, pairs, unpack = assert, select, pairs, unpack
-local tinsert = tinsert
+local tinsert, wipe = tinsert, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
