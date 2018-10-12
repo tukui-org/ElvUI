@@ -264,10 +264,11 @@ function UF:CustomTimeText(duration)
 		if db.castbar.format == 'CURRENT' then
 			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
 		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(duration))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 		end
 	else
 		if db.castbar.format == 'CURRENT' then
@@ -276,6 +277,8 @@ function UF:CustomTimeText(duration)
 			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
 		end
 	end
 end
