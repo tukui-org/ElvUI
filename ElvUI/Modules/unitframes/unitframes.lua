@@ -1252,7 +1252,7 @@ local function updateColor(self, r, g, b)
 	end
 end
 
-function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
 	statusBar.isTransparent = isTransparent
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
@@ -1275,9 +1275,15 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
 			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
 		else
-			backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			if reverseFill then
+				backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
+				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
+				backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
+			else
+				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
+				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			end
 		end
 
 		if invertBackdropTex then
@@ -1310,9 +1316,15 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 				backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
 				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
 			else
-				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+				if reverseFill then
+					backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
+					backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
+					backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
+				else
+					backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
+					backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+					backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+				end
 			end
 		end
 
