@@ -582,6 +582,7 @@ L["Thin Border Theme"] = "얇은 경계 테마"
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
 L["Unit Prefix Style"] = "단위 축약 방식"
+L["Vehicle Seat Indicator Size"] = true
 L["Vendor Gray Detailed Report"] = "자동판매시 목록 보기"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
 L["Replace Blizzard's Voice Overlay."] = "블리자드 음성 오버레이 대체"

@@ -535,6 +535,7 @@ L["Thin Border Theme"] = "細邊框主題"
 L["Toggle Tutorials"] = "教學開關"
 L["Top Panel"] = "頂部面板"
 L["Unit Prefix Style"] = "單位縮寫"
+L["Vehicle Seat Indicator Size"] = true
 L["Vendor Gray Detailed Report"] = "詳細報告灰色物品售賣"
 L["When you go AFK display the AFK screen."] = "當你離開時顯示AFK界面"
 L["Replace Blizzard's Voice Overlay."] = "替換暴雪語音介面"

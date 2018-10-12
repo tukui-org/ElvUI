@@ -535,6 +535,7 @@ L["Thin Border Theme"] = true
 L["Toggle Tutorials"] = "Mostrar/Ocultar Tutoriales"
 L["Top Panel"] = "Panel Superior"
 L["Unit Prefix Style"] = true
+L["Vehicle Seat Indicator Size"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = true
 L["Replace Blizzard's Voice Overlay."] = true

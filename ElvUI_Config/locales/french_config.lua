@@ -535,6 +535,7 @@ L["Thin Border Theme"] = "Thème aec bordures fines"
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"
 L["Unit Prefix Style"] = "Style des préfixes d'unités"
+L["Vehicle Seat Indicator Size"] = true
 L["Vendor Gray Detailed Report"] = true
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial."
 L["Replace Blizzard's Voice Overlay."] = true

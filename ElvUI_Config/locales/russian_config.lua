@@ -534,6 +534,7 @@ L["Thin Border Theme"] = "Тонкие границы"
 L["Toggle Tutorials"] = "Показать помощь"
 L["Top Panel"] = "Верхняя панель"
 L["Unit Prefix Style"] = "Стиль сокращений"
+L["Vehicle Seat Indicator Size"] = true
 L["Vendor Gray Detailed Report"] = "Подробности продажи"
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
 L["Replace Blizzard's Voice Overlay."] = "Заменить индикатор голоса Blizzard."
