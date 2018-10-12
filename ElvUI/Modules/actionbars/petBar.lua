@@ -57,7 +57,6 @@ function AB:UpdatePet(event, unit)
 			end);
 		end
 
-
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
 			--button:GetCheckedTexture():SetColorTexture(1, 1, 1)
 			button:SetChecked(true);

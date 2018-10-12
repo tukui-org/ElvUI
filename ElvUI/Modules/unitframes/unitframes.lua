@@ -233,7 +233,6 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
-
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)

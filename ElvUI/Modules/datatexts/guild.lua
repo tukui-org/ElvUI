@@ -106,7 +106,6 @@ local function BuildGuildTable()
 	end
 end
 
-
 local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
