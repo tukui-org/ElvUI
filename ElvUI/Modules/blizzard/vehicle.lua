@@ -2,7 +2,9 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 --No point caching anything here, but list them here for mikk's FindGlobals script
--- GLOBALS: VehicleSeatIndicator, MinimapCluster, VehicleSeatMover, VehicleSeatIndicator_SetUpVehicle
+-- GLOBALS: VehicleSeatIndicator, VehicleSeatIndicator_SetUpVehicle
+-- GLOBALS: MinimapCluster, VehicleSeatMover
+
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local hooksecurefunc = hooksecurefunc
