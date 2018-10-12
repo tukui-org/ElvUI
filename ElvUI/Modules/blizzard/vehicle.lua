@@ -20,12 +20,14 @@ end
 local function VehicleSetUp(vehicleID)
 	VehicleSeatIndicator:SetSize(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
 	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
-	for i = 1, numSeatIndicators do
-		local button = _G["VehicleSeatIndicatorButton"..i];
-		button:SetSize(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
-		local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i);
-		button:ClearAllPoints()
-		button:SetPoint("CENTER", button:GetParent(), "TOPLEFT", xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
+	if numSeatIndicators then
+		for i = 1, numSeatIndicators do
+			local button = _G["VehicleSeatIndicatorButton"..i];
+			button:SetSize(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
+			local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i);
+			button:ClearAllPoints()
+			button:SetPoint("CENTER", button:GetParent(), "TOPLEFT", xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
+		end
 	end
 end
 
