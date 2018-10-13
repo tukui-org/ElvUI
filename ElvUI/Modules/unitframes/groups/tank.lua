@@ -58,8 +58,6 @@ function UF:Update_TankHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 
-	header:SetAttribute("startingIndex", -1)
-	RegisterAttributeDriver(header, 'state-visibility', 'show')
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	header:SetAttribute("startingIndex", 1)
 
@@ -148,15 +146,7 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_HealthBar(frame)
 
 	--Name
-	do
-		local name = frame.Name
-		name:Point('CENTER', frame.Health, 'CENTER')
-		if UF.db.colors.healthclass then
-			frame:Tag(name, '[name:medium]')
-		else
-			frame:Tag(name, '[namecolor][name:medium]')
-		end
-	end
+	UF:UpdateNameSettings(frame)
 
 	--Threat
 	UF:Configure_Threat(frame)

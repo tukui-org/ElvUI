@@ -3136,6 +3136,13 @@ P['unitframe'] = {
 			['disableTargetGlow'] = false,
 			['disableDebuffHighlight'] = true,
 			['verticalSpacing'] = 7,
+			['name'] = {
+				['position'] = 'CENTER',
+				['text_format'] = '[namecolor][name:medium]',
+				['yOffset'] = 0,
+				['xOffset'] = 0,
+				['attachTextTo'] = 'Health',
+			},
 			['buffs'] = {
 				['enable'] = false,
 				['perrow'] = 6,
@@ -3207,6 +3214,13 @@ P['unitframe'] = {
 				['width'] = 120,
 				['height'] = 28,
 				['colorOverride'] = 'USE_DEFAULT',
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:medium]',
+					['yOffset'] = 0,
+					['xOffset'] = 0,
+					['attachTextTo'] = 'Health',
+				},
 			},
 		},
 		['assist'] = {
@@ -3221,6 +3235,13 @@ P['unitframe'] = {
 			['disableTargetGlow'] = false,
 			['disableDebuffHighlight'] = true,
 			['verticalSpacing'] = 7,
+			['name'] = {
+				['position'] = 'CENTER',
+				['text_format'] = '[namecolor][name:medium]',
+				['yOffset'] = 0,
+				['xOffset'] = 0,
+				['attachTextTo'] = 'Health',
+			},
 			['buffs'] = {
 				['enable'] = false,
 				['perrow'] = 6,
@@ -3292,6 +3313,13 @@ P['unitframe'] = {
 				['width'] = 120,
 				['height'] = 28,
 				['colorOverride'] = 'USE_DEFAULT',
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:medium]',
+					['yOffset'] = 0,
+					['xOffset'] = 0,
+					['attachTextTo'] = 'Frame',
+				},
 			},
 		},
 	},
