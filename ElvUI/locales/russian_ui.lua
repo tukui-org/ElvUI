@@ -45,6 +45,7 @@ L["Temporary Move"] = "Временное перемещение"
 L["Toggle Bags"] = "Показать сумки"
 L["Vendor Grays"] = "Продавать серые предметы"
 L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "АФК" --Also used in datatexts and tooltip

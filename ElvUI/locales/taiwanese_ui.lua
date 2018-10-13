@@ -45,6 +45,7 @@ L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/摧毁灰色物品"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "暫離" --Also used in datatexts and tooltip

@@ -45,6 +45,7 @@ L["Temporary Move"] = true
 L["Toggle Bags"] = true
 L["Vendor Grays"] = true
 L["Vendor / Delete Grays"] = true
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = true --Also used in datatexts

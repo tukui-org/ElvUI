@@ -45,6 +45,7 @@ L["Temporary Move"] = "Mover Temporariamente"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Vendor Grays"] = "Vender Itens Cinzentos"
 L["Vendor / Delete Grays"] = true
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "LDT"
