@@ -2228,7 +2228,7 @@ E.Options.args.unitframe = {
 							name = L["OOR Alpha"],
 							desc = L["The alpha to set units that are out of range to."],
 							type = 'range',
-							min = 0, max = 1, step = 0.01,
+							softMin = .1, min = 0, max = 1, step = 0.01,
 						},
 						debuffHighlighting = {
 							order = 3,
