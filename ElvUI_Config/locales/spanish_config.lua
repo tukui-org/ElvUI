@@ -190,6 +190,7 @@ L["Button Size (Bank)"] = "Tamaño de los Botones (Banco)"
 L["Clear Search On Close"] = true
 L["Condensed"] = true
 L["Currency Format"] = "Formato de Moneda"
+L["Custom Color"] = true
 L["Descending"] = "Descendente"
 L["Direction the bag sorting will use to allocate the items."] = "Dirección de ordenado que se usará para distribuir los objetos."
 L["Disable Bag Sort"] = true
@@ -199,6 +200,7 @@ L["Display the junk icon on all grey items that can be vendored."] = true
 L["Display the New Item Glow"] = true
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = true
 L["Displays item level on equippable items."] = true
+L["Enable Custom Color"] = true
 L["Enable/Disable the all-in-one bag."] = "Habilitar/Deshabilitar la bolsa todo en uno."
 L["Enable/Disable the Bag-Bar."] = "Activa/Desactiva la barra de las bolsas."
 L["Full"] = true
@@ -239,6 +241,14 @@ L["The spacing between buttons."] = "Separación entre los botones."
 L["Top to Bottom"] = "De Arriba hacia Abajo"
 L["Use coin icons instead of colored text."] = true
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
+
+--Bag Colors
+L["Enchanting"] = true
+L["Engineering"] = true
+L["Gems"] = true
+L["Herbalism"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Empieza una nueva fila o columna después de estas auras."

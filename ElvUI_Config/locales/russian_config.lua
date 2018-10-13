@@ -190,6 +190,7 @@ L["Button Size (Bank)"] = "Размер слотов банка"
 L["Clear Search On Close"] = "Сбрасывать поиск при закрытии"
 L["Condensed"] = "Через запятую"
 L["Currency Format"] = "Формат валюты"
+L["Custom Color"] = true
 L["Descending"] = "Нисходящее"
 L["Direction the bag sorting will use to allocate the items."] = "Направление расположения предметов при сортировке."
 L["Disable Bag Sort"] = "Отключить сортировку сумок"
@@ -198,6 +199,7 @@ L["Display Item Level"] = "Отображать уровень предмето�
 L["Display the junk icon on all grey items that can be vendored."] = "Показывать иконку монетки на серых предметах, которые можно продать."
 L["Display the New Item Glow"] = "Отображать свечение на новых предметах"
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "Отображать иконку на предметах, которые игра считает апгрейдом для персонажа."
+L["Enable Custom Color"] = true
 L["Enable/Disable the all-in-one bag."] = 'Включить/выключить режим сумки "все в одной". '
 L["Enable/Disable the Bag-Bar."] = "Включить/выключить панель сумок"
 L["Full"] = "Полный"
@@ -238,6 +240,14 @@ L["The spacing between buttons."] = "Расстояние между кнопк�
 L["Top to Bottom"] = "Сверху вниз"
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
+
+--Bag Colors
+L["Enchanting"] = true
+L["Engineering"] = true
+L["Gems"] = true
+L["Herbalism"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Начинать новый ряд/столбец после этого количества аур."

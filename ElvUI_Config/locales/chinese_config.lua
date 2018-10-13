@@ -188,6 +188,7 @@ L["Button Size (Bank)"] = "银行格子尺寸"
 L["Clear Search On Close"] = "关闭时清除搜索"
 L["Condensed"] = "紧凑"
 L["Currency Format"] = "货币格式"
+L["Custom Color"] = true
 L["Descending"] = "降序"
 L["Direction the bag sorting will use to allocate the items."] = "整理背包时物品排序方向"
 L["Disable Bag Sort"] = "禁用背包排序"
@@ -197,6 +198,7 @@ L["Display the junk icon on all grey items that can be vendored."] = "为所有�
 L["Display the New Item Glow"] = "显示新物品发光"
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "在WoW认为可以提升你角色的物品上显示升级图标"
 L["Displays item level on equippable items."] = "显示可装备物品的物品等级"
+L["Enable Custom Color"] = true
 L["Enable/Disable the all-in-one bag."] = "启用/禁用整合背包"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用背包条"
 L["Full"] = "满"
@@ -237,6 +239,14 @@ L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = "顶部到底部"
 L["Use coin icons instead of colored text."] = "显示硬币图标而不是颜色文字"
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
+
+--Bag Colors
+L["Enchanting"] = true
+L["Engineering"] = true
+L["Gems"] = true
+L["Herbalism"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "在这些光环旁开始新的行或列"

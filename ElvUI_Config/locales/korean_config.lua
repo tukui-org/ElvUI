@@ -236,6 +236,7 @@ L["Button Size (Bank)"] = "슬롯 크기 (은행)"
 L["Clear Search On Close"] = "닫으면 검색 칸 비우기"
 L["Condensed"] = "간략하게"
 L["Currency Format"] = "화폐 표시방법"
+L["Custom Color"] = true
 L["Descending"] = "내림차순"
 L["Direction the bag sorting will use to allocate the items."] = "정렬기능을 실행할 때 체크 시 아이템이 가방칸의 우측하단을, 체크 해제 시 좌측상단을 기준으로 모아서 정렬됩니다."
 L["Disable Bag Sort"] = "가방 정리 비활성"
@@ -245,6 +246,7 @@ L["Display the junk icon on all grey items that can be vendored."] = "판매 가
 L["Display the New Item Glow"] = true
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "게임내에서 캐릭터를 강화할 수 있는 것으로 판단되는 아이템에 강화 아이콘을 표시합니다."
 L["Displays item level on equippable items."] = "착용 가능한 아이템의 경우 아이템 슬롯에 템렙을 표시합니다."
+L["Enable Custom Color"] = true
 L["Enable/Disable the all-in-one bag."] = "통합가방 기능을 사용할지 여부를 결정합니다."
 L["Enable/Disable the Bag-Bar."] = "가방바를 사용할지 여부를 결정합니다."
 L["Full"] = "전체"
@@ -285,6 +287,14 @@ L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다.
 L["Top to Bottom"] = "위에서 아래로"
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
+
+--Bag Colors
+L["Enchanting"] = true
+L["Engineering"] = true
+L["Gems"] = true
+L["Herbalism"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "한 줄에 아이콘이 이 값보다 많으면 다음 줄에 배치합니다."

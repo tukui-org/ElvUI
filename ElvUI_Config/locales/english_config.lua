@@ -188,6 +188,7 @@ L["Button Size (Bank)"] = true
 L["Clear Search On Close"] = true
 L["Condensed"] = true
 L["Currency Format"] = true
+L["Custom Color"] = true
 L["Descending"] = true
 L["Direction the bag sorting will use to allocate the items."] = true
 L["Disable Bag Sort"] = true
@@ -197,6 +198,7 @@ L["Display the junk icon on all grey items that can be vendored."] = true
 L["Display the New Item Glow"] = true
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = true
 L["Displays item level on equippable items."] = true
+L["Enable Custom Color"] = true
 L["Enable/Disable the all-in-one bag."] = true
 L["Enable/Disable the Bag-Bar."] = true
 L["Full"] = true
@@ -237,6 +239,14 @@ L["The spacing between buttons."] = true
 L["Top to Bottom"] = true
 L["Use coin icons instead of colored text."] = true
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
+
+--Bag Colors
+L["Enchanting"] = true
+L["Engineering"] = true
+L["Gems"] = true
+L["Herbalism"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = true
