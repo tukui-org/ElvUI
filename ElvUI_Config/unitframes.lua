@@ -4693,6 +4693,7 @@ E.Options.args.unitframe.args.pet = {
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 
