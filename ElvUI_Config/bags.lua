@@ -332,6 +332,7 @@ E.Options.args.bags = {
 						local t = E.db.bags.colors.profession[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						B:UpdateBagColors('ProfessionColors', info[#info], r, g, b)
+						B:UpdateAllBagSlots()
 					end,
 					args = {
 						leatherworking = {
@@ -395,6 +396,7 @@ E.Options.args.bags = {
 						local t = E.db.bags.colors.assignment[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						B:UpdateBagColors('AssignmentColors', info[#info], r, g, b)
+						B:UpdateAllBagSlots()
 					end,
 					args = {
 						equipment = {
