@@ -1025,6 +1025,7 @@ P['datatexts'] = {
 --Tooltip
 P['tooltip'] = {
 	['cursorAnchor'] = false,
+	['cursorAnchorType'] = "ANCHOR_CURSOR",
 	['cursorAnchorX'] = 0,
 	['cursorAnchorY'] = 0,
 	['alwaysShowRealm'] = false,
