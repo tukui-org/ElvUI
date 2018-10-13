@@ -8,6 +8,8 @@ Added Debuff Highlighting on our Focus Frame.
 Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
 Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
 Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
+Added options to change the Item Level color in the Bags. (#764)  
+Added options to change the Profession Bags color. (#525)  
 Added Tooltip offsets while using anchor on mouse. (#204)  
 Added Tooltip option to alway show the realm name. (#372)  
 Added quick search for spells in filters. (#30)  
