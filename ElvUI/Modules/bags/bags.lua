@@ -2120,25 +2120,23 @@ function B:CreateSellFrame()
 	B.SellFrame:Hide()
 end
 
-function B:UpdateBagColors()
-	self.ProfessionColors = {
-		[0x0008]   = { self.db.colors.profession.leatherworking.r, self.db.colors.profession.leatherworking.g, self.db.colors.profession.leatherworking.b },
-		[0x0010]   = { self.db.colors.profession.inscription.r, self.db.colors.profession.inscription.g, self.db.colors.profession.inscription.b },
-		[0x0020]   = { self.db.colors.profession.herbs.r, self.db.colors.profession.herbs.g, self.db.colors.profession.herbs.b },
-		[0x0040]   = { self.db.colors.profession.enchanting.r, self.db.colors.profession.enchanting.g, self.db.colors.profession.enchanting.b },
-		[0x0080]   = { self.db.colors.profession.engineering.r, self.db.colors.profession.engineering.g, self.db.colors.profession.engineering.b },
-		[0x0200]   = { self.db.colors.profession.gems.r, self.db.colors.profession.gems.g, self.db.colors.profession.gems.b },
-		[0x0400]   = { self.db.colors.profession.mining.r, self.db.colors.profession.mining.g, self.db.colors.profession.mining.b },
-		[0x8000]   = { self.db.colors.profession.fishing.r, self.db.colors.profession.fishing.g, self.db.colors.profession.fishing.b },
-		[0x010000] = { self.db.colors.profession.cooking.r, self.db.colors.profession.cooking.g, self.db.colors.profession.cooking.b },
-	}
+B.BagIndice = {
+	leatherworking = 0x0008,
+	inscription = 0x0010,
+	herbs = 0x0020,
+	enchanting = 0x0040,
+	engineering = 0x0080,
+	gems = 0x0200,
+	mining = 0x0400,
+	fishing = 0x8000,
+	cooking = 0x010000,
+	equipment = 2,
+	consumables = 3,
+	tradegoods = 4,
+}
 
-	self.AssignmentColors = {
-		[0] = { .99, .23, .21 },   -- fallback
-		[2] = { self.db.colors.assignment.equipment.r , self.db.colors.assignment.equipment.g, self.db.colors.assignment.equipment.b },
-		[3] = { self.db.colors.assignment.consumables.r , self.db.colors.assignment.consumables.g, self.db.colors.assignment.consumables.b },
-		[4] = { self.db.colors.assignment.tradegoods.r , self.db.colors.assignment.tradegoods.g, self.db.colors.assignment.tradegoods.b },
-	}
+function B:UpdateBagColors(table, indice, r, g, b)
+	self[table][B.BagIndice[indice]] = { r, g, b }
 end
 
 function B:Initialize()
@@ -2167,7 +2165,24 @@ function B:Initialize()
 	self.db = E.db.bags
 	self.BagFrames = {}
 
-	self:UpdateBagColors()
+	self.ProfessionColors = {
+		[0x0008]   = { self.db.colors.profession.leatherworking.r, self.db.colors.profession.leatherworking.g, self.db.colors.profession.leatherworking.b },
+		[0x0010]   = { self.db.colors.profession.inscription.r, self.db.colors.profession.inscription.g, self.db.colors.profession.inscription.b },
+		[0x0020]   = { self.db.colors.profession.herbs.r, self.db.colors.profession.herbs.g, self.db.colors.profession.herbs.b },
+		[0x0040]   = { self.db.colors.profession.enchanting.r, self.db.colors.profession.enchanting.g, self.db.colors.profession.enchanting.b },
+		[0x0080]   = { self.db.colors.profession.engineering.r, self.db.colors.profession.engineering.g, self.db.colors.profession.engineering.b },
+		[0x0200]   = { self.db.colors.profession.gems.r, self.db.colors.profession.gems.g, self.db.colors.profession.gems.b },
+		[0x0400]   = { self.db.colors.profession.mining.r, self.db.colors.profession.mining.g, self.db.colors.profession.mining.b },
+		[0x8000]   = { self.db.colors.profession.fishing.r, self.db.colors.profession.fishing.g, self.db.colors.profession.fishing.b },
+		[0x010000] = { self.db.colors.profession.cooking.r, self.db.colors.profession.cooking.g, self.db.colors.profession.cooking.b },
+	}
+
+	self.AssignmentColors = {
+		[0] = { .99, .23, .21 },   -- fallback
+		[2] = { self.db.colors.assignment.equipment.r , self.db.colors.assignment.equipment.g, self.db.colors.assignment.equipment.b },
+		[3] = { self.db.colors.assignment.consumables.r , self.db.colors.assignment.consumables.g, self.db.colors.assignment.consumables.b },
+		[4] = { self.db.colors.assignment.tradegoods.r , self.db.colors.assignment.tradegoods.g, self.db.colors.assignment.tradegoods.b },
+	}
 
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 22 + E.Border*4 - E.Spacing*2)
