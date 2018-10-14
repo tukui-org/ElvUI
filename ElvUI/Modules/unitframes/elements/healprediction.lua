@@ -136,11 +136,13 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:Size(healPrediction.maxOverflow, 0)
 				end
 
-				healPrediction.overHealAbsorb:ClearAllPoints()
-				healPrediction.overHealAbsorb:Point("TOP", frame.Health, "TOP")
-				healPrediction.overHealAbsorb:Point("BOTTOM", frame.Health, "BOTTOM")
-				healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
-				healPrediction.overHealAbsorb:Size(healPrediction.maxOverflow, 0)
+				if healPrediction.overHealAbsorb then
+					healPrediction.overHealAbsorb:ClearAllPoints()
+					healPrediction.overHealAbsorb:Point("TOP", frame.Health, "TOP")
+					healPrediction.overHealAbsorb:Point("BOTTOM", frame.Health, "BOTTOM")
+					healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
+					healPrediction.overHealAbsorb:Size(healPrediction.maxOverflow, 0)
+				end
 			else
 				local height = frame.Health:GetHeight()
 				local p1 = reverseFill and "TOP" or "BOTTOM"
@@ -184,11 +186,13 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:Size(0, healPrediction.maxOverflow)
 				end
 
-				healPrediction.overHealAbsorb:ClearAllPoints()
-				healPrediction.overHealAbsorb:Point("LEFT", frame.Health, "LEFT")
-				healPrediction.overHealAbsorb:Point("RIGHT", frame.Health, "RIGHT")
-				healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
-				healPrediction.overHealAbsorb:Size(0, healPrediction.maxOverflow)
+				if healPrediction.overHealAbsorb then
+					healPrediction.overHealAbsorb:ClearAllPoints()
+					healPrediction.overHealAbsorb:Point("LEFT", frame.Health, "LEFT")
+					healPrediction.overHealAbsorb:Point("RIGHT", frame.Health, "RIGHT")
+					healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
+					healPrediction.overHealAbsorb:Size(0, healPrediction.maxOverflow)
+				end
 			end
 
 			myBar:SetReverseFill(reverseFill)
