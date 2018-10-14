@@ -373,7 +373,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				role = LOCALE.NONE
 			end
 
-			GameTooltip:AddDoubleLine(L["Role"], role, 1, 1, 1, r, g, b)
+			GameTooltip:AddDoubleLine(ROLE, role, 1, 1, 1, r, g, b)
 		end
 
 		--High CPU usage, restricting it to shift key down only.
