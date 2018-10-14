@@ -361,7 +361,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
 		end
 
-		if IsInGroup() then
+		if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) then
 			local role, r, g, b = UnitGroupRolesAssigned(unit), 1, 1, 1
 			if role == "HEALER" then
 				role, r, g, b = L["Healer"], 0, 1, .59
@@ -373,7 +373,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				role = LOCALE.NONE
 			end
 
-			GameTooltip:AddDoubleLine(ROLE, role, 1, 1, 1, r, g, b)
+			GameTooltip:AddDoubleLine(ROLE, role, 1, .82, 0, r, g, b)
 		end
 
 		--High CPU usage, restricting it to shift key down only.
