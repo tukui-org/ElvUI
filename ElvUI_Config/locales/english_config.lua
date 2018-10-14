@@ -949,6 +949,7 @@ L["Display how many of a certain item you have in your possession."] = true
 L["Display player titles."] = true
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = true
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = true
+L["Display the unit role in the tooltip."] = true
 L["Guild Ranks"] = true
 L["Header Font Size"] = true
 L["Health Bar"] = true

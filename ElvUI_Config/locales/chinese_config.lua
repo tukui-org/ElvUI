@@ -959,6 +959,7 @@ L["Display how many of a certain item you have in your possession."] = "显示�
 L["Display player titles."] = "显示玩家头衔"
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = "当按住shift时展示该玩家的专精和装等,由于需要读取所以不会在指向某玩家时立即更新"
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "在鼠标提示中显示技能或物品的ID."
+L["Display the unit role in the tooltip."] = true
 L["Guild Ranks"] = "公会等级"
 L["Header Font Size"] = "标题名字大小"
 L["Health Bar"] = "生命条"
