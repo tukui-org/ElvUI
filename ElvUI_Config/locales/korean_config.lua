@@ -758,6 +758,7 @@ L["Display Minions"] = true
 L["Display Minor Units"] = true
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = "체력바 없이 이름만 표시될 때 NPC의 칭호를 표시합니다."
 L["Display Style"] = "표시 방식"
+L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."] = true
 L["Elite Icon"] = "정예 아이콘"
 L["Enable/Disable the scaling of targetted nameplates."] = "대상선택된 이름표의 크기조절을 활성화/비활성화합니다."
 L["Enabling this will check your health amount."] = "활성화하면 내 체력량을 점검합니다."

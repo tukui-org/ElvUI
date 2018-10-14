@@ -711,6 +711,7 @@ L["Display Minions"] = true
 L["Display Minor Units"] = true
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = true
 L["Display Style"] = true
+L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."] = true
 L["Enable/Disable the scaling of targetted nameplates."] = true
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true

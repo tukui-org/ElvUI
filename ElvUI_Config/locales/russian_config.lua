@@ -710,6 +710,7 @@ L["Display Minions"] = "Отображать миньонов"
 L["Display Minor Units"] = "Отображать малых существ"
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = "Отображать татилу НИП, когда полосы здоровья отключены, а имена нет."
 L["Display Style"] = "Стиль отображения"
+L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."] = true
 L["Elite Icon"] = "Иконки элиты"
 L["Enable/Disable the scaling of targetted nameplates."] = "Включить/выключить масштабирование индикатора цели."
 L["Enabling this will check your health amount."] = "Если включено, будет проверять значение вашего здоровья."

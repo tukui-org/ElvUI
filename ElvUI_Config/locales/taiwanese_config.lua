@@ -711,6 +711,7 @@ L["Display Minions"] = "顯示僕從"
 L["Display Minor Units"] = "顯示僕從單位"
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = "無論是否顯示NPC的名字和血條都顯示NPC的頭銜"
 L["Display Style"] = "顯示格式"
+L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."] = true
 L["Elite Icon"] = "精英標誌"
 L["Enable/Disable the scaling of targetted nameplates."] = "啟用/禁用目標姓名板的縮放"
 L["Enabling this will check your health amount."] = true
