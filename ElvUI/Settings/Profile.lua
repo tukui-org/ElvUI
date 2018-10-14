@@ -2068,7 +2068,7 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 			},
 			['aurabar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['anchorPoint'] = 'ABOVE',
 				['attachTo'] = 'FRAME',
 				['maxBars'] = 6,
