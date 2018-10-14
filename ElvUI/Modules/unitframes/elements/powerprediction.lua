@@ -6,7 +6,7 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_PowerPrediction(frame)
-	local mainBar = CreateFrame('StatusBar', '$parentPP', frame.Power)
+	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
 	UF['statusbars'][mainBar] = true
 	mainBar:Hide()
 
@@ -16,7 +16,7 @@ function UF:Construct_PowerPrediction(frame)
 	}
 
 	if frame.AdditionalPower then
-		local altBar = CreateFrame('StatusBar', '$parentAP', frame.AdditionalPower)
+		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
 		UF['statusbars'][altBar] = true
 		altBar:Hide()
 
