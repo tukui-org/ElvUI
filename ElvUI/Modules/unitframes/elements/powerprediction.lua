@@ -7,7 +7,6 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_PowerPrediction(frame)
 	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
-	mainBar:SetReverseFill(true)
 	mainBar:SetStatusBarTexture(E["media"].blankTex)
 	mainBar:Hide()
 
@@ -18,7 +17,6 @@ function UF:Construct_PowerPrediction(frame)
 
 	if frame.AdditionalPower then
 		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
-		altBar:SetReverseFill(true)
 		altBar:SetStatusBarTexture(E["media"].blankTex)
 		altBar:Hide()
 
@@ -30,30 +28,43 @@ end
 
 function UF:Configure_PowerPrediction(frame)
 	local powerPrediction = frame.PowerPrediction
-	local c = self.db.colors.powerPrediction
 
-	if frame.db.powerPrediction then
+	if frame.db.power.powerPrediction then
 		if not frame:IsElementEnabled('PowerPrediction') then
 			frame:EnableElement('PowerPrediction')
 		end
 
 		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
-		local reverseFill = not not frame.db.power.reverseFill
+		local reverseFill = frame.db.power.reverseFill
+		local r, g, b = frame.Power:GetStatusBarColor()
 
 		mainBar:SetPoint('TOP')
 		mainBar:SetPoint('BOTTOM')
-		mainBar:SetWidth(200)
-		mainBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+		mainBar:SetWidth(frame.Power:GetWidth())
+		mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 
-		mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
+		if reverseFill then
+			mainBar:SetReverseFill(false)
+			mainBar:SetPoint('LEFT', frame.Power:GetStatusBarTexture(), 'LEFT')
+		else
+			mainBar:SetReverseFill(true)
+			mainBar:SetPoint('RIGHT', frame.Power:GetStatusBarTexture(), 'RIGHT')
+		end
 
 		if altBar then
+			r, g, b = frame.AdditionalPower:GetStatusBarColor()
 			altBar:SetPoint('TOP')
 			altBar:SetPoint('BOTTOM')
-			altBar:SetWidth(200)
-			altBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+			altBar:SetWidth(frame.AdditionalPower:GetWidth())
+			altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 
-			altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+			if reverseFill then
+				altBar:SetReverseFill(false)
+				altBar:SetPoint('LEFT', frame.AdditionalPower:GetStatusBarTexture(), 'LEFT')
+			else
+				altBar:SetReverseFill(true)
+				altBar:SetPoint('RIGHT', frame.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+			end
 		end
 	else
 		if frame:IsElementEnabled('PowerPrediction') then

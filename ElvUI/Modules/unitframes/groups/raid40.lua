@@ -30,6 +30,8 @@ function UF:Construct_Raid40Frames()
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.Power.frequentUpdates = false;
 
+	self.PowerPrediction = self:Construct_PowerPrediction(self)
+
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 
@@ -184,6 +186,9 @@ function UF:Update_Raid40Frames(frame, db)
 
 	--Power
 	UF:Configure_Power(frame)
+
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
 	UF:Configure_Portrait(frame)

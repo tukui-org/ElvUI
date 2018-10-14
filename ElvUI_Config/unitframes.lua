@@ -1411,6 +1411,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 1,
 				name = L["Enable"],
 			},
+			powerPrediction = {
+				type = 'toggle',
+				order = 2,
+				name = L["Power Prediction"],
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],

@@ -1231,6 +1231,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
@@ -1439,6 +1440,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
@@ -1589,6 +1591,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -1682,6 +1685,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -1780,6 +1784,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -1907,6 +1912,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -2004,6 +2010,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -2126,6 +2133,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -2212,6 +2220,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
@@ -2333,6 +2342,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
@@ -2465,6 +2475,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['attachTextTo'] = 'Health',
@@ -2692,6 +2703,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
@@ -2872,6 +2884,7 @@ P['unitframe'] = {
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
 				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
