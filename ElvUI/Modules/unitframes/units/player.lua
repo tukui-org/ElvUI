@@ -25,8 +25,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
 
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -59,6 +57,8 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == 'SHAMAN' then
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
+
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
 
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
