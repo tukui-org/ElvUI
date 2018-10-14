@@ -17,9 +17,10 @@ Added "Display Target" to NamePlate castbars.
 Added "Display Interrupt Source" to NamePlate castbars.  
 Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
 Added option to scale the Vehicle display. (#715)  
-Added Tank & Assist Name Placements
-Added Pet AuraBars (Hunters Rejoice!)
-Added Tooltip Group Role
+Added Tank & Assist Name Placements (#128)
+Added Pet AuraBars (Hunters Rejoice!) (#518)
+Added Tooltip Group Role (#583)
+
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
@@ -28,8 +29,9 @@ Fixed Raidmarker spacing. (#791)
 Fixed issue which would sometimes keep Player UnitFrame out of range.  
 Fixed error with UnitFrame Tags when enter Arena. (#821)  
 Fixed issue which would show a NPC Reputation instead of NPC Title on NamePlates when Colorblind mode was enabled. (#826)  
-Fixed Health Backdrop ClassBackdrop multiplier
-Fixed DejaCharacterStats and Character Skin conflicts
+Fixed Health Backdrop ClassBackdrop multiplier (#134)
+Fixed DejaCharacterStats and Character Skin conflicts (#819)
+
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
