@@ -145,8 +145,6 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
-	health.bg:SetTexture(E.LSM:Fetch('statusbar', E.private.general.normTex))
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
@@ -162,6 +160,10 @@ function UF:Configure_HealthBar(frame)
 		--Party/Raid Frames can toggle frequent updates
 		if db.health.frequentUpdates then
 			health.frequentUpdates = db.health.frequentUpdates
+		end
+
+		if db.health.bgUseBarTexture then
+			health.bg:SetTexture(E.LSM:Fetch('statusbar', E.private.general.normTex))
 		end
 	end
 

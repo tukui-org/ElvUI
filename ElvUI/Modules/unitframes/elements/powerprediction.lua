@@ -6,8 +6,8 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_PowerPrediction(frame)
-	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
-	mainBar:SetStatusBarTexture(E["media"].blankTex)
+	local mainBar = CreateFrame('StatusBar', '$parentPP', frame.Power)
+	UF['statusbars'][mainBar] = true
 	mainBar:Hide()
 
 	local PowerPrediction = {
@@ -16,8 +16,8 @@ function UF:Construct_PowerPrediction(frame)
 	}
 
 	if frame.AdditionalPower then
-		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
-		altBar:SetStatusBarTexture(E["media"].blankTex)
+		local altBar = CreateFrame('StatusBar', '$parentAP', frame.AdditionalPower)
+		UF['statusbars'][altBar] = true
 		altBar:Hide()
 
 		PowerPrediction.altBar = altBar
@@ -35,35 +35,52 @@ function UF:Configure_PowerPrediction(frame)
 		end
 
 		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
-		local reverseFill = frame.db.power.reverseFill
+		local orientation = frame.db.power.orientation or frame.Power:GetOrientation()
+		local reverseFill = not not frame.db.power.reverseFill
 		local r, g, b = frame.Power:GetStatusBarColor()
 
-		mainBar:SetPoint('TOP')
-		mainBar:SetPoint('BOTTOM')
-		mainBar:SetWidth(frame.Power:GetWidth())
 		mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
-
-		if reverseFill then
-			mainBar:SetReverseFill(false)
-			mainBar:SetPoint('LEFT', frame.Power:GetStatusBarTexture(), 'LEFT')
-		else
-			mainBar:SetReverseFill(true)
-			mainBar:SetPoint('RIGHT', frame.Power:GetStatusBarTexture(), 'RIGHT')
-		end
+		mainBar:SetReverseFill(not reverseFill)
 
 		if altBar then
 			r, g, b = frame.AdditionalPower:GetStatusBarColor()
-			altBar:SetPoint('TOP')
-			altBar:SetPoint('BOTTOM')
-			altBar:SetWidth(frame.AdditionalPower:GetWidth())
 			altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			altBar:SetReverseFill(not reverseFill)
+		end
 
-			if reverseFill then
-				altBar:SetReverseFill(false)
-				altBar:SetPoint('LEFT', frame.AdditionalPower:GetStatusBarTexture(), 'LEFT')
-			else
-				altBar:SetReverseFill(true)
-				altBar:SetPoint('RIGHT', frame.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+		if orientation == "HORIZONTAL" then
+			local width = frame.Power:GetWidth()
+			local point = reverseFill and "LEFT" or "RIGHT"
+
+			mainBar:ClearAllPoints()
+			mainBar:Point("TOP", frame.Power, "TOP")
+			mainBar:Point("BOTTOM", frame.Power, "BOTTOM")
+			mainBar:Point(point, frame.Power:GetStatusBarTexture(), point)
+			mainBar:Size(width, 0)
+
+			if altBar then
+				altBar:ClearAllPoints()
+				altBar:Point("TOP", frame.AdditionalPower, "TOP")
+				altBar:Point("BOTTOM", frame.AdditionalPower, "BOTTOM")
+				altBar:Point(point, frame.AdditionalPower:GetStatusBarTexture(), point)
+				altBar:Size(width, 0)
+			end
+		else
+			local height = frame.Power:GetHeight()
+			local point = reverseFill and "BOTTOM" or "TOP"
+
+			mainBar:ClearAllPoints()
+			mainBar:Point("LEFT", frame.Power, "LEFT")
+			mainBar:Point("RIGHT", frame.Power, "RIGHT")
+			mainBar:Point(point, frame.Power:GetStatusBarTexture(), point)
+			mainBar:Size(0, height)
+
+			if altBar then
+				altBar:ClearAllPoints()
+				altBar:Point("LEFT", frame.AdditionalPower, "LEFT")
+				altBar:Point("RIGHT", frame.AdditionalPower, "RIGHT")
+				altBar:Point(point, frame.AdditionalPower:GetStatusBarTexture(), point)
+				altBar:Size(0, height)
 			end
 		end
 	else
