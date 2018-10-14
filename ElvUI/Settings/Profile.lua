@@ -1364,6 +1364,12 @@ P['unitframe'] = {
 				['tickWidth'] = 1,
 				['tickColor'] = {r = 0, g = 0, b = 0, a = 0.8},
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['classbar'] = {
 				['enable'] = true,
@@ -1546,6 +1552,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -1867,6 +1879,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -2112,6 +2130,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 		},
 		['pettarget'] = {
@@ -2305,6 +2329,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -2427,6 +2457,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['pvpTrinket'] = {
 				['enable'] = true,
@@ -2597,6 +2633,12 @@ P['unitframe'] = {
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
 				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -2640,6 +2682,14 @@ P['unitframe'] = {
 					['text_format'] = '[namecolor][name:short]',
 					['yOffset'] = 0,
 					['xOffset'] = 0,
+				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
 				},
 			},
 			['raidicon'] = {
@@ -3236,6 +3286,14 @@ P['unitframe'] = {
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 8,
+			},
 			['targetsGroup'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'RIGHT',
@@ -3250,6 +3308,14 @@ P['unitframe'] = {
 					['yOffset'] = 0,
 					['xOffset'] = 0,
 					['attachTextTo'] = 'Health',
+				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
 				},
 			},
 		},
@@ -3335,6 +3401,14 @@ P['unitframe'] = {
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 8,
+			},
 			['targetsGroup'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'RIGHT',
@@ -3349,6 +3423,14 @@ P['unitframe'] = {
 					['yOffset'] = 0,
 					['xOffset'] = 0,
 					['attachTextTo'] = 'Frame',
+				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
 				},
 			},
 		},

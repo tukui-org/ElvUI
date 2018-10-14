@@ -32,6 +32,8 @@ function UF:Construct_PartyFrames()
 		self.MouseGlow = UF:Construct_MouseGlow(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		self.Name = UF:Construct_NameText(self)
+		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
+
 		self.originalParent = self:GetParent()
 
 		self.childType = "pet"
@@ -205,6 +207,8 @@ function UF:Update_PartyFrames(frame, db)
 
 		--Health
 		UF:Configure_HealthBar(frame)
+
+		UF:Configure_RaidIcon(frame)
 
 		--Name
 		UF:UpdateNameSettings(frame, frame.childType)

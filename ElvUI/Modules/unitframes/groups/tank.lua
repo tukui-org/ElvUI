@@ -154,6 +154,8 @@ function UF:Update_TankFrames(frame, db)
 	--Range
 	UF:Configure_Range(frame)
 
+	UF:Configure_RaidIcon(frame)
+
 	if not frame.isChild then
 		--Auras
 		UF:EnableDisable_Auras(frame)

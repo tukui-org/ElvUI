@@ -156,6 +156,8 @@ function UF:Update_AssistFrames(frame, db)
 	--Range
 	UF:Configure_Range(frame)
 
+	UF:Configure_RaidIcon(frame)
+
 	if not frame.isChild then
 		--Auras
 		UF:EnableDisable_Auras(frame)
