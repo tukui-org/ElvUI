@@ -21,6 +21,8 @@ Added Tank & Assist Name Placements. (#128)
 Added Pet AuraBars (Hunters Rejoice!). (#518)  
 Added Tooltip Group Role. (#583)  
 Added Power Prediction on UnitFrames. (#421)  
+Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)  
+Added Castbar Strata and Level Options. (#323)  
 
 
 **Bug Fixes:**  
