@@ -1208,6 +1208,7 @@ L["Position"] = "位置"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "NPC 目標將隱藏能量值文字."
 L["Power"] = "能量"
 L["Powers"] = "能量"
+L["Power Prediction"] = true
 L["Priority"] = "優先級"
 L["Profile Specific"] = "角色專用"
 L["PvP & Prestige Icon"] = "PvP和威望圖標"

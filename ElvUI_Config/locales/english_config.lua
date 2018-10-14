@@ -1196,6 +1196,7 @@ L["Position"] = true
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = true
 L["Power"] = true
 L["Powers"] = true
+L["Power Prediction"] = true
 L["Priority"] = true
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true

@@ -1256,6 +1256,7 @@ L["Position"] = "위치"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "유닛이 NPC라면 자원 글자를 숨기고 그 위치에 이름을 표시합니다."
 L["Power"] = "자원"
 L["Powers"] = "자원 (마나, 분노, 기력...)"
+L["Power Prediction"] = true
 L["Priority"] = "우선도"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = "PVP & 명성 아이콘"

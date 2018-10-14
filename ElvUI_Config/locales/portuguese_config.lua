@@ -1208,6 +1208,7 @@ L["Position"] = "Posição"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "Em PNJs o texto de poder não será mostrado, em adição o texto de nome será reposicionado para o ponto de fixação do texto de poder."
 L["Power"] = "Poder"
 L["Powers"] = "Poderes"
+L["Power Prediction"] = true
 L["Priority"] = "prioridade"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true

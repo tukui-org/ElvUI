@@ -1211,6 +1211,7 @@ L["Position"] = "Position"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "Der Krafttext wird bei NPC-Zielen automatisch verborgen, zusätzlich wird der Namenstext relativ zu dem Energie/Mana-Ankerpunkt umpositioniert."
 L["Power"] = "Kraft"
 L["Powers"] = "Kräfte"
+L["Power Prediction"] = "Kraft Vorhersage" -- probably really bad locale
 L["Priority"] = "Priorität"
 L["Profile Specific"] = "Profilspezifisch"
 L["PvP & Prestige Icon"] = "PvP & Prestige Symbol"

@@ -1207,6 +1207,7 @@ L["Position"] = "Позиция"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "Текст ресурса будет спрятан для НИП. Также текст имени будет смещен в точку расположения текста ресурса."
 L["Power"] = "Ресурс"
 L["Powers"] = "Ресурсы"
+L["Power Prediction"] = true
 L["Priority"] = "Приоритет"
 L["Profile Specific"] = "По профилю"
 L["PvP & Prestige Icon"] = "Иконки PvP и престижа"
