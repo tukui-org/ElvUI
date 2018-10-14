@@ -145,8 +145,6 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
-	health.bg:SetTexture(E.LSM:Fetch('statusbar', E.private.general.normTex))
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
