@@ -68,14 +68,19 @@ function mod:UpdateElement_Cast(frame, event, ...)
 
 	local arg1, arg2 = ...;
 	local unit = frame.displayedUnit
-	if ( event == "PLAYER_ENTERING_WORLD" ) then
-		local nameChannel = UnitChannelInfo(unit);
+	if ( event == "PLAYER_ENTERING_WORLD" ) then -- this event is often fake
 		local nameSpell = UnitCastingInfo(unit);
-		if ( nameChannel ) then
-			event = "UNIT_SPELLCAST_CHANNEL_START";
-			arg1 = unit;
-		elseif ( nameSpell ) then
+		local nameChannel
+
+		if not nameSpell then
+			nameChannel = UnitChannelInfo(unit);
+		end
+
+		if nameSpell then
 			event = "UNIT_SPELLCAST_START";
+			arg1 = unit;
+		elseif nameChannel then
+			event = "UNIT_SPELLCAST_CHANNEL_START";
 			arg1 = unit;
 		else
 		    frame.CastBar:Hide()
