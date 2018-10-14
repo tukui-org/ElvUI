@@ -903,7 +903,7 @@ Used to unregister a tag from a unit frame.
 * fs   - the font string holding the tag (FontString)
 --]]
 local function Untag(self, fs)
-	if(not fs) then return end
+	if(not fs or not self.__tags) then return end
 
 	unregisterEvents(fs)
 	for _, timers in next, eventlessUnits do
