@@ -896,9 +896,12 @@ function mod:OnEvent(event, unit, ...)
 end
 
 function mod:RegisterEvents(frame, unit)
-	local displayedUnit;
-	if ( unit ~= frame.displayedUnit ) then
-		displayedUnit = frame.displayedUnit;
+	local displayedUnit
+	if unit ~= frame.displayedUnit then
+		displayedUnit = frame.displayedUnit
+	end
+	if not unit then
+		unit = frame.unit
 	end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
@@ -939,10 +942,13 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
 			frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
-			frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit, displayedUnit);
+
+			if unit == 'player' then
+				frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
+			end
 		end
 
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
@@ -950,7 +956,7 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit or frame.unit)
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", frame.unit)
 	end
 
 	frame:RegisterEvent("RAID_TARGET_UPDATE")

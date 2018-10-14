@@ -87,7 +87,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 	end
 
-	if ( event == "UNIT_SPELLCAST_SENT" ) then
+	if ( unit == 'player' and event == "UNIT_SPELLCAST_SENT") then
 		frame.CastBar.curTarget = (arg2 and arg2 ~= "" and self.db.units[frame.UnitType].castbar.displayTarget) and arg2 or nil
 	end
 
