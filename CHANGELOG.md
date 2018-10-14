@@ -25,7 +25,6 @@ Added Power Prediction on UnitFrames. (#421)
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
-Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)  
 Fixed Raidmarker spacing. (#791)  
 Fixed issue which would sometimes keep Player UnitFrame out of range.  
 Fixed error with UnitFrame Tags when enter Arena. (#821)  
