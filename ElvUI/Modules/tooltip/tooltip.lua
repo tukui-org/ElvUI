@@ -357,6 +357,21 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
 		end
 
+		if IsInGroup() then
+			local role, r, g, b = UnitGroupRolesAssigned(unit), 1, 1, 1
+			if role == "HEALER" then
+				role, r, g, b = L["Healer"], 0, 1, .59
+			elseif role == "TANK" then
+				role, r, g, b = L["Tank"], .16, .31, .61
+			elseif role == "DAMAGER" then
+				role, r, g, b = L["DPS"], .77, .12, .24
+			else
+				role = NONE
+			end
+
+			GameTooltip:AddDoubleLine(L["Role"], role, 1, 1, 1, r, g, b)
+		end
+
 		--High CPU usage, restricting it to shift key down only.
 		if(self.db.inspectInfo and isShiftKeyDown) then
 			self:ShowInspectInfo(tt, unit, color.r, color.g, color.b)
