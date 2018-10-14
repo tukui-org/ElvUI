@@ -826,12 +826,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
 			},
-			displayTarget = {
-				order = 12,
-				type = 'toggle',
-				name = L["Display Target"],
-				desc = L["Display the target of your current cast. Useful for mouseover casts."],
-			},
 			iconSettings = {
 				order = 13,
 				type = "group",
@@ -948,6 +942,12 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 
 	if hasTicks then
+		config.args.displayTarget = {
+			order = 11,
+			type = 'toggle',
+			name = L["Display Target"],
+			desc = L["Display the target of your current cast. Useful for mouseover casts."],
+		}
 		config.args.ticks = {
 			order = 12,
 			type = "group",
