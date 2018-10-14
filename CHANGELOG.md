@@ -20,6 +20,7 @@ Added option to scale the Vehicle display. (#715)
 Added Tank & Assist Name Placements (#128)  
 Added Pet AuraBars (Hunters Rejoice!) (#518)  
 Added Tooltip Group Role (#583)  
+Added Power Prediction on UnitFrames (#421)  
 
 
 **Bug Fixes:**  
