@@ -17,10 +17,10 @@ Added "Display Target" to NamePlate castbars.
 Added "Display Interrupt Source" to NamePlate castbars.  
 Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
 Added option to scale the Vehicle display. (#715)  
-Added Tank & Assist Name Placements (#128)  
-Added Pet AuraBars (Hunters Rejoice!) (#518)  
-Added Tooltip Group Role (#583)  
-Added Power Prediction on UnitFrames (#421)  
+Added Tank & Assist Name Placements. (#128)  
+Added Pet AuraBars (Hunters Rejoice!). (#518)  
+Added Tooltip Group Role. (#583)  
+Added Power Prediction on UnitFrames. (#421)  
 
 
 **Bug Fixes:**  
