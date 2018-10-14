@@ -145,6 +145,8 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
+	health.bg:SetTexture(E.LSM:Fetch('statusbar', E.private.general.normTex))
+
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
@@ -218,7 +220,7 @@ function UF:PostUpdateHealth(unit, min, max)
 		end
 
 		if t then
-			self.bg:SetVertexColor(t[1], t[2], t[3])
+			self.bg:SetVertexColor(t[1] * .25 , t[2] * .25, t[3] * .25)
 		end
 	end
 
