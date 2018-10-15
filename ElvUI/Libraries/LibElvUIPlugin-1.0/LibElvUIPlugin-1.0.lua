@@ -7,9 +7,13 @@ if not lib then return end
 local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
 local format, strsplit, strlen, gsub, ceil = format, strsplit, strlen, gsub, ceil
 --WoW API / Variables
+local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
 local GetAddOnMetadata, GetChannelName = GetAddOnMetadata, GetChannelName
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 
@@ -19,7 +23,6 @@ local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 lib.plugins = {}
 lib.index = 0
 lib.prefix = "ElvUIPluginVC"
-lib.groupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
@@ -93,6 +96,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		local f = CreateFrame('Frame')
 		f:RegisterEvent("CHAT_MSG_ADDON")
+		f:RegisterEvent("GROUP_ROSTER_UPDATE")
 		f:SetScript('OnEvent', lib.VersionCheck)
 		lib.vcframe = f
 	end
@@ -150,7 +154,7 @@ function lib:GetPluginOptions()
 end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
-	if (event == "CHAT_MSG_ADDON") and (prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
+	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
 		if not lib.myName then lib.myName = lib.E.myname..'-'..gsub(lib.E.myrealm,'[%s%-]','') end
 		if sender == lib.myName then
 			if lib.delayedCheck then
@@ -174,6 +178,16 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 					end
 				end
 			end
+		end
+	elseif event == "GROUP_ROSTER_UPDATE" then
+		local num = GetNumGroupMembers()
+		if num ~= lib.groupSize then
+			if num > 1 and num > lib.groupSize then
+				if not lib.SendMessageTimer then
+					lib.SendMessageTimer = lib.E:ScheduleTimer("SendPluginVersionCheck", 10)
+				end
+			end
+			lib.groupSize = num
 		end
 	else
 		if not lib.E.SendPluginVersionCheck then
@@ -208,7 +222,7 @@ function lib:GeneratePluginList()
 	return list
 end
 
-local clearSendMessageTimer = function()
+function lib:ClearSendMessageTimer()
 	lib.SendMessageTimer = nil
 end
 
@@ -216,15 +230,21 @@ function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, "^%s-$") then return end
 	local ChatType, Channel
 
-	local ElvUIGVC = GetChannelName('ElvUIGVC')
-	if ElvUIGVC and ElvUIGVC > 0 then
-		ChatType, Channel = "CHANNEL", ElvUIGVC
-	elseif IsInGuild() then
-		ChatType = "GUILD"
+	if IsInRaid() then
+		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
+	elseif IsInGroup() then
+		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
+	else
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			ChatType, Channel = "CHANNEL", ElvUIGVC
+		elseif IsInGuild() then
+			ChatType = "GUILD"
+		end
 	end
 
 	if not ChatType then
-		clearSendMessageTimer()
+		lib.ClearSendMessageTimer()
 		return
 	end
 
@@ -237,12 +257,12 @@ function lib:SendPluginVersionCheck(message)
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
 				lib.E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
-				lib.E:Delay(delay, clearSendMessageTimer) -- keep this after `delay = delay + 1`
+				lib.E:Delay(delay, lib.ClearSendMessageTimer) -- keep this after `delay = delay + 1`
 			end
 		end
 	else
 		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
-		clearSendMessageTimer()
+		lib.ClearSendMessageTimer()
 	end
 end
 

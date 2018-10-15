@@ -31,11 +31,15 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
 local JoinPermanentChannel = JoinPermanentChannel
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
+local UnitFactionGroup = UnitFactionGroup
+local GetChannelList = GetChannelList
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local GetNumGroupMembers = GetNumGroupMembers
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local UnitFactionGroup = UnitFactionGroup
-local GetChannelList = GetChannelList
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
@@ -906,16 +910,23 @@ end
 
 local SendMessageTimer -- prevent setting multiple timers at once
 function E:SendMessage()
-	local ElvUIGVC = GetChannelName('ElvUIGVC')
-	if ElvUIGVC and ElvUIGVC > 0 then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
-	elseif IsInGuild() then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+	if IsInRaid() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+	elseif IsInGroup() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+	else
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
+		elseif IsInGuild() then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+		end
 	end
 
 	SendMessageTimer = nil
 end
 
+local SendRecieveGroupSize
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
@@ -937,6 +948,16 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 				end
 			end
 		end
+	elseif event == "GROUP_ROSTER_UPDATE" then
+		local num = GetNumGroupMembers()
+		if num ~= SendRecieveGroupSize then
+			if num > 1 and num > SendRecieveGroupSize then
+				if not SendMessageTimer then
+					SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
+				end
+			end
+			SendRecieveGroupSize = num
+		end
 	elseif not SendMessageTimer then
 		SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
 	end
@@ -946,6 +967,7 @@ C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:SetScript("OnEvent", SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
