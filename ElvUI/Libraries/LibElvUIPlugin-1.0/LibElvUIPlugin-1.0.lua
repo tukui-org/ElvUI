@@ -78,7 +78,6 @@ function lib:RegisterPlugin(name,callback, isLib)
 
 	if not lib.vcframe then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
-		JoinTemporaryChannel('ElvUIGVC')
 		local f = CreateFrame('Frame')
 		f:RegisterEvent("GROUP_ROSTER_UPDATE")
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
