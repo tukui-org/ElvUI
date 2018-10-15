@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 22
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 22
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -23,7 +23,7 @@ local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 lib.plugins = {}
 lib.index = 0
 lib.groupSize = 0
-lib.prefix = "ElvUIPluginVC"
+lib.prefix = 'ElvUIPluginVC'
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
@@ -54,24 +54,11 @@ if GetLocale() == "ruRU" then -- Russian Translations
 	LIBRARY = "Библиотека"
 end
 
---
--- Plugin table format:
---   { name (string) - The name of the plugin,
---     version (string) - The version of the plugin,
---     optionCallback (string) - The callback to call when ElvUI_Config is loaded
---   }
---
-
---
--- RegisterPlugin(name,callback)
---   Registers a module with the given name and option callback, pulls version info from metadata
---
-
 function lib:GenerateVersionCheckMessage()
-	local list = ""
+	local list = ''
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
-			list = list..plugin.name.."="..plugin.version..";"
+			list = list..plugin.name..'='..plugin.version..';'
 		end
 	end
 	return list
@@ -89,9 +76,22 @@ local function DelayedSendVersionCheck()
 	end
 
 	if not lib.SendMessageTimer then
-		lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
+		lib.SendMessageTimer = E:ScheduleTimer('SendPluginVersionCheck', 10)
 	end
 end
+
+--
+-- Plugin table format:
+--   { name (string) - The name of the plugin,
+--     version (string) - The version of the plugin,
+--     optionCallback (string) - The callback to call when ElvUI_Config is loaded
+--   }
+--
+
+--
+-- RegisterPlugin(name,callback)
+--   Registers a module with the given name and option callback, pulls version info from metadata
+--
 
 function lib:RegisterPlugin(name, callback, isLib)
 	if not ElvUI then return end -- lol?
@@ -99,27 +99,27 @@ function lib:RegisterPlugin(name, callback, isLib)
 
     local plugin = {}
 	plugin.name = name
-	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
+	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, 'Version')
 	if isLib then plugin.isLib = true; plugin.version = 1 end
 	plugin.callback = callback
 	lib.plugins[name] = plugin
-	local loaded = IsAddOnLoaded("ElvUI_Config")
+	local loaded = IsAddOnLoaded('ElvUI_Config')
 
 	if not lib.vcframe then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		local f = CreateFrame('Frame')
-		f:RegisterEvent("CHAT_MSG_ADDON")
-		f:RegisterEvent("GROUP_ROSTER_UPDATE")
+		f:RegisterEvent('CHAT_MSG_ADDON')
+		f:RegisterEvent('GROUP_ROSTER_UPDATE')
 		f:SetScript('OnEvent', lib.VersionCheck)
 		lib.vcframe = f
 	end
 
 	if not loaded then
 		if not lib.ConfigFrame then
-			local configFrame = CreateFrame("Frame")
-			configFrame:RegisterEvent("ADDON_LOADED")
-			configFrame:SetScript("OnEvent", function(_, _, addon)
-				if addon == "ElvUI_Config" then
+			local configFrame = CreateFrame('Frame')
+			configFrame:RegisterEvent('ADDON_LOADED')
+			configFrame:SetScript('OnEvent', function(_, _, addon)
+				if addon == 'ElvUI_Config' then
 					for _, PlugIn in pairs(lib.plugins) do
 						if PlugIn.callback then
 							PlugIn.callback()
@@ -134,6 +134,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		if name ~= MAJOR then
 			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
+
 		callback()
 	end
 
@@ -145,18 +146,18 @@ end
 function lib:GetPluginOptions()
 	ElvUI[1].Options.args.plugins = {
         order = -10,
-        type = "group",
+        type = 'group',
         name = HDR_CONFIG,
         guiInline = false,
         args = {
             pluginheader = {
                 order = 1,
-                type = "header",
+                type = 'header',
                 name = format(HDR_INFORMATION, MINOR),
             },
             plugins = {
                 order = 2,
-                type = "description",
+                type = 'description',
                 name = lib:GeneratePluginList(),
             },
         }
@@ -165,20 +166,20 @@ end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
 	local E = ElvUI[1]
-	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
+	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
 		if not lib.myName then lib.myName = E.myname..'-'..gsub(E.myrealm,'[%s%-]','') end
 		if sender == lib.myName then return end
 
 		if not E.pluginRecievedOutOfDateMessage then
 			local name, version, plugin, Pname
-			for _, p in pairs({strsplit(";",message)}) do
-				if not strmatch(p, "^%s-$") then
-					name, version = strmatch(p, "([%w_]+)=([%d%p]+)")
+			for _, p in pairs({strsplit(';',message)}) do
+				if not strmatch(p, '^%s-$') then
+					name, version = strmatch(p, '([%w_]+)=([%d%p]+)')
 					if lib.plugins[name] then
 						plugin = lib.plugins[name]
 						if (version ~= nil and plugin.version ~= nil and plugin.version ~= 'BETA') and (tonumber(version) ~= nil and tonumber(plugin.version) ~= nil) and (tonumber(version) > tonumber(plugin.version)) then
 							plugin.old, plugin.newversion = true, tonumber(version)
-							Pname = GetAddOnMetadata(plugin.name, "Title")
+							Pname = GetAddOnMetadata(plugin.name, 'Title')
 							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 							ElvUI[1].pluginRecievedOutOfDateMessage = true
 						end
@@ -186,7 +187,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 				end
 			end
 		end
-	elseif event == "GROUP_ROSTER_UPDATE" then
+	elseif event == 'GROUP_ROSTER_UPDATE' then
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
@@ -198,22 +199,18 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 end
 
 function lib:GeneratePluginList()
-	local E, list = ElvUI[1], ""
+	local E, list = ElvUI[1], ''
 	local author, Pname, color
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
-			author = GetAddOnMetadata(plugin.name, "Author")
-			Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
+			author = GetAddOnMetadata(plugin.name, 'Author')
+			Pname = GetAddOnMetadata(plugin.name, 'Title') or plugin.name
 			color = plugin.old and E:RGBToHex(1,0,0) or E:RGBToHex(0,1,0)
-			list = list .. Pname
-			if author then
-			  list = list .. " ".. INFO_BY .." " .. author
-			end
-			list = list .. color ..(plugin.isLib and " "..LIBRARY or " - " .. INFO_VERSION .." " .. plugin.version)
-			if plugin.old then
-			  list = list .. INFO_NEW .. plugin.newversion .. ")"
-			end
-			list = list .. "|r\n"
+			list = list..Pname
+			if author then list = list..' '..INFO_BY..' '..author end
+			list = list..color..(plugin.isLib and ' '..LIBRARY or ' - '..INFO_VERSION..' '..plugin.version)
+			if plugin.old then list = list..INFO_NEW..plugin.newversion..')' end
+			list = list..'|r\n'
 		end
 	end
 	return list
@@ -224,23 +221,22 @@ function lib:ClearSendMessageTimer()
 end
 
 function lib:SendPluginVersionCheck(message)
-	if (not message) or strmatch(message, "^%s-$") then
+	if (not message) or strmatch(message, '^%s-$') then
 		lib.ClearSendMessageTimer()
 		return
 	end
 
 	local ChatType, Channel
-
 	if IsInRaid() then
-		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
+		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID'
 	elseif IsInGroup() then
-		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
+		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY'
 	else
 		local ElvUIGVC = GetChannelName('ElvUIGVC')
 		if ElvUIGVC and ElvUIGVC > 0 then
-			ChatType, Channel = "CHANNEL", ElvUIGVC
+			ChatType, Channel = 'CHANNEL', ElvUIGVC
 		elseif IsInGuild() then
-			ChatType = "GUILD"
+			ChatType = 'GUILD'
 		end
 	end
 
@@ -255,7 +251,7 @@ function lib:SendPluginVersionCheck(message)
 		for _ = 1, ceil(msgLength/maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
-				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
+				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
 				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
 				E:Delay(delay, lib.ClearSendMessageTimer) -- keep this after `delay = delay + 1`
