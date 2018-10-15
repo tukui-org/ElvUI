@@ -155,19 +155,14 @@ function mod:PLAYER_ENTERING_WORLD()
 	end
 
 	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
-		self:CheckBGHealers()
+		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", 'CheckBGHealers')
 	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
-		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
-		self:CheckArenaHealers()
+		self:RegisterEvent("UNIT_NAME_UPDATE", 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers')
 	else
-		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("UNIT_NAME_UPDATE")
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
-		if self.CheckHealerTimer then
-			self:CancelTimer(self.CheckHealerTimer)
-			self.CheckHealerTimer = nil;
-		end
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
 	end
 
 	if self.db.units.PLAYER.useStaticPosition then
