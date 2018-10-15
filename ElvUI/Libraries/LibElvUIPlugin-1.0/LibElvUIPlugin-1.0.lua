@@ -80,6 +80,18 @@ local function SendPluginVersionCheck()
 	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
 end
 
+local function DelayedSendVersionCheck()
+	local E = ElvUI[1]
+
+	if not E.SendPluginVersionCheck then
+		ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
+	end
+
+	if not lib.SendMessageTimer then
+		lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
+	end
+end
+
 function lib:RegisterPlugin(name, callback, isLib)
 	if not ElvUI then return end -- lol?
 	local E = ElvUI[1]
@@ -99,11 +111,6 @@ function lib:RegisterPlugin(name, callback, isLib)
 		f:RegisterEvent("GROUP_ROSTER_UPDATE")
 		f:SetScript('OnEvent', lib.VersionCheck)
 		lib.vcframe = f
-	end
-
-	if not lib.delayedCheck then
-		E:Delay(10, SendPluginVersionCheck)
-		lib.delayedCheck = true
 	end
 
 	if not loaded then
@@ -128,6 +135,8 @@ function lib:RegisterPlugin(name, callback, isLib)
 		end
 		callback()
 	end
+
+	DelayedSendVersionCheck() -- initial broadcast
 
 	return plugin
 end
@@ -157,12 +166,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 	local E = ElvUI[1]
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
 		if not lib.myName then lib.myName = E.myname..'-'..gsub(E.myrealm,'[%s%-]','') end
-		if sender == lib.myName then
-			if lib.delayedCheck then
-				lib.delayedCheck = nil
-			end
-			return
-		end
+		if sender == lib.myName then return end
+
 		if not E.pluginRecievedOutOfDateMessage then
 			local name, version, plugin, Pname
 			for _, p in pairs({strsplit(";",message)}) do
@@ -184,19 +189,9 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
-				if not lib.SendMessageTimer then
-					lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
-				end
+				DelayedSendVersionCheck()
 			end
 			lib.groupSize = num
-		end
-	else
-		if not E.SendPluginVersionCheck then
-			ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
-		end
-
-		if not lib.SendMessageTimer then
-			lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
 		end
 	end
 end
