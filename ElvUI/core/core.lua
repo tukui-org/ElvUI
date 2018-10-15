@@ -912,7 +912,7 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	else
 		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC then
+		if ElvUIGVC and ElvUIGVC > 0 then
 			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
 		elseif IsInGuild() then
 			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
