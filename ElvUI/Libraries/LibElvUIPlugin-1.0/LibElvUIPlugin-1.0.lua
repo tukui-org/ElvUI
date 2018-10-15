@@ -82,7 +82,7 @@ end
 
 function lib:RegisterPlugin(name, callback, isLib)
 	if not ElvUI then return end -- lol?
-	lib.E = ElvUI[1]
+	local E = ElvUI[1]
 
     local plugin = {}
 	plugin.name = name
@@ -102,7 +102,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 	end
 
 	if not lib.delayedCheck then
-		lib.E:Delay(10, SendPluginVersionCheck)
+		E:Delay(10, SendPluginVersionCheck)
 		lib.delayedCheck = true
 	end
 
@@ -124,7 +124,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 	elseif loaded then
 		-- Need to update plugins list
 		if name ~= MAJOR then
-			lib.E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
+			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 		callback()
 	end
@@ -133,7 +133,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 end
 
 function lib:GetPluginOptions()
-	lib.E.Options.args.plugins = {
+	ElvUI[1].Options.args.plugins = {
         order = -10,
         type = "group",
         name = HDR_CONFIG,
@@ -154,15 +154,16 @@ function lib:GetPluginOptions()
 end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
+	local E = ElvUI[1]
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
-		if not lib.myName then lib.myName = lib.E.myname..'-'..gsub(lib.E.myrealm,'[%s%-]','') end
+		if not lib.myName then lib.myName = E.myname..'-'..gsub(E.myrealm,'[%s%-]','') end
 		if sender == lib.myName then
 			if lib.delayedCheck then
 				lib.delayedCheck = nil
 			end
 			return
 		end
-		if not lib.E["pluginRecievedOutOfDateMessage"] then
+		if not E.pluginRecievedOutOfDateMessage then
 			local name, version, plugin, Pname
 			for _, p in pairs({strsplit(";",message)}) do
 				if not strmatch(p, "^%s-$") then
@@ -172,8 +173,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 						if (version ~= nil and plugin.version ~= nil and plugin.version ~= 'BETA') and (tonumber(version) ~= nil and tonumber(plugin.version) ~= nil) and (tonumber(version) > tonumber(plugin.version)) then
 							plugin.old, plugin.newversion = true, tonumber(version)
 							Pname = GetAddOnMetadata(plugin.name, "Title")
-							lib.E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
-							lib.E["pluginRecievedOutOfDateMessage"] = true
+							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
+							E.pluginRecievedOutOfDateMessage = true
 						end
 					end
 				end
@@ -184,30 +185,30 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
 				if not lib.SendMessageTimer then
-					lib.SendMessageTimer = lib.E:ScheduleTimer("SendPluginVersionCheck", 10)
+					lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
 				end
 			end
 			lib.groupSize = num
 		end
 	else
-		if not lib.E.SendPluginVersionCheck then
-			lib.E.SendPluginVersionCheck = SendPluginVersionCheck
+		if not E.SendPluginVersionCheck then
+			E.SendPluginVersionCheck = SendPluginVersionCheck
 		end
 
 		if not lib.SendMessageTimer then
-			lib.SendMessageTimer = lib.E:ScheduleTimer("SendPluginVersionCheck", 10)
+			lib.SendMessageTimer = E:ScheduleTimer("SendPluginVersionCheck", 10)
 		end
 	end
 end
 
 function lib:GeneratePluginList()
-	local list = ""
+	local E, list = ElvUI[1], ""
 	local author, Pname, color
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
 			author = GetAddOnMetadata(plugin.name, "Author")
 			Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
-			color = plugin.old and lib.E:RGBToHex(1,0,0) or lib.E:RGBToHex(0,1,0)
+			color = plugin.old and E:RGBToHex(1,0,0) or E:RGBToHex(0,1,0)
 			list = list .. Pname
 			if author then
 			  list = list .. " ".. INFO_BY .." " .. author
@@ -250,14 +251,14 @@ function lib:SendPluginVersionCheck(message)
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
-		local splitMessage
+		local E, splitMessage = ElvUI[1]
 		for _ = 1, ceil(msgLength/maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
-				lib.E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
+				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
-				lib.E:Delay(delay, lib.ClearSendMessageTimer) -- keep this after `delay = delay + 1`
+				E:Delay(delay, lib.ClearSendMessageTimer) -- keep this after `delay = delay + 1`
 			end
 		end
 	else
