@@ -7,7 +7,7 @@ local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 local GetCVar, SetCVar = GetCVar, SetCVar
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, WorldMapFrame
+-- GLOBALS: UIParent
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
