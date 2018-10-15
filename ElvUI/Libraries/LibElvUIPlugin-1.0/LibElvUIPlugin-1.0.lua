@@ -162,14 +162,16 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		if sender == lib.myName then return end
 
 		if not E.pluginRecievedOutOfDateMessage then
-			local name, version, plugin, Pname
+			local name, version, plugin, Pname, Pver, ver
 			for _, p in pairs({strsplit(';',message)}) do
 				if not strmatch(p, '^%s-$') then
 					name, version = strmatch(p, '([%w_]+)=([%d%p]+)')
 					if lib.plugins[name] then
 						plugin = lib.plugins[name]
-						if (version ~= nil and plugin.version ~= nil and plugin.version ~= 'BETA') and (tonumber(version) ~= nil and tonumber(plugin.version) ~= nil) and (tonumber(version) > tonumber(plugin.version)) then
-							plugin.old, plugin.newversion = true, tonumber(version)
+						Pver = tonumber(plugin.version)
+						ver = tonumber(version)
+						if (version ~= nil and plugin.version ~= nil and plugin.version ~= 'BETA') and (ver ~= nil and Pver ~= nil) and (ver > Pver) then
+							plugin.old, plugin.newversion = true, ver
 							Pname = GetAddOnMetadata(plugin.name, 'Title')
 							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 							ElvUI[1].pluginRecievedOutOfDateMessage = true

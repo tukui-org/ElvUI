@@ -934,14 +934,16 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if sender == myName then return end
 		if prefix == "ELVUI_VERSIONCHK" then
 			local msg, ver = tonumber(message), tonumber(E.version)
-			if (not E.recievedOutOfDateMessage) and (msg ~= nil and msg > ver) then
-				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+			if msg ~= nil and (msg > ver) then -- you're outdated D:
+				if not E.recievedOutOfDateMessage then
+					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-				if msg ~= nil and ((msg - ver) >= 0.05) then
-					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
+					if msg ~= nil and ((msg - ver) >= 0.05) then
+						E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
+					end
+
+					E.recievedOutOfDateMessage = true
 				end
-
-				E.recievedOutOfDateMessage = true
 			elseif msg ~= nil and (msg < ver) then -- Send Message Back if you intercept and are higher revision
 				if not SendMessageTimer then
 					SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
