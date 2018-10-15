@@ -217,6 +217,8 @@ function lib:SendPluginVersionCheck(message)
 		ChatType = "GUILD"
 	end
 
+	if not ChatType then return end
+
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
 		local splitMessage
