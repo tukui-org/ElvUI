@@ -180,7 +180,9 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			lib.E.SendPluginVersionCheck = SendPluginVersionCheck
 		end
 
-		lib.E:ScheduleTimer("SendPluginVersionCheck", 10)
+		if not lib.SendMessageTimer then
+			lib.SendMessageTimer = lib.E:ScheduleTimer("SendPluginVersionCheck", 10)
+		end
 	end
 end
 
@@ -206,6 +208,10 @@ function lib:GeneratePluginList()
 	return list
 end
 
+local clearSendMessageTimer = function()
+	lib.SendMessageTimer = nil
+end
+
 function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, "^%s-$") then return end
 	local ChatType, Channel
@@ -217,7 +223,10 @@ function lib:SendPluginVersionCheck(message)
 		ChatType = "GUILD"
 	end
 
-	if not ChatType then return end
+	if not ChatType then
+		clearSendMessageTimer()
+		return
+	end
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
@@ -228,10 +237,12 @@ function lib:SendPluginVersionCheck(message)
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
 				lib.E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
+				lib.E:Delay(delay, clearSendMessageTimer) -- keep this after `delay = delay + 1`
 			end
 		end
 	else
 		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
+		clearSendMessageTimer()
 	end
 end
 

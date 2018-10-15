@@ -904,6 +904,7 @@ function E:SplitString(s, delim)
 	return unpack(t)
 end
 
+local SendMessageTimer -- prevent setting multiple timers at once
 function E:SendMessage()
 	local ElvUIGVC = GetChannelName('ElvUIGVC')
 	if ElvUIGVC and ElvUIGVC > 0 then
@@ -911,6 +912,8 @@ function E:SendMessage()
 	elseif IsInGuild() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	end
+
+	SendMessageTimer = nil
 end
 
 local myRealm = gsub(E.myrealm,'[%s%-]','')
@@ -929,11 +932,13 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 
 				E.recievedOutOfDateMessage = true
 			elseif msg ~= nil and (msg < ver) then -- Send Message Back if you intercept and are higher revision
-				E:ScheduleTimer('SendMessage', 10)
+				if not SendMessageTimer then
+					SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
+				end
 			end
 		end
-	else
-		E:ScheduleTimer('SendMessage', 10)
+	elseif not SendMessageTimer then
+		SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
 	end
 end
 
