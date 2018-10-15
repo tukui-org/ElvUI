@@ -912,7 +912,7 @@ function E:SendMessage()
 	elseif IsInGuild() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	else
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", GetChannelName("ElvUIGVC"))
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", GetChannelName('ElvUIGVC'))
 	end
 
 	if E.SendMSGTimer then
@@ -926,8 +926,8 @@ local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if(sender == myName) then return end
-
+		--if(sender == myName) then return end
+		print(event, message, prefix, sender)
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
@@ -939,7 +939,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 				E.recievedOutOfDateMessage = true
 			end
 		end
-	else
+	elseif event == "GROUP_ROSTER_UPDATE" then
 		local num = GetNumGroupMembers()
 		if num ~= SendRecieveGroupSize then
 			if num > 1 and num > SendRecieveGroupSize then
@@ -947,16 +947,18 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 			SendRecieveGroupSize = num
 		end
+	else
+		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 5)
 	end
 end
 
-JoinTemporaryChannel('ElvUIGVC')
 C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 --f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
@@ -1602,6 +1604,8 @@ local function HandleCommandBar()
 end
 
 function E:Initialize(loginFrame)
+	JoinPermanentChannel('ElvUIGVC')
+
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
