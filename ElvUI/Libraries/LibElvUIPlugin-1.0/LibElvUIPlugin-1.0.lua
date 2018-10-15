@@ -224,7 +224,11 @@ function lib:ClearSendMessageTimer()
 end
 
 function lib:SendPluginVersionCheck(message)
-	if (not message) or strmatch(message, "^%s-$") then return end
+	if (not message) or strmatch(message, "^%s-$") then
+		lib.ClearSendMessageTimer()
+		return
+	end
+
 	local ChatType, Channel
 
 	if IsInRaid() then
