@@ -926,7 +926,7 @@ function E:SendMessage()
 	SendMessageTimer = nil
 end
 
-local SendRecieveGroupSize
+local SendRecieveGroupSize = 0
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
