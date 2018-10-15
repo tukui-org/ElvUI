@@ -65,14 +65,19 @@ end
 --
 ------------------------------
 function lib:RegisterPlugin(name, callback, isLib)
-    local plugin = {}
-	plugin.name = name
-	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, 'Version')
-	if isLib then plugin.isLib = true; plugin.version = 1 end
-	plugin.callback = callback
+    local plugin = {
+		name = name,
+		callback = callback,
+		version = name == MAJOR and MINOR or GetAddOnMetadata(name, 'Version')
+	}
+
+	if isLib then
+		plugin.isLib = true
+		plugin.version = 1
+	end
+
 	lib.plugins[name] = plugin
 
-	local loaded = IsAddOnLoaded('ElvUI_Config')
 	if not lib.registeredPrefix then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
@@ -81,6 +86,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		lib.registeredPrefix = true
 	end
 
+	local loaded = IsAddOnLoaded('ElvUI_Config')
 	if not loaded then
 		lib.CFFrame:RegisterEvent('ADDON_LOADED')
 	elseif loaded then
