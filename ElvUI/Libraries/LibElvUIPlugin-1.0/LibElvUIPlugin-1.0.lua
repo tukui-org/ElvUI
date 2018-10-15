@@ -16,7 +16,6 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
-
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUI
 
@@ -24,8 +23,7 @@ lib.plugins = {}
 lib.index = 0
 lib.groupSize = 0
 lib.prefix = 'ElvUIPluginVC'
-
--- MULTI Language Support (Default Language: English)
+------------------------------
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
 local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
@@ -34,7 +32,7 @@ local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
 local LIBRARY = "Library"
 
-if GetLocale() == "deDE" then -- German Translation
+if GetLocale() == "deDE" then
 	MSG_OUTDATED = "Deine Version von %s %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
 	HDR_CONFIG = "Plugins"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
@@ -44,7 +42,7 @@ if GetLocale() == "deDE" then -- German Translation
 	LIBRARY = "Bibliothek"
 end
 
-if GetLocale() == "ruRU" then -- Russian Translations
+if GetLocale() == "ruRU" then
 	MSG_OUTDATED = "Ваша версия %s %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
 	HDR_CONFIG = "Плагины"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
@@ -53,33 +51,7 @@ if GetLocale() == "ruRU" then -- Russian Translations
 	INFO_NEW = "Последняя:"
 	LIBRARY = "Библиотека"
 end
-
-function lib:GenerateVersionCheckMessage()
-	local list = ''
-	for _, plugin in pairs(lib.plugins) do
-		if plugin.name ~= MAJOR then
-			list = list..plugin.name..'='..plugin.version..';'
-		end
-	end
-	return list
-end
-
-local function SendPluginVersionCheck()
-	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
-end
-
-local function DelayedSendVersionCheck()
-	local E = ElvUI[1]
-
-	if not E.SendPluginVersionCheck then
-		ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
-	end
-
-	if not lib.SendMessageTimer then
-		lib.SendMessageTimer = E:ScheduleTimer('SendPluginVersionCheck', 10)
-	end
-end
-
+------------------------------
 --
 -- Plugin table format:
 --   { name (string) - The name of the plugin,
@@ -87,12 +59,11 @@ end
 --     optionCallback (string) - The callback to call when ElvUI_Config is loaded
 --   }
 --
-
 --
 -- RegisterPlugin(name,callback)
 --   Registers a module with the given name and option callback, pulls version info from metadata
 --
-
+------------------------------
 function lib:RegisterPlugin(name, callback, isLib)
 	if not ElvUI then return end -- lol?
 	local E = ElvUI[1]
@@ -105,30 +76,16 @@ function lib:RegisterPlugin(name, callback, isLib)
 	lib.plugins[name] = plugin
 	local loaded = IsAddOnLoaded('ElvUI_Config')
 
-	if not lib.vcframe then
+	if not lib.registeredPrefix then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
-		local f = CreateFrame('Frame')
-		f:RegisterEvent('CHAT_MSG_ADDON')
-		f:RegisterEvent('GROUP_ROSTER_UPDATE')
-		f:SetScript('OnEvent', lib.VersionCheck)
-		lib.vcframe = f
+		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
+		lib.VCFrame:RegisterEvent('GROUP_ROSTER_UPDATE')
+		lib.VCFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		lib.registeredPrefix = true
 	end
 
 	if not loaded then
-		if not lib.ConfigFrame then
-			local configFrame = CreateFrame('Frame')
-			configFrame:RegisterEvent('ADDON_LOADED')
-			configFrame:SetScript('OnEvent', function(_, _, addon)
-				if addon == 'ElvUI_Config' then
-					for _, PlugIn in pairs(lib.plugins) do
-						if PlugIn.callback then
-							PlugIn.callback()
-						end
-					end
-				end
-			end)
-			lib.ConfigFrame = configFrame
-		end
+		lib.CFFrame:RegisterEvent('ADDON_LOADED')
 	elseif loaded then
 		-- Need to update plugins list
 		if name ~= MAJOR then
@@ -138,9 +95,43 @@ function lib:RegisterPlugin(name, callback, isLib)
 		callback()
 	end
 
-	DelayedSendVersionCheck() -- initial broadcast
-
 	return plugin
+end
+
+local function SendPluginVersionCheck()
+	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
+end
+
+function lib:DelayedSendVersionCheck(delay)
+	local E = ElvUI[1]
+
+	if not E.SendPluginVersionCheck then
+		ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
+	end
+
+	if not lib.SendMessageTimer then
+		lib.SendMessageTimer = E:ScheduleTimer('SendPluginVersionCheck', delay or 10)
+	end
+end
+
+function lib:ConfigLoaded(_, _, addon)
+	if addon == 'ElvUI_Config' then
+		for _, plugin in pairs(lib.plugins) do
+			if plugin.callback then
+				plugin.callback()
+			end
+		end
+	end
+end
+
+function lib:GenerateVersionCheckMessage()
+	local list = ''
+	for _, plugin in pairs(lib.plugins) do
+		if plugin.name ~= MAJOR then
+			list = list..plugin.name..'='..plugin.version..';'
+		end
+	end
+	return list
 end
 
 function lib:GetPluginOptions()
@@ -191,10 +182,12 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
-				DelayedSendVersionCheck()
+				lib:DelayedSendVersionCheck(10)
 			end
 			lib.groupSize = num
 		end
+	elseif event == 'PLAYER_ENTERING_WORLD' then
+		lib:DelayedSendVersionCheck(15)
 	end
 end
 
@@ -262,5 +255,11 @@ function lib:SendPluginVersionCheck(message)
 		lib.ClearSendMessageTimer()
 	end
 end
+
+lib.VCFrame = CreateFrame('Frame')
+lib.VCFrame:SetScript('OnEvent', lib.VersionCheck)
+
+lib.CFFrame = CreateFrame('Frame')
+lib.CFFrame:SetScript('OnEvent', lib.ConfigLoaded)
 
 lib:RegisterPlugin(MAJOR, lib.GetPluginOptions)

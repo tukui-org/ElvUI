@@ -958,8 +958,10 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 			SendRecieveGroupSize = num
 		end
-	elseif not SendMessageTimer then
-		SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		if not SendMessageTimer then
+			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 10)
+		end
 	end
 end
 
@@ -968,7 +970,21 @@ C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", SendRecieve)
+
+local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
+function E:DelayedElvUIGVC()
+	local ElvUIGVC = GetChannelName('ElvUIGVC')
+	if not (ElvUIGVC and ElvUIGVC > 0) then
+		local inMaxChannels = select(maxedChannels, GetChannelList())
+		if not inMaxChannels then
+			JoinPermanentChannel('ElvUIGVC')
+		end
+	end
+
+	E:Delay(5, E.SendMessage)
+end
 
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then
@@ -1612,19 +1628,7 @@ local function HandleCommandBar()
 	end
 end
 
-local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
-local DelayedElvUIGVC = function()
-	local inMaxChannels = select(maxedChannels, GetChannelList())
-	if not inMaxChannels then
-		JoinPermanentChannel('ElvUIGVC')
-	end
-
-	E:Delay(5, SendRecieve)
-end
-
 function E:Initialize(loginFrame)
-	E:Delay(30, DelayedElvUIGVC)
-
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
