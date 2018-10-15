@@ -911,6 +911,8 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	elseif IsInGuild() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+	else
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", GetChannelName("ElvUIGVC"))
 	end
 
 	if E.SendMSGTimer then
@@ -948,6 +950,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	end
 end
 
+JoinTemporaryChannel('ElvUIGVC')
 C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
