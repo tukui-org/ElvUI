@@ -922,7 +922,6 @@ local SendRecieveGroupSize = -1 --this is negative one so that the first check w
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
-	print(event, prefix, message, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if (sender == myName) then
 			return
@@ -1605,7 +1604,7 @@ local function HandleCommandBar()
 end
 
 function E:Initialize(loginFrame)
-	JoinPermanentChannel('ElvUIGVC')
+	E:Delay(30, function() JoinPermanentChannel('ElvUIGVC') end)
 
 	twipe(self.db)
 	twipe(self.global)
