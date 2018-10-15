@@ -114,7 +114,7 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 end
 
-function lib:ConfigLoaded(_, _, addon)
+function lib:ConfigLoaded(_, addon)
 	if addon == 'ElvUI_Config' then
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
