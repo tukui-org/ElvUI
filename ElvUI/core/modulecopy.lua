@@ -4,6 +4,8 @@ local CP = E:NewModule('CopyProfile', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0
 local pairs, next, type = pairs, next, type
 local format, error = format, error
 
+-- GLOBALS: ElvDB
+
 --This table to reserve settings names in E.global.profileCopy. Used in export/imports functions
 --Pligins can add own values for their internal settings for safechecks here
 CP.InternalOptions = {
@@ -238,7 +240,7 @@ end
 
 --Maybe actually not needed at all
 function CP:Initialize()
-	
+
 end
 
 local function InitializeCallback()
