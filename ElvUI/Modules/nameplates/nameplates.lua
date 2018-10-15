@@ -159,6 +159,7 @@ function mod:PLAYER_ENTERING_WORLD()
 	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
 		self:RegisterEvent("UNIT_NAME_UPDATE", 'CheckArenaHealers')
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers')
+		self:CheckArenaHealers()
 	else
 		self:UnregisterEvent("UNIT_NAME_UPDATE")
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
