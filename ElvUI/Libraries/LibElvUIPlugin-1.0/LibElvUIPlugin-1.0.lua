@@ -124,7 +124,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 	elseif loaded then
 		-- Need to update plugins list
 		if name ~= MAJOR then
-			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
+			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 		callback()
 	end
@@ -174,7 +174,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 							plugin.old, plugin.newversion = true, tonumber(version)
 							Pname = GetAddOnMetadata(plugin.name, "Title")
 							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
-							E.pluginRecievedOutOfDateMessage = true
+							ElvUI[1].pluginRecievedOutOfDateMessage = true
 						end
 					end
 				end
@@ -192,7 +192,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		end
 	else
 		if not E.SendPluginVersionCheck then
-			E.SendPluginVersionCheck = SendPluginVersionCheck
+			ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
 		end
 
 		if not lib.SendMessageTimer then
