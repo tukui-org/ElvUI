@@ -22,13 +22,13 @@ function E:UIScale(event, loginFrame)
 
 	local minScale = E.global.general.minUiScale or 0.64
 	if E.global.general.autoScale then
-		scale = max(minScale, min(1.15, 768/height));
+		scale = max(minScale, min(1.15, 768/height))
 	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()));
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()))
 	end
 
 	if width < 1600 then
-		E.lowversion = true;
+		E.lowversion = true
 	elseif width >= 3840 and E.global.general.eyefinity then
 		-- because some user enable bezel compensation, we need to find the real width of a single monitor.
 		-- I don't know how it really work, but i'm assuming they add pixel to width to compensate the bezel. :P
@@ -49,11 +49,11 @@ function E:UIScale(event, loginFrame)
 
 		-- yep, now set ElvUI to lower resolution if screen #1 width < 1600
 		if width < 1600 then
-			E.lowversion = true;
+			E.lowversion = true
 		end
 
 		-- register a constant, we will need it later for launch.lua
-		E.eyefinity = width;
+		E.eyefinity = width
 	end
 
 	E.mult = 768/height/scale
@@ -63,8 +63,8 @@ function E:UIScale(event, loginFrame)
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
 		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) then
-			SetCVar("useUiScale", 1);
-			SetCVar("uiScale", scale);
+			SetCVar("useUiScale", 1)
+			SetCVar("uiScale", scale)
 		end
 
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
@@ -78,17 +78,17 @@ function E:UIScale(event, loginFrame)
 		if E.eyefinity then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
 			if not E.global.general.autoScale or height > 1200 then
-				local h = UIParent:GetHeight();
-				local ratio = height / h;
-				local w = width / ratio;
+				local h = UIParent:GetHeight()
+				local ratio = (height / h)
+				local w = (width / ratio)
 
-				width = w;
-				height = h;
+				width = w
+				height = h
 			end
 			--[[ Eyefinity Test mode
 					--Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 					--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-				E.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
+				E.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250)
 			]]
 		else
 			width, height = UIParent:GetSize()
@@ -96,12 +96,12 @@ function E:UIScale(event, loginFrame)
 
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
-		E.UIParent:ClearAllPoints();
+		E.UIParent:ClearAllPoints()
 
 		if E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-			E.UIParent:Point("BOTTOM");
+			E.UIParent:Point("BOTTOM")
 		else
-			E.UIParent:Point("CENTER");
+			E.UIParent:Point("CENTER")
 		end
 
 		--Calculate potential coordinate differences
@@ -131,5 +131,5 @@ end
 
 -- pixel perfect script of custom ui scale.
 function E:Scale(x)
-	return E.mult * floor(x/E.mult+.5);
+	return E.mult * floor(x/E.mult+.5)
 end
