@@ -96,6 +96,16 @@ function CP:CreateMoversConfigGroup()
 			set = function(info, value) E.global.profileCopy.movers[moverName] = value; end
 		}
 	end
+	for moverName, data in pairs(E.DisabledMovers) do
+		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
+		config[moverName] = {
+			order = 1,
+			type = "toggle",
+			name = data.text,
+			get = function(info) return E.global.profileCopy.movers[moverName] end,
+			set = function(info, value) E.global.profileCopy.movers[moverName] = value; end
+		}
+	end
 	return config
 end
 
