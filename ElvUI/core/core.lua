@@ -28,7 +28,8 @@ local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetNumGroupMembers = GetNumGroupMembers
+local GetChannelName = GetChannelName
+local JoinPermanentChannel = JoinPermanentChannel
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -918,35 +919,24 @@ function E:SendMessage()
 	end
 end
 
-local SendRecieveGroupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if (sender == myName) then
-			return
-		end
-
+		if sender == myName then return end
 		if prefix == "ELVUI_VERSIONCHK" then
-			if (not E.recievedOutOfDateMessage) and (tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
+			local msg, ver = tonumber(message), tonumber(E.version)
+			if (not E.recievedOutOfDateMessage) and (msg ~= nil and msg > ver) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-				if((tonumber(message) - tonumber(E.version)) >= 0.05) then
+				if msg ~= nil and ((msg - ver) >= 0.05) then
 					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				end
 
 				E.recievedOutOfDateMessage = true
-			elseif (tonumber(message) ~= nil and tonumber(message) < tonumber(E.version)) then -- Send Message Back if you intercept and are higher revision
+			elseif msg ~= nil and (msg < ver) then -- Send Message Back if you intercept and are higher revision
 				E:ScheduleTimer('SendMessage', 10)
 			end
-		end
-	elseif event == "GROUP_ROSTER_UPDATE" then
-		local num = GetNumGroupMembers()
-		if num ~= SendRecieveGroupSize then
-			if num > 1 and num > SendRecieveGroupSize then
-				E:ScheduleTimer('SendMessage', 10)
-			end
-			SendRecieveGroupSize = num
 		end
 	else
 		E:ScheduleTimer('SendMessage', 10)
@@ -956,9 +946,7 @@ end
 C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
-f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("CHAT_MSG_ADDON")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
@@ -1603,8 +1591,13 @@ local function HandleCommandBar()
 	end
 end
 
+local DelayedElvUIGVC = function()
+	JoinPermanentChannel('ElvUIGVC')
+	E:Delay(5, SendRecieve)
+end
+
 function E:Initialize(loginFrame)
-	E:Delay(30, function() JoinPermanentChannel('ElvUIGVC') end)
+	E:Delay(30, DelayedElvUIGVC)
 
 	twipe(self.db)
 	twipe(self.global)
