@@ -98,7 +98,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 	return plugin
 end
 
-local function SendPluginVersionCheck()
+local function SendVersionCheckMessage()
 	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
 end
 
@@ -106,7 +106,7 @@ function lib:DelayedSendVersionCheck(delay)
 	local E = ElvUI[1]
 
 	if not E.SendPluginVersionCheck then
-		ElvUI[1].SendPluginVersionCheck = SendPluginVersionCheck
+		ElvUI[1].SendPluginVersionCheck = SendVersionCheckMessage
 	end
 
 	if not lib.SendMessageTimer then
@@ -182,7 +182,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
-				lib:DelayedSendVersionCheck(10)
+				lib:DelayedSendVersionCheck()
 			end
 			lib.groupSize = num
 		end
