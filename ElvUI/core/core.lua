@@ -37,6 +37,7 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UnitFactionGroup = UnitFactionGroup
+local GetChannelList = GetChannelList
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
@@ -1592,8 +1593,13 @@ local function HandleCommandBar()
 	end
 end
 
+local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
 local DelayedElvUIGVC = function()
-	JoinPermanentChannel('ElvUIGVC')
+	local inMaxChannels = select(maxedChannels, GetChannelList())
+	if not inMaxChannels then
+		JoinPermanentChannel('ElvUIGVC')
+	end
+
 	E:Delay(5, SendRecieve)
 end
 
