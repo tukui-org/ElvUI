@@ -981,7 +981,7 @@ function E:DelayedElvUIGVC()
 	if not (ElvUIGVC and ElvUIGVC > 0) then
 		local inMaxChannels = select(maxedChannels, GetChannelList())
 		if not inMaxChannels then
-			JoinPermanentChannel('ElvUIGVC')
+			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
 		end
 	end
 
