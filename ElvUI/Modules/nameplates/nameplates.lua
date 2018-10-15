@@ -897,11 +897,9 @@ end
 
 function mod:RegisterEvents(frame, unit)
 	local displayedUnit
+	if not unit then unit = frame.unit end
 	if unit ~= frame.displayedUnit then
 		displayedUnit = frame.displayedUnit
-	end
-	if not unit then
-		unit = frame.unit
 	end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
