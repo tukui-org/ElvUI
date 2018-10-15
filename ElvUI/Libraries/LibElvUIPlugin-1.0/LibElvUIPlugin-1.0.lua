@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 21
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 22
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -78,8 +78,10 @@ function lib:RegisterPlugin(name,callback, isLib)
 
 	if not lib.vcframe then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
+		JoinTemporaryChannel('ElvUIGVC')
 		local f = CreateFrame('Frame')
 		f:RegisterEvent("GROUP_ROSTER_UPDATE")
+		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:RegisterEvent("CHAT_MSG_ADDON")
 		f:SetScript('OnEvent', lib.VersionCheck)
 		lib.vcframe = f
@@ -213,23 +215,33 @@ end
 
 function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, "^%s-$") then return end
+	local ChatType, Channel
 
-	local ChatType = ((not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) or (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE))) and "INSTANCE_CHAT" or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or (IsInGuild() and 'GUILD') or nil
-	if not ChatType then return end
+	if IsInRaid() then
+		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
+	elseif IsInGroup() then
+		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
+	else
+		if GetChannelName('ElvUIGVC') then
+			ChatType, Channel = "CHANNEL", GetChannelName('ElvUIGVC')
+		elseif IsInGuild() then
+			ChatType = "GUILD"
+		end
+	end
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
 		local splitMessage
-		for _=1, ceil(msgLength/maxChar) do
+		for _ = 1, ceil(msgLength/maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, "^"..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), "")
-				ElvUI[1]:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
+				ElvUI[1]:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
 			end
 		end
 	else
-		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType)
+		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
 	end
 end
 
