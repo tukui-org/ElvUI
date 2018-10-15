@@ -16,6 +16,7 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local UNKNOWN = UNKNOWN
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUI
 
@@ -166,13 +167,13 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			for _, p in pairs({strsplit(';',message)}) do
 				if not strmatch(p, '^%s-$') then
 					name, version = strmatch(p, '([%w_]+)=([%d%p]+)')
-					if lib.plugins[name] then
-						plugin = lib.plugins[name]
-						Pver = tonumber(plugin.version)
-						ver = tonumber(version)
-						if (version ~= nil and plugin.version ~= nil and plugin.version ~= 'BETA') and (ver ~= nil and Pver ~= nil) and (ver > Pver) then
+					plugin = name and lib.plugins[name]
+
+					if version and plugin and plugin.version and (plugin.version ~= 'BETA') then
+						Pver, ver = tonumber(plugin.version), tonumber(version)
+						if (ver and Pver) and (ver > Pver) then
 							plugin.old, plugin.newversion = true, ver
-							Pname = GetAddOnMetadata(plugin.name, 'Title')
+							Pname = plugin.name and GetAddOnMetadata(plugin.name, 'Title') or UNKNOWN
 							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 							ElvUI[1].pluginRecievedOutOfDateMessage = true
 						end
