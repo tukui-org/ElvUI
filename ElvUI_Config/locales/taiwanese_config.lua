@@ -1191,6 +1191,8 @@ L["The Portrait will overlay the Healthbar. This will be automatically happen if
 L["Overlay"] = "重疊顯示"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "複寫可見性的設定, 例如: 在10人副本里只顯示1隊和2隊."
 L["Override the default class color setting."] = "覆蓋默認職業色設置."
+L["Over Absorbs"] = true
+L["Over Heal Absorbs"] = true
 L["Owners Name"] = "所有者姓名"
 L["Parent"] = "跟隨框架"
 L["Party Pets"] = "隊伍寵物"

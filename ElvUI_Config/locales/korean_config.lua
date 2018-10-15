@@ -1239,6 +1239,8 @@ L["The Portrait will overlay the Healthbar. This will be automatically happen if
 L["Overlay"] = "덮어씌우기"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "현재 입던해있는 던전의 상태에 맞춰 표시할 파티수를 자동으로 제한합니다.|n|n예로 10인 인스안에 있으면 1,2파티만 표시됩니다."
 L["Override the default class color setting."] = "이 유닛프레임의 체력바에만 직업색을 적용하도록 따로 설정하는 것이 가능합니다."
+L["Over Absorbs"] = true
+L["Over Heal Absorbs"] = true
 L["Owners Name"] = "주인 이름"
 L["Parent"] = true
 L["Party Pets"] = "파티원 소환수"

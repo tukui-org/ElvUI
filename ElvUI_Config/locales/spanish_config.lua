@@ -1190,6 +1190,8 @@ L["The Portrait will overlay the Healthbar. This will be automatically happen if
 L["Overlay"] = "Recubrir"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Sobrescribir cualquier opción de visibilidad en ciertas situaciones, Ej: Sólo mostrar grupos 1 y 2 dentro de una mazmorra de banda de 10 personas."
 L["Override the default class color setting."] = "Ignorar el ajuste predeterminado del color de clase."
+L["Over Absorbs"] = true
+L["Over Heal Absorbs"] = true
 L["Owners Name"] = true
 L["Parent"] = true
 L["Party Pets"] = "Mascotas de Grupo"

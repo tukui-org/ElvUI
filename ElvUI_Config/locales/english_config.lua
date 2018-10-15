@@ -1179,6 +1179,8 @@ L["The Portrait will overlay the Healthbar. This will be automatically happen if
 L["Overlay"] = true
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = true
 L["Override the default class color setting."] = true
+L["Over Absorbs"] = true
+L["Over Heal Absorbs"] = true
 L["Owners Name"] = true
 L["Parent"] = true
 L["Party Pets"] = true
