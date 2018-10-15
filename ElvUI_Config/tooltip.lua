@@ -46,9 +46,9 @@ E.Options.args.tooltip = {
 					type = 'select',
 					name = L["Cursor Anchor Type"],
 					values = {
-						["ANCHOR_CURSOR"] = "ANCHOR_CURSOR",
-						["ANCHOR_CURSOR_LEFT"] = "ANCHOR_CURSOR_LEFT",
-						["ANCHOR_CURSOR_RIGHT"] = "ANCHOR_CURSOR_RIGHT",
+						["ANCHOR_CURSOR"] = L["ANCHOR_CURSOR"],
+						["ANCHOR_CURSOR_LEFT"] = L["ANCHOR_CURSOR_LEFT"],
+						["ANCHOR_CURSOR_RIGHT"] = L["ANCHOR_CURSOR_RIGHT"],
 					},
 					disabled = function() return (not E.db.tooltip.cursorAnchor) end,
 				},
