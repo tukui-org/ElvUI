@@ -23,7 +23,7 @@ local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGr
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded, DisableAddOn = IsAddOnLoaded, DisableAddOn
-local IsInInstance, IsInGroup, IsInRaid, IsInGuild = IsInInstance, IsInGroup, IsInRaid, IsInGuild
+local IsInInstance, IsInGuild = IsInInstance, IsInGuild
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -33,8 +33,6 @@ local JoinPermanentChannel = JoinPermanentChannel
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
-local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UnitFactionGroup = UnitFactionGroup
 local GetChannelList = GetChannelList
@@ -907,17 +905,11 @@ function E:SplitString(s, delim)
 end
 
 function E:SendMessage()
-	if IsInRaid() then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
-	elseif IsInGroup() then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
-		elseif IsInGuild() then
-			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
-		end
+	local ElvUIGVC = GetChannelName('ElvUIGVC')
+	if ElvUIGVC and ElvUIGVC > 0 then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
+	elseif IsInGuild() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	end
 end
 

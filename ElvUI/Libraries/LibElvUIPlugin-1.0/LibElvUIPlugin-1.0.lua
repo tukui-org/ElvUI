@@ -7,14 +7,11 @@ if not lib then return end
 local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
 local format, strsplit, strlen, gsub, ceil = format, strsplit, strlen, gsub, ceil
 --WoW API / Variables
-local GetLocale = GetLocale
+local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
-local IsInGroup, IsInRaid, IsInGuild = IsInGroup, IsInRaid, IsInGuild
 local GetAddOnMetadata, GetChannelName = GetAddOnMetadata, GetChannelName
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
-local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUI
@@ -213,17 +210,11 @@ function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, "^%s-$") then return end
 	local ChatType, Channel
 
-	if IsInRaid() then
-		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
-	elseif IsInGroup() then
-		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			ChatType, Channel = "CHANNEL", ElvUIGVC
-		elseif IsInGuild() then
-			ChatType = "GUILD"
-		end
+	local ElvUIGVC = GetChannelName('ElvUIGVC')
+	if ElvUIGVC and ElvUIGVC > 0 then
+		ChatType, Channel = "CHANNEL", ElvUIGVC
+	elseif IsInGuild() then
+		ChatType = "GUILD"
 	end
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
