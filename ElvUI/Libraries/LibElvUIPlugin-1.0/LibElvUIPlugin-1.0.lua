@@ -22,6 +22,7 @@ local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 lib.plugins = {}
 lib.index = 0
+lib.groupSize = 0
 lib.prefix = "ElvUIPluginVC"
 
 -- MULTI Language Support (Default Language: English)
