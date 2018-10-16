@@ -1187,7 +1187,8 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 		local plate = self.PlateGUIDs[targetGUID]
 		if plate and (plate.unitFrame and plate.unitFrame.CastBar) then
 			local db = plate.unitFrame.UnitType and self.db and self.db.units and self.db.units[plate.unitFrame.UnitType]
-			if db and db.castbar and db.castbar.sourceInterrupt then
+			local healthBar = (db and db.healthbar and db.healthbar.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
+			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				local holdTime = db.castbar.timeToHold
 				if holdTime > 0 then
 					if db.castbar.sourceInterruptClassColor then
