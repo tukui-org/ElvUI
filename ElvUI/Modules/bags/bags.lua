@@ -2039,7 +2039,7 @@ function B:ProgressQuickVendor()
 	if not item then return nil, true end --No more to sell
 	local bag, slot,itemPrice, link = unpack(item)
 
-	local goldGained, stackPrice, _ = 0
+	local stackPrice = 0
 	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 	if B.SellFrame.Info.delete then
 		PickupContainerItem(bag, slot)

@@ -102,7 +102,7 @@ local function CreateBagsConfig()
 	config.args.split = {
 		order = 4,
 		type = "toggle",
-		name = L['Split'],
+		name = L["Split"],
 		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
 	}
@@ -337,7 +337,7 @@ local function CreateUnitframesConfig()
 			["frameGlow"] = {
 				order = 6,
 				type = "toggle",
-				name = L['Frame Glow'],
+				name = L["Frame Glow"],
 			},
 			["debuffHighlight"] = {
 				order = 7,
