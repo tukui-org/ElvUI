@@ -365,7 +365,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 		if E.db.tooltip.role then
 			local role, r, g, b = UnitGroupRolesAssigned(unit)
-			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= LOCALE.NONE) then
+			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "None") then
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
 				elseif role == "TANK" then
