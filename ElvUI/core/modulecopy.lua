@@ -41,13 +41,25 @@ function CP:CreateModuleConfigGroup(Name, section, pluginSection)
 				order = 201,
 				type = "execute",
 				name = L["Import Now"],
-				func = function() CP:ImportFromProfile(section, pluginSection) end,
+				func = function()
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB["profileKeys"][E.myname..' - '..E.myrealm])
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+						CP:ImportFromProfile(section, pluginSection)
+					end
+					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+				end,
 			},
 			export = {
 				order = 202,
 				type = "execute",
 				name = L["Export Now"],
-				func = function() CP:ExportToProfile(section, pluginSection) end,
+				func = function()
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB["profileKeys"][E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+						CP:ExportToProfile(section, pluginSection)
+					end
+					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+				end,
 			},
 		},
 	}
@@ -79,13 +91,25 @@ function CP:CreateMoversConfigGroup()
 			order = 201,
 			type = "execute",
 			name = L["Import Now"],
-			func = function() CP:CopyMovers("import") end,
+			func = function()
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB["profileKeys"][E.myname..' - '..E.myrealm])
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					CP:CopyMovers("import")
+				end
+				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+			end,
 		},
 		export = {
 			order = 202,
 			type = "execute",
 			name = L["Export Now"],
-			func = function() CP:CopyMovers("export") end,
+			func = function()
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB["profileKeys"][E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					CP:CopyMovers("export")
+				end
+				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+			end,
 		},
 	}
 	for moverName, data in pairs(E.CreatedMovers) do
