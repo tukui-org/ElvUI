@@ -962,7 +962,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		end
 	elseif event == "LOADING_SCREEN_DISABLED" then
 		if not SendMessageWaiting then
-			SendMessageWaiting = E:Delay(5, E.DelayedElvUIGVC)
+			SendMessageWaiting = E:Delay(30, E.DelayedElvUIGVC) -- attempt to join channel 30 seconds after event, then 5 seconds after that send message
 		end
 	end
 end
@@ -985,7 +985,7 @@ function E:DelayedElvUIGVC()
 	end
 
 	if not SendMessageWaiting then
-		SendMessageWaiting = E:Delay(5, E.SendMessage)
+		SendMessageWaiting = E:Delay(5, E.SendMessage) -- this is really 30+5, so 35.
 	end
 end
 

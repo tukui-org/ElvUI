@@ -105,7 +105,7 @@ local function SendVersionCheckMessage()
 	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
 end
 
-function lib:DelayedSendVersionCheck()
+function lib:DelayedSendVersionCheck(delay)
 	local E = ElvUI[1]
 
 	if not E.SendPluginVersionCheck then
@@ -113,7 +113,7 @@ function lib:DelayedSendVersionCheck()
 	end
 
 	if not lib.SendMessageWaiting then
-		lib.SendMessageWaiting = E:Delay(10, ElvUI[1].SendPluginVersionCheck)
+		lib.SendMessageWaiting = E:Delay(delay or 10, ElvUI[1].SendPluginVersionCheck)
 	end
 end
 
@@ -192,7 +192,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			lib.groupSize = num
 		end
 	elseif event == 'LOADING_SCREEN_DISABLED' then
-		lib:DelayedSendVersionCheck()
+		lib:DelayedSendVersionCheck(35) -- 35 seconds is same as core send version check time
 	end
 end
 
