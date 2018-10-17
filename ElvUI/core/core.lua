@@ -962,7 +962,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		end
 	elseif event == "LOADING_SCREEN_DISABLED" then
 		if not SendMessageTimer then
-			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 5)
+			E:Delay(5, function() SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 5) end)
 		end
 	end
 end
