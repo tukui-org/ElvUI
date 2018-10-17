@@ -914,13 +914,8 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
-		elseif IsInGuild() then
-			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
-		end
+	elseif IsInGuild() then
+		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 	end
 
 	SendMessageWaiting = nil
@@ -960,9 +955,9 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 			SendRecieveGroupSize = num
 		end
-	elseif event == "LOADING_SCREEN_DISABLED" then
+	elseif event == "PLAYER_ENTERING_WORLD" then
 		if not SendMessageWaiting then
-			SendMessageWaiting = E:Delay(30, E.DelayedElvUIGVC) -- attempt to join channel 30 seconds after event, then 5 seconds after that send message
+			SendMessageWaiting = E:Delay(10, E.SendMessage)
 		end
 	end
 end
@@ -972,22 +967,8 @@ C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:RegisterEvent("LOADING_SCREEN_DISABLED")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", SendRecieve)
-
-function E:DelayedElvUIGVC()
-	local ElvUIGVC = GetChannelName('ElvUIGVC')
-	if not (ElvUIGVC and ElvUIGVC > 0) then
-		local canAddChannel = ChatFrame_CanAddChannel()
-		if canAddChannel then
-			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
-		end
-	end
-
-	if not SendMessageWaiting then
-		SendMessageWaiting = E:Delay(5, E.SendMessage) -- this is really 30+5, so 35.
-	end
-end
 
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then

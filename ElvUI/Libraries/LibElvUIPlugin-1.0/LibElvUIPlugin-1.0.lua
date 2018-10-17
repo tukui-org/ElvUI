@@ -82,7 +82,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
 		lib.VCFrame:RegisterEvent('GROUP_ROSTER_UPDATE')
-		lib.VCFrame:RegisterEvent('LOADING_SCREEN_DISABLED')
+		lib.VCFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		lib.registeredPrefix = true
 	end
 
@@ -191,8 +191,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			end
 			lib.groupSize = num
 		end
-	elseif event == 'LOADING_SCREEN_DISABLED' then
-		lib:DelayedSendVersionCheck(35) -- 35 seconds is same as core send version check time
+	elseif event == 'PLAYER_ENTERING_WORLD' then
+		lib:DelayedSendVersionCheck()
 	end
 end
 
@@ -224,18 +224,13 @@ function lib:SendPluginVersionCheck(message)
 		return
 	end
 
-	local ChatType, Channel
+	local ChatType
 	if IsInRaid() then
 		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID'
 	elseif IsInGroup() then
 		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY'
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			ChatType, Channel = 'CHANNEL', ElvUIGVC
-		elseif IsInGuild() then
-			ChatType = 'GUILD'
-		end
+	elseif IsInGuild() then
+		ChatType = 'GUILD'
 	end
 
 	if not ChatType then
@@ -250,14 +245,14 @@ function lib:SendPluginVersionCheck(message)
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
-				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
+				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
 		end
 
 		E:Delay(delay, lib.ClearSendMessageWait)
 	else
-		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
+		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType)
 		lib.ClearSendMessageWait()
 	end
 end
