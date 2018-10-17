@@ -71,7 +71,8 @@ local LOCALE = {
 	LEVEL = LEVEL,
 	TARGET = TARGET,
 	DEAD = DEAD,
-	FACTION_ALLIANCE = FACTION_ALLIANCE
+	FACTION_ALLIANCE = FACTION_ALLIANCE,
+	NONE = NONE
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
