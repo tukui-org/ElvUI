@@ -112,8 +112,8 @@ function lib:DelayedSendVersionCheck()
 		ElvUI[1].SendPluginVersionCheck = SendVersionCheckMessage
 	end
 
-	if not lib.SendMessageTimer then
-		lib.SendMessageTimer = E:Delay(10, ElvUI[1].SendPluginVersionCheck)
+	if not lib.SendMessageWaiting then
+		lib.SendMessageWaiting = E:Delay(10, ElvUI[1].SendPluginVersionCheck)
 	end
 end
 
@@ -214,13 +214,13 @@ function lib:GeneratePluginList()
 	return list
 end
 
-function lib:ClearSendMessageTimer()
-	lib.SendMessageTimer = nil
+function lib:ClearSendMessageWait()
+	lib.SendMessageWaiting = nil
 end
 
 function lib:SendPluginVersionCheck(message)
 	if (not message) or strmatch(message, '^%s-$') then
-		lib.ClearSendMessageTimer()
+		lib.ClearSendMessageWait()
 		return
 	end
 
@@ -239,7 +239,7 @@ function lib:SendPluginVersionCheck(message)
 	end
 
 	if not ChatType then
-		lib.ClearSendMessageTimer()
+		lib.ClearSendMessageWait()
 		return
 	end
 
@@ -255,10 +255,10 @@ function lib:SendPluginVersionCheck(message)
 			end
 		end
 
-		E:Delay(delay, lib.ClearSendMessageTimer)
+		E:Delay(delay, lib.ClearSendMessageWait)
 	else
 		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
-		lib.ClearSendMessageTimer()
+		lib.ClearSendMessageWait()
 	end
 end
 

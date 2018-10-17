@@ -908,7 +908,7 @@ function E:SplitString(s, delim)
 	return unpack(t)
 end
 
-local SendMessageTimer -- prevent setting multiple timers at once
+local SendMessageWaiting -- only allow 1 delay at a time regardless of eventing
 function E:SendMessage()
 	if IsInRaid() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
@@ -923,7 +923,7 @@ function E:SendMessage()
 		end
 	end
 
-	SendMessageTimer = nil
+	SendMessageWaiting = nil
 end
 
 local SendRecieveGroupSize = 0
@@ -945,8 +945,8 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 					E.recievedOutOfDateMessage = true
 				end
 			elseif msg and (msg < ver) then -- Send Message Back if you intercept and are higher revision
-				if not SendMessageTimer then
-					SendMessageTimer = E:Delay(10, E.SendMessage)
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
 				end
 			end
 		end
@@ -954,15 +954,15 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= SendRecieveGroupSize then
 			if num > 1 and num > SendRecieveGroupSize then
-				if not SendMessageTimer then
-					SendMessageTimer = E:Delay(10, E.SendMessage)
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
 				end
 			end
 			SendRecieveGroupSize = num
 		end
 	elseif event == "LOADING_SCREEN_DISABLED" then
-		if not SendMessageTimer then
-			SendMessageTimer = E:Delay(5, E.DelayedElvUIGVC)
+		if not SendMessageWaiting then
+			SendMessageWaiting = E:Delay(5, E.DelayedElvUIGVC)
 		end
 	end
 end
@@ -984,8 +984,8 @@ function E:DelayedElvUIGVC()
 		end
 	end
 
-	if not SendMessageTimer then
-		SendMessageTimer = E:Delay(5, E.SendMessage)
+	if not SendMessageWaiting then
+		SendMessageWaiting = E:Delay(5, E.SendMessage)
 	end
 end
 
