@@ -45,7 +45,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
--- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
+-- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap, ChatFrame_CanAddChannel
 -- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
 -- GLOBALS: DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, ElvDB
 
@@ -946,7 +946,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 				end
 			elseif msg and (msg < ver) then -- Send Message Back if you intercept and are higher revision
 				if not SendMessageTimer then
-					SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
+					SendMessageTimer = E:Delay(10, E.SendMessage)
 				end
 			end
 		end
@@ -955,14 +955,14 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if num ~= SendRecieveGroupSize then
 			if num > 1 and num > SendRecieveGroupSize then
 				if not SendMessageTimer then
-					SendMessageTimer = E:ScheduleTimer('SendMessage', 10)
+					SendMessageTimer = E:Delay(10, E.SendMessage)
 				end
 			end
 			SendRecieveGroupSize = num
 		end
 	elseif event == "LOADING_SCREEN_DISABLED" then
 		if not SendMessageTimer then
-			E:Delay(5, function() SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 5) end)
+			SendMessageTimer = E:Delay(5, E.DelayedElvUIGVC)
 		end
 	end
 end
@@ -975,17 +975,18 @@ f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("LOADING_SCREEN_DISABLED")
 f:SetScript("OnEvent", SendRecieve)
 
-local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
 function E:DelayedElvUIGVC()
 	local ElvUIGVC = GetChannelName('ElvUIGVC')
 	if not (ElvUIGVC and ElvUIGVC > 0) then
-		local inMaxChannels = select(maxedChannels, GetChannelList())
-		if not inMaxChannels then
+		local canAddChannel = ChatFrame_CanAddChannel()
+		if canAddChannel then
 			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
 		end
 	end
 
-	E:Delay(5, E.SendMessage)
+	if not SendMessageTimer then
+		SendMessageTimer = E:Delay(5, E.SendMessage)
+	end
 end
 
 function E:UpdateAll(ignoreInstall)

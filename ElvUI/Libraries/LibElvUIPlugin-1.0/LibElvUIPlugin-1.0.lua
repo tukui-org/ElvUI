@@ -105,7 +105,7 @@ local function SendVersionCheckMessage()
 	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
 end
 
-function lib:DelayedSendVersionCheck(delay)
+function lib:DelayedSendVersionCheck()
 	local E = ElvUI[1]
 
 	if not E.SendPluginVersionCheck then
@@ -113,7 +113,7 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 
 	if not lib.SendMessageTimer then
-		lib.SendMessageTimer = E:ScheduleTimer('SendPluginVersionCheck', delay or 10)
+		lib.SendMessageTimer = E:Delay(10, ElvUI[1].SendPluginVersionCheck)
 	end
 end
 
@@ -252,9 +252,10 @@ function lib:SendPluginVersionCheck(message)
 				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
 				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
-				E:Delay(delay, lib.ClearSendMessageTimer) -- keep this after `delay = delay + 1`
 			end
 		end
+
+		E:Delay(delay, lib.ClearSendMessageTimer)
 	else
 		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
 		lib.ClearSendMessageTimer()
