@@ -363,16 +363,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 
 		if E.db.tooltip.role then
-			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) then
-				local role, r, g, b = UnitGroupRolesAssigned(unit), 1, 1, 1
+			local role, r, g, b = UnitGroupRolesAssigned(unit), 1, 1, 1
+			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= LOCALE.NONE) then
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
 				elseif role == "TANK" then
 					role, r, g, b = L["Tank"], .16, .31, .61
 				elseif role == "DAMAGER" then
 					role, r, g, b = L["DPS"], .77, .12, .24
-				else
-					role = LOCALE.NONE
 				end
 
 				GameTooltip:AddDoubleLine(ROLE, role, nil, nil, nil, r, g, b)
