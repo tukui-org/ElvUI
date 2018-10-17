@@ -981,7 +981,7 @@ function E:DelayedElvUIGVC()
 	if not (ElvUIGVC and ElvUIGVC > 0) then
 		local inMaxChannels = select(maxedChannels, GetChannelList())
 		if not inMaxChannels then
-			C_Timer.After(.5, function() JoinPermanentChannel('ElvUIGVC', nil, nil, true) end)
+			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
 		end
 	end
 
