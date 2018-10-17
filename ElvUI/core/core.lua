@@ -974,7 +974,7 @@ f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f.delayedGVC = function(frame, elapsed)
 	frame.delay = (frame.delay or 0) + elapsed
-	if frame.delay < 10 then return end
+	if frame.delay < 5 then return end
 
 	frame:SetScript("OnUpdate", nil)
 	E:DelayedElvUIGVC()
