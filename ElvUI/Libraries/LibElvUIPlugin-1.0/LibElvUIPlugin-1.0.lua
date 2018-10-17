@@ -82,7 +82,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
 		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
 		lib.VCFrame:RegisterEvent('GROUP_ROSTER_UPDATE')
-		lib.VCFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		lib.VCFrame:RegisterEvent('LOADING_SCREEN_DISABLED')
 		lib.registeredPrefix = true
 	end
 
@@ -191,8 +191,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			end
 			lib.groupSize = num
 		end
-	elseif event == 'PLAYER_ENTERING_WORLD' then
-		lib:DelayedSendVersionCheck(30)
+	elseif event == 'LOADING_SCREEN_DISABLED' then
+		lib:DelayedSendVersionCheck()
 	end
 end
 

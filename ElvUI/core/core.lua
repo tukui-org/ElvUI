@@ -960,9 +960,9 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			end
 			SendRecieveGroupSize = num
 		end
-	elseif event == "PLAYER_ENTERING_WORLD" then
+	elseif event == "LOADING_SCREEN_DISABLED" then
 		if not SendMessageTimer then
-			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 30)
+			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 5)
 		end
 	end
 end
@@ -972,7 +972,7 @@ C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:RegisterEvent("LOADING_SCREEN_DISABLED")
 f:SetScript("OnEvent", SendRecieve)
 
 local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
@@ -985,7 +985,7 @@ function E:DelayedElvUIGVC()
 		end
 	end
 
-	E:Delay(10, E.SendMessage)
+	E:Delay(5, E.SendMessage)
 end
 
 function E:UpdateAll(ignoreInstall)
