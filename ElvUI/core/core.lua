@@ -927,7 +927,7 @@ function E:SendMessage()
 	end
 
 	if simpyMeraTesting then
-		print('!! Sent Message !!', (GetTime()))
+		print('!! Sent Message !!')
 	end
 
 	SendMessageTimer = nil
@@ -945,7 +945,7 @@ local function SendRecieve(frame, event, prefix, message, derp, sender, ...)
 		if event ~= "LOADING_SCREEN_DISABLED" then
 			return
 		else
-			print('!! LOADING_SCREEN_DISABLED !!', (GetTime()))
+			print('!! LOADING_SCREEN_DISABLED !!')
 		end
 	end
 
@@ -1006,7 +1006,7 @@ function E:DelayedElvUIGVC()
 		if not inMaxChannels then
 			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
 			if simpyMeraTesting then
-				print('!! Joined Channel !!', (GetTime()))
+				print('!! Joined Channel !!')
 			end
 		end
 	end
