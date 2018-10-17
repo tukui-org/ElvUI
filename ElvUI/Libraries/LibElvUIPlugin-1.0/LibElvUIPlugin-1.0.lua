@@ -161,7 +161,7 @@ end
 
 function lib:DelayedCheck(elapsed)
 	self.delay = (self.delay or 0) + elapsed
-	if self.delay < 5 then return end
+	if self.delay < 10 then return end
 
 	self:SetScript('OnUpdate', nil)
 	lib:DelayedSendVersionCheck(6) -- one second after core version check
