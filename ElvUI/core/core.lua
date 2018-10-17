@@ -908,9 +908,6 @@ function E:SplitString(s, delim)
 	return unpack(t)
 end
 
-local simpyMeraTesting = false
-local simpyMeraTable = {}
-
 local SendMessageTimer -- prevent setting multiple timers at once
 function E:SendMessage()
 	if IsInRaid() then
@@ -926,29 +923,13 @@ function E:SendMessage()
 		end
 	end
 
-	if simpyMeraTesting then
-		print('!! Sent Message !!')
-	end
-
 	SendMessageTimer = nil
 end
 
 local SendRecieveGroupSize = 0
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
-local function SendRecieve(frame, event, prefix, message, derp, sender, ...)
-	if simpyMeraTesting then
-		if not simpyMeraTable[event] then
-			print(event, prefix, message, derp, sender, ...)
-			simpyMeraTable[event] = true
-		end
-		if event ~= "LOADING_SCREEN_DISABLED" then
-			return
-		else
-			print('!! LOADING_SCREEN_DISABLED !!')
-		end
-	end
-
+local function SendRecieve(_, event, prefix, message, _, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == myName then return end
 		if prefix == "ELVUI_VERSIONCHK" then
@@ -981,7 +962,7 @@ local function SendRecieve(frame, event, prefix, message, derp, sender, ...)
 		end
 	elseif event == "LOADING_SCREEN_DISABLED" then
 		if not SendMessageTimer then
-			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 10)
+			E:Delay(5, function() SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 5) end)
 		end
 	end
 end
@@ -989,13 +970,9 @@ end
 C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
-if simpyMeraTesting then
-	f:RegisterAllEvents()
-else
-	f:RegisterEvent("CHAT_MSG_ADDON")
-	f:RegisterEvent("GROUP_ROSTER_UPDATE")
-	f:RegisterEvent("LOADING_SCREEN_DISABLED")
-end
+f:RegisterEvent("CHAT_MSG_ADDON")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("LOADING_SCREEN_DISABLED")
 f:SetScript("OnEvent", SendRecieve)
 
 local maxedChannels = (MAX_WOW_CHAT_CHANNELS*3) - 2 -- (id1, name1, disabled1, id2, name2, disabled2, ...)
@@ -1005,9 +982,6 @@ function E:DelayedElvUIGVC()
 		local inMaxChannels = select(maxedChannels, GetChannelList())
 		if not inMaxChannels then
 			JoinPermanentChannel('ElvUIGVC', nil, nil, true)
-			if simpyMeraTesting then
-				print('!! Joined Channel !!')
-			end
 		end
 	end
 
