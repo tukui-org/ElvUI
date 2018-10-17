@@ -962,7 +962,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		if not SendMessageTimer then
-			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 10)
+			SendMessageTimer = E:ScheduleTimer('DelayedElvUIGVC', 30)
 		end
 	end
 end
@@ -985,7 +985,7 @@ function E:DelayedElvUIGVC()
 		end
 	end
 
-	E:Delay(5, E.SendMessage)
+	E:Delay(10, E.SendMessage)
 end
 
 function E:UpdateAll(ignoreInstall)

@@ -192,7 +192,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			lib.groupSize = num
 		end
 	elseif event == 'PLAYER_ENTERING_WORLD' then
-		lib:DelayedSendVersionCheck(15)
+		lib:DelayedSendVersionCheck(30)
 	end
 end
 
