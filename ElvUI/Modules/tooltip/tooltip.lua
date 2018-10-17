@@ -72,7 +72,8 @@ local LOCALE = {
 	TARGET = TARGET,
 	DEAD = DEAD,
 	FACTION_ALLIANCE = FACTION_ALLIANCE,
-	NONE = NONE
+	NONE = NONE,
+	ROLE = ROLE
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -363,7 +364,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 
 		if E.db.tooltip.role then
-			local role, r, g, b = UnitGroupRolesAssigned(unit), 1, 1, 1
+			local role, r, g, b = UnitGroupRolesAssigned(unit)
 			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= LOCALE.NONE) then
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
@@ -373,7 +374,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
 
-				GameTooltip:AddDoubleLine(ROLE, role, nil, nil, nil, r, g, b)
+				GameTooltip:AddDoubleLine(LOCALE.ROLE, role, nil, nil, nil, r, g, b)
 			end
 		end
 
