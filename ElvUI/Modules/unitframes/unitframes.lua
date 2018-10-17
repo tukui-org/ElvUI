@@ -1151,12 +1151,6 @@ function UF:PLAYER_ENTERING_WORLD()
 	end
 end
 
-function UF:PLAYER_STARTED_MOVING()
-	self:Update_AllFrames()
-	UF:UpdateAllHeaders()
-	self:UnregisterEvent("PLAYER_STARTED_MOVING")
-end
-
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
@@ -1358,7 +1352,6 @@ function UF:Initialize()
 
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('PLAYER_STARTED_MOVING')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
