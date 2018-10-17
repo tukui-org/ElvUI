@@ -83,7 +83,6 @@ function lib:RegisterPlugin(name, callback, isLib)
 		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
 		lib.VCFrame:RegisterEvent('GROUP_ROSTER_UPDATE')
 		lib.VCFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-		lib.VCFrame:SetScript('OnUpdate', lib.DelayedCheck)
 		lib.registeredPrefix = true
 	end
 
@@ -159,14 +158,6 @@ function lib:GetPluginOptions()
     }
 end
 
-function lib:DelayedCheck(elapsed)
-	self.delay = (self.delay or 0) + elapsed
-	if self.delay < 5 then return end
-
-	self:SetScript('OnUpdate', nil)
-	lib:DelayedSendVersionCheck(6) -- one second after core version check
-end
-
 function lib:VersionCheck(event, prefix, message, _, sender)
 	local E = ElvUI[1]
 	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
@@ -201,8 +192,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			lib.groupSize = num
 		end
 	elseif event == 'PLAYER_ENTERING_WORLD' then
-		self:SetScript('OnUpdate', lib.DelayedCheck)
-		self.delay = 0
+		lib:DelayedSendVersionCheck(15)
 	end
 end
 
