@@ -93,7 +93,7 @@ function UF:Configure_HealComm(frame)
 			end
 
 			if orientation == "HORIZONTAL" then
-				local width = frame.Health:GetWidth()
+				local width = frame.db.width or frame.Health:GetWidth()
 				local p1 = reverseFill and "RIGHT" or "LEFT"
 				local p2 = reverseFill and "LEFT" or "RIGHT"
 
@@ -143,7 +143,7 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overHealAbsorb:Size(1, 0)
 				end
 			else
-				local height = frame.Health:GetHeight()
+				local height = frame.db.height or frame.Health:GetHeight()
 				local p1 = reverseFill and "TOP" or "BOTTOM"
 				local p2 = reverseFill and "BOTTOM" or "TOP"
 
