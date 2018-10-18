@@ -73,12 +73,19 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
+--Global locales
+L["Color"] = true
+L["Colors"] = true
+L["Font Size"] = true
+L["None"] = true
+
 --ActionBars
 L["Action Paging"] = "Pagination d'action"
 L["ActionBars"] = "Barres d'actions"
 L["Allow Masque to handle the skinning of this element."] = "Autoriser Masque à gérer l'habillage de cet élement."
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "Autoriser les nouveaux sorts à être automatiquement ajoutés dans un emplacement vide d'une barre d'action."
 L["Alpha"] = "Transparence"
+L["ALT-Key"] = true
 L["Anchor Point"] = "Point d'ancrage" --also in unitframes
 L["Auto Add New Spells"] = "Ajouter automatiquement les nouveaux sorts"
 L["Automatic"] = "Automatique"
@@ -100,6 +107,7 @@ L["Color when the text is in the minutes format."] = "Couleur quand le texte est
 L["Color when the text is in the seconds format."] = "Couleur quand le texte est exprimé en seconde."
 L["Cooldown Text"] = "Texte temps de recharge"
 L["Cooldown Override"] = true
+L["CTRL-Key"] = true
 L["Darken Inactive"] = "Foncé Inactif"
 L["Days"] = "Jours"
 L["Desaturate On Cooldown"] = true
@@ -121,6 +129,7 @@ L["Keybind Mode"] = "Mode raccourcis"
 L["Keybind Text"] = "Texte des raccourcis"
 L["Color Keybind Text"] = true
 L["Color Keybind Text when Out of Range, instead of the button."] = true
+L["Lock Actionbars"] = true
 L["Low Threshold"] = "Seuil minimal"
 L["Macro Text"] = "Texte sur Macro"
 L["Masque Support"] = "Support de Maque"
@@ -128,12 +137,14 @@ L["Minutes"] = "Minutes"
 L["Mouse Over"] = "Au survol"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multiplie la hauteur ou la largeur de l'arrière-plan par cette valeur. Très utile si vous souhaitez avoir une barre de plus en arrière-plan."
 L["Not Usable"] = "Non utilisable"
+L["Pickup Actionkey"] = true
 L["Out of Power"] = "Sans ressource"
 L["Out of Range"] = "Hors de portée"
 L["Restore Bar"] = "Restaurer la barre"
 L["Restore the actionbars default settings"] = "Restaure la barre d'actions avec ses paramètres par défaut."
 L["RightClick Self-Cast"] = true
 L["Seconds"] = "Secondes"
+L["Shift Key"] = true
 L["Show Empty Buttons"] = "Voir les emplacements vide"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true
 L["The amount of buttons to display per row."] = "Nombre de boutons à afficher par ligne."

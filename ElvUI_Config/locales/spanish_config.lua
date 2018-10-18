@@ -73,12 +73,19 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
+--Global locales
+L["Color"] = true
+L["Colors"] = true
+L["Font Size"] = true
+L["None"] = true
+
 --ActionBars
 L["Action Paging"] = "Paginación"
 L["ActionBars"] = "Barras de Acción"
 L["Allow Masque to handle the skinning of this element."] = true
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
 L["Alpha"] = "Transparencia"
+L["ALT-Key"] = true
 L["Anchor Point"] = "Punto de Fijación"
 L["Auto Add New Spells"] = true
 L["Automatic"] = true
@@ -100,6 +107,7 @@ L["Color when the text is in the minutes format."] = "Color del texto cuando ten
 L["Color when the text is in the seconds format."] = "Color del texto cuando tenga formato de segundos."
 L["Cooldown Text"] = "Texto de Reutilización"
 L["Cooldown Override"] = true
+L["CTRL-Key"] = true
 L["Darken Inactive"] = true
 L["Days"] = "Días"
 L["Desaturate On Cooldown"] = true
@@ -121,6 +129,7 @@ L["Keybind Mode"] = "Asignar Teclas"
 L["Keybind Text"] = "Mostrar Atajos"
 L["Color Keybind Text"] = true
 L["Color Keybind Text when Out of Range, instead of the button."] = true
+L["Lock Actionbars"] = true
 L["Low Threshold"] = "Umbral Bajo"
 L["Macro Text"] = "Texto de Macro"
 L["Masque Support"] = true
@@ -128,12 +137,14 @@ L["Minutes"] = "Minutos"
 L["Mouse Over"] = "Pasar el ratón sobre"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multiplica el ancho o alto de los fondos por este valor. Es útil si deseas tener más de una barra con fondo."
 L["Not Usable"] = true
+L["Pickup Actionkey"] = true
 L["Out of Power"] = "Sin Poder"
 L["Out of Range"] = "Fuera de Rango"
 L["Restore Bar"] = "Restaurar Barra"
 L["Restore the actionbars default settings"] = "Restaura las barras de acción a los ajustes predeterminados."
 L["RightClick Self-Cast"] = true
 L["Seconds"] = "Segundos"
+L["Shift Key"] = true
 L["Show Empty Buttons"] = true
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true
 L["The amount of buttons to display per row."] = "Número de botones a mostrar por fila"

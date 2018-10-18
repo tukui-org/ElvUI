@@ -73,12 +73,19 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
+--Global locales
+L["Color"] = true
+L["Colors"] = true
+L["Font Size"] = true
+L["None"] = true
+
 --ActionBars
 L["Action Paging"] = "快捷列翻頁"
 L["ActionBars"] = "快捷列"
 L["Allow Masque to handle the skinning of this element."] = "允許 Masque 來處理此元件的皮膚"
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "允許自動將新習得的法術添加到快捷列"
 L["Alpha"] = "透明度"
+L["ALT-Key"] = true
 L["Anchor Point"] = "定位方向"
 L["Auto Add New Spells"] = "自動添加新法術"
 L["Automatic"] = "自動"
@@ -100,6 +107,7 @@ L["Color when the text is in the minutes format."] = "以分顯示的文字顏�
 L["Color when the text is in the seconds format."] = "以秒顯示的文字顏色."
 L["Cooldown Text"] = "冷卻文字"
 L["Cooldown Override"] = "冷卻覆蓋"
+L["CTRL-Key"] = true
 L["Darken Inactive"] = "非啟用者變暗"
 L["Days"] = "天"
 L["Desaturate On Cooldown"] = "冷卻時的飽和度"
@@ -121,6 +129,7 @@ L["Keybind Mode"] = "快捷鍵綁定模式"
 L["Keybind Text"] = "快捷鍵文字"
 L["Color Keybind Text"] = "按鍵文字上色"
 L["Color Keybind Text when Out of Range, instead of the button."] = "在超出射程時給按鍵文字上色，而不是整個技能圖示。"
+L["Lock Actionbars"] = true
 L["Low Threshold"] = "冷卻時間低閥值"
 L["Macro Text"] = "巨集名稱"
 L["Masque Support"] = "Masque 支援"
@@ -128,12 +137,14 @@ L["Minutes"] = "分"
 L["Mouse Over"] = "滑鼠滑過顯示"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "根據此值增加背景的高度或寬度. 一般用來設定在一個背景框裡放置多條快捷列."
 L["Not Usable"] = "無法使用"
+L["Pickup Actionkey"] = true
 L["Out of Power"] = "施放能量不足"
 L["Out of Range"] = "超出施放範圍"
 L["Restore Bar"] = "還原快捷列"
 L["Restore the actionbars default settings"] = "恢復此快捷列的預設設定"
 L["RightClick Self-Cast"] = "右鍵自我施法"
 L["Seconds"] = "秒"
+L["Shift Key"] = true
 L["Show Empty Buttons"] = "顯示空白按鈕"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "當法術仍有可使用次數並在充能時顯示一個倒數動畫"
 L["The amount of buttons to display per row."] = "每行所顯示的按鈕數量."

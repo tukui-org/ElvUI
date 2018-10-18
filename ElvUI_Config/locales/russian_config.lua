@@ -73,12 +73,19 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
+--Global locales
+L["Color"] = true
+L["Colors"] = true
+L["Font Size"] = true
+L["None"] = true
+
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
 L["Allow Masque to handle the skinning of this element."] = "Разрешить Masque обрабатывать этот элемент."
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "Позволить свежевыученным заклинаниям автоматически размещаться в пустых слотах панелей каманд."
 L["Alpha"] = "Прозрачность"
+L["ALT-Key"] = true
 L["Anchor Point"] = "Точка фиксации"
 L["Auto Add New Spells"] = "Автоматически добавлять новые заклинания"
 L["Automatic"] = "Автоматически"
@@ -100,6 +107,7 @@ L["Color when the text is in the minutes format."] = "Цвет текста вр
 L["Color when the text is in the seconds format."] = "Цвет текста времени восстановления в секундах."
 L["Cooldown Text"] = "Текст восстановления"
 L["Cooldown Override"] = "Замещение текста восстановления"
+L["CTRL-Key"] = true
 L["Darken Inactive"] = "Неактивные затенены"
 L["Days"] = "Дни"
 L["Desaturate On Cooldown"] = "Обесцветить при кулдауне"
@@ -121,6 +129,7 @@ L["Keybind Mode"] = "Назначить клавиши"
 L["Keybind Text"] = "Текст клавиш"
 L["Color Keybind Text"] = "Окрашивать текст клавиш"
 L["Color Keybind Text when Out of Range, instead of the button."] = "Окрашивать текст клавиш, если юнит вне радиуса, вместо всей кнопки."
+L["Lock Actionbars"] = true
 L["Low Threshold"] = "Минимальное значение"
 L["Macro Text"] = "Названия макросов"
 L["Masque Support"] = "Поддержка Masque"
@@ -128,12 +137,14 @@ L["Minutes"] = "Минуты"
 L["Mouse Over"] = "При наведении" --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда Вы хотите иметь более одной панели на данном фоне."
 L["Not Usable"] = "Нельзя использовать"
+L["Pickup Actionkey"] = true
 L["Out of Power"] = "Мало ресурса"
 L["Out of Range"] = "Вне радиуса"
 L["Restore Bar"] = "Восстановить панель"
 L["Restore the actionbars default settings"] = "Восстанавливает настройки панели по умолчанию."
 L["RightClick Self-Cast"] = "Применить к себе через ПКМ"
 L["Seconds"] = "Секунды"
+L["Shift Key"] = true
 L["Show Empty Buttons"] = "Показывать пустые кнопки"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Отображать анимацию заполнения, когда заклинание перезаряжается, но все еще имеет заряды."
 L["The amount of buttons to display per row."] = "Количество кнопок в каждом ряду"

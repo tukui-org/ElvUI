@@ -76,7 +76,7 @@ local function BuildABConfig()
 			lockActionBars = {
 				order = 7,
 				type = "toggle",
-				name = LOCK_ACTIONBAR_TEXT,
+				name = L["Lock Actionbars"],
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
 				set = function(info, value)
 					E.db.actionbar[ info[#info] ] = value;
@@ -142,14 +142,14 @@ local function BuildABConfig()
 			movementModifier = {
 				order = 13,
 				type = 'select',
-				name = PICKUP_ACTION_KEY_TEXT,
+				name = L["Pickup Actionkey"],
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
 				disabled = function() return (not E.private.actionbar.enable or not E.db.actionbar.lockActionBars) end,
 				values = {
-					['NONE'] = NONE,
-					['SHIFT'] = SHIFT_KEY,
-					['ALT'] = ALT_KEY,
-					['CTRL'] = CTRL_KEY,
+					['NONE'] = L["None"],
+					['SHIFT'] = L["Shift Key"],
+					['ALT'] = L["ALT-Key"],
+					['CTRL'] = L["CTRL-Key"],
 				},
 			},
 			globalFadeAlpha = {
@@ -164,7 +164,7 @@ local function BuildABConfig()
 			colorGroup = {
 				order = 20,
 				type = "group",
-				name = COLORS,
+				name = L["Colors"],
 				guiInline = true,
 				get = function(info)
 					local t = E.db.actionbar[ info[#info] ]
@@ -218,7 +218,7 @@ local function BuildABConfig()
 					},
 					fontSize = {
 						order = 5,
-						name = FONT_SIZE,
+						name = L["Font Size"],
 						type = "range",
 						min = 4, max = 212, step = 1,
 					},
@@ -228,7 +228,7 @@ local function BuildABConfig()
 						desc = L["Set the font outline."],
 						type = "select",
 						values = {
-							['NONE'] = NONE,
+							['NONE'] = L["None"],
 							['OUTLINE'] = 'OUTLINE',
 
 							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -238,7 +238,7 @@ local function BuildABConfig()
 					fontColor = {
 						type = 'color',
 						order = 7,
-						name = COLOR,
+						name = L["Color"],
 						get = function(info)
 							local t = E.db.actionbar[ info[#info] ]
 							local d = P.actionbar[info[#info]]
