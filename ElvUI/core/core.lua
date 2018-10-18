@@ -921,10 +921,17 @@ function E:SendMessage()
 	SendMessageWaiting = nil
 end
 
+local function MoveElvUIGVC(self)
+	local Index = GetChannelName('ElvUIGVC')
+	for i = 1, 20 do
+		ChatConfigChannelSettings_MoveChannelDown(GetChannelName('ElvUIGVC'))
+	end
+end
+
 local SendRecieveGroupSize = 0
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
-local function SendRecieve(_, event, prefix, message, _, sender)
+local function SendRecieve(self, event, prefix, message, _, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == myName then return end
 		if prefix == "ELVUI_VERSIONCHK" then
@@ -958,7 +965,10 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		if not SendMessageWaiting then
 			SendMessageWaiting = E:Delay(10, E.SendMessage)
+			--MoveElvUIGVC()
 		end
+	else
+		--MoveElvUIGVC()
 	end
 end
 
@@ -968,6 +978,17 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:RegisterEvent("CHANNEL_COUNT_UPDATE")
+f:RegisterEvent("CHAT_MSG_CHANNEL_JOIN")
+f:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
+f:RegisterEvent("CHAT_MSG_CHANNEL_LIST")
+f:RegisterEvent("CHANNEL_UI_UPDATE")
+f:SetScript("OnUpdate", function(self)
+	if #CHAT_CONFIG_CHANNEL_LIST >= 1 then
+		JoinPermanentChannel('ElvUIGVC', nil, nil, true)
+		self:SetScript('OnUpdate', nil)
+	end
+end)
 f:SetScript("OnEvent", SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
