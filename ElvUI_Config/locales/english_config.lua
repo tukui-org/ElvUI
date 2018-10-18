@@ -73,19 +73,12 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
---Global locales
-L["Color"] = true
-L["Colors"] = true
-L["Font Size"] = true
-L["None"] = true
-
 --ActionBars
 L["Action Paging"] = true
 L["ActionBars"] = true
 L["Allow Masque to handle the skinning of this element."] = true
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = true
 L["Alpha"] = true
-L["ALT-Key"] = true
 L["Anchor Point"] = true --also in unitframes
 L["Auto Add New Spells"] = true
 L["Automatic"] = true
@@ -107,7 +100,6 @@ L["Color when the text is in the minutes format."] = true
 L["Color when the text is in the seconds format."] = true
 L["Cooldown Text"] = true
 L["Cooldown Override"] = true
-L["CTRL-Key"] = true
 L["Darken Inactive"] = true
 L["Days"] = true
 L["Desaturate On Cooldown"] = true
@@ -129,7 +121,6 @@ L["Keybind Mode"] = true
 L["Keybind Text"] = true
 L["Color Keybind Text"] = true
 L["Color Keybind Text when Out of Range, instead of the button."] = true
-L["Lock Actionbars"] = true
 L["Low Threshold"] = true
 L["Macro Text"] = true
 L["Masque Support"] = true
@@ -139,12 +130,10 @@ L["Multiply the backdrops height or width by this value. This is usefull if you 
 L["Not Usable"] = true
 L["Out of Power"] = true
 L["Out of Range"] = true
-L["Pickup Actionkey"] = true
 L["Restore Bar"] = true
 L["Restore the actionbars default settings"] = true
 L["RightClick Self-Cast"] = true
 L["Seconds"] = true
-L["Shift Key"] = true
 L["Show Empty Buttons"] = true
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = true
 L["The amount of buttons to display per row."] = true

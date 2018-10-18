@@ -109,19 +109,12 @@ If you set this to 2 in another style filter then all plates triggered by that f
 
 NOTE: This setting will NOT fix the issue with clicking or mousing over nameplates that are overlapped. That issue is due to us not being able to manipulate the frame level of the clickable area for nameplates.]=]
 
---Global locales
-L["Color"] = true
-L["Colors"] = true
-L["Font Size"] = true
-L["None"] = true
-
 --ActionBars
 L["Action Paging"] = "페이지 자동전환 조건"
 L["ActionBars"] = "행동단축바"
 L["Allow Masque to handle the skinning of this element."] = "Masque가 이 요소의 스킨에 관여하도록 허용합니다."
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "새로 습득한 주문을 빈 액션 바 슬롯에 자동으로 배치할지 여부를 결정합니다."
 L["Alpha"] = "투명도"
-L["ALT-Key"] = true
 L["Anchor Point"] = "기준점"
 L["Auto Add New Spells"] = "새로운 주문 자동 추가"
 L["Automatic"] = "자동"
@@ -143,7 +136,6 @@ L["Color when the text is in the minutes format."] = "버튼에 배치된 행동
 L["Color when the text is in the seconds format."] = "버튼에 배치된 행동의 재사용 대기시간이 초 단위일 경우 글자색"
 L["Cooldown Text"] = "재사용 대기시간 설정"
 L["Cooldown Override"] = true
-L["CTRL-Key"] = true
 L["Darken Inactive"] = "킨 태세만 아이콘 표시"
 L["Days"] = "일 단위 색상"
 L["Desaturate On Cooldown"] = "재사용 대기중일 때 흑백처리"
@@ -165,7 +157,6 @@ L["Keybind Mode"] = "단축키 설정 모드"
 L["Keybind Text"] = "단축키 표시"
 L["Color Keybind Text"] = "단축키 글씨만 채색"
 L["Color Keybind Text when Out of Range, instead of the button."] = "사정거리에서 벗어났을때 버튼 대신 단축키 글씨의 색상을 변경합니다."
-L["Lock Actionbars"] = true
 L["Low Threshold"] = "초읽기 시작 시점"
 L["Macro Text"] = "매크로 이름 표시"
 L["Masque Support"] = "Masque 지원"
@@ -173,14 +164,12 @@ L["Minutes"] = "분 단위 색상"
 L["Mouse Over"] = "마우스오버 시 표시"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "이 값 만큼 배경의 길이가 배로 늘어납니다. 배경 하나에 여러 행동단축바를 올리고 싶은 경우에 유용합니다."
 L["Not Usable"] = "사용 불가능"
-L["Pickup Actionkey"] = true
 L["Out of Power"] = "자원 부족"
 L["Out of Range"] = "사정거리 밖"
 L["Restore Bar"] = "기본값으로 초기화"
 L["Restore the actionbars default settings"] = "이 행동단축바에 대한 모든 수치를 기본값으로 되돌립니다."
 L["RightClick Self-Cast"] = "우클릭으로 자기에게 시전"
 L["Seconds"] = "초 단위 색상"
-L["Shift Key"] = true
 L["Show Empty Buttons"] = "빈 칸 표시"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "충전수가 남아있는 경우에도 주문이 충전중일때 전환 애니매이션을 표시합니다."
 L["The amount of buttons to display per row."] = "한 줄에 배치할 버튼의 수를 결정합니다."

@@ -74,19 +74,12 @@ Wenn du dieses auf 2 setzt in einem anderen Stilfilter, werden alle Namensplaket
 HINWEIS: Diese Einstellung behebt NICHT die Probleme mit klicken oder mouseover von überlappenden Namensplaketten. Dieses Problem liegt dran, dass wir nicht im Stande sind das
 Frame Level von klickbaren Namensplakette zu manipulieren.]=]
 
---Global locales
-L["Color"] = "Farbe"
-L["Colors"] = "Farben"
-L["Font Size"] = "Schriftgröße"
-L["None"] = "Nichts"
-
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
 L["ActionBars"] = "Aktionsleisten"
 L["Allow Masque to handle the skinning of this element."] = "Erlaubt Masque das Gestalten dieser Elememte."
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "Erlaubt neu erlernte Zauber direkt in einen Aktionsleisten slot hinzuzufügen."
 L["Alpha"] = "Alpha"
-L["ALT-Key"] = "ALT-Taste"
 L["Anchor Point"] = "Ankerpunkt" --also in unitframes
 L["Auto Add New Spells"] = "Automatisches hinzufügen von neuen Zaubern"
 L["Automatic"] = "Automatisch"
@@ -108,7 +101,6 @@ L["Color when the text is in the minutes format."] = "Färbe den Text in dieser 
 L["Color when the text is in the seconds format."] = "Färbe den Text in dieser Farbe, wenn er in Sekunden angezeigt wird."
 L["Cooldown Text"] = "Abklingzeittext"
 L["Cooldown Override"] = "Abklingzeit Überschreibung"
-L["CTRL-Key"] = "STRG-Taste"
 L["Darken Inactive"] = "Inaktives verdunkeln"
 L["Days"] = "Tage"
 L["Desaturate On Cooldown"] = "Auf Cooldown entsättigt"
@@ -130,7 +122,6 @@ L["Keybind Mode"] = "Tastaturbelegung"
 L["Keybind Text"] = "Tastaturbelegungstext"
 L["Color Keybind Text"] = "Färbe Tastaturbelegungstext"
 L["Color Keybind Text when Out of Range, instead of the button."] = "Färbt den Tastaturbelegungstext wen nicht in Reichweite anstatt der Taste."
-L["Lock Actionbars"] = "Leisten fixieren"
 L["Low Threshold"] = "Niedrige CD-Schwelle"
 L["Macro Text"] = "Makrotext"
 L["Masque Support"] = "Masque Unterstützung"
@@ -138,14 +129,12 @@ L["Minutes"] = "Minuten"
 L["Mouse Over"] = "Mouseover" --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multipliziere die Höhe und die Breite des Hintergrundes. Das ist nützlich, wenn du mehr als eine Leiste hinter einem Hintergrund haben möchtest."
 L["Not Usable"] = "Nicht nutzbar"
-L["Pickup Actionkey"] = "Freischaltungstaste"
 L["Out of Power"] = "Keine Kraft"
 L["Out of Range"] = "Außer Reichweite"
 L["Restore Bar"] = "Leiste zurücksetzen"
 L["Restore the actionbars default settings"] = "Wiederherstellung der vordefinierten Aktionsleisteneinstellung"
 L["RightClick Self-Cast"] = "Rechtsklick Selbstzauber"
 L["Seconds"] = "Sekunden"
-L["Shift Key"] = "Umschalttaste"
 L["Show Empty Buttons"] = "Zeige leere Tasten"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Zeigt eine 'Swipe' Animation wenn ein Zauber am Aufladen ist aber immer noch Aufladungen hat." --not a really good translation for 'Swipe'
 L["The amount of buttons to display per row."] = "Anzahl der Aktionstasten in einer Reihe."

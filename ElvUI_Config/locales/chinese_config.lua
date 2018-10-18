@@ -71,19 +71,12 @@ L["NAMEPLATE_FRAMELEVEL_DESC"] = [=[如果你设置为1则所有符合这个过�
 如果你将另一个过滤器设置为2则符合那个过滤器的姓名板将在设为1的姓名板以及未触发的姓名板上方。
 请注意：这个设置不会修复在互相重叠的姓名板上点击/鼠标指向的问题。该问题是由于我们无法处理姓名板可点击区域的层次。]=]
 
---Global locales
-L["Color"] = true
-L["Colors"] = true
-L["Font Size"] = true
-L["None"] = true
-
 --ActionBars
 L["Action Paging"] = "动作条翻页"
 L["ActionBars"] = "动作条"
 L["Allow Masque to handle the skinning of this element."] = "允许Masque来处理这个元素的皮肤"
 L["Allow newly learned spells to be automatically placed on an empty actionbar slot."] = "允许新学会的技能自动添加到动作条空位"
 L["Alpha"] = "透明度"
-L["ALT-Key"] = true
 L["Anchor Point"] = "定位方向"
 L["Auto Add New Spells"] = "自动添加新技能"
 L["Automatic"] = "自动"
@@ -105,7 +98,6 @@ L["Color when the text is in the minutes format."] = "以分显示的文字颜�
 L["Color when the text is in the seconds format."] = "以秒显示的文字颜色"
 L["Cooldown Text"] = "冷却文字"
 L["Cooldown Override"] = "冷却覆盖"
-L["CTRL-Key"] = true
 L["Darken Inactive"] = "未激活时暗化"
 L["Days"] = "天"
 L["Desaturate On Cooldown"] = "冷却中褪色"
@@ -127,7 +119,6 @@ L["Keybind Mode"] = "键位设置模式"
 L["Keybind Text"] = "键位文字"
 L["Color Keybind Text"] = "键位文字着色"
 L["Color Keybind Text when Out of Range, instead of the button."] = "当你超过射程时对键位文字着色而不是对按钮着色"
-L["Lock Actionbars"] = true
 L["Low Threshold"] = "冷却时间阈值"
 L["Macro Text"] = "宏名称"
 L["Masque Support"] = "Masque支持"
@@ -135,14 +126,12 @@ L["Minutes"] = "分"
 L["Mouse Over"] = "鼠标滑过显示"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "根据此值增加背景的高度或宽度. 一般用来在一个背景框里放置多条动作条"
 L["Not Usable"] = "不可用"
-L["Pickup Actionkey"] = true
 L["Out of Power"] = "能量不足"
 L["Out of Range"] = "超出范围"
 L["Restore Bar"] = "重置动作条"
 L["Restore the actionbars default settings"] = "恢复此动作条的预设设定"
 L["RightClick Self-Cast"] = "右键自我施法"
 L["Seconds"] = "秒"
-L["Shift Key"] = true
 L["Show Empty Buttons"] = "显示空白按钮"
 L["Shows a swipe animation when a spell is recharging but still has charges left."] = "当一个技能在充能但仍有剩余使用次数时使用反向填充动画"
 L["The amount of buttons to display per row."] = "每行显示多少个按钮数"
