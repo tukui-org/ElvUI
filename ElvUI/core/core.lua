@@ -29,10 +29,9 @@ local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
-local JoinPermanentChannel = JoinPermanentChannel
+local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup
-local GetChannelList = GetChannelList
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -914,8 +913,13 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
-	elseif IsInGuild() then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+	else
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
+		elseif IsInGuild() then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+		end
 	end
 
 	SendMessageWaiting = nil
@@ -939,7 +943,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 
 					E.recievedOutOfDateMessage = true
 				end
-			elseif msg and (msg < ver) then -- Send Message Back if you intercept and are higher revision
+			elseif msg and (msg < ver) then -- Send Message Back
 				if not SendMessageWaiting then
 					SendMessageWaiting = E:Delay(10, E.SendMessage)
 				end
@@ -959,6 +963,8 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if not SendMessageWaiting then
 			SendMessageWaiting = E:Delay(10, E.SendMessage)
 		end
+	elseif event == "PLAYER_LOGOUT" then
+		LeaveChannelByName("ElvUIGVC")
 	end
 end
 
@@ -968,7 +974,19 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:RegisterEvent("PLAYER_LOGOUT")
 f:SetScript("OnEvent", SendRecieve)
+
+hooksecurefunc("CreateChatChannelList", function()
+	if #CHAT_CONFIG_CHANNEL_LIST >= 1 then
+		if GetChannelName('ElvUIGVC') == 0 and ChatFrame_CanAddChannel() == true then
+			JoinChannelByName('ElvUIGVC', nil, nil, true)
+			if not SendMessageWaiting then
+				SendMessageWaiting = E:Delay(10, E.SendMessage)
+			end
+		end
+	end
+end)
 
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then

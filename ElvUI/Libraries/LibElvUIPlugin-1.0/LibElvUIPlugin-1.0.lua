@@ -224,13 +224,18 @@ function lib:SendPluginVersionCheck(message)
 		return
 	end
 
-	local ChatType
+	local ChatType, Channel
 	if IsInRaid() then
 		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID'
 	elseif IsInGroup() then
 		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY'
-	elseif IsInGuild() then
-		ChatType = 'GUILD'
+	else
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			ChatType, Channel = 'CHANNEL', ElvUIGVC
+		elseif IsInGuild() then
+			ChatType = 'GUILD'
+		end
 	end
 
 	if not ChatType then
@@ -245,14 +250,14 @@ function lib:SendPluginVersionCheck(message)
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
-				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
+				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
 				delay = delay + 1
 			end
 		end
 
 		E:Delay(delay, lib.ClearSendMessageWait)
 	else
-		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType)
+		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
 		lib.ClearSendMessageWait()
 	end
 end
