@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local NP = E:GetModule("NamePlates")
-local CP = E:GetModule('CopyProfile')
+local CP = E:GetModule('CopyProfile');
+
+local XPBAR_LABEL, MINIMAP_LABEL = XPBAR_LABEL, MINIMAP_LABEL
+local REPUTATION, HONOR, COLORS = REPUTATION, HONOR, COLORS
 
 --Actionbars
 local function CreateActionbarsConfig()

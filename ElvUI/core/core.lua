@@ -30,10 +30,12 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
 local JoinChannelByName = JoinChannelByName
+local LeaveChannelByName = LeaveChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local GetNumGroupMembers = GetNumGroupMembers
+local CreateChatChannelList = CreateChatChannelList
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
@@ -41,12 +43,9 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
--- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
--- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
--- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap, ChatFrame_CanAddChannel
--- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
--- GLOBALS: DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, ElvDB
+-- GLOBALS: ElvDB, LibStub, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
+-- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, ChatFrame_CanAddChannel, CHAT_CONFIG_CHANNEL_LIST
+-- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
 --Constants
 E.LSM = LSM
