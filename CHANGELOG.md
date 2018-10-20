@@ -44,6 +44,7 @@ Optimized Bag Code in various areas (This should mainly fix the lag reported whe
 Removed ArtifactBar from the DataBars.  
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
+Updated collection skin. Credits AddOnSkins.  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
