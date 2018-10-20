@@ -212,7 +212,9 @@ end
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	if not t then t = "Default" end
 
-	local b = CreateFrame("Frame", nil, f)
+	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
+
+	local b = CreateFrame("Frame", nil, parent)
 	if(f.forcePixelMode or forcePixelMode) then
 		b:SetOutside(nil, E.mult, E.mult)
 	else
@@ -220,8 +222,8 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	end
 	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 
-	if f:GetFrameLevel() - 1 >= 0 then
-		b:SetFrameLevel(f:GetFrameLevel() - 1)
+	if (parent:GetFrameLevel() - 1) >= 0 then
+		b:SetFrameLevel(parent:GetFrameLevel() - 1)
 	else
 		b:SetFrameLevel(0)
 	end
