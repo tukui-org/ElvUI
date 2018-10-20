@@ -68,12 +68,15 @@ local LOCALE = {
 	FOREIGN_SERVER_LABEL = FOREIGN_SERVER_LABEL,
 	ID = ID,
 	INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL,
-	LEVEL = LEVEL,
 	TARGET = TARGET,
 	DEAD = DEAD,
 	FACTION_ALLIANCE = FACTION_ALLIANCE,
 	NONE = NONE,
-	ROLE = ROLE
+	ROLE = ROLE,
+
+	-- Custom to find LEVEL string on tooltip
+	LEVEL1 = TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
+	LEVEL2 = TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -201,8 +204,9 @@ end
 function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
-		local tipText = _G["GameTooltipTextLeft"..i]
-		if(tipText:GetText() and tipText:GetText():find(LOCALE.LEVEL)) then
+		local tipLine = _G["GameTooltipTextLeft"..i]
+		local tipText = tipLine and tipLine.GetText and tipLine:GetText()
+		if tipText and (tipText:find(LOCALE.LEVEL1) or tipText:find(LOCALE.LEVEL2)) then
 			return tipText
 		end
 	end
