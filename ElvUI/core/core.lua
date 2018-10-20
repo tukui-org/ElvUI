@@ -962,7 +962,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if not SendMessageWaiting then
 			SendMessageWaiting = E:Delay(10, E.SendMessage)
 		end
-	elseif event == "PLAYER_LOGOUT" then
+	elseif event == "PLAYER_LOGOUT" and event == "PLAYER_QUITING" or event == "PLAYER_CAMPING" then
 		LeaveChannelByName("ElvUIGVC")
 	end
 end
@@ -974,6 +974,8 @@ f:RegisterEvent("CHAT_MSG_ADDON")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_LOGOUT")
+f:RegisterEvent("PLAYER_QUITING")
+f:RegisterEvent("PLAYER_CAMPING")
 f:SetScript("OnEvent", SendRecieve)
 f:SetScript("OnUpdate", function(self, elapsed)
 	self.delayed = (self.delayed or 0) + elapsed
