@@ -26,6 +26,7 @@ local IsAddOnLoaded, DisableAddOn = IsAddOnLoaded, DisableAddOn
 local IsInInstance, IsInGuild = IsInInstance, IsInGuild
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
@@ -43,7 +44,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvDB, LibStub, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
--- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, ChatFrame_CanAddChannel, CHAT_CONFIG_CHANNEL_LIST
+-- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, MAX_WOW_CHAT_CHANNELS, CHAT_CONFIG_CHANNEL_LIST
 -- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
 --Constants
@@ -974,15 +975,23 @@ f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_LOGOUT")
 f:SetScript("OnEvent", SendRecieve)
-f:SetScript('OnUpdate', function(self)
-	if #CHAT_CONFIG_CHANNEL_LIST >= 1 then
-		if GetChannelName('ElvUIGVC') == 0 and ChatFrame_CanAddChannel() == true then
-			JoinChannelByName('ElvUIGVC', nil, nil, true)
-			if not SendMessageWaiting then
-				SendMessageWaiting = E:Delay(10, E.SendMessage)
+f:SetScript("OnUpdate", function(self, elapsed)
+	self.delayed = (self.delayed or 0) + elapsed
+	if self.delayed > 1 then
+		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
+		if numActiveChannels and (numActiveChannels >= 1) then
+			if (GetChannelName('ElvUIGVC') == 0) and (numActiveChannels < MAX_WOW_CHAT_CHANNELS) then
+				JoinChannelByName('ElvUIGVC', nil, nil, true)
+
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
+				end
+
+				self:SetScript("OnUpdate", nil)
 			end
-			self:SetScript("OnUpdate", nil)
 		end
+	elseif self.delayed > 30 then
+		self:SetScript("OnUpdate", nil)
 	end
 end)
 
