@@ -974,15 +974,14 @@ f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_LOGOUT")
 f:SetScript("OnEvent", SendRecieve)
-
-hooksecurefunc("CreateChatChannelList", function(...)
+f:SetScript('OnUpdate', function(self)
 	if #CHAT_CONFIG_CHANNEL_LIST >= 1 then
 		if GetChannelName('ElvUIGVC') == 0 and ChatFrame_CanAddChannel() == true then
 			JoinChannelByName('ElvUIGVC', nil, nil, true)
 			if not SendMessageWaiting then
 				SendMessageWaiting = E:Delay(10, E.SendMessage)
 			end
-			CreateChatChannelList(...)
+			self:SetScript("OnUpdate", nil)
 		end
 	end
 end)
