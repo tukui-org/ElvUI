@@ -1822,7 +1822,7 @@ function CH:CHAT_MSG_SAY(event, message, author, ...)
 end
 
 function CH:ThrottleSound()
-	self.SoundTimer = nil
+	CH.SoundTimer = nil
 end
 
 local protectLinks = {}
