@@ -202,7 +202,7 @@ function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
 		local tipText = _G["GameTooltipTextLeft"..i]
-		if(tipText:GetText() and tipText:GetText():find(LOCALE.LEVEL)) then
+		if(tipText:GetText() and tipText:GetText():match(TOOLTIP_UNIT_LEVEL_RACE_CLASS_TYPE)) then
 			return tipText
 		end
 	end
