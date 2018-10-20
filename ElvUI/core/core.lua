@@ -35,7 +35,6 @@ local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPowe
 local UnitFactionGroup = UnitFactionGroup
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local GetNumGroupMembers = GetNumGroupMembers
-local CreateChatChannelList = CreateChatChannelList
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
