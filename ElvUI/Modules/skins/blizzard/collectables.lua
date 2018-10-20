@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_PetJournal_GetPetStats = C_PetJournal.GetPetStats
@@ -330,13 +330,13 @@ local function LoadSkin()
 	end)
 
 	-- Appearances Tab
-	local function SkinTab(tab)
-		S:HandleTab(tab)
-		tab.backdrop:SetTemplate("Default", true)
-		tab.backdrop:SetOutside(nil, 2, 2)
-	end
-	SkinTab(WardrobeCollectionFrame.ItemsTab)
-	SkinTab(WardrobeCollectionFrame.SetsTab)
+	--local function SkinTab(tab)
+		--S:HandleTab(tab)
+		--tab.backdrop:SetTemplate("Default", true)
+		--tab.backdrop:SetOutside(nil, 2, 2)
+	--end
+	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
+	S:HandleTab(WardrobeCollectionFrame.SetsTab)
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
@@ -345,6 +345,7 @@ local function LoadSkin()
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
@@ -353,21 +354,25 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
 	-- Taken from AddOnSkins
-	for i = 1, 3 do
-		for j = 1, 6 do
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:SetFrameLevel(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:GetFrameLevel() + 2)
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:CreateBackdrop("Default")
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border:Kill()
-			hooksecurefunc(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border, 'SetAtlas', function(self, texture)
-				local color = E.media.bordercolor
-				if texture == "transmog-wardrobe-border-uncollected" then
-					color = { 1, 1, 0}
-				elseif texture == "transmog-wardrobe-border-unusable" then
-					color = { 1, 0, 0}
-				end
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(color))
-			end)
+	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
+		if Frame.Models then
+			for _, Model in pairs(Frame.Models) do
+				Model:CreateBackdrop("Default")
+				Model:SetFrameLevel(Model:GetFrameLevel() + 2)
+				Model.backdrop:SetPoint('BOTTOMRIGHT', 2, -1)
+				Model.Border:Kill()
+				hooksecurefunc(Model.Border, 'SetAtlas', function(self, texture)
+					local r, g, b
+					if texture == "transmog-wardrobe-border-uncollected" then
+						r, g, b = 1, 1, 0
+					elseif texture == "transmog-wardrobe-border-unusable" then
+						r, g, b =  1, 0, 0
+					else
+						r, g, b = unpack(E["media"].bordercolor)
+					end
+					Model.backdrop:SetBackdropBorderColor(r, g, b)
+				end)
+			end
 		end
 	end
 
