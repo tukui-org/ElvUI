@@ -71,7 +71,7 @@ function E:DelayScriptCall(msg)
 		self:Print("usage: /in <seconds> <command>")
 		self:Print("example: /in 1.5 /say hi")
 	else
-		E:ScheduleTimer(OnCallback, secs, command)
+		E:Delay(secs, OnCallback, command)
 	end
 end
 
