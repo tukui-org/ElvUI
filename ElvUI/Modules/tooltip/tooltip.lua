@@ -207,7 +207,7 @@ function TT:GetLevelLine(tt, offset)
 		local tipLine = _G["GameTooltipTextLeft"..i]
 		local tipText = tipLine and tipLine.GetText and tipLine:GetText()
 		if tipText and (tipText:find(LOCALE.LEVEL1) or tipText:find(LOCALE.LEVEL2)) then
-			return tipText
+			return tipLine
 		end
 	end
 end
