@@ -8,26 +8,32 @@ local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 
 function UF:Construct_HealComm(frame)
 	local myBar = CreateFrame('StatusBar', nil, frame.Health)
+	myBar:SetFrameLevel(11)
 	UF['statusbars'][myBar] = true
 	myBar:Hide()
 
 	local otherBar = CreateFrame('StatusBar', nil, frame.Health)
+	otherBar:SetFrameLevel(11)
 	UF['statusbars'][otherBar] = true
 	otherBar:Hide()
 
 	local absorbBar = CreateFrame('StatusBar', nil, frame.Health)
+	absorbBar:SetFrameLevel(11)
 	UF['statusbars'][absorbBar] = true
 	absorbBar:Hide()
 
 	local healAbsorbBar = CreateFrame('StatusBar', nil, frame.Health)
+	healAbsorbBar:SetFrameLevel(11)
 	UF['statusbars'][healAbsorbBar] = true
 	healAbsorbBar:Hide()
 
 	local overAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
+	overAbsorb:SetFrameLevel(11)
 	overAbsorb:SetTexture(E["media"].blankTex)
 	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
+	overHealAbsorb:SetFrameLevel(11)
 	overHealAbsorb:SetTexture(E["media"].blankTex)
 	overHealAbsorb:Hide()
 
