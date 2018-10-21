@@ -22,58 +22,6 @@ local function SetOriginalBackdrop(self)
 	self:SetBackdropBorderColor(unpack(E['media'].bordercolor))
 end
 
-local function SkinScrollBar(frame, thumbTrim)
-	if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
-	if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
-
-	if _G[frame:GetName().."Top"] then
-		_G[frame:GetName().."Top"]:SetTexture(nil)
-		_G[frame:GetName().."Bottom"]:SetTexture(nil)
-		_G[frame:GetName().."Middle"]:SetTexture(nil)
-	end
-
-	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
-		local scrollUpWidth, scrollUpHeight = _G[frame:GetName().."ScrollUpButton"]:GetWidth(), _G[frame:GetName().."ScrollUpButton"]:GetHeight()
-		local scrollDownWidth, scrollDownHeight = _G[frame:GetName().."ScrollDownButton"]:GetWidth(), _G[frame:GetName().."ScrollDownButton"]:GetHeight()
-
-		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollUpButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
-			_G[frame:GetName().."ScrollUpButton"]:Size(scrollUpWidth, scrollUpHeight) --Set size back to what it originally was
-		end
-
-		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollDownButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
-			_G[frame:GetName().."ScrollDownButton"]:Size(scrollDownWidth, scrollDownHeight) --Set size back to what it originally was
-		end
-
-		if not frame.trackbg then
-			frame.trackbg = CreateFrame("Frame", nil, frame)
-			frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
-			frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-			frame.trackbg:SetTemplate("Transparent")
-		end
-
-		if frame:GetThumbTexture() then
-			if not thumbTrim then thumbTrim = 3 end
-			frame:GetThumbTexture():SetTexture(nil)
-			if not frame.thumbbg then
-				frame.thumbbg = CreateFrame("Frame", nil, frame)
-				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
-				frame.thumbbg:SetTemplate("Default", true, true)
-				frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-				if frame.trackbg then
-					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
-				end
-			end
-		end
-	end
-end
-
 local function SkinButton(f, strip, noTemplate)
 	if f.Left then f.Left:SetAlpha(0)  end
 	if f.Middle then f.Middle:SetAlpha(0)  end
@@ -125,7 +73,7 @@ function S:SkinAce3()
 			end
 
 			SkinButton(widget.button)
-			SkinScrollBar(widget.scrollBar)
+			S:HandleScrollBar(widget.scrollBar)
 			widget.scrollBar:Point("RIGHT", frame, "RIGHT", 0 -4)
 			widget.scrollBG:Point("TOPRIGHT", widget.scrollBar, "TOPLEFT", -2, 19)
 			widget.scrollBG:Point("BOTTOMLEFT", widget.button, "TOPLEFT")
@@ -280,7 +228,7 @@ function S:SkinAce3()
 		local TYPE = widget.type
 		if TYPE == "ScrollFrame" then
 			local frame = widget.scrollbar
-			SkinScrollBar(frame)
+			S:HandleScrollBar(frame)
 		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" or TYPE == "Window" then
 			local frame = widget.content:GetParent()
 			if TYPE == "Frame" then
@@ -355,7 +303,7 @@ function S:SkinAce3()
 			end
 
 			if widget.scrollbar then
-				SkinScrollBar(widget.scrollbar)
+				S:HandleScrollBar(widget.scrollbar)
 			end
 		elseif TYPE == "SimpleGroup" then
 			local frame = widget.content:GetParent()
