@@ -45,6 +45,7 @@ Removed ArtifactBar from the DataBars.
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
 Updated collection skin. Credits AddOnSkins.  
+Added `ElvUI_VC` chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
