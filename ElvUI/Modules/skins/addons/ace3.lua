@@ -3,13 +3,12 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local _G = _G
-local unpack, select = unpack, select
+local select = select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, LibStub
+-- GLOBALS: LibStub
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
