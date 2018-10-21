@@ -230,9 +230,9 @@ function lib:SendPluginVersionCheck(message)
 	elseif IsInGroup() then
 		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY'
 	else
-		local ElvUI_VC = GetChannelName('ElvUI_VC')
-		if ElvUI_VC and ElvUI_VC > 0 then
-			ChatType, Channel = 'CHANNEL', ElvUI_VC
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			ChatType, Channel = 'CHANNEL', ElvUIGVC
 		elseif IsInGuild() then
 			ChatType = 'GUILD'
 		end

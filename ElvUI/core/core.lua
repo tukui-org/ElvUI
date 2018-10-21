@@ -912,9 +912,9 @@ function E:SendMessage()
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	else
-		local ElvUI_VC = GetChannelName('ElvUI_VC')
-		if ElvUI_VC and ElvUI_VC > 0 then
-			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUI_VC)
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
 		elseif IsInGuild() then
 			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
 		end
@@ -976,8 +976,8 @@ f:SetScript("OnUpdate", function(self, elapsed)
 	if self.delayed > 1 then
 		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
 		if numActiveChannels and (numActiveChannels >= 1) then
-			if (GetChannelName('ElvUI_VC') == 0) and (numActiveChannels < MAX_WOW_CHAT_CHANNELS) then
-				JoinChannelByName('ElvUI_VC', nil, nil, true)
+			if (GetChannelName('ElvUIGVC') == 0) and (numActiveChannels < MAX_WOW_CHAT_CHANNELS) then
+				JoinChannelByName('ElvUIGVC', nil, nil, true)
 
 				if not SendMessageWaiting then
 					SendMessageWaiting = E:Delay(10, E.SendMessage)
