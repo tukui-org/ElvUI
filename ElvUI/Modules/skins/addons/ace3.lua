@@ -12,43 +12,6 @@ local CreateFrame = CreateFrame
 -- GLOBALS: SquareButton_SetIcon, LibStub
 
 local RegisterAsWidget, RegisterAsContainer
-local function SetModifiedBackdrop(self)
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E['media'].rgbvaluecolor))
-end
-
-local function SetOriginalBackdrop(self)
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E['media'].bordercolor))
-end
-
-local function SkinButton(f, strip, noTemplate)
-	if f.Left then f.Left:SetAlpha(0)  end
-	if f.Middle then f.Middle:SetAlpha(0)  end
-	if f.Right then f.Right:SetAlpha(0) end
-
-	if f.SetNormalTexture then f:SetNormalTexture("") end
-
-	if f.SetHighlightTexture then f:SetHighlightTexture("") end
-
-	if f.SetPushedTexture then f:SetPushedTexture("") end
-
-	if f.SetDisabledTexture then f:SetDisabledTexture("") end
-
-	if strip then f:StripTextures() end
-
-	if not f.template and not noTemplate then
-		f:SetTemplate("Default", true)
-	end
-
-	f:HookScript("OnEnter", SetModifiedBackdrop)
-	f:HookScript("OnLeave", SetOriginalBackdrop)
-end
-
-local function SkinNextPrevButton(...)
-	S:HandleNextPrevButton(...)
-end
-
 local function SkinDropdownPullout(self)
 	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
 		self.obj.pullout.frame:SetTemplate('Default', true)
@@ -72,7 +35,7 @@ function S:SkinAce3()
 				widget.scrollBG:SetTemplate('Default')
 			end
 
-			SkinButton(widget.button)
+			S:HandleButton(widget.button)
 			S:HandleScrollBar(widget.scrollBar)
 			widget.scrollBar:Point("RIGHT", frame, "RIGHT", 0 -4)
 			widget.scrollBG:Point("TOPRIGHT", widget.scrollBar, "TOPLEFT", -2, 19)
@@ -100,7 +63,7 @@ function S:SkinAce3()
 			button:ClearAllPoints()
 			button:Point("RIGHT", frame, "RIGHT", -20, 0)
 
-			SkinNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true)
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default")
@@ -117,7 +80,7 @@ function S:SkinAce3()
 			local text = frame.text
 			frame:StripTextures()
 
-			SkinNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true)
 			frame.text:ClearAllPoints()
 			frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
 
@@ -162,17 +125,17 @@ function S:SkinAce3()
 			frame.backdrop:Point('BOTTOMRIGHT', 2, 0)
 			frame.backdrop:SetParent(widget.frame)
 			frame:SetParent(frame.backdrop)
-			SkinButton(button)
+			S:HandleButton(button)
 		elseif TYPE == "Button" then
 			local frame = widget.frame
-			SkinButton(frame, nil, true)
+			S:HandleButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
 		elseif TYPE == "Button-ElvUI" then
 			local frame = widget.frame
-			SkinButton(frame, nil, true)
+			S:HandleButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
@@ -201,7 +164,7 @@ function S:SkinAce3()
 			local button = widget.button
 			local msgframe = widget.msgframe
 
-			SkinButton(button, nil, true)
+			S:HandleButton(button, nil, true)
 			button:StripTextures()
 			button:CreateBackdrop('Default', true)
 			button.backdrop:SetInside()
@@ -239,7 +202,7 @@ function S:SkinAce3()
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:GetObjectType() == "Button" and child:GetText() then
-						SkinButton(child)
+						S:HandleButton(child)
 					else
 						child:StripTextures()
 					end
