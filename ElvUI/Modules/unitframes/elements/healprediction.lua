@@ -28,12 +28,10 @@ function UF:Construct_HealComm(frame)
 	healAbsorbBar:Hide()
 
 	local overAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
-	overAbsorb:SetFrameLevel(11)
 	overAbsorb:SetTexture(E["media"].blankTex)
 	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
-	overHealAbsorb:SetFrameLevel(11)
 	overHealAbsorb:SetTexture(E["media"].blankTex)
 	overHealAbsorb:Hide()
 
