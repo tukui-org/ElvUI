@@ -6,7 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local _G = _G
 local wipe, time, difftime = wipe, time, difftime
-local ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type = ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type
+local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
@@ -317,7 +317,7 @@ end
 
 function CH:InsertEmotions(msg)
 	local emoji, pattern
-	for word in msg:gmatch("%s-%S+%s*") do
+	for word in gmatch(msg, "%s-%S+%s*") do
 		pattern = strtrim(word):gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
 		emoji = CH.Smileys[pattern]
 		if emoji then
@@ -1810,7 +1810,7 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message)
-	for hyperLink in message:gmatch("|%x+|H.-|h.-|h|r") do
+	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
 		protectLinks[hyperLink]=hyperLink:gsub('%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if hyperLink == keyword then
@@ -1831,7 +1831,7 @@ function CH:CheckKeyword(message)
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
-	for word in message:gmatch("%s-%S+%s*") do
+	for word in gmatch(message, "%s-%S+%s*") do
 		if not next(protectLinks) or not protectLinks[word:gsub("%s",""):gsub("|s"," ")] then
 			tempWord = word:gsub("[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
