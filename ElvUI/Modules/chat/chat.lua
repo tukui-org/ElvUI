@@ -191,7 +191,7 @@ function CH:RemoveSmiley(key)
 end
 
 function CH:AddSmiley(key, texture)
-	if key and texture then
+	if key and (type(key) == 'string') and texture then
 		CH.Smileys[key] = texture
 	end
 end
