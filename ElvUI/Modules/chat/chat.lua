@@ -183,36 +183,16 @@ local tabTexs = {
 	'Highlight'
 }
 
-CH.Smileys = {
-	Keys = {},
-	Textures = {}
-}
-
-function CH:RemoveSmiley(keyOrIndex)
-	if type(keyOrIndex) == 'number' then
-		tremove(CH.Smileys.Keys, keyOrIndex)
-		tremove(CH.Smileys.Textures, keyOrIndex)
-	elseif type(keyOrIndex) == 'string' then
-		for i, v in ipairs(CH.Smileys.Keys) do
-			if v == keyOrIndex then
-				tremove(CH.Smileys.Keys, i)
-				tremove(CH.Smileys.Textures, i)
-				break
-			end
-		end
+CH.Smileys = {}
+function CH:RemoveSmiley(key)
+	if key and (type(key) == 'string') then
+		CH.Smileys[key] = nil
 	end
 end
 
--- `top` will be picked before others, use this for cases such as ">:(" and ":(". where you would want ">:(" selected before ":(".
-function CH:AddSmiley(key, texture, top)
+function CH:AddSmiley(key, texture)
 	if key and texture then
-		if top then
-			tinsert(CH.Smileys.Keys, 1, key)
-			tinsert(CH.Smileys.Textures, 1, texture)
-		else
-			tinsert(CH.Smileys.Keys, key)
-			tinsert(CH.Smileys.Textures, texture)
-		end
+		CH.Smileys[key] = texture
 	end
 end
 
@@ -336,21 +316,16 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for i, v in ipairs(CH.Smileys.Keys) do
-		if CH.Smileys.Textures[i] then
-			if strmatch(msg, '^'..v..'$') then -- only word
-				msg = gsub(msg, v, '|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '^'..v..'[%s%p]+') then -- start of string
-				msg = gsub(msg, '^'..v..'([%s%p]+)', '|T'..CH.Smileys.Textures[i]..':16:16|t%1');
-			elseif strmatch(msg, '[%s%p]-'..v..'$') then -- end of string
-				msg = gsub(msg, '([%s%p]-)'..v..'$', '%1|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '[%s%p]-'..v..'[%s%p]+') then -- whole word
-				msg = gsub(msg, '([%s%p]-)'..v..'([%s%p]+)', '%1|T'..CH.Smileys.Textures[i]..':16:16|t%2');
-			end
+	local emoji, pattern
+	for word in msg:gmatch("%s-%S+%s*") do
+		pattern = strtrim(word):gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+		emoji = CH.Smileys[pattern]
+		if emoji then
+			msg = gsub(msg, pattern, emoji)
 		end
 	end
 
-	return msg;
+	return msg
 end
 
 function CH:GetSmileyReplacementText(msg)
@@ -2273,12 +2248,11 @@ local FindURL_Events = {
 }
 
 function CH:DefaultSmileys()
-	if next(CH.Smileys.Keys) then
-		wipe(CH.Smileys.Keys)
-		wipe(CH.Smileys.Textures)
+	if next(CH.Smileys) then
+		wipe(CH.Smileys)
 	end
 
-	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s"
+	local t = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s:16:16|t"
 
 	-- new keys
 	CH:AddSmiley(':angry:',			format(t,'angry'))
