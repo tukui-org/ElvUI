@@ -241,15 +241,13 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 		if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
 			_G[frame:GetName().."ScrollUpButton"]:StripTextures()
 			if not _G[frame:GetName().."ScrollUpButton"].icon then
-				S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
-				SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
+				S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"], true, true)
 				_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)
 			end
 
 			_G[frame:GetName().."ScrollDownButton"]:StripTextures()
 			if not _G[frame:GetName().."ScrollDownButton"].icon then
-				S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
-				SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
+				S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"], true)
 				_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)
 			end
 
