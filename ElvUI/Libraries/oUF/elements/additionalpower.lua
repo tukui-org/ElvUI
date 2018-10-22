@@ -68,7 +68,7 @@ local function UpdateColor(element, cur, max)
 	if(element.colorClass) then
 		t = parent.colors.class[playerClass]
 	elseif(element.colorSmooth) then
-		r, g, b = parent.ColorGradient(cur, max, unpack(element.smoothGradient or parent.colors.smooth))
+		r, g, b = parent:ColorGradient(cur, max, unpack(element.smoothGradient or parent.colors.smooth))
 	elseif(element.colorPower) then
 		t = parent.colors.power[ADDITIONAL_POWER_BAR_NAME]
 	end
