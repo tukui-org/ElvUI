@@ -5,7 +5,7 @@ Added Drain Life to channel ticks.
 Added Island Expedition progress to the BfA Mission Datatext.  
 Added NPC Id's to our Tooltip.  
 Added Debuff Highlighting on our Focus Frame.  
-Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
+Added a dropdown menu to the Garrison Minimap Button. (Credits: Foxlit - WarPlan)  
 Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
 Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
 Added options to change the Item Level color in the Bags. (#764)  
@@ -18,7 +18,7 @@ Added "Display Interrupt Source" to NamePlate castbars.
 Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
 Added option to scale the Vehicle display. (#715)  
 Added Tank & Assist Name Placements. (#128)  
-Added Pet AuraBars (Hunters Rejoice!). (#518)  
+Added Pet AuraBars. (Hunters Rejoice!) (#518)  
 Added Tooltip Group Role. (#583)  
 Added Power Prediction on UnitFrames. (#421)  
 Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)  
@@ -31,8 +31,9 @@ Fixed Raidmarker spacing. (#791)
 Fixed issue which would sometimes keep Player UnitFrame out of range.  
 Fixed error with UnitFrame Tags when enter Arena. (#821)  
 Fixed issue which would show a NPC Reputation instead of NPC Title on NamePlates when Colorblind mode was enabled. (#826)  
-Fixed Health Backdrop ClassBackdrop multiplier (#134)  
-Fixed DejaCharacterStats and Character Skin conflicts (#819)  
+Fixed Health Backdrop ClassBackdrop multiplier. (#134)  
+Fixed DejaCharacterStats and Character Skin conflicts. (#819)  
+Fixed `Raid Menu` button in `Raid Control`. (!78 - Thanks @Dimitro)  
 
 
 **Misc. Changes:**  
@@ -40,13 +41,13 @@ Updated CCDebuffs list.
 Updated Frenzy buff Id for pets. (#816)  
 Updated Zul debuff list.  
 Updated the macro text on the ActionBars to use the ActionBar font.  
-Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
+Optimized Bag Code in various areas. (This should mainly fix the lag reported when opening your bags).  
 Removed ArtifactBar from the DataBars.  
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
 Updated collection skin. Credits AddOnSkins.  
 Added `ElvUI_VC` chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
-Time datatext will now use the 24 hour clock by default in non-US regions. (#839, credit Rick van Lieshout)
+Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: Rick van Lieshout).  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
