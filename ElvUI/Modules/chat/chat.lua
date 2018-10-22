@@ -105,7 +105,7 @@ local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
 
@@ -318,7 +318,7 @@ end
 function CH:InsertEmotions(msg)
 	local emoji, pattern
 	for word in gmatch(msg, "%s-%S+%s*") do
-		pattern = strtrim(word):gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+		pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
 		emoji = CH.Smileys[pattern]
 		if emoji then
 			if strmatch(msg, '^'..pattern..'$') then -- only word
@@ -567,9 +567,9 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time());
-		timeStamp = timeStamp:gsub(' ', '')
-		timeStamp = timeStamp:gsub('AM', ' AM')
-		timeStamp = timeStamp:gsub('PM', ' PM')
+		timeStamp = gsub(timeStamp, ' ', '')
+		timeStamp = gsub(timeStamp, 'AM', ' AM')
+		timeStamp = gsub(timeStamp, 'PM', ' PM')
 		if CH.db.useCustomTimeColor then
 			local color = CH.db.customTimeColor
 			local hexColor = E:RGBToHex(color.r, color.g, color.b)
@@ -1603,9 +1603,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 					elseif ( type == "TEXT_EMOTE" and realm ) then
 						-- make sure emote has realm link correct
 						if info.colorNameByClass then
-							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
 						else
-							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
+							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h.-)|h$","%1-"..realm.."|h"), 1);
 						end
 					elseif (type == "TEXT_EMOTE") then
 						body = gsub(message, arg2, pflag..playerLink, 1);
@@ -1625,14 +1625,14 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13);
 			if CH.db.shortChannels and type ~= "EMOTE" and type ~= "TEXT_EMOTE" then
-				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-				body = body:gsub('CHANNEL:', '')
-				body = body:gsub("^(.-|h) "..L["whispers"], "%1")
-				body = body:gsub("^(.-|h) "..L["says"], "%1")
-				body = body:gsub("^(.-|h) "..L["yells"], "%1")
-				body = body:gsub("<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-				body = body:gsub("<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = body:gsub("^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
+				body = gsub(body, "|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+				body = gsub(body, 'CHANNEL:', '')
+				body = gsub(body, "^(.-|h) "..L["whispers"], "%1")
+				body = gsub(body, "^(.-|h) "..L["says"], "%1")
+				body = gsub(body, "^(.-|h) "..L["yells"], "%1")
+				body = gsub(body, "<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+				body = gsub(body, "<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+				body = gsub(body, "^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
@@ -1811,7 +1811,7 @@ end
 local protectLinks = {}
 function CH:CheckKeyword(message)
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
-		protectLinks[hyperLink]=hyperLink:gsub('%s','|s')
+		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if hyperLink == keyword then
 				if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
@@ -1826,18 +1826,18 @@ function CH:CheckKeyword(message)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		message = message:gsub(hyperLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
+		message = gsub(message, gsub(hyperLink, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1'), tempLink)
 	end
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
 	for word in gmatch(message, "%s-%S+%s*") do
-		if not next(protectLinks) or not protectLinks[word:gsub("%s",""):gsub("|s"," ")] then
-			tempWord = word:gsub("[%s%p]", "")
+		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
+			tempWord = gsub(word, "[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
 			for keyword, _ in pairs(CH.Keywords) do
 				if lowerCaseWord == keyword:lower() then
-					word = word:gsub(tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
+					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
 					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
@@ -1849,7 +1849,7 @@ function CH:CheckKeyword(message)
 			end
 
 			if self.db.classColorMentionsChat then
-				tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
+				tempWord = gsub(word,"^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
 				lowerCaseWord = tempWord:lower()
 
 				classMatch = CH.ClassNames[lowerCaseWord]
@@ -1857,7 +1857,7 @@ function CH:CheckKeyword(message)
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
 					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
-					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 			end
 		end
@@ -1871,7 +1871,7 @@ function CH:CheckKeyword(message)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
+		rebuiltString = gsub(rebuiltString, gsub(tempLink, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
 		protectLinks[hyperLink] = nil
 	end
 
@@ -2213,10 +2213,10 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 				queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
 				if queueName ~= '' then
 					if output == '' then
-						output = queueName:gsub('\n.+','') -- grab only the first queue name
-						queueCount = queueCount + select(2, queueName:gsub('\n','')) -- collect additional on single queue
+						output = gsub(queueName, '\n.+','') -- grab only the first queue name
+						queueCount = queueCount + select(2, gsub(queueName, '\n','')) -- collect additional on single queue
 					else
-						queueCount = queueCount + 1 + select(2, queueName:gsub('\n','')) -- collect additional on additional queues
+						queueCount = queueCount + 1 + select(2, gsub(queueName, '\n','')) -- collect additional on additional queues
 					end
 				end
 			end
