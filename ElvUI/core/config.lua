@@ -451,7 +451,7 @@ function E:CreateMoverPopup()
 	upButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, 1)
 	end)
-	SquareButton_SetIcon(upButton, "UP");
+	S:HandleNextPrevButton(upButton, true, true);
 	S:HandleButton(upButton)
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
@@ -459,7 +459,7 @@ function E:CreateMoverPopup()
 	downButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, -1)
 	end)
-	SquareButton_SetIcon(downButton, "DOWN");
+	S:HandleNextPrevButton(downButton, true, false);
 	S:HandleButton(downButton)
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
@@ -467,7 +467,7 @@ function E:CreateMoverPopup()
 	leftButton:SetScript('OnClick', function()
 		E:NudgeMover(-1)
 	end)
-	SquareButton_SetIcon(leftButton, "LEFT");
+	S:HandleNextPrevButton(leftButton);
 	S:HandleButton(leftButton)
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
@@ -475,6 +475,6 @@ function E:CreateMoverPopup()
 	rightButton:SetScript('OnClick', function()
 		E:NudgeMover(1)
 	end)
-	SquareButton_SetIcon(rightButton, "RIGHT");
+	S:HandleNextPrevButton(rightButton);
 	S:HandleButton(rightButton)
 end
