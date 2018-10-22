@@ -132,14 +132,12 @@ local function LoadSkin()
 			s.ScrollUpButton:StripTextures()
 			if not s.ScrollUpButton.icon then
 				S:HandleNextPrevButton(s.ScrollUpButton)
-				SquareButton_SetIcon(s.ScrollUpButton, 'UP')
 				s.ScrollUpButton:Size(s.ScrollUpButton:GetWidth() + 7, s.ScrollUpButton:GetHeight() + 7)
 			end
 
 			s.ScrollDownButton:StripTextures()
 			if not s.ScrollDownButton.icon then
-				S:HandleNextPrevButton(s.ScrollDownButton)
-				SquareButton_SetIcon(s.ScrollDownButton, 'DOWN')
+				S:HandleNextPrevButton(s.ScrollDownButton, true)
 				s.ScrollDownButton:Size(s.ScrollDownButton:GetWidth() + 7, s.ScrollDownButton:GetHeight() + 7)
 			end
 
