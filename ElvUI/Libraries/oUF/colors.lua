@@ -20,7 +20,9 @@ local colors = {
 	},
 	class = {},
 	debuff = {},
-	reaction = {},
+	reaction = {
+		[0] = {0, 0, 1},
+	},
 	power = {},
 }
 
@@ -99,6 +101,27 @@ colors.power[13] = colors.power.INSANITY
 colors.power[16] = colors.power.ARCANE_CHARGES
 colors.power[17] = colors.power.FURY
 colors.power[18] = colors.power.PAIN
+
+local function round(v)
+	return math.floor(v + 0.5)
+end
+ --[[ Colors: oUF:UnitSelectionColor(unit) or frame:UnitSelectionColor(unit)
+ --]]
+function oUF:UnitSelectionColor(unit)
+	local r, g, b = UnitSelectionColor(unit)
+	r, g, b = round(r * 255), round(g * 255), round(b * 255)
+ 	if r == 255 and g == 255 and b == 0 then
+		return self.colors.reaction[4][1], self.colors.reaction[4][2], self.colors.reaction[4][3]
+	elseif r == 255 and g == 129 and b == 0 then
+		return self.colors.reaction[3][1], self.colors.reaction[3][2], self.colors.reaction[3][3]
+	elseif r == 255 and g == 0 and b == 0 then
+		return self.colors.reaction[2][1], self.colors.reaction[2][2], self.colors.reaction[2][3]
+	elseif r == 0 and g == 255 and b == 0 then
+		return self.colors.reaction[5][1], self.colors.reaction[5][2], self.colors.reaction[5][3]
+	elseif r == 0 and g == 0 and b == 255 then
+		return self.colors.reaction[0][1], self.colors.reaction[0][2], self.colors.reaction[0][3]
+	end
+end
 
 local function colorsAndPercent(a, b, ...)
 	if(a <= 0 or b == 0) then
@@ -267,3 +290,4 @@ oUF.useHCYColorGradient = false
 
 frame_metatable.__index.colors = colors
 frame_metatable.__index.ColorGradient = ColorGradient
+frame_metatable.__index.UnitSelectionColor = oUF.UnitSelectionColor
