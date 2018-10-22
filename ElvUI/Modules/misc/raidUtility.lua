@@ -371,7 +371,7 @@ function RU:Initialize()
 	--Raid Control Panel
 	self:CreateUtilButton("RaidControlButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth(), 18, "TOPLEFT", ReadyCheckButton, "BOTTOMLEFT", 0, -5, L["Raid Menu"], nil)
 	RaidControlButton:SetScript("OnMouseUp", function()
-		ToggleFriendsFrame(4)
+		ToggleFriendsFrame(3)
 	end)
 
 	local buttons = {
