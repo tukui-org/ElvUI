@@ -991,7 +991,7 @@ P['datatexts'] = {
 	},
 	--Time Datatext
 	['localtime'] = true,
-	['time24'] = false,
+	['time24'] = GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
 	--Friends
 	['friends'] = {
 		--status
