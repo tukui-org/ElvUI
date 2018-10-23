@@ -45,6 +45,7 @@ L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
 L["Vendor Grays"] = "잡동사니 자동판매"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "자리비움"

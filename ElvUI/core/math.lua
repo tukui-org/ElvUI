@@ -298,6 +298,11 @@ function E:Delay(delay, func, ...)
 	if (type(delay) ~= "number") or (type(func) ~= "function") then
 		return false
 	end
+
+	if delay < 0.01 then
+		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
+	end
+
 	local extend = {...}
 	if not next(extend) then
 		C_Timer_After(delay, func)

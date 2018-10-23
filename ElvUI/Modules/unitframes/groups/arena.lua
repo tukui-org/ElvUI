@@ -70,6 +70,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	if not frame.isChild then
 		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+		frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 
 		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
@@ -162,6 +163,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Power
 	UF:Configure_Power(frame)
+
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
 	UF:Configure_Portrait(frame)

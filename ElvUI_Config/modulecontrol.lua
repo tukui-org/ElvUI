@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local NP = E:GetModule("NamePlates")
-local CP = E:GetModule('CopyProfile')
+local CP = E:GetModule('CopyProfile');
+
+local XPBAR_LABEL, MINIMAP_LABEL = XPBAR_LABEL, MINIMAP_LABEL
+local REPUTATION, HONOR, COLORS = REPUTATION, HONOR, COLORS
 
 --Actionbars
 local function CreateActionbarsConfig()
@@ -102,7 +104,7 @@ local function CreateBagsConfig()
 	config.args.split = {
 		order = 4,
 		type = "toggle",
-		name = L['Split'],
+		name = L["Split"],
 		get = function(info) return E.global.profileCopy.bags[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.bags[ info[#info] ] = value; end
 	}
@@ -183,6 +185,41 @@ local function CreateDatatextsConfig()
 		name = L["Panels"],
 		get = function(info) return E.global.profileCopy.datatexts[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.datatexts[ info[#info] ] = value; end
+	}
+
+	return config
+end
+
+--General
+local function CreateGeneralConfig()
+	local config = CP:CreateModuleConfigGroup(L["General"], "general")
+	config.args.altPowerBar = {
+		order = 2,
+		type = "toggle",
+		name = L["Alternative Power"],
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
+	}
+	config.args.minimap = {
+		order = 3,
+		type = "toggle",
+		name = MINIMAP_LABEL,
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
+	}
+	config.args.threat = {
+		order = 4,
+		type = "toggle",
+		name = L["Threat"],
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
+	}
+	config.args.totems = {
+		order = 5,
+		type = "toggle",
+		name = L["Class Totems"],
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
 	}
 
 	return config
@@ -337,7 +374,7 @@ local function CreateUnitframesConfig()
 			["frameGlow"] = {
 				order = 6,
 				type = "toggle",
-				name = L['Frame Glow'],
+				name = L["Frame Glow"],
 			},
 			["debuffHighlight"] = {
 				order = 7,
@@ -499,6 +536,7 @@ E.Options.args.modulecontrol= {
 						cooldown = CreateCooldownConfig(),
 						databars = CreateDatatbarsConfig(),
 						datatexts = CreateDatatextsConfig(),
+						general = CreateGeneralConfig(),
 						nameplates = CreateNamePlatesConfig(),
 						tooltip = CreateTooltipConfig(),
 						uniframes = CreateUnitframesConfig(),

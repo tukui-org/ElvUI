@@ -1,9 +1,9 @@
 --- AceDBOptions-3.0 provides a universal AceConfig options screen for managing AceDB-3.0 profiles.
 -- @class file
 -- @name AceDBOptions-3.0
--- @release $Id: AceDBOptions-3.0.lua 1140 2016-07-03 07:53:29Z nevcairiel $
+-- @release $Id: AceDBOptions-3.0.lua 1193 2018-08-02 12:24:37Z funkydude $
 local ACEDBO_MAJOR, ACEDBO_MINOR = "AceDBOptions-3.0", 15
-local AceDBOptions, oldminor = LibStub:NewLibrary(ACEDBO_MAJOR, ACEDBO_MINOR)
+local AceDBOptions = LibStub:NewLibrary(ACEDBO_MAJOR, ACEDBO_MINOR)
 
 if not AceDBOptions then return end -- No upgrade needed
 

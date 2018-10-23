@@ -8,7 +8,7 @@
 -- :IterateOptionsTables() (and :GetOptionsTable() if only given one argument) return a function reference that the requesting config handling addon must call with valid "uiType", "uiName".
 -- @class file
 -- @name AceConfigRegistry-3.0
--- @release $Id: AceConfigRegistry-3.0.lua 1169 2018-02-27 16:18:28Z nevcairiel $
+-- @release $Id: AceConfigRegistry-3.0.lua 1193 2018-08-02 12:24:37Z funkydude $
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 
 local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 18
@@ -59,7 +59,6 @@ local optstring={["nil"]=true,["string"]=true, _="string"}
 local optstringfunc={["nil"]=true,["string"]=true,["function"]=true, _="string or funcref"}
 local optstringnumberfunc={["nil"]=true,["string"]=true,["number"]=true,["function"]=true, _="string, number or funcref"}
 local optnumber={["nil"]=true,["number"]=true, _="number"}
-local optmethod={["nil"]=true,["string"]=true,["function"]=true, _="methodname or funcref"}
 local optmethodfalse={["nil"]=true,["string"]=true,["function"]=true,["boolean"]={[false]=true},  _="methodname, funcref or false"}
 local optmethodnumber={["nil"]=true,["string"]=true,["function"]=true,["number"]=true,  _="methodname, funcref or number"}
 local optmethodtable={["nil"]=true,["string"]=true,["function"]=true,["table"]=true,  _="methodname, funcref or table"}
@@ -178,7 +177,6 @@ local typedkeys={
 	},
 	color={
 		hasAlpha=optmethodbool,
-		reset=opttable,
 	},
 	keybinding={
 		-- TODO

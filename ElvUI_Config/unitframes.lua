@@ -826,12 +826,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
 			},
-			displayTarget = {
-				order = 12,
-				type = 'toggle',
-				name = L["Display Target"],
-				desc = L["Display the target of your current cast. Useful for mouseover casts."],
-			},
 			iconSettings = {
 				order = 13,
 				type = "group",
@@ -899,11 +893,61 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "range",
 				min = 0, max = 10, step = .1,
 			},
+			strataAndLevel = {
+				order = 9,
+				type = "group",
+				name = L["Strata and Level"],
+				get = function(info) return E.db.unitframe.units[groupName]['castbar']["strataAndLevel"][ info[#info] ] end,
+				set = function(info, value) E.db.unitframe.units[groupName]['castbar']["strataAndLevel"][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+				guiInline = true,
+				args = {
+					useCustomStrata = {
+						order = 1,
+						type = "toggle",
+						name = L["Use Custom Strata"],
+					},
+					frameStrata = {
+						order = 2,
+						type = "select",
+						name = L["Frame Strata"],
+						values = {
+							["BACKGROUND"] = "BACKGROUND",
+							["LOW"] = "LOW",
+							["MEDIUM"] = "MEDIUM",
+							["HIGH"] = "HIGH",
+							["DIALOG"] = "DIALOG",
+							["TOOLTIP"] = "TOOLTIP",
+						},
+					},
+					spacer = {
+						order = 3,
+						type = "description",
+						name = "",
+					},
+					useCustomLevel = {
+						order = 4,
+						type = "toggle",
+						name = L["Use Custom Level"],
+					},
+					frameLevel = {
+						order = 5,
+						type = "range",
+						name = L["Frame Level"],
+						min = 2, max = 128, step = 1,
+					},
+				},
+			}
 		},
 	}
 
 
 	if hasTicks then
+		config.args.displayTarget = {
+			order = 11,
+			type = 'toggle',
+			name = L["Display Target"],
+			desc = L["Display the target of your current cast. Useful for mouseover casts."],
+		}
 		config.args.ticks = {
 			order = 12,
 			type = "group",
@@ -1410,6 +1454,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'toggle',
 				order = 1,
 				name = L["Enable"],
+			},
+			powerPrediction = {
+				type = 'toggle',
+				order = 2,
+				name = L["Power Prediction"],
 			},
 			text_format = {
 				order = 100,
@@ -2228,7 +2277,7 @@ E.Options.args.unitframe = {
 							name = L["OOR Alpha"],
 							desc = L["The alpha to set units that are out of range to."],
 							type = 'range',
-							min = 0, max = 1, step = 0.01,
+							softMin = .1, min = 0, max = 1, step = 0.01,
 						},
 						debuffHighlighting = {
 							order = 3,
@@ -4693,6 +4742,7 @@ E.Options.args.unitframe.args.pet = {
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 
@@ -6588,7 +6638,7 @@ E.Options.args.unitframe.args.raid40 = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
@@ -7234,8 +7284,10 @@ E.Options.args.unitframe.args.tank = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
 			},
 		},
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
@@ -7291,6 +7343,8 @@ E.Options.args.unitframe.args.tank = {
 		},
 	},
 }
+E.Options.args.unitframe.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 
 --Assist Frames
 E.Options.args.unitframe.args.assist = {
@@ -7433,8 +7487,10 @@ E.Options.args.unitframe.args.assist = {
 					type = 'select',
 					values = colorOverrideValues,
 				},
+				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
 			},
 		},
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
@@ -7485,6 +7541,8 @@ E.Options.args.unitframe.args.assist = {
 		},
 	},
 }
+E.Options.args.unitframe.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {

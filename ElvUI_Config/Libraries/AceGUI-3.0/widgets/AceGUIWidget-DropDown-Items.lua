@@ -1,4 +1,4 @@
---[[ $Id: AceGUIWidget-DropDown-Items.lua 1167 2017-08-29 22:08:48Z funkydude $ ]]--
+--[[ $Id: AceGUIWidget-DropDown-Items.lua 1192 2018-07-30 18:03:51Z funkydude $ ]]--
 
 local AceGUI = LibStub("AceGUI-3.0")
 
@@ -169,7 +169,7 @@ function ItemBase.Create(type)
 	self.text = text
 
 	local highlight = frame:CreateTexture(nil, "OVERLAY")
-	highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	highlight:SetTexture(136810) -- Interface\\QuestFrame\\UI-QuestTitleHighlight
 	highlight:SetBlendMode("ADD")
 	highlight:SetHeight(14)
 	highlight:ClearAllPoints()
@@ -182,7 +182,7 @@ function ItemBase.Create(type)
 	check:SetWidth(16)
 	check:SetHeight(16)
 	check:SetPoint("LEFT",frame,"LEFT",3,-1)
-	check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
+	check:SetTexture(130751) -- Interface\\Buttons\\UI-CheckBox-Check
 	check:Hide()
 	self.check = check
 
@@ -190,7 +190,7 @@ function ItemBase.Create(type)
 	sub:SetWidth(16)
 	sub:SetHeight(16)
 	sub:SetPoint("RIGHT",frame,"RIGHT",-3,-1)
-	sub:SetTexture("Interface\\ChatFrame\\ChatFrameExpandArrow")
+	sub:SetTexture(130940) -- Interface\\ChatFrame\\ChatFrameExpandArrow
 	sub:Hide()
 	self.sub = sub
 

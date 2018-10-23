@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Global Settings
 G['general'] = {
@@ -266,6 +266,13 @@ G["profileCopy"] = {
 	["datatexts"] = {
 		["general"] = true,
 		["panels"] = true,
+	},
+	["general"] = {
+		["general"] = true,
+		["altPowerBar"] = true,
+		["minimap"] = true,
+		["threat"] = true,
+		["totems"] = true,
 	},
 	["nameplates"] = {
 		["general"] = true,

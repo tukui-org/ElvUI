@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -155,19 +155,15 @@ function mod:PLAYER_ENTERING_WORLD()
 	end
 
 	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
-		self:CheckBGHealers()
+		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", 'CheckBGHealers')
 	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
-		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
+		self:RegisterEvent("UNIT_NAME_UPDATE", 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers')
 		self:CheckArenaHealers()
 	else
-		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("UNIT_NAME_UPDATE")
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
-		if self.CheckHealerTimer then
-			self:CancelTimer(self.CheckHealerTimer)
-			self.CheckHealerTimer = nil;
-		end
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
 	end
 
 	if self.db.units.PLAYER.useStaticPosition then
@@ -896,9 +892,10 @@ function mod:OnEvent(event, unit, ...)
 end
 
 function mod:RegisterEvents(frame, unit)
-	local displayedUnit;
-	if ( unit ~= frame.displayedUnit ) then
-		displayedUnit = frame.displayedUnit;
+	local displayedUnit
+	if not unit then unit = frame.unit end
+	if unit ~= frame.displayedUnit then
+		displayedUnit = frame.displayedUnit
 	end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
@@ -939,10 +936,13 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
 			frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
-			frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit, displayedUnit);
+
+			if unit == 'player' then
+				frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
+			end
 		end
 
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
@@ -950,7 +950,7 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit or frame.unit)
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit)
 	end
 
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
@@ -1187,7 +1187,8 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 		local plate = self.PlateGUIDs[targetGUID]
 		if plate and (plate.unitFrame and plate.unitFrame.CastBar) then
 			local db = plate.unitFrame.UnitType and self.db and self.db.units and self.db.units[plate.unitFrame.UnitType]
-			if db and db.castbar and db.castbar.sourceInterrupt then
+			local healthBar = (db and db.healthbar and db.healthbar.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
+			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				local holdTime = db.castbar.timeToHold
 				if holdTime > 0 then
 					if db.castbar.sourceInterruptClassColor then

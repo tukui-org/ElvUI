@@ -1997,6 +1997,7 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						type = 'toggle',
 						name = L["Display Interrupt Source"],
+						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."],
 					},
 					sourceInterruptClassColor = {
 						order = 4,
@@ -2004,12 +2005,7 @@ local function GetUnitSettings(unit, name)
 						name = L["Show Interrupt Source in Class Color"],
 						disabled = function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end,
 					},
-					displayTarget = {
-						order = 5,
-						type = 'toggle',
-						name = L["Display Target"],
-						desc = L["Display the target of your current cast. Useful for mouseover casts."],
-					},
+					-- order 5 is player Display Target
 					height = {
 						order = 6,
 						name = L["Height"],
@@ -2563,6 +2559,12 @@ local function GetUnitSettings(unit, name)
 			order = 3,
 			type = "toggle",
 			name = L["Use Class Color"],
+		}
+		group.args.castGroup.args.displayTarget = {
+			order = 5,
+			type = 'toggle',
+			name = L["Display Target"],
+			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.minions = {

@@ -15,6 +15,7 @@
 	<Script file='phaseindicator.lua'/>
 	<Script file='portrait.lua'/>
 	<Script file='power.lua'/>
+	<Script file='powerprediction.lua'/>
 	<Script file='PvPIcon.lua'/>
 	<Script file='pvpindicator.lua'/>
 	<Script file='pvpspecicon.lua'/>

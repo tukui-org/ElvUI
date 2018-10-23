@@ -23,61 +23,64 @@ local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGr
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded, DisableAddOn = IsAddOnLoaded, DisableAddOn
-local IsInInstance, IsInGroup, IsInRaid, IsInGuild = IsInInstance, IsInGroup, IsInRaid, IsInGuild
+local IsInInstance, IsInGuild = IsInInstance, IsInGuild
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetNumGroupMembers = GetNumGroupMembers
+local GetChannelName = GetChannelName
+local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
-local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local UnitFactionGroup = UnitFactionGroup
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local GetNumGroupMembers = GetNumGroupMembers
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local UnitFactionGroup = UnitFactionGroup
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame
--- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
--- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
--- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
--- GLOBALS: ElvUIParent, ElvUI_TopPanel, hooksecurefunc, InterfaceOptionsCameraPanelMaxDistanceSlider
--- GLOBALS: DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, ElvDB
+-- GLOBALS: ElvDB, LibStub, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
+-- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, MAX_WOW_CHAT_CHANNELS, CHAT_CONFIG_CHANNEL_LIST
+-- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
 --Constants
+E.LSM = LSM
+E.noop = function() end
 E.title = format("|cfffe7b2c%s |r", "ElvUI")
-E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player");
-E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player");
-E.myLocalizedRace, E.myrace = UnitRace("player");
-E.myname = UnitName("player");
-E.myrealm = GetRealmName();
-E.myspec = GetSpecialization();
-E.version = GetAddOnMetadata("ElvUI", "Version");
-E.wowpatch, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
+E.myfaction, E.myLocalizedFaction = UnitFactionGroup("player")
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass("player")
+E.myLocalizedRace, E.myrace = UnitRace("player")
+E.myname = UnitName("player")
+E.myrealm = GetRealmName()
+E.myspec = GetSpecialization()
+E.version = GetAddOnMetadata("ElvUI", "Version")
+E.wowpatch, E.wowbuild = GetBuildInfo()
+E.wowbuild = tonumber(E.wowbuild)
 E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution"); --only used for now in our install.lua line 779
-E.screenwidth, E.screenheight = GetPhysicalScreenSize();
-E.isMacClient = IsMacClient();
-E.LSM = LSM;
+E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+E.isMacClient = IsMacClient()
 E.NewSign = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t" -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 
 --Tables
-E["media"] = {};
-E["frames"] = {};
-E["unitFrameElements"] = {};
-E["statusBars"] = {};
-E["texts"] = {};
+E["media"] = {}
+E["frames"] = {}
+E["unitFrameElements"] = {}
+E["statusBars"] = {}
+E["texts"] = {}
 E['snapBars'] = {}
 E["RegisteredModules"] = {}
 E['RegisteredInitialModules'] = {}
 E["ModuleCallbacks"] = {["CallPriority"] = {}}
 E["InitialModuleCallbacks"] = {["CallPriority"] = {}}
-E['valueColorUpdateFuncs'] = {};
+E['valueColorUpdateFuncs'] = {}
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.VehicleLocks = {}
-E.CreditsList = {};
-E.PixelMode = false;
+E.CreditsList = {}
+E.PixelMode = false
 
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -177,8 +180,6 @@ for filter, tbl in pairs(G.unitframe.aurafilters) do
 	E.DEFAULT_FILTER[filter] = tbl.type
 end
 
-E.noop = function() end;
-
 local hexvaluecolor
 function E:Print(...)
 	hexvaluecolor = self["media"].hexvaluecolor or "|cff00b3ff"
@@ -194,24 +195,24 @@ E.PriestColors = {
 }
 
 function E:GetPlayerRole()
-	local assignedRole = UnitGroupRolesAssigned("player");
+	local assignedRole = UnitGroupRolesAssigned("player")
 	if ( assignedRole == "NONE" ) then
-		local spec = GetSpecialization();
-		return GetSpecializationRole(spec);
+		local spec = GetSpecialization()
+		return GetSpecializationRole(spec)
 	end
 
-	return assignedRole;
+	return assignedRole
 end
 
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 function E:CheckClassColor(r, g, b)
 	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
-	local matchFound = false;
+	local matchFound = false
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
 			local colorTable = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
-				matchFound = true;
+				matchFound = true
 			end
 		end
 	end
@@ -394,16 +395,16 @@ function E:PLAYER_ENTERING_WORLD()
 
 	if not self.MediaUpdated then
 		self:UpdateMedia()
-		self.MediaUpdated = true;
+		self.MediaUpdated = true
 	end
 
-	local _, instanceType = IsInInstance();
+	local _, instanceType = IsInInstance()
 	if instanceType == "pvp" then
 		self.BGTimer = self:ScheduleRepeatingTimer("RequestBGInfo", 5)
 		self:RequestBGInfo()
 	elseif self.BGTimer then
 		self:CancelTimer(self.BGTimer)
-		self.BGTimer = nil;
+		self.BGTimer = nil
 	end
 
 	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
@@ -422,20 +423,20 @@ function E:UpdateFrameTemplates()
 	for frame in pairs(self["frames"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
-				frame:SetTemplate(frame.template, frame.glossTex);
+				frame:SetTemplate(frame.template, frame.glossTex)
 			end
 		else
-			self["frames"][frame] = nil;
+			self["frames"][frame] = nil
 		end
 	end
 
 	for frame in pairs(self["unitFrameElements"]) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
-				frame:SetTemplate(frame.template, frame.glossTex);
+				frame:SetTemplate(frame.template, frame.glossTex)
 			end
 		else
-			self["unitFrameElements"][frame] = nil;
+			self["unitFrameElements"][frame] = nil
 		end
 	end
 end
@@ -449,7 +450,7 @@ function E:UpdateBorderColors()
 				end
 			end
 		else
-			self["frames"][frame] = nil;
+			self["frames"][frame] = nil
 		end
 	end
 
@@ -461,7 +462,7 @@ function E:UpdateBorderColors()
 				end
 			end
 		else
-			self["unitFrameElements"][frame] = nil;
+			self["unitFrameElements"][frame] = nil
 		end
 	end
 end
@@ -481,7 +482,7 @@ function E:UpdateBackdropColors()
 				end
 			end
 		else
-			self["frames"][frame] = nil;
+			self["frames"][frame] = nil
 		end
 	end
 
@@ -499,7 +500,7 @@ function E:UpdateBackdropColors()
 				end
 			end
 		else
-			self["unitFrameElements"][frame] = nil;
+			self["unitFrameElements"][frame] = nil
 		end
 	end
 end
@@ -507,9 +508,9 @@ end
 function E:UpdateFontTemplates()
 	for text, _ in pairs(self["texts"]) do
 		if text then
-			text:FontTemplate(text.font, text.fontSize, text.fontStyle);
+			text:FontTemplate(text.font, text.fontSize, text.fontStyle)
 		else
-			self["texts"][text] = nil;
+			self["texts"][text] = nil
 		end
 	end
 end
@@ -529,10 +530,10 @@ function E:UpdateStatusBars()
 end
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
-E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
-E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
-E.UIParent:SetPoint('CENTER', UIParent, 'CENTER');
-E.UIParent:SetSize(UIParent:GetSize());
+E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
+E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
+E.UIParent:SetPoint('CENTER', UIParent, 'CENTER')
+E.UIParent:SetSize(UIParent:GetSize())
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 
@@ -559,17 +560,17 @@ function E:IsDispellableByMe(debuffType)
 	if not self.DispelClasses[self.myclass] then return; end
 
 	if self.DispelClasses[self.myclass][debuffType] then
-		return true;
+		return true
 	end
 end
 
 function E:CheckRole()
 	local talentTree = GetSpecialization()
-	local IsInPvPGear = false;
+	local IsInPvPGear = false
 	local role
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
-		IsInPvPGear = true;
+		IsInPvPGear = true
 	end
 
 	self.myspec = talentTree
@@ -586,15 +587,15 @@ function E:CheckRole()
 	end
 
 	if not role then
-		local playerint = select(2, UnitStat("player", 4));
-		local playeragi	= select(2, UnitStat("player", 2));
-		local base, posBuff, negBuff = UnitAttackPower("player");
-		local playerap = base + posBuff + negBuff;
+		local playerint = select(2, UnitStat("player", 4))
+		local playeragi	= select(2, UnitStat("player", 2))
+		local base, posBuff, negBuff = UnitAttackPower("player")
+		local playerap = base + posBuff + negBuff
 
 		if (playerap > playerint) or (playeragi > playerint) then
-			role = "Melee";
+			role = "Melee"
 		else
-			role = "Caster";
+			role = "Caster"
 		end
 	end
 
@@ -605,9 +606,9 @@ function E:CheckRole()
 
 	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
 		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
-			self.DispelClasses[self.myclass].Magic = true;
+			self.DispelClasses[self.myclass].Magic = true
 		else
-			self.DispelClasses[self.myclass].Magic = false;
+			self.DispelClasses[self.myclass].Magic = false
 		end
 	end
 end
@@ -645,9 +646,9 @@ end
 
 function E:IsFoolsDay()
 	if find(date(), '04/01/') and not E.global.aprilFools then
-		return true;
+		return true
 	else
-		return false;
+		return false
 	end
 end
 
@@ -755,16 +756,16 @@ function E:TableToLuaString(inTable)
 		return
 	end
 
-	local ret = "{\n";
+	local ret = "{\n"
 	local function recurse(table, level)
 		for i,v in pairs(table) do
-			ret = ret..strrep("    ", level).."[";
+			ret = ret..strrep("    ", level).."["
 			if(type(i) == "string") then
-				ret = ret.."\""..i.."\"";
+				ret = ret.."\""..i.."\""
 			else
-				ret = ret..i;
+				ret = ret..i
 			end
-			ret = ret.."] = ";
+			ret = ret.."] = "
 
 			if(type(v) == "number") then
 				ret = ret..v..",\n"
@@ -778,7 +779,7 @@ function E:TableToLuaString(inTable)
 				end
 			elseif(type(v) == "table") then
 				ret = ret.."{\n"
-				recurse(v, level + 1);
+				recurse(v, level + 1)
 				ret = ret..strrep("    ", level).."},\n"
 			else
 				ret = ret.."\""..tostring(v).."\",\n"
@@ -787,11 +788,11 @@ function E:TableToLuaString(inTable)
 	end
 
 	if(inTable) then
-		recurse(inTable, 1);
+		recurse(inTable, 1)
 	end
-	ret = ret.."}";
+	ret = ret.."}"
 
-	return ret;
+	return ret
 end
 
 local profileFormat = {
@@ -835,12 +836,12 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				returnString = returnString..lineStructure
 			end
 
-			returnString = returnString.."[";
+			returnString = returnString.."["
 
 			if(type(k) == "string") then
-				returnString = returnString.."\""..k.."\"";
+				returnString = returnString.."\""..k.."\""
 			else
-				returnString = returnString..k;
+				returnString = returnString..k
 			end
 
 			if type(v) == "table" then
@@ -850,7 +851,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				recurse(v)
 			else
 				sameLine = false
-				returnString = returnString.."] = ";
+				returnString = returnString.."] = "
 
 				if type(v) == "number" then
 					returnString = returnString..v.."\n"
@@ -873,10 +874,10 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 	end
 
 	if inTable and profileType then
-		recurse(inTable);
+		recurse(inTable)
 	end
 
-	return returnString;
+	return returnString
 end
 
 --Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
@@ -904,46 +905,61 @@ function E:SplitString(s, delim)
 	return unpack(t)
 end
 
+local SendMessageWaiting -- only allow 1 delay at a time regardless of eventing
 function E:SendMessage()
 	if IsInRaid() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
-	elseif IsInGuild() then
-		C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+	else
+		local ElvUIGVC = GetChannelName('ElvUIGVC')
+		if ElvUIGVC and ElvUIGVC > 0 then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "CHANNEL", ElvUIGVC)
+		elseif IsInGuild() then
+			C_ChatInfo_SendAddonMessage("ELVUI_VERSIONCHK", E.version, "GUILD")
+		end
 	end
 
-	if E.SendMSGTimer then
-		self:CancelTimer(E.SendMSGTimer)
-		E.SendMSGTimer = nil
-	end
+	SendMessageWaiting = nil
 end
 
-local SendRecieveGroupSize = -1 --this is negative one so that the first check will send (if group size is greater than one; specifically for /reload)
+local SendRecieveGroupSize = 0
 local myRealm = gsub(E.myrealm,'[%s%-]','')
 local myName = E.myname..'-'..myRealm
 local function SendRecieve(_, event, prefix, message, _, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if(sender == myName) then return end
+		if sender == myName then return end
+		if prefix == "ELVUI_VERSIONCHK" then
+			local msg, ver = tonumber(message), tonumber(E.version)
+			if msg and (msg > ver) then -- you're outdated D:
+				if not E.recievedOutOfDateMessage then
+					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
-			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
-				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+					if msg and ((msg - ver) >= 0.05) then
+						E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
+					end
 
-				if((tonumber(message) - tonumber(E.version)) >= 0.05) then
-					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
+					E.recievedOutOfDateMessage = true
 				end
-
-				E.recievedOutOfDateMessage = true
+			elseif msg and (msg < ver) then -- Send Message Back
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
+				end
 			end
 		end
-	else
+	elseif event == "GROUP_ROSTER_UPDATE" then
 		local num = GetNumGroupMembers()
 		if num ~= SendRecieveGroupSize then
 			if num > 1 and num > SendRecieveGroupSize then
-				E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
+				end
 			end
 			SendRecieveGroupSize = num
+		end
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		if not SendMessageWaiting then
+			SendMessageWaiting = E:Delay(10, E.SendMessage)
 		end
 	end
 end
@@ -951,10 +967,29 @@ end
 C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame("Frame")
-f:RegisterEvent("GROUP_ROSTER_UPDATE")
---f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", SendRecieve)
+f:SetScript("OnUpdate", function(self, elapsed)
+	self.delayed = (self.delayed or 0) + elapsed
+	if self.delayed > 1 then
+		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
+		if numActiveChannels and (numActiveChannels >= 1) then
+			if (GetChannelName('ElvUIGVC') == 0) and (numActiveChannels < MAX_WOW_CHAT_CHANNELS) then
+				JoinChannelByName('ElvUIGVC', nil, nil, true)
+
+				if not SendMessageWaiting then
+					SendMessageWaiting = E:Delay(10, E.SendMessage)
+				end
+
+				self:SetScript("OnUpdate", nil)
+			end
+		end
+	elseif self.delayed > 30 then
+		self:SetScript("OnUpdate", nil)
+	end
+end)
 
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then
@@ -963,10 +998,10 @@ function E:UpdateAll(ignoreInstall)
 	end
 
 	self.private = self.charSettings.profile
-	self.db = self.data.profile;
-	self.global = self.data.global;
-	self.db.theme = nil;
-	self.db.install_complete = nil;
+	self.db = self.data.profile
+	self.global = self.data.global
+	self.db.theme = nil
+	self.db.install_complete = nil
 
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
@@ -985,7 +1020,7 @@ function E:UpdateAll(ignoreInstall)
 
 	local CH = self:GetModule('Chat')
 	CH.db = self.db.chat
-	CH:PositionChat(true);
+	CH:PositionChat(true)
 	CH:SetupChat()
 	CH:UpdateAnchors()
 
@@ -998,15 +1033,15 @@ function E:UpdateAll(ignoreInstall)
 	AB:Extra_SetScale()
 	AB:ToggleDesaturation()
 
-	local bags = E:GetModule('Bags');
+	local bags = E:GetModule('Bags')
 	bags.db = self.db.bags
-	bags:Layout();
-	bags:Layout(true);
+	bags:Layout()
+	bags:Layout(true)
 	bags:SizeAndPositionBagBar()
 	bags:UpdateItemLevelDisplay()
 	bags:UpdateCountDisplay()
 
-	local totems = E:GetModule('Totems');
+	local totems = E:GetModule('Totems')
 	totems.db = self.db.general.totems
 	totems:PositionAndSize()
 	totems:ToggleEnable()
@@ -1070,7 +1105,7 @@ function E:UpdateAll(ignoreInstall)
 
 	self:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
 
-	collectgarbage('collect');
+	collectgarbage('collect')
 end
 
 function E:RemoveNonPetBattleFrames()
@@ -1353,7 +1388,7 @@ end
 function E:InitializeInitialModules()
 	--Fire callbacks for any module using the new system
 	for index, moduleName in ipairs(self.InitialModuleCallbacks["CallPriority"]) do
-		self.InitialModuleCallbacks[moduleName] = nil;
+		self.InitialModuleCallbacks[moduleName] = nil
 		self.InitialModuleCallbacks["CallPriority"][index] = nil
 		E.callbacks:Fire(moduleName)
 	end
@@ -1379,7 +1414,7 @@ end
 function E:InitializeModules()
 	--Fire callbacks for any module using the new system
 	for index, moduleName in ipairs(self.ModuleCallbacks["CallPriority"]) do
-		self.ModuleCallbacks[moduleName] = nil;
+		self.ModuleCallbacks[moduleName] = nil
 		self.ModuleCallbacks["CallPriority"][index] = nil
 		E.callbacks:Fire(moduleName)
 	end
@@ -1490,7 +1525,7 @@ end
 local CPU_USAGE = {}
 local function CompareCPUDiff(showall, minCalls)
 	local greatestUsage, greatestCalls, greatestName, newName, newFunc
-	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0;
+	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0
 
 	for name, oldUsage in pairs(CPU_USAGE) do
 		newName, newFunc = name:match("^([^:]+):(.+)$")
@@ -1592,7 +1627,7 @@ local function HandleCommandBar()
 		bar:Hide()
 		UIParent:UnregisterEvent("UNIT_AURA")--Only used for OrderHall Bar
 	elseif E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-		E.UIParent:SetPoint("BOTTOM", UIParent, "BOTTOM");
+		E.UIParent:SetPoint("BOTTOM", UIParent, "BOTTOM")
 		OrderHallCommandBar:HookScript("OnShow", SetModifiedHeight)
 		OrderHallCommandBar:HookScript("OnHide", SetOriginalHeight)
 	end
@@ -1604,20 +1639,20 @@ function E:Initialize(loginFrame)
 	twipe(self.private)
 
 	self.myguid = UnitGUID("player")
-	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
+	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF)
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
-	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars);
+	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars)
 	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.private = self.charSettings.profile
-	self.db = self.data.profile;
-	self.global = self.data.global;
+	self.db = self.data.profile
+	self.global = self.data.global
 	self:CheckIncompatible()
 	self:DBConversions()
 
 	self:CheckRole()
-	self:UIScale('PLAYER_LOGIN', loginFrame);
+	self:UIScale('PLAYER_LOGIN', loginFrame)
 
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules
@@ -1630,7 +1665,7 @@ function E:Initialize(loginFrame)
 	end
 
 	if not find(date(), '04/01/') then
-		E.global.aprilFools = nil;
+		E.global.aprilFools = nil
 	end
 
 	if(self:HelloKittyFixCheck()) then
@@ -1642,11 +1677,11 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole");
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole");
-	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole");
-	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole");
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole")
+	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole")
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole")
+	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole")
+	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole")
 	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
@@ -1664,10 +1699,10 @@ function E:Initialize(loginFrame)
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
-	collectgarbage("collect");
+	collectgarbage("collect")
 
 	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		E:Print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 
 	if OrderHallCommandBar then

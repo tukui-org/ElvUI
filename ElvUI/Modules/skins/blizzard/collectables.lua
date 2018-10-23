@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_PetJournal_GetPetStats = C_PetJournal.GetPetStats
@@ -55,13 +55,59 @@ local function LoadSkin()
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
-	for i = 1, #MountJournal.ListScrollFrame.buttons do
-		local b = _G["MountJournalListScrollFrameButton"..i];
-		S:HandleItemButton(b)
-		b.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
-		b.favorite:Point("TOPLEFT",b.DragButton,"TOPLEFT",-8,8)
-		b.favorite:SetSize(32,32)
-		b.selectedTexture:SetColorTexture(1, 1, 1, 0.1)
+	for _, bu in pairs(MountJournal.ListScrollFrame.buttons) do
+		bu:CreateBackdrop("Transparent")
+		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
+		bu.backdrop:SetInside(bu, 3, 3)
+
+		bu.icon:SetPoint("LEFT", bu, -40, 0)
+		bu.icon:SetTexCoord(unpack(E.TexCoords))
+		bu.icon:CreateBackdrop("Default")
+		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
+
+		bu:HookScript("OnEnter", function(self)
+			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+			self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+		end)
+
+		bu:HookScript("OnLeave", function(self)
+			if self.selected then
+				self.backdrop:SetBackdropBorderColor(1, .8, .1)
+				self.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+			else
+				self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			end
+		end)
+
+		hooksecurefunc(bu.unusable, 'Show', function() bu.icon:SetVertexColor(.4, .1, .1) bu.backdrop:SetBackdropColor(.4, .1, .1, .65) end)
+		hooksecurefunc(bu.unusable, 'Hide', function() bu.icon:SetVertexColor(1, 1, 1) bu.backdrop:SetBackdropColor(0, 0, 0, .65) end)
+
+		hooksecurefunc(bu.selectedTexture, 'Show', function()
+			bu.name:SetTextColor(1, .8, .1)
+			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+			bu.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+		end)
+
+		hooksecurefunc(bu.selectedTexture, 'Hide', function()
+			bu.name:SetTextColor(1, 1, 1)
+			bu.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			bu.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end)
+
+		bu:SetHighlightTexture(nil)
+		bu.unusable:SetAlpha(0)
+		bu.iconBorder:SetTexture('')
+		bu.background:SetTexture('')
+		bu.selectedTexture:SetTexture('')
+
+		bu.factionIcon:SetDrawLayer('OVERLAY')
+		bu.factionIcon:SetPoint('TOPRIGHT', -1, -4)
+		bu.factionIcon:SetPoint('BOTTOMRIGHT', -1, 4)
+
+		bu.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
+		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
+		bu.favorite:SetSize(32, 32)
 	end
 
 	-----------------------------
@@ -98,46 +144,53 @@ local function LoadSkin()
 	PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(PetJournalListScrollFrameScrollBar)
 
-	for i = 1, #PetJournal.listScroll.buttons do
-		local b = _G["PetJournalListScrollFrameButton"..i]
-		S:HandleItemButton(b)
-		b.dragButton.favorite:SetParent(b.backdrop)
-		b.dragButton.ActiveTexture:Kill()
-		b.selectedTexture:SetColorTexture(1, 1, 1, 0.1)
-	end
+	for _, bu in pairs(PetJournal.listScroll.buttons) do
+		bu:StripTextures()
+		bu:CreateBackdrop("Transparent")
+		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
+		bu.backdrop:SetInside(bu, 3, 3)
 
-	local function ColorSelectedPet()
-		local petButtons = PetJournal.listScroll.buttons;
-		local isWild = PetJournal.isWild;
+		bu.icon:SetPoint("LEFT", -40, 0)
+		bu.icon:SetTexCoord(unpack(E.TexCoords))
+		bu.icon:CreateBackdrop("Default")
+		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
-		for i = 1, #petButtons do
-			local index = petButtons[i].index;
-			if not index then break; end
-			local b = _G["PetJournalListScrollFrameButton"..i]
-			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
-			local petID = C_PetJournal_GetPetInfoByIndex(index, isWild);
+		bu:HookScript("OnEnter", function(self)
+			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+		end)
 
-			if b.selectedTexture:IsShown() then
-				t:SetTextColor(1,1,0)
+		bu:HookScript("OnLeave", function(self)
+			if self.selected then
+				self.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				t:SetTextColor(1,1,1)
+				self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
-			if petID ~= nil then
-				local _, _, _, _, rarity = C_PetJournal_GetPetStats(petID);
-				if rarity then
-					local color = ITEM_QUALITY_COLORS[rarity-1]
-					b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
-				else
-					b.backdrop:SetBackdropBorderColor(0,0,0)
-				end
-			else
-				b.backdrop:SetBackdropBorderColor(0,0,0)
-			end
-		end
+		end)
+
+		hooksecurefunc(bu.selectedTexture, 'Show', function()
+			bu.name:SetTextColor(1, .8, .1)
+			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+		end)
+
+		hooksecurefunc(bu.selectedTexture, 'Hide', function()
+			bu.name:SetTextColor(1, 1, 1)
+			bu.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end)
+
+		bu.dragButton.ActiveTexture:SetAlpha(0)
+		bu.dragButton.levelBG:SetTexture(nil)
+
+		bu.iconBorder:SetTexture('')
+		bu.selectedTexture:SetTexture('')
+
+		hooksecurefunc(bu.iconBorder, 'SetVertexColor', function(self, r, g, b)
+			bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
+		end)
+
+		hooksecurefunc(bu.iconBorder, 'Hide', function(self)
+			bu.icon.backdrop:SetBackdropColor(unpack(E["media"].bordercolor))
+		end)
 	end
-	hooksecurefunc('PetJournal_UpdatePetList', ColorSelectedPet)
-	PetJournalListScrollFrame:HookScript("OnVerticalScroll", ColorSelectedPet)
-	PetJournalListScrollFrame:HookScript("OnMouseWheel", ColorSelectedPet)
 
 	PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
 
@@ -248,8 +301,7 @@ local function LoadSkin()
 	ToyBox.iconsFrame:StripTextures()
 	ToyBox.iconsFrame.NineSlice:Hide()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
-	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, false, true)
 	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
@@ -289,8 +341,7 @@ local function LoadSkin()
 	HeirloomsJournal.iconsFrame:StripTextures()
 	HeirloomsJournal.iconsFrame.NineSlice:Hide()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
-	SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, false, true)
 	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
 	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
@@ -338,13 +389,8 @@ local function LoadSkin()
 	end)
 
 	-- Appearances Tab
-	local function SkinTab(tab)
-		S:HandleTab(tab)
-		tab.backdrop:SetTemplate("Default", true)
-		tab.backdrop:SetOutside(nil, 2, 2)
-	end
-	SkinTab(WardrobeCollectionFrame.ItemsTab)
-	SkinTab(WardrobeCollectionFrame.SetsTab)
+	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
+	S:HandleTab(WardrobeCollectionFrame.SetsTab)
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
@@ -353,6 +399,7 @@ local function LoadSkin()
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
@@ -362,21 +409,25 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
 	-- Taken from AddOnSkins
-	for i = 1, 3 do
-		for j = 1, 6 do
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:SetFrameLevel(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:GetFrameLevel() + 2)
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j]:CreateBackdrop("Default")
-			WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border:Kill()
-			hooksecurefunc(WardrobeCollectionFrame.ItemsCollectionFrame["ModelR"..i.."C"..j].Border, 'SetAtlas', function(self, texture)
-				local color = E.media.bordercolor
-				if texture == "transmog-wardrobe-border-uncollected" then
-					color = { 1, 1, 0}
-				elseif texture == "transmog-wardrobe-border-unusable" then
-					color = { 1, 0, 0}
-				end
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(color))
-			end)
+	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
+		if Frame.Models then
+			for _, Model in pairs(Frame.Models) do
+				Model:CreateBackdrop("Default")
+				Model:SetFrameLevel(Model:GetFrameLevel() + 2)
+				Model.backdrop:SetPoint('BOTTOMRIGHT', 2, -1)
+				Model.Border:Kill()
+				hooksecurefunc(Model.Border, 'SetAtlas', function(self, texture)
+					local r, g, b
+					if texture == "transmog-wardrobe-border-uncollected" then
+						r, g, b = 1, 1, 0
+					elseif texture == "transmog-wardrobe-border-unusable" then
+						r, g, b =  1, 0, 0
+					else
+						r, g, b = unpack(E["media"].bordercolor)
+					end
+					Model.backdrop:SetBackdropBorderColor(r, g, b)
+				end)
+			end
 		end
 	end
 

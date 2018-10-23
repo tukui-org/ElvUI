@@ -4,6 +4,8 @@ local CP = E:NewModule('CopyProfile', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0
 local pairs, next, type = pairs, next, type
 local format, error = format, error
 
+-- GLOBALS: ElvDB
+
 --This table to reserve settings names in E.global.profileCopy. Used in export/imports functions
 --Pligins can add own values for their internal settings for safechecks here
 CP.InternalOptions = {
@@ -39,13 +41,25 @@ function CP:CreateModuleConfigGroup(Name, section, pluginSection)
 				order = 201,
 				type = "execute",
 				name = L["Import Now"],
-				func = function() CP:ImportFromProfile(section, pluginSection) end,
+				func = function()
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB["profileKeys"][E.myname..' - '..E.myrealm])
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+						CP:ImportFromProfile(section, pluginSection)
+					end
+					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+				end,
 			},
 			export = {
 				order = 202,
 				type = "execute",
 				name = L["Export Now"],
-				func = function() CP:ExportToProfile(section, pluginSection) end,
+				func = function()
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB["profileKeys"][E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+						CP:ExportToProfile(section, pluginSection)
+					end
+					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+				end,
 			},
 		},
 	}
@@ -77,16 +91,38 @@ function CP:CreateMoversConfigGroup()
 			order = 201,
 			type = "execute",
 			name = L["Import Now"],
-			func = function() CP:CopyMovers("import") end,
+			func = function()
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB["profileKeys"][E.myname..' - '..E.myrealm])
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					CP:CopyMovers("import")
+				end
+				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+			end,
 		},
 		export = {
 			order = 202,
 			type = "execute",
 			name = L["Export Now"],
-			func = function() CP:CopyMovers("export") end,
+			func = function()
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB["profileKeys"][E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					CP:CopyMovers("export")
+				end
+				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+			end,
 		},
 	}
 	for moverName, data in pairs(E.CreatedMovers) do
+		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
+		config[moverName] = {
+			order = 1,
+			type = "toggle",
+			name = data.text,
+			get = function(info) return E.global.profileCopy.movers[moverName] end,
+			set = function(info, value) E.global.profileCopy.movers[moverName] = value; end
+		}
+	end
+	for moverName, data in pairs(E.DisabledMovers) do
 		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
 		config[moverName] = {
 			order = 1,
@@ -105,7 +141,7 @@ function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 			if module == true or (type(module) == "table" and module.general == nil or (not CopyTo.general and module.general)) then --Some dark magic of a logic to figure out stuff
 				--This check is to see if the profile we are copying from has keys absent from defaults.
 				--If key exists, then copy. If not, then clear obsolite key from the profile.
-				if CopyDefault[key] then
+				if CopyDefault[key] ~= nil then
 					CopyTo[key] = CopyFrom[key] or CopyDefault[key]
 				else
 					CopyFrom[key] = nil
@@ -115,12 +151,12 @@ function CP:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 			if module == true then --Copy over entire section of profile subgroup
 				E:CopyTable(CopyTo, CopyDefault)
 				E:CopyTable(CopyTo, CopyFrom)
-			elseif module[key] then
+			elseif module[key] ~= nil then
 				--Making sure tables actually exist in profiles (e.g absent values in ElvDB["profiles"] are for default values)
 				CopyFrom[key], CopyTo[key] = CP:TablesExist(CopyFrom[key], CopyTo[key], CopyDefault[key])
 				--If key exists, then copy. If not, then clear obsolite key from the profile.
 				--Someone should double check this logic. Cause for single keys it is fine, but I'm no sure bout whole tables @Darth
-				if CopyFrom[key] then
+				if CopyFrom[key] ~= nil then
 					CP:CopyTable(CopyFrom[key], CopyTo[key], CopyDefault[key], module[key])
 				else
 					CopyTo[key] = nil
@@ -228,7 +264,7 @@ end
 
 --Maybe actually not needed at all
 function CP:Initialize()
-	
+
 end
 
 local function InitializeCallback()

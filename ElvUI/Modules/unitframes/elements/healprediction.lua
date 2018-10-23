@@ -8,19 +8,23 @@ local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 
 function UF:Construct_HealComm(frame)
 	local myBar = CreateFrame('StatusBar', nil, frame.Health)
-	myBar:SetStatusBarTexture(E["media"].blankTex)
+	myBar:SetFrameLevel(11)
+	UF['statusbars'][myBar] = true
 	myBar:Hide()
 
 	local otherBar = CreateFrame('StatusBar', nil, frame.Health)
-	otherBar:SetStatusBarTexture(E["media"].blankTex)
+	otherBar:SetFrameLevel(11)
+	UF['statusbars'][otherBar] = true
 	otherBar:Hide()
 
 	local absorbBar = CreateFrame('StatusBar', nil, frame.Health)
-	absorbBar:SetStatusBarTexture(E["media"].blankTex)
+	absorbBar:SetFrameLevel(11)
+	UF['statusbars'][absorbBar] = true
 	absorbBar:Hide()
 
 	local healAbsorbBar = CreateFrame('StatusBar', nil, frame.Health)
-	healAbsorbBar:SetStatusBarTexture(E["media"].blankTex)
+	healAbsorbBar:SetFrameLevel(11)
+	UF['statusbars'][healAbsorbBar] = true
 	healAbsorbBar:Hide()
 
 	local overAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
@@ -38,7 +42,7 @@ function UF:Construct_HealComm(frame)
 		healAbsorbBar = healAbsorbBar,
 		maxOverflow = 1,
 		overAbsorb_ = overAbsorb,
-		overHealAbsorb = overHealAbsorb,
+		overHealAbsorb_ = overHealAbsorb,
 		PostUpdate = UF.UpdateHealComm,
 		parent = frame,
 	}
@@ -51,6 +55,8 @@ function UF:Configure_HealComm(frame)
 		local otherBar = healPrediction.otherBar
 		local absorbBar = healPrediction.absorbBar
 		local healAbsorbBar = healPrediction.healAbsorbBar
+		local c = self.db.colors.healPrediction
+		healPrediction.maxOverflow = 1 + (c.maxOverflow or 0)
 
 		if not frame:IsElementEnabled('HealthPrediction') then
 			frame:EnableElement('HealthPrediction')
@@ -80,15 +86,19 @@ function UF:Configure_HealComm(frame)
 
 			if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
 				healPrediction.overAbsorb = healPrediction.overAbsorb_
+				healPrediction.overHealAbsorb = healPrediction.overHealAbsorb_
 			else
 				if healPrediction.overAbsorb then
 					healPrediction.overAbsorb:Hide()
 					healPrediction.overAbsorb = nil
+					healPrediction.overHealAbsorb:Hide()
+					healPrediction.overHealAbsorb = nil
 				end
 			end
 
 			if orientation == "HORIZONTAL" then
 				local width = frame.Health:GetWidth()
+				width = width > 0 and width or frame.Health.WIDTH
 				local p1 = reverseFill and "RIGHT" or "LEFT"
 				local p2 = reverseFill and "LEFT" or "RIGHT"
 
@@ -130,13 +140,16 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:Size(1, 0)
 				end
 
-				healPrediction.overHealAbsorb:ClearAllPoints()
-				healPrediction.overHealAbsorb:Point("TOP", frame.Health, "TOP")
-				healPrediction.overHealAbsorb:Point("BOTTOM", frame.Health, "BOTTOM")
-				healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
-				healPrediction.overHealAbsorb:Size(1, 0)
+				if healPrediction.overHealAbsorb then
+					healPrediction.overHealAbsorb:ClearAllPoints()
+					healPrediction.overHealAbsorb:Point("TOP", frame.Health, "TOP")
+					healPrediction.overHealAbsorb:Point("BOTTOM", frame.Health, "BOTTOM")
+					healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
+					healPrediction.overHealAbsorb:Size(1, 0)
+				end
 			else
 				local height = frame.Health:GetHeight()
+				height = height > 0 and height or frame.Health.HEIGHT
 				local p1 = reverseFill and "TOP" or "BOTTOM"
 				local p2 = reverseFill and "BOTTOM" or "TOP"
 
@@ -178,11 +191,13 @@ function UF:Configure_HealComm(frame)
 					healPrediction.overAbsorb:Size(0, 1)
 				end
 
-				healPrediction.overHealAbsorb:ClearAllPoints()
-				healPrediction.overHealAbsorb:Point("LEFT", frame.Health, "LEFT")
-				healPrediction.overHealAbsorb:Point("RIGHT", frame.Health, "RIGHT")
-				healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
-				healPrediction.overHealAbsorb:Size(0, 1)
+				if healPrediction.overHealAbsorb then
+					healPrediction.overHealAbsorb:ClearAllPoints()
+					healPrediction.overHealAbsorb:Point("LEFT", frame.Health, "LEFT")
+					healPrediction.overHealAbsorb:Point("RIGHT", frame.Health, "RIGHT")
+					healPrediction.overHealAbsorb:Point(p2, frame.Health, p1)
+					healPrediction.overHealAbsorb:Size(0, 1)
+				end
 			end
 
 			myBar:SetReverseFill(reverseFill)
@@ -190,8 +205,6 @@ function UF:Configure_HealComm(frame)
 			absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill or reverseFill)
 			healAbsorbBar:SetReverseFill(not reverseFill)
 		end
-
-		local c = self.db.colors.healPrediction
 
 		myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 		otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
@@ -201,10 +214,9 @@ function UF:Configure_HealComm(frame)
 		if healPrediction.overAbsorb then
 			healPrediction.overAbsorb:SetVertexColor(c.overabsorbs.r, c.overabsorbs.g, c.overabsorbs.b, c.overabsorbs.a)
 		end
-
-		healPrediction.overHealAbsorb:SetVertexColor(c.overhealabsorbs.r, c.overhealabsorbs.g, c.overhealabsorbs.b, c.overhealabsorbs.a)
-
-		healPrediction.maxOverflow = 1 + (c.maxOverflow or 0)
+		if healPrediction.overHealAbsorb then
+			healPrediction.overHealAbsorb:SetVertexColor(c.overhealabsorbs.r, c.overhealabsorbs.g, c.overhealabsorbs.b, c.overhealabsorbs.a)
+		end
 	else
 		if frame:IsElementEnabled('HealthPrediction') then
 			frame:DisableElement('HealthPrediction')

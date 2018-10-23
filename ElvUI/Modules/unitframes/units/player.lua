@@ -58,6 +58,8 @@ function UF:Construct_PlayerFrame(frame)
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
+
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
@@ -149,6 +151,9 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Power
 	UF:Configure_Power(frame)
+
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
 	UF:Configure_Portrait(frame)

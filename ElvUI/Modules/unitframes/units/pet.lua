@@ -20,6 +20,8 @@ function UF:Construct_PetFrame(frame)
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -35,6 +37,7 @@ function UF:Construct_PetFrame(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = self:Construct_AuraWatch(frame)
+	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = self:Construct_Range(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
@@ -92,6 +95,9 @@ function UF:Update_PetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -108,6 +114,9 @@ function UF:Update_PetFrame(frame, db)
 
 	--OverHealing
 	UF:Configure_HealComm(frame)
+
+	-- AuraBars
+	UF:Configure_AuraBars(frame)
 
 	--Combat Fade
 	if E.db.unitframe.units.player.enable and E.db.unitframe.units.player.combatfade and ElvUF_Player and not InCombatLockdown() then

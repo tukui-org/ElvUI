@@ -24,6 +24,7 @@ local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetTime = GetTime
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -56,19 +57,27 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
-local DEAD = DEAD
-local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
-local FACTION_HORDE = FACTION_HORDE
-local FOREIGN_SERVER_LABEL = FOREIGN_SERVER_LABEL
-local ID = ID
-local INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL
-local LEVEL = LEVEL
 local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-local PVP = PVP
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local TARGET = TARGET
+
+local LOCALE = {
+	PVP = PVP,
+	FACTION_HORDE = FACTION_HORDE,
+	FOREIGN_SERVER_LABEL = FOREIGN_SERVER_LABEL,
+	ID = ID,
+	INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL,
+	TARGET = TARGET,
+	DEAD = DEAD,
+	FACTION_ALLIANCE = FACTION_ALLIANCE,
+	NONE = NONE,
+	ROLE = ROLE,
+
+	-- Custom to find LEVEL string on tooltip
+	LEVEL1 = TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
+	LEVEL2 = TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
+}
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
@@ -146,7 +155,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 
 		if(self.db.cursorAnchor) then
-			tt:SetOwner(parent, "ANCHOR_CURSOR_RIGHT", self.db.cursorAnchorX, self.db.cursorAnchorY)
+			tt:SetOwner(parent, self.db.cursorAnchorType, self.db.cursorAnchorX, self.db.cursorAnchorY)
 			return
 		else
 			tt:SetOwner(parent, "ANCHOR_NONE")
@@ -185,7 +194,7 @@ function TT:RemoveTrashLines(tt)
 		local tiptext = _G["GameTooltipTextLeft"..i]
 		local linetext = tiptext:GetText()
 
-		if(linetext == PVP or linetext == FACTION_ALLIANCE or linetext == FACTION_HORDE) then
+		if(linetext == LOCALE.PVP or linetext == LOCALE.FACTION_ALLIANCE or linetext == LOCALE.FACTION_HORDE) then
 			tiptext:SetText(nil)
 			tiptext:Hide()
 		end
@@ -195,9 +204,10 @@ end
 function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
-		local tipText = _G["GameTooltipTextLeft"..i]
-		if(tipText:GetText() and tipText:GetText():find(LEVEL)) then
-			return tipText
+		local tipLine = _G["GameTooltipTextLeft"..i]
+		local tipText = tipLine and tipLine.GetText and tipLine:GetText()
+		if tipText and (tipText:find(LOCALE.LEVEL1) or tipText:find(LOCALE.LEVEL2)) then
+			return tipLine
 		end
 	end
 end
@@ -318,9 +328,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(isShiftKeyDown) or self.db.alwaysShowRealm then
 				name = name.."-"..realm
 			elseif(relationship == LE_REALM_RELATION_COALESCED) then
-				name = name..FOREIGN_SERVER_LABEL
+				name = name..LOCALE.FOREIGN_SERVER_LABEL
 			elseif(relationship == LE_REALM_RELATION_VIRTUAL) then
-				name = name..INTERACTIVE_SERVER_LABEL
+				name = name..LOCALE.INTERACTIVE_SERVER_LABEL
 			end
 		end
 
@@ -355,6 +365,21 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				race = factionGroup.." "..race
 			end
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
+		end
+
+		if E.db.tooltip.role then
+			local r, g, b, role = 1, 1, 1, UnitGroupRolesAssigned(unit)
+			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "NONE") then
+				if role == "HEALER" then
+					role, r, g, b = L["Healer"], 0, 1, .59
+				elseif role == "TANK" then
+					role, r, g, b = L["Tank"], .16, .31, .61
+				elseif role == "DAMAGER" then
+					role, r, g, b = L["DPS"], .77, .12, .24
+				end
+
+				GameTooltip:AddDoubleLine(LOCALE.ROLE, role, nil, nil, nil, r, g, b)
+			end
 		end
 
 		--High CPU usage, restricting it to shift key down only.
@@ -404,7 +429,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 
 			if(UnitIsPVP(unit)) then
-				pvpFlag = format(" (%s)", PVP)
+				pvpFlag = format(" (%s)", LOCALE.PVP)
 			end
 
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r%s %s%s", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", classification[creatureClassification] or "", creatureType or "", pvpFlag)
@@ -421,7 +446,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 		end
 
-		GameTooltip:AddDoubleLine(format("%s:", TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
+		GameTooltip:AddDoubleLine(format("%s:", LOCALE.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 	end
 
 	if(self.db.targetInfo and IsInGroup()) then
@@ -447,7 +472,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local guid = UnitGUID(unit) or ""
 		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)
 		if id and guid:match("%a+") ~= "Player" then
-			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
 		end
 	end
 
@@ -479,7 +504,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 		tt.text:SetFormattedText("%d%%", floor(value * 100))
 		tt:SetStatusBarColor(TAPPED_COLOR.r, TAPPED_COLOR.g, TAPPED_COLOR.b) --most effeciant?
 	elseif(value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
-		tt.text:SetText(DEAD)
+		tt.text:SetText(LOCALE.DEAD)
 	else
 		tt.text:SetText(E:ShortValue(value).." / "..E:ShortValue(max))
 	end
@@ -512,7 +537,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local bankCount = " "
 
 		if link ~= nil and self.db.spellID then
-			left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
+			left = (("|cFFCA3C3C%s|r %s"):format(LOCALE.ID, link)):match(":(%w+)")
 		end
 
 		if self.db.itemCount == "BAGS_ONLY" then
@@ -617,9 +642,9 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			local _, class = UnitClass(caster)
 			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 			if not color then color = RAID_CLASS_COLORS["PRIEST"] end
-			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
+			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
 		end
 
 		tt:Show()
@@ -631,7 +656,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local id = select(2, tt:GetSpell())
 	if not id or not self.db.spellID then return end
 
-	local displayString = ("|cFFCA3C3C%s|r %d"):format(ID, id)
+	local displayString = ("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id)
 	local lines = tt:NumLines()
 	local isFound
 	for i= 1, lines do
@@ -651,7 +676,7 @@ end
 function TT:SetItemRef(link)
 	if find(link,"^spell:") and self.db.spellID then
 		local id = sub(link,7)
-		ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+		ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
 		ItemRefTooltip:Show()
 	end
 end

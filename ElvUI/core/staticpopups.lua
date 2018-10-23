@@ -547,6 +547,14 @@ E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
 	hasEditBox = 1,
 }
 
+E.PopupDialogs["MODULE_COPY_CONFIRM"] = {
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()

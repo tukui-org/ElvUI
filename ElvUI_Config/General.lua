@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule("Blizzard")
 
 local _G = _G
@@ -37,8 +37,8 @@ E.Options.args.general = {
 				},
 				messageRedirect = {
 					order = 1,
-					name = L["ElvUI: Chat Output"],
-					desc = L["The selects the Chat Frame to use as the output of ElvUI messages."],
+					name = L["Chat Output"],
+					desc = L["This selects the Chat Frame to use as the output of ElvUI messages."],
 					type = 'select',
 					values = GetChatWindowInfo()
 				},

@@ -3,104 +3,14 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local _G = _G
-local unpack, select = unpack, select
+local select = select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, LibStub
+-- GLOBALS: LibStub
 
 local RegisterAsWidget, RegisterAsContainer
-local function SetModifiedBackdrop(self)
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E['media'].rgbvaluecolor))
-end
-
-local function SetOriginalBackdrop(self)
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E['media'].bordercolor))
-end
-
-local function SkinScrollBar(frame, thumbTrim)
-	if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
-	if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
-
-	if _G[frame:GetName().."Top"] then
-		_G[frame:GetName().."Top"]:SetTexture(nil)
-		_G[frame:GetName().."Bottom"]:SetTexture(nil)
-		_G[frame:GetName().."Middle"]:SetTexture(nil)
-	end
-
-	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
-		local scrollUpWidth, scrollUpHeight = _G[frame:GetName().."ScrollUpButton"]:GetWidth(), _G[frame:GetName().."ScrollUpButton"]:GetHeight()
-		local scrollDownWidth, scrollDownHeight = _G[frame:GetName().."ScrollDownButton"]:GetWidth(), _G[frame:GetName().."ScrollDownButton"]:GetHeight()
-
-		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollUpButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
-			_G[frame:GetName().."ScrollUpButton"]:Size(scrollUpWidth, scrollUpHeight) --Set size back to what it originally was
-		end
-
-		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollDownButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
-			_G[frame:GetName().."ScrollDownButton"]:Size(scrollDownWidth, scrollDownHeight) --Set size back to what it originally was
-		end
-
-		if not frame.trackbg then
-			frame.trackbg = CreateFrame("Frame", nil, frame)
-			frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
-			frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-			frame.trackbg:SetTemplate("Transparent")
-		end
-
-		if frame:GetThumbTexture() then
-			if not thumbTrim then thumbTrim = 3 end
-			frame:GetThumbTexture():SetTexture(nil)
-			if not frame.thumbbg then
-				frame.thumbbg = CreateFrame("Frame", nil, frame)
-				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
-				frame.thumbbg:SetTemplate("Default", true, true)
-				frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-				if frame.trackbg then
-					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
-				end
-			end
-		end
-	end
-end
-
-local function SkinButton(f, strip, noTemplate)
-	if f.Left then f.Left:SetAlpha(0)  end
-	if f.Middle then f.Middle:SetAlpha(0)  end
-	if f.Right then f.Right:SetAlpha(0) end
-
-	if f.SetNormalTexture then f:SetNormalTexture("") end
-
-	if f.SetHighlightTexture then f:SetHighlightTexture("") end
-
-	if f.SetPushedTexture then f:SetPushedTexture("") end
-
-	if f.SetDisabledTexture then f:SetDisabledTexture("") end
-
-	if strip then f:StripTextures() end
-
-	if not f.template and not noTemplate then
-		f:SetTemplate("Default", true)
-	end
-
-	f:HookScript("OnEnter", SetModifiedBackdrop)
-	f:HookScript("OnLeave", SetOriginalBackdrop)
-end
-
-local function SkinNextPrevButton(...)
-	S:HandleNextPrevButton(...)
-end
-
 local function SkinDropdownPullout(self)
 	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
 		self.obj.pullout.frame:SetTemplate('Default', true)
@@ -124,8 +34,8 @@ function S:SkinAce3()
 				widget.scrollBG:SetTemplate('Default')
 			end
 
-			SkinButton(widget.button)
-			SkinScrollBar(widget.scrollBar)
+			S:HandleButton(widget.button)
+			S:HandleScrollBar(widget.scrollBar)
 			widget.scrollBar:Point("RIGHT", frame, "RIGHT", 0 -4)
 			widget.scrollBG:Point("TOPRIGHT", widget.scrollBar, "TOPLEFT", -2, 19)
 			widget.scrollBG:Point("BOTTOMLEFT", widget.button, "TOPLEFT")
@@ -152,7 +62,7 @@ function S:SkinAce3()
 			button:ClearAllPoints()
 			button:Point("RIGHT", frame, "RIGHT", -20, 0)
 
-			SkinNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true)
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default")
@@ -169,7 +79,7 @@ function S:SkinAce3()
 			local text = frame.text
 			frame:StripTextures()
 
-			SkinNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true)
 			frame.text:ClearAllPoints()
 			frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
 
@@ -214,17 +124,17 @@ function S:SkinAce3()
 			frame.backdrop:Point('BOTTOMRIGHT', 2, 0)
 			frame.backdrop:SetParent(widget.frame)
 			frame:SetParent(frame.backdrop)
-			SkinButton(button)
+			S:HandleButton(button)
 		elseif TYPE == "Button" then
 			local frame = widget.frame
-			SkinButton(frame, nil, true)
+			S:HandleButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
 		elseif TYPE == "Button-ElvUI" then
 			local frame = widget.frame
-			SkinButton(frame, nil, true)
+			S:HandleButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
@@ -253,7 +163,7 @@ function S:SkinAce3()
 			local button = widget.button
 			local msgframe = widget.msgframe
 
-			SkinButton(button, nil, true)
+			S:HandleButton(button, nil, true)
 			button:StripTextures()
 			button:CreateBackdrop('Default', true)
 			button.backdrop:SetInside()
@@ -280,7 +190,7 @@ function S:SkinAce3()
 		local TYPE = widget.type
 		if TYPE == "ScrollFrame" then
 			local frame = widget.scrollbar
-			SkinScrollBar(frame)
+			S:HandleScrollBar(frame)
 		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" or TYPE == "Window" then
 			local frame = widget.content:GetParent()
 			if TYPE == "Frame" then
@@ -291,7 +201,7 @@ function S:SkinAce3()
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:GetObjectType() == "Button" and child:GetText() then
-						SkinButton(child)
+						S:HandleButton(child)
 					else
 						child:StripTextures()
 					end
@@ -355,7 +265,7 @@ function S:SkinAce3()
 			end
 
 			if widget.scrollbar then
-				SkinScrollBar(widget.scrollbar)
+				S:HandleScrollBar(widget.scrollbar)
 			end
 		elseif TYPE == "SimpleGroup" then
 			local frame = widget.content:GetParent()

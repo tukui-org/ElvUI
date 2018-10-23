@@ -895,6 +895,21 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[267430] = Defaults(), -- Torment
 		[263235] = Defaults(), -- Blood Feast
 		[270287] = Defaults(), -- Blighted Ground
+
+	-- Siege of Zuldazar
+		-- Ra'wani Kanae/Frida Ironbellows
+		[283573] = Defaults(), -- Sacred Blade
+		[283617] = Defaults(), -- Wave of Light
+		[283651] = Defaults(), -- Blinding Faith
+		[284595] = Defaults(), -- Penance
+		[283582] = Defaults(), -- Consecration
+
+		-- Grong
+		[285998] = Defaults(), -- Ferocious Roar
+		[283069] = Defaults(), -- Megatomic Fire
+		[285671] = Defaults(), -- Crushed
+		[285875] = Defaults(), -- Rending Bite
+		--[282010] = Defaults(), -- Shaken
 	},
 }
 

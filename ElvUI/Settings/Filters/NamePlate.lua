@@ -3,7 +3,7 @@
 
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
+local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 G["nameplate"]["filters"] = {
 	["Boss"] = {

@@ -17,6 +17,8 @@ function UF:Construct_PetTargetFrame(frame)
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -79,6 +81,9 @@ function UF:Update_PetTargetFrame(frame, db)
 
 	--Power
 	UF:Configure_Power(frame)
+
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
 	UF:Configure_Portrait(frame)

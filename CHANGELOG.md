@@ -5,9 +5,11 @@ Added Drain Life to channel ticks.
 Added Island Expedition progress to the BfA Mission Datatext.  
 Added NPC Id's to our Tooltip.  
 Added Debuff Highlighting on our Focus Frame.  
-Added a dropdown menu to the Garrison Minimap Button. Credits Foxlit (WarPlan)  
+Added a dropdown menu to the Garrison Minimap Button. (Credits: Foxlit - WarPlan)  
 Added a Module Copy option. This allows you to copy module settings to/from your different profiles.  
 Added Bag Split (Bags + Bank) and Reverse Slots to the Bags. (#203)  
+Added options to change the Item Level color in the Bags. (#764)  
+Added options to change the Profession Bags & Bag Assignment color. (#525)  
 Added Tooltip offsets while using anchor on mouse. (#204)  
 Added Tooltip option to alway show the realm name. (#372)  
 Added quick search for spells in filters. (#30)  
@@ -15,15 +17,23 @@ Added "Display Target" to NamePlate castbars.
 Added "Display Interrupt Source" to NamePlate castbars.  
 Added "Display Target" on any UnitFrame castbar, previously it was only available on Player UnitFrame.  
 Added option to scale the Vehicle display. (#715)  
+Added Tank & Assist Name Placements. (#128)  
+Added Pet AuraBars. (Hunters Rejoice)! (#518)  
+Added Tooltip Group Role. (#583)  
+Added Power Prediction on UnitFrames. (#421)  
+Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)  
+Added Castbar Strata and Level Options. (#323)  
 
 
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
-Fixed Left/Right Mouse Buttons to be used on Keybinds. (#234)  
 Fixed Raidmarker spacing. (#791)  
 Fixed issue which would sometimes keep Player UnitFrame out of range.  
 Fixed error with UnitFrame Tags when enter Arena. (#821)  
 Fixed issue which would show a NPC Reputation instead of NPC Title on NamePlates when Colorblind mode was enabled. (#826)  
+Fixed Health Backdrop ClassBackdrop multiplier. (#134)  
+Fixed DejaCharacterStats and Character Skin conflicts. (#819)  
+Fixed `Raid Menu` button in `Raid Control`. (!78 - Thanks @Dimitro)  
 
 
 **Misc. Changes:**  
@@ -31,10 +41,13 @@ Updated CCDebuffs list.
 Updated Frenzy buff Id for pets. (#816)  
 Updated Zul debuff list.  
 Updated the macro text on the ActionBars to use the ActionBar font.  
-Optimized Bag Code in various areas (This should mainly fix the lag reported when opening your bags).  
+Optimized Bag Code in various areas. (This should mainly fix the lag reported when opening your bags).  
 Removed ArtifactBar from the DataBars.  
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
+Updated collection skin. Credits AddOnSkins.  
+Added `ElvUI_VC` chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
+Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 
 ___
 **Version 10.82 [ September 18th 2018 ]**
@@ -51,7 +64,7 @@ Fixed a rare nil error in the range code.
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
-Updated ArenaPrepFrame functions (Thanks oUF!).  
+Updated ArenaPrepFrame functions (Thanks oUF)!  
 Updated PvP, LFG & Talent skins.  
 
 ___
@@ -61,8 +74,8 @@ ___
 
 
 **Bug Fixes:**  
-Fixed issue with display of Attonement in Buff Indicators when the Trinity talent is active (#346).  
-Fixed issue with "out of range" display on UnitFrames on the Mother encounter in Uldir (#767).  
+Fixed issue with display of Attonement in Buff Indicators when the Trinity talent is active. (#346)  
+Fixed issue with "out of range" display on UnitFrames on the Mother encounter in Uldir. (#767)  
 
 
 **Misc. Changes:**  
@@ -86,7 +99,7 @@ Fixed Nameplate Cutaway health not following Style Filter Health Color changes.
 Fixed the AltPowerBar enable toggle not requiring a reload.  
 Fixed Blizzard Forbidden Nameplates not spawning in the world when Nameplate module was enabled.  
 Fixed the default position for the UIWidgetTopCenter mover.  
-Fixed issue with chat frames and data panels disappearing (#686).  
+Fixed issue with chat frames and data panels disappearing. (#686)  
 Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
 Fixed issue which prevented debuff highlight from working for shadow priests and diseases.  
 Fixed channel ticks for Penance with talent 'Castigation'  
@@ -100,7 +113,7 @@ ___
 **Version 10.79 [ August 20th 2018 ]**
 
 **New Additions:**  
-Added Tranquility channel ticks (#586).  
+Added Tranquility channel ticks. (#586)  
 Added Phase Indicator for Target, Party and Raid frames (Thanks @ls-).  
 Added Cutaway Health to nameplates (part of #331).  
 Added BFA Mission Datatext (Thanks @AcidWeb).  
@@ -109,10 +122,10 @@ Added Alternative Power Bar. The settings are located under `/ec - General - Alt
 
 
 **Bug Fixes:**  
-Fixed a texture issue on the Talent skin (#566).  
-Fixed bags from being shown over the WorldMapFrame (#592).  
-Fixed an issue which caused the cooldown module to error: `Font not set` (#548).  
-Fixed an issue which prevented the frame glow being shown on a UnitFrame with the Frame Orientation set to right (#558).  
+Fixed a texture issue on the Talent skin. (#566)  
+Fixed bags from being shown over the WorldMapFrame. (#592)  
+Fixed an issue which caused the cooldown module to error: `Font not set` (#548)  
+Fixed an issue which prevented the frame glow being shown on a UnitFrame with the Frame Orientation set to right. (#558)  
 Fixed skin issue with Mission Talent Frame.  
 Fixed issue which prevented clicking in the top-right of screen where Minimap is by default (when the Minimap is not actually there).  
 Fixed Stagger class bar auto-hide (Thanks to Jimmy Pruitt).  
@@ -120,8 +133,8 @@ Fixed Ace3 plus/minus on some scrollbars (#631 - Thanks @sezz).
 
 
 **Misc. Changes:**  
-Updated spell id for Earth Shield (#527).  
-Updated SpellHighlightTexture in the Spellbook (#547).  
+Updated spell id for Earth Shield. (#527)  
+Updated SpellHighlightTexture in the Spellbook. (#547)  
 Updated WarboardUI skin.  
 Updated Communities skin.  
 Open PVP frame when you click on the Honor bar.  
@@ -146,7 +159,7 @@ ___
 **Bug Fixes:**  
 Fixed CVar `chatClassColorOverride` not working correctly.  
 Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
-Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia!)  
+Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia)!  
 Fixed bags not properly showing items when searched.  
 Fixed an issue that sometimes the chat scrollBars where not hidden properly.  
 
@@ -180,7 +193,7 @@ ___
 
 **Bug Fixes:**  
 Fixed issue with backdrop on tooltips turning blue.  
-Fixed error when pressing 'Enter' to start typing in the chat (#485).  
+Fixed error when pressing 'Enter' to start typing in the chat. (#485)  
 
 
 **Misc. Changes:**  
@@ -211,10 +224,10 @@ Fixed icon border on black market auction house items.
 Fixed `[namecolor]` not updating sometimes when it should.  
 Fixed skin issue when using a dropdown in the config.  
 Fixed friendly nameplates not showing in Garrisons.  
-Fixed issue with tooltip compare being activated when it should not (#471).  
+Fixed issue with tooltip compare being activated when it should not. (#471)  
 Fixed several issues with the Micro Bar.   
-Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap (#434).  
-Fixed various issues with tooltips (#472).  
+Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap. (#434)  
+Fixed various issues with tooltips. (#472)  
 
 
 **Misc. Changes:**  
@@ -282,17 +295,17 @@ Added option to use a vertical classbar on unitframes.
 Added spacing option for classbar on unitframes. It controls the spacing between each "button" when using the "Spaced" fill.  
 Added an option for a detailed report for Vendor Grey Items.  
 Added Talent Spec Icon on the tooltip.  
-Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea!)  
+Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea)!  
 
 
 **Bug Fixes:**  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
-Fixed error trying to copy settings between nameplate units (#305).  
+Fixed error trying to copy settings between nameplate units. (#305)  
 Fixed various issues with the keybind feature (/kb). Trying to keybind an empty pet action button will now correctly show a tooltip. Trying to keybind a flyout menu will now correctly show a tooltip too.  
 Clicking on a player's name who whispered you or messaged into guild chat via Mobile app will now properly link their name with realm attached.  
 Corrected issue which made the UI Scale incorrect after alt-tab during combat when using Fullscreen on higher resolutions. (This will now autocorrect itself after combat ends).  
-Fixed issue in which class colored names in chat could still hijack the coloring of some hyperlinks. (This will also allow other hyperlinks to be keywords as well.)  
+Fixed issue in which class colored names in chat could still hijack the coloring of some hyperlinks. (This will also allow other hyperlinks to be keywords as well).  
 Fixed UI-Scale bug for users over 1080p in Fullscreen mode. (Thanks AcidWeb and Nihilith for helping debug).  
 Fixed UI-Scale being off for Mac users as well. (Thank you critklepka for helping debug the Mac scale issue).  
 
@@ -304,13 +317,13 @@ Skinned the Expand/Collapse buttons on various frames.
 Skinned the reward and bonus icons on the PvP Skin.  
 Skinned the reward icons with a quality border on the quest skin.  
 Skinned the Orderhall/Garrison Portraits.  
-Adjusted the Flight Map's font to match the general media font (#306).  
+Adjusted the Flight Map's font to match the general media font. (#306)  
 Added the combat and resting icon texture from Supervillain UI and Azilroka.  
 Changed the click needed to reset current session in the gold datatext from Shift+LeftClick to Ctrl+RightClick.  
 Added automatic handling of "Attach To" setting on unitframe auras. When setting Smart Aura Position, then the "Attach To" setting will automatically be set for the respective aura type, and then the selection box will be disabled.  
-Saved Instances will now be sorted by name then difficulty. (Thanks Kelebek for initial work!)  
+Saved Instances will now be sorted by name then difficulty. (Thanks Kelebek for initial work)!  
 Saved Instances will now show Raid Finder lockouts correctly and will also allow heroic dungeons to be shown.  
-Updated the New Item Glow to the Bag module. (This will flash on the inside of the slot, based on the slots border color.)  
+Updated the New Item Glow to the Bag module. (This will flash on the inside of the slot, based on the slots border color).  
 Updated the Quest and Upgrade Icon in the Bag module.  
 Added Kin's Forging Strike to Raid Debuffs (for normal+ raids).  
 
@@ -353,8 +366,8 @@ Fixed issue with arena frames displaying wrong unit in PvP Brawls.
 Fixed issue which caused the MicroBar position to be misplaced during combat.  
 Fixed issue which caused the Color Picker default color button to be disabled when it should still be active.  
 Fixed error when importing style filters via global (account settings).  
-Fixed issue (#282) which prevented some Style Filter actions from taking affect.  
-Fixed issue (#288) which caused items in the bag to not update correctly (after sorting).  
+Fixed issue which prevented some Style Filter actions from taking affect. (#282)  
+Fixed issue which caused items in the bag to not update correctly (after sorting). (#288)  
 Fixed issue which caused the invite via Guild and Friend (non-bnet) datatext to not properly request an invite.  
 
 
@@ -436,7 +449,7 @@ Fixed issue with chat history showing incorrect name on messages from BNet frien
 Fixed issue which caused auras to not respect the Max Duration setting when priority list was empty.  
 Fixed issue which may have caused weird behaviour with player nameplate hide delay.  
 Fixed issue which caused some Quick Join messages in chat to be duplicated.  
-Fixed issue which made it impossible to target raid members in vehicles in the new raid instance. This is a temporary workaround until Blizzard fixes the issue. Until then you need to use Raid-Pet Frames if you need to see vehicles (Malygos, Ulduar etc.).  
+Fixed issue which made it impossible to target raid members in vehicles in the new raid instance. This is a temporary workaround until Blizzard fixes the issue. Until then you need to use Raid-Pet Frames if you need to see vehicles (Malygos, Ulduar etc).  
 
 
 **Misc. Changes:**  

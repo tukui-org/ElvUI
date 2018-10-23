@@ -32,6 +32,8 @@ function UF:Construct_PartyFrames()
 		self.MouseGlow = UF:Construct_MouseGlow(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		self.Name = UF:Construct_NameText(self)
+		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
+
 		self.originalParent = self:GetParent()
 
 		self.childType = "pet"
@@ -44,6 +46,7 @@ function UF:Construct_PartyFrames()
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
+		self.PowerPrediction = UF:Construct_PowerPrediction(self)
 
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
@@ -204,6 +207,8 @@ function UF:Update_PartyFrames(frame, db)
 
 		--Health
 		UF:Configure_HealthBar(frame)
+
+		UF:Configure_RaidIcon(frame)
 
 		--Name
 		UF:UpdateNameSettings(frame, frame.childType)

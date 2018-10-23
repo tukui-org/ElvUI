@@ -52,7 +52,6 @@ local function LoadSkin()
 	QuestScrollFrameScrollBar:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
 	QuestScrollFrameScrollBar:SetPoint("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
 
-	local QuestMapFrame = _G["QuestMapFrame"]
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)

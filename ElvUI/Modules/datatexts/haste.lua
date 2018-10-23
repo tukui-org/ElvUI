@@ -37,7 +37,7 @@ local OnEnter = function(self)
 	local rating = CR_HASTE_MELEE;
 	local classTooltip = _G["STAT_HASTE_"..E.myclass.."_TOOLTIP"]
 	local haste = GetHaste()
-	
+
 	local hasteFormatString;
 	if (haste < 0 and not GetPVPGearStatRules()) then
 		hasteFormatString = RED_FONT_COLOR_CODE.."%s"..FONT_COLOR_CODE_CLOSE;
