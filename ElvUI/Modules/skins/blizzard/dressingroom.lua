@@ -14,6 +14,7 @@ local function LoadSkin()
 
 	local DressUpFrame = _G["DressUpFrame"]
 	DressUpFrame:StripTextures()
+	DressUpFrame.NineSlice:Hide()
 	DressUpFrame:CreateBackdrop("Transparent")
 
 	DressUpFramePortrait:Hide()
