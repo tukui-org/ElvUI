@@ -15,6 +15,10 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', nil, frame)
 	UF['statusbars'][power] = true
 
+	power.RaisedElementParent = CreateFrame('Frame', nil, power)
+	power.RaisedElementParent:SetFrameLevel(power:GetFrameLevel() + 100)
+	power.RaisedElementParent:SetAllPoints()
+
 	power.PostUpdate = self.PostUpdatePower
 
 	if bg then
@@ -64,7 +68,7 @@ function UF:Configure_Power(frame)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextTo == "Power" then
-			power.value:SetParent(power)
+			power.value:SetParent(power.RaisedElementParent)
 		else
 			power.value:SetParent(frame.RaisedElementParent)
 		end
