@@ -497,7 +497,7 @@ function UF:PostUpdateAdditionalPower(_, min, max, event)
 					self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 				end
 			else
-				self.text:SetParent(self)
+				self.text:SetParent(frame.RaisedElementParent) -- needs to be 'frame.RaisedElementParent' otherwise the new PowerPrediction Bar will overlap
 				self.text:Point("CENTER", self)
 				self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 			end
