@@ -320,8 +320,8 @@ function CH:InsertEmotions(msg)
 	for word in gmatch(msg, "%s-%S+%s*") do
 		pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
 		emoji = CH.Smileys[pattern]
-		if emoji and strmatch(msg, '%s-'..pattern..'%s*') then
-			msg = gsub(msg, '(%s-)'..pattern..'(%s*)', '%1'..emoji..'%2');
+		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
+			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', '%1'..emoji..'%2');
 		end
 	end
 
