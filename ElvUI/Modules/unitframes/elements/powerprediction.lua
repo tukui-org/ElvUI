@@ -45,7 +45,7 @@ function UF:Configure_PowerPrediction(frame)
 		if altBar then
 			r, g, b = frame.AdditionalPower:GetStatusBarColor()
 			altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
-			--altBar:SetReverseFill(not reverseFill)
+			altBar:SetReverseFill(true)
 		end
 
 		if orientation == "HORIZONTAL" then
