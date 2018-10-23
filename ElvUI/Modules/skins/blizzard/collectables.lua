@@ -57,10 +57,10 @@ local function LoadSkin()
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetInside(bu, 3, 3)
 
-		bu.icon:SetPoint("LEFT", bu, -37, 0)
+		bu.icon:SetPoint("LEFT", bu, -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
 		bu.icon:CreateBackdrop("Default")
-		bu.icon.backdrop:SetOutside(bu.icon, 2, 2)
+		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
 			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
@@ -105,8 +105,6 @@ local function LoadSkin()
 		bu.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
 		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
 		bu.favorite:SetSize(32, 32)
-
-		S:CropIcon(bu.icon, bu)
 	end
 
 	-----------------------------
@@ -147,42 +145,36 @@ local function LoadSkin()
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetInside(bu, 3, 3)
 
-		bu.icon:SetPoint("LEFT", bu, -37, 0)
+		bu.icon:SetPoint("LEFT", -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
 		bu.icon:CreateBackdrop("Default")
-		bu.icon.backdrop:SetOutside(bu.icon, 2, 2)
+		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
 			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
-			self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 		end)
 
 		bu:HookScript("OnLeave", function(self)
 			if self.selected then
 				self.backdrop:SetBackdropBorderColor(1, .8, .1)
-				self.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
 				self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-				self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Show', function()
 			bu.name:SetTextColor(1, .8, .1)
 			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-			bu.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Hide', function()
 			bu.name:SetTextColor(1, 1, 1)
 			bu.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			bu.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end)
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
 		bu.dragButton.levelBG:SetTexture(nil)
 
-		bu.icon:SetPoint("LEFT", -37, 0)
 		bu.iconBorder:SetTexture('')
 		bu.selectedTexture:SetTexture('')
 
