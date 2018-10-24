@@ -195,7 +195,7 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF.ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					local r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 					bars[i]:SetStatusBarColor(r, g, b)
 				end
 
