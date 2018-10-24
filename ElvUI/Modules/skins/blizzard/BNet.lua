@@ -22,11 +22,20 @@ local function LoadSkin()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
+	local ReportFrame = _G["PlayerReportFrame"]
+	ReportFrame:StripTextures()
+	ReportFrame:CreateBackdrop("Transparent")
+	ReportFrame.Comment:StripTextures()
+	S:HandleEditBox(ReportFrame.Comment)
+	S:HandleButton(ReportFrame.ReportButton)
+	S:HandleButton(ReportFrame.CancelButton)
+
+	local ReportCheatingDialog = _G["ReportCheatingDialog"]
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()
 	S:HandleButton(ReportCheatingDialogReportButton)
 	S:HandleButton(ReportCheatingDialogCancelButton)
-	ReportCheatingDialog:SetTemplate("Transparent")
+	ReportCheatingDialog:CreateBackdrop("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
 
 	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
