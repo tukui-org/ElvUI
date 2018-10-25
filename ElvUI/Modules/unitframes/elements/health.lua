@@ -240,19 +240,21 @@ function UF:PostUpdateHealth(unit, min, max)
 		parent.ResurrectIndicator:SetAlpha(min == 0 and 1 or 0)
 	end
 
-	local r, g, b = self:GetStatusBarColor()
+	-- Health by Value
 	local colors = E.db['unitframe']['colors'];
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
+		local r, g, b = self:GetStatusBarColor()
 		local newr, newg, newb = ElvUF:ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
-
 		self:SetStatusBarColor(newr, newg, newb)
-		if self.bg and self.bg.multiplier then
-			local mu = self.bg.multiplier
-			self.bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+
+		local multiplier = self.bg and self.bg.multiplier
+		if multiplier then
+			self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
 		end
 	end
 
-	if colors.classbackdrop then
+	-- Class Backdrop
+	if self.bg and colors.classbackdrop then
 		local reaction = UnitReaction(unit, 'player')
 		local t
 		if UnitIsPlayer(unit) then
@@ -267,13 +269,13 @@ function UF:PostUpdateHealth(unit, min, max)
 		end
 	end
 
-	--Backdrop
-	if colors.customhealthbackdrop then
+	-- Custom Backdrop
+	if self.bg and colors.customhealthbackdrop then
 		local backdrop = colors.health_backdrop
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
 	end
 
-	if colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
+	if self.bg and colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
 		local backdrop = colors.health_backdrop_dead
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
 	end
