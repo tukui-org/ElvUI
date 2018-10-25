@@ -152,8 +152,12 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ReputationBar_OnClick()
-	ToggleCharacter("ReputationFrame");
+function mod:ReputationBar_OnClick(btn)
+	if btn == "LeftButton" then
+		ToggleCharacter("ReputationFrame");
+	elseif btn == "RightButton" then
+		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "reputation");
+	end
 end
 
 function mod:UpdateReputationDimensions()
