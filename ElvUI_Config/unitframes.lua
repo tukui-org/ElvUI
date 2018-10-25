@@ -2593,10 +2593,19 @@ E.Options.args.unitframe = {
 							end,
 							args = {
 								healthclass = {
-									order = 1,
+									order = 0,
 									type = 'toggle',
 									name = L["Class Health"],
 									desc = L["Color health by classcolor or reaction."],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+									disabled = function() return E.db.unitframe.colors.healthselection end,
+								},
+								healthselection = {
+									order = 1,
+									type = 'toggle',
+									name = L["Selection Health"],
+									desc = L["Color health by UnitSelectionColor API."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
@@ -2607,7 +2616,7 @@ E.Options.args.unitframe = {
 									desc = L["Forces reaction color instead of class color on units controlled by players."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									disabled = function() return not E.db.unitframe.colors.healthclass end,
+									disabled = function() return E.db.unitframe.colors.healthselection or not E.db.unitframe.colors.healthclass end,
 								},
 								colorhealthbyvalue = {
 									order = 3,
@@ -2699,9 +2708,18 @@ E.Options.args.unitframe = {
 									desc = L["Color power by classcolor or reaction."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+									disabled = function() return E.db.unitframe.colors.powerselection end,
+								},
+								powerselection = {
+									order = 1,
+									type = 'toggle',
+									name = L["Selection Power"],
+									desc = L["Color power by UnitSelectionColor API."],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								transparentPower = {
-									order = 1,
+									order = 2,
 									type = 'toggle',
 									name = L["Transparent"],
 									desc = L["Make textures transparent."],
@@ -2709,52 +2727,52 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								MANA = {
-									order = 2,
+									order = 3,
 									name = MANA,
 									type = 'color',
 								},
 								RAGE = {
-									order = 3,
+									order = 4,
 									name = RAGE,
 									type = 'color',
 								},
 								FOCUS = {
-									order = 4,
+									order = 5,
 									name = FOCUS,
 									type = 'color',
 								},
 								ENERGY = {
-									order = 5,
+									order = 6,
 									name = ENERGY,
 									type = 'color',
 								},
 								RUNIC_POWER = {
-									order = 6,
+									order = 7,
 									name = RUNIC_POWER,
 									type = 'color',
 								},
 								PAIN = {
-									order = 7,
+									order = 8,
 									name = PAIN,
 									type = 'color',
 								},
 								FURY = {
-									order = 8,
+									order = 9,
 									name = FURY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
-									order = 9,
+									order = 10,
 									name = LUNAR_POWER,
 									type = 'color'
 								},
 								INSANITY = {
-									order = 10,
+									order = 11,
 									name = INSANITY,
 									type = 'color'
 								},
 								MAELSTROM = {
-									order = 11,
+									order = 12,
 									name = MAELSTROM,
 									type = 'color'
 								},
@@ -2792,8 +2810,68 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						castBars = {
+						selectionGroup = {
 							order = 5,
+							type = 'group',
+							name = L["Selection"],
+							get = function(info)
+								local n = tonumber(info[#info])
+								local t = E.db.unitframe.colors.selection[n]
+								local d = P.unitframe.colors.selection[n]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.unitframe.colors.selection[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								UF:Update_AllFrames()
+							end,
+							args = {
+								['1'] = {
+									order = 1,
+									name = L["Player In Combat"],
+									desc = L["used for player's character while in combat"],
+									type = 'color',
+								},
+								['2'] = {
+									order = 2,
+									name = L["Neutral"],
+									desc = L["used for neutral units"],
+									type = 'color',
+								},
+								['3'] = {
+									order = 3,
+									name = L["Non-Interactive Unfriendly"],
+									desc = L["used for non-interactive unfriendly units"],
+									type = 'color',
+								},
+								['4'] = {
+									order = 4,
+									name = L["Hostile"],
+									desc = L["used for hostile units"],
+									type = 'color',
+								},
+								['5'] = {
+									order = 5,
+									name = L["Dead"],
+									desc = L["used for dead units"],
+									type = 'color',
+								},
+								['6'] = {
+									order = 6,
+									name = L["Friendly"],
+									desc = L["used for friendly units"],
+									type = 'color',
+								},
+								['7'] = {
+									order = 7,
+									name = L["Default"],
+									desc = L["the default colour, also used for friendly player names in dungeons, unattackable, players in sanctuaries, etc."],
+									type = 'color',
+								},
+							},
+						},
+						castBars = {
+							order = 6,
 							type = 'group',
 							name = L["Castbar"],
 							get = function(info)
@@ -2844,7 +2922,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						auraBars = {
-							order = 6,
+							order = 7,
 							type = 'group',
 							name = L["Aura Bars"],
 							args = {
@@ -2924,7 +3002,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						healPrediction = {
-							order = 7,
+							order = 8,
 							name = L["Heal Prediction"],
 							type = 'group',
 							get = function(info)
@@ -2987,7 +3065,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						debuffHighlight = {
-							order = 8,
+							order = 9,
 							name = L["Debuff Highlighting"],
 							type = 'group',
 							get = function(info)

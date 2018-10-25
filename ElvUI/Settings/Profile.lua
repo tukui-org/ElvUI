@@ -1109,8 +1109,10 @@ P['unitframe'] = {
 	['colors'] = {
 		['borderColor'] = {r = 0, g = 0, b = 0},
 		['healthclass'] = false,
+		['healthselection'] = false,
 		['forcehealthreaction'] = false,
 		['powerclass'] = false,
+		['powerselection'] = false,
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
 		['useDeadBackdrop'] = false,
@@ -1146,9 +1148,18 @@ P['unitframe'] = {
 			['MAELSTROM'] = {r = 0, g = 0.5, b = 1},
 		},
 		['reaction'] = {
-			['BAD'] = { r = 0.78, g = 0.25, b = 0.25 },
+			['BAD'] = { r = 199/255, g = 64/255, b = 64/255 },
 			['NEUTRAL'] = { r = 218/255, g = 197/255, b = 92/255 },
 			['GOOD'] = { r = 75/255, g = 175/255, b = 76/255 },
+		},
+		['selection'] = {
+			[1] = {r = 255/255, g = 255/255, b = 139/255},	-- very light yellow, used for player's character while in combat
+			[2] = {r = 218/255, g = 197/255, b = 92/255},	-- yellow, used for neutral units
+			[3] = {r = 255/255, g = 156/255, b = 73/255},	-- orange, used for non-interactive unfriendly units
+			[4] = {r = 199/255, g = 64/255, b = 64/255},	-- red, used for hostile units
+			[5] = {r = 128/255, g = 128/255, b = 128/255},	-- grey, used for dead units
+			[6] = {r = 75/255, g = 175/255, b = 76/255},	-- green, used for friendly units
+			[7] = {r = 51/255, g = 153/255, b = 255/255},	-- blue, the default colour, also used for friendly player names in dungeons, unattackable, players in sanctuaries, etc.
 		},
 		['healPrediction'] = {
 			['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
