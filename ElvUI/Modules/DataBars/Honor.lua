@@ -98,8 +98,12 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:HonorBar_OnClick()
-	TogglePVPUI()
+function mod:HonorBar_OnClick(btn)
+	if btn == "LeftButton" then
+		TogglePVPUI()
+	elseif btn == "RightButton" then
+		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "honor");
+	end
 end
 
 function mod:UpdateHonorDimensions()

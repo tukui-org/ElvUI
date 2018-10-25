@@ -120,8 +120,10 @@ function mod:ExperienceBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ExperienceBar_OnClick()
-
+function mod:ExperienceBar_OnClick(btn)
+	if btn == "RightButton" then
+		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "experience");
+	end
 end
 
 function mod:UpdateExperienceDimensions()

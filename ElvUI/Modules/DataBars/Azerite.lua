@@ -104,6 +104,12 @@ function mod:AzeriteBar_OnEnter()
 	end)
 end
 
+function mod:AzeriteBar_OnClick(btn)
+	if btn == "RightButton" then
+		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "azerite");
+	end
+end
+
 function mod:UpdateAzeriteDimensions()
 	self.azeriteBar:Width(self.db.azerite.width)
 	self.azeriteBar:Height(self.db.azerite.height)
@@ -142,7 +148,7 @@ function mod:EnableDisable_AzeriteBar()
 end
 
 function mod:LoadAzeriteBar()
-	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, self.AzeriteBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
