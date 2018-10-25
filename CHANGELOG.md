@@ -24,6 +24,7 @@ Added Power Prediction on UnitFrames. (#421)
 Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)  
 Added Castbar Strata and Level Options. (#323)  
 Added Color options to the UnitFrames to choose the Blizzard Selection Colors.  
+Added right-click option for the DataBars to get to the options.  
 
 
 **Bug Fixes:**  
