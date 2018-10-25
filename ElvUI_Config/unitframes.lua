@@ -2626,6 +2626,7 @@ E.Options.args.unitframe = {
 									desc = L["Color health by amount remaining."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+									disabled = function() return E.db.unitframe.colors.healthselection end,
 								},
 								customhealthbackdrop = {
 									order = 4,
@@ -2822,7 +2823,8 @@ E.Options.args.unitframe = {
 								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
-								local t = E.db.unitframe.colors.selection[ info[#info] ]
+								local n = tonumber(info[#info])
+								local t = E.db.unitframe.colors.selection[n]
 								t.r, t.g, t.b = r, g, b
 								UF:Update_AllFrames()
 							end,
