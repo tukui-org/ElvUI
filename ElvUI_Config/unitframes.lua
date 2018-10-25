@@ -15,6 +15,7 @@ local twipe = table.wipe
 local strsplit = strsplit
 local match = string.match
 local gsub = string.gsub
+local tonumber = tonumber
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -2829,43 +2830,43 @@ E.Options.args.unitframe = {
 								['1'] = {
 									order = 1,
 									name = L["Player In Combat"],
-									desc = L["used for player's character while in combat"],
+									desc = L["Used for player's character while in combat"],
 									type = 'color',
 								},
 								['2'] = {
 									order = 2,
 									name = L["Neutral"],
-									desc = L["used for neutral units"],
+									desc = L["Used for neutral units"],
 									type = 'color',
 								},
 								['3'] = {
 									order = 3,
 									name = L["Non-Interactive Unfriendly"],
-									desc = L["used for non-interactive unfriendly units"],
+									desc = L["Used for non-interactive unfriendly units"],
 									type = 'color',
 								},
 								['4'] = {
 									order = 4,
 									name = L["Hostile"],
-									desc = L["used for hostile units"],
+									desc = L["Used for hostile units"],
 									type = 'color',
 								},
 								['5'] = {
 									order = 5,
 									name = L["Dead"],
-									desc = L["used for dead units"],
+									desc = L["Used for dead units"],
 									type = 'color',
 								},
 								['6'] = {
 									order = 6,
 									name = L["Friendly"],
-									desc = L["used for friendly units"],
+									desc = L["Used for friendly units"],
 									type = 'color',
 								},
 								['7'] = {
 									order = 7,
 									name = L["Default"],
-									desc = L["the default colour, also used for friendly player names in dungeons, unattackable, players in sanctuaries, etc."],
+									desc = L["The default colour, also used for friendly player names in dungeons, unattackable, players in sanctuaries, etc."],
 									type = 'color',
 								},
 							},
