@@ -242,7 +242,7 @@ function AddOn:ToggleConfig(msg)
 	ACD[mode](ACD, AddOnName)
 
 	if pages then
-		ACD:SelectGroup("ElvUI", unpack(pages))
+		ACD:SelectGroup(AddOnName, unpack(pages))
 	end
 
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.

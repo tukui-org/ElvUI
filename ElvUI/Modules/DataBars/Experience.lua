@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -122,7 +122,7 @@ end
 
 function mod:ExperienceBar_OnClick(btn)
 	if btn == "RightButton" then
-		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "experience");
+		mod:ToggleConfigGroup("experience")
 	end
 end
 

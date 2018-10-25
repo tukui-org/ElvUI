@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -11,10 +11,8 @@ local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local InCombatLockdown = InCombatLockdown
-local Item = Item
 local ARTIFACT_POWER = ARTIFACT_POWER
-local AZERITE_POWER_TOOLTIP_BODY = AZERITE_POWER_TOOLTIP_BODY
-local AZERITE_POWER_TOOLTIP_TITLE = AZERITE_POWER_TOOLTIP_TITLE
+local Item = Item
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, CreateFrame
@@ -106,7 +104,7 @@ end
 
 function mod:AzeriteBar_OnClick(btn)
 	if btn == "RightButton" then
-		E:ToggleConfig(); LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "azerite");
+		mod:ToggleConfigGroup("azerite")
 	end
 end
 

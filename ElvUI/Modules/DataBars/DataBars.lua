@@ -2,12 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:NewModule("DataBars", 'AceEvent-3.0')
 E.DataBars = mod
 
+local LibStub = LibStub
+
 --Cache global variables
 --WoW API / Variables
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, CreateFrame
+-- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar,
+-- GLOBALS: GameTooltip
 
 function mod:OnLeave()
 	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) or (self == ElvUI_AzeriteBar and mod.db.azerite.mouseover) then
@@ -59,6 +64,20 @@ function mod:PLAYER_LEVEL_UP(level)
 		self:UpdateHonor("PLAYER_LEVEL_UP", level)
 	else
 		self.honorBar:Hide()
+	end
+end
+
+function mod:ToggleConfigGroup(tab)
+	local ACD = IsAddOnLoaded("ElvUI_Config") and LibStub("AceConfigDialog-3.0-ElvUI")
+	if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+		if ACD.Status and ACD.Status.ElvUI and ACD.Status.ElvUI.children.databars and ACD.Status.ElvUI.children.databars.status.groups.selected == tab then
+			E:ToggleConfig()
+		else
+			ACD:SelectGroup("ElvUI", "databars", tab)
+		end
+	else
+		E:ToggleConfig()
+		LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", tab)
 	end
 end
 
