@@ -104,7 +104,7 @@ end
 
 function mod:AzeriteBar_OnClick(btn)
 	if btn == "RightButton" then
-		mod:ToggleConfigGroup("azerite")
+		E:ToggleConfig("databars,azerite")
 	end
 end
 

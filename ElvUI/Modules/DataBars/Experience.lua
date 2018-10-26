@@ -122,7 +122,7 @@ end
 
 function mod:ExperienceBar_OnClick(btn)
 	if btn == "RightButton" then
-		mod:ToggleConfigGroup("experience")
+		E:ToggleConfig("databars,experience")
 	end
 end
 

@@ -103,7 +103,7 @@ function mod:HonorBar_OnClick(btn)
 	if btn == "LeftButton" then
 		TogglePVPUI()
 	elseif btn == "RightButton" then
-		mod:ToggleConfigGroup("honor")
+		E:ToggleConfig("databars,honor")
 	end
 end
 

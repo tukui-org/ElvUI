@@ -156,7 +156,7 @@ function mod:ReputationBar_OnClick(btn)
 	if btn == "LeftButton" then
 		ToggleCharacter("ReputationFrame")
 	elseif btn == "RightButton" then
-		mod:ToggleConfigGroup("reputation")
+		E:ToggleConfig("databars,reputation")
 	end
 end
 
