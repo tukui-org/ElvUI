@@ -118,7 +118,7 @@ function UF:Update_RaidHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,raid')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,raid,general')
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")

@@ -39,7 +39,7 @@ function B:PositionVehicleFrame()
 	if not VehicleSeatIndicator.PositionVehicleFrameHooked then
 		hooksecurefunc(VehicleSeatIndicator, 'SetPoint', VehicleSeatIndicator_SetPosition)
 		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
-		E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general')
+		E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,general')
 		VehicleSeatIndicator.PositionVehicleFrameHooked = true
 	end
 

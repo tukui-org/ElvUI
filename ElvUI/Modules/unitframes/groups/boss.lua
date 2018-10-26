@@ -47,7 +47,7 @@ function UF:Construct_BossFrames(frame)
 	frame.customTexts = {}
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,boss')
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,boss,general')
 	frame.mover = BossHeader.mover
 
 	frame.unitframeType = "boss"

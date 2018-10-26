@@ -31,7 +31,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,targettarget')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,targettarget,general')
 
 	frame.unitframeType = "targettarget"
 end

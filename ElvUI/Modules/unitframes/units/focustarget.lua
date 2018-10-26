@@ -35,7 +35,7 @@ function UF:Construct_FocusTargetFrame(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,focustarget')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,focustarget,general')
 
 	frame.unitframeType = "focustarget"
 end
