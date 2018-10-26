@@ -255,7 +255,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 				frame.trackbg = CreateFrame("Frame", nil, frame)
 				frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
 				frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Transparent")
+				frame.trackbg:SetTemplate("Default", true, true)
 			end
 
 			if frame:GetThumbTexture() then
@@ -299,7 +299,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 				frame.trackbg = CreateFrame("Frame", nil, frame)
 				frame.trackbg:Point("TOPLEFT", frame.ScrollUpButton, "BOTTOMLEFT", 0, -1)
 				frame.trackbg:Point("BOTTOMRIGHT", frame.ScrollDownButton, "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Transparent")
+				frame.trackbg:SetTemplate("Default", true, true)
 			end
 
 			if frame.thumbTexture then
@@ -328,6 +328,8 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
 	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
 
+	Slider:StripTextures()
+
 	if Slider.trackBG then Slider.trackBG:Hide() end
 	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
 	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
@@ -337,44 +339,52 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
-		Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, -1)
-		Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 1)
-		Slider.trackbg:SetTemplate("Transparent")
+		if Slider.ScrollUp and Slider.ScrollDown then
+			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, 0)
+			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 0)
+		elseif Slider.ScrollUpButton and Slider.ScrollDownButton then
+			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUpButton, "BOTTOMLEFT", 0, -1)
+			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDownButton, "TOPRIGHT", 0, 1)
+		elseif parent.scrollUp and parent.scrollDown then
+			Slider.trackbg:Point("TOPLEFT", parent.scrollUp, "BOTTOMLEFT", 0, -1)
+			Slider.trackbg:Point("BOTTOMRIGHT", parent.scrollDown, "TOPRIGHT", 0, 1)
+		end
+		Slider.trackbg:SetTemplate("Default", true, true)
 	end
 
 	if Slider.ScrollUp and Slider.ScrollDown then
 		if not Slider.ScrollUp.icon then
 			S:HandleNextPrevButton(Slider.ScrollUp, true, true)
-			Slider.ScrollUp:Size(Slider.ScrollUp:GetWidth() + 7, Slider.ScrollUp:GetHeight() + 7)
+			Slider.ScrollUp:Size(Slider:GetWidth(), Slider.ScrollUp:GetHeight() + 7)
 		end
 
 		if not Slider.ScrollDown.icon then
 			S:HandleNextPrevButton(Slider.ScrollDown, true)
-			Slider.ScrollDown:Size(Slider.ScrollDown:GetWidth() + 7, Slider.ScrollDown:GetHeight() + 7)
+			Slider.ScrollDown:Size(Slider:GetWidth(), Slider.ScrollDown:GetHeight() + 7)
 		end
 	end
 
 	if Slider.ScrollUpButton  and Slider.ScrollDownButton then
 		if not Slider.ScrollUpButton.icon then
 			S:HandleNextPrevButton(Slider.ScrollUpButton, true, true)
-			Slider.ScrollUpButton:Size(Slider.ScrollUpButton:GetWidth() + 9, Slider.ScrollUpButton:GetHeight() + 7) -- Not perfect
+			Slider.ScrollUpButton:Size(Slider:GetWidth(), Slider.ScrollUpButton:GetHeight() + 7)
 		end
 
 		if not Slider.ScrollDownButton.icon then
 			S:HandleNextPrevButton(Slider.ScrollDownButton, true)
-			Slider.ScrollDownButton:Size(Slider.ScrollDownButton:GetWidth() + 7, Slider.ScrollDownButton:GetHeight() + 7)
+			Slider.ScrollDownButton:Size(Slider:GetWidth(), Slider.ScrollDownButton:GetHeight() + 7)
 		end
 	end
 
 	if parent.scrollUp and parent.scrollDown then
 		if not parent.scrollUp.icon then
 			S:HandleNextPrevButton(parent.scrollUp, true, true)
-			parent.scrollUp:Size(parent.scrollUp:GetWidth() + 9, parent.scrollUp:GetHeight() + 7) -- Not perfect
+			parent.scrollUp:Size(Slider:GetWidth(), parent.scrollUp:GetHeight() + 7)
 		end
 
 		if not parent.scrollDown.icon then
 			S:HandleNextPrevButton(parent.scrollDown, true)
-			parent.scrollDown:Size(parent.scrollDown:GetWidth() + 9, parent.scrollDown:GetHeight() + 7) -- Not perfect
+			parent.scrollDown:Size(Slider:GetWidth(), parent.scrollDown:GetHeight() + 7)
 		end
 	end
 
@@ -391,9 +401,7 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
 			end
 		end
-	end
-
-	if Slider.ThumbTexture then
+	elseif Slider.ThumbTexture then
 		if not thumbTrim then thumbTrim = 3 end
 		Slider.ThumbTexture:SetTexture(nil)
 		if not Slider.thumbbg then

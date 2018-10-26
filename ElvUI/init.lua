@@ -230,19 +230,29 @@ function AddOn:ToggleConfig(msg)
 	end
 
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
-
 	local pages
-	if (msg and msg ~= "") then
+	if msg and msg ~= "" then
 		pages = {strsplit(",", msg)}
 	end
+
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] or (pages ~= nil) then
-		mode = 'Open'
+		if pages ~= nil then
+			local mainTab = pages[1] and ACD.Status and ACD.Status.ElvUI
+			local subTab = pages[2] and mainTab and mainTab.children[pages[1]]
+			if ACD.OpenFrames[AddOnName] and ((subTab and subTab.status.groups.selected == pages[2]) or ((not subTab) and mainTab and mainTab.status.groups.selected == pages[1])) then
+				mode = 'Close'
+			else
+				mode = 'Open'
+			end
+		else
+			mode = 'Open'
+		end
 	end
 	ACD[mode](ACD, AddOnName)
 
-	if pages then
-		ACD:SelectGroup("ElvUI", unpack(pages))
+	if pages and (mode == 'Open') then
+		ACD:SelectGroup(AddOnName, unpack(pages))
 	end
 
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.

@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -11,9 +11,10 @@ local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
+local InCombatLockdown = InCombatLockdown
+local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HONOR = HONOR
-local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
@@ -98,8 +99,12 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:HonorBar_OnClick()
-	TogglePVPUI()
+function mod:HonorBar_OnClick(btn)
+	if btn == "LeftButton" then
+		TogglePVPUI()
+	elseif btn == "RightButton" then
+		E:ToggleConfig("databars,honor")
+	end
 end
 
 function mod:UpdateHonorDimensions()

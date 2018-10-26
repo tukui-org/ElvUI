@@ -4,10 +4,12 @@ E.DataBars = mod
 
 --Cache global variables
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, CreateFrame
+-- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar,
+-- GLOBALS: GameTooltip
 
 function mod:OnLeave()
 	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) or (self == ElvUI_AzeriteBar and mod.db.azerite.mouseover) then
@@ -21,7 +23,7 @@ function mod:CreateBar(name, onEnter, onClick, ...)
 	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', mod.OnLeave)
-	bar:SetScript("OnClick", onClick)
+	bar:SetScript('OnMouseDown', onClick)
 	bar:SetFrameStrata('LOW')
 	bar:SetTemplate('Transparent')
 	bar:Hide()

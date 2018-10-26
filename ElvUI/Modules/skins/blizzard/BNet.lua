@@ -40,7 +40,7 @@ local function LoadSkin()
 
 	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
 	BattleTagInviteFrame:StripTextures()
-	BattleTagInviteFrame:SetTemplate('Transparent')
+	BattleTagInviteFrame:CreateBackdrop("Transparent")
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())
