@@ -132,7 +132,7 @@ local statusTable = { " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", "
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
-local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2 = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2
+local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD
 local wowString = BNET_CLIENT_WOW
 local dataValid = false
 local lastPanel
@@ -147,6 +147,7 @@ local clientTags = {
 	[BNET_CLIENT_SC] = "SC",
 	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_DESTINY2] = "Dst2",
+	[BNET_CLIENT_COD] = "VIPR",
 	["BSAp"] = L["Mobile"],
 }
 local clientIndex = {
@@ -158,8 +159,9 @@ local clientIndex = {
 	[BNET_CLIENT_SC] = 6,
 	[BNET_CLIENT_SC2] = 7,
 	[BNET_CLIENT_DESTINY2] = 8,
-	["App"] = 9,
-	["BSAp"] = 10,
+	[BNET_CLIENT_COD] = 9,
+	["App"] = 10,
+	["BSAp"] = 11,
 }
 
 local function SortAlphabeticName(a, b)
