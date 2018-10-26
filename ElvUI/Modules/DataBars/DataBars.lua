@@ -77,7 +77,10 @@ function mod:ToggleConfigGroup(tab)
 		end
 	else
 		E:ToggleConfig()
-		LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", tab)
+
+		if IsAddOnLoaded("ElvUI_Config") then
+			LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", tab)
+		end
 	end
 end
 
