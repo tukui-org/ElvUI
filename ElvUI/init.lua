@@ -230,17 +230,36 @@ function AddOn:ToggleConfig(msg)
 	end
 
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+	local ConfigOpen = ACD.OpenFrames[AddOnName]
+
 	local pages
 	if msg and msg ~= "" then
 		pages = {strsplit(",", msg)}
 	end
 
 	local mode = 'Close'
-	if not ACD.OpenFrames[AddOnName] or (pages ~= nil) then
+	if not ConfigOpen or (pages ~= nil) then
 		if pages ~= nil then
-			local mainTab = pages[1] and ACD.Status and ACD.Status.ElvUI
-			local subTab = pages[2] and mainTab and mainTab.children[pages[1]]
-			if ACD.OpenFrames[AddOnName] and ((subTab and subTab.status.groups.selected == pages[2]) or ((not subTab) and mainTab and mainTab.status.groups.selected == pages[1])) then
+			local index, pageCount, childNode, main, mainNode, mainSel, sub, subNode, subSel = 0, #pages, {}
+			for i = 1, pageCount do
+				if i == 1 then
+					main = pages[i] and ACD.Status and ACD.Status.ElvUI
+					mainNode = main and main.children and main.children[pages[i]]
+					mainSel = main and main.status and main.status.groups and main.status.groups.selected
+					childNode[index+1] = main
+					childNode[index+2] = mainNode
+				else
+					sub = pages[i] and childNode[i] and ((i == pageCount and childNode[i]) or childNode[i].children[pages[i]])
+					subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
+					subNode = (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msg:gsub(',','\001'))
+					childNode[index+1] = sub
+					childNode[index+2] = subNode
+				end
+
+				index = index + 2
+			end
+
+			if ConfigOpen and (index > 0) and childNode[index] then
 				mode = 'Close'
 			else
 				mode = 'Open'
