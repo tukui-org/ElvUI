@@ -99,12 +99,8 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:HonorBar_OnClick(btn)
-	if btn == "LeftButton" then
-		TogglePVPUI()
-	elseif btn == "RightButton" then
-		E:ToggleConfig("databars,honor")
-	end
+function mod:HonorBar_OnClick()
+	TogglePVPUI()
 end
 
 function mod:UpdateHonorDimensions()
