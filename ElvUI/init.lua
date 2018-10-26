@@ -269,7 +269,7 @@ function AddOn:ToggleConfig(msg)
 				mainSel = main and main.status and main.status.groups and main.status.groups.selected
 			end
 
-			if ConfigOpen and ((not index and mainSel and mainSel == msg) or (index and index > 2 and pageNodes and pageNodes[index])) then
+			if ConfigOpen and ((not index and mainSel and mainSel == msg) or (index and pageNodes and pageNodes[index])) then
 				mode = 'Close'
 			else
 				mode = 'Open'
