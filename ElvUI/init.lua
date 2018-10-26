@@ -12,6 +12,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 --Cache global variables
 local _G = _G
+local wipe = wipe
 local pairs = pairs
 local unpack = unpack
 local strsplit = string.split
@@ -202,6 +203,7 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
+local pageNodes = {}
 function AddOn:ToggleConfig(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
@@ -240,26 +242,34 @@ function AddOn:ToggleConfig(msg)
 	local mode = 'Close'
 	if not ConfigOpen or (pages ~= nil) then
 		if pages ~= nil then
-			local index, pageCount, childNode, main, mainNode, mainSel, sub, subNode, subSel = 0, #pages, {}
-			for i = 1, pageCount do
-				if i == 1 then
-					main = pages[i] and ACD.Status and ACD.Status.ElvUI
-					mainNode = main and main.children and main.children[pages[i]]
-					mainSel = main and main.status and main.status.groups and main.status.groups.selected
-					childNode[index+1] = main
-					childNode[index+2] = mainNode
-				else
-					sub = pages[i] and childNode[i] and ((i == pageCount and childNode[i]) or childNode[i].children[pages[i]])
-					subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-					subNode = (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msg:gsub(',','\001'))
-					childNode[index+1] = sub
-					childNode[index+2] = subNode
-				end
+			local pageCount, index, mainSel = #pages
+			if pageCount > 1 then
+				wipe(pageNodes)
+				index = 0
 
-				index = index + 2
+				local main, mainNode, sub, subNode, subSel
+				for i = 1, pageCount do
+					if i == 1 then
+						main = pages[i] and ACD.Status and ACD.Status.ElvUI
+						mainSel = main and main.status and main.status.groups and main.status.groups.selected
+						mainNode = main and main.children and main.children[pages[i]]
+						pageNodes[index+1] = main
+						pageNodes[index+2] = mainNode
+					else
+						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
+						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
+						subNode = (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msg:gsub(',','\001'))
+						pageNodes[index+1] = sub
+						pageNodes[index+2] = subNode
+					end
+					index = index + 2
+				end
+			else
+				local main = pages[1] and ACD.Status and ACD.Status.ElvUI
+				mainSel = main and main.status and main.status.groups and main.status.groups.selected
 			end
 
-			if ConfigOpen and (index > 0) and childNode[index] then
+			if ConfigOpen and (((index == nil or index == 2) and mainSel and mainSel == msg) or (index and (index > 2) and pageNodes and pageNodes[index])) then
 				mode = 'Close'
 			else
 				mode = 'Open'
