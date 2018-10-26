@@ -255,7 +255,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 				frame.trackbg = CreateFrame("Frame", nil, frame)
 				frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
 				frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Transparent")
+				frame.trackbg:SetTemplate("Default", true, true)
 			end
 
 			if frame:GetThumbTexture() then
@@ -299,7 +299,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 				frame.trackbg = CreateFrame("Frame", nil, frame)
 				frame.trackbg:Point("TOPLEFT", frame.ScrollUpButton, "BOTTOMLEFT", 0, -1)
 				frame.trackbg:Point("BOTTOMRIGHT", frame.ScrollDownButton, "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Transparent")
+				frame.trackbg:SetTemplate("Default", true, true)
 			end
 
 			if frame.thumbTexture then
