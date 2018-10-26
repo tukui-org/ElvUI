@@ -339,9 +339,17 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
-		Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, -1)
-		Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 1)
-		Slider.trackbg:SetTemplate("Transparent")
+		if Slider.ScrollUp and Slider.ScrollDown then
+			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, 0)
+			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 0)
+		elseif Slider.ScrollUpButton and Slider.ScrollDownButton then
+			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUpButton, "BOTTOMLEFT", 0, -1)
+			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDownButton, "TOPRIGHT", 0, 1)
+		elseif parent.scrollUp and parent.scrollDown then
+			Slider.trackbg:Point("TOPLEFT", parent.scrollUp, "BOTTOMLEFT", 0, -1)
+			Slider.trackbg:Point("BOTTOMRIGHT", parent.scrollDown, "TOPRIGHT", 0, 1)
+		end
+		Slider.trackbg:SetTemplate("Default", true, true)
 	end
 
 	if Slider.ScrollUp and Slider.ScrollDown then
