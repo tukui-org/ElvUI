@@ -204,6 +204,6 @@ function mod:LoadReputationBar()
 
 	self:UpdateReputationDimensions()
 
-	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
+	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 	self:EnableDisable_ReputationBar()
 end

@@ -1308,7 +1308,7 @@ function mod:Initialize()
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)
-	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"])
+	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"], nil, nil, nil, nil, nil, 'nameplate,playerGroup')
 	self:TogglePlayerDisplayType()
 	self:SetNamePlateClickThrough()
 

@@ -73,7 +73,7 @@ function UF:Update_TankHeader(header, db)
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
-		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,tank')
 		header.mover.positionOverride = "TOPLEFT"
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)

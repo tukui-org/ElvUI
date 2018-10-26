@@ -304,7 +304,7 @@ function LO:CreateChatPanels()
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent', nil, true)
 	lchat.backdrop:SetAllPoints()
-	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
+	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"], nil, nil, nil, nil, nil, 'chat')
 
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -363,7 +363,7 @@ function LO:CreateChatPanels()
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent', nil, true)
 	rchat.backdrop:SetAllPoints()
-	E:CreateMover(rchat, "RightChatMover", L["Right Chat"])
+	E:CreateMover(rchat, "RightChatMover", L["Right Chat"], nil, nil, nil, nil, nil, 'chat')
 
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')

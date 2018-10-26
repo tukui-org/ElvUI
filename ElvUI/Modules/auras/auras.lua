@@ -422,11 +422,11 @@ function A:Initialize()
 
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:Point("TOPRIGHT", MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
-	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])
+	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
-	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
+	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end

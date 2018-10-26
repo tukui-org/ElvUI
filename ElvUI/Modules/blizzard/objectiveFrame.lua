@@ -40,7 +40,7 @@ local function IsFramePositionedLeft(frame)
 end
 
 function B:MoveObjectiveFrame()
-	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"])
+	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
 
 	ObjectiveTrackerFrame:ClearAllPoints()

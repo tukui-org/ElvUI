@@ -51,7 +51,7 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable)
+local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 
@@ -78,6 +78,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
+	f.configString = configString
 
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
@@ -113,7 +114,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		elseif find(anchorString, ",") then
 			delim = ","
 		end
-		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
+
+		point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 		f:Point(point, anchor, secondaryPoint, x, y)
 		f.anchor = anchor
 	else
@@ -142,14 +144,15 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			self:StopMovingOrSizing()
 		end
 
-		local x, y, point = E:CalculateMoverPoints(self)
+		x, y, point = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-		local overridePoint;
+
+		local overridePoint
 		if (self.positionOverride) then
 			if (self.positionOverride == "BOTTOM" or self.positionOverride == "TOP") then
-				overridePoint = "BOTTOM";
+				overridePoint = "BOTTOM"
 			else
-				overridePoint = "BOTTOMLEFT";
+				overridePoint = "BOTTOMLEFT"
 			end
 		end
 
@@ -192,11 +195,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			else
 				self:StopMovingOrSizing()
 			end
+
 			--Allow resetting of anchor by Ctrl+RightClick
 			if IsControlKeyDown() and self.textString then
 				E:ResetMovers(self.textString)
 			elseif IsShiftKeyDown() then --Allow hiding a mover temporarily
 				self:Hide()
+			elseif self.configString then --OpenConfig
+				E:ToggleConfig(self.configString)
 			end
 		end
 	end
@@ -346,7 +352,7 @@ function E:SaveMoverDefaultPosition(name)
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 
 	if E.CreatedMovers[name] == nil then
@@ -358,6 +364,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name]["snapoffset"] = snapoffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
 		E.CreatedMovers[name]["shouldDisable"] = shouldDisable
+		E.CreatedMovers[name]["configString"] = configString
 
 		E.CreatedMovers[name]["type"] = {}
 		local types = {split(',', moverTypes)}
@@ -367,7 +374,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		end
 	end
 
-	CreateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable)
+	CreateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
 end
 
 function E:ToggleMovers(show, moverType)
@@ -512,7 +519,7 @@ end
 --Called from core.lua
 function E:LoadMovers()
 	for n, _ in pairs(E.CreatedMovers) do
-		local p, t, o, so, pd
+		local p, t, o, so, pd, sd, cs
 		for key, value in pairs(E.CreatedMovers[n]) do
 			if key == "parent" then
 				p = value
@@ -524,8 +531,13 @@ function E:LoadMovers()
 				so = value
 			elseif key == "postdrag" then
 				pd = value
+			elseif key == "shouldDisable" then
+				sd = value
+			elseif key == "configString" then
+				cs = value
 			end
 		end
-		CreateMover(p, n, t, o, so, pd)
+
+		CreateMover(p, n, t, o, so, pd, sd, cs)
 	end
 end

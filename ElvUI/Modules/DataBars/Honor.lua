@@ -152,7 +152,7 @@ function mod:LoadHonorBar()
 	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) mod:UpdateHonor(event, unit) end)
 
 	self:UpdateHonorDimensions()
-	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])
+	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
 	self:EnableDisable_HonorBar()
 end

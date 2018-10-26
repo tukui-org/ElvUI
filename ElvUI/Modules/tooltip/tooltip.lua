@@ -775,7 +775,7 @@ function TT:Initialize()
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"])
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
 
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook("SetItemRef")

@@ -83,7 +83,9 @@ function UF:Construct_Castbar(frame, moverName)
 	button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 
 	if moverName then
-		E:CreateMover(castbar.Holder, frame:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
+		local name = frame:GetName()
+		local configName = name:gsub('^ElvUF_', ''):lower()
+		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,'..configName..',castbar')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")

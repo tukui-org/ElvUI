@@ -474,7 +474,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 
-	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag)
+	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
 	MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)

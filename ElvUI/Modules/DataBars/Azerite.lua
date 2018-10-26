@@ -159,6 +159,6 @@ function mod:LoadAzeriteBar()
 	self.azeriteBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateAzerite(event) end)
 
 	self:UpdateAzeriteDimensions()
-	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"])
+	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 	self:EnableDisable_AzeriteBar()
 end

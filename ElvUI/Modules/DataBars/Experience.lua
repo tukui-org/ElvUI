@@ -190,6 +190,6 @@ function mod:LoadExperienceBar()
 
 	self:UpdateExperienceDimensions()
 
-	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
+	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 	self:EnableDisable_ExperienceBar()
 end

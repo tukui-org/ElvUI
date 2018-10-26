@@ -2154,7 +2154,7 @@ function B:Initialize()
 	if not E.private.bags.enable then
 		--Set a different default anchor
 		BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
-		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove)
+		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags')
 
 		self:SecureHook('UpdateContainerFrameAnchors')
 
@@ -2186,7 +2186,7 @@ function B:Initialize()
 
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 22 + E.Border*4 - E.Spacing*2)
-	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove)
+	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags')
 
 	--Bank Mover
 	local BankFrameHolder = CreateFrame("Frame", nil, E.UIParent)
@@ -2194,7 +2194,7 @@ function B:Initialize()
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
-	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove)
+	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags')
 
 	--Bag Assignment Dropdown Menu
 	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "UIDropDownMenuTemplate")

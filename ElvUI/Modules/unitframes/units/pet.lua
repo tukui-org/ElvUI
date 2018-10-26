@@ -44,7 +44,7 @@ function UF:Construct_PetFrame(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
-	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,pet')
 
 	frame.unitframeType = "pet"
 end
