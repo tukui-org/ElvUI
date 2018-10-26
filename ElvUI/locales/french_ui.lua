@@ -307,6 +307,7 @@ L["Zone Ability"] = "Zone d'abilité"
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
 
 Options:
+  Clic Droit - Open Config Section.
   Shift + clic droit - Cacher temporairement.
   Ctrl + clic droit - Réinitialiser la position par défaut.
 ]=]
