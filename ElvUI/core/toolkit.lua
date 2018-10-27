@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, type, select, getmetatable, assert = unpack, type, select, getmetatable, assert
+local unpack, type, select, getmetatable, assert, pairs = unpack, type, select, getmetatable, assert, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -258,18 +258,43 @@ local function Kill(object)
 	object:Hide()
 end
 
+local blizzFrames = {
+	'Inset',
+	'inset',
+	'InsetFrame',
+	'LeftInset',
+	'RightInset',
+	'NineSlice',
+	'BorderFrame',
+	'bottomInset',
+	'BottomInset',
+	'bgLeft',
+	'bgRight',
+	'FilligreeOverlay',
+}
+
 local function StripTextures(object, kill)
-	for i=1, object:GetNumRegions() do
-		local region = select(i, object:GetRegions())
-		if region and region:GetObjectType() == "Texture" then
-			if kill and type(kill) == 'boolean' then
-				region:Kill()
-			elseif region:GetDrawLayer() == kill then
-				region:SetTexture(nil)
-			elseif kill and type(kill) == 'string' and region:GetTexture() ~= kill then
-				region:SetTexture(nil)
-			else
-				region:SetTexture(nil)
+	local objectName = object.GetName and object:GetName()
+	for _, Blizzard in pairs(blizzFrames) do
+		local BlizzFrame = object[Blizzard] or objectName and _G[objectName..Blizzard]
+		if BlizzFrame then
+			BlizzFrame:StripTextures()
+		end
+	end
+
+	if object.GetNumRegions then
+		for i = 1, object:GetNumRegions() do
+			local region = select(i, object:GetRegions())
+			if region and region:IsObjectType('Texture') then
+				if kill and type(kill) == 'boolean' then
+					region:Kill()
+				elseif region:GetDrawLayer() == kill then
+					region:SetTexture(nil)
+				elseif kill and type(kill) == 'string' and region:GetTexture() ~= kill then
+					region:SetTexture(nil)
+				else
+					region:SetTexture(nil)
+				end
 			end
 		end
 	end
