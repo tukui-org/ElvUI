@@ -2288,6 +2288,9 @@ function CH:DefaultSmileys()
 	CH:AddSmiley(':stuck_out_tongue:',				format(t,'stuck_out_tongue'))
 	CH:AddSmiley(':stuck_out_tongue_closed_eyes:',	format(t,'stuck_out_tongue_closed_eyes'))
 
+	-- Darth's keys
+	CH:AddSmiley(':meaw:',	format(t,'meaw'))
+
 	-- Simpy's keys
 	CH:AddSmiley('>:%(',	format(t,'rage'))
 	CH:AddSmiley(':%$',		format(t,'blush'))
