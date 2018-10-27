@@ -2841,7 +2841,7 @@ E.Options.args.unitframe = {
 								},
 								['3'] = {
 									order = 3,
-									name = L["Non-Interactive Unfriendly"],
+									name = L["Unfriendly"],
 									type = 'color',
 								},
 								['4'] = {
