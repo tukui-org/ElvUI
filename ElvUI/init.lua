@@ -258,7 +258,7 @@ function AddOn:ToggleConfig(msg)
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = mainSel and msgStr:match('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001'..pages[i]..'$') and (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						subNode = mainSel and msgStr:match('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001'..pages[i]:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'$') and (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
