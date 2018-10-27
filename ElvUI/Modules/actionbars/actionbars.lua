@@ -46,7 +46,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 -- GLOBALS: LeaveVehicleButton, StatusTrackingBarManager, MultiCastActionBarFrame
 -- GLOBALS: LOCK_ACTIONBAR, UIParent, Minimap, IconIntroTracker, MainMenuBar, OverrideActionBar, ActionBarController
 -- GLOBALS: SpellFlyout, SpellFlyoutBackgroundEnd, SpellFlyoutVerticalBackground, SpellFlyoutHorizontalBackground
--- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight
+-- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight, MicroButtonAndBagsBar
 -- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
 -- GLOBALS: InterfaceOptionsActionBarsPanelRightTwo, InterfaceOptionsActionBarsPanelRight
 -- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
