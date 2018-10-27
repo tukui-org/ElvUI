@@ -307,9 +307,9 @@ local function LoadSkin()
 		if not button.hover then
 			local hover = button:CreateTexture()
 			hover:SetColorTexture(1, 1, 1, 0.3)
-			hover:SetInside()
-			button.hover = hover
+			hover:SetInside(button.backdrop)
 			button:SetHighlightTexture(hover)
+			button.hover = hover
 		end
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -322,10 +322,12 @@ local function LoadSkin()
 
 	hooksecurefunc("CommunitiesGuildRewards_Update", function(self)
 		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
-			local _, itemID = GetGuildRewardInfo(button.index)
-			local _, _, quality = GetItemInfo(itemID)
-			if quality and quality > 1 then
-				button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+			if button.index then
+				local _, itemID = GetGuildRewardInfo(button.index)
+				local _, _, quality = GetItemInfo(itemID)
+				if quality and quality > 1 then
+					button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+				end
 			end
 		end
 	end)
