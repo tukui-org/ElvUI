@@ -254,14 +254,12 @@ function AddOn:ToggleConfig(msg)
 						main = pages[i] and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
 						mainNode = main and main.children and main.children[pages[i]]
-						pageNodes[index+1] = main
-						pageNodes[index+2] = mainNode
+						pageNodes[index+1], pageNodes[index+2] = main, mainNode
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = mainSel and msgStr:match('^'..mainSel:gsub('%p','')..'\001'..pages[i]..'$') and (subSel and subSel == pages[i])
-						pageNodes[index+1] = sub
-						pageNodes[index+2] = subNode
+						subNode = mainSel and msgStr:match('^'..mainSel:gsub('%p','')..'\001'..pages[i]..'$') and (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
 				end
