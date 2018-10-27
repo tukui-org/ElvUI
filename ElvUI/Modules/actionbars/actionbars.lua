@@ -958,10 +958,10 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (self.db.useRangeColorText and 'hotkey') or 'button'
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
-	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
-	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
-	bar.buttonConfig.colors.usable = E:GetColorTable(self.db.usableColor)
-	bar.buttonConfig.colors.notUsable = E:GetColorTable(self.db.notUsableColor)
+	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, self.db.noRangeColor)
+	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, self.db.noPowerColor)
+	bar.buttonConfig.colors.usable = E:SetColorTable(bar.buttonConfig.colors.usable, self.db.usableColor)
+	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, self.db.notUsableColor)
 	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 

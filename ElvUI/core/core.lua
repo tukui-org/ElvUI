@@ -220,14 +220,45 @@ function E:CheckClassColor(r, g, b)
 	return matchFound
 end
 
-function E:GetColorTable(data)
+function E:SetColorTable(t, data)
 	if not data.r or not data.g or not data.b then
-		error("Could not unpack color values.")
+		error("SetColorTable: Could not unpack color values.")
 	end
 
-	if data.r > 1 or data.r < 0 then data.r = 1 end
-	if data.g > 1 or data.g < 0 then data.g = 1 end
-	if data.b > 1 or data.b < 0 then data.b = 1 end
+	if t and (type(t) == "table") then
+		t[1], t[2], t[3], t[4] = E:UpdateColorTable(data)
+	else
+		t = E:GetColorTable(data)
+	end
+
+	return t
+end
+
+function E:UpdateColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error("UpdateColorTable: Could not unpack color values.")
+	end
+
+	if (data.r > 1 or data.r < 0) then data.r = 1 end
+	if (data.g > 1 or data.g < 0) then data.g = 1 end
+	if (data.b > 1 or data.b < 0) then data.b = 1 end
+	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
+
+	if data.a then
+		return data.r, data.g, data.b, data.a
+	else
+		return data.r, data.g, data.b
+	end
+end
+
+function E:GetColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error("GetColorTable: Could not unpack color values.")
+	end
+
+	if (data.r > 1 or data.r < 0) then data.r = 1 end
+	if (data.g > 1 or data.g < 0) then data.g = 1 end
+	if (data.b > 1 or data.b < 0) then data.b = 1 end
 	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
 
 	if data.a then
@@ -271,10 +302,10 @@ function E:UpdateMedia()
 	self.media.unitframeBorderColor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	self.media.backdropcolor = E:GetColorTable(self.db.general.backdropcolor)
+	self.media.backdropcolor = E:SetColorTable(self.media.backdropcolor, self.db.general.backdropcolor)
 
 	--Backdrop Fade Color
-	self.media.backdropfadecolor = E:GetColorTable(self.db.general.backdropfadecolor)
+	self.media.backdropfadecolor = E:SetColorTable(self.media.backdropfadecolor, self.db.general.backdropfadecolor)
 
 	--Value Color
 	local value = self.db.general.valuecolor
