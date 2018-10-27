@@ -9,7 +9,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_DebuffHighlight(frame)
 	local dbh = frame:CreateTexture(nil, "OVERLAY")
 	dbh:SetInside(frame.Health.backdrop)
-	dbh:SetTexture(E['media'].blankTex)
+	dbh:SetTexture(E.media.blankTex)
 	dbh:SetVertexColor(0, 0, 0, 0)
 	dbh:SetBlendMode("ADD")
 	frame.DebuffHighlightFilter = true

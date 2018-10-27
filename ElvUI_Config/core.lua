@@ -415,7 +415,7 @@ if not E.Options.args.profiles.plugins then
 	E.Options.args.profiles.plugins = {}
 end
 
-E.Options.args.profiles.plugins["ElvUI"] = {
+E.Options.args.profiles.plugins.ElvUI = {
 	spacer = {
 		order = 89,
 		type = 'description',

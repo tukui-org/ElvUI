@@ -315,7 +315,7 @@ local function GetProfileData(profileType)
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["profile"])
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
 
 	elseif profileType == "private" then
 		local privateProfileKey = E.myname..' - '..E.myrealm
@@ -323,30 +323,30 @@ local function GetProfileData(profileType)
 
 		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
 		profileData = E:RemoveTableDuplicates(profileData, V)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["private"])
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == "global" then
 		profileKey = "global"
 
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys["global"])
+		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
 	elseif profileType == "filters" then
 		profileKey = "filters"
 
-		profileData["unitframe"] = {}
-		profileData["unitframe"]["aurafilters"] = {}
-		profileData["unitframe"]["aurafilters"] = E:CopyTable(profileData["unitframe"]["aurafilters"], ElvDB.global.unitframe.aurafilters)
-		profileData["unitframe"]["buffwatch"] = {}
-		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
+		profileData.unitframe = {}
+		profileData.unitframe.aurafilters = {}
+		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
+		profileData.unitframe.buffwatch = {}
+		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	elseif profileType == "styleFilters" then
 		profileKey = "styleFilters"
 
-		profileData["nameplate"] = {}
-		profileData["nameplate"]["filters"] = {}
-		profileData["nameplate"]["filters"] = E:CopyTable(profileData["nameplate"]["filters"], ElvDB.global.nameplate.filters)
+		profileData.nameplate = {}
+		profileData.nameplate.filters = {}
+		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 

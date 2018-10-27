@@ -120,11 +120,7 @@ function mod:ExperienceBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ExperienceBar_OnClick(btn)
-	if btn == "RightButton" then
-		E:ToggleConfig("databars,experience")
-	end
-end
+function mod:ExperienceBar_OnClick() end
 
 function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
@@ -190,6 +186,6 @@ function mod:LoadExperienceBar()
 
 	self:UpdateExperienceDimensions()
 
-	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
+	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 	self:EnableDisable_ExperienceBar()
 end

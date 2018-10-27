@@ -682,17 +682,17 @@ function B.SortBags(...)
 		for bagType, sortedBags in pairs(bagCache) do
 			if bagType ~= 'Normal' then
 				B.Stack(sortedBags, sortedBags, B.IsPartial)
-				B.Stack(bagCache['Normal'], sortedBags)
-				B.Fill(bagCache['Normal'], sortedBags, B.db.sortInverted)
+				B.Stack(bagCache.Normal, sortedBags)
+				B.Fill(bagCache.Normal, sortedBags, B.db.sortInverted)
 				B.Sort(sortedBags, nil, B.db.sortInverted)
 				twipe(sortedBags)
 			end
 		end
 
-		if bagCache['Normal'] then
-			B.Stack(bagCache['Normal'], bagCache['Normal'], B.IsPartial)
-			B.Sort(bagCache['Normal'], nil, B.db.sortInverted)
-			twipe(bagCache['Normal'])
+		if bagCache.Normal then
+			B.Stack(bagCache.Normal, bagCache.Normal, B.IsPartial)
+			B.Sort(bagCache.Normal, nil, B.db.sortInverted)
+			twipe(bagCache.Normal)
 		end
 		twipe(bagCache)
 		twipe(bagGroups)

@@ -68,7 +68,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
-		if backdrop.bgFile ~= E["media"].blankTex then
+		if backdrop.bgFile ~= E.media.blankTex then
 			self:SetTemplate("Transparent")
 		end
 	end)
@@ -647,7 +647,7 @@ local function LoadSkin()
 			if(selected) then
 				button:SetBackdropBorderColor(1, 1, 0)
 			else
-				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)

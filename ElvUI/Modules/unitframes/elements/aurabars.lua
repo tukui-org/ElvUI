@@ -28,7 +28,7 @@ function UF:Construct_AuraBars()
 	self:SetTemplate('Default', nil, nil, UF.thinBorders, true)
 	local inset = UF.thinBorders and E.mult or nil
 	bar:SetInside(self, inset, inset)
-	UF['statusbars'][bar] = true
+	UF.statusbars[bar] = true
 	UF:Update_StatusBar(bar)
 
 	UF:Configure_FontString(bar.spelltime)
@@ -55,7 +55,7 @@ function UF:Construct_AuraBars()
 
 		if auraName then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
+			E.global.unitframe.aurafilters.Blacklist.spells[auraName] = {
 				['enable'] = true,
 				['priority'] = 0,
 			}

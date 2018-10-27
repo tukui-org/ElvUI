@@ -71,7 +71,7 @@ local function LoadSkin()
 	end
 
 	-- Skin GameTooltip Status Bar
-	GameTooltipStatusBar:SetStatusBarTexture(E['media'].normTex)
+	GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(GameTooltipStatusBar)
 	GameTooltipStatusBar:CreateBackdrop('Transparent')
 	GameTooltipStatusBar:ClearAllPoints()

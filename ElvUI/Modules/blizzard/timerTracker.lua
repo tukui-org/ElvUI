@@ -20,11 +20,11 @@ local function SkinIt(bar)
 		end
 	end
 
-	bar:SetStatusBarTexture(E["media"].normTex)
+	bar:SetStatusBarTexture(E.media.normTex)
 	if E.PixelMode then
 		bar:SetStatusBarColor(.31, .31, .31)
 	else
-		bar:SetStatusBarColor(unpack(E["media"].bordercolor))
+		bar:SetStatusBarColor(unpack(E.media.bordercolor))
 	end
 
 	if not bar.backdrop then
@@ -38,9 +38,9 @@ end
 
 function B:START_TIMER()
 	for _, b in pairs(TimerTracker.timerList) do
-		if b["bar"] and not b["bar"].skinned then
-			SkinIt(b["bar"])
-			b["bar"].skinned = true
+		if b.bar and not b.bar.skinned then
+			SkinIt(b.bar)
+			b.bar.skinned = true
 		end
 	end
 end

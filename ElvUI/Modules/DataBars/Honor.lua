@@ -99,12 +99,8 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:HonorBar_OnClick(btn)
-	if btn == "LeftButton" then
-		TogglePVPUI()
-	elseif btn == "RightButton" then
-		E:ToggleConfig("databars,honor")
-	end
+function mod:HonorBar_OnClick()
+	TogglePVPUI()
 end
 
 function mod:UpdateHonorDimensions()
@@ -152,7 +148,7 @@ function mod:LoadHonorBar()
 	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) mod:UpdateHonor(event, unit) end)
 
 	self:UpdateHonorDimensions()
-	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])
+	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
 	self:EnableDisable_HonorBar()
 end

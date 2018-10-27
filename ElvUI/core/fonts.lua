@@ -17,9 +17,9 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 end
 
 function E:UpdateBlizzardFonts()
-	local NORMAL		= self["media"].normFont
+	local NORMAL		= self.media.normFont
 	local COMBAT		= LSM:Fetch('font', self.private.general.dmgfont)
-	local NUMBER		= self["media"].normFont
+	local NUMBER		= self.media.normFont
 	local NAMEFONT		= LSM:Fetch('font', self.private.general.namefont)
 	local BUBBLE		= LSM:Fetch('font', self.private.general.chatBubbleFont)
 	local MONOCHROME	= ''

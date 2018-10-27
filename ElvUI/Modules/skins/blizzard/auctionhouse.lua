@@ -62,7 +62,7 @@ local function LoadSkin()
 
 	AuctionProgressBar:StripTextures()
 	AuctionProgressBar:CreateBackdrop("Default")
-	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
+	AuctionProgressBar:SetStatusBarTexture(E.media.normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
 	E:RegisterStatusBar(AuctionProgressBar)
 

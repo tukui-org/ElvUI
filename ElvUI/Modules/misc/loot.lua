@@ -128,7 +128,7 @@ local function createSlot(id)
 	iconFrame:Point('RIGHT', frame)
 	iconFrame:SetTemplate('Default')
 	frame.iconFrame = iconFrame
-	E['frames'][iconFrame] = nil
+	E.frames[iconFrame] = nil
 
 	local icon = iconFrame:CreateTexture(nil, 'ARTWORK')
 	icon:SetTexCoord(unpack(E.TexCoords))
@@ -319,13 +319,13 @@ function M:LoadLoot()
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
 		CloseLoot()
 	end)
-	E['frames'][lootFrame] = nil
+	E.frames[lootFrame] = nil
 
 	self:RegisterEvent('LOOT_OPENED')
 	self:RegisterEvent('LOOT_SLOT_CLEARED')
 	self:RegisterEvent('LOOT_CLOSED')
 
-	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"])
+	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,general')
 
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()

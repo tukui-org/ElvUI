@@ -13,7 +13,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', nil, frame)
-	UF['statusbars'][power] = true
+	UF.statusbars[power] = true
 
 	power.RaisedElementParent = CreateFrame('Frame', nil, power)
 	power.RaisedElementParent:SetFrameLevel(power:GetFrameLevel() + 100)
@@ -24,7 +24,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	if bg then
 		power.bg = power:CreateTexture(nil, 'BORDER')
 		power.bg:SetAllPoints()
-		power.bg:SetTexture(E["media"].blankTex)
+		power.bg:SetTexture(E.media.blankTex)
 		power.bg.multiplier = 0.2
 	end
 
@@ -124,9 +124,9 @@ function UF:Configure_Power(frame)
 				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
 				if frame.unitframeType and frame.unitframeType == "player" then
-					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,power')
 				elseif frame.unitframeType and frame.unitframeType == "target" then
-					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,power')
 				end
 			else
 				power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)

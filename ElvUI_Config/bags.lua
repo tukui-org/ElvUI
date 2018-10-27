@@ -318,105 +318,147 @@ E.Options.args.bags = {
 			type = "group",
 			name = COLORS,
 			args = {
-				profession = {
+				header = {
 					order = 1,
-					type = "group",
-					name = L["Profession Bags"],
-					guiInline = true,
-					get = function(info)
-						local t = E.db.bags.colors.profession[ info[#info] ]
-						local d = P.bags.colors.profession[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.bags.colors.profession[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						B:UpdateBagColors('ProfessionColors', info[#info], r, g, b)
-						B:UpdateAllBagSlots()
-					end,
-					args = {
-						leatherworking = {
-							order = 1,
-							type = 'color',
-							name = L["Leatherworking"],
-						},
-						inscription = {
-							order = 2,
-							type = 'color',
-							name = INSCRIPTION,
-						},
-						herbs = {
-							order = 3,
-							type = 'color',
-							name = L["Herbalism"],
-						},
-						enchanting = {
-							order = 4,
-							type = 'color',
-							name = L["Enchanting"],
-						},
-						engineering = {
-							order = 5,
-							type = 'color',
-							name = L["Engineering"],
-						},
-						gems = {
-							order = 6,
-							type = 'color',
-							name = L["Gems"],
-						},
-						mining = {
-							order = 7,
-							type = 'color',
-							name = L["Mining"],
-						},
-						fishing = {
-							order = 8,
-							type = 'color',
-							name = PROFESSIONS_FISHING,
-						},
-						cooking = {
-							order = 9,
-							type = 'color',
-							name = PROFESSIONS_COOKING,
-						},
-					},
+					type = "header",
+					name = COLORS
 				},
-				assignment = {
+				bags = {
 					order = 2,
 					type = "group",
-					name = L["Bag Assignment"],
+					name = L["Bags"],
 					guiInline = true,
-					get = function(info)
-						local t = E.db.bags.colors.assignment[ info[#info] ]
-						local d = P.bags.colors.assignment[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.bags.colors.assignment[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						B:UpdateBagColors('AssignmentColors', info[#info], r, g, b)
-						B:UpdateAllBagSlots()
-					end,
 					args = {
-						equipment = {
+						profession = {
 							order = 1,
-							type = 'color',
-							name = BAG_FILTER_EQUIPMENT,
+							type = "group",
+							name = L["Profession Bags"],
+							guiInline = true,
+							get = function(info)
+								local t = E.db.bags.colors.profession[ info[#info] ]
+								local d = P.bags.colors.profession[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.bags.colors.profession[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								B:UpdateBagColors('ProfessionColors', info[#info], r, g, b)
+								B:UpdateAllBagSlots()
+							end,
+							args = {
+								leatherworking = {
+									order = 1,
+									type = 'color',
+									name = L["Leatherworking"],
+								},
+								inscription = {
+									order = 2,
+									type = 'color',
+									name = INSCRIPTION,
+								},
+								herbs = {
+									order = 3,
+									type = 'color',
+									name = L["Herbalism"],
+								},
+								enchanting = {
+									order = 4,
+									type = 'color',
+									name = L["Enchanting"],
+								},
+								engineering = {
+									order = 5,
+									type = 'color',
+									name = L["Engineering"],
+								},
+								gems = {
+									order = 6,
+									type = 'color',
+									name = L["Gems"],
+								},
+								mining = {
+									order = 7,
+									type = 'color',
+									name = L["Mining"],
+								},
+								fishing = {
+									order = 8,
+									type = 'color',
+									name = PROFESSIONS_FISHING,
+								},
+								cooking = {
+									order = 9,
+									type = 'color',
+									name = PROFESSIONS_COOKING,
+								},
+							},
 						},
-						consumables = {
+						assignment = {
 							order = 2,
-							type = 'color',
-							name = BAG_FILTER_CONSUMABLES,
-						},
-						tradegoods = {
-							order = 3,
-							type = 'color',
-							name = BAG_FILTER_TRADE_GOODS,
+							type = "group",
+							name = L["Bag Assignment"],
+							guiInline = true,
+							get = function(info)
+								local t = E.db.bags.colors.assignment[ info[#info] ]
+								local d = P.bags.colors.assignment[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.bags.colors.assignment[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								B:UpdateBagColors('AssignmentColors', info[#info], r, g, b)
+								B:UpdateAllBagSlots()
+							end,
+							args = {
+								equipment = {
+									order = 1,
+									type = 'color',
+									name = BAG_FILTER_EQUIPMENT,
+								},
+								consumables = {
+									order = 2,
+									type = 'color',
+									name = BAG_FILTER_CONSUMABLES,
+								},
+								tradegoods = {
+									order = 3,
+									type = 'color',
+									name = BAG_FILTER_TRADE_GOODS,
+								},
+							},
 						},
 					},
 				},
-			},
+				items = {
+					order = 3,
+					type = "group",
+					name = ITEMS,
+					guiInline = true,
+					get = function(info)
+						local t = E.db.bags.colors.items[ info[#info] ]
+						local d = P.bags.colors.items[info[#info]]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.bags.colors.items[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						B:UpdateQuestColors("QuestColors", info[#info], r, g, b)
+						B:UpdateAllBagSlots()
+					end,
+					args = {
+						questStarter = {
+							order = 1,
+							type = "color",
+							name = L["Quest Starter"]
+						},
+						questItem = {
+							order = 2,
+							type = "color",
+							name = ITEM_BIND_QUEST
+						}
+					}
+				}
+			}
 		},
 		bagBar = {
 			order = 6,
@@ -502,7 +544,7 @@ E.Options.args.bags = {
 						if value and value:match('[\n\r]') then
 							value = value:gsub('[\n\r]','')
 						end
-						E.db.bags.bagBar['visibility'] = value;
+						E.db.bags.bagBar.visibility = value;
 						B:SizeAndPositionBagBar()
 					end,
 				},

@@ -102,11 +102,7 @@ function mod:AzeriteBar_OnEnter()
 	end)
 end
 
-function mod:AzeriteBar_OnClick(btn)
-	if btn == "RightButton" then
-		E:ToggleConfig("databars,azerite")
-	end
-end
+function mod:AzeriteBar_OnClick() end
 
 function mod:UpdateAzeriteDimensions()
 	self.azeriteBar:Width(self.db.azerite.width)
@@ -159,6 +155,6 @@ function mod:LoadAzeriteBar()
 	self.azeriteBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateAzerite(event) end)
 
 	self:UpdateAzeriteDimensions()
-	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"])
+	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 	self:EnableDisable_AzeriteBar()
 end

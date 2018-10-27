@@ -13,12 +13,14 @@ local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
+local ToggleCharacter = ToggleCharacter
+local CreateFrame = CreateFrame
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
 local MAX_REPUTATION_REACTION = MAX_REPUTATION_REACTION
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, RightChatPanel, CreateFrame, ToggleCharacter
+-- GLOBALS: GameTooltip, RightChatPanel
 
 local backupColor = FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN
@@ -152,12 +154,8 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ReputationBar_OnClick(btn)
-	if btn == "LeftButton" then
-		ToggleCharacter("ReputationFrame")
-	elseif btn == "RightButton" then
-		E:ToggleConfig("databars,reputation")
-	end
+function mod:ReputationBar_OnClick()
+	ToggleCharacter("ReputationFrame")
 end
 
 function mod:UpdateReputationDimensions()
@@ -204,6 +202,6 @@ function mod:LoadReputationBar()
 
 	self:UpdateReputationDimensions()
 
-	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
+	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 	self:EnableDisable_ReputationBar()
 end

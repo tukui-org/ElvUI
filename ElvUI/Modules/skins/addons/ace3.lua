@@ -149,7 +149,7 @@ function S:SkinAce3()
 			frame:StripTextures()
 			frame:SetTemplate('Default')
 			frame:Height(HEIGHT)
-			frame:SetThumbTexture(E["media"].blankTex)
+			frame:SetThumbTexture(E.media.blankTex)
 			frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 			frame:GetThumbTexture():Size(HEIGHT-2,HEIGHT+2)
 

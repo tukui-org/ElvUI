@@ -35,7 +35,7 @@ function UF:Construct_FocusTargetFrame(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,focustarget,generalGroup')
 
 	frame.unitframeType = "focustarget"
 end
@@ -111,4 +111,4 @@ function UF:Update_FocusTargetFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'focustarget')
+tinsert(UF.unitstoload, 'focustarget')

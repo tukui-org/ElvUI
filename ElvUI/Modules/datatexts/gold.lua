@@ -27,11 +27,11 @@ local function OnEvent(self)
 	if not IsLoggedIn() then return end
 	local NewMoney = GetMoney();
 	ElvDB = ElvDB or { };
-	ElvDB['gold'] = ElvDB['gold'] or {};
-	ElvDB['gold'][E.myrealm] = ElvDB['gold'][E.myrealm] or {};
-	ElvDB['gold'][E.myrealm][E.myname] = ElvDB['gold'][E.myrealm][E.myname] or NewMoney;
+	ElvDB.gold = ElvDB.gold or {};
+	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {};
+	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney;
 
-	local OldMoney = ElvDB['gold'][E.myrealm][E.myname] or NewMoney
+	local OldMoney = ElvDB.gold[E.myrealm][E.myname] or NewMoney
 
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	if OldMoney>NewMoney then		-- Lost Money
@@ -42,7 +42,7 @@ local function OnEvent(self)
 
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
 
-	ElvDB['gold'][E.myrealm][E.myname] = NewMoney
+	ElvDB.gold[E.myrealm][E.myname] = NewMoney
 end
 
 local function Click(self, btn)
@@ -79,10 +79,10 @@ local function OnEnter(self)
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
 
-	for k,_ in pairs(ElvDB['gold'][E.myrealm]) do
-		if ElvDB['gold'][E.myrealm][k] then
-			DT.tooltip:AddDoubleLine(k, E:FormatMoney(ElvDB['gold'][E.myrealm][k], style, textOnly), 1, 1, 1, 1, 1, 1)
-			totalGold=totalGold+ElvDB['gold'][E.myrealm][k]
+	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
+		if ElvDB.gold[E.myrealm][k] then
+			DT.tooltip:AddDoubleLine(k, E:FormatMoney(ElvDB.gold[E.myrealm][k], style, textOnly), 1, 1, 1, 1, 1, 1)
+			totalGold=totalGold+ElvDB.gold[E.myrealm][k]
 		end
 	end
 

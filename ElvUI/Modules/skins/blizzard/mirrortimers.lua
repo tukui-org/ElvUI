@@ -43,7 +43,7 @@ local function LoadSkin()
 		mirrorTimer:StripTextures()
 		mirrorTimer:Size(222, 18)
 		mirrorTimer.label = text
-		statusBar:SetStatusBarTexture(E["media"].normTex)
+		statusBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop()
 		statusBar:Size(222, 18)

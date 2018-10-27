@@ -510,15 +510,15 @@ function B:UpdateSlot(bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -1121,15 +1121,15 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -1273,7 +1273,7 @@ function B:Token_OnClick()
 end
 
 function B:UpdateGoldText()
-	self.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db['bags'].moneyFormat, not E.db['bags'].moneyCoins))
+	self.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db.bags.moneyFormat, not E.db.bags.moneyCoins))
 end
 
 function B:FormatMoney(amount)
@@ -2091,7 +2091,7 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar = CreateFrame("StatusBar", "ElvUIVendorGraysFrameStatusbar", B.SellFrame)
 	B.SellFrame.statusbar:Size(180, 16)
 	B.SellFrame.statusbar:Point("BOTTOM", B.SellFrame, "BOTTOM", 0, 4)
-	B.SellFrame.statusbar:SetStatusBarTexture(E["media"].normTex)
+	B.SellFrame.statusbar:SetStatusBarTexture(E.media.normTex)
 	B.SellFrame.statusbar:SetStatusBarColor(1, 0, 0)
 	B.SellFrame.statusbar:CreateBackdrop("Transparent")
 
@@ -2135,8 +2135,17 @@ B.BagIndice = {
 	tradegoods = 4,
 }
 
+B.QuestKeys = {
+	questStarter = "questStarter",
+	questItem = "questItem",
+}
+
 function B:UpdateBagColors(table, indice, r, g, b)
 	self[table][B.BagIndice[indice]] = { r, g, b }
+end
+
+function B:UpdateQuestColors(table, indice, r, g, b)
+	self[table][B.QuestKeys[indice]] = { r, g, b }
 end
 
 function B:Initialize()
@@ -2154,7 +2163,7 @@ function B:Initialize()
 	if not E.private.bags.enable then
 		--Set a different default anchor
 		BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
-		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove)
+		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 		self:SecureHook('UpdateContainerFrameAnchors')
 
@@ -2184,9 +2193,14 @@ function B:Initialize()
 		[4] = { self.db.colors.assignment.tradegoods.r , self.db.colors.assignment.tradegoods.g, self.db.colors.assignment.tradegoods.b },
 	}
 
+	self.QuestColors = {
+		["questStarter"] = {self.db.colors.items.questStarter.r, self.db.colors.items.questStarter.g, self.db.colors.items.questStarter.b},
+		["questItem"] = {self.db.colors.items.questItem.r, self.db.colors.items.questItem.g, self.db.colors.items.questItem.b},
+	}
+
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 22 + E.Border*4 - E.Spacing*2)
-	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove)
+	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Bank Mover
 	local BankFrameHolder = CreateFrame("Frame", nil, E.UIParent)
@@ -2194,7 +2208,7 @@ function B:Initialize()
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
-	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove)
+	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Bag Assignment Dropdown Menu
 	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "UIDropDownMenuTemplate")

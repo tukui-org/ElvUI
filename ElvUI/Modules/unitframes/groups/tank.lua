@@ -43,7 +43,7 @@ function UF:Construct_TankFrames()
 		self.unitframeType = "tanktarget"
 	end
 
-	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
+	UF:Update_TankFrames(self, E.db.unitframe.units.tank)
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -73,7 +73,7 @@ function UF:Update_TankHeader(header, db)
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
-		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,tank,generalGroup')
 		header.mover.positionOverride = "TOPLEFT"
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -175,4 +175,4 @@ function UF:Update_TankFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['tank'] = {'MAINTANK', 'ELVUI_UNITTARGET'}
+UF.headerstoload.tank = {'MAINTANK', 'ELVUI_UNITTARGET'}

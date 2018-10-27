@@ -149,8 +149,8 @@ function A:CreateIcon(button)
 		button.CooldownOverride = 'auras'
 		button.isRegisteredCooldown = true
 
-		if not E.RegisteredCooldowns['auras'] then E.RegisteredCooldowns['auras'] = {} end
-		tinsert(E.RegisteredCooldowns['auras'], button)
+		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
+		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
 	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
@@ -286,8 +286,8 @@ function A:CooldownText_Update(button)
 	button.timerOptions.reverseToggle = self.db.cooldown.reverse
 	button.timerOptions.hideBlizzard = self.db.cooldown.hideBlizzard
 
-	if self.db.cooldown.override and E.TimeColors['auras'] then
-		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
+	if self.db.cooldown.override and E.TimeColors.auras then
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors.auras, self.db.cooldown.thresholdd
 	else
 		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end
@@ -422,11 +422,11 @@ function A:Initialize()
 
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:Point("TOPRIGHT", MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
-	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])
+	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
-	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
+	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end

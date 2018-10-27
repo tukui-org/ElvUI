@@ -110,7 +110,7 @@ local function LoadSkin()
 		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
 		local bu = _G["CalendarDayButton"..i]
 		--bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
-		bu:SetHighlightTexture(E["media"].glossTex)
+		bu:SetHighlightTexture(E.media.glossTex)
 		local hl = bu:GetHighlightTexture()
 		hl:SetVertexColor(1, 1, 1, 0.3)
 		hl.SetAlpha = E.noop

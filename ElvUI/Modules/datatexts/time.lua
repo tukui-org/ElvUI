@@ -56,7 +56,7 @@ local function ValueColorUpdate(hex)
 		Update(lastPanel, 20000)
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function ConvertTime(h, m)
 	local AmPm
@@ -79,7 +79,7 @@ local function CalculateTimeValues(tooltip)
 		return ConvertTime(GetGameTime())
 	else
 		local dateTable = date("*t")
-		return ConvertTime(dateTable["hour"], dateTable["min"])
+		return ConvertTime(dateTable.hour, dateTable.min)
 	end
 end
 
@@ -184,26 +184,26 @@ local function OnEnter(self)
 			buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
 
 			if isRaid then
-				tinsert(lockedInstances["raids"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
+				tinsert(lockedInstances.raids, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			elseif isHeroicOrMythicDungeon then
-				tinsert(lockedInstances["dungeons"], {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
+				tinsert(lockedInstances.dungeons, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
 			end
 		end
 	end
 
 	local reset, maxPlayers, numEncounters, encounterProgress, lockoutColor
-	if next(lockedInstances["raids"]) then
+	if next(lockedInstances.raids) then
 		if DT.tooltip:NumLines() > 0 then
 			DT.tooltip:AddLine(" ")
 		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-		tsort(lockedInstances["raids"], function( a,b ) return a[1] < b[1] end)
+		tsort(lockedInstances.raids, function( a,b ) return a[1] < b[1] end)
 
-		for i = 1, #lockedInstances["raids"] do
-			difficultyLetter = lockedInstances["raids"][i][2]
-			buttonImg = lockedInstances["raids"][i][3]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["raids"][i][4])
+		for i = 1, #lockedInstances.raids do
+			difficultyLetter = lockedInstances.raids[i][2]
+			buttonImg = lockedInstances.raids[i][3]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
 
 			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
@@ -214,18 +214,18 @@ local function OnEnter(self)
 		end
 	end
 
-	if next(lockedInstances["dungeons"]) then
+	if next(lockedInstances.dungeons) then
 		if DT.tooltip:NumLines() > 0 then
 			DT.tooltip:AddLine(" ")
 		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		tsort(lockedInstances["dungeons"], function( a,b ) return a[1] < b[1] end)
+		tsort(lockedInstances.dungeons, function( a,b ) return a[1] < b[1] end)
 
-		for i = 1,#lockedInstances["dungeons"] do
-			difficultyLetter = lockedInstances["dungeons"][i][2]
-			buttonImg = lockedInstances["dungeons"][i][3]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances["dungeons"][i][4])
+		for i = 1,#lockedInstances.dungeons do
+			difficultyLetter = lockedInstances.dungeons[i][2]
+			buttonImg = lockedInstances.dungeons[i][3]
+			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
 
 			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then

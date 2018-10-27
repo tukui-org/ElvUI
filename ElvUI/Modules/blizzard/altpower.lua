@@ -68,7 +68,7 @@ function B:PositionAltPowerBar()
 	local function Position(bar) bar:Point('CENTER', AltPowerBarHolder, 'CENTER') end
 	hooksecurefunc(PlayerPowerBarAlt, "ClearAllPoints", Position)
 
-	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"])
+	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
 
 function B:UpdateAltPowerBarColors()

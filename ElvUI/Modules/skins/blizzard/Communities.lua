@@ -316,7 +316,7 @@ local function LoadSkin()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
 	StatusBar.Shadow:Hide()
-	StatusBar.Progress:SetTexture(E["media"].normTex)
+	StatusBar.Progress:SetTexture(E.media.normTex)
 	StatusBar.Progress:SetAllPoints()
 	E:RegisterStatusBar(StatusBar)
 

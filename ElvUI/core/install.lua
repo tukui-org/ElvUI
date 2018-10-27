@@ -119,11 +119,11 @@ local function SetupChat()
 
 	if E.Chat then
 		E.Chat:PositionChat(true)
-		if E.db['RightChatPanelFaded'] then
+		if E.db.RightChatPanelFaded then
 			RightChatToggleButton:Click()
 		end
 
-		if E.db['LeftChatPanelFaded'] then
+		if E.db.LeftChatPanelFaded then
 			LeftChatToggleButton:Click()
 		end
 	end
@@ -421,14 +421,14 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,176"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,132"
 				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,432"
-				E.db.movers["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,0,275"
+				E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,275"
 			else
 				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-102,182"
 				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,120"
 				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-102,120"
 				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-				E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
+				E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
 			end
 		else
 			E.db.movers.ElvAB_3 = "BOTTOM,ElvUIParent,BOTTOM,332,4"
@@ -443,14 +443,14 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,186"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,145"
 				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,432"
-				E.db.movers["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,0,275"
+				E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,275"
 			else
 				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-118,182"
 				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,120"
 				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-118,120"
 				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-				E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
+				E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
 			end
 		end
 	elseif E.db.lowresolutionset then
@@ -469,7 +469,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
 		end
 
-		E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
+		E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
 	end
 
 	if layout ~= 'healer' and not E.db.lowresolutionset then
@@ -516,13 +516,13 @@ function E:SetupLayout(layout, noDataReset)
 					E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,278,110"
 					E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,110"
 					E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,150"
-					E.db.movers["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,0,195"
+					E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,195"
 				else
 					E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-307,110"
 					E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,307,110"
 					E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,110"
 					E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,150"
-					E.db.movers["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,0,195"
+					E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,195"
 				end
 			else
 				yOffset = 76
@@ -542,7 +542,7 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
 			end
 
-			E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
+			E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
 		end
 
 		if E.PixelMode then
@@ -556,7 +556,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,307,76"
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,76"
 		E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,115"
-		E.db.movers["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,0,158"
+		E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,158"
 
 	end
 
@@ -578,7 +578,7 @@ end
 local function SetupAuras(style)
 	local UF = E:GetModule('UnitFrames')
 
-	local frame = UF["player"]
+	local frame = UF.player
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
 	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
@@ -588,7 +588,7 @@ local function SetupAuras(style)
 		UF:Configure_AuraBars(frame)
 	end
 
-	frame = UF["target"]
+	frame = UF.target
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
@@ -598,7 +598,7 @@ local function SetupAuras(style)
 		UF:Configure_AuraBars(frame)
 	end
 
-	frame = UF["focus"]
+	frame = UF.focus
 	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
 	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
@@ -881,7 +881,7 @@ function E:Install()
 		f.Status = CreateFrame("StatusBar", "InstallStatus", f)
 		f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 		f.Status:CreateBackdrop("Default")
-		f.Status:SetStatusBarTexture(E["media"].normTex)
+		f.Status:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(f.Status)
 		f.Status:SetStatusBarColor(1, 0, 0)
 		f.Status:SetMinMaxValues(0, MAX_PAGE)

@@ -238,7 +238,7 @@ function E:GetFormattedText(style, min, max)
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(styles['CURRENT'], E:ShortValue(min))
+		return format(styles.CURRENT, E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
 		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then

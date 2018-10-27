@@ -217,5 +217,5 @@ function AB:SetupMicroBar()
 	CharacterMicroButtonAlert:SetAlpha(0)
 	CharacterMicroButtonAlert:SetScale(0.00001)
 
-	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar');
 end

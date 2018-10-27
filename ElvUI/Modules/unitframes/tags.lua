@@ -313,7 +313,7 @@ ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	if (deficit > 0 and currentHealth > 0) then
 		return _TAGS["health:percent-nostatus"](unit)
 	else
-		return _TAGS["name"](unit)
+		return _TAGS.name(unit)
 	end
 end
 
@@ -437,8 +437,8 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 end
 
 ElvUF.Tags.Methods['manacolor'] = function()
-	local altR, altG, altB = PowerBarColor["MANA"].r, PowerBarColor["MANA"].g, PowerBarColor["MANA"].b
-	local color = ElvUF['colors'].power["MANA"]
+	local altR, altG, altB = PowerBarColor.MANA.r, PowerBarColor.MANA.g, PowerBarColor.MANA.b
+	local color = ElvUF.colors.power.MANA
 	if color then
 		return Hex(color[1], color[2], color[3])
 	else
@@ -524,7 +524,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 			local c = GetRelativeDifficultyColor(teamLevel, level)
 			r, g, b = c.r, c.g, c.b
 		else
-			local c = QuestDifficultyColors["difficult"]
+			local c = QuestDifficultyColors.difficult
 			r, g, b = c.r, c.g, c.b
 		end
 	else
@@ -554,7 +554,7 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 		if not class then return "" end
 		return Hex(class[1], class[2], class[3])
 	elseif (unitReaction) then
-		local reaction = ElvUF['colors'].reaction[unitReaction]
+		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
 		return '|cFFC2C2C2'
@@ -754,7 +754,7 @@ local Harmony = {
 	[6] = {.17, .63, .33, 1},
 }
 
-local StaggerColors = ElvUF.colors.power["STAGGER"]
+local StaggerColors = ElvUF.colors.power.STAGGER
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
 local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
@@ -919,7 +919,7 @@ f:SetScript("OnEvent", function()
 	elseif IsInGroup() then
 		groupType = "party"
 		groupSize = GetNumGroupMembers() - 1
-		GroupUnits["player"] = true
+		GroupUnits.player = true
 	else
 		groupType = "solo"
 		groupSize = 1
