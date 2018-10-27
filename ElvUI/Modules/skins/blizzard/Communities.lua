@@ -323,6 +323,17 @@ local function LoadSkin()
 			end
 
 			button.Icon:SetTexCoord(unpack(E.TexCoords))
+			if not button.Icon.backdrop then
+				button.Icon:CreateBackdrop("Default")
+				button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
+				button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
+			end
+
+			local _, itemID = GetGuildRewardInfo(button.index)
+			local _, _, quality = GetItemInfo(itemID)
+			if quality and quality > 1 then
+				button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+			end
 
 			button.index = index
 		end
