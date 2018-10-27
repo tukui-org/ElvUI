@@ -167,6 +167,7 @@ L["Adjust the width of the bag frame."] = true
 L["Adjust the width of the bank frame."] = true
 L["Ascending"] = true
 L["Bag"] = true
+L["Bag Assignment"] = true
 L["Bag 1"] = true
 L["Bag 2"] = true
 L["Bag 3"] = true
