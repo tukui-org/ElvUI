@@ -34,7 +34,6 @@ local function LoadSkin()
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
 	PVPQueueFrame.HonorInset:StripTextures()
-	PVPQueueFrame.HonorInset.NineSlice:Hide()
 	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
 
 	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
@@ -49,9 +48,7 @@ local function LoadSkin()
 
 	-- Honor Frame
 	local HonorFrame = _G["HonorFrame"]
-	local Inset = HonorFrame.Inset
-	Inset.Bg:Hide()
-	Inset.NineSlice:Hide()
+	HonorFrame:StripTextures()
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
@@ -147,10 +144,6 @@ local function LoadSkin()
 
 	-- Conquest Frame
 	local ConquestFrame = _G["ConquestFrame"]
-	local Inset = ConquestFrame.Inset
-	Inset.Bg:Hide()
-	Inset.NineSlice:Hide()
-
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:Hide()
 

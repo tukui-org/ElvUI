@@ -67,17 +67,6 @@ local function LoadSkin()
 		"FriendsFrameBroadcastInputMiddle",
 	}
 
-	FriendsFrame.NineSlice:Hide()
-	FriendsFrameInset:StripTextures()
-	FriendsFrameInset.NineSlice:Hide()
-	WhoFrameListInset:StripTextures()
-	WhoFrameListInset.NineSlice:Hide()
-	WhoFrameEditBoxInset:StripTextures()
-	WhoFrameEditBoxInset.NineSlice:Hide()
-	LFRQueueFrameListInset:StripTextures()
-	LFRQueueFrameRoleInset:StripTextures()
-	LFRQueueFrameCommentInset:StripTextures()
-
 	local buttons = {
 		"FriendsFrameAddFriendButton",
 		"FriendsFrameSendMessageButton",
@@ -104,6 +93,21 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
+
+	local mainFrames = {
+		"FriendsFrame",
+		"WhoFrame",
+		"LFRQueueFrame",
+	}
+
+	for _, frame in pairs(mainFrames) do
+		_G[frame]:StripTextures()
+	end
+
+	WhoFrameListInset:StripTextures()
+	WhoFrameListInset.NineSlice:Hide()
+	WhoFrameEditBoxInset:StripTextures()
+	WhoFrameEditBoxInset.NineSlice:Hide()
 
 	for i=1, FriendsFrame:GetNumRegions() do
 		local region = select(i, FriendsFrame:GetRegions())

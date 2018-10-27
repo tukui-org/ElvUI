@@ -33,9 +33,6 @@ local function LoadSkin()
 		object:StripTextures()
 	end
 
-	PlayerTalentFrame.NineSlice:Hide()
-	PlayerTalentFrameInset.NineSlice:Hide()
-
 	PlayerTalentFramePortrait:Kill()
 	PlayerTalentFrame:StripTextures()
 	PlayerTalentFrame:CreateBackdrop('Transparent')
@@ -375,8 +372,6 @@ local function LoadSkin()
 	end
 
 	PvpTalentFrame.TalentList:StripTextures()
-	PvpTalentFrame.TalentList.NineSlice:Hide()
-	PvpTalentFrame.TalentList.Inset.NineSlice:Hide()
 	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
 
 	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)

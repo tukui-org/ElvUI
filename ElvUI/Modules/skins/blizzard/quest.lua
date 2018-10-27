@@ -170,7 +170,6 @@ local function LoadSkin()
 
 	--Quest Frame
 	QuestFrame:StripTextures(true)
-	QuestFrame.NineSlice:Hide()
 	QuestFrameInset:Kill()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
@@ -233,7 +232,6 @@ local function LoadSkin()
 	QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
 
 	QuestLogPopupDetailFrame:StripTextures()
-	QuestLogPopupDetailFrame.NineSlice:Hide()
 	QuestLogPopupDetailFrameInset:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrameAbandonButton)
 	S:HandleButton(QuestLogPopupDetailFrameShareButton)

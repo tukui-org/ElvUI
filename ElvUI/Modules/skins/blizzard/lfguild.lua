@@ -15,10 +15,8 @@ local function SkinLFGuild()
 
 	local LookingForGuildFrame = _G["LookingForGuildFrame"]
 	LookingForGuildFrame:StripTextures()
-	LookingForGuildFrame.NineSlice:Hide()
 	LookingForGuildFrame:SetTemplate("Transparent")
 	LookingForGuildFrameInset:StripTextures(false)
-	LookingForGuildFrameInset.NineSlice:Hide()
 
 	local checkbox = {
 		"LookingForGuildPvPButton",

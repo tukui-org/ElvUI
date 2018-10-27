@@ -15,7 +15,6 @@ local function LoadSkin()
 
 	--Addon List (From AddOnSkins)
 	local AddonList = _G["AddonList"]
-	AddonList.NineSlice:Hide()
 	AddonList:StripTextures()
 	AddonList:SetTemplate("Transparent")
 
@@ -25,9 +24,6 @@ local function LoadSkin()
 	--Original Size: 449,99, 382
 	--Adjusting the ScrollFrame will also positon the ScrollBar.
 	AddonListScrollFrame:SetSize(499, 382)
-
-	AddonListInset:StripTextures()
-	AddonListInset.NineSlice:Hide()
 
 	S:HandleButton(AddonListEnableAllButton, true)
 	S:HandleButton(AddonListDisableAllButton, true)
@@ -42,7 +38,7 @@ local function LoadSkin()
 
 	S:HandleCloseButton(AddonListCloseButton)
 
-	for i=1, MAX_ADDONS_DISPLAYED do
+	for i = 1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end

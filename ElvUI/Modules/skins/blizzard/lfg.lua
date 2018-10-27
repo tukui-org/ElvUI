@@ -27,9 +27,7 @@ local function LoadSkin()
 
 	local PVEFrame = _G["PVEFrame"]
 	PVEFrame:StripTextures()
-	PVEFrame.NineSlice:Hide()
 	PVEFrameLeftInset:StripTextures()
-	PVEFrameLeftInset.NineSlice:Hide()
 	RaidFinderQueueFrame:StripTextures(true)
 	PVEFrameBg:Hide()
 	PVEFramePortrait:Hide()
@@ -237,7 +235,6 @@ local function LoadSkin()
 
 	LFDParentFrame:StripTextures()
 	LFDParentFrameInset:StripTextures()
-	LFDParentFrameInset.NineSlice:Hide()
 
 	local function HandleGoldIcon(button)
 		_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
@@ -451,7 +448,6 @@ local function LoadSkin()
 	--LFGListFrame
 	local LFGListFrame = _G["LFGListFrame"]
 	LFGListFrame.CategorySelection.Inset:StripTextures()
-	LFGListFrame.CategorySelection.Inset.NineSlice:Hide()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
@@ -663,7 +659,6 @@ local function LoadSecondarySkin()
 	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
-	ChallengesFrameInset.NineSlice:Hide()
 
 	-- Mythic+ KeyStoneFrame
 	local KeyStoneFrame = _G["ChallengesKeystoneFrame"]

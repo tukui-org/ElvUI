@@ -18,17 +18,15 @@ local function LoadSkin()
 
 	local CommunitiesFrame = _G["CommunitiesFrame"]
 	CommunitiesFrame:StripTextures()
-	CommunitiesFrameInset.NineSlice:Hide()
+	CommunitiesFrame.NineSlice:Hide()
 	CommunitiesFrameInset.Bg:Hide()
 	CommunitiesFrame.PortraitOverlay:Kill()
-	CommunitiesFrame.NineSlice:Hide()
 	CommunitiesFrame.PortraitOverlay.Portrait:Hide()
 	CommunitiesFrame.CommunitiesList.InsetFrame:StripTextures()
 
 	CommunitiesFrame:CreateBackdrop("Transparent")
 
 	local CommunitiesFrameCommunitiesList = _G["CommunitiesFrameCommunitiesList"]
-	CommunitiesFrameCommunitiesList.InsetFrame.NineSlice:Hide()
 	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
@@ -165,13 +163,10 @@ local function LoadSkin()
 	CommunitiesFrame.MemberList.InsetFrame:Hide()
 	CommunitiesFrame.MemberList.WatermarkFrame:Hide()
 
-	CommunitiesFrame.Chat.InsetFrame:StripTextures()
-	CommunitiesFrame.Chat.InsetFrame.NineSlice:Hide()
+	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate("Transparent")
 
 	CommunitiesFrame.GuildFinderFrame:StripTextures()
-	CommunitiesFrame.GuildFinderFrame.InsetFrame:StripTextures()
-	CommunitiesFrame.GuildFinderFrame.InsetFrame.NineSlice:Hide()
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:SetSize(120, 20)

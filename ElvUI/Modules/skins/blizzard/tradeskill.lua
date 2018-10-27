@@ -16,7 +16,6 @@ local function LoadSkin()
 
 	-- MainFrame
 	local TradeSkillFrame = _G["TradeSkillFrame"]
-	TradeSkillFrame.NineSlice:Hide()
 	TradeSkillFramePortrait:SetAlpha(0)
 	TradeSkillFrame:StripTextures(true)
 	TradeSkillFrame:SetTemplate("Transparent")
@@ -49,14 +48,12 @@ local function LoadSkin()
 
 	-- RecipeList
 	TradeSkillFrame.RecipeInset:StripTextures()
-	TradeSkillFrame.RecipeInset.NineSlice:Hide()
 	TradeSkillFrame.RecipeList.LearnedTab:StripTextures()
 	TradeSkillFrame.RecipeList.UnlearnedTab:StripTextures()
 
 	-- DetailsFrame
 	TradeSkillFrame.DetailsFrame:StripTextures()
 	TradeSkillFrame.DetailsInset:StripTextures()
-	TradeSkillFrame.DetailsInset.NineSlice:Hide()
 	TradeSkillFrame.DetailsFrame.Background:Hide()
 	S:HandleEditBox(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox)
 	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:DisableDrawLayer("BACKGROUND")

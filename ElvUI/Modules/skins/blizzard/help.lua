@@ -31,10 +31,6 @@ local function LoadSkin()
 		"HelpFrameReportBugSubmit",
 	}
 
-	-- skin main frames
-	HelpFrameLeftInset.NineSlice:Hide()
-	HelpFrameMainInset.NineSlice:Hide()
-
 	for i = 1, #frames do
 		_G[frames[i]]:StripTextures(true)
 		_G[frames[i]]:CreateBackdrop("Transparent")

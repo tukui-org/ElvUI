@@ -178,10 +178,6 @@ local function LoadSkin()
 		"PaperDollEquipmentManagerPane",
 	}
 
-	CharacterFrame.NineSlice:Hide()
-	CharacterFrameInset.NineSlice:Hide()
-	CharacterFrameInsetRight.NineSlice:Hide()
-
 	S:HandleCloseButton(ReputationDetailCloseButton)
 	S:HandleCloseButton(TokenFramePopupCloseButton)
 

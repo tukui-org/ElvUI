@@ -15,7 +15,6 @@ local function LoadSkin()
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
 	IslandsFrame:StripTextures()
-	IslandsQueueFrame.NineSlice:Hide()
 	IslandsQueueFrame.ArtOverlayFrame.PortraitFrame:SetAlpha(0)
 	IslandsQueueFrame.ArtOverlayFrame.portrait:SetAlpha(0)
 	IslandsQueueFrame.portrait:Hide()

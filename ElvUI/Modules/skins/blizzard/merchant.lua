@@ -25,18 +25,14 @@ local function LoadSkin()
 	end
 
 	MerchantExtraCurrencyInset:StripTextures()
-	MerchantExtraCurrencyInset.NineSlice:Hide()
 	MerchantExtraCurrencyBg:StripTextures()
 	MerchantFrameInset:StripTextures()
 	MerchantMoneyBg:StripTextures()
 	MerchantMoneyInset:StripTextures()
-	MerchantMoneyInset.NineSlice:Hide()
 	MerchantBuyBackItem.backdrop:Point("TOPLEFT", -6, 6)
 	MerchantBuyBackItem.backdrop:Point("BOTTOMRIGHT", 6, -6)
 
 	local MerchantFrame = _G["MerchantFrame"]
-	MerchantFrame.NineSlice:Hide()
-	MerchantFrameInset.NineSlice:Hide()
 	MerchantFrame.backdrop:Point("TOPLEFT", 6, 2)
 	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 2, -1)
 

@@ -15,9 +15,8 @@ local function LoadSkin()
 
 	local FlightMapFrame = _G["FlightMapFrame"]
 	_G["FlightMapFramePortrait"]:Kill()
+	FlightMapFrame:StripTextures()
 	FlightMapFrame:CreateBackdrop("Transparent")
-	FlightMapFrame.BorderFrame:StripTextures()
-	FlightMapFrame.BorderFrame.NineSlice:Hide()
 
 	S:HandleCloseButton(FlightMapFrameCloseButton)
 end

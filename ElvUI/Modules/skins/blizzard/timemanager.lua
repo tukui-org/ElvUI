@@ -15,7 +15,6 @@ local function LoadSkin()
 
 	local TimeManagerFrame = _G["TimeManagerFrame"]
 	TimeManagerFrame:StripTextures()
-	TimeManagerFrame.NineSlice:Hide()
 	TimeManagerFrame:SetTemplate("Transparent")
 
 	S:HandleCloseButton(TimeManagerFrameCloseButton)

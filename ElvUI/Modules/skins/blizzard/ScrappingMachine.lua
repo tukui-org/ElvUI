@@ -17,7 +17,6 @@ local function LoadSkin()
 
 	local MachineFrame = _G["ScrappingMachineFrame"]
 	MachineFrame:StripTextures()
-	MachineFrame.NineSlice:Hide()
 	ScrappingMachineFrameInset:Hide()
 
 	MachineFrame:CreateBackdrop("Transparent")

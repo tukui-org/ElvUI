@@ -114,10 +114,7 @@ local function LoadSkin()
 
 	-- Capacitive display frame
 	GarrisonCapacitiveDisplayFrame:StripTextures(true)
-	GarrisonCapacitiveDisplayFrame.NineSlice:Hide()
 	GarrisonCapacitiveDisplayFrame:CreateBackdrop("Transparent")
-	GarrisonCapacitiveDisplayFrame.Inset:StripTextures()
-	GarrisonCapacitiveDisplayFrameInset.NineSlice:Hide()
 	S:HandleCloseButton(GarrisonCapacitiveDisplayFrame.CloseButton, GarrisonCapacitiveDisplayFrame.backdrop)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton, true)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
