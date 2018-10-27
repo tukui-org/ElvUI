@@ -46,7 +46,7 @@ local function UpdateCoords(self)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
-local isDragging = false;
+local isDragging = false
 local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
@@ -115,8 +115,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			delim = ","
 		end
 
-		point, anchor, secondaryPoint, x, y = split(delim, anchorString)
-		f:Point(point, anchor, secondaryPoint, x, y)
+		local point1, anchor1, secondaryPoint1, x1, y1 = split(delim, anchorString)
+		f:Point(point1, anchor1, secondaryPoint1, x1, y1)
 		f.anchor = anchor
 	else
 		f:Point(point, anchor, secondaryPoint, x, y)
@@ -130,33 +130,33 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		else
 			self:StartMoving()
 		end
+
 		coordFrame.child = self
 		coordFrame:Show()
-		isDragging = true;
+		isDragging = true
 	end
 
 	local function OnDragStop(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-		isDragging = false;
+		isDragging = false
 		if E.db['general'].stickyFrames then
 			Sticky:StopMoving(self)
 		else
 			self:StopMovingOrSizing()
 		end
 
-		x, y, point = E:CalculateMoverPoints(self)
+		local x2, y2, point2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-
 		local overridePoint
-		if (self.positionOverride) then
-			if (self.positionOverride == "BOTTOM" or self.positionOverride == "TOP") then
+		if self.positionOverride then
+			if self.positionOverride == "BOTTOM" or self.positionOverride == "TOP" then
 				overridePoint = "BOTTOM"
 			else
 				overridePoint = "BOTTOMLEFT"
 			end
 		end
 
-		self:Point(self.positionOverride or point, E.UIParent, overridePoint and overridePoint or point, x, y)
+		self:Point(self.positionOverride or point2, E.UIParent, overridePoint and overridePoint or point2, x2, y2)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
@@ -171,7 +171,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		coordFrame.child = nil
 		coordFrame:Hide()
 
-		if postdrag ~= nil and type(postdrag) == 'function' then
+		if postdrag ~= nil and (type(postdrag) == 'function') then
 			postdrag(self, E:GetScreenQuadrant(self))
 		end
 
@@ -189,7 +189,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnMouseDown(self, button)
 		if button == "RightButton" then
-			isDragging = false;
+			isDragging = false
 			if E.db['general'].stickyFrames then
 				Sticky:StopMoving(self)
 			else
@@ -247,7 +247,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		end)
 	end
 
-	E.CreatedMovers[name].Created = true;
+	E.CreatedMovers[name].Created = true
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -299,11 +299,11 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetBottom() - E.diffGetBottom
 		elseif(mover.positionOverride == "BOTTOM") then
-			x = mover:GetCenter() - screenCenter;
-			y = mover:GetBottom() - E.diffGetBottom;
+			x = mover:GetCenter() - screenCenter
+			y = mover:GetBottom() - E.diffGetBottom
 		elseif(mover.positionOverride == "TOP") then
-			x = mover:GetCenter() - screenCenter;
-			y = mover:GetTop() - E.diffGetTop;
+			x = mover:GetCenter() - screenCenter
+			y = mover:GetTop() - E.diffGetTop
 		end
 	end
 
@@ -518,26 +518,26 @@ end
 
 --Called from core.lua
 function E:LoadMovers()
-	for n, _ in pairs(E.CreatedMovers) do
-		local p, t, o, so, pd, sd, cs
-		for key, value in pairs(E.CreatedMovers[n]) do
+	for name in pairs(E.CreatedMovers) do
+		local parent, text, overlay, snapOffset, postdrag, shouldDisable, configString
+		for key, value in pairs(E.CreatedMovers[name]) do
 			if key == "parent" then
-				p = value
+				parent = value
 			elseif key == "text" then
-				t = value
+				text = value
 			elseif key == "overlay" then
-				o = value
+				overlay = value
 			elseif key == "snapoffset" then
-				so = value
+				snapOffset = value
 			elseif key == "postdrag" then
-				pd = value
+				postdrag = value
 			elseif key == "shouldDisable" then
-				sd = value
+				shouldDisable = value
 			elseif key == "configString" then
-				cs = value
+				configString = value
 			end
 		end
 
-		CreateMover(p, n, t, o, so, pd, sd, cs)
+		CreateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
 	end
 end
