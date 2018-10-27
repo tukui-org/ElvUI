@@ -510,15 +510,15 @@ function B:UpdateSlot(bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questStarter"]))
-			slot:SetBackdropBorderColor(unpack(B.ItemColors["questStarter"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questStarter"]))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors["questStarter"]))
 			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questItem"]))
-			slot:SetBackdropBorderColor(unpack(B.ItemColors["questItem"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questItem"]))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors["questItem"]))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -1121,15 +1121,15 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questStarter"]))
-			slot:SetBackdropBorderColor(unpack(B.ItemColors["questStarter"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questStarter"]))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors["questStarter"]))
 			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questItem"]))
-			slot:SetBackdropBorderColor(unpack(B.ItemColors["questItem"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questItem"]))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors["questItem"]))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -2135,17 +2135,17 @@ B.BagIndice = {
 	tradegoods = 4,
 }
 
-function B:UpdateBagColors(table, indice, r, g, b)
-	self[table][B.BagIndice[indice]] = { r, g, b }
-end
-
-B.ItemIndice = {
+B.QuestKeys = {
 	questStarter = "questStarter",
 	questItem = "questItem",
 }
 
-function B:UpdateItemColors(table, indice, r, g, b)
-	self[table][B.ItemIndice[indice]] = { r, g, b }
+function B:UpdateBagColors(table, indice, r, g, b)
+	self[table][B.BagIndice[indice]] = { r, g, b }
+end
+
+function B:UpdateQuestColors(table, indice, r, g, b)
+	self[table][B.QuestKeys[indice]] = { r, g, b }
 end
 
 function B:Initialize()
@@ -2193,7 +2193,7 @@ function B:Initialize()
 		[4] = { self.db.colors.assignment.tradegoods.r , self.db.colors.assignment.tradegoods.g, self.db.colors.assignment.tradegoods.b },
 	}
 
-	self.ItemColors = {
+	self.QuestColors = {
 		["questStarter"] = {self.db.colors.items.questStarter.r, self.db.colors.items.questStarter.g, self.db.colors.items.questStarter.b},
 		["questItem"] = {self.db.colors.items.questItem.r, self.db.colors.items.questItem.g, self.db.colors.items.questItem.b},
 	}

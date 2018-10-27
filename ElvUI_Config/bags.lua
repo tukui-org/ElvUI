@@ -442,7 +442,7 @@ E.Options.args.bags = {
 					set = function(info, r, g, b)
 						local t = E.db.bags.colors.items[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
-						B:UpdateItemColors("ItemColors", info[#info], r, g, b)
+						B:UpdateQuestColors("QuestColors", info[#info], r, g, b)
 						B:UpdateAllBagSlots()
 					end,
 					args = {
