@@ -510,15 +510,15 @@ function B:UpdateSlot(bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questStarter"]))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors["questStarter"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questItem"]))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors["questItem"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -1121,15 +1121,15 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questStarter"]))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors["questStarter"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors["questItem"]))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors["questItem"]))
+			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
+			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
