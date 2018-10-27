@@ -234,9 +234,10 @@ function AddOn:ToggleConfig(msg)
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 	local ConfigOpen = ACD.OpenFrames[AddOnName]
 
-	local pages
+	local pages, msgStr
 	if msg and msg ~= "" then
-		pages = {strsplit(",", msg)}
+		pages = {strsplit(',', msg)}
+		msgStr = msg:gsub(',','\001')
 	end
 
 	local mode = 'Close'
@@ -258,7 +259,7 @@ function AddOn:ToggleConfig(msg)
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSel and mainSel:find(pages[1]) and subSel and (subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msg:gsub(',','\001'))
+						subNode = (mainSel and msgStr:find(mainSel) and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1] = sub
 						pageNodes[index+2] = subNode
 					end
