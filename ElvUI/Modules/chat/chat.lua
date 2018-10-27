@@ -393,9 +393,9 @@ function CH:StyleChat(frame)
 	end)
 
 	tab.text = _G[name.."TabText"]
-	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
+	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(self, r, g, b)
-		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
+		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
 			self:SetTextColor(rR, gG, bB)
 		end
@@ -732,8 +732,8 @@ local function FindRightChatID()
 end
 
 function CH:UpdateChatTabs()
-	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
 	for i = 1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
@@ -780,8 +780,8 @@ function CH:PositionChat(override)
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
 	local chat, chatbg, tab, id, isDocked
-	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
 	for i=1, CreatedFrames do
 		local BASE_OFFSET = 57 + E.Spacing*3
@@ -886,7 +886,7 @@ local function UpdateChatTabColor(_, r, g, b)
 		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
 end
-E['valueColorUpdateFuncs'][UpdateChatTabColor] = true
+E.valueColorUpdateFuncs[UpdateChatTabColor] = true
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
@@ -1987,10 +1987,10 @@ function CH:DisplayChatHistory()
 	CH.SoundTimer = nil
 end
 
-tremove(ChatTypeGroup['GUILD'], 2)
+tremove(ChatTypeGroup.GUILD, 2)
 function CH:DelayGuildMOTD()
 	local delay, checks, delayFrame, chat = 0, 0, CreateFrame('Frame')
-	tinsert(ChatTypeGroup['GUILD'], 2, 'GUILD_MOTD')
+	tinsert(ChatTypeGroup.GUILD, 2, 'GUILD_MOTD')
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
 		if delay < 5 then return end
@@ -2545,7 +2545,7 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
 		self.ChatHeadFrame[i].StatusBar:SetHeight(self.volumeBarHeight)
 		self.ChatHeadFrame[i].StatusBar:CreateBackdrop()
-		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E["media"].normTex)
+		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E.media.normTex)
 		self.ChatHeadFrame[i].StatusBar:SetMinMaxValues(0, 1)
 
 		self.ChatHeadFrame[i].StatusBar.anim = CreateAnimationGroup(self.ChatHeadFrame[i].StatusBar)

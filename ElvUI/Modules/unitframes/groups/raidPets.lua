@@ -83,7 +83,7 @@ function UF:Update_RaidpetHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidPetsSmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.RaidPetsSmartVisibility)
 	end
 
 	UF.RaidPetsSmartVisibility(headerHolder)
@@ -176,4 +176,4 @@ function UF:Update_RaidpetFrames(frame, db)
 end
 
 --Added an additional argument at the end, specifying the header Template we want to use
-UF['headerstoload']['raidpet'] = {nil, nil, 'SecureGroupPetHeaderTemplate'}
+UF.headerstoload.raidpet = {nil, nil, 'SecureGroupPetHeaderTemplate'}

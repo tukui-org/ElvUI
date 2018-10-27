@@ -133,7 +133,7 @@ function mod:LockdownInstancePlateCVars(lockedInstance)
 	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 	else
-		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil;
+		E.LockedCVars.nameplateShowDebuffsOnFriendly = nil;
 		SetCVar("nameplateShowDebuffsOnFriendly", true)
 	end
 end
@@ -1209,8 +1209,8 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function mod:Initialize()
-	self.db = E.db["nameplates"]
-	if E.private["nameplates"].enable ~= true then return end
+	self.db = E.db.nameplates
+	if E.private.nameplates.enable ~= true then return end
 
 	--Add metatable to all our StyleFilters so they can grab default values if missing
 	self:StyleFilterInitializeAllFilters()

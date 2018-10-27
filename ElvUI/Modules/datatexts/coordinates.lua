@@ -43,6 +43,6 @@ end
 local function ValueColorUpdate(hex)
 	displayString = join("", hex, "%.2f|r", " , ", hex, "%.2f|r")
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Coords', {"ZONE_CHANGED","ZONE_CHANGED_INDOORS","ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"])

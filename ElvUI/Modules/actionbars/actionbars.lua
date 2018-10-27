@@ -62,9 +62,9 @@ local UIHider
 
 AB.RegisterCooldown = E.RegisterCooldown
 
-AB["handledBars"] = {} --List of all bars
-AB["handledbuttons"] = {} --List of all buttons that have been modified.
-AB["barDefaults"] = {
+AB.handledBars = {} --List of all bars
+AB.handledbuttons = {} --List of all buttons that have been modified.
+AB.barDefaults = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
@@ -246,11 +246,11 @@ function AB:PositionAndSizeBar(barName)
 			bar:SetAlpha(self.db[barName].alpha);
 		end
 
-		local page = self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions)
-		if AB['barDefaults']['bar'..bar.id].conditions:find("[form,noform]") then
+		local page = self:GetPage(barName, self.barDefaults[barName].page, self.barDefaults[barName].conditions)
+		if AB.barDefaults['bar'..bar.id].conditions:find("[form,noform]") then
 			bar:SetAttribute("hasTempBar", true)
 
-			local newCondition = gsub(AB['barDefaults']['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
+			local newCondition = gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
 			bar:SetAttribute("newCondition", newCondition)
 		else
 			bar:SetAttribute("hasTempBar", false)
@@ -336,7 +336,7 @@ function AB:CreateBar(id)
 	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
+	local point, anchor, attachTo, x, y = split(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
@@ -348,7 +348,7 @@ function AB:CreateBar(id)
 	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 
 	bar.buttons = {}
-	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
+	bar.bindButtons = self.barDefaults['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
@@ -372,7 +372,7 @@ function AB:CreateBar(id)
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB['barDefaults']['bar'..id].conditions:find("[form]") then
+	if AB.barDefaults['bar'..id].conditions:find("[form]") then
 		bar:SetAttribute("hasTempBar", true)
 	else
 		bar:SetAttribute("hasTempBar", false)
@@ -584,12 +584,12 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
-	for button, _ in pairs(self["handledbuttons"]) do
+	for button, _ in pairs(self.handledbuttons) do
 		if button then
 			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
 		else
-			self["handledbuttons"][button] = nil
+			self.handledbuttons[button] = nil
 		end
 	end
 
@@ -612,7 +612,7 @@ function AB:UpdateButtonSettings()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
-	local page = self.db[bar]['paging'][E.myclass]
+	local page = self.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
 	if not page then
 		page = ''
@@ -1024,7 +1024,7 @@ local function SetupFlyoutButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB["handledbuttons"][parentAnchorButton] then return end
+				if not AB.handledbuttons[parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				AB:Bar_OnEnter(parentAnchorBar)
@@ -1032,7 +1032,7 @@ local function SetupFlyoutButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
 				local parent = self:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB["handledbuttons"][parentAnchorButton] then return end
+				if not AB.handledbuttons[parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				AB:Bar_OnLeave(parentAnchorBar)
@@ -1047,7 +1047,7 @@ local function SetupFlyoutButton()
 
 	SpellFlyout:HookScript('OnEnter', function(self)
 		local anchorButton = select(2, self:GetPoint())
-		if not AB["handledbuttons"][anchorButton] then return end
+		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
 		AB:Bar_OnEnter(parentAnchorBar)
@@ -1055,7 +1055,7 @@ local function SetupFlyoutButton()
 
 	SpellFlyout:HookScript('OnLeave', function(self)
 		local anchorButton = select(2, self:GetPoint())
-		if not AB["handledbuttons"][anchorButton] then return end
+		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
 		AB:Bar_OnLeave(parentAnchorBar)

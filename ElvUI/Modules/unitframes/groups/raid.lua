@@ -122,7 +122,7 @@ function UF:Update_RaidHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.RaidSmartVisibility)
 		headerHolder.positioned = true;
 	end
 
@@ -241,4 +241,4 @@ function UF:Update_RaidFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['raid'] = true
+UF.headerstoload.raid = true

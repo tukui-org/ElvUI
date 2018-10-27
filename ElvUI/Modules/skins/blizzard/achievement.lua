@@ -41,7 +41,7 @@ local function LoadSkin(event)
 				if (self.player and self.player.accountWide or self.accountWide) then
 					self.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 				else
-					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end)
 		end
@@ -99,8 +99,8 @@ local function LoadSkin(event)
 							Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 							Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
 					end)
 				end
@@ -319,7 +319,7 @@ local function LoadSkin(event)
 
 	local function SkinStatusBar(bar)
 		bar:StripTextures()
-		bar:SetStatusBarTexture(E["media"].normTex)
+		bar:SetStatusBarTexture(E.media.normTex)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
 		E:RegisterStatusBar(bar)
@@ -415,7 +415,7 @@ local function LoadSkin(event)
 		if frame then
 			if not frame.skinned then
 				frame:StripTextures()
-				frame:SetStatusBarTexture(E["media"].normTex)
+				frame:SetStatusBarTexture(E.media.normTex)
 				E:RegisterStatusBar(frame)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
@@ -498,8 +498,8 @@ local function LoadSkin(event)
 				Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 				Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 

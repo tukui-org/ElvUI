@@ -98,7 +98,7 @@ function UF:Update_PartyHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['PartySmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.PartySmartVisibility)
 	end
 
 	UF.PartySmartVisibility(headerHolder)
@@ -262,4 +262,4 @@ function UF:Update_PartyFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['party'] = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}
+UF.headerstoload.party = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

@@ -130,4 +130,4 @@ function UF:Update_FocusFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'focus')
+tinsert(UF.unitstoload, 'focus')

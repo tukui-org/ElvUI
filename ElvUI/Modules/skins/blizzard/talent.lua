@@ -140,7 +140,7 @@ local function LoadSkin()
 			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 2)
 			bu.bg:Point("TOPLEFT", 15, -1)
 			bu.bg:Point("BOTTOMRIGHT", -10, 1)
-			bu.bg.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+			bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 
 			bu.GlowFrame.TopGlowLine = bu.bg.backdrop
 			bu.GlowFrame.TopGlowLine:Hide()
@@ -359,7 +359,7 @@ local function LoadSkin()
 					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
 					self.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			else
 				self.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])

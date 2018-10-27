@@ -149,4 +149,4 @@ function UF:Update_TargetFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'target')
+tinsert(UF.unitstoload, 'target')

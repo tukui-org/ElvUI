@@ -113,8 +113,8 @@ function M:SkinBubble(frame)
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
 			frame:SetBackdrop({
-				bgFile = E["media"].blankTex,
-				edgeFile = E["media"].blankTex,
+				bgFile = E.media.blankTex,
+				edgeFile = E.media.blankTex,
 				tile = false, tileSize = 0, edgeSize = mult,
 				insets = { left = 0, right = 0, top = 0, bottom = 0}
 			})

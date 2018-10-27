@@ -77,7 +77,7 @@ local function LoadSkin()
 	ClassTrainerFrameSkillStepButton.selectedTex:SetColorTexture(1,1,1,0.3)
 
 	ClassTrainerStatusBar:StripTextures()
-	ClassTrainerStatusBar:SetStatusBarTexture(E["media"].normTex)
+	ClassTrainerStatusBar:SetStatusBarTexture(E.media.normTex)
 	ClassTrainerStatusBar:CreateBackdrop("Default")
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
 	ClassTrainerStatusBar.rankText:Point("CENTER", ClassTrainerStatusBar, "CENTER")

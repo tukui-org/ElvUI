@@ -43,7 +43,7 @@ function UF:Construct_TankFrames()
 		self.unitframeType = "tanktarget"
 	end
 
-	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
+	UF:Update_TankFrames(self, E.db.unitframe.units.tank)
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -175,4 +175,4 @@ function UF:Update_TankFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['tank'] = {'MAINTANK', 'ELVUI_UNITTARGET'}
+UF.headerstoload.tank = {'MAINTANK', 'ELVUI_UNITTARGET'}

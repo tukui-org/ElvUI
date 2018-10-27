@@ -158,7 +158,7 @@ function M:CreateRollFrame()
 	status:SetInside()
 	status:SetScript("OnUpdate", StatusUpdate)
 	status:SetFrameLevel(status:GetFrameLevel()-1)
-	status:SetStatusBarTexture(E["media"].normTex)
+	status:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(status)
 	status:SetStatusBarColor(.8, .8, .8, .9)
 	status.parent = frame

@@ -41,7 +41,7 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 		if isStealable and not isFriend then
 			aura.backdrop:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
-			aura.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			aura.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 

@@ -288,7 +288,7 @@ local function LoadSkin()
 			object.BgMiddle:SetTexture(nil)
 			object.text:FontTemplate()
 			hooksecurefunc(object.text, "SetFont", function(self, font)
-				if font ~= E["media"].normFont then
+				if font ~= E.media.normFont then
 					self:FontTemplate()
 				end
 			end)
@@ -395,7 +395,7 @@ local function LoadSkin()
 			end
 
 			if statusbar then
-				statusbar:SetStatusBarTexture(E["media"].normTex)
+				statusbar:SetStatusBarTexture(E.media.normTex)
 
 				if not statusbar.backdrop then
 					statusbar:CreateBackdrop("Default")

@@ -65,17 +65,17 @@ E.isMacClient = IsMacClient()
 E.NewSign = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t" -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 
 --Tables
-E["media"] = {}
-E["frames"] = {}
-E["unitFrameElements"] = {}
-E["statusBars"] = {}
-E["texts"] = {}
-E['snapBars'] = {}
-E["RegisteredModules"] = {}
-E['RegisteredInitialModules'] = {}
-E["ModuleCallbacks"] = {["CallPriority"] = {}}
-E["InitialModuleCallbacks"] = {["CallPriority"] = {}}
-E['valueColorUpdateFuncs'] = {}
+E.media = {}
+E.frames = {}
+E.unitFrameElements = {}
+E.statusBars = {}
+E.texts = {}
+E.snapBars = {}
+E.RegisteredModules = {}
+E.RegisteredInitialModules = {}
+E.ModuleCallbacks = {["CallPriority"] = {}}
+E.InitialModuleCallbacks = {["CallPriority"] = {}}
+E.valueColorUpdateFuncs = {}
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.VehicleLocks = {}
@@ -182,7 +182,7 @@ end
 
 local hexvaluecolor
 function E:Print(...)
-	hexvaluecolor = self["media"].hexvaluecolor or "|cff00b3ff"
+	hexvaluecolor = self.media.hexvaluecolor or "|cff00b3ff"
 	(_G[self.db.general.messageRedirect] or DEFAULT_CHAT_FRAME):AddMessage(strjoin('', hexvaluecolor, 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
 
@@ -238,56 +238,56 @@ function E:GetColorTable(data)
 end
 
 function E:UpdateMedia()
-	if not self.db['general'] or not self.private['general'] then return end --Prevent rare nil value errors
+	if not self.db.general or not self.private.general then return end --Prevent rare nil value errors
 
 	--Fonts
-	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
-	self["media"].combatFont = LSM:Fetch("font", self.private['general'].dmgfont)
+	self.media.normFont = LSM:Fetch("font", self.db.general.font)
+	self.media.combatFont = LSM:Fetch("font", self.private.general.dmgfont)
 
 	--Textures
-	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
-	self["media"].normTex = LSM:Fetch("statusbar", self.private['general'].normTex)
-	self["media"].glossTex = LSM:Fetch("statusbar", self.private['general'].glossTex)
+	self.media.blankTex = LSM:Fetch("background", "ElvUI Blank")
+	self.media.normTex = LSM:Fetch("statusbar", self.private.general.normTex)
+	self.media.glossTex = LSM:Fetch("statusbar", self.private.general.glossTex)
 
 	--Border Color
-	local border = E.db['general'].bordercolor
+	local border = E.db.general.bordercolor
 	if self:CheckClassColor(border.r, border.g, border.b) then
 		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-		E.db['general'].bordercolor.r = classColor.r
-		E.db['general'].bordercolor.g = classColor.g
-		E.db['general'].bordercolor.b = classColor.b
+		E.db.general.bordercolor.r = classColor.r
+		E.db.general.bordercolor.g = classColor.g
+		E.db.general.bordercolor.b = classColor.b
 	end
 
-	self["media"].bordercolor = {border.r, border.g, border.b}
+	self.media.bordercolor = {border.r, border.g, border.b}
 
 	--UnitFrame Border Color
-	border = E.db['unitframe'].colors.borderColor
+	border = E.db.unitframe.colors.borderColor
 	if self:CheckClassColor(border.r, border.g, border.b) then
 		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-		E.db['unitframe'].colors.borderColor.r = classColor.r
-		E.db['unitframe'].colors.borderColor.g = classColor.g
-		E.db['unitframe'].colors.borderColor.b = classColor.b
+		E.db.unitframe.colors.borderColor.r = classColor.r
+		E.db.unitframe.colors.borderColor.g = classColor.g
+		E.db.unitframe.colors.borderColor.b = classColor.b
 	end
-	self["media"].unitframeBorderColor = {border.r, border.g, border.b}
+	self.media.unitframeBorderColor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	self["media"].backdropcolor = E:GetColorTable(self.db['general'].backdropcolor)
+	self.media.backdropcolor = E:GetColorTable(self.db.general.backdropcolor)
 
 	--Backdrop Fade Color
-	self["media"].backdropfadecolor = E:GetColorTable(self.db['general'].backdropfadecolor)
+	self.media.backdropfadecolor = E:GetColorTable(self.db.general.backdropfadecolor)
 
 	--Value Color
-	local value = self.db['general'].valuecolor
+	local value = self.db.general.valuecolor
 
 	if self:CheckClassColor(value.r, value.g, value.b) then
 		value = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-		self.db['general'].valuecolor.r = value.r
-		self.db['general'].valuecolor.g = value.g
-		self.db['general'].valuecolor.b = value.b
+		self.db.general.valuecolor.r = value.r
+		self.db.general.valuecolor.g = value.g
+		self.db.general.valuecolor.b = value.b
 	end
 
-	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
-	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
+	self.media.hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
+	self.media.rgbvaluecolor = {value.r, value.g, value.b}
 
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
@@ -414,103 +414,103 @@ function E:PLAYER_ENTERING_WORLD()
 end
 
 function E:ValueFuncCall()
-	for func, _ in pairs(self['valueColorUpdateFuncs']) do
-		func(self["media"].hexvaluecolor, unpack(self["media"].rgbvaluecolor))
+	for func, _ in pairs(self.valueColorUpdateFuncs) do
+		func(self.media.hexvaluecolor, unpack(self.media.rgbvaluecolor))
 	end
 end
 
 function E:UpdateFrameTemplates()
-	for frame in pairs(self["frames"]) do
+	for frame in pairs(self.frames) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
 				frame:SetTemplate(frame.template, frame.glossTex)
 			end
 		else
-			self["frames"][frame] = nil
+			self.frames[frame] = nil
 		end
 	end
 
-	for frame in pairs(self["unitFrameElements"]) do
+	for frame in pairs(self.unitFrameElements) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
 				frame:SetTemplate(frame.template, frame.glossTex)
 			end
 		else
-			self["unitFrameElements"][frame] = nil
+			self.unitFrameElements[frame] = nil
 		end
 	end
 end
 
 function E:UpdateBorderColors()
-	for frame, _ in pairs(self["frames"]) do
+	for frame, _ in pairs(self.frames) do
 		if frame and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-					frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
+					frame:SetBackdropBorderColor(unpack(self.media.bordercolor))
 				end
 			end
 		else
-			self["frames"][frame] = nil
+			self.frames[frame] = nil
 		end
 	end
 
-	for frame, _ in pairs(self["unitFrameElements"]) do
+	for frame, _ in pairs(self.unitFrameElements) do
 		if frame and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
-					frame:SetBackdropBorderColor(unpack(self['media'].unitframeBorderColor))
+					frame:SetBackdropBorderColor(unpack(self.media.unitframeBorderColor))
 				end
 			end
 		else
-			self["unitFrameElements"][frame] = nil
+			self.unitFrameElements[frame] = nil
 		end
 	end
 end
 
 function E:UpdateBackdropColors()
-	for frame, _ in pairs(self["frames"]) do
+	for frame, _ in pairs(self.frames) do
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
 					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
 					else
-						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+						frame:SetBackdropColor(unpack(self.media.backdropcolor))
 					end
 				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
+					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end
 			end
 		else
-			self["frames"][frame] = nil
+			self.frames[frame] = nil
 		end
 	end
 
-	for frame, _ in pairs(self["unitFrameElements"]) do
+	for frame, _ in pairs(self.unitFrameElements) do
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
 					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self['media'].backdropcolor))
+						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
 					else
-						frame:SetBackdropColor(unpack(self['media'].backdropcolor))
+						frame:SetBackdropColor(unpack(self.media.backdropcolor))
 					end
 				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(unpack(self['media'].backdropfadecolor))
+					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end
 			end
 		else
-			self["unitFrameElements"][frame] = nil
+			self.unitFrameElements[frame] = nil
 		end
 	end
 end
 
 function E:UpdateFontTemplates()
-	for text, _ in pairs(self["texts"]) do
+	for text, _ in pairs(self.texts) do
 		if text then
 			text:FontTemplate(text.font, text.fontSize, text.fontStyle)
 		else
-			self["texts"][text] = nil
+			self.texts[text] = nil
 		end
 	end
 end
@@ -535,7 +535,7 @@ E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetPoint('CENTER', UIParent, 'CENTER')
 E.UIParent:SetSize(UIParent:GetSize())
 E.UIParent.origHeight = E.UIParent:GetHeight()
-E['snapBars'][#E['snapBars'] + 1] = E.UIParent
+E.snapBars[#E.snapBars + 1] = E.UIParent
 
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
@@ -1352,7 +1352,7 @@ function E:RegisterModule(name, loadFunc)
 
 			--Add module name to registry
 			self.ModuleCallbacks[name] = true
-			self.ModuleCallbacks["CallPriority"][#self.ModuleCallbacks["CallPriority"] + 1] = name
+			self.ModuleCallbacks.CallPriority[#self.ModuleCallbacks.CallPriority + 1] = name
 
 			--Register loadFunc to be called when event is fired
 			E:RegisterCallback(name, loadFunc, E:GetModule(name))
@@ -1361,7 +1361,7 @@ function E:RegisterModule(name, loadFunc)
 		if self.initialized then
 			self:GetModule(name):Initialize()
 		else
-			self['RegisteredModules'][#self['RegisteredModules'] + 1] = name
+			self.RegisteredModules[#self.RegisteredModules + 1] = name
 		end
 	end
 end
@@ -1376,25 +1376,25 @@ function E:RegisterInitialModule(name, loadFunc)
 
 		--Add module name to registry
 		self.InitialModuleCallbacks[name] = true
-		self.InitialModuleCallbacks["CallPriority"][#self.InitialModuleCallbacks["CallPriority"] + 1] = name
+		self.InitialModuleCallbacks.CallPriority[#self.InitialModuleCallbacks.CallPriority + 1] = name
 
 		--Register loadFunc to be called when event is fired
 		E:RegisterCallback(name, loadFunc, E:GetModule(name))
 	else
-		self['RegisteredInitialModules'][#self['RegisteredInitialModules'] + 1] = name
+		self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = name
 	end
 end
 
 function E:InitializeInitialModules()
 	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.InitialModuleCallbacks["CallPriority"]) do
+	for index, moduleName in ipairs(self.InitialModuleCallbacks.CallPriority) do
 		self.InitialModuleCallbacks[moduleName] = nil
-		self.InitialModuleCallbacks["CallPriority"][index] = nil
+		self.InitialModuleCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(moduleName)
 	end
 
 	--Old deprecated initialize method, we keep it for any plugins that may need it
-	for _, module in pairs(E['RegisteredInitialModules']) do
+	for _, module in pairs(E.RegisteredInitialModules) do
 		module = self:GetModule(module, true)
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
@@ -1413,14 +1413,14 @@ end
 
 function E:InitializeModules()
 	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.ModuleCallbacks["CallPriority"]) do
+	for index, moduleName in ipairs(self.ModuleCallbacks.CallPriority) do
 		self.ModuleCallbacks[moduleName] = nil
-		self.ModuleCallbacks["CallPriority"][index] = nil
+		self.ModuleCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(moduleName)
 	end
 
 	--Old deprecated initialize method, we keep it for any plugins that may need it
-	for _, module in pairs(E['RegisteredModules']) do
+	for _, module in pairs(E.RegisteredModules) do
 		module = self:GetModule(module)
 		if module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
@@ -1702,7 +1702,7 @@ function E:Initialize(loginFrame)
 	collectgarbage("collect")
 
 	if self.db.general.loginmessage then
-		E:Print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		E:Print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
 	end
 
 	if OrderHallCommandBar then

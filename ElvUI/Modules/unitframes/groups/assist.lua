@@ -43,7 +43,7 @@ function UF:Construct_AssistFrames()
 		self.unitframeType = "assisttarget"
 	end
 
-	UF:Update_AssistFrames(self, E.db['unitframe']['units']['assist'])
+	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -177,4 +177,4 @@ function UF:Update_AssistFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['assist'] = {'MAINASSIST', 'ELVUI_UNITTARGET'}
+UF.headerstoload.assist = {'MAINASSIST', 'ELVUI_UNITTARGET'}

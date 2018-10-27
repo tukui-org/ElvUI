@@ -23,24 +23,24 @@ local function GetTemplate(t, isUnitFrameElement)
 			borderr, borderg, borderb = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
 		end
 		if t ~= "Transparent" then
-			backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
+			backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 		else
-			backdropr, backdropg, backdropb, backdropa = unpack(E["media"].backdropfadecolor)
+			backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
 		end
 	elseif t == "Transparent" then
 		if isUnitFrameElement then
-			borderr, borderg, borderb = unpack(E["media"].unitframeBorderColor)
+			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
 		else
-			borderr, borderg, borderb = unpack(E["media"].bordercolor)
+			borderr, borderg, borderb = unpack(E.media.bordercolor)
 		end
-		backdropr, backdropg, backdropb, backdropa = unpack(E["media"].backdropfadecolor)
+		backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
 	else
 		if isUnitFrameElement then
-			borderr, borderg, borderb = unpack(E["media"].unitframeBorderColor)
+			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
 		else
-			borderr, borderg, borderb = unpack(E["media"].bordercolor)
+			borderr, borderg, borderb = unpack(E.media.bordercolor)
 		end
-		backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
+		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 	end
 end
 
@@ -127,15 +127,15 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t ~= "NoBackdrop" then
 		if E.private.general.pixelPerfect or f.forcePixelMode then
 			f:SetBackdrop({
-			  bgFile = E["media"].blankTex,
-			  edgeFile = E["media"].blankTex,
+			  bgFile = E.media.blankTex,
+			  edgeFile = E.media.blankTex,
 			  tile = false, tileSize = 0, edgeSize = E.mult,
 			  insets = { left = 0, right = 0, top = 0, bottom = 0}
 			})
 		else
 			f:SetBackdrop({
-			  bgFile = E["media"].blankTex,
-			  edgeFile = E["media"].blankTex,
+			  bgFile = E.media.blankTex,
+			  edgeFile = E.media.blankTex,
 			  tile = false, tileSize = 0, edgeSize = E.mult,
 			  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 			})
@@ -157,7 +157,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				local border = CreateFrame("Frame", nil, f)
 				border:SetInside(f, E.mult, E.mult)
 				border:SetBackdrop({
-					edgeFile = E["media"].blankTex,
+					edgeFile = E.media.blankTex,
 					edgeSize = E.mult,
 					insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
 				})
@@ -169,7 +169,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				border:SetOutside(f, E.mult, E.mult)
 				border:SetFrameLevel(f:GetFrameLevel() + 1)
 				border:SetBackdrop({
-					edgeFile = E["media"].blankTex,
+					edgeFile = E.media.blankTex,
 					edgeSize = E.mult,
 					insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
 				})
@@ -183,9 +183,9 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
 			f.backdropTexture:SetAlpha(backdropa)
 			if glossTex then
-				f.backdropTexture:SetTexture(E["media"].glossTex)
+				f.backdropTexture:SetTexture(E.media.glossTex)
 			else
-				f.backdropTexture:SetTexture(E["media"].blankTex)
+				f.backdropTexture:SetTexture(E.media.blankTex)
 			end
 
 			if(f.forcePixelMode or forcePixelMode) then
@@ -202,9 +202,9 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 	if not f.ignoreUpdates then
 		if f.isUnitFrameElement then
-			E["unitFrameElements"][f] = true
+			E.unitFrameElements[f] = true
 		else
-			E["frames"][f] = true
+			E.frames[f] = true
 		end
 	end
 end
@@ -280,7 +280,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle
 
-	font = font or LSM:Fetch("font", E.db['general'].font)
+	font = font or LSM:Fetch("font", E.db.general.font)
 	fontSize = fontSize or E.db.general.fontSize
 
 	if fontStyle == 'OUTLINE' and (E.db.general.font == "Homespun") then
@@ -298,7 +298,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	end
 	fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
 
-	E["texts"][fs] = true
+	E.texts[fs] = true
 end
 
 local function StyleButton(button, noHover, noPushed, noChecked)
@@ -355,7 +355,7 @@ local function CreateCloseButton(frame, size, offset, texture, backdrop)
 		self:GetParent():Hide()
 	end)
 	CloseButton:SetScript("OnEnter", function(self)
-		self.Texture:SetVertexColor(unpack(E["media"].rgbvaluecolor))
+		self.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	end)
 	CloseButton:SetScript("OnLeave", function(self)
 		self.Texture:SetVertexColor(1, 1, 1)

@@ -455,7 +455,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
 				local _, class = UnitClass(groupUnit);
 				local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-				if not classColor then classColor = RAID_CLASS_COLORS["PRIEST"] end
+				if not classColor then classColor = RAID_CLASS_COLORS.PRIEST end
 				tinsert(targetList, format("|c%s%s|r", classColor.colorStr, UnitName(groupUnit)))
 			end
 		end
@@ -583,7 +583,7 @@ function TT:GameTooltip_ShowProgressBar(tt)
 
 	sb.Bar:StripTextures()
 	sb.Bar:CreateBackdrop('Transparent', nil, true)
-	sb.Bar:SetStatusBarTexture(E['media'].normTex)
+	sb.Bar:SetStatusBarTexture(E.media.normTex)
 
 	tt.pbBar = sb.Bar
 end
@@ -596,7 +596,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 
 	sb:StripTextures()
 	sb:CreateBackdrop('Default', nil, true)
-	sb:SetStatusBarTexture(E['media'].normTex)
+	sb:SetStatusBarTexture(E.media.normTex)
 end
 
 function TT:CheckBackdropColor(tt)
@@ -641,7 +641,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			local name = UnitName(caster)
 			local _, class = UnitClass(caster)
 			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-			if not color then color = RAID_CLASS_COLORS["PRIEST"] end
+			if not color then color = RAID_CLASS_COLORS.PRIEST end
 			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))

@@ -149,8 +149,8 @@ function A:CreateIcon(button)
 		button.CooldownOverride = 'auras'
 		button.isRegisteredCooldown = true
 
-		if not E.RegisteredCooldowns['auras'] then E.RegisteredCooldowns['auras'] = {} end
-		tinsert(E.RegisteredCooldowns['auras'], button)
+		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
+		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
 	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
@@ -286,8 +286,8 @@ function A:CooldownText_Update(button)
 	button.timerOptions.reverseToggle = self.db.cooldown.reverse
 	button.timerOptions.hideBlizzard = self.db.cooldown.hideBlizzard
 
-	if self.db.cooldown.override and E.TimeColors['auras'] then
-		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['auras'], self.db.cooldown.thresholdd
+	if self.db.cooldown.override and E.TimeColors.auras then
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors.auras, self.db.cooldown.thresholdd
 	else
 		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end

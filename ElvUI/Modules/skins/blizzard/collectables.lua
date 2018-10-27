@@ -63,8 +63,8 @@ local function LoadSkin()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
-			self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+			self.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			self.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
 		bu:HookScript("OnLeave", function(self)
@@ -72,8 +72,8 @@ local function LoadSkin()
 				self.backdrop:SetBackdropBorderColor(1, .8, .1)
 				self.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-				self.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -88,8 +88,8 @@ local function LoadSkin()
 
 		hooksecurefunc(bu.selectedTexture, 'Hide', function()
 			bu.name:SetTextColor(1, 1, 1)
-			bu.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			bu.icon.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			bu.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		bu:SetHighlightTexture(nil)
@@ -151,14 +151,14 @@ local function LoadSkin()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+			self.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
 		bu:HookScript("OnLeave", function(self)
 			if self.selected then
 				self.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -169,7 +169,7 @@ local function LoadSkin()
 
 		hooksecurefunc(bu.selectedTexture, 'Hide', function()
 			bu.name:SetTextColor(1, 1, 1)
-			bu.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
@@ -183,7 +183,7 @@ local function LoadSkin()
 		end)
 
 		hooksecurefunc(bu.iconBorder, 'Hide', function(self)
-			bu.icon.backdrop:SetBackdropColor(unpack(E["media"].bordercolor))
+			bu.icon.backdrop:SetBackdropColor(unpack(E.media.bordercolor))
 		end)
 	end
 
@@ -300,7 +300,7 @@ local function LoadSkin()
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
 	progressBar:DisableDrawLayer("BACKGROUND")
-	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:SetStatusBarTexture(E.media.normTex)
 	progressBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(progressBar)
 
@@ -340,7 +340,7 @@ local function LoadSkin()
 	local progressBar = HeirloomsJournal.progressBar
 	progressBar.border:Hide()
 	progressBar:DisableDrawLayer("BACKGROUND")
-	progressBar:SetStatusBarTexture(E["media"].normTex)
+	progressBar:SetStatusBarTexture(E.media.normTex)
 	progressBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(progressBar)
 
@@ -414,7 +414,7 @@ local function LoadSkin()
 					elseif texture == "transmog-wardrobe-border-unusable" then
 						r, g, b =  1, 0, 0
 					else
-						r, g, b = unpack(E["media"].bordercolor)
+						r, g, b = unpack(E.media.bordercolor)
 					end
 					Model.backdrop:SetBackdropBorderColor(r, g, b)
 				end)

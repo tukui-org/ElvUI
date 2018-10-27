@@ -205,7 +205,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'player')
+tinsert(UF.unitstoload, 'player')
 
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.

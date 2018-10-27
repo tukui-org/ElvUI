@@ -261,17 +261,17 @@ function UF:HeaderConfig(header, configMode)
 		end
 	end
 
-	UF["headerFunctions"][header.groupName]:AdjustVisibility(header)
+	UF.headerFunctions[header.groupName]:AdjustVisibility(header)
 end
 
 function UF:PLAYER_REGEN_DISABLED()
-	for _, header in pairs(UF['headers']) do
+	for _, header in pairs(UF.headers) do
 		if header.forceShow then
 			self:HeaderConfig(header)
 		end
 	end
 
-	for _, unit in pairs(UF['units']) do
+	for _, unit in pairs(UF.units) do
 		local frame = self[unit]
 		if frame and frame.forceShow then
 			self:UnforceShow(frame)

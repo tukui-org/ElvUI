@@ -32,7 +32,7 @@ local currencyList = {}
 for currency, data in pairs(Currencies) do
 	currencyList[currency] = data.NAME
 end
-currencyList["GOLD"] = BONUS_ROLL_REWARD_MONEY
+currencyList.GOLD = BONUS_ROLL_REWARD_MONEY
 DT.CurrencyList = currencyList
 
 local function OnClick()
