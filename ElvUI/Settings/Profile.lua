@@ -1159,11 +1159,11 @@ P['unitframe'] = {
 		['selection'] = {
 			[1] = {r = 255/255, g = 255/255, b = 139/255},	-- very light yellow, used for player's character while in combat
 			[2] = {r = 218/255, g = 197/255, b = 92/255},	-- yellow, used for neutral units
-			[3] = {r = 255/255, g = 156/255, b = 73/255},	-- orange, used for non-interactive unfriendly units
+			[3] = {r = 255/255, g = 156/255, b = 73/255},	-- orange, used for unfriendly units
 			[4] = {r = 199/255, g = 64/255, b = 64/255},	-- red, used for hostile units
 			[5] = {r = 128/255, g = 128/255, b = 128/255},	-- grey, used for dead units
 			[6] = {r = 75/255, g = 175/255, b = 76/255},	-- green, used for friendly units
-			[7] = {r = 0/255, g = 179/255, b = 255/255},	-- blue, the default colour, also used for friendly player names in dungeons, unattackable, players in sanctuaries, etc.
+			[7] = {r = 0/255, g = 179/255, b = 255/255},	-- blue, the default colour, mainly used for players in dungeons, raids, and sanctuaries
 		},
 		['healPrediction'] = {
 			['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
