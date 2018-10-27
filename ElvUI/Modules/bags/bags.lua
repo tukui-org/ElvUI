@@ -510,15 +510,15 @@ function B:UpdateSlot(bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questStarter"]))
+			slot:SetBackdropBorderColor(unpack(B.ItemColors["questStarter"]))
 			slot.ignoreBorderColors = true
 			if(slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questItem"]))
+			slot:SetBackdropBorderColor(unpack(B.ItemColors["questItem"]))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -1121,15 +1121,15 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questStarter"]))
+			slot:SetBackdropBorderColor(unpack(B.ItemColors["questStarter"]))
 			slot.ignoreBorderColors = true
 			if (slot.questIcon) then
 				slot.questIcon:Show();
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(1.0, 0.3, 0.3);
-			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
+			slot.newItemGlow:SetVertexColor(unpack(B.ItemColors["questItem"]))
+			slot:SetBackdropBorderColor(unpack(B.ItemColors["questItem"]))
 			slot.ignoreBorderColors = true
 		elseif slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b);
@@ -2139,6 +2139,15 @@ function B:UpdateBagColors(table, indice, r, g, b)
 	self[table][B.BagIndice[indice]] = { r, g, b }
 end
 
+B.ItemIndice = {
+	questStarter = "questStarter",
+	questItem = "questItem",
+}
+
+function B:UpdateItemColors(table, indice, r, g, b)
+	self[table][B.ItemIndice[indice]] = { r, g, b }
+end
+
 function B:Initialize()
 	--Creating vendor grays frame
 	self:CreateSellFrame()
@@ -2182,6 +2191,11 @@ function B:Initialize()
 		[2] = { self.db.colors.assignment.equipment.r , self.db.colors.assignment.equipment.g, self.db.colors.assignment.equipment.b },
 		[3] = { self.db.colors.assignment.consumables.r , self.db.colors.assignment.consumables.g, self.db.colors.assignment.consumables.b },
 		[4] = { self.db.colors.assignment.tradegoods.r , self.db.colors.assignment.tradegoods.g, self.db.colors.assignment.tradegoods.b },
+	}
+
+	self.ItemColors = {
+		["questStarter"] = {self.db.colors.items.questStarter.r, self.db.colors.items.questStarter.g, self.db.colors.items.questStarter.b},
+		["questItem"] = {self.db.colors.items.questItem.r, self.db.colors.items.questItem.g, self.db.colors.items.questItem.b},
 	}
 
 	--Bag Mover: Set default anchor point and create mover

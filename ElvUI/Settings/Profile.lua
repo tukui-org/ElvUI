@@ -233,6 +233,10 @@ P['bags'] = {
 			['consumables'] = { r = .57, g = .95, b = .66 },
 			['tradegoods'] = { r = 1, g = .32, b = .66 },
 		},
+		['items'] = {
+			['questStarter'] = {r = 1, g = 1, b = 0},
+			['questItem'] = {r = 1, g = 0.30, b = 0.30},
+		}
 	},
 	['vendorGrays'] = {
 		["enable"] = false,
