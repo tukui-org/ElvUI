@@ -367,13 +367,13 @@ function UF:UpdateColors()
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:GetColorTable(db.power.MAELSTROM)
 
-	ElvUF.colors.selection[1] = E:GetColorTable(db.selection[1])
-	ElvUF.colors.selection[2] = E:GetColorTable(db.selection[2])
-	ElvUF.colors.selection[3] = E:GetColorTable(db.selection[3])
-	ElvUF.colors.selection[4] = E:GetColorTable(db.selection[4])
-	ElvUF.colors.selection[5] = E:GetColorTable(db.selection[5])
-	ElvUF.colors.selection[6] = E:GetColorTable(db.selection[6])
-	ElvUF.colors.selection[7] = E:GetColorTable(db.selection[7])
+	ElvUF.colors.selection[16777099] = E:GetColorTable(db.selection[1])	--255 * 65536 + 255 * 256 + 139
+	ElvUF.colors.selection[16776960] = E:GetColorTable(db.selection[2])	--255 * 65536 + 255 * 256 +   0
+	ElvUF.colors.selection[16744704] = E:GetColorTable(db.selection[3])	--255 * 65536 + 129 * 256 +   0
+	ElvUF.colors.selection[16711680] = E:GetColorTable(db.selection[4])	--255 * 65536 +   0 * 256 +   0
+	ElvUF.colors.selection[8421504] = E:GetColorTable(db.selection[5])	--128 * 65536 + 128 * 256 + 128
+	ElvUF.colors.selection[65280] = E:GetColorTable(db.selection[6])	--  0 * 65536 + 255 * 256 +   0
+	ElvUF.colors.selection[255] = E:GetColorTable(db.selection[7])		--  0 * 65536 +   0 * 256 + 255
 
 	ElvUF.colors.ComboPoints = {}
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])
