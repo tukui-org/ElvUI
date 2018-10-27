@@ -432,7 +432,7 @@ E.Options.args.bags = {
 				items = {
 					order = 3,
 					type = "group",
-					name = "Items", -- Localize
+					name = ITEMS,
 					guiInline = true,
 					get = function(info)
 						local t = E.db.bags.colors.items[ info[#info] ]
@@ -449,12 +449,12 @@ E.Options.args.bags = {
 						questStarter = {
 							order = 1,
 							type = "color",
-							name = "Quest Starter" -- Localize / Change to better name?
+							name = L["Quest Starter"]
 						},
 						questItem = {
 							order = 2,
 							type = "color",
-							name = "Quest Item" -- Localize / Change to better name?
+							name = ITEM_BIND_QUEST
 						}
 					}
 				}
