@@ -248,17 +248,18 @@ function AddOn:ToggleConfig(msg)
 				wipe(pageNodes)
 				index = 0
 
-				local main, mainNode, sub, subNode, subSel
+				local main, mainNode, mainSelStr, sub, subNode, subSel
 				for i = 1, pageCount do
 					if i == 1 then
 						main = pages[i] and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
+						mainSelStr = mainSel and ('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
 						pageNodes[index+1], pageNodes[index+2] = main, mainNode
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = mainSel and msgStr:match('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001'..pages[i]:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'$') and (subSel and subSel == pages[i]) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						subNode = (mainSelStr and msgStr:match(mainSelStr..pages[i]:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
