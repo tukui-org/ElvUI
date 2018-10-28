@@ -7419,6 +7419,8 @@ E.Options.args.unitframe.args.tank = {
 }
 E.Options.args.unitframe.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units['tank'].targetsGroup.name[ info[#info] ] end
+E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units['tank'].targetsGroup.name[ info[#info] ] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
 
 --Assist Frames
 E.Options.args.unitframe.args.assist = {
@@ -7617,6 +7619,8 @@ E.Options.args.unitframe.args.assist = {
 }
 E.Options.args.unitframe.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units['assist'].targetsGroup.name[ info[#info] ] end
+E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units['assist'].targetsGroup.name[ info[#info] ] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {
