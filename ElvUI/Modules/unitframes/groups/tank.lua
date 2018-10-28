@@ -146,7 +146,7 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_HealthBar(frame)
 
 	--Name
-	UF:UpdateNameSettings(frame)
+	UF:UpdateNameSettings(frame, frame.isChild and 'target')
 
 	--Threat
 	UF:Configure_Threat(frame)
