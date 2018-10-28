@@ -53,6 +53,13 @@ S.Blizzard.Regions = {
 	'Background',
 }
 
+S.ArrowRotation = {
+	['up'] = 0,
+	['down'] = 3.14,
+	['left'] = 1.57,
+	['right'] = -1.57,
+}
+
 function S:SetModifiedBackdrop()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -543,14 +550,6 @@ function S:HandleRotateButton(btn)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
-S.ArrowRotation = {
-	['up'] = 0,
-	['down'] = 3.14,
-	['left'] = 1.57,
-	['right'] = -1.57,
-}
-
--- Introduced in 7.3
 function S:HandleMaxMinFrame(frame)
 	assert(frame, "does not exist.")
 
