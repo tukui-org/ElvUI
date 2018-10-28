@@ -56,8 +56,8 @@ S.Blizzard.Regions = {
 S.ArrowRotation = {
 	['down'] = 0,
 	['up'] = 3.14,
-	['left'] = 1.57,
-	['right'] = -1.57,
+	['left'] = -1.57,
+	['right'] = 1.57,
 }
 
 function S:SetModifiedBackdrop()
