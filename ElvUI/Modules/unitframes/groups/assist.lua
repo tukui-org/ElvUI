@@ -151,7 +151,7 @@ function UF:Update_AssistFrames(frame, db)
 	UF:Configure_Threat(frame)
 
 	--Name
-	UF:UpdateNameSettings(frame, frame.isChild and 'target')
+	UF:UpdateNameSettings(frame)
 
 	--Range
 	UF:Configure_Range(frame)
