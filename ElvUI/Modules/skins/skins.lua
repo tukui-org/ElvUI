@@ -54,8 +54,8 @@ S.Blizzard.Regions = {
 }
 
 S.ArrowRotation = {
-	['up'] = 0,
-	['down'] = 3.14,
+	['down'] = 0,
+	['up'] = 3.14,
 	['left'] = 1.57,
 	['right'] = -1.57,
 }
