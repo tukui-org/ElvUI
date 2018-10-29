@@ -1113,10 +1113,8 @@ P['unitframe'] = {
 	['colors'] = {
 		['borderColor'] = {r = 0, g = 0, b = 0},
 		['healthclass'] = false,
-		['healthselection'] = false,
 		['forcehealthreaction'] = false,
 		['powerclass'] = false,
-		['powerselection'] = false,
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
 		['useDeadBackdrop'] = false,

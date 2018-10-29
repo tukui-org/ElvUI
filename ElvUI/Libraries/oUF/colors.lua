@@ -2,8 +2,6 @@ local parent, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local print = Private.print
-
 local frame_metatable = Private.frame_metatable
 
 local colors = {
@@ -24,32 +22,7 @@ local colors = {
 	debuff = {},
 	reaction = {},
 	power = {},
-	selection = {
-		-- these colours are sorted by r, then by g, then by b
-		-- very light yellow, used for player's character while in combat
-		{255 / 255, 255 / 255, 139 / 255},
-		-- yellow, used for neutral units
-		{255 / 255, 255 / 255, 0 / 255},
-		-- orange, used for unfriendly units
-		{255 / 255, 129 / 255, 0 / 255},
-		-- red, used for hostile units
-		{255 / 255, 0 / 255, 0 /255},
-		-- grey, used for dead units
-		{128 / 255, 128 / 255, 128 / 255},
-		-- green, used for friendly units
-		{0 / 255, 255 / 255, 0 / 255},
-		-- blue, the default colour, mainly used for players in dungeons, raids, and sanctuaries
-		{0 / 255, 0 / 255, 255 / 255},
-	},
 }
-
-colors.selection[255 * 65536 + 255 * 256 + 139] = colors.selection[1]
-colors.selection[255 * 65536 + 255 * 256 +   0] = colors.selection[2]
-colors.selection[255 * 65536 + 129 * 256 +   0] = colors.selection[3]
-colors.selection[255 * 65536 +   0 * 256 +   0] = colors.selection[4]
-colors.selection[128 * 65536 + 128 * 256 + 128] = colors.selection[5]
-colors.selection[  0 * 65536 + 255 * 256 +   0] = colors.selection[6]
-colors.selection[  0 * 65536 +   0 * 256 + 255] = colors.selection[7]
 
 -- We do this because people edit the vars directly, and changing the default
 -- globals makes SPICE FLOW!
@@ -126,28 +99,6 @@ colors.power[13] = colors.power.INSANITY
 colors.power[16] = colors.power.ARCANE_CHARGES
 colors.power[17] = colors.power.FURY
 colors.power[18] = colors.power.PAIN
-
---[[ Colors: oUF:UnitSelectionColor(unit) or frame:UnitSelectionColor(unit)
-
---]]
-function oUF:UnitSelectionColor(unit)
-	local r, g, b = UnitSelectionColor(unit)
-	r = math.ceil(r * 255) * 65536 + math.ceil(g * 255) * 256 + math.ceil(b * 255)
-
-	-- BUG: When targeting yourself while in combat, UnitSelectionColor for "player" or any other unit that's actually
-	-- player returns either green or blue instead of intended light yellow
-	if(UnitIsUnit(unit, 'player') and UnitAffectingCombat('player')) then
-		r = 16777099 -- 255 * 65536 + 255 * 256 + 139
-	end
-
-	local color = self.colors.selection[r]
-	if(not color) then
-		-- print("|cffffd200Unknown colour:|r", UnitSelectionColor(unit))
-		color = self.colors.selection[7]
-	end
-
-	return color[1], color[2], color[3]
-end
 
 local function colorsAndPercent(a, b, ...)
 	if(a <= 0 or b == 0) then
@@ -294,4 +245,3 @@ oUF.useHCYColorGradient = false
 
 frame_metatable.__index.colors = colors
 frame_metatable.__index.ColorGradient = oUF.ColorGradient
-frame_metatable.__index.UnitSelectionColor = oUF.UnitSelectionColor

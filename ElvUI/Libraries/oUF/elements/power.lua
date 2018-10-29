@@ -42,7 +42,6 @@ The following options are listed by priority. The first check that returns true 
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
 .colorClassPet     - Use `self.colors.class[class]` to color the bar if the unit is player controlled, but not a player
                      (boolean)
-.colorSelection    - ??? (boolean)
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
                      [UnitReaction](http://wowprogramming.com/docs/api/UnitReaction.html) (boolean)
@@ -143,8 +142,6 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = parent.colors.class[class]
-	elseif(element.colorSelection) then
-		r, g, b = parent:UnitSelectionColor(unit)
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		t = parent.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
@@ -302,7 +299,6 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping
-		self:RegisterEvent('UNIT_FLAGS', Path) -- For selection
 
 		if(element:IsObjectType('StatusBar')) then
 			element.texture = element:GetStatusBarTexture() and element:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
@@ -332,7 +328,6 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_FACTION', Path)
-		self:UnregisterEvent('UNIT_FLAGS', Path)
 	end
 end
 

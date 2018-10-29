@@ -362,14 +362,6 @@ function UF:UpdateColors()
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
 
-	ElvUF.colors.selection[1] = E:SetColorTable(ElvUF.colors.selection[1], db.selection[1])
-	ElvUF.colors.selection[2] = E:SetColorTable(ElvUF.colors.selection[2], db.selection[2])
-	ElvUF.colors.selection[3] = E:SetColorTable(ElvUF.colors.selection[3], db.selection[3])
-	ElvUF.colors.selection[4] = E:SetColorTable(ElvUF.colors.selection[4], db.selection[4])
-	ElvUF.colors.selection[5] = E:SetColorTable(ElvUF.colors.selection[5], db.selection[5])
-	ElvUF.colors.selection[6] = E:SetColorTable(ElvUF.colors.selection[6], db.selection[6])
-	ElvUF.colors.selection[7] = E:SetColorTable(ElvUF.colors.selection[7], db.selection[7])
-
 	if not ElvUF.colors.ComboPoints then ElvUF.colors.ComboPoints = {} end
 	ElvUF.colors.ComboPoints[1] = E:SetColorTable(ElvUF.colors.ComboPoints[1], db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:SetColorTable(ElvUF.colors.ComboPoints[2], db.classResources.comboPoints[2])
