@@ -209,10 +209,26 @@ local function LoadSkin()
 	OpacityFrame:SetTemplate("Transparent")
 
 	--DropDownMenu
-	hooksecurefunc("UIDropDownMenu_CreateFrames", function()
-		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+		local listFrame = _G["DropDownList"..level]
+		local listFrameName = listFrame:GetName()
+		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"]
+		if expandArrow then
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
+			expandArrow:Size(18)
+			expandArrow:GetNormalTexture():SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
+		end
+
+		-- Skin the backdrop
+		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
+			local menu = _G["DropDownList"..i.."MenuBackdrop"]
+			local backdrop = _G["DropDownList"..i.."Backdrop"]
+			if not backdrop.IsSkinned then
+				backdrop:SetTemplate("Transparent")
+				menu:SetTemplate("Transparent")
+
+				backdrop.IsSkinned = true
+			end
 		end
 	end)
 
