@@ -51,6 +51,16 @@ S.Blizzard.Regions = {
 	'Cover',
 	'Border',
 	'Background',
+	-- EditBox
+	'TopTex',
+	'TopLeftTex',
+	'TopRightTex',
+	'LeftTex',
+	'BottomTex',
+	'BottomLeftTex',
+	'BottomRightTex',
+	'RightTex',
+	'MiddleTex',
 }
 
 S.ArrowRotation = {

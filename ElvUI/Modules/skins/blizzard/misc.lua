@@ -208,20 +208,6 @@ local function LoadSkin()
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")
 
-	--[[WatchFrameCollapseExpandButton:StripTextures()
-	S:HandleCloseButton(WatchFrameCollapseExpandButton)
-	WatchFrameCollapseExpandButton:Size(30)
-	WatchFrameCollapseExpandButton.text:SetText('-')
-	WatchFrameCollapseExpandButton:SetFrameStrata('MEDIUM')
-
-	hooksecurefunc('WatchFrame_Expand', function()
-		WatchFrameCollapseExpandButton.text:SetText('-')
-	end)
-
-	hooksecurefunc('WatchFrame_Collapse', function()
-		WatchFrameCollapseExpandButton.text:SetText('+')
-	end)]]
-
 	--DropDownMenu
 	hooksecurefunc("UIDropDownMenu_CreateFrames", function()
 		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
@@ -229,24 +215,6 @@ local function LoadSkin()
 			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)
-
-	--[[local function SkinWatchFrameItems()
-		for i=1, WATCHFRAME_NUM_ITEMS do
-			local button = _G["WatchFrameItem"..i]
-			if button and not button.skinned then
-				button:CreateBackdrop('Default')
-				button.backdrop:SetAllPoints()
-				button:StyleButton()
-				_G["WatchFrameItem"..i.."NormalTexture"]:SetAlpha(0)
-				_G["WatchFrameItem"..i.."IconTexture"]:SetInside()
-				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-				E:RegisterCooldown(_G["WatchFrameItem"..i.."Cooldown"])
-				button.skinned = true
-			end
-		end
-	end
-	hooksecurefunc("QuestPOIUpdateIcons", SkinWatchFrameItems)]]
-	--WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()

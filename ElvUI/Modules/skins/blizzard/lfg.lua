@@ -518,6 +518,7 @@ local function LoadSkin()
 	S:HandleButton(LFGListInviteDialog.AcceptButton)
 	S:HandleButton(LFGListInviteDialog.DeclineButton)
 	LFGListInviteDialog.RoleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+
 	local function SetRoleIcon(self, resultID)
 		local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
 		self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
