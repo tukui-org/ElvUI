@@ -12,6 +12,7 @@ local C_PetJournal_GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local GetItemQualityColor = GetItemQualityColor
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SquareButton_SetIcon
 
@@ -314,7 +315,7 @@ local function LoadSkin()
 
 	for i=1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
-		S:HandleItemButton(button, true)
+		S:HandleItemButton(button)
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
@@ -326,6 +327,19 @@ local function LoadSkin()
 		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
 		E:RegisterCooldown(button.cooldown)
 	end
+
+	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+		if (PlayerHasToy(self.itemID)) then
+			local quality = select(3, GetItemInfo(self.itemID))
+			local r, g, b = 1, 1, 1
+			if quality then
+				r, g, b = GetItemQualityColor(quality)
+			end
+			self.backdrop:SetBackdropBorderColor(r, g, b)
+		else
+			self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end
+	end)
 
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
