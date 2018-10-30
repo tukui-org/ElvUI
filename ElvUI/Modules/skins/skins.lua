@@ -63,6 +63,7 @@ S.Blizzard.Regions = {
 	'MiddleTex',
 }
 
+-- Depends on the arrow texture to be up by default.
 S.ArrowRotation = {
 	['down'] = 0,
 	['up'] = 3.14,
