@@ -1273,8 +1273,6 @@ function mod:Initialize()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
-
-	--[[
 	self:RegisterEvent("QUEST_ACCEPTED")
 	self:RegisterEvent("QUEST_REMOVED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
@@ -1291,7 +1289,6 @@ function mod:Initialize()
 			end
 		end
 	end
-	]]
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()

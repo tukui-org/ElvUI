@@ -21,6 +21,7 @@ function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
 end
 
 function mod:QUEST_REMOVED(questID)
+	if not IsQuestTask(questID) then return end
 	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if not questName then return end
 
@@ -56,20 +57,22 @@ function mod:GetQuests(unitID)
 				QuestList[index].objectiveCount = y - x
 			end
 
-			local QuestLogIndex = GetQuestLogIndexByID(questID)
-			local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
-			QuestList[index].itemTexture = itemTexture
+			if questID then
+				local QuestLogIndex = GetQuestLogIndexByID(questID)
+				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+				QuestList[index].itemTexture = itemTexture
 
-			if itemTexture then
-				QuestList[index].questType = "QUEST_ITEM"
-			elseif progressText:find(L["slain"]) then
-				QuestList[index].questType = "KILL"
-			else
-				QuestList[index].questType = "LOOT"
+				if itemTexture then
+					QuestList[index].questType = "QUEST_ITEM"
+				elseif progressText:find(L["slain"]) then
+					QuestList[index].questType = "KILL"
+				else
+					QuestList[index].questType = "LOOT"
+				end
+
+				QuestList[index].questID = questID
+				QuestList[index].questLogIndex = QuestLogIndex
 			end
-
-			QuestList[index].questID = questID
-			QuestList[index].questLogIndex = QuestLogIndex
 		end
 	end
 
