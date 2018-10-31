@@ -21,7 +21,7 @@ function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
 end
 
 function mod:QUEST_REMOVED(questID)
-	if not IsQuestTask(questID) then return end
+	if not questID then return end
 	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if not questName then return end
 
