@@ -1281,7 +1281,6 @@ function mod:Initialize()
 
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
-	self.Tooltip.Index = {}
 
 	for k, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(C_Map.GetBestMapForUnit("player"))) do
 		if task.inProgress then

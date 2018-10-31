@@ -16,6 +16,8 @@ function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
 	if questName then
 		self.ActiveWorldQuests[questName] = questID
 	end
+
+	mod:ForEachPlate("UpdateElement_QuestIcon")
 end
 
 function mod:QUEST_REMOVED(questID)
@@ -23,18 +25,11 @@ function mod:QUEST_REMOVED(questID)
 	if not questName then return end
 		
 	self.ActiveWorldQuests[questName] = nil
+	mod:ForEachPlate("UpdateElement_QuestIcon")
 end
 
 mod.QuestObjectiveStrings = {}
 function mod:QUEST_LOG_UPDATE()
-	--[[twipe(self.Tooltip.Index)
-	for i = 1, GetNumQuestLogEntries() do
-		local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isBounty, isStory = GetQuestLogTitle(i)
-		if not isHeader then
-			self.Tooltip.Index[title] = i
-		end
-	end]]
-	
 	mod:ForEachPlate("UpdateElement_QuestIcon")
 end
 
@@ -153,7 +148,6 @@ function mod:UpdateElement_QuestIcon(frame)
 			icon.ItemTexture:Show()
 			icon.ItemTexture:SetTexture(itemTexture)
 		end
-
 
 		icon:Show()
 	end
