@@ -703,7 +703,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		mod:UpdateElement_Cast(frame)
 		mod:UpdateElement_Auras(frame)
 		mod:UpdateElement_HealPrediction(frame)
-		--mod:UpdateElement_QuestIcon(frame)
+		mod:UpdateElement_QuestIcon(frame)
 		if(self.db.units[frame.UnitType].powerbar.enable) then
 			frame.PowerBar:Show()
 			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
