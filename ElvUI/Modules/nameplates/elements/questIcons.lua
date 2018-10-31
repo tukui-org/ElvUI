@@ -10,7 +10,7 @@ local strjoin = strjoin
 mod.ActiveWorldQuests = {
 	-- [questName] = questID ?
 }
-function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
+function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
 	if not IsQuestTask(questID) then return end
 	local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if questName then
@@ -20,7 +20,7 @@ function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
 	mod:ForEachPlate("UpdateElement_QuestIcon")
 end
 
-function mod:QUEST_REMOVED(questID)
+function mod:QUEST_REMOVED(_, questID)
 	if not questID then return end
 	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if not questName then return end
@@ -154,10 +154,7 @@ function mod:UpdateElement_QuestIcon(frame)
 
 		icon:Show()
 	end
-
 end
-
-
 
 function mod:ConstructElement_QuestIcons(frame)
 	local questIcons = CreateFrame("frame", nil, frame)
