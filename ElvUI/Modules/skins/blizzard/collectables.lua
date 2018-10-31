@@ -389,21 +389,26 @@ local function LoadSkin()
 	end)
 
 	-- Appearances Tab
+	local WardrobeCollectionFrame = _G["WardrobeCollectionFrame"]
 	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
 	S:HandleTab(WardrobeCollectionFrame.SetsTab)
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E["media"].normTex)
+
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+
 	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
+
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
-	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate("Transparent")
+
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
