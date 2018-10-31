@@ -69,7 +69,6 @@ function UF:Configure_HealthBar(frame)
 	health.colorHealth = nil
 	health.colorClass = nil
 	health.colorReaction = nil
-	health.colorSelection = nil
 
 	if db.colorOverride and db.colorOverride == "FORCE_ON" then
 		health.colorClass = true
@@ -81,9 +80,7 @@ function UF:Configure_HealthBar(frame)
 			health.colorHealth = true
 		end
 	else
-		if self.db.colors.healthselection == true then
-			health.colorSelection = true
-		elseif self.db.colors.healthclass ~= true then
+		if self.db.colors.healthclass ~= true then
 			if self.db.colors.colorhealthbyvalue == true then
 				health.colorSmooth = true
 			else

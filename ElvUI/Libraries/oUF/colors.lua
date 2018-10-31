@@ -22,24 +22,6 @@ local colors = {
 	debuff = {},
 	reaction = {},
 	power = {},
-	selection = {
-		-- these colours are sorted by r, then by g, then by b
-		-- very light yellow, used for player's character while in combat
-		{255 / 255, 255 / 255, 139 / 255},
-		-- yellow, used for neutral units
-		{255 / 255, 255 / 255, 0 / 255},
-		-- orange, used for non-interactive unfriendly units
-		{255 / 255, 129 / 255, 0 / 255},
-		-- red, used for hostile units
-		{255 / 255, 0 / 255, 0 /255},
-		-- grey, used for dead units
-		{128 / 255, 128 / 255, 128 / 255},
-		-- green, used for friendly units
-		{0 / 255, 255 / 255, 0 / 255},
-		-- blue, the default colour, also used for friendly player names in dungeons, unattackable
-		-- players in sanctuaries, etc.
-		{0 / 255, 0 / 255, 255 / 255},
-	},
 }
 
 -- We do this because people edit the vars directly, and changing the default
@@ -117,38 +99,6 @@ colors.power[13] = colors.power.INSANITY
 colors.power[16] = colors.power.ARCANE_CHARGES
 colors.power[17] = colors.power.FURY
 colors.power[18] = colors.power.PAIN
-
-local function round(v)
-	return math.floor(v + 0.5)
-end
-
---[[ Colors: oUF:UnitSelectionColor(unit) or frame:UnitSelectionColor(unit)
---]]
-
-function oUF:UnitSelectionColor(unit)
-	local r, g, b = UnitSelectionColor(unit)
-	r, g, b = round(r * 255), round(g * 255), round(b * 255)
-	local color
-	if(r == 255 and g == 255 and b == 139) then
-		color = self.colors.selection[1]
-	elseif(r == 255 and g == 255 and b == 0) then
-		color = self.colors.selection[2]
-	elseif(r == 255 and g == 129 and b == 0) then
-		color = self.colors.selection[3]
-	elseif(r == 255 and g == 0 and b == 0) then
-		color = self.colors.selection[4]
-	elseif(r == 128 and g == 128 and b == 128) then
-		color = self.colors.selection[5]
-	elseif(r == 0 and g == 255 and b == 0) then
-		color = self.colors.selection[6]
-	elseif(r == 0 and g == 0 and b == 255) then
-		color = self.colors.selection[7]
-	else
-		-- print("|cffffd200Unknown colour:|r", r, g, b)
-		color = self.colors.selection[7]
-	end
-	return color[1], color[2], color[3]
-end
 
 local function colorsAndPercent(a, b, ...)
 	if(a <= 0 or b == 0) then
@@ -295,4 +245,3 @@ oUF.useHCYColorGradient = false
 
 frame_metatable.__index.colors = colors
 frame_metatable.__index.ColorGradient = oUF.ColorGradient
-frame_metatable.__index.UnitSelectionColor = oUF.UnitSelectionColor

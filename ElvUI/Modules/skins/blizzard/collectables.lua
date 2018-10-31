@@ -12,6 +12,7 @@ local C_PetJournal_GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local GetItemQualityColor = GetItemQualityColor
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SquareButton_SetIcon
 
@@ -191,7 +192,8 @@ local function LoadSkin()
 	E:RegisterCooldown(PetJournalHealPetButtonCooldown)
 	PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	PetJournalLoadoutBorder:StripTextures()
-	for i=1, 3 do
+
+	for i = 1, 3 do
 		local petButton = _G['PetJournalLoadoutPet'..i]
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
@@ -310,9 +312,9 @@ local function LoadSkin()
 		end
 	end
 
-	for i=1, 18 do
+	for i = 1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
-		S:HandleItemButton(button, true)
+		S:HandleItemButton(button)
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
@@ -324,6 +326,19 @@ local function LoadSkin()
 		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
 		E:RegisterCooldown(button.cooldown)
 	end
+
+	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+		if (PlayerHasToy(self.itemID)) then
+			local quality = select(3, GetItemInfo(self.itemID))
+			local r, g, b = 1, 1, 1
+			if quality then
+				r, g, b = GetItemQualityColor(quality)
+			end
+			self.backdrop:SetBackdropBorderColor(r, g, b)
+		else
+			self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end
+	end)
 
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
@@ -342,58 +357,56 @@ local function LoadSkin()
 	progressBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(progressBar)
 
-	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
-		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
-			local header = HeirloomsJournal.heirloomHeaderFrames[i]
-			header.text:FontTemplate()
-			header.text:SetTextColor(1, 1, 1)
+	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(_, button)
+		if not button.styled then
+			S:HandleItemButton(button)
+
+			button.iconTexture:SetDrawLayer("ARTWORK")
+			button.hover:SetAllPoints(button.iconTexture)
+			button.slotFrameCollected:SetAlpha(0)
+			button.slotFrameUncollected:SetAlpha(0)
+			button.special:SetJustifyH('RIGHT')
+			button.special:ClearAllPoints()
+			button.styled = true
 		end
 
-		for i=1, #HeirloomsJournal.heirloomEntryFrames do
-			local button = HeirloomsJournal.heirloomEntryFrames[i]
-			if(not button.skinned) then
-				button.skinned = true
-				S:HandleItemButton(button, true)
-				--button.levelBackground:SetAlpha(0)
-				button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
-				button.iconTextureUncollected:SetInside(button)
-				button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
-				HeirloomsJournal:UpdateButton(button)
-			end
+		button.levelBackground:SetTexture(nil)
 
-			if(C_Heirloom_PlayerHasHeirloom(button.itemID)) then
-				button.name:SetTextColor(1, 1, 1)
-			else
-				button.name:SetTextColor(0.6, 0.6, 0.6)
-			end
-		end
-	end)
+		button.name:SetPoint('LEFT', button, 'RIGHT', 4, 8)
+		button.level:SetPoint('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
-	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(self, button)
-		button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
-		if(C_Heirloom_PlayerHasHeirloom(button.itemID)) then
+		button.SetTextColor = nil
+		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(1, 1, 1)
+			button.special:SetTextColor(1, .82, 0)
+			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
-			button.name:SetTextColor(0.6, 0.6, 0.6)
+			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
+		button.SetTextColor = E.noop
 	end)
 
 	-- Appearances Tab
+	local WardrobeCollectionFrame = _G["WardrobeCollectionFrame"]
 	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
 	S:HandleTab(WardrobeCollectionFrame.SetsTab)
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E["media"].normTex)
+
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+
 	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
+
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
-	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate("Transparent")
+
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 

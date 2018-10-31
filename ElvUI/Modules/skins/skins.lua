@@ -6,6 +6,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe, next = table.insert, table.wipe, next
+local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetDesaturation = SetDesaturation
@@ -24,7 +25,51 @@ S.allowBypass = {}
 S.addonCallbacks = {}
 S.nonAddonCallbacks = {["CallPriority"] = {}}
 
-local find = string.find
+S.Blizzard = {}
+S.Blizzard.Regions = {
+	'Left',
+	'Middle',
+	'Right',
+	'Mid',
+	'LeftDisabled',
+	'MiddleDisabled',
+	'RightDisabled',
+	'TopLeft',
+	'TopRight',
+	'BottomLeft',
+	'BottomRight',
+	'TopMiddle',
+	'MiddleLeft',
+	'MiddleRight',
+	'BottomMiddle',
+	'MiddleMiddle',
+	'TabSpacer',
+	'TabSpacer1',
+	'TabSpacer2',
+	'_RightSeparator',
+	'_LeftSeparator',
+	'Cover',
+	'Border',
+	'Background',
+	-- EditBox
+	'TopTex',
+	'TopLeftTex',
+	'TopRightTex',
+	'LeftTex',
+	'BottomTex',
+	'BottomLeftTex',
+	'BottomRightTex',
+	'RightTex',
+	'MiddleTex',
+}
+
+-- Depends on the arrow texture to be up by default.
+S.ArrowRotation = {
+	['down'] = 0,
+	['up'] = 3.14,
+	['left'] = -1.57,
+	['right'] = 1.57,
+}
 
 function S:SetModifiedBackdrop()
 	if self.backdrop then self = self.backdrop end
@@ -167,46 +212,40 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
-function S:HandleButton(f, strip, isDeclineButton)
-	assert(f, "doesn't exist!")
+function S:HandleButton(button, strip, isDeclineButton)
+	assert(button, "doesn't exist!")
 
-	if f.Left then f.Left:SetAlpha(0) end
-	if f.Middle then f.Middle:SetAlpha(0) end
-	if f.Right then f.Right:SetAlpha(0) end
-	if f.TopLeft then f.TopLeft:SetAlpha(0) end
-	if f.TopMiddle then f.TopMiddle:SetAlpha(0) end
-	if f.TopRight then f.TopRight:SetAlpha(0) end
-	if f.MiddleLeft then f.MiddleLeft:SetAlpha(0) end
-	if f.MiddleMiddle then f.MiddleMiddle:SetAlpha(0) end
-	if f.MiddleRight then f.MiddleRight:SetAlpha(0) end
-	if f.BottomLeft then f.BottomLeft:SetAlpha(0) end
-	if f.BottomMiddle then f.BottomMiddle:SetAlpha(0) end
-	if f.BottomRight then f.BottomRight:SetAlpha(0) end
-	if f.LeftSeparator then f.LeftSeparator:SetAlpha(0) end
-	if f.RightSeparator then f.RightSeparator:SetAlpha(0) end
+	local buttonName = button.GetName and button:GetName()
 
-	if f.SetNormalTexture then f:SetNormalTexture("") end
-	if f.SetHighlightTexture then f:SetHighlightTexture("") end
-	if f.SetPushedTexture then f:SetPushedTexture("") end
-	if f.SetDisabledTexture then f:SetDisabledTexture("") end
+	if button.SetNormalTexture then button:SetNormalTexture("") end
+	if button.SetHighlightTexture then button:SetHighlightTexture("") end
+	if button.SetPushedTexture then button:SetPushedTexture("") end
+	if button.SetDisabledTexture then button:SetDisabledTexture("") end
 
-	if strip then f:StripTextures() end
+	if strip then button:StripTextures() end
 
-	-- used for a white X on decline buttons (more clear)
-	if isDeclineButton then
-		if f.Icon then f.Icon:Hide() end
-		if not f.text then
-			f.text = f:CreateFontString(nil, 'OVERLAY')
-			f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-			f.text:SetText('x')
-			f.text:SetJustifyH('CENTER')
-			f.text:Point('CENTER', f, 'CENTER')
+	for _, region in pairs(S.Blizzard.Regions) do
+		region = buttonName and _G[buttonName..region] or button[region]
+		if region then
+			region:SetAlpha(0)
 		end
 	end
 
-	f:SetTemplate("Default", true)
-	f:HookScript("OnEnter", S.SetModifiedBackdrop)
-	f:HookScript("OnLeave", S.SetOriginalBackdrop)
+	-- used for a white X on decline buttons (more clear)
+	if isDeclineButton then
+		if button.Icon then button.Icon:Hide() end
+		if not button.text then
+			button.text = button:CreateFontString(nil, 'OVERLAY')
+			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			button.text:SetText('x')
+			button.text:SetJustifyH('CENTER')
+			button.text:Point('CENTER', button, 'CENTER')
+		end
+	end
+
+	button:SetTemplate("Default", true)
+	button:HookScript("OnEnter", S.SetModifiedBackdrop)
+	button:HookScript("OnLeave", S.SetOriginalBackdrop)
 end
 
 function S:CropIcon(texture, parent)
@@ -522,37 +561,29 @@ function S:HandleRotateButton(btn)
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
 end
 
--- Introduced in 7.3
 function S:HandleMaxMinFrame(frame)
 	assert(frame, "does not exist.")
 
-	frame:StripTextures()
+	frame:StripTextures(true)
 
-	for _, name in next, {"MaximizeButton", "MinimizeButton"} do
+	for name, direction in pairs ({ ["MaximizeButton"] = 'up', ["MinimizeButton"] = 'down'}) do
 		local button = frame[name]
+
 		if button then
-			button:SetSize(18, 18)
+			button:SetSize(16, 16)
 			button:ClearAllPoints()
 			button:SetPoint("CENTER")
+			button:SetHitRectInsets(1, 1, 1, 1)
+
+			S:HandleButton(button)
 
 			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
+			button:GetNormalTexture():SetInside(button, 2, 2)
+
 			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-			button:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-
-			if not button.backdrop then
-				button:CreateBackdrop("Default", true)
-				button.backdrop:Point("TOPLEFT", button, 1, -1)
-				button.backdrop:Point("BOTTOMRIGHT", button, -1, 1)
-				button:HookScript('OnEnter', S.SetModifiedBackdrop)
-				button:HookScript('OnLeave', S.SetOriginalBackdrop)
-				button:SetHitRectInsets(1, 1, 1, 1)
-			end
-
-			if name == "MaximizeButton" then
-				button:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-				button:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-				button:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
-			end
+			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
+			button:GetPushedTexture():SetInside()
 		end
 	end
 end
@@ -780,7 +811,7 @@ function S:HandleItemButton(b, shrinkIcon)
 			b.backdrop:SetAllPoints()
 			icon:SetInside(b)
 		else
-			b.backdrop:SetOutside(icon)
+			b.backdrop:SetOutside(icon, 1, 1)
 		end
 
 		icon:SetParent(b.backdrop)

@@ -131,7 +131,7 @@ local function LoadSkin()
 			local s = frame.LinesScrollFrame.ScrollBar
 			s.ScrollUpButton:StripTextures()
 			if not s.ScrollUpButton.icon then
-				S:HandleNextPrevButton(s.ScrollUpButton)
+				S:HandleNextPrevButton(s.ScrollUpButton, true, true)
 				s.ScrollUpButton:Size(s.ScrollUpButton:GetWidth() + 7, s.ScrollUpButton:GetHeight() + 7)
 			end
 

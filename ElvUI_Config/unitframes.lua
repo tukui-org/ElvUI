@@ -2600,36 +2600,26 @@ E.Options.args.unitframe = {
 									desc = L["Color health by classcolor or reaction."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									disabled = function() return E.db.unitframe.colors.healthselection end,
-								},
-								healthselection = {
-									order = 1,
-									type = 'toggle',
-									name = L["Selection Health"],
-									desc = L["Color health by Blizzards UnitSelectionColor."],
-									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
-									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								forcehealthreaction = {
-									order = 2,
+									order = 1,
 									type = 'toggle',
 									name = L["Force Reaction Color"],
 									desc = L["Forces reaction color instead of class color on units controlled by players."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									disabled = function() return E.db.unitframe.colors.healthselection or not E.db.unitframe.colors.healthclass end,
+									disabled = function() return not E.db.unitframe.colors.healthclass end,
 								},
 								colorhealthbyvalue = {
-									order = 3,
+									order = 2,
 									type = 'toggle',
 									name = L["Health By Value"],
 									desc = L["Color health by amount remaining."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									disabled = function() return E.db.unitframe.colors.healthselection end,
 								},
 								customhealthbackdrop = {
-									order = 4,
+									order = 3,
 									type = 'toggle',
 									name = L["Custom Health Backdrop"],
 									desc = L["Use the custom health backdrop color instead of a multiple of the main health color."],
@@ -2637,7 +2627,7 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								classbackdrop = {
-									order = 5,
+									order = 4,
 									type = 'toggle',
 									name = L["Class Backdrop"],
 									desc = L["Color the health backdrop by class or reaction."],
@@ -2645,7 +2635,7 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								transparentHealth = {
-									order = 6,
+									order = 5,
 									type = 'toggle',
 									name = L["Transparent"],
 									desc = L["Make textures transparent."],
@@ -2653,7 +2643,7 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								useDeadBackdrop = {
-									order = 7,
+									order = 6,
 									type = "toggle",
 									name = L["Use Dead Backdrop"],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
@@ -2710,18 +2700,9 @@ E.Options.args.unitframe = {
 									desc = L["Color power by classcolor or reaction."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									disabled = function() return E.db.unitframe.colors.powerselection end,
-								},
-								powerselection = {
-									order = 1,
-									type = 'toggle',
-									name = L["Selection Power"],
-									desc = L["Color power by Blizzards UnitSelectionColor."],
-									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
-									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
 								transparentPower = {
-									order = 2,
+									order = 1,
 									type = 'toggle',
 									name = L["Transparent"],
 									desc = L["Make textures transparent."],
@@ -2808,60 +2789,6 @@ E.Options.args.unitframe = {
 								GOOD = {
 									order = 3,
 									name = L["Good"],
-									type = 'color',
-								},
-							},
-						},
-						selectionGroup = {
-							order = 5,
-							type = 'group',
-							name = L["Selection"],
-							get = function(info)
-								local n = tonumber(info[#info])
-								local t = E.db.unitframe.colors.selection[n]
-								local d = P.unitframe.colors.selection[n]
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-							end,
-							set = function(info, r, g, b)
-								local n = tonumber(info[#info])
-								local t = E.db.unitframe.colors.selection[n]
-								t.r, t.g, t.b = r, g, b
-								UF:Update_AllFrames()
-							end,
-							args = {
-								['1'] = {
-									order = 1,
-									name = L["Player in Combat"],
-									type = 'color',
-								},
-								['2'] = {
-									order = 2,
-									name = L["Neutral"],
-									type = 'color',
-								},
-								['3'] = {
-									order = 3,
-									name = L["Non-Interactive Unfriendly"],
-									type = 'color',
-								},
-								['4'] = {
-									order = 4,
-									name = L["Hostile"],
-									type = 'color',
-								},
-								['5'] = {
-									order = 5,
-									name = L["Dead"],
-									type = 'color',
-								},
-								['6'] = {
-									order = 6,
-									name = L["Friendly"],
-									type = 'color',
-								},
-								['7'] = {
-									order = 7,
-									name = L["Default"],
 									type = 'color',
 								},
 							},
@@ -7419,6 +7346,8 @@ E.Options.args.unitframe.args.tank = {
 }
 E.Options.args.unitframe.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units['tank'].targetsGroup.name[ info[#info] ] end
+E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units['tank'].targetsGroup.name[ info[#info] ] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
 
 --Assist Frames
 E.Options.args.unitframe.args.assist = {
@@ -7617,6 +7546,8 @@ E.Options.args.unitframe.args.assist = {
 }
 E.Options.args.unitframe.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
 E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units['assist'].targetsGroup.name[ info[#info] ] end
+E.Options.args.unitframe.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units['assist'].targetsGroup.name[ info[#info] ] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {
