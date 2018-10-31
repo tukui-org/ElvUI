@@ -571,10 +571,12 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.CastBar.interruptedBy = nil
 	frame.unitFrame.CastBar.curTarget = nil
 
+	--[[
 	local numIcons = #frame.unitFrame.QuestIcon
 	for i=1, numIcons do
 		frame.unitFrame.QuestIcon[i]:Hide()
 	end
+	]]
 
 	frame.unitFrame.plateID = nil
 	if frame.unitFrame.plateGUID then
@@ -703,7 +705,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		mod:UpdateElement_Cast(frame)
 		mod:UpdateElement_Auras(frame)
 		mod:UpdateElement_HealPrediction(frame)
-		mod:UpdateElement_QuestIcon(frame)
+		--mod:UpdateElement_QuestIcon(frame)
 		if(self.db.units[frame.UnitType].powerbar.enable) then
 			frame.PowerBar:Show()
 			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
@@ -787,9 +789,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Elite = self:ConstructElement_Elite(frame.unitFrame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
-	frame.unitFrame.QuestIcon = self:ConstructElement_QuestIcons(frame.unitFrame)
-
-	
+	--frame.unitFrame.QuestIcon = self:ConstructElement_QuestIcons(frame.unitFrame)
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
@@ -800,8 +800,6 @@ function mod:NAME_PLATE_CREATED(_, frame)
 		frame.unitFrame.onShowHooked = true
 	end
 end
-
-
 
 function mod:OnEvent(event, unit, ...)
 	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
@@ -1275,6 +1273,8 @@ function mod:Initialize()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
+
+	--[[
 	self:RegisterEvent("QUEST_ACCEPTED")
 	self:RegisterEvent("QUEST_REMOVED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
@@ -1291,6 +1291,7 @@ function mod:Initialize()
 			end
 		end
 	end
+	]]
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()

@@ -21,9 +21,9 @@ function mod:QUEST_ACCEPTED(questLogIndex, questID, ...)
 end
 
 function mod:QUEST_REMOVED(questID)
-	local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
+	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if not questName then return end
-		
+
 	self.ActiveWorldQuests[questName] = nil
 	mod:ForEachPlate("UpdateElement_QuestIcon")
 end
@@ -35,7 +35,7 @@ end
 
 function mod:GetQuests(unitID)
 	self.Tooltip:SetUnit(unitID)
-	
+
 	local QuestList = {}
 
 	local questID
@@ -45,7 +45,7 @@ function mod:GetQuests(unitID)
 		if not text then return end
 		questID = questID or self.ActiveWorldQuests[text]
 		local playerName, progressText = match(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
-		
+
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
@@ -94,7 +94,7 @@ function mod:Get_QuestIcon(frame, index)
 	itemTexture:SetTexCoord(unpack(E.TexCoords))
 	itemTexture:Hide()
 	icon.ItemTexture = itemTexture
-	
+
 	-- Loot icon, display if mob needs to be looted for quest item
 	local lootIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	lootIcon:SetAtlas('Banker')
@@ -108,13 +108,13 @@ function mod:Get_QuestIcon(frame, index)
 	skullIcon:SetSize(16, 16)
 	skullIcon:SetPoint('TOPLEFT', icon, 'BOTTOMRIGHT', -12, 12)
 	skullIcon:Hide()
-	icon.SkullIcon = skullIcon	
+	icon.SkullIcon = skullIcon
 
 	local iconText = icon:CreateFontString(nil, 'OVERLAY')
 	iconText:SetPoint('CENTER', icon, 0.8, 0)
 	iconText:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	icon.Text = iconText
-	
+
 	frame.QuestIcon[index] = icon
 	return icon
 end
