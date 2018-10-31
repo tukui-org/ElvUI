@@ -12,6 +12,7 @@ local format = string.format
 local match = string.match
 local strjoin = strjoin
 local tonumber = tonumber
+
 --WoW API / Variables
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
@@ -53,6 +54,7 @@ local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
+
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
@@ -70,6 +72,7 @@ local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 mod.PlateGUIDs = {}
+
 
 --Taken from Blizzard_TalentUI.lua
 local healerSpecIDs = {
@@ -568,6 +571,11 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.CastBar.interruptedBy = nil
 	frame.unitFrame.CastBar.curTarget = nil
 
+	local numIcons = #frame.unitFrame.QuestIcon
+	for i=1, numIcons do
+		frame.unitFrame.QuestIcon[i]:Hide()
+	end
+
 	frame.unitFrame.plateID = nil
 	if frame.unitFrame.plateGUID then
 		self.PlateGUIDs[frame.unitFrame.plateGUID] = nil
@@ -695,6 +703,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		mod:UpdateElement_Cast(frame)
 		mod:UpdateElement_Auras(frame)
 		mod:UpdateElement_HealPrediction(frame)
+		mod:UpdateElement_QuestIcon(frame)
 		if(self.db.units[frame.UnitType].powerbar.enable) then
 			frame.PowerBar:Show()
 			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
@@ -778,6 +787,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Elite = self:ConstructElement_Elite(frame.unitFrame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
+	frame.unitFrame.QuestIcon = self:ConstructElement_QuestIcons(frame.unitFrame)
+
+	
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
@@ -788,6 +800,8 @@ function mod:NAME_PLATE_CREATED(_, frame)
 		frame.unitFrame.onShowHooked = true
 	end
 end
+
+
 
 function mod:OnEvent(event, unit, ...)
 	if event == "PLAYER_ENTERING_WORLD" and (not unit or type(unit) == "boolean") then
@@ -1208,6 +1222,9 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
+
+
+
 function mod:Initialize()
 	self.db = E.db.nameplates
 	if E.private.nameplates.enable ~= true then return end
@@ -1258,6 +1275,23 @@ function mod:Initialize()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
+	self:RegisterEvent("QUEST_ACCEPTED")
+	self:RegisterEvent("QUEST_REMOVED")
+	self:RegisterEvent("QUEST_LOG_UPDATE")
+
+	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
+	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
+	self.Tooltip.Index = {}
+
+	for k, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(C_Map.GetBestMapForUnit("player"))) do
+		if task.inProgress then
+			local questID = task.questId
+			local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
+			if questName then
+				self.ActiveWorldQuests[questName] = questID
+			end
+		end
+	end
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
