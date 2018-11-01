@@ -819,6 +819,7 @@ L["PLAYER"] = "Player"
 L["Power Threshold"] = true
 L["Power Color"] = true
 L["Quest Boss"] = true
+L["Quest Icon"] = true
 L["Raid Difficulty"] = true
 L["Rare Elite"] = true
 L["Reaction Colors"] = true

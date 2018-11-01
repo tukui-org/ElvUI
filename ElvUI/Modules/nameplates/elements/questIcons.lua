@@ -120,6 +120,7 @@ function mod:Get_QuestIcon(frame, index)
 end
 
 function mod:UpdateElement_QuestIcon(frame)
+	if self.db.questIcon ~= true then return end
 
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)

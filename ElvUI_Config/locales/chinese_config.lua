@@ -823,6 +823,7 @@ L["PLAYER"] = "玩家"
 L["Power Threshold"] = "能量阈值"
 L["Power Color"] = "能量颜色"
 L["Quest Boss"] = "任务怪物"
+L["Quest Icon"] = true
 L["Raid Difficulty"] = "副本难度"
 L["Rare Elite"] = "稀有精英"
 L["Reaction Colors"] = "声望颜色"
