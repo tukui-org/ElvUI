@@ -407,17 +407,15 @@ local function LoadSkin()
 
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
-	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
-
-	-- Taken from AddOnSkins
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
+				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
 				Model:CreateBackdrop("Default")
-				Model:SetFrameLevel(Model:GetFrameLevel() + 2)
-				Model.backdrop:SetPoint('BOTTOMRIGHT', 2, -1)
+				Model.backdrop:SetOutside(Model, 2, 2)
 				Model.Border:Kill()
+				Model.TransmogStateTexture:SetAlpha(0)
+
 				hooksecurefunc(Model.Border, 'SetAtlas', function(self, texture)
 					local r, g, b
 					if texture == "transmog-wardrobe-border-uncollected" then
@@ -425,11 +423,29 @@ local function LoadSkin()
 					elseif texture == "transmog-wardrobe-border-unusable" then
 						r, g, b =  1, 0, 0
 					else
-						r, g, b = unpack(E.media.bordercolor)
+						r, g, b = unpack(E["media"].bordercolor)
 					end
 					Model.backdrop:SetBackdropBorderColor(r, g, b)
 				end)
 			end
+		end
+
+		if Frame.PendingTransmogFrame then
+			Frame.PendingTransmogFrame.Glowframe:SetAtlas(nil)
+			Frame.PendingTransmogFrame.Glowframe:CreateBackdrop("Default")
+			Frame.PendingTransmogFrame.Glowframe.backdrop:SetOutside()
+			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
+			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropBorderColor(1, .77, 1, 1)
+			Frame.PendingTransmogFrame.Glowframe = Frame.PendingTransmogFrame.Glowframe.backdrop
+
+			for i = 1, 12 do
+				Frame.PendingTransmogFrame['Wisp'..i]:Hide()
+			end
+		end
+
+		if Frame.PagingFrame then
+			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton)
 		end
 	end
 

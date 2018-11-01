@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local select = select
+local select, unpack = select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
@@ -108,8 +108,14 @@ function S:SkinAce3()
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
 			button:HookScript('OnClick', function(this)
-				if this and this.obj and this.obj.dropdown and not this.obj.dropdown.template then
-					this.obj.dropdown:SetTemplate('Default', true)
+				local self = this.obj
+				if self.dropdown then
+					self.dropdown:SetTemplate("Default", true)
+					if self.dropdown.slider then
+						self.dropdown.slider:SetTemplate("Default")
+						self.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
+						self.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E["media"].rgbvaluecolor))
+					end
 				end
 			end)
 		elseif TYPE == "EditBox" then

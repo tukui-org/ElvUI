@@ -83,10 +83,6 @@ local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local SEARCH = SEARCH
 
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
-local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
-local ToggleDropDownMenu = ToggleDropDownMenu
 local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -95,6 +91,7 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames, HandleModifiedItemClick
 -- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton, SetInsertItemsLeftToRight
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
+-- GLOBALS: ToggleDropDownMenu, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize
 
 local ElvUIAssignBagDropdown
 local SEARCH_STRING = ""
