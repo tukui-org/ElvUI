@@ -156,6 +156,8 @@ local function Constructor()
 	colorSwatch:SetPoint("LEFT")
 
 	local texture = frame:CreateTexture(nil, "BACKGROUND")
+	frame.texture = texture
+
 	texture:SetWidth(16)
 	texture:SetHeight(16)
 	texture:SetColorTexture(1, 1, 1)
@@ -163,6 +165,7 @@ local function Constructor()
 	texture:Show()
 
 	local checkers = frame:CreateTexture(nil, "BACKGROUND")
+	frame.checkers = checkers
 	checkers:SetWidth(14)
 	checkers:SetHeight(14)
 	checkers:SetTexture(188523) -- Tileset\\Generic\\Checkers
@@ -190,6 +193,7 @@ local function Constructor()
 		frame       = frame,
 		type        = Type
 	}
+
 	for method, func in pairs(methods) do
 		widget[method] = func
 	end
