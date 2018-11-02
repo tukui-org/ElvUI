@@ -125,8 +125,16 @@ function mod:UpdateElement_QuestIcon(frame)
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)
 
+	local scenarioName, currentStage, numStages, flags, _, _, _, xp, money, scenarioType, _, textureKitID = C_Scenario.GetInfo()
+	local inChallengeMode = (scenarioType == LE_SCENARIO_TYPE_CHALLENGE_MODE)
+
 	for i=1, #questIcon do
 		questIcon[i]:Hide()
+
+		if inChallengeMode then
+			questIcon[i]:Hide()
+			return
+		end
 	end
 
 	for i=1, #QuestList do
