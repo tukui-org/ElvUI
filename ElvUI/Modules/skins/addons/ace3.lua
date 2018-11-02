@@ -162,7 +162,6 @@ function S:SkinAce3()
 			local editbox = widget.editbox
 			local lowtext = widget.lowtext
 			local hightext = widget.hightext
-			local HEIGHT = 12
 
 			S:HandleSliderFrame(frame)
 
