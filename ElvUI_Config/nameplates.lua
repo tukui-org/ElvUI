@@ -3600,7 +3600,7 @@ E.Options.args.nameplate = {
 					name = L["Quest Icon"],
 					type = 'group',
 					get = function(info) return E.db.nameplates.questIcon end,
-					set = function(info, value) E.db.nameplates.questIcon = value; end,
+					set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
 					args = {
 						enable = {
 							type = 'toggle',
