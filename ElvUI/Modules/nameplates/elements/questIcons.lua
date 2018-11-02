@@ -21,6 +21,7 @@ function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
 end
 
 function mod:QUEST_REMOVED(_, questID)
+	if not questID then return end
 	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
 	if not questName then return end
 
@@ -56,20 +57,22 @@ function mod:GetQuests(unitID)
 				QuestList[index].objectiveCount = y - x
 			end
 
-			local QuestLogIndex = GetQuestLogIndexByID(questID)
-			local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
-			QuestList[index].itemTexture = itemTexture
+			if questID then
+				local QuestLogIndex = GetQuestLogIndexByID(questID)
+				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+				QuestList[index].itemTexture = itemTexture
 
-			if itemTexture then
-				QuestList[index].questType = "QUEST_ITEM"
-			elseif progressText:find(L["slain"]) then
-				QuestList[index].questType = "KILL"
-			else
-				QuestList[index].questType = "LOOT"
+				if itemTexture then
+					QuestList[index].questType = "QUEST_ITEM"
+				elseif progressText:find(L["slain"]) then
+					QuestList[index].questType = "KILL"
+				else
+					QuestList[index].questType = "LOOT"
+				end
+
+				QuestList[index].questID = questID
+				QuestList[index].questLogIndex = QuestLogIndex
 			end
-
-			QuestList[index].questID = questID
-			QuestList[index].questLogIndex = QuestLogIndex
 		end
 	end
 
@@ -124,13 +127,6 @@ function mod:UpdateElement_QuestIcon(frame)
 
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)
-
-	--[[ Mera is to stupid to get this working >.>
-	local inInstance, instanceType = IsInInstance()
-	if(inInstance and (instanceType == 'raid' or instanceType == 'party' or instanceType == 'scenario')) then
-		return
-	end
-	]]
 
 	for i=1, #questIcon do
 		questIcon[i]:Hide()
