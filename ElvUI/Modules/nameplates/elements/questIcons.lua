@@ -125,6 +125,13 @@ function mod:UpdateElement_QuestIcon(frame)
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)
 
+	--[[ Mera is to stupid to get this working >.>
+	local inInstance, instanceType = IsInInstance()
+	if(inInstance and (instanceType == 'raid' or instanceType == 'party' or instanceType == 'scenario')) then
+		return
+	end
+	]]
+
 	for i=1, #questIcon do
 		questIcon[i]:Hide()
 	end
