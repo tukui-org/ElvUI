@@ -15,9 +15,9 @@ local UsedLocale = GetLocale()
 local QuestTypesLocalized = {
 	["enUS"] = {
 		["slain"] = "KILL",
-		["destroyed"] = "KILL",
+		["destroy"] = "KILL",
 		["kill"] = "KILL",
-		["defeated"] = "KILL",
+		["defeat"] = "KILL",
 		["speak"] = "CHAT",
 	},
 	["deDE"] = {
