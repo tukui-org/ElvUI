@@ -17,9 +17,48 @@ local QuestTypesLocalized = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
-	}
+	},
+	["deDE"] = {
+		["getötet"] = "KILL",
+		["zerstört"] = "KILL",
+		["sprecht"] = "CHAT",
+	},
+	["esMX"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["frFR"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["koKR"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["ptBR"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["ruRU"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["zhCN"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
+	["zhTW"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	},
 }
-
 
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
 	if questLogIndex and questLogIndex > 0 then
@@ -141,7 +180,7 @@ function mod:Get_QuestIcon(frame, index)
 	chatIcon:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	chatIcon:SetTexCoord(0, 0.5, 0.5, 1)
 	chatIcon:Hide()
-	icon.ChatIcon = chatIcon	
+	icon.ChatIcon = chatIcon
 
 	local iconText = icon:CreateFontString(nil, 'OVERLAY')
 	iconText:SetPoint('BOTTOMRIGHT', icon, 2, -0.8)
@@ -185,7 +224,7 @@ function mod:UpdateElement_QuestIcon(frame)
 			elseif questType == "QUEST_ITEM" then
 				icon.ItemTexture:Show()
 				icon.ItemTexture:SetTexture(itemTexture)
-			end			
+			end
 			icon:Show()
 		else
 			icon:Hide()
