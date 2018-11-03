@@ -10,6 +10,17 @@ local strjoin = strjoin
 mod.ActiveQuests = {
 	-- [questName] = questID ?
 }
+
+local DaLang = GetLocale()
+local QuestTypesLocalized = {
+	["enUS"] = {
+		["slain"] = "KILL",
+		["destroyed"] = "KILL",
+		["speak"] = "CHAT",
+	}
+}
+
+
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
@@ -50,11 +61,11 @@ function mod:GetQuests(unitID)
 		if not text then return end
 		questID = questID or self.ActiveQuests[text]
 		local playerName, progressText = match(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
-
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
 
+			progressText = progressText:lower()
 			local x, y
 			x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
@@ -70,10 +81,15 @@ function mod:GetQuests(unitID)
 
 			if itemTexture then
 				QuestList[index].questType = "QUEST_ITEM"
-			elseif progressText:find(L["slain"]) then
-				QuestList[index].questType = "KILL"
 			else
 				QuestList[index].questType = "LOOT"
+
+				for string in pairs(QuestTypesLocalized[DaLang]) do
+					if progressText:find(string) then
+						QuestList[index].questType = QuestTypesLocalized[DaLang][string]
+						break
+					end
+				end
 			end
 
 			QuestList[index].questLogIndex = QuestLogIndex
@@ -118,6 +134,15 @@ function mod:Get_QuestIcon(frame, index)
 	skullIcon:Hide()
 	icon.SkullIcon = skullIcon
 
+	-- Chat Icon, display if need to talk to NPC
+	local chatIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
+	chatIcon:SetSize(20, 20)
+	chatIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 2)
+	chatIcon:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
+	chatIcon:SetTexCoord(0, 0.5, 0.5, 1)
+	chatIcon:Hide()
+	icon.ChatIcon = chatIcon	
+
 	local iconText = icon:CreateFontString(nil, 'OVERLAY')
 	iconText:SetPoint('BOTTOMRIGHT', icon, 2, -0.8)
 	iconText:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
@@ -149,11 +174,14 @@ function mod:UpdateElement_QuestIcon(frame)
 			icon.SkullIcon:Hide()
 			icon.LootIcon:Hide()
 			icon.ItemTexture:Hide()
-	
+			icon.ChatIcon:Hide()
 			if questType == "KILL" then
 				icon.SkullIcon:Show()
 			elseif questType == "LOOT" then
 				icon.LootIcon:Show()
+			elseif questType == "CHAT" then
+				icon.ChatIcon:Show()
+				icon.Text:SetText('')
 			elseif questType == "QUEST_ITEM" then
 				icon.ItemTexture:Show()
 				icon.ItemTexture:SetTexture(itemTexture)
