@@ -11,7 +11,7 @@ mod.ActiveQuests = {
 	-- [questName] = questID ?
 }
 
-local DaLang = GetLocale()
+local UsedLocale = GetLocale()
 local QuestTypesLocalized = {
 	["enUS"] = {
 		["slain"] = "KILL",
@@ -44,9 +44,9 @@ local QuestTypesLocalized = {
 		["speak"] = "CHAT",
 	},
 	["ruRU"] = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
+		["убит"] = "KILL",
+		["уничтожен"] = "KILL",
+		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {
 		["slain"] = "KILL",
@@ -59,6 +59,7 @@ local QuestTypesLocalized = {
 		["speak"] = "CHAT",
 	},
 }
+local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
 	if questLogIndex and questLogIndex > 0 then
@@ -123,9 +124,9 @@ function mod:GetQuests(unitID)
 			else
 				QuestList[index].questType = "LOOT"
 
-				for string in pairs(QuestTypesLocalized[DaLang]) do
-					if progressText:find(string) then
-						QuestList[index].questType = QuestTypesLocalized[DaLang][string]
+				for questString in pairs(QuestTypes) do
+					if progressText:find(questString) then
+						QuestList[index].questType = QuestTypes[questString]
 						break
 					end
 				end
