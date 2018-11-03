@@ -7,26 +7,30 @@ local format = string.format
 local match = string.match
 local strjoin = strjoin
 
-mod.ActiveWorldQuests = {
+mod.ActiveQuests = {
 	-- [questName] = questID ?
 }
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
-	if not IsQuestTask(questID) then return end
-	local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
-	if questName then
-		self.ActiveWorldQuests[questName] = questID
-	end
+	if questLogIndex and questLogIndex > 0 then
+		local questName = GetQuestLogTitle(questLogIndex)
 
-	mod:ForEachPlate("UpdateElement_QuestIcon")
+		if questName and questID and questID > 0 then
+			self.ActiveQuests[questName] = questID
+		end
+
+		mod:ForEachPlate("UpdateElement_QuestIcon")
+	end
 end
 
 function mod:QUEST_REMOVED(_, questID)
 	if not questID then return end
-	local questName, _, _ = C_TaskQuest.GetQuestInfoByQuestID(questID)
-	if not questName then return end
-
-	self.ActiveWorldQuests[questName] = nil
-	mod:ForEachPlate("UpdateElement_QuestIcon")
+	for questName, __questID in pairs(self.ActiveQuests) do
+		if __questID == questID then
+			self.ActiveQuests[questName] = nil
+			mod:ForEachPlate("UpdateElement_QuestIcon")
+			break
+		end
+	end
 end
 
 mod.QuestObjectiveStrings = {}
@@ -44,7 +48,7 @@ function mod:GetQuests(unitID)
 		local str = _G['ElvUIQuestTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text then return end
-		questID = questID or self.ActiveWorldQuests[text]
+		questID = questID or self.ActiveQuests[text]
 		local playerName, progressText = match(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
 
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then

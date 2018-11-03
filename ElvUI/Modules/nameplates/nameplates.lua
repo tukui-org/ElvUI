@@ -1278,15 +1278,13 @@ function mod:Initialize()
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	for k, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(C_Map.GetBestMapForUnit("player"))) do
-		if task.inProgress then
-			local questID = task.questId
-			local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
-			if questName then
-				self.ActiveWorldQuests[questName] = questID
-			end
+	local numEntries, numQuests = GetNumQuestLogEntries();
+	for questLogIndex = 1, numEntries do
+		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);
+		if title and questID and questID > 0 then
+			self.ActiveQuests[title] = questID
 		end
-	end
+	end	
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
