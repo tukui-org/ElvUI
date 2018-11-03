@@ -90,6 +90,7 @@ function mod:QUEST_LOG_UPDATE()
 end
 
 function mod:GetQuests(unitID)
+	if UnitClassification(unit) == "worldboss" then return end
 	self.Tooltip:SetUnit(unitID)
 
 	local QuestList = {}
