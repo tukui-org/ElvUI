@@ -108,14 +108,14 @@ function mod:Get_QuestIcon(frame, index)
 
 	-- Skull icon, display if mob needs to be slain
 	local skullIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
-	skullIcon:SetSize(16, 16)
-	skullIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT')
-	skullIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon.tga]])
+	skullIcon:SetSize(20, 20)
+	skullIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 2)
+	skullIcon:SetTexture([[Interface\WorldMap\Skull_64Grey.PNG]])
 	skullIcon:Hide()
 	icon.SkullIcon = skullIcon
 
 	local iconText = icon:CreateFontString(nil, 'OVERLAY')
-	iconText:SetPoint('BOTTOMRIGHT', icon, 0.8, -0.8)
+	iconText:SetPoint('BOTTOMRIGHT', icon, 2, -0.8)
 	iconText:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	icon.Text = iconText
 
