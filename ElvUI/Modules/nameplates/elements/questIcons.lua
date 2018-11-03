@@ -61,18 +61,18 @@ function mod:GetQuests(unitID)
 				local QuestLogIndex = GetQuestLogIndexByID(questID)
 				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
 				QuestList[index].itemTexture = itemTexture
-
-				if itemTexture then
-					QuestList[index].questType = "QUEST_ITEM"
-				elseif progressText:find(L["slain"]) then
-					QuestList[index].questType = "KILL"
-				else
-					QuestList[index].questType = "LOOT"
-				end
-
 				QuestList[index].questID = questID
-				QuestList[index].questLogIndex = QuestLogIndex
 			end
+
+			if itemTexture then
+				QuestList[index].questType = "QUEST_ITEM"
+			elseif progressText:find(L["slain"]) then
+				QuestList[index].questType = "KILL"
+			else
+				QuestList[index].questType = "LOOT"
+			end
+
+			QuestList[index].questLogIndex = QuestLogIndex
 		end
 	end
 
@@ -102,19 +102,20 @@ function mod:Get_QuestIcon(frame, index)
 	local lootIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	lootIcon:SetAtlas('Banker')
 	lootIcon:SetSize(16, 16)
-	lootIcon:SetPoint('TOPLEFT', icon, 'BOTTOMRIGHT', -12, 12)
+	lootIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT')
 	lootIcon:Hide()
 	icon.LootIcon = lootIcon
 
 	-- Skull icon, display if mob needs to be slain
 	local skullIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	skullIcon:SetSize(16, 16)
-	skullIcon:SetPoint('TOPLEFT', icon, 'BOTTOMRIGHT', -12, 12)
+	skullIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT')
+	skullIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon.tga]])
 	skullIcon:Hide()
 	icon.SkullIcon = skullIcon
 
 	local iconText = icon:CreateFontString(nil, 'OVERLAY')
-	iconText:SetPoint('CENTER', icon, 0.8, 0)
+	iconText:SetPoint('BOTTOMRIGHT', icon, 0.8, -0.8)
 	iconText:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	icon.Text = iconText
 
@@ -140,20 +141,23 @@ function mod:UpdateElement_QuestIcon(frame)
 
 		if objectiveCount and objectiveCount > 0 then
 			icon.Text:SetText(objectiveCount)
+
+			icon.SkullIcon:Hide()
+			icon.LootIcon:Hide()
+			icon.ItemTexture:Hide()
+	
+			if questType == "KILL" then
+				icon.SkullIcon:Show()
+			elseif questType == "LOOT" then
+				icon.LootIcon:Show()
+			elseif questType == "QUEST_ITEM" then
+				icon.ItemTexture:Show()
+				icon.ItemTexture:SetTexture(itemTexture)
+			end			
+			icon:Show()
 		else
-			icon.Text:SetText("")
+			icon:Hide()
 		end
-
-		if questType == "KILL" then
-			icon.SkullIcon:Show()
-		elseif questType == "LOOT" then
-			icon.LootIcon:Show()
-		elseif questType == "QUEST_ITEM" then
-			icon.ItemTexture:Show()
-			icon.ItemTexture:SetTexture(itemTexture)
-		end
-
-		icon:Show()
 	end
 end
 

@@ -246,6 +246,16 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
 	end
 
+	if self.db.units[frame.UnitType].castbar.iconPosition == "RIGHT" then
+		frame.QuestIcon:ClearAllPoints()
+		if frame.CastBar:IsShown() then
+			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+		else
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+		end
+	end
+
+
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update()
 	end
