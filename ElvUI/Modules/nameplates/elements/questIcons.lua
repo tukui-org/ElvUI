@@ -174,7 +174,7 @@ function mod:Get_QuestIcon(frame, index)
 	local skullIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	skullIcon:SetSize(20, 20)
 	skullIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 2)
-	skullIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon.blp]])
+	skullIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon]])
 	skullIcon:Hide()
 	icon.SkullIcon = skullIcon
 
