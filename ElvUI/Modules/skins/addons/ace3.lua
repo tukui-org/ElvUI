@@ -195,6 +195,7 @@ function S:SkinAce3()
 			if not frame.backdrop then
 				frame:CreateBackdrop("Default")
 			end
+
 			frame.backdrop:SetSize(16, 16)
 			frame.backdrop:ClearAllPoints()
 			frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
@@ -209,6 +210,7 @@ function S:SkinAce3()
 
 			if frame.checkers then
 				frame.checkers:ClearAllPoints()
+				frame.checkers:SetDrawLayer("ARTWORK")
 				frame.checkers:SetParent(frame.backdrop)
 				frame.checkers:SetInside(frame.backdrop)
 			end
