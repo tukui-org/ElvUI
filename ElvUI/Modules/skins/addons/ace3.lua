@@ -135,6 +135,11 @@ function S:SkinAce3()
 				local self = this.obj
 				if self.dropdown then
 					self.dropdown:SetTemplate("Default", true)
+					if self.dropdown.slider then
+						self.dropdown.slider:SetTemplate('Default')
+						self.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
+						self.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+					end
 				end
 			end)
 		elseif TYPE == "EditBox" then
