@@ -142,7 +142,13 @@ function S:SkinAce3()
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			button:HookScript('OnClick', SkinDropdownPullout)
+			-- We need this, otherwise the dropdown isn't skinned after the first click!
+			button:HookScript('OnClick', function(this)
+				local self = this.obj
+				if self.dropdown then
+					self.dropdown:SetTemplate("Default", true)
+				end
+			end)
 		elseif TYPE == "EditBox" then
 			local frame = widget.editbox
 			local button = widget.button
