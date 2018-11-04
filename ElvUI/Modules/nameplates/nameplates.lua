@@ -48,16 +48,18 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestLogTitle = GetQuestLogTitle
 local GetCVar = GetCVar
 local UnitGUID = UnitGUID
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
+-- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplates
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemies
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions
@@ -72,7 +74,6 @@ local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 mod.PlateGUIDs = {}
-
 
 --Taken from Blizzard_TalentUI.lua
 local healerSpecIDs = {
@@ -1218,9 +1219,6 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-
-
-
 function mod:Initialize()
 	self.db = E.db.nameplates
 	if E.private.nameplates.enable ~= true then return end
@@ -1284,7 +1282,7 @@ function mod:Initialize()
 		if title and questID and questID > 0 then
 			self.ActiveQuests[title] = questID
 		end
-	end	
+	end
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()

@@ -12,8 +12,20 @@ local CreateFrame = CreateFrame
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
-	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
-		self.obj.pullout.frame:SetTemplate('Default', true)
+	if self and self.obj then
+		if self.obj.pullout and self.obj.pullout.frame then
+			self.obj.pullout.frame:SetTemplate('Default', true)
+		end
+
+		if self.obj.dropdown then
+			self.obj.dropdown:SetTemplate('Default', true)
+
+			if self.obj.dropdown.slider then
+				self.obj.dropdown.slider:SetTemplate('Default')
+				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
+				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+			end
+		end
 	end
 end
 
@@ -45,8 +57,8 @@ function S:SkinAce3()
 			widget.checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			widget.checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 
-			widget.check:SetTexture(E["media"].normTex)
-			widget.check:SetVertexColor(unpack(E["media"].rgbvaluecolor))
+			widget.check:SetTexture(E.media.normTex)
+			widget.check:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
 			widget.checkbg:SetTexture('')
 			widget.highlight:SetTexture('')
@@ -126,17 +138,7 @@ function S:SkinAce3()
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			button:HookScript('OnClick', function(self)
-				self = self.obj
-				if self.dropdown then
-					self.dropdown:SetTemplate("Default", true)
-					if self.dropdown.slider then
-						self.dropdown.slider:SetTemplate("Default")
-						self.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
-						self.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E["media"].rgbvaluecolor))
-					end
-				end
-			end)
+			button:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "EditBox" then
 			local frame = widget.editbox
 			local button = widget.button
@@ -194,7 +196,7 @@ function S:SkinAce3()
 			frame.backdrop:SetSize(16, 16)
 			frame.backdrop:ClearAllPoints()
 			frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
-			colorSwatch:SetTexture(E["media"].blankTex)
+			colorSwatch:SetTexture(E.media.blankTex)
 			colorSwatch:ClearAllPoints()
 			colorSwatch:SetParent(frame.backdrop)
 			colorSwatch:SetInside(frame.backdrop)
