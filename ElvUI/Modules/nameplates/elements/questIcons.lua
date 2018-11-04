@@ -129,7 +129,7 @@ function mod:GetQuests(unitID)
 				local progress = C_TaskQuest.GetQuestProgressBarInfo(questID)
 				QuestList[index].isPerc = false
 				if progress then
-					QuestList[index].objectiveCount = ceil(100 - progress)
+					QuestList[index].objectiveCount = progress
 					QuestList[index].isPerc = true
 				end
 
