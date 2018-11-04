@@ -37,6 +37,7 @@ Fixed issue which would show a NPC Reputation instead of NPC Title on NamePlates
 Fixed Health Backdrop ClassBackdrop multiplier. (#134)  
 Fixed DejaCharacterStats and Character Skin conflicts. (#819)  
 Fixed `Raid Menu` button in `Raid Control`. (!78 - Thanks @Dimitro)  
+Fixed issue which prevented Style Filters from applying to Healthbars of some Nameplates when Healthbar was disabled.  
 
 
 **Misc. Changes:**  
