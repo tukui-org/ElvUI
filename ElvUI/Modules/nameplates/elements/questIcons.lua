@@ -23,6 +23,8 @@ local QuestTypesLocalized = {
 	["deDE"] = {
 		["getötet"] = "KILL",
 		["zerstört"] = "KILL",
+		["töten"] = "KILL",
+		["besiegen"] = "KILL",
 		["sprecht"] = "CHAT",
 	},
 	["esMX"] = {
@@ -118,7 +120,7 @@ function mod:GetQuests(unitID)
 			if questID then
 				local QuestLogIndex = GetQuestLogIndexByID(questID)
 				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
-				
+
 				QuestList[index].itemTexture = itemTexture
 				QuestList[index].questID = questID
 			end
