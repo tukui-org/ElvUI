@@ -95,7 +95,8 @@ function mod:QUEST_LOG_UPDATE()
 end
 
 function mod:GetQuests(unitID)
-	if UnitClassification(unit) == "worldboss" then return end
+	local inInstance, instanceType = IsInInstance()
+	if inInstance then return end
 	self.Tooltip:SetUnit(unitID)
 
 	local QuestList = {}
@@ -209,7 +210,7 @@ function mod:UpdateElement_QuestIcon(frame)
 	for i=1, #questIcon do
 		questIcon[i]:Hide()
 	end
-
+	if not QuestList then return end
 	for i=1, #QuestList do
 		local icon = self:Get_QuestIcon(frame, i)
 		local objectiveCount = QuestList[i].objectiveCount
