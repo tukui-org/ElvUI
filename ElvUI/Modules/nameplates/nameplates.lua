@@ -503,6 +503,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:ConfigureElement_Elite(frame.unitFrame)
 	self:ConfigureElement_Detection(frame.unitFrame)
 	self:ConfigureElement_Highlight(frame.unitFrame)
+	self:ConfigureElement_QuestIcon(frame.unitFrame)
 	self:RegisterEvents(frame.unitFrame, unit)
 	self:UpdateElement_All(frame.unitFrame, unit, nil, true)
 

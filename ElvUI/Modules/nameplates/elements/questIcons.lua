@@ -146,8 +146,9 @@ end
 function mod:Get_QuestIcon(frame, index)
 	if frame.QuestIcon[index] then return frame.QuestIcon[index] end
 
+	local iconSize = self.db.questIconSize
 	local icon = CreateFrame("Frame", nil, frame.QuestIcon)
-	icon:SetSize(16, 16)
+	icon:SetSize(iconSize, iconSize)
 
 	if index == 1 then
 		icon:SetPoint("LEFT", frame.QuestIcon, "LEFT")
@@ -157,7 +158,7 @@ function mod:Get_QuestIcon(frame, index)
 
 	local itemTexture = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	itemTexture:SetPoint('TOPRIGHT', icon, 'BOTTOMLEFT', 12, 12)
-	itemTexture:SetSize(16, 16)
+	itemTexture:SetSize(iconSize, iconSize)
 	itemTexture:SetTexCoord(unpack(E.TexCoords))
 	itemTexture:Hide()
 	icon.ItemTexture = itemTexture
@@ -165,14 +166,14 @@ function mod:Get_QuestIcon(frame, index)
 	-- Loot icon, display if mob needs to be looted for quest item
 	local lootIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
 	lootIcon:SetAtlas('Banker')
-	lootIcon:SetSize(16, 16)
+	lootIcon:SetSize(iconSize, iconSize)
 	lootIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT')
 	lootIcon:Hide()
 	icon.LootIcon = lootIcon
 
 	-- Skull icon, display if mob needs to be slain
 	local skullIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
-	skullIcon:SetSize(20, 20)
+	skullIcon:SetSize(iconSize + 4, iconSize + 4)
 	skullIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 2)
 	skullIcon:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon]])
 	skullIcon:Hide()
@@ -180,7 +181,7 @@ function mod:Get_QuestIcon(frame, index)
 
 	-- Chat Icon, display if need to talk to NPC
 	local chatIcon = icon:CreateTexture(nil, 'BORDER', nil, 1)
-	chatIcon:SetSize(20, 20)
+	chatIcon:SetSize(iconSize + 4, iconSize + 4)
 	chatIcon:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 2)
 	chatIcon:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	chatIcon:SetTexCoord(0, 0.5, 0.5, 1)
@@ -234,6 +235,19 @@ function mod:UpdateElement_QuestIcon(frame)
 		else
 			icon:Hide()
 		end
+	end
+end
+
+function mod:ConfigureElement_QuestIcon(frame)
+	local QuestList = self:GetQuests(frame.unit)
+	local iconSize = self.db.questIconSize
+	for i=1, #QuestList do
+		local icon = self:Get_QuestIcon(frame, i)
+		icon:SetSize(iconSize,iconSize)
+		icon.ItemTexture:SetSize(iconSize,iconSize)
+		icon.LootIcon:SetSize(iconSize,iconSize)
+		icon.SkullIcon:SetSize(iconSize + 4,iconSize + 4)
+		icon.ChatIcon:SetSize(iconSize + 4,iconSize + 4)
 	end
 end
 

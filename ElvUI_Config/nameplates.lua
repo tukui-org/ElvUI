@@ -3599,13 +3599,21 @@ E.Options.args.nameplate = {
 					order = 226,
 					name = L["Quest Icon"],
 					type = 'group',
-					get = function(info) return E.db.nameplates.questIcon end,
-					set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
 					args = {
 						enable = {
 							type = 'toggle',
 							order = 1,
 							name = L["Enable"],
+							get = function(info) return E.db.nameplates.questIcon end,
+							set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
+						},
+						questIconSize = {
+							type = 'range',
+							order = 2,
+							name = L["Size"],
+							min = 10, max = 50, step = 1,
+							get = function(info) return E.db.nameplates.questIconSize end,
+							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
 						},
 					},
 				},

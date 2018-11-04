@@ -328,6 +328,7 @@ P['nameplates'] = {
 	['cutawayHealthFadeOutTime'] = 0.6,
 	['alwaysShowTargetHealth'] = true,
 	['questIcon'] = true,
+	['questIconSize'] = 16,
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = true,
