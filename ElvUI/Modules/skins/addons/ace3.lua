@@ -188,7 +188,7 @@ function S:SkinAce3()
 			msgframe:SetTemplate('Transparent')
 			msgframe.msg:ClearAllPoints()
 			msgframe.msg:SetPoint("CENTER")
-		elseif (TYPE == "ColorPicker-ElvUI" or TYPE == "ColorPicker") then
+		elseif (TYPE == "ColorPicker" or TYPE == "ColorPicker-ElvUI") then
 			local frame = widget.frame
 			local colorSwatch = widget.colorSwatch
 
