@@ -12,8 +12,18 @@ local CreateFrame = CreateFrame
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
-	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
-		self.obj.pullout.frame:SetTemplate('Default', true)
+	if self and self.obj then
+		if self.obj.pullout and self.obj.pullout.frame then
+			self.obj.pullout.frame:SetTemplate('Default', true)
+		elseif self.obj.dropdown then
+			self.obj.dropdown:SetTemplate('Default', true)
+
+			if self.obj.dropdown.slider then
+				self.obj.dropdown.slider:SetTemplate('Default')
+				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
+				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+			end
+		end
 	end
 end
 
@@ -130,18 +140,7 @@ function S:SkinAce3()
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			-- We need this, otherwise the dropdown isn't skinned after the first click!
-			button:HookScript('OnClick', function(this)
-				local self = this.obj
-				if self.dropdown then
-					self.dropdown:SetTemplate("Default", true)
-					if self.dropdown.slider then
-						self.dropdown.slider:SetTemplate('Default')
-						self.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
-						self.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
-					end
-				end
-			end)
+			button:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "EditBox" then
 			local frame = widget.editbox
 			local button = widget.button
