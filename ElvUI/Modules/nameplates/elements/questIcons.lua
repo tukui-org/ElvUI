@@ -106,7 +106,10 @@ function mod:GetQuests(unitID)
 		local str = _G['ElvUIQuestTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text then return end
-		questID = questID or self.ActiveQuests[text]
+		if not questID then
+			questID = self.ActiveQuests[text]
+		end
+
 		local playerName, progressText = match(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then
 			local index = #QuestList + 1
@@ -122,6 +125,13 @@ function mod:GetQuests(unitID)
 			if questID then
 				local QuestLogIndex = GetQuestLogIndexByID(questID)
 				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+
+				local progress = C_TaskQuest.GetQuestProgressBarInfo(questID)
+				QuestList[index].isPerc = false
+				if progress then
+					QuestList[index].objectiveCount = ceil(100 - progress)
+					QuestList[index].isPerc = true
+				end
 
 				QuestList[index].itemTexture = itemTexture
 				QuestList[index].questID = questID
@@ -139,7 +149,7 @@ function mod:GetQuests(unitID)
 					end
 				end
 			end
-
+			questID = nil
 			QuestList[index].questLogIndex = QuestLogIndex
 		end
 	end
@@ -218,13 +228,13 @@ function mod:UpdateElement_QuestIcon(frame)
 		local itemTexture = QuestList[i].itemTexture
 
 		if objectiveCount and objectiveCount > 0 then
-			icon.Text:SetText(objectiveCount)
+			icon.Text:SetText(QuestList[i].isPerc and objectiveCount .."%" or objectiveCount)
 
 			icon.SkullIcon:Hide()
 			icon.LootIcon:Hide()
 			icon.ItemTexture:Hide()
 			icon.ChatIcon:Hide()
-			if questType == "KILL" then
+			if questType == "KILL" or QuestList[i].isPerc == true then
 				icon.SkullIcon:Show()
 			elseif questType == "LOOT" then
 				icon.LootIcon:Show()
