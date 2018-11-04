@@ -15,7 +15,7 @@ local function SkinDropdownPullout(self)
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
 			self.obj.pullout.frame:SetTemplate('Default', true)
-		elseif self.obj.dropdown then
+		elseif self.obj.dropdown then -- this will be LSM
 			self.obj.dropdown:SetTemplate('Default', true)
 
 			if self.obj.dropdown.slider then
