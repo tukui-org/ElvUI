@@ -254,6 +254,8 @@ end
 
 function mod:ConfigureElement_QuestIcon(frame)
 	local QuestList = self:GetQuests(frame.unit)
+	if not QuestList then return end
+
 	local iconSize = self.db.questIconSize
 	for i=1, #QuestList do
 		local icon = self:Get_QuestIcon(frame, i)
