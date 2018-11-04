@@ -12,20 +12,8 @@ local CreateFrame = CreateFrame
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
-	if self and self.obj then
-		if self.obj.pullout and self.obj.pullout.frame then
-			self.obj.pullout.frame:SetTemplate('Default', true)
-		end
-
-		if self.obj.dropdown then
-			self.obj.dropdown:SetTemplate('Default', true)
-
-			if self.obj.dropdown.slider then
-				self.obj.dropdown.slider:SetTemplate('Default')
-				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
-				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
-			end
-		end
+	if self and self.obj and self.obj.pullout and self.obj.pullout.frame and not self.obj.pullout.frame.template then
+		self.obj.pullout.frame:SetTemplate('Default', true)
 	end
 end
 
