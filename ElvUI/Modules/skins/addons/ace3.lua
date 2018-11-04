@@ -53,21 +53,25 @@ function S:SkinAce3()
 			widget.scrollBG:Point("BOTTOMLEFT", widget.button, "TOPLEFT")
 			widget.scrollFrame:Point("BOTTOMRIGHT", widget.scrollBG, "BOTTOMRIGHT", -4, 8)
 		elseif TYPE == "CheckBox" then
-			widget.checkbg:CreateBackdrop("Default")
-			widget.checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
-			widget.checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
+			local check = widget.check
+			local checkbg = widget.checkbg
+			local highlight = widget.highlight
 
-			widget.check:SetTexture(E.media.normTex)
-			widget.check:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			checkbg:CreateBackdrop("Default")
+			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
+			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 
-			widget.checkbg:SetTexture('')
-			widget.highlight:SetTexture('')
+			check:SetTexture(E.media.blankTex)
+			check:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
-			widget.check:SetInside(widget.checkbg.backdrop)
+			checkbg:SetTexture('')
+			highlight:SetTexture('')
 
-			widget.checkbg.SetTexture = E.noop
-			widget.highlight.SetTexture = E.noop
-			widget.check.SetTexture = E.noop
+			check:SetInside(widget.checkbg.backdrop)
+
+			checkbg.SetTexture = E.noop
+			highlight.SetTexture = E.noop
+			check.SetTexture = E.noop
 		elseif TYPE == "Dropdown" then
 			local frame = widget.dropdown
 			local button = widget.button
