@@ -1,12 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local CreateAnimationGroup = CreateAnimationGroup
+
 --Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
+local CreateAnimationGroup = CreateAnimationGroup
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
@@ -145,10 +146,10 @@ local function LoadSkin()
 			bu.bg.transition:SetLooping(true)
 
 			bu.bg.transition.color = bu.bg.transition:CreateAnimation("Color")
-			bu.bg.transition.color:SetDuration(0.7)			
+			bu.bg.transition.color:SetDuration(0.7)
 			bu.bg.transition.color:SetColorType("border")
 			bu.bg.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
-			bu.bg.transition.color:SetScript("OnFinished", function(self) 
+			bu.bg.transition.color:SetScript("OnFinished", function(self)
 				local r, g, b = self:GetChange()
 				local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
 				defaultR = E:Round(defaultR, 2)
@@ -163,17 +164,17 @@ local function LoadSkin()
 			end)
 
 			bu.GlowFrame:StripTextures()
-			bu.GlowFrame:HookScript('OnShow', function(self) 
+			bu.GlowFrame:HookScript('OnShow', function(self)
 				local r, g, b = unpack(E.media.bordercolor)
 				bu.bg.backdrop:SetBackdropBorderColor(r, g, b)
-				if not bu.bg.transition:IsPlaying() then 
-					bu.bg.transition:Play() 
-				end 
+				if not bu.bg.transition:IsPlaying() then
+					bu.bg.transition:Play()
+				end
 			end)
-			bu.GlowFrame:HookScript('OnHide', function(self) 
-				if bu.bg.transition:IsPlaying() then 
-					bu.bg.transition:Stop() 
-				end 
+			bu.GlowFrame:HookScript('OnHide', function(self)
+				if bu.bg.transition:IsPlaying() then
+					bu.bg.transition:Stop()
+				end
 				local r, g, b = unpack(E.media.bordercolor)
 				bu.bg.backdrop:SetBackdropBorderColor(r, g, b)
 			end)
