@@ -24,6 +24,15 @@ function mod:UpdateElement_Elite(frame)
 	else
 		icon:Hide()
 	end
+
+	if self.db.units[frame.UnitType].eliteIcon.position == "RIGHT" then
+		frame.QuestIcon:ClearAllPoints()
+		if icon:IsShown() then
+			frame.QuestIcon:SetPoint("LEFT", icon, "RIGHT", 4, 0)
+		else
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+		end
+	end
 end
 
 function mod:ConfigureElement_Elite(frame)
