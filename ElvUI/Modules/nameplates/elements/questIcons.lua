@@ -51,6 +51,7 @@ local QuestTypesLocalized = {
 		["убит"] = "KILL",
 		["уничтожен"] = "KILL",
 		["разбомблен"] = "KILL",
+		["разбит"] = "KILL",
 		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {
