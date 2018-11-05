@@ -2851,6 +2851,14 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
+		questIcon = {
+			order = 17,
+			type = "execute",
+			name = L["Quest Icon"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "questIcon") end,
+			disabled = function() return not E.NamePlates; end,
+		},
 		playerShortcut = {
 			order = 17,
 			type = "execute",
@@ -2867,18 +2875,18 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		friendlyPlayerShortcut = {
+		spacer5 = {
 			order = 19,
+			type = "description",
+			name = " ",
+		},
+		friendlyPlayerShortcut = {
+			order = 20,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
 			disabled = function() return not E.NamePlates; end,
-		},
-		spacer5 = {
-			order = 20,
-			type = "description",
-			name = " ",
 		},
 		enemyPlayerShortcut = {
 			order = 21,
@@ -2896,18 +2904,18 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		enemyNPCShortcut = {
+		spacer6 = {
 			order = 23,
+			type = "description",
+			name = " ",
+		},
+		enemyNPCShortcut = {
+			order = 24,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
-		},
-		spacer6 = {
-			order = 24,
-			type = "description",
-			name = " ",
 		},
 		filtersShortcut = {
 			order = 25,
@@ -3584,6 +3592,28 @@ E.Options.args.nameplate = {
 							min = 0.1, max = 1, step = 0.1,
 							get = function(info) return E.db.nameplates.cutawayHealthFadeOutTime end,
 							set = function(info, value) E.db.nameplates.cutawayHealthFadeOutTime = value; end,
+						},
+					},
+				},
+				questIcon = {
+					order = 226,
+					name = L["Quest Icon"],
+					type = 'group',
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							get = function(info) return E.db.nameplates.questIcon end,
+							set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
+						},
+						questIconSize = {
+							type = 'range',
+							order = 2,
+							name = L["Size"],
+							min = 10, max = 50, step = 1,
+							get = function(info) return E.db.nameplates.questIconSize end,
+							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
 						},
 					},
 				},

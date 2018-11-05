@@ -873,6 +873,7 @@ L["PLAYER"] = "플레이어"
 L["Power Threshold"] = true
 L["Power Color"] = true
 L["Quest Boss"] = true
+L["Quest Icon"] = true
 L["Raid Difficulty"] = "공격대 난이도"
 L["Rare Elite"] = "정예 희귀"
 L["Reaction Colors"] = "관계 색상"

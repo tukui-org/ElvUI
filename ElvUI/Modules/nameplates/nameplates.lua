@@ -48,16 +48,18 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestLogTitle = GetQuestLogTitle
 local GetCVar = GetCVar
 local UnitGUID = UnitGUID
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
+-- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplates
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemies
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions
@@ -72,7 +74,6 @@ local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 mod.PlateGUIDs = {}
-
 
 --Taken from Blizzard_TalentUI.lua
 local healerSpecIDs = {
@@ -502,6 +503,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:ConfigureElement_Elite(frame.unitFrame)
 	self:ConfigureElement_Detection(frame.unitFrame)
 	self:ConfigureElement_Highlight(frame.unitFrame)
+	self:ConfigureElement_QuestIcon(frame.unitFrame)
 	self:RegisterEvents(frame.unitFrame, unit)
 	self:UpdateElement_All(frame.unitFrame, unit, nil, true)
 
@@ -1218,9 +1220,6 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-
-
-
 function mod:Initialize()
 	self.db = E.db.nameplates
 	if E.private.nameplates.enable ~= true then return end
@@ -1278,13 +1277,11 @@ function mod:Initialize()
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	for k, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(C_Map.GetBestMapForUnit("player"))) do
-		if task.inProgress then
-			local questID = task.questId
-			local questName = C_TaskQuest.GetQuestInfoByQuestID(questID)
-			if questName then
-				self.ActiveWorldQuests[questName] = questID
-			end
+	local numEntries, numQuests = GetNumQuestLogEntries();
+	for questLogIndex = 1, numEntries do
+		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);
+		if title and questID and questID > 0 then
+			self.ActiveQuests[title] = questID
 		end
 	end
 

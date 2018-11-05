@@ -828,6 +828,7 @@ L["Power Color"] = "Kraftfarbe"
 L["PLAYER"] = "Player"
 L["Power Threshold"] = "Kraft Schwellenwert"
 L["Quest Boss"] = true --No need to translate
+L["Quest Icon"] = "Quest Symbol"
 L["Raid Difficulty"] = "Schlachtzug Schwierigkeitsgrad"
 L["Rare Elite"] = "Selten Elite"
 L["Reaction Colors"] = "Reaktionsfarbe"

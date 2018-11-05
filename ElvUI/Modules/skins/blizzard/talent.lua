@@ -7,6 +7,7 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
+local CreateAnimationGroup = CreateAnimationGroup
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
@@ -137,17 +138,46 @@ local function LoadSkin()
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
-			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 2)
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
 			bu.bg:Point("TOPLEFT", 15, -1)
 			bu.bg:Point("BOTTOMRIGHT", -10, 1)
-			bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			--bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			bu.bg.transition = CreateAnimationGroup(bu.bg.backdrop)
+			bu.bg.transition:SetLooping(true)
 
-			bu.GlowFrame.TopGlowLine = bu.bg.backdrop
-			bu.GlowFrame.TopGlowLine:Hide()
-			bu.GlowFrame.BottomGlowLine:Kill()
+			bu.bg.transition.color = bu.bg.transition:CreateAnimation("Color")
+			bu.bg.transition.color:SetDuration(0.7)
+			bu.bg.transition.color:SetColorType("border")
+			bu.bg.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
+			bu.bg.transition.color:SetScript("OnFinished", function(self)
+				local r, g, b = self:GetChange()
+				local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
+				defaultR = E:Round(defaultR, 2)
+				defaultG = E:Round(defaultG, 2)
+				defaultB = E:Round(defaultB, 2)
 
-			bu.GlowFrame:HookScript('OnShow', function(self) self.TopGlowLine:Show() bu.bg.backdrop:Show() end)
-			bu.GlowFrame:HookScript('OnHide', function(self) self.TopGlowLine:Hide() bu.bg.backdrop:Hide() end)
+				if r == defaultR and g == defaultG and b == defaultB then
+					self:SetChange(unpack(E.media.rgbvaluecolor))
+				else
+					self:SetChange(defaultR, defaultG, defaultB)
+				end
+			end)
+
+			bu.GlowFrame:StripTextures()
+			bu.GlowFrame:HookScript('OnShow', function(self)
+				local r, g, b = unpack(E.media.bordercolor)
+				bu.bg.backdrop:SetBackdropBorderColor(r, g, b)
+				if not bu.bg.transition:IsPlaying() then
+					bu.bg.transition:Play()
+				end
+			end)
+			bu.GlowFrame:HookScript('OnHide', function(self)
+				if bu.bg.transition:IsPlaying() then
+					bu.bg.transition:Stop()
+				end
+				local r, g, b = unpack(E.media.bordercolor)
+				bu.bg.backdrop:SetBackdropBorderColor(r, g, b)
+			end)
 
 			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
@@ -231,6 +261,8 @@ local function LoadSkin()
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
 						frame.icon:SetSize(40, 40)
+						frame:CreateBackdrop("Default")
+						frame.backdrop:SetOutside(frame.icon)
 					end
 				end
 				index = index + 1

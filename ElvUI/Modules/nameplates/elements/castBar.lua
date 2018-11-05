@@ -6,13 +6,13 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local select, unpack = select, unpack
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local GetTime = GetTime
+local CreateFrame = CreateFrame
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 local hooksecurefunc = hooksecurefunc
+local INTERRUPTED = INTERRUPTED
+local FAILED = FAILED
 
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
@@ -244,6 +244,15 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		self:UpdateElement_Filters(frame, "UpdateElement_Cast")
 	else
 		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
+	end
+
+	if self.db.units[frame.UnitType].castbar.iconPosition == "RIGHT" then
+		frame.QuestIcon:ClearAllPoints()
+		if frame.CastBar:IsShown() then
+			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+		else
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+		end
 	end
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then

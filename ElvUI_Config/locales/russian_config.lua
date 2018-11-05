@@ -824,6 +824,7 @@ L["PLAYER"] = "Игрок"
 L["Power Threshold"] = "Лимит ресурса"
 L["Power Color"] = "Цвет ресурса"
 L["Quest Boss"] = "Боссы заданий"
+L["Quest Icon"] = true
 L["Raid Difficulty"] = "Сложность рейда"
 L["Rare Elite"] = "Редкий элитный"
 L["Reaction Colors"] = "Цвета отношений"
