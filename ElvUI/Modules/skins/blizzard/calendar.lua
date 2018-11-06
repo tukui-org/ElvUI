@@ -145,7 +145,7 @@ local function LoadSkin()
 
 	--CreateEventFrame
 	CalendarCreateEventFrame:StripTextures()
-	CalendarCreateEventFrame:SetTemplate("Transparent")
+	CalendarCreateEventFrame:CreateBackdrop("Transparent")
 	CalendarCreateEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarCreateEventTitleFrame:StripTextures()
 
@@ -156,7 +156,7 @@ local function LoadSkin()
 	CalendarCreateEventInviteEdit:Width(CalendarCreateEventInviteEdit:GetWidth() - 2)
 
 	CalendarCreateEventInviteList:StripTextures()
-	CalendarCreateEventInviteList:SetTemplate("Default")
+	CalendarCreateEventInviteList:CreateBackdrop("Default")
 
 	S:HandleEditBox(CalendarCreateEventInviteEdit)
 	S:HandleEditBox(CalendarCreateEventTitleEdit)
@@ -223,21 +223,21 @@ local function LoadSkin()
 
 	--Raid View
 	CalendarViewRaidFrame:StripTextures()
-	CalendarViewRaidFrame:SetTemplate("Transparent")
+	CalendarViewRaidFrame:CreateBackdrop("Transparent")
 	CalendarViewRaidFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewRaidTitleFrame:StripTextures()
 	S:HandleCloseButton(CalendarViewRaidCloseButton)
 
 	--Holiday View
 	CalendarViewHolidayFrame:StripTextures(true)
-	CalendarViewHolidayFrame:SetTemplate("Transparent")
+	CalendarViewHolidayFrame:CreateBackdrop("Transparent")
 	CalendarViewHolidayFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewHolidayTitleFrame:StripTextures()
 	S:HandleCloseButton(CalendarViewHolidayCloseButton)
 
 	-- Event View
 	CalendarViewEventFrame:StripTextures()
-	CalendarViewEventFrame:SetTemplate("Transparent")
+	CalendarViewEventFrame:CreateBackdrop("Transparent")
 	CalendarViewEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewEventTitleFrame:StripTextures()
 	CalendarViewEventDescriptionContainer:StripTextures()
