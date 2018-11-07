@@ -252,19 +252,6 @@ function S:SkinAce3()
 				widget.treeframe:SetTemplate('Transparent')
 				frame:Point("TOPLEFT", widget.treeframe, "TOPRIGHT", 1, 0)
 
-				local oldCreateButton = widget.CreateButton
-				widget.CreateButton = function(self)
-					local button = oldCreateButton(self)
-					button.toggle:StripTextures()
-					button.toggle.SetNormalTexture = E.noop
-					button.toggle.SetPushedTexture = E.noop
-					button.toggleText = button.toggle:CreateFontString(nil, 'OVERLAY')
-					button.toggleText:FontTemplate(nil, 19)
-					button.toggleText:Point('CENTER')
-					button.toggleText:SetText('+')
-					return button
-				end
-
 				local oldRefreshTree = widget.RefreshTree
 				widget.RefreshTree = function(self, scrollToSelection)
 					oldRefreshTree(self, scrollToSelection)
@@ -273,14 +260,17 @@ function S:SkinAce3()
 					local groupstatus = status.groups
 					local lines = self.lines
 					local buttons = self.buttons
-					local offset = status.scrollvalue
 
-					for i = offset + 1, #lines do
-						local button = buttons[i - offset]
-						if groupstatus[lines[i].uniquevalue] and button then
-							button.toggleText:SetText('-')
+					for i, line in pairs(lines) do
+						local button = buttons[i]
+						if groupstatus[line.uniquevalue] and button then
+							button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
+							button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
+							button.toggle:SetHighlightTexture('')
 						elseif button then
-							button.toggleText:SetText('+')
+							button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
+							button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
+							button.toggle:SetHighlightTexture('')
 						end
 					end
 				end
