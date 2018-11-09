@@ -253,6 +253,31 @@ function mod:UpdateElement_QuestIcon(frame)
 	end
 end
 
+function mod:QuestIcon_RelativePosition(frame, element)
+	if not frame.QuestIcon then return end
+	local isCastbar, isElite = false, false
+	local unit = frame.UnitType
+	frame.QuestIcon:ClearAllPoints()
+	if self.db.units[unit].castbar.enable and element == "Castbar" then
+		if self.db.units[unit].castbar.iconPosition == "RIGHT" then
+			if frame.CastBar:IsShown() then isCastbar = true end
+		end
+	end
+	if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable then
+		if self.db.units[unit].eliteIcon.position == "RIGHT" then
+			if frame.Elite:IsShown() then isElite = true end
+		end
+	end
+
+	if isCastbar then
+		frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+	elseif not isCastbar and isElite then
+		frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
+	else
+		frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+	end
+end
+
 function mod:ConfigureElement_QuestIcon(frame)
 	local QuestList = self:GetQuests(frame.unit)
 	if not QuestList then return end
