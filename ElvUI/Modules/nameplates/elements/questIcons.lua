@@ -74,13 +74,14 @@ local QuestTypesLocalized = {
 		["speak"] = "CHAT",
 	},
 }
+
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
 
-		if questName and questID and questID > 0 then
+		if questName and (questID and questID > 0) then
 			self.ActiveQuests[questName] = questID
 		end
 
@@ -233,19 +234,21 @@ function mod:UpdateElement_QuestIcon(frame)
 
 	if not QuestList then return end
 
+	local icon, objectiveCount, questType, itemTexture
 	for i=1, #QuestList do
-		local icon = self:Get_QuestIcon(frame, i)
-		local objectiveCount = QuestList[i].objectiveCount
-		local questType = QuestList[i].questType
-		local itemTexture = QuestList[i].itemTexture
+		icon = self:Get_QuestIcon(frame, i)
+		objectiveCount = QuestList[i].objectiveCount
+		questType = QuestList[i].questType
+		itemTexture = QuestList[i].itemTexture
 
 		if objectiveCount and objectiveCount > 0 then
-			icon.Text:SetText(QuestList[i].isPerc and objectiveCount .."%" or objectiveCount)
+			icon.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
 
 			icon.SkullIcon:Hide()
 			icon.LootIcon:Hide()
 			icon.ItemTexture:Hide()
 			icon.ChatIcon:Hide()
+
 			if questType == "KILL" or QuestList[i].isPerc == true then
 				icon.SkullIcon:Show()
 			elseif questType == "LOOT" then
@@ -257,6 +260,7 @@ function mod:UpdateElement_QuestIcon(frame)
 				icon.ItemTexture:Show()
 				icon.ItemTexture:SetTexture(itemTexture)
 			end
+
 			icon:Show()
 		else
 			icon:Hide()
@@ -267,21 +271,18 @@ end
 function mod:QuestIcon_RelativePosition(frame, element)
 	if not frame.QuestIcon then return end
 
-	local isCastbar, isElite = false, false
-	local unit = frame.UnitType
-
-	frame.QuestIcon:ClearAllPoints()
-	if self.db.units[unit].castbar.enable and element == "Castbar" then
-		if self.db.units[unit].castbar.iconPosition == "RIGHT" then
+	local unit, isCastbar, isElite = frame.UnitType, false, false
+	if unit then
+		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "RIGHT" then
 			if frame.CastBar:IsShown() then isCastbar = true end
 		end
-	end
-	if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable then
-		if self.db.units[unit].eliteIcon.position == "RIGHT" then
+
+		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "RIGHT" then
 			if frame.Elite:IsShown() then isElite = true end
 		end
 	end
 
+	frame.QuestIcon:ClearAllPoints()
 	if isCastbar then
 		frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
 	elseif not isCastbar and isElite then
@@ -296,14 +297,16 @@ function mod:ConfigureElement_QuestIcon(frame)
 	if not QuestList then return end
 
 	local iconSize = self.db.questIconSize
+	local biggerIcon = iconSize + 4
 
+	local icon
 	for i=1, #QuestList do
-		local icon = self:Get_QuestIcon(frame, i)
+		icon = self:Get_QuestIcon(frame, i)
 		icon:SetSize(iconSize,iconSize)
 		icon.ItemTexture:SetSize(iconSize,iconSize)
 		icon.LootIcon:SetSize(iconSize,iconSize)
-		icon.SkullIcon:SetSize(iconSize + 4,iconSize + 4)
-		icon.ChatIcon:SetSize(iconSize + 4,iconSize + 4)
+		icon.SkullIcon:SetSize(biggerIcon,biggerIcon)
+		icon.ChatIcon:SetSize(biggerIcon,biggerIcon)
 	end
 end
 
