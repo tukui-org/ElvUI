@@ -95,7 +95,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 
-		callback()
+		if callback then callback() end
 	end
 
 	return plugin
