@@ -228,14 +228,14 @@ function mod:UpdateElement_QuestIcon(frame)
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)
 
-	for i=1, #questIcon do
+	for i = 1, #questIcon do
 		questIcon[i]:Hide()
 	end
 
 	if not QuestList then return end
 
 	local icon, objectiveCount, questType, itemTexture
-	for i=1, #QuestList do
+	for i = 1, #QuestList do
 		icon = self:Get_QuestIcon(frame, i)
 		objectiveCount = QuestList[i].objectiveCount
 		questType = QuestList[i].questType
@@ -300,7 +300,7 @@ function mod:ConfigureElement_QuestIcon(frame)
 	local biggerIcon = iconSize + 4
 
 	local icon
-	for i=1, #QuestList do
+	for i = 1, #QuestList do
 		icon = self:Get_QuestIcon(frame, i)
 		icon:SetSize(iconSize,iconSize)
 		icon.ItemTexture:SetSize(iconSize,iconSize)
