@@ -2,10 +2,19 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local twipe = table.wipe
-local format = string.format
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+local unpack = unpack
 local match = string.match
-local strjoin = strjoin
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInInstance = IsInInstance
+local GetQuestLogTitle = GetQuestLogTitle
+local GetQuestLogIndexByID = GetQuestLogIndexByID
+local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
 mod.ActiveQuests = {
 	-- [questName] = questID ?
@@ -67,7 +76,7 @@ local QuestTypesLocalized = {
 }
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
-function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
+function mod:QUEST_ACCEPTED(_, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
 
@@ -96,13 +105,12 @@ function mod:QUEST_LOG_UPDATE()
 end
 
 function mod:GetQuests(unitID)
-	local inInstance, instanceType = IsInInstance()
+	local inInstance = IsInInstance()
 	if inInstance then return end
+
 	self.Tooltip:SetUnit(unitID)
 
-	local QuestList = {}
-
-	local questID
+	local QuestList, questID = {}
 	for i = 3, self.Tooltip:NumLines() do
 		local str = _G['ElvUIQuestTooltipTextLeft' .. i]
 		local text = str and str:GetText()
@@ -123,11 +131,12 @@ function mod:GetQuests(unitID)
 				QuestList[index].objectiveCount = y - x
 			end
 
+			local QuestLogIndex, itemTexture, _
 			if questID then
-				local QuestLogIndex = GetQuestLogIndexByID(questID)
-				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+				QuestLogIndex = GetQuestLogIndexByID(questID)
+				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
 
-				local progress = C_TaskQuest.GetQuestProgressBarInfo(questID)
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				QuestList[index].isPerc = false
 				if progress then
 					QuestList[index].objectiveCount = progress
@@ -150,6 +159,7 @@ function mod:GetQuests(unitID)
 					end
 				end
 			end
+
 			questID = nil
 			QuestList[index].questLogIndex = QuestLogIndex
 		end
@@ -221,7 +231,9 @@ function mod:UpdateElement_QuestIcon(frame)
 	for i=1, #questIcon do
 		questIcon[i]:Hide()
 	end
+
 	if not QuestList then return end
+
 	for i=1, #QuestList do
 		local icon = self:Get_QuestIcon(frame, i)
 		local objectiveCount = QuestList[i].objectiveCount
@@ -255,8 +267,10 @@ end
 
 function mod:QuestIcon_RelativePosition(frame, element)
 	if not frame.QuestIcon then return end
+
 	local isCastbar, isElite = false, false
 	local unit = frame.UnitType
+
 	frame.QuestIcon:ClearAllPoints()
 	if self.db.units[unit].castbar.enable and element == "Castbar" then
 		if self.db.units[unit].castbar.iconPosition == "RIGHT" then
@@ -281,8 +295,9 @@ end
 function mod:ConfigureElement_QuestIcon(frame)
 	local QuestList = self:GetQuests(frame.unit)
 	if not QuestList then return end
+
 	local iconSize = self.db.questIconSize
-	
+
 	for i=1, #QuestList do
 		local icon = self:Get_QuestIcon(frame, i)
 		icon:SetSize(iconSize,iconSize)
