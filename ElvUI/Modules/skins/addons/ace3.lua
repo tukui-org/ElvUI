@@ -140,9 +140,6 @@ function S:SkinAce3()
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-
-			button:SetFrameLevel(frame.backdrop:GetFrameLevel() + 2)
-
 			button:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "EditBox" then
 			local frame = widget.editbox
