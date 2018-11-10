@@ -241,7 +241,7 @@ function mod:UpdateElement_QuestIcon(frame)
 		questType = QuestList[i].questType
 		itemTexture = QuestList[i].itemTexture
 
-		if objectiveCount and objectiveCount > 0 then
+		if objectiveCount and (objectiveCount > 0 or QuestList[i].isPerc) then
 			icon.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
 
 			icon.SkullIcon:Hide()
