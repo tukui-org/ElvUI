@@ -865,7 +865,7 @@ function S:HandleSliderFrame(frame)
 	end)
 
 	frame:SetThumbTexture(E.media.blankTex)
-	frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
+	frame:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then
