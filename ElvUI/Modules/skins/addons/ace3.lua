@@ -140,20 +140,26 @@ function S:SkinAce3()
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
+
+			button:SetFrameLevel(frame.backdrop:GetFrameLevel() + 2)
+
 			button:HookScript('OnClick', SkinDropdownPullout)
 		elseif TYPE == "EditBox" then
 			local frame = widget.editbox
 			local button = widget.button
-			frame.Left:Kill()
-			frame.Middle:Kill()
-			frame.Right:Kill()
-			frame:Height(17)
-			frame:CreateBackdrop('Default')
-			frame.backdrop:Point('TOPLEFT', -2, 0)
-			frame.backdrop:Point('BOTTOMRIGHT', 2, 0)
-			frame.backdrop:SetParent(widget.frame)
-			frame:SetParent(frame.backdrop)
+			S:HandleEditBox(frame)
 			S:HandleButton(button)
+
+			button:SetPoint("RIGHT", frame.backdrop, 'RIGHT', -2, 0)
+
+			hooksecurefunc(frame, "SetPoint", function(self, a, b, c, d, e)
+				if d == 7 then
+					self:SetPoint(a, b, c, 0, e)
+				end
+			end)
+
+			frame.backdrop:SetPoint('TOPLEFT', 0, -2)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', -1, 0)
 		elseif (TYPE == "Button" or TYPE == "Button-ElvUI") then
 			local frame = widget.frame
 			S:HandleButton(frame, nil, true)
