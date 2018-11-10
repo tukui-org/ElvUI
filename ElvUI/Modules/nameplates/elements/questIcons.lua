@@ -123,10 +123,9 @@ function mod:GetQuests(unitID)
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
-
 			progressText = progressText:lower()
-			local x, y
-			x, y = match(progressText, '(%d+)/(%d+)')
+
+			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
 				QuestList[index].objectiveCount = y - x
 			end
