@@ -348,19 +348,16 @@ do
 	local CloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
 	local CloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 	CreateCloseButton = function(frame, size, offset, texture, backdrop)
-		size, offset = size or 16, offset or -6
-		texture = texture or 'Interface\\AddOns\\ElvUI\\media\\textures\\close'
-
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:Size(size)
-		CloseButton:Point('TOPRIGHT', offset, offset)
+		CloseButton:Size(size or 16)
+		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
 			CloseButton:CreateBackdrop('Default', true)
 		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
-		CloseButton.Texture:SetTexture(texture)
+		CloseButton.Texture:SetTexture(texture or 'Interface\\AddOns\\ElvUI\\media\\textures\\close')
 
 		CloseButton:SetScript('OnClick', CloseButtonOnClick)
 		CloseButton:SetScript('OnEnter', CloseButtonOnEnter)
