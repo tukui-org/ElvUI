@@ -113,17 +113,17 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t ~= "NoBackdrop" then
 		if E.private.general.pixelPerfect or f.forcePixelMode then
 			f:SetBackdrop({
-			  bgFile = E.media.blankTex,
-			  edgeFile = E.media.blankTex,
-			  tile = false, tileSize = 0, edgeSize = E.mult,
-			  insets = { left = 0, right = 0, top = 0, bottom = 0}
+				bgFile = E.media.blankTex,
+				edgeFile = E.media.blankTex,
+				tile = false, tileSize = 0, edgeSize = E.mult,
+				insets = { left = 0, right = 0, top = 0, bottom = 0}
 			})
 		else
 			f:SetBackdrop({
-			  bgFile = E.media.blankTex,
-			  edgeFile = E.media.blankTex,
-			  tile = false, tileSize = 0, edgeSize = E.mult,
-			  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+				bgFile = E.media.blankTex,
+				edgeFile = E.media.blankTex,
+				tile = false, tileSize = 0, edgeSize = E.mult,
+				insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 			})
 		end
 
