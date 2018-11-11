@@ -389,11 +389,11 @@ local function CreateCloseButton(frame, size, offset, texture, backdrop)
 	frame.CloseButton = CloseButton
 end
 
-local function GetNamedChild(frame, childName)
+local function GetNamedChild(frame, childName, index)
 	if (not frame:GetName()) then
 		return nil;
 	end
-	return _G[frame:GetName()..childName];
+	return _G[frame:GetName()..childName..(index or "")];
 end
 
 local function addapi(object)
