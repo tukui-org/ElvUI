@@ -372,7 +372,7 @@ end
 
 local function GetNamedChild(frame, childName, index)
 	local name = frame and frame.GetName and frame:GetName()
-	if not name then return nil end
+	if not name or not childName then return nil end
 	return _G[name..childName..(index or '')]
 end
 
