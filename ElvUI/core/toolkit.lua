@@ -389,6 +389,13 @@ local function CreateCloseButton(frame, size, offset, texture, backdrop)
 	frame.CloseButton = CloseButton
 end
 
+local function GetNamedChild(frame, childName)
+	if (not frame:GetName()) then
+		return nil;
+	end
+	return _G[frame:GetName()..childName];
+end
+
 local function addapi(object)
 	local mt = getmetatable(object).__index
 	if not object.Size then mt.Size = Size end
@@ -405,6 +412,7 @@ local function addapi(object)
 	if not object.StripTextures then mt.StripTextures = StripTextures end
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
+	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
 end
 
 local handled = {["Frame"] = true}
