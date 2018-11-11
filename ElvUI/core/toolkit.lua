@@ -16,18 +16,18 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
-	if t == "ClassColor" then
+	if t == 'ClassColor' then
 		if CUSTOM_CLASS_COLORS then
 			borderr, borderg, borderb = CUSTOM_CLASS_COLORS[E.myclass].r, CUSTOM_CLASS_COLORS[E.myclass].g, CUSTOM_CLASS_COLORS[E.myclass].b
 		else
 			borderr, borderg, borderb = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
 		end
-		if t ~= "Transparent" then
+		if t ~= 'Transparent' then
 			backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 		else
 			backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
 		end
-	elseif t == "Transparent" then
+	elseif t == 'Transparent' then
 		if isUnitFrameElement then
 			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
 		else
@@ -64,11 +64,11 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 		arg2 = obj:GetParent()
 	end
 
-	if type(arg1)=="number" then arg1 = E:Scale(arg1) end
-	if type(arg2)=="number" then arg2 = E:Scale(arg2) end
-	if type(arg3)=="number" then arg3 = E:Scale(arg3) end
-	if type(arg4)=="number" then arg4 = E:Scale(arg4) end
-	if type(arg5)=="number" then arg5 = E:Scale(arg5) end
+	if type(arg1)=='number' then arg1 = E:Scale(arg1) end
+	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
+	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
+	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
+	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
@@ -110,7 +110,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
-	if t ~= "NoBackdrop" then
+	if t ~= 'NoBackdrop' then
 		if E.private.general.pixelPerfect or f.forcePixelMode then
 			f:SetBackdrop({
 				bgFile = E.media.blankTex,
@@ -128,8 +128,8 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 		end
 
 		if not f.backdropTexture and t ~= 'Transparent' then
-			local backdropTexture = f:CreateTexture(nil, "BORDER")
-			backdropTexture:SetDrawLayer("BACKGROUND", 1)
+			local backdropTexture = f:CreateTexture(nil, 'BORDER')
+			backdropTexture:SetDrawLayer('BACKGROUND', 1)
 			f.backdropTexture = backdropTexture
 		elseif t == 'Transparent' then
 			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
@@ -141,7 +141,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 			if not E.private.general.pixelPerfect and not f.forcePixelMode then
 				if not f.iborder then
-					local border = CreateFrame("Frame", nil, f)
+					local border = CreateFrame('Frame', nil, f)
 					border:SetInside(f, E.mult, E.mult)
 					border:SetBackdrop({
 						edgeFile = E.media.blankTex,
@@ -153,7 +153,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				end
 
 				if not f.oborder then
-					local border = CreateFrame("Frame", nil, f)
+					local border = CreateFrame('Frame', nil, f)
 					border:SetOutside(f, E.mult, E.mult)
 					border:SetFrameLevel(f:GetFrameLevel() + 1)
 					border:SetBackdrop({
@@ -201,10 +201,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	if not t then t = "Default" end
+	if not t then t = 'Default' end
 
 	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
-	local b = CreateFrame("Frame", nil, parent)
+	local b = CreateFrame('Frame', nil, parent)
 	if f.forcePixelMode or forcePixelMode then
 		b:SetOutside(nil, E.mult, E.mult)
 	else
@@ -229,11 +229,11 @@ local function CreateShadow(f)
 	borderr, borderg, borderb = 0, 0, 0
 	backdropr, backdropg, backdropb = 0, 0, 0
 
-	local shadow = CreateFrame("Frame", nil, f)
+	local shadow = CreateFrame('Frame', nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
 	shadow:SetOutside(f, 3, 3)
-	shadow:SetBackdrop({edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3)})
+	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 	f.shadow = shadow
@@ -297,10 +297,10 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle
 
-	font = font or LSM:Fetch("font", E.db.general.font)
+	font = font or LSM:Fetch('font', E.db.general.font)
 	fontSize = fontSize or E.db.general.fontSize
 
-	if fontStyle == 'OUTLINE' and (E.db.general.font == "Homespun") then
+	if fontStyle == 'OUTLINE' and (E.db.general.font == 'Homespun') then
 		if fontSize > 10 and not fs.fontSize then
 			fontStyle = 'MONOCHROMEOUTLINE'
 			fontSize = 10
@@ -308,7 +308,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
-	if fontStyle and (fontStyle ~= "NONE") then
+	if fontStyle and (fontStyle ~= 'NONE') then
 		fs:SetShadowColor(0, 0, 0, 0.2)
 	else
 		fs:SetShadowColor(0, 0, 0, 1)
@@ -344,7 +344,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 	end
 
 	local name = button.GetName and button:GetName()
-	local cooldown = name and _G[name.."Cooldown"]
+	local cooldown = name and _G[name..'Cooldown']
 	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:SetInside()
@@ -360,22 +360,22 @@ do
 	local CloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 	CreateCloseButton = function(frame, size, offset, texture, backdrop)
 		size, offset = size or 16, offset or -6
-		texture = texture or "Interface\\AddOns\\ElvUI\\media\\textures\\close"
+		texture = texture or 'Interface\\AddOns\\ElvUI\\media\\textures\\close'
 
-		local CloseButton = CreateFrame("Button", nil, frame)
+		local CloseButton = CreateFrame('Button', nil, frame)
 		CloseButton:Size(size)
-		CloseButton:Point("TOPRIGHT", offset, offset)
+		CloseButton:Point('TOPRIGHT', offset, offset)
 		if backdrop then
-			CloseButton:CreateBackdrop("Default", true)
+			CloseButton:CreateBackdrop('Default', true)
 		end
 
-		CloseButton.Texture = CloseButton:CreateTexture(nil, "OVERLAY")
+		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
 		CloseButton.Texture:SetTexture(texture)
 
-		CloseButton:SetScript("OnClick", CloseButtonOnClick)
-		CloseButton:SetScript("OnEnter", CloseButtonOnEnter)
-		CloseButton:SetScript("OnLeave", CloseButtonOnLeave)
+		CloseButton:SetScript('OnClick', CloseButtonOnClick)
+		CloseButton:SetScript('OnEnter', CloseButtonOnEnter)
+		CloseButton:SetScript('OnLeave', CloseButtonOnLeave)
 
 		frame.CloseButton = CloseButton
 	end
@@ -384,7 +384,7 @@ end
 local function GetNamedChild(frame, childName, index)
 	local name = frame and frame.GetName and frame:GetName()
 	if not name then return nil end
-	return _G[name..childName..(index or "")]
+	return _G[name..childName..(index or '')]
 end
 
 local function addapi(object)
@@ -406,8 +406,8 @@ local function addapi(object)
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
 end
 
-local handled = {["Frame"] = true}
-local object = CreateFrame("Frame")
+local handled = {['Frame'] = true}
+local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())
 addapi(object:CreateFontString())
@@ -423,5 +423,5 @@ while object do
 end
 
 --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the "Frame" widget
-local scrollFrame = CreateFrame("ScrollFrame")
+local scrollFrame = CreateFrame('ScrollFrame')
 addapi(scrollFrame)
