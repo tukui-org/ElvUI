@@ -280,13 +280,7 @@ local function StripTextures(object, kill)
 			if region and region.IsObjectType and region:IsObjectType('Texture') then
 				if kill and type(kill) == 'boolean' then
 					region:Kill()
-				--[[
-				elseif region.GetDrawLayer and region:GetDrawLayer() == kill then
-					region:SetTexture(nil)
-				elseif kill and type(kill) == 'string' and region.GetTexture and region:GetTexture() ~= kill then
-					region:SetTexture(nil)
-				]]
-				else -- since this is else, the above checks are pointless
+				else
 					region:SetTexture(nil)
 				end
 			end
