@@ -299,19 +299,12 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	font = font or LSM:Fetch('font', E.db.general.font)
 	fontSize = fontSize or E.db.general.fontSize
 
-	if fontStyle == 'OUTLINE' and (E.db.general.font == 'Homespun') then
-		if fontSize > 10 and not fs.fontSize then
-			fontStyle = 'MONOCHROMEOUTLINE'
-			fontSize = 10
-		end
+	if (fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun') and (fontSize > 10 and not fs.fontSize) then
+		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
-	if fontStyle and (fontStyle ~= 'NONE') then
-		fs:SetShadowColor(0, 0, 0, 0.2)
-	else
-		fs:SetShadowColor(0, 0, 0, 1)
-	end
+	fs:SetShadowColor(0, 0, 0, (fontStyle and fontStyle ~= 'NONE' and 0.2) or 1)
 	fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
 
 	E.texts[fs] = true
