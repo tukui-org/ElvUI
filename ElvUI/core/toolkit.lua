@@ -274,16 +274,19 @@ local function StripTextures(object, kill)
 	end
 
 	if object.GetNumRegions then
+		local region
 		for i = 1, object:GetNumRegions() do
-			local region = select(i, object:GetRegions())
-			if region and region:IsObjectType('Texture') then
+			region = select(i, object:GetRegions())
+			if region and region.IsObjectType and region:IsObjectType('Texture') then
 				if kill and type(kill) == 'boolean' then
 					region:Kill()
-				elseif region:GetDrawLayer() == kill then
+				--[[
+				elseif region.GetDrawLayer and region:GetDrawLayer() == kill then
 					region:SetTexture(nil)
-				elseif kill and type(kill) == 'string' and region:GetTexture() ~= kill then
+				elseif kill and type(kill) == 'string' and region.GetTexture and region:GetTexture() ~= kill then
 					region:SetTexture(nil)
-				else
+				]]
+				else -- since this is else, the above checks are pointless
 					region:SetTexture(nil)
 				end
 			end
@@ -299,13 +302,13 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	font = font or LSM:Fetch('font', E.db.general.font)
 	fontSize = fontSize or E.db.general.fontSize
 
-	if (fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun') and (fontSize > 10 and not fs.fontSize) then
+	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
 		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
 	fs:SetShadowColor(0, 0, 0, (fontStyle and fontStyle ~= 'NONE' and 0.2) or 1)
-	fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+	fs:SetShadowOffset(E.mult or 1, -(E.mult or 1))
 
 	E.texts[fs] = true
 end
@@ -313,26 +316,26 @@ end
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture()
-		hover:SetColorTexture(1, 1, 1, 0.3)
 		hover:SetInside()
-		button.hover = hover
+		hover:SetColorTexture(1, 1, 1, 0.3)
 		button:SetHighlightTexture(hover)
+		button.hover = hover
 	end
 
 	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture()
-		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 		pushed:SetInside()
-		button.pushed = pushed
+		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 		button:SetPushedTexture(pushed)
+		button.pushed = pushed
 	end
 
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
-		checked:SetColorTexture(1, 1, 1, 0.3)
 		checked:SetInside()
-		button.checked = checked
+		checked:SetColorTexture(1, 1, 1, 0.3)
 		button:SetCheckedTexture(checked)
+		button.checked = checked
 	end
 
 	local name = button.GetName and button:GetName()
