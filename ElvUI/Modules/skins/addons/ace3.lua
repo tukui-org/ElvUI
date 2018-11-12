@@ -268,14 +268,16 @@ function S:SkinAce3()
 
 					for i = offset + 1, #lines do
 						local button = buttons[i - offset]
-						if groupstatus[lines[i].uniquevalue] and button then
-							button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
-							button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
-							button.toggle:SetHighlightTexture('')
-						elseif button then
-							button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
-							button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
-							button.toggle:SetHighlightTexture('')
+						if button then
+							if groupstatus[lines[i].uniquevalue] then
+								button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
+								button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Minus]])
+								button.toggle:SetHighlightTexture('')
+							else
+								button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
+								button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
+								button.toggle:SetHighlightTexture('')
+							end
 						end
 					end
 				end
