@@ -1823,15 +1823,17 @@ end
 
 function B:OpenBags()
 	self.BagFrame:Show()
+	PlaySound(SOUNDKIT.IG_BACKPACK_OPEN)
 
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
-	self.BagFrame:Hide();
+	self.BagFrame:Hide()
+	PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
 
 	if self.BankFrame then
-		self.BankFrame:Hide();
+		self.BankFrame:Hide()
 	end
 
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
