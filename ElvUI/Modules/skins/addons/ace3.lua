@@ -89,6 +89,11 @@ function S:SkinAce3()
 
 			widget.label:ClearAllPoints()
 			widget.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+			hooksecurefunc(widget.label, 'SetTextColor', function(self, r, g, b, a)
+				if r == 1 and g == 0.82 and b == 0 then
+					self:SetTextColor(1, 1, 1, 1)
+				end
+			end)
 
 			button:SetSize(20, 20)
 			button:ClearAllPoints()
@@ -116,6 +121,11 @@ function S:SkinAce3()
 
 			frame.label:ClearAllPoints()
 			frame.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+			hooksecurefunc(frame.label, 'SetTextColor', function(self, r, g, b, a)
+				if r == 1 and g == 0.82 and b == 0 then
+					self:SetTextColor(1, 1, 1, 1)
+				end
+			end)
 
 			frame.text:ClearAllPoints()
 			frame.text:SetPoint('RIGHT', button, 'LEFT', -2, 0)
@@ -155,7 +165,11 @@ function S:SkinAce3()
 					self:SetPoint(a, b, c, 0, e)
 				end
 			end)
-
+			hooksecurefunc(widget.label, 'SetTextColor', function(self, r, g, b, a)
+				if r == 1 and g == 0.82 and b == 0 then
+					self:SetTextColor(1, 1, 1, 1)
+				end
+			end)
 			frame.backdrop:SetPoint('TOPLEFT', 0, -2)
 			frame.backdrop:SetPoint('BOTTOMRIGHT', -1, 0)
 		elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
@@ -165,6 +179,14 @@ function S:SkinAce3()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
+			-- Normal Buttons
+			widget.text:SetTextColor(1, 1, 1, 1)
+			-- ElvUI Buttons
+			hooksecurefunc(widget.text, 'SetTextColor', function(self, r, g, b, a)
+				if r == 1 and g == 0.82 and b == 0 then
+					self:SetTextColor(1, 1, 1, 1)
+				end
+			end)
 		elseif TYPE == 'Slider' then
 			local frame = widget.slider
 			local editbox = widget.editbox
@@ -176,6 +198,12 @@ function S:SkinAce3()
 			editbox:SetTemplate('Default')
 			editbox:Height(15)
 			editbox:Point('TOP', frame, 'BOTTOM', 0, -1)
+
+			hooksecurefunc(widget.label, 'SetTextColor', function(self, r, g, b, a)
+				if r == 1 and g == 0.82 and b == 0 then
+					self:SetTextColor(1, 1, 1, 1)
+				end
+			end)
 
 			lowtext:Point('TOPLEFT', frame, 'BOTTOMLEFT', 2, -2)
 			hightext:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', -2, -2)
@@ -218,7 +246,10 @@ function S:SkinAce3()
 				frame.checkers:SetParent(frame.backdrop)
 				frame.checkers:SetInside(frame.backdrop)
 			end
+		elseif TYPE == 'Heading' then
+			widget.label:SetTextColor(1, 1, 1, 1)
 		end
+
 		return oldRegisterAsWidget(self, widget)
 	end
 	AceGUI.RegisterAsWidget = RegisterAsWidget
@@ -249,8 +280,13 @@ function S:SkinAce3()
 			elseif TYPE == 'Window' then
 				frame:StripTextures()
 				S:HandleCloseButton(frame.obj.closebutton)
+				-- Set the textcolor for the button @Azil
 			end
 			frame:SetTemplate('Transparent')
+
+			if widget.titletext then
+				widget.titletext:SetTextColor(1, 1, 1, 1)
+			end
 
 			if widget.treeframe then
 				widget.treeframe:SetTemplate('Transparent')
@@ -278,6 +314,7 @@ function S:SkinAce3()
 								button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\Plus]])
 								button.toggle:SetHighlightTexture('')
 							end
+							button.text:SetTextColor(1, 1, 1, 1)
 						end
 					end
 				end
@@ -293,6 +330,7 @@ function S:SkinAce3()
 					tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 					tab.backdrop:Point('TOPLEFT', 10, -3)
 					tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+					tab.text:SetTextColor(1, 1, 1, 1)
 					return tab
 				end
 			end
