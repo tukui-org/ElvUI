@@ -265,11 +265,17 @@ end
 
 function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
+
+	local overrideWidth = self.db.widthOverride and self.db.widthOverride > 0 and self.db.widthOverride
+	local auraWidth = overrideWidth or (((width - mod.mult * numAuras) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+	local auraHeight = (self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1)
+
 	for i=1, numAuras do
-		self.icons[i]:SetWidth((self.db.widthOverride and self.db.widthOverride > 0 and self.db.widthOverride) or (((width - (mod.mult*numAuras)) / numAuras) - (E.private.general.pixelPerfect and 0 or 3)))
-		self.icons[i]:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
+		self.icons[i]:SetWidth(auraWidth)
+		self.icons[i]:SetHeight(auraHeight)
 	end
-	self:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
+
+	self:SetHeight(auraHeight)
 end
 
 function mod:UpdateAuraIcons(auras)
