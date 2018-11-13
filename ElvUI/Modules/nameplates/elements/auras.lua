@@ -293,16 +293,19 @@ function mod:UpdateAuraIcons(auras)
 		self.Auras_SizeChanged(auras, auras:GetWidth(), auras:GetHeight())
 	end
 
+	local stackFont = LSM:Fetch("font", self.db.stackFont)
+	local aurasHeight = auras.db.baseHeight or 18
+
 	for i=1, maxAuras do
 		auras.icons[i] = auras.icons[i] or tremove(auraCache) or mod:CreateAuraIcon(auras)
 		auras.icons[i]:SetParent(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
-		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
+		auras.icons[i]:SetHeight(aurasHeight)
 
 		-- update stacks font on NAME_PLATE_UNIT_ADDED
 		if auras.icons[i].count then
-			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+			auras.icons[i].count:SetFont(stackFont, self.db.stackFontSize, self.db.stackFontOutline)
 		end
 
 		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED
