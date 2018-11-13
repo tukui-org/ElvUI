@@ -16,6 +16,7 @@ local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
+local UnitSex = UnitSex
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
 -- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
@@ -233,7 +234,8 @@ local function LoadSkin()
 		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
 		local numSpecs = GetNumSpecializations(nil, self.isPet)
-		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet)
+		local sex = self.isPet and UnitSex("pet") or UnitSex("player")
+		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet, nil, sex)
 		local scrollChild = self.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
