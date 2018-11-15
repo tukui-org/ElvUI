@@ -226,14 +226,15 @@ do --this can save some main file locals
 		-- Whiro --
 		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis Toons --
-		["Maithilis-Shattrath"]		= ElvGreen, -- Monk [Alliance]
-		["Melisendra-Shattrath"]	= ElvBlue, -- Mage [Alliance]
-		["Merathilis-Garrosh"]		= ElvOrange, -- Druid [Horde]
-		["Merathilis-Shattrath"]	= ElvOrange, -- Druid [Alliance]
-		["Merathilîs-Shattrath"]	= ElvBlue,	 -- Shaman [Alliance]
-		["Asragoth-Shattrath"]		= ElvPurple, -- Warlock [Alliance]
-		["Damará-Shattrath"]		= ElvRed,	 -- Paladin [Alliance]
-		["Mattdemôn-Shattrath"]		= ElvPurple, -- Demon Hunter [Alliance]
+		["Asragoth-Shattrath"]		= ElvPurple,	-- Warlock [Alliance]
+		["Damará-Shattrath"]		= ElvRed,		-- Paladin [Alliance]
+		["Jazira-Shattrath"]		= ElvBlue,		-- Priest [Alliance]
+		["Maithilis-Shattrath"]		= ElvGreen,		-- Monk [Alliance]
+		["Mattdemôn-Shattrath"]		= ElvPurple,	-- Demon Hunter [Alliance]
+		["Melisendra-Shattrath"]	= ElvBlue,		-- Mage [Alliance]
+		["Merathilis-Garrosh"]		= ElvOrange,	-- Druid [Horde]
+		["Merathilis-Shattrath"]	= ElvOrange,	-- Druid [Alliance]
+		["Merathilîs-Shattrath"]	= ElvBlue,		-- Shaman [Alliance]
 		-- Affinity's Toons --
 		["Affinichi-Illidan"]	= Bathrobe,
 		["Affinitii-Illidan"]	= Bathrobe,
