@@ -30,17 +30,16 @@ local function LoadSkin()
 		SpellBookFrameTutorialButton:Kill()
 	end
 
-	local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
-	pagebackdrop:SetTemplate("Default")
-	pagebackdrop:Point("TOPLEFT", SpellBookPage1, "TOPLEFT", -2, 2)
-	pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
-	SpellBookFrame.pagebackdrop = pagebackdrop
-
 	if E.private.skins.parchmentRemover.enable then
 		SpellBookPage1:SetAlpha(0)
 		SpellBookPage2:SetAlpha(0)
 		SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
+		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
+		pagebackdrop:SetTemplate("Default")
+		pagebackdrop:Point("TOPLEFT", SpellBookPage1, "TOPLEFT", -2, 2)
+		pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
+		SpellBookFrame.pagebackdrop = pagebackdrop
 		for i = 1, 2 do
 			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
 			_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
