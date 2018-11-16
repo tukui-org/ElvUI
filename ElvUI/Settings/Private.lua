@@ -53,6 +53,9 @@ V['skins'] = {
 	['ace3'] = {
 		['enable'] = true,
 	},
+	['parchmentRemover'] = {
+		['enable'] = false,
+	},
 	['blizzard'] = {
 		['enable'] = true,
 		['deathRecap'] = true,

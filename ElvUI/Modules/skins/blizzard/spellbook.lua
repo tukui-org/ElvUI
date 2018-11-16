@@ -20,13 +20,7 @@ local function LoadSkin()
 	local SpellBookFrame = _G["SpellBookFrame"]
 	SpellBookFrame:SetTemplate("Transparent")
 
-	local StripAllTextures = {
-		"SpellBookFrame",
-		"SpellBookFrameInset",
-		"SpellBookSpellIconsFrame",
-		"SpellBookSideTabsFrame",
-		"SpellBookPageNavigationFrame",
-	}
+	local StripAllTextures = { "SpellBookFrame", "SpellBookFrameInset", "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
@@ -42,44 +36,63 @@ local function LoadSkin()
 	pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
 	SpellBookFrame.pagebackdrop = pagebackdrop
 
-	for i=1, 2 do
-		_G['SpellBookPage'..i]:SetParent(pagebackdrop)
-		_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
+	if E.private.skins.parchmentRemover.enable then
+		SpellBookPage1:SetAlpha(0)
+		SpellBookPage2:SetAlpha(0)
+		SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
+	else
+		for i = 1, 2 do
+			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
+			_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
+		end
 	end
 
 	S:HandleNextPrevButton(SpellBookPrevPageButton)
 	S:HandleNextPrevButton(SpellBookNextPageButton)
 
-	--Skin SpellButtons
-	local function SpellButtons(self, first)
-		for i=1, SPELLS_PER_PAGE do
+	for i = 1, SPELLS_PER_PAGE do
+		local button = _G["SpellButton"..i]
+		local icon = _G["SpellButton"..i.."IconTexture"]
+		local highlight =_G["SpellButton"..i.."Highlight"]
+
+		highlight:SetColorTexture(1, 1, 1, 0.3)
+		highlight:SetAllPoints(icon)
+
+		for j = 1, button:GetNumRegions() do
+			local region = select(j, button:GetRegions())
+			if region:IsObjectType("Texture") then
+				if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
+					and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
+					region:SetTexture(nil)
+				end
+			end
+		end
+
+		S:CropIcon(icon)
+		icon:SetAllPoints()
+		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
+		button:CreateBackdrop("Default", true)
+
+		if button.SpellHighlightTexture then
+			button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
+			if icon then
+				button.SpellHighlightTexture:SetOutside(button.backdrop)
+			end
+			E:Flash(button.SpellHighlightTexture, 1, true)
+		end
+
+		if button.shine then
+			button.shine:ClearAllPoints()
+			button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
+			button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+		end
+	end
+
+	hooksecurefunc("SpellButton_UpdateButton", function()
+		for i = 1, SPELLS_PER_PAGE do
 			local button = _G["SpellButton"..i]
 			local icon = _G["SpellButton"..i.."IconTexture"]
 
-			if not InCombatLockdown() then
-				button:SetFrameLevel(SpellBookFrame:GetFrameLevel() + 5)
-			end
-
-			if first then
-				--button:StripTextures()
-				for i=1, button:GetNumRegions() do
-					local region = select(i, button:GetRegions())
-					if region:GetObjectType() == "Texture" then
-						if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
-						  and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
-							region:SetTexture(nil)
-						end
-					end
-				end
-			end
-
-			if _G["SpellButton"..i.."Highlight"] then
-				_G["SpellButton"..i.."Highlight"]:SetColorTexture(1, 1, 1, 0.3)
-				_G["SpellButton"..i.."Highlight"]:ClearAllPoints()
-				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
-			end
-
-			--Button texture for bars not on AB
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
 				if icon then
@@ -87,27 +100,19 @@ local function LoadSkin()
 				end
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
-
-			if button.shine then
-				button.shine:ClearAllPoints()
-				button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
-				button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
-			end
-
-			if icon then
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:ClearAllPoints()
-				icon:SetAllPoints()
-
-				if not button.backdrop then
-					E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
-					button:CreateBackdrop("Default", true)
+			if E.private.skins.parchmentRemover.enable then
+				button:SetHighlightTexture('')
+				local r = button.SpellName:GetTextColor()
+				if r < 0.8 then
+					button.SpellName:SetTextColor(0.6, 0.6, 0.6)
+				else
+					button.SpellName:SetTextColor(1, 1, 1)
 				end
+				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
+				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
 			end
 		end
-	end
-	SpellButtons(nil, true)
-	hooksecurefunc("SpellButton_UpdateButton", SpellButtons)
+	end)
 
 	-- needs review
 	local function SkinTab(tab)

@@ -264,24 +264,36 @@ local StripTexturesBlizzFrames = {
 	'FilligreeOverlay',
 }
 
-local function StripTextures(object, kill)
-	local objectName = object.GetName and object:GetName()
-	for _, Blizzard in pairs(StripTexturesBlizzFrames) do
-		local BlizzFrame = object[Blizzard] or (objectName and _G[objectName..Blizzard])
-		if BlizzFrame then
-			BlizzFrame:StripTextures()
+local function StripTextures(object, kill, alpha)
+	if object:IsObjectType('Texture') then
+		if kill then
+			object:Kill()
+		elseif alpha then
+			object:SetAlpha(0)
+		else
+			object:SetTexture(nil)
 		end
-	end
+	else
+		local FrameName = object.GetName and object:GetName()
 
-	if object.GetNumRegions then
-		local region
-		for i = 1, object:GetNumRegions() do
-			region = select(i, object:GetRegions())
-			if region and region.IsObjectType and region:IsObjectType('Texture') then
-				if kill and type(kill) == 'boolean' then
-					region:Kill()
-				else
-					region:SetTexture(nil)
+		for _, Blizzard in pairs(StripTexturesBlizzFrames) do
+			local BlizzFrame = object[Blizzard] or FrameName and _G[FrameName..Blizzard]
+			if BlizzFrame then
+				BlizzFrame:StripTextures(kill, alpha)
+			end
+		end
+
+		if object.GetNumRegions then
+			for i = 1, object:GetNumRegions() do
+				local region = select(i, object:GetRegions())
+				if region and region.IsObjectType and region:IsObjectType('Texture') then
+					if kill then
+						region:Kill()
+					elseif alpha then
+						region:SetAlpha(0)
+					else
+						region:SetTexture(nil)
+					end
 				end
 			end
 		end

@@ -24,6 +24,13 @@ E.Options.args.skins = {
 			get = function(info) return E.private.skins.ace3.enable end,
 			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},
+		parchmentRemover = {
+			order = 3,
+			type = 'toggle',
+			name = 'Parchment Remover',
+			get = function(info) return E.private.skins.ace3.parchmentRemover end,
+			set = function(info, value) E.private.skins.ace3.parchmentRemover = value; E:StaticPopup_Show("PRIVATE_RL") end,
+		},
 		blizzard = {
 			order = 300,
 			type = 'group',

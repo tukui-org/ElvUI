@@ -74,8 +74,10 @@ local function LoadSkin()
 	QuestRewardScrollFrame:HookScript('OnShow', function(self)
 		if not self.backdrop then
 			self:CreateBackdrop("Default")
-			StyleScrollFrame(self, 509, 630, false)
 			self:Height(self:GetHeight() - 2)
+			if not E.private.skins.parchmentRemover.enable then
+				StyleScrollFrame(self, 509, 630, false)
+			end
 		end
 		self.spellTex:Height(self:GetHeight() + 217)
 	end)
@@ -174,13 +176,16 @@ local function LoadSkin()
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
 	QuestDetailScrollFrame:SetTemplate()
-	StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)
 
 	QuestProgressScrollFrame:SetTemplate()
-	StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)
 
 	QuestGreetingScrollFrame:SetTemplate()
-	StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
+
+	if not E.private.skins.parchmentRemover.enable then
+		StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)
+		StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)
+		StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
+	end
 
 	QuestFrameGreetingPanel:StripTextures(true)
 	S:HandleButton(QuestFrameGreetingGoodbyeButton, true)
@@ -252,8 +257,10 @@ local function LoadSkin()
 	QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(self)
 		if not QuestLogPopupDetailFrameScrollFrame.backdrop then
 			QuestLogPopupDetailFrameScrollFrame:CreateBackdrop("Default")
-			StyleScrollFrame(QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			QuestLogPopupDetailFrameScrollFrame:Height(self:GetHeight() - 2)
+			if not E.private.skins.parchmentRemover.enable then
+				StyleScrollFrame(QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
+			end
 		end
 		QuestLogPopupDetailFrameScrollFrame.spellTex:Height(self:GetHeight() + 217)
 	end)
