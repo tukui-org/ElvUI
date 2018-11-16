@@ -28,8 +28,8 @@ E.Options.args.skins = {
 			order = 3,
 			type = 'toggle',
 			name = 'Parchment Remover',
-			get = function(info) return E.private.skins.ace3.parchmentRemover end,
-			set = function(info, value) E.private.skins.ace3.parchmentRemover = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			get = function(info) return E.private.skins.parchmentRemover.enable end,
+			set = function(info, value) E.private.skins.parchmentRemover.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},
 		blizzard = {
 			order = 300,
