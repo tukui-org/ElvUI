@@ -933,6 +933,7 @@ L["Mirror Timers"] = "Таймеры"
 L["Misc Frames"] = "Прочие фреймы"
 L["Non-Raid Frame"] = "Не рейдовые фреймы"
 L["Orderhall"] = "Оплот класса"
+L["Parchment Remover"] = true
 L["Pet Battle"] = "Битвы питомцев"
 L["Petition Frame"] = "Хартия гильдии"
 L["PvP Frames"] = "ПвП фреймы"

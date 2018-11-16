@@ -982,6 +982,7 @@ L["Mirror Timers"] = "미러 타이머"
 L["Misc Frames"] = "기타 프레임"
 L["Non-Raid Frame"] = "비공격대 프레임"
 L["Orderhall"] = "직업전당"
+L["Parchment Remover"] = true
 L["Pet Battle"] = "애완동물대전 관련"
 L["Petition Frame"] = "GM 요청 창"
 L["PvP Frames"] = "PvP 창"

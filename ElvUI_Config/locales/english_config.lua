@@ -929,6 +929,7 @@ L["Mirror Timers"] = true
 L["Misc Frames"] = true
 L["Non-Raid Frame"] = true
 L["Orderhall"] = true
+L["Parchment Remover"] = true
 L["Pet Battle"] = true
 L["Petition Frame"] = true
 L["PvP Frames"] = true

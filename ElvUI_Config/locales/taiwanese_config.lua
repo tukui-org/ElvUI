@@ -935,6 +935,7 @@ L["Mirror Timers"] = "鏡像計時器"
 L["Misc Frames"] = "其他"
 L["Non-Raid Frame"] = "非團隊框架"
 L["Orderhall"] = "職業大廳"
+L["Parchment Remover"] = true
 L["Pet Battle"] = "寵物戰鬥"
 L["Petition Frame"] = "回報GM"
 L["PvP Frames"] = "PvP框架"

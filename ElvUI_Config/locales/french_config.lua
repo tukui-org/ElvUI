@@ -934,6 +934,7 @@ L["Mirror Timers"] = "Fenêtre des Timers mirroirs" --need review
 L["Misc Frames"] = "Divers"
 L["Non-Raid Frame"] = "Info Raid"
 L["Orderhall"] = "Domaine de classe"
+L["Parchment Remover"] = true
 L["Pet Battle"] = "Combats de mascottes"
 L["Petition Frame"] = "Fenêtre de Charte"
 L["PvP Frames"] = "Fenêtre JcJ"
