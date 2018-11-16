@@ -33,6 +33,15 @@ local function LoadSkin()
 	local QuestMapFrame = _G["QuestMapFrame"]
 	QuestMapFrame.VerticalSeparator:Hide()
 
+	if E.private.skins.parchmentRemover.enable then
+		QuestMapFrame.DetailsFrame:StripTextures()
+		QuestMapFrame.DetailsFrame:CreateBackdrop()
+		QuestMapFrame.DetailsFrame.backdrop:SetPoint('TOPLEFT', 0, 0)
+		QuestMapFrame.DetailsFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
+		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
+		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
+	end
+
 	local QuestScrollFrame = _G["QuestScrollFrame"]
 	QuestScrollFrame.DetailFrame:StripTextures()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()

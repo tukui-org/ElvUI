@@ -100,6 +100,40 @@ local function LoadSkin()
 
 			questItem.Name:SetTextColor(1, 1, 1)
 		end
+		if E.private.skins.parchmentRemover.enable then
+			QuestInfoTitleHeader:SetTextColor(1, .8, .1)
+			QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
+			QuestInfoObjectivesHeader:SetTextColor(1, .8, .1)
+			QuestInfoRewardsFrame.Header:SetTextColor(1, .8, .1)
+			QuestInfoDescriptionText:SetTextColor(1, 1, 1)
+			QuestInfoObjectivesText:SetTextColor(1, 1, 1)
+			QuestInfoGroupSize:SetTextColor(1, 1, 1)
+			QuestInfoRewardText:SetTextColor(1, 1, 1)
+			QuestInfoQuestType:SetTextColor(1, 1, 1)
+			QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
+			QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
+			if (QuestInfoRewardsFrame.SpellLearnText) then
+				QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
+			end
+			QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
+			QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+			local numObjectives = GetNumQuestLeaderBoards()
+			local numVisibleObjectives = 0
+			for i = 1, numObjectives do
+				local _, type, finished = GetQuestLogLeaderBoard(i)
+				if type ~= 'spell' then
+					numVisibleObjectives = numVisibleObjectives + 1
+					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+					if objective then
+						if finished then
+							objective:SetTextColor(1, .8, .1)
+						else
+							objective:SetTextColor(0.6, 0.6, 0.6)
+						end
+					end
+				end
+			end
+		end
 	end)
 
 	local rewardFrames = {
@@ -181,7 +215,62 @@ local function LoadSkin()
 
 	QuestGreetingScrollFrame:SetTemplate()
 
-	if not E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemover.enable then
+		GreetingText:SetTextColor(1, 1, 1)
+		GreetingText.SetTextColor = E.Noop
+		CurrentQuestsText:SetTextColor(1, .8, .1)
+		CurrentQuestsText.SetTextColor = E.Noop
+		AvailableQuestsText:SetTextColor(1, .8, .1)
+		AvailableQuestsText.SetTextColor = E.Noop
+
+		hooksecurefunc('QuestFrameProgressItems_Update', function()
+			QuestProgressTitleText:SetTextColor(1, .8, .1)
+			QuestProgressText:SetTextColor(1, 1, 1)
+			QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+			QuestProgressRequiredMoneyText:SetTextColor(1, .8, .1)
+		end)
+
+		hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
+			local requiredMoney = GetQuestLogRequiredMoney()
+			if requiredMoney > 0 then
+				if requiredMoney > GetMoney() then
+					QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+				else
+					QuestInfoRequiredMoneyText:SetTextColor(1, .8, .1)
+				end
+			end
+		end)
+
+		for i = 1, C_QuestLog.GetMaxNumQuestsCanAccept() do
+			local button = _G['QuestTitleButton'..i]
+			if button then
+				hooksecurefunc(button, 'SetFormattedText', function()
+					if button:GetFontString() then
+						if button:GetFontString():GetText() and button:GetFontString():GetText():find('|cff000000') then
+							button:GetFontString():SetText(string.gsub(button:GetFontString():GetText(), '|cff000000', '|cffffe519'))
+						end
+					end
+				end)
+			end
+		end
+
+		if (QuestInfoRewardsFrame.spellHeaderPool) then
+			for _, pool in pairs({"followerRewardPool", "spellRewardPool"}) do
+				QuestInfoRewardsFrame[pool]._acquire = QuestInfoRewardsFrame[pool].Acquire
+				QuestInfoRewardsFrame[pool].Acquire = function(self)
+					local frame = QuestInfoRewardsFrame[pool]:_acquire()
+					frame.Name:SetTextColor(1, 1, 1)
+					return frame
+				end
+			end
+			QuestInfoRewardsFrame.spellHeaderPool._acquire = QuestInfoRewardsFrame.spellHeaderPool.Acquire
+			QuestInfoRewardsFrame.spellHeaderPool.Acquire = function(self)
+				local frame = self:_acquire()
+				frame:SetTextColor(1, 1, 1)
+				return frame
+			end
+		end
+	else
 		StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
