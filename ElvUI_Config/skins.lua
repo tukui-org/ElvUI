@@ -6,19 +6,19 @@ E.Options.args.skins = {
 	childGroups = "tree",
 	args = {
 		intro = {
-			order = 1,
+			order = 0,
 			type = "description",
 			name = L["SKINS_DESC"],
 		},
 		blizzardEnable = {
-			order = 2,
+			order = 1,
 			type = 'toggle',
 			name = 'Blizzard',
 			get = function(info) return E.private.skins.blizzard.enable end,
 			set = function(info, value) E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},
 		ace3 = {
-			order = 3,
+			order = 2,
 			type = 'toggle',
 			name = 'Ace3',
 			get = function(info) return E.private.skins.ace3.enable end,
