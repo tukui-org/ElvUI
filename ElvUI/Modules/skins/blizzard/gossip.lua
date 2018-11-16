@@ -4,11 +4,13 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local gsub = gsub
 local pairs = pairs
+local strfind = strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: NUMGOSSIPBUTTONS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
@@ -59,7 +61,7 @@ local function LoadSkin()
 				if button:GetFontString() then
 					local Text = button:GetFontString():GetText()
 					if Text and strfind(Text, '|cff000000') then
-						button:GetFontString():SetText(string.gsub(Text, '|cff000000', '|cffffe519'))
+						button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
 					end
 				end
 			end
