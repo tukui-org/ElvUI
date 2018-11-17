@@ -26,7 +26,7 @@ Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)
 Added Castbar Strata and Level Options. (#323)  
 Added Color options to the UnitFrames to choose the Blizzard Selection Colors.  
 Added right-click functionality for the movers in `/moveui` to get to the options. (#843)  
-Added NamePlate indicators for Quest Mobs.  
+Added NamePlate indicators for Quest Mobs. Works only in the Open World.  
 Added a skin option to remove the Parchment from some skins.  
 
 
@@ -52,6 +52,7 @@ Removed ArtifactBar from the DataBars.
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
 Updated collection skin. Credits AddOnSkins.  
+Updated Ace3 skin (ElvUI config page)  
 Added `ElvUIGVC` chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
 Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 
