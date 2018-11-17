@@ -351,7 +351,9 @@ local function LoadSkin()
 				StyleScrollFrame(QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			end
 		end
-		QuestLogPopupDetailFrameScrollFrame.spellTex:Height(self:GetHeight() + 217)
+		if not E.private.skins.parchmentRemover.enable then
+			QuestLogPopupDetailFrameScrollFrame.spellTex:Height(self:GetHeight() + 217)
+		end
 	end)
 
 	S:HandleCloseButton(QuestLogPopupDetailFrameCloseButton)
