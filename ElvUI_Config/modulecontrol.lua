@@ -330,21 +330,21 @@ end
 
 --UnitFrames
 local function CreateUnitframesConfig()
-	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "unitframes")
+	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
 	config.args.cooldown = {
 		order = 2,
 		type = "toggle",
 		name = L["Cooldown Text"],
-		get = function(info) return E.global.profileCopy.unitframes[ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.unitframes[ info[#info] ] = value; end
+		get = function(info) return E.global.profileCopy.unitframe[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframe[ info[#info] ] = value; end
 	}
 	config.args.colors = {
 		order = 3,
 		type = "group",
 		guiInline = true,
 		name = COLORS,
-		get = function(info) return E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] = value; end,
+		get = function(info) return E.global.profileCopy.unitframe[info[#info - 1]][ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframe[info[#info - 1]][ info[#info] ] = value; end,
 		args = {
 			["general"] = {
 				order = 1,
@@ -388,8 +388,8 @@ local function CreateUnitframesConfig()
 		type = "group",
 		guiInline = true,
 		name = L["UnitFrames"],
-		get = function(info) return E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.unitframes[info[#info - 1]][ info[#info] ] = value; end,
+		get = function(info) return E.global.profileCopy.unitframe[info[#info - 1]][ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.unitframe[info[#info - 1]][ info[#info] ] = value; end,
 		args = {
 			["player"] = {
 				order = 1,
