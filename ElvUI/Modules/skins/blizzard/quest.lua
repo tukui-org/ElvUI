@@ -79,7 +79,9 @@ local function LoadSkin()
 				StyleScrollFrame(self, 509, 630, false)
 			end
 		end
-		self.spellTex:Height(self:GetHeight() + 217)
+		if not E.private.skins.parchmentRemover.enable then
+			self.spellTex:Height(self:GetHeight() + 217)
+		end
 	end)
 
 	hooksecurefunc("QuestInfo_Display", function()
