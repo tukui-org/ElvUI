@@ -4,12 +4,15 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local gsub = gsub
 local pairs = pairs
 local select = select
 local unpack = unpack
 --WoW API / Variables
+local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -243,13 +246,13 @@ local function LoadSkin()
 			end
 		end)
 
-		for i = 1, C_QuestLog.GetMaxNumQuestsCanAccept() do
+		for i = 1, C_QuestLog_GetMaxNumQuestsCanAccept() do
 			local button = _G['QuestTitleButton'..i]
 			if button then
 				hooksecurefunc(button, 'SetFormattedText', function()
 					if button:GetFontString() then
 						if button:GetFontString():GetText() and button:GetFontString():GetText():find('|cff000000') then
-							button:GetFontString():SetText(string.gsub(button:GetFontString():GetText(), '|cff000000', '|cffffe519'))
+							button:GetFontString():SetText(gsub(button:GetFontString():GetText(), '|cff000000', '|cffffe519'))
 						end
 					end
 				end)
