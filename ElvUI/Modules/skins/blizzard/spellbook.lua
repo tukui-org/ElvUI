@@ -8,7 +8,6 @@ local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SpellBookFrame_UpdateSkillLineTabs, SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
 
