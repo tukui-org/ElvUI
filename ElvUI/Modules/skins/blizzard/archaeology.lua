@@ -33,7 +33,7 @@ local function LoadSkin()
 		frame.raceName:SetTextColor(1, 1, 1)
 
 		artifact.border:SetTexture(nil)
-		S:CropIcon(artifact.icon, true)
+		S:CropIcon(artifact.icon, artifact)
 		artifact.artifactName:SetTextColor(1, .8, .1)
 		artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
 	end
@@ -72,8 +72,9 @@ local function LoadSkin()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(ArchaeologyFrameArtifactPageSolveFrameStatusBar)
 
-	S:CropIcon(ArchaeologyFrameArtifactPageIcon, true)
 	S:HandleCloseButton(ArchaeologyFrameCloseButton)
+
+	S:HandleIcon(ArchaeologyFrameArtifactPageIcon)
 
 	ArcheologyDigsiteProgressBar:StripTextures()
 	ArcheologyDigsiteProgressBar.FillBar:StripTextures()
