@@ -9,8 +9,8 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
-	altpower:SetStatusBarTexture(E['media'].blankTex)
-	UF['statusbars'][altpower] = true
+	altpower:SetStatusBarTexture(E.media.blankTex)
+	UF.statusbars[altpower] = true
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
 	altpower.PostUpdate = UF.AltPowerBarPostUpdate

@@ -106,7 +106,6 @@ local function BuildGuildTable()
 	end
 end
 
-
 local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
@@ -148,7 +147,6 @@ local eventHandlers = {
 	["ELVUI_FORCE_RUN"] = E.noop,
 	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
-
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
@@ -300,6 +298,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_SYSTEM', "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)

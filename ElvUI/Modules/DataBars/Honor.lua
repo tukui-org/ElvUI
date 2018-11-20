@@ -1,20 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
 local format = format
 --WoW API / Variables
-local ToggleTalentFrame = ToggleTalentFrame
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
+local InCombatLockdown = InCombatLockdown
+local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HONOR = HONOR
-local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
@@ -148,7 +148,7 @@ function mod:LoadHonorBar()
 	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) mod:UpdateHonor(event, unit) end)
 
 	self:UpdateHonorDimensions()
-	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])
+	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
 	self:EnableDisable_HonorBar()
 end

@@ -50,12 +50,12 @@ end
 
 --Change border when mouse is inside the button
 local function ButtonEnter(self)
-	self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
 --Change border back to normal when mouse leaves button
 local function ButtonLeave(self)
-	self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
 -- Function to create buttons in this module
@@ -215,7 +215,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
-	E.FrameLocks['RaidUtilityPanel'] = true
+	E.FrameLocks.RaidUtilityPanel = true
 
 	--Show Button
 	self:CreateUtilButton("RaidUtility_ShowButton", E.UIParent, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", E.UIParent, "TOP", -400, E.Border, RAID_CONTROL, nil)
@@ -371,7 +371,7 @@ function RU:Initialize()
 	--Raid Control Panel
 	self:CreateUtilButton("RaidControlButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth(), 18, "TOPLEFT", ReadyCheckButton, "BOTTOMLEFT", 0, -5, L["Raid Menu"], nil)
 	RaidControlButton:SetScript("OnMouseUp", function()
-		ToggleFriendsFrame(4)
+		ToggleFriendsFrame(3)
 	end)
 
 	local buttons = {

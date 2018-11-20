@@ -94,7 +94,7 @@ local function BuildABConfig()
 				desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
 				get = function(info) return E.db.actionbar.hideCooldownBling end,
 				set = function(info, value) E.db.actionbar.hideCooldownBling = value;
-					for _, bar in pairs(AB["handledBars"]) do
+					for _, bar in pairs(AB.handledBars) do
 						AB:UpdateButtonConfig(bar, bar.bindButtons)
 					end
 					AB:UpdatePetCooldownSettings()
@@ -107,7 +107,7 @@ local function BuildABConfig()
 				desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
 				get = function(info) return E.db.actionbar.useDrawSwipeOnCharges end,
 				set = function(info, value) E.db.actionbar.useDrawSwipeOnCharges = value;
-					for _, bar in pairs(AB["handledBars"]) do
+					for _, bar in pairs(AB.handledBars) do
 						AB:UpdateButtonConfig(bar, bar.bindButtons)
 					end
 				end,
@@ -125,7 +125,7 @@ local function BuildABConfig()
 				name = L["RightClick Self-Cast"],
 				set = function(info, value)
 					E.db.actionbar.rightClickSelfCast = value;
-					for _, bar in pairs(AB["handledBars"]) do
+					for _, bar in pairs(AB.handledBars) do
 						AB:UpdateButtonConfig(bar, bar.bindButtons)
 					end
 				end,
@@ -289,8 +289,8 @@ local function BuildABConfig()
 		order = 2,
 		guiInline = false,
 		disabled = function() return not E.ActionBars; end,
-		get = function(info) return E.db.actionbar['barPet'][ info[#info] ] end,
-		set = function(info, value) E.db.actionbar['barPet'][ info[#info] ] = value; AB:PositionAndSizeBarPet() end,
+		get = function(info) return E.db.actionbar.barPet[ info[#info] ] end,
+		set = function(info, value) E.db.actionbar.barPet[ info[#info] ] = value; AB:PositionAndSizeBarPet() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -302,7 +302,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L["Restore Bar"],
 				desc = L["Restore the actionbars default settings"],
-				func = function() E:CopyTable(E.db.actionbar['barPet'], P.actionbar['barPet']); E:ResetMovers('Pet Bar'); AB:PositionAndSizeBarPet() end,
+				func = function() E:CopyTable(E.db.actionbar.barPet, P.actionbar.barPet); E:ResetMovers('Pet Bar'); AB:PositionAndSizeBarPet() end,
 			},
 			point = {
 				order = 3,
@@ -399,7 +399,7 @@ local function BuildABConfig()
 					if value and value:match('[\n\r]') then
 						value = value:gsub('[\n\r]','')
 					end
-					E.db.actionbar['barPet']['visibility'] = value;
+					E.db.actionbar.barPet.visibility = value;
 					AB:UpdateButtonSettings()
 				end,
 			},
@@ -411,8 +411,8 @@ local function BuildABConfig()
 		order = 3,
 		guiInline = false,
 		disabled = function() return not E.ActionBars; end,
-		get = function(info) return E.db.actionbar['stanceBar'][ info[#info] ] end,
-		set = function(info, value) E.db.actionbar['stanceBar'][ info[#info] ] = value; AB:PositionAndSizeBarShapeShift() end,
+		get = function(info) return E.db.actionbar.stanceBar[ info[#info] ] end,
+		set = function(info, value) E.db.actionbar.stanceBar[ info[#info] ] = value; AB:PositionAndSizeBarShapeShift() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -424,7 +424,7 @@ local function BuildABConfig()
 				type = 'execute',
 				name = L["Restore Bar"],
 				desc = L["Restore the actionbars default settings"],
-				func = function() E:CopyTable(E.db.actionbar['stanceBar'], P.actionbar['stanceBar']); E:ResetMovers('Stance Bar'); AB:PositionAndSizeBarShapeShift() end,
+				func = function() E:CopyTable(E.db.actionbar.stanceBar, P.actionbar.stanceBar); E:ResetMovers('Stance Bar'); AB:PositionAndSizeBarShapeShift() end,
 			},
 			point = {
 				order = 3,
@@ -544,7 +544,7 @@ local function BuildABConfig()
 					if value and value:match('[\n\r]') then
 						value = value:gsub('[\n\r]','')
 					end
-					E.db.actionbar['stanceBar']['visibility'] = value;
+					E.db.actionbar.stanceBar.visibility = value;
 					AB:UpdateButtonSettings()
 				end,
 			},
@@ -619,7 +619,7 @@ local function BuildABConfig()
 					if value and value:match('[\n\r]') then
 						value = value:gsub('[\n\r]','')
 					end
-					E.db.actionbar['microbar']['visibility'] = value;
+					E.db.actionbar.microbar.visibility = value;
 					AB:UpdateMicroPositionDimensions()
 				end,
 			},
@@ -767,17 +767,17 @@ local function BuildABConfig()
 					desc = L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"],
 					width = 'full',
 					multiline = true,
-					get = function(info) return E.db.actionbar['bar'..i]['paging'][E.myclass] end,
+					get = function(info) return E.db.actionbar['bar'..i].paging[E.myclass] end,
 					set = function(info, value)
 						if value and value:match('[\n\r]') then
 							value = value:gsub('[\n\r]','')
 						end
 
-						if not E.db.actionbar['bar'..i]['paging'][E.myclass] then
-							E.db.actionbar['bar'..i]['paging'][E.myclass] = {}
+						if not E.db.actionbar['bar'..i].paging[E.myclass] then
+							E.db.actionbar['bar'..i].paging[E.myclass] = {}
 						end
 
-						E.db.actionbar['bar'..i]['paging'][E.myclass] = value
+						E.db.actionbar['bar'..i].paging[E.myclass] = value
 						AB:UpdateButtonSettings()
 					end,
 				},
@@ -792,7 +792,7 @@ local function BuildABConfig()
 						if value and value:match('[\n\r]') then
 							value = value:gsub('[\n\r]','')
 						end
-						E.db.actionbar['bar'..i]['visibility'] = value;
+						E.db.actionbar['bar'..i].visibility = value;
 						AB:UpdateButtonSettings()
 					end,
 				},

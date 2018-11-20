@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 local SpellRange = LibStub("SpellRange-1.0")
-local _,class = UnitClass("player")
 
 --Cache global variables
 --Lua functions
@@ -24,7 +23,7 @@ function UF:Construct_Range()
 	local Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
 	Range.Override = UF.UpdateRange
 
-	SpellRangeTable[class] = SpellRangeTable[class] or {}
+	SpellRangeTable[E.myclass] = SpellRangeTable[E.myclass] or {}
 
 	return Range
 end
@@ -45,15 +44,15 @@ function UF:Configure_Range(frame)
 end
 
 local function AddTable(tbl)
-	SpellRangeTable[class][tbl] = {}
+	SpellRangeTable[E.myclass][tbl] = {}
 end
 
 local function AddSpell(tbl, spellID)
-	SpellRangeTable[class][tbl][#SpellRangeTable[class][tbl] + 1] = spellID
+	SpellRangeTable[E.myclass][tbl][#SpellRangeTable[E.myclass][tbl] + 1] = spellID
 end
 
 function UF:UpdateRangeCheckSpells()
-	for tbl, spells in pairs(E.global.unitframe.spellRangeCheck[class]) do
+	for tbl, spells in pairs(E.global.unitframe.spellRangeCheck[E.myclass]) do
 		AddTable(tbl) --Create the table holding spells, even if it ends up being an empty table
 		for spellID in pairs(spells) do
 			local enabled = spells[spellID]
@@ -97,23 +96,25 @@ local function friendlyIsInRange(unit)
 	end
 
 	if CheckInteractDistance(unit, 1) then
-		return true -- within 28 yards (arg2 as 1 is compare achievements)
+		return true -- within 28 yards (arg2 as 1 is Compare Achievements distance)
 	end
 
-	if UnitIsDeadOrGhost(unit) and #SpellRangeTable[class].resSpells > 0 then -- dead with rez spells
-		for _, spellID in ipairs(SpellRangeTable[class].resSpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true -- within rez range
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].resSpells and UnitIsDeadOrGhost(unit) and (#SpellRangeTable[E.myclass].resSpells > 0) then -- dead with rez spells
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].resSpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true -- within rez range
+				end
 			end
+
+			return false -- dead but no spells are in range
 		end
 
-		return false -- dead but no spells are in range
-	end
-
-	if #SpellRangeTable[class].friendlySpells > 0 then -- you have some healy spell
-		for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
-			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-				return true -- within healy spell range
+		if SpellRangeTable[E.myclass].friendlySpells and (#SpellRangeTable[E.myclass].friendlySpells > 0) then -- you have some healy spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true -- within healy spell range
+				end
 			end
 		end
 	end
@@ -123,41 +124,56 @@ end
 
 local function petIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
-		return true
+		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	for _, spellID in ipairs(SpellRangeTable[class].friendlySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].friendlySpells and (#SpellRangeTable[E.myclass].friendlySpells > 0) then -- you have some healy spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].friendlySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
+			end
 		end
-	end
-	for _, spellID in ipairs(SpellRangeTable[class].petSpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+
+		if SpellRangeTable[E.myclass].petSpells and (#SpellRangeTable[E.myclass].petSpells > 0) then -- you have some pet spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].petSpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
+			end
 		end
 	end
 
-	return false
+	return false -- not within 8 yards and no spells in range
 end
 
 local function enemyIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
-		return true
+		return true -- within 8 yards (arg2 as 2 is Trade distance)
 	end
 
-	for _, spellID in ipairs(SpellRangeTable[class].enemySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].enemySpells and (#SpellRangeTable[E.myclass].enemySpells > 0) then -- you have some damage spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].enemySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
+			end
 		end
 	end
 
-	return false
+	return false -- not within 8 yards and no spells in range
 end
 
 local function enemyIsInLongRange(unit)
-	for _, spellID in ipairs(SpellRangeTable[class].longEnemySpells) do
-		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
-			return true
+	if SpellRangeTable[E.myclass] then
+		if SpellRangeTable[E.myclass].longEnemySpells and (#SpellRangeTable[E.myclass].longEnemySpells > 0) then -- you have some 30+ range damage spell
+			for _, spellID in ipairs(SpellRangeTable[E.myclass].longEnemySpells) do
+				if SpellRange.IsSpellInRange(spellID, unit) == 1 then
+					return true
+				end
+			end
 		end
 	end
 
@@ -167,9 +183,10 @@ end
 function UF:UpdateRange()
 	local range = self.Range
 	if not range then return end
+
 	local unit = self.unit
 
-	if self.forceInRange then
+	if self.forceInRange or unit == 'player' then
 		self:SetAlpha(range.insideAlpha)
 	elseif self.forceNotInRange then
 		self:SetAlpha(range.outsideAlpha)

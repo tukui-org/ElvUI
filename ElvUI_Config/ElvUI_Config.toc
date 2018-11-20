@@ -1,6 +1,6 @@
 ## Interface: 80000
 ## Author: Elv
-## Version: 1.05
+## Version: 1.06
 ## Title: |cfffe7b2cElvUI Config|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
@@ -25,4 +25,4 @@ tag_info.lua
 nameplates.lua
 profiles.lua
 maps.lua
-modulereset.lua
+modulecontrol.lua

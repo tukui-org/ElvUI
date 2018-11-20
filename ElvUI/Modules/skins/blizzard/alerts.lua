@@ -488,7 +488,6 @@ local function LoadSkin()
 		frame.SpecIcon:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -15)
 		frame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 
-
 		-- Icon border
 		if not frame.Icon.b then
 			frame.Icon.b = CreateFrame("Frame", nil, frame)
@@ -719,7 +718,6 @@ local function LoadSkin()
 	frame:CreateBackdrop("Transparent")
 	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
 	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-
 
 	--Bonus Roll Loot
 	frame = BonusRollLootWonFrame

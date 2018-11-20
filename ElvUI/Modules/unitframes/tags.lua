@@ -181,7 +181,7 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
 	else
-		local r, g, b = ElvUF.ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		local r, g, b = ElvUF:ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		return Hex(r, g, b)
 	end
 end
@@ -313,7 +313,7 @@ ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	if (deficit > 0 and currentHealth > 0) then
 		return _TAGS["health:percent-nostatus"](unit)
 	else
-		return _TAGS["name"](unit)
+		return _TAGS.name(unit)
 	end
 end
 
@@ -437,8 +437,8 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 end
 
 ElvUF.Tags.Methods['manacolor'] = function()
-	local altR, altG, altB = PowerBarColor["MANA"].r, PowerBarColor["MANA"].g, PowerBarColor["MANA"].b
-	local color = ElvUF['colors'].power["MANA"]
+	local altR, altG, altB = PowerBarColor.MANA.r, PowerBarColor.MANA.g, PowerBarColor.MANA.b
+	local color = ElvUF.colors.power.MANA
 	if color then
 		return Hex(color[1], color[2], color[3])
 	else
@@ -524,7 +524,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 			local c = GetRelativeDifficultyColor(teamLevel, level)
 			r, g, b = c.r, c.g, c.b
 		else
-			local c = QuestDifficultyColors["difficult"]
+			local c = QuestDifficultyColors.difficult
 			r, g, b = c.r, c.g, c.b
 		end
 	else
@@ -554,7 +554,7 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 		if not class then return "" end
 		return Hex(class[1], class[2], class[3])
 	elseif (unitReaction) then
-		local reaction = ElvUF['colors'].reaction[unitReaction]
+		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
 		return '|cFFC2C2C2'
@@ -653,7 +653,7 @@ ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
 	local realmString
-	if realm then
+	if realm ~= E.myrealm then
 		realmString = format("-%s", realm)
 	else
 		realmString = nil
@@ -754,7 +754,7 @@ local Harmony = {
 	[6] = {.17, .63, .33, 1},
 }
 
-local StaggerColors = ElvUF.colors.power["STAGGER"]
+local StaggerColors = ElvUF.colors.power.STAGGER
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
 local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
@@ -919,7 +919,7 @@ f:SetScript("OnEvent", function()
 	elseif IsInGroup() then
 		groupType = "party"
 		groupSize = GetNumGroupMembers() - 1
-		GroupUnits["player"] = true
+		GroupUnits.player = true
 	else
 		groupType = "solo"
 		groupSize = 1

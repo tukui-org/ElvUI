@@ -45,6 +45,7 @@ L["Temporary Move"] = '移动背包'
 L["Toggle Bags"] = "背包开关"
 L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/删除灰色物品"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "离开" --Also used in datatexts and tooltip
@@ -66,10 +67,10 @@ L["whispers"] = "密语"
 L["yells"] = "大喊"
 
 --DataBars
+L["Azerite Bar"] = "艾泽里特能量条"
 L["Current Level:"] = "当前等级:"
 L["Honor Remaining:"] = "荣誉值剩余:"
 L["Honor XP:"] = "荣誉值:"
-L["In Bags:"] = "背包内:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 内存占用"
@@ -229,10 +230,11 @@ L["Empty Slot"] = "空拾取位"
 L["Enable"] = "启用"
 L["Experience"] = "经验/声望条"
 L["Fishy Loot"] = "贪婪"
-L["Left Click:"] = "鼠标左键:"
+L["Left Click:"] = "左键:"
 L["Raid Menu"] = "团队菜单"
 L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
+L["Right Click:"] = "右键:"
 L["Toggle Chat Buttons"] = "开关聊天按钮" --layout\layout.lua
 L["Toggle Chat Frame"] = "开关聊天框架"
 L["Toggle Configuration"] = "设置开关"
@@ -245,7 +247,6 @@ L["Voice Overlay"] = "语音界面"
 L["Alternative Power"] = "特殊能量条"
 L["Archeology Progress Bar"] = "考古进度条"
 L["Arena Frames"] = "竞技场框架"
-L["Artifact Bar"] = "神器能量条"
 L["Bag Mover (Grow Down)"] = "背包框架(向下)"
 L["Bag Mover (Grow Up)"] = "背包框架(向上)"
 L["Bag Mover"] = "背包框架"
@@ -306,6 +307,7 @@ L["Zone Ability"] = "区域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
 
 选项：
+  右键 - Open Config Section.
   Shift + 右键 - 暂时隐藏定位开关
   Ctrl + 右键 - 重置定位开关位置
 ]=]
@@ -340,7 +342,7 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "你所做的改动只会影响到使用这个插件的本角色, 你需要重新加载界面才能使改动生效."
 L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = "接受这个将重置关于%s的单位单位框架. 你确定吗？"
-L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "接受这个将重置姓名版中所有光环的过滤器优先级. 你确定吗？"
+L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "接受这个将重置姓名板中所有光环的过滤器优先级. 你确定吗？"
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "接受这个将重置单位框架中所有光环的过滤器优先级. 你确定吗？"
 L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定要对所有ElvUI元素使用这个字体?"
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "移动鼠标到动作条或技能书按钮上绑定快捷键. 按ESC或鼠标右键取消目前快捷键"
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = '我承诺'
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起来你使用的一个插件使得Blizzard_CompactRaidFrames停用了。这会产生错误与问题。这个插件现在会被重新启用"
 L["No, Revert Changes!"] = "不，撤销修改！"

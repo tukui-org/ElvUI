@@ -146,7 +146,7 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 		t = parent.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		local adjust = 0 - (min or 0)
-		r, g, b = parent.ColorGradient(cur + adjust, max + adjust, unpack(element.smoothGradient or parent.colors.smooth))
+		r, g, b = parent:ColorGradient(cur + adjust, max + adjust, unpack(element.smoothGradient or parent.colors.smooth))
 	end
 
 	if(t) then

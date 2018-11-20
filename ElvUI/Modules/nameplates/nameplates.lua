@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -10,8 +10,11 @@ local gsub = gsub
 local twipe = table.wipe
 local format = string.format
 local match = string.match
+local strjoin = strjoin
 local tonumber = tonumber
+
 --WoW API / Variables
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
@@ -44,13 +47,19 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnregisterUnitWatch = UnregisterUnitWatch
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestLogTitle = GetQuestLogTitle
 local GetCVar = GetCVar
+local UnitGUID = UnitGUID
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: NamePlateDriverFrame, UIParent, InterfaceOptionsNamesPanelUnitNameplates
+-- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
+-- GLOBALS: InterfaceOptionsNamesPanelUnitNameplates
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesAggroFlash
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemies
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions
@@ -62,6 +71,9 @@ local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesShowAll
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesMakeLarger
 -- GLOBALS: InterfaceOptionsNamesPanelUnitNameplatesFriends
+-- GLOBALS: CUSTOM_CLASS_COLORS
+
+mod.PlateGUIDs = {}
 
 --Taken from Blizzard_TalentUI.lua
 local healerSpecIDs = {
@@ -74,7 +86,7 @@ local healerSpecIDs = {
 }
 
 mod.HealerSpecs = {}
-mod.Healers = {};
+mod.Healers = {}
 
 --Get localized healing spec names
 for _, specID in pairs(healerSpecIDs) do
@@ -125,7 +137,7 @@ function mod:LockdownInstancePlateCVars(lockedInstance)
 	if lockedInstance then
 		E:LockCVar("nameplateShowDebuffsOnFriendly", false)
 	else
-		E.LockedCVars["nameplateShowDebuffsOnFriendly"] = nil;
+		E.LockedCVars.nameplateShowDebuffsOnFriendly = nil;
 		SetCVar("nameplateShowDebuffsOnFriendly", true)
 	end
 end
@@ -147,19 +159,15 @@ function mod:PLAYER_ENTERING_WORLD()
 	end
 
 	if inInstance and (instanceType == 'pvp') and self.db.units.ENEMY_PLAYER.markHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
-		self:CheckBGHealers()
+		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", 'CheckBGHealers')
 	elseif inInstance and (instanceType == 'arena') and self.db.units.ENEMY_PLAYER.markHealers then
-		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
+		self:RegisterEvent("UNIT_NAME_UPDATE", 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers')
 		self:CheckArenaHealers()
 	else
-		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("UNIT_NAME_UPDATE")
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
-		if self.CheckHealerTimer then
-			self:CancelTimer(self.CheckHealerTimer)
-			self.CheckHealerTimer = nil;
-		end
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
 	end
 
 	if self.db.units.PLAYER.useStaticPosition then
@@ -385,7 +393,6 @@ function mod:StyleFrame(frame, useMainFrame)
 	parent:CreateBackdrop("Transparent")
 end
 
-
 function mod:DISPLAY_SIZE_CHANGED()
 	self.mult = E.mult --[[* UIParent:GetScale()]]
 end
@@ -421,8 +428,19 @@ end
 function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	frame = frame or self:GetNamePlateForUnit(unit)
 
-	local plateID = self:GetNameplateID(frame)
-	frame.unitFrame.plateID = plateID
+	frame.unitFrame.mainFrame = frame
+
+	-- we dont actually use `frame.unitFrame.namePlateUnitToken` but some other addons might try to
+	frame.unitFrame.namePlateUnitToken = frame.namePlateUnitToken
+
+	local plateID, plateGUID = self:GetNameplateID(frame)
+	if plateID then
+		frame.unitFrame.plateID = plateID
+	end
+	if plateGUID then
+		frame.unitFrame.plateGUID = plateGUID
+		self.PlateGUIDs[plateGUID] = frame
+	end
 
 	frame.unitFrame.unit = unit
 	frame.unitFrame.displayedUnit = unit
@@ -485,6 +503,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:ConfigureElement_Elite(frame.unitFrame)
 	self:ConfigureElement_Detection(frame.unitFrame)
 	self:ConfigureElement_Highlight(frame.unitFrame)
+	self:ConfigureElement_QuestIcon(frame.unitFrame)
 	self:RegisterEvents(frame.unitFrame, unit)
 	self:UpdateElement_All(frame.unitFrame, unit, nil, true)
 
@@ -539,7 +558,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.Elite:Hide()
 	frame.unitFrame:Hide()
 	frame.unitFrame.unit = nil
-	frame.unitFrame.plateID = nil
+	frame.unitFrame.mainFrame = nil
 	frame.unitFrame.UnitType = nil
 	frame.unitFrame.isTarget = nil
 	frame.unitFrame.isTargetingMe = nil
@@ -549,7 +568,21 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.unitFrame.isBeingTanked = nil
 	frame.unitFrame.ThreatScale = nil
 	frame.unitFrame.ThreatData = nil
+	frame.unitFrame.namePlateUnitToken = nil
 	frame.unitFrame.StyleFilterWaitTime = nil
+	frame.unitFrame.CastBar.interruptedBy = nil
+	frame.unitFrame.CastBar.curTarget = nil
+
+	local numIcons = #frame.unitFrame.QuestIcon
+	for i = 1, numIcons do
+		frame.unitFrame.QuestIcon[i]:Hide()
+	end
+
+	frame.unitFrame.plateID = nil
+	if frame.unitFrame.plateGUID then
+		self.PlateGUIDs[frame.unitFrame.plateGUID] = nil
+		frame.unitFrame.plateGUID = nil
+	end
 
 	if self.ClassBar and (unitType == "PLAYER") then
 		mod:ClassBar_Update()
@@ -672,6 +705,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 		mod:UpdateElement_Cast(frame)
 		mod:UpdateElement_Auras(frame)
 		mod:UpdateElement_HealPrediction(frame)
+		mod:UpdateElement_QuestIcon(frame)
 		if(self.db.units[frame.UnitType].powerbar.enable) then
 			frame.PowerBar:Show()
 			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
@@ -711,20 +745,33 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame, filterIgnore)
 end
 
 function mod:GetNameplateID(frame)
-	if frame == mod.PlayerFrame__ then return 0 end
+	if frame == mod.PlayerFrame__ then
+		return 0, E.myguid
+	end
+
 	local plateName = frame:GetName()
-	local plateID = plateName and tonumber(match(plateName, "%d+$"))
-	return plateID
+	return plateName and tonumber(match(plateName, "%d+$")), frame.namePlateUnitToken and UnitGUID(frame.namePlateUnitToken)
 end
 
 function mod:NAME_PLATE_CREATED(_, frame)
-	local plateID = self:GetNameplateID(frame)
+	local plateID, plateGUID = self:GetNameplateID(frame)
 	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_NamePlate%d", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
 	frame.unitFrame:SetFrameStrata("BACKGROUND")
 	frame.unitFrame:SetScript("OnEvent", mod.OnEvent)
-	frame.unitFrame.plateID = plateID
+	frame.unitFrame.mainFrame = frame
+
+	-- we dont actually use `frame.unitFrame.namePlateUnitToken` but some other addons might try to
+	frame.unitFrame.namePlateUnitToken = frame.namePlateUnitToken
+
+	if plateID then
+		frame.unitFrame.plateID = plateID
+	end
+	if plateGUID then
+		frame.unitFrame.plateGUID = plateGUID
+		self.PlateGUIDs[plateGUID] = frame
+	end
 
 	frame.unitFrame.HealthBar = self:ConstructElement_HealthBar(frame.unitFrame)
 	frame.unitFrame.CutawayHealth = self:ConstructElement_CutawayHealth(frame.unitFrame)
@@ -742,6 +789,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Elite = self:ConstructElement_Elite(frame.unitFrame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
+	frame.unitFrame.QuestIcon = self:ConstructElement_QuestIcons(frame.unitFrame)
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)
@@ -759,6 +807,15 @@ function mod:OnEvent(event, unit, ...)
 	end
 	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then
 		return
+	end
+
+	-- this part doesnt really get called ever but if for some reason we fail to get guid this can pick it up later on
+	if self.mainFrame and not self.plateGUID then
+		local _, plateGUID = mod:GetNameplateID(self.mainFrame)
+		if plateGUID then
+			self.plateGUID = plateGUID
+			mod.PlateGUIDs[plateGUID] = self.mainFrame
+		end
 	end
 
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
@@ -847,9 +904,10 @@ function mod:OnEvent(event, unit, ...)
 end
 
 function mod:RegisterEvents(frame, unit)
-	local displayedUnit;
-	if ( unit ~= frame.displayedUnit ) then
-		displayedUnit = frame.displayedUnit;
+	local displayedUnit
+	if not unit then unit = frame.unit end
+	if unit ~= frame.displayedUnit then
+		displayedUnit = frame.displayedUnit
 	end
 
 	if(self.db.units[frame.UnitType].healthbar.enable or (frame.isTarget and self.db.alwaysShowTargetHealth)) then
@@ -893,6 +951,10 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit, displayedUnit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit, displayedUnit);
+
+			if unit == 'player' then
+				frame:RegisterUnitEvent("UNIT_SPELLCAST_SENT", unit, displayedUnit);
+			end
 		end
 
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
@@ -900,7 +962,7 @@ function mod:RegisterEvents(frame, unit)
 		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
-		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit or frame.unit)
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD", unit)
 	end
 
 	frame:RegisterEvent("RAID_TARGET_UPDATE")
@@ -1130,9 +1192,37 @@ function mod:UpdatePlateFonts()
 	end
 end
 
+function mod:COMBAT_LOG_EVENT_UNFILTERED()
+	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
+
+	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+		local plate = self.PlateGUIDs[targetGUID]
+		if plate and (plate.unitFrame and plate.unitFrame.CastBar) then
+			local db = plate.unitFrame.UnitType and self.db and self.db.units and self.db.units[plate.unitFrame.UnitType]
+			local healthBar = (db and db.healthbar and db.healthbar.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
+			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
+				local holdTime = db.castbar.timeToHold
+				if holdTime > 0 then
+					if db.castbar.sourceInterruptClassColor then
+						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
+						if sourceClass then
+							local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
+							sourceClass = classColor and classColor.colorStr
+						end
+
+						plate.unitFrame.CastBar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+					else
+						plate.unitFrame.CastBar.interruptedBy = sourceName
+					end
+				end
+			end
+		end
+	end
+end
+
 function mod:Initialize()
-	self.db = E.db["nameplates"]
-	if E.private["nameplates"].enable ~= true then return end
+	self.db = E.db.nameplates
+	if E.private.nameplates.enable ~= true then return end
 
 	--Add metatable to all our StyleFilters so they can grab default values if missing
 	self:StyleFilterInitializeAllFilters()
@@ -1175,10 +1265,25 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
+	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITING_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
+	self:RegisterEvent("QUEST_ACCEPTED")
+	self:RegisterEvent("QUEST_REMOVED")
+	self:RegisterEvent("QUEST_LOG_UPDATE")
+
+	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
+	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
+
+	local numEntries, numQuests = GetNumQuestLogEntries();
+	for questLogIndex = 1, numEntries do
+		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);
+		if title and questID and questID > 0 then
+			self.ActiveQuests[title] = questID
+		end
+	end
 
 	if self.db.hideBlizzardPlates then
 		InterfaceOptionsNamesPanelUnitNameplates:Kill()
@@ -1229,7 +1334,7 @@ function mod:Initialize()
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
 	self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)
-	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"])
+	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"], nil, nil, nil, nil, nil, 'nameplate,playerGroup,general')
 	self:TogglePlayerDisplayType()
 	self:SetNamePlateClickThrough()
 

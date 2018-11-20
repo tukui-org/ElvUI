@@ -172,6 +172,7 @@ local clientTable = {
 	['S1'] = "SC",
 	['S2'] = "SC2",
 	['DST2'] = "Dst2",
+	['VIPR'] = "VIPR", -- COD
 	['BSAp'] = L["Mobile"],
 	['App'] = "App", --Launcher
 }
@@ -200,6 +201,7 @@ local function SetupFriendClients() --this function is used to create the client
 	SetupFriendClient('S1', 10)
 	SetupFriendClient('S2', 11)
 	SetupFriendClient('DST2', 12)
+	SetupFriendClient('VIPR', 13)
 end
 
 E.Options.args.datatexts = {

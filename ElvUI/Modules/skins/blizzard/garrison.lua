@@ -29,7 +29,7 @@ local function LoadSkin()
 			if reward.IconBorder and reward.IconBorder:IsShown() then
 				r, g, b = reward.IconBorder:GetVertexColor()
 			else
-				r, g, b = unpack(E["media"].bordercolor)
+				r, g, b = unpack(E.media.bordercolor)
 			end
 
 			if not reward.border then
@@ -57,7 +57,7 @@ local function LoadSkin()
 				r, g, b = frame.IconBorder:GetVertexColor()
 			else
 				-- This is a currency, use the default ElvUI border color
-				r, g, b = unpack(E["media"].bordercolor)
+				r, g, b = unpack(E.media.bordercolor)
 			end
 		-- end
 		frame.backdrop:SetBackdropBorderColor(r, g, b)]]
@@ -84,7 +84,7 @@ local function LoadSkin()
 						local r, g, b = Reward.IconBorder:GetVertexColor()
 						Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
 					else
-						Reward.border.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+						Reward.border.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
 					idx = idx + 1;
 				end
@@ -121,8 +121,7 @@ local function LoadSkin()
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
 	S:HandleEditBox(GarrisonCapacitiveDisplayFrame.Count)
-	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton)
-	SquareButton_SetIcon(GarrisonCapacitiveDisplayFrame.DecrementButton, 'LEFT')
+	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton, false, true)
 	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.IncrementButton)
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
@@ -383,7 +382,7 @@ local function LoadSkin()
 	FollowerTab:StripTextures()
 	FollowerTab.Class:SetSize(50, 43)
 	FollowerTab.XPBar:StripTextures()
-	FollowerTab.XPBar:SetStatusBarTexture(E["media"].normTex)
+	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
 	FollowerTab.XPBar:CreateBackdrop()
 
 	-- Orderhall Portraits
@@ -455,7 +454,7 @@ local function LoadSkin()
 	S:HandleFollowerListOnUpdateData("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
 
 	XPBar:StripTextures()
-	XPBar:SetStatusBarTexture(E["media"].normTex)
+	XPBar:SetStatusBarTexture(E.media.normTex)
 	XPBar:CreateBackdrop()
 
 	Class:SetSize(50, 43)

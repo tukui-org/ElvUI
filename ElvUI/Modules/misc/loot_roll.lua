@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
 --Cache global variables
@@ -64,7 +64,6 @@ local function SetTip(frame)
 	GameTooltip:Show()
 end
 
-
 local function SetItemTip(frame)
 	if not frame.link then return end
 	GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT")
@@ -73,12 +72,10 @@ local function SetItemTip(frame)
 	if IsModifiedClick("DRESSUP") then ShowInspectCursor() else ResetCursor() end
 end
 
-
 local function ItemOnUpdate(self)
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 	CursorOnUpdate(self)
 end
-
 
 local function LootClick(frame)
 	if IsControlKeyDown() then DressUpItemLink(frame.link)
@@ -161,7 +158,7 @@ function M:CreateRollFrame()
 	status:SetInside()
 	status:SetScript("OnUpdate", StatusUpdate)
 	status:SetFrameLevel(status:GetFrameLevel()-1)
-	status:SetStatusBarTexture(E["media"].normTex)
+	status:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(status)
 	status:SetStatusBarColor(.8, .8, .8, .9)
 	status.parent = frame

@@ -266,9 +266,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleNextPrevButton(LootFrameDownButton)
-	S:HandleNextPrevButton(LootFrameUpButton)
-	SquareButton_SetIcon(LootFrameUpButton, 'UP')
-	SquareButton_SetIcon(LootFrameDownButton, 'DOWN')
+	S:HandleNextPrevButton(LootFrameUpButton, true)
 end
 
 S:AddCallback("Loot", LoadSkin)

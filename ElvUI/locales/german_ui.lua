@@ -45,6 +45,7 @@ L["Temporary Move"] = "Temporäres Bewegen"
 L["Toggle Bags"] = "Taschen umschalten"
 L["Vendor Grays"] = "Graue Gegenstände verkaufen"
 L["Vendor / Delete Grays"] = "Verkaufe / Lösche graue Gegenstände"
+L["Vendoring Grays"] = "Verkaufe graue Gegenstände"
 
 --Chat
 L["AFK"] = "AFK" --Also used in datatexts and tooltip
@@ -66,10 +67,10 @@ L["whispers"] = "flüstern"
 L["yells"] = "schreien"
 
 --DataBars
+L["Azerite Bar"] = "Azerit Leiste"
 L["Current Level:"] = "Derzeitiges Level:"
 L["Honor Remaining:"] = "Ehre verbleibend:"
 L["Honor XP:"] = "Ehre XP:"
-L["In Bags:"] = "In Tasche:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
@@ -233,6 +234,7 @@ L["Left Click:"] = "Linksklick:" --layout\layout.lua
 L["Raid Menu"] = "Schlachtzugsmenü"
 L["Remaining:"] = "Verbleibend:"
 L["Rested:"] = "Ausgeruht:"
+L["Right Click:"] = "Rechts Klick:"
 L["Toggle Chat Buttons"] = "Chat Tasten an-/ausschalten" --layout\layout.lua
 L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten" --layout\layout.lua
 L["Toggle Configuration"] = "Konfiguration an-/ausschalten" --layout\layout.lua
@@ -245,7 +247,6 @@ L["Voice Overlay"] = true -- No need to translate
 L["Alternative Power"] = "Alternative Energie"
 L["Archeology Progress Bar"] = "Archeologie Fortschrittsleiste"
 L["Arena Frames"] = "Arena Fenster" --Also used in UnitFrames
-L["Artifact Bar"] = "Artefaktleiste"
 L["Bag Mover (Grow Down)"] = "Taschen Anker (Nach unten wachsen)"
 L["Bag Mover (Grow Up)"] = "Taschen Anker (Nach oben wachsen)"
 L["Bag Mover"] = "Taschen Anker"
@@ -306,6 +307,7 @@ L["Zone Ability"] = "Zonen Fähigkeit"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
 Options:
+  Rechtsklick - Öffnet Konfigurationsbereich.
   Shift + Rechtsklick - Blendet den Anker vorübergehend aus.
   Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI ist nicht aktuell. Du kannst die neuste Version bei www.tukui.org herunterladen. Hol dir die Premium-Mitgliedschaft und ElvUI wird durch den Tukui-Client automatisch aktualisiert!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI muss eine Datenbank Optimierung durchführen. Bitte warte eine Moment."
 L["Error resetting UnitFrame."] = "Fehler beim Zurücksetzen des Einheitenfesters."
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Bewege deine Maus über einen Aktionsbutton oder dein Zauberbuch um ihn mit einem Hotkey zu belegen. Drücke Escape oder rechte Maustaste um die aktuelle Tastenbelegung des Buttons zu löschen."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "Bewege deine Maus über einen Aktionsbutton oder dein Zauberbuch um ihn mit einem Hotkey zu belegen. Drücke Escape um die aktuelle Tastenbelegung des Buttons zu löschen."
 L["I Swear"] = "Ich schwöre"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Es sieht so aus, als würde eines deiner Addons die Blizzard_CompactRaidFrames deaktivieren. Dass kann zu Fehlern oder anderen Problemen führen. Das Addon wird wieder aktiviert."
 L["No, Revert Changes!"] = "Nein, Änderungen verwerfen!"

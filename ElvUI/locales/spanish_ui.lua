@@ -45,6 +45,7 @@ L["Temporary Move"] = "Movimiento Temporal"
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Vendor Grays"] = "Vender Objetos Grises"
 L["Vendor / Delete Grays"] = true
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "Ausente"
@@ -66,10 +67,10 @@ L["whispers"] = "susurra"
 L["yells"] = "grita"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
-L["In Bags:"] = true
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
@@ -233,6 +234,7 @@ L["Left Click:"] = "Click Izquierdo"
 L["Raid Menu"] = "Menú de Banda"
 L["Remaining:"] = "Restante"
 L["Rested:"] = "Descansado:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Marco de Chat"
 L["Toggle Configuration"] = "Mostrar/Ocultar Configuración"
@@ -245,7 +247,6 @@ L["Voice Overlay"] = true
 L["Alternative Power"] = "Poder Alternativo"
 L["Archeology Progress Bar"] = "Barra de Progreso de Arqueología"
 L["Arena Frames"] = "Marcos de Arena"
-L["Artifact Bar"] = "Barra de Artefacto"
 L["Bag Mover (Grow Down)"] = "Fijador de Bolsa (Crecer hacia abajo)"
 L["Bag Mover (Grow Up)"] = "Fijador de Bolsa (Crecer hacia arriba)"
 L["Bag Mover"] = "Fijador de Bolsa"
@@ -306,6 +307,7 @@ L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
 
 Options:
+  RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI está desactualizado. Puedes descargar la versión más nueva de www.tukui.org. ¡Obtén la suscripción premium y ElvUI se actualizará automáticamente con el cliente Tukui!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI necesita realizar optimizaciones de base de datos por favor se paciente."
 L["Error resetting UnitFrame."] = true
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Pasa tu ratón por encima de un botón de acción o de un botón del libro de hechizos para ligarlo. Pulsa escape o botón derecho para limpiar la asignación actual del botón de acción."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "Lo Juro"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Parece ser que uno de tus addons ha desactivado el addon Blizzard_CompactRaidFrames. Esto puede causar errores y otros problemas. El addon será ahora reactivado."
 L["No, Revert Changes!"] = "¡No, Revierte los Cambios!"

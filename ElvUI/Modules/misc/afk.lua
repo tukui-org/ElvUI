@@ -145,7 +145,6 @@ function AFK:OnEvent(event, ...)
 	end
 end
 
-
 function AFK:Toggle()
 	if(E.db.general.afk) then
 		self:RegisterEvent("PLAYER_FLAGS_CHANGED", "OnEvent")

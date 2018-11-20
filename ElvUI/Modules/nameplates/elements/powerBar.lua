@@ -18,9 +18,9 @@ end
 local temp = {r = 1, b = 1, g = 1}
 function mod:UpdateElement_Power(frame)
 	self:UpdateElement_MaxPower(frame)
-
-	local curValue = UnitPower(frame.displayedUnit, frame.PowerType);
-	local maxValue = UnitPowerMax(frame.displayedUnit, frame.PowerType);
+	local unit = frame.displayedUnit or frame.unit
+	local curValue = UnitPower(unit, frame.PowerType);
+	local maxValue = UnitPowerMax(unit, frame.PowerType);
 	if (curValue == 0 and self.db.units[frame.UnitType].powerbar.hideWhenEmpty) then
 		frame.PowerBar:Hide()
 	else

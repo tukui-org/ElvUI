@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -13,11 +13,14 @@ local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
+local ToggleCharacter = ToggleCharacter
+local CreateFrame = CreateFrame
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
+local MAX_REPUTATION_REACTION = MAX_REPUTATION_REACTION
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, RightChatPanel, CreateFrame, ToggleCharacter
+-- GLOBALS: GameTooltip, RightChatPanel
 
 local backupColor = FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN
@@ -26,6 +29,7 @@ function mod:UpdateReputation(event)
 
 	local bar = self.repBar
 	local ID, isFriend, friendText, standingLabel
+	local isCapped
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 
 	if factionID and C_Reputation_IsFactionParagon(factionID) then
@@ -36,6 +40,12 @@ function mod:UpdateReputation(event)
 			if hasRewardPending then
 				value = value + threshold
 			end
+		end
+	else
+		if reaction == MAX_REPUTATION_REACTION then
+			-- max rank, make it look like a full bar
+			min, max, value = 0, 1, 1
+			isCapped = true
 		end
 	end
 
@@ -85,20 +95,25 @@ function mod:UpdateReputation(event)
 			maxMinDiff = 1
 		end
 
-		if textFormat == 'PERCENT' then
-			text = format('%s: %d%% [%s]', name, ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURMAX' then
-			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURPERC' then
-			text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CUR' then
-			text = format('%s: %s [%s]', name, E:ShortValue(value - min), isFriend and friendText or standingLabel)
-		elseif textFormat == 'REM' then
-			text = format('%s: %s [%s]', name, E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURREM' then
-			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURPERCREM' then
-			text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+		if isCapped and textFormat ~= 'NONE' then
+			-- show only name and standing on exalted
+			text = format('%s: [%s]', name, isFriend and friendText or standingLabel)
+		else
+			if textFormat == 'PERCENT' then
+				text = format('%s: %d%% [%s]', name, ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+			elseif textFormat == 'CURMAX' then
+				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
+			elseif textFormat == 'CURPERC' then
+				text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+			elseif textFormat == 'CUR' then
+				text = format('%s: %s [%s]', name, E:ShortValue(value - min), isFriend and friendText or standingLabel)
+			elseif textFormat == 'REM' then
+				text = format('%s: %s [%s]', name, E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+			elseif textFormat == 'CURREM' then
+				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+			end
 		end
 
 		bar.text:SetText(text)
@@ -132,13 +147,15 @@ function mod:ReputationBar_OnEnter()
 		if factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
 		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
-		GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
+		if reaction ~= MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
+			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)	
+		end
 	end
 	GameTooltip:Show()
 end
 
 function mod:ReputationBar_OnClick()
-	ToggleCharacter("ReputationFrame");
+	ToggleCharacter("ReputationFrame")
 end
 
 function mod:UpdateReputationDimensions()
@@ -173,7 +190,6 @@ function mod:EnableDisable_ReputationBar()
 	end
 end
 
-
 function mod:LoadReputationBar()
 	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
@@ -186,6 +202,6 @@ function mod:LoadReputationBar()
 
 	self:UpdateReputationDimensions()
 
-	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
+	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 	self:EnableDisable_ReputationBar()
 end

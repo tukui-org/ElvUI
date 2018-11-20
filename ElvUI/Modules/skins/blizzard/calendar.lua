@@ -109,8 +109,12 @@ local function LoadSkin()
 		_G["CalendarDayButton"..i.."DarkFrame"]:SetAlpha(.5)
 		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
 		local bu = _G["CalendarDayButton"..i]
-		--bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
-		bu:SetHighlightTexture(E["media"].glossTex)
+
+		if E.private.skins.parchmentRemover.enable then
+			bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
+		end
+
+		bu:SetHighlightTexture(E.media.glossTex)
 		local hl = bu:GetHighlightTexture()
 		hl:SetVertexColor(1, 1, 1, 0.3)
 		hl.SetAlpha = E.noop
@@ -145,7 +149,7 @@ local function LoadSkin()
 
 	--CreateEventFrame
 	CalendarCreateEventFrame:StripTextures()
-	CalendarCreateEventFrame:SetTemplate("Transparent")
+	CalendarCreateEventFrame:CreateBackdrop("Transparent")
 	CalendarCreateEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarCreateEventTitleFrame:StripTextures()
 
@@ -156,7 +160,7 @@ local function LoadSkin()
 	CalendarCreateEventInviteEdit:Width(CalendarCreateEventInviteEdit:GetWidth() - 2)
 
 	CalendarCreateEventInviteList:StripTextures()
-	CalendarCreateEventInviteList:SetTemplate("Default")
+	CalendarCreateEventInviteList:CreateBackdrop("Default")
 
 	S:HandleEditBox(CalendarCreateEventInviteEdit)
 	S:HandleEditBox(CalendarCreateEventTitleEdit)
@@ -223,21 +227,21 @@ local function LoadSkin()
 
 	--Raid View
 	CalendarViewRaidFrame:StripTextures()
-	CalendarViewRaidFrame:SetTemplate("Transparent")
+	CalendarViewRaidFrame:CreateBackdrop("Transparent")
 	CalendarViewRaidFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewRaidTitleFrame:StripTextures()
 	S:HandleCloseButton(CalendarViewRaidCloseButton)
 
 	--Holiday View
 	CalendarViewHolidayFrame:StripTextures(true)
-	CalendarViewHolidayFrame:SetTemplate("Transparent")
+	CalendarViewHolidayFrame:CreateBackdrop("Transparent")
 	CalendarViewHolidayFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewHolidayTitleFrame:StripTextures()
 	S:HandleCloseButton(CalendarViewHolidayCloseButton)
 
 	-- Event View
 	CalendarViewEventFrame:StripTextures()
-	CalendarViewEventFrame:SetTemplate("Transparent")
+	CalendarViewEventFrame:CreateBackdrop("Transparent")
 	CalendarViewEventFrame:Point("TOPLEFT", CalendarFrame, "TOPRIGHT", 3, -24)
 	CalendarViewEventTitleFrame:StripTextures()
 	CalendarViewEventDescriptionContainer:StripTextures()

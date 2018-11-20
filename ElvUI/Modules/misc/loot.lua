@@ -128,7 +128,7 @@ local function createSlot(id)
 	iconFrame:Point('RIGHT', frame)
 	iconFrame:SetTemplate('Default')
 	frame.iconFrame = iconFrame
-	E['frames'][iconFrame] = nil
+	E.frames[iconFrame] = nil
 
 	local icon = iconFrame:CreateTexture(nil, 'ARTWORK')
 	icon:SetTexCoord(unpack(E.TexCoords))
@@ -194,7 +194,7 @@ function M:LOOT_OPENED(_, autoloot)
 	local items = GetNumLootItems()
 
 	if IsFishingLoot() then
-		lootFrame.title:SetText(L['Fishy Loot'])
+		lootFrame.title:SetText(L["Fishy Loot"])
 	elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
 		lootFrame.title:SetText(UnitName('target'))
 	else
@@ -255,7 +255,6 @@ function M:LOOT_OPENED(_, autoloot)
 			end
 			w = max(w, slot.name:GetStringWidth())
 
-
 			local questTexture = slot.questTexture
 			if ( questId and not isActive ) then
 				questTexture:Show()
@@ -275,7 +274,7 @@ function M:LOOT_OPENED(_, autoloot)
 		local slot = lootFrame.slots[1] or createSlot(1)
 		local color = ITEM_QUALITY_COLORS[0]
 
-		slot.name:SetText(L['Empty Slot'])
+		slot.name:SetText(L["Empty Slot"])
 		if color then
 			slot.name:SetTextColor(color.r, color.g, color.b)
 		end
@@ -320,13 +319,13 @@ function M:LoadLoot()
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
 		CloseLoot()
 	end)
-	E['frames'][lootFrame] = nil
+	E.frames[lootFrame] = nil
 
 	self:RegisterEvent('LOOT_OPENED')
 	self:RegisterEvent('LOOT_SLOT_CLEARED')
 	self:RegisterEvent('LOOT_CLOSED')
 
-	E:CreateMover(lootFrameHolder, 'LootFrameMover', L['Loot Frame'])
+	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,general')
 
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()

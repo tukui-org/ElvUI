@@ -418,7 +418,6 @@ E.PopupDialogs["HELLO_KITTY_END"] = {
 	whileDead = 1,
 }
 
-
 E.PopupDialogs["DISBAND_RAID"] = {
 	text = L["Are you sure you want to disband the group?"],
 	button1 = ACCEPT,
@@ -546,6 +545,14 @@ E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
 	timeout = 15,
 	hideOnEscape = 0,
 	hasEditBox = 1,
+}
+
+E.PopupDialogs["MODULE_COPY_CONFIRM"] = {
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 local MAX_STATIC_POPUPS = 4

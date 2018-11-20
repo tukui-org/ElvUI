@@ -110,6 +110,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Attack Power', {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "UNIT_ATTACK_POWER", "UNIT_RANGED_ATTACK_POWER"}, OnEvent, nil, nil, OnEnter, nil, STAT_ATTACK_POWER)

@@ -6,13 +6,13 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local select, unpack = select, unpack
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local GetTime = GetTime
+local CreateFrame = CreateFrame
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 local hooksecurefunc = hooksecurefunc
+local INTERRUPTED = INTERRUPTED
+local FAILED = FAILED
 
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
@@ -53,6 +53,11 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 		end
 	elseif (self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
+
+		if self.interruptedBy and self.Name and (self.Name:GetText() == INTERRUPTED) then
+			self.Name:SetText(INTERRUPTED .. " > " .. self.interruptedBy)
+			self.interruptedBy = nil
+		end
 	else
 		self:Hide()
 	end
@@ -61,20 +66,29 @@ end
 function mod:UpdateElement_Cast(frame, event, ...)
 	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
 
-	local arg1 = ...;
+	local arg1, arg2 = ...;
 	local unit = frame.displayedUnit
-	if ( event == "PLAYER_ENTERING_WORLD" ) then
-		local nameChannel = UnitChannelInfo(unit);
+	if ( event == "PLAYER_ENTERING_WORLD" ) then -- this event is often fake
 		local nameSpell = UnitCastingInfo(unit);
-		if ( nameChannel ) then
-			event = "UNIT_SPELLCAST_CHANNEL_START";
-			arg1 = unit;
-		elseif ( nameSpell ) then
+		local nameChannel
+
+		if not nameSpell then
+			nameChannel = UnitChannelInfo(unit);
+		end
+
+		if nameSpell then
 			event = "UNIT_SPELLCAST_START";
+			arg1 = unit;
+		elseif nameChannel then
+			event = "UNIT_SPELLCAST_CHANNEL_START";
 			arg1 = unit;
 		else
 		    frame.CastBar:Hide()
 		end
+	end
+
+	if ( unit == 'player' and event == "UNIT_SPELLCAST_SENT") then
+		frame.CastBar.curTarget = (arg2 and arg2 ~= "" and self.db.units[frame.UnitType].castbar.displayTarget) and arg2 or nil
 	end
 
 	if ( arg1 ~= unit ) then
@@ -93,7 +107,13 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
-		frame.CastBar.Name:SetText(name)
+
+		if frame.CastBar.curTarget then
+			frame.CastBar.Name:SetText(name .. " > " .. frame.CastBar.curTarget)
+		else
+			frame.CastBar.Name:SetText(name)
+		end
+
 		frame.CastBar.value = (GetTime() - (startTime / 1000));
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -135,11 +155,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar.Spark:Hide();
 			end
 
-			if ( event == "UNIT_SPELLCAST_FAILED" ) then
+			if event == "UNIT_SPELLCAST_FAILED" then
 				frame.CastBar.Name:SetText(FAILED);
 			else
 				frame.CastBar.Name:SetText(INTERRUPTED);
 			end
+
 			frame.CastBar.casting = nil;
 			frame.CastBar.channeling = nil;
 			frame.CastBar.canInterrupt = nil
@@ -224,6 +245,8 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	else
 		frame.CastBar.canInterrupt = nil --Only remove this when it's not shown so we can use it in style filter
 	end
+
+	self:QuestIcon_RelativePosition(frame, "Castbar")
 
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update()

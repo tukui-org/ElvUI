@@ -14,11 +14,12 @@ local CreateFrame = CreateFrame
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
 
-	S:HandleCloseButton(AuctionFrameCloseButton)
-	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
 	local AuctionFrame = _G["AuctionFrame"]
 	AuctionFrame:StripTextures(true)
 	AuctionFrame:SetTemplate("Transparent")
+
+	S:HandleCloseButton(AuctionFrameCloseButton)
+	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
 
 	BrowseFilterScrollFrame:StripTextures()
 	BrowseScrollFrame:StripTextures()
@@ -62,17 +63,18 @@ local function LoadSkin()
 
 	AuctionProgressBar:StripTextures()
 	AuctionProgressBar:CreateBackdrop("Default")
-	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
+	AuctionProgressBar:SetStatusBarTexture(E.media.normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
 	E:RegisterStatusBar(AuctionProgressBar)
 
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
-
+	BrowseNextPageButton:Size(20, 20)
 	BrowseNextPageButton:ClearAllPoints()
-	BrowseNextPageButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
+	BrowseNextPageButton:Point("TOPRIGHT", BrowseResetButton, "BOTTOMRIGHT", 0, -3)
+	BrowsePrevPageButton:Size(20, 20)
 	BrowsePrevPageButton:ClearAllPoints()
-	BrowsePrevPageButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
+	BrowsePrevPageButton:Point("TOPLEFT", BrowseSearchButton, "BOTTOMLEFT", 0, -3)
 
 	S:HandleCheckBox(ExactMatchCheckButton)
 	local buttons = {
@@ -96,6 +98,7 @@ local function LoadSkin()
 	end
 
 	--Fix Button Positions
+	AuctionFrameCloseButton:Point('TOPRIGHT', AuctionFrame, 'TOPRIGHT')
 	AuctionsCloseButton:Point("BOTTOMRIGHT", AuctionFrameAuctions, "BOTTOMRIGHT", 66, 10)
 	AuctionsCancelAuctionButton:Point("RIGHT", AuctionsCloseButton, "LEFT", -4, 0)
 	BidBuyoutButton:Point("RIGHT", BidCloseButton, "LEFT", -4, 0)
@@ -148,6 +151,12 @@ local function LoadSkin()
 
 	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
+		_G["AuctionFrameTab"..i]:ClearAllPoints()
+		if(i == 1) then
+			_G["AuctionFrameTab"..i]:Point('TOPLEFT', AuctionFrame, 'BOTTOMLEFT', 40, 2)
+		else
+			_G["AuctionFrameTab"..i]:Point('LEFT', _G["AuctionFrameTab"..(i - 1)], 'RIGHT', -8, 0)
+		end
 	end
 
 	for i=1, NUM_FILTERS_TO_DISPLAY do
@@ -282,7 +291,7 @@ local function LoadSkin()
 
 	--Custom Backdrops
 	AuctionFrameBrowse.bg1 = CreateFrame("Frame", nil, AuctionFrameBrowse)
-	AuctionFrameBrowse.bg1:SetTemplate("Default")
+	AuctionFrameBrowse.bg1:SetTemplate("Transparent")
 	AuctionFrameBrowse.bg1:Point("TOPLEFT", 20, -103)
 	AuctionFrameBrowse.bg1:Point("BOTTOMRIGHT", -575, 40)
 	BrowseNoResultsText:SetParent(AuctionFrameBrowse.bg1)
@@ -291,14 +300,14 @@ local function LoadSkin()
 	BrowseFilterScrollFrame:Height(300) --Adjust scrollbar height a little off
 
 	AuctionFrameBrowse.bg2 = CreateFrame("Frame", nil, AuctionFrameBrowse)
-	AuctionFrameBrowse.bg2:SetTemplate("Default")
+	AuctionFrameBrowse.bg2:SetTemplate("Transparent")
 	AuctionFrameBrowse.bg2:Point("TOPLEFT", AuctionFrameBrowse.bg1, "TOPRIGHT", 4, 0)
 	AuctionFrameBrowse.bg2:Point("BOTTOMRIGHT", AuctionFrame, "BOTTOMRIGHT", -8, 40)
 	AuctionFrameBrowse.bg2:SetFrameLevel(AuctionFrameBrowse.bg2:GetFrameLevel() - 1)
 	BrowseScrollFrame:Height(300) --Adjust scrollbar height a little off
 
 	AuctionFrameBid.bg = CreateFrame("Frame", nil, AuctionFrameBid)
-	AuctionFrameBid.bg:SetTemplate("Default")
+	AuctionFrameBid.bg:SetTemplate("Transparent")
 	AuctionFrameBid.bg:Point("TOPLEFT", 22, -72)
 	AuctionFrameBid.bg:Point("BOTTOMRIGHT", 66, 39)
 	AuctionFrameBid.bg:SetFrameLevel(AuctionFrameBid.bg:GetFrameLevel() - 1)
@@ -306,13 +315,13 @@ local function LoadSkin()
 
 	AuctionsScrollFrame:Height(336)
 	AuctionFrameAuctions.bg1 = CreateFrame("Frame", nil, AuctionFrameAuctions)
-	AuctionFrameAuctions.bg1:SetTemplate("Default")
+	AuctionFrameAuctions.bg1:SetTemplate("Transparent")
 	AuctionFrameAuctions.bg1:Point("TOPLEFT", 15, -70)
 	AuctionFrameAuctions.bg1:Point("BOTTOMRIGHT", -545, 35)
 	AuctionFrameAuctions.bg1:SetFrameLevel(AuctionFrameAuctions.bg1:GetFrameLevel() - 2)
 
 	AuctionFrameAuctions.bg2 = CreateFrame("Frame", nil, AuctionFrameAuctions)
-	AuctionFrameAuctions.bg2:SetTemplate("Default")
+	AuctionFrameAuctions.bg2:SetTemplate("Transparent")
 	AuctionFrameAuctions.bg2:Point("TOPLEFT", AuctionFrameAuctions.bg1, "TOPRIGHT", 3, 0)
 	AuctionFrameAuctions.bg2:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)
 	AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)

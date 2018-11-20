@@ -22,7 +22,7 @@ local function LoadSkin()
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()
 	TradeSkillFrame.RankFrame:CreateBackdrop("Default")
-	TradeSkillFrame.RankFrame:SetStatusBarTexture(E["media"].normTex)
+	TradeSkillFrame.RankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillFrame.RankFrame.RankText:FontTemplate()
 	E:RegisterStatusBar(TradeSkillFrame.RankFrame)
 	S:HandleButton(TradeSkillFrame.FilterButton)
@@ -119,7 +119,7 @@ local function LoadSkin()
 			if not self.SubSkillRankBar.backdrop then
 				self.SubSkillRankBar:CreateBackdrop("Default")
 				self.SubSkillRankBar.backdrop:SetAllPoints()
-				self.SubSkillRankBar:SetStatusBarTexture(E["media"].normTex)
+				self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 				E:RegisterStatusBar(self.SubSkillRankBar)
 			end
 		end

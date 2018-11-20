@@ -18,6 +18,8 @@ function UF:Construct_TargetFrame(frame)
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -42,7 +44,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
-	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,generalGroup')
 
 	frame.unitframeType = "target"
 end
@@ -102,6 +104,9 @@ function UF:Update_TargetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -144,4 +149,4 @@ function UF:Update_TargetFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'target')
+tinsert(UF.unitstoload, 'target')

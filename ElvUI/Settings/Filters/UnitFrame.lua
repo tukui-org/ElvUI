@@ -2,11 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Cache global variables
 --Lua functions
-local print, unpack, select = print, unpack, select
-local lower = string.lower
+local print, unpack = print, unpack
+local strlower = string.lower
 --WoW API / Variables
 local GetSpellInfo = GetSpellInfo
-local IsPlayerSpell, UnitClass = IsPlayerSpell, UnitClass
+local IsPlayerSpell = IsPlayerSpell
 
 local function SpellName(id)
 	local name = GetSpellInfo(id)
@@ -56,7 +56,6 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[208618] = Defaults(3), -- Illidan's Grasp (Afterward)
 		[213491] = Defaults(4), -- Demonic Trample (it's this one or the other)
 		[208645] = Defaults(4), -- Demonic Trample
-		[200166] = Defaults(4), -- Metamorphosis
 	--Druid
 		[81261]  = Defaults(2), -- Solar Beam
 		[5211]   = Defaults(4), -- Mighty Bash
@@ -69,10 +68,10 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[45334]  = Defaults(1), -- Immobilized
 		[102359] = Defaults(1), -- Mass Entanglement
 		[339]    = Defaults(1), -- Entangling Roots
+		[2637]   = Defaults(1), -- Hibernate
 	--Hunter
 		[202933] = Defaults(2), -- Spider Sting (it's this one or the other)
 		[233022] = Defaults(2), -- Spider Sting
-		[224729] = Defaults(4), -- Bursting Shot
 		[213691] = Defaults(4), -- Scatter Shot
 		[19386]  = Defaults(3), -- Wyvern Sting
 		[3355]   = Defaults(3), -- Freezing Trap
@@ -131,12 +130,11 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[605]    = Defaults(5), -- Mind Control
 		[8122]   = Defaults(3), -- Psychic Scream
 		[15487]  = Defaults(2), -- Silence
-		[199683] = Defaults(2), -- Last Word
+		[64044]  = Defaults(1), -- Psychic Horror
 	--Rogue
 		[2094]   = Defaults(4), -- Blind
 		[6770]   = Defaults(4), -- Sap
 		[1776]   = Defaults(4), -- Gouge
-		[199743] = Defaults(4), -- Parley
 		[1330]   = Defaults(2), -- Garrote - Silence
 		[207777] = Defaults(2), -- Dismantle
 		[199804] = Defaults(4), -- Between the Eyes
@@ -165,7 +163,6 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[710]    = Defaults(5), -- Banish
 		[6789]   = Defaults(3), -- Mortal Coil
 		[118699] = Defaults(3), -- Fear
-		[5484]   = Defaults(3), -- Howl of Terror
 		[6358]   = Defaults(3), -- Seduction (Succub)
 		[171017] = Defaults(4), -- Meteor Strike (Infernal)
 		[22703]  = Defaults(4), -- Infernal Awakening (Infernal CD)
@@ -180,8 +177,8 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[199085] = Defaults(4), -- Warpath
 		[105771] = Defaults(1), -- Charge
 		[199042] = Defaults(1), -- Thunderstruck
+		[236077] = Defaults(2), -- Disarm
 	--Racial
-		[155145] = Defaults(2), -- Arcane Torrent
 		[20549]  = Defaults(4), -- War Stomp
 		[107079] = Defaults(4), -- Quaking Palm
 	},
@@ -750,6 +747,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[265881] = Defaults(), -- Decaying Touch
 		[261438] = Defaults(), -- Wasting Strike
 		[268202] = Defaults(), -- Death Lens
+		[278456] = Defaults(), -- Infest
 
 		-- Atal'Dazar
 		[252781] = Defaults(), -- Unstable Hex
@@ -877,8 +875,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		-- Zul
 		[273365] = Defaults(), -- Dark Revelation
 		[273434] = Defaults(), -- Pit of Despair
-		[274195] = Defaults(), -- Corrupted Blood
+		--[274195] = Defaults(), -- Corrupted Blood
 		[272018] = Defaults(), -- Absorbed in Darkness
+		[274358] = Defaults(), -- Rupturing Blood
 
 		-- Zek'voz, Herald of N'zoth
 		[265237] = Defaults(), -- Shatter
@@ -896,6 +895,21 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[267430] = Defaults(), -- Torment
 		[263235] = Defaults(), -- Blood Feast
 		[270287] = Defaults(), -- Blighted Ground
+
+	-- Siege of Zuldazar
+		-- Ra'wani Kanae/Frida Ironbellows
+		[283573] = Defaults(), -- Sacred Blade
+		[283617] = Defaults(), -- Wave of Light
+		[283651] = Defaults(), -- Blinding Faith
+		[284595] = Defaults(), -- Penance
+		[283582] = Defaults(), -- Consecration
+
+		-- Grong
+		[285998] = Defaults(), -- Ferocious Roar
+		[283069] = Defaults(), -- Megatomic Fire
+		[285671] = Defaults(), -- Crushed
+		[285875] = Defaults(), -- Rending Bite
+		--[282010] = Defaults(), -- Shaken
 	},
 }
 
@@ -988,7 +1002,7 @@ G.unitframe.buffwatch = {
 		-- Warlock Pets
 		[193396] = ClassBuff(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true), -- Demonic Empowerment
 		-- Hunter Pets
-		[19615] = ClassBuff(19615, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
+		[272790] = ClassBuff(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
 		[136]   = ClassBuff(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)      -- Mend Pet
 	},
 	HUNTER = {}, --Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
@@ -1008,6 +1022,7 @@ G.unitframe.ChannelTicks = {
 	-- Warlock
 	[SpellName(198590)] = 6, -- Drain Soul
 	[SpellName(755)]    = 6, -- Health Funnel
+	[SpellName(234153)] = 6, -- Drain Life
 	-- Priest
 	[SpellName(64843)]  = 4, -- Divine Hymn
 	[SpellName(15407)]  = 4, -- Mind Flay
@@ -1023,8 +1038,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_TALENT_UPDATE")
 f:SetScript("OnEvent", function()
-	local class = select(2, UnitClass("player"))
-	if lower(class) ~= "priest" then return; end
+	if strlower(E.myclass) ~= "priest" then return end
 
 	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
 	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance

@@ -11,7 +11,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: UIDROPDOWNMENU_MAXLEVELS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
@@ -118,9 +118,9 @@ local function LoadSkin()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G["ChatMenu"] then
-			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E['media'].backdropfadecolor)) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -208,45 +208,29 @@ local function LoadSkin()
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")
 
-	--[[WatchFrameCollapseExpandButton:StripTextures()
-	S:HandleCloseButton(WatchFrameCollapseExpandButton)
-	WatchFrameCollapseExpandButton:Size(30)
-	WatchFrameCollapseExpandButton.text:SetText('-')
-	WatchFrameCollapseExpandButton:SetFrameStrata('MEDIUM')
-
-	hooksecurefunc('WatchFrame_Expand', function()
-		WatchFrameCollapseExpandButton.text:SetText('-')
-	end)
-
-	hooksecurefunc('WatchFrame_Collapse', function()
-		WatchFrameCollapseExpandButton.text:SetText('+')
-	end)]]
-
 	--DropDownMenu
-	hooksecurefunc("UIDropDownMenu_CreateFrames", function()
-		if not _G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"].template then
-			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."Backdrop"]:SetTemplate("Transparent")
-			_G["DropDownList"..UIDROPDOWNMENU_MAXLEVELS.."MenuBackdrop"]:SetTemplate("Transparent")
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+		local listFrame = _G["DropDownList"..level]
+		local listFrameName = listFrame:GetName()
+		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"]
+		if expandArrow then
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
+			expandArrow:Size(18)
+			expandArrow:GetNormalTexture():SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
 		end
-	end)
 
-	--[[local function SkinWatchFrameItems()
-		for i=1, WATCHFRAME_NUM_ITEMS do
-			local button = _G["WatchFrameItem"..i]
-			if button and not button.skinned then
-				button:CreateBackdrop('Default')
-				button.backdrop:SetAllPoints()
-				button:StyleButton()
-				_G["WatchFrameItem"..i.."NormalTexture"]:SetAlpha(0)
-				_G["WatchFrameItem"..i.."IconTexture"]:SetInside()
-				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-				E:RegisterCooldown(_G["WatchFrameItem"..i.."Cooldown"])
-				button.skinned = true
+		-- Skin the backdrop
+		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
+			local menu = _G["DropDownList"..i.."MenuBackdrop"]
+			local backdrop = _G["DropDownList"..i.."Backdrop"]
+			if not backdrop.IsSkinned then
+				backdrop:SetTemplate("Transparent")
+				menu:SetTemplate("Transparent")
+
+				backdrop.IsSkinned = true
 			end
 		end
-	end
-	hooksecurefunc("QuestPOIUpdateIcons", SkinWatchFrameItems)]]
-	--WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
+	end)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()

@@ -58,9 +58,12 @@ function UF:Construct_PlayerFrame(frame)
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
+
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
+	frame.RaidRoleFramesAnchor = self:Construct_RaidRoleFrames(frame)
 	frame.RestingIndicator = self:Construct_RestingIndicator(frame)
 	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
@@ -73,7 +76,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,generalGroup')
 
 	frame.unitframeType = "player"
 end
@@ -149,6 +152,9 @@ function UF:Update_PlayerFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -190,6 +196,8 @@ function UF:Update_PlayerFrame(frame, db)
 	--PvP & Prestige Icon
 	UF:Configure_PVPIcon(frame)
 
+	UF:Configure_RaidRoleIcons(frame)
+
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
@@ -197,7 +205,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'player')
+tinsert(UF.unitstoload, 'player')
 
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.

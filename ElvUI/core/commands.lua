@@ -21,7 +21,7 @@ local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: FarmMode, Minimap, FarmModeMap, EGrid, MacroEditBox, HelloKittyLeft
+-- GLOBALS: Minimap, EGrid, MacroEditBox, HelloKittyLeft
 
 function E:Grid(msg)
 	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
@@ -71,7 +71,7 @@ function E:DelayScriptCall(msg)
 		self:Print("usage: /in <seconds> <command>")
 		self:Print("example: /in 1.5 /say hi")
 	else
-		E:ScheduleTimer(OnCallback, secs, command)
+		E:Delay(secs, OnCallback, command)
 	end
 end
 

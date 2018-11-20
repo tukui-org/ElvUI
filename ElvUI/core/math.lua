@@ -14,59 +14,60 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local C_Timer_After = C_Timer.After
 
 --Return short value of a number
-local shortValueDec
+local shortValueDec, value
 function E:ShortValue(v)
 	shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
+	value = abs(v)
 	if E.db.general.numberPrefixStyle == "METRIC" then
-		if abs(v) >= 1e12 then
+		if value >= 1e12 then
 			return format(shortValueDec.."T", v / 1e12)
-		elseif abs(v) >= 1e9 then
+		elseif value >= 1e9 then
 			return format(shortValueDec.."G", v / 1e9)
-		elseif abs(v) >= 1e6 then
+		elseif value >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)
-		elseif abs(v) >= 1e3 then
+		elseif value >= 1e3 then
 			return format(shortValueDec.."k", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "CHINESE" then
-		if abs(v) >= 1e8 then
+		if value >= 1e8 then
 			return format(shortValueDec.."Y", v / 1e8)
-		elseif abs(v) >= 1e4 then
+		elseif value >= 1e4 then
 			return format(shortValueDec.."W", v / 1e4)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "KOREAN" then
-		if abs(v) >= 1e8 then
+		if value >= 1e8 then
 			return format(shortValueDec.."억", v / 1e8)
-		elseif abs(v) >= 1e4 then
+		elseif value >= 1e4 then
 			return format(shortValueDec.."만", v / 1e4)
-		elseif abs(v) >= 1e3 then
+		elseif value >= 1e3 then
 			return format(shortValueDec.."천", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
-		if abs(v) >= 1e12 then
+		if value >= 1e12 then
 			return format(shortValueDec.."Bio", v / 1e12)
-		elseif abs(v) >= 1e9 then
+		elseif value >= 1e9 then
 			return format(shortValueDec.."Mrd", v / 1e9)
-		elseif abs(v) >= 1e6 then
+		elseif value >= 1e6 then
 			return format(shortValueDec.."Mio", v / 1e6)
-		elseif abs(v) >= 1e3 then
+		elseif value >= 1e3 then
 			return format(shortValueDec.."Tsd", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	else
-		if abs(v) >= 1e12 then
+		if value >= 1e12 then
 			return format(shortValueDec.."T", v / 1e12)
-		elseif abs(v) >= 1e9 then
+		elseif value >= 1e9 then
 			return format(shortValueDec.."B", v / 1e9)
-		elseif abs(v) >= 1e6 then
+		elseif value >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)
-		elseif abs(v) >= 1e3 then
+		elseif value >= 1e3 then
 			return format(shortValueDec.."K", v / 1e3)
 		else
 			return format("%.0f", v)
@@ -109,9 +110,9 @@ end
 
 --RGB to Hex
 function E:RGBToHex(r, g, b)
-	r = r <= 1 and r >= 0 and r or 0
-	g = g <= 1 and g >= 0 and g or 0
-	b = b <= 1 and b >= 0 and b or 0
+	r = r <= 1 and r >= 0 and r or 1
+	g = g <= 1 and g >= 0 and g or 1
+	b = b <= 1 and b >= 0 and b or 1
 	return format("|cff%02x%02x%02x", r*255, g*255, b*255)
 end
 
@@ -237,7 +238,7 @@ function E:GetFormattedText(style, min, max)
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(styles['CURRENT'], E:ShortValue(min))
+		return format(styles.CURRENT, E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
 		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
@@ -297,6 +298,11 @@ function E:Delay(delay, func, ...)
 	if (type(delay) ~= "number") or (type(func) ~= "function") then
 		return false
 	end
+
+	if delay < 0.01 then
+		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
+	end
+
 	local extend = {...}
 	if not next(extend) then
 		C_Timer_After(delay, func)
@@ -354,7 +360,6 @@ E.TimeFormats = {
 	[5] = { '%d:%02d', '%d:%02d' }, --mmss
 	[6] = { '%d:%02d', '%d:%02d' }, --hhmm
 }
-
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
 local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points

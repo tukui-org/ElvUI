@@ -41,7 +41,7 @@ local function LoadSkin(event)
 				if (self.player and self.player.accountWide or self.accountWide) then
 					self.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 				else
-					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end)
 		end
@@ -99,8 +99,8 @@ local function LoadSkin(event)
 							Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 							Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
 					end)
 				end
@@ -118,24 +118,42 @@ local function LoadSkin(event)
 		return;
 	end
 
-	local frames = {
-		"AchievementFrame",
-		"AchievementFrameCategories",
-		"AchievementFrameSummary",
-		"AchievementFrameHeader",
-		"AchievementFrameSummaryCategoriesHeader",
-		"AchievementFrameSummaryAchievementsHeader",
-		"AchievementFrameStatsBG",
-		"AchievementFrameAchievements",
-		"AchievementFrameComparison",
-		"AchievementFrameComparisonHeader",
-		"AchievementFrameComparisonSummaryPlayer",
-		"AchievementFrameComparisonSummaryFriend",
-	}
-
-	for _, frame in pairs(frames) do
-		_G[frame]:StripTextures(true)
+	AchievementFrameCategories:SetBackdrop(nil)
+	AchievementFrameSummary:SetBackdrop(nil)
+	for i = 1, 17 do
+		select(i, AchievementFrame:GetRegions()):Hide()
 	end
+	AchievementFrameSummaryBackground:Hide()
+	AchievementFrameSummary:GetChildren():Hide()
+	AchievementFrameCategoriesContainerScrollBarBG:SetAlpha(0)
+	for i = 1, 4 do
+		select(i, AchievementFrameHeader:GetRegions()):Hide()
+	end
+	AchievementFrameHeaderRightDDLInset:SetAlpha(0)
+	AchievementFrameHeaderLeftDDLInset:SetAlpha(0)
+	select(2, AchievementFrameAchievements:GetChildren()):Hide()
+	AchievementFrameAchievementsBackground:Hide()
+	select(3, AchievementFrameAchievements:GetRegions()):Hide()
+	AchievementFrameStatsBG:Hide()
+	AchievementFrameSummaryAchievementsHeaderHeader:Hide()
+	AchievementFrameSummaryCategoriesHeaderTexture:Hide()
+	select(3, AchievementFrameStats:GetChildren()):Hide()
+	select(5, AchievementFrameComparison:GetChildren()):Hide()
+	AchievementFrameComparisonHeaderBG:Hide()
+	AchievementFrameComparisonHeaderPortrait:Hide()
+	AchievementFrameComparisonHeaderPortraitBg:Hide()
+	AchievementFrameComparisonBackground:Hide()
+	AchievementFrameComparisonDark:SetAlpha(0)
+	AchievementFrameComparisonSummaryPlayerBackground:Hide()
+	AchievementFrameComparisonSummaryFriendBackground:Hide()
+	AchievementFrameMetalBorderTopLeft:Hide()
+	AchievementFrameWoodBorderTopLeft:Hide()
+	AchievementFrameMetalBorderTopRight:Hide()
+	AchievementFrameWoodBorderTopRight:Hide()
+	AchievementFrameMetalBorderBottomRight:Hide()
+	AchievementFrameWoodBorderBottomRight:Hide()
+	AchievementFrameMetalBorderBottomLeft:Hide()
+	AchievementFrameWoodBorderBottomLeft:Hide()
 
 	local noname_frames = {
 		"AchievementFrameStats",
@@ -166,6 +184,7 @@ local function LoadSkin(event)
 	AchievementFrameCategoriesContainer:CreateBackdrop("Default")
 	AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	AchievementFrameCategoriesContainer.backdrop:SetFrameStrata("BACKGROUND")
 	AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
 	AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
 	AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
@@ -300,7 +319,7 @@ local function LoadSkin(event)
 
 	local function SkinStatusBar(bar)
 		bar:StripTextures()
-		bar:SetStatusBarTexture(E["media"].normTex)
+		bar:SetStatusBarTexture(E.media.normTex)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
 		E:RegisterStatusBar(bar)
@@ -391,13 +410,12 @@ local function LoadSkin(event)
 		_G[frame.."HeaderMiddle"]:Kill()
 	end
 
-
 	hooksecurefunc("AchievementButton_GetProgressBar", function(index)
 		local frame = _G["AchievementFrameProgressBar"..index]
 		if frame then
 			if not frame.skinned then
 				frame:StripTextures()
-				frame:SetStatusBarTexture(E["media"].normTex)
+				frame:SetStatusBarTexture(E.media.normTex)
 				E:RegisterStatusBar(frame)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
@@ -480,8 +498,8 @@ local function LoadSkin(event)
 				Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 				Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 

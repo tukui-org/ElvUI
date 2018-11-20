@@ -30,6 +30,8 @@ function UF:Construct_RaidFrames()
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.Power.frequentUpdates = false;
 
+	self.PowerPrediction = UF:Construct_PowerPrediction(self)
+
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 
@@ -116,11 +118,11 @@ function UF:Update_RaidHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,raid,generalGroup')
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.RaidSmartVisibility)
 		headerHolder.positioned = true;
 	end
 
@@ -128,6 +130,10 @@ function UF:Update_RaidHeader(header, db)
 end
 
 function UF:Update_RaidFrames(frame, db)
+	if InCombatLockdown() then
+		return
+	end
+
 	frame.db = db
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)
@@ -186,6 +192,9 @@ function UF:Update_RaidFrames(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -236,4 +245,4 @@ function UF:Update_RaidFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['raid'] = true
+UF.headerstoload.raid = true

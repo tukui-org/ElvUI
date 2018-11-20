@@ -125,7 +125,7 @@ last 3 RGB values are returned.
 * b    - value used as denominator to calculate the percentage (number)
 * ...  - a list of RGB percent values. At least 6 values should be passed (number [0-1])
 --]]
-local function RGBColorGradient(...)
+function oUF:RGBColorGradient(...)
 	local relperc, r1, g1, b1, r2, g2, b2 = colorsAndPercent(...)
 	if(relperc) then
 		return r1 + (r2 - r1) * relperc, g1 + (g2 - g1) * relperc, b1 + (b2 - b1) * relperc
@@ -139,16 +139,8 @@ local function getY(r, g, b)
 	return 0.299 * r + 0.587 * g + 0.114 * b
 end
 
---[[ Colors: oUF:RGBToHCY(r, g, b)
-Used to convert a color from RGB to HCY color space.
-
-* self - the global oUF object
-* r    - red color component (number [0-1])
-* g    - green color component (number [0-1])
-* b    - blue color component (number [0-1])
---]]
-function oUF:RGBToHCY(r, g, b)
-	local min, max = min(r, g, b), max(r, g, b)
+local function rgbToHCY(r, g, b)
+	local min, max = math.min(r, g, b), math.max(r, g, b)
 	local chroma = max - min
 	local hue
 	if(chroma > 0) then
@@ -164,20 +156,11 @@ function oUF:RGBToHCY(r, g, b)
 	return hue, chroma, getY(r, g, b)
 end
 
-local math_abs = math.abs
---[[ Colors: oUF:HCYtoRGB(hue, chroma, luma)
-Used to convert a color from HCY to RGB color space.
-
-* self   - the global oUF object
-* hue    - hue color component (number [0-1])
-* chroma - chroma color component (number [0-1])
-* luma   - luminance color component (number [0-1])
---]]
-function oUF:HCYtoRGB(hue, chroma, luma)
+local function hcyToRGB(hue, chroma, luma)
 	local r, g, b = 0, 0, 0
 	if(hue and luma > 0) then
 		local h2 = hue * 6
-		local x = chroma * (1 - math_abs(h2 % 2 - 1))
+		local x = chroma * (1 - math.abs(h2 % 2 - 1))
 		if(h2 < 1) then
 			r, g, b = chroma, x, 0
 		elseif(h2 < 2) then
@@ -218,14 +201,14 @@ last 3 HCY values are returned.
 * b    - value used as denominator to calculate the percentage (number)
 * ...  - a list of HCY color values. At least 6 values should be passed (number [0-1])
 --]]
-local function HCYColorGradient(...)
+function oUF:HCYColorGradient(...)
 	local relperc, r1, g1, b1, r2, g2, b2 = colorsAndPercent(...)
 	if(not relperc) then
 		return r1, g1, b1
 	end
 
-	local h1, c1, y1 = self:RGBToHCY(r1, g1, b1)
-	local h2, c2, y2 = self:RGBToHCY(r2, g2, b2)
+	local h1, c1, y1 = rgbToHCY(r1, g1, b1)
+	local h2, c2, y2 = rgbToHCY(r2, g2, b2)
 	local c = c1 + (c2 - c1) * relperc
 	local y = y1 + (y2 - y1) * relperc
 
@@ -237,9 +220,9 @@ local function HCYColorGradient(...)
 			dh = dh - 1
 		end
 
-		return self:HCYtoRGB((h1 + dh * relperc) % 1, c, y)
+		return hcyToRGB((h1 + dh * relperc) % 1, c, y)
 	else
-		return self:HCYtoRGB(h1 or h2, c, y)
+		return hcyToRGB(h1 or h2, c, y)
 	end
 
 end
@@ -253,17 +236,12 @@ set to true, `:HCYColorGradient` will be called, else `:RGBColorGradient`.
 * b    - value used as denominator to calculate the percentage (number)
 * ...  - a list of color values. At least 6 values should be passed (number [0-1])
 --]]
-local function ColorGradient(...)
-	return (oUF.useHCYColorGradient and HCYColorGradient or RGBColorGradient)(...)
+function oUF:ColorGradient(...)
+	return (oUF.useHCYColorGradient and oUF.HCYColorGradient or oUF.RGBColorGradient)(self, ...)
 end
 
-Private.colors = colors
-
 oUF.colors = colors
-oUF.ColorGradient = ColorGradient
-oUF.RGBColorGradient = RGBColorGradient
-oUF.HCYColorGradient = HCYColorGradient
 oUF.useHCYColorGradient = false
 
 frame_metatable.__index.colors = colors
-frame_metatable.__index.ColorGradient = ColorGradient
+frame_metatable.__index.ColorGradient = oUF.ColorGradient

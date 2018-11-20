@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -11,10 +11,8 @@ local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local InCombatLockdown = InCombatLockdown
-local Item = Item
 local ARTIFACT_POWER = ARTIFACT_POWER
-local AZERITE_POWER_TOOLTIP_BODY = AZERITE_POWER_TOOLTIP_BODY
-local AZERITE_POWER_TOOLTIP_TITLE = AZERITE_POWER_TOOLTIP_TITLE
+local Item = Item
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, CreateFrame
@@ -104,6 +102,8 @@ function mod:AzeriteBar_OnEnter()
 	end)
 end
 
+function mod:AzeriteBar_OnClick() end
+
 function mod:UpdateAzeriteDimensions()
 	self.azeriteBar:Width(self.db.azerite.width)
 	self.azeriteBar:Height(self.db.azerite.height)
@@ -142,7 +142,7 @@ function mod:EnableDisable_AzeriteBar()
 end
 
 function mod:LoadAzeriteBar()
-	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, self.AzeriteBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
@@ -155,6 +155,6 @@ function mod:LoadAzeriteBar()
 	self.azeriteBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateAzerite(event) end)
 
 	self:UpdateAzeriteDimensions()
-	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"])
+	E:CreateMover(self.azeriteBar, "AzeriteBarMover", L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 	self:EnableDisable_AzeriteBar()
 end

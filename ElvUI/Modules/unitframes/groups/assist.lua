@@ -43,7 +43,7 @@ function UF:Construct_AssistFrames()
 		self.unitframeType = "assisttarget"
 	end
 
-	UF:Update_AssistFrames(self, E.db['unitframe']['units']['assist'])
+	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -76,7 +76,7 @@ function UF:Update_AssistHeader(header, db)
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -248)
 
-		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,assist,generalGroup')
 		header.mover.positionOverride = "TOPLEFT"
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -151,18 +151,12 @@ function UF:Update_AssistFrames(frame, db)
 	UF:Configure_Threat(frame)
 
 	--Name
-	do
-		local name = frame.Name
-		name:Point('CENTER', frame.Health, 'CENTER')
-		if UF.db.colors.healthclass then
-			frame:Tag(name, '[name:medium]')
-		else
-			frame:Tag(name, '[namecolor][name:medium]')
-		end
-	end
+	UF:UpdateNameSettings(frame)
 
 	--Range
 	UF:Configure_Range(frame)
+
+	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
 		--Auras
@@ -183,4 +177,4 @@ function UF:Update_AssistFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['assist'] = {'MAINASSIST', 'ELVUI_UNITTARGET'}
+UF.headerstoload.assist = {'MAINASSIST', 'ELVUI_UNITTARGET'}

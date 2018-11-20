@@ -14,6 +14,8 @@ function UF:Construct_TargetTargetFrame(frame)
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -29,7 +31,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,targettarget,generalGroup')
 
 	frame.unitframeType = "targettarget"
 end
@@ -81,6 +83,9 @@ function UF:Update_TargetTargetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -101,8 +106,8 @@ function UF:Update_TargetTargetFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db['units'].player.castbar.height))
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db.units.player.castbar.height))
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'targettarget')
+tinsert(UF.unitstoload, 'targettarget')

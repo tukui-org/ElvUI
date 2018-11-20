@@ -124,7 +124,6 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
-
 local garrisonType = LE_GARRISON_TYPE_6_0;
 
 local function OnClick()

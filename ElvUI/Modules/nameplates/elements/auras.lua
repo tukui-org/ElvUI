@@ -41,7 +41,7 @@ function mod:SetAura(aura, index, name, icon, count, duration, expirationTime, s
 		if isStealable and not isFriend then
 			aura.backdrop:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
-			aura.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			aura.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
@@ -265,11 +265,17 @@ end
 
 function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
+
+	local overrideWidth = self.db.widthOverride and self.db.widthOverride > 0 and self.db.widthOverride
+	local auraWidth = overrideWidth or (((width - mod.mult * numAuras) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+	local auraHeight = (self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1)
+
 	for i=1, numAuras do
-		self.icons[i]:SetWidth(self.db.widthOverride > 0 and self.db.widthOverride or (((width - (mod.mult*numAuras)) / numAuras) - (E.private.general.pixelPerfect and 0 or 3)))
-		self.icons[i]:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
+		self.icons[i]:SetWidth(auraWidth)
+		self.icons[i]:SetHeight(auraHeight)
 	end
-	self:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
+
+	self:SetHeight(auraHeight)
 end
 
 function mod:UpdateAuraIcons(auras)
@@ -287,16 +293,19 @@ function mod:UpdateAuraIcons(auras)
 		self.Auras_SizeChanged(auras, auras:GetWidth(), auras:GetHeight())
 	end
 
+	local stackFont = LSM:Fetch("font", self.db.stackFont)
+	local aurasHeight = auras.db.baseHeight or 18
+
 	for i=1, maxAuras do
 		auras.icons[i] = auras.icons[i] or tremove(auraCache) or mod:CreateAuraIcon(auras)
 		auras.icons[i]:SetParent(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
-		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
+		auras.icons[i]:SetHeight(aurasHeight)
 
 		-- update stacks font on NAME_PLATE_UNIT_ADDED
 		if auras.icons[i].count then
-			auras.icons[i].count:SetFont(LSM:Fetch("font", self.db.stackFont), self.db.stackFontSize, self.db.stackFontOutline)
+			auras.icons[i].count:SetFont(stackFont, self.db.stackFontSize, self.db.stackFontOutline)
 		end
 
 		-- update the cooldown text font defaults on NAME_PLATE_UNIT_ADDED

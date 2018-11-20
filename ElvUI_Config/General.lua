@@ -1,5 +1,16 @@
-﻿local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule("Blizzard")
+
+local _G = _G
+local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
+
+local function GetChatWindowInfo()
+	local ChatTabInfo = {}
+	for i = 1, FCF_GetNumActiveChatFrames() do
+		ChatTabInfo["ChatFrame"..i] = _G["ChatFrame"..i.."Tab"]:GetText()
+	end
+	return ChatTabInfo
+end
 
 E.Options.args.general = {
 	type = "group",
@@ -20,9 +31,16 @@ E.Options.args.general = {
 			name = L["General"],
 			args = {
 				generalHeader = {
-					order = 1,
+					order = 0,
 					type = "header",
 					name = L["General"],
+				},
+				messageRedirect = {
+					order = 1,
+					name = L["Chat Output"],
+					desc = L["This selects the Chat Frame to use as the output of ElvUI messages."],
+					type = 'select',
+					values = GetChatWindowInfo()
 				},
 				pixelPerfect = {
 					order = 2,
@@ -62,18 +80,6 @@ E.Options.args.general = {
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
-				},
-				vendorGrays = {
-					order = 6,
-					name = L["Vendor Grays"],
-					desc = L["Automatically vendor gray items when visiting a vendor."],
-					type = "toggle",
-				},
-				vendorGraysDetails = {
-					order = 7,
-					name = L["Vendor Gray Detailed Report"],
-					desc = L["Displays a detailed report of every item sold when enabled."],
-					type = "toggle",
 				},
 				autoRoll = {
 					order = 8,
@@ -205,8 +211,16 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
-				decimalLength = {
+				vehicleSeatIndicatorSize = {
 					order = 25,
+					type = "range",
+					name = L["Vehicle Seat Indicator Size"],
+					min = 64, max = 128, step = 4,
+					get = function(info) return E.db.general.vehicleSeatIndicatorSize end,
+					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
+				},
+				decimalLength = {
+					order = 26,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -215,7 +229,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 26,
+					order = 27,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -228,7 +242,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 27,
+					order = 28,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],

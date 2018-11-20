@@ -34,7 +34,7 @@ local function LoadSkin()
 	S:HandleButton(ReagentBankFrame.DespositButton)
 
 	local function UpdateBorderColors(button)
-		button:SetBackdropBorderColor(unpack(E['media'].bordercolor))
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 		if button.type and button.type == QUESTS_LABEL then
 			button:SetBackdropBorderColor(1, 0.2, 0.2)
@@ -204,12 +204,11 @@ local function LoadSkin()
 			UpdateBorderColors(button)
 		end
 
-
 		--[[if highlight and not highlight.skinned then
-			highlight:SetColorTexture(unpack(E["media"].rgbvaluecolor), 0.3)
+			highlight:SetColorTexture(unpack(E.media.rgbvaluecolor), 0.3)
 			hooksecurefunc(highlight, "SetTexture", function(self, r, g, b, a)
 				if a ~= 0.3 then
-					highlight:SetColorTexture(unpack(E["media"].rgbvaluecolor), 0.3)
+					highlight:SetColorTexture(unpack(E.media.rgbvaluecolor), 0.3)
 				end
 			end)
 			highlight:SetInside()

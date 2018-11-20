@@ -16,7 +16,7 @@ local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
+-- GLOBALS: WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -76,7 +76,7 @@ end
 function M:SetSmallWorldMap()
 	if not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("TOPLEFT", UIParent, "TOPLEFT", 16, -94)
+		WorldMapFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 16, -94)
 	end
 end
 

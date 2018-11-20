@@ -126,6 +126,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Quick Join', {"SOCIAL_QUEUE_UPDATE", "PLAYER_ENTERING_WORLD"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)

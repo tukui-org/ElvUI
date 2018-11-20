@@ -10,18 +10,13 @@ local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetSpecializationInfoByID = GetSpecializationInfoByID
-local IsInInstance = IsInInstance
-local UnitExists = UnitExists
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, ArenaHeaderMover
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: ArenaHeaderMover
 
-local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
+local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
 	if not (frame and frame.ArenaPrepSpec and frame.ArenaPrepIcon) then return end
@@ -75,6 +70,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	if not frame.isChild then
 		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+		frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 
 		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
@@ -114,7 +110,7 @@ function UF:Construct_ArenaFrames(frame)
 	end
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA')
+	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
 end
 
@@ -167,6 +163,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Power
 	UF:Configure_Power(frame)
+
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
 	UF:Configure_Portrait(frame)
@@ -228,4 +227,4 @@ function UF:Update_ArenaFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['unitgroupstoload']['arena'] = {5, 'ELVUI_UNITTARGET'}
+UF.unitgroupstoload.arena = {5, 'ELVUI_UNITTARGET'}

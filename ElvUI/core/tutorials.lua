@@ -10,7 +10,7 @@ local DISABLE = DISABLE
 local HIDE = HIDE
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, ElvUITutorialWindow
+-- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
 	L["For technical support visit us at http://www.tukui.org."],
@@ -51,7 +51,7 @@ function E:SetPrevTutorial()
 end
 
 function E:SpawnTutorialFrame()
-	local f = CreateFrame("Frame", "ElvUITutorialWindow", UIParent)
+	local f = CreateFrame("Frame", "ElvUITutorialWindow", E.UIParent)
 	f:SetFrameStrata("DIALOG")
 	f:SetToplevel(true)
 	f:SetClampedToScreen(true)

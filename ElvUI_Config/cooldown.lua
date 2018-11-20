@@ -76,15 +76,15 @@ local function group(order, db, label)
 					mmssThreshold = {
 						order = 2,
 						type = 'range',
-						name = L['MM:SS Threshold'],
-						desc = L['Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format.'],
+						name = L["MM:SS Threshold"],
+						desc = L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."],
 						min = -1, max = 10800, step = 1,
 					},
 					hhmmThreshold = {
 						order = 3,
 						type = 'range',
-						name = L['HH:MM Threshold'],
-						desc = L['Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format.'],
+						name = L["HH:MM Threshold"],
+						desc = L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."],
 						min = -1, max = 1440, step = 1,
 					},
 				}
@@ -196,8 +196,8 @@ local function group(order, db, label)
 					fontSize = {
 						order = 3,
 						type = 'range',
-						name = L['Font Size'],
-						desc = L['Sets the size of the timers.'],
+						name = L["Text Font Size"],
+						desc = L["Sets the size of the timers."],
 						min = 10, max = 50, step = 1,
 					},
 					font = {
@@ -212,7 +212,7 @@ local function group(order, db, label)
 						type = "select",
 						name = L["Font Outline"],
 						values = {
-							['NONE'] = L['None'],
+							['NONE'] = NONE,
 							['OUTLINE'] = 'OUTLINE',
 							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 							['THICKOUTLINE'] = 'THICKOUTLINE',

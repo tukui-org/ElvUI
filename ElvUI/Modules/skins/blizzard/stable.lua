@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 --Cache global variables
@@ -46,7 +46,7 @@ local function LoadSkin()
 		button:StripTextures()
 
 		if button.Checked then
-			button.Checked:SetColorTexture(unpack(E["media"].rgbvaluecolor))
+			button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
 			button.Checked:SetAllPoints(icon)
 			button.Checked:SetAlpha(0.3)
 		end

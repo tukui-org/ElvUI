@@ -45,6 +45,7 @@ L["Temporary Move"] = true
 L["Toggle Bags"] = true
 L["Vendor Grays"] = true
 L["Vendor / Delete Grays"] = true
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = true --Also used in datatexts
@@ -66,10 +67,10 @@ L["whispers"] = true
 L["yells"] = true
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
-L["In Bags:"] = true
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = true
@@ -233,6 +234,7 @@ L["Left Click:"] = true --layout\layout.lua
 L["Raid Menu"] = true
 L["Remaining:"] = true
 L["Rested:"] = true
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = true --layout\layout.lua
 L["Toggle Configuration"] = true --layout\layout.lua
@@ -245,7 +247,6 @@ L["Voice Overlay"] = true
 L["Alternative Power"] = true
 L["Archeology Progress Bar"] = true
 L["Arena Frames"] = true --Also used in UnitFrames
-L["Artifact Bar"] = true
 L["Bag Mover (Grow Down)"] = true
 L["Bag Mover (Grow Up)"] = true
 L["Bag Mover"] = true
@@ -306,6 +307,7 @@ L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 
 Options:
+  RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true
 L["ElvUI needs to perform database optimizations please be patient."] = true
 L["Error resetting UnitFrame."] = true
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = true
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = true
 L["No, Revert Changes!"] = true

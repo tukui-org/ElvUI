@@ -67,7 +67,6 @@ SlashCmdList["FRAME"] = function(arg)
 	end
 end
 
-
 SLASH_FRAMELIST1 = "/framelist"
 SlashCmdList["FRAMELIST"] = function(msg)
 	if(not FrameStackTooltip) then

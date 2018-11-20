@@ -106,7 +106,7 @@ local function LoadSkin()
 	S:HandleScrollBar(GuildPerksContainerScrollBar, 4)
 
 	GuildFactionBar:StripTextures()
-	GuildFactionBar.progress:SetTexture(E["media"].normTex)
+	GuildFactionBar.progress:SetTexture(E.media.normTex)
 	E:RegisterStatusBar(GuildFactionBar.progress)
 	GuildFactionBar:CreateBackdrop("Default")
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)

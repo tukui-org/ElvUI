@@ -204,7 +204,18 @@ function AB:SetupMicroBar()
 	UpdateMicroButtonsParent(microBar)
 	self:MainMenuMicroButton_SetNormal()
 	self:UpdateMicroPositionDimensions()
-	MainMenuBarPerformanceBar:Kill()
-	CollectionsMicroButtonAlert:Kill()
-	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
+
+	-- With this method we might don't taint anything. Instead of using :Kill()
+	MainMenuBarPerformanceBar:SetAlpha(0)
+	MainMenuBarPerformanceBar:SetScale(0.00001)
+
+	CollectionsMicroButtonAlert:EnableMouse(false)
+	CollectionsMicroButtonAlert:SetAlpha(0)
+	CollectionsMicroButtonAlert:SetScale(0.00001)
+
+	CharacterMicroButtonAlert:EnableMouse(false)
+	CharacterMicroButtonAlert:SetAlpha(0)
+	CharacterMicroButtonAlert:SetScale(0.00001)
+
+	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar');
 end

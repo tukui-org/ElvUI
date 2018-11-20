@@ -49,7 +49,7 @@
 	StepTitleTextJustification - The justification of the text on each step button ("LEFT", "RIGHT", "CENTER"). Default: "CENTER"
 ]]
 
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local PI = E:NewModule("PluginInstaller")
 
 --Cache global variables
@@ -238,8 +238,8 @@ function PI:CreateFrame()
 	f.Status = CreateFrame("StatusBar", "PluginInstallStatus", f)
 	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 	f.Status:CreateBackdrop("Default", true)
-	f.Status:SetStatusBarTexture(E["media"].normTex)
-	f.Status:SetStatusBarColor(unpack(E["media"].rgbvaluecolor))
+	f.Status:SetStatusBarTexture(E.media.normTex)
+	f.Status:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 	f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
 	f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
 	-- Setup StatusBar Animation
@@ -359,7 +359,7 @@ function PI:CreateFrame()
 	f.side:Width(140)
 	f.side.text = f.side:CreateFontString(nil, "OVERLAY")
 	f.side.text:SetPoint("TOP", f.side, "TOP", 0, -4)
-	f.side.text:SetFont(E["media"].normFont, 18, "OUTLINE")
+	f.side.text:SetFont(E.media.normFont, 18, "OUTLINE")
 	f.side.text:SetText(L["Steps"])
 	f.side.Lines = {} --Table to keep shown lines
 	f.side:Hide()
@@ -374,7 +374,7 @@ function PI:CreateFrame()
 		button.text = button:CreateFontString(nil, "OVERLAY")
 		button.text:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
 		button.text:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 2)
-		button.text:SetFont(E["media"].normFont, 14, "OUTLINE")
+		button.text:SetFont(E.media.normFont, 14, "OUTLINE")
 		button:SetScript("OnClick", function() if i <= f.MaxPage then SetPage(i, f.CurrentPage) end end)
 		button.text:SetText("")
 		f.side.Lines[i] = button

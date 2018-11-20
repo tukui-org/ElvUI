@@ -32,6 +32,8 @@ function UF:Construct_PartyFrames()
 		self.MouseGlow = UF:Construct_MouseGlow(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		self.Name = UF:Construct_NameText(self)
+		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
+
 		self.originalParent = self:GetParent()
 
 		self.childType = "pet"
@@ -44,6 +46,7 @@ function UF:Construct_PartyFrames()
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
+		self.PowerPrediction = UF:Construct_PowerPrediction(self)
 
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
@@ -90,12 +93,12 @@ function UF:Update_PartyHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA', nil, 'unitframe,party,generalGroup')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['PartySmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.PartySmartVisibility)
 	end
 
 	UF.PartySmartVisibility(headerHolder)
@@ -124,6 +127,10 @@ function UF:PartySmartVisibility(event)
 end
 
 function UF:Update_PartyFrames(frame, db)
+	if InCombatLockdown() then
+		return
+	end
+
 	frame.db = db
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)
@@ -205,6 +212,8 @@ function UF:Update_PartyFrames(frame, db)
 		--Health
 		UF:Configure_HealthBar(frame)
 
+		UF:Configure_RaidIcon(frame)
+
 		--Name
 		UF:UpdateNameSettings(frame, frame.childType)
 	else
@@ -257,4 +266,4 @@ function UF:Update_PartyFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['party'] = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}
+UF.headerstoload.party = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

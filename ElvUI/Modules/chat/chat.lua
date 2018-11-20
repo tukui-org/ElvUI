@@ -6,7 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local _G = _G
 local wipe, time, difftime = wipe, time, difftime
-local ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type = ipairs, pairs, unpack, select, tostring, pcall, next, tonumber, type
+local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
 local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
@@ -105,7 +105,7 @@ local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local SOCIAL_QUEUE_QUEUED_FOR = SOCIAL_QUEUE_QUEUED_FOR:gsub(':%s?$','') --some language have `:` on end
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
 
@@ -183,36 +183,16 @@ local tabTexs = {
 	'Highlight'
 }
 
-CH.Smileys = {
-	Keys = {},
-	Textures = {}
-}
-
-function CH:RemoveSmiley(keyOrIndex)
-	if type(keyOrIndex) == 'number' then
-		tremove(CH.Smileys.Keys, keyOrIndex)
-		tremove(CH.Smileys.Textures, keyOrIndex)
-	elseif type(keyOrIndex) == 'string' then
-		for i, v in ipairs(CH.Smileys.Keys) do
-			if v == keyOrIndex then
-				tremove(CH.Smileys.Keys, i)
-				tremove(CH.Smileys.Textures, i)
-				break
-			end
-		end
+CH.Smileys = {}
+function CH:RemoveSmiley(key)
+	if key and (type(key) == 'string') then
+		CH.Smileys[key] = nil
 	end
 end
 
--- `top` will be picked before others, use this for cases such as ">:(" and ":(". where you would want ">:(" selected before ":(".
-function CH:AddSmiley(key, texture, top)
-	if key and texture then
-		if top then
-			tinsert(CH.Smileys.Keys, 1, key)
-			tinsert(CH.Smileys.Textures, 1, texture)
-		else
-			tinsert(CH.Smileys.Keys, key)
-			tinsert(CH.Smileys.Textures, texture)
-		end
+function CH:AddSmiley(key, texture)
+	if key and (type(key) == 'string') and texture then
+		CH.Smileys[key] = texture
 	end
 end
 
@@ -240,17 +220,21 @@ do --this can save some main file locals
 		["Elvz-Kil'jaeden"]		= ElvBlue,
 		["Elv-Spirestone"]		= ElvBlue,
 		-- Tirain --
+		["Tierone-Spirestone"] = "Dr. ", -- lol
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 		-- Whiro --
 		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis Toons --
-		["Maithilis-Shattrath"]		= ElvGreen,
-		["Merathilis-Garrosh"]		= ElvOrange, -- Druid [Horde]
-		["Merathilis-Shattrath"]	= ElvOrange, -- Druid [Alliance]
-		["Merathilîs-Shattrath"]	= ElvBlue,	 -- Shaman
-		["Asragoth-Shattrath"]		= ElvBlue,	 -- Warlock
-		["Damará-Shattrath"]		= ElvRed,	 -- Paladin
+		["Asragoth-Shattrath"]		= ElvPurple,	-- Warlock [Alliance]
+		["Damará-Shattrath"]		= ElvRed,		-- Paladin [Alliance]
+		["Jazira-Shattrath"]		= ElvBlue,		-- Priest [Alliance]
+		["Maithilis-Shattrath"]		= ElvGreen,		-- Monk [Alliance]
+		["Mattdemôn-Shattrath"]		= ElvPurple,	-- Demon Hunter [Alliance]
+		["Melisendra-Shattrath"]	= ElvBlue,		-- Mage [Alliance]
+		["Merathilis-Garrosh"]		= ElvOrange,	-- Druid [Horde]
+		["Merathilis-Shattrath"]	= ElvOrange,	-- Druid [Alliance]
+		["Merathilîs-Shattrath"]	= ElvBlue,		-- Shaman [Alliance]
 		-- Affinity's Toons --
 		["Affinichi-Illidan"]	= Bathrobe,
 		["Affinitii-Illidan"]	= Bathrobe,
@@ -333,21 +317,16 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for i, v in ipairs(CH.Smileys.Keys) do
-		if CH.Smileys.Textures[i] then
-			if strmatch(msg, '^'..v..'$') then -- only word
-				msg = gsub(msg, v, '|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '^'..v..'[%s%p]+') then -- start of string
-				msg = gsub(msg, '^'..v..'([%s%p]+)', '|T'..CH.Smileys.Textures[i]..':16:16|t%1');
-			elseif strmatch(msg, '[%s%p]-'..v..'$') then -- end of string
-				msg = gsub(msg, '([%s%p]-)'..v..'$', '%1|T'..CH.Smileys.Textures[i]..':16:16|t');
-			elseif strmatch(msg, '[%s%p]-'..v..'[%s%p]+') then -- whole word
-				msg = gsub(msg, '([%s%p]-)'..v..'([%s%p]+)', '%1|T'..CH.Smileys.Textures[i]..':16:16|t%2');
-			end
+	local emoji, pattern
+	for word in gmatch(msg, "%s-%S+%s*") do
+		pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
+		emoji = CH.Smileys[pattern]
+		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
+			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', '%1'..emoji..'%2');
 		end
 	end
 
-	return msg;
+	return msg
 end
 
 function CH:GetSmileyReplacementText(msg)
@@ -415,9 +394,9 @@ function CH:StyleChat(frame)
 	end)
 
 	tab.text = _G[name.."TabText"]
-	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
+	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(self, r, g, b)
-		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
+		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
 			self:SetTextColor(rR, gG, bB)
 		end
@@ -581,9 +560,9 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time());
-		timeStamp = timeStamp:gsub(' ', '')
-		timeStamp = timeStamp:gsub('AM', ' AM')
-		timeStamp = timeStamp:gsub('PM', ' PM')
+		timeStamp = gsub(timeStamp, ' ', '')
+		timeStamp = gsub(timeStamp, 'AM', ' AM')
+		timeStamp = gsub(timeStamp, 'PM', ' PM')
 		if CH.db.useCustomTimeColor then
 			local color = CH.db.customTimeColor
 			local hexColor = E:RGBToHex(color.r, color.g, color.b)
@@ -754,8 +733,8 @@ local function FindRightChatID()
 end
 
 function CH:UpdateChatTabs()
-	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
 	for i = 1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
@@ -802,8 +781,8 @@ function CH:PositionChat(override)
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
 	local chat, chatbg, tab, id, isDocked
-	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
 	for i=1, CreatedFrames do
 		local BASE_OFFSET = 57 + E.Spacing*3
@@ -908,7 +887,7 @@ local function UpdateChatTabColor(_, r, g, b)
 		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
 end
-E['valueColorUpdateFuncs'][UpdateChatTabColor] = true
+E.valueColorUpdateFuncs[UpdateChatTabColor] = true
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
@@ -921,13 +900,13 @@ function CH:PrintURL(url)
 end
 
 function CH:FindURL(event, msg, ...)
-	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
+	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and (CH.db.whisperSound ~= 'None') and not CH.SoundTimer then
 		if (strsub(msg,1,3) == "OQ,") then return false, msg, ... end
 		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
 		end
-		CH.SoundPlayed = true
-		CH.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+
+		CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
 	end
 
 	if not CH.db.url then
@@ -1617,9 +1596,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 					elseif ( type == "TEXT_EMOTE" and realm ) then
 						-- make sure emote has realm link correct
 						if info.colorNameByClass then
-							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
+							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
 						else
-							body = gsub(message, arg2.."%-"..realm, pflag..playerLink:gsub("(|h.-)|h$","%1-"..realm.."|h"), 1);
+							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h.-)|h$","%1-"..realm.."|h"), 1);
 						end
 					elseif (type == "TEXT_EMOTE") then
 						body = gsub(message, arg2, pflag..playerLink, 1);
@@ -1639,14 +1618,14 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13);
 			if CH.db.shortChannels and type ~= "EMOTE" and type ~= "TEXT_EMOTE" then
-				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-				body = body:gsub('CHANNEL:', '')
-				body = body:gsub("^(.-|h) "..L["whispers"], "%1")
-				body = body:gsub("^(.-|h) "..L["says"], "%1")
-				body = body:gsub("^(.-|h) "..L["yells"], "%1")
-				body = body:gsub("<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-				body = body:gsub("<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = body:gsub("^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
+				body = gsub(body, "|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+				body = gsub(body, 'CHANNEL:', '')
+				body = gsub(body, "^(.-|h) "..L["whispers"], "%1")
+				body = gsub(body, "^(.-|h) "..L["says"], "%1")
+				body = gsub(body, "^(.-|h) "..L["yells"], "%1")
+				body = gsub(body, "<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+				body = gsub(body, "<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+				body = gsub(body, "^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
@@ -1819,51 +1798,51 @@ function CH:CHAT_MSG_SAY(event, message, author, ...)
 end
 
 function CH:ThrottleSound()
-	self.SoundPlayed = nil;
+	CH.SoundTimer = nil
 end
 
 local protectLinks = {}
 function CH:CheckKeyword(message)
-	for hyperLink in message:gmatch("|%x+|H.-|h.-|h|r") do
-		protectLinks[hyperLink]=hyperLink:gsub('%s','|s')
+	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
+		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
 		for keyword, _ in pairs(CH.Keywords) do
 			if hyperLink == keyword then
-				if self.db.keywordSound ~= 'None' and not self.SoundPlayed then
+				if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
 					end
-					self.SoundPlayed = true
-					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+
+					self.SoundTimer = E:Delay(1, CH.ThrottleSound)
 				end
 			end
 		end
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		message = message:gsub(hyperLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), tempLink)
+		message = gsub(message, gsub(hyperLink, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1'), tempLink)
 	end
 
 	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
 	local isFirstWord = true
-	for word in message:gmatch("%s-%S+%s*") do
-		if not next(protectLinks) or not protectLinks[word:gsub("%s",""):gsub("|s"," ")] then
-			tempWord = word:gsub("[%s%p]", "")
+	for word in gmatch(message, "%s-%S+%s*") do
+		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
+			tempWord = gsub(word, "[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
 			for keyword, _ in pairs(CH.Keywords) do
 				if lowerCaseWord == keyword:lower() then
-					word = word:gsub(tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if self.db.keywordSound ~= 'None' and not self.SoundPlayed then
+					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
+					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
 						end
-						self.SoundPlayed = true
-						self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+
+						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
 					end
 				end
 			end
 
 			if self.db.classColorMentionsChat then
-				tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
+				tempWord = gsub(word,"^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
 				lowerCaseWord = tempWord:lower()
 
 				classMatch = CH.ClassNames[lowerCaseWord]
@@ -1871,7 +1850,7 @@ function CH:CheckKeyword(message)
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
 					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
-					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 			end
 		end
@@ -1885,7 +1864,7 @@ function CH:CheckKeyword(message)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		rebuiltString = rebuiltString:gsub(tempLink:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
+		rebuiltString = gsub(rebuiltString, gsub(tempLink, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
 		protectLinks[hyperLink] = nil
 	end
 
@@ -1993,7 +1972,7 @@ function CH:DisplayChatHistory()
 		return
 	end
 
-	CH.SoundPlayed = true
+	CH.SoundTimer = true
 	for _, chat in pairs(CHAT_FRAMES) do
 		for i=1, #data do
 			d = data[i]
@@ -2006,13 +1985,13 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
-	CH.SoundPlayed = nil
+	CH.SoundTimer = nil
 end
 
-tremove(ChatTypeGroup['GUILD'], 2)
+tremove(ChatTypeGroup.GUILD, 2)
 function CH:DelayGuildMOTD()
 	local delay, checks, delayFrame, chat = 0, 0, CreateFrame('Frame')
-	tinsert(ChatTypeGroup['GUILD'], 2, 'GUILD_MOTD')
+	tinsert(ChatTypeGroup.GUILD, 2, 'GUILD_MOTD')
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
 		if delay < 5 then return end
@@ -2227,10 +2206,10 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 				queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
 				if queueName ~= '' then
 					if output == '' then
-						output = queueName:gsub('\n.+','') -- grab only the first queue name
-						queueCount = queueCount + select(2, queueName:gsub('\n','')) -- collect additional on single queue
+						output = gsub(queueName, '\n.+','') -- grab only the first queue name
+						queueCount = queueCount + select(2, gsub(queueName, '\n','')) -- collect additional on single queue
 					else
-						queueCount = queueCount + 1 + select(2, queueName:gsub('\n','')) -- collect additional on additional queues
+						queueCount = queueCount + 1 + select(2, gsub(queueName, '\n','')) -- collect additional on additional queues
 					end
 				end
 			end
@@ -2270,12 +2249,11 @@ local FindURL_Events = {
 }
 
 function CH:DefaultSmileys()
-	if next(CH.Smileys.Keys) then
-		wipe(CH.Smileys.Keys)
-		wipe(CH.Smileys.Textures)
+	if next(CH.Smileys) then
+		wipe(CH.Smileys)
 	end
 
-	local t = "Interface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s"
+	local t = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s:16:16|t"
 
 	-- new keys
 	CH:AddSmiley(':angry:',			format(t,'angry'))
@@ -2310,6 +2288,9 @@ function CH:DefaultSmileys()
 	CH:AddSmiley(':zzz:',			format(t,'zzz'))
 	CH:AddSmiley(':stuck_out_tongue:',				format(t,'stuck_out_tongue'))
 	CH:AddSmiley(':stuck_out_tongue_closed_eyes:',	format(t,'stuck_out_tongue_closed_eyes'))
+
+	-- Darth's keys
+	CH:AddSmiley(':meaw:',	format(t,'meaw'))
 
 	-- Simpy's keys
 	CH:AddSmiley('>:%(',	format(t,'rage'))
@@ -2568,7 +2549,7 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
 		self.ChatHeadFrame[i].StatusBar:SetHeight(self.volumeBarHeight)
 		self.ChatHeadFrame[i].StatusBar:CreateBackdrop()
-		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E["media"].normTex)
+		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E.media.normTex)
 		self.ChatHeadFrame[i].StatusBar:SetMinMaxValues(0, 1)
 
 		self.ChatHeadFrame[i].StatusBar.anim = CreateAnimationGroup(self.ChatHeadFrame[i].StatusBar)

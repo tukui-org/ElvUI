@@ -24,6 +24,8 @@ function mod:UpdateElement_Elite(frame)
 	else
 		icon:Hide()
 	end
+
+	mod:QuestIcon_RelativePosition(frame, "Elite")
 end
 
 function mod:ConfigureElement_Elite(frame)

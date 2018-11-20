@@ -14,7 +14,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: BossHeaderMover
 
-local BossHeader = CreateFrame('Frame', 'BossHeader', UIParent)
+local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
 	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
@@ -23,6 +23,8 @@ function UF:Construct_BossFrames(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 
 	frame.Name = self:Construct_NameText(frame)
 
@@ -45,7 +47,7 @@ function UF:Construct_BossFrames(frame)
 	frame.customTexts = {}
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID')
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,boss,generalGroup')
 	frame.mover = BossHeader.mover
 
 	frame.unitframeType = "boss"
@@ -105,6 +107,9 @@ function UF:Update_BossFrames(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -162,4 +167,4 @@ function UF:Update_BossFrames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['unitgroupstoload']['boss'] = {MAX_BOSS_FRAMES}
+UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}

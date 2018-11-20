@@ -108,7 +108,6 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance),1,1,1)
 	DT.tooltip:AddLine(' ')
 
-
 	if unhittable > 0 then
 		DT.tooltip:AddDoubleLine(L["Unhittable:"], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
 	else
@@ -117,7 +116,6 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-
 local function ValueColorUpdate(hex)
 	displayString = join("", "%s", hex, "%.2f%%|r")
 
@@ -125,7 +123,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
-
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Avoidance', {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])

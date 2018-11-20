@@ -45,6 +45,7 @@ L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/摧毁灰色物品"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "暫離" --Also used in datatexts and tooltip
@@ -66,10 +67,10 @@ L["whispers"] = "密語"
 L["yells"] = "大喊"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "目前等級"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
-L["In Bags:"] = "背包內:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 記憶體使用量"
@@ -233,6 +234,7 @@ L["Left Click:"] = "滑鼠左鍵：" --layout\layout.lua
 L["Raid Menu"] = "團隊選單"
 L["Remaining:"] = "剩餘:"
 L["Rested:"] = "休息:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = "開關對話按鈕" --layout\layout.lua
 L["Toggle Chat Frame"] = "開關對話框架" --layout\layout.lua
 L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
@@ -245,7 +247,6 @@ L["Voice Overlay"] = "語音浮層"
 L["Alternative Power"] = "特殊能量條框架"
 L["Archeology Progress Bar"] = "考古進度條"
 L["Arena Frames"] = "競技場框架" --Also used in UnitFrames
-L["Artifact Bar"] = "神器能量條"
 L["Bag Mover (Grow Down)"] = "背包錨點 (向下增長)"
 L["Bag Mover (Grow Up)"] = "背包錨點 (向上增長)"
 L["Bag Mover"] = "背包錨點"
@@ -306,6 +307,7 @@ L["Zone Ability"] = "區域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 
 選項:
+  右鍵 - Open Config Section.
   Shift + 右鍵 - 暫時隱藏定位器.
   Ctrl + 右鍵 - 重置定位器位置到預設值.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 以過期. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI 需要進行資料庫優化, 請稍待."
 L["Error resetting UnitFrame."] = "重置單位框架錯誤"
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "移動滑鼠到快捷列或技能書按鈕上綁定快捷鍵.按ESC或滑鼠右鍵取消目前快捷鍵."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "我承諾"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起來你其中的一個插件使得 Blizzard_CompactRaidFrames 停用了. 這會造成錯誤與問題. 插件現在會重新被啟用."
 L["No, Revert Changes!"] = "不, 回復修改!"

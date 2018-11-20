@@ -12,8 +12,7 @@ local UnitReaction = UnitReaction
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_Name(frame, triggered)
 	local name = frame.displayedUnit and UnitName(frame.displayedUnit)

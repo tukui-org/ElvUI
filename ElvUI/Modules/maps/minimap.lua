@@ -25,7 +25,6 @@ local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleCharacter = ToggleCharacter
 local ToggleCollectionsJournal = ToggleCollectionsJournal
-local ToggleDropDownMenu = ToggleDropDownMenu
 local ToggleFrame = ToggleFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
@@ -44,7 +43,7 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
 -- GLOBALS: QueueStatusMinimapButtonBorder, RightMiniPanel, SpellBookFrame, StoreMicroButton, TalentFrame_LoadUI
 -- GLOBALS: TimeManagerClockButton, TimeManagerFrame, TopLeftMiniPanel, TopMiniPanel, TopRightMiniPanel, UIParent
--- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster
+-- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster, ToggleDropDownMenu
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
@@ -474,7 +473,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 
-	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag)
+	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
 	MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)

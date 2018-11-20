@@ -156,7 +156,7 @@ function M:MERCHANT_CLOSED()
 end
 
 function M:MERCHANT_SHOW()
-	if E.db.general.vendorGrays then
+	if E.db.bags.vendorGrays.enable then
 		C_Timer_After(0.5, VendorGrays)
 	end
 
@@ -190,7 +190,6 @@ function M:DisbandRaidGroup()
 	end
 	LeaveParty()
 end
-
 
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end

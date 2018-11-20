@@ -4,6 +4,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
+local ipairs = ipairs
+local tinsert = tinsert
 local max = math.max
 --WoW API / Variables
 local CreateAnimationGroup = CreateAnimationGroup
@@ -23,20 +25,20 @@ local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local C_Timer_After = C_Timer.After
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
 
-	local r, g, b;
-	local scale = 1
+	local r, g, b, scale = 1, 1, 1, 1
 	if ( not UnitIsConnected(frame.unit) ) then
 		r, g, b = self.db.reactions.offline.r, self.db.reactions.offline.g, self.db.reactions.offline.b
 	else
 		if ( frame.HealthBar.ColorOverride ) then
-			--[[local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
-			r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;]]
+			--[[
+				local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
+				r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;
+			]]
 		else
 			--Try to color it by class.
 			local _, class = UnitClass(frame.displayedUnit);
@@ -97,14 +99,15 @@ function mod:UpdateElement_HealthColor(frame)
 				end
 
 				if (not status) or (status and not self.db.threat.useThreatColor) then
-					--By Reaction
-					local reactionType = UnitReaction(frame.unit, "player")
-					if(reactionType == 4) then
-						r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
-					elseif(reactionType > 4) then
-						r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
-					else
-						r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+					local reactionType = UnitReaction(frame.displayedUnit, "player")
+					if reactionType then
+						if reactionType == 4 then
+							r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
+						elseif reactionType > 4 then
+							r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
+						else
+							r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+						end
 					end
 				end
 			end
@@ -216,8 +219,6 @@ function mod:UpdateElement_HealPrediction(frame)
 	mod:UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, absorb);
 end
 
-
-
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
@@ -225,7 +226,7 @@ function mod:UpdateElement_MaxHealth(frame)
 		for _, cb in ipairs(frame.MaxHealthChangeCallbacks) do
 			cb(self, frame, maxHealth);
 		end
-	end	
+	end
 end
 
 function mod:UpdateElement_Health(frame)
@@ -284,7 +285,6 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	
 
 	if (not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()

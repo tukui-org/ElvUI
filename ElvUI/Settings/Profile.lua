@@ -1,9 +1,10 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 P.gridSize = 64
 
 --Core
 P['general'] = {
+	['messageRedirect'] = DEFAULT_CHAT_FRAME:GetName(),
 	['taintLog'] = false,
 	['stickyFrames'] = true,
 	['loginmessage'] = true,
@@ -11,14 +12,13 @@ P['general'] = {
 	['autoRepair'] = 'NONE',
 	['autoRoll'] = false,
 	['autoAcceptInvite'] = false,
-	['vendorGrays'] = false,
-	['vendorGraysDetails'] = false,
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
 	['enhancedPvpMessages'] = true,
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
+	['vehicleSeatIndicatorSize'] = 128,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
 	['decimalLength'] = 1,
@@ -153,20 +153,6 @@ P['databars'] = {
 		['hideInVehicle'] = false,
 		['hideInCombat'] = false,
 	},
-	['artifact'] = {
-		['enable'] = true,
-		['width'] = 10,
-		['height'] = 180,
-		['textFormat'] = 'NONE',
-		['textSize'] = 11,
-		['font'] = 'PT Sans Narrow',
-		['fontOutline'] = 'NONE',
-		['mouseover'] = false,
-		['orientation'] = 'VERTICAL',
-		['reverseFill'] = false,
-		['hideInVehicle'] = false,
-		['hideInCombat'] = false,
-	},
 	['honor'] = {
 		['enable'] = true,
 		['width'] = 10,
@@ -218,15 +204,61 @@ P['bags'] = {
 	['itemLevelFont'] = 'Homespun',
 	['itemLevelFontSize'] = 10,
 	['itemLevelFontOutline'] = 'MONOCHROMEOUTLINE',
+	['itemLevelCustomColorEnable'] = false,
+	['itemLevelCustomColor'] = { r = 1, g = 1, b = 1 },
 	['countFont'] = 'Homespun',
 	['countFontSize'] = 10,
 	['countFontOutline'] = 'MONOCHROMEOUTLINE',
 	['countFontColor'] = {r = 1, g = 1, b = 1},
 	['reverseLoot'] = false,
+	['reverseSlots'] = false,
 	['clearSearchOnClose'] = false,
 	['disableBagSort'] = false,
 	['disableBankSort'] = false,
 	['strata'] = 'HIGH',
+	['colors'] = {
+		['profession'] = {
+			['leatherworking'] = { r = .88, g = .73, b = .29 },
+			['inscription'] = { r = .29, g = .30, b = .88 },
+			['herbs'] = { r = .07, g = .71, b = .13 },
+			['enchanting'] = { r = .76, g = .02, b = .8 },
+			['engineering'] = { r = .91, g = .46, b = .18 },
+			['gems'] = { r = .03, g = .71, b = .81 },
+			['mining'] = { r = .54, g = .40, b = .04 },
+			['fishing'] = { r = .42, g = .59, b = 1 },
+			['cooking'] = { r = .87, g = .05, b = .25 },
+		},
+		['assignment'] = {
+			['equipment'] = { r = 0, g = .50, b = .47 },
+			['consumables'] = { r = .57, g = .95, b = .66 },
+			['tradegoods'] = { r = 1, g = .32, b = .66 },
+		},
+		['items'] = {
+			['questStarter'] = {r = 1, g = 1, b = 0},
+			['questItem'] = {r = 1, g = 0.30, b = 0.30},
+		}
+	},
+	['vendorGrays'] = {
+		["enable"] = false,
+		["interval"] = 0.2,
+		["details"] = false,
+	},
+	['split'] = {
+		['bagSpacing'] = 5,
+		['player'] = false,
+		['bank'] = false,
+		['bag1'] = false,
+		['bag2'] = false,
+		['bag3'] = false,
+		['bag4'] = false,
+		['bag5'] = false,
+		['bag6'] = false,
+		['bag7'] = false,
+		['bag8'] = false,
+		['bag9'] = false,
+		['bag10'] = false,
+		['bag11'] = false,
+	},
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = false,
@@ -295,6 +327,8 @@ P['nameplates'] = {
 	['cutawayHealthLength'] = 0.3,
 	['cutawayHealthFadeOutTime'] = 0.6,
 	['alwaysShowTargetHealth'] = true,
+	['questIcon'] = true,
+	['questIconSize'] = 16,
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = true,
@@ -338,6 +372,8 @@ P['nameplates'] = {
 		['others'] = {r = 0, g = 1, b = 0, a = 0.25},
 		['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 		['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+		['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+		['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 	},
 	['threat'] = {
 		['goodColor'] = {r = 75/255,  g = 175/255, b = 76/255},
@@ -409,6 +445,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -475,6 +514,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -543,6 +585,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -611,6 +656,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -676,6 +724,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = false,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -746,6 +797,9 @@ P['nameplates'] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				['sourceInterrupt'] = false,
+				['sourceInterruptClassColor'] = true,
+				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
 				['castTimeFormat'] = 'CURRENT',
@@ -943,7 +997,7 @@ P['datatexts'] = {
 	},
 	--Time Datatext
 	['localtime'] = true,
-	['time24'] = false,
+	['time24'] = GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
 	--Friends
 	['friends'] = {
 		--status
@@ -977,12 +1031,17 @@ P['datatexts'] = {
 --Tooltip
 P['tooltip'] = {
 	['cursorAnchor'] = false,
+	['cursorAnchorType'] = "ANCHOR_CURSOR",
+	['cursorAnchorX'] = 0,
+	['cursorAnchorY'] = 0,
+	['alwaysShowRealm'] = false,
 	['targetInfo'] = true,
 	['playerTitles'] = true,
 	['guildRanks'] = true,
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
+	['role'] = true,
 	['font'] = 'PT Sans Narrow',
 	['fontOutline'] = 'NONE',
 	['headerFontSize'] = 12,
@@ -1093,15 +1152,26 @@ P['unitframe'] = {
 			['MAELSTROM'] = {r = 0, g = 0.5, b = 1},
 		},
 		['reaction'] = {
-			['BAD'] = { r = 0.78, g = 0.25, b = 0.25 },
+			['BAD'] = { r = 199/255, g = 64/255, b = 64/255 },
 			['NEUTRAL'] = { r = 218/255, g = 197/255, b = 92/255 },
 			['GOOD'] = { r = 75/255, g = 175/255, b = 76/255 },
+		},
+		['selection'] = {
+			[1] = {r = 255/255, g = 255/255, b = 139/255},	-- very light yellow, used for player's character while in combat
+			[2] = {r = 218/255, g = 197/255, b = 92/255},	-- yellow, used for neutral units
+			[3] = {r = 255/255, g = 156/255, b = 73/255},	-- orange, used for unfriendly units
+			[4] = {r = 199/255, g = 64/255, b = 64/255},	-- red, used for hostile units
+			[5] = {r = 128/255, g = 128/255, b = 128/255},	-- grey, used for dead units
+			[6] = {r = 75/255, g = 175/255, b = 76/255},	-- green, used for friendly units
+			[7] = {r = 0/255, g = 179/255, b = 255/255},	-- blue, the default colour, mainly used for players in dungeons, raids, and sanctuaries
 		},
 		['healPrediction'] = {
 			['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
 			['others'] = {r = 0, g = 1, b = 0, a = 0.25},
 			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+			['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+			['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 			['maxOverflow'] = 0,
 		},
 		['classResources'] = {
@@ -1157,7 +1227,11 @@ P['unitframe'] = {
 			['height'] = 54,
 			['lowmana'] = 30,
 			['combatfade'] = false,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['threatStyle'] = 'GLOW',
 			['smartAuraPosition'] = 'DISABLED',
 			['colorOverride'] = 'USE_DEFAULT',
@@ -1169,9 +1243,12 @@ P['unitframe'] = {
 				['xOffset'] = 2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 10,
@@ -1218,6 +1295,10 @@ P['unitframe'] = {
 				['yOffset'] = 6,
 				['size'] = 22,
 				['texture'] = 'DEFAULT',
+			},
+			['raidRoleIcons'] = {
+				['enable'] = true,
+				['position'] = 'TOPLEFT',
 			},
 			['CombatIcon'] = {
 				['enable'] = true,
@@ -1297,6 +1378,13 @@ P['unitframe'] = {
 				['iconYOffset'] = 0,
 				['tickWidth'] = 1,
 				['tickColor'] = {r = 0, g = 0, b = 0, a = 0.8},
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['classbar'] = {
 				['enable'] = true,
@@ -1356,7 +1444,11 @@ P['unitframe'] = {
 			['smartAuraPosition'] = 'DISABLED',
 			['colorOverride'] = 'USE_DEFAULT',
 			['rangeCheck'] = true,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['middleClickFocus'] = true,
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = true,
@@ -1366,9 +1458,12 @@ P['unitframe'] = {
 				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 10,
@@ -1470,6 +1565,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -1512,9 +1614,12 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1603,9 +1708,12 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1686,7 +1794,11 @@ P['unitframe'] = {
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 190,
 			['height'] = 36,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = false,
 			['health'] = {
@@ -1695,9 +1807,12 @@ P['unitframe'] = {
 				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1776,6 +1891,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -1818,9 +1940,12 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = -2,
 				['yOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1901,7 +2026,11 @@ P['unitframe'] = {
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 130,
 			['height'] = 36,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = true,
 			['health'] = {
@@ -1909,9 +2038,12 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
 				['xOffset'] = -2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -1974,6 +2106,22 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['aurabar'] = {
+				['enable'] = false,
+				['anchorPoint'] = 'ABOVE',
+				['attachTo'] = 'FRAME',
+				['maxBars'] = 6,
+				['minDuration'] = 0,
+				['maxDuration'] = 120,
+				['priority'] = '',
+				['friendlyAuraType'] = 'HELPFUL',
+				['enemyAuraType'] = 'HARMFUL',
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING',
+				['uniformThreshold'] = 0,
+				['yOffset'] = 2,
+				['spacing'] = 2,
+			},
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
@@ -1993,6 +2141,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 		},
 		['pettarget'] = {
@@ -2011,9 +2166,12 @@ P['unitframe'] = {
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
 				['xOffset'] = -2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2095,9 +2253,12 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2178,6 +2339,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -2198,7 +2366,11 @@ P['unitframe'] = {
 			['width'] = 246,
 			['height'] = 47,
 			['pvpSpecIcon'] = true,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['disableMouseoverGlow'] = false,
 			['disableTargetGlow'] = false,
@@ -2208,9 +2380,12 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2291,6 +2466,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['pvpTrinket'] = {
 				['enable'] = true,
@@ -2317,7 +2499,11 @@ P['unitframe'] = {
 			['invertGroupingOrder'] = false,
 			['startFromCenter'] = false,
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 184,
 			['height'] = 54,
@@ -2332,9 +2518,12 @@ P['unitframe'] = {
 				['frequentUpdates'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 2,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '[powercolor][power:current]',
 				['attachTextTo'] = 'Health',
 				['width'] = 'fill',
@@ -2452,6 +2641,13 @@ P['unitframe'] = {
 				['iconPosition'] = 'LEFT',
 				['iconXOffset'] = -10,
 				['iconYOffset'] = 0,
+				['timeToHold'] = 0,
+				['strataAndLevel'] = {
+					['useCustomStrata'] = false,
+					['frameStrata'] = 'LOW',
+					['useCustomLevel'] = false,
+					['frameLevel'] = 1,
+				},
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -2496,6 +2692,14 @@ P['unitframe'] = {
 					['yOffset'] = 0,
 					['xOffset'] = 0,
 				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
+				},
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -2536,7 +2740,11 @@ P['unitframe'] = {
 			['groupBy'] = 'GROUP',
 			['sortDir'] = 'ASC',
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 44,
@@ -2551,9 +2759,12 @@ P['unitframe'] = {
 				['frequentUpdates'] = false,
 				['yOffset'] = 2,
 				['xOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = true,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2710,7 +2921,11 @@ P['unitframe'] = {
 			['groupBy'] = 'GROUP',
 			['sortDir'] = 'ASC',
 			['showPlayer'] = true,
-			['healPrediction'] = false,
+			['healPrediction'] = {
+				['enable'] = false,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 27,
@@ -2725,9 +2940,12 @@ P['unitframe'] = {
 				['attachTextTo'] = 'Health',
 				['yOffset'] = 2,
 				['xOffset'] = 0,
+				['reverseFill'] = false,
 			},
 			['power'] = {
 				['enable'] = false,
+				['powerPrediction'] = false,
+				['reverseFill'] = false,
 				['text_format'] = '',
 				['width'] = 'fill',
 				['height'] = 7,
@@ -2886,7 +3104,11 @@ P['unitframe'] = {
 			['raidWideSorting'] = true,
 			['invertGroupingOrder'] = false,
 			['startFromCenter'] = false,
-			['healPrediction'] = true,
+			['healPrediction'] = {
+				['enable'] = true,
+				['showOverAbsorbs'] = true,
+				['showAbsorbAmount'] = false,
+			},
 			['colorOverride'] = 'USE_DEFAULT',
 			['width'] = 80,
 			['height'] = 30,
@@ -2901,6 +3123,7 @@ P['unitframe'] = {
 				['yOffset'] = 2,
 				['xOffset'] = 0,
 				['attachTextTo'] = 'Health',
+				['reverseFill'] = false,
 			},
 			['name'] = {
 				['position'] = 'TOP',
@@ -3002,6 +3225,13 @@ P['unitframe'] = {
 			['disableTargetGlow'] = false,
 			['disableDebuffHighlight'] = true,
 			['verticalSpacing'] = 7,
+			['name'] = {
+				['position'] = 'CENTER',
+				['text_format'] = '[namecolor][name:medium]',
+				['yOffset'] = 0,
+				['xOffset'] = 0,
+				['attachTextTo'] = 'Health',
+			},
 			['buffs'] = {
 				['enable'] = false,
 				['perrow'] = 6,
@@ -3065,6 +3295,14 @@ P['unitframe'] = {
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 8,
+			},
 			['targetsGroup'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'RIGHT',
@@ -3073,6 +3311,21 @@ P['unitframe'] = {
 				['width'] = 120,
 				['height'] = 28,
 				['colorOverride'] = 'USE_DEFAULT',
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:medium]',
+					['yOffset'] = 0,
+					['xOffset'] = 0,
+					['attachTextTo'] = 'Health',
+				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
+				},
 			},
 		},
 		['assist'] = {
@@ -3087,6 +3340,13 @@ P['unitframe'] = {
 			['disableTargetGlow'] = false,
 			['disableDebuffHighlight'] = true,
 			['verticalSpacing'] = 7,
+			['name'] = {
+				['position'] = 'CENTER',
+				['text_format'] = '[namecolor][name:medium]',
+				['yOffset'] = 0,
+				['xOffset'] = 0,
+				['attachTextTo'] = 'Health',
+			},
 			['buffs'] = {
 				['enable'] = false,
 				['perrow'] = 6,
@@ -3150,6 +3410,14 @@ P['unitframe'] = {
 					['color'] = {r = 1, g = 0.9, b = 0, a = 1}
 				},
 			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 8,
+			},
 			['targetsGroup'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'RIGHT',
@@ -3158,6 +3426,21 @@ P['unitframe'] = {
 				['width'] = 120,
 				['height'] = 28,
 				['colorOverride'] = 'USE_DEFAULT',
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:medium]',
+					['yOffset'] = 0,
+					['xOffset'] = 0,
+					['attachTextTo'] = 'Frame',
+				},
+				['raidicon'] = {
+					['enable'] = true,
+					['size'] = 18,
+					['attachTo'] = 'TOP',
+					['attachToObject'] = 'Frame',
+					['xOffset'] = 0,
+					['yOffset'] = 8,
+				},
 			},
 		},
 	},

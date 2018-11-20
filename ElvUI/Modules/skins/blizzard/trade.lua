@@ -34,7 +34,7 @@ local function LoadSkin()
 	TradeRecipientMoneyInset:Kill()
 	TradeRecipientMoneyBg:Kill()
 
-	for i=1, 7 do
+	for i = 1, MAX_TRADE_ITEMS do
 		local player = _G["TradePlayerItem"..i]
 		local recipient = _G["TradeRecipientItem"..i]
 		local player_button = _G["TradePlayerItem"..i.."ItemButton"]

@@ -114,16 +114,16 @@ function AB:StyleShapeShift()
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local buttonSpacing = E:Scale(self.db['stanceBar'].buttonspacing);
-	local backdropSpacing = E:Scale((self.db["stanceBar"].backdropSpacing or self.db["stanceBar"].buttonspacing))
-	local buttonsPerRow = self.db['stanceBar'].buttonsPerRow;
-	local numButtons = self.db['stanceBar'].buttons;
-	local size = E:Scale(self.db['stanceBar'].buttonsize);
-	local point = self.db['stanceBar'].point;
-	local widthMult = self.db['stanceBar'].widthMult;
-	local heightMult = self.db['stanceBar'].heightMult;
+	local buttonSpacing = E:Scale(self.db.stanceBar.buttonspacing);
+	local backdropSpacing = E:Scale((self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing))
+	local buttonsPerRow = self.db.stanceBar.buttonsPerRow;
+	local numButtons = self.db.stanceBar.buttons;
+	local size = E:Scale(self.db.stanceBar.buttonsize);
+	local point = self.db.stanceBar.point;
+	local widthMult = self.db.stanceBar.widthMult;
+	local heightMult = self.db.stanceBar.heightMult;
 	if bar.mover then
-		if self.db['stanceBar'].usePositionOverride then
+		if self.db.stanceBar.usePositionOverride then
 			bar.mover.positionOverride = point;
 		else
 			bar.mover.positionOverride = nil
@@ -147,9 +147,9 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 
-	bar.db = self.db['stanceBar']
+	bar.db = self.db.stanceBar
 	bar.db.position = nil; --Depreciated
-	bar.mouseover = self.db['stanceBar'].mouseover
+	bar.mouseover = self.db.stanceBar.mouseover
 
 	if bar.LastButton and numButtons > bar.LastButton then
 		numButtons = bar.LastButton;
@@ -168,7 +168,7 @@ function AB:PositionAndSizeBarShapeShift()
 		numColumns = 1;
 	end
 
-	if self.db['stanceBar'].backdrop == true then
+	if self.db.stanceBar.backdrop == true then
 		bar.backdrop:Show();
 	else
 		bar.backdrop:Hide();
@@ -177,12 +177,12 @@ function AB:PositionAndSizeBarShapeShift()
 		heightMult = 1
 	end
 
-	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db["stanceBar"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db["stanceBar"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
+	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
+	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	bar:Width(barWidth);
 	bar:Height(barHeight);
 
-	if self.db['stanceBar'].enabled then
+	if self.db.stanceBar.enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(bar.db.alpha);
 		E:EnableMover(bar.mover:GetName())
@@ -205,14 +205,14 @@ function AB:PositionAndSizeBarShapeShift()
 		horizontalGrowth = "LEFT";
 	end
 
-	if(self.db['stanceBar'].inheritGlobalFade) then
+	if(self.db.stanceBar.inheritGlobalFade) then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
 
 	local button, lastButton, lastColumnButton;
-	local firstButtonSpacing = (self.db["stanceBar"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
+	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 	for i=1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i];
 		lastButton = _G["ElvUI_StanceBarButton"..i-1];
@@ -221,7 +221,7 @@ function AB:PositionAndSizeBarShapeShift()
 		button:ClearAllPoints();
 		button:Size(size);
 
-		if self.db['stanceBar'].mouseover == true then
+		if self.db.stanceBar.mouseover == true then
 			bar:SetAlpha(0);
 		else
 			bar:SetAlpha(bar.db.alpha);
@@ -337,7 +337,6 @@ function AB:UpdateStanceBindings()
 	end
 end
 
-
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
@@ -353,7 +352,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 
-	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
 	self:StyleShapeShift();

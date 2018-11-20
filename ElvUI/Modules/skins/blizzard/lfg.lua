@@ -15,6 +15,8 @@ local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
@@ -69,7 +71,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
-		if backdrop.bgFile ~= E["media"].blankTex then
+		if backdrop.bgFile ~= E.media.blankTex then
 			self:SetTemplate("Transparent")
 		end
 	end)
@@ -462,7 +464,6 @@ local function LoadSkin()
 	S:HandleScrollBar(LFDQueueFrameRandomScrollFrameScrollBar)
 	S:HandleScrollBar(ScenarioQueueFrameSpecificScrollFrameScrollBar)
 
-
 	--LFGListFrame
 	local LFGListFrame = _G["LFGListFrame"]
 	LFGListFrame.CategorySelection.Inset:StripTextures()
@@ -517,6 +518,7 @@ local function LoadSkin()
 	S:HandleButton(LFGListInviteDialog.AcceptButton)
 	S:HandleButton(LFGListInviteDialog.DeclineButton)
 	LFGListInviteDialog.RoleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+
 	local function SetRoleIcon(self, resultID)
 		local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
 		self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
@@ -661,7 +663,7 @@ local function LoadSkin()
 			if(selected) then
 				button:SetBackdropBorderColor(1, 1, 0)
 			else
-				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
@@ -678,25 +680,13 @@ local function LoadSecondarySkin()
 	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
-	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
 
-	-- Mythic Dungeon Tab
-	--ChallengesFrame.WeeklyBest:SetPoint("TOPLEFT")
-	--ChallengesFrame.WeeklyBest:SetPoint("BOTTOMRIGHT")
-	--ChallengesFrame.WeeklyBest.Child.Star:SetPoint("TOPLEFT", 54, -27)
-	--ChallengesFrame.WeeklyBest.Child.Label:ClearAllPoints()
-	--ChallengesFrame.WeeklyBest.Child.Label:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "TOPRIGHT", -16, 1)
-	--ChallengesFrame.GuildBest:SetFrameLevel(ChallengesFrame.GuildBest:GetFrameLevel()+3)
-	--ChallengesFrame.GuildBest:StripTextures()
-	--ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
-	--ChallengesFrame.GuildBest.Line:Hide()
-	--ChallengesFrame.GuildBest:ClearAllPoints()
-	--ChallengesFrame.GuildBest:Point("TOPLEFT", ChallengesFrame.WeeklyBest.Child.Star, "BOTTOMRIGHT", -16, 50)
-
 	-- Mythic+ KeyStoneFrame
-	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
-	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)
+	local KeyStoneFrame = _G["ChallengesKeystoneFrame"]
+	KeyStoneFrame:CreateBackdrop("Transparent")
+	S:HandleCloseButton(KeyStoneFrame.CloseButton)
+	S:HandleButton(KeyStoneFrame.StartButton, true)
 
 	hooksecurefunc("ChallengesFrame_Update", function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
@@ -709,6 +699,35 @@ local function LoadSecondarySkin()
 			end
 		end
 	end)
+
+	local function HandleAffixIcons(self)
+		for _, frame in ipairs(self.Affixes) do
+			frame.Border:SetTexture(nil)
+			frame.Portrait:SetTexture(nil)
+
+			if frame.info then
+				frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+			elseif frame.affixID then
+				local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
+				frame.Portrait:SetTexture(filedataid)
+			end
+			frame.Portrait:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	hooksecurefunc(ChallengesFrame.WeeklyInfo, "SetUp", function(self)
+		local affixes = C_MythicPlus_GetCurrentAffixes()
+		if affixes then
+			HandleAffixIcons(self.Child)
+		end
+	end)
+
+	hooksecurefunc(KeyStoneFrame, "Reset", function(self)
+		self:GetRegions():SetAlpha(0)
+		self.InstructionBackground:SetAlpha(0)
+	end)
+
+	hooksecurefunc(KeyStoneFrame, "OnKeystoneSlotted", HandleAffixIcons)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)

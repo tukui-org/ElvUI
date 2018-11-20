@@ -4,17 +4,15 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs = pairs
 local select = select
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CreateFrame = CreateFrame
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: CUSTOM_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame, ClassHallTalentInset
 -- GLOBALS: OrderHallTalentFrame, OrderHallTalentFramePortrait, OrderHallTalentFramePortraitFrame
-
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end

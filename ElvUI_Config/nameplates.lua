@@ -1993,14 +1993,27 @@ local function GetUnitSettings(unit, name)
 						name = L["Hide Time"],
 						type = "toggle",
 					},
-					height = {
+					sourceInterrupt = {
 						order = 4,
+						type = 'toggle',
+						name = L["Display Interrupt Source"],
+						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."],
+					},
+					sourceInterruptClassColor = {
+						order = 4,
+						type = 'toggle',
+						name = L["Show Interrupt Source in Class Color"],
+						disabled = function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end,
+					},
+					-- order 5 is player Display Target
+					height = {
+						order = 6,
 						name = L["Height"],
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
 					castTimeFormat = {
-						order = 5,
+						order = 7,
 						type = "select",
 						name = L["Cast Time Format"],
 						values = {
@@ -2010,7 +2023,7 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					channelTimeFormat = {
-						order = 6,
+						order = 8,
 						type = "select",
 						name = L["Channel Time Format"],
 						values = {
@@ -2020,14 +2033,14 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					timeToHold = {
-						order = 7,
+						order = 9,
 						type = "range",
 						name = L["Time To Hold"],
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
 					iconPosition = {
-						order = 8,
+						order = 10,
 						type = "select",
 						name = L["Icon Position"],
 						values = {
@@ -2124,7 +2137,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.unitframe['specialFilters']
+									local list = E.global.unitframe.specialFilters
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
@@ -2143,7 +2156,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
 									local filters = {}
-									local list = E.global.unitframe['aurafilters']
+									local list = E.global.unitframe.aurafilters
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -2187,7 +2200,7 @@ local function GetUnitSettings(unit, name)
 								stateSwitchGetText = function(_, TEXT)
 									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
-									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
 									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
@@ -2259,7 +2272,7 @@ local function GetUnitSettings(unit, name)
 					},
 					widthOverride = {
 						order = 4,
-						name = L["Width Override"],
+						name = L["Icon Width Override"],
 						desc = L["If not set to 0 then set the width of the Aura Icon to this"],
 						type = "range",
 						min = 0, max = 60, step = 1,
@@ -2306,7 +2319,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
 									local filters = {}
-									local list = E.global.unitframe['specialFilters']
+									local list = E.global.unitframe.specialFilters
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
@@ -2325,7 +2338,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
 									local filters = {}
-									local list = E.global.unitframe['aurafilters']
+									local list = E.global.unitframe.aurafilters
 									if not list then return end
 									for filter in pairs(list) do
 										filters[filter] = filter
@@ -2369,7 +2382,7 @@ local function GetUnitSettings(unit, name)
 								stateSwitchGetText = function(_, TEXT)
 									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
-									local SF, localized = E.global.unitframe['specialFilters'][text], L[text]
+									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
 									local filterText = (blockText and format("|cFF999999%s|r %s", BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", ENEMY, filterText)) or filterText
@@ -2546,6 +2559,12 @@ local function GetUnitSettings(unit, name)
 			order = 3,
 			type = "toggle",
 			name = L["Use Class Color"],
+		}
+		group.args.castGroup.args.displayTarget = {
+			order = 5,
+			type = 'toggle',
+			name = L["Display Target"],
+			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.minions = {
@@ -2832,6 +2851,14 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
+		questIcon = {
+			order = 17,
+			type = "execute",
+			name = L["Quest Icon"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "questIcon") end,
+			disabled = function() return not E.NamePlates; end,
+		},
 		playerShortcut = {
 			order = 17,
 			type = "execute",
@@ -2848,18 +2875,18 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		friendlyPlayerShortcut = {
+		spacer5 = {
 			order = 19,
+			type = "description",
+			name = " ",
+		},
+		friendlyPlayerShortcut = {
+			order = 20,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
 			disabled = function() return not E.NamePlates; end,
-		},
-		spacer5 = {
-			order = 20,
-			type = "description",
-			name = " ",
 		},
 		enemyPlayerShortcut = {
 			order = 21,
@@ -2877,18 +2904,18 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		enemyNPCShortcut = {
+		spacer6 = {
 			order = 23,
+			type = "description",
+			name = " ",
+		},
+		enemyNPCShortcut = {
+			order = 24,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
-		},
-		spacer6 = {
-			order = 24,
-			type = "description",
-			name = " ",
 		},
 		filtersShortcut = {
 			order = 25,
@@ -3088,7 +3115,7 @@ E.Options.args.nameplate = {
 									order = 6,
 									type = "select",
 									customWidth = 225,
-									name = L["Target Indicator"],
+									name = L["Target/Low Health Indicator"],
 									get = function(info) return E.db.nameplates.targetGlow end,
 									set = function(info, value) E.db.nameplates.targetGlow = value; NP:ConfigureAll() end,
 									values = {
@@ -3568,6 +3595,28 @@ E.Options.args.nameplate = {
 						},
 					},
 				},
+				questIcon = {
+					order = 226,
+					name = L["Quest Icon"],
+					type = 'group',
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							get = function(info) return E.db.nameplates.questIcon end,
+							set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
+						},
+						questIconSize = {
+							type = 'range',
+							order = 2,
+							name = L["Size"],
+							min = 10, max = 50, step = 1,
+							get = function(info) return E.db.nameplates.questIconSize end,
+							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
+						},
+					},
+				},
 			},
 		},
 		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
@@ -3592,7 +3641,7 @@ E.Options.args.nameplate = {
 						if match(value, "^[%s%p]-$") then
 							return
 						end
-						if E.global['nameplate']['filters'][value] then
+						if E.global.nameplate.filters[value] then
 							E:Print(L["Filter already exists!"])
 							return
 						end

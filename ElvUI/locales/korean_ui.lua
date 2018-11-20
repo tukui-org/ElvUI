@@ -45,6 +45,7 @@ L["Temporary Move"] = "임시 이동"
 L["Toggle Bags"] = "가방슬롯 보기"
 L["Vendor Grays"] = "잡동사니 자동판매"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
+L["Vendoring Grays"] = true
 
 --Chat
 L["AFK"] = "자리비움"
@@ -66,10 +67,10 @@ L["whispers"] = "귓"
 L["yells"] = "외침"
 
 --DataBars
+L["Azerite Bar"] = true
 L["Current Level:"] = "현재 레벨"
 L["Honor Remaining:"] = "남은 명예"
 L["Honor XP:"] = "명예 경험치"
-L["In Bags:"] = "가방 속에"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
@@ -233,6 +234,7 @@ L["Left Click:"] = "왼 클릭 :"
 L["Raid Menu"] = "공대 도구"
 L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
+L["Right Click:"] = true
 L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
@@ -245,7 +247,6 @@ L["Voice Overlay"] = "음성 오버레이"
 L["Alternative Power"] = "특수상황 진행 바"
 L["Archeology Progress Bar"] = "고고학 진척도 바"
 L["Arena Frames"] = "투기장 프레임"
-L["Artifact Bar"] = "유물력바"
 L["Bag Mover (Grow Down)"] = "가방 조정자(아래로 성장)"
 L["Bag Mover (Grow Up)"] = "가방 조정자(위로 성장)"
 L["Bag Mover"] = "가방 조정자"
@@ -306,6 +307,7 @@ L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.
 
 선택사항:
+  우클릭 - Open Config Section.
   Shift + 우클릭 - 조정자를 일시적으로 숨깁니다.
   Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI가 오래된 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI의 데이터베이스를 조정할 필요가 있습니다. 잠시 기다려주세요."
 L["Error resetting UnitFrame."] = "유닛프레임 초기화 오류"
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "행동단축바나 주문책의 스킬에 마우스오버 후 키를 누르면 단축키로 지정합니다. 단축키를 지정한 곳을 우클릭 하거나 ESC를 누르면 해제합니다."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "알겠습니다."
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "현재 설치된 애드온 중 하나가 정상 로드되지 않았습니다. 에러가 날 확률이 높아 리로드합니다."
 L["No, Revert Changes!"] = "예전으로 돌려주세요"

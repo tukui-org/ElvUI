@@ -90,7 +90,6 @@ function UF:Configure_Portrait(frame, dontHide)
 				end
 			end
 
-
 			portrait:SetInside(portrait.backdrop, frame.BORDER)
 		end
 	else

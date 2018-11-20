@@ -26,7 +26,6 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame
 -- GLOBALS: HelloKittyLeft, HelloKittyRight
 
-
 --Harlem Shake (Activate with command: /harlemshake)
 --People really seemed to like this one. We got a lot of positive responses.
 do
@@ -37,7 +36,7 @@ do
 		SetCVar("Sound_EnableMusic", self.oldEnableMusic)
 
 		self:StopShakeHorizontal(ElvUI_StaticPopup1)
-		for _, object in pairs(self["massiveShakeObjects"]) do
+		for _, object in pairs(self.massiveShakeObjects) do
 			if object then
 				self:StopShake(object)
 			end
@@ -57,7 +56,7 @@ do
 		E.isMassiveShaking = true
 		ElvUI_StaticPopup1Button1:Enable()
 
-		for _, object in pairs(self["massiveShakeObjects"]) do
+		for _, object in pairs(self.massiveShakeObjects) do
 			if object and not object:IsForbidden() and object:IsShown() then
 				self:Shake(object)
 			end
@@ -88,15 +87,15 @@ do
 		tinsert(self.massiveShakeObjects, LeftChatPanel)
 		tinsert(self.massiveShakeObjects, RightChatPanel)
 
-		for unit in pairs(UF['units']) do
+		for unit in pairs(UF.units) do
 			tinsert(self.massiveShakeObjects, UF[unit])
 		end
 
-		for _, header in pairs(UF['headers']) do
+		for _, header in pairs(UF.headers) do
 			tinsert(self.massiveShakeObjects, header)
 		end
 
-		for _, bar in pairs(AB['handledBars']) do
+		for _, bar in pairs(AB.handledBars) do
 			for i=1, #bar.buttons do
 				tinsert(self.massiveShakeObjects, bar.buttons[i])
 			end

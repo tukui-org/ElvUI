@@ -12,11 +12,12 @@ local tinsert = table.insert
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Pet
 
-
 function UF:Construct_PetTargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 
 	frame.Name = self:Construct_NameText(frame)
 
@@ -31,7 +32,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,pettarget,generalGroup')
 
 	frame.unitframeType = "pettarget"
 end
@@ -81,6 +82,9 @@ function UF:Update_PetTargetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -101,4 +105,4 @@ function UF:Update_PetTargetFrame(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'pettarget')
+tinsert(UF.unitstoload, 'pettarget')

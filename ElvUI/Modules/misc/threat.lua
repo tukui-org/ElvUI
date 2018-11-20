@@ -20,7 +20,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF, UIParent
+-- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 E.Threat = THREAT
@@ -61,7 +61,7 @@ function THREAT:GetColor(unit)
 		if not class then return 194, 194, 194 end
 		return class.r*255, class.g*255, class.b*255
 	elseif (unitReaction) then
-		local reaction = ElvUF['colors'].reaction[unitReaction]
+		local reaction = ElvUF.colors.reaction[unitReaction]
 		return reaction[1]*255, reaction[2]*255, reaction[3]*255
 	else
 		return 194, 194, 194
@@ -85,7 +85,7 @@ function THREAT:Update()
 		if percent == 100 then
 			--Build threat list
 			if petExists then
-				self.list['pet'] = select(3, UnitDetailedThreatSituation('pet', 'target'))
+				self.list.pet = select(3, UnitDetailedThreatSituation('pet', 'target'))
 			end
 
 			if isInRaid then
@@ -152,8 +152,8 @@ function THREAT:Initialize()
 
 	self.db = E.db.general.threat
 
-	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', UIParent)
-	self.bar:SetStatusBarTexture(E['media'].normTex)
+	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)
+	self.bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)
 	self.bar:CreateBackdrop('Default')

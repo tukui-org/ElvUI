@@ -17,6 +17,7 @@ function B:Initialize()
 	self:PositionTalkingHead()
 	self:Handle_LevelUpDisplay_BossBanner()
 	self:Handle_UIWidgets()
+	self:GarrisonDropDown()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
@@ -29,11 +30,15 @@ function B:Initialize()
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
+	-- Quick Join Bug
 	CreateFrame("Frame"):SetScript("OnUpdate", function(self)
 		if LFRBrowseFrame.timeToClear then
 			LFRBrowseFrame.timeToClear = nil
 		end
 	end)
+
+	-- Fix Guild Set Rank Error introduced in Patch 27326
+	GuildControlUIRankSettingsFrameRosterLabel = CreateFrame("Frame", nil, E.HiddenFrame)
 
 	-- MicroButton Talent Alert
 	if TalentMicroButtonAlert then -- why do we need to check this?

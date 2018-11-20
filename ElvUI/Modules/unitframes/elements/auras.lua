@@ -71,8 +71,8 @@ function UF:Construct_AuraIcon(button)
 	button.timerOptions.reverseToggle = UF.db.cooldown.reverse
 	button.timerOptions.hideBlizzard = UF.db.cooldown.hideBlizzard
 
-	if UF.db.cooldown.override and E.TimeColors['unitframe'] then
-		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors['unitframe'], UF.db.cooldown.threshold
+	if UF.db.cooldown.override and E.TimeColors.unitframe then
+		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors.unitframe, UF.db.cooldown.threshold
 	else
 		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
 	end
@@ -113,7 +113,7 @@ function UF:Construct_AuraIcon(button)
 
 		if auraName then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
+			E.global.unitframe.aurafilters.Blacklist.spells[auraName] = {
 				['enable'] = true,
 				['priority'] = 0,
 			}
@@ -127,8 +127,8 @@ function UF:Construct_AuraIcon(button)
 		button.CooldownOverride = 'unitframe'
 		button.isRegisteredCooldown = true
 
-		if not E.RegisteredCooldowns['unitframe'] then E.RegisteredCooldowns['unitframe'] = {} end
-		tinsert(E.RegisteredCooldowns['unitframe'], button)
+		if not E.RegisteredCooldowns.unitframe then E.RegisteredCooldowns.unitframe = {} end
+		tinsert(E.RegisteredCooldowns.unitframe, button)
 	end
 
 	UF:UpdateAuraIconSettings(button, true)
@@ -447,7 +447,7 @@ function UF:PostUpdateAura(unit, button)
 		if button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
-			button:SetBackdropBorderColor(unpack(E["media"].unitframeBorderColor))
+			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 	end
 
@@ -490,10 +490,11 @@ function UF:UpdateAuraTimer(elapsed)
 		return
 	end
 
+	local textHasFont = self.text and self.text:GetFont()
 	if (not E:Cooldown_IsEnabled(self)) or (self.expirationSaved <= 0) then
 		self:SetScript('OnUpdate', nil)
 
-		if self.text:GetFont() then
+		if textHasFont then
 			self.text:SetText('')
 		end
 
@@ -508,7 +509,10 @@ function UF:UpdateAuraTimer(elapsed)
 
 	local value1, formatid, nextupdate, value2 = E:GetTimeInfo(self.expirationSaved, timeThreshold, hhmmThreshold, mmssThreshold)
 	self.nextupdate = nextupdate
-	self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
+
+	if textHasFont then
+		self.text:SetFormattedText(format("%s%s|r", timeColors[formatid], E.TimeFormats[formatid][2]), value1, value2)
+	end
 end
 
 function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)

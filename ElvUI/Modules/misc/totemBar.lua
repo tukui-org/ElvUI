@@ -94,7 +94,6 @@ function TOTEMS:PositionAndSize()
 	self:Update()
 end
 
-
 function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 
@@ -125,7 +124,7 @@ function TOTEMS:Initialize()
 
 	self:PositionAndSize()
 
-	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"]);
+	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems');
 	self:ToggleEnable()
 end
 

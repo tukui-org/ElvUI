@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
 local AceGUI = LibStub("AceGUI-3.0")
 
@@ -415,7 +415,7 @@ if not E.Options.args.profiles.plugins then
 	E.Options.args.profiles.plugins = {}
 end
 
-E.Options.args.profiles.plugins["ElvUI"] = {
+E.Options.args.profiles.plugins.ElvUI = {
 	spacer = {
 		order = 89,
 		type = 'description',

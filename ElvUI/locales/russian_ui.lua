@@ -45,6 +45,7 @@ L["Temporary Move"] = "Временное перемещение"
 L["Toggle Bags"] = "Показать сумки"
 L["Vendor Grays"] = "Продавать серые предметы"
 L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
+L["Vendoring Grays"] = "Продаю хлам"
 
 --Chat
 L["AFK"] = "АФК" --Also used in datatexts and tooltip
@@ -66,10 +67,10 @@ L["whispers"] = "шепчет"
 L["yells"] = "кричит"
 
 --DataBars
+L["Azerite Bar"] = "Азерит"
 L["Current Level:"] = "Текущий уровень:"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
-L["In Bags:"] = "В сумках:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
@@ -233,6 +234,7 @@ L["Left Click:"] = "ЛКМ:" --layout\layout.lua
 L["Raid Menu"] = "Рейдовое меню"
 L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
+L["Right Click:"] = "ПКМ: "
 L["Toggle Chat Buttons"] = "Показать/скрыть кнопки чата" --layout\layout.lua
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
@@ -245,7 +247,6 @@ L["Voice Overlay"] = "Индикатор голоса"
 L["Alternative Power"] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L["Arena Frames"] = "Арена" --Also used in UnitFrames
-L["Artifact Bar"] = "Полоса Артефакта"
 L["Bag Mover (Grow Down)"] = "Сумки (Рост вниз)"
 L["Bag Mover (Grow Up)"] = "Сумки (Рост вверх)"
 L["Bag Mover"] = "Фиксатор сумок"
@@ -306,6 +307,7 @@ L["Zone Ability"] = "Способность зоны"
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.
 
 Options:
+  RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
 ]=]
@@ -358,7 +360,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI устарел. Вы можете скачать последнюю версию с www.tukui.org. С премиум аккаунтом ElvUI будет автоматически обновляться через TukUI клиент."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI нужно провести оптимизацию базы данных. Подождите, пожалуйста."
 L["Error resetting UnitFrame."] = "Ошибка сброса рамки юнита."
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Наведите курсор на любую кнопку на панели или в книге заклинаний, чтобы назначит ей клавишу. Нажмите правую кнопку мыши или 'Escape', чтобы сбросить назначение для этой кнопки."
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "Наведите мышку на любую кнопку панели команд или книги заклинаний, чтобы создать назначение. Нажатие ESC убирает текущее назначение."
 L["I Swear"] = "Я клянусь!"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Похоже, что один из ваших аддонов отключил Blizzard_CompactRaidFrames. Это может вызвать ошибки и другие проблемы, мы рекомендуем включить. Включить аддоны Blizzard сейчас?"
 L["No, Revert Changes!"] = "Нет, обратить изменения!"

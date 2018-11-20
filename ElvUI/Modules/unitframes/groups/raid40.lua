@@ -21,7 +21,6 @@ function UF:Construct_Raid40Frames()
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
-
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
@@ -30,6 +29,8 @@ function UF:Construct_Raid40Frames()
 
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.Power.frequentUpdates = false;
+
+	self.PowerPrediction = UF:Construct_PowerPrediction(self)
 
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
@@ -116,11 +117,11 @@ function UF:Update_Raid40Header(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,raid40,generalGroup')
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['Raid40SmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.Raid40SmartVisibility)
 		headerHolder.positioned = true;
 	end
 
@@ -128,6 +129,10 @@ function UF:Update_Raid40Header(header, db)
 end
 
 function UF:Update_Raid40Frames(frame, db)
+	if InCombatLockdown() then
+		return
+	end
+
 	frame.db = db
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)
@@ -186,6 +191,9 @@ function UF:Update_Raid40Frames(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -236,4 +244,4 @@ function UF:Update_Raid40Frames(frame, db)
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-UF['headerstoload']['raid40'] = true
+UF.headerstoload.raid40 = true

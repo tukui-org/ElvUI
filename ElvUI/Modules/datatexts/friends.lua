@@ -132,7 +132,7 @@ local statusTable = { " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", "
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
-local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2 = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2
+local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD
 local wowString = BNET_CLIENT_WOW
 local dataValid = false
 local lastPanel
@@ -147,6 +147,7 @@ local clientTags = {
 	[BNET_CLIENT_SC] = "SC",
 	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_DESTINY2] = "Dst2",
+	[BNET_CLIENT_COD] = "VIPR",
 	["BSAp"] = L["Mobile"],
 }
 local clientIndex = {
@@ -158,8 +159,9 @@ local clientIndex = {
 	[BNET_CLIENT_SC] = 6,
 	[BNET_CLIENT_SC2] = 7,
 	[BNET_CLIENT_DESTINY2] = 8,
-	["App"] = 9,
-	["BSAp"] = 10,
+	[BNET_CLIENT_COD] = 9,
+	["App"] = 10,
+	["BSAp"] = 11,
 }
 
 local function SortAlphabeticName(a, b)
@@ -362,14 +364,14 @@ local function Click(self, btn)
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if (#friendTable > 0) and not E.db.datatexts.friends['hideWoW'] then
+		if (#friendTable > 0) and not E.db.datatexts.friends.hideWoW then
 			for i = 1, #friendTable do
 				info = friendTable[i]
 				if info[5] then
 					shouldSkip = false
-					if (info[6] == statusTable[1]) and E.db.datatexts.friends['hideAFK'] then
+					if (info[6] == statusTable[1]) and E.db.datatexts.friends.hideAFK then
 						shouldSkip = true
-					elseif (info[6] == statusTable[2]) and E.db.datatexts.friends['hideDND'] then
+					elseif (info[6] == statusTable[2]) and E.db.datatexts.friends.hideDND then
 						shouldSkip = true
 					end
 					if not shouldSkip then
@@ -393,9 +395,9 @@ local function Click(self, btn)
 				info = BNTable[i]
 				if info[7] then
 					shouldSkip = false
-					if (info[8] == true) and E.db.datatexts.friends['hideAFK'] then
+					if (info[8] == true) and E.db.datatexts.friends.hideAFK then
 						shouldSkip = true
-					elseif (info[9] == true) and E.db.datatexts.friends['hideDND'] then
+					elseif (info[9] == true) and E.db.datatexts.friends.hideDND then
 						shouldSkip = true
 					end
 					if info[6] and E.db.datatexts.friends['hide'..info[6]] then
@@ -468,14 +470,14 @@ local function OnEnter(self)
 	local zonec, classc, levelc, realmc, info, grouped, shouldSkip
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-	if (onlineFriends > 0) and not E.db.datatexts.friends['hideWoW'] then
+	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
 				shouldSkip = false
-				if (info[6] == statusTable[1]) and E.db.datatexts.friends['hideAFK'] then
+				if (info[6] == statusTable[1]) and E.db.datatexts.friends.hideAFK then
 					shouldSkip = true
-				elseif (info[6] == statusTable[2]) and E.db.datatexts.friends['hideDND'] then
+				elseif (info[6] == statusTable[2]) and E.db.datatexts.friends.hideDND then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -504,12 +506,12 @@ local function OnEnter(self)
 					if info[7] then
 						shouldSkip = false
 						if info[8] == true then
-							if E.db.datatexts.friends['hideAFK'] then
+							if E.db.datatexts.friends.hideAFK then
 								shouldSkip = true
 							end
 							status = statusTable[1]
 						elseif info[9] == true then
-							if E.db.datatexts.friends['hideDND'] then
+							if E.db.datatexts.friends.hideDND then
 								shouldSkip = true
 							end
 							status = statusTable[2]
@@ -522,13 +524,13 @@ local function OnEnter(self)
 								if info[16] ~= '' then
 									levelc = GetQuestDifficultyColor(info[16])
 								else
-									levelc = RAID_CLASS_COLORS["PRIEST"]
-									classc = RAID_CLASS_COLORS["PRIEST"]
+									levelc = RAID_CLASS_COLORS.PRIEST
+									classc = RAID_CLASS_COLORS.PRIEST
 								end
 
 								--Sometimes the friend list is fubar with level 0 unknown friends
 								if not classc then
-									classc = RAID_CLASS_COLORS["PRIEST"]
+									classc = RAID_CLASS_COLORS.PRIEST
 								end
 
 								if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
@@ -561,6 +563,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Friends', {'PLAYER_ENTERING_WORLD', "BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, FRIENDS)

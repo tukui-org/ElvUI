@@ -196,7 +196,6 @@ local function DefaultSort(a, b)
 		end
 	end
 
-
 	local aOrder, bOrder = initialOrder[a], initialOrder[b]
 
 	if aID == bID then
@@ -213,7 +212,6 @@ local function DefaultSort(a, b)
 	local _, _, _, _, _, _, _, _, bEquipLoc, _, _, bItemClassId, bItemSubClassId = GetItemInfo(bID)
 
 	local aRarity, bRarity = bagQualities[a], bagQualities[b]
-
 
 	if bagPetIDs[a] then
 		aRarity = 1
@@ -684,17 +682,17 @@ function B.SortBags(...)
 		for bagType, sortedBags in pairs(bagCache) do
 			if bagType ~= 'Normal' then
 				B.Stack(sortedBags, sortedBags, B.IsPartial)
-				B.Stack(bagCache['Normal'], sortedBags)
-				B.Fill(bagCache['Normal'], sortedBags, B.db.sortInverted)
+				B.Stack(bagCache.Normal, sortedBags)
+				B.Fill(bagCache.Normal, sortedBags, B.db.sortInverted)
 				B.Sort(sortedBags, nil, B.db.sortInverted)
 				twipe(sortedBags)
 			end
 		end
 
-		if bagCache['Normal'] then
-			B.Stack(bagCache['Normal'], bagCache['Normal'], B.IsPartial)
-			B.Sort(bagCache['Normal'], nil, B.db.sortInverted)
-			twipe(bagCache['Normal'])
+		if bagCache.Normal then
+			B.Stack(bagCache.Normal, bagCache.Normal, B.IsPartial)
+			B.Sort(bagCache.Normal, nil, B.db.sortInverted)
+			twipe(bagCache.Normal)
 		end
 		twipe(bagCache)
 		twipe(bagGroups)
@@ -717,13 +715,26 @@ function B:StartStacking()
 end
 
 local function RegisterUpdateDelayed()
+	local shouldUpdateFade
+
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.registerUpdate then
-			--call update and re-register BAG_UPDATE event
-			bagFrame.registerUpdate = nil
 			bagFrame:UpdateAllSlots()
+
+			bagFrame.registerUpdate = nil -- call update and re-register events, keep this after UpdateAllSlots
+			shouldUpdateFade = true -- we should refresh the bag search after sorting
+
 			bagFrame:RegisterEvent("BAG_UPDATE")
+			bagFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
+
+			for _, event in pairs(bagFrame.events) do
+				bagFrame:RegisterEvent(event)
+			end
 		end
+	end
+
+	if shouldUpdateFade then
+		B:RefreshSearch() -- this will clear the bag lock look during a sort
 	end
 end
 
@@ -894,8 +905,6 @@ function B:GetGroup(id)
 end
 
 function B:CommandDecorator(func, groupsDefaults)
-	local bagGroups = {}
-
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
 			B:StopStacking(L["Already Running.. Bailing Out!"], true)

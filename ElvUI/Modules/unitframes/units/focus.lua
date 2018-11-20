@@ -18,6 +18,8 @@ function UF:Construct_FocusFrame(frame)
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
+	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -37,10 +39,11 @@ function UF:Construct_FocusFrame(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
+	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
-	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,focus,generalGroup')
 
 	frame.unitframeType = "focus"
 end
@@ -90,6 +93,9 @@ function UF:Update_FocusFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
+	-- Power Predicition
+	UF:Configure_PowerPrediction(frame)
+
 	--Portrait
 	UF:Configure_Portrait(frame)
 
@@ -118,7 +124,10 @@ function UF:Update_FocusFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
+	--Debuff Highlight
+	UF:Configure_DebuffHighlight(frame)
+
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
-tinsert(UF['unitstoload'], 'focus')
+tinsert(UF.unitstoload, 'focus')

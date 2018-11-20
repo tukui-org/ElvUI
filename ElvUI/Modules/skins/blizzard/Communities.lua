@@ -296,35 +296,39 @@ local function LoadSkin()
 
 	S:HandleScrollSlider(CommunitiesFrameRewards.scrollBar)
 
+	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
+		if not button.backdrop then
+			button:CreateBackdrop("Default")
+		end
+
+		button:SetNormalTexture("")
+		button:SetHighlightTexture("")
+
+		if not button.hover then
+			local hover = button:CreateTexture()
+			hover:SetColorTexture(1, 1, 1, 0.3)
+			hover:SetInside(button.backdrop)
+			button:SetHighlightTexture(hover)
+			button.hover = hover
+		end
+
+		button.Icon:SetTexCoord(unpack(E.TexCoords))
+		if not button.Icon.backdrop then
+			button.Icon:CreateBackdrop("Default")
+			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
+			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
+		end
+	end
+
 	hooksecurefunc("CommunitiesGuildRewards_Update", function(self)
-		local scrollFrame = self.RewardsContainer
-		local offset = HybridScrollFrame_GetOffset(scrollFrame)
-		local buttons = scrollFrame.buttons
-		local button, index
-		local numButtons = #buttons
-
-		for i = 1, numButtons do
-			button = buttons[i]
-			index = offset + i
-
-			if not button.backdrop then
-				button:CreateBackdrop("Default")
+		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
+			if button.index then
+				local _, itemID = GetGuildRewardInfo(button.index)
+				local _, _, quality = GetItemInfo(itemID)
+				if quality and quality > 1 then
+					button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+				end
 			end
-
-			button:SetNormalTexture("")
-			button:SetHighlightTexture("")
-
-			if not button.hover then
-				local hover = button:CreateTexture()
-				hover:SetColorTexture(1, 1, 1, 0.3)
-				hover:SetInside()
-				button.hover = hover
-				button:SetHighlightTexture(hover)
-			end
-
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
-
-			button.index = index
 		end
 	end)
 
@@ -335,7 +339,7 @@ local function LoadSkin()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
 	StatusBar.Shadow:Hide()
-	StatusBar.Progress:SetTexture(E["media"].normTex)
+	StatusBar.Progress:SetTexture(E.media.normTex)
 	StatusBar.Progress:SetAllPoints()
 	E:RegisterStatusBar(StatusBar)
 

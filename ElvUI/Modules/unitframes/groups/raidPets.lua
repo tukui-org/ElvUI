@@ -78,18 +78,22 @@ function UF:Update_RaidpetHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,raidpet,generalGroup')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidPetsSmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF.RaidPetsSmartVisibility)
 	end
 
 	UF.RaidPetsSmartVisibility(headerHolder)
 end
 
 function UF:Update_RaidpetFrames(frame, db)
+	if InCombatLockdown() then
+		return
+	end
+
 	frame.db = db
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)
@@ -176,4 +180,4 @@ function UF:Update_RaidpetFrames(frame, db)
 end
 
 --Added an additional argument at the end, specifying the header Template we want to use
-UF['headerstoload']['raidpet'] = {nil, nil, 'SecureGroupPetHeaderTemplate'}
+UF.headerstoload.raidpet = {nil, nil, 'SecureGroupPetHeaderTemplate'}

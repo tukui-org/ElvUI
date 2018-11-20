@@ -46,7 +46,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 -- GLOBALS: LeaveVehicleButton, StatusTrackingBarManager, MultiCastActionBarFrame
 -- GLOBALS: LOCK_ACTIONBAR, UIParent, Minimap, IconIntroTracker, MainMenuBar, OverrideActionBar, ActionBarController
 -- GLOBALS: SpellFlyout, SpellFlyoutBackgroundEnd, SpellFlyoutVerticalBackground, SpellFlyoutHorizontalBackground
--- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight
+-- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight, MicroButtonAndBagsBar
 -- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
 -- GLOBALS: InterfaceOptionsActionBarsPanelRightTwo, InterfaceOptionsActionBarsPanelRight
 -- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
@@ -62,9 +62,9 @@ local UIHider
 
 AB.RegisterCooldown = E.RegisterCooldown
 
-AB["handledBars"] = {} --List of all bars
-AB["handledbuttons"] = {} --List of all buttons that have been modified.
-AB["barDefaults"] = {
+AB.handledBars = {} --List of all bars
+AB.handledbuttons = {} --List of all buttons that have been modified.
+AB.barDefaults = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
@@ -246,11 +246,11 @@ function AB:PositionAndSizeBar(barName)
 			bar:SetAlpha(self.db[barName].alpha);
 		end
 
-		local page = self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions)
-		if AB['barDefaults']['bar'..bar.id].conditions:find("[form,noform]") then
+		local page = self:GetPage(barName, self.barDefaults[barName].page, self.barDefaults[barName].conditions)
+		if AB.barDefaults['bar'..bar.id].conditions:find("[form,noform]") then
 			bar:SetAttribute("hasTempBar", true)
 
-			local newCondition = gsub(AB['barDefaults']['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
+			local newCondition = gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
 			bar:SetAttribute("newCondition", newCondition)
 		else
 			bar:SetAttribute("hasTempBar", false)
@@ -336,7 +336,7 @@ function AB:CreateBar(id)
 	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
+	local point, anchor, attachTo, x, y = split(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
@@ -348,7 +348,7 @@ function AB:CreateBar(id)
 	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 
 	bar.buttons = {}
-	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
+	bar.bindButtons = self.barDefaults['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
@@ -372,12 +372,11 @@ function AB:CreateBar(id)
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB['barDefaults']['bar'..id].conditions:find("[form]") then
+	if AB.barDefaults['bar'..id].conditions:find("[form]") then
 		bar:SetAttribute("hasTempBar", true)
 	else
 		bar:SetAttribute("hasTempBar", false)
 	end
-
 
 	bar:SetAttribute("_onstate-page", [[
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
@@ -400,7 +399,7 @@ function AB:CreateBar(id)
 	]]);
 
 	self.handledBars['bar'..id] = bar;
-	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
+	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,bar'..id)
 	self:PositionAndSizeBar('bar'..id);
 	return bar
 end
@@ -585,12 +584,12 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
-	for button, _ in pairs(self["handledbuttons"]) do
+	for button, _ in pairs(self.handledbuttons) do
 		if button then
 			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
 		else
-			self["handledbuttons"][button] = nil
+			self.handledbuttons[button] = nil
 		end
 	end
 
@@ -613,7 +612,7 @@ function AB:UpdateButtonSettings()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
-	local page = self.db[bar]['paging'][E.myclass]
+	local page = self.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
 	if not page then
 		page = ''
@@ -631,6 +630,7 @@ end
 
 function AB:StyleButton(button, noBackdrop, useMasque)
 	local name = button:GetName();
+	local macroText = _G[name.."Name"];
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
 	local flash	 = _G[name.."Flash"];
@@ -662,6 +662,13 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		count:Point("BOTTOMRIGHT", 0, 2);
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
+	end
+
+	if macroText then
+		macroText:ClearAllPoints();
+		macroText:Point("BOTTOM", 0, 1);
+		macroText:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		macroText:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
@@ -951,10 +958,10 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (self.db.useRangeColorText and 'hotkey') or 'button'
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
-	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
-	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
-	bar.buttonConfig.colors.usable = E:GetColorTable(self.db.usableColor)
-	bar.buttonConfig.colors.notUsable = E:GetColorTable(self.db.notUsableColor)
+	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, self.db.noRangeColor)
+	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, self.db.noPowerColor)
+	bar.buttonConfig.colors.usable = E:SetColorTable(bar.buttonConfig.colors.usable, self.db.usableColor)
+	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, self.db.notUsableColor)
 	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
@@ -1017,7 +1024,7 @@ local function SetupFlyoutButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB["handledbuttons"][parentAnchorButton] then return end
+				if not AB.handledbuttons[parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				AB:Bar_OnEnter(parentAnchorBar)
@@ -1025,7 +1032,7 @@ local function SetupFlyoutButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
 				local parent = self:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB["handledbuttons"][parentAnchorButton] then return end
+				if not AB.handledbuttons[parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				AB:Bar_OnLeave(parentAnchorBar)
@@ -1040,7 +1047,7 @@ local function SetupFlyoutButton()
 
 	SpellFlyout:HookScript('OnEnter', function(self)
 		local anchorButton = select(2, self:GetPoint())
-		if not AB["handledbuttons"][anchorButton] then return end
+		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
 		AB:Bar_OnEnter(parentAnchorBar)
@@ -1048,7 +1055,7 @@ local function SetupFlyoutButton()
 
 	SpellFlyout:HookScript('OnLeave', function(self)
 		local anchorButton = select(2, self:GetPoint())
-		if not AB["handledbuttons"][anchorButton] then return end
+		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
 		AB:Bar_OnLeave(parentAnchorBar)

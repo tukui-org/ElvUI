@@ -91,7 +91,7 @@ function UF:Configure_ClassBar(frame, cur)
 			bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER+frame.SPACING)*2))
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
+			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,classbar')
 		else
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
@@ -183,7 +183,7 @@ function UF:Configure_ClassBar(frame, cur)
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 				elseif E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
-					local r, g, b = unpack(ElvUF.colors.ClassBars["DEATHKNIGHT"])
+					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
 					bars[i]:SetStatusBarColor(r, g, b)
 					if (bars[i].bg) then
 						local mu = bars[i].bg.multiplier or 1
@@ -195,7 +195,7 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF.ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					local r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 					bars[i]:SetStatusBarColor(r, g, b)
 				end
 
@@ -309,19 +309,19 @@ function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
-	local maxBars = max(UF['classMaxResourceBar'][E.myclass] or 0, MAX_COMBO_POINTS)
+	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassIconButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
+		bars[i]:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF['statusbars'][bars[i]] = true
+		UF.statusbars[bars[i]] = true
 
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
 		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
 		bars[i].bg:SetAllPoints(bars[i])
-		bars[i].bg:SetTexture(E['media'].blankTex)
+		bars[i].bg:SetTexture(E.media.blankTex)
 	end
 
 	bars.PostUpdate = UF.UpdateClassBar
@@ -380,10 +380,10 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
+	for i = 1, UF.classMaxResourceBar[E.myclass] do
 		runes[i] = CreateFrame("StatusBar", frame:GetName().."RuneButton"..i, runes)
-		UF['statusbars'][runes[i]] = true
-		runes[i]:SetStatusBarTexture(E['media'].blankTex)
+		UF.statusbars[runes[i]] = true
+		runes[i]:SetStatusBarTexture(E.media.blankTex)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 
 		runes[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
@@ -391,7 +391,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
-		runes[i].bg:SetTexture(E['media'].blankTex)
+		runes[i].bg:SetTexture(E.media.blankTex)
 		runes[i].bg.multiplier = 0.3
 	end
 
@@ -433,12 +433,12 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop('Default')
-	UF['statusbars'][additionalPower] = true
-	additionalPower:SetStatusBarTexture(E["media"].blankTex)
+	UF.statusbars[additionalPower] = true
+	additionalPower:SetStatusBarTexture(E.media.blankTex)
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
 	additionalPower.bg:SetAllPoints(additionalPower)
-	additionalPower.bg:SetTexture(E["media"].blankTex)
+	additionalPower.bg:SetTexture(E.media.blankTex)
 	additionalPower.bg.multiplier = 0.3
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
@@ -460,7 +460,7 @@ function UF:PostUpdateAdditionalPower(_, min, max, event)
 			local powerValueText = powerValue:GetText()
 			local powerValueParent = powerValue:GetParent()
 			local powerTextPosition = db.power.position
-			local color = ElvUF['colors'].power['MANA']
+			local color = ElvUF.colors.power.MANA
 			color = E:RGBToHex(color[1], color[2], color[3])
 
 			--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
@@ -497,7 +497,7 @@ function UF:PostUpdateAdditionalPower(_, min, max, event)
 					self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 				end
 			else
-				self.text:SetParent(self)
+				self.text:SetParent(frame.RaisedElementParent) -- needs to be 'frame.RaisedElementParent' otherwise the new PowerPrediction Bar will overlap
 				self.text:Point("CENTER", self)
 				self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 			end
@@ -535,7 +535,7 @@ end
 -----------------------------------------------------------
 function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame("Statusbar", nil, frame)
-	UF['statusbars'][stagger] = true
+	UF.statusbars[stagger] = true
 	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger

@@ -34,7 +34,7 @@ local ticks = {}
 function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 30) --Make it appear above everything else
-	self['statusbars'][castbar] = true
+	self.statusbars[castbar] = true
 	castbar.CustomDelayText = self.CustomCastDelayText
 	castbar.CustomTimeText = self.CustomTimeText
 	castbar.PostCastStart = self.PostCastStart
@@ -66,7 +66,7 @@ function UF:Construct_Castbar(frame, moverName)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
-	castbar.LatencyTexture:SetTexture(E['media'].blankTex)
+	castbar.LatencyTexture:SetTexture(E.media.blankTex)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
@@ -83,7 +83,9 @@ function UF:Construct_Castbar(frame, moverName)
 	button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 
 	if moverName then
-		E:CreateMover(castbar.Holder, frame:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
+		local name = frame:GetName()
+		local configName = name:gsub('^ElvUF_', ''):lower()
+		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,'..configName..',castbar')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
@@ -109,6 +111,16 @@ function UF:Configure_Castbar(frame)
 	if(castbar.Holder:GetScript('OnSizeChanged')) then
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 	end
+
+	if db.castbar.strataAndLevel and db.castbar.strataAndLevel.useCustomStrata then
+		castbar:SetFrameStrata(db.castbar.strataAndLevel.frameStrata)
+	end
+
+	if db.castbar.strataAndLevel and db.castbar.strataAndLevel.useCustomLevel then
+		castbar:SetFrameLevel(db.castbar.strataAndLevel.frameLevel)
+	end
+
+	castbar.timeToHold = db.castbar.holdTime
 
 	--Latency
 	if db.castbar.latency then
@@ -238,6 +250,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.max, self.delay))
 		end
 	else
 		if db.castbar.format == 'CURRENT' then
@@ -246,6 +260,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), "+", self.delay))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), self.max, "+", self.delay))
 		end
 	end
 end
@@ -258,10 +274,11 @@ function UF:CustomTimeText(duration)
 		if db.castbar.format == 'CURRENT' then
 			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
 		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(duration))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 		end
 	else
 		if db.castbar.format == 'CURRENT' then
@@ -270,6 +287,8 @@ function UF:CustomTimeText(duration)
 			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
 		elseif db.castbar.format == 'REMAINING' then
 			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
+		elseif db.castbar.format == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
 		end
 	end
 end
@@ -290,7 +309,7 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	for i = 1, numTicks do
 		if not ticks[i] then
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
-			ticks[i]:SetTexture(E["media"].normTex)
+			ticks[i]:SetTexture(E.media.normTex)
 			E:RegisterStatusBar(ticks[i])
 			ticks[i]:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 			ticks[i]:Width(frame.tickWidth)
@@ -320,7 +339,7 @@ function UF:PostCastStart(unit, name)
 	if unit == "vehicle" then unit = "player" end
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(name..' --> '..self.curTarget)
+		self.Text:SetText(name..' > '..self.curTarget)
 	else
 		self.Text:SetText(name)
 	end

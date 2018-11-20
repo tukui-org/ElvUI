@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
@@ -120,9 +120,7 @@ function mod:ExperienceBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ExperienceBar_OnClick()
-
-end
+function mod:ExperienceBar_OnClick() end
 
 function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
@@ -188,6 +186,6 @@ function mod:LoadExperienceBar()
 
 	self:UpdateExperienceDimensions()
 
-	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
+	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 	self:EnableDisable_ExperienceBar()
 end
