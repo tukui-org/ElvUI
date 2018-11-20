@@ -1,4 +1,15 @@
-**Version 10.83 [  ]**
+**Version 10.84 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+___
+**Version 10.83 [ November 20th 2018 ]**
 
 **New Additions:**  
 Added Drain Life to channel ticks.  

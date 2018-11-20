@@ -222,7 +222,7 @@ function AddOn:ToggleConfig(msg)
 				self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r")
 				return
 			end
-			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.05" then
+			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.06" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end
 		else
