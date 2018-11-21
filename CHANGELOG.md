@@ -5,6 +5,7 @@ Added option to use health texture also on the backdrop.
 
 **Bug Fixes:**  
 Fixed Calendar Skin not take account to Parchment Remover.  
+Fixed `realm:dash` tag error. (tags.lua:657: bad argument #2 to 'format')  
 
 **Misc. Changes:**  
 
