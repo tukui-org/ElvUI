@@ -1071,6 +1071,11 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
+			bgUseBarTexture = {
+				type = "toggle",
+				order = 5,
+				name = L["Use Health Texture on Backgound"],
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
