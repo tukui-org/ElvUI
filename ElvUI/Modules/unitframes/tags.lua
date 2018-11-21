@@ -73,11 +73,17 @@ local UNKNOWN = UNKNOWN
 ------------------------------------------------------------------------
 
 local function UnitName(unit)
-	local name, realm = _G.UnitName(unit);
-	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
+	local name, realm = _G.UnitName(unit)
+
+	if (name == UNKNOWN and E.myclass == "MONK") and UnitIsUnit(unit, "pet") then
 		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
 	end
-	return name, realm
+
+	if realm and realm ~= "" then
+		return name, realm
+	else
+		return name
+	end
 end
 
 ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
@@ -646,7 +652,12 @@ end
 ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm'] = function(unit)
 	local _, realm = UnitName(unit)
-	return realm or nil
+
+	if realm and realm ~= "" then
+		return realm
+	else
+		return nil
+	end
 end
 
 ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
