@@ -1121,7 +1121,7 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['useDeadBackdrop'] = false,
 		['classbackdrop'] = false,
-		['healthmultiplier'] = 1,
+		['healthmultiplier'] = 0.6,
 		['auraBarByType'] = true,
 		['auraBarTurtle'] = true,
 		['auraBarTurtleColor'] = {r = 143/255, g = 101/255, b = 158/255},
