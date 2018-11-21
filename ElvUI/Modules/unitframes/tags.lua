@@ -76,7 +76,7 @@ local function UnitName(unit)
 	local name, realm = _G.UnitName(unit)
 
 	if (name == UNKNOWN and E.myclass == "MONK") and UnitIsUnit(unit, "pet") then
-		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
+		name = format(UNITNAME_SUMMON_TITLE17, _G.UnitName("player"))
 	end
 
 	if realm and realm ~= "" then
@@ -176,7 +176,7 @@ ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
 	if isAFK then
-		return ('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r'):format(DEFAULT_AFK_MESSAGE)
+		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
 	else
 		return nil
 	end
@@ -733,7 +733,7 @@ ElvUF.Tags.Methods['statustimer'] = function(unit)
 		local timer = GetTime() - unitStatus[guid][2]
 		local mins = floor(timer / 60)
 		local secs = floor(timer - (mins * 60))
-		return ("%s (%01.f:%02.f)"):format(status, mins, secs)
+		return format("%s (%01.f:%02.f)", status, mins, secs)
 	else
 		return nil
 	end
@@ -747,7 +747,7 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 		if timer ~= 301000 and timer ~= -1 then
 			local mins = floor((timer / 1000) / 60)
 			local secs = floor((timer / 1000) - (mins * 60))
-			return ("%s (%01.f:%02.f)"):format(PVP, mins, secs)
+			return format("%s (%01.f:%02.f)", PVP, mins, secs)
 		else
 			return PVP
 		end
