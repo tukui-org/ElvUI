@@ -652,13 +652,12 @@ end
 ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
-	local realmString
-	if realm ~= E.myrealm then
-		realmString = format("-%s", realm)
-	else
-		realmString = nil
+
+	if realm and (realm ~= "" and realm ~= E.myrealm) then
+		realm = format("-%s", realm)
 	end
-	return realmString
+
+	return realm
 end
 
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
