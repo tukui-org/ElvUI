@@ -655,6 +655,8 @@ ElvUF.Tags.Methods['realm:dash'] = function(unit)
 
 	if realm and (realm ~= "" and realm ~= E.myrealm) then
 		realm = format("-%s", realm)
+	elseif realm == "" then
+		realm = nil
 	end
 
 	return realm
