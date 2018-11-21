@@ -1,10 +1,10 @@
 **Version 10.84 [  ]**
 
 **New Additions:**  
-
+Added option to use health texture also on the backdrop.  
 
 **Bug Fixes:**  
-
+Fixed Calendar Skin not take account to Parchment Remover.  
 
 **Misc. Changes:**  
 
