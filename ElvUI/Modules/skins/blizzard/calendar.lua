@@ -41,14 +41,6 @@ local function LoadSkin()
 		_G["CalendarWeekday"..i.."Background"]:SetAlpha(0)
 	end
 
-	if E.private.skins.parchmentRemover.enable then
-		for i = 1, 42 do
-			_G["CalendarDayButton"..i.."DarkFrame"]:SetAlpha(.5)
-			local bu = _G["CalendarDayButton"..i]
-			bu:DisableDrawLayer("BACKGROUND")
-		end
-	end
-
 	_G["CalendarViewEventDivider"]:Hide()
 	_G["CalendarCreateEventDivider"]:Hide()
 	_G["CalendarViewEventInviteList"]:GetRegions():Hide()
