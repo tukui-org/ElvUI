@@ -1073,8 +1073,8 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 			},
 			bgUseBarTexture = {
 				type = "toggle",
-				order = 5,
-				name = L["Use Health Texture on Backgound"],
+				order = 6,
+				name = L["Use Health Texture on Background"],
 			},
 			text_format = {
 				order = 100,
@@ -2664,18 +2664,26 @@ E.Options.args.unitframe = {
 									type = 'color',
 									name = L["Health Backdrop"],
 								},
-								tapped = {
+								healthmultiplier = {
 									order = 12,
+									name = L["Health Backdrop Multiplier"],
+									type = 'range',
+									min = 0, max = 1, step = .01,
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+								},
+								tapped = {
+									order = 13,
 									type = 'color',
 									name = L["Tapped"],
 								},
 								disconnected = {
-									order = 13,
+									order = 14,
 									type = 'color',
 									name = L["Disconnected"],
 								},
 								health_backdrop_dead = {
-									order = 14,
+									order = 15,
 									type = "color",
 									name = L["Custom Dead Backdrop"],
 									desc = L["Use this backdrop color for units that are dead or ghosts."],
