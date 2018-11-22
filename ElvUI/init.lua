@@ -327,3 +327,5 @@ if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 		end
 	end)
 end
+
+DisableAddOn("ElvUI_EverySecondCounts")
