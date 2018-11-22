@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added option to use health texture also on the backdrop.  
+Added a seperate Tooltip option to display the NPC ID.  
 
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
