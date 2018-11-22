@@ -329,6 +329,7 @@ P['nameplates'] = {
 	['alwaysShowTargetHealth'] = true,
 	['questIcon'] = true,
 	['questIconSize'] = 16,
+	['questIconPosition'] = 'RIGHT',
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = true,

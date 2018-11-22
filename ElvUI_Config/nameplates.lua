@@ -3615,6 +3615,15 @@ E.Options.args.nameplate = {
 							get = function(info) return E.db.nameplates.questIconSize end,
 							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
 						},
+						questIconPosition = {
+							type = 'select',
+							order = 3,
+							name = L["Position"],
+							values = {
+								["LEFT"] = L["Left"],
+								["RIGHT"] = L["Right"],
+							},
+						},
 					},
 				},
 			},
