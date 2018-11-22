@@ -865,7 +865,7 @@ function S:HandleSliderFrame(frame)
 	end)
 
 	frame:SetThumbTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
-	frame:GetThumbTexture():SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
+	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then
