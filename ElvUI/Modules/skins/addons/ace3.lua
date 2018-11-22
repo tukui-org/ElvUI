@@ -60,7 +60,7 @@ function S:SkinAce3()
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 
-			check:SetTexture(E.media.blankTex)
+			check:SetTexture([[Interface\AddOns\ElvUI\media\textures\normTex]])
 			check:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
 			checkbg:SetTexture('')
