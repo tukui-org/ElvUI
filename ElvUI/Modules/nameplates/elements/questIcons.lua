@@ -282,7 +282,7 @@ function mod:QuestIcon_RelativePosition(frame, element)
 		end
 
 		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "LEFT" then
-			if frame.CastBar:IsShown() then  isCastbarRight = true end
+			if frame.CastBar:IsShown() then isCastbarRight = true end
 		end
 
 		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "LEFT" then
