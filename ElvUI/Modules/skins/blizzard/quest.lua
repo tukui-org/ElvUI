@@ -230,11 +230,8 @@ local function LoadSkin()
 
 		QuestFrameGreetingPanel:HookScript("OnShow", function()
 			GreetingText:SetTextColor(1, 1, 1)
-			GreetingText.SetTextColor = E.Noop
 			CurrentQuestsText:SetTextColor(1, .8, .1)
-			CurrentQuestsText.SetTextColor = E.Noop
 			AvailableQuestsText:SetTextColor(1, .8, .1)
-			AvailableQuestsText.SetTextColor = E.Noop
 		end)
 
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
