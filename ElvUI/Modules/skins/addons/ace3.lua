@@ -22,7 +22,7 @@ local function SkinDropdownPullout(self)
 			if self.obj.dropdown.slider then
 				self.obj.dropdown.slider:SetTemplate('Default')
 				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
-				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
 			end
 		end
 	end
@@ -60,8 +60,8 @@ function S:SkinAce3()
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 
-			check:SetTexture([[Interface\AddOns\ElvUI\media\textures\gradient]])
-			check:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+			check:SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
 
 			checkbg:SetTexture('')
 			highlight:SetTexture('')

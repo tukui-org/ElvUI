@@ -864,8 +864,8 @@ function S:HandleSliderFrame(frame)
 		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
 
-	frame:SetThumbTexture(E.media.blankTex)
-	frame:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+	frame:SetThumbTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+	frame:GetThumbTexture():SetVertexColor(NORMAL_FONT_COLOR:GetRGB())
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then
