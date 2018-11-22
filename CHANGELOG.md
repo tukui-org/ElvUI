@@ -7,8 +7,10 @@ Added a position option (Left or Right) for the Quest Icon on the Nameplates.
 
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
+Fixed QuestGreetingPanel skin not take account to Parchment Remover.  
 
 **Misc. Changes:**  
+Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
 
 ___
 **Version 10.83 [ November 20th 2018 ]**
