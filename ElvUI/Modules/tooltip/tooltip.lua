@@ -467,7 +467,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	-- NPC ID's
-	if unit and self.db.spellID then
+	if unit and self.db.npcID then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
 		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)

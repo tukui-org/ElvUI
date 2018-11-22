@@ -1042,6 +1042,7 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
+	['npcID'] = true,
 	['role'] = true,
 	['font'] = 'PT Sans Narrow',
 	['fontOutline'] = 'NONE',
