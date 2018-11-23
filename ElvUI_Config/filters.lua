@@ -726,7 +726,7 @@ local function UpdateFilterGroup()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:lower():find(searchText) then values[spell.id] = name end
+								if name and name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values
