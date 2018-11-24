@@ -1277,7 +1277,7 @@ function mod:Initialize()
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	local numEntries, numQuests = GetNumQuestLogEntries();
+	local numEntries = GetNumQuestLogEntries();
 	for questLogIndex = 1, numEntries do
 		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);
 		if title and questID and questID > 0 then

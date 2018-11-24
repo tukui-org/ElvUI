@@ -30,7 +30,7 @@ local function UIWidgets()
 	belowMiniMapcontainer.ignoreFramePositionManager = true
 
 	--Reposition capture bar on layout update
-	hooksecurefunc(_G["UIWidgetManager"].registeredWidgetSetContainers[2], "layoutFunc", function(widgetContainer, sortedWidgets, ...)
+	hooksecurefunc(_G["UIWidgetManager"].registeredWidgetSetContainers[2], "layoutFunc", function(widgetContainer)
 		widgetContainer:ClearAllPoints()
 		if widgetContainer:GetWidth() ~= belowMiniMapHolder:GetWidth() then belowMiniMapHolder:Width(widgetContainer:GetWidth()) end
 	end)

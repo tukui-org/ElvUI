@@ -7,8 +7,6 @@ local _G = _G
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
-local C_PetJournal_GetPetStats = C_PetJournal.GetPetStats
-local C_PetJournal_GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS

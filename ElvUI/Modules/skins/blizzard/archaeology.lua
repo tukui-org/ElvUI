@@ -4,9 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack, select = pairs, unpack, select
+local pairs, select = pairs, select
 --WoW API / Variables
-local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ARCHAEOLOGY_MAX_RACES, UIPARENT_MANAGED_FRAME_POSITIONS
 

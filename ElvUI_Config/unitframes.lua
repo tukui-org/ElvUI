@@ -15,7 +15,6 @@ local twipe = table.wipe
 local strsplit = strsplit
 local match = string.match
 local gsub = string.gsub
-local tonumber = tonumber
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
