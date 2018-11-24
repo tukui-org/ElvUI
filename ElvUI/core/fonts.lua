@@ -84,7 +84,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(FriendsFont_Small,					NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_Large,					NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_UserText,				NORMAL, self.db.general.fontSize)
-		SetFont(CombatTextFont,                     COMBAT, 200, MONOCHROME.."OUTLINE") -- number here just increase the font quality.
 		SetFont(QuestFont_Shadow_Huge,				NORMAL, 15, nil, SHADOWCOLOR, NORMALOFFSET) -- Quest Title
 		SetFont(QuestFont_Shadow_Small,				NORMAL, 14, nil, SHADOWCOLOR, NORMALOFFSET)
 		SetFont(SystemFont_Outline,					NORMAL, 13, MONOCHROME.."OUTLINE")			-- Pet level on World map
