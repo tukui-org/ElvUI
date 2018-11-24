@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
 local _G = _G

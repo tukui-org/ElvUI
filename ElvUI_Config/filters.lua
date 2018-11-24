@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local UF = E:GetModule('UnitFrames');
 
 local type = type
+local next = next
 local pairs = pairs
 local tonumber = tonumber
 local tostring = tostring
