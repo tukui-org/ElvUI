@@ -228,10 +228,22 @@ local function LoadSkin()
 			QuestProgressRequiredMoneyText:SetTextColor(1, .8, .1)
 		end)
 
-		QuestFrameGreetingPanel:HookScript("OnShow", function()
-			GreetingText:SetTextColor(1, 1, 1)
-			CurrentQuestsText:SetTextColor(1, .8, .1)
-			AvailableQuestsText:SetTextColor(1, .8, .1)
+		hooksecurefunc(GreetingText, 'SetTextColor', function(self, r, g, b)
+			if r == 0.18 and g == 0.12 and b == 0.06 then
+				self:SetTextColor(1, 1, 1)
+			end
+		end)
+
+		hooksecurefunc(CurrentQuestsText, 'SetTextColor', function(self, r, g, b)
+			if r == 0 and g == 0 and b == 0 then
+				self:SetTextColor(1, .8, .1)
+			end
+		end)
+
+		hooksecurefunc(AvailableQuestsText, 'SetTextColor', function(self, r, g, b)
+			if r == 0 and g == 0 and b == 0 then
+				self:SetTextColor(1, .8, .1)
+			end
 		end)
 
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
