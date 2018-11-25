@@ -14,16 +14,20 @@ local format, len, sub = string.format, string.len, string.sub
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
-local CooldownFrame_Set = CooldownFrame_Set
-local CreateFrame = CreateFrame
+local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
-local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
+local ContainerIDToInventoryID = ContainerIDToInventoryID
+local CooldownFrame_Set = CooldownFrame_Set
+local CreateAnimationGroup = CreateAnimationGroup
+local CreateFrame = CreateFrame
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local GetBagSlotFlag = GetBagSlotFlag
+local GetBankBagSlotFlag = GetBankBagSlotFlag
 local GetContainerItemCooldown = GetContainerItemCooldown
 local GetContainerItemID = GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
@@ -41,12 +45,15 @@ local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
 local PlaySound = PlaySound
 local PutItemInBag = PutItemInBag
+local SetBagSlotFlag = SetBagSlotFlag
+local SetBankBagSlotFlag = SetBankBagSlotFlag
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonTexture = SetItemButtonTexture
@@ -55,18 +62,18 @@ local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UpdateSlot = UpdateSlot
-local SetBagSlotFlag = SetBagSlotFlag
-local SetBankBagSlotFlag = SetBankBagSlotFlag
-local GetBagSlotFlag = GetBagSlotFlag
-local GetBankBagSlotFlag = GetBankBagSlotFlag
-local CreateAnimationGroup = CreateAnimationGroup
 local UseContainerItem = UseContainerItem
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
+
+local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
+local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
 local CONTAINER_WIDTH = CONTAINER_WIDTH
+local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
+local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
+local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
+local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -74,13 +81,9 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
-local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
-local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
-local BAG_FILTER_LABELS = BAG_FILTER_LABELS
+local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
-local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local SEARCH = SEARCH
 
 local hooksecurefunc = hooksecurefunc
@@ -93,7 +96,7 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
 -- GLOBALS: ToggleDropDownMenu, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize
 
-local ElvUIAssignBagDropdown
+local ElvUIAssignBagDropdown, TooltipModule, SkinModule
 local SEARCH_STRING = ""
 
 function B:GetContainerFrame(arg)
@@ -1369,6 +1372,8 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
+	if not SkinModule then SkinModule = E:GetModule('Skins') end
+
 	local strata = E.db.bags.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent);
@@ -1420,7 +1425,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
 
-	E:GetModule('Skins'):HandleCloseButton(f.closeButton);
+	SkinModule:HandleCloseButton(f.closeButton);
 
 	f.holderFrame = CreateFrame('Frame', nil, f);
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset);
@@ -1448,7 +1453,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-		E:GetModule("Skins"):HandleButton(f.reagentFrame.cover.purchaseButton)
+		SkinModule:HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
 		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
@@ -1823,20 +1828,22 @@ end
 
 function B:OpenBags()
 	self.BagFrame:Show()
-	PlaySound(SOUNDKIT.IG_BACKPACK_OPEN)
+	PlaySound(IG_BACKPACK_OPEN)
 
-	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
+	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
+	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
 	self.BagFrame:Hide()
-	PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
+	PlaySound(IG_BACKPACK_CLOSE)
 
 	if self.BankFrame then
 		self.BankFrame:Hide()
 	end
 
-	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
+	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
+	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:OpenBank()
