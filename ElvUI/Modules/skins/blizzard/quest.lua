@@ -221,28 +221,17 @@ local function LoadSkin()
 	QuestGreetingScrollFrame:SetTemplate()
 
 	if E.private.skins.parchmentRemover.enable then
-		hooksecurefunc('QuestFrameProgressItems_Update', function()
-			QuestProgressTitleText:SetTextColor(1, .8, .1)
-			QuestProgressText:SetTextColor(1, 1, 1)
-			QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
-			QuestProgressRequiredMoneyText:SetTextColor(1, .8, .1)
-		end)
-
-		hooksecurefunc(GreetingText, 'SetTextColor', function(self, r, g, b)
-			if r == 0.18 and g == 0.12 and b == 0.06 then
-				self:SetTextColor(1, 1, 1)
+		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)
+			if fontString == 'QuestProgressTitleText' then
+				fontString:SetTextColor(1, .8, .1)
 			end
 		end)
 
-		hooksecurefunc(CurrentQuestsText, 'SetTextColor', function(self, r, g, b)
-			if r == 0 and g == 0 and b == 0 then
-				self:SetTextColor(1, .8, .1)
-			end
-		end)
-
-		hooksecurefunc(AvailableQuestsText, 'SetTextColor', function(self, r, g, b)
-			if r == 0 and g == 0 and b == 0 then
-				self:SetTextColor(1, .8, .1)
+		hooksecurefunc("QuestFrame_SetTextColor", function(fontString)
+			if (fontString == 'GreetingText' or fontString == 'QuestProgressText') then
+				fontString:SetTextColor(1, 1, 1)
+			else
+				fontString:SetTextColor(1, .8, .1)
 			end
 		end)
 
