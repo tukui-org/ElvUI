@@ -221,6 +221,10 @@ local function LoadSkin()
 	QuestGreetingScrollFrame:SetTemplate()
 
 	if E.private.skins.parchmentRemover.enable then
+		hooksecurefunc('QuestFrameProgressItems_Update', function()
+			QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+		end)
+
 		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)
 			if fontString == 'QuestProgressTitleText' then
 				fontString:SetTextColor(1, .8, .1)
