@@ -217,6 +217,7 @@ L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
 L["Panel Width (Bank)"] = "Ширина банка"
 L["Profession Bags"] = "Сумки профессий"
+L["Progress Bar"] = true
 L["Reverse Bag Slots"] = "Обратный порядок слотов"
 L["Search Syntax"] = "Синтаксис поиска"
 L["Sell Interval"] = "Интервал продажи"

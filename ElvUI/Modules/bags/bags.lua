@@ -2081,6 +2081,7 @@ function B:CreateSellFrame()
 	B.SellFrame:Size(200,40)
 	B.SellFrame:Point("CENTER", E.UIParent)
 	B.SellFrame:CreateBackdrop("Transparent")
+	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 
 	B.SellFrame.title = B.SellFrame:CreateFontString(nil, "OVERLAY")
 	B.SellFrame.title:FontTemplate(nil, 12, "OUTLINE")
@@ -2117,6 +2118,13 @@ function B:CreateSellFrame()
 	B.SellFrame:SetScript("OnUpdate", B.VendorGreys_OnUpdate)
 
 	B.SellFrame:Hide()
+end
+
+function B:UpdateSellFrameSettings()
+	if not B.SellFrame or not B.SellFrame.Info then return; end
+	
+	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
+	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 end
 
 B.BagIndice = {

@@ -264,6 +264,7 @@ L["Money Format"] = "소지금 표시방법"
 L["Panel Width (Bags)"] = "통합가방 프레임 가로길이"
 L["Panel Width (Bank)"] = "통합은행 프레임 가로길이"
 L["Profession Bags"] = true
+L["Progress Bar"] = true
 L["Reverse Bag Slots"] = true
 L["Search Syntax"] = "아이템 검색법"
 L["Sell Interval"] = true

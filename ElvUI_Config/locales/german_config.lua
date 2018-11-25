@@ -220,6 +220,7 @@ L["Money Format"] = "Geldformat"
 L["Panel Width (Bags)"] = "Leistenbreite (Taschen)"
 L["Panel Width (Bank)"] = "Leistenbreite (Bank)"
 L["Profession Bags"] = "Berufstaschen"
+L["Progress Bar"] = true
 L["Reverse Bag Slots"] = "Umgekehrte Taschenslots"
 L["Search Syntax"] = "Suchsyntax"
 L["Sell Interval"] = "Verkaufsintervall"

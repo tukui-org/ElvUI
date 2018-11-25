@@ -242,6 +242,7 @@ P['bags'] = {
 		["enable"] = false,
 		["interval"] = 0.2,
 		["details"] = false,
+		["progressBar"] = true,
 	},
 	['split'] = {
 		['bagSpacing'] = 5,

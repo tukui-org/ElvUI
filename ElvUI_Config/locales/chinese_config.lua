@@ -216,6 +216,7 @@ L["Money Format"] = "金币格式"
 L["Panel Width (Bags)"] = "背包面板宽度"
 L["Panel Width (Bank)"] = "银行面板宽度"
 L["Profession Bags"] = "专业背包"
+L["Progress Bar"] = true
 L["Reverse Bag Slots"] = "反向背包格子"
 L["Search Syntax"] = "搜索语法"
 L["Sell Interval"] = "售卖周期"
