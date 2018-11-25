@@ -23,35 +23,37 @@ local function LoadSkin()
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
 
-	ArchaeologyFrameBgLeft:Kill()
-	ArchaeologyFrameBgRight:Kill()
+	if E.private.skins.parchmentRemover.enable then
+		ArchaeologyFrameBgLeft:Kill()
+		ArchaeologyFrameBgRight:Kill()
 
-	for i = 1, ARCHAEOLOGY_MAX_RACES do
-		local frame = ArchaeologyFrame.summaryPage['race'..i]
-		local artifact = ArchaeologyFrame.completedPage['artifact'..i]
-		frame.raceName:SetTextColor(1, 1, 1)
+		ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
+		ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
+		ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
 
-		artifact.border:SetTexture(nil)
-		S:CropIcon(artifact.icon, artifact)
-		artifact.artifactName:SetTextColor(1, .8, .1)
-		artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
-	end
+		for i = 1, ARCHAEOLOGY_MAX_RACES do
+			local frame = ArchaeologyFrame.summaryPage['race'..i]
+			local artifact = ArchaeologyFrame.completedPage['artifact'..i]
+			frame.raceName:SetTextColor(1, 1, 1)
 
-	for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
-		for i = 1, Frame:GetNumRegions() do
-			local Region = select(i, Frame:GetRegions())
-			if Region:IsObjectType("FontString") then
-				Region:SetTextColor(1, .8, .1)
+			artifact.border:SetTexture(nil)
+			S:CropIcon(artifact.icon, artifact)
+			artifact.artifactName:SetTextColor(1, .8, .1)
+			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
+		end
+
+		for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
+			for i = 1, Frame:GetNumRegions() do
+				local Region = select(i, Frame:GetRegions())
+				if Region:IsObjectType("FontString") then
+					Region:SetTextColor(1, .8, .1)
+				end
 			end
 		end
 	end
-
-	ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
-	ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
-	ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
 
 	S:HandleButton(ArchaeologyFrameSummaryPagePrevPageButton)
 	S:HandleButton(ArchaeologyFrameSummaryPageNextPageButton)

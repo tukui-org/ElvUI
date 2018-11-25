@@ -25,8 +25,6 @@ local function LoadSkin()
 	--Adjusting the ScrollFrame will also positon the ScrollBar.
 	AddonListScrollFrame:SetSize(499, 382)
 
-	AddonListInset:StripTextures()
-
 	S:HandleButton(AddonListEnableAllButton, true)
 	S:HandleButton(AddonListDisableAllButton, true)
 	S:HandleButton(AddonListOkayButton, true)
