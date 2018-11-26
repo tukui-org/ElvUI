@@ -235,11 +235,11 @@ local function LoadSkin()
 	--Custom Backdrops
 	for _, Frame in pairs({ AuctionFrameBrowse, AuctionFrameAuctions }) do
 		Frame.LeftBackground = CreateFrame("Frame", nil, Frame)
-		Frame.LeftBackground:SetTemplate()
+		Frame.LeftBackground:SetTemplate('Transparent')
 		Frame.LeftBackground:SetFrameLevel(Frame:GetFrameLevel())
 
 		Frame.RightBackground = CreateFrame("Frame", nil, Frame)
-		Frame.RightBackground:SetTemplate()
+		Frame.RightBackground:SetTemplate('Transparent')
 		Frame.RightBackground:SetFrameLevel(Frame:GetFrameLevel())
 	end
 
