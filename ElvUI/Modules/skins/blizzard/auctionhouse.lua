@@ -98,7 +98,7 @@ local function LoadSkin()
 	end
 
 	for _, Tab in pairs(SortTabs) do
-		S:HandleButton(Tab)
+		Tab:StripTextures()
 		Tab:SetNormalTexture([[Interface\Buttons\UI-SortArrow]])
 	end
 
