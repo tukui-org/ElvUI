@@ -77,7 +77,6 @@ local function LoadSkin()
 
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
-			--Button:StripTextures()
 			Button:CreateBackdrop()
 			Button.backdrop:SetPoint("TOPLEFT", 8, 2)
 			Button.backdrop:SetPoint("BOTTOMRIGHT", 10, -2)

@@ -226,17 +226,11 @@ local function LoadSkin()
 		end)
 
 		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)
-			if fontString == 'QuestProgressTitleText' then
-				fontString:SetTextColor(1, .8, .1)
-			end
+			fontString:SetTextColor(1, .8, .1)
 		end)
 
 		hooksecurefunc("QuestFrame_SetTextColor", function(fontString)
-			if (fontString == 'GreetingText' or fontString == 'QuestProgressText') then
-				fontString:SetTextColor(1, 1, 1)
-			else
-				fontString:SetTextColor(1, .8, .1)
-			end
+			fontString:SetTextColor(1, 1, 1)
 		end)
 
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
