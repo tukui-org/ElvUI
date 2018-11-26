@@ -53,6 +53,9 @@ local function LoadSkin()
 	AzeriteRespecFrameBotLeftCorner:Hide()
 	AzeriteRespecFrameBg:Hide()
 
+	AzeriteRespecFrame:CreateBackdrop("Transparent")
+	AzeriteRespecFrame.backdrop:SetAllPoints()
+
 	local ItemSlot = AzeriteRespecFrame.ItemSlot
 	ItemSlot:SetSize(64, 64)
 	ItemSlot:SetPoint("CENTER", AzeriteRespecFrame)
@@ -61,23 +64,21 @@ local function LoadSkin()
 	ItemSlot.Icon:SetPoint("BOTTOMRIGHT", -1, 1)
 	ItemSlot.GlowOverlay:SetAlpha(0)
 
-	AzeriteRespecFrame.ItemSlot:CreateBackdrop("Transparent")
-	AzeriteRespecFrame.ItemSlot.backdrop:SetBackdropColor(153/255, 0/255, 153/255, 0.5)
-	S:CropIcon(AzeriteRespecFrame.ItemSlot.Icon)
+	ItemSlot:CreateBackdrop("Transparent")
+	ItemSlot.backdrop:SetBackdropColor(153/255, 0/255, 153/255, 0.5)
+	S:CropIcon(ItemSlot.Icon)
 
 	local ButtonFrame = AzeriteRespecFrame.ButtonFrame
 	ButtonFrame:GetRegions():Hide()
 	ButtonFrame.ButtonBorder:Hide()
 	ButtonFrame.ButtonBottomBorder:Hide()
+	ButtonFrame.AzeriteRespecButton.LeftSeparator:Hide()
 
 	ButtonFrame.MoneyFrameEdge:Hide()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
 	ButtonFrame.MoneyFrame:SetPoint("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
 
-	AzeriteRespecFrame:CreateBackdrop("Transparent")
-	AzeriteRespecFrame.backdrop:SetAllPoints()
-
-	S:HandleButton(AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
+	S:HandleButton(ButtonFrame.AzeriteRespecButton)
 	S:HandleCloseButton(AzeriteRespecFrameCloseButton)
 end
 
