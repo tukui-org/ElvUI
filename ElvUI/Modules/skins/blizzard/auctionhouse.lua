@@ -256,7 +256,7 @@ local function LoadSkin()
 	AuctionFrameBrowse.RightBackground:SetPoint("BOTTOMRIGHT", AuctionFrame, "BOTTOMRIGHT", -8, 40)
 
 	AuctionFrameBid.Background = CreateFrame("Frame", nil, AuctionFrameBid)
-	AuctionFrameBid.Background:SetTemplate()
+	AuctionFrameBid.Background:SetTemplate('Transparent')
 	AuctionFrameBid.Background:SetPoint("TOPLEFT", 22, -72)
 	AuctionFrameBid.Background:SetPoint("BOTTOMRIGHT", 66, 39)
 	BidScrollFrame:SetHeight(332)
