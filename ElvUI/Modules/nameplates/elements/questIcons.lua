@@ -7,6 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local _G = _G
 local pairs = pairs
 local unpack = unpack
+local floor = math.floor
 local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -128,7 +129,7 @@ function mod:GetQuests(unitID)
 
 			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
-				QuestList[index].objectiveCount = y - x
+				QuestList[index].objectiveCount = floor(y - x)
 			end
 
 			local QuestLogIndex, itemTexture, _
@@ -136,10 +137,10 @@ function mod:GetQuests(unitID)
 				QuestLogIndex = GetQuestLogIndexByID(questID)
 				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
 
-				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				QuestList[index].isPerc = false
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				if progress then
-					QuestList[index].objectiveCount = progress
+					QuestList[index].objectiveCount = floor(progress)
 					QuestList[index].isPerc = true
 				end
 
