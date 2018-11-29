@@ -179,11 +179,12 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetAlpha(self.db[barName].alpha);
 	end
 
-	if(self.db[barName].inheritGlobalFade) then
+	if self.db[barName].inheritGlobalFade then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
+
 	local button, lastButton, lastColumnButton;
 	local firstButtonSpacing = (self.db[barName].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 	for i=1, NUM_ACTIONBAR_BUTTONS do
@@ -237,7 +238,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil);
+		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil);
 		button:SetCheckedTexture("")
 	end
 
@@ -328,7 +329,9 @@ function AB:PositionAndSizeBar(barName)
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 
-	if MasqueGroup and E.private.actionbar.masque.actionbars then MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
+		MasqueGroup:ReSkin()
+	end
 end
 
 function AB:CreateBar(id)
@@ -585,7 +588,7 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
-	for button, _ in pairs(self.handledbuttons) do
+	for button in pairs(self.handledbuttons) do
 		if button then
 			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
@@ -603,8 +606,8 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
-	for i=1, 6 do
-		self:PositionAndSizeBar('bar'..i)
+	for barName in pairs(self.handledBars) do
+		self:PositionAndSizeBar(barName)
 	end
 
 	self:AdjustMaxStanceButtons()
@@ -1010,7 +1013,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil)
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
