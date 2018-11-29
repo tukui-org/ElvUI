@@ -600,13 +600,11 @@ function AB:UpdateButtonSettings()
 	self:UpdatePetBindings()
 	self:UpdateStanceBindings()
 
-	for _, bar in pairs(self.handledBars) do
+	for barName, bar in pairs(self.handledBars) do
 		if bar then
 			self:UpdateButtonConfig(bar, bar.bindButtons)
 		end
-	end
 
-	for barName in pairs(self.handledBars) do
 		self:PositionAndSizeBar(barName)
 	end
 
