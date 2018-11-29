@@ -603,9 +603,8 @@ function AB:UpdateButtonSettings()
 	for barName, bar in pairs(self.handledBars) do
 		if bar then
 			self:UpdateButtonConfig(bar, bar.bindButtons)
+			self:PositionAndSizeBar(barName)
 		end
-
-		self:PositionAndSizeBar(barName)
 	end
 
 	self:AdjustMaxStanceButtons()
