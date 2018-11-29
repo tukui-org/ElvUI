@@ -856,20 +856,7 @@ function AB:DisableBlizzard()
 	MicroButtonAndBagsBar:SetScale(0.00001)
 	MicroButtonAndBagsBar:EnableMouse(false)
 
-	-- This can taint
-	--[[
-	for i=1, MainMenuBar:GetNumChildren() do
-		local child = select(i, MainMenuBar:GetChildren())
-		if child then
-			child:UnregisterAllEvents()
-			child:Hide()
-			child:SetParent(UIHider)
-		end
-	end
-	]]
-
-	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
-	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
+	MainMenuBarArtFrame:UnregisterAllEvents()
 	MainMenuBarArtFrame:Hide()
 	MainMenuBarArtFrame:SetParent(UIHider)
 
@@ -910,10 +897,13 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
+
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
-		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
+		hooksecurefunc("TalentFrame_LoadUI", function()
+			PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		end)
 	end
 end
 
