@@ -315,9 +315,9 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 end
 
 function E:UpdatePositionOverride(name)
-	if _G[name] and _G[name]:GetScript("OnDragStop") then
-		_G[name]:GetScript("OnDragStop")(_G[name])
-	end
+	local frame = _G[name]
+	local OnDragStop = frame and frame.GetScript and frame:GetScript("OnDragStop")
+	if OnDragStop then OnDragStop(frame) end
 end
 
 function E:HasMoverBeenMoved(name)
