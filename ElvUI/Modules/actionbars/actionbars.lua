@@ -854,7 +854,6 @@ function AB:DisableBlizzard()
 	MainMenuBar:SetScale(0.00001)
 	MainMenuBar:SetFrameStrata('BACKGROUND')
 	MainMenuBar:SetFrameLevel(0)
-	MainMenuBar:SetScale(0.00001)
 
 	MicroButtonAndBagsBar:SetScale(0.00001)
 	MicroButtonAndBagsBar:EnableMouse(false)
