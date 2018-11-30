@@ -1038,103 +1038,99 @@ function E:UpdateAll(ignoreInstall)
 
 	E:DBConversions()
 
+	local ActionBars = E:GetModule('ActionBars')
+	local AFK = E:GetModule('AFK')
+	local Auras = E:GetModule('Auras')
+	local Bags = E:GetModule('Bags')
+	local Blizzard = E:GetModule('Blizzard')
+	local Chat = E:GetModule('Chat')
+	local DataBars = E:GetModule('DataBars')
+	local DataTexts = E:GetModule('DataTexts')
+	local Layout = E:GetModule('Layout')
+	local Minimap = E:GetModule('Minimap')
+	local NamePlates = E:GetModule('NamePlates')
+	local Threat = E:GetModule('Threat')
+	local Tooltip = E:GetModule('Tooltip')
+	local Totems = E:GetModule('Totems')
+	local UnitFrames = E:GetModule('UnitFrames')
+
+	ActionBars.db = E.db.actionbar
+	Auras.db = E.db.auras
+	Bags.db = E.db.bags
+	Chat.db = E.db.chat
+	DataBars.db = E.db.databars
+	DataTexts.db = E.db.datatexts
+	NamePlates.db = E.db.nameplates
+	Threat.db = E.db.general.threat
+	Tooltip.db = E.db.tooltip
+	Totems.db = E.db.general.totems
+	UnitFrames.db = E.db.unitframe
+
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
-
 	E:SetMoversPositions()
 
 	E:UpdateMedia()
-	E:UpdateCooldownSettings('all')
-	if E.RefreshGUI then E:RefreshGUI() end --Refresh Config
-
-	local UF = E:GetModule('UnitFrames')
-	UF.db = E.db.unitframe
-	UF:Update_AllFrames()
-
-	local CH = E:GetModule('Chat')
-	CH.db = E.db.chat
-	CH:PositionChat(true)
-	CH:SetupChat()
-	CH:UpdateAnchors()
-
-	local AB = E:GetModule('ActionBars')
-	AB.db = E.db.actionbar
-	AB:UpdateButtonSettings()
-	AB:UpdatePetCooldownSettings()
-	AB:UpdateMicroPositionDimensions()
-	AB:Extra_SetAlpha()
-	AB:Extra_SetScale()
-	AB:ToggleDesaturation()
-
-	local bags = E:GetModule('Bags')
-	bags.db = E.db.bags
-	bags:Layout()
-	bags:Layout(true)
-	bags:SizeAndPositionBagBar()
-	bags:UpdateItemLevelDisplay()
-	bags:UpdateCountDisplay()
-
-	local totems = E:GetModule('Totems')
-	totems.db = E.db.general.totems
-	totems:PositionAndSize()
-	totems:ToggleEnable()
-
-	E:GetModule('Layout'):ToggleChatPanels()
-
-	local DT = E:GetModule('DataTexts')
-	DT.db = E.db.datatexts
-	DT:LoadDataTexts()
-
-	local NP = E:GetModule('NamePlates')
-	NP.db = E.db.nameplates
-	NP:StyleFilterInitializeAllFilters()
-	NP:ConfigureAll()
-
-	local DataBars = E:GetModule('DataBars')
-	DataBars.db = E.db.databars
-	DataBars:UpdateDataBarDimensions()
-	DataBars:EnableDisable_ExperienceBar()
-	DataBars:EnableDisable_ReputationBar()
-	DataBars:EnableDisable_AzeriteBar()
-	DataBars:EnableDisable_HonorBar()
-
-	local T = E:GetModule('Threat')
-	T.db = E.db.general.threat
-	T:UpdatePosition()
-	T:ToggleEnable()
-
-	E:GetModule('Tooltip').db = E.db.tooltip
-
-	local A = E:GetModule('Auras')
-	A.db = E.db.auras
-	if ElvUIPlayerBuffs then A:UpdateHeader(ElvUIPlayerBuffs) end
-	if ElvUIPlayerDebuffs then A:UpdateHeader(ElvUIPlayerDebuffs) end
-
-	if E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83) then
-		if not ignoreInstall then
-			E:Install()
-		end
-	end
-
-	E:GetModule('Minimap'):UpdateSettings()
-	E:GetModule('AFK'):Toggle()
-
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
+	E:UpdateCooldownSettings('all')
 
-	local LO = E:GetModule('Layout')
-	LO:ToggleChatPanels()
-	LO:BottomPanelVisibility()
-	LO:TopPanelVisibility()
-	LO:SetDataPanelStyle()
+	Layout:ToggleChatPanels()
+	Layout:BottomPanelVisibility()
+	Layout:TopPanelVisibility()
+	Layout:SetDataPanelStyle()
 
-	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
+	ActionBars:Extra_SetAlpha()
+	ActionBars:Extra_SetScale()
+	ActionBars:ToggleDesaturation()
+	ActionBars:UpdateButtonSettings()
+	ActionBars:UpdateMicroPositionDimensions()
+	ActionBars:UpdatePetCooldownSettings()
+	AFK:Toggle()
+	Bags:Layout()
+	Bags:Layout(true)
+	Bags:SizeAndPositionBagBar()
+	Bags:UpdateCountDisplay()
+	Bags:UpdateItemLevelDisplay()
+	Chat:PositionChat(true)
+	Chat:SetupChat()
+	Chat:UpdateAnchors()
+	DataBars:EnableDisable_AzeriteBar()
+	DataBars:EnableDisable_ExperienceBar()
+	DataBars:EnableDisable_HonorBar()
+	DataBars:EnableDisable_ReputationBar()
+	DataBars:UpdateDataBarDimensions()
+	DataTexts:LoadDataTexts()
+	Minimap:UpdateSettings()
+	NamePlates:ConfigureAll()
+	NamePlates:StyleFilterInitializeAllFilters()
+	Threat:ToggleEnable()
+	Threat:UpdatePosition()
+	Totems:PositionAndSize()
+	Totems:ToggleEnable()
+	UnitFrames:Update_AllFrames()
 
-	E:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
+	if ElvUIPlayerBuffs then
+		Auras:UpdateHeader(ElvUIPlayerBuffs)
+	end
+	if ElvUIPlayerDebuffs then
+		Auras:UpdateHeader(ElvUIPlayerDebuffs)
+	end
+
+	if E.RefreshGUI then
+		E:RefreshGUI()
+	end
+
+	if not ignoreInstall and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
+		E:Install()
+	end
+
+	Blizzard:SetObjectiveFrameHeight()
+	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect')
 end
