@@ -6,7 +6,7 @@ local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
 --Cache global variables
-local tonumber = tonumber
+local tonumber, collectgarbage = tonumber, collectgarbage
 local floor = math.floor
 local format, strsub = string.format, strsub
 --WoW API / Variables
@@ -156,6 +156,10 @@ function B:EnhanceColorPicker()
 			self.func()
 			self.timeSinceUpdate = 0
 		end
+	end)
+
+	ColorPickerOkayButton:HookScript('OnClick', function()
+		collectgarbage("collect"); --Couldn't hurt to do this, this button usually executes a lot of code.
 	end)
 
 	OpacitySliderFrame:HookScript("OnValueChanged", function(self)
