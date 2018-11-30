@@ -1023,8 +1023,16 @@ f:SetScript("OnUpdate", function(self, elapsed)
 end)
 
 function E:UpdateAll(ignoreInstall)
+	if (ignoreInstall == 'OnProfileChanged') and E.UpdateAllSpecWait then
+		E.UpdateAllSpecWait = nil
+		return
+	end
+
 	if not self.initialized then
-		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
+		C_Timer_After(1, function()
+			E:UpdateAll(ignoreInstall == true)
+		end)
+
 		return
 	end
 
@@ -1101,25 +1109,25 @@ function E:UpdateAll(ignoreInstall)
 	T:UpdatePosition()
 	T:ToggleEnable()
 
-	E:GetModule('Auras').db = E.db.auras
 	E:GetModule('Tooltip').db = E.db.tooltip
 
-	if(ElvUIPlayerBuffs) then
-		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerBuffs)
+	local A = E:GetModule('Auras')
+	A.db = E.db.auras
+	if ElvUIPlayerBuffs then
+		A:UpdateHeader(ElvUIPlayerBuffs)
 	end
-
-	if(ElvUIPlayerDebuffs) then
-		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerDebuffs)
+	if ElvUIPlayerDebuffs then
+		A:UpdateHeader(ElvUIPlayerDebuffs)
 	end
 
 	if E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83) then
-		if not ignoreInstall then
+		if ignoreInstall ~= true then
 			E:Install()
 		end
 	end
 
 	E:GetModule('Minimap'):UpdateSettings()
-	E:GetModule("AFK"):Toggle()
+	E:GetModule('AFK'):Toggle()
 
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
@@ -1671,8 +1679,8 @@ function E:Initialize(loginFrame)
 
 	self.myguid = UnitGUID("player")
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF)
-	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
-	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	self.data.RegisterCallback(self, "OnProfileChanged", function() E:UpdateAll('OnProfileChanged') end)
+	self.data.RegisterCallback(self, "OnProfileCopied", function() E:UpdateAll('OnProfileCopied') end)
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars)
 	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
@@ -1713,6 +1721,7 @@ function E:Initialize(loginFrame)
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole")
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole")
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole")
+	self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", "UpdateAll")
 	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
