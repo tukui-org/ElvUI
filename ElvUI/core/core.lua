@@ -422,8 +422,8 @@ function E:NEUTRAL_FACTION_SELECT_RESULT()
 end
 
 function E:PLAYER_ENTERING_WORLD()
-	self:CheckRole()
 	self:MapInfo_Update()
+	self:CheckRole()
 
 	if not self.MediaUpdated then
 		self:UpdateMedia()
@@ -1680,7 +1680,6 @@ function E:Initialize(loginFrame)
 	self:CheckIncompatible()
 	self:DBConversions()
 
-	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN', loginFrame)
 
 	self:LoadCommands(); --Load Commands
@@ -1706,11 +1705,6 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'CheckRole')
-	self:RegisterEvent('PLAYER_TALENT_UPDATE', 'CheckRole')
-	self:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
-	self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'CheckRole')
-	self:RegisterEvent('UPDATE_BONUS_ACTIONBAR', 'CheckRole')
 	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
@@ -1718,6 +1712,7 @@ function E:Initialize(loginFrame)
 	self:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 	self:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
 
 	if self.db.general.kittys then
