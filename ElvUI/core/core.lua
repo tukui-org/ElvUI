@@ -1030,6 +1030,8 @@ function E:UpdateAll(ignoreInstall)
 		return
 	end
 
+	E:DBConversions()
+
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
 	E.global = E.data.global
