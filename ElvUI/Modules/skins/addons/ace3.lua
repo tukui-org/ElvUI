@@ -203,6 +203,8 @@ function S:SkinAce3()
 			frame.backdrop:SetSize(16, 16)
 			frame.backdrop:ClearAllPoints()
 			frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
+			frame.backdrop:SetBackdropBorderColor(1, 1, 1, 0.6)
+
 			colorSwatch:SetTexture(E.media.blankTex)
 			colorSwatch:ClearAllPoints()
 			colorSwatch:SetParent(frame.backdrop)
