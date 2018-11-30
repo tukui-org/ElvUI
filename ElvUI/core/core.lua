@@ -6,7 +6,7 @@ local Masque = LibStub('Masque', true)
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
+local assert, type, pcall, date = assert, type, pcall, date
 local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
@@ -1133,8 +1133,6 @@ function E:UpdateAll(ignoreInstall)
 	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
 	E:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
-
-	collectgarbage('collect')
 end
 
 function E:RemoveNonPetBattleFrames()
@@ -1723,7 +1721,6 @@ function E:Initialize(loginFrame)
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
-	collectgarbage('collect')
 
 	if self.db.general.loginmessage then
 		E:Print(select(2, E:GetModule('Chat'):FindURL('CHAT_MSG_DUMMY', format(L['LOGIN_MSG'], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
