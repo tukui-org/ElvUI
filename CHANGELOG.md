@@ -8,7 +8,7 @@ Added a position option (Left or Right) for the Quest Icon on the Nameplates.
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
 Fixed QuestGreetingPanel skin not take account to Parchment Remover.  
-Masque on ActionBar 7 and 8 should work now. (#709)  
+Fixed Masque issues with the AddOn `ElvUI_ExtraActionBars`. (#709)  
 
 **Misc. Changes:**  
 Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
