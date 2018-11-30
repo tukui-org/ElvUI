@@ -1101,15 +1101,15 @@ function E:UpdateAll(ignoreInstall)
 	T:UpdatePosition()
 	T:ToggleEnable()
 
-	E:GetModule('Auras').db = E.db.auras
 	E:GetModule('Tooltip').db = E.db.tooltip
 
-	if(ElvUIPlayerBuffs) then
-		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerBuffs)
+	local A = E:GetModule('Auras')
+	A.db = E.db.auras
+	if ElvUIPlayerBuffs then
+		A:UpdateHeader(ElvUIPlayerBuffs)
 	end
-
-	if(ElvUIPlayerDebuffs) then
-		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerDebuffs)
+	if ElvUIPlayerDebuffs then
+		A:UpdateHeader(ElvUIPlayerDebuffs)
 	end
 
 	if E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83) then
