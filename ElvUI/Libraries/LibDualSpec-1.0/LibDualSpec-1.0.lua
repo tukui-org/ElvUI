@@ -181,7 +181,6 @@ function mixin:CheckDualSpecState()
 
 	local profileName = self:GetDualSpecProfile()
 	if profileName ~= self:GetCurrentProfile() then
-		ElvUI[1].UpdateAllSpecWait = true
 		self:SetProfile(profileName)
 	end
 end
