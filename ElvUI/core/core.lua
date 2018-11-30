@@ -59,7 +59,7 @@ E.myspec = GetSpecialization()
 E.version = GetAddOnMetadata('ElvUI', 'Version')
 E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
-E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gxWindowedResolution'); --only used for now in our install.lua line 779
+E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gxWindowedResolution') --only used for now in our install.lua line 779
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
@@ -390,7 +390,7 @@ local MasqueGroupToTableElement = {
 }
 
 local function MasqueCallback(_, Group, _, _, _, _, Disabled)
-	if not E.private then return; end
+	if not E.private then return end
 	local element = MasqueGroupToTableElement[Group]
 
 	if element then
@@ -590,7 +590,7 @@ function E:CheckTalentTree(tree)
 end
 
 function E:IsDispellableByMe(debuffType)
-	if not self.DispelClasses[self.myclass] then return; end
+	if not self.DispelClasses[self.myclass] then return end
 
 	if self.DispelClasses[self.myclass][debuffType] then
 		return true
@@ -655,7 +655,7 @@ function E:IncompatibleAddOn(addon, module)
 end
 
 function E:CheckIncompatible()
-	if E.global.ignoreIncompatible then return; end
+	if E.global.ignoreIncompatible then return end
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:IncompatibleAddOn('Prat-3.0', 'Chat')
 	end
@@ -1210,7 +1210,7 @@ function E:UnregisterPetBattleHideFrames(object)
 end
 
 function E:EnterVehicleHideFrames(_, unit)
-	if unit ~= 'player' then return; end
+	if unit ~= 'player' then return end
 
 	for object in pairs(E.VehicleLocks) do
 		object:SetParent(E.HiddenFrame)
@@ -1218,7 +1218,7 @@ function E:EnterVehicleHideFrames(_, unit)
 end
 
 function E:ExitVehicleShowFrames(_, unit)
-	if unit ~= 'player' then return; end
+	if unit ~= 'player' then return end
 
 	for object, originalParent in pairs(E.VehicleLocks) do
 		object:SetParent(originalParent)
@@ -1680,9 +1680,9 @@ function E:Initialize(loginFrame)
 
 	self:UIScale('PLAYER_LOGIN', loginFrame)
 
-	self:LoadCommands(); --Load Commands
-	self:InitializeModules(); --Load Modules
-	self:LoadMovers(); --Load Movers
+	self:LoadCommands() --Load Commands
+	self:InitializeModules() --Load Modules
+	self:LoadMovers() --Load Movers
 	self:UpdateCooldownSettings('all')
 	self.initialized = true
 
