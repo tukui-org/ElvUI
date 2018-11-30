@@ -1028,35 +1028,35 @@ function E:UpdateAll(ignoreInstall)
 		return
 	end
 
-	self.private = self.charSettings.profile
-	self.db = self.data.profile
-	self.global = self.data.global
-	self.db.theme = nil
-	self.db.install_complete = nil
+	E.private = E.charSettings.profile
+	E.db = E.data.profile
+	E.global = E.data.global
+	E.db.theme = nil
+	E.db.install_complete = nil
 
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
 	--We set movers to be clamped again at the bottom of this function.
-	self:SetMoversClampedToScreen(false)
+	E:SetMoversClampedToScreen(false)
 
-	self:SetMoversPositions()
+	E:SetMoversPositions()
 
-	self:UpdateMedia()
-	self:UpdateCooldownSettings('all')
-	if self.RefreshGUI then self:RefreshGUI() end --Refresh Config
+	E:UpdateMedia()
+	E:UpdateCooldownSettings('all')
+	if E.RefreshGUI then E:RefreshGUI() end --Refresh Config
 
-	local UF = self:GetModule('UnitFrames')
-	UF.db = self.db.unitframe
+	local UF = E:GetModule('UnitFrames')
+	UF.db = E.db.unitframe
 	UF:Update_AllFrames()
 
-	local CH = self:GetModule('Chat')
-	CH.db = self.db.chat
+	local CH = E:GetModule('Chat')
+	CH.db = E.db.chat
 	CH:PositionChat(true)
 	CH:SetupChat()
 	CH:UpdateAnchors()
 
-	local AB = self:GetModule('ActionBars')
-	AB.db = self.db.actionbar
+	local AB = E:GetModule('ActionBars')
+	AB.db = E.db.actionbar
 	AB:UpdateButtonSettings()
 	AB:UpdatePetCooldownSettings()
 	AB:UpdateMicroPositionDimensions()
@@ -1065,7 +1065,7 @@ function E:UpdateAll(ignoreInstall)
 	AB:ToggleDesaturation()
 
 	local bags = E:GetModule('Bags')
-	bags.db = self.db.bags
+	bags.db = E.db.bags
 	bags:Layout()
 	bags:Layout(true)
 	bags:SizeAndPositionBagBar()
@@ -1073,22 +1073,22 @@ function E:UpdateAll(ignoreInstall)
 	bags:UpdateCountDisplay()
 
 	local totems = E:GetModule('Totems')
-	totems.db = self.db.general.totems
+	totems.db = E.db.general.totems
 	totems:PositionAndSize()
 	totems:ToggleEnable()
 
-	self:GetModule('Layout'):ToggleChatPanels()
+	E:GetModule('Layout'):ToggleChatPanels()
 
-	local DT = self:GetModule('DataTexts')
-	DT.db = self.db.datatexts
+	local DT = E:GetModule('DataTexts')
+	DT.db = E.db.datatexts
 	DT:LoadDataTexts()
 
-	local NP = self:GetModule('NamePlates')
-	NP.db = self.db.nameplates
+	local NP = E:GetModule('NamePlates')
+	NP.db = E.db.nameplates
 	NP:StyleFilterInitializeAllFilters()
 	NP:ConfigureAll()
 
-	local DataBars = self:GetModule("DataBars")
+	local DataBars = E:GetModule("DataBars")
 	DataBars.db = E.db.databars
 	DataBars:UpdateDataBarDimensions()
 	DataBars:EnableDisable_ExperienceBar()
@@ -1096,13 +1096,13 @@ function E:UpdateAll(ignoreInstall)
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_HonorBar()
 
-	local T = self:GetModule('Threat')
-	T.db = self.db.general.threat
+	local T = E:GetModule('Threat')
+	T.db = E.db.general.threat
 	T:UpdatePosition()
 	T:ToggleEnable()
 
-	self:GetModule('Auras').db = self.db.auras
-	self:GetModule('Tooltip').db = self.db.tooltip
+	E:GetModule('Auras').db = E.db.auras
+	E:GetModule('Tooltip').db = E.db.tooltip
 
 	if(ElvUIPlayerBuffs) then
 		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerBuffs)
@@ -1112,19 +1112,19 @@ function E:UpdateAll(ignoreInstall)
 		E:GetModule('Auras'):UpdateHeader(ElvUIPlayerDebuffs)
 	end
 
-	if self.private.install_complete == nil or (self.private.install_complete and type(self.private.install_complete) == 'boolean') or (self.private.install_complete and type(tonumber(self.private.install_complete)) == 'number' and tonumber(self.private.install_complete) <= 3.83) then
+	if E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83) then
 		if not ignoreInstall then
-			self:Install()
+			E:Install()
 		end
 	end
 
-	self:GetModule('Minimap'):UpdateSettings()
-	self:GetModule("AFK"):Toggle()
+	E:GetModule('Minimap'):UpdateSettings()
+	E:GetModule("AFK"):Toggle()
 
-	self:UpdateBorderColors()
-	self:UpdateBackdropColors()
-	self:UpdateFrameTemplates()
-	self:UpdateStatusBars()
+	E:UpdateBorderColors()
+	E:UpdateBackdropColors()
+	E:UpdateFrameTemplates()
+	E:UpdateStatusBars()
 
 	local LO = E:GetModule('Layout')
 	LO:ToggleChatPanels()
@@ -1132,9 +1132,9 @@ function E:UpdateAll(ignoreInstall)
 	LO:TopPanelVisibility()
 	LO:SetDataPanelStyle()
 
-	self:GetModule('Blizzard'):SetObjectiveFrameHeight()
+	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
-	self:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
+	E:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect')
 end
