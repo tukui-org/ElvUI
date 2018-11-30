@@ -337,7 +337,7 @@ E.LockedCVars = {}
 E.IgnoredCVars = {}
 
 function E:PLAYER_REGEN_ENABLED(_)
-	if(self.CVarUpdate) then
+	if self.CVarUpdate then
 		for cvarName, value in pairs(self.LockedCVars) do
 			if (not self.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value)) then
 				SetCVar(cvarName, value)
@@ -348,8 +348,8 @@ function E:PLAYER_REGEN_ENABLED(_)
 end
 
 local function CVAR_UPDATE(cvarName, value)
-	if(not E.IgnoredCVars[cvarName] and E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value) then
-		if(InCombatLockdown()) then
+	if not E.IgnoredCVars[cvarName] and E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value then
+		if InCombatLockdown() then
 			E.CVarUpdate = true
 			return
 		end
@@ -360,9 +360,10 @@ end
 
 hooksecurefunc('SetCVar', CVAR_UPDATE)
 function E:LockCVar(cvarName, value)
-	if(GetCVar(cvarName) ~= value) then
+	if GetCVar(cvarName) ~= value then
 		SetCVar(cvarName, value)
 	end
+
 	self.LockedCVars[cvarName] = value
 end
 
@@ -630,7 +631,7 @@ function E:CheckRole()
 		end
 	end
 
-	if(self.role ~= role) then
+	if self.role ~= role then
 		self.role = role
 		self.callbacks:Fire('RoleChanged')
 	end
@@ -791,24 +792,24 @@ function E:TableToLuaString(inTable)
 	local function recurse(table, level)
 		for i,v in pairs(table) do
 			ret = ret..strrep('    ', level)..'['
-			if(type(i) == 'string') then
+			if type(i) == 'string' then
 				ret = ret..'"'..i..'"'
 			else
 				ret = ret..i
 			end
 			ret = ret..'] = '
 
-			if(type(v) == 'number') then
+			if type(v) == 'number' then
 				ret = ret..v..',\n'
-			elseif(type(v) == 'string') then
+			elseif type(v) == 'string' then
 				ret = ret..'"'..v:gsub('\\', '\\\\'):gsub('\n', '\\n'):gsub('"', '\\"'):gsub('\124', '\124\124')..'",\n'
-			elseif(type(v) == 'boolean') then
-				if(v) then
+			elseif type(v) == 'boolean' then
+				if v then
 					ret = ret..'true,\n'
 				else
 					ret = ret..'false,\n'
 				end
-			elseif(type(v) == 'table') then
+			elseif type(v) == 'table' then
 				ret = ret..'{\n'
 				recurse(v, level + 1)
 				ret = ret..strrep('    ', level)..'},\n'
@@ -818,7 +819,7 @@ function E:TableToLuaString(inTable)
 		end
 	end
 
-	if(inTable) then
+	if inTable then
 		recurse(inTable, 1)
 	end
 	ret = ret..'}'
@@ -869,7 +870,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 
 			returnString = returnString..'['
 
-			if(type(k) == 'string') then
+			if type(k) == 'string' then
 				returnString = returnString..'"'..k..'"'
 			else
 				returnString = returnString..k
@@ -1699,7 +1700,7 @@ function E:Initialize(loginFrame)
 		E.global.aprilFools = nil
 	end
 
-	if(self:HelloKittyFixCheck()) then
+	if self:HelloKittyFixCheck() then
 		self:HelloKittyFix()
 	end
 
