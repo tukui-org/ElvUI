@@ -49,7 +49,7 @@ function UF:Construct_HealComm(frame)
 end
 
 function UF:Configure_HealComm(frame)
-	if frame.db.healPrediction and ((type(frame.db.healPrediction) == 'table' and frame.db.healPrediction.enable) or (type(frame.db.healPrediction) == 'boolean' and frame.db.healPrediction)) then
+	if (frame.db.healPrediction and frame.db.healPrediction.enable) then
 		local healPrediction = frame.HealthPrediction
 		local myBar = healPrediction.myBar
 		local otherBar = healPrediction.otherBar
