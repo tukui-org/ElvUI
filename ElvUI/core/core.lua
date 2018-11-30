@@ -1030,13 +1030,13 @@ function E:UpdateAll(ignoreInstall)
 		return
 	end
 
-	E:DBConversions()
-
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
 	E.global = E.data.global
 	E.db.theme = nil
 	E.db.install_complete = nil
+
+	E:DBConversions()
 
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
