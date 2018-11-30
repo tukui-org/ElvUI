@@ -421,8 +421,8 @@ function E:NEUTRAL_FACTION_SELECT_RESULT()
 end
 
 function E:PLAYER_ENTERING_WORLD()
-	self:CheckRole()
 	self:MapInfo_Update()
+	self:CheckRole()
 
 	if not self.MediaUpdated then
 		self:UpdateMedia()
@@ -1023,9 +1023,13 @@ f:SetScript("OnUpdate", function(self, elapsed)
 end)
 
 function E:UpdateAll(ignoreInstall)
-	if (ignoreInstall == 'OnProfileChanged') and E.UpdateAllSpecWait then
-		E.UpdateAllSpecWait = nil
-		return
+	if ignoreInstall == 'OnProfileChanged' then
+		if E.UpdateAllSpecWait then
+			E.UpdateAllSpecWait = nil
+			return
+		end
+
+		E:CheckRole()
 	end
 
 	if not self.initialized then
@@ -1690,7 +1694,6 @@ function E:Initialize(loginFrame)
 	self:CheckIncompatible()
 	self:DBConversions()
 
-	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN', loginFrame)
 
 	self:LoadCommands(); --Load Commands
@@ -1716,11 +1719,6 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole")
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole")
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole")
-	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole")
-	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole")
 	self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", "UpdateAll")
 	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
