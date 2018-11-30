@@ -208,7 +208,7 @@ end
 function E:CheckClassColor(r, g, b)
 	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 	local matchFound = false
-	for class, _ in pairs(RAID_CLASS_COLORS) do
+	for class in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
 			local colorTable = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
@@ -446,7 +446,7 @@ function E:PLAYER_ENTERING_WORLD()
 end
 
 function E:ValueFuncCall()
-	for func, _ in pairs(self.valueColorUpdateFuncs) do
+	for func in pairs(self.valueColorUpdateFuncs) do
 		func(self.media.hexvaluecolor, unpack(self.media.rgbvaluecolor))
 	end
 end
@@ -474,7 +474,7 @@ function E:UpdateFrameTemplates()
 end
 
 function E:UpdateBorderColors()
-	for frame, _ in pairs(self.frames) do
+	for frame in pairs(self.frames) do
 		if frame and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
@@ -486,7 +486,7 @@ function E:UpdateBorderColors()
 		end
 	end
 
-	for frame, _ in pairs(self.unitFrameElements) do
+	for frame in pairs(self.unitFrameElements) do
 		if frame and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
@@ -500,7 +500,7 @@ function E:UpdateBorderColors()
 end
 
 function E:UpdateBackdropColors()
-	for frame, _ in pairs(self.frames) do
+	for frame in pairs(self.frames) do
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
@@ -518,7 +518,7 @@ function E:UpdateBackdropColors()
 		end
 	end
 
-	for frame, _ in pairs(self.unitFrameElements) do
+	for frame in pairs(self.unitFrameElements) do
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
@@ -538,7 +538,7 @@ function E:UpdateBackdropColors()
 end
 
 function E:UpdateFontTemplates()
-	for text, _ in pairs(self.texts) do
+	for text in pairs(self.texts) do
 		if text then
 			text:FontTemplate(text.font, text.fontSize, text.fontStyle)
 		else
@@ -573,19 +573,20 @@ E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
 function E:CheckTalentTree(tree)
-	local activeGroup = GetActiveSpecGroup()
-	if type(tree) == 'number' then
-		if activeGroup and GetSpecialization(false, false, activeGroup) then
-			return tree == GetSpecialization(false, false, activeGroup)
-		end
-	elseif type(tree) == 'table' then
-		local activeGroup = GetActiveSpecGroup()
+	local activeSpec = GetActiveSpecGroup()
+	local currentSpec = activeSpec and GetSpecialization(false, false, activeSpec)
+
+	if currentSpec and type(tree) == 'number' then
+		return tree == currentSpec
+	elseif currentSpec and type(tree) == 'table' then
 		for _, index in pairs(tree) do
-			if activeGroup and GetSpecialization(false, false, activeGroup) then
-				return index == GetSpecialization(false, false, activeGroup)
+			if index == currentSpec then
+				return true
 			end
 		end
 	end
+
+	return false
 end
 
 function E:IsDispellableByMe(debuffType)
@@ -1106,12 +1107,8 @@ function E:UpdateAll(ignoreInstall)
 
 	local A = E:GetModule('Auras')
 	A.db = E.db.auras
-	if ElvUIPlayerBuffs then
-		A:UpdateHeader(ElvUIPlayerBuffs)
-	end
-	if ElvUIPlayerDebuffs then
-		A:UpdateHeader(ElvUIPlayerDebuffs)
-	end
+	if ElvUIPlayerBuffs then A:UpdateHeader(ElvUIPlayerBuffs) end
+	if ElvUIPlayerDebuffs then A:UpdateHeader(ElvUIPlayerDebuffs) end
 
 	if E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83) then
 		if not ignoreInstall then
@@ -1142,7 +1139,7 @@ end
 
 function E:RemoveNonPetBattleFrames()
 	if InCombatLockdown() then return end
-	for object, _ in pairs(E.FrameLocks) do
+	for object in pairs(E.FrameLocks) do
 		local obj = _G[object] or object
 		obj:SetParent(E.HiddenFrame)
 	end
@@ -1277,7 +1274,7 @@ end
 
 local EventRegister = {}
 local EventFrame = CreateFrame('Frame')
-EventFrame:SetScript('OnEvent', function(self, event, ...)
+EventFrame:SetScript('OnEvent', function(_, event, ...)
 	if EventRegister[event] then
 		for object, functions in pairs(EventRegister[event]) do
 			for _, func in ipairs(functions) do
@@ -1740,19 +1737,19 @@ function E:Initialize(loginFrame)
 	if OrderHallCommandBar then
 		HandleCommandBar()
 	else
-		local f = CreateFrame('Frame')
-		f:RegisterEvent('ADDON_LOADED')
-		f:SetScript('OnEvent', function(self, event, addon)
+		local frame = CreateFrame('Frame')
+		frame:RegisterEvent('ADDON_LOADED')
+		frame:SetScript('OnEvent', function(Frame, event, addon)
 			if event == 'ADDON_LOADED' and addon == 'Blizzard_OrderHallUI' then
 				if InCombatLockdown() then
-					self:RegisterEvent('PLAYER_REGEN_ENABLED')
+					Frame:RegisterEvent('PLAYER_REGEN_ENABLED')
 				else
 					HandleCommandBar()
 				end
-				self:UnregisterEvent(event)
+				Frame:UnregisterEvent(event)
 			elseif event == 'PLAYER_REGEN_ENABLED' then
 				HandleCommandBar()
-				self:UnregisterEvent(event)
+				Frame:UnregisterEvent(event)
 			end
 		end)
 	end

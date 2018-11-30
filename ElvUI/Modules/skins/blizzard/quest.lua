@@ -166,7 +166,7 @@ local function LoadSkin()
 		end
 	end
 
-	for frame, _ in pairs(rewardFrames) do
+	for frame in pairs(rewardFrames) do
 		HandleReward(MapQuestInfoRewardsFrame[frame])
 	end
 

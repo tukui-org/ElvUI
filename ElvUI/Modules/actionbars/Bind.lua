@@ -380,7 +380,7 @@ function AB:LoadKeyBinder()
 		b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "SPELL"); end);
 	end
 
-	for b, _ in pairs(self.handledbuttons) do
+	for b in pairs(self.handledbuttons) do
 		self:RegisterButton(b, true);
 	end
 

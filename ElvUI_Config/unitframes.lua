@@ -1278,7 +1278,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 				width = 'full',
 				get = function() return '' end,
 				set = function(info, textName)
-					for object, _ in pairs(E.db.unitframe.units[groupName]) do
+					for object in pairs(E.db.unitframe.units[groupName]) do
 						if object:lower() == textName:lower() then
 							E:Print(L["The name you have selected is already in use by another element."])
 							return
@@ -7704,9 +7704,9 @@ function E:RefreshCustomTextsConfigs()
 	end
 	twipe(CUSTOMTEXT_CONFIGS)
 
-	for unit, _ in pairs(E.db.unitframe.units) do
+	for unit in pairs(E.db.unitframe.units) do
 		if E.db.unitframe.units[unit].customTexts then
-			for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
+			for objectName in pairs(E.db.unitframe.units[unit].customTexts) do
 				CreateCustomTextGroup(unit, objectName)
 			end
 		end

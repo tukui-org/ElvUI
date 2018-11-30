@@ -949,7 +949,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 8 then
@@ -966,7 +966,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 10 then
@@ -983,7 +983,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 30 then

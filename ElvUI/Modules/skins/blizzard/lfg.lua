@@ -534,7 +534,7 @@ local function LoadSkin()
 		['Damager'] = true
 	}
 
-	for x, _ in pairs(columns) do
+	for x in pairs(columns) do
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Left:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Middle:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()

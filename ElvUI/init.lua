@@ -172,7 +172,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	end
 
 	if self.CreatedMovers then
-		for name, _ in pairs(self.CreatedMovers) do
+		for name in pairs(self.CreatedMovers) do
 			if _G[name] and _G[name]:IsShown() then
 				err = true;
 				_G[name]:Hide();
