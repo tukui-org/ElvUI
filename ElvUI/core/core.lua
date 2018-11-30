@@ -642,6 +642,8 @@ function E:CheckRole()
 			self.DispelClasses[self.myclass].Magic = false
 		end
 	end
+
+	E:UpdateAll()
 end
 
 function E:IncompatibleAddOn(addon, module)
@@ -1708,11 +1710,7 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole")
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", "CheckRole")
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "CheckRole")
-	self:RegisterEvent("UNIT_INVENTORY_CHANGED", "CheckRole")
-	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR", "CheckRole")
+	self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", "CheckRole")
 	self:RegisterEvent("UI_SCALE_CHANGED", "UIScale")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("NEUTRAL_FACTION_SELECT_RESULT")
