@@ -196,7 +196,7 @@ E.PriestColors = {
 
 function E:GetPlayerRole()
 	local assignedRole = UnitGroupRolesAssigned('player')
-	if ( assignedRole == 'NONE' ) then
+	if assignedRole == 'NONE' then
 		local spec = GetSpecialization()
 		return GetSpecializationRole(spec)
 	end
