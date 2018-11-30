@@ -4996,7 +4996,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 11,
 					type = "range",
 					name = L["Spacing"],
-					min = 0, max = 400, step = 1,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
 				},
 				threatStyle = {
 					type = 'select',
