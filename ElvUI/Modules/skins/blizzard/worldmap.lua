@@ -5,6 +5,7 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
@@ -33,6 +34,15 @@ local function LoadSkin()
 	-- Quest Frames
 	local QuestMapFrame = _G["QuestMapFrame"]
 	QuestMapFrame.VerticalSeparator:Hide()
+
+	if E.private.skins.parchmentRemover.enable then
+		QuestMapFrame.DetailsFrame:StripTextures()
+		QuestMapFrame.DetailsFrame:CreateBackdrop()
+		QuestMapFrame.DetailsFrame.backdrop:SetPoint('TOPLEFT', 0, 0)
+		QuestMapFrame.DetailsFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
+		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
+		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
+	end
 
 	local QuestScrollFrame = _G["QuestScrollFrame"]
 	QuestScrollFrame.DetailFrame:StripTextures()

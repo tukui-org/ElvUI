@@ -2,10 +2,20 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local twipe = table.wipe
-local format = string.format
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+local unpack = unpack
+local floor = math.floor
 local match = string.match
-local strjoin = strjoin
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInInstance = IsInInstance
+local GetQuestLogTitle = GetQuestLogTitle
+local GetQuestLogIndexByID = GetQuestLogIndexByID
+local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
 mod.ActiveQuests = {
 	-- [questName] = questID ?
@@ -65,13 +75,14 @@ local QuestTypesLocalized = {
 		["speak"] = "CHAT",
 	},
 }
+
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
-function mod:QUEST_ACCEPTED(_, questLogIndex, questID, ...)
+function mod:QUEST_ACCEPTED(_, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
 
-		if questName and questID and questID > 0 then
+		if questName and (questID and questID > 0) then
 			self.ActiveQuests[questName] = questID
 		end
 
@@ -96,13 +107,12 @@ function mod:QUEST_LOG_UPDATE()
 end
 
 function mod:GetQuests(unitID)
-	local inInstance, instanceType = IsInInstance()
+	local inInstance = IsInInstance()
 	if inInstance then return end
+
 	self.Tooltip:SetUnit(unitID)
 
-	local QuestList = {}
-
-	local questID
+	local QuestList, questID = {}
 	for i = 3, self.Tooltip:NumLines() do
 		local str = _G['ElvUIQuestTooltipTextLeft' .. i]
 		local text = str and str:GetText()
@@ -115,22 +125,22 @@ function mod:GetQuests(unitID)
 		if (not playerName or playerName == '' or playerName == E.myname) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
-
 			progressText = progressText:lower()
-			local x, y
-			x, y = match(progressText, '(%d+)/(%d+)')
+
+			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
-				QuestList[index].objectiveCount = y - x
+				QuestList[index].objectiveCount = floor(y - x)
 			end
 
+			local QuestLogIndex, itemTexture, _
 			if questID then
-				local QuestLogIndex = GetQuestLogIndexByID(questID)
-				local _, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+				QuestLogIndex = GetQuestLogIndexByID(questID)
+				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
 
-				local progress = C_TaskQuest.GetQuestProgressBarInfo(questID)
 				QuestList[index].isPerc = false
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				if progress then
-					QuestList[index].objectiveCount = progress
+					QuestList[index].objectiveCount = floor(progress)
 					QuestList[index].isPerc = true
 				end
 
@@ -150,6 +160,7 @@ function mod:GetQuests(unitID)
 					end
 				end
 			end
+
 			questID = nil
 			QuestList[index].questLogIndex = QuestLogIndex
 		end
@@ -218,23 +229,27 @@ function mod:UpdateElement_QuestIcon(frame)
 	local questIcon = frame.QuestIcon
 	local QuestList = self:GetQuests(frame.unit)
 
-	for i=1, #questIcon do
+	for i = 1, #questIcon do
 		questIcon[i]:Hide()
 	end
-	if not QuestList then return end
-	for i=1, #QuestList do
-		local icon = self:Get_QuestIcon(frame, i)
-		local objectiveCount = QuestList[i].objectiveCount
-		local questType = QuestList[i].questType
-		local itemTexture = QuestList[i].itemTexture
 
-		if objectiveCount and objectiveCount > 0 then
-			icon.Text:SetText(QuestList[i].isPerc and objectiveCount .."%" or objectiveCount)
+	if not QuestList then return end
+
+	local icon, objectiveCount, questType, itemTexture
+	for i = 1, #QuestList do
+		icon = self:Get_QuestIcon(frame, i)
+		objectiveCount = QuestList[i].objectiveCount
+		questType = QuestList[i].questType
+		itemTexture = QuestList[i].itemTexture
+
+		if objectiveCount and (objectiveCount > 0 or QuestList[i].isPerc) then
+			icon.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
 
 			icon.SkullIcon:Hide()
 			icon.LootIcon:Hide()
 			icon.ItemTexture:Hide()
 			icon.ChatIcon:Hide()
+
 			if questType == "KILL" or QuestList[i].isPerc == true then
 				icon.SkullIcon:Show()
 			elseif questType == "LOOT" then
@@ -246,6 +261,7 @@ function mod:UpdateElement_QuestIcon(frame)
 				icon.ItemTexture:Show()
 				icon.ItemTexture:SetTexture(itemTexture)
 			end
+
 			icon:Show()
 		else
 			icon:Hide()
@@ -253,18 +269,63 @@ function mod:UpdateElement_QuestIcon(frame)
 	end
 end
 
+function mod:QuestIcon_RelativePosition(frame, element)
+	if not frame.QuestIcon then return end
+
+	local unit, isCastbarLeft, isCastbarRight, isEliteLeft, isEliteRight = frame.UnitType, false, false, false, false
+	if unit then
+		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "RIGHT" then
+			if frame.CastBar:IsShown() then isCastbarLeft = true end
+		end
+
+		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "RIGHT" then
+			if frame.Elite:IsShown() then isEliteLeft = true end
+		end
+
+		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "LEFT" then
+			if frame.CastBar:IsShown() then isCastbarRight = true end
+		end
+
+		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "LEFT" then
+			if frame.Elite:IsShown() then isEliteRight = true end
+		end
+	end
+
+	frame.QuestIcon:ClearAllPoints()
+	if self.db.questIconPosition == "RIGHT" then
+		if isCastbarLeft then
+			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+		elseif not isCastbarLeft and isEliteLeft then
+			frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
+		else
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+		end
+	elseif self.db.questIconPosition == "LEFT" then
+		if isCastbarRight then
+			frame.QuestIcon:SetPoint("RIGHT", frame.CastBar.Icon, "LEFT", -4, 0)
+		elseif not isCastbarRight and isEliteRight then
+			frame.QuestIcon:SetPoint("RIGHT", frame.Elite, "LEFT", -4, 0)
+		else
+			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -4, 0)
+		end
+	end
+end
+
 function mod:ConfigureElement_QuestIcon(frame)
 	local QuestList = self:GetQuests(frame.unit)
 	if not QuestList then return end
+
 	local iconSize = self.db.questIconSize
-	
-	for i=1, #QuestList do
-		local icon = self:Get_QuestIcon(frame, i)
+	local biggerIcon = iconSize + 4
+
+	local icon
+	for i = 1, #QuestList do
+		icon = self:Get_QuestIcon(frame, i)
 		icon:SetSize(iconSize,iconSize)
 		icon.ItemTexture:SetSize(iconSize,iconSize)
 		icon.LootIcon:SetSize(iconSize,iconSize)
-		icon.SkullIcon:SetSize(iconSize + 4,iconSize + 4)
-		icon.ChatIcon:SetSize(iconSize + 4,iconSize + 4)
+		icon.SkullIcon:SetSize(biggerIcon,biggerIcon)
+		icon.ChatIcon:SetSize(biggerIcon,biggerIcon)
 	end
 end
 

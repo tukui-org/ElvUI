@@ -4,9 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack, select = pairs, unpack, select
+local pairs, select = pairs, select
 --WoW API / Variables
-local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ARCHAEOLOGY_MAX_RACES, UIPARENT_MANAGED_FRAME_POSITIONS
 
@@ -15,7 +14,6 @@ local function LoadSkin()
 
 	local ArchaeologyFrame = _G["ArchaeologyFrame"]
 	ArchaeologyFrame:StripTextures()
-	ArchaeologyFrameInset:StripTextures()
 	ArchaeologyFrame:CreateBackdrop("Transparent")
 	ArchaeologyFrame.backdrop:SetAllPoints()
 	ArchaeologyFrame.portrait:SetAlpha(0)
@@ -25,24 +23,37 @@ local function LoadSkin()
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
 
-	ArchaeologyFrameBgLeft:Kill()
-	ArchaeologyFrameBgRight:Kill()
+	if E.private.skins.parchmentRemover.enable then
+		ArchaeologyFrameBgLeft:Kill()
+		ArchaeologyFrameBgRight:Kill()
 
-	for _, Frame in pairs({ ArchaeologyFrameCompletedPage, ArchaeologyFrameSummaryPage}) do
-		for i = 1, Frame:GetNumRegions() do
-			local Region = select(i, Frame:GetRegions())
-			if Region:IsObjectType("FontString") then
-				Region:SetTextColor(1, 1, 0)
+		ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
+		ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
+		ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
+
+		for i = 1, ARCHAEOLOGY_MAX_RACES do
+			local frame = ArchaeologyFrame.summaryPage['race'..i]
+			local artifact = ArchaeologyFrame.completedPage['artifact'..i]
+			frame.raceName:SetTextColor(1, 1, 1)
+
+			artifact.border:SetTexture(nil)
+			S:CropIcon(artifact.icon, artifact)
+			artifact.artifactName:SetTextColor(1, .8, .1)
+			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
+		end
+
+		for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
+			for i = 1, Frame:GetNumRegions() do
+				local Region = select(i, Frame:GetRegions())
+				if Region:IsObjectType("FontString") then
+					Region:SetTextColor(1, .8, .1)
+				end
 			end
 		end
 	end
-
-	ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
-	ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
-	ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
-	ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
 
 	S:HandleButton(ArchaeologyFrameSummaryPagePrevPageButton)
 	S:HandleButton(ArchaeologyFrameSummaryPageNextPageButton)
@@ -51,54 +62,32 @@ local function LoadSkin()
 
 	ArchaeologyFrameRankBar:StripTextures()
 	ArchaeologyFrameRankBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(ArchaeologyFrameRankBar)
 	ArchaeologyFrameRankBar:SetFrameLevel(ArchaeologyFrameRankBar:GetFrameLevel() + 2)
 	ArchaeologyFrameRankBar:CreateBackdrop("Default")
+	E:RegisterStatusBar(ArchaeologyFrameRankBar)
 
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:StripTextures()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(ArchaeologyFrameArtifactPageSolveFrameStatusBar)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
-
-	for i = 1, ARCHAEOLOGY_MAX_RACES do
-		local frame = _G["ArchaeologyFrameSummaryPageRace"..i]
-		local artifact = _G["ArchaeologyFrameCompletedPageArtifact"..i]
-		local icon = _G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"]
-
-		frame.raceName:SetTextColor(1, 1, 1)
-		artifact.border:SetTexture(nil)
-		_G[artifact:GetName().."Bg"]:Kill()
-		artifact:CreateBackdrop()
-
-		icon:SetTexCoord(unpack(E.TexCoords))
-		artifact.backdrop:SetOutside(icon)
-
-		artifact.artifactName:SetTextColor(1, 1, 0)
-		artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
-	end
-
-	ArchaeologyFrameArtifactPageIcon:SetTexCoord(unpack(E.TexCoords))
-	ArchaeologyFrameArtifactPageIcon.backdrop = CreateFrame("Frame", nil, ArchaeologyFrameArtifactPage)
-	ArchaeologyFrameArtifactPageIcon.backdrop:SetTemplate("Default")
-	ArchaeologyFrameArtifactPageIcon.backdrop:SetOutside(ArchaeologyFrameArtifactPageIcon)
-	ArchaeologyFrameArtifactPageIcon.backdrop:SetFrameLevel(ArchaeologyFrameArtifactPage:GetFrameLevel())
-	ArchaeologyFrameArtifactPageIcon:SetParent(ArchaeologyFrameArtifactPageIcon.backdrop)
-	ArchaeologyFrameArtifactPageIcon:SetDrawLayer("OVERLAY")
+	E:RegisterStatusBar(ArchaeologyFrameArtifactPageSolveFrameStatusBar)
 
 	S:HandleCloseButton(ArchaeologyFrameCloseButton)
+
+	S:HandleIcon(ArchaeologyFrameArtifactPageIcon)
 
 	ArcheologyDigsiteProgressBar:StripTextures()
 	ArcheologyDigsiteProgressBar.FillBar:StripTextures()
 	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(ArcheologyDigsiteProgressBar.FillBar)
 	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArcheologyDigsiteProgressBar.FillBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArcheologyDigsiteProgressBar.FillBar:CreateBackdrop("Default")
 	ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	ArcheologyDigsiteProgressBar:ClearAllPoints()
 	ArcheologyDigsiteProgressBar:Point("TOP", UIParent, "TOP", 0, -400)
+	E:RegisterStatusBar(ArcheologyDigsiteProgressBar.FillBar)
+
 	UIPARENT_MANAGED_FRAME_POSITIONS["ArcheologyDigsiteProgressBar"] = nil
 	E:CreateMover(ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end

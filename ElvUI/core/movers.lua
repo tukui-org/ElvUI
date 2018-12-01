@@ -315,9 +315,9 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 end
 
 function E:UpdatePositionOverride(name)
-	if _G[name] and _G[name]:GetScript("OnDragStop") then
-		_G[name]:GetScript("OnDragStop")(_G[name])
-	end
+	local frame = _G[name]
+	local OnDragStop = frame and frame.GetScript and frame:GetScript("OnDragStop")
+	if OnDragStop then OnDragStop(frame) end
 end
 
 function E:HasMoverBeenMoved(name)
@@ -380,7 +380,7 @@ end
 function E:ToggleMovers(show, moverType)
 	self.configMode = show
 
-	for name, _ in pairs(E.CreatedMovers) do
+	for name in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
 		else
@@ -437,7 +437,7 @@ end
 
 function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
-		for name, _ in pairs(E.CreatedMovers) do
+		for name in pairs(E.CreatedMovers) do
 			local f = _G[name]
 			local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
 			f:ClearAllPoints()
@@ -451,7 +451,7 @@ function E:ResetMovers(arg)
 		end
 		self.db.movers = nil
 	else
-		for name, _ in pairs(E.CreatedMovers) do
+		for name in pairs(E.CreatedMovers) do
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "text" then
 					if arg == value then
@@ -486,7 +486,7 @@ function E:SetMoversPositions()
 		end
 	end
 
-	for name, _ in pairs(E.CreatedMovers) do
+	for name in pairs(E.CreatedMovers) do
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
 		if E.db.movers and E.db.movers[name] and type(E.db.movers[name]) == 'string' then

@@ -478,7 +478,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		frame.unitFrame.IsPlayerFrame = nil
 	end
 
-	if(self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
+	if(self.db.units[frame.unitFrame.UnitType] and self.db.units[frame.unitFrame.UnitType].healthbar and self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
 		self:ConfigureElement_HealthBar(frame.unitFrame)
 		self:ConfigureElement_CutawayHealth(frame.unitFrame)
 		self:ConfigureElement_PowerBar(frame.unitFrame)
@@ -1277,7 +1277,7 @@ function mod:Initialize()
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	local numEntries, numQuests = GetNumQuestLogEntries();
+	local numEntries = GetNumQuestLogEntries();
 	for questLogIndex = 1, numEntries do
 		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);
 		if title and questID and questID > 0 then

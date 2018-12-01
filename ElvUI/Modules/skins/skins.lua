@@ -5,7 +5,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Lua functions
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
-local tinsert, wipe, next = table.insert, table.wipe, next
+local tinsert, wipe = table.insert, table.wipe
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -864,8 +864,8 @@ function S:HandleSliderFrame(frame)
 		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
 
-	frame:SetThumbTexture(E.media.blankTex)
-	frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
+	frame:SetThumbTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then

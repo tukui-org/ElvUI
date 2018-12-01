@@ -73,11 +73,17 @@ local UNKNOWN = UNKNOWN
 ------------------------------------------------------------------------
 
 local function UnitName(unit)
-	local name, realm = _G.UnitName(unit);
-	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
-		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
+	local name, realm = _G.UnitName(unit)
+
+	if (name == UNKNOWN and E.myclass == "MONK") and UnitIsUnit(unit, "pet") then
+		name = format(UNITNAME_SUMMON_TITLE17, _G.UnitName("player"))
 	end
-	return name, realm
+
+	if realm and realm ~= "" then
+		return name, realm
+	else
+		return name
+	end
 end
 
 ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
@@ -170,7 +176,7 @@ ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
 	if isAFK then
-		return ('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r'):format(DEFAULT_AFK_MESSAGE)
+		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
 	else
 		return nil
 	end
@@ -646,19 +652,25 @@ end
 ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm'] = function(unit)
 	local _, realm = UnitName(unit)
-	return realm or nil
+
+	if realm and realm ~= "" then
+		return realm
+	else
+		return nil
+	end
 end
 
 ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
-	local realmString
-	if realm ~= E.myrealm then
-		realmString = format("-%s", realm)
-	else
-		realmString = nil
+
+	if realm and (realm ~= "" and realm ~= E.myrealm) then
+		realm = format("-%s", realm)
+	elseif realm == "" then
+		realm = nil
 	end
-	return realmString
+
+	return realm
 end
 
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
@@ -721,7 +733,7 @@ ElvUF.Tags.Methods['statustimer'] = function(unit)
 		local timer = GetTime() - unitStatus[guid][2]
 		local mins = floor(timer / 60)
 		local secs = floor(timer - (mins * 60))
-		return ("%s (%01.f:%02.f)"):format(status, mins, secs)
+		return format("%s (%01.f:%02.f)", status, mins, secs)
 	else
 		return nil
 	end
@@ -735,7 +747,7 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 		if timer ~= 301000 and timer ~= -1 then
 			local mins = floor((timer / 1000) / 60)
 			local secs = floor((timer / 1000) - (mins * 60))
-			return ("%s (%01.f:%02.f)"):format(PVP, mins, secs)
+			return format("%s (%01.f:%02.f)", PVP, mins, secs)
 		else
 			return PVP
 		end
@@ -937,7 +949,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 8 then
@@ -954,7 +966,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 10 then
@@ -971,7 +983,7 @@ ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
+		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
 				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 30 then

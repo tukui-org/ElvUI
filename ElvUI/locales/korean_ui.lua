@@ -335,8 +335,8 @@ L["This setting caused a conflicting anchor point, where '%s' would be attached 
 L["Vendored gray items for: %s"] = "모든 잡동사니를 팔았습니다: %s"
 L["You don't have enough money to repair."] = "수리 비용이 부족합니다."
 L["You must be at a vendor."] = "상인을 만나야 가능합니다."
-L["Your items have been repaired for: "] = "자동으로 수리하고 비용을 지불했습니다:"
-L["Your items have been repaired using guild bank funds for: "] = "길드자금으로 수리하고 비용을 지불했습니다:"
+L["Your items have been repaired for: "] = "자동으로 수리하고 비용을 지불했습니다: "
+L["Your items have been repaired using guild bank funds for: "] = "길드자금으로 수리하고 비용을 지불했습니다: "
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "Lua 에러가 발생하였습니다. 전투가 끝난 후에 내역을 표시하겠습니다."
 
 --Static Popups

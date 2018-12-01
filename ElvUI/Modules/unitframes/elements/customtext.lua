@@ -19,7 +19,7 @@ function UF:Configure_CustomTexts(frame)
 
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
-		for objectName, _ in pairs(db.customTexts) do
+		for objectName in pairs(db.customTexts) do
 			if not frame.customTexts[objectName] then
 				frame.customTexts[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end

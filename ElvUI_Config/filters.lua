@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local UF = E:GetModule('UnitFrames');
 
 local type = type
+local next = next
 local pairs = pairs
 local tonumber = tonumber
 local tostring = tostring
@@ -479,7 +480,7 @@ local function UpdateFilterGroup()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:lower():find(searchText) then values[spell.id] = name end
+								if name and name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values
@@ -528,124 +529,128 @@ local function UpdateFilterGroup()
 
 		if selectedSpell then
 			local name = GetSpellInfo(selectedSpell)
-			E.Options.args.filters.args.filterGroup.args[name] = {
-				name = name..' ('..selectedSpell..')',
-				type = 'group',
-				get = function(info) return E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] end,
-				set = function(info, value) E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
-				order = -10,
-				args = {
-					enabled = {
-						name = L["Enable"],
-						order = 0,
-						type = 'toggle',
-					},
-					point = {
-						name = L["Anchor Point"],
-						order = 1,
-						type = 'select',
-						values = {
-							['TOPLEFT'] = 'TOPLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-							['BOTTOMLEFT'] = 'BOTTOMLEFT',
-							['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-							['LEFT'] = 'LEFT',
-							['RIGHT'] = 'RIGHT',
-							['TOP'] = 'TOP',
-							['BOTTOM'] = 'BOTTOM',
-						}
-					},
-					sizeOverride = {
-						order = 2,
-						type = "range",
-						name = L["Size Override"],
-						min = 0, max = 50, step = 1,
-					},
-					xOffset = {
-						order = 3,
-						type = 'range',
-						name = L["xOffset"],
-						min = -75, max = 75, step = 1,
-					},
-					yOffset = {
-						order = 4,
-						type = 'range',
-						name = L["yOffset"],
-						min = -75, max = 75, step = 1,
-					},
-					style = {
-						name = L["Style"],
-						order = 5,
-						type = 'select',
-						values = {
-							['coloredIcon'] = L["Colored Icon"],
-							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = NONE,
+			if name then
+				E.Options.args.filters.args.filterGroup.args[name] = {
+					name = name..' ('..selectedSpell..')',
+					type = 'group',
+					get = function(info) return E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] end,
+					set = function(info, value) E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+					order = -10,
+					args = {
+						enabled = {
+							name = L["Enable"],
+							order = 0,
+							type = 'toggle',
+						},
+						point = {
+							name = L["Anchor Point"],
+							order = 1,
+							type = 'select',
+							values = {
+								['TOPLEFT'] = 'TOPLEFT',
+								['TOPRIGHT'] = 'TOPRIGHT',
+								['BOTTOMLEFT'] = 'BOTTOMLEFT',
+								['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
+								['LEFT'] = 'LEFT',
+								['RIGHT'] = 'RIGHT',
+								['TOP'] = 'TOP',
+								['BOTTOM'] = 'BOTTOM',
+							}
+						},
+						sizeOverride = {
+							order = 2,
+							type = "range",
+							name = L["Size Override"],
+							min = 0, max = 50, step = 1,
+						},
+						xOffset = {
+							order = 3,
+							type = 'range',
+							name = L["xOffset"],
+							min = -75, max = 75, step = 1,
+						},
+						yOffset = {
+							order = 4,
+							type = 'range',
+							name = L["yOffset"],
+							min = -75, max = 75, step = 1,
+						},
+						style = {
+							name = L["Style"],
+							order = 5,
+							type = 'select',
+							values = {
+								['coloredIcon'] = L["Colored Icon"],
+								['texturedIcon'] = L["Textured Icon"],
+								['NONE'] = NONE,
+							},
+						},
+						color = {
+							name = COLOR,
+							type = 'color',
+							order = 6,
+							get = function(info)
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								UF:CreateAndUpdateUF('pet')
+							end,
+						},
+						displayText = {
+							name = L["Display Text"],
+							type = 'toggle',
+							order = 7,
+						},
+						textColor = {
+							name = L["Text Color"],
+							type = 'color',
+							order = 8,
+							get = function(info)
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								if t then
+									return t.r, t.g, t.b, t.a
+								else
+									return 1, 1, 1, 1
+								end
+							end,
+							set = function(info, r, g, b)
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								UF:CreateAndUpdateUF('pet')
+							end,
+						},
+						decimalThreshold = {
+							name = L["Decimal Threshold"],
+							desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
+							type = 'range',
+							order = 9,
+							min = -1, max = 10, step = 1,
+						},
+						textThreshold = {
+							name = L["Text Threshold"],
+							desc = L["At what point should the text be displayed. Set to -1 to disable."],
+							type = 'range',
+							order = 10,
+							min = -1, max = 60, step = 1,
+						},
+						anyUnit = {
+							name = L["Show Aura From Other Players"],
+							order = 11,
+							type = 'toggle',
+						},
+						onlyShowMissing = {
+							name = L["Show When Not Active"],
+							order = 12,
+							type = 'toggle',
 						},
 					},
-					color = {
-						name = COLOR,
-						type = 'color',
-						order = 6,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
-							return t.r, t.g, t.b, t.a
-						end,
-						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							UF:CreateAndUpdateUF('pet')
-						end,
-					},
-					displayText = {
-						name = L["Display Text"],
-						type = 'toggle',
-						order = 7,
-					},
-					textColor = {
-						name = L["Text Color"],
-						type = 'color',
-						order = 8,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
-							if t then
-								return t.r, t.g, t.b, t.a
-							else
-								return 1, 1, 1, 1
-							end
-						end,
-						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							UF:CreateAndUpdateUF('pet')
-						end,
-					},
-					decimalThreshold = {
-						name = L["Decimal Threshold"],
-						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
-						type = 'range',
-						order = 9,
-						min = -1, max = 10, step = 1,
-					},
-					textThreshold = {
-						name = L["Text Threshold"],
-						desc = L["At what point should the text be displayed. Set to -1 to disable."],
-						type = 'range',
-						order = 10,
-						min = -1, max = 60, step = 1,
-					},
-					anyUnit = {
-						name = L["Show Aura From Other Players"],
-						order = 11,
-						type = 'toggle',
-					},
-					onlyShowMissing = {
-						name = L["Show When Not Active"],
-						order = 12,
-						type = 'toggle',
-					},
-				},
-			}
+				}
+			else
+				E:Print(L["Not valid spell id"])
+			end
 		end
 	elseif selectedFilter == 'Buff Indicator' then
 		if not E.global.unitframe.buffwatch[E.myclass] then
@@ -726,7 +731,7 @@ local function UpdateFilterGroup()
 						for _, spell in pairs(list) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
-								if name:lower():find(searchText) then values[spell.id] = name end
+								if name and name:lower():find(searchText) then values[spell.id] = name end
 							end
 						end
 						return values

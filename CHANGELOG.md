@@ -1,4 +1,20 @@
-**Version 10.83 [  ]**
+**Version 10.84 [  ]**
+
+**New Additions:**  
+Added option to use health texture also on the backdrop.  
+Added a seperate Tooltip option to display the NPC ID. (#873)  
+Added a position option (Left or Right) for the Quest Icon on the Nameplates.  
+
+**Bug Fixes:**  
+Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
+Fixed QuestGreetingPanel skin not take account to Parchment Remover.  
+Fixed Masque issues with the AddOn `ElvUI_ExtraActionBars`. (#709)  
+
+**Misc. Changes:**  
+Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
+
+___
+**Version 10.83 [ November 20th 2018 ]**
 
 **New Additions:**  
 Added Drain Life to channel ticks.  
@@ -26,6 +42,8 @@ Added Raid Icons for Party Targets, Tank & Assist UnitFrames. (#459)
 Added Castbar Strata and Level Options. (#323)  
 Added Color options to the UnitFrames to choose the Blizzard Selection Colors.  
 Added right-click functionality for the movers in `/moveui` to get to the options. (#843)  
+Added NamePlate indicators for Quest Mobs. Works only in the Open World.  
+Added a skin option to remove the Parchment from some skins.  
 
 
 **Bug Fixes:**  
@@ -50,6 +68,7 @@ Removed ArtifactBar from the DataBars.
 Reworked vendor greys code to resolve issues with the previous versions.  
 Allow left & right mouse button when using Keybind. (#234)  
 Updated collection skin. Credits AddOnSkins.  
+Updated Ace3 skin (ElvUI config page)  
 Added `ElvUIGVC` chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
 Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 

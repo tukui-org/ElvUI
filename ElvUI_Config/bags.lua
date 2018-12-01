@@ -659,7 +659,7 @@ E.Options.args.bags = {
 			type = "group",
 			name = L["Vendor Grays"],
 			get = function(info) return E.db.bags.vendorGrays[ info[#info] ] end,
-			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value end,
+			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value; B:UpdateSellFrameSettings() end,
 			args = {
 				enable = {
 					order = 1,
@@ -678,6 +678,11 @@ E.Options.args.bags = {
 					order = 3,
 					name = L["Vendor Gray Detailed Report"],
 					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
+				},
+				progressBar = {
+					order = 4,
+					name = L["Progress Bar"],
 					type = "toggle",
 				},
 			},
