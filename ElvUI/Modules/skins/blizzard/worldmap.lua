@@ -35,7 +35,7 @@ local function LoadSkin()
 	QuestMapFrame.VerticalSeparator:Hide()
 
 	if E.private.skins.parchmentRemover.enable then
-		QuestMapFrame.DetailsFrame:StripTextures()
+		QuestMapFrame.DetailsFrame:StripTextures(true)
 		QuestMapFrame.DetailsFrame:CreateBackdrop()
 		QuestMapFrame.DetailsFrame.backdrop:SetPoint('TOPLEFT', 0, 0)
 		QuestMapFrame.DetailsFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
