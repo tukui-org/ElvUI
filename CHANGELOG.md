@@ -11,6 +11,7 @@ Fixed QuestGreetingPanel skin not take account to Parchment Remover.
 Fixed Masque issues with the AddOn `ElvUI_ExtraActionBars`. (#709)  
 
 **Misc. Changes:**  
+Updated LibItemSearch to latest version.  
 Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
 
 ___
