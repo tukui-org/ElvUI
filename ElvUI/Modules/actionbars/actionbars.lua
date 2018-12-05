@@ -640,7 +640,12 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	local normal  = _G[name.."NormalTexture"];
 	local normal2 = button:GetNormalTexture()
 	local shine = _G[name.."Shine"];
+
 	local color = self.db.fontColor
+
+	local countPosition = self.db.countTextPosition or 'BOTTOMRIGHT'
+	local countXOffset = self.db.countTextXOffset or 0
+	local countYOffset = self.db.countTextYOffset or 2
 
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
@@ -660,7 +665,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 
 	if count then
 		count:ClearAllPoints();
-		count:Point("BOTTOMRIGHT", 0, 2);
+		count:Point(countPosition, countXOffset, countYOffset);
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
 	end
@@ -981,6 +986,10 @@ function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey'];
 	local text = hotkey:GetText();
 
+	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
+	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
+
 	if text then
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
 		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
@@ -1005,7 +1014,7 @@ function AB:FixKeybindText(button)
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:Point("TOPRIGHT", 0, -3);
+		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset);
 	end
 end
 
