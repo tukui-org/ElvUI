@@ -4,6 +4,7 @@
 Added option to use health texture also on the backdrop.  
 Added a seperate Tooltip option to display the NPC ID. (#873)  
 Added a position option (Left or Right) for the Quest Icon on the Nameplates.  
+Added option to change the position of the Keybind & Stack Text on the ActionBars. (#361)  
 
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  

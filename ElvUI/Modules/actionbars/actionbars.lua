@@ -993,8 +993,6 @@ function AB:FixKeybindText(button)
 	local justify = "RIGHT"
 	if hotkeyPosition == "TOPLEFT" or hotkeyPosition == "BOTTOMLEFT" then
 		justify = "LEFT"
-	elseif hotkeyPosition == "TOPRIGHT" or hotkeyPosition == "BOTTOMRIGHT" then
-		justify = "RIGHT"
 	elseif hotkeyPosition == "TOP" or hotkeyPosition == "BOTTOM" then
 		justify = "CENTER"
 	end
