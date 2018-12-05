@@ -15,7 +15,6 @@ local function LoadSkin()
 	AzeriteEmpoweredItemUI:StripTextures()
 	AzeriteEmpoweredItemUIPortrait:Hide()
 	AzeriteEmpoweredItemUI.ClipFrame.BackgroundFrame.Bg:Hide()
-	AzeriteEmpoweredItemUI.ClipFrame.BackgroundFrame.KeyOverlay.Shadow:Hide()
 
 	AzeriteEmpoweredItemUI:CreateBackdrop("Transparent")
 
