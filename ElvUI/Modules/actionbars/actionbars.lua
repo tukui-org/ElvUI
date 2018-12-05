@@ -990,6 +990,15 @@ function AB:FixKeybindText(button)
 	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
 	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
 
+	local justify = "RIGHT"
+	if hotkeyPosition == "TOPLEFT" or hotkeyPosition == "BOTTOMLEFT" then
+		justify = "LEFT"
+	elseif hotkeyPosition == "TOPRIGHT" or hotkeyPosition == "BOTTOMRIGHT" then
+		justify = "RIGHT"
+	elseif hotkeyPosition == "TOP" or hotkeyPosition == "BOTTOM" then
+		justify = "CENTER"
+	end
+
 	if text then
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
 		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
@@ -1010,6 +1019,7 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'NEQUALS', "N=");
 
 		hotkey:SetText(text);
+		hotkey:SetJustifyH(justify)
 	end
 
 	if not button.useMasque then
