@@ -315,7 +315,7 @@ local function LoadSkin()
 
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
-		S:HandleItemButton(button)
+		S:HandleItemButton(button, true)
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
@@ -360,7 +360,7 @@ local function LoadSkin()
 
 	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(_, button)
 		if not button.styled then
-			S:HandleItemButton(button)
+			S:HandleItemButton(button, true)
 
 			button.iconTexture:SetDrawLayer("ARTWORK")
 			button.hover:SetAllPoints(button.iconTexture)
