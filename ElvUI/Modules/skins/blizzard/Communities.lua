@@ -10,8 +10,12 @@ local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local GetGuildRewardInfo = GetGuildRewardInfo
+local GetItemQualityColor = GetItemQualityColor
+local GetItemInfo = GetItemInfo
+local Enum = Enum
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: CLASS_ICON_TCOORDS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
