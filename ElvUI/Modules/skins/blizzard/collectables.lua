@@ -379,6 +379,7 @@ local function LoadSkin()
 		button.SetTextColor = nil
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(1, 1, 1)
+			button.level:SetTextColor(1, 1, 1)
 			button.special:SetTextColor(1, .82, 0)
 			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
