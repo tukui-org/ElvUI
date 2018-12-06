@@ -66,7 +66,7 @@ local function LoadSkin()
 			end
 		end
 
-		S:CropIcon(icon)
+		S:HandleTexture(icon)
 		icon:SetAllPoints()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 		button:CreateBackdrop("Default", true)

@@ -172,7 +172,7 @@ local function LoadSkin()
 	hooksecurefunc(AuctionsItemButton, "SetNormalTexture", function(self, texture)
 		if self:GetNormalTexture() then
 			self:GetNormalTexture():SetInside()
-			S:CropIcon(self:GetNormalTexture())
+			S:HandleTexture(self:GetNormalTexture())
 		end
 	end)
 
@@ -224,7 +224,7 @@ local function LoadSkin()
 			Button:GetHighlightTexture():SetPoint("TOPLEFT", ItemButton, "TOPRIGHT", 2, 0)
 			Button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", Button, "BOTTOMRIGHT", -2, 5)
 
-			S:CropIcon(Texture)
+			S:HandleTexture(Texture)
 			Texture:SetInside()
 
 			hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b) ItemButton:SetBackdropBorderColor(r, g, b) end)
@@ -264,7 +264,7 @@ local function LoadSkin()
 	--WoW Token Category
 	S:HandleButton(BrowseWowTokenResults.Buyout)
 	BrowseWowTokenResultsToken:CreateBackdrop("Default")
-	S:CropIcon(BrowseWowTokenResultsTokenIconTexture)
+	S:HandleTexture(BrowseWowTokenResultsTokenIconTexture)
 	BrowseWowTokenResultsToken.backdrop:SetOutside(BrowseWowTokenResultsTokenIconTexture)
 	BrowseWowTokenResultsToken.backdrop:SetBackdropBorderColor(BrowseWowTokenResultsToken.IconBorder:GetVertexColor())
 	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())

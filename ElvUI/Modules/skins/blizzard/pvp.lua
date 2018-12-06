@@ -29,7 +29,7 @@ local function LoadSkin()
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:Point("LEFT", 10, 0)
-		S:CropIcon(bu.Icon, bu)
+		S:HandleTexture(bu.Icon, bu)
 	end
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
@@ -81,7 +81,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:CropIcon(reward.Icon, reward)
+		S:HandleTexture(reward.Icon, reward)
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate("Default")
@@ -213,7 +213,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:CropIcon(reward.Icon, reward)
+		S:HandleTexture(reward.Icon, reward)
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)

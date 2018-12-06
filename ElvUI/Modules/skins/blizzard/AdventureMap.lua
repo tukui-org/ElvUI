@@ -24,7 +24,7 @@ local function LoadSkin()
 		for reward in pairs(AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 			if not reward.isSkinned then
 				S:HandleItemButton(reward)
-				S:CropIcon(reward.Icon)
+				S:HandleTexture(reward.Icon)
 				reward.Icon:SetDrawLayer("OVERLAY")
 				reward.isSkinned = true
 			end

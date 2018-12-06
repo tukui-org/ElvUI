@@ -224,7 +224,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:CropIcon(bu.icon, bu)
+		S:HandleTexture(bu.icon, bu)
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")
