@@ -458,6 +458,7 @@ L["TopRightMiniPanel"] = "小地圖右上 (內側)"
 L["Use Tooltip"] = "使用浮動提示"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "處於戰場時, 在主資訊文字條顯示你的戰場得分訊息."
 L["Word Wrap"] = "自動換行"
+L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "如果不是同一服務器, 那他必需和你在同一隊伍中."
@@ -498,6 +499,7 @@ L["Chat Bubble Names"] = "聊天氣泡姓名"
 L["Chat Output"] = "聊天輸出"
 L["Color Gradient"] = "顏色漸層"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制在血條和單位框架等元件的小數位數"
+L["Crop Icons"] = true
 L["Current / Max - Percent"] = "當前 / 最大 - 百分比"
 L["Decimal Length"] = "小數位數"
 L["Direction the bar moves on gains/losses"] = "條增加/減少時的方向"
@@ -553,6 +555,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "細邊框主題會改變所有的外觀,使用細邊框主題會略微提升性能"
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "在ElvUI中數值單位的縮寫. 該選項主要應用在單位框體."
 L["Thin Border Theme"] = "細邊框主題"
+L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "選擇ElvUI訊息輸出的聊天視窗"
 L["Toggle Tutorials"] = "教學開關"
 L["Top Panel"] = "頂部面板"
