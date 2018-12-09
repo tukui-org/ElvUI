@@ -14,9 +14,19 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
 
 	local AzeriteRespecFrame = _G["AzeriteRespecFrame"]
+	AzeriteRespecFrame:SetClipsChildren(true)
 	AzeriteRespecFrame.Background:Hide()
 	AzeriteRespecFrame:StripTextures()
 	AzeriteRespecFrame:SetTemplate("Transparent")
+
+	local Lines = select(23, AzeriteRespecFrame:GetRegions())
+	Lines:ClearAllPoints()
+	Lines:SetPoint("TOPLEFT", -50, 25)
+	Lines:SetPoint("BOTTOMRIGHT")
+	Lines:SetTexture([[Interface\Transmogrify\EtherealLines]], true, true)
+	Lines:SetHorizTile(true)
+	Lines:SetVertTile(true)
+	Lines:SetAlpha(0.5)
 
 	local ItemSlot = AzeriteRespecFrame.ItemSlot
 	ItemSlot:SetSize(64, 64)
