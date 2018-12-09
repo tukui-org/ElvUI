@@ -27,7 +27,6 @@ local function LoadSkin()
 		"AudioOptionsFrame",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
-		"StackSplitFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
@@ -240,13 +239,18 @@ local function LoadSkin()
 	SideDressUpFrame:SetTemplate("Transparent")
 
 	-- StackSplit
-	StackSplitFrame:GetRegions():Hide()
+	local StackSplitFrame = _G["StackSplitFrame"]
+	StackSplitFrame:StripTextures()
+	StackSplitFrame:CreateBackdrop("Transparent")
 
 	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
 	StackSplitFrame.bg1:SetTemplate("Transparent")
 	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
 	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
 	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
+
+	S:HandleButton(StackSplitFrame.OkayButton)
+	S:HandleButton(StackSplitFrame.CancelButton)
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	local function SkinNavBarButtons(self)
