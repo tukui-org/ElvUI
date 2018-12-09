@@ -37,6 +37,7 @@ P['general'] = {
 
 	['fontSize'] = 12,
 	['font'] = 'PT Sans Narrow',
+	['fontStyle'] = 'OUTLINE',
 
 	['bordercolor'] = { r = 0.1,g = 0.1,b = 0.1 },
 	['backdropcolor'] = { r = 0.1,g = 0.1,b = 0.1 },
