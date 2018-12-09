@@ -17,7 +17,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
-
+local Ticker
 local Profit	= 0
 local Spent		= 0
 local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
@@ -25,6 +25,12 @@ local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Ri
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
+
+	if not Ticker then
+		C_WowTokenPublic.UpdateMarketPrice()
+		Ticker = C_Timer.NewTicker(60, function () C_WowTokenPublic.UpdateMarketPrice() end)
+	end
+
 	local NewMoney = GetMoney();
 	ElvDB = ElvDB or { };
 	ElvDB.gold = ElvDB.gold or {};
@@ -89,6 +95,8 @@ local function OnEnter(self)
 	DT.tooltip:AddLine' '
 	DT.tooltip:AddLine(L["Server: "])
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddLine' '
+	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic.GetCurrentMarketPrice(), style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
