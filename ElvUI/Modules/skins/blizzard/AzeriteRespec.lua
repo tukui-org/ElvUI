@@ -19,7 +19,7 @@ local function LoadSkin()
 	AzeriteRespecFrame:StripTextures()
 	AzeriteRespecFrame:SetTemplate("Transparent")
 
-	local Lines = select(23, AzeriteRespecFrame:GetRegions())
+	local Lines = AzeriteRespecFrame:CreateTexture(nil, "BACKGROUND")
 	Lines:ClearAllPoints()
 	Lines:SetPoint("TOPLEFT", -50, 25)
 	Lines:SetPoint("BOTTOMRIGHT")
@@ -46,6 +46,10 @@ local function LoadSkin()
 	ButtonFrame.MoneyFrameEdge:Hide()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
 	ButtonFrame.MoneyFrame:SetPoint("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
+
+	-- Hide the damn Tutorial Tooltip
+	local HelpBox = AzeriteRespecFrame.HelpBox
+	HelpBox:SetAlpha(0)
 
 	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
