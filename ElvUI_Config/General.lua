@@ -457,6 +457,14 @@ E.Options.args.general = {
 						E:UpdateMedia()
 					end,
 				},
+				cropIcon = {
+					order = 35,
+					type = 'toggle',
+					name = L["Crop Icons"],
+					desc = L["This is for Customized Icons in your Interface/Icons folder."],
+					get = function(info) return E.db.general[ info[#info] ] end,
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+				},
 			},
 		},
 		totems = {
