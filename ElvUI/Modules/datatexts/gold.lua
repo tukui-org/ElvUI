@@ -22,6 +22,7 @@ local Profit	= 0
 local Spent		= 0
 local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
 local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
+local C_WowTokenPublic = C_WowTokenPublic
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
@@ -96,7 +97,7 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["Server: "])
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine' '
-	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic.GetCurrentMarketPrice(), style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic.GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
