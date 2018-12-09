@@ -11,7 +11,7 @@ local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
-
+local C_WowTokenPublic = C_WowTokenPublic
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvDB, ToggleAllBags
 
@@ -22,7 +22,6 @@ local Profit	= 0
 local Spent		= 0
 local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
 local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
-local C_WowTokenPublic = C_WowTokenPublic
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
@@ -81,7 +80,7 @@ local function OnEnter(self)
 	elseif (Profit-Spent)>0 then
 		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
 	end
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
@@ -93,7 +92,7 @@ local function OnEnter(self)
 		end
 	end
 
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Server: "])
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine' '
@@ -102,13 +101,13 @@ local function OnEnter(self)
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(CURRENCY)
 		end
 		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
 	end
 
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(resetCountersFormatter)
 	DT.tooltip:AddLine(resetInfoFormatter)
 
