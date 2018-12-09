@@ -28,7 +28,7 @@ local function OnEvent(self)
 
 	if not Ticker then
 		C_WowTokenPublic.UpdateMarketPrice()
-		Ticker = C_Timer.NewTicker(60, function () C_WowTokenPublic.UpdateMarketPrice() end)
+		Ticker = C_Timer.NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
 	end
 
 	local NewMoney = GetMoney();
