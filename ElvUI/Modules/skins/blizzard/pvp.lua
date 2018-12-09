@@ -29,7 +29,7 @@ local function LoadSkin()
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:Point("LEFT", 10, 0)
-		S:CropIcon(bu.Icon, bu)
+		S:HandleTexture(bu.Icon, bu)
 	end
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
@@ -67,14 +67,14 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:CropIcon(reward.Icon, reward)
+		S:HandleTexture(reward.Icon, reward)
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate("Default")
 		reward.EnlistmentBonus:SetSize(20, 20)
 		reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
 
-		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture(nil, nil, self)
+		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
 		EnlistmentBonusIcon:SetPoint("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
 		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
 		EnlistmentBonusIcon:SetTexture("Interface\\Icons\\achievement_guildperk_honorablemention_rank2")
@@ -193,7 +193,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:CropIcon(reward.Icon, reward)
+		S:HandleTexture(reward.Icon, reward)
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
@@ -208,7 +208,7 @@ local function LoadSkin()
 		if bar.Border then bar.Border:Hide() end
 		if bar.Background then bar.Background:Hide() end
 
-		if (factionGroup == "Alliance") then
+		if E.myfaction == "Alliance" then
 			bar:SetStatusBarColor(0.05, 0.15, 0.36)
 		else
 			bar:SetStatusBarColor(0.63, 0.09, 0.09)
@@ -232,7 +232,7 @@ local function LoadSkin()
 		if bar.Border then bar.Border:Hide() end
 		if bar.Background then bar.Background:Hide() end
 
-		if (factionGroup == "Alliance") then
+		if E.myfaction == "Alliance" then
 			bar:SetStatusBarColor(0.05, 0.15, 0.36)
 		else
 			bar:SetStatusBarColor(0.63, 0.09, 0.09)

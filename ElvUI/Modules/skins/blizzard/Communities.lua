@@ -10,8 +10,12 @@ local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local GetGuildRewardInfo = GetGuildRewardInfo
+local GetItemQualityColor = GetItemQualityColor
+local GetItemInfo = GetItemInfo
+local Enum = Enum
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+-- GLOBALS: CLASS_ICON_TCOORDS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
@@ -41,7 +45,7 @@ local function LoadSkin()
 			self.Background:Hide()
 			self:SetFrameLevel(self:GetFrameLevel()+5)
 
-			S:CropIcon(self.Icon)
+			S:HandleTexture(self.Icon)
 			self.Icon:RemoveMaskTexture(self.CircleMask)
 			self.Icon:SetDrawLayer("OVERLAY", 1)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -76,7 +80,7 @@ local function LoadSkin()
 		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
 		self:SetFrameLevel(self:GetFrameLevel()+5)
-		S:CropIcon(self.Icon)
+		S:HandleTexture(self.Icon)
 		self.CircleMask:Hide()
 		self.Icon:SetDrawLayer("OVERLAY", 1)
 		self.Icon:SetTexCoord(unpack(E.TexCoords))

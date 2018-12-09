@@ -32,6 +32,7 @@ function S:SkinAce3()
 	local AceGUI = LibStub("AceGUI-3.0", true)
 	if not AceGUI then return end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
+	local ColorBlind = GetCVarBool('colorblindmode')
 
 	RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
@@ -57,20 +58,32 @@ function S:SkinAce3()
 			local highlight = widget.highlight
 
 			checkbg:CreateBackdrop('Default')
-			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
+			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
-
-			check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
-			check:SetVertexColor(1, .82, 0, 0.8)
-
 			checkbg:SetTexture('')
 			highlight:SetTexture('')
 
-			check:SetInside(widget.checkbg.backdrop)
+			if not ColorBlind then
+				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
+
+				check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+
+				hooksecurefunc(check, "SetDesaturated", function(self, value)
+					if value == true then
+						self:SetVertexColor(.6, .6, .6, .8)
+					else
+						self:SetVertexColor(1, .82, 0, 0.8)
+					end
+				end)
+
+				check.SetTexture = E.noop
+				check:SetInside(widget.checkbg.backdrop)
+			else
+				check:SetOutside(widget.checkbg.backdrop, 3, 3)
+			end
 
 			checkbg.SetTexture = E.noop
 			highlight.SetTexture = E.noop
-			check.SetTexture = E.noop
 		elseif TYPE == 'Dropdown' then
 			local frame = widget.dropdown
 			local button = widget.button
@@ -136,7 +149,6 @@ function S:SkinAce3()
 				widget.bar:ClearAllPoints()
 				widget.bar:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
 				widget.bar:SetPoint('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
-			--elseif TYPE == 'LSM30_Border' or TYPE == 'LSM30_Background' then -- Leave this here please. - Azilroka
 			end
 
 			button:SetParent(frame.backdrop)
@@ -200,10 +212,9 @@ function S:SkinAce3()
 				frame:CreateBackdrop('Default')
 			end
 
-			frame.backdrop:SetSize(16, 16)
+			frame.backdrop:SetSize(24, 16)
 			frame.backdrop:ClearAllPoints()
 			frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
-			frame.backdrop:SetBackdropBorderColor(1, 1, 1, 0.6)
 
 			colorSwatch:SetTexture(E.media.blankTex)
 			colorSwatch:ClearAllPoints()
@@ -220,7 +231,10 @@ function S:SkinAce3()
 				frame.checkers:SetParent(frame.backdrop)
 				frame.checkers:SetInside(frame.backdrop)
 			end
+		elseif TYPE == 'Icon' then
+			widget.frame:StripTextures()
 		end
+
 		return oldRegisterAsWidget(self, widget)
 	end
 	AceGUI.RegisterAsWidget = RegisterAsWidget

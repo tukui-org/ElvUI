@@ -90,7 +90,7 @@ local function LoadSkin()
 			Button.learnedTex:SetAlpha(0)
 			Button.selectedTex:SetAlpha(0)
 			Button.specIcon:SetTexture(icon)
-			S:CropIcon(Button.specIcon, Button)
+			S:HandleTexture(Button.specIcon, Button)
 			Button:SetHighlightTexture(nil)
 
 			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
@@ -105,7 +105,7 @@ local function LoadSkin()
 		Frame.spellsScroll.child.ring:SetAlpha(0)
 		Frame.spellsScroll.child.Seperator:SetAlpha(0)
 
-		S:CropIcon(Frame.spellsScroll.child.specIcon, Frame.spellsScroll.child)
+		S:HandleTexture(Frame.spellsScroll.child.specIcon, Frame.spellsScroll.child)
 	end
 
 	for i = 1, MAX_TALENT_TIERS do
@@ -123,7 +123,7 @@ local function LoadSkin()
 			bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 			bu.knownSelection:SetAlpha(0)
 			bu.icon:SetDrawLayer("OVERLAY", 1)
-			S:CropIcon(bu.icon, bu)
+			S:HandleTexture(bu.icon, bu)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
@@ -313,7 +313,7 @@ local function LoadSkin()
 
 	for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
 		Button:DisableDrawLayer("BACKGROUND")
-		S:CropIcon(Button.Icon)
+		S:HandleTexture(Button.Icon)
 		Button:StyleButton()
 		Button:CreateBackdrop()
 		Button.Selected:SetTexture("")

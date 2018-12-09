@@ -3485,6 +3485,14 @@ P['actionbar'] = {
 	['macrotext'] = false,
 	['hotkeytext'] = true,
 
+	['hotkeyTextPosition'] = 'TOPRIGHT',
+	['hotkeyTextXOffset'] = 0,
+	['hotkeyTextYOffset'] = -3,
+
+	['countTextPosition'] = 'BOTTOMRIGHT',
+	['countTextXOffset'] = 0,
+	['countTextYOffset'] = 2,
+
 	['useRangeColorText'] = false,
 	['noRangeColor'] = { r = 0.8, g = 0.1, b = 0.1 },
 	['noPowerColor'] = { r = 0.5, g = 0.5, b = 1 },

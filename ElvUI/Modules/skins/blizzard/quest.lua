@@ -18,10 +18,13 @@ local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
-	scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+	if not scrollFrame.spellTex then
+		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+	end
+
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	if inset then
-		scrollFrame.spellTex:Point("TOPLEFT", 2, -2)
+		scrollFrame.spellTex:Point("TOPLEFT", 1, -1)
 	else
 		scrollFrame.spellTex:Point("TOPLEFT")
 	end
@@ -74,18 +77,8 @@ local function LoadSkin()
 		end
 	end)
 
-	QuestRewardScrollFrame:HookScript('OnShow', function(self)
-		if not self.backdrop then
-			self:CreateBackdrop("Default")
-			self:Height(self:GetHeight() - 2)
-			if not E.private.skins.parchmentRemover.enable then
-				StyleScrollFrame(self, 509, 630, false)
-			end
-		end
-		if not E.private.skins.parchmentRemover.enable then
-			self.spellTex:Height(self:GetHeight() + 217)
-		end
-	end)
+	QuestRewardScrollFrame:CreateBackdrop('Default')
+	QuestRewardScrollFrame:Height(QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc("QuestInfo_Display", function()
 		for i = 1, #QuestInfoRewardsFrame.RewardButtons do
@@ -277,6 +270,9 @@ local function LoadSkin()
 		StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
+		QuestRewardScrollFrame:HookScript('OnShow', function(self)
+			StyleScrollFrame(self, 506, 615, true)
+		end)
 	end
 
 	QuestFrameGreetingPanel:StripTextures(true)

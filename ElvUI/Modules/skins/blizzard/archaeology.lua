@@ -40,7 +40,7 @@ local function LoadSkin()
 			frame.raceName:SetTextColor(1, 1, 1)
 
 			artifact.border:SetTexture(nil)
-			S:CropIcon(artifact.icon, artifact)
+			S:HandleTexture(artifact.icon, artifact)
 			artifact.artifactName:SetTextColor(1, .8, .1)
 			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
 		end

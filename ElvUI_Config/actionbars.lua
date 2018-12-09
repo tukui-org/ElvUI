@@ -239,6 +239,7 @@ local function BuildABConfig()
 						type = 'color',
 						order = 7,
 						name = COLOR,
+						width = 'full',
 						get = function(info)
 							local t = E.db.actionbar[ info[#info] ]
 							local d = P.actionbar[info[#info]]
@@ -250,10 +251,68 @@ local function BuildABConfig()
 							AB:UpdateButtonSettings();
 						end,
 					},
+					textPosition = {
+						type = 'group',
+						order = 8,
+						name = L["Text Position"],
+						guiInline = true,
+						args = {
+							countTextPosition = {
+								type = 'select',
+								order = 1,
+								name = L["Stack Text Position"],
+								values = {
+									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
+									['BOTTOMLEFT'] = 'BOTTOMLEFT',
+									['TOPRIGHT'] = 'TOPRIGHT',
+									['TOPLEFT'] = 'TOPLEFT',
+									['BOTTOM'] = 'BOTTOM',
+									['TOP'] = 'TOP',
+								},
+							},
+							countTextXOffset = {
+								type = 'range',
+								order = 2,
+								name = L["Stack Text X-Offset"],
+								min = -10, max = 10, step = 1,
+							},
+							countTextYOffset = {
+								type = 'range',
+								order = 3,
+								name = L["Stack Text Y-Offset"],
+								min = -10, max = 10, step = 1,
+							},
+							hotkeyTextPosition  = {
+								type = 'select',
+								order = 4,
+								name = L["Hotkey Text Position"],
+								values = {
+									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
+									['BOTTOMLEFT'] = 'BOTTOMLEFT',
+									['TOPRIGHT'] = 'TOPRIGHT',
+									['TOPLEFT'] = 'TOPLEFT',
+									['BOTTOM'] = 'BOTTOM',
+									['TOP'] = 'TOP',
+								},
+							},
+							hotkeyTextXOffset = {
+								type = 'range',
+								order = 5,
+								name = L["Hotkey Text X-Offset"],
+								min = -10, max = 10, step = 1,
+							},
+							hotkeyTextYOffset = {
+								type = 'range',
+								order = 6,
+								name = L["Hotkey Text Y-Offset"],
+								min = -10, max = 10, step = 1,
+							},
+						},
+					},
 				},
 			},
 			masque = {
-				order = 30,
+				order = 35,
 				type = "group",
 				guiInline = true,
 				name = L["Masque Support"],
