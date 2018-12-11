@@ -5,15 +5,20 @@ Added option to use health texture also on the backdrop.
 Added a seperate Tooltip option to display the NPC ID. (#873)  
 Added a position option (Left or Right) for the Quest Icon on the Nameplates.  
 Added option to change the position of the Keybind & Stack Text on the ActionBars. (#361)  
+Added option to show an icon on an item in the bags if it's scrappable.  
+Added option in our media section to remove the cropping from icons. Mostly used for Custom Texture Packs.  
+Added option in our media section to select the 'Font Outline'.  
+Added the WoW Token price in our Gold DataText.  
 
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
-Fixed QuestGreetingPanel skin not take account to Parchment Remover.  
+Fixed QuestGreetingPanel & WorldMap skin not take account to Parchment Remover.  
 Fixed Masque issues with the AddOn `ElvUI_ExtraActionBars`. (#709)  
 
 **Misc. Changes:**  
 Updated LibItemSearch to latest version.  
 Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
+Some Code improvements.  
 Various Skin tweaks.  
 
 ___
