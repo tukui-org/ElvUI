@@ -1,4 +1,16 @@
-**Version 10.84 [  ]**
+**Version 10.85 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.84 [ December 11th 2018 ]**
 
 **New Additions:**  
 Added option to use health texture also on the backdrop.  
