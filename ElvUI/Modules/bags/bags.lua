@@ -15,6 +15,8 @@ local format, len, sub = string.format, string.len, string.sub
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local C_Item_CanScrapItem = C_Item.CanScrapItem
+local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
@@ -402,18 +404,20 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
+local UpdateItemScrapIcon;
 function UpdateItemScrapIcon(slot)
 	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
 	-- Also the option dont update correctly.
 	if not E.db.bags.scrapIcon then
 		slot.ScrapIcon:SetShown(false)
+		return
 	end
 
 	local itemLocation = ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
 	if not itemLocation then return end
 
 	if itemLocation and itemLocation ~= "" then
-		if C_Item.DoesItemExist(itemLocation) and C_Item.CanScrapItem(itemLocation) then
+		if (C_Item_DoesItemExist(itemLocation) and C_Item_CanScrapItem(itemLocation)) and E.db.bags.scrapIcon then
 			slot.ScrapIcon:SetShown(itemLocation)
 		else
 			slot.ScrapIcon:SetShown(false)
@@ -488,7 +492,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 	end
 
-	if slot.ScrapIcon and E.db.bags.scrapIcon then
+	if slot.ScrapIcon then
 		UpdateItemScrapIcon(slot)
 	end
 
