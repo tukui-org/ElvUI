@@ -16,8 +16,6 @@ local function LoadSkin()
 	WarboardQuestChoiceFrame:StripTextures()
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
 
-	WarboardQuestChoiceFrame.BorderFrame:Hide()
-	WarboardQuestChoiceFrame.BorderFrame.Header:SetAlpha(0)
 	WarboardQuestChoiceFrame.Background:Hide()
 	WarboardQuestChoiceFrame.Title:DisableDrawLayer("BACKGROUND")
 
@@ -42,9 +40,10 @@ local function LoadSkin()
 	end
 
 	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
-		E:Delay(.5, WarboardQuestChoiceDelayed, self);
+		E:Delay(.5, WarboardQuestChoiceDelayed, self)
 	end)
 
+	-- TODO Hide the "new" CloseButton.Border
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 

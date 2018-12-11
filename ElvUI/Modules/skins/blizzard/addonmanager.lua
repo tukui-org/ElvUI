@@ -38,7 +38,7 @@ local function LoadSkin()
 
 	S:HandleCloseButton(AddonList.CloseButton)
 
-	for i=1, MAX_ADDONS_DISPLAYED do
+	for i = 1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end

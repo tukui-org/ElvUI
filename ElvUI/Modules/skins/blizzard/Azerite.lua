@@ -13,12 +13,8 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteUI ~= true then return end
 
 	AzeriteEmpoweredItemUI:StripTextures()
-	AzeriteEmpoweredItemUI.BorderFrame:StripTextures()
 	AzeriteEmpoweredItemUIPortrait:Hide()
-	AzeriteEmpoweredItemUIPortraitFrame:Hide()
-	AzeriteEmpoweredItemUITopBorder:Hide()
 	AzeriteEmpoweredItemUI.ClipFrame.BackgroundFrame.Bg:Hide()
-	AzeriteEmpoweredItemUI.ClipFrame.BackgroundFrame.KeyOverlay.Shadow:Hide()
 
 	AzeriteEmpoweredItemUI:CreateBackdrop("Transparent")
 

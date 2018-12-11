@@ -35,6 +35,7 @@ local function LoadSkin()
 	}
 
 	local ClassTrainerFrame = _G["ClassTrainerFrame"]
+
 	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
 		local button = _G["ClassTrainerScrollFrameButton"..i]
 		button:StripTextures()

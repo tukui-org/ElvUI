@@ -15,6 +15,8 @@ local format, len, sub = string.format, string.len, string.sub
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local C_Item_CanScrapItem = C_Item.CanScrapItem
+local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
@@ -402,6 +404,27 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
+local UpdateItemScrapIcon;
+function UpdateItemScrapIcon(slot)
+	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
+	-- Also the option dont update correctly.
+	if not E.db.bags.scrapIcon then
+		slot.ScrapIcon:SetShown(false)
+		return
+	end
+
+	local itemLocation = ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
+	if not itemLocation then return end
+
+	if itemLocation and itemLocation ~= "" then
+		if (C_Item_DoesItemExist(itemLocation) and C_Item_CanScrapItem(itemLocation)) and E.db.bags.scrapIcon then
+			slot.ScrapIcon:SetShown(itemLocation)
+		else
+			slot.ScrapIcon:SetShown(false)
+		end
+	end
+end
+
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show and E.db.bags.newItemGlow then
@@ -446,11 +469,11 @@ function B:UpdateSlot(bagID, slotID)
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
-	slot.name, slot.rarity = nil, nil;
+	slot.name, slot.rarity = nil, nil
 	local texture, count, locked, readable, noValue, _
-	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
+	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
 
-	local clink = GetContainerItemLink(bagID, slotID);
+	local clink = GetContainerItemLink(bagID, slotID)
 
 	slot:Show();
 	if slot.questIcon then
@@ -458,15 +481,19 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	if slot.Azerite then
-		slot.Azerite:Hide();
+		slot.Azerite:Hide()
 	end
 
 	if slot.JunkIcon then
 		if slot.rarity and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
-			slot.JunkIcon:Show();
+			slot.JunkIcon:Show()
 		else
 			slot.JunkIcon:Hide()
 		end
+	end
+
+	if slot.ScrapIcon then
+		UpdateItemScrapIcon(slot)
 	end
 
 	if slot.UpgradeIcon then
@@ -672,15 +699,15 @@ function B:AssignBagFlagMenu()
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
 	local info = UIDropDownMenu_CreateInfo()
-    info.text = BAG_FILTER_ASSIGN_TO
-    info.isTitle = 1
-    info.notCheckable = 1
-    UIDropDownMenu_AddButton(info)
+	info.text = BAG_FILTER_ASSIGN_TO
+	info.isTitle = 1
+	info.notCheckable = 1
+	UIDropDownMenu_AddButton(info)
 
-    info.isTitle = nil
-    info.notCheckable = nil
-    info.tooltipWhileDisabled = 1
-    info.tooltipOnButton = 1
+	info.isTitle = nil
+	info.notCheckable = nil
+	info.tooltipWhileDisabled = 1
+	info.tooltipOnButton = 1
 
 	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 		if i ~= LE_BAG_FILTER_FLAG_JUNK then
@@ -913,10 +940,19 @@ function B:Layout(isBank)
 					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
 					if not f.Bags[bagID][slotID].JunkIcon then
 						local JunkIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
-						JunkIcon:SetAtlas("bags-junkcoin")
+						JunkIcon:SetAtlas("bags-junkcoin", true)
 						JunkIcon:Point("TOPLEFT", 1, 0)
 						JunkIcon:Hide()
 						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
+					if not f.Bags[bagID][slotID].ScrapIcon then
+						local ScrapIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						ScrapIcon:SetAtlas("bags-icon-scrappable")
+						ScrapIcon:SetSize(14, 12)
+						ScrapIcon:Point("TOPRIGHT", -1, -1)
+						ScrapIcon:Hide()
+						f.Bags[bagID][slotID].ScrapIcon = ScrapIcon
 					end
 
 					if not f.Bags[bagID][slotID].Azerite then
@@ -2129,7 +2165,7 @@ end
 
 function B:UpdateSellFrameSettings()
 	if not B.SellFrame or not B.SellFrame.Info then return; end
-	
+
 	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
 	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 end

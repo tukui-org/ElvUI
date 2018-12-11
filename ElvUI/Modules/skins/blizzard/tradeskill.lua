@@ -16,7 +16,7 @@ local function LoadSkin()
 
 	-- MainFrame
 	local TradeSkillFrame = _G["TradeSkillFrame"]
-	TradeSkillFramePortrait:Kill()
+	TradeSkillFramePortrait:SetAlpha(0)
 	TradeSkillFrame:StripTextures(true)
 	TradeSkillFrame:SetTemplate("Transparent")
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
@@ -47,7 +47,6 @@ local function LoadSkin()
 	S:HandleCloseButton(TradeSkillFrameCloseButton)
 
 	-- RecipeList
-	TradeSkillFrame.RecipeInset:StripTextures()
 	TradeSkillFrame.RecipeInset:StripTextures()
 	TradeSkillFrame.RecipeList.LearnedTab:StripTextures()
 	TradeSkillFrame.RecipeList.UnlearnedTab:StripTextures()
@@ -137,8 +136,6 @@ local function LoadSkin()
 	--Guild Crafters
 	S:HandleCloseButton(TradeSkillFrame.DetailsFrame.GuildFrame.CloseButton)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
-	TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton.LeftSeparator:SetTexture(nil)
-	TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton.RightSeparator:SetTexture(nil)
 	TradeSkillFrame.DetailsFrame.GuildFrame:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate("Transparent")
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()

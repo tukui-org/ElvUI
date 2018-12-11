@@ -19,7 +19,8 @@ local BNSetCustomMessage = BNSetCustomMessage
 local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetFriendInfo = GetFriendInfo
-local GetNumFriends = GetNumFriends
+local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
+local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRealmName = GetRealmName
 local InviteToGroup = InviteToGroup
@@ -336,7 +337,7 @@ local function BuildBNTable(total)
 end
 
 local function OnEvent(self, event, message)
-	local _, onlineFriends = GetNumFriends()
+	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local _, numBNetOnline = BNGetNumFriends()
 
 	-- special handler to detect friend coming online or going offline
@@ -451,7 +452,8 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	lastTooltipXLineHeader = nil
 
-	local numberOfFriends, onlineFriends = GetNumFriends()
+	local onlineFriends = C_FriendList_GetNumOnlineFriends()
+	local numberOfFriends = C_FriendList_GetNumFriends()
 	local totalBNet, numBNetOnline = BNGetNumFriends()
 
 	local totalonline = onlineFriends + numBNetOnline

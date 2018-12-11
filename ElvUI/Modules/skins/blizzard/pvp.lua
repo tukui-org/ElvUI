@@ -33,16 +33,6 @@ local function LoadSkin()
 	end
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
-	PVPQueueFrameBg:Hide()
-	PVPQueueFrameInsetRightBorder:Hide()
-	PVPQueueFrameInsetLeftBorder:Hide()
-	PVPQueueFrameInsetTopBorder:Hide()
-	PVPQueueFrameInsetBottomBorder:Hide()
-	PVPQueueFrameInsetBotLeftCorner:Hide()
-	PVPQueueFrameInsetBotRightCorner:Hide()
-	PVPQueueFrameInsetTopRightCorner:Hide()
-	PVPQueueFrameInsetTopLeftCorner:Hide()
-
 	PVPQueueFrame.HonorInset:StripTextures()
 	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
 
@@ -58,11 +48,7 @@ local function LoadSkin()
 
 	-- Honor Frame
 	local HonorFrame = _G["HonorFrame"]
-	local Inset = HonorFrame.Inset
-
-	for i = 1, 9 do
-		select(i, Inset:GetRegions()):Hide()
-	end
+	HonorFrame:StripTextures()
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
@@ -158,14 +144,8 @@ local function LoadSkin()
 
 	-- Conquest Frame
 	local ConquestFrame = _G["ConquestFrame"]
-	local Inset = ConquestFrame.Inset
-
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:Hide()
-
-	for i = 1, 9 do
-		select(i, Inset:GetRegions()):Hide()
-	end
 
 	S:HandleButton(ConquestJoinButton, true)
 

@@ -1318,7 +1318,7 @@ function mod:Initialize()
 
 	if not self.db.hideBlizzardPlates then
 		--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
-		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function(self, _, bar)
+		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(self, _, bar)
 			if bar and bar == self.nameplateBar then
 				if mod.ClassBar ~= bar then
 					mod:SetClassNameplateBar(bar) --update our ClassBar link

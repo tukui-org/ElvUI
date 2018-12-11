@@ -286,9 +286,6 @@ local function LoadSkin()
 
 	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
 	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
-	PvpTalentFrame.TalentList.MyTopLeftCorner:Hide()
-	PvpTalentFrame.TalentList.MyTopRightCorner:Hide()
-	PvpTalentFrame.TalentList.MyTopBorder:Hide()
 
 	local TalentList_CloseButton = select(4, PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
 	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then

@@ -38,8 +38,6 @@ local function LoadSkin()
 	--[[ mount journal (tab 1) ]]--
 	-------------------------------
 	MountJournal:StripTextures()
-	MountJournal.LeftInset:StripTextures()
-	MountJournal.RightInset:StripTextures()
 	MountJournal.MountDisplay:StripTextures()
 	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
@@ -503,6 +501,7 @@ local function LoadSkin()
 	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC
+	local WardrobeFrame = _G["WardrobeFrame"]
 	WardrobeFrame:StripTextures()
 	WardrobeFrame:SetTemplate("Transparent")
 	WardrobeOutfitFrame:StripTextures()
@@ -517,7 +516,6 @@ local function LoadSkin()
 	WardrobeOutfitDropDown.SaveButton:SetPoint("LEFT", WardrobeOutfitDropDown, "RIGHT", 1, 4)
 
 	WardrobeTransmogFrame:StripTextures()
-	WardrobeTransmogFrame.Inset:StripTextures()
 
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()

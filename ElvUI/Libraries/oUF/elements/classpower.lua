@@ -61,9 +61,6 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower or 9
 local SPELL_POWER_CHI = Enum.PowerType.Chi or 12
 local SPELL_POWER_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 
--- sourced from FrameXML/TargetFrame.lua
-local MAX_COMBO_POINTS = MAX_COMBO_POINTS or 5
-
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
 local ClassPowerEnable, ClassPowerDisable
@@ -103,16 +100,10 @@ local function Update(self, event, unit, powerType)
 
 	local cur, max, mod, oldMax
 	if(event ~= 'ClassPowerDisable') then
-		if(unit == 'vehicle') then
-			-- BUG: UnitPower always returns 0 combo points for vehicles
-			cur = GetComboPoints(unit)
-			max = MAX_COMBO_POINTS
-			mod = 1
-		else
-			cur = UnitPower('player', ClassPowerID, true)
-			max = UnitPowerMax('player', ClassPowerID)
-			mod = UnitPowerDisplayMod(ClassPowerID)
-		end
+		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
+		cur = UnitPower(unit, powerID, true)
+		max = UnitPowerMax(unit, powerID)
+		mod = UnitPowerDisplayMod(powerID)
 
 		-- mod should never be 0, but according to Blizz code it can actually happen
 		cur = mod == 0 and 0 or cur / mod
@@ -176,7 +167,7 @@ local function Visibility(self, event, unit)
 	local shouldEnable
 
 	if(UnitHasVehicleUI('player')) then
-		shouldEnable = true
+		shouldEnable = PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
 		if(not RequireSpec or RequireSpec == GetSpecialization()) then
