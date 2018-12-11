@@ -489,6 +489,14 @@ function E:FormatMoney(amount, style, textonly)
 		else
 			return format("%d%s", copper, coppername)
 		end
+	elseif style == "BLIZZARD2" then
+		if gold > 0 then
+			return format("%s%s %02d%s %02d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+		elseif silver > 0 then
+			return format("%d%s %02d%s", silver, silvername, copper, coppername)
+		else
+			return format("%d%s", copper, coppername)
+		end
 	end
 
 	-- Shouldn't be here; punt

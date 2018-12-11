@@ -461,6 +461,7 @@ L["TopRightMiniPanel"] = "Minimap Obenrechts (Innen)"
 L["Use Tooltip"] = "Benutze Tooltip"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Zeige innerhalb eines Schlachtfeldes persönliche Statistiken in den Haupt-Infoleisten."
 L["Word Wrap"] = "Zeilenumbruch"
+L["WoW Token:"] = true -- No need to translate
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."
@@ -501,6 +502,7 @@ L["Chat Bubble Names"] = "Sprechblasen Name"
 L["Chat Output"] = "Chat Ausgabe"
 L["Color Gradient"] = "Farbverlauf"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
+L["Crop Icons"] = "Symbole zuschneiden"
 L["Current / Max - Percent"] = "Aktuell / Max - Prozent"
 L["Decimal Length"] = "Dezimalstellen"
 L["Direction the bar moves on gains/losses"] = "Richtung in die der Balken wächst/sinkt"
@@ -556,6 +558,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Das Dünne Rahmen Theme ändert das gesamte Erscheinungsbild deines UI. Das Benutzten des Dünnen Rahmen Theme ist ein kleiner performance Schub gegenüber dem traditionellen Layout."
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "Der Einheitenpräfix den du benutzen möchtest wenn die Werte von ElvUI verkürzt sind. Wird meist auf den Einheitenfenstern benutzt."
 L["Thin Border Theme"] = "Dünner Rahmen Theme"
+L["This is for Customized Icons in your Interface/Icons folder."] = "Dieses ist für Benutzerdefinierte Symbole in deinem Interface/Icon Ordner."
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "Dieses wählt das Chatfenster aus wo die ElvUI Nachrichten erscheinen sollen."
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"

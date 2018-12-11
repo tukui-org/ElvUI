@@ -459,6 +459,7 @@ L["TopRightMiniPanel"] = "Minicarte en haut à droite (intérieur)"
 L["Use Tooltip"] = "Utiliser l'infobulle"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Lorsqu'à l'intérieur d'un champ de bataille, afficher le tableau des scores personnels dans la barre principale des textes d'informations."
 L["Word Wrap"] = "Césure des mots"
+L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Doit être dans le même groupe avec le joueur s'il n'est pas du même serveur."
@@ -499,6 +500,7 @@ L["Chat Bubble Names"] = true
 L["Chat Output"] = true
 L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
+L["Crop Icons"] = true
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = true
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre lors de gains/pertes"
@@ -554,6 +556,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = true
 L["Thin Border Theme"] = "Thème aec bordures fines"
+L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = true
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"

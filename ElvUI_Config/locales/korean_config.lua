@@ -506,6 +506,7 @@ L["TopRightMiniPanel"] = "미니맵 우상단 (내부)"
 L["Use Tooltip"] = "툴팁 사용"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "전장 안에 있는 경우 주 정보문자에 자신의 각종 점수들을 표시하게 합니다."
 L["Word Wrap"] = true
+L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "대상으로 잡은 유저가 타 서버 유저라면 반드시 그 유저와 파티를 맻고 있어야 합니다."
@@ -546,6 +547,7 @@ L["Chat Bubble Names"] = "말풍성에 이름 표시"
 L["Chat Output"] = true
 L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
+L["Crop Icons"] = true
 L["Current / Max - Percent"] = true
 L["Decimal Length"] = "소숫점 자릿수"
 L["Direction the bar moves on gains/losses"] = "바의 증감방향을 결정합니다."
@@ -601,6 +603,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "얇은 경계 테마 옵션은 인터페이스의 전반적인 외형을 변경합니다. 얇은 경계 테마를 사용하는 것은 기존보다 약간 성능이 향상됩니다."
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "ElvUI에서 수치를 짧게 표시하고 싶을때 단위를 사용해 축약합니다. 주로 유닛프레임에서 사용됩니다."
 L["Thin Border Theme"] = "얇은 경계 테마"
+L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = true
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"

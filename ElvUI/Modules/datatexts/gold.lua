@@ -11,13 +11,13 @@ local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
-
+local C_WowTokenPublic = C_WowTokenPublic
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvDB, ToggleAllBags
 
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
-
+local Ticker
 local Profit	= 0
 local Spent		= 0
 local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
@@ -25,6 +25,12 @@ local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Ri
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
+
+	if not Ticker then
+		C_WowTokenPublic.UpdateMarketPrice()
+		Ticker = C_Timer.NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
+	end
+
 	local NewMoney = GetMoney();
 	ElvDB = ElvDB or { };
 	ElvDB.gold = ElvDB.gold or {};
@@ -74,7 +80,7 @@ local function OnEnter(self)
 	elseif (Profit-Spent)>0 then
 		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
 	end
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
@@ -86,20 +92,22 @@ local function OnEnter(self)
 		end
 	end
 
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Server: "])
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddLine(' ')
+	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic.GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(CURRENCY)
 		end
 		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
 	end
 
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(resetCountersFormatter)
 	DT.tooltip:AddLine(resetInfoFormatter)
 

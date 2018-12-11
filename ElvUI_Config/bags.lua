@@ -62,6 +62,7 @@ E.Options.args.bags = {
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
+						['BLIZZARD2'] = L["Blizzard Style"].." 2",
 					},
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateGoldText(); end,
 				},

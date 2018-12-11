@@ -1680,6 +1680,10 @@ function E:Initialize(loginFrame)
 
 	self:UIScale('PLAYER_LOGIN', loginFrame)
 
+	if not E.db.general.cropIcon then
+		E.TexCoords = {0, 1, 0, 1}
+	end
+
 	self:LoadCommands() --Load Commands
 	self:InitializeModules() --Load Modules
 	self:LoadMovers() --Load Movers
