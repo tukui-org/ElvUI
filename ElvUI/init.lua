@@ -172,7 +172,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	end
 
 	if self.CreatedMovers then
-		for name, _ in pairs(self.CreatedMovers) do
+		for name in pairs(self.CreatedMovers) do
 			if _G[name] and _G[name]:IsShown() then
 				err = true;
 				_G[name]:Hide();
@@ -327,3 +327,5 @@ if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 		end
 	end)
 end
+
+DisableAddOn("ElvUI_EverySecondCounts")

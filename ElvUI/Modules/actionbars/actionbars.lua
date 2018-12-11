@@ -179,11 +179,12 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetAlpha(self.db[barName].alpha);
 	end
 
-	if(self.db[barName].inheritGlobalFade) then
+	if self.db[barName].inheritGlobalFade then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
+
 	local button, lastButton, lastColumnButton;
 	local firstButtonSpacing = (self.db[barName].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 	for i=1, NUM_ACTIONBAR_BUTTONS do
@@ -237,7 +238,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil);
+		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil);
 		button:SetCheckedTexture("")
 	end
 
@@ -269,9 +270,10 @@ function AB:PositionAndSizeBar(barName)
 
 				if newstate == 1 then
 					if(HasVehicleActionBar()) then
-						bar:SetAttribute("state", GetVehicleBarIndex()) -- This should update the bar correctly for King's Rest now.
-						bar:ChildUpdate("state", GetVehicleBarIndex())
-						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", GetVehicleBarIndex()) --Update MainMenuBarArtFrame too.
+						local index = GetVehicleBarIndex() -- This should update the bar correctly for King's Rest now.
+						bar:SetAttribute("state", index)
+						bar:ChildUpdate("state", index)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", index) -- Update MainMenuBarArtFrame too.
 					else
 						if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 							ParsedText = GetTempShapeshiftBarIndex() or ParsedText
@@ -327,7 +329,9 @@ function AB:PositionAndSizeBar(barName)
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 
-	if MasqueGroup and E.private.actionbar.masque.actionbars then MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
+		MasqueGroup:ReSkin()
+	end
 end
 
 function AB:CreateBar(id)
@@ -584,7 +588,7 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
-	for button, _ in pairs(self.handledbuttons) do
+	for button in pairs(self.handledbuttons) do
 		if button then
 			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
@@ -596,14 +600,11 @@ function AB:UpdateButtonSettings()
 	self:UpdatePetBindings()
 	self:UpdateStanceBindings()
 
-	for _, bar in pairs(self.handledBars) do
+	for barName, bar in pairs(self.handledBars) do
 		if bar then
 			self:UpdateButtonConfig(bar, bar.bindButtons)
+			self:PositionAndSizeBar(barName)
 		end
-	end
-
-	for i=1, 6 do
-		self:PositionAndSizeBar('bar'..i)
 	end
 
 	self:AdjustMaxStanceButtons()
@@ -639,7 +640,12 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	local normal  = _G[name.."NormalTexture"];
 	local normal2 = button:GetNormalTexture()
 	local shine = _G[name.."Shine"];
+
 	local color = self.db.fontColor
+
+	local countPosition = self.db.countTextPosition or 'BOTTOMRIGHT'
+	local countXOffset = self.db.countTextXOffset or 0
+	local countYOffset = self.db.countTextYOffset or 2
 
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
@@ -659,7 +665,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 
 	if count then
 		count:ClearAllPoints();
-		count:Point("BOTTOMRIGHT", 0, 2);
+		count:Point(countPosition, countXOffset, countYOffset);
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
 	end
@@ -851,24 +857,15 @@ function AB:DisableBlizzard()
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
 	MainMenuBar:SetScale(0.00001)
+	MainMenuBar:SetFrameStrata('BACKGROUND')
+	MainMenuBar:SetFrameLevel(0)
 
 	MicroButtonAndBagsBar:SetScale(0.00001)
 	MicroButtonAndBagsBar:EnableMouse(false)
+	MicroButtonAndBagsBar:SetFrameStrata('BACKGROUND')
+	MicroButtonAndBagsBar:SetFrameLevel(0)
 
-	-- This can taint
-	--[[
-	for i=1, MainMenuBar:GetNumChildren() do
-		local child = select(i, MainMenuBar:GetChildren())
-		if child then
-			child:UnregisterAllEvents()
-			child:Hide()
-			child:SetParent(UIHider)
-		end
-	end
-	]]
-
-	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
-	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
+	MainMenuBarArtFrame:UnregisterAllEvents()
 	MainMenuBarArtFrame:Hide()
 	MainMenuBarArtFrame:SetParent(UIHider)
 
@@ -909,10 +906,13 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
+
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
-		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
+		hooksecurefunc("TalentFrame_LoadUI", function()
+			PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		end)
 	end
 end
 
@@ -986,6 +986,17 @@ function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey'];
 	local text = hotkey:GetText();
 
+	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
+	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
+
+	local justify = "RIGHT"
+	if hotkeyPosition == "TOPLEFT" or hotkeyPosition == "BOTTOMLEFT" then
+		justify = "LEFT"
+	elseif hotkeyPosition == "TOP" or hotkeyPosition == "BOTTOM" then
+		justify = "CENTER"
+	end
+
 	if text then
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
 		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
@@ -1006,11 +1017,12 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'NEQUALS', "N=");
 
 		hotkey:SetText(text);
+		hotkey:SetJustifyH(justify)
 	end
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:Point("TOPRIGHT", 0, -3);
+		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset);
 	end
 end
 
@@ -1019,7 +1031,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil)
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()

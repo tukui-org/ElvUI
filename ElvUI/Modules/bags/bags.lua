@@ -14,16 +14,22 @@ local format, len, sub = string.format, string.len, string.sub
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
-local CooldownFrame_Set = CooldownFrame_Set
-local CreateFrame = CreateFrame
+local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local C_Item_CanScrapItem = C_Item.CanScrapItem
+local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
-local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
+local ContainerIDToInventoryID = ContainerIDToInventoryID
+local CooldownFrame_Set = CooldownFrame_Set
+local CreateAnimationGroup = CreateAnimationGroup
+local CreateFrame = CreateFrame
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local GetBagSlotFlag = GetBagSlotFlag
+local GetBankBagSlotFlag = GetBankBagSlotFlag
 local GetContainerItemCooldown = GetContainerItemCooldown
 local GetContainerItemID = GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
@@ -41,12 +47,15 @@ local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
 local PlaySound = PlaySound
 local PutItemInBag = PutItemInBag
+local SetBagSlotFlag = SetBagSlotFlag
+local SetBankBagSlotFlag = SetBankBagSlotFlag
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonTexture = SetItemButtonTexture
@@ -55,18 +64,18 @@ local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UpdateSlot = UpdateSlot
-local SetBagSlotFlag = SetBagSlotFlag
-local SetBankBagSlotFlag = SetBankBagSlotFlag
-local GetBagSlotFlag = GetBagSlotFlag
-local GetBankBagSlotFlag = GetBankBagSlotFlag
-local CreateAnimationGroup = CreateAnimationGroup
 local UseContainerItem = UseContainerItem
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
+
+local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
+local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
 local CONTAINER_WIDTH = CONTAINER_WIDTH
+local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
+local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
+local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
+local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -74,13 +83,9 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
-local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
-local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
-local BAG_FILTER_LABELS = BAG_FILTER_LABELS
+local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
-local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local SEARCH = SEARCH
 
 local hooksecurefunc = hooksecurefunc
@@ -93,7 +98,7 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
 -- GLOBALS: ToggleDropDownMenu, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize
 
-local ElvUIAssignBagDropdown
+local ElvUIAssignBagDropdown, TooltipModule, SkinModule
 local SEARCH_STRING = ""
 
 function B:GetContainerFrame(arg)
@@ -399,6 +404,27 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
+local UpdateItemScrapIcon;
+function UpdateItemScrapIcon(slot)
+	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
+	-- Also the option dont update correctly.
+	if not E.db.bags.scrapIcon then
+		slot.ScrapIcon:SetShown(false)
+		return
+	end
+
+	local itemLocation = ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
+	if not itemLocation then return end
+
+	if itemLocation and itemLocation ~= "" then
+		if (C_Item_DoesItemExist(itemLocation) and C_Item_CanScrapItem(itemLocation)) and E.db.bags.scrapIcon then
+			slot.ScrapIcon:SetShown(itemLocation)
+		else
+			slot.ScrapIcon:SetShown(false)
+		end
+	end
+end
+
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show and E.db.bags.newItemGlow then
@@ -443,11 +469,11 @@ function B:UpdateSlot(bagID, slotID)
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
-	slot.name, slot.rarity = nil, nil;
+	slot.name, slot.rarity = nil, nil
 	local texture, count, locked, readable, noValue, _
-	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
+	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
 
-	local clink = GetContainerItemLink(bagID, slotID);
+	local clink = GetContainerItemLink(bagID, slotID)
 
 	slot:Show();
 	if slot.questIcon then
@@ -455,15 +481,19 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	if slot.Azerite then
-		slot.Azerite:Hide();
+		slot.Azerite:Hide()
 	end
 
 	if slot.JunkIcon then
 		if slot.rarity and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
-			slot.JunkIcon:Show();
+			slot.JunkIcon:Show()
 		else
 			slot.JunkIcon:Hide()
 		end
+	end
+
+	if slot.ScrapIcon then
+		UpdateItemScrapIcon(slot)
 	end
 
 	if slot.UpgradeIcon then
@@ -669,15 +699,15 @@ function B:AssignBagFlagMenu()
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
 	local info = UIDropDownMenu_CreateInfo()
-    info.text = BAG_FILTER_ASSIGN_TO
-    info.isTitle = 1
-    info.notCheckable = 1
-    UIDropDownMenu_AddButton(info)
+	info.text = BAG_FILTER_ASSIGN_TO
+	info.isTitle = 1
+	info.notCheckable = 1
+	UIDropDownMenu_AddButton(info)
 
-    info.isTitle = nil
-    info.notCheckable = nil
-    info.tooltipWhileDisabled = 1
-    info.tooltipOnButton = 1
+	info.isTitle = nil
+	info.notCheckable = nil
+	info.tooltipWhileDisabled = 1
+	info.tooltipOnButton = 1
 
 	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 		if i ~= LE_BAG_FILTER_FLAG_JUNK then
@@ -910,10 +940,19 @@ function B:Layout(isBank)
 					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
 					if not f.Bags[bagID][slotID].JunkIcon then
 						local JunkIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
-						JunkIcon:SetAtlas("bags-junkcoin")
+						JunkIcon:SetAtlas("bags-junkcoin", true)
 						JunkIcon:Point("TOPLEFT", 1, 0)
 						JunkIcon:Hide()
 						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
+					if not f.Bags[bagID][slotID].ScrapIcon then
+						local ScrapIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						ScrapIcon:SetAtlas("bags-icon-scrappable")
+						ScrapIcon:SetSize(14, 12)
+						ScrapIcon:Point("TOPRIGHT", -1, -1)
+						ScrapIcon:Hide()
+						f.Bags[bagID][slotID].ScrapIcon = ScrapIcon
 					end
 
 					if not f.Bags[bagID][slotID].Azerite then
@@ -1369,6 +1408,8 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
+	if not SkinModule then SkinModule = E:GetModule('Skins') end
+
 	local strata = E.db.bags.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent);
@@ -1420,7 +1461,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
 
-	E:GetModule('Skins'):HandleCloseButton(f.closeButton);
+	SkinModule:HandleCloseButton(f.closeButton);
 
 	f.holderFrame = CreateFrame('Frame', nil, f);
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset);
@@ -1448,7 +1489,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-		E:GetModule("Skins"):HandleButton(f.reagentFrame.cover.purchaseButton)
+		SkinModule:HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
 		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
@@ -1823,20 +1864,22 @@ end
 
 function B:OpenBags()
 	self.BagFrame:Show()
-	PlaySound(SOUNDKIT.IG_BACKPACK_OPEN)
+	PlaySound(IG_BACKPACK_OPEN)
 
-	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
+	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
+	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
 	self.BagFrame:Hide()
-	PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
+	PlaySound(IG_BACKPACK_CLOSE)
 
 	if self.BankFrame then
 		self.BankFrame:Hide()
 	end
 
-	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
+	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
+	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:OpenBank()
@@ -2081,6 +2124,7 @@ function B:CreateSellFrame()
 	B.SellFrame:Size(200,40)
 	B.SellFrame:Point("CENTER", E.UIParent)
 	B.SellFrame:CreateBackdrop("Transparent")
+	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 
 	B.SellFrame.title = B.SellFrame:CreateFontString(nil, "OVERLAY")
 	B.SellFrame.title:FontTemplate(nil, 12, "OUTLINE")
@@ -2117,6 +2161,13 @@ function B:CreateSellFrame()
 	B.SellFrame:SetScript("OnUpdate", B.VendorGreys_OnUpdate)
 
 	B.SellFrame:Hide()
+end
+
+function B:UpdateSellFrameSettings()
+	if not B.SellFrame or not B.SellFrame.Info then return; end
+
+	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
+	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 end
 
 B.BagIndice = {

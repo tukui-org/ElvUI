@@ -1327,7 +1327,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if ( chatGroup == "SYSTEM") then
 				local matchFound = false;
 				local message = strlower(arg1);
-				for playerName, _ in pairs(self.privateMessageList) do
+				for playerName in pairs(self.privateMessageList) do
 					local playerNotFoundMsg = strlower(format(GlobalStrings.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName));
 					local charOnlineMsg = strlower(format(GlobalStrings.ERR_FRIEND_ONLINE_SS, playerName, playerName));
 					local charOfflineMsg = strlower(format(GlobalStrings.ERR_FRIEND_OFFLINE_S, playerName));
@@ -1805,7 +1805,7 @@ local protectLinks = {}
 function CH:CheckKeyword(message)
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
 		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
-		for keyword, _ in pairs(CH.Keywords) do
+		for keyword in pairs(CH.Keywords) do
 			if hyperLink == keyword then
 				if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
@@ -1828,7 +1828,7 @@ function CH:CheckKeyword(message)
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
 			tempWord = gsub(word, "[%s%p]", "")
 			lowerCaseWord = tempWord:lower()
-			for keyword, _ in pairs(CH.Keywords) do
+			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == keyword:lower() then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
 					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then

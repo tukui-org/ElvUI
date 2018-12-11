@@ -286,8 +286,20 @@ E.Options.args.general = {
 					values = AceGUIWidgetLSMlists.font,
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 				},
-				applyFontToAll = {
+				fontStyle = {
+					type = "select",
 					order = 4,
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = NONE,
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+				},
+				applyFontToAll = {
+					order = 5,
 					type = 'execute',
 					name = L["Apply Font To All"],
 					desc = L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."],
@@ -295,7 +307,7 @@ E.Options.args.general = {
 				},
 				dmgfont = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 5,
+					order = 6,
 					name = L["CombatText Font"],
 					desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 					values = AceGUIWidgetLSMlists.font,
@@ -304,7 +316,7 @@ E.Options.args.general = {
 				},
 				namefont = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 6,
+					order = 7,
 					name = L["Name Font"],
 					desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 					values = AceGUIWidgetLSMlists.font,
@@ -312,7 +324,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
 				},
 				replaceBlizzFonts = {
-					order = 7,
+					order = 8,
 					type = 'toggle',
 					name = L["Replace Blizzard Fonts"],
 					desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
@@ -456,6 +468,14 @@ E.Options.args.general = {
 						t.r, t.g, t.b, t.a = r, g, b, a
 						E:UpdateMedia()
 					end,
+				},
+				cropIcon = {
+					order = 35,
+					type = 'toggle',
+					name = L["Crop Icons"],
+					desc = L["This is for Customized Icons in your Interface/Icons folder."],
+					get = function(info) return E.db.general[ info[#info] ] end,
+					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 				},
 			},
 		},

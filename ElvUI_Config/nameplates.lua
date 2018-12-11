@@ -445,7 +445,7 @@ local function UpdateStyleLists()
 			args = {},
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
+			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
 				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
 					name = name,
 					type = "toggle",
@@ -471,7 +471,7 @@ local function UpdateStyleLists()
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) then
 			local spell, spellName, notDisabled
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) do
+			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
@@ -510,7 +510,7 @@ local function UpdateStyleLists()
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) then
 			local spell, spellName, notDisabled
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) do
+			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
@@ -554,7 +554,7 @@ local function UpdateStyleLists()
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
 			local spell, spellName, notDisabled
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
+			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
@@ -594,7 +594,7 @@ local function UpdateStyleLists()
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
 			local spell, spellName, notDisabled
-			for name, _ in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
+			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
 				spell = name
 				if tonumber(spell) then
 					spellName = GetSpellInfo(spell)
@@ -3614,6 +3614,15 @@ E.Options.args.nameplate = {
 							min = 10, max = 50, step = 1,
 							get = function(info) return E.db.nameplates.questIconSize end,
 							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
+						},
+						questIconPosition = {
+							type = 'select',
+							order = 3,
+							name = L["Position"],
+							values = {
+								["LEFT"] = L["Left"],
+								["RIGHT"] = L["Right"],
+							},
 						},
 					},
 				},

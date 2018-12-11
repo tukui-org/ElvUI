@@ -66,9 +66,6 @@ local function LoadSkin()
 						region:SetAllPoints()
 						region:SetDrawLayer("ARTWORK", 1)
 						region:SetAlpha(0.8)
-					elseif region == self.StyleFrame.CurrencyBG then
-						region:SetDrawLayer("ARTWORK", 2)
-						region:SetAlpha(0.4)
 					else
 						region:Hide()
 					end
@@ -79,10 +76,15 @@ local function LoadSkin()
 			self.Background:SetAlpha(0.8)
 		end
 
+		if self.NineSlice then self.NineSlice:Hide() end
+		if self.OverlayElements then self.OverlayElements:Hide() end
+		if self.CloseButton.Border then self.CloseButton.Border:Hide() end
+		if self.CurrencyBG then self.CurrencyBG:Hide() end
 		if self.PortraitFrame then self.PortraitFrame:Hide() end
-		if self.CornerLogo then self.CornerLogo:Hide() end
 		if self.portrait then self.portrait:Hide() end
 		if self.skinned then return end
+
+		if self.Currency.Icon then self.Currency.Icon:SetTexCoord(unpack(E.TexCoords)) end
 
 		for i=1, self:GetNumRegions() do
 			local region = select(i, self:GetRegions())

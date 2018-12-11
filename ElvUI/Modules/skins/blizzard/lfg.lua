@@ -20,7 +20,7 @@ local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
--- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS
+-- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS, CHALLENGE_MODE_EXTRA_AFFIX_INFO
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
@@ -30,12 +30,7 @@ local function LoadSkin()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
 	PVEFrameBg:Hide()
-	PVEFrameTitleBg:Hide()
 	PVEFramePortrait:Hide()
-	PVEFramePortraitFrame:Hide()
-	PVEFrameTopRightCorner:Hide()
-	PVEFrameTopBorder:Hide()
-	PVEFrameLeftInsetBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
@@ -224,7 +219,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:CropIcon(bu.icon, bu)
+		S:HandleTexture(bu.icon, bu)
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")
@@ -296,11 +291,7 @@ local function LoadSkin()
 
 	-- Raid Finder
 	RaidFinderFrame:StripTextures()
-	RaidFinderFrameBottomInset:StripTextures()
 	RaidFinderFrameRoleInset:StripTextures()
-	RaidFinderFrameBottomInsetBg:Hide()
-	RaidFinderFrameBtnCornerRight:Hide()
-	RaidFinderFrameButtonBottomBorder:Hide()
 	S:HandleDropDownBox(RaidFinderQueueFrameSelectionDropDown)
 	RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
@@ -310,9 +301,6 @@ local function LoadSkin()
 
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
-	ScenarioFinderFrame.TopTileStreaks:Hide()
-	ScenarioFinderFrameBtnCornerRight:Hide()
-	ScenarioFinderFrameButtonBottomBorder:Hide()
 	ScenarioQueueFrame.Bg:Hide()
 	ScenarioFinderFrameInset:GetRegions():Hide()
 
@@ -373,16 +361,9 @@ local function LoadSkin()
 	RaidBrowserFrameBg:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
-	LFRBrowseFrameRoleInsetBg:Hide()
 	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
 	LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
 	LFRBrowseFrameColumnHeader2:Width(38)
-
-	for i = 1, 14 do
-		if i ~= 6 and i ~= 8 then
-			select(i, RaidBrowserFrame:GetRegions()):Hide()
-		end
-	end
 
 	RaidBrowserFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(RaidBrowserFrameCloseButton)
@@ -534,7 +515,7 @@ local function LoadSkin()
 		['Damager'] = true
 	}
 
-	for x, _ in pairs(columns) do
+	for x in pairs(columns) do
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Left:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Middle:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()
@@ -671,7 +652,6 @@ local function LoadSkin()
 	-- Tutorial
 	S:HandleCloseButton(PremadeGroupsPvETutorialAlert.CloseButton)
 end
-
 S:AddCallback("LFG", LoadSkin)
 
 local function LoadSecondarySkin()
@@ -680,7 +660,6 @@ local function LoadSecondarySkin()
 	local ChallengesFrame = _G["ChallengesFrame"]
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
 	ChallengesFrameInset:StripTextures()
-	ChallengesFrameInsetBg:Hide()
 
 	-- Mythic+ KeyStoneFrame
 	local KeyStoneFrame = _G["ChallengesKeystoneFrame"]

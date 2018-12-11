@@ -5,7 +5,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Lua functions
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
-local tinsert, wipe, next = table.insert, table.wipe, next
+local tinsert, wipe = table.insert, table.wipe
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -246,18 +246,6 @@ function S:HandleButton(button, strip, isDeclineButton)
 	button:SetTemplate("Default", true)
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
-end
-
-function S:CropIcon(texture, parent)
-	texture:SetTexCoord(unpack(E.TexCoords))
-	if parent then
-		local layer, subLevel = texture:GetDrawLayer()
-		local iconBorder = parent:CreateTexture(nil, layer, nil, subLevel - 1)
-		iconBorder:SetPoint("TOPLEFT", texture, -1, 1)
-		iconBorder:SetPoint("BOTTOMRIGHT", texture, 1, -1)
-		iconBorder:SetColorTexture(0, 0, 0)
-		return iconBorder
-	end
 end
 
 function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
@@ -864,8 +852,8 @@ function S:HandleSliderFrame(frame)
 		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
 
-	frame:SetThumbTexture(E.media.blankTex)
-	frame:GetThumbTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+	frame:SetThumbTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then

@@ -198,12 +198,12 @@ function CP:ImportFromProfile(section, pluginSection)
 	--Some checks for the occasion someone passes wrong stuff
 	if not section then error("No profile section provided. Usage CP:ImportFromProfile(\"section\")") end
 	if not pluginSection and CP.InternalOptions[section] then error(format("Section name could not be \"%s\". This name is reserved for internal setting"), section) end
-	if pluginSection and CP.InternalOptions[pluginSection][section] then error(format("Section name for plugin group \"%s\" could not be \"%s\". This name is reserved for internal setting"), pluginSection, section) end
+	if pluginSection and (CP.InternalOptions[pluginSection] and CP.InternalOptions[pluginSection][section]) then error(format("Section name for plugin group \"%s\" could not be \"%s\". This name is reserved for internal setting"), pluginSection, section) end
 
 	local module = pluginSection and E.global.profileCopy[pluginSection][section] or E.global.profileCopy[section]
 	if not module then error(format("Provided section name \"%s\" does not have a template for profile copy.", section)) end
 	--Starting digging through the settings
-	local CopyFrom = pluginSection and ElvDB.profiles[E.global.profileCopy.selected][pluginSection][section] or ElvDB.profiles[E.global.profileCopy.selected][section]
+	local CopyFrom = pluginSection and (ElvDB.profiles[E.global.profileCopy.selected][pluginSection] and ElvDB.profiles[E.global.profileCopy.selected][pluginSection][section] or P[pluginSection][section]) or ElvDB.profiles[E.global.profileCopy.selected][section]
 	local CopyTo = pluginSection and E.db[pluginSection][section] or E.db[section]
 	local CopyDefault = pluginSection and P[pluginSection][section] or P[section]
 	--Making sure tables actually exist in profiles (e.g absent values in ElvDB.profiles are for default values)

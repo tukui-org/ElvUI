@@ -10,60 +10,33 @@ local select = select
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
-local function SkinEtheralFrame(frame)
-	frame.CornerTL:Hide()
-	frame.CornerTR:Hide()
-	frame.CornerBL:Hide()
-	frame.CornerBR:Hide()
-
-	local name = frame:GetName()
-	_G[name.."LeftEdge"]:Hide()
-	_G[name.."RightEdge"]:Hide()
-	_G[name.."TopEdge"]:Hide()
-	_G[name.."BottomEdge"]:Hide()
-
-	local bg = select(23, frame:GetRegions())
-	bg:ClearAllPoints()
-	bg:SetPoint("TOPLEFT", -50, 25)
-	bg:SetPoint("BOTTOMRIGHT")
-	bg:SetTexture([[Interface\Transmogrify\EtherealLines]], true, true)
-	bg:SetHorizTile(true)
-	bg:SetVertTile(true)
-	bg:SetAlpha(0.5)
-end
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
 
 	local AzeriteRespecFrame = _G["AzeriteRespecFrame"]
-	-- We can't use StripTextures() otherwise all gets killed. Not coolio!
 	AzeriteRespecFrame:SetClipsChildren(true)
 	AzeriteRespecFrame.Background:Hide()
-	SkinEtheralFrame(AzeriteRespecFrame)
+	AzeriteRespecFrame:StripTextures()
+	AzeriteRespecFrame:SetTemplate("Transparent")
 
-	AzeriteRespecFramePortraitFrame:Hide()
-	AzeriteRespecFramePortrait:Hide()
-	AzeriteRespecFrameTitleBg:Hide()
-	AzeriteRespecFrameTopBorder:Hide()
-	AzeriteRespecFrameTopRightCorner:Hide()
-	AzeriteRespecFrameRightBorder:Hide()
-	AzeriteRespecFrameLeftBorder:Hide()
-	AzeriteRespecFrameBottomBorder:Hide()
-	AzeriteRespecFrameBotRightCorner:Hide()
-	AzeriteRespecFrameBotLeftCorner:Hide()
-	AzeriteRespecFrameBg:Hide()
+	local Lines = AzeriteRespecFrame:CreateTexture(nil, "BACKGROUND")
+	Lines:ClearAllPoints()
+	Lines:SetPoint("TOPLEFT", -50, 25)
+	Lines:SetPoint("BOTTOMRIGHT")
+	Lines:SetTexture([[Interface\Transmogrify\EtherealLines]], true, true)
+	Lines:SetHorizTile(true)
+	Lines:SetVertTile(true)
+	Lines:SetAlpha(0.5)
 
 	local ItemSlot = AzeriteRespecFrame.ItemSlot
 	ItemSlot:SetSize(64, 64)
 	ItemSlot:SetPoint("CENTER", AzeriteRespecFrame)
-	ItemSlot.Icon:ClearAllPoints()
-	ItemSlot.Icon:SetPoint("TOPLEFT", 1, -1)
-	ItemSlot.Icon:SetPoint("BOTTOMRIGHT", -1, 1)
+	ItemSlot.Icon:SetInside()
 	ItemSlot.GlowOverlay:SetAlpha(0)
 
-	AzeriteRespecFrame.ItemSlot:CreateBackdrop("Transparent")
-	AzeriteRespecFrame.ItemSlot.backdrop:SetBackdropColor(153/255, 0/255, 153/255, 0.5)
-	S:CropIcon(AzeriteRespecFrame.ItemSlot.Icon)
+	ItemSlot:CreateBackdrop("Transparent")
+	ItemSlot.backdrop:SetBackdropColor(.6, 0, .6, .5)
+	S:HandleTexture(ItemSlot.Icon)
 
 	local ButtonFrame = AzeriteRespecFrame.ButtonFrame
 	ButtonFrame:GetRegions():Hide()
@@ -74,11 +47,12 @@ local function LoadSkin()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
 	ButtonFrame.MoneyFrame:SetPoint("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
 
-	AzeriteRespecFrame:CreateBackdrop("Transparent")
-	AzeriteRespecFrame.backdrop:SetAllPoints()
+	-- Hide the damn Tutorial Tooltip
+	local HelpBox = AzeriteRespecFrame.HelpBox
+	HelpBox:SetAlpha(0)
 
-	S:HandleButton(AzeriteRespecFrame.ButtonFrame.AzeriteRespecButton)
-	S:HandleCloseButton(AzeriteRespecFrameCloseButton)
+	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
+	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_AzeriteRespecUI", "AzeriteRespec", LoadSkin)

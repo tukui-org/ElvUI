@@ -37,12 +37,13 @@ P['general'] = {
 
 	['fontSize'] = 12,
 	['font'] = 'PT Sans Narrow',
+	['fontStyle'] = 'OUTLINE',
 
 	['bordercolor'] = { r = 0.1,g = 0.1,b = 0.1 },
 	['backdropcolor'] = { r = 0.1,g = 0.1,b = 0.1 },
 	['backdropfadecolor'] = { r = .06,g = .06,b = .06, a = 0.8 },
 	['valuecolor'] = {r = 254/255,g = 123/255,b = 44/255},
-
+	['cropIcon'] = true,
 	['minimap'] = {
 		['size'] = 176,
 		['locationText'] = 'MOUSEOVER',
@@ -196,6 +197,7 @@ P['bags'] = {
 	['moneyFormat'] = 'SMART',
 	['moneyCoins'] = true,
 	['junkIcon'] = false,
+	['scrapIcon'] = false,
 	['upgradeIcon'] = true,
 	['newItemGlow'] = true,
 	['ignoredItems'] = {},
@@ -242,6 +244,7 @@ P['bags'] = {
 		["enable"] = false,
 		["interval"] = 0.2,
 		["details"] = false,
+		["progressBar"] = true,
 	},
 	['split'] = {
 		['bagSpacing'] = 5,
@@ -329,6 +332,7 @@ P['nameplates'] = {
 	['alwaysShowTargetHealth'] = true,
 	['questIcon'] = true,
 	['questIconSize'] = 16,
+	['questIconPosition'] = 'RIGHT',
 	['cooldown'] = {
 		['threshold'] = 4,
 		['override'] = true,
@@ -1041,6 +1045,7 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
+	['npcID'] = true,
 	['role'] = true,
 	['font'] = 'PT Sans Narrow',
 	['fontOutline'] = 'NONE',
@@ -1121,6 +1126,7 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['useDeadBackdrop'] = false,
 		['classbackdrop'] = false,
+		['healthmultiplier'] = 0.6,
 		['auraBarByType'] = true,
 		['auraBarTurtle'] = true,
 		['auraBarTurtleColor'] = {r = 143/255, g = 101/255, b = 158/255},
@@ -3480,6 +3486,14 @@ P['actionbar'] = {
 
 	['macrotext'] = false,
 	['hotkeytext'] = true,
+
+	['hotkeyTextPosition'] = 'TOPRIGHT',
+	['hotkeyTextXOffset'] = 0,
+	['hotkeyTextYOffset'] = -3,
+
+	['countTextPosition'] = 'BOTTOMRIGHT',
+	['countTextXOffset'] = 0,
+	['countTextYOffset'] = 2,
 
 	['useRangeColorText'] = false,
 	['noRangeColor'] = { r = 0.8, g = 0.1, b = 0.1 },

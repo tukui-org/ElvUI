@@ -307,6 +307,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 
 	font = font or LSM:Fetch('font', E.db.general.font)
 	fontSize = fontSize or E.db.general.fontSize
+	fontStyle = fontStyle or E.db.general.fontStyle
 
 	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
 		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'

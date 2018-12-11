@@ -28,7 +28,7 @@ local function LoadSkin()
 	end
 
 	local VoidStorageFrame = _G["VoidStorageFrame"]
-	for i=1, 2 do
+	for i = 1, 2 do
 		local tab = VoidStorageFrame["Page"..i]
 		tab:DisableDrawLayer("BACKGROUND")
 		tab:StyleButton(nil, true)
@@ -53,60 +53,18 @@ local function LoadSkin()
 	VoidItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	VoidItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
 
-	for i = 1, 9 do
-		local button_d = _G["VoidStorageDepositButton"..i]
-		local button_w = _G["VoidStorageWithdrawButton"..i]
-		local icon_d = _G["VoidStorageDepositButton"..i.."IconTexture"]
-		local icon_w = _G["VoidStorageWithdrawButton"..i.."IconTexture"]
-
-		_G["VoidStorageDepositButton"..i.."Bg"]:Hide()
-		_G["VoidStorageWithdrawButton"..i.."Bg"]:Hide()
-
-		button_d:StyleButton()
-		button_d:SetTemplate()
-		hooksecurefunc(button_d.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r,g,b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(button_d.IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		button_w:StyleButton()
-		button_w:SetTemplate()
-		hooksecurefunc(button_w.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r,g,b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(button_w.IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		icon_d:SetTexCoord(unpack(E.TexCoords))
-		icon_d:SetInside()
-
-		icon_w:SetTexCoord(unpack(E.TexCoords))
-		icon_w:SetInside()
-	end
-
-	for i = 1, 80 do
-		local button = _G["VoidStorageStorageButton"..i]
-		local icon = _G["VoidStorageStorageButton"..i.."IconTexture"]
-
-		_G["VoidStorageStorageButton"..i.."Bg"]:Hide()
-
-		button:StyleButton()
-		button:SetTemplate()
-
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r,g,b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(button.IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+	for StorageType, NumSlots  in pairs({ ['Deposit'] = 9, ['Withdraw'] = 9, ['Storage'] = 80 }) do
+		for i = 1, NumSlots do
+			local Button = _G["VoidStorage"..StorageType.."Button"..i]
+			Button:StripTextures()
+			Button:SetTemplate()
+			Button:StyleButton()
+			S:HandleTexture(Button.icon)
+			Button.icon:SetInside()
+			Button.IconBorder:SetAlpha(0)
+			hooksecurefunc(Button.IconBorder, 'SetVertexColor', function(self, r, g, b) Button:SetBackdropBorderColor(r, g, b) end)
+			hooksecurefunc(Button.IconBorder, 'Hide', function(self) Button:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		end
 	end
 end
 

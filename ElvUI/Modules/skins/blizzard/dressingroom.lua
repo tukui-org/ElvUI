@@ -17,7 +17,6 @@ local function LoadSkin()
 	DressUpFrame:CreateBackdrop("Transparent")
 
 	DressUpFramePortrait:Hide()
-	DressUpFramePortraitFrame:Hide()
 	DressUpFrameInset:Hide()
 
 	S:HandleButton(DressUpFrameResetButton)

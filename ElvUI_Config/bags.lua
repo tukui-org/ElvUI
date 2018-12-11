@@ -62,6 +62,7 @@ E.Options.args.bags = {
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
+						['BLIZZARD2'] = L["Blizzard Style"].." 2",
 					},
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateGoldText(); end,
 				},
@@ -86,15 +87,22 @@ E.Options.args.bags = {
 					desc = L["Display the upgrade icon on items that WoW considers an upgrade for your character."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
-				newItemGlow = {
+				scrapIcon = {
 					order = 8,
+					type = 'toggle',
+					name = L["Show Scrap Icon"],
+					desc = L["Display the scrap icon on items that can be scrapped."],
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
+				},
+				newItemGlow = {
+					order = 9,
 					type = 'toggle',
 					name = L["Show New Item Glow"],
 					desc = L["Display the New Item Glow"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				clearSearchOnClose = {
-					order = 9,
+					order = 10,
 					type = 'toggle',
 					name = L["Clear Search On Close"],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
@@ -109,25 +117,25 @@ E.Options.args.bags = {
 					end,
 				},
 				reverseSlots = {
-					order = 11,
+					order = 12,
 					type = "toggle",
 					name = L["Reverse Bag Slots"],
 					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
 				},
 				disableBagSort = {
-					order = 12,
+					order = 13,
 					type = "toggle",
 					name = L["Disable Bag Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
 				},
 				disableBankSort = {
-					order = 13,
+					order = 14,
 					type = "toggle",
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
 				strata = {
-					order = 14,
+					order = 15,
 					type = "select",
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
@@ -141,7 +149,7 @@ E.Options.args.bags = {
 					},
 				},
 				countGroup = {
-					order = 15,
+					order = 16,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -191,7 +199,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 16,
+					order = 17,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,
@@ -659,7 +667,7 @@ E.Options.args.bags = {
 			type = "group",
 			name = L["Vendor Grays"],
 			get = function(info) return E.db.bags.vendorGrays[ info[#info] ] end,
-			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value end,
+			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value; B:UpdateSellFrameSettings() end,
 			args = {
 				enable = {
 					order = 1,
@@ -678,6 +686,11 @@ E.Options.args.bags = {
 					order = 3,
 					name = L["Vendor Gray Detailed Report"],
 					desc = L["Displays a detailed report of every item sold when enabled."],
+					type = "toggle",
+				},
+				progressBar = {
+					order = 4,
+					name = L["Progress Bar"],
 					type = "toggle",
 				},
 			},

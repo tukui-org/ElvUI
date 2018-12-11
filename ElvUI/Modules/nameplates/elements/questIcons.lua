@@ -7,6 +7,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local _G = _G
 local pairs = pairs
 local unpack = unpack
+local floor = math.floor
 local match = string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -128,7 +129,7 @@ function mod:GetQuests(unitID)
 
 			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
-				QuestList[index].objectiveCount = y - x
+				QuestList[index].objectiveCount = floor(y - x)
 			end
 
 			local QuestLogIndex, itemTexture, _
@@ -136,10 +137,10 @@ function mod:GetQuests(unitID)
 				QuestLogIndex = GetQuestLogIndexByID(questID)
 				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
 
-				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				QuestList[index].isPerc = false
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
 				if progress then
-					QuestList[index].objectiveCount = progress
+					QuestList[index].objectiveCount = floor(progress)
 					QuestList[index].isPerc = true
 				end
 
@@ -271,24 +272,42 @@ end
 function mod:QuestIcon_RelativePosition(frame, element)
 	if not frame.QuestIcon then return end
 
-	local unit, isCastbar, isElite = frame.UnitType, false, false
+	local unit, isCastbarLeft, isCastbarRight, isEliteLeft, isEliteRight = frame.UnitType, false, false, false, false
 	if unit then
 		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "RIGHT" then
-			if frame.CastBar:IsShown() then isCastbar = true end
+			if frame.CastBar:IsShown() then isCastbarLeft = true end
 		end
 
 		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "RIGHT" then
-			if frame.Elite:IsShown() then isElite = true end
+			if frame.Elite:IsShown() then isEliteLeft = true end
+		end
+
+		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "LEFT" then
+			if frame.CastBar:IsShown() then isCastbarRight = true end
+		end
+
+		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "LEFT" then
+			if frame.Elite:IsShown() then isEliteRight = true end
 		end
 	end
 
 	frame.QuestIcon:ClearAllPoints()
-	if isCastbar then
-		frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
-	elseif not isCastbar and isElite then
-		frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
-	else
-		frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+	if self.db.questIconPosition == "RIGHT" then
+		if isCastbarLeft then
+			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+		elseif not isCastbarLeft and isEliteLeft then
+			frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
+		else
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+		end
+	elseif self.db.questIconPosition == "LEFT" then
+		if isCastbarRight then
+			frame.QuestIcon:SetPoint("RIGHT", frame.CastBar.Icon, "LEFT", -4, 0)
+		elseif not isCastbarRight and isEliteRight then
+			frame.QuestIcon:SetPoint("RIGHT", frame.Elite, "LEFT", -4, 0)
+		else
+			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -4, 0)
+		end
 	end
 end
 

@@ -4,10 +4,8 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
-
+local pairs = pairs
 --WoW API / Variables
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
@@ -18,41 +16,22 @@ local function LoadSkin()
 	local MachineFrame = _G["ScrappingMachineFrame"]
 	MachineFrame:StripTextures()
 	ScrappingMachineFrameInset:Hide()
-	MachineFrame.ScrapButton.LeftSeparator:Hide()
-	MachineFrame.ScrapButton.RightSeparator:Hide()
 
 	MachineFrame:CreateBackdrop("Transparent")
 
 	S:HandleCloseButton(ScrappingMachineFrameCloseButton)
 	S:HandleButton(MachineFrame.ScrapButton)
 
-	local function refreshIcon(self)
-		local quality = 1
-		if self.itemLocation and not self.item:IsItemEmpty() and self.item:GetItemName() then
-			quality = self.item:GetItemQuality()
-		end
-		local color = BAG_ITEM_QUALITY_COLORS[quality]
-		if color and self.itemLocation and not self.item:IsItemEmpty() and self.item:GetItemName() then
-			self.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			self.backdrop:SetBackdropBorderColor(nil) -- Clear the BackdropBorderColor if no item is in the slot.
-		end
-	end
-
 	local ItemSlots = MachineFrame.ItemSlots
 	ItemSlots:StripTextures()
 
 	for button in pairs(ItemSlots.scrapButtons.activeObjects) do
-		if not button.styled then
-			button:CreateBackdrop("Default")
-
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
-			button.IconBorder:SetAlpha(0)
-
-			hooksecurefunc(button, "RefreshIcon", refreshIcon)
-
-			button.styled = true
-		end
+		button:StripTextures()
+		button:SetTemplate()
+		S:HandleTexture(button.Icon)
+		button.IconBorder:SetAlpha(0)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
+		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(E['media'].bordercolor) end)
 	end
 
 	-- Temp mover

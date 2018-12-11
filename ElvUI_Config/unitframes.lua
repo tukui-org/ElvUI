@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
@@ -15,7 +15,6 @@ local twipe = table.wipe
 local strsplit = strsplit
 local match = string.match
 local gsub = string.gsub
-local tonumber = tonumber
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -1071,6 +1070,11 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
+			bgUseBarTexture = {
+				type = "toggle",
+				order = 6,
+				name = L["Use Health Texture on Background"],
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1274,7 +1278,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 				width = 'full',
 				get = function() return '' end,
 				set = function(info, textName)
-					for object, _ in pairs(E.db.unitframe.units[groupName]) do
+					for object in pairs(E.db.unitframe.units[groupName]) do
 						if object:lower() == textName:lower() then
 							E:Print(L["The name you have selected is already in use by another element."])
 							return
@@ -2659,18 +2663,26 @@ E.Options.args.unitframe = {
 									type = 'color',
 									name = L["Health Backdrop"],
 								},
-								tapped = {
+								healthmultiplier = {
 									order = 12,
+									name = L["Health Backdrop Multiplier"],
+									type = 'range',
+									min = 0, max = 1, step = .01,
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+								},
+								tapped = {
+									order = 13,
 									type = 'color',
 									name = L["Tapped"],
 								},
 								disconnected = {
-									order = 13,
+									order = 14,
 									type = 'color',
 									name = L["Disconnected"],
 								},
 								health_backdrop_dead = {
-									order = 14,
+									order = 15,
 									type = "color",
 									name = L["Custom Dead Backdrop"],
 									desc = L["Use this backdrop color for units that are dead or ghosts."],
@@ -4984,7 +4996,7 @@ E.Options.args.unitframe.args.boss = {
 					order = 11,
 					type = "range",
 					name = L["Spacing"],
-					min = 0, max = 400, step = 1,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
 				},
 				threatStyle = {
 					type = 'select',
@@ -7692,9 +7704,9 @@ function E:RefreshCustomTextsConfigs()
 	end
 	twipe(CUSTOMTEXT_CONFIGS)
 
-	for unit, _ in pairs(E.db.unitframe.units) do
+	for unit in pairs(E.db.unitframe.units) do
 		if E.db.unitframe.units[unit].customTexts then
-			for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
+			for objectName in pairs(E.db.unitframe.units[unit].customTexts) do
 				CreateCustomTextGroup(unit, objectName)
 			end
 		end

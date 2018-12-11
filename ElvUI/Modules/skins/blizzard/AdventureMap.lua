@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -24,7 +24,7 @@ local function LoadSkin()
 		for reward in pairs(AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 			if not reward.isSkinned then
 				S:HandleItemButton(reward)
-				reward.Icon:SetTexCoord(unpack(E.TexCoords))
+				S:HandleTexture(reward.Icon)
 				reward.Icon:SetDrawLayer("OVERLAY")
 				reward.isSkinned = true
 			end

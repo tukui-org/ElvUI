@@ -1,5 +1,5 @@
 --[[
-Copyright 2011-2016 João Cardoso
+Copyright 2011-2018 João Cardoso
 Unfit is distributed under the terms of the GNU General Public License (Version 3).
 As a special exception, the copyright holders of this library give you permission to embed it
 with independent modules to produce an addon, regardless of the license terms of these
@@ -11,9 +11,6 @@ This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with the library. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 
 This file is part of Unfit.
 --]]
@@ -82,7 +79,7 @@ do
 	elseif Class == 'SHAMAN' then
 		Unusable = {
 			{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-			{LE_ITEM_ARMOR_PLATEM}
+			{LE_ITEM_ARMOR_PLATE}
 		}
 	elseif Class == 'WARLOCK' then
 		Unusable = {

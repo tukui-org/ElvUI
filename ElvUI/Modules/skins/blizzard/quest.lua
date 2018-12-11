@@ -18,10 +18,13 @@ local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
-	scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+	if not scrollFrame.spellTex then
+		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+	end
+
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	if inset then
-		scrollFrame.spellTex:Point("TOPLEFT", 2, -2)
+		scrollFrame.spellTex:Point("TOPLEFT", 1, -1)
 	else
 		scrollFrame.spellTex:Point("TOPLEFT")
 	end
@@ -74,18 +77,8 @@ local function LoadSkin()
 		end
 	end)
 
-	QuestRewardScrollFrame:HookScript('OnShow', function(self)
-		if not self.backdrop then
-			self:CreateBackdrop("Default")
-			self:Height(self:GetHeight() - 2)
-			if not E.private.skins.parchmentRemover.enable then
-				StyleScrollFrame(self, 509, 630, false)
-			end
-		end
-		if not E.private.skins.parchmentRemover.enable then
-			self.spellTex:Height(self:GetHeight() + 217)
-		end
-	end)
+	QuestRewardScrollFrame:CreateBackdrop('Default')
+	QuestRewardScrollFrame:Height(QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc("QuestInfo_Display", function()
 		for i = 1, #QuestInfoRewardsFrame.RewardButtons do
@@ -166,7 +159,7 @@ local function LoadSkin()
 		end
 	end
 
-	for frame, _ in pairs(rewardFrames) do
+	for frame in pairs(rewardFrames) do
 		HandleReward(MapQuestInfoRewardsFrame[frame])
 	end
 
@@ -221,18 +214,16 @@ local function LoadSkin()
 	QuestGreetingScrollFrame:SetTemplate()
 
 	if E.private.skins.parchmentRemover.enable then
-		GreetingText:SetTextColor(1, 1, 1)
-		GreetingText.SetTextColor = E.Noop
-		CurrentQuestsText:SetTextColor(1, .8, .1)
-		CurrentQuestsText.SetTextColor = E.Noop
-		AvailableQuestsText:SetTextColor(1, .8, .1)
-		AvailableQuestsText.SetTextColor = E.Noop
-
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
-			QuestProgressTitleText:SetTextColor(1, .8, .1)
-			QuestProgressText:SetTextColor(1, 1, 1)
 			QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
-			QuestProgressRequiredMoneyText:SetTextColor(1, .8, .1)
+		end)
+
+		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)
+			fontString:SetTextColor(1, .8, .1)
+		end)
+
+		hooksecurefunc("QuestFrame_SetTextColor", function(fontString)
+			fontString:SetTextColor(1, 1, 1)
 		end)
 
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
@@ -279,6 +270,9 @@ local function LoadSkin()
 		StyleScrollFrame(QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
+		QuestRewardScrollFrame:HookScript('OnShow', function(self)
+			StyleScrollFrame(self, 506, 615, true)
+		end)
 	end
 
 	QuestFrameGreetingPanel:StripTextures(true)
@@ -329,15 +323,6 @@ local function LoadSkin()
 	QuestNPCModelTextFrame:StripTextures()
 	QuestNPCModelTextFrame:CreateBackdrop("Default")
 	QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
-	--QuestLogDetailFrame:StripTextures()
-	--QuestLogDetailFrame:SetTemplate("Transparent")
-	--QuestLogDetailScrollFrame:StripTextures()
-	--S:HandleCloseButton(QuestLogDetailFrameCloseButton)
-
-	--hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
-		--QuestNPCModel:ClearAllPoints();
-		--QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
-	--end)
 
 	QuestLogPopupDetailFrame:StripTextures()
 	QuestLogPopupDetailFrameInset:StripTextures()

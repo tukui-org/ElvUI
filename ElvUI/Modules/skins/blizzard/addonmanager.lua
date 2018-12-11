@@ -25,12 +25,10 @@ local function LoadSkin()
 	--Adjusting the ScrollFrame will also positon the ScrollBar.
 	AddonListScrollFrame:SetSize(499, 382)
 
-	AddonListInset:StripTextures()
-
-	S:HandleButton(AddonListEnableAllButton, true)
-	S:HandleButton(AddonListDisableAllButton, true)
-	S:HandleButton(AddonListOkayButton, true)
-	S:HandleButton(AddonListCancelButton, true)
+	S:HandleButton(AddonList.EnableAllButton, true)
+	S:HandleButton(AddonList.DisableAllButton, true)
+	S:HandleButton(AddonList.OkayButton, true)
+	S:HandleButton(AddonList.CancelButton, true)
 
 	S:HandleScrollBar(AddonListScrollFrameScrollBar, 5)
 
@@ -38,9 +36,9 @@ local function LoadSkin()
 	AddonListForceLoad:SetSize(26, 26)
 	S:HandleDropDownBox(AddonCharacterDropDown)
 
-	S:HandleCloseButton(AddonListCloseButton)
+	S:HandleCloseButton(AddonList.CloseButton)
 
-	for i=1, MAX_ADDONS_DISPLAYED do
+	for i = 1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end

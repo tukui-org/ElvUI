@@ -26,9 +26,7 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
-	ChannelFrameInset:Hide()
-	ChannelFrame.LeftInset:Hide()
-	ChannelFrame.RightInset:Hide()
+	--ChannelFrameInset:Hide()
 
 	ChannelFrame:CreateBackdrop("Transparent")
 	CreateChannelPopup:CreateBackdrop("Transparent")

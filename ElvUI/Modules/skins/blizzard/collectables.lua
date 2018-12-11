@@ -4,17 +4,16 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
-local C_PetJournal_GetPetStats = C_PetJournal.GetPetStats
-local C_PetJournal_GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon
+-- GLOBALS: ToyBox, PlayerHasToy, SquareButton_SetIcon
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
@@ -39,8 +38,6 @@ local function LoadSkin()
 	--[[ mount journal (tab 1) ]]--
 	-------------------------------
 	MountJournal:StripTextures()
-	MountJournal.LeftInset:StripTextures()
-	MountJournal.RightInset:StripTextures()
 	MountJournal.MountDisplay:StripTextures()
 	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
@@ -316,7 +313,7 @@ local function LoadSkin()
 
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
-		S:HandleItemButton(button)
+		S:HandleItemButton(button, true)
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
@@ -361,7 +358,7 @@ local function LoadSkin()
 
 	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(_, button)
 		if not button.styled then
-			S:HandleItemButton(button)
+			S:HandleItemButton(button, true)
 
 			button.iconTexture:SetDrawLayer("ARTWORK")
 			button.hover:SetAllPoints(button.iconTexture)
@@ -380,6 +377,7 @@ local function LoadSkin()
 		button.SetTextColor = nil
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(1, 1, 1)
+			button.level:SetTextColor(1, 1, 1)
 			button.special:SetTextColor(1, .82, 0)
 			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
@@ -503,6 +501,7 @@ local function LoadSkin()
 	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC
+	local WardrobeFrame = _G["WardrobeFrame"]
 	WardrobeFrame:StripTextures()
 	WardrobeFrame:SetTemplate("Transparent")
 	WardrobeOutfitFrame:StripTextures()
@@ -517,7 +516,6 @@ local function LoadSkin()
 	WardrobeOutfitDropDown.SaveButton:SetPoint("LEFT", WardrobeOutfitDropDown, "RIGHT", 1, 4)
 
 	WardrobeTransmogFrame:StripTextures()
-	WardrobeTransmogFrame.Inset:StripTextures()
 
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()

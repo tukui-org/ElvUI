@@ -66,7 +66,7 @@ local function LoadSkin()
 			end
 		end
 
-		S:CropIcon(icon)
+		S:HandleTexture(icon)
 		icon:SetAllPoints()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 		button:CreateBackdrop("Default", true)
@@ -180,7 +180,12 @@ local function LoadSkin()
 
 	for _, header in pairs(professionheaders) do
 		_G[header.."Missing"]:SetTextColor(1, 1, 0)
-		_G[header].missingText:SetTextColor(0, 0, 0)
+
+		if E.private.skins.parchmentRemover.enable then
+			_G[header].missingText:SetTextColor(1, 1, 1)
+		else
+			_G[header].missingText:SetTextColor(0, 0, 0)
+		end
 	end
 
 	for _, button in pairs(professionbuttons) do
