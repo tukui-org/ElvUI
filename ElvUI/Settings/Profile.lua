@@ -196,6 +196,7 @@ P['bags'] = {
 	['moneyFormat'] = 'SMART',
 	['moneyCoins'] = true,
 	['junkIcon'] = false,
+	['scrapIcon'] = false,
 	['upgradeIcon'] = true,
 	['newItemGlow'] = true,
 	['ignoredItems'] = {},

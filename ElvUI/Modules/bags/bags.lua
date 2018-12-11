@@ -402,6 +402,25 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
+function UpdateItemScrapIcon(slot)
+	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
+	-- Also the option dont update correctly.
+	if not E.db.bags.scrapIcon then
+		slot.ScrapIcon:SetShown(false)
+	end
+
+	local itemLocation = ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
+	if not itemLocation then return end
+
+	if itemLocation and itemLocation ~= "" then
+		if C_Item.DoesItemExist(itemLocation) and C_Item.CanScrapItem(itemLocation) then
+			slot.ScrapIcon:SetShown(itemLocation)
+		else
+			slot.ScrapIcon:SetShown(false)
+		end
+	end
+end
+
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show and E.db.bags.newItemGlow then
@@ -469,20 +488,9 @@ function B:UpdateSlot(bagID, slotID)
 		end
 	end
 
-	-- UPDATE ME
-	-- 8.1 ScrapIcon: ContainerFrame.lua #630
-	--[[
-	local itemLocation = ItemLocation:CreateFromBagAndSlot(frame:GetID(), itemButton:GetID());
-	if slot.ScrapIcon then
-		if C_Item.DoesItemExist(itemLocation) then
-			if ScrappingMachineFrame and ScrappingMachineFrame:IsShown() and C_Item.CanScrapItem(itemLocation) then
-				slot.ScrapIcon:Show()
-			else
-				slot.ScrapIcon:Hide()
-			end
-		end
+	if slot.ScrapIcon and E.db.bags.scrapIcon then
+		UpdateItemScrapIcon(slot)
 	end
-	]]
 
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
@@ -937,8 +945,8 @@ function B:Layout(isBank)
 					if not f.Bags[bagID][slotID].ScrapIcon then
 						local ScrapIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
 						ScrapIcon:SetAtlas("bags-icon-scrappable")
-						ScrapIcon:SetSize(16, 14)
-						ScrapIcon:Point("TOPRIGHT", -1, 0)
+						ScrapIcon:SetSize(14, 12)
+						ScrapIcon:Point("TOPRIGHT", -1, -1)
 						ScrapIcon:Hide()
 						f.Bags[bagID][slotID].ScrapIcon = ScrapIcon
 					end
