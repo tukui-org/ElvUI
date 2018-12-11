@@ -446,11 +446,11 @@ function B:UpdateSlot(bagID, slotID)
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
-	slot.name, slot.rarity = nil, nil;
+	slot.name, slot.rarity = nil, nil
 	local texture, count, locked, readable, noValue, _
-	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
+	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
 
-	local clink = GetContainerItemLink(bagID, slotID);
+	local clink = GetContainerItemLink(bagID, slotID)
 
 	slot:Show();
 	if slot.questIcon then
@@ -458,16 +458,31 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	if slot.Azerite then
-		slot.Azerite:Hide();
+		slot.Azerite:Hide()
 	end
 
 	if slot.JunkIcon then
 		if slot.rarity and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
-			slot.JunkIcon:Show();
+			slot.JunkIcon:Show()
 		else
 			slot.JunkIcon:Hide()
 		end
 	end
+
+	-- UPDATE ME
+	-- 8.1 ScrapIcon: ContainerFrame.lua #630
+	--[[
+	local itemLocation = ItemLocation:CreateFromBagAndSlot(frame:GetID(), itemButton:GetID());
+	if slot.ScrapIcon then
+		if C_Item.DoesItemExist(itemLocation) then
+			if ScrappingMachineFrame and ScrappingMachineFrame:IsShown() and C_Item.CanScrapItem(itemLocation) then
+				slot.ScrapIcon:Show()
+			else
+				slot.ScrapIcon:Hide()
+			end
+		end
+	end
+	]]
 
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
@@ -672,15 +687,15 @@ function B:AssignBagFlagMenu()
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
 	local info = UIDropDownMenu_CreateInfo()
-    info.text = BAG_FILTER_ASSIGN_TO
-    info.isTitle = 1
-    info.notCheckable = 1
-    UIDropDownMenu_AddButton(info)
+	info.text = BAG_FILTER_ASSIGN_TO
+	info.isTitle = 1
+	info.notCheckable = 1
+	UIDropDownMenu_AddButton(info)
 
-    info.isTitle = nil
-    info.notCheckable = nil
-    info.tooltipWhileDisabled = 1
-    info.tooltipOnButton = 1
+	info.isTitle = nil
+	info.notCheckable = nil
+	info.tooltipWhileDisabled = 1
+	info.tooltipOnButton = 1
 
 	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 		if i ~= LE_BAG_FILTER_FLAG_JUNK then
@@ -913,10 +928,19 @@ function B:Layout(isBank)
 					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
 					if not f.Bags[bagID][slotID].JunkIcon then
 						local JunkIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
-						JunkIcon:SetAtlas("bags-junkcoin")
+						JunkIcon:SetAtlas("bags-junkcoin", true)
 						JunkIcon:Point("TOPLEFT", 1, 0)
 						JunkIcon:Hide()
 						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
+					if not f.Bags[bagID][slotID].ScrapIcon then
+						local ScrapIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						ScrapIcon:SetAtlas("bags-icon-scrappable")
+						ScrapIcon:SetSize(16, 14)
+						ScrapIcon:Point("TOPRIGHT", -1, 0)
+						ScrapIcon:Hide()
+						f.Bags[bagID][slotID].ScrapIcon = ScrapIcon
 					end
 
 					if not f.Bags[bagID][slotID].Azerite then
@@ -2129,7 +2153,7 @@ end
 
 function B:UpdateSellFrameSettings()
 	if not B.SellFrame or not B.SellFrame.Info then return; end
-	
+
 	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
 	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
 end
