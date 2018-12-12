@@ -115,7 +115,7 @@ local function whisperClick(self, name, battleNet)
 	menuFrame:Hide()
 
 	if battleNet then
-		ChatFrame_SendSmartTell(name)
+		ChatFrame_SendBNetTell(name)
 	else
 		SetItemRef( "player:"..name, format("|Hplayer:%1$s|h[%1$s]|h",name), "LeftButton" )
 	end
