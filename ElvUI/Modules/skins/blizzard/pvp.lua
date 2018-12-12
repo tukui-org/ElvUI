@@ -34,7 +34,6 @@ local function LoadSkin()
 
 	local PVPQueueFrame = _G["PVPQueueFrame"]
 	PVPQueueFrame.HonorInset:StripTextures()
-	PVPQueueFrame.HonorInset.HonorLevelDisplay.NextRewardLevel.LevelLabel:FontTemplate()
 
 	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
 	SeasonReward.CircleMask:Hide()
