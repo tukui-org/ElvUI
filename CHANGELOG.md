@@ -5,6 +5,7 @@ Added 'Weakend Soul' back to our Buff Indicator.
 
 **Bug Fixes:**  
 Fixed a nil error on our PvP skin.  
+Fixed a possible nil error on our NamePlate auras.  
 
 **Misc. Changes:**  
 Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.  
