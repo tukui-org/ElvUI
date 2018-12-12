@@ -14,6 +14,7 @@ local function LoadSkin()
 
 	local WarboardQuestChoiceFrame = _G["WarboardQuestChoiceFrame"]
 	WarboardQuestChoiceFrame:StripTextures()
+	WarboardQuestChoiceFrame.NineSlice:Hide()
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
 
 	WarboardQuestChoiceFrame.Background:Hide()
