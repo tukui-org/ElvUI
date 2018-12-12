@@ -4,10 +4,10 @@
 
 
 **Bug Fixes:**  
-
+Fixed a nil error on our PvP skin.  
 
 **Misc. Changes:**  
-
+Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.  
 
 ___
 **Version 10.84 [ December 11th 2018 ]**
