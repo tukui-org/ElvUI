@@ -393,10 +393,6 @@ function mod:StyleFrame(frame, useMainFrame)
 	parent:CreateBackdrop("Transparent")
 end
 
-function mod:DISPLAY_SIZE_CHANGED()
-	self.mult = E.mult --[[* UIParent:GetScale()]]
-end
-
 function mod:CheckUnitType(frame)
 	local role = UnitGroupRolesAssigned(frame.unit)
 	local CanAttack = UnitCanAttack(self.playerUnitToken, frame.displayedUnit)
@@ -1264,7 +1260,6 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_CREATED");
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
-	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
@@ -1328,7 +1323,6 @@ function mod:Initialize()
 		end)
 	end
 
-	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
 
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)

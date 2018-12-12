@@ -267,7 +267,7 @@ function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
 	if numAuras == 0 then return end
 	local overrideWidth = self.db.widthOverride and self.db.widthOverride > 0 and self.db.widthOverride
-	local auraWidth = overrideWidth or (((width - mod.mult * numAuras) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+	local auraWidth = overrideWidth or (((width - E.mult * numAuras) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
 	local auraHeight = (self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1)
 
 	for i=1, numAuras do
