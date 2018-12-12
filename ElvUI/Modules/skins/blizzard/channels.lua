@@ -6,6 +6,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:

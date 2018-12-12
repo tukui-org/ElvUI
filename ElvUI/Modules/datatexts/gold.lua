@@ -12,12 +12,13 @@ local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
+local C_Timer_NewTicker = C_Timer.NewTicker
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvDB, ToggleAllBags
 
+local Ticker
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
-local Ticker
 local Profit	= 0
 local Spent		= 0
 local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
@@ -28,7 +29,7 @@ local function OnEvent(self)
 
 	if not Ticker then
 		C_WowTokenPublic.UpdateMarketPrice()
-		Ticker = C_Timer.NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
+		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
 	end
 
 	local NewMoney = GetMoney();

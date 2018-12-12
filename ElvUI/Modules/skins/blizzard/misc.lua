@@ -11,7 +11,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIDROPDOWNMENU_MAXLEVELS
+-- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, NORMAL_FONT_COLOR
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
