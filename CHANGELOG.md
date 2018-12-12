@@ -1,7 +1,7 @@
 **Version 10.85 [  ]**
 
 **New Additions:**  
-
+Added 'Weakend Soul' back to our Buff Indicator.  
 
 **Bug Fixes:**  
 Fixed a nil error on our PvP skin.  
