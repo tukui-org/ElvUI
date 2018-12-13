@@ -1002,6 +1002,9 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
 	E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
 	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
+
+	--Make sure quest icon info is available when enabled
+	E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
 end
 
 local function CopySettings(from, to)

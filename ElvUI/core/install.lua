@@ -149,6 +149,7 @@ local function SetupCVars()
 	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("nameplateShowFriendlyNPCs", 1)
+	SetCVar("showQuestTrackingTooltips", 1)
 
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
