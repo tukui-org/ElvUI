@@ -48,7 +48,7 @@ local function LoadSkin()
 		if not button.skinned then
 			for i=1, button:GetNumRegions() do
 				local region = select(i, button:GetRegions())
-				if region and region:GetObjectType() == 'Texture' and region ~= button.searchOverlay and region ~= button.UpgradeIcon then
+				if region and region:GetObjectType() == 'Texture' and region ~= button.searchOverlay and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
 					region:SetTexture(nil)
 				end
 			end
