@@ -1,14 +1,20 @@
 **Version 10.85 [  ]**
 
 **New Additions:**  
-Added 'Weakend Soul' back to our Buff Indicator.  
+Added 'Weakened Soul' back to our Buff Indicator.  
 
 **Bug Fixes:**  
 Fixed a nil error on our PvP skin.  
 Fixed a possible nil error on our NamePlate auras.  
+Fixed issue in Bags skin preventing the "highlight" visual from showing when searching for items.  
+Fixed nil error in the Obliterum skin.  
+Fixed issue which could result in Quest Icon not showing up on nameplates even if it was enabled.  
 
 **Misc. Changes:**  
 Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.  
+Updated oUF tags with recent changes.  
+Hid the Recipient Portrait on the TradeFrame.  
+Fixed minor positioning issue with role indicator on unitframes.  
 
 ___
 **Version 10.84 [ December 11th 2018 ]**
