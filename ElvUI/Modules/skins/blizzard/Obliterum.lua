@@ -12,27 +12,18 @@ local _G = _G
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Obliterum ~= true then return end
 
-	-- Obliterum Forge UI (Legion)
-	-- The frame looks really good, just set the template to transparent.
 	local ObliterumForgeFrame = _G["ObliterumForgeFrame"]
 	ObliterumForgeFrame:SetTemplate("Transparent")
-	ObliterumForgeFrameInset:Hide()
-	ObliterumForgeFramePortrait:Hide()
-	ObliterumForgeFramePortraitFrame:Hide()
-	ObliterumForgeFrameTitleBg:Hide()
-	ObliterumForgeFrameBg:Hide()
-	ObliterumForgeFrameTopBorder:Hide()
-	ObliterumForgeFrameTopRightCorner:Hide()
-	ObliterumForgeFrameRightBorder:Hide()
-	ObliterumForgeFrameLeftBorder:Hide()
-	ObliterumForgeFrameBtnCornerRight:Hide()
-	ObliterumForgeFrameBotRightCorner:Hide()
-	ObliterumForgeFrameBtnCornerLeft:Hide()
-	ObliterumForgeFrameBotLeftCorner:Hide()
-	ObliterumForgeFrameBottomBorder:Hide()
-	ObliterumForgeFrameButtonBottomBorder:Hide()
-	ObliterumForgeFrame.ObliterateButton.RightSeparator:Hide()
-	ObliterumForgeFrame.ObliterateButton.LeftSeparator:Hide()
+
+	ObliterumForgeFrame.NineSlice:Hide()
+
+	if ObliterumForgeFrame.TitleBg then ObliterumForgeFrame.TitleBg:Hide() end
+	if ObliterumForgeFrame.TopTileStreaks then ObliterumForgeFrame.TopTileStreaks:SetTexture("") end
+	if ObliterumForgeFramePortrait then ObliterumForgeFramePortrait:Hide() end
+	if ObliterumForgeFrameInset then ObliterumForgeFrameInset:Hide() end
+	if ObliterumForgeFrameBg then ObliterumForgeFrameBg:Hide() end
+
+	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	S:HandleCloseButton(ObliterumForgeFrameCloseButton)
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
