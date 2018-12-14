@@ -9,6 +9,11 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent
 
+local function roundToNthDecimal(num, n)
+  local mult = 10^(n or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
 	local width = E.screenwidth
@@ -64,13 +69,13 @@ function E:UIScale(event, loginFrame)
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
 		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) then
 			SetCVar("useUiScale", 1)
-			SetCVar("uiScale", scale)
+			SetCVar("uiScale", roundToNthDecimal(scale, 3))
 		end
 
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
-		if scale < 0.64 then
-			UIParent:SetScale(scale)
-		end
+		--if scale < 0.64 then
+		--end
+		UIParent:SetScale(roundToNthDecimal(scale, 3))
 	end
 
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
@@ -126,6 +131,7 @@ function E:UIScale(event, loginFrame)
 		if loginFrame and event == 'PLAYER_LOGIN' then
 			loginFrame:UnregisterEvent('PLAYER_LOGIN')
 		end
+		print(floor(scale))
 	end
 end
 
