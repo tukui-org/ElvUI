@@ -14,15 +14,6 @@ local function LoadSkin()
 
 	local ObliterumForgeFrame = _G["ObliterumForgeFrame"]
 	S:HandlePortraitFrame(ObliterumForgeFrame, true)
-	--ObliterumForgeFrame:SetTemplate("Transparent")
-
-	--ObliterumForgeFrame.NineSlice:Hide()
---
-	--if ObliterumForgeFrame.TitleBg then ObliterumForgeFrame.TitleBg:Hide() end
-	--if ObliterumForgeFrame.TopTileStreaks then ObliterumForgeFrame.TopTileStreaks:SetTexture("") end
-	--if ObliterumForgeFramePortrait then ObliterumForgeFramePortrait:Hide() end
-	--if ObliterumForgeFrameInset then ObliterumForgeFrameInset:Hide() end
-	--if ObliterumForgeFrameBg then ObliterumForgeFrameBg:Hide() end
 
 	ObliterumForgeFrame.ItemSlot:CreateBackdrop("Default")
 	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
