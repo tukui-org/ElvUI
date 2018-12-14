@@ -15,11 +15,9 @@ local function LoadSkin()
 
 	--Class Trainer Frame
 	local StripAllTextures = {
-		"ClassTrainerFrame",
 		"ClassTrainerScrollFrameScrollChild",
 		"ClassTrainerFrameSkillStepButton",
 		"ClassTrainerFrameBottomInset",
-		"ClassTrainerFrameInset",
 	}
 
 	local buttons = {
@@ -35,6 +33,7 @@ local function LoadSkin()
 	}
 
 	local ClassTrainerFrame = _G["ClassTrainerFrame"]
+	S:HandlePortraitFrame(ClassTrainerFrame, true)
 
 	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
 		local button = _G["ClassTrainerScrollFrameButton"..i]
@@ -69,7 +68,7 @@ local function LoadSkin()
 	ClassTrainerFrame:CreateBackdrop("Transparent")
 	ClassTrainerFrame.backdrop:Point("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
 	ClassTrainerFrame.backdrop:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")
-	S:HandleCloseButton(ClassTrainerFrameCloseButton,ClassTrainerFrame)
+
 	ClassTrainerFrameSkillStepButton.icon:SetTexCoord(unpack(E.TexCoords))
 	ClassTrainerFrameSkillStepButton:CreateBackdrop("Default")
 	ClassTrainerFrameSkillStepButton.backdrop:SetOutside(ClassTrainerFrameSkillStepButton.icon)

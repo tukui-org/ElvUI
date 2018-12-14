@@ -26,12 +26,12 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
 	local PVEFrame = _G["PVEFrame"]
-	PVEFrame:StripTextures()
-	PVEFrameLeftInset:StripTextures()
+	S:HandlePortraitFrame(PVEFrame, true)
+
 	RaidFinderQueueFrame:StripTextures(true)
 	PVEFrameBg:Hide()
-	PVEFramePortrait:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
+
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
 	S:HandleButton(LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
@@ -227,8 +227,6 @@ local function LoadSkin()
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 	PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
-
-	S:HandleCloseButton(PVEFrameCloseButton)
 
 	-- raid finder
 	S:HandleButton(LFDQueueFrameFindGroupButton, true)

@@ -13,28 +13,24 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.merchant ~= true then return end
 
-	local frames = {
-		"MerchantBuyBackItem",
-		"MerchantFrame",
-	}
+	local MerchantFrame = _G["MerchantFrame"]
+	S:HandlePortraitFrame(MerchantFrame, true)
 
-	-- skin main frames
-	for i = 1, #frames do
-		_G[frames[i]]:StripTextures(true)
-		_G[frames[i]]:CreateBackdrop("Transparent")
-	end
+	MerchantFrame.backdrop:Point("TOPLEFT", 6, 2)
+	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 2, -1)
+
+	MerchantFrame:Width(360)
+
+	MerchantBuyBackItem:StripTextures(true)
+	MerchantBuyBackItem:CreateBackdrop("Transparent")
 
 	MerchantExtraCurrencyInset:StripTextures()
 	MerchantExtraCurrencyBg:StripTextures()
-	MerchantFrameInset:StripTextures()
+
 	MerchantMoneyBg:StripTextures()
 	MerchantMoneyInset:StripTextures()
 	MerchantBuyBackItem.backdrop:Point("TOPLEFT", -6, 6)
 	MerchantBuyBackItem.backdrop:Point("BOTTOMRIGHT", 6, -6)
-
-	local MerchantFrame = _G["MerchantFrame"]
-	MerchantFrame.backdrop:Point("TOPLEFT", 6, 2)
-	MerchantFrame.backdrop:Point("BOTTOMRIGHT", 2, -1)
 
 	S:HandleDropDownBox(MerchantFrameLootFilter)
 
@@ -107,9 +103,6 @@ local function LoadSkin()
 	MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	MerchantRepairAllIcon:SetInside()
 
-	-- Skin misc frames
-	MerchantFrame:Width(360)
-	S:HandleCloseButton(MerchantFrameCloseButton, MerchantFrame.backdrop)
 	S:HandleNextPrevButton(MerchantNextPageButton)
 	S:HandleNextPrevButton(MerchantPrevPageButton)
 end

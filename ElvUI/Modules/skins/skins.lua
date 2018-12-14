@@ -71,6 +71,54 @@ S.ArrowRotation = {
 	['right'] = 1.57,
 }
 
+function S:HandleInsetFrame(frame)
+	assert(frame, "doesn't exist!")
+
+	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
+	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
+	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
+
+	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
+	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
+	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
+
+	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
+	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
+
+	if frame.Bg then frame.Bg:Hide() end
+end
+
+-- All frames that have a Portrait
+function S:HandlePortraitFrame(frame, setBackdrop)
+	assert(frame, "doesn't exist!")
+
+	local name = frame and frame.GetName and frame:GetName()
+	local insetFrame = name and _G[name..'Inset'] or frame.Inset
+	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait
+
+	frame:StripTextures()
+
+	if portraitFrame then
+		portraitFrame:SetAlpha(0)
+	end
+
+	if frame.PortraitOverlay then frame.PortraitOverlay:SetAlpha(0) end
+	if frame.ArtOverlayFrame then frame.ArtOverlayFrame:SetAlpha(0) end
+
+	if insetFrame then
+		S:HandleInsetFrame(insetFrame)
+	end
+
+	if frame.CloseButton then
+		S:HandleCloseButton(frame.CloseButton)
+	end
+
+	if setBackdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:SetAllPoints()
+	end
+end
+
 function S:SetModifiedBackdrop()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -178,21 +226,6 @@ function S:SkinLibDropDownMenu(prefix)
 	end
 end
 
-function S:HandleInsetFrameTemplate(frame)
-	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
-	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
-	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
-
-	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
-	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
-	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
-
-	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
-	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
-
-	if frame.Bg then frame.Bg:Hide() end
-end
-
 function S:SkinTalentListButtons(frame)
 	local name = frame and frame.GetName and frame:GetName()
 	if name then
@@ -205,7 +238,7 @@ function S:SkinTalentListButtons(frame)
 	end
 
 	if frame.Inset then
-		S:HandleInsetFrameTemplate(frame.Inset)
+		S:HandleInsetFrame(frame.Inset)
 
 		frame.Inset:SetPoint("TOPLEFT", 4, -60)
 		frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)

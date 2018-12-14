@@ -14,12 +14,10 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
 
-	S:HandleCloseButton(SpellBookFrameCloseButton)
-
 	local SpellBookFrame = _G["SpellBookFrame"]
-	SpellBookFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(SpellBookFrame, true)
 
-	local StripAllTextures = { "SpellBookFrame", "SpellBookFrameInset", "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }
+	local StripAllTextures = { "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()

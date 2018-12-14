@@ -14,8 +14,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 
 	local MailFrame = _G["MailFrame"]
-	MailFrame:StripTextures(true)
-	MailFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(MailFrame, true)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
@@ -43,7 +42,6 @@ local function LoadSkin()
 		end)
 	end
 
-	S:HandleCloseButton(MailFrameCloseButton)
 	S:HandleNextPrevButton(InboxPrevPageButton)
 	S:HandleNextPrevButton(InboxNextPageButton)
 

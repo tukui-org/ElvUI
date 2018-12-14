@@ -14,15 +14,13 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end
 
 	local PetStableFrame = _G["PetStableFrame"]
-	PetStableFrame:StripTextures()
-	PetStableFrameInset:StripTextures()
+	S:HandlePortraitFrame(PetStableFrame, true)
+
 	PetStableLeftInset:StripTextures()
 	PetStableBottomInset:StripTextures()
 
-	PetStableFrame:SetTemplate('Transparent')
 	PetStableFrameInset:SetTemplate('Transparent')
 
-	S:HandleCloseButton(PetStableFrameCloseButton)
 	S:HandleButton(PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
 	S:HandleRotateButton(PetStableModelRotateRightButton)

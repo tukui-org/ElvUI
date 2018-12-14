@@ -203,8 +203,9 @@ local function LoadSkin()
 	QuestInfoPlayerTitleFrame.backdrop:SetOutside(QuestInfoPlayerTitleFrame.Icon)
 
 	--Quest Frame
-	QuestFrame:StripTextures(true)
-	QuestFrameInset:Kill()
+	local QuestFrame = _G["QuestFrame"]
+	S:HandlePortraitFrame(QuestFrame, true)
+
 	QuestFrameDetailPanel:StripTextures(true)
 	QuestDetailScrollFrame:StripTextures(true)
 	QuestDetailScrollFrame:SetTemplate()
@@ -284,15 +285,13 @@ local function LoadSkin()
 	QuestRewardScrollChildFrame:StripTextures(true)
 	QuestFrameProgressPanel:StripTextures(true)
 	QuestFrameRewardPanel:StripTextures(true)
-	QuestFrame:CreateBackdrop("Transparent")
 	S:HandleButton(QuestFrameAcceptButton, true)
 	S:HandleButton(QuestFrameDeclineButton, true)
 	S:HandleButton(QuestFrameCompleteButton, true)
 	S:HandleButton(QuestFrameGoodbyeButton, true)
 	S:HandleButton(QuestFrameCompleteQuestButton, true)
-	S:HandleCloseButton(QuestFrameCloseButton, QuestFrame.backdrop)
 
-	for i=1, 6 do
+	for i = 1, 6 do
 		local button = _G["QuestProgressItem"..i]
 		local icon = _G["QuestProgressItem"..i.."IconTexture"]
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -324,8 +323,9 @@ local function LoadSkin()
 	QuestNPCModelTextFrame:CreateBackdrop("Default")
 	QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
 
-	QuestLogPopupDetailFrame:StripTextures()
-	QuestLogPopupDetailFrameInset:StripTextures()
+	local QuestLogPopupDetailFrame = _G["QuestLogPopupDetailFrame"]
+	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
+
 	S:HandleButton(QuestLogPopupDetailFrameAbandonButton)
 	S:HandleButton(QuestLogPopupDetailFrameShareButton)
 	S:HandleButton(QuestLogPopupDetailFrameTrackButton)
@@ -346,7 +346,6 @@ local function LoadSkin()
 		end
 	end)
 
-	S:HandleCloseButton(QuestLogPopupDetailFrameCloseButton)
 	S:HandleScrollBar(QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()

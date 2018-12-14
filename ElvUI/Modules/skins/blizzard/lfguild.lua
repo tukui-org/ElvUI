@@ -15,9 +15,7 @@ local function SkinLFGuild()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
 
 	local LookingForGuildFrame = _G["LookingForGuildFrame"]
-	LookingForGuildFrame:StripTextures()
-	LookingForGuildFrame:SetTemplate("Transparent")
-	LookingForGuildFrameInset:StripTextures(false)
+	S:HandlePortraitFrame(LookingForGuildFrame, true)
 
 	local checkbox = {
 		"LookingForGuildPvPButton",
@@ -42,7 +40,7 @@ local function SkinLFGuild()
 	S:HandleScrollBar(LookingForGuildBrowseFrameContainerScrollBar)
 	S:HandleButton(LookingForGuildBrowseButton)
 	S:HandleButton(LookingForGuildRequestButton)
-	S:HandleCloseButton(LookingForGuildFrameCloseButton)
+
 	LookingForGuildCommentInputFrame:CreateBackdrop("Default")
 	LookingForGuildCommentInputFrame:StripTextures(false)
 

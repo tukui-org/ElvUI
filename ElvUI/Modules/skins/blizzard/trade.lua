@@ -15,16 +15,13 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trade ~= true then return end
 
 	local TradeFrame = _G["TradeFrame"]
-	TradeFrame:StripTextures(true)
-	TradeFrame:CreateBackdrop("Transparent")
-	TradeFrame.backdrop:SetAllPoints()
-	TradeFrameInset:Kill()
+	S:HandlePortraitFrame(TradeFrame, true)
 
 	TradeFrame.RecipientOverlay.portrait:SetAlpha(0)
 	TradeFrame.RecipientOverlay.portraitFrame:SetAlpha(0)
+
 	S:HandleButton(TradeFrameTradeButton, true)
 	S:HandleButton(TradeFrameCancelButton, true)
-	S:HandleCloseButton(TradeFrameCloseButton, TradeFrame.backdrop)
 
 	S:HandleEditBox(TradePlayerInputMoneyFrameGold)
 	S:HandleEditBox(TradePlayerInputMoneyFrameSilver)

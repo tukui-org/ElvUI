@@ -13,11 +13,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
 
 	local DressUpFrame = _G["DressUpFrame"]
-	DressUpFrame:StripTextures()
-	DressUpFrame:CreateBackdrop("Transparent")
-
-	DressUpFramePortrait:Hide()
-	DressUpFrameInset:Hide()
+	S:HandlePortraitFrame(DressUpFrame, true)
 
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
@@ -28,7 +24,7 @@ local function LoadSkin()
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
 
 	S:HandleMaxMinFrame(MaximizeMinimizeFrame)
-	S:HandleCloseButton(DressUpFrameCloseButton)
+
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 
 	-- Wardrobe edit frame

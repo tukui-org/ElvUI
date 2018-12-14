@@ -14,10 +14,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
 
 	local InspectFrame = _G["InspectFrame"]
-	InspectFrame:StripTextures(true)
-	InspectFrameInset:StripTextures(true)
-	InspectFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(InspectFrameCloseButton)
+	S:HandlePortraitFrame(InspectFrame, true)
 	S:HandleButton(InspectPaperDollFrame.ViewButton)
 
 	--Create portrait element for the PvP Frame so we can see prestige

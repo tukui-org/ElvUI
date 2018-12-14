@@ -16,9 +16,8 @@ local function LoadSkin()
 
 	-- MainFrame
 	local TradeSkillFrame = _G["TradeSkillFrame"]
-	TradeSkillFramePortrait:SetAlpha(0)
-	TradeSkillFrame:StripTextures(true)
-	TradeSkillFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(TradeSkillFrame, true)
+
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()
 	TradeSkillFrame.RankFrame:CreateBackdrop("Default")
@@ -44,7 +43,7 @@ local function LoadSkin()
 	TradeSkillFrame.bg2:SetFrameLevel(TradeSkillFrame.bg2:GetFrameLevel() - 1)
 
 	S:HandleEditBox(TradeSkillFrame.SearchBox)
-	S:HandleCloseButton(TradeSkillFrameCloseButton)
+
 
 	-- RecipeList
 	TradeSkillFrame.RecipeInset:StripTextures()

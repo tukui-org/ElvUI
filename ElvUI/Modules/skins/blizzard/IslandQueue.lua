@@ -14,14 +14,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
 
 	local IslandsFrame = _G["IslandsQueueFrame"]
-	IslandsFrame:StripTextures()
-	IslandsQueueFrame.ArtOverlayFrame.PortraitFrame:SetAlpha(0)
-	IslandsQueueFrame.ArtOverlayFrame.portrait:SetAlpha(0)
-	IslandsQueueFrame.portrait:Hide()
-
-	IslandsFrame:CreateBackdrop("Transparent")
-
-	S:HandleCloseButton(IslandsQueueFrameCloseButton)
+	S:HandlePortraitFrame(IslandsFrame, true)
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest

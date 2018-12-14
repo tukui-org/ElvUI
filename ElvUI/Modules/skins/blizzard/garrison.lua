@@ -113,9 +113,8 @@ local function LoadSkin()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	-- Capacitive display frame
-	GarrisonCapacitiveDisplayFrame:StripTextures(true)
-	GarrisonCapacitiveDisplayFrame:CreateBackdrop("Transparent")
-	S:HandleCloseButton(GarrisonCapacitiveDisplayFrame.CloseButton, GarrisonCapacitiveDisplayFrame.backdrop)
+	S:HandlePortraitFrame(GarrisonCapacitiveDisplayFrame, true)
+
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton, true)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
@@ -157,10 +156,7 @@ local function LoadSkin()
 	end
 
 	-- Recruiter frame
-	GarrisonRecruiterFrame:StripTextures(true)
-	GarrisonRecruiterFrame:CreateBackdrop("Transparent")
-	GarrisonRecruiterFrame.Inset:StripTextures()
-	S:HandleCloseButton(GarrisonRecruiterFrame.CloseButton, GarrisonRecruiterFrame.backdrop)
+	S:HandlePortraitFrame(GarrisonRecruiterFrame, true)
 
 	-- Recruiter Unavailable frame
 	local UnavailableFrame = GarrisonRecruiterFrame.UnavailableFrame

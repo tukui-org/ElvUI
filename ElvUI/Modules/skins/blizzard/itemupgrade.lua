@@ -15,12 +15,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.itemUpgrade ~= true then return end
 
 	local ItemUpgradeFrame = _G["ItemUpgradeFrame"]
-	ItemUpgradeFrame:StripTextures()
-	ItemUpgradeFrame:SetTemplate('Transparent')
-	--ItemUpgradeFrameShadows:Kill()
-	--ItemUpgradeFrameInset:Kill()
-
-	S:HandleCloseButton(ItemUpgradeFrameCloseButton)
+	S:HandlePortraitFrame(ItemUpgradeFrame, true)
 
 	S:HandleItemButton(ItemUpgradeFrame.ItemButton, true)
 

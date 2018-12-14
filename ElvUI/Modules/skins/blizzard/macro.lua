@@ -15,13 +15,16 @@ local ShowUIPanel = ShowUIPanel
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.macro ~= true then return end
 
-	S:HandleCloseButton(MacroFrameCloseButton)
+	local MacroFrame = _G["MacroFrame"]
+	S:HandlePortraitFrame(MacroFrame, true)
+	MacroFrame:Width(360)
+
+	MacroFrameTextBackground:StripTextures()
+	MacroFrameTextBackground:SetTemplate('Default')
+	MacroButtonScrollFrame:CreateBackdrop()
+
 	S:HandleScrollBar(MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(MacroFrameScrollFrameScrollBar)
-
-	local MacroFrame = _G["MacroFrame"]
-	MacroFrame:StripTextures()
-	MacroFrame:Width(360)
 
 	local buttons = {
 		"MacroSaveButton",
@@ -45,14 +48,6 @@ local function LoadSkin()
 	end
 	MacroFrameTab1:Point("TOPLEFT", MacroFrame, "TOPLEFT", 85, -39)
 	MacroFrameTab2:Point("LEFT", MacroFrameTab1, "RIGHT", 4, 0)
-
-	-- General
-	MacroFrame:StripTextures()
-	MacroFrame:SetTemplate("Transparent")
-	MacroFrameTextBackground:StripTextures()
-	MacroFrameTextBackground:SetTemplate('Default')
-	MacroButtonScrollFrame:CreateBackdrop()
-	MacroFrameInset:Kill()
 
 	--Reposition edit button
 	MacroEditButton:ClearAllPoints()

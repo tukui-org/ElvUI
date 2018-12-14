@@ -15,8 +15,7 @@ local function LoadSkin()
 
 	--Addon List (From AddOnSkins)
 	local AddonList = _G["AddonList"]
-	AddonList:StripTextures()
-	AddonList:SetTemplate("Transparent")
+	S:HandlePortraitFrame(AddonList, true)
 
 	--Original Size: 500, 478
 	AddonList:SetSize(550, 478)
@@ -35,8 +34,6 @@ local function LoadSkin()
 	S:HandleCheckBox(AddonListForceLoad)
 	AddonListForceLoad:SetSize(26, 26)
 	S:HandleDropDownBox(AddonCharacterDropDown)
-
-	S:HandleCloseButton(AddonList.CloseButton)
 
 	for i = 1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])

@@ -23,7 +23,10 @@ local UNIGNORESLOT_LOCATION = 0xFFFFFFFD;
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 
-	S:HandleCloseButton(CharacterFrameCloseButton)
+	-- General
+	local CharacterFrame = _G["CharacterFrame"]
+	S:HandlePortraitFrame(CharacterFrame, true)
+
 	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
 	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
@@ -169,7 +172,6 @@ local function LoadSkin()
 
 	--Strip Textures
 	local charframe = {
-		"CharacterFrame",
 		"CharacterModelFrame",
 		"CharacterFrameInset",
 		"CharacterStatsPane",

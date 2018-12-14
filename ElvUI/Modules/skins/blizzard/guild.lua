@@ -16,13 +16,12 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
 
 	local GuildFrame = _G["GuildFrame"]
-	GuildFrame:StripTextures(true)
-	GuildFrame:SetTemplate("Transparent")
-	--GuildLevelFrame:Kill()
+	S:HandlePortraitFrame(GuildFrame, true)
 
 	S:HandleCloseButton(GuildMemberDetailCloseButton)
 	S:HandleCloseButton(GuildFrameCloseButton)
 	S:HandleScrollBar(GuildInfoFrameApplicantsContainerScrollBar)
+
 	local striptextures = {
 		"GuildFrameInset",
 		"GuildFrameBottomInset",
@@ -47,6 +46,7 @@ local function LoadSkin()
 		"GuildNewsBossModel",
 		"GuildNewsBossModelTextFrame",
 	}
+
 	GuildRewardsFrameVisitText:ClearAllPoints()
 	GuildRewardsFrameVisitText:Point("TOP", GuildRewardsFrame, "TOP", 0, 30)
 	for _, frame in pairs(striptextures) do

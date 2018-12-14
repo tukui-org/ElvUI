@@ -24,7 +24,6 @@ local function LoadSkin()
 	GossipFramePortrait:Kill()
 
 	S:HandleCloseButton(ItemTextFrameCloseButton)
-	S:HandleCloseButton(GossipFrameCloseButton)
 
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
 	S:HandleScrollBar(ItemTextScrollFrameScrollBar)
@@ -40,11 +39,14 @@ local function LoadSkin()
 		end
 	end)
 
-	local StripAllTextures = { "GossipFrameGreetingPanel", "GossipFrame", "GossipFrameInset", "GossipGreetingScrollFrame" }
+	local StripAllTextures = { "GossipFrameGreetingPanel", "GossipGreetingScrollFrame" }
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
+
+	local GossipFrame = _G["GossipFrame"]
+	S:HandlePortraitFrame(GossipFrame, true)
 
 	GossipGreetingScrollFrame:SetTemplate()
 

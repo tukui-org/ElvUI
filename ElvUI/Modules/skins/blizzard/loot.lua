@@ -171,12 +171,8 @@ local function LoadSkin()
 	end)
 
 	local LootFrame = _G["LootFrame"]
-	LootFrame:StripTextures()
-	LootFrameInset:StripTextures()
+	S:HandlePortraitFrame(LootFrame, true)
 	LootFrame:Height(LootFrame:GetHeight() - 30)
-	S:HandleCloseButton(LootFrameCloseButton)
-
-	LootFrame:SetTemplate("Transparent")
 	LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do

@@ -15,9 +15,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
 	local EJ = _G["EncounterJournal"]
-	EJ:StripTextures(true)
-	EJ.inset:StripTextures(true)
-	EJ:CreateBackdrop("Transparent")
+	S:HandlePortraitFrame(EJ, true)
 
 	EJ.navBar:StripTextures(true)
 	EJ.navBar.overlay:StripTextures(true)
@@ -28,7 +26,6 @@ local function LoadSkin()
 	S:HandleButton(EJ.navBar.home, true)
 
 	S:HandleEditBox(EJ.searchBox)
-	S:HandleCloseButton(EncounterJournalCloseButton)
 
 	--Instance Selection Frame
 	local InstanceSelect = EJ.instanceSelect

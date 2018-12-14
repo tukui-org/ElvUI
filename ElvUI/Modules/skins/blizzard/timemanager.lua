@@ -14,11 +14,9 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.timemanager ~= true then return end
 
 	local TimeManagerFrame = _G["TimeManagerFrame"]
-	TimeManagerFrame:StripTextures()
-	TimeManagerFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(TimeManagerFrame, true)
 
-	S:HandleCloseButton(TimeManagerFrameCloseButton)
-	TimeManagerFrameInset:Kill()
+
 	S:HandleDropDownBox(TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmMinuteDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmAMPMDropDown, 80)

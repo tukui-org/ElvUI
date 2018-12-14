@@ -14,12 +14,8 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Scrapping ~= true then return end
 
 	local MachineFrame = _G["ScrappingMachineFrame"]
-	MachineFrame:StripTextures()
-	ScrappingMachineFrameInset:Hide()
+	S:HandlePortraitFrame(MachineFrame, true)
 
-	MachineFrame:CreateBackdrop("Transparent")
-
-	S:HandleCloseButton(ScrappingMachineFrameCloseButton)
 	S:HandleButton(MachineFrame.ScrapButton)
 
 	local ItemSlots = MachineFrame.ItemSlots

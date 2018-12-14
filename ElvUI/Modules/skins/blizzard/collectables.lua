@@ -19,15 +19,13 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
 
 	-- global
-	CollectionsJournal:StripTextures()
-	CollectionsJournal:SetTemplate('Transparent')
-	CollectionsJournalPortrait:SetAlpha(0)
+	local CollectionsJournal = _G["CollectionsJournal"]
+	S:HandlePortraitFrame(CollectionsJournal, true)
 
 	for i=1, 5 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
-	S:HandleCloseButton(CollectionsJournalCloseButton)
 	S:HandleItemButton(MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(MountJournalFilterButton)
 
@@ -502,8 +500,8 @@ local function LoadSkin()
 
 	-- Transmogrify NPC
 	local WardrobeFrame = _G["WardrobeFrame"]
-	WardrobeFrame:StripTextures()
-	WardrobeFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(WardrobeFrame, true)
+
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
 	S:HandleCloseButton(WardrobeFrameCloseButton)

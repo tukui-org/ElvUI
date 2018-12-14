@@ -16,11 +16,10 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
 
 	local ItemSocketingFrame = _G["ItemSocketingFrame"]
-	ItemSocketingFrame:StripTextures()
+	S:HandlePortraitFrame(ItemSocketingFrame, true)
+
 	ItemSocketingDescription:DisableDrawLayer("BORDER")
 	ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
-	ItemSocketingFrame:SetTemplate("Transparent")
-	ItemSocketingFrameInset:Kill()
 	ItemSocketingScrollFrame:StripTextures()
 	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
@@ -54,7 +53,6 @@ local function LoadSkin()
 	ItemSocketingSocketButton:ClearAllPoints()
 	ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
 	S:HandleButton(ItemSocketingSocketButton)
-	S:HandleCloseButton(ItemSocketingFrameCloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_ItemSocketingUI", "ItemSocket", LoadSkin)

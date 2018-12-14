@@ -13,19 +13,20 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Obliterum ~= true then return end
 
 	local ObliterumForgeFrame = _G["ObliterumForgeFrame"]
-	ObliterumForgeFrame:SetTemplate("Transparent")
+	S:HandlePortraitFrame(ObliterumForgeFrame, true)
+	--ObliterumForgeFrame:SetTemplate("Transparent")
 
-	ObliterumForgeFrame.NineSlice:Hide()
+	--ObliterumForgeFrame.NineSlice:Hide()
+--
+	--if ObliterumForgeFrame.TitleBg then ObliterumForgeFrame.TitleBg:Hide() end
+	--if ObliterumForgeFrame.TopTileStreaks then ObliterumForgeFrame.TopTileStreaks:SetTexture("") end
+	--if ObliterumForgeFramePortrait then ObliterumForgeFramePortrait:Hide() end
+	--if ObliterumForgeFrameInset then ObliterumForgeFrameInset:Hide() end
+	--if ObliterumForgeFrameBg then ObliterumForgeFrameBg:Hide() end
 
-	if ObliterumForgeFrame.TitleBg then ObliterumForgeFrame.TitleBg:Hide() end
-	if ObliterumForgeFrame.TopTileStreaks then ObliterumForgeFrame.TopTileStreaks:SetTexture("") end
-	if ObliterumForgeFramePortrait then ObliterumForgeFramePortrait:Hide() end
-	if ObliterumForgeFrameInset then ObliterumForgeFrameInset:Hide() end
-	if ObliterumForgeFrameBg then ObliterumForgeFrameBg:Hide() end
-
+	ObliterumForgeFrame.ItemSlot:CreateBackdrop("Default")
 	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
 
-	S:HandleCloseButton(ObliterumForgeFrameCloseButton)
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end
 

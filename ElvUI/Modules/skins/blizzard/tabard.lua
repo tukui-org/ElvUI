@@ -14,17 +14,16 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tabard ~= true then return end
 
 	local TabardFrame = _G["TabardFrame"]
-	TabardFrame:StripTextures(true)
-	TabardFrame:SetTemplate("Transparent")
-	TabardModel:CreateBackdrop("Default")
+	S:HandlePortraitFrame(TabardFrame, true)
+
 	S:HandleButton(TabardFrameCancelButton)
 	S:HandleButton(TabardFrameAcceptButton)
-	S:HandleCloseButton(TabardFrameCloseButton)
 	S:HandleRotateButton(TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(TabardCharacterModelRotateRightButton)
+
+	TabardModel:CreateBackdrop("Default")
 	TabardFrameCostFrame:StripTextures()
 	TabardFrameCustomizationFrame:StripTextures()
-	TabardFrameInset:Kill()
 	TabardFrameMoneyInset:Kill()
 	TabardFrameMoneyBg:StripTextures()
 

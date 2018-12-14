@@ -25,26 +25,16 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
 
 	local PlayerTalentFrame = _G["PlayerTalentFrame"]
-	local objects = {
-		PlayerTalentFrame,
-		PlayerTalentFrameTalents,
-	}
+	S:HandlePortraitFrame(PlayerTalentFrame, true)
 
-	for _, object in pairs(objects) do
-		object:StripTextures()
-	end
+	PlayerTalentFrameTalents:StripTextures()
 
-	PlayerTalentFramePortrait:Kill()
-	PlayerTalentFrame:StripTextures()
-	PlayerTalentFrame:SetTemplate('Transparent')
 
 	if E.global.general.disableTutorialButtons then
 		PlayerTalentFrameSpecializationTutorialButton:Kill()
 		PlayerTalentFrameTalentsTutorialButton:Kill()
 		PlayerTalentFramePetSpecializationTutorialButton:Kill()
 	end
-
-	S:HandleCloseButton(PlayerTalentFrame.CloseButton)
 
 	local buttons = {
 		PlayerTalentFrameSpecializationLearnButton,

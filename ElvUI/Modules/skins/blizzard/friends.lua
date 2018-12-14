@@ -95,7 +95,6 @@ local function LoadSkin()
 	end
 
 	local mainFrames = {
-		"FriendsFrame",
 		"WhoFrame",
 		"LFRQueueFrame",
 	}
@@ -103,6 +102,9 @@ local function LoadSkin()
 	for _, frame in pairs(mainFrames) do
 		_G[frame]:StripTextures()
 	end
+
+	local FriendsFrame = _G["FriendsFrame"]
+	S:HandlePortraitFrame(FriendsFrame, true)
 
 	WhoFrameListInset:StripTextures()
 	WhoFrameListInset.NineSlice:Hide()
@@ -116,8 +118,6 @@ local function LoadSkin()
 			region:SetAlpha(0)
 		end
 	end
-
-	FriendsFrame:SetTemplate('Transparent')
 
 	S:HandleEditBox(FriendsFriendsList)
 	S:HandleDropDownBox(FriendsFriendsFrameDropDown,150)
@@ -218,7 +218,6 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleCloseButton(FriendsFrameCloseButton,FriendsFrame.backdrop)
 	S:HandleDropDownBox(WhoFrameDropDown,150)
 
 	--Bottom Tabs
