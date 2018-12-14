@@ -24,7 +24,7 @@ function E:UIScale(event, loginFrame)
 	if E.global.general.autoScale then
 		scale = max(minScale, min(1.15, 768/height))
 	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()))
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetEffectiveScale()))
 	end
 
 	scale = tonumber(string.sub(scale, 0, 7))
