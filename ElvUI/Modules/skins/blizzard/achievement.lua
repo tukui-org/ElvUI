@@ -74,16 +74,14 @@ local function SkinStatusBar(bar)
 	bar:SetStatusBarColor(4/255, 179/255, 30/255)
 	bar:CreateBackdrop("Default")
 	E:RegisterStatusBar(bar)
-	local StatusBarName = bar:GetName()
 
+	local StatusBarName = bar:GetName()
 	if _G[StatusBarName.."Title"] then
 		_G[StatusBarName.."Title"]:Point("LEFT", 4, 0)
 	end
-
 	if _G[StatusBarName.."Label"] then
 		_G[StatusBarName.."Label"]:Point("LEFT", 4, 0)
 	end
-
 	if _G[StatusBarName.."Text"] then
 		_G[StatusBarName.."Text"]:Point("RIGHT", -4, 0)
 	end
@@ -104,7 +102,6 @@ end
 
 local function achievementSearchPreviewButton(button)
 	skinSearchPreview(button)
-
 	button.iconFrame:SetAlpha(0)
 end
 
@@ -232,17 +229,18 @@ local function LoadSkin(event)
 	_G.AchievementFrameWoodBorderBottomLeft:Hide()
 
 	local noname_frames = {
-		"AchievementFrameStats",
-		"AchievementFrameSummary",
-		"AchievementFrameAchievements",
-		"AchievementFrameComparison"
+		_G.AchievementFrameStats,
+		_G.AchievementFrameSummary,
+		_G.AchievementFrameAchievements,
+		_G.AchievementFrameComparison
 	}
-
 	for _, frame in pairs(noname_frames) do
-		for i=1, _G[frame]:GetNumChildren() do
-			local child = select(i, _G[frame]:GetChildren())
-			if child and not child:GetName() then
-				child:SetBackdrop(nil)
+		if frame and frame.GetNumChildren then
+			for i=1, frame:GetNumChildren() do
+				local child = select(i, frame:GetChildren())
+				if child and not child:GetName() then
+					child:SetBackdrop(nil)
+				end
 			end
 		end
 	end

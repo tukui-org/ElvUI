@@ -21,7 +21,12 @@ end
 
 local function SkinAchievementAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
+
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
 		frame.backdrop:Point("TOPLEFT", frame.Background, "TOPLEFT", -2, -6)
@@ -57,7 +62,11 @@ end
 
 local function SkinCriteriaAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -86,7 +95,12 @@ end
 
 local function SkinDungeonCompletionAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
+
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
 		frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
@@ -120,7 +134,11 @@ end
 
 local function SkinGuildChallengeAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -160,21 +178,23 @@ local function SkinInvasionAlert(frame)
 		frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 4, 4)
 		frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -7, 6)
 		--Background contains the item border too, so have to remove it
-		local region, icon = frame:GetRegions()
-		if region and region:GetObjectType() == "Texture" then
-			if region:GetAtlas() == "legioninvasion-Toast-Frame" then
-				region:Kill()
+		if frame.GetRegions then
+			local region, icon = frame:GetRegions()
+			if region and region:GetObjectType() == "Texture" then
+				if region:GetAtlas() == "legioninvasion-Toast-Frame" then
+					region:Kill()
+				end
 			end
-		end
-		-- Icon border
-		if icon and icon:GetObjectType() == "Texture" then
-			if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
-				icon.b = CreateFrame("Frame", nil, frame)
-				icon.b:SetTemplate("Default")
-				icon.b:SetOutside(icon)
-				icon:SetParent(icon.b)
-				icon:SetDrawLayer("OVERLAY")
-				icon:SetTexCoord(unpack(E.TexCoords))
+			-- Icon border
+			if icon and icon:GetObjectType() == "Texture" then
+				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
+					icon.b = CreateFrame("Frame", nil, frame)
+					icon.b:SetTemplate("Default")
+					icon.b:SetOutside(icon)
+					icon:SetParent(icon.b)
+					icon:SetDrawLayer("OVERLAY")
+					icon:SetTexCoord(unpack(E.TexCoords))
+				end
 			end
 		end
 		frame.isSkinned = true
@@ -183,7 +203,11 @@ end
 
 local function SkinScenarioAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -229,11 +253,13 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.backdrop:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 6)
 		frame.shine:Kill()
 		-- Background
-		for i = 1, frame:GetNumRegions() do
-			local region = select(i, frame:GetRegions())
-			if region:GetObjectType() == "Texture" then
-				if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
-					region:Kill()
+		if frame.GetNumRegions then
+			for i = 1, frame:GetNumRegions() do
+				local region = select(i, frame:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
+						region:Kill()
+					end
 				end
 			end
 		end
@@ -256,11 +282,13 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.FollowerBG:SetAlpha(0)
 		frame.DieIcon:SetAlpha(0)
 		--Background
-		for i = 1, frame:GetNumRegions() do
-			local region = select(i, frame:GetRegions())
-			if region:GetObjectType() == "Texture" then
-				if region:GetAtlas() == "Garr_MissionToast" then
-					region:Kill()
+		if frame.GetNumRegions then
+			for i = 1, frame:GetNumRegions() do
+				local region = select(i, frame:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetAtlas() == "Garr_MissionToast" then
+						region:Kill()
+					end
 				end
 			end
 		end
@@ -471,7 +499,11 @@ end
 
 local function SkinLootWonAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -513,7 +545,11 @@ end
 
 local function SkinLootUpgradeAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.Sheen:Kill()
@@ -540,7 +576,11 @@ end
 
 local function SkinMoneyWonAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -563,7 +603,11 @@ end
 
 local function SkinStorePurchaseAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -593,7 +637,11 @@ end
 
 local function SkinDigsiteCompleteAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -609,7 +657,11 @@ end
 
 local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
@@ -639,7 +691,11 @@ end
 
 local function SkinNewPetAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()
