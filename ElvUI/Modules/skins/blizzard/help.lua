@@ -71,13 +71,13 @@ local function LoadSkin()
 
 	-- skin sub buttons
 	for i = 1, #buttons do
-		_G[buttons[i]]:StripTextures(true)
-		S:HandleButton(_G[buttons[i]], true)
+		buttons[i]:StripTextures(true)
+		S:HandleButton(buttons[i], true)
 
-		if _G[buttons[i]].text then
-			_G[buttons[i]].text:ClearAllPoints()
-			_G[buttons[i]].text:Point("CENTER")
-			_G[buttons[i]].text:SetJustifyH("CENTER")
+		if buttons[i].text then
+			buttons[i].text:ClearAllPoints()
+			buttons[i].text:Point("CENTER")
+			buttons[i].text:SetJustifyH("CENTER")
 		end
 	end
 
