@@ -1979,7 +1979,9 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
+						if not strmatch(d[1],'^|Kv%d-|k$') then -- ignore new guild protection string type
+							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
+						end
 					end
 				end
 			end
@@ -2036,19 +2038,22 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if #temp > 0 then
-		temp[50] = event
-		temp[51] = time()
+		if not strmatch(temp[1],'^|Kv%d-|k$') then -- ignore new guild protection string type
+			temp[50] = event
+			temp[51] = time()
 
-		local coloredName, battleTag
-		if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
-		if battleTag then temp[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-		temp[52] = coloredName or CH:GetColoredName(event, ...)
+			local coloredName, battleTag
+			if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
+			if battleTag then temp[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
+			temp[52] = coloredName or CH:GetColoredName(event, ...)
 
-		tinsert(data, temp)
-		while #data >= 128 do
-			tremove(data, 1)
+			tinsert(data, temp)
+			while #data >= 128 do
+				tremove(data, 1)
+			end
 		end
 	end
+
 	temp = nil -- Destory!
 end
 
