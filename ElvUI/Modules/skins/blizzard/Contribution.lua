@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local unpack = unpack
 --WoW API / Variables
@@ -28,7 +29,6 @@ local function LoadSkin()
 	end
 
 	local ContributionMixin = _G.ContributionMixin
-
 	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(self)
 		-- Skin the Contribute Buttons
 		if (not self.isSkinned) then
