@@ -112,6 +112,8 @@ local function achievementSearchPreviewButton(button)
 end
 
 local function styleSearchPreview(preview, index)
+	local AchievementFrame = _G["AchievementFrame"]
+
 	if index == 1 then
 		preview:SetPoint("TOPLEFT", AchievementFrame.searchBox, "BOTTOMLEFT", 0, 1)
 		preview:SetPoint("TOPRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 80, 1)

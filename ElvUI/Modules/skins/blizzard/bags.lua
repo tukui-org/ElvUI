@@ -104,12 +104,12 @@ local function SkinBags()
 			end)
 
 			if i == 1 then
-				BackpackTokenFrame:StripTextures(true)
-				for i=1, MAX_WATCHED_TOKENS do
-					_G["BackpackTokenFrameToken"..i].icon:SetTexCoord(unpack(E.TexCoords))
-					_G["BackpackTokenFrameToken"..i]:CreateBackdrop("Default")
-					_G["BackpackTokenFrameToken"..i].backdrop:SetOutside(_G["BackpackTokenFrameToken"..i].icon)
-					_G["BackpackTokenFrameToken"..i].icon:Point("LEFT", _G["BackpackTokenFrameToken"..i].count, "RIGHT", 2, 0)
+				_G["BackpackTokenFrame"]:StripTextures(true)
+				for j=1, MAX_WATCHED_TOKENS do
+					_G["BackpackTokenFrameToken"..j].icon:SetTexCoord(unpack(E.TexCoords))
+					_G["BackpackTokenFrameToken"..j]:CreateBackdrop("Default")
+					_G["BackpackTokenFrameToken"..j].backdrop:SetOutside(_G["BackpackTokenFrameToken"..j].icon)
+					_G["BackpackTokenFrameToken"..j].icon:Point("LEFT", _G["BackpackTokenFrameToken"..j].count, "RIGHT", 2, 0)
 				end
 			end
 		end

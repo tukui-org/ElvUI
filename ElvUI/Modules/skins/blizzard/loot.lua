@@ -23,9 +23,8 @@ local LOOT, ITEMS = LOOT, ITEMS
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i=1, numItems do
-		local frame = LootHistoryFrame.itemFrames[i]
-
-		if not frame.isSkinned then
+		local frame = _G["LootHistoryFrame"].itemFrames[i]
+		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)

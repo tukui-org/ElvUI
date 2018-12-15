@@ -11,6 +11,8 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS:
 
 local function SkinRewards()
+	local AdventureMapQuestChoiceDialog = _G["AdventureMapQuestChoiceDialog"]
+
 	for reward in pairs(AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 		if not reward.isSkinned then
 			S:HandleItemButton(reward)

@@ -14,9 +14,9 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
-		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
+	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
-			--Set border color according to rarity of item
+		--Set border color according to rarity of item
 		local firstRegion, r, g, b
 		for _, reward in pairs(self.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
@@ -60,12 +60,14 @@ local function LoadSkin()
 				r, g, b = unpack(E.media.bordercolor)
 			end
 		-- end
+
 		frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
 
 	--This handles border color for rewards on Garrison/Order Hall Report Frame
 	hooksecurefunc("GarrisonLandingPageReportList_UpdateAvailable", function()
+		local GarrisonLandingPageReport = _G["GarrisonLandingPageReport"]
 		local items = GarrisonLandingPageReport.List.AvailableItems;
 		local numItems = #items;
 		local scrollFrame = GarrisonLandingPageReport.List.listScroll;

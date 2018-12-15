@@ -31,6 +31,7 @@ local function LoadSkin()
 	S:HandleCloseButton(ItemRefCloseButton)
 
 	-- World Quest Reward Icon
+	local WorldMapTooltip = _G["WorldMapTooltip"]
 	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	WorldMapTooltip.ItemTooltip:CreateBackdrop()
 	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)

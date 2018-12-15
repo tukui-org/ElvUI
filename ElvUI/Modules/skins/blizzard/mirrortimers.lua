@@ -11,7 +11,6 @@ local format = format
 
 local function MirrorTimer_OnUpdate(frame, elapsed)
 	if frame.paused then return end
-
 	if frame.timeSinceUpdate >= 0.3 then
 		local minutes = frame.value/60
 		local seconds = frame.value%60

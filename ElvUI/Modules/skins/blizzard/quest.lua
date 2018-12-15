@@ -20,6 +20,7 @@ local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local function HandleReward(frame)
 	if frame.backdrop then return end
+
 	frame.NameFrame:SetAlpha(0)
 	frame.Icon:SetTexCoord(unpack(E.TexCoords))
 	frame:CreateBackdrop()
@@ -28,7 +29,7 @@ local function HandleReward(frame)
 	frame.Count:ClearAllPoints()
 	frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
 
-	if(frame.CircleBackground) then
+	if frame.CircleBackground then
 		frame.CircleBackground:SetAlpha(0)
 		frame.CircleBackgroundGlow:SetAlpha(0)
 	end

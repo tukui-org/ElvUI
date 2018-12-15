@@ -13,7 +13,6 @@ local hooksecurefunc = hooksecurefunc
 
 local function SkinOjectiveTrackerHeaders()
 	local frame = _G["ObjectiveTrackerFrame"].MODULES
-
 	if frame then
 		for i = 1, #frame do
 			local modules = frame[i]

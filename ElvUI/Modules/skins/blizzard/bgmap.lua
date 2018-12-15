@@ -12,14 +12,16 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: UIDropDownMenu_Initialize, ToggleDropDownMenu
 
 local function GetOpacity()
+	local BattlefieldMapOptions = _G["BattlefieldMapOptions"]
 	return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
 end
 
 local function InitializeOptionsDropDown()
-	BattlefieldMapTab:InitializeOptionsDropDown()
+	_G["BattlefieldMapTab"]:InitializeOptionsDropDown()
 end
 
 local function setBackdropAlpha()
+	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
 	if BattlefieldMapFrame.backdrop then
 		BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
 	end
@@ -29,14 +31,14 @@ end
 local oldAlpha = 0
 local function setOldAlpha()
 	if oldAlpha then
-		BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
+		_G["BattlefieldMapFrame"]:SetGlobalAlpha(oldAlpha)
 		oldAlpha = nil
 	end
 end
 
 local function setRealAlpha()
 	oldAlpha = GetOpacity()
-	BattlefieldMapFrame:SetGlobalAlpha(1)
+	_G["BattlefieldMapFrame"]:SetGlobalAlpha(1)
 end
 
 local function refreshAlpha()
@@ -47,6 +49,10 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 
 	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
+	local BattlefieldMapOptions = _G["BattlefieldMapOptions"]
+	local BattlefieldMapTab = _G["BattlefieldMapTab"]
+	local OpacityFrame = _G["OpacityFrame"]
+
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:StripTextures()
 

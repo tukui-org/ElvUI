@@ -32,7 +32,7 @@ local function SkinFriendRequest(frame)
 end
 
 local function UpdateWhoSkins()
-	WhoListScrollFrame:StripTextures()
+	_G["WhoListScrollFrame"]:StripTextures()
 end
 
 --Social Frame

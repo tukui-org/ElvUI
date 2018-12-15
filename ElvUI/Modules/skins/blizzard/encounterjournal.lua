@@ -12,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: EJ_GetEncounterInfoByIndex, AJ_MAX_NUM_SUGGESTIONS
 
 local function SkinDungeons()
-	local b1 = EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
+	local b1 = _G["EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1"]
 	if b1 and not b1.isSkinned then
 		S:HandleButton(b1)
 		b1.bgImage:SetInside()

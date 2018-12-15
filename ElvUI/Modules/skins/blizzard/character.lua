@@ -57,6 +57,7 @@ local function ColorizeStatPane(frame)
 end
 
 local function StatsPane(which)
+	local CharacterStatsPane = _G["CharacterStatsPane"]
 	CharacterStatsPane[which]:StripTextures()
 	CharacterStatsPane[which]:CreateBackdrop("Transparent")
 	CharacterStatsPane[which].backdrop:ClearAllPoints()
@@ -66,7 +67,7 @@ local function StatsPane(which)
 end
 
 local function SkinItemFlyouts()
-	local flyout = EquipmentFlyoutFrame
+	local flyout = _G["EquipmentFlyoutFrame"]
 	local buttons = flyout.buttons
 	local buttonAnchor = flyout.buttonFrame
 
@@ -157,10 +158,10 @@ local function FixSidebarTabCoords()
 end
 
 local function UpdateFactionSkins()
-	ReputationListScrollFrame:StripTextures()
-	ReputationFrame:StripTextures(true)
+	_G["ReputationListScrollFrame"]:StripTextures()
+	_G["ReputationFrame"]:StripTextures(true)
 
-	local factionOffset = FauxScrollFrame_GetOffset(ReputationListScrollFrame)
+	local factionOffset = FauxScrollFrame_GetOffset(_G["ReputationListScrollFrame"])
 	local numFactions = GetNumFactions()
 
 	for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
@@ -196,21 +197,25 @@ local function UpdateFactionSkins()
 		end
 	end
 
+	local ReputationDetailFrame = _G["ReputationDetailFrame"]
 	ReputationDetailFrame:StripTextures()
 	ReputationDetailFrame:SetTemplate("Transparent")
-	ReputationDetailFrame:Point("TOPLEFT", ReputationFrame, "TOPRIGHT", 4, -28)
+	ReputationDetailFrame:Point("TOPLEFT", _G["ReputationFrame"], "TOPRIGHT", 4, -28)
 end
 
 local function UpdateCurrencySkins()
+	local TokenFramePopup = _G["TokenFramePopup"]
+
 	if TokenFramePopup then
 		if not TokenFramePopup.template then
 			TokenFramePopup:StripTextures()
 			TokenFramePopup:SetTemplate("Transparent")
 		end
 
-		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
+		TokenFramePopup:Point("TOPLEFT", _G["TokenFrame"], "TOPRIGHT", 4, -28)
 	end
 
+	local TokenFrameContainer = _G["TokenFrameContainer"]
 	if not TokenFrameContainer.buttons then return end
 
 	local buttons = TokenFrameContainer.buttons
@@ -420,7 +425,7 @@ local function LoadSkin()
 	CharacterFrame:SetTemplate("Transparent")
 
 	--Titles
-	PaperDollTitlesPane:HookScript("OnShow", function(self)
+	PaperDollTitlesPane:HookScript("OnShow", function()
 		for _, object in pairs(PaperDollTitlesPane.buttons) do
 			object.BgTop:SetTexture(nil)
 			object.BgBottom:SetTexture(nil)
@@ -486,7 +491,7 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = EmbeddedItemTooltip
+		local tooltip = _G["EmbeddedItemTooltip"]
 		local reward = tooltip.ItemTooltip
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")

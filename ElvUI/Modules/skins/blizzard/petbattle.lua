@@ -59,12 +59,13 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
 
-	local f = PetBattleFrame
+	local f = _G["PetBattleFrame"]
 	local bf = f.BottomFrame
 	local infoBars = {
 		f.ActiveAlly,
 		f.ActiveEnemy
 	}
+
 	S:HandleCloseButton(FloatingBattlePetTooltip.CloseButton)
 
 	-- TOP FRAMES
@@ -155,7 +156,7 @@ local function LoadSkin()
 	end
 
 	-- PETS SPEED INDICATOR UPDATE
-	hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function(self)
+	hooksecurefunc("PetBattleFrame_UpdateSpeedIndicators", function()
 		if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
 			f.ActiveAlly.FirstAttack:Hide()
 			f.ActiveEnemy.FirstAttack:Hide()
@@ -257,15 +258,15 @@ local function LoadSkin()
 		hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				_G["BattlePetTooltip"]:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G["BattlePetTooltip"]:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
 		-- TOOLTIP DEFAULT POSITION
 		hooksecurefunc("PetBattleAbilityTooltip_Show", function()
-			local t = PetBattlePrimaryAbilityTooltip
+			local t = _G["PetBattlePrimaryAbilityTooltip"]
 			local point, x, y = "TOPRIGHT", -4, -4
 			--Position it at the bottom right on low resolution setups
 			--Otherwise the tooltip might overlap enemy team unit info
@@ -338,7 +339,7 @@ local function LoadSkin()
 	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
 	bf.TurnTimer.SkipButton:ClearAllPoints()
 	bf.TurnTimer.SkipButton:Point("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
-	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(self, point, _, anchorPoint, xOffset, yOffset)
+	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(_, point, _, anchorPoint, xOffset, yOffset)
 		if point ~= "BOTTOM" or anchorPoint ~= "TOP" or xOffset ~= 0 or yOffset ~= (E.PixelMode and -1 or 1) then
 			bf.TurnTimer.SkipButton:ClearAllPoints()
 			bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)

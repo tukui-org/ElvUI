@@ -12,22 +12,22 @@ local hooksecurefunc = hooksecurefunc
 
 local function MailFrameSkin()
 	for i = 1, ATTACHMENTS_MAX_SEND do
-		local b = _G["SendMailAttachment"..i]
-		if not b.skinned then
-			b:StripTextures()
-			b:SetTemplate("Default", true)
-			b:StyleButton()
-			b.skinned = true
-			hooksecurefunc(b.IconBorder, 'SetVertexColor', function(self, r, g, b)
+		local btn = _G["SendMailAttachment"..i]
+		if not btn.skinned then
+			btn:StripTextures()
+			btn:SetTemplate("Default", true)
+			btn:StyleButton()
+			btn.skinned = true
+			hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r, g, b)
 				self:SetTexture("")
 			end)
-			hooksecurefunc(b.IconBorder, 'Hide', function(self)
+			hooksecurefunc(btn.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 
-		local t = b:GetNormalTexture()
+		local t = btn:GetNormalTexture()
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
 			t:SetInside()
