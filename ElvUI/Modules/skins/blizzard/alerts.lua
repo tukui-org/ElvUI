@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local unpack, select = unpack, select
 --WoW API / Variables
@@ -667,42 +668,42 @@ local function LoadSkin()
 
 	--[[ HOOKS ]]--
 	-- Achievements
-	hooksecurefunc(AchievementAlertSystem, "setUpFunction", SkinAchievementAlert)
-	hooksecurefunc(CriteriaAlertSystem, "setUpFunction", SkinCriteriaAlert)
+	hooksecurefunc(_G.AchievementAlertSystem, "setUpFunction", SkinAchievementAlert)
+	hooksecurefunc(_G.CriteriaAlertSystem, "setUpFunction", SkinCriteriaAlert)
 
 	-- Encounters
-	hooksecurefunc(DungeonCompletionAlertSystem, "setUpFunction", SkinDungeonCompletionAlert)
-	hooksecurefunc(GuildChallengeAlertSystem, "setUpFunction", SkinGuildChallengeAlert)
-	hooksecurefunc(InvasionAlertSystem, "setUpFunction", SkinInvasionAlert)
-	hooksecurefunc(ScenarioAlertSystem, "setUpFunction", SkinScenarioAlert)
-	hooksecurefunc(WorldQuestCompleteAlertSystem, "setUpFunction", SkinWorldQuestCompleteAlert)
+	hooksecurefunc(_G.DungeonCompletionAlertSystem, "setUpFunction", SkinDungeonCompletionAlert)
+	hooksecurefunc(_G.GuildChallengeAlertSystem, "setUpFunction", SkinGuildChallengeAlert)
+	hooksecurefunc(_G.InvasionAlertSystem, "setUpFunction", SkinInvasionAlert)
+	hooksecurefunc(_G.ScenarioAlertSystem, "setUpFunction", SkinScenarioAlert)
+	hooksecurefunc(_G.WorldQuestCompleteAlertSystem, "setUpFunction", SkinWorldQuestCompleteAlert)
 
 	-- Garrisons
-	hooksecurefunc(GarrisonFollowerAlertSystem, "setUpFunction", SkinGarrisonFollowerAlert)
-	hooksecurefunc(GarrisonShipFollowerAlertSystem, "setUpFunction", SkinGarrisonShipFollowerAlert)
-	hooksecurefunc(GarrisonTalentAlertSystem, "setUpFunction", SkinGarrisonTalentAlert)
-	hooksecurefunc(GarrisonBuildingAlertSystem, "setUpFunction", SkinGarrisonBuildingAlert)
-	hooksecurefunc(GarrisonMissionAlertSystem, "setUpFunction", SkinGarrisonMissionAlert)
-	hooksecurefunc(GarrisonShipMissionAlertSystem, "setUpFunction", SkinGarrisonShipMissionAlert)
-	hooksecurefunc(GarrisonRandomMissionAlertSystem, "setUpFunction", SkinGarrisonRandomMissionAlert)
+	hooksecurefunc(_G.GarrisonFollowerAlertSystem, "setUpFunction", SkinGarrisonFollowerAlert)
+	hooksecurefunc(_G.GarrisonShipFollowerAlertSystem, "setUpFunction", SkinGarrisonShipFollowerAlert)
+	hooksecurefunc(_G.GarrisonTalentAlertSystem, "setUpFunction", SkinGarrisonTalentAlert)
+	hooksecurefunc(_G.GarrisonBuildingAlertSystem, "setUpFunction", SkinGarrisonBuildingAlert)
+	hooksecurefunc(_G.GarrisonMissionAlertSystem, "setUpFunction", SkinGarrisonMissionAlert)
+	hooksecurefunc(_G.GarrisonShipMissionAlertSystem, "setUpFunction", SkinGarrisonShipMissionAlert)
+	hooksecurefunc(_G.GarrisonRandomMissionAlertSystem, "setUpFunction", SkinGarrisonRandomMissionAlert)
 
 	-- Loot
-	hooksecurefunc(LegendaryItemAlertSystem, "setUpFunction", SkinLegendaryItemAlert)
-	hooksecurefunc(LootAlertSystem, "setUpFunction", SkinLootWonAlert)
-	hooksecurefunc(LootUpgradeAlertSystem, "setUpFunction", SkinLootUpgradeAlert)
-	hooksecurefunc(MoneyWonAlertSystem, "setUpFunction", SkinMoneyWonAlert)
-	hooksecurefunc(StorePurchaseAlertSystem, "setUpFunction", SkinStorePurchaseAlert)
+	hooksecurefunc(_G.LegendaryItemAlertSystem, "setUpFunction", SkinLegendaryItemAlert)
+	hooksecurefunc(_G.LootAlertSystem, "setUpFunction", SkinLootWonAlert)
+	hooksecurefunc(_G.LootUpgradeAlertSystem, "setUpFunction", SkinLootUpgradeAlert)
+	hooksecurefunc(_G.MoneyWonAlertSystem, "setUpFunction", SkinMoneyWonAlert)
+	hooksecurefunc(_G.StorePurchaseAlertSystem, "setUpFunction", SkinStorePurchaseAlert)
 	-- Professions
-	hooksecurefunc(DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
-	hooksecurefunc(NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
+	hooksecurefunc(_G.DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
+	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
 
 	-- Pets/Mounts
-	hooksecurefunc(NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
-	hooksecurefunc(NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
+	hooksecurefunc(_G.NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
+	hooksecurefunc(_G.NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
 
 	--[[ STATIC SKINNING ]]--
 	--Bonus Roll Money
-	local frame = BonusRollMoneyWonFrame
+	local frame = _G.BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
 	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 	frame.Background:Kill()
@@ -719,7 +720,7 @@ local function LoadSkin()
 	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 
 	--Bonus Roll Loot
-	frame = BonusRollLootWonFrame
+	frame = _G.BonusRollLootWonFrame
 	frame:SetAlpha(1)
 	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 	frame.Background:Kill()

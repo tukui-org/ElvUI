@@ -18,8 +18,6 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local QUESTS_LABEL = QUESTS_LABEL
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function UpdateBorderColors(button)
 	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -104,7 +102,7 @@ local function SkinBags()
 			end)
 
 			if i == 1 then
-				_G["BackpackTokenFrame"]:StripTextures(true)
+				_G.BackpackTokenFrame:StripTextures(true)
 				for j=1, MAX_WATCHED_TOKENS do
 					_G["BackpackTokenFrameToken"..j].icon:SetTexCoord(unpack(E.TexCoords))
 					_G["BackpackTokenFrameToken"..j]:CreateBackdrop("Default")
@@ -126,12 +124,12 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
 
-	BankSlotsFrame:StripTextures()
-	S:HandleTab(BankFrameTab1)
-	S:HandleTab(BankFrameTab2)
-	S:HandleButton(ReagentBankFrame.DespositButton)
-	ReagentBankFrame:HookScript("OnShow", function()
-		ReagentBankFrame:StripTextures()
+	_G.BankSlotsFrame:StripTextures()
+	S:HandleTab(_G.BankFrameTab1)
+	S:HandleTab(_G.BankFrameTab2)
+	S:HandleButton(_G.ReagentBankFrame.DespositButton)
+	_G.ReagentBankFrame:HookScript("OnShow", function(self)
+		self:StripTextures()
 	end)
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
@@ -144,26 +142,26 @@ local function LoadSkin()
 	end)
 
 	--Bank
-	local BankFrame = _G["BankFrame"]
+	local BankFrame = _G.BankFrame
 	hooksecurefunc("BankFrameItemButton_Update", function(button)
 		if not BankFrame.backdrop then
 			BankFrame:StripTextures(true)
 			BankFrame:SetTemplate('Transparent')
-			S:HandleButton(BankFramePurchaseButton, true)
-			S:HandleCloseButton(BankFrameCloseButton)
+			S:HandleButton(_G.BankFramePurchaseButton, true)
+			S:HandleCloseButton(_G.BankFrameCloseButton)
 
-			BankFrame.backdrop2 = CreateFrame("Frame", nil, BankSlotsFrame)
+			BankFrame.backdrop2 = CreateFrame("Frame", nil, _G.BankSlotsFrame)
 			BankFrame.backdrop2:SetTemplate("Default")
-			BankFrame.backdrop2:Point("TOPLEFT", BankFrameItem1, "TOPLEFT", -6, 6)
-			BankFrame.backdrop2:Point("BOTTOMRIGHT", BankFrameItem28, "BOTTOMRIGHT", 6, -6)
+			BankFrame.backdrop2:Point("TOPLEFT", _G.BankFrameItem1, "TOPLEFT", -6, 6)
+			BankFrame.backdrop2:Point("BOTTOMRIGHT", _G.BankFrameItem28, "BOTTOMRIGHT", 6, -6)
 
-			BankFrame.backdrop3 = CreateFrame("Frame", nil, BankSlotsFrame)
+			BankFrame.backdrop3 = CreateFrame("Frame", nil, _G.BankSlotsFrame)
 			BankFrame.backdrop3:SetTemplate("Default")
-			BankFrame.backdrop3:Point("TOPLEFT", BankSlotsFrame.Bag1, "TOPLEFT", -6, 6)
-			BankFrame.backdrop3:Point("BOTTOMRIGHT", BankSlotsFrame.Bag7, "BOTTOMRIGHT", 6, -6)
+			BankFrame.backdrop3:Point("TOPLEFT", _G.BankSlotsFrame.Bag1, "TOPLEFT", -6, 6)
+			BankFrame.backdrop3:Point("BOTTOMRIGHT", _G.BankSlotsFrame.Bag7, "BOTTOMRIGHT", 6, -6)
 
-			BankFrameMoneyFrameInset:Kill()
-			BankFrameMoneyFrameBorder:Kill()
+			_G.BankFrameMoneyFrameInset:Kill()
+			_G.BankFrameMoneyFrameBorder:Kill()
 			BankFrame.backdrop = true;
 		end
 
@@ -215,10 +213,12 @@ local function LoadSkin()
 		end]]
 	end)
 
+	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
 
-	BagHelpBox:Kill()
+	local BankItemSearchBox = _G.BankItemSearchBox
+	_G.BagHelpBox:Kill()
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop("Overlay")
 	BankItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)

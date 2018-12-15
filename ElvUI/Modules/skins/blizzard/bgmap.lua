@@ -4,26 +4,20 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIDropDownMenu_Initialize, ToggleDropDownMenu
-
 local function GetOpacity()
-	local BattlefieldMapOptions = _G["BattlefieldMapOptions"]
-	return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
+	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
 end
 
 local function InitializeOptionsDropDown()
-	_G["BattlefieldMapTab"]:InitializeOptionsDropDown()
+	_G.BattlefieldMapTab:InitializeOptionsDropDown()
 end
 
 local function setBackdropAlpha()
-	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
-	if BattlefieldMapFrame.backdrop then
-		BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
+	if _G.BattlefieldMapFrame.backdrop then
+		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
 	end
 end
 
@@ -31,14 +25,14 @@ end
 local oldAlpha = 0
 local function setOldAlpha()
 	if oldAlpha then
-		_G["BattlefieldMapFrame"]:SetGlobalAlpha(oldAlpha)
+		_G.BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
 		oldAlpha = nil
 	end
 end
 
 local function setRealAlpha()
 	oldAlpha = GetOpacity()
-	_G["BattlefieldMapFrame"]:SetGlobalAlpha(1)
+	_G.BattlefieldMapFrame:SetGlobalAlpha(1)
 end
 
 local function refreshAlpha()
@@ -48,10 +42,8 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 
-	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
-	local BattlefieldMapOptions = _G["BattlefieldMapOptions"]
-	local BattlefieldMapTab = _G["BattlefieldMapTab"]
-	local OpacityFrame = _G["OpacityFrame"]
+	local BattlefieldMapFrame = _G.BattlefieldMapFrame
+	local BattlefieldMapTab = _G.BattlefieldMapTab
 
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:StripTextures()
@@ -80,17 +72,17 @@ local function LoadSkin()
 			BattlefieldMapTab:StopMovingOrSizing()
 			BattlefieldMapTab:SetUserPlaced(true)
 		elseif btn == "RightButton" then
-			UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
-			ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
+			_G.ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
 		end
 
-		if OpacityFrame:IsShown() then
-			OpacityFrame:Hide()
+		if _G.OpacityFrame:IsShown() then
+			_G.OpacityFrame:Hide()
 		end
 	end)
 
 	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseDown", function(_, btn)
-		if btn == "LeftButton" and (BattlefieldMapOptions and not BattlefieldMapOptions.locked) then
+		if btn == "LeftButton" and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
 			BattlefieldMapTab:StartMoving()
 		end
 	end)

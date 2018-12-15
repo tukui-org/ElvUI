@@ -9,8 +9,6 @@ local unpack = unpack
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GetNumGuildBankTabs = GetNumGuildBankTabs
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUM_RANK_FLAGS, MAX_BUY_GUILDBANK_TABS
 
 local function SkinGuildRanks()
 	for i=1, GuildControlGetNumRanks() do
@@ -77,44 +75,45 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
 
-	local GuildControlUI = _G["GuildControlUI"]
+	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
-	GuildControlUIHbar:StripTextures()
+	_G.GuildControlUIHbar:StripTextures()
 	GuildControlUI:SetTemplate("Transparent")
-	GuildControlUIRankBankFrameInset:StripTextures()
-	GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
-	S:HandleCloseButton(GuildControlUICloseButton)
-	S:HandleScrollBar(GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
+	_G.GuildControlUIRankBankFrameInset:StripTextures()
+	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
+	S:HandleCloseButton(_G.GuildControlUICloseButton)
+	S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
 
 	hooksecurefunc("GuildControlUI_RankOrder_Update", SkinGuildRanks)
-	GuildControlUIRankOrderFrameNewButton:HookScript("OnClick", function()
+	_G.GuildControlUIRankOrderFrameNewButton:HookScript("OnClick", function()
 		E:Delay(1, SkinGuildRanks)
 	end)
 
-	S:HandleDropDownBox(GuildControlUINavigationDropDown)
-	S:HandleDropDownBox(GuildControlUIRankSettingsFrameRankDropDown, 180)
-	GuildControlUINavigationDropDownButton:Width(20)
-	GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
+	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
+	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
+	_G.GuildControlUINavigationDropDownButton:Width(20)
+	_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
 
-	for i=1, NUM_RANK_FLAGS do
+	for i=1, _G.NUM_RANK_FLAGS do
 		if _G["GuildControlUIRankSettingsFrameCheckbox"..i] then
 			S:HandleCheckBox(_G["GuildControlUIRankSettingsFrameCheckbox"..i])
 		end
 	end
 
-	S:HandleButton(GuildControlUIRankOrderFrameNewButton)
+	S:HandleButton(_G.GuildControlUIRankOrderFrameNewButton)
 
+	local GuildControlUIRankSettingsFrameGoldBox = _G.GuildControlUIRankSettingsFrameGoldBox
 	S:HandleEditBox(GuildControlUIRankSettingsFrameGoldBox)
 	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point("TOPLEFT", -2, -4)
 	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point("BOTTOMRIGHT", 2, 4)
 	GuildControlUIRankSettingsFrameGoldBox:StripTextures()
 
-	GuildControlUIRankBankFrame:StripTextures()
+	_G.GuildControlUIRankBankFrame:StripTextures()
 
 	local once = false
 	hooksecurefunc("GuildControlUI_BankTabPermissions_Update", function()
 		local numTabs = GetNumGuildBankTabs()
-		if numTabs < MAX_BUY_GUILDBANK_TABS then
+		if numTabs < _G.MAX_BUY_GUILDBANK_TABS then
 			numTabs = numTabs + 1
 		end
 		for i=1, numTabs do
@@ -140,8 +139,8 @@ local function LoadSkin()
 		once = true
 	end)
 
-	S:HandleDropDownBox(GuildControlUIRankBankFrameRankDropDown, 180)
-	GuildControlUIRankBankFrameRankDropDownButton:Width(20)
+	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropDown, 180)
+	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
 S:AddCallbackForAddon("Blizzard_GuildControlUI", "GuildControl", LoadSkin)

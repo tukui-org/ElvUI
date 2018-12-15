@@ -7,15 +7,12 @@ local _G = _G
 local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Scrapping ~= true then return end
 
-	local MachineFrame = _G["ScrappingMachineFrame"]
+	local MachineFrame = _G.ScrappingMachineFrame
 	S:HandlePortraitFrame(MachineFrame, true)
-
 	S:HandleButton(MachineFrame.ScrapButton)
 
 	local ItemSlots = MachineFrame.ItemSlots

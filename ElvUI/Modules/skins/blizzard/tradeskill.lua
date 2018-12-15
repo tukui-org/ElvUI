@@ -8,8 +8,6 @@ local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function SkinRecipeList(self, _, tradeSkillInfo)
 	-- +/- Buttons
@@ -38,7 +36,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 
 	-- MainFrame
-	local TradeSkillFrame = _G["TradeSkillFrame"]
+	local TradeSkillFrame = _G.TradeSkillFrame
 	S:HandlePortraitFrame(TradeSkillFrame, true)
 
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)

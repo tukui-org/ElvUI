@@ -12,9 +12,6 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NumberFont_Outline_Huge, LE_BATTLE_PET_WEATHER, NUM_BATTLE_PET_ABILITIES
--- GLOBALS: PET_BATTLE_PAD_INDEX
 
 local function SkinPetButton(self, bf)
 	if not self.backdrop then
@@ -59,14 +56,14 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
 
-	local f = _G["PetBattleFrame"]
+	local f = _G.PetBattleFrame
 	local bf = f.BottomFrame
 	local infoBars = {
 		f.ActiveAlly,
 		f.ActiveEnemy
 	}
 
-	S:HandleCloseButton(FloatingBattlePetTooltip.CloseButton)
+	S:HandleCloseButton(_G.FloatingBattlePetTooltip.CloseButton)
 
 	-- TOP FRAMES
 	f:StripTextures()
@@ -144,7 +141,7 @@ local function LoadSkin()
 		infoBar.PetType:SetAlpha(0)
 
 		infoBar.LevelUnderlay:SetAlpha(0)
-		infoBar.Level:SetFontObject(NumberFont_Outline_Huge)
+		infoBar.Level:SetFontObject(_G.NumberFont_Outline_Huge)
 		infoBar.Level:ClearAllPoints()
 		infoBar.Level:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMLEFT', 2, 2)
 		if infoBar.SpeedIcon then
@@ -223,7 +220,7 @@ local function LoadSkin()
 
 	-- WEATHER
 	hooksecurefunc("PetBattleWeatherFrame_Update", function(self)
-		local weather = C_PetBattles_GetAuraInfo(LE_BATTLE_PET_WEATHER, PET_BATTLE_PAD_INDEX, 1)
+		local weather = C_PetBattles_GetAuraInfo(_G.LE_BATTLE_PET_WEATHER, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			self.Icon:Hide()
 			self.BackgroundArt:ClearAllPoints()
@@ -248,25 +245,25 @@ local function LoadSkin()
 
 	-- TOOLTIPS SKINNING
 	if E.private.skins.blizzard.tooltip then
-		SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
-		SkinPetTooltip(PetBattlePrimaryUnitTooltip)
-		SkinPetTooltip(BattlePetTooltip)
-		SkinPetTooltip(FloatingBattlePetTooltip)
-		SkinPetTooltip(FloatingPetBattleAbilityTooltip)
+		SkinPetTooltip(_G.PetBattlePrimaryAbilityTooltip)
+		SkinPetTooltip(_G.PetBattlePrimaryUnitTooltip)
+		SkinPetTooltip(_G.BattlePetTooltip)
+		SkinPetTooltip(_G.FloatingBattlePetTooltip)
+		SkinPetTooltip(_G.FloatingPetBattleAbilityTooltip)
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				_G["BattlePetTooltip"]:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				_G["BattlePetTooltip"]:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
 		-- TOOLTIP DEFAULT POSITION
 		hooksecurefunc("PetBattleAbilityTooltip_Show", function()
-			local t = _G["PetBattlePrimaryAbilityTooltip"]
+			local t = _G.PetBattlePrimaryAbilityTooltip
 			local point, x, y = "TOPRIGHT", -4, -4
 			--Position it at the bottom right on low resolution setups
 			--Otherwise the tooltip might overlap enemy team unit info
@@ -385,7 +382,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("PetBattleFrame_UpdateActionBarLayout", function()
-		for i=1, NUM_BATTLE_PET_ABILITIES do
+		for i=1, _G.NUM_BATTLE_PET_ABILITIES do
 			local b = bf.abilityButtons[i]
 			SkinPetButton(b, bf)
 			b:SetParent(bar)
@@ -412,6 +409,7 @@ local function LoadSkin()
 		SkinPetButton(bf.ForfeitButton, bf)
 	end)
 
+	local PetBattleQueueReadyFrame = _G.PetBattleQueueReadyFrame
 	PetBattleQueueReadyFrame:StripTextures()
 	PetBattleQueueReadyFrame:SetTemplate("Transparent")
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)

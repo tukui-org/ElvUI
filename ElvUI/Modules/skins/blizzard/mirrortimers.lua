@@ -6,8 +6,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local format = format
 --WoW API / Variables
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: MIRRORTIMER_NUMTIMERS
 
 local function MirrorTimer_OnUpdate(frame, elapsed)
 	if frame.paused then return end
@@ -32,7 +30,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mirrorTimers ~= true then return end
 
 	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
-	for i = 1, MIRRORTIMER_NUMTIMERS do
+	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local mirrorTimer = _G['MirrorTimer'..i]
 		local statusBar = _G['MirrorTimer'..i..'StatusBar']
 		local text = _G['MirrorTimer'..i.."Text"]

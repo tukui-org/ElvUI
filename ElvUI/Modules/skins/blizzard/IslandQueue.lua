@@ -6,13 +6,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 --WoW API / Variables
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
 
-	local IslandsFrame = _G["IslandsQueueFrame"]
+	local IslandsFrame = _G.IslandsQueueFrame
 	S:HandlePortraitFrame(IslandsFrame, true)
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 

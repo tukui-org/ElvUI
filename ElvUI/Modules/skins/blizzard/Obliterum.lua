@@ -6,18 +6,14 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 --WoW API / Variables
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Obliterum ~= true then return end
 
-	local ObliterumForgeFrame = _G["ObliterumForgeFrame"]
+	local ObliterumForgeFrame = _G.ObliterumForgeFrame
 	S:HandlePortraitFrame(ObliterumForgeFrame, true)
-
 	ObliterumForgeFrame.ItemSlot:CreateBackdrop("Default")
 	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
-
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end
 

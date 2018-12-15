@@ -5,33 +5,32 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 --WoW API / Variables
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
 
-	local DressUpFrame = _G["DressUpFrame"]
+	local DressUpFrame = _G.DressUpFrame
 	S:HandlePortraitFrame(DressUpFrame, true)
 
-	S:HandleButton(DressUpFrameResetButton)
-	S:HandleButton(DressUpFrameCancelButton)
+	S:HandleButton(_G.DressUpFrameResetButton)
+	S:HandleButton(_G.DressUpFrameCancelButton)
+
+	local DressUpFrameOutfitDropDown = _G.DressUpFrameOutfitDropDown
 	S:HandleButton(DressUpFrameOutfitDropDown.SaveButton)
 	DressUpFrameOutfitDropDown.SaveButton:ClearAllPoints()
 	DressUpFrameOutfitDropDown.SaveButton:SetPoint("RIGHT", DressUpFrameOutfitDropDown, 86, 4)
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
 
-	S:HandleMaxMinFrame(MaximizeMinimizeFrame)
-
-	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
+	S:HandleMaxMinFrame(_G.MaximizeMinimizeFrame)
+	_G.DressUpFrameResetButton:Point("RIGHT", _G.DressUpFrameCancelButton, "LEFT", -2, 0)
 
 	-- Wardrobe edit frame
-	local WardrobeOutfitFrame = _G["WardrobeOutfitFrame"]
+	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures(true)
 	WardrobeOutfitFrame:SetTemplate("Transparent")
 
-	local WardrobeOutfitEditFrame = _G["WardrobeOutfitEditFrame"]
+	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)
 	WardrobeOutfitEditFrame:SetTemplate("Transparent")
 	WardrobeOutfitEditFrame.EditBox:StripTextures()

@@ -7,8 +7,6 @@ local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUM_PET_ACTIVE_SLOTS, NUM_PET_STABLE_SLOTS
 
 local function PetButtons(btn, p)
 	local button = _G[btn]
@@ -44,19 +42,20 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end
 
-	local PetStableFrame = _G["PetStableFrame"]
+	local PetStableFrame = _G.PetStableFrame
 	S:HandlePortraitFrame(PetStableFrame, true)
 
-	PetStableLeftInset:StripTextures()
-	PetStableBottomInset:StripTextures()
-	PetStableFrameInset:SetTemplate('Transparent')
+	_G.PetStableLeftInset:StripTextures()
+	_G.PetStableBottomInset:StripTextures()
+	_G.PetStableFrameInset:SetTemplate('Transparent')
 
-	S:HandleButton(PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
-	S:HandleButton(PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
-	S:HandleRotateButton(PetStableModelRotateRightButton)
-	S:HandleRotateButton(PetStableModelRotateLeftButton)
+	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
+	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
+	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
+	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
 	local p = E.PixelMode and 1 or 2
+	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 		local b = CreateFrame("Frame", nil, PetStableSelectedPetIcon:GetParent())
@@ -67,10 +66,10 @@ local function LoadSkin()
 		b:SetTemplate("Default")
 	end
 
-	for i = 1, NUM_PET_ACTIVE_SLOTS do
+	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
 		PetButtons('PetStableActivePet' .. i, p)
 	end
-	for i = 1, NUM_PET_STABLE_SLOTS do
+	for i = 1, _G.NUM_PET_STABLE_SLOTS do
 		PetButtons('PetStableStabledPet' .. i, p)
 	end
 end

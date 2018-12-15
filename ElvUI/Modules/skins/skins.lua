@@ -14,8 +14,6 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame, HybridScrollFrame_GetOffset
 
 E.Skins = S
 S.addonsToLoad = {}
@@ -550,15 +548,15 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 
 	if useVertical then
 		if inverseDirection then
-			SquareButton_SetIcon(btn, 'UP')
+			_G.SquareButton_SetIcon(btn, 'UP')
 		else
-			SquareButton_SetIcon(btn, 'DOWN')
+			_G.SquareButton_SetIcon(btn, 'DOWN')
 		end
 	else
 		if inverseDirection then
-			SquareButton_SetIcon(btn, 'LEFT')
+			_G.SquareButton_SetIcon(btn, 'LEFT')
 		else
-			SquareButton_SetIcon(btn, 'RIGHT')
+			_G.SquareButton_SetIcon(btn, 'RIGHT')
 		end
 	end
 
@@ -1118,7 +1116,7 @@ function S:HandleFollowerListOnUpdateData(frame)
 	local FollowerListUpdateDataLastOffset = nil
 	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
 		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
-		local offset = HybridScrollFrame_GetOffset(dataFrame.listScroll)
+		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
 		local Buttons = dataFrame.listScroll.buttons
 		local followersList = dataFrame.followersList
 
@@ -1334,7 +1332,7 @@ function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
 end
 
 function S:SkinTextWithStateWidget(widgetFrame)
-	local text = widgetFrame.Text;
+	--local text = widgetFrame.Text;
 end
 
 function S:SkinHorizontalCurrenciesWidget(widgetFrame)
@@ -1517,18 +1515,19 @@ function S:Initialize()
 		if IsAddOnLoaded(addon) then
 			self.addonsToLoad[addon] = nil;
 			local _, catch = pcall(loadFunc)
-			if(catch and GetCVarBool('scriptErrors') == true) then
-				ScriptErrorsFrame:OnError(catch, false, false)
+			if catch and GetCVarBool('scriptErrors') then
+				_G.ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
 
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
 		local _, catch = pcall(loadFunc)
-		if(catch and GetCVarBool('scriptErrors') == true) then
-			ScriptErrorsFrame:OnError(catch, false, false)
+		if catch and GetCVarBool('scriptErrors') then
+			_G.ScriptErrorsFrame:OnError(catch, false, false)
 		end
 	end
+
 	wipe(self.nonAddonsToLoad)
 end
 

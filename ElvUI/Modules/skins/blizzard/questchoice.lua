@@ -6,13 +6,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
 local function LoadSkin()
 	if E.private.skins.blizzard.questChoice ~= true then return end
 
-	local QuestChoiceFrame = _G["QuestChoiceFrame"]
+	local QuestChoiceFrame = _G.QuestChoiceFrame
 	for i = 1, 4 do
 		local option = QuestChoiceFrame["Option"..i]
 		local rewards = option.Rewards
@@ -31,10 +28,10 @@ local function LoadSkin()
 	end
 
 	QuestChoiceFrame:CreateBackdrop("Transparent")
-	S:HandleButton(QuestChoiceFrameOption1.OptionButtonsContainer.OptionButton1)
-	S:HandleButton(QuestChoiceFrameOption2.OptionButtonsContainer.OptionButton1)
-	S:HandleButton(QuestChoiceFrameOption3.OptionButtonsContainer.OptionButton1)
-	S:HandleButton(QuestChoiceFrameOption4.OptionButtonsContainer.OptionButton1)
+	S:HandleButton(_G.QuestChoiceFrameOption1.OptionButtonsContainer.OptionButton1)
+	S:HandleButton(_G.QuestChoiceFrameOption2.OptionButtonsContainer.OptionButton1)
+	S:HandleButton(_G.QuestChoiceFrameOption3.OptionButtonsContainer.OptionButton1)
+	S:HandleButton(_G.QuestChoiceFrameOption4.OptionButtonsContainer.OptionButton1)
 	S:HandleCloseButton(QuestChoiceFrame.CloseButton)
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end

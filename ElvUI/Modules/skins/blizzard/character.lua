@@ -12,8 +12,6 @@ local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: PAPERDOLL_SIDEBARS, NUM_GEARSET_ICONS_SHOWN, NUM_FACTIONS_DISPLAYED
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF
 local IGNORESLOT_LOCATION = 0xFFFFFFFE
@@ -57,7 +55,7 @@ local function ColorizeStatPane(frame)
 end
 
 local function StatsPane(which)
-	local CharacterStatsPane = _G["CharacterStatsPane"]
+	local CharacterStatsPane = _G.CharacterStatsPane
 	CharacterStatsPane[which]:StripTextures()
 	CharacterStatsPane[which]:CreateBackdrop("Transparent")
 	CharacterStatsPane[which].backdrop:ClearAllPoints()
@@ -67,7 +65,7 @@ local function StatsPane(which)
 end
 
 local function SkinItemFlyouts()
-	local flyout = _G["EquipmentFlyoutFrame"]
+	local flyout = _G.EquipmentFlyoutFrame
 	local buttons = flyout.buttons
 	local buttonAnchor = flyout.buttonFrame
 
@@ -124,7 +122,7 @@ local function SkinItemFlyouts()
 end
 
 local function FixSidebarTabCoords()
-	for i=1, #PAPERDOLL_SIDEBARS do
+	for i=1, #_G.PAPERDOLL_SIDEBARS do
 		local tab = _G["PaperDollSidebarTab"..i]
 
 		if tab and not tab.backdrop then
@@ -158,13 +156,13 @@ local function FixSidebarTabCoords()
 end
 
 local function UpdateFactionSkins()
-	_G["ReputationListScrollFrame"]:StripTextures()
-	_G["ReputationFrame"]:StripTextures(true)
+	_G.ReputationListScrollFrame:StripTextures()
+	_G.ReputationFrame:StripTextures(true)
 
-	local factionOffset = FauxScrollFrame_GetOffset(_G["ReputationListScrollFrame"])
+	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
 	local numFactions = GetNumFactions()
 
-	for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED, 1 do
 		local statusbar = _G["ReputationBar"..i.."ReputationBar"]
 		local button = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
 		local factionIndex = factionOffset + i
@@ -197,14 +195,14 @@ local function UpdateFactionSkins()
 		end
 	end
 
-	local ReputationDetailFrame = _G["ReputationDetailFrame"]
+	local ReputationDetailFrame = _G.ReputationDetailFrame
 	ReputationDetailFrame:StripTextures()
 	ReputationDetailFrame:SetTemplate("Transparent")
-	ReputationDetailFrame:Point("TOPLEFT", _G["ReputationFrame"], "TOPRIGHT", 4, -28)
+	ReputationDetailFrame:Point("TOPLEFT", _G.ReputationFrame, "TOPRIGHT", 4, -28)
 end
 
 local function UpdateCurrencySkins()
-	local TokenFramePopup = _G["TokenFramePopup"]
+	local TokenFramePopup = _G.TokenFramePopup
 
 	if TokenFramePopup then
 		if not TokenFramePopup.template then
@@ -212,10 +210,10 @@ local function UpdateCurrencySkins()
 			TokenFramePopup:SetTemplate("Transparent")
 		end
 
-		TokenFramePopup:Point("TOPLEFT", _G["TokenFrame"], "TOPRIGHT", 4, -28)
+		TokenFramePopup:Point("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 4, -28)
 	end
 
-	local TokenFrameContainer = _G["TokenFrameContainer"]
+	local TokenFrameContainer = _G.TokenFrameContainer
 	if not TokenFrameContainer.buttons then return end
 
 	local buttons = TokenFrameContainer.buttons
@@ -269,12 +267,12 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 
 	-- General
-	local CharacterFrame = _G["CharacterFrame"]
+	local CharacterFrame = _G.CharacterFrame
 	S:HandlePortraitFrame(CharacterFrame, true)
 
-	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
-	S:HandleScrollBar(TokenFrameContainerScrollBar)
-	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
+	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
+	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
 	-- Azerite Items
 	local slots = {
@@ -339,15 +337,15 @@ local function LoadSkin()
 		end
 	end
 
-	CharacterLevelText:FontTemplate()
-	CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
-	CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
-	ColorizeStatPane(CharacterStatsPane.ItemLevelFrame)
+	_G.CharacterLevelText:FontTemplate()
+	_G.CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
+	_G.CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
+	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
 	hooksecurefunc("PaperDollFrame_UpdateStats", function()
 		if IsAddOnLoaded("DejaCharacterStats") then return end
 
-		for _, Table in ipairs({CharacterStatsPane.statsFramePool:EnumerateActive()}) do
+		for _, Table in ipairs({_G.CharacterStatsPane.statsFramePool:EnumerateActive()}) do
 			if type(Table) == 'table' then
 				for statFrame in pairs(Table) do
 					ColorizeStatPane(statFrame)
@@ -379,29 +377,29 @@ local function LoadSkin()
 		"PaperDollEquipmentManagerPane",
 	}
 
-	S:HandleCloseButton(ReputationDetailCloseButton)
-	S:HandleCloseButton(TokenFramePopupCloseButton)
+	S:HandleCloseButton(_G.ReputationDetailCloseButton)
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton)
 
-	S:HandleCheckBox(ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(ReputationDetailMainScreenCheckBox)
-	S:HandleCheckBox(ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(ReputationDetailLFGBonusReputationCheckBox)
-	S:HandleCheckBox(TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(TokenFramePopupBackpackCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
-	EquipmentFlyoutFrameHighlight:Kill()
-	EquipmentFlyoutFrame.NavigationFrame:StripTextures()
-	EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
-	EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
-	EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
-	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton, nil, true)
-	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
+	_G.EquipmentFlyoutFrameHighlight:Kill()
+	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
+	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
+	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
+	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", _G.EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton, nil, true)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
 
 	--Icon in upper right corner of character frame
-	CharacterFramePortrait:Kill()
+	_G.CharacterFramePortrait:Kill()
 
 	local scrollbars = {
 		"PaperDollTitlesPaneScrollBar",
@@ -417,16 +415,16 @@ local function LoadSkin()
 	end
 
 	--Re-add the overlay texture which was removed right above via StripTextures
-	CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
-	CharacterModelFrame:CreateBackdrop("Default")
-	CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
+	_G.CharacterModelFrame:CreateBackdrop("Default")
+	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	CharacterFrame:SetTemplate("Transparent")
 
 	--Titles
-	PaperDollTitlesPane:HookScript("OnShow", function()
-		for _, object in pairs(PaperDollTitlesPane.buttons) do
+	_G.PaperDollTitlesPane:HookScript("OnShow", function()
+		for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
 			object.BgTop:SetTexture(nil)
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
@@ -440,15 +438,16 @@ local function LoadSkin()
 	end)
 
 	--Equipement Manager
-	S:HandleButton(PaperDollEquipmentManagerPaneEquipSet)
-	S:HandleButton(PaperDollEquipmentManagerPaneSaveSet)
-	PaperDollEquipmentManagerPaneEquipSet:Width(PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
-	PaperDollEquipmentManagerPaneSaveSet:Width(PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
-	PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
-	PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
-	PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
+	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
+	_G.PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", _G.PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
+	_G.PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
+
 	--Itemset buttons
-	for _, object in pairs(PaperDollEquipmentManagerPane.buttons) do
+	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
 		object.BgTop:SetTexture(nil)
 		object.BgBottom:SetTexture(nil)
 		object.BgMiddle:SetTexture(nil)
@@ -469,10 +468,10 @@ local function LoadSkin()
 	end
 
 	--Icon selection frame
-	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
-	S:HandleButton(GearManagerDialogPopupOkay)
-	S:HandleButton(GearManagerDialogPopupCancel)
-	S:HandleEditBox(GearManagerDialogPopupEditBox)
+	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
+	S:HandleButton(_G.GearManagerDialogPopupOkay)
+	S:HandleButton(_G.GearManagerDialogPopupCancel)
+	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do
@@ -491,7 +490,7 @@ local function LoadSkin()
 
 	--Reputation Paragon Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = _G["EmbeddedItemTooltip"]
+		local tooltip = _G.EmbeddedItemTooltip
 		local reward = tooltip.ItemTooltip
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")
@@ -512,10 +511,10 @@ local function LoadSkin()
 
 	--Currency
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
-	hooksecurefunc(TokenFrameContainer, "update", UpdateCurrencySkins)
+	hooksecurefunc(_G.TokenFrameContainer, "update", UpdateCurrencySkins)
 
 	-- Tutorials
-	S:HandleCloseButton(PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton)
+	S:HandleCloseButton(_G.PaperDollItemsFrame.UnspentAzeriteHelpBox.CloseButton)
 end
 
 S:AddCallback("Character", LoadSkin)

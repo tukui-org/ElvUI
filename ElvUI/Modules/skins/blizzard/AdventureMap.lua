@@ -7,13 +7,9 @@ local _G = _G
 local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function SkinRewards()
-	local AdventureMapQuestChoiceDialog = _G["AdventureMapQuestChoiceDialog"]
-
-	for reward in pairs(AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
+	for reward in pairs(_G.AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 		if not reward.isSkinned then
 			S:HandleItemButton(reward)
 			S:HandleTexture(reward.Icon)
@@ -27,7 +23,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AdventureMap ~= true then return end
 
 	--Quest Choise
-	local AdventureMapQuestChoiceDialog = _G["AdventureMapQuestChoiceDialog"]
+	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
 	AdventureMapQuestChoiceDialog:StripTextures()
 	AdventureMapQuestChoiceDialog:CreateBackdrop("Transparent")
 	AdventureMapQuestChoiceDialog.backdrop:SetFrameStrata("LOW")

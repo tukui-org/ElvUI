@@ -7,12 +7,9 @@ local _G = _G
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ObjectiveTrackerBlocksFrame, ObjectiveTrackerFrame, BonusObjectiveTrackerProgressBar_PlayFlareAnim
--- GLOBALS: SCENARIO_TRACKER_MODULE, BONUS_OBJECTIVE_TRACKER_MODULE, WORLD_QUEST_TRACKER_MODULE, QUEST_TRACKER_MODULE, DEFAULT_OBJECTIVE_TRACKER_MODULE
 
 local function SkinOjectiveTrackerHeaders()
-	local frame = _G["ObjectiveTrackerFrame"].MODULES
+	local frame = _G.ObjectiveTrackerFrame.MODULES
 	if frame then
 		for i = 1, #frame do
 			local modules = frame[i]
@@ -96,7 +93,7 @@ local function SkinProgressBars(_, _, line)
 			end
 		end
 
-		BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
+		_G.BonusObjectiveTrackerProgressBar_PlayFlareAnim = E.noop
 		progressBar.isSkinned = true
 
 		ColorProgressBars(progressBar, bar:GetValue())
@@ -133,7 +130,7 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
 
-	local ObjectiveTrackerFrame = _G["ObjectiveTrackerFrame"]
+	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimizeButton:StripTextures()
 	minimizeButton:Size(16, 16)
@@ -155,12 +152,12 @@ local function LoadSkin()
 	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton",PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
 	hooksecurefunc("ObjectiveTracker_Update",SkinOjectiveTrackerHeaders)					--[Skin]: Module Headers
 	hooksecurefunc("QuestObjectiveSetupBlockButton_FindGroup",SkinFindGroupButton)			--[Skin]: The eye
-	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
-	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar
-	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Quest Progress Bar
-	hooksecurefunc(SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)				--[Skin]: Scenario Progress Bar
-	hooksecurefunc(QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
-	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
+	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
+	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar
+	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Quest Progress Bar
+	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)				--[Skin]: Scenario Progress Bar
+	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
+	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
 end
 
 S:AddCallback("ObjectiveTracker", LoadSkin)

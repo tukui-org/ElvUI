@@ -8,17 +8,16 @@ local select, unpack = select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUM_GUILDBANK_ICONS_SHOWN, MAX_GUILDBANK_TABS, NUM_GUILDBANK_COLUMNS, NUM_SLOTS_PER_GUILDBANK_GROUP
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end
 
+	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
 	GuildBankFrame:SetTemplate("Transparent")
-	GuildBankEmblemFrame:StripTextures(true)
-	GuildBankMoneyFrameBackground:Kill()
-	S:HandleScrollBar(GuildBankPopupScrollFrameScrollBar)
+	_G.GuildBankEmblemFrame:StripTextures(true)
+	_G.GuildBankMoneyFrameBackground:Kill()
+	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
 
 	--Close button doesn't have a fucking name, extreme hackage
 	for i=1, GuildBankFrame:GetNumChildren() do
@@ -30,26 +29,26 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleButton(GuildBankFrameDepositButton, true)
-	S:HandleButton(GuildBankFrameWithdrawButton, true)
-	S:HandleButton(GuildBankInfoSaveButton, true)
-	S:HandleButton(GuildBankFramePurchaseButton, true)
+	S:HandleButton(_G.GuildBankFrameDepositButton, true)
+	S:HandleButton(_G.GuildBankFrameWithdrawButton, true)
+	S:HandleButton(_G.GuildBankInfoSaveButton, true)
+	S:HandleButton(_G.GuildBankFramePurchaseButton, true)
 
-	GuildBankFrameWithdrawButton:Point("RIGHT", GuildBankFrameDepositButton, "LEFT", -2, 0)
-	GuildBankInfoScrollFrame:Point('TOPLEFT', GuildBankInfo, 'TOPLEFT', -10, 12)
-	GuildBankInfoScrollFrame:StripTextures()
-	GuildBankInfoScrollFrame:Width(GuildBankInfoScrollFrame:GetWidth() - 8)
-	GuildBankTransactionsScrollFrame:StripTextures()
+	_G.GuildBankFrameWithdrawButton:Point("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
+	_G.GuildBankInfoScrollFrame:Point('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
+	_G.GuildBankInfoScrollFrame:StripTextures()
+	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
+	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate("Default")
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 
-	for i=1, NUM_GUILDBANK_COLUMNS do
+	for i=1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
 
-		for x=1, NUM_SLOTS_PER_GUILDBANK_GROUP do
+		for x=1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = _G["GuildBankColumn"..i.."Button"..x]
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
@@ -72,7 +71,7 @@ local function LoadSkin()
 		end
 	end
 
-	for i=1, MAX_GUILDBANK_TABS do
+	for i=1, _G.MAX_GUILDBANK_TABS do
 		local button = _G["GuildBankTab"..i.."Button"]
 		local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		_G["GuildBankTab"..i]:StripTextures(true)
@@ -89,6 +88,7 @@ local function LoadSkin()
 		S:HandleTab(_G["GuildBankFrameTab"..i])
 	end
 
+	local GuildItemSearchBox = _G.GuildItemSearchBox
 	GuildItemSearchBox.Left:Kill()
 	GuildItemSearchBox.Middle:Kill()
 	GuildItemSearchBox.Right:Kill()
@@ -97,13 +97,13 @@ local function LoadSkin()
 	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
 
-	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
-	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
+	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
+	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)
 
 	--Popup
-	GuildBankPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
-	GuildBankPopupFrame:Hide()
-	S:HandleIconSelectionFrame(GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
+	_G.GuildBankPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
+	_G.GuildBankPopupFrame:Hide()
+	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
 end
 
 S:AddCallbackForAddon("Blizzard_GuildBankUI", "GuildBank", LoadSkin)

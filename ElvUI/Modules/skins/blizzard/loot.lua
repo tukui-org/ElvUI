@@ -17,13 +17,11 @@ local IsFishingLoot = IsFishingLoot
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT, ITEMS = LOOT, ITEMS
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LOOTFRAME_NUMBUTTONS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i=1, numItems do
-		local frame = _G["LootHistoryFrame"].itemFrames[i]
+		local frame = _G.LootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
@@ -44,7 +42,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 
 	-- Loot history frame
-	local LootHistoryFrame = _G["LootHistoryFrame"]
+	local LootHistoryFrame = _G.LootHistoryFrame
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
@@ -56,13 +54,13 @@ local function LoadSkin()
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
 	LootHistoryFrame.ResizeButton:Point("TOP", LootHistoryFrame, "BOTTOM", 0, -2)
-	LootHistoryFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(LootHistoryFrameScrollFrameScrollBar)
+	_G.LootHistoryFrameScrollFrame:StripTextures()
+	S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
 
 	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
 
 	-- Master Loot
-	local MasterLooterFrame = _G["MasterLooterFrame"]
+	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:SetTemplate()
 
@@ -71,7 +69,7 @@ local function LoadSkin()
 		if b then
 			local i = b.Icon
 			local icon = i:GetTexture()
-			local c = ITEM_QUALITY_COLORS[LootFrame.selectedQuality]
+			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
 			b:StripTextures()
 			i:SetTexture(icon)
@@ -98,7 +96,7 @@ local function LoadSkin()
 	end)
 
 	-- Bonus Roll Frame
-	local BonusRollFrame = _G["BonusRollFrame"]
+	local BonusRollFrame = _G.BonusRollFrame
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 
@@ -170,10 +168,10 @@ local function LoadSkin()
 		if text2 and text2:find('|t') then pfifc:SetText(text2:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
 	end)
 
-	local LootFrame = _G["LootFrame"]
+	local LootFrame = _G.LootFrame
 	S:HandlePortraitFrame(LootFrame, true)
 	LootFrame:Height(LootFrame:GetHeight() - 30)
-	LootFramePortraitOverlay:SetParent(E.HiddenFrame)
+	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions());
@@ -188,7 +186,7 @@ local function LoadSkin()
 	LootFrame.Title:Point("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
 	LootFrame.Title:SetJustifyH("LEFT")
 
-	for i=1, LOOTFRAME_NUMBUTTONS do
+	for i=1, _G.LOOTFRAME_NUMBUTTONS do
 		local button = _G["LootButton"..i]
 		_G["LootButton"..i.."NameFrame"]:Hide()
 		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
@@ -211,12 +209,12 @@ local function LoadSkin()
 	hooksecurefunc("LootFrame_UpdateButton", function(index)
 		local numLootItems = LootFrame.numLootItems;
 		--Logic to determine how many items to show per page
-		local numLootToShow = LOOTFRAME_NUMBUTTONS;
+		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS;
 		local self = LootFrame;
-		if( self.AutoLootTable ) then
+		if self.AutoLootTable then
 			numLootItems = #self.AutoLootTable;
 		end
-		if ( numLootItems > LOOTFRAME_NUMBUTTONS ) then
+		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
 			numLootToShow = numLootToShow - 1; -- make space for the page buttons
 		end
 
@@ -261,8 +259,8 @@ local function LoadSkin()
 		end
 	end)
 
-	S:HandleNextPrevButton(LootFrameDownButton)
-	S:HandleNextPrevButton(LootFrameUpButton, true)
+	S:HandleNextPrevButton(_G.LootFrameDownButton)
+	S:HandleNextPrevButton(_G.LootFrameUpButton, true)
 end
 
 S:AddCallback("Loot", LoadSkin)

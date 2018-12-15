@@ -8,8 +8,6 @@ local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local FrameTexs = {
 	"TopLeft",
@@ -25,11 +23,11 @@ local FrameTexs = {
 }
 
 local function SkinOnShow()
-	local ScriptErrorsFrame = _G["ScriptErrorsFrame"]
+	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
 	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(ScriptErrorsFrameScrollBar)
-	S:HandleCloseButton(ScriptErrorsFrameClose)
+	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
+	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
 	ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
@@ -136,7 +134,7 @@ end
 local function LoadErrorFrameSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
 
-	S:SecureHookScript(ScriptErrorsFrame, 'OnShow', SkinOnShow)
+	S:SecureHookScript(_G.ScriptErrorsFrame, 'OnShow', SkinOnShow)
 end
 
 local function LoadSkin()
@@ -144,13 +142,13 @@ local function LoadSkin()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		FrameStackTooltip:HookScript("OnShow", function(self)
+		_G.FrameStackTooltip:HookScript("OnShow", function(self)
 			if not self.template then
 				self:SetTemplate("Transparent")
 			end
 		end)
 
-		EventTraceTooltip:HookScript("OnShow", function(self)
+		_G.EventTraceTooltip:HookScript("OnShow", function(self)
 			if not self.template then
 				self:SetTemplate("Transparent", nil, true) --ignore updates
 			else
@@ -164,12 +162,12 @@ local function LoadSkin()
 		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture(nil)
 	end
 
-	EventTraceFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(EventTraceFrameCloseButton)
+	_G.EventTraceFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
-	SkinTableAttributeDisplay(TableAttributeDisplay)
-	hooksecurefunc(TableInspectorMixin, "OnLoad", function(self)
+	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
+	hooksecurefunc(_G.TableInspectorMixin, "OnLoad", function(self)
 		if self and self.ScrollFrameArt and not self.skinned then
 			SkinTableAttributeDisplay(self)
 			self.skinned = true
@@ -181,7 +179,7 @@ end
 S:AddCallback("ScriptErrorsFrame", LoadErrorFrameSkin)
 
 -- EventTrace, FrameStack, TableInspect Skins
-if IsAddOnLoaded("Blizzard_DebugTools") then
+if _G.IsAddOnLoaded("Blizzard_DebugTools") then
 	S:AddCallback("SkinDebugTools", LoadSkin)
 else
 	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)

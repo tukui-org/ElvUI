@@ -6,22 +6,20 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
 
 	-- Macro to show the WorldStateScoreFrame: /run WorldStateScoreFrame:Show()
-	local WorldStateScoreFrame = _G["WorldStateScoreFrame"]
-	_G["WorldStateScoreScrollFrame"]:StripTextures()
+	local WorldStateScoreFrame = _G.WorldStateScoreFrame
+	_G.WorldStateScoreScrollFrame:StripTextures()
 	WorldStateScoreFrame:StripTextures()
 	WorldStateScoreFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(WorldStateScoreFrameCloseButton)
-	S:HandleScrollBar(WorldStateScoreScrollFrameScrollBar)
-	WorldStateScoreFrameInset:SetAlpha(0)
-	S:HandleButton(WorldStateScoreFrameLeaveButton)
-	S:HandleButton(WorldStateScoreFrameQueueButton)
+	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton)
+	S:HandleScrollBar(_G.WorldStateScoreScrollFrameScrollBar)
+	_G.WorldStateScoreFrameInset:SetAlpha(0)
+	S:HandleButton(_G.WorldStateScoreFrameLeaveButton)
+	S:HandleButton(_G.WorldStateScoreFrameQueueButton)
+
 	for i = 1, 3 do
 		S:HandleTab(_G["WorldStateScoreFrameTab"..i])
 	end
