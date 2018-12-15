@@ -123,7 +123,7 @@ function B:GroupLootContainer_Update()
 			if prevFrame and not (prevFrame == frame) then
 				frame:SetPoint(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET);
 			else
-				frame:SetPoint(POSITION, self, POSITION, 0, 0);
+				frame:SetPoint(POSITION, self, POSITION, 0, 0, self.reservedSize * (i-1 + 0.5));
 			end
 			lastIdx = i;
 		end
