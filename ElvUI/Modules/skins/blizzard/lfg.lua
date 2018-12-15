@@ -22,6 +22,83 @@ local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 -- GLOBALS: CHALLENGE_MODE_EXTRA_AFFIX_INFO, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
 -- GLOBALS: GameFontNormal
 
+local function LFDQueueFrameRoleButtonIconOnShow(self)
+	LBG.ShowOverlayGlow(self:GetParent().checkButton)
+end
+local function LFDQueueFrameRoleButtonIconOnHide(self)
+	LBG.HideOverlayGlow(self:GetParent().checkButton)
+end
+
+local function HandleGoldIcon(button)
+	_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+	_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
+	_G[button.."Count"]:SetDrawLayer("OVERLAY")
+	_G[button.."NameFrame"]:SetTexture()
+	_G[button.."NameFrame"]:SetSize(118, 39)
+
+	_G[button].border = CreateFrame("Frame", nil, _G[button])
+	_G[button].border:SetTemplate()
+	_G[button].border:SetOutside(_G[button.."IconTexture"])
+	_G[button.."IconTexture"]:SetParent(_G[button].border)
+	_G[button.."Count"]:SetParent(_G[button].border)
+end
+
+local function SkinItemButton(parentFrame, _, index)
+	local parentName = parentFrame:GetName();
+	local item = _G[parentName.."Item"..index];
+
+	if item and not item.isSkinned then
+		item.border = CreateFrame("Frame", nil, item)
+		item.border:SetTemplate()
+		item.border:SetOutside(item.Icon)
+
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().border:SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(item.IconBorder, "Hide", function(self)
+			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
+
+		item.Icon:SetTexCoord(unpack(E.TexCoords))
+		item.Icon:SetDrawLayer("OVERLAY")
+		item.Icon:SetParent(item.border)
+
+		item.Count:SetDrawLayer("OVERLAY")
+		item.Count:SetParent(item.border)
+
+		item.NameFrame:SetTexture()
+		item.NameFrame:SetSize(118, 39)
+
+		item.shortageBorder:SetTexture(nil)
+
+		item.roleIcon1:SetParent(item.border)
+		item.roleIcon2:SetParent(item.border)
+
+		item.isSkinned = true
+	end
+end
+
+local function SetRoleIcon(self, resultID)
+	local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
+	self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
+end
+
+local function HandleAffixIcons(self)
+	for _, frame in ipairs(self.Affixes) do
+		frame.Border:SetTexture(nil)
+		frame.Portrait:SetTexture(nil)
+
+		if frame.info then
+			frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+		elseif frame.affixID then
+			local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
+			frame.Portrait:SetTexture(filedataid)
+		end
+		frame.Portrait:SetTexCoord(unpack(E.TexCoords))
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
@@ -76,18 +153,12 @@ local function LoadSkin()
 	LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
 	LFDQueueFrameRoleButtonDPSIncentiveIcon:SetAlpha(0)
 
-	local function OnShow(self)
-		LBG.ShowOverlayGlow(self:GetParent().checkButton)
-	end
-	local function OnHide(self)
-		LBG.HideOverlayGlow(self:GetParent().checkButton)
-	end
-	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnShow", OnShow)
-	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnShow", OnShow)
-	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnShow", OnShow)
-	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnHide", OnHide)
-	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnHide", OnHide)
-	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnHide", OnHide)
+	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnShow", LFDQueueFrameRoleButtonIconOnShow)
+	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnShow", LFDQueueFrameRoleButtonIconOnShow)
+	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnShow", LFDQueueFrameRoleButtonIconOnShow)
+	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnHide", LFDQueueFrameRoleButtonIconOnHide)
+	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnHide", LFDQueueFrameRoleButtonIconOnHide)
+	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnHide", LFDQueueFrameRoleButtonIconOnHide)
 	LFDQueueFrameRoleButtonTank.shortageBorder:Kill()
 	LFDQueueFrameRoleButtonDPS.shortageBorder:Kill()
 	LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
@@ -234,19 +305,6 @@ local function LoadSkin()
 	LFDParentFrame:StripTextures()
 	LFDParentFrameInset:StripTextures()
 
-	local function HandleGoldIcon(button)
-		_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
-		_G[button.."Count"]:SetDrawLayer("OVERLAY")
-		_G[button.."NameFrame"]:SetTexture()
-		_G[button.."NameFrame"]:SetSize(118, 39)
-
-		_G[button].border = CreateFrame("Frame", nil, _G[button])
-		_G[button].border:SetTemplate()
-		_G[button].border:SetOutside(_G[button.."IconTexture"])
-		_G[button.."IconTexture"]:SetParent(_G[button].border)
-		_G[button.."Count"]:SetParent(_G[button].border)
-	end
 	HandleGoldIcon("LFDQueueFrameRandomScrollFrameChildFrameMoneyReward")
 	HandleGoldIcon("RaidFinderQueueFrameScrollFrameChildFrameMoneyReward")
 	HandleGoldIcon("ScenarioQueueFrameRandomScrollFrameChildFrameMoneyReward")
@@ -303,41 +361,6 @@ local function LoadSkin()
 	ScenarioFinderFrameInset:GetRegions():Hide()
 
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
-	local function SkinItemButton(parentFrame, _, index)
-		local parentName = parentFrame:GetName();
-		local item = _G[parentName.."Item"..index];
-
-		if item and not item.isSkinned then
-			item.border = CreateFrame("Frame", nil, item)
-			item.border:SetTemplate()
-			item.border:SetOutside(item.Icon)
-
-			hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-				self:GetParent().border:SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
-			end)
-			hooksecurefunc(item.IconBorder, "Hide", function(self)
-				self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
-
-			item.Icon:SetTexCoord(unpack(E.TexCoords))
-			item.Icon:SetDrawLayer("OVERLAY")
-			item.Icon:SetParent(item.border)
-
-			item.Count:SetDrawLayer("OVERLAY")
-			item.Count:SetParent(item.border)
-
-			item.NameFrame:SetTexture()
-			item.NameFrame:SetSize(118, 39)
-
-			item.shortageBorder:SetTexture(nil)
-
-			item.roleIcon1:SetParent(item.border)
-			item.roleIcon2:SetParent(item.border)
-
-			item.isSkinned = true
-		end
-	end
 	hooksecurefunc("LFGRewardsFrame_SetItemButton", SkinItemButton)
 
 	ScenarioQueueFrameFindGroupButton:StripTextures()
@@ -498,10 +521,6 @@ local function LoadSkin()
 	S:HandleButton(LFGListInviteDialog.DeclineButton)
 	LFGListInviteDialog.RoleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 
-	local function SetRoleIcon(self, resultID)
-		local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
-		self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
-	end
 	hooksecurefunc("LFGListInviteDialog_Show", SetRoleIcon)
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
@@ -676,21 +695,6 @@ local function LoadSecondarySkin()
 			end
 		end
 	end)
-
-	local function HandleAffixIcons(self)
-		for _, frame in ipairs(self.Affixes) do
-			frame.Border:SetTexture(nil)
-			frame.Portrait:SetTexture(nil)
-
-			if frame.info then
-				frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
-			elseif frame.affixID then
-				local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
-				frame.Portrait:SetTexture(filedataid)
-			end
-			frame.Portrait:SetTexCoord(unpack(E.TexCoords))
-		end
-	end
 
 	hooksecurefunc(ChallengesFrame.WeeklyInfo, "SetUp", function(self)
 		local affixes = C_MythicPlus_GetCurrentAffixes()

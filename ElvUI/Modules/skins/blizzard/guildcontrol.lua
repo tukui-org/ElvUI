@@ -12,6 +12,68 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NUM_RANK_FLAGS, MAX_BUY_GUILDBANK_TABS
 
+local function SkinGuildRanks()
+	for i=1, GuildControlGetNumRanks() do
+		local rankFrame = _G["GuildControlUIRankOrderFrameRank"..i]
+		if rankFrame then
+			if not rankFrame.nameBox.backdrop then
+				S:HandleButton(rankFrame.downButton)
+				S:HandleButton(rankFrame.upButton)
+				S:HandleButton(rankFrame.deleteButton)
+				S:HandleEditBox(rankFrame.nameBox)
+			end
+
+			rankFrame.nameBox.backdrop:ClearAllPoints()
+			rankFrame.nameBox.backdrop:Point("TOPLEFT", -2, -4)
+			rankFrame.nameBox.backdrop:Point("BOTTOMRIGHT", -4, 4)
+		end
+	end
+end
+
+local function fixSkin(frame)
+	frame.backdrop:Hide();
+	--Initiate fucked up method of creating a backdrop
+	if not E.PixelMode then
+		frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg1:SetDrawLayer("BACKGROUND", 4)
+		frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
+		E:RegisterStatusBar(frame.bg1)
+		frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
+		frame.bg1:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
+		frame.bg1:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)
+
+		frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg2:SetDrawLayer("BACKGROUND", 3)
+		frame.bg2:SetColorTexture(0,0,0)
+		frame.bg2:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
+		frame.bg2:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
+
+		frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg3:SetDrawLayer("BACKGROUND", 2)
+		frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
+		frame.bg3:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
+		frame.bg3:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)
+
+		frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg4:SetDrawLayer("BACKGROUND", 1)
+		frame.bg4:SetColorTexture(0,0,0)
+		frame.bg4:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
+		frame.bg4:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
+	else
+		frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg1:SetDrawLayer("BACKGROUND", 4)
+		frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
+		E:RegisterStatusBar(frame.bg1)
+		frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
+		frame.bg1:SetInside(frame.backdrop, E.mult)
+
+		frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+		frame.bg3:SetDrawLayer("BACKGROUND", 2)
+		frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
+		frame.bg3:SetAllPoints(frame.backdrop)
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
 
@@ -24,23 +86,6 @@ local function LoadSkin()
 	S:HandleCloseButton(GuildControlUICloseButton)
 	S:HandleScrollBar(GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
 
-	local function SkinGuildRanks()
-		for i=1, GuildControlGetNumRanks() do
-			local rankFrame = _G["GuildControlUIRankOrderFrameRank"..i]
-			if rankFrame then
-				if not rankFrame.nameBox.backdrop then
-					S:HandleButton(rankFrame.downButton)
-					S:HandleButton(rankFrame.upButton)
-					S:HandleButton(rankFrame.deleteButton)
-					S:HandleEditBox(rankFrame.nameBox)
-				end
-
-				rankFrame.nameBox.backdrop:ClearAllPoints()
-				rankFrame.nameBox.backdrop:Point("TOPLEFT", -2, -4)
-				rankFrame.nameBox.backdrop:Point("BOTTOMRIGHT", -4, 4)
-			end
-		end
-	end
 	hooksecurefunc("GuildControlUI_RankOrder_Update", SkinGuildRanks)
 	GuildControlUIRankOrderFrameNewButton:HookScript("OnClick", function()
 		E:Delay(1, SkinGuildRanks)
@@ -65,50 +110,6 @@ local function LoadSkin()
 	GuildControlUIRankSettingsFrameGoldBox:StripTextures()
 
 	GuildControlUIRankBankFrame:StripTextures()
-
-	local function fixSkin(frame)
-		frame.backdrop:Hide();
-		--Initiate fucked up method of creating a backdrop
-		if not E.PixelMode then
-			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg1:SetDrawLayer("BACKGROUND", 4)
-			frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
-			E:RegisterStatusBar(frame.bg1)
-			frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
-			frame.bg1:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
-			frame.bg1:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)
-
-			frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg2:SetDrawLayer("BACKGROUND", 3)
-			frame.bg2:SetColorTexture(0,0,0)
-			frame.bg2:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
-			frame.bg2:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
-
-			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg3:SetDrawLayer("BACKGROUND", 2)
-			frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
-			frame.bg3:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
-			frame.bg3:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)
-
-			frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg4:SetDrawLayer("BACKGROUND", 1)
-			frame.bg4:SetColorTexture(0,0,0)
-			frame.bg4:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
-			frame.bg4:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
-		else
-			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg1:SetDrawLayer("BACKGROUND", 4)
-			frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
-			E:RegisterStatusBar(frame.bg1)
-			frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
-			frame.bg1:SetInside(frame.backdrop, E.mult)
-
-			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
-			frame.bg3:SetDrawLayer("BACKGROUND", 2)
-			frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
-			frame.bg3:SetAllPoints(frame.backdrop)
-		end
-	end
 
 	local once = false
 	hooksecurefunc("GuildControlUI_BankTabPermissions_Update", function()

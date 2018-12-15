@@ -9,6 +9,32 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
+-- Floor Dropdown
+local function WorldMapFloorNavigationDropDown(Frame)
+	S:HandleWorldMapDropDownMenu(Frame)
+end
+
+-- Tracking Button
+local function WorldMapTrackingOptionsButton(Button)
+	local shadow = Button:GetRegions()
+	shadow:Hide()
+
+	Button.Background:Hide()
+	Button.IconOverlay:SetAlpha(0)
+	Button.Border:Hide()
+
+	local tex = Button:GetHighlightTexture()
+	tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
+	tex:SetAllPoints(Button.Icon)
+end
+
+-- Bounty Board
+local function WorldMapBountyBoard(Frame)
+	Frame.BountyName:FontTemplate()
+
+	S:HandleCloseButton(Frame.TutorialBox.CloseButton)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
 
@@ -83,32 +109,6 @@ local function LoadSkin()
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
-	end
-
-	-- Floor Dropdown
-	local function WorldMapFloorNavigationDropDown(Frame)
-		S:HandleWorldMapDropDownMenu(Frame)
-	end
-
-	-- Tracking Button
-	local function WorldMapTrackingOptionsButton(Button)
-		local shadow = Button:GetRegions()
-		shadow:Hide()
-
-		Button.Background:Hide()
-		Button.IconOverlay:SetAlpha(0)
-		Button.Border:Hide()
-
-		local tex = Button:GetHighlightTexture()
-		tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
-		tex:SetAllPoints(Button.Icon)
-	end
-
-	-- Bounty Board
-	local function WorldMapBountyBoard(Frame)
-		Frame.BountyName:FontTemplate()
-
-		S:HandleCloseButton(Frame.TutorialBox.CloseButton)
 	end
 
 	-- Add a hook to adjust the OverlayFrames

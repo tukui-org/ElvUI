@@ -18,6 +18,22 @@ local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
+local function HandleReward(frame)
+	if frame.backdrop then return end
+	frame.NameFrame:SetAlpha(0)
+	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame:CreateBackdrop()
+	frame.backdrop:SetOutside(frame.Icon)
+	frame.Name:FontTemplate()
+	frame.Count:ClearAllPoints()
+	frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+
+	if(frame.CircleBackground) then
+		frame.CircleBackground:SetAlpha(0)
+		frame.CircleBackgroundGlow:SetAlpha(0)
+	end
+end
+
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
 	if not scrollFrame.spellTex then
@@ -144,22 +160,6 @@ local function LoadSkin()
 		["ArtifactXPFrame"] = true,
 		["TitleFrame"] = true,
 	}
-
-	local function HandleReward(frame)
-		if frame.backdrop then return end
-		frame.NameFrame:SetAlpha(0)
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame:CreateBackdrop()
-		frame.backdrop:SetOutside(frame.Icon)
-		frame.Name:FontTemplate()
-		frame.Count:ClearAllPoints()
-		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
-
-		if(frame.CircleBackground) then
-			frame.CircleBackground:SetAlpha(0)
-			frame.CircleBackgroundGlow:SetAlpha(0)
-		end
-	end
 
 	for frame in pairs(rewardFrames) do
 		HandleReward(MapQuestInfoRewardsFrame[frame])

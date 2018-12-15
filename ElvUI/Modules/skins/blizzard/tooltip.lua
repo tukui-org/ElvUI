@@ -17,6 +17,14 @@ local hooksecurefunc = hooksecurefunc
 -- GLOBALS: ShoppingTooltip1, ShoppingTooltip2, ShoppingTooltip3
 -- GLOBALS: ItemRefCloseButton, AutoCompleteBox
 
+local function IslandTooltipStyle(self)
+	if not self.IsSkinned then
+		self:SetBackdrop(nil)
+		self:SetTemplate("Transparent")
+		self.IsSkinned = true
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
@@ -87,19 +95,10 @@ local function LoadSkin()
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
-	local function style(self)
-		if not self.IsSkinned then
-			self:SetBackdrop(nil)
-			self:SetTemplate("Transparent")
-
-			self.IsSkinned = true
-		end
-	end
-
 	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
 		if addon == "Blizzard_IslandsQueueUI" then
 			local IslandTooltip = _G["IslandsQueueFrameTooltip"]
-			IslandTooltip:GetParent():GetParent():HookScript("OnShow", style)
+			IslandTooltip:GetParent():GetParent():HookScript("OnShow", IslandTooltipStyle)
 			IslandTooltip:GetParent().IconBorder:SetAlpha(0)
 			IslandTooltip:GetParent().Icon:SetTexCoord(unpack(E.TexCoords))
 		end

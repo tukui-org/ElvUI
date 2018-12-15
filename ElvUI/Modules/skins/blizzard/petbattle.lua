@@ -16,6 +16,46 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 -- GLOBALS: NumberFont_Outline_Huge, LE_BATTLE_PET_WEATHER, NUM_BATTLE_PET_ABILITIES
 -- GLOBALS: PET_BATTLE_PAD_INDEX
 
+local function SkinPetButton(self, bf)
+	if not self.backdrop then
+		self:CreateBackdrop()
+	end
+
+	self:SetNormalTexture("")
+	self.Icon:SetTexCoord(unpack(E.TexCoords))
+	self.Icon:SetParent(self.backdrop)
+	self.Icon:SetDrawLayer('BORDER')
+	self:StyleButton(nil, nil, true)
+	self.SelectedHighlight:SetAlpha(0)
+	self.pushed:SetInside(self.backdrop)
+	self.hover:SetInside(self.backdrop)
+	self:SetFrameStrata('LOW')
+	self.backdrop:SetFrameStrata('LOW')
+
+	if self == bf.SwitchPetButton then
+		local spbc = self:GetCheckedTexture()
+		spbc:SetColorTexture(1, 1, 1, 0.3)
+		spbc:SetInside(self.backdrop)
+	end
+end
+
+local function SkinPetTooltip(tt)
+	tt.Background:SetTexture(nil)
+	if tt.Delimiter1 then
+		tt.Delimiter1:SetTexture(nil)
+		tt.Delimiter2:SetTexture(nil)
+	end
+	tt.BorderTop:SetTexture(nil)
+	tt.BorderTopLeft:SetTexture(nil)
+	tt.BorderTopRight:SetTexture(nil)
+	tt.BorderLeft:SetTexture(nil)
+	tt.BorderRight:SetTexture(nil)
+	tt.BorderBottom:SetTexture(nil)
+	tt.BorderBottomRight:SetTexture(nil)
+	tt.BorderBottomLeft:SetTexture(nil)
+	tt:SetTemplate("Transparent")
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
 
@@ -207,23 +247,6 @@ local function LoadSkin()
 
 	-- TOOLTIPS SKINNING
 	if E.private.skins.blizzard.tooltip then
-		local function SkinPetTooltip(tt)
-			tt.Background:SetTexture(nil)
-			if tt.Delimiter1 then
-				tt.Delimiter1:SetTexture(nil)
-				tt.Delimiter2:SetTexture(nil)
-			end
-			tt.BorderTop:SetTexture(nil)
-			tt.BorderTopLeft:SetTexture(nil)
-			tt.BorderTopRight:SetTexture(nil)
-			tt.BorderLeft:SetTexture(nil)
-			tt.BorderRight:SetTexture(nil)
-			tt.BorderBottom:SetTexture(nil)
-			tt.BorderBottomRight:SetTexture(nil)
-			tt.BorderBottomLeft:SetTexture(nil)
-			tt:SetTemplate("Transparent")
-		end
-
 		SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
 		SkinPetTooltip(PetBattlePrimaryUnitTooltip)
 		SkinPetTooltip(BattlePetTooltip)
@@ -360,33 +383,13 @@ local function LoadSkin()
 		bf.PetSelectionFrame:Point("BOTTOM", bf.xpBar, "TOP", 0, 8)
 	end)
 
-	local function SkinPetButton(self)
-		if not self.backdrop then
-			self:CreateBackdrop()
-		end
-		self:SetNormalTexture("")
-		self.Icon:SetTexCoord(unpack(E.TexCoords))
-		self.Icon:SetParent(self.backdrop)
-		self.Icon:SetDrawLayer('BORDER')
-		self:StyleButton(nil, nil, true)
-		self.SelectedHighlight:SetAlpha(0)
-		self.pushed:SetInside(self.backdrop)
-		self.hover:SetInside(self.backdrop)
-		self:SetFrameStrata('LOW')
-		self.backdrop:SetFrameStrata('LOW')
-		if self == bf.SwitchPetButton then
-			local spbc = self:GetCheckedTexture()
-			spbc:SetColorTexture(1, 1, 1, 0.3)
-			spbc:SetInside(self.backdrop)
-		end
-	end
-
-	hooksecurefunc("PetBattleFrame_UpdateActionBarLayout", function(self)
+	hooksecurefunc("PetBattleFrame_UpdateActionBarLayout", function()
 		for i=1, NUM_BATTLE_PET_ABILITIES do
 			local b = bf.abilityButtons[i]
-			SkinPetButton(b)
+			SkinPetButton(b, bf)
 			b:SetParent(bar)
 			b:ClearAllPoints()
+
 			if i == 1 then
 				b:Point("BOTTOMLEFT", 10, 10)
 			else
@@ -397,15 +400,15 @@ local function LoadSkin()
 
 		bf.SwitchPetButton:ClearAllPoints()
 		bf.SwitchPetButton:Point("LEFT", bf.abilityButtons[3], "RIGHT", 10, 0)
-		SkinPetButton(bf.SwitchPetButton)
+		SkinPetButton(bf.SwitchPetButton, bf)
 		bf.CatchButton:SetParent(bar)
 		bf.CatchButton:ClearAllPoints()
 		bf.CatchButton:Point("LEFT", bf.SwitchPetButton, "RIGHT", 10, 0)
-		SkinPetButton(bf.CatchButton)
+		SkinPetButton(bf.CatchButton, bf)
 		bf.ForfeitButton:SetParent(bar)
 		bf.ForfeitButton:ClearAllPoints()
 		bf.ForfeitButton:Point("LEFT", bf.CatchButton, "RIGHT", 10, 0)
-		SkinPetButton(bf.ForfeitButton)
+		SkinPetButton(bf.ForfeitButton, bf)
 	end)
 
 	PetBattleQueueReadyFrame:StripTextures()

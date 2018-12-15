@@ -17,6 +17,62 @@ local Enum = Enum
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: CLASS_ICON_TCOORDS
 
+local function SkinTab(tab)
+	local normTex = tab:GetNormalTexture()
+	if normTex then
+		normTex:SetTexCoord(unpack(E.TexCoords))
+		normTex:SetInside()
+	end
+
+	if not tab.isSkinned then
+		for i = 1, tab:GetNumRegions() do
+			local region = select(i, tab:GetRegions())
+			if region:GetObjectType() == "Texture" then
+				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
+					region:Kill()
+				end
+			end
+		end
+
+		tab.pushed = true;
+		tab:CreateBackdrop("Default")
+		tab.backdrop:Point("TOPLEFT", -2, 2)
+		tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
+		tab:StyleButton(true)
+		tab.Icon:SetTexCoord(unpack(E.TexCoords))
+
+		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetPushedTexture(nil);
+			end
+		end)
+
+		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetHighlightTexture(nil);
+			end
+		end)
+
+		local point, relatedTo, point2, _, y = tab:GetPoint()
+		tab:Point(point, relatedTo, point2, 1, y)
+	end
+
+	tab.isSkinned = true
+end
+
+local function UpdateNames(self)
+	if not self.expanded then return end
+
+	local memberInfo = self:GetMemberInfo()
+	if memberInfo and memberInfo.classID then
+		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
+		if classInfo then
+			local tcoords = CLASS_ICON_TCOORDS[classInfo.classFile]
+			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+		end
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
 
@@ -97,48 +153,6 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	local function SkinTab(tab)
-		local normTex = tab:GetNormalTexture()
-		if normTex then
-			normTex:SetTexCoord(unpack(E.TexCoords))
-			normTex:SetInside()
-		end
-
-		if not tab.isSkinned then
-			for i = 1, tab:GetNumRegions() do
-				local region = select(i, tab:GetRegions())
-				if region:GetObjectType() == "Texture" then
-					if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
-						region:Kill()
-					end
-				end
-			end
-
-			tab.pushed = true;
-			tab:CreateBackdrop("Default")
-			tab.backdrop:Point("TOPLEFT", -2, 2)
-			tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
-			tab:StyleButton(true)
-			tab.Icon:SetTexCoord(unpack(E.TexCoords))
-
-			hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-				if texPath ~= nil then
-					self:SetPushedTexture(nil);
-				end
-			end)
-
-			hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-				if texPath ~= nil then
-					self:SetHighlightTexture(nil);
-				end
-			end)
-
-			local point, relatedTo, point2, _, y = tab:GetPoint()
-			tab:Point(point, relatedTo, point2, 1, y)
-		end
-
-		tab.isSkinned = true
-	end
 	SkinTab(CommunitiesFrame.ChatTab)
 	SkinTab(CommunitiesFrame.RosterTab)
 	SkinTab(CommunitiesFrame.GuildBenefitsTab)
@@ -199,19 +213,6 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
-
-	local function UpdateNames(self)
-		if not self.expanded then return end
-
-		local memberInfo = self:GetMemberInfo()
-		if memberInfo and memberInfo.classID then
-			local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
-			if classInfo then
-				local tcoords = CLASS_ICON_TCOORDS[classInfo.classFile]
-				self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
-			end
-		end
-	end
 
 	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(self)
 		for i = 1, self.ColumnDisplay:GetNumChildren() do

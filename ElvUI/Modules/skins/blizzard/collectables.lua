@@ -15,6 +15,43 @@ local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: PlayerHasToy
 
+local function TextColorModified(self, r, g, b)
+	if r == 0.33 and g == 0.27 and b == 0.2 then
+		self:SetTextColor(0.6, 0.6, 0.6)
+	elseif r == 1 and g == 0.82 and b == 0 then
+		self:SetTextColor(1, 1, 1)
+	end
+end
+
+local function SetItemQuality(_, itemFrame)
+	if itemFrame.backdrop then
+		local _, _, quality = GetItemInfo(itemFrame.itemID);
+		local alpha = 1
+
+		if not itemFrame.collected then
+			alpha = 0.4
+		end
+
+		if not quality or quality < 2 then --Not collected or item is white or grey
+			itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
+		else
+			itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
+		end
+	end
+end
+
+local function SkinSetItemButtons(self)
+	for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
+		if not itemFrame.isSkinned then
+			S:HandleIcon(itemFrame.Icon, itemFrame)
+			itemFrame.isSkinned = true
+		end
+
+		itemFrame.IconBorder:SetAlpha(0)
+		SetItemQuality(self, itemFrame)
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
 
@@ -301,14 +338,6 @@ local function LoadSkin()
 	progressBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(progressBar)
 
-	local function TextColorModified(self, r, g, b)
-		if(r == 0.33 and g == 0.27 and b == 0.2) then
-			self:SetTextColor(0.6, 0.6, 0.6)
-		elseif(r == 1 and g == 0.82 and b == 0) then
-			self:SetTextColor(1, 1, 1)
-		end
-	end
-
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
 		S:HandleItemButton(button, true)
@@ -468,34 +497,9 @@ local function LoadSkin()
 	end
 
 	--Set quality color on set item buttons
-	local function SetItemQuality(self, itemFrame)
-		if (itemFrame.backdrop) then
-			local _, _, quality = GetItemInfo(itemFrame.itemID);
-			local alpha = 1
-			if (not itemFrame.collected) then
-				alpha = 0.4
-			end
-
-			if (not quality or quality < 2) then --Not collected or item is white or grey
-				itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
-			else
-				itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
-			end
-		end
-	end
 	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "SetItemFrameQuality", SetItemQuality)
 
 	--Skin set item buttons
-	local function SkinSetItemButtons(self)
-		for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
-			if (not itemFrame.isSkinned) then
-				S:HandleIcon(itemFrame.Icon, itemFrame)
-				itemFrame.isSkinned = true
-			end
-			itemFrame.IconBorder:SetAlpha(0)
-			SetItemQuality(self, itemFrame)
-		end
-	end
 	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC

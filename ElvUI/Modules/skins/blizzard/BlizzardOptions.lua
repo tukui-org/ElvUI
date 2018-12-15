@@ -4,19 +4,43 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local ipairs = ipairs
 local pairs = pairs
 local print = print
 local ceil = math.ceil
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 local GetChannelList = GetChannelList
 local IsMacClient = IsMacClient
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CHAT_CONFIG_CHANNEL_LIST, CHAT_CONFIG_CHAT_LEFT, CHANNELS, COMBAT_CONFIG_TABS
--- GLOBALS: COMBAT_CONFIG_UNIT_COLORS, CHAT_CONFIG_CHAT_CREATURE_LEFT
--- GLOBALS: CHAT_CONFIG_OTHER_COMBAT, CHAT_CONFIG_OTHER_PVP, CHAT_CONFIG_OTHER_SYSTEM
--- GLOBALS: COMBAT_CONFIG_MESSAGESOURCES_BY, COMBAT_CONFIG_MESSAGESOURCES_TO
+-- GLOBALS: COMBAT_CONFIG_TABS, CHAT_CONFIG_CHAT_LEFT,  CHAT_CONFIG_OTHER_COMBAT, CHAT_CONFIG_OTHER_PVP, CHAT_CONFIG_OTHER_SYSTEM
+-- GLOBALS: CHAT_CONFIG_CHAT_CREATURE_LEFT, COMBAT_CONFIG_UNIT_COLORS, COMBAT_CONFIG_MESSAGESOURCES_BY, COMBAT_CONFIG_MESSAGESOURCES_TO
+
+local function HandlePushToTalkButton(button)
+	button:SetSize(button:GetSize())
+
+	button.TopLeft:Hide()
+	button.TopRight:Hide()
+	button.BottomLeft:Hide()
+	button.BottomRight:Hide()
+	button.TopMiddle:Hide()
+	button.MiddleLeft:Hide()
+	button.MiddleRight:Hide()
+	button.BottomMiddle:Hide()
+	button.MiddleMiddle:Hide()
+	button:SetHighlightTexture("")
+
+	button:SetTemplate("Default", true)
+	button:HookScript("OnEnter", S.SetModifiedBackdrop)
+	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+end
+
+function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
+	HandlePushToTalkButton(btn.PushToTalkKeybindButton)
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BlizzardOptions ~= true then return end
@@ -707,28 +731,6 @@ local function LoadSkin()
 	S:HandleButton(TestInputDevice.ToggleTest)
 
 	-- PushToTalk KeybindButton - Wow 8.0
-	local function HandlePushToTalkButton(button)
-		button:SetSize(button:GetSize())
-
-		button.TopLeft:Hide()
-		button.TopRight:Hide()
-		button.BottomLeft:Hide()
-		button.BottomRight:Hide()
-		button.TopMiddle:Hide()
-		button.MiddleLeft:Hide()
-		button.MiddleRight:Hide()
-		button.BottomMiddle:Hide()
-		button.MiddleMiddle:Hide()
-		button:SetHighlightTexture("")
-
-		button:SetTemplate("Default", true)
-		button:HookScript("OnEnter", S.SetModifiedBackdrop)
-		button:HookScript("OnLeave", S.SetOriginalBackdrop)
-	end
-
-	function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(self)
-		HandlePushToTalkButton(self.PushToTalkKeybindButton)
-	end
 	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
 	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon

@@ -24,6 +24,17 @@ local tabs = {
 	"Right",
 }
 
+local function SkinFriendRequest(frame)
+	if frame.isSkinned then return; end
+	S:HandleButton(frame.DeclineButton, nil, true)
+	S:HandleButton(frame.AcceptButton)
+	frame.isSkinned = true
+end
+
+local function UpdateWhoSkins()
+	WhoListScrollFrame:StripTextures()
+end
+
 --Social Frame
 local function SkinSocialHeaderTab(tab)
 	if not tab then return end
@@ -188,12 +199,6 @@ local function LoadSkin()
 
 	--Pending invites
 	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
-	local function SkinFriendRequest(frame)
-		if frame.isSkinned then return; end
-		S:HandleButton(frame.DeclineButton, nil, true)
-		S:HandleButton(frame.AcceptButton)
-		frame.isSkinned = true
-	end
 	hooksecurefunc(FriendsFrameFriendsScrollFrame.invitePool, "Acquire", function()
 		for object in pairs(FriendsFrameFriendsScrollFrame.invitePool.activeObjects) do
 			SkinFriendRequest(object)
@@ -201,10 +206,6 @@ local function LoadSkin()
 	end)
 
 	--Who Frame
-	local function UpdateWhoSkins()
-		WhoListScrollFrame:StripTextures()
-	end
-
 	WhoFrame:HookScript("OnShow", UpdateWhoSkins)
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
 

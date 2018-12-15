@@ -20,6 +20,27 @@ local LOOT, ITEMS = LOOT, ITEMS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LOOTFRAME_NUMBUTTONS
 
+local function UpdateLoots()
+	local numItems = C_LootHistory_GetNumItems()
+	for i=1, numItems do
+		local frame = LootHistoryFrame.itemFrames[i]
+
+		if not frame.isSkinned then
+			local Icon = frame.Icon:GetTexture()
+			frame:StripTextures()
+			frame.Icon:SetTexture(Icon)
+			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			-- create a backdrop around the icon
+			frame:CreateBackdrop("Default")
+			frame.backdrop:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.backdrop)
+
+			frame.isSkinned = true
+		end
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 
@@ -39,26 +60,6 @@ local function LoadSkin()
 	LootHistoryFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(LootHistoryFrameScrollFrameScrollBar)
 
-	local function UpdateLoots(self)
-		local numItems = C_LootHistory_GetNumItems()
-		for i=1, numItems do
-			local frame = LootHistoryFrame.itemFrames[i]
-
-			if not frame.isSkinned then
-				local Icon = frame.Icon:GetTexture()
-				frame:StripTextures()
-				frame.Icon:SetTexture(Icon)
-				frame.Icon:SetTexCoord(unpack(E.TexCoords))
-
-				-- create a backdrop around the icon
-				frame:CreateBackdrop("Default")
-				frame.backdrop:SetOutside(frame.Icon)
-				frame.Icon:SetParent(frame.backdrop)
-
-				frame.isSkinned = true
-			end
-		end
-	end
 	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
 
 	-- Master Loot

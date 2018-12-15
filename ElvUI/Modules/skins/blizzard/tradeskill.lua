@@ -11,6 +11,29 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
+local function SkinRecipeList(self, _, tradeSkillInfo)
+	-- +/- Buttons
+	if tradeSkillInfo.collapsed then
+		self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+	else
+		self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+	end
+
+	-- Skillbar
+	if tradeSkillInfo.hasProgressBar then
+		self.SubSkillRankBar.BorderMid:Hide()
+		self.SubSkillRankBar.BorderLeft:Hide()
+		self.SubSkillRankBar.BorderRight:Hide()
+
+		if not self.SubSkillRankBar.backdrop then
+			self.SubSkillRankBar:CreateBackdrop("Default")
+			self.SubSkillRankBar.backdrop:SetAllPoints()
+			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
+			E:RegisterStatusBar(self.SubSkillRankBar)
+		end
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 
@@ -99,29 +122,6 @@ local function LoadSkin()
 			Button.NameFrame:Kill()
 		end
 	end)
-
-	local function SkinRecipeList(self, _, tradeSkillInfo)
-		-- +/- Buttons
-		if tradeSkillInfo.collapsed then
-			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
-		else
-			self:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
-		end
-
-		-- Skillbar
-		if tradeSkillInfo.hasProgressBar then
-			self.SubSkillRankBar.BorderMid:Hide()
-			self.SubSkillRankBar.BorderLeft:Hide()
-			self.SubSkillRankBar.BorderRight:Hide()
-
-			if not self.SubSkillRankBar.backdrop then
-				self.SubSkillRankBar:CreateBackdrop("Default")
-				self.SubSkillRankBar.backdrop:SetAllPoints()
-				self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
-				E:RegisterStatusBar(self.SubSkillRankBar)
-			end
-		end
-	end
 
 	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
 		for _, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do

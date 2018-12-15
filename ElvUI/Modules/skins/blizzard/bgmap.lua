@@ -9,23 +9,48 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BattlefieldMapTab, BattlefieldMapOptions, OpacityFrame
--- GLOBALS: SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
--- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL, UIParent, ToggleDropDownMenu, UIDropDownMenu_Initialize
+-- GLOBALS: UIDropDownMenu_Initialize, ToggleDropDownMenu
+
+local function GetOpacity()
+	return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
+end
+
+local function InitializeOptionsDropDown()
+	BattlefieldMapTab:InitializeOptionsDropDown()
+end
+
+local function setBackdropAlpha()
+	if BattlefieldMapFrame.backdrop then
+		BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
+	end
+end
+
+-- alpha stuff
+local oldAlpha = 0
+local function setOldAlpha()
+	if oldAlpha then
+		BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
+		oldAlpha = nil
+	end
+end
+
+local function setRealAlpha()
+	oldAlpha = GetOpacity()
+	BattlefieldMapFrame:SetGlobalAlpha(1)
+end
+
+local function refreshAlpha()
+	oldAlpha = GetOpacity()
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
-
-	local function GetOpacity()
-		return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
-	end
-
-	local oldAlpha = GetOpacity()
 
 	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:StripTextures()
 
+	refreshAlpha() -- will need this soon
 	BattlefieldMapFrame:CreateBackdrop('Default')
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
@@ -43,10 +68,6 @@ local function LoadSkin()
 	BattlefieldMapFrame.BorderFrame.CloseButton:SetFrameLevel(BattlefieldMapFrame.BorderFrame.CloseButton:GetFrameLevel()+1)
 	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
 	BattlefieldMapTab:Kill()
-
-	local function InitializeOptionsDropDown()
-		BattlefieldMapTab:InitializeOptionsDropDown()
-	end
 
 	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
 		if btn == "LeftButton" then
@@ -68,28 +89,8 @@ local function LoadSkin()
 		end
 	end)
 
-	local function setBackdropAlpha()
-		if BattlefieldMapFrame.backdrop then
-			BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
-		end
-	end
-
 	hooksecurefunc(BattlefieldMapFrame, "SetGlobalAlpha", setBackdropAlpha)
-	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", function()
-		oldAlpha = GetOpacity()
-	end)
-
-	local function setOldAlpha()
-		if oldAlpha then
-			BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
-			oldAlpha = nil
-		end
-	end
-
-	local function setRealAlpha()
-		oldAlpha = GetOpacity()
-		BattlefieldMapFrame:SetGlobalAlpha(1)
-	end
+	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", refreshAlpha)
 
 	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)

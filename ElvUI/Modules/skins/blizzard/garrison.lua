@@ -462,29 +462,29 @@ local function LoadSkin()
 	Class:SetSize(50, 43)
 end
 
+local function SkinFollowerTooltip(frame)
+	if not frame then return end
+
+	S:HandleTooltipBorderedFrame(frame)
+end
+
+local function SkinAbilityTooltip(frame)
+	if not frame then return end
+
+	for i = 1, 9 do
+		select(i, frame:GetRegions()):Hide()
+	end
+	local icon = frame.Icon
+	icon:SetTexCoord(unpack(E.TexCoords))
+	if not frame.border then
+		frame.border = CreateFrame("Frame", nil, frame)
+		S:HandleIcon(frame.Icon, frame.border)
+	end
+	frame:SetTemplate("Transparent")
+end
+
 local function SkinTooltip()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
-
-	local function SkinFollowerTooltip(frame)
-		if not frame then return end
-
-		S:HandleTooltipBorderedFrame(frame)
-	end
-
-	local function SkinAbilityTooltip(frame)
-		if not frame then return end
-
-		for i = 1, 9 do
-			select(i, frame:GetRegions()):Hide()
-		end
-		local icon = frame.Icon
-		icon:SetTexCoord(unpack(E.TexCoords))
-		if not frame.border then
-			frame.border = CreateFrame("Frame", nil, frame)
-			S:HandleIcon(frame.Icon, frame.border)
-		end
-		frame:SetTemplate("Transparent")
-	end
 
 	SkinFollowerTooltip(GarrisonFollowerTooltip)
 	SkinFollowerTooltip(FloatingGarrisonFollowerTooltip)

@@ -10,6 +10,31 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ATTACHMENTS_MAX_SEND, INBOXITEMS_TO_DISPLAY
 
+local function MailFrameSkin()
+	for i = 1, ATTACHMENTS_MAX_SEND do
+		local b = _G["SendMailAttachment"..i]
+		if not b.skinned then
+			b:StripTextures()
+			b:SetTemplate("Default", true)
+			b:StyleButton()
+			b.skinned = true
+			hooksecurefunc(b.IconBorder, 'SetVertexColor', function(self, r, g, b)
+				self:GetParent():SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			hooksecurefunc(b.IconBorder, 'Hide', function(self)
+				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
+		end
+
+		local t = b:GetNormalTexture()
+		if t then
+			t:SetTexCoord(unpack(E.TexCoords))
+			t:SetInside()
+		end
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 
@@ -68,29 +93,6 @@ local function LoadSkin()
 	SendMailNameEditBox:SetHeight(18)
 	SendMailFrame:StripTextures()
 
-	local function MailFrameSkin()
-		for i = 1, ATTACHMENTS_MAX_SEND do
-			local b = _G["SendMailAttachment"..i]
-			if not b.skinned then
-				b:StripTextures()
-				b:SetTemplate("Default", true)
-				b:StyleButton()
-				b.skinned = true
-				hooksecurefunc(b.IconBorder, 'SetVertexColor', function(self, r, g, b)
-					self:GetParent():SetBackdropBorderColor(r, g, b)
-					self:SetTexture("")
-				end)
-				hooksecurefunc(b.IconBorder, 'Hide', function(self)
-					self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end)
-			end
-			local t = b:GetNormalTexture()
-			if t then
-				t:SetTexCoord(unpack(E.TexCoords))
-				t:SetInside()
-			end
-		end
-	end
 	hooksecurefunc("SendMailFrame_Update", MailFrameSkin)
 
 	S:HandleButton(SendMailMailButton)

@@ -13,6 +13,22 @@ local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIDROPDOWNMENU_MAXLEVELS, NORMAL_FONT_COLOR
 
+local function SkinNavBarButtons(self)
+	if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
+		return
+	end
+
+	local navButton = self.navList[#self.navList]
+	if navButton and not navButton.isSkinned then
+		S:HandleButton(navButton, true)
+		if navButton.MenuArrowButton then
+			S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+		end
+
+		navButton.isSkinned = true
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 
@@ -253,20 +269,6 @@ local function LoadSkin()
 	S:HandleButton(StackSplitFrame.CancelButton)
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
-	local function SkinNavBarButtons(self)
-		if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
-			return
-		end
-		local navButton = self.navList[#self.navList]
-		if navButton and not navButton.isSkinned then
-			S:HandleButton(navButton, true)
-			if navButton.MenuArrowButton then
-				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
-			end
-
-			navButton.isSkinned = true
-		end
-	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 

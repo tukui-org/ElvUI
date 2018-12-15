@@ -11,6 +11,122 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: EJ_GetEncounterInfoByIndex, AJ_MAX_NUM_SUGGESTIONS
 
+local function SkinDungeons()
+	local b1 = EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
+	if b1 and not b1.isSkinned then
+		S:HandleButton(b1)
+		b1.bgImage:SetInside()
+		b1.bgImage:SetTexCoord(.08, .6, .08, .6)
+		b1.bgImage:SetDrawLayer("ARTWORK")
+		b1.isSkinned = true
+	end
+
+	for i = 1, 100 do
+		local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
+		if b and not b.isSkinned then
+			S:HandleButton(b)
+			b.bgImage:SetInside()
+			b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
+			b.bgImage:SetDrawLayer("ARTWORK")
+			b.isSkinned = true
+		end
+	end
+end
+
+local function SkinBosses()
+	local bossIndex = 1;
+	local _, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
+	local bossButton;
+
+	while bossID do
+		bossButton = _G["EncounterJournalBossButton"..bossIndex];
+		if bossButton and not bossButton.isSkinned then
+			S:HandleButton(bossButton)
+			bossButton.creature:ClearAllPoints()
+			bossButton.creature:Point("TOPLEFT", 1, -4)
+			bossButton.isSkinned = true
+		end
+
+		bossIndex = bossIndex + 1;
+		_, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
+	end
+end
+
+local function SkinOverviewInfo(self, _, index)
+	local header = self.overviews[index]
+	if not header.isSkinned then
+
+		header.descriptionBG:SetAlpha(0)
+		header.descriptionBGBottom:SetAlpha(0)
+		for i = 4, 18 do
+			select(i, header.button:GetRegions()):SetTexture("")
+		end
+
+		S:HandleButton(header.button)
+
+		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+		header.button.title.SetTextColor = E.noop
+		header.button.expandedIcon:SetTextColor(1, 1, 1)
+		header.button.expandedIcon.SetTextColor = E.noop
+
+		header.isSkinned = true
+	end
+end
+
+local function SkinOverviewInfoBullets(object)
+	local parent = object:GetParent()
+
+	if parent.Bullets then
+		for _, bullet in pairs(parent.Bullets) do
+			if not bullet.styled then
+				bullet.Text:SetTextColor(1, 1, 1)
+				bullet.styled = true
+			end
+		end
+	end
+end
+
+local function SkinAbilitiesInfo()
+	local index = 1
+	local header = _G["EncounterJournalInfoHeader"..index]
+	while header do
+		if not header.isSkinned then
+			header.flashAnim.Play = E.noop
+
+			header.descriptionBG:SetAlpha(0)
+			header.descriptionBGBottom:SetAlpha(0)
+			for i = 4, 18 do
+				select(i, header.button:GetRegions()):SetTexture("")
+			end
+
+			header.description:SetTextColor(1, 1, 1)
+			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+			header.button.title.SetTextColor = E.noop
+			header.button.expandedIcon:SetTextColor(1, 1, 1)
+			header.button.expandedIcon.SetTextColor = E.noop
+
+			S:HandleButton(header.button)
+
+			header.button.bg = CreateFrame("Frame", nil, header.button)
+			header.button.bg:SetTemplate("Default")
+			header.button.bg:SetOutside(header.button.abilityIcon)
+			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
+			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
+
+			header.isSkinned = true
+		end
+
+		if header.button.abilityIcon:IsShown() then
+			header.button.bg:Show()
+		else
+			header.button.bg:Hide()
+		end
+
+		index = index + 1
+		header = _G["EncounterJournalInfoHeader"..index]
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
@@ -196,49 +312,10 @@ local function LoadSkin()
 	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
-	local function SkinDungeons()
-		local b1 = EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
-		if b1 and not b1.isSkinned then
-			S:HandleButton(b1)
-			b1.bgImage:SetInside()
-			b1.bgImage:SetTexCoord(.08, .6, .08, .6)
-			b1.bgImage:SetDrawLayer("ARTWORK")
-			b1.isSkinned = true
-		end
-
-		for i = 1, 100 do
-			local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
-			if b and not b.isSkinned then
-				S:HandleButton(b)
-				b.bgImage:SetInside()
-				b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
-				b.bgImage:SetDrawLayer("ARTWORK")
-				b.isSkinned = true
-			end
-		end
-	end
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
 	EncounterJournal_ListInstances()
 
 	--Boss selection buttons
-	local function SkinBosses()
-		local bossIndex = 1;
-		local _, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
-		local bossButton;
-
-		while bossID do
-			bossButton = _G["EncounterJournalBossButton"..bossIndex];
-			if bossButton and not bossButton.isSkinned then
-				S:HandleButton(bossButton)
-				bossButton.creature:ClearAllPoints()
-				bossButton.creature:Point("TOPLEFT", 1, -4)
-				bossButton.isSkinned = true
-			end
-
-			bossIndex = bossIndex + 1;
-			_, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
-		end
-	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 
 	-- Loot buttons
@@ -288,84 +365,12 @@ local function LoadSkin()
 	end
 
 	--Overview Info (From Aurora)
-	local function SkinOverviewInfo(self, _, index)
-		local header = self.overviews[index]
-		if not header.isSkinned then
-
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture("")
-			end
-
-			S:HandleButton(header.button)
-
-			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-			header.button.title.SetTextColor = E.noop
-			header.button.expandedIcon:SetTextColor(1, 1, 1)
-			header.button.expandedIcon.SetTextColor = E.noop
-
-			header.isSkinned = true
-		end
-	end
 	hooksecurefunc("EncounterJournal_SetUpOverview", SkinOverviewInfo)
 
 	--Overview Info Bullets (From Aurora)
-	local function SkinOverviewInfoBullets(object)
-		local parent = object:GetParent()
-
-		if parent.Bullets then
-			for _, bullet in pairs(parent.Bullets) do
-				if not bullet.styled then
-					bullet.Text:SetTextColor(1, 1, 1)
-					bullet.styled = true
-				end
-			end
-		end
-	end
 	hooksecurefunc("EncounterJournal_SetBullets", SkinOverviewInfoBullets)
 
 	--Abilities Info (From Aurora)
-	local function SkinAbilitiesInfo()
-		local index = 1
-		local header = _G["EncounterJournalInfoHeader"..index]
-		while header do
-			if not header.isSkinned then
-				header.flashAnim.Play = E.noop
-
-				header.descriptionBG:SetAlpha(0)
-				header.descriptionBGBottom:SetAlpha(0)
-				for i = 4, 18 do
-					select(i, header.button:GetRegions()):SetTexture("")
-				end
-
-				header.description:SetTextColor(1, 1, 1)
-				header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-				header.button.title.SetTextColor = E.noop
-				header.button.expandedIcon:SetTextColor(1, 1, 1)
-				header.button.expandedIcon.SetTextColor = E.noop
-
-				S:HandleButton(header.button)
-
-				header.button.bg = CreateFrame("Frame", nil, header.button)
-				header.button.bg:SetTemplate("Default")
-				header.button.bg:SetOutside(header.button.abilityIcon)
-				header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
-				header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
-
-				header.isSkinned = true
-			end
-
-			if header.button.abilityIcon:IsShown() then
-				header.button.bg:Show()
-			else
-				header.button.bg:Hide()
-			end
-
-			index = index + 1
-			header = _G["EncounterJournalInfoHeader"..index]
-		end
-	end
 	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
 
 	-- Search
