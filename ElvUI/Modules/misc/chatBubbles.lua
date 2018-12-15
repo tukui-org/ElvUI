@@ -93,7 +93,7 @@ end
 
 function M:SkinBubble(frame)
 	if frame:IsForbidden() then return end
-	local mult = E.mult * tonumber(string.sub(UIParent:GetEffectiveScale(), 0, 7))
+	local mult = E.mult
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
