@@ -4,16 +4,12 @@ local B = E:GetModule('Blizzard');
 --Cache global variables
 --Lua functions
 local pairs = pairs
+local ipairs = ipairs
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: AlertFrame, AlertFrameMover, MissingLootFrame, GroupLootContainer
--- GLOBALS: LOOT_WON_ALERT_FRAMES, LOOT_UPGRADE_ALERT_FRAMES, MONEY_WON_ALERT_FRAMES
--- GLOBALS: AchievementAlertFrame1, CriteriaAlertFrame1, ChallengeModeAlertFrame1
--- GLOBALS: DungeonCompletionAlertFrame1, StorePurchaseAlertFrame, ScenarioAlertFrame1
--- GLOBALS: GuildChallengeAlertFrame, DigsiteCompleteToastFrame, GarrisonBuildingAlertFrame
--- GLOBALS: GarrisonMissionAlertFrame, GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
--- GLOBALS: GarrisonShipMissionAlertFrame, UIPARENT_MANAGED_FRAME_POSITIONS
--- GLOBALS: hooksecurefunc, ipairs
+-- GLOBALS: AlertFrame, GroupLootContainer, AlertFrameMover
+-- GLOBALS: UIPARENT_MANAGED_FRAME_POSITIONS
 
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:Width(180)

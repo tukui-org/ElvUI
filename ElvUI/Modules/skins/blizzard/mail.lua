@@ -8,7 +8,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: INBOXITEMS_TO_DISPLAY, ATTACHMENTS_MAX_SEND
+-- GLOBALS: ATTACHMENTS_MAX_SEND, INBOXITEMS_TO_DISPLAY
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end

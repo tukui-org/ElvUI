@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 --Lua functions
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
+local tonumber, strsub = tonumber, strsub
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
 
@@ -27,7 +28,7 @@ function E:UIScale(event, loginFrame)
 		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (PixelUtil.GetPixelToUIUnitFactor())) or UIParent:GetEffectiveScale()))
 	end
 
-	scale = tonumber(string.sub(scale, 0, 4))
+	scale = tonumber(strsub(scale, 0, 4))
 
 	if width < 1600 then
 		E.lowversion = true

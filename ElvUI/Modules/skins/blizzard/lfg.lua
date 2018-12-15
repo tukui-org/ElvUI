@@ -6,9 +6,9 @@ local LBG = LibStub("LibButtonGlow-1.0", true)
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local lower = string.lower
-local min = math.min
+local min, lower = math.min, string.lower
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
@@ -17,10 +17,10 @@ local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
-local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameFontNormal, NUM_SCENARIO_CHOICE_BUTTONS, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
--- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS, CHALLENGE_MODE_EXTRA_AFFIX_INFO
+-- GLOBALS: NUM_LFD_CHOICE_BUTTONS, NUM_LFR_CHOICE_BUTTONS, NUM_SCENARIO_CHOICE_BUTTONS
+-- GLOBALS: CHALLENGE_MODE_EXTRA_AFFIX_INFO, MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES
+-- GLOBALS: GameFontNormal
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end

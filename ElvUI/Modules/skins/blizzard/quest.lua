@@ -9,9 +9,11 @@ local pairs = pairs
 local select = select
 local unpack = unpack
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
+local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
+local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:

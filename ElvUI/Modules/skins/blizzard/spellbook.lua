@@ -9,7 +9,7 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SpellBookFrame_UpdateSkillLineTabs, SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
+-- GLOBALS: SPELLS_PER_PAGE, MAX_SKILLLINE_TABS, SpellBookFrame_UpdateSkillLineTabs
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end

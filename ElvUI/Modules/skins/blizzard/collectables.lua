@@ -7,13 +7,13 @@ local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
-local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
+local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ToyBox, PlayerHasToy, SquareButton_SetIcon
+-- GLOBALS: PlayerHasToy
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end

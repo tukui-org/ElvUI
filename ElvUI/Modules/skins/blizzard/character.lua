@@ -13,12 +13,11 @@ local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: PAPERDOLL_SIDEBARS, PAPERDOLL_STATINFO, PAPERDOLL_STATCATEGORIES, NUM_GEARSET_ICONS_SHOWN
--- GLOBALS: PaperDollFrame_SetItemLevel, MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY, NUM_FACTIONS_DISPLAYED
+-- GLOBALS: PAPERDOLL_SIDEBARS, NUM_GEARSET_ICONS_SHOWN, NUM_FACTIONS_DISPLAYED
 
-local PLACEINBAGS_LOCATION = 0xFFFFFFFF;
-local IGNORESLOT_LOCATION = 0xFFFFFFFE;
-local UNIGNORESLOT_LOCATION = 0xFFFFFFFD;
+local PLACEINBAGS_LOCATION = 0xFFFFFFFF
+local IGNORESLOT_LOCATION = 0xFFFFFFFE
+local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end

@@ -12,8 +12,7 @@ local BNFeaturesEnabled = BNFeaturesEnabled
 local RaiseFrameLevel = RaiseFrameLevel
 local BNConnected = BNConnected
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: FriendsFrameBroadcastInput_UpdateDisplay, FriendsFrame_CheckBattlenetStatus
--- GLOBALS: WhoFrameColumn_SetWidth, FRIENDS_TO_DISPLAY, MAX_DISPLAY_CHANNEL_BUTTONS
+-- GLOBALS: FRIENDS_TO_DISPLAY
 
 --Tab Regions
 local tabs = {

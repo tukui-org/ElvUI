@@ -5,15 +5,15 @@ local CH = E:GetModule("Chat");
 --Cache global variables
 --Lua functions
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
-local format = string.format
+local tonumber, strsub, format = tonumber, strsub, string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
-local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
@@ -93,7 +93,7 @@ end
 
 function M:SkinBubble(frame)
 	if frame:IsForbidden() then return end
-	local mult = E.mult
+	local mult = E.mult * tonumber(strsub(UIParent:GetEffectiveScale(), 0, 7))
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then

@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 --WoW API / Variables
-
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 

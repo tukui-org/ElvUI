@@ -14,7 +14,6 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame, HybridScrollFrame_GetOffset
 

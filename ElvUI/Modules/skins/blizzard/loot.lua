@@ -7,18 +7,18 @@ local LBG = LibStub("LibButtonGlow-1.0", true)
 local _G = _G
 local unpack, select = unpack, select
 --WoW API / Variables
-local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
+local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetLootSlotInfo = GetLootSlotInfo
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 local IsFishingLoot = IsFishingLoot
+local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT, ITEMS = LOOT, ITEMS
-local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LOOTFRAME_NUMBUTTONS, SquareButton_SetIcon
+-- GLOBALS: LOOTFRAME_NUMBUTTONS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end

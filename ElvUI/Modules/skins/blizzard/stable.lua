@@ -10,6 +10,37 @@ local CreateFrame = CreateFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: NUM_PET_ACTIVE_SLOTS, NUM_PET_STABLE_SLOTS
 
+local function PetButtons(btn, p)
+	local button = _G[btn]
+	local icon = _G[btn..'IconTexture']
+	local highlight = button:GetHighlightTexture()
+	button:StripTextures()
+
+	if button.Checked then
+		button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
+		button.Checked:SetAllPoints(icon)
+		button.Checked:SetAlpha(0.3)
+	end
+
+	if highlight then
+		highlight:SetColorTexture(1, 1, 1, 0.3)
+		highlight:SetAllPoints(icon)
+	end
+
+	if icon then
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:ClearAllPoints()
+		icon:Point("TOPLEFT", p, -p)
+		icon:Point("BOTTOMRIGHT", -p, p)
+
+		button:SetFrameLevel(button:GetFrameLevel() + 2)
+		if not button.backdrop then
+			button:CreateBackdrop("Default", true)
+			button.backdrop:SetAllPoints()
+		end
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end
 
@@ -18,7 +49,6 @@ local function LoadSkin()
 
 	PetStableLeftInset:StripTextures()
 	PetStableBottomInset:StripTextures()
-
 	PetStableFrameInset:SetTemplate('Transparent')
 
 	S:HandleButton(PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
@@ -37,43 +67,11 @@ local function LoadSkin()
 		b:SetTemplate("Default")
 	end
 
-	local function PetButtons(btn)
-		local button = _G[btn]
-		local icon = _G[btn..'IconTexture']
-		local highlight = button:GetHighlightTexture()
-		button:StripTextures()
-
-		if button.Checked then
-			button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
-			button.Checked:SetAllPoints(icon)
-			button.Checked:SetAlpha(0.3)
-		end
-
-		if highlight then
-			highlight:SetColorTexture(1, 1, 1, 0.3)
-			highlight:SetAllPoints(icon)
-		end
-
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:ClearAllPoints()
-			icon:Point("TOPLEFT", p, -p)
-			icon:Point("BOTTOMRIGHT", -p, p)
-
-			button:SetFrameLevel(button:GetFrameLevel() + 2)
-			if not button.backdrop then
-				button:CreateBackdrop("Default", true)
-				button.backdrop:SetAllPoints()
-			end
-		end
-	end
-
 	for i = 1, NUM_PET_ACTIVE_SLOTS do
-		PetButtons('PetStableActivePet' .. i)
+		PetButtons('PetStableActivePet' .. i, p)
 	end
-
 	for i = 1, NUM_PET_STABLE_SLOTS do
-		PetButtons('PetStableStabledPet' .. i)
+		PetButtons('PetStableStabledPet' .. i, p)
 	end
 end
 

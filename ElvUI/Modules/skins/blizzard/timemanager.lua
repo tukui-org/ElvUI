@@ -10,21 +10,25 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
 
+local function SetPlayTexture()
+	StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\play")
+end
+local function SetPauseTexture()
+	StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\pause")
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.timemanager ~= true then return end
 
 	local TimeManagerFrame = _G["TimeManagerFrame"]
 	S:HandlePortraitFrame(TimeManagerFrame, true)
 
-
 	S:HandleDropDownBox(TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmMinuteDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmAMPMDropDown, 80)
 
 	S:HandleEditBox(TimeManagerAlarmMessageEditBox)
-
 	S:HandleCheckBox(TimeManagerAlarmEnabledButton)
-
 	S:HandleCheckBox(TimeManagerMilitaryTimeCheck)
 	S:HandleCheckBox(TimeManagerLocalTimeCheck)
 
@@ -32,6 +36,7 @@ local function LoadSkin()
 	TimeManagerStopwatchCheck:SetTemplate("Default")
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
+
 	local hover = TimeManagerStopwatchCheck:CreateTexture() -- hover
 	hover:SetColorTexture(1,1,1,0.3)
 	hover:Point("TOPLEFT",TimeManagerStopwatchCheck,2,-2)
@@ -60,12 +65,6 @@ local function LoadSkin()
 	StopwatchResetButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\reset")
 	StopwatchResetButton:Point("BOTTOMRIGHT", StopwatchFrame, "BOTTOMRIGHT", -4, 6)
 
-	local function SetPlayTexture()
-		StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\play")
-	end
-	local function SetPauseTexture()
-		StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\pause")
-	end
 	hooksecurefunc("Stopwatch_Play", SetPauseTexture)
 	hooksecurefunc("Stopwatch_Pause", SetPlayTexture)
 	hooksecurefunc("Stopwatch_Clear", SetPlayTexture)

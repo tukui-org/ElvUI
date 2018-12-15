@@ -30,6 +30,7 @@ local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
+local LeaveChannelByName = LeaveChannelByName
 local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup
@@ -1009,12 +1010,12 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	if self.delayed > 10 then
 		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
 
-		if (GetChannelName('ElvUIGVC') > 0) then -- Leave it
+		if GetChannelName('ElvUIGVC') > 0 then -- Leave it
 			LeaveChannelByName('ElvUIGVC')
 		end
 
 		if numActiveChannels and (numActiveChannels >= 1) then
-			if (GetChannelName('ElvUIGVC') == 0) and (numActiveChannels < MAX_WOW_CHAT_CHANNELS) then
+			if GetChannelName('ElvUIGVC') == 0 and numActiveChannels < MAX_WOW_CHAT_CHANNELS then
 				JoinChannelByName('ElvUIGVC', nil, nil, true)
 
 				if not SendMessageWaiting then

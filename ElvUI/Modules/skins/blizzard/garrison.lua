@@ -9,7 +9,7 @@ local unpack, pairs, select = unpack, pairs, select
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon
+-- GLOBALS: HybridScrollFrame_GetOffset
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
