@@ -504,7 +504,6 @@ local function LoadSkin()
 
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(WardrobeFrameCloseButton)
 	S:HandleDropDownBox(WardrobeOutfitDropDown)
 	WardrobeOutfitDropDown:SetSize(200, 32)
 	WardrobeOutfitDropDownText:ClearAllPoints()

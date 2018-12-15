@@ -19,7 +19,6 @@ local function LoadSkin()
 	S:HandlePortraitFrame(GuildFrame, true)
 
 	S:HandleCloseButton(GuildMemberDetailCloseButton)
-	S:HandleCloseButton(GuildFrameCloseButton)
 	S:HandleScrollBar(GuildInfoFrameApplicantsContainerScrollBar)
 
 	local striptextures = {
