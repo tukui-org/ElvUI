@@ -252,9 +252,9 @@ local function LoadSkin()
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)
 	S:HandleScrollBar(_G.CalendarViewEventInviteListScrollFrameScrollBar)
 
-	S:HandleButton(_G.darViewEventAcceptButton)
-	S:HandleButton(_G.darViewEventTentativeButton)
-	S:HandleButton(_G.darViewEventRemoveButton)
+	S:HandleButton(_G.CalendarViewEventAcceptButton)
+	S:HandleButton(_G.CalendarViewEventTentativeButton)
+	S:HandleButton(_G.CalendarViewEventRemoveButton)
 	S:HandleButton(_G.CalendarViewEventDeclineButton)
 
 	--Event Picker Frame
