@@ -1035,30 +1035,19 @@ function E:UpdateDB()
 	E.global = E.data.global
 	E.db.theme = nil
 	E.db.install_complete = nil
-	E:DBConversions()
 
-	local Auras = E:GetModule('Auras')
-	Auras.db = E.db.auras
-	local ActionBars = E:GetModule('ActionBars')
-	ActionBars.db = E.db.actionbar
-	local Bags = E:GetModule('Bags')
-	Bags.db = E.db.bags
-	local Chat = E:GetModule('Chat')
-	Chat.db = E.db.chat
-	local DataBars = E:GetModule('DataBars')
-	DataBars.db = E.db.databars
-	local DataTexts = E:GetModule('DataTexts')
-	DataTexts.db = E.db.datatexts
-	local NamePlates = E:GetModule('NamePlates')
-	NamePlates.db = E.db.nameplates
-	local Tooltip = E:GetModule('Tooltip')
-	Tooltip.db = E.db.tooltip
-	local UnitFrames = E:GetModule('UnitFrames')
-	UnitFrames.db = E.db.unitframe
-	local Threat = E:GetModule('Threat')
-	Threat.db = E.db.general.threat
-	local Totems = E:GetModule('Totems')
-	Totems.db = E.db.general.totems
+	E:DBConversions()
+	E:GetModule('Auras').db = E.db.auras
+	E:GetModule('ActionBars').db = E.db.actionbar
+	E:GetModule('Bags').db = E.db.bags
+	E:GetModule('Chat').db = E.db.chat
+	E:GetModule('DataBars').db = E.db.databars
+	E:GetModule('DataTexts').db = E.db.datatexts
+	E:GetModule('NamePlates').db = E.db.nameplates
+	E:GetModule('Tooltip').db = E.db.tooltip
+	E:GetModule('UnitFrames').db = E.db.unitframe
+	E:GetModule('Threat').db = E.db.general.threat
+	E:GetModule('Totems').db = E.db.general.totems
 end
 
 function E:UpdateMediaItems()
@@ -1078,19 +1067,20 @@ function E:UpdateMoverPositions()
 end
 
 function E:UpdateAuras()
-	local Auras = E:GetModule('Auras')
-	if ElvUIPlayerBuffs then
-		Auras:UpdateHeader(ElvUIPlayerBuffs)
-	end
-
-	if ElvUIPlayerDebuffs then
-		Auras:UpdateHeader(ElvUIPlayerDebuffs)
+	if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+		local Auras = E:GetModule('Auras')
+		if ElvUIPlayerBuffs then
+			Auras:UpdateHeader(ElvUIPlayerBuffs)
+		end
+		if ElvUIPlayerDebuffs then
+			Auras:UpdateHeader(ElvUIPlayerDebuffs)
+		end
 	end
 end
 
 function E:UpdateActionBars()
-	local ActionBars = E:GetModule('ActionBars')
 	if E.private.actionbar.enable then
+		local ActionBars = E:GetModule('ActionBars')
 		ActionBars:Extra_SetAlpha()
 		ActionBars:Extra_SetScale()
 		ActionBars:ToggleDesaturation()
@@ -1101,8 +1091,8 @@ function E:UpdateActionBars()
 end
 
 function E:UpdateBags()
-	local Bags = E:GetModule('Bags')
 	if E.private.bags.enable then
+		local Bags = E:GetModule('Bags')
 		Bags:Layout()
 		Bags:Layout(true)
 		Bags:SizeAndPositionBagBar()
@@ -1112,8 +1102,8 @@ function E:UpdateBags()
 end
 
 function E:UpdateChat()
-	local Chat = E:GetModule('Chat')
 	if E.private.chat.enable then
+		local Chat = E:GetModule('Chat')
 		Chat:PositionChat(true)
 		Chat:SetupChat()
 		Chat:UpdateAnchors()
@@ -1135,15 +1125,15 @@ function E:UpdateDataTexts()
 end
 
 function E:UpdateMinimap()
-	local Minimap = E:GetModule('Minimap')
 	if E.private.general.minimap.enable then
+		local Minimap = E:GetModule('Minimap')
 		Minimap:UpdateSettings()
 	end
 end
 
 function E:UpdateNamePlates()
-	local NamePlates = E:GetModule('NamePlates')
 	if E.private.nameplates.enable then
+		local NamePlates = E:GetModule('NamePlates')
 		NamePlates:ConfigureAll()
 		NamePlates:StyleFilterInitializeAllFilters()
 	end
@@ -1155,8 +1145,8 @@ function E:UpdateTooltip()
 end
 
 function E:UpdateUnitFrames()
-	local UnitFrames = E:GetModule('UnitFrames')
 	if E.private.unitframe.enable then
+		local UnitFrames = E:GetModule('UnitFrames')
 		UnitFrames:Update_AllFrames()
 	end
 end
@@ -1170,11 +1160,8 @@ function E:UpdateLayout()
 end
 
 function E:UpdateMisc()
-	local AFK = E:GetModule('AFK')
-	AFK:Toggle()
-
-	local Blizzard = E:GetModule('Blizzard')
-	Blizzard:SetObjectiveFrameHeight()
+	E:GetModule('AFK'):Toggle()
+	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
 	local Threat = E:GetModule('Threat')
 	Threat:ToggleEnable()
@@ -1208,11 +1195,15 @@ end
 
 function E:StaggeredUpdateAll(event, ignoreInstall)
 	if not self.initialized then
-		C_Timer_After(1, function() E:StaggeredUpdateAll(event, ignoreInstall) end)
+		C_Timer_After(1, function()
+			E:StaggeredUpdateAll(event, ignoreInstall)
+		end)
+
 		return
 	end
+
 	self.ignoreInstall = ignoreInstall
-	
+
 	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") then
 		--Stagger updates
 		self:UpdateDB()
@@ -1220,9 +1211,9 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 		self:UpdateUnitFrames()
 		C_Timer_After(0.05, E.UpdateMediaItems)
 		C_Timer_After(0.10, E.UpdateLayout)
-		C_Timer_After(0.2, E.UpdateActionBars)
-		C_Timer_After(0.4, E.UpdateNamePlates)
-		C_Timer_After(0.5, E.UpdateTooltip)
+		C_Timer_After(0.20, E.UpdateActionBars)
+		C_Timer_After(0.40, E.UpdateNamePlates)
+		C_Timer_After(0.50, E.UpdateTooltip)
 		C_Timer_After(0.55, E.UpdateBags)
 		C_Timer_After(0.60, E.UpdateChat)
 		C_Timer_After(0.65, E.UpdateDataBars)
