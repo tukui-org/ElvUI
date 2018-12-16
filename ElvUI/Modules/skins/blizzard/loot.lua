@@ -82,7 +82,7 @@ local function LoadSkin()
 		for i=1, MasterLooterFrame:GetNumChildren() do
 			local child = select(i, MasterLooterFrame:GetChildren())
 			if child and not child.isSkinned and not child:GetName() then
-				if child:GetObjectType() == "Button" then
+				if child:IsObjectType('Button') then
 					if child:GetPushedTexture() then
 						S:HandleCloseButton(child)
 					else
@@ -175,7 +175,7 @@ local function LoadSkin()
 
 	for i=1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions());
-		if(region:GetObjectType() == "FontString") then
+		if(region:IsObjectType('FontString')) then
 			if(region:GetText() == ITEMS) then
 				LootFrame.Title = region
 			end

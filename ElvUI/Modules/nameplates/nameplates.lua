@@ -381,7 +381,7 @@ end
 function mod:StyleFrame(frame, useMainFrame)
 	local parent = frame
 
-	if(parent:GetObjectType() == "Texture") then
+	if(parent:IsObjectType('Texture')) then
 		parent = frame:GetParent()
 	end
 

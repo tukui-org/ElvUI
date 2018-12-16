@@ -85,7 +85,7 @@ local function LoadSkin()
 	for i=1, _G.MerchantRepairItemButton:GetNumRegions() do
 		local region = select(i, _G.MerchantRepairItemButton:GetRegions())
 
-		if region:GetObjectType() == "Texture" then
+		if region:IsObjectType('Texture') then
 			region:SetTexCoord(0.04, 0.24, 0.06, 0.5)
 			region:SetInside()
 		end

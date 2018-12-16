@@ -41,7 +41,7 @@ local function LoadSkin()
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())
-		if child:GetObjectType() == 'Button' then
+		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end
 	end

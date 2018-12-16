@@ -566,7 +566,7 @@ local function LoadSkin()
 	hooksecurefunc("LFGListSearchPanel_UpdateAutoComplete", function(self)
 		for i = 1, LFGListFrame.SearchPanel.AutoCompleteFrame:GetNumChildren() do
 			local child = select(i, LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren())
-			if child and not child.isSkinned and child:GetObjectType() == "Button" then
+			if child and not child.isSkinned and child:IsObjectType('Button') then
 				S:HandleButton(child)
 				child.isSkinned = true
 			end

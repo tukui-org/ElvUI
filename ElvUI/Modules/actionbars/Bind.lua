@@ -283,7 +283,7 @@ function AB:RegisterButton(b, override)
 	local stance = StanceButton1:GetScript("OnClick");
 	local pet = PetActionButton1:GetScript("OnClick");
 	local button = SecureActionButton_OnClick;
-	if b.IsProtected and b.GetObjectType and b.GetScript and b:GetObjectType()=="CheckButton" and b:IsProtected() then
+	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
 		local script = b:GetScript("OnClick");
 		if override then
 			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);

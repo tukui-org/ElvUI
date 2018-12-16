@@ -13,9 +13,9 @@ local CreateFrame = CreateFrame
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
 		local region = select(i, bar:GetRegions())
-		if region:GetObjectType() == "Texture" then
+		if region:IsObjectType('Texture') then
 			region:SetTexture(nil)
-		elseif region:GetObjectType() == "FontString" then
+		elseif region:IsObjectType('FontString') then
 			region:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end

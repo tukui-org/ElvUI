@@ -121,7 +121,7 @@ local function LoadSkin()
 
 	for i=1, FriendsFrame:GetNumRegions() do
 		local region = select(i, FriendsFrame:GetRegions())
-		if region:GetObjectType() == "Texture" then
+		if region:IsObjectType('Texture') then
 			region:SetTexture(nil)
 			region:SetAlpha(0)
 		end

@@ -425,10 +425,10 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF.statusbars) do
-		if statusbar and statusbar:GetObjectType() == 'StatusBar' and not statusbar.isTransparent then
+		if statusbar and statusbar:IsObjectType('StatusBar') and not statusbar.isTransparent then
 			statusbar:SetStatusBarTexture(statusBarTexture)
 			if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
-		elseif statusbar and statusbar:GetObjectType() == 'Texture' then
+		elseif statusbar and statusbar:IsObjectType('Texture') then
 			statusbar:SetTexture(statusBarTexture)
 		end
 	end
@@ -1261,7 +1261,7 @@ local function updateColor(self, r, g, b)
 		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
 	end
 
-	if self.bg and self.bg:GetObjectType() == 'Texture' and not self.bg.multiplier then
+	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
 		self.bg:SetColorTexture(r * 0.35, g * 0.35, b * 0.35)
 	end
 end
