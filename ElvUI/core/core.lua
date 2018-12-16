@@ -599,14 +599,14 @@ end
 
 function E:CheckRole()
 	local talentTree = GetSpecialization()
-	local IsInPvPGear = false
-	local role
+	self.myspec = talentTree
+
+	local IsInPvPGear, role = false
+
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
 		IsInPvPGear = true
 	end
-
-	self.myspec = talentTree
 
 	if type(self.ClassRole[self.myclass]) == 'string' then
 		role = self.ClassRole[self.myclass]
