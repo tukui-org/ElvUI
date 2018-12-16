@@ -463,10 +463,11 @@ function UF:Update_AllFrames()
 
 	for unit in pairs(self.units) do
 		if self.db.units[unit].enable then
-			self[unit]:Enable()
 			self[unit]:Update()
+			self[unit]:Enable()
 			E:EnableMover(self[unit].mover:GetName())
 		else
+			self[unit]:Update()
 			self[unit]:Disable()
 			E:DisableMover(self[unit].mover:GetName())
 		end
