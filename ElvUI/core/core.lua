@@ -1036,6 +1036,29 @@ function E:UpdateDB()
 	E.db.theme = nil
 	E.db.install_complete = nil
 	E:DBConversions()
+
+	local Auras = E:GetModule('Auras')
+	Auras.db = E.db.auras
+	local ActionBars = E:GetModule('ActionBars')
+	ActionBars.db = E.db.actionbar
+	local Bags = E:GetModule('Bags')
+	Bags.db = E.db.bags
+	local Chat = E:GetModule('Chat')
+	Chat.db = E.db.chat
+	local DataBars = E:GetModule('DataBars')
+	DataBars.db = E.db.databars
+	local DataTexts = E:GetModule('DataTexts')
+	DataTexts.db = E.db.datatexts
+	local NamePlates = E:GetModule('NamePlates')
+	NamePlates.db = E.db.nameplates
+	local Tooltip = E:GetModule('Tooltip')
+	Tooltip.db = E.db.tooltip
+	local UnitFrames = E:GetModule('UnitFrames')
+	UnitFrames.db = E.db.unitframe
+	local Threat = E:GetModule('Threat')
+	Threat.db = E.db.general.threat
+	local Totems = E:GetModule('Totems')
+	Totems.db = E.db.general.totems
 end
 
 function E:UpdateMediaItems()
@@ -1056,7 +1079,6 @@ end
 
 function E:UpdateAuras()
 	local Auras = E:GetModule('Auras')
-	Auras.db = E.db.auras
 	if ElvUIPlayerBuffs then
 		Auras:UpdateHeader(ElvUIPlayerBuffs)
 	end
@@ -1068,7 +1090,6 @@ end
 
 function E:UpdateActionBars()
 	local ActionBars = E:GetModule('ActionBars')
-	ActionBars.db = E.db.actionbar
 	if E.private.actionbar.enable then
 		ActionBars:Extra_SetAlpha()
 		ActionBars:Extra_SetScale()
@@ -1081,7 +1102,6 @@ end
 
 function E:UpdateBags()
 	local Bags = E:GetModule('Bags')
-	Bags.db = E.db.bags
 	if E.private.bags.enable then
 		Bags:Layout()
 		Bags:Layout(true)
@@ -1093,7 +1113,6 @@ end
 
 function E:UpdateChat()
 	local Chat = E:GetModule('Chat')
-	Chat.db = E.db.chat
 	if E.private.chat.enable then
 		Chat:PositionChat(true)
 		Chat:SetupChat()
@@ -1103,7 +1122,6 @@ end
 
 function E:UpdateDataBars()
 	local DataBars = E:GetModule('DataBars')
-	DataBars.db = E.db.databars
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
@@ -1113,7 +1131,6 @@ end
 
 function E:UpdateDataTexts()
 	local DataTexts = E:GetModule('DataTexts')
-	DataTexts.db = E.db.datatexts
 	DataTexts:LoadDataTexts()
 end
 
@@ -1126,7 +1143,6 @@ end
 
 function E:UpdateNamePlates()
 	local NamePlates = E:GetModule('NamePlates')
-	NamePlates.db = E.db.nameplates
 	if E.private.nameplates.enable then
 		NamePlates:ConfigureAll()
 		NamePlates:StyleFilterInitializeAllFilters()
@@ -1134,13 +1150,12 @@ function E:UpdateNamePlates()
 end
 
 function E:UpdateTooltip()
-	local Tooltip = E:GetModule('Tooltip')
-	Tooltip.db = E.db.tooltip
+	--Placeholder?
+	--local Tooltip = E:GetModule('Tooltip')
 end
 
 function E:UpdateUnitFrames()
 	local UnitFrames = E:GetModule('UnitFrames')
-	UnitFrames.db = E.db.unitframe
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end
@@ -1162,12 +1177,10 @@ function E:UpdateMisc()
 	Blizzard:SetObjectiveFrameHeight()
 
 	local Threat = E:GetModule('Threat')
-	Threat.db = E.db.general.threat
 	Threat:ToggleEnable()
 	Threat:UpdatePosition()
 
 	local Totems = E:GetModule('Totems')
-	Totems.db = E.db.general.totems
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 end
@@ -1202,7 +1215,7 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 	
 	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") then
 		--Stagger updates
-		C_Timer_After(0.005, E.UpdateDB)
+		self:UpdateDB()
 		C_Timer_After(0.010, E.UpdateMoverPositions)
 		C_Timer_After(0.015, E.UpdateMediaItems)
 		C_Timer_After(0.020, E.UpdateLayout)
