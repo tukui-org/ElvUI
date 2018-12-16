@@ -1029,21 +1029,19 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateAll(event, ignoreInstall)
+function E:UpdateAll(ignoreInstall)
 	if not self.initialized then
-		C_Timer_After(1, function() E:UpdateAll(nil, ignoreInstall) end)
+		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
 		return
 	end
 
-	C_Timer.After(0.005, function()
-		E.private = E.charSettings.profile
-		E.db = E.data.profile
-		E.global = E.data.global
-		E.db.theme = nil
-		E.db.install_complete = nil
+	E.private = E.charSettings.profile
+	E.db = E.data.profile
+	E.global = E.data.global
+	E.db.theme = nil
+	E.db.install_complete = nil
 
-		E:DBConversions()
-	end)
+	E:DBConversions()
 
 	local ActionBars = E:GetModule('ActionBars')
 	local AFK = E:GetModule('AFK')
@@ -1061,7 +1059,6 @@ function E:UpdateAll(event, ignoreInstall)
 	local Totems = E:GetModule('Totems')
 	local UnitFrames = E:GetModule('UnitFrames')
 
-	C_Timer.After(0.01, function()
 	ActionBars.db = E.db.actionbar
 	Auras.db = E.db.auras
 	Bags.db = E.db.bags
@@ -1073,30 +1070,25 @@ function E:UpdateAll(event, ignoreInstall)
 	Tooltip.db = E.db.tooltip
 	Totems.db = E.db.general.totems
 	UnitFrames.db = E.db.unitframe
-	end)
 
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
 	--We set movers to be clamped again at the bottom of this function.
-	C_Timer.After(0.015, function()
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
-	end)
-	C_Timer.After(0.02, function()
+
 	E:UpdateMedia()
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 	E:UpdateCooldownSettings('all')
-	end)
-	C_Timer.After(0.025, function()
+
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
-	end)
-	C_Timer.After(0.03, function()
+
 	if E.private.actionbar.enable then
 		ActionBars:Extra_SetAlpha()
 		ActionBars:Extra_SetScale()
@@ -1105,9 +1097,7 @@ function E:UpdateAll(event, ignoreInstall)
 		ActionBars:UpdateMicroPositionDimensions()
 		ActionBars:UpdatePetCooldownSettings()
 	end
-	end)
 
-	C_Timer.After(0.035, function()
 	AFK:Toggle()
 
 	if E.private.bags.enable then
@@ -1170,7 +1160,6 @@ function E:UpdateAll(event, ignoreInstall)
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect')
-	end)
 end
 
 function E:RemoveNonPetBattleFrames()
