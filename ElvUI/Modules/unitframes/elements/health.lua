@@ -240,7 +240,7 @@ function UF:PostUpdateHealth(unit, min, max)
 
 	-- Health by Value
 	local colors = E.db.unitframe.colors;
-	local multiplier = colors.healthmultiplier
+	local multiplier = colors.healthmultiplier > 0.00 and colors.healthmultiplier or .25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local r, g, b = self:GetStatusBarColor()
@@ -264,6 +264,7 @@ function UF:PostUpdateHealth(unit, min, max)
 		end
 
 		if t then
+			multiplier = colors.healthmultiplier > 0.00 and colors.healthmultiplier or 1
 			self.bg:SetVertexColor(t[1] * multiplier , t[2] * multiplier, t[3] * multiplier)
 		end
 	end
