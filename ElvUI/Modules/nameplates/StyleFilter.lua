@@ -550,7 +550,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by spec conditions
 	if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
 		condition = false
-		mySpecID = GetSpecializationInfo(E.myspec)
+		mySpecID = E.myspec and GetSpecializationInfo(E.myspec)
 		if mySpecID and trigger.class[E.myclass].specs[mySpecID] then
 			condition = true
 		end
