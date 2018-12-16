@@ -684,8 +684,7 @@ local function LoadSecondarySkin()
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				frame:DisableDrawLayer("BORDER")
-				frame.Icon:SetTexCoord(unpack(E.TexCoords))
+				S:HandleTexture(frame.Icon, frame)
 				frame.Icon:SetInside()
 			end
 		end
