@@ -19,12 +19,7 @@ local function GetTemplate(t, isUnitFrameElement)
 	if t == 'ClassColor' then
 		local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 		borderr, borderg, borderb = color.r, color.g, color.b
-
-		if t ~= 'Transparent' then
-			backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
-		else
-			backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
-		end
+		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 	elseif t == 'Transparent' then
 		if isUnitFrameElement then
 			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
