@@ -1569,27 +1569,7 @@ function E:InitializeModules()
 	end
 end
 
---DATABASE CONVERSIONS
-local function auraFilterStrip(name, content, value)
-	if match(name, value) then
-		E.global.unitframe.aurafilters[gsub(name, value, '')] = E:CopyTable({}, content)
-		E.global.unitframe.aurafilters[name] = nil
-	end
-end
-
 function E:DBConversions()
-	--Make sure default filters use the correct filter type
-	for filter, filterType in pairs(E.DEFAULT_FILTER) do
-		E.global.unitframe.aurafilters[filter].type = filterType
-	end
-
-	--Add missing nameplates table to Minimalistic profile
-	if ElvDB.profiles['Minimalistic'] and not ElvDB.profiles['Minimalistic'].nameplates then
-		ElvDB.profiles['Minimalistic'].nameplates = {
-			['filters'] = {},
-		}
-	end
-
 	--Combat & Resting Icon options update
 	if E.db.unitframe.units.player.combatIcon ~= nil then
 		E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
@@ -1600,13 +1580,6 @@ function E:DBConversions()
 		E.db.unitframe.units.player.restIcon = nil
 	end
 
-	--Remove commas from aura filters
-	for name, content in pairs(E.global.unitframe.aurafilters) do
-		auraFilterStrip(name, content, ',')
-		auraFilterStrip(name, content, '^Friendly:')
-		auraFilterStrip(name, content, '^Enemy:')
-	end
-
 	--Convert old "Buffs and Debuffs" font size option to individual options
 	if E.db.auras.fontSize then
 		local fontSize = E.db.auras.fontSize
@@ -1615,13 +1588,6 @@ function E:DBConversions()
 		E.db.auras.debuffs.countFontSize = fontSize
 		E.db.auras.debuffs.durationFontSize = fontSize
 		E.db.auras.fontSize = nil
-	end
-
-	--Convert old private cooldown setting to profile setting
-	if E.private.cooldown and (E.private.cooldown.enable ~= nil) then
-		E.db.cooldown.enable = E.private.cooldown.enable
-		E.private.cooldown.enable = nil
-		E.private.cooldown = nil
 	end
 
 	--Convert Nameplate Aura Duration to new Cooldown system
