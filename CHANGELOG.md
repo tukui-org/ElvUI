@@ -15,6 +15,7 @@ Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.
 Updated oUF tags with recent changes.  
 Hid the Recipient Portrait on the TradeFrame.  
 Fixed minor positioning issue with role indicator on unitframes.  
+Fixed Copy Chat Log (and Copy Chat Line). Blizzard has protected some messages (known: Guild messages; maybe others) which we can no longer access as text.  
 
 ___
 **Version 10.84 [ December 11th 2018 ]**
