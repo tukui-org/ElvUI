@@ -1089,39 +1089,61 @@ function E:UpdateAll(ignoreInstall)
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
 
-	ActionBars:Extra_SetAlpha()
-	ActionBars:Extra_SetScale()
-	ActionBars:ToggleDesaturation()
-	ActionBars:UpdateButtonSettings()
-	ActionBars:UpdateMicroPositionDimensions()
-	ActionBars:UpdatePetCooldownSettings()
+	if E.private.actionbar.enable then
+		ActionBars:Extra_SetAlpha()
+		ActionBars:Extra_SetScale()
+		ActionBars:ToggleDesaturation()
+		ActionBars:UpdateButtonSettings()
+		ActionBars:UpdateMicroPositionDimensions()
+		ActionBars:UpdatePetCooldownSettings()
+	end
+
 	AFK:Toggle()
-	Bags:Layout()
-	Bags:Layout(true)
-	Bags:SizeAndPositionBagBar()
-	Bags:UpdateCountDisplay()
-	Bags:UpdateItemLevelDisplay()
-	Chat:PositionChat(true)
-	Chat:SetupChat()
-	Chat:UpdateAnchors()
+
+	if E.private.bags.enable then
+		Bags:Layout()
+		Bags:Layout(true)
+		Bags:SizeAndPositionBagBar()
+		Bags:UpdateCountDisplay()
+		Bags:UpdateItemLevelDisplay()
+	end
+
+	if E.private.chat.enable then
+		Chat:PositionChat(true)
+		Chat:SetupChat()
+		Chat:UpdateAnchors()
+	end
+
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
+
 	DataTexts:LoadDataTexts()
-	Minimap:UpdateSettings()
-	NamePlates:ConfigureAll()
-	NamePlates:StyleFilterInitializeAllFilters()
+
+	if E.private.general.minimap.enable then
+		Minimap:UpdateSettings()
+	end
+
+	if E.private.nameplates.enable then
+		NamePlates:ConfigureAll()
+		NamePlates:StyleFilterInitializeAllFilters()
+	end
+
 	Threat:ToggleEnable()
 	Threat:UpdatePosition()
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
-	UnitFrames:Update_AllFrames()
+
+	if E.private.unitframe.enable then
+		UnitFrames:Update_AllFrames()
+	end
 
 	if ElvUIPlayerBuffs then
 		Auras:UpdateHeader(ElvUIPlayerBuffs)
 	end
+
 	if ElvUIPlayerDebuffs then
 		Auras:UpdateHeader(ElvUIPlayerDebuffs)
 	end
