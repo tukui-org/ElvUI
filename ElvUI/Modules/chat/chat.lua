@@ -972,7 +972,9 @@ local function HyperLinkedCPL(data)
 			if message and message ~= "" then
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
-				SetChatEditBoxMessage(message)
+				if not strmatch(message, '|Kv%d-|k$') then -- ignore guild protection (from the end)
+					SetChatEditBoxMessage(message)
+				end
 			end
 		end
 		return
@@ -1979,7 +1981,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						if not strmatch(d[1],'^|Kv%d-|k$') then -- ignore new guild protection string type
+						if not strmatch(d[1],'^|Kv%d-|k$') then -- ignore guild protection
 							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 						end
 					end
@@ -2038,7 +2040,7 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if #temp > 0 then
-		if not strmatch(temp[1],'^|Kv%d-|k$') then -- ignore new guild protection string type
+		if not strmatch(temp[1],'^|Kv%d-|k$') then -- ignore guild protection
 			temp[50] = event
 			temp[51] = time()
 
