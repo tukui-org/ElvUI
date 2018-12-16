@@ -553,9 +553,9 @@ end
 
 function E:UpdateStatusBars()
 	for _, statusBar in pairs(self.statusBars) do
-		if statusBar and statusBar:GetObjectType() == 'StatusBar' then
+		if statusBar and statusBar:IsObjectType('StatusBar') then
 			statusBar:SetStatusBarTexture(self.media.normTex)
-		elseif statusBar and statusBar:GetObjectType() == 'Texture' then
+		elseif statusBar and statusBar:IsObjectType('Texture') then
 			statusBar:SetTexture(self.media.normTex)
 		end
 	end
