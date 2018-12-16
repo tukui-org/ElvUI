@@ -27,7 +27,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
 		health.bg:SetTexture(E.media.blankTex)
-		health.bg.multiplier = 0.25
 	end
 
 	if text then
@@ -240,16 +239,14 @@ function UF:PostUpdateHealth(unit, min, max)
 
 	-- Health by Value
 	local colors = E.db.unitframe.colors;
-	local multiplier = colors.healthmultiplier > 0.00 and colors.healthmultiplier or .25
+	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local r, g, b = self:GetStatusBarColor()
 		local newr, newg, newb = ElvUF:ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 
-		if multiplier then
-			self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
-		end
+		self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
 	end
 
 	-- Class Backdrop
@@ -264,7 +261,7 @@ function UF:PostUpdateHealth(unit, min, max)
 		end
 
 		if t then
-			multiplier = colors.healthmultiplier > 0.00 and colors.healthmultiplier or 1
+			multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 1
 			self.bg:SetVertexColor(t[1] * multiplier , t[2] * multiplier, t[3] * multiplier)
 		end
 	end
