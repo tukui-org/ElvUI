@@ -1029,66 +1029,46 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateAll(ignoreInstall)
-	if not self.initialized then
-		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
-		return
-	end
-
+function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
 	E.global = E.data.global
 	E.db.theme = nil
 	E.db.install_complete = nil
-
 	E:DBConversions()
+end
 
-	local ActionBars = E:GetModule('ActionBars')
-	local AFK = E:GetModule('AFK')
-	local Auras = E:GetModule('Auras')
-	local Bags = E:GetModule('Bags')
-	local Blizzard = E:GetModule('Blizzard')
-	local Chat = E:GetModule('Chat')
-	local DataBars = E:GetModule('DataBars')
-	local DataTexts = E:GetModule('DataTexts')
-	local Layout = E:GetModule('Layout')
-	local Minimap = E:GetModule('Minimap')
-	local NamePlates = E:GetModule('NamePlates')
-	local Threat = E:GetModule('Threat')
-	local Tooltip = E:GetModule('Tooltip')
-	local Totems = E:GetModule('Totems')
-	local UnitFrames = E:GetModule('UnitFrames')
-
-	ActionBars.db = E.db.actionbar
-	Auras.db = E.db.auras
-	Bags.db = E.db.bags
-	Chat.db = E.db.chat
-	DataBars.db = E.db.databars
-	DataTexts.db = E.db.datatexts
-	NamePlates.db = E.db.nameplates
-	Threat.db = E.db.general.threat
-	Tooltip.db = E.db.tooltip
-	Totems.db = E.db.general.totems
-	UnitFrames.db = E.db.unitframe
-
-	--The mover is positioned before it is resized, which causes issues for unitframes
-	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
-	--We set movers to be clamped again at the bottom of this function.
-	E:SetMoversClampedToScreen(false)
-	E:SetMoversPositions()
-
+function E:UpdateMediaItems()
 	E:UpdateMedia()
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
-	E:UpdateCooldownSettings('all')
+end
 
-	Layout:ToggleChatPanels()
-	Layout:BottomPanelVisibility()
-	Layout:TopPanelVisibility()
-	Layout:SetDataPanelStyle()
+function E:UpdateMoverPositions()
+	--The mover is positioned before it is resized, which causes issues for unitframes
+	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
+	--We set movers to be clamped again at the bottom of this function.
+	E:SetMoversClampedToScreen(false)
+	E:SetMoversPositions()
+end
 
+function E:UpdateAuras()
+	local Auras = E:GetModule('Auras')
+	Auras.db = E.db.auras
+	if ElvUIPlayerBuffs then
+		Auras:UpdateHeader(ElvUIPlayerBuffs)
+	end
+
+	if ElvUIPlayerDebuffs then
+		Auras:UpdateHeader(ElvUIPlayerDebuffs)
+	end
+end
+
+function E:UpdateActionBars()
+	local ActionBars = E:GetModule('ActionBars')
+	ActionBars.db = E.db.actionbar
 	if E.private.actionbar.enable then
 		ActionBars:Extra_SetAlpha()
 		ActionBars:Extra_SetScale()
@@ -1097,9 +1077,11 @@ function E:UpdateAll(ignoreInstall)
 		ActionBars:UpdateMicroPositionDimensions()
 		ActionBars:UpdatePetCooldownSettings()
 	end
+end
 
-	AFK:Toggle()
-
+function E:UpdateBags()
+	local Bags = E:GetModule('Bags')
+	Bags.db = E.db.bags
 	if E.private.bags.enable then
 		Bags:Layout()
 		Bags:Layout(true)
@@ -1107,59 +1089,160 @@ function E:UpdateAll(ignoreInstall)
 		Bags:UpdateCountDisplay()
 		Bags:UpdateItemLevelDisplay()
 	end
+end
 
+function E:UpdateChat()
+	local Chat = E:GetModule('Chat')
+	Chat.db = E.db.chat
 	if E.private.chat.enable then
 		Chat:PositionChat(true)
 		Chat:SetupChat()
 		Chat:UpdateAnchors()
 	end
+end
 
+function E:UpdateDataBars()
+	local DataBars = E:GetModule('DataBars')
+	DataBars.db = E.db.databars
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
+end
 
+function E:UpdateDataTexts()
+	local DataTexts = E:GetModule('DataTexts')
+	DataTexts.db = E.db.datatexts
 	DataTexts:LoadDataTexts()
+end
 
+function E:UpdateMinimap()
+	local Minimap = E:GetModule('Minimap')
 	if E.private.general.minimap.enable then
 		Minimap:UpdateSettings()
 	end
+end
 
+function E:UpdateNamePlates()
+	local NamePlates = E:GetModule('NamePlates')
+	NamePlates.db = E.db.nameplates
 	if E.private.nameplates.enable then
 		NamePlates:ConfigureAll()
 		NamePlates:StyleFilterInitializeAllFilters()
 	end
+end
 
-	Threat:ToggleEnable()
-	Threat:UpdatePosition()
-	Totems:PositionAndSize()
-	Totems:ToggleEnable()
+function E:UpdateTooltip()
+	local Tooltip = E:GetModule('Tooltip')
+	Tooltip.db = E.db.tooltip
+end
 
+function E:UpdateUnitFrames()
+	local UnitFrames = E:GetModule('UnitFrames')
+	UnitFrames.db = E.db.unitframe
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end
+end
 
-	if ElvUIPlayerBuffs then
-		Auras:UpdateHeader(ElvUIPlayerBuffs)
-	end
+function E:UpdateLayout()
+	local Layout = E:GetModule('Layout')
+	Layout:ToggleChatPanels()
+	Layout:BottomPanelVisibility()
+	Layout:TopPanelVisibility()
+	Layout:SetDataPanelStyle()
+end
 
-	if ElvUIPlayerDebuffs then
-		Auras:UpdateHeader(ElvUIPlayerDebuffs)
-	end
+function E:UpdateMisc()
+	local AFK = E:GetModule('AFK')
+	AFK:Toggle()
+
+	local Blizzard = E:GetModule('Blizzard')
+	Blizzard:SetObjectiveFrameHeight()
+
+	local Threat = E:GetModule('Threat')
+	Threat.db = E.db.general.threat
+	Threat:ToggleEnable()
+	Threat:UpdatePosition()
+
+	local Totems = E:GetModule('Totems')
+	Totems.db = E.db.general.totems
+	Totems:PositionAndSize()
+	Totems:ToggleEnable()
+end
+
+function E:UpdateEnd()
+	E:UpdateCooldownSettings('all')
 
 	if E.RefreshGUI then
 		E:RefreshGUI()
 	end
 
-	if (ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
-		E:Install()
-	end
-
-	Blizzard:SetObjectiveFrameHeight()
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect')
+
+	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
+		E.ignoreInstall = nil
+		E:Install()
+	end
+
+	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
+	--So call it, but skip updates inside it
+	E:UpdateAll(false)
+end
+
+function E:StaggeredUpdateAll(event, ignoreInstall)
+	if not self.initialized then
+		C_Timer_After(1, function() E:StaggeredUpdateAll(event, ignoreInstall) end)
+		return
+	end
+	self.ignoreInstall = ignoreInstall
+	
+	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") then
+		--Stagger updates
+		C_Timer_After(0.005, E.UpdateDB)
+		C_Timer_After(0.010, E.UpdateMoverPositions)
+		C_Timer_After(0.015, E.UpdateMediaItems)
+		C_Timer_After(0.020, E.UpdateLayout)
+		C_Timer_After(0.025, E.UpdateTooltip)
+		C_Timer_After(0.030, E.UpdateActionBars)
+		C_Timer_After(0.035, E.UpdateBags)
+		C_Timer_After(0.040, E.UpdateChat)
+		C_Timer_After(0.045, E.UpdateDataBars)
+		C_Timer_After(0.050, E.UpdateDataTexts)
+		C_Timer_After(0.055, E.UpdateMinimap)
+		C_Timer_After(0.060, E.UpdateNamePlates)
+		C_Timer_After(0.065, E.UpdateUnitFrames)
+		C_Timer_After(0.070, E.UpdateAuras)
+		C_Timer_After(0.075, E.UpdateMisc)
+		C_Timer_After(0.080, E.UpdateEnd)
+	else
+		--Fire away
+		E:UpdateAll(true)
+	end
+end
+
+function E:UpdateAll(doUpdates)
+	if doUpdates then
+		self:UpdateDB()
+		self:UpdateMoverPositions()
+		self:UpdateMediaItems()
+		self:UpdateLayout()
+		self:UpdateTooltip()
+		self:UpdateActionBars()
+		self:UpdateBags()
+		self:UpdateChat()
+		self:UpdateDataBars()
+		self:UpdateDataTexts()
+		self:UpdateMinimap()
+		self:UpdateNamePlates()
+		self:UpdateUnitFrames()
+		self:UpdateAuras()
+		self:UpdateMisc()
+		self:UpdateEnd()
+	end
 end
 
 function E:RemoveNonPetBattleFrames()
@@ -1694,8 +1777,8 @@ function E:Initialize(loginFrame)
 
 	self.myguid = UnitGUID('player')
 	self.data = LibStub('AceDB-3.0'):New('ElvDB', self.DF)
-	self.data.RegisterCallback(self, 'OnProfileChanged', 'UpdateAll')
-	self.data.RegisterCallback(self, 'OnProfileCopied', 'UpdateAll')
+	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
+	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
 	self.charSettings = LibStub('AceDB-3.0'):New('ElvPrivateDB', self.privateVars)
 	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, 'ElvUI')

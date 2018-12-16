@@ -354,7 +354,7 @@ E.Options.args.general = {
 
 						if(E.db.unitframe.statusbar == previousValue) then
 							E.db.unitframe.statusbar = value
-							E:UpdateAll(true)
+							E:StaggeredUpdateAll(nil, true)
 						else
 							E:UpdateMedia()
 							E:UpdateStatusBars()
@@ -383,7 +383,7 @@ E.Options.args.general = {
 					func = function()
 						local texture = E.private.general.normTex
 						E.db.unitframe.statusbar = texture
-						E:UpdateAll(true)
+						E:StaggeredUpdateAll(nil, true)
 					end,
 				},
 				colorsHeaderSpacing = {

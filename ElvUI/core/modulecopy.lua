@@ -216,7 +216,7 @@ function CP:ImportFromProfile(section, pluginSection)
 	else
 		error(format("Provided section name \"%s\" does not have a valid copy template.", section))
 	end
-	E:UpdateAll(true)
+	E:StaggeredUpdateAll(nil, true)
 end
 
 function CP:ExportToProfile(section, pluginSection)

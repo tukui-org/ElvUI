@@ -492,7 +492,7 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 		E.db.unitframe.units.raid.rdebuffs.font = font
 		E.db.unitframe.units.raid40.rdebuffs.font = font
 
-		E:UpdateAll(true)
+		E:StaggeredUpdateAll(nil, true)
 	end,
 	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING'); end,
 	button1 = YES,
