@@ -615,20 +615,19 @@ function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
 		local message, r, g, b = frame:GetMessageInfo(i)
+		if not strmatch(message, '|Kv%d-|k$') then -- ignore guild protection (from the end)
+			--Set fallback color values
+			r, g, b = r or 1, g or 1, b or 1
 
-		--Set fallback color values
-		r = r or 1
-		g = g or 1
-		b = b or 1
+			--Remove icons
+			message = removeIconFromLine(message)
 
-		--Remove icons
-		message = removeIconFromLine(message)
+			--Add text color
+			message = colorizeLine(message, r, g, b)
 
-		--Add text color
-		message = colorizeLine(message, r, g, b)
-
-		lines[index] = message
-		index = index + 1
+			lines[index] = message
+			index = index + 1
+		end
 	end
 
 	return index - 1
