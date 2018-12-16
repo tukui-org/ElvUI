@@ -94,8 +94,9 @@ function UF:Configure_HealthBar(frame)
 
 	--Position
 	health:ClearAllPoints()
-	health.WIDTH = frame.db.width
-	health.HEIGHT = frame.db.height
+	health.WIDTH = db.width
+	health.HEIGHT = db.height
+
 	if frame.ORIENTATION == "LEFT" then
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
