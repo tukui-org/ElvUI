@@ -9,6 +9,7 @@ Fixed a possible nil error on our NamePlate auras.
 Fixed issue in Bags skin preventing the "highlight" visual from showing when searching for items.  
 Fixed nil error in the Obliterum skin.  
 Fixed issue which could result in Quest Icon not showing up on nameplates even if it was enabled.  
+Fixed an issue with we accidentally use the general texture for the unitframe backdrop instead of the unitframe texture.  
 
 **Misc. Changes:**  
 Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.  
