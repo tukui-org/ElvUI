@@ -1307,6 +1307,7 @@ L["Statusbar Fill Orientation"] = "Направление заполнения �
 L["StatusBar Texture"] = "Текстура полос состояния"
 L["Strata and Level"] = "Слой и уровень"
 L["Style"] = "Стиль"
+L["Summon Icon"] = true
 L["Tank Frames"] = "Танки"
 L["Tank Target"] = "Цели танков"
 L["Tapped"] = "Чужой"

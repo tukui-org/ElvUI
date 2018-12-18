@@ -26,6 +26,7 @@
 	<Script file='readycheckicon.lua'/>
 	<Script file='restingindicator.lua'/>
 	<Script file='resurrectionicon.lua'/>
+	<Script file='summonindicator.lua'/>
 	<Script file='roleicons.lua'/>
 	<Script file='frameglow.lua'/>
 	<Script file='threat.lua'/>

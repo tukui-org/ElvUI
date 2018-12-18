@@ -1306,6 +1306,7 @@ L["Statusbar Fill Orientation"] = "状态条填充方向"
 L["StatusBar Texture"] = "状态条材质"
 L["Strata and Level"] = "框架层级和层次"
 L["Style"] = "风格"
+L["Summon Icon"] = true
 L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目标"
 L["Tapped"] = "被攻击"

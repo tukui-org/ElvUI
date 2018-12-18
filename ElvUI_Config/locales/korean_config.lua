@@ -1356,6 +1356,7 @@ L["Statusbar Fill Orientation"] = "막대 진행 방향"
 L["StatusBar Texture"] = "진행막대 텍스쳐"
 L["Strata and Level"] = true
 L["Style"] = "디자인"
+L["Summon Icon"] = true
 L["Tank Frames"] = "방어전담 프레임"
 L["Tank Target"] = "방어전담 프레임"
 L["Tapped"] = "선점되었을 때의 색상"

@@ -1308,6 +1308,7 @@ L["Statusbar Fill Orientation"] = "Orientation la barre d'état."
 L["StatusBar Texture"] = "Texture de la barre d'état."
 L["Strata and Level"] = "Couche et niveau"
 L["Style"] = "Style"
+L["Summon Icon"] = true
 L["Tank Frames"] = "Cadre des Tanks"
 L["Tank Target"] = "Cible de tank"
 L["Tapped"] = "Collé"

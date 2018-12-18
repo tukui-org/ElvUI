@@ -1303,6 +1303,7 @@ L["Statusbar Fill Orientation"] = true
 L["StatusBar Texture"] = true
 L["Strata and Level"] = true
 L["Style"] = true
+L["Summon Icon"] = true
 L["Tank Frames"] = true
 L["Tank Target"] = true
 L["Tapped"] = true

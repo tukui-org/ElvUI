@@ -1757,6 +1757,60 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
+	local config = {
+		order = 5002,
+		type = 'group',
+		name = L["Summon Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].summonIcon[ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName].summonIcon[ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Summon Icon"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			attachTo = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
+			},
+			size = {
+				order = 5,
+				type = 'range',
+				name = L["Size"],
+				min = 8, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 6,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 7,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
 local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	local config = {
 		order = 800,
@@ -5864,6 +5918,7 @@ E.Options.args.unitframe.args.party = {
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		phaseIndicator = {
 			order = 5005,
 			type = 'group',
@@ -6387,6 +6442,7 @@ E.Options.args.unitframe.args.raid = {
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
 
@@ -6861,6 +6917,7 @@ E.Options.args.unitframe.args.raid40 = {
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
 
