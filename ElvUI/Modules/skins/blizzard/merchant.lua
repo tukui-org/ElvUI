@@ -38,7 +38,7 @@ local function LoadSkin()
 	end
 
 	-- skin icons / merchant slots
-	for i = 1, 12 do
+	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		local button = _G["MerchantItem"..i.."ItemButton"]
 		local icon = button.icon
 		local iconBorder = button.IconBorder
@@ -50,8 +50,12 @@ local function LoadSkin()
 		button:StyleButton(false)
 		button:SetTemplate("Default", true)
 		button:Point("TOPLEFT", item, "TOPLEFT", 4, -4)
+
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
+		icon:ClearAllPoints()
+		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
+		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+
 		iconBorder:SetAlpha(0)
 		hooksecurefunc(iconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
@@ -69,8 +73,12 @@ local function LoadSkin()
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton(false)
 	_G.MerchantBuyBackItemItemButton:SetTemplate("Default", true)
+
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetInside()
+	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("TOPLEFT", E.mult, -E.mult)
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)
 		self:GetParent():SetBackdropBorderColor(r, g, b)

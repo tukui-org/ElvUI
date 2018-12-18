@@ -1216,8 +1216,10 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:SetInside()
+
 		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
+		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 	end
 end
 

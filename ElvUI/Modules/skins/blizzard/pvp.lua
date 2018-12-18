@@ -83,14 +83,17 @@ local function LoadSkin()
 		bu.Bg:Hide()
 		bu.Border:Hide()
 
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
-		bu.SelectedTexture:SetInside()
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-
 		bu:SetNormalTexture("")
 		bu:SetHighlightTexture("")
+
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
+		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
+		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
+		bu:StyleButton(nil, true)
+
+		bu.SelectedTexture:SetInside(bu.backdrop)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		bu.Icon:SetPoint("TOPLEFT", 5, -3)
