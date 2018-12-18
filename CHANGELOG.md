@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added 'Weakened Soul' back to our Buff Indicator.  
+Added new Currencies to our Currencies Datatext.  
 
 **Bug Fixes:**  
 Fixed a nil error on our PvP skin.  
