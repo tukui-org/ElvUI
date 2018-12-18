@@ -73,11 +73,11 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(Currencies["WAR_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_RESOURCES"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["WAR_SUPPLIES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
 	if E.myfaction == "Alliance" then
-		DT.tooltip:AddDoubleLine(Currencies["7TH_LEGION_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(Currencies["7TH_LEGION_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["7TH_LEGION_SERVICE_MEDAL"].ID)), 1, 1, 1)
 	else
-		DT.tooltip:AddDoubleLine(Currencies["HONORBOUND_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(Currencies["HONORBOUND_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["HONORBOUND_SERVICE_MEDAL"].ID)), 1, 1, 1)
 	end
-	DT.tooltip:AddDoubleLine(Currencies["TITAN_RESIDUUM"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies["TITAN_RESIDUUM"].NAME, select(2, GetCurrencyInfo(Currencies["TITAN_RESIDUUM"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
