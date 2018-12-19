@@ -30,7 +30,7 @@ function E:UIScale(event, loginFrame)
 		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (PixelUtil.GetPixelToUIUnitFactor())) or UIParent:GetEffectiveScale()))
 	end
 
-	scale = tonumber(strsub(scale, 0, 4))
+	scale = tonumber(strsub(scale, 0, 5))
 
 	if width < 1600 then
 		E.lowversion = true
