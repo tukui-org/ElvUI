@@ -97,6 +97,7 @@ local function LoadSkin()
 	GarrisonBuildingFrame:StripTextures(true)
 	GarrisonBuildingFrame.TitleText:Show()
 	GarrisonBuildingFrame:CreateBackdrop("Transparent")
+
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
 	if E.private.skins.blizzard.tooltip then
 		GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
@@ -214,6 +215,12 @@ local function LoadSkin()
 	S:HandleTab(_G.GarrisonLandingPageTab3)
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
 	_G.GarrisonLandingPageTab1:Point("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
+
+	if E.private.skins.parchmentRemover.enable then
+		for i = 1, 10 do
+			select(i, GarrisonLandingPage:GetRegions()):Hide()
+		end
+	end
 
 	-- Landing page: Report
 	local Report = GarrisonLandingPage.Report
