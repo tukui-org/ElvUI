@@ -458,7 +458,6 @@ L["TopRightMiniPanel"] = "Миникарта сверху справа (внут
 L["Use Tooltip"] = "Использовать подсказку"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "На полях боя отображать личную информацию на основных полосах инфо-текстов"
 L["Word Wrap"] = "Перенос слов"
-L["WoW Token:"] = "WoW токен:"
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Вы должны быть в группе в данным игроком, если он не с Вашего сервера."

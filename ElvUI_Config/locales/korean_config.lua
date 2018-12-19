@@ -506,7 +506,6 @@ L["TopRightMiniPanel"] = "미니맵 우상단 (내부)"
 L["Use Tooltip"] = "툴팁 사용"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "전장 안에 있는 경우 주 정보문자에 자신의 각종 점수들을 표시하게 합니다."
 L["Word Wrap"] = true
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "대상으로 잡은 유저가 타 서버 유저라면 반드시 그 유저와 파티를 맻고 있어야 합니다."

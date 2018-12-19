@@ -461,7 +461,6 @@ L["TopRightMiniPanel"] = "Minimap Obenrechts (Innen)"
 L["Use Tooltip"] = "Benutze Tooltip"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Zeige innerhalb eines Schlachtfeldes persönliche Statistiken in den Haupt-Infoleisten."
 L["Word Wrap"] = "Zeilenumbruch"
-L["WoW Token:"] = true -- No need to translate
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."

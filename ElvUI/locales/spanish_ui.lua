@@ -136,6 +136,7 @@ L["Unhittable:"] = "Imbatible:"
 L["Waist"] = "Cintura"
 L["World Protocol:"] = true
 L["Wrist"] = "Muñeca"
+L["WoW Token:"] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFClick Izquierdo:|r Cambiar Especialización de Talentos"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClick Derecho:|r Cambiar Especialización de Botín"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Click Izquierdo:|r Mostrar Interfaz de Especialización de Talentos"

@@ -460,7 +460,6 @@ L["TopRightMiniPanel"] = "小地圖右上 (內側)"
 L["Use Tooltip"] = "使用浮動提示"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "處於戰場時, 在主資訊文字條顯示你的戰場得分訊息."
 L["Word Wrap"] = "自動換行"
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "如果不是同一服務器, 那他必需和你在同一隊伍中."

@@ -459,7 +459,6 @@ L["TopRightMiniPanel"] = "Minicarte en haut à droite (intérieur)"
 L["Use Tooltip"] = "Utiliser l'infobulle"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Lorsqu'à l'intérieur d'un champ de bataille, afficher le tableau des scores personnels dans la barre principale des textes d'informations."
 L["Word Wrap"] = "Césure des mots"
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Doit être dans le même groupe avec le joueur s'il n'est pas du même serveur."
