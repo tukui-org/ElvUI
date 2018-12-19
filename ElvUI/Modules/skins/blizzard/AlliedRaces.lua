@@ -3,35 +3,44 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 local _G = _G
+local select, unpack = select, unpack
 --Lua functions
 --WoW API / Variables
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AlliedRaces ~= true then return end
 
-	-- AlliedRacesFrame:StripTextures() -- this will hide almost everything, not cool
-	_G.AlliedRacesFrame:CreateBackdrop("Transparent")
-	_G.AlliedRacesFrameBg:Hide()
-	_G.AlliedRacesFramePortrait:Hide()
-	_G.AlliedRacesFramePortraitFrame:Hide()
-	_G.AlliedRacesFrameTitleBg:Hide()
-	_G.AlliedRacesFrameTopBorder:Hide()
-	_G.AlliedRacesFrameTopRightCorner:Hide()
-	_G.AlliedRacesFrameRightBorder:Hide()
-	_G.AlliedRacesFrameBotRightCorner:Hide()
-	_G.AlliedRacesFrameBotLeftCorner:Hide()
-	_G.AlliedRacesFrameBtnCornerRight:Hide()
-	_G.AlliedRacesFrameBtnCornerLeft:Hide()
-	_G.AlliedRacesFrameButtonBottomBorder:Hide()
-	_G.AlliedRacesFrameBottomBorder:Hide()
-	_G.AlliedRacesFrameLeftBorder:Hide()
-	_G.AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.Border:Hide()
-	_G.AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollUpBorder:Hide()
-	_G.AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar.ScrollDownBorder:Hide()
-	_G.AlliedRacesFrame.ModelFrame:StripTextures()
+	local AlliedRacesFrame = _G.AlliedRacesFrame
+	S:HandlePortraitFrame(AlliedRacesFrame, true)
+	select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
 
-	S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
-	S:HandleScrollBar(_G.AlliedRacesFrame.RaceInfoFrame.ScrollFrame.ScrollBar)
+	local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
+	scrollFrame.ScrollBar.Border:Hide()
+	scrollFrame.ScrollBar.ScrollUpBorder:Hide()
+	scrollFrame.ScrollBar.ScrollDownBorder:Hide()
+	S:HandleScrollSlider(scrollFrame.ScrollBar)
+
+	scrollFrame.Child.ObjectivesFrame:StripTextures()
+	scrollFrame.Child.ObjectivesFrame:CreateBackdrop("Transparent")
+
+	AlliedRacesFrame.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(1, .8, 0)
+	scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
+	scrollFrame.Child.RacialTraitsLabel:SetTextColor(1, .8, 0)
+
+	AlliedRacesFrame:HookScript("OnShow", function(self)
+		local parent = scrollFrame.Child
+		for i = 1, parent:GetNumChildren() do
+			local bu = select(i, parent:GetChildren())
+
+			if bu.Icon and not bu.IsSkinned then
+				select(3, bu:GetRegions()):Hide()
+				S:HandleTexture(bu.Icon, bu)
+				bu.Text:SetTextColor(1, 1, 1)
+
+				bu.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_AlliedRacesUI", "AlliedRaces", LoadSkin)
