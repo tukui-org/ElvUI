@@ -27,7 +27,7 @@ function E:UIScale(event, loginFrame)
 	if E.global.general.autoScale then
 		scale = max(minScale, min(1.15, magic))
 	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (magic)) or UIParent:GetEffectiveScale()))
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and magic) or UIParent:GetEffectiveScale()))
 	end
 
 	if width < 1600 then
