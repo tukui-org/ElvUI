@@ -4,10 +4,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local _G = _G
 --Lua functions
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
-local tonumber, strsub = tonumber, strsub
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
-local PixelUtil = PixelUtil
+
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS:
 
