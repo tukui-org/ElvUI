@@ -11,15 +11,32 @@ local function LoadSkin()
 
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 
-	TalkingHeadFrame:StripTextures(true)
-	TalkingHeadFrame.MainFrame:StripTextures(true)
-	TalkingHeadFrame.PortraitFrame:StripTextures(true)
+	TalkingHeadFrame:StripTextures()
+	TalkingHeadFrame:CreateBackdrop("Transparent")
+	TalkingHeadFrame.MainFrame:StripTextures()
+	TalkingHeadFrame.PortraitFrame:StripTextures()
 
 	TalkingHeadFrame.BackgroundFrame.TextBackground:SetAtlas(nil)
 	TalkingHeadFrame.PortraitFrame.Portrait:SetAtlas(nil)
 	TalkingHeadFrame.MainFrame.Model.PortraitBg:SetAtlas(nil)
+	TalkingHeadFrame.BackgroundFrame.TextBackground.SetAtlas = E.noop
+	TalkingHeadFrame.PortraitFrame.Portrait.SetAtlas = E.noop
+	TalkingHeadFrame.MainFrame.Model.PortraitBg.SetAtlas = E.noop
 
-	S:HandleCloseButton(TalkingHeadFrame.MainFrame.CloseButton)
+	TalkingHeadFrame.NameFrame.Name:SetTextColor(1, 0.82, 0.02)
+	TalkingHeadFrame.NameFrame.Name.SetTextColor = E.noop
+	TalkingHeadFrame.NameFrame.Name:SetShadowColor(0, 0, 0, 1)
+	TalkingHeadFrame.NameFrame.Name:SetShadowOffset(2, -2)
+
+	TalkingHeadFrame.TextFrame.Text:SetTextColor(1, 1, 1)
+	TalkingHeadFrame.TextFrame.Text.SetTextColor = E.noop
+	TalkingHeadFrame.TextFrame.Text:SetShadowColor(0, 0, 0, 1)
+	TalkingHeadFrame.TextFrame.Text:SetShadowOffset(2, -2)
+
+	local button = TalkingHeadFrame.MainFrame.CloseButton
+	S:HandleCloseButton(button)
+	button:ClearAllPoints()
+	button:Point('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 end
 
 S:AddCallbackForAddon("Blizzard_TalkingHeadUI", "TalkingHead", LoadSkin)
