@@ -114,9 +114,9 @@ function E:Grid_Create()
 	grid:Show()
 
 	local size = 1
-	local width = E.eyefinity or GetScreenWidth()
-	local ratio = width / GetScreenHeight()
-	local height = GetScreenHeight() * ratio
+	local width = E.eyefinity or E.screenwidth
+	local ratio = width / E.screenheight
+	local height = E.screenheight * ratio
 
 	local wStep = width / E.db.gridSize
 	local hStep = height / E.db.gridSize
@@ -131,7 +131,7 @@ function E:Grid_Create()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
 		tx:Point('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
 	end
-	height = GetScreenHeight()
+	height = E.screenheight
 
 	do
 		local tx = grid:CreateTexture(nil, 'BACKGROUND')
