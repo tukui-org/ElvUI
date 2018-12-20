@@ -11,10 +11,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.archaeology ~= true then return end
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
-	ArchaeologyFrame:StripTextures()
-	ArchaeologyFrame:CreateBackdrop("Transparent")
-	ArchaeologyFrame.backdrop:SetAllPoints()
-	ArchaeologyFrame.portrait:SetAlpha(0)
+	S:HandlePortraitFrame(ArchaeologyFrame, true)
 
 	S:HandleButton(_G.ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
 	S:HandleButton(_G.ArchaeologyFrameArtifactPageBackButton, true)
@@ -70,7 +67,6 @@ local function LoadSkin()
 	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
 	E:RegisterStatusBar(_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar)
-	S:HandleCloseButton(_G.ArchaeologyFrameCloseButton)
 	S:HandleIcon(_G.ArchaeologyFrameArtifactPageIcon)
 
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
