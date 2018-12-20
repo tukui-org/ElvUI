@@ -14,22 +14,11 @@ local function LoadSkin()
 	local ChannelFrame = _G.ChannelFrame
 	local CreateChannelPopup = _G.CreateChannelPopup
 
-	--Channel Frame
-	local frames = {
-		_G.ChannelFrame,
-		_G.CreateChannelPopup,
-	}
+	S:HandlePortraitFrame(ChannelFrame, true)
+	CreateChannelPopup:StripTextures()
 
-	for _, frame in pairs(frames) do
-		frame:StripTextures()
-	end
-
-	--ChannelFrameInset:Hide()
-
-	ChannelFrame:CreateBackdrop("Transparent")
 	CreateChannelPopup:CreateBackdrop("Transparent")
 
-	S:HandleCloseButton(_G.ChannelFrameCloseButton)
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
 
