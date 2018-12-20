@@ -25,12 +25,10 @@ function E:UIScale(event, loginFrame)
 
 	local minScale = E.global.general.minUiScale or 0.64
 	if E.global.general.autoScale then
-		scale = max(minScale, min(1.15, PixelUtil.GetPixelToUIUnitFactor()))
+		scale = max(minScale, min(1.15, 768/height))
 	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (PixelUtil.GetPixelToUIUnitFactor())) or UIParent:GetEffectiveScale()))
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetEffectiveScale()))
 	end
-
-	scale = tonumber(strsub(scale, 0, 5))
 
 	if width < 1600 then
 		E.lowversion = true
@@ -61,7 +59,7 @@ function E:UIScale(event, loginFrame)
 		E.eyefinity = width
 	end
 
-	E.mult = PixelUtil.GetNearestPixelSize(1, scale, 1)
+	E.mult = 768/height/scale
 	E.Spacing = (E.PixelMode and 0) or E.mult
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
