@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local _G = _G
 --Lua functions
+local tonumber, strsub = tonumber, strsub
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -13,20 +14,20 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
 	local UIParent = _G.UIParent
-	local width = E.screenwidth
-	local height = E.screenheight
-	local scale
+	local width, height = E.screenwidth, E.screenheight
+	local magic = tonumber(strsub(768/height, 0, 4))
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then
 		E.global.uiScale = uiScaleCVar
 	end
 
+	local scale
 	local minScale = E.global.general.minUiScale or 0.64
 	if E.global.general.autoScale then
-		scale = max(minScale, min(1.15, 768/height))
+		scale = max(minScale, min(1.15, magic))
 	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetEffectiveScale()))
+		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (magic)) or UIParent:GetEffectiveScale()))
 	end
 
 	if width < 1600 then
@@ -58,7 +59,7 @@ function E:UIScale(event, loginFrame)
 		E.eyefinity = width
 	end
 
-	E.mult = 768/height/scale
+	E.mult = magic/scale
 	E.Spacing = (E.PixelMode and 0) or E.mult
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
