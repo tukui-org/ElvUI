@@ -14,7 +14,8 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 function E:UIScale(event, loginFrame)
 	local UIParent = _G.UIParent
 	local width, height = E.screenwidth, E.screenheight
-	local magic = (height > 0 and 768 / height) or UIParent:GetEffectiveScale()
+	local effectiveScale = UIParent:GetEffectiveScale()
+	local magic = (height > 0 and 768 / height) or effectiveScale
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then E.global.uiScale = uiScaleCVar end
@@ -57,7 +58,7 @@ function E:UIScale(event, loginFrame)
 
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) then
+		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
 			SetCVar("useUiScale", 1)
 			SetCVar("uiScale", scale)
 		end
