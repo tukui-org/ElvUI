@@ -58,7 +58,7 @@ function E:UIScale(event, loginFrame)
 
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
+		if event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
 			SetCVar("useUiScale", 1)
 			SetCVar("uiScale", scale)
 		end
@@ -73,7 +73,7 @@ function E:UIScale(event, loginFrame)
 		--Resize E.UIParent if Eyefinity is on.
 		if E.eyefinity then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
-			if not E.global.general.autoScale or height > 1200 then
+			if (not E.global.general.autoScale) or height > 1200 then
 				local h = UIParent:GetHeight()
 				local ratio = (height / h)
 				local w = (width / ratio)
