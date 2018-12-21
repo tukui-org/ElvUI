@@ -21,7 +21,7 @@ function E:UIScale(event, loginFrame)
 	if uiScaleCVar then E.global.uiScale = uiScaleCVar end
 
 	local minScale = E.global.general.minUiScale or 0.64
-	local scale = max(minScale, min(1.15, (E.global.general.autoScale and magic) or E.global.uiScale or minScale))
+	local scale = max(minScale, min(1.15, E.global.uiScale or minScale))
 
 	if width < 1600 then
 		E.lowversion = true
@@ -56,24 +56,10 @@ function E:UIScale(event, loginFrame)
 	E.Spacing = (E.PixelMode and 0) or E.mult
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
-	if E.global.general.autoScale then
-		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
-			SetCVar("useUiScale", 1)
-			SetCVar("uiScale", scale)
-		end
-
-		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
-		if scale < 0.64 then
-			UIParent:SetScale(scale)
-		end
-	end
-
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
 		--Resize E.UIParent if Eyefinity is on.
 		if E.eyefinity then
-			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
-			if (not E.global.general.autoScale) or height > 1200 then
+			if height > 1200 then -- find a new width value of E.UIParent for screen #1.
 				local h = UIParent:GetHeight()
 				local ratio = (height / h)
 				local w = (width / ratio)
@@ -81,6 +67,7 @@ function E:UIScale(event, loginFrame)
 				width = w
 				height = h
 			end
+
 			--[[ Eyefinity Test mode
 					--Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 					--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
@@ -112,11 +99,7 @@ function E:UIScale(event, loginFrame)
 		end
 
 		if event == 'UI_SCALE_CHANGED' and (change and change > 1) then
-			if E.global.general.autoScale then
-				E:StaticPopup_Show('FAILED_UISCALE')
-			else
-				E:StaticPopup_Show('CONFIG_RL')
-			end
+			E:StaticPopup_Show('CONFIG_RL')
 		end
 
 		if loginFrame and event == 'PLAYER_LOGIN' then
