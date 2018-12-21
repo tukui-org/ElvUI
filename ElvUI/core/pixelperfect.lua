@@ -12,22 +12,15 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
-	local width, height = E.screenwidth, E.screenheight
-	local magic = 768/height
-
 	local UIParent = _G.UIParent
-	local uiScaleCVar = GetCVar('uiScale')
-	if uiScaleCVar then
-		E.global.uiScale = uiScaleCVar
-	end
+	local width, height = E.screenwidth, E.screenheight
+	local magic = (height > 0 and 768 / height) or UIParent:GetEffectiveScale()
 
-	local scale
+	local uiScaleCVar = GetCVar('uiScale')
+	if uiScaleCVar then E.global.uiScale = uiScaleCVar end
+
 	local minScale = E.global.general.minUiScale or 0.64
-	if E.global.general.autoScale then
-		scale = max(minScale, min(1.15, magic))
-	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and magic) or UIParent:GetEffectiveScale()))
-	end
+	local scale = max(minScale, min(1.15, (E.global.general.autoScale and magic) or E.global.uiScale or minScale))
 
 	if width < 1600 then
 		E.lowversion = true
