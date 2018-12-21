@@ -3,7 +3,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local _G = _G
 --Lua functions
-local tonumber, strsub = tonumber, strsub
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -13,10 +12,10 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
-	local UIParent = _G.UIParent
 	local width, height = E.screenwidth, E.screenheight
-	local magic = tonumber(strsub(768/height, 0, 4))
+	local magic = 768/height
 
+	local UIParent = _G.UIParent
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then
 		E.global.uiScale = uiScaleCVar
