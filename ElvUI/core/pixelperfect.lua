@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local _G = _G
 --Lua functions
+local tonumber, strsub, strlen = tonumber, strsub, strlen
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -22,6 +23,10 @@ function E:UIScale(event, loginFrame)
 
 	local minScale = E.global.general.minUiScale or 0.64
 	local scale = max(minScale, min(1.15, (E.global.general.autoScale and magic) or E.global.uiScale or minScale))
+
+	if strlen(scale) > 5 then -- lock to thousands decimal place
+		scale = tonumber(strsub(scale, 0, 5))
+	end
 
 	if width < 1600 then
 		E.lowversion = true
