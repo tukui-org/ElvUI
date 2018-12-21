@@ -24,8 +24,8 @@ function E:UIScale(event, loginFrame)
 	local minScale = E.global.general.minUiScale or 0.64
 	local scale = max(minScale, min(1.15, (E.global.general.autoScale and magic) or E.global.uiScale or minScale))
 
-	if strlen(scale) > 5 then -- lock to thousands decimal place
-		scale = tonumber(strsub(scale, 0, 5))
+	if strlen(scale) > 6 then -- lock to ten thousands decimal place
+		scale = tonumber(strsub(scale, 0, 6))
 	end
 
 	if width < 1600 then
