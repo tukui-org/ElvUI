@@ -19,6 +19,7 @@ Hid the Recipient Portrait on the TradeFrame.
 Fixed minor positioning issue with role indicator on unitframes.  
 Fixed Copy Chat Log (and Copy Chat Line). Blizzard has protected some messages (known: Guild messages; maybe others) which we can no longer access as text.  
 Fixed lua error caused in NamePlate Style Filters about `GetSpecializationInfo`. (#926)  
+Fixed bad values in incomingheals tags. (#950)
 
 ___
 **Version 10.84 [ December 11th 2018 ]**

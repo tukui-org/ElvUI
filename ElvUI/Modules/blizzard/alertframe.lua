@@ -59,25 +59,25 @@ function E:PostAlertMove()
 		end
 
 		AlertFrame:ClearAllPoints()
-		GroupLootContainer:ClearAllPoints()
+		--GroupLootContainer:ClearAllPoints()
 		if lastShownFrame then
 			AlertFrame:SetAllPoints(lastShownFrame)
-			GroupLootContainer:SetPoint(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
+			--GroupLootContainer:SetPoint(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
 		else
 			AlertFrame:SetAllPoints(AlertFrameHolder)
-			GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+			--GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
 		end
-		if GroupLootContainer:IsShown() then
-			B.GroupLootContainer_Update(GroupLootContainer)
-		end
+		--if GroupLootContainer:IsShown() then
+			--B.GroupLootContainer_Update(GroupLootContainer)
+		--end
 	else
 		AlertFrame:ClearAllPoints()
 		AlertFrame:SetAllPoints(AlertFrameHolder)
-		GroupLootContainer:ClearAllPoints()
-		GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
-		if GroupLootContainer:IsShown() then
-			B.GroupLootContainer_Update(GroupLootContainer)
-		end
+		--GroupLootContainer:ClearAllPoints()
+		--GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+		--if GroupLootContainer:IsShown() then
+			--B.GroupLootContainer_Update(GroupLootContainer)
+		--end
 	end
 end
 
@@ -144,7 +144,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
-	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
+	--UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
@@ -159,7 +159,7 @@ function B:AlertMovers()
 	end)
 
 	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
-	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
+	--hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
 
 	--[[ Code you can use for alert testing
 		--Queued Alerts:

@@ -897,19 +897,19 @@ end
 
 ElvUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
+	local personal = UnitGetIncomingHeals(unit, 'player') or 0
 	local heal = UnitGetIncomingHeals(unit) or 0
-	if heal == 0 then
+	local others = heal - personal
+	if others == 0 then
 		return nil
 	else
-		return E:ShortValue(heal)
+		return E:ShortValue(others)
 	end
 end
 
 ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals'] = function(unit)
-	local personal = UnitGetIncomingHeals(unit, 'player') or 0
-	local others = UnitGetIncomingHeals(unit) or 0
-	local heal = personal + others
+	local heal = UnitGetIncomingHeals(unit) or 0
 	if heal == 0 then
 		return nil
 	else
