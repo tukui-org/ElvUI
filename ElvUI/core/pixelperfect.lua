@@ -15,7 +15,7 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 function E:UIScale(event, loginFrame)
 	local UIParent = _G.UIParent
 	local width, height = E.screenwidth, E.screenheight
-	local magic = E:Round(768/height, 5)
+	local magic = tonumber(strsub(768/height, 0, 4))
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then
