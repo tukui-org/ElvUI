@@ -183,6 +183,10 @@ local tabTexs = {
 	'Highlight'
 }
 
+function CH:MessageIsProtected(message)
+	return strmatch(message, '[^|]-|K[vq]%d-[^|]-|k')
+end
+
 CH.Smileys = {}
 function CH:RemoveSmiley(key)
 	if key and (type(key) == 'string') then
@@ -615,7 +619,7 @@ function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
 		local message, r, g, b = frame:GetMessageInfo(i)
-		if not strmatch(message, '|Kv%d-|k$') then -- ignore guild protection (from the end)
+		if not CH:MessageIsProtected(message) then
 			--Set fallback color values
 			r, g, b = r or 1, g or 1, b or 1
 
@@ -971,7 +975,7 @@ local function HyperLinkedCPL(data)
 			if message and message ~= "" then
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
-				if not strmatch(message, '|Kv%d-|k$') then -- ignore guild protection (from the end)
+				if not CH:MessageIsProtected(message) then
 					SetChatEditBoxMessage(message)
 				end
 			end
@@ -1980,7 +1984,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						if not strmatch(d[1],'^|Kv%d-|k$') then -- ignore guild protection
+						if not CH:MessageIsProtected(d[1]) then
 							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 						end
 					end
