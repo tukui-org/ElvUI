@@ -6,13 +6,19 @@ local _G = _G
 local tonumber, strsub, strlen = tonumber, strsub, strlen
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 local GetCVar, SetCVar = GetCVar, SetCVar
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS:
 
 function E:GetUIScale(useEffectiveScale)
-	local width, height = E.screenwidth, E.screenheight
+	local width, height = E.screenwidth or 0, E.screenheight or 0
+	if width == 0 or height == 0 then
+		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+		width, height = E.screenwidth or 0, E.screenheight or 0
+	end
+
 	local effectiveScale = _G.UIParent:GetEffectiveScale()
 	local magic = (not useEffectiveScale and height > 0 and 768 / height) or effectiveScale
 
