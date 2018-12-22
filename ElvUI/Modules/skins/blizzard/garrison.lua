@@ -47,19 +47,6 @@ local function LoadSkin()
 			frame.IconBorder:SetTexture()
 		end
 
-		--[[ Set border color according to rarity of item
-		-- for _, reward in pairs(frame.Rewards) do -- WIP
-			local r, g, b
-			if frame.IconBorder:IsShown() then
-				-- This is an item, use the color set by WoW
-				r, g, b = frame.IconBorder:GetVertexColor()
-			else
-				-- This is a currency, use the default ElvUI border color
-				r, g, b = unpack(E.media.bordercolor)
-			end
-		-- end
-
-		frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
 
@@ -207,7 +194,6 @@ local function LoadSkin()
 
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
-	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
 	GarrisonLandingPage:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
@@ -237,6 +223,9 @@ local function LoadSkin()
 				S:HandleIcon(reward.Icon, reward.border)
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
+				-- For some reason, this fix icon border in 8.1
+				reward:ClearAllPoints()
+				reward:SetPoint("TOPRIGHT", -4, -4)
 			end
 		end
 	end
