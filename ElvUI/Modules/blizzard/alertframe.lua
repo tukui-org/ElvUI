@@ -183,6 +183,6 @@ function B:AlertMovers()
 		/run DigsiteCompleteAlertSystem:AddAlert(1)
 
 		--Bonus Rolls
-		/run BonusRollFrame_StartBonusRoll(242969,1,179,1273,14)
+		/run BonusRollFrame_StartBonusRoll(242969,'test',1,515,1273,14)
 	]]
 end
