@@ -71,12 +71,10 @@ function E:UIScale(event, loginFrame)
 	local UIParent, _ = _G.UIParent
 	local scale, magic, effectiveScale, width, height = E:GetUIScale()
 
-	if E.global.general.autoScale then
-		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
-			SetCVar("useUiScale", 1)
-			SetCVar("uiScale", scale)
-		end
+	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
+	if E.global.general.autoScale and event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
+		SetCVar("useUiScale", 1)
+		SetCVar("uiScale", scale)
 
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
 		if scale < 0.64 then
