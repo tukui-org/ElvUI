@@ -5,6 +5,7 @@ local AB = E:GetModule('ActionBars');
 --Lua functions
 local _G = _G
 local assert = assert
+local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
@@ -13,7 +14,7 @@ local GetCurrentRegionName = GetCurrentRegionName
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 
-local function onLeave()
+local function onLeaveBar()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeOut(_G.ElvUI_MicroBar, 0.2, _G.ElvUI_MicroBar:GetAlpha(), 0)
 	end
@@ -25,7 +26,7 @@ local function onUpdate(self, elapsed)
 		if not self:IsMouseOver() then
 			self.IsMouseOvered = nil
 			self:SetScript("OnUpdate", nil)
-			onLeave()
+			onLeaveBar()
 		end
 		watcher = 0
 	else
@@ -33,11 +34,21 @@ local function onUpdate(self, elapsed)
 	end
 end
 
-local function onEnter()
+local function onEnter(button)
 	if AB.db.microbar.mouseover and not _G.ElvUI_MicroBar.IsMouseOvered then
 		_G.ElvUI_MicroBar.IsMouseOvered = true
 		_G.ElvUI_MicroBar:SetScript("OnUpdate", onUpdate)
 		E:UIFrameFadeIn(_G.ElvUI_MicroBar, 0.2, _G.ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
+	end
+
+	if button.backdrop then
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	end
+end
+
+local function onLeave(button)
+	if button.backdrop then
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 
@@ -58,6 +69,7 @@ function AB:HandleMicroButton(button)
 	button:SetParent(_G.ElvUI_MicroBar)
 	button:GetHighlightTexture():Kill()
 	button:HookScript('OnEnter', onEnter)
+	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if button.Flash then
