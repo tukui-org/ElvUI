@@ -29,12 +29,7 @@ function E:GetUIScale(useEffectiveScale)
 	return scale, magic, effectiveScale, width, height
 end
 
---Determine if Eyefinity is being used, setup the pixel perfect script.
-function E:UIScale(event, loginFrame)
-	local UIParent = _G.UIParent
-	local scale, _, effectiveScale, width, height = E:GetUIScale()
-	local magic -- used later, this is so i can local _ and magic without shadowing. just keep it :')
-
+function E:SetResolutionVariables(width, height)
 	if width < 1600 then
 		E.lowversion = true
 	elseif width >= 3840 and E.global.general.eyefinity then
@@ -63,6 +58,13 @@ function E:UIScale(event, loginFrame)
 		-- register a constant, we will need it later for launch.lua
 		E.eyefinity = width
 	end
+end
+
+--Determine if Eyefinity is being used, setup the pixel perfect script.
+function E:UIScale(event, loginFrame)
+	local UIParent = _G.UIParent
+	local scale, _, effectiveScale, width, height = E:GetUIScale()
+	local magic -- used later, this is so i can local _ and magic without shadowing. just keep it :')
 
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
@@ -85,6 +87,8 @@ function E:UIScale(event, loginFrame)
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
+		E:SetResolutionVariables(width, height)
+
 		--Resize E.UIParent if Eyefinity is on.
 		if E.eyefinity then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
