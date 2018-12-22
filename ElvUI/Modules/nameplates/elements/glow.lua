@@ -63,7 +63,7 @@ function mod:UpdatePosition_Glow(frame, shouldShow)
 		local scale = 1
 		if self.db.useTargetScale then
 			if self.db.targetScale >= 0.75 then
-				scale = self.db.targetScale
+				scale = self.db.targetScale/1.6
 			else
 				scale = 0.75
 			end
