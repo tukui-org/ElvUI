@@ -33,7 +33,7 @@ end
 function E:UIScale(event, loginFrame)
 	local UIParent = _G.UIParent
 	local scale, _, effectiveScale, width, height = E:GetUIScale()
-	local magic -- used later
+	local magic -- used later, this is so i can local _ and magic without shadowing. just keep it :')
 
 	if width < 1600 then
 		E.lowversion = true
