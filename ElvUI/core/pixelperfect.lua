@@ -62,9 +62,8 @@ end
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale(event, loginFrame)
-	local UIParent = _G.UIParent
-	local scale, _, effectiveScale, width, height = E:GetUIScale()
-	local magic -- used later, this is so i can local _ and magic without shadowing. just keep it :')
+	local UIParent, _ = _G.UIParent
+	local scale, magic, effectiveScale, width, height = E:GetUIScale()
 
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
