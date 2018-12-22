@@ -144,6 +144,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
+	GroupLootContainer:EnableMouse(false)
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')
 
@@ -183,6 +184,6 @@ function B:AlertMovers()
 		/run DigsiteCompleteAlertSystem:AddAlert(1)
 
 		--Bonus Rolls
-		/run BonusRollFrame_StartBonusRoll(242969,'test',1,515,1273,14)
+		/run BonusRollFrame_StartBonusRoll(242969,'test',10,515,1273,14) --515 is darkmoon token, change to another currency id you have
 	]]
 end
