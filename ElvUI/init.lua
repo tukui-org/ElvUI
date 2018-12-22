@@ -107,7 +107,6 @@ function AddOn:OnInitialize()
 		self.PixelMode = true;
 	end
 
-	self:UIScale();
 	self:UpdateMedia();
 
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
