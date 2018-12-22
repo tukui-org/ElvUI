@@ -207,9 +207,9 @@ local function GetFrame()
 
 	local f = M:CreateRollFrame()
 	if pos == "TOP" then
-		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] --[[or AlertFrameHolder]], "BOTTOM", 0, -4)
+		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "BOTTOM", 0, -4)
 	else
-		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] --[[or AlertFrameHolder]], "TOP", 0, 4)
+		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "TOP", 0, 4)
 	end
 	tinsert(M.RollBars, f)
 	return f
@@ -253,8 +253,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 
 	f:Point("CENTER", WorldFrame, "CENTER")
 	f:Show()
-
-	--AlertFrame:UpdateAnchors()
+	AlertFrame:UpdateAnchors()
 
 	--Add cached roll info, if any
 	for rollID, rollTable in pairs(cachedRolls) do
