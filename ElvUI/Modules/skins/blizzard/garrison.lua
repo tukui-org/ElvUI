@@ -16,11 +16,13 @@ local function LoadSkin()
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
 		--Set border color according to rarity of item
 		local firstRegion, r, g, b
+		local index = 0
 		for _, reward in pairs(self.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
 
-			reward:SetPoint("TOPRIGHT", -1, -1)
+			reward:ClearAllPoints()
+			reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
@@ -37,6 +39,7 @@ local function LoadSkin()
 				S:HandleIcon(reward.Icon, reward.border)
 			end
 			reward.border.backdrop:SetBackdropBorderColor(r, g, b)
+			index = index + 1
 		end
 	end)
 
@@ -226,6 +229,7 @@ local function LoadSkin()
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
 				-- For some reason, this fix icon border in 8.1
+				reward:ClearAllPoints()
 				reward:SetPoint("TOPRIGHT", -5, -5)
 			end
 		end
