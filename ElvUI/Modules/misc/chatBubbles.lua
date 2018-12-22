@@ -4,8 +4,8 @@ local CH = E:GetModule("Chat");
 
 --Cache global variables
 --Lua functions
+local format = string.format
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
-local tonumber, strsub, format = tonumber, strsub, string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
@@ -16,7 +16,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 --Message caches
 local messageToGUID = {}
