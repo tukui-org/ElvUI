@@ -114,32 +114,32 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				f.backdropTexture:Hide()
 				f.backdropTexture = nil
 			end
+		end
 
-			if not E.private.general.pixelPerfect and not f.forcePixelMode then
-				if not f.iborder then
-					local border = CreateFrame('Frame', nil, f)
-					border:SetInside(f, E.mult, E.mult)
-					border:SetBackdrop({
-						edgeFile = E.media.blankTex,
-						edgeSize = E.mult,
-						insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-					})
-					border:SetBackdropBorderColor(0, 0, 0, 1)
-					f.iborder = border
-				end
+		if not E.private.general.pixelPerfect and not f.forcePixelMode then
+			if not f.iborder then
+				local border = CreateFrame('Frame', nil, f)
+				border:SetInside(f, E.mult, E.mult)
+				border:SetBackdrop({
+					edgeFile = E.media.blankTex,
+					edgeSize = E.mult,
+					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.iborder = border
+			end
 
-				if not f.oborder then
-					local border = CreateFrame('Frame', nil, f)
-					border:SetOutside(f, E.mult, E.mult)
-					border:SetFrameLevel(f:GetFrameLevel() + 1)
-					border:SetBackdrop({
-						edgeFile = E.media.blankTex,
-						edgeSize = E.mult,
-						insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-					})
-					border:SetBackdropBorderColor(0, 0, 0, 1)
-					f.oborder = border
-				end
+			if not f.oborder then
+				local border = CreateFrame('Frame', nil, f)
+				border:SetOutside(f, E.mult, E.mult)
+				border:SetFrameLevel(f:GetFrameLevel() + 1)
+				border:SetBackdrop({
+					edgeFile = E.media.blankTex,
+					edgeSize = E.mult,
+					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.oborder = border
 			end
 		end
 
