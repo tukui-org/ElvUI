@@ -4,6 +4,7 @@ local AB = E:GetModule('ActionBars');
 --Cache global variables
 --Lua functions
 local _G = _G
+local pairs = pairs
 local assert = assert
 local unpack = unpack
 --WoW API / Variables
@@ -98,8 +99,8 @@ function AB:MainMenuMicroButton_SetPushed()
 end
 
 function AB:UpdateMicroButtonsParent()
-	for i=1, #_G.MICRO_BUTTONS do
-		_G[_G.MICRO_BUTTONS[i]]:SetParent(_G.ElvUI_MicroBar);
+	for _, x in pairs(_G.MICRO_BUTTONS) do
+		_G[x]:SetParent(_G.ElvUI_MicroBar)
 	end
 end
 
@@ -200,9 +201,9 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
 	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
 
-	E.FrameLocks["ElvUI_MicroBar"] = true;
-	for i=1, #_G.MICRO_BUTTONS do
-		self:HandleMicroButton(_G[_G.MICRO_BUTTONS[i]])
+	E.FrameLocks["ElvUI_MicroBar"] = true
+	for _, x in pairs(_G.MICRO_BUTTONS) do
+		self:HandleMicroButton(_G[x])
 	end
 
 	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton.backdrop)
