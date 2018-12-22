@@ -3,9 +3,10 @@ local M = E:GetModule('Misc');
 local CH = E:GetModule("Chat");
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
-local tonumber, strsub, format = tonumber, strsub, string.format
+local format = string.format
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
@@ -14,9 +15,6 @@ local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, CUSTOM_CLASS_COLORS
 
 --Message caches
 local messageToGUID = {}
@@ -56,7 +54,7 @@ function M:UpdateBubbleBorder()
 				wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+					classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
 					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 
@@ -82,7 +80,7 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
 		if class then
-			color = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] and CUSTOM_CLASS_COLORS[class].colorStr) or (RAID_CLASS_COLORS[class] and RAID_CLASS_COLORS[class].colorStr)
+			color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] and _G.CUSTOM_CLASS_COLORS[class].colorStr) or (RAID_CLASS_COLORS[class] and RAID_CLASS_COLORS[class].colorStr)
 		end
 	else
 		color = defaultColor
@@ -93,7 +91,7 @@ end
 
 function M:SkinBubble(frame)
 	if frame:IsForbidden() then return end
-	local mult = E.mult * UIParent:GetScale()
+	local mult = E.mult * _G.UIParent:GetScale()
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:IsObjectType('Texture') then
