@@ -144,7 +144,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
-	GroupLootContainer:EnableMouse(false) -- Prevent this weird non clickable area stuff. Monitor this. Maybe breaks other Addons?.
+	GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')
 
