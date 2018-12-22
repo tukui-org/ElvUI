@@ -11,12 +11,10 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS:
 
---Determine if Eyefinity is being used, setup the pixel perfect script.
-function E:UIScale(event, loginFrame)
-	local UIParent = _G.UIParent
+function E:GetUIScale(useEffectiveScale)
 	local width, height = E.screenwidth, E.screenheight
-	local effectiveScale = UIParent:GetEffectiveScale()
-	local magic = (height > 0 and 768 / height) or effectiveScale
+	local effectiveScale = _G.UIParent:GetEffectiveScale()
+	local magic = (not useEffectiveScale and height > 0 and 768 / height) or effectiveScale
 
 	local uiScaleCVar = GetCVar('uiScale')
 	if uiScaleCVar then E.global.uiScale = uiScaleCVar end
@@ -27,6 +25,15 @@ function E:UIScale(event, loginFrame)
 	if strlen(scale) > 6 then -- lock to ten thousands decimal place
 		scale = tonumber(strsub(scale, 0, 6))
 	end
+
+	return scale, magic, effectiveScale, width, height
+end
+
+--Determine if Eyefinity is being used, setup the pixel perfect script.
+function E:UIScale(event, loginFrame)
+	local UIParent = _G.UIParent
+	local scale, _, effectiveScale, width, height = E:GetUIScale()
+	local magic -- used later
 
 	if width < 1600 then
 		E.lowversion = true
@@ -57,10 +64,6 @@ function E:UIScale(event, loginFrame)
 		E.eyefinity = width
 	end
 
-	E.mult = magic/scale
-	E.Spacing = (E.PixelMode and 0) or E.mult
-	E.Border = (E.PixelMode and E.mult) or E.mult*2
-
 	if E.global.general.autoScale then
 		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
 		if event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
@@ -72,7 +75,14 @@ function E:UIScale(event, loginFrame)
 		if scale < 0.64 then
 			UIParent:SetScale(scale)
 		end
+
+		-- call this after setting CVars and SetScale when using autoscale.. to recalculate based on the blizzard UIParent scale value.
+		scale, magic, _, width, height = E:GetUIScale(true)
 	end
+
+	E.mult = magic/scale
+	E.Spacing = (E.PixelMode and 0) or E.mult
+	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
 		--Resize E.UIParent if Eyefinity is on.
