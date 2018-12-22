@@ -87,6 +87,7 @@ function E:UIScale(event, loginFrame)
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
+		--Check if we are using `E.eyefinity` also this will set `E.lowversion`
 		E:SetResolutionVariables(width, height)
 
 		--Resize E.UIParent if Eyefinity is on.
