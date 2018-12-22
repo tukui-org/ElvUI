@@ -127,7 +127,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			if not E.private.general.pixelPerfect and not f.forcePixelMode then
 				if not f.iborder then
 					local border = CreateFrame('Frame', nil, f)
-					border:SetInside(f)
+					border:SetInside(f, E.mult, E.mult)
 					border:SetBackdrop({
 						edgeFile = E.media.blankTex,
 						edgeSize = E.mult,
@@ -139,7 +139,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 				if not f.oborder then
 					local border = CreateFrame('Frame', nil, f)
-					border:SetOutside(f)
+					border:SetOutside(f, E.mult, E.mult)
 					border:SetFrameLevel(f:GetFrameLevel() + 1)
 					border:SetBackdrop({
 						edgeFile = E.media.blankTex,
