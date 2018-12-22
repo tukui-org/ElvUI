@@ -20,6 +20,9 @@ local function LoadSkin()
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
 
+			reward:ClearAllPoints()
+			reward:SetPoint("TOPRIGHT", -E.mult, -E.mult)
+
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
 			end
@@ -225,7 +228,7 @@ local function LoadSkin()
 				reward.IconBorder:SetAlpha(0)
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
-				reward:SetPoint("TOPRIGHT", -4, -4)
+				reward:SetPoint("TOPRIGHT", -5, -5)
 			end
 		end
 	end
@@ -404,7 +407,6 @@ local function LoadSkin()
 	S:HandleButton(MissionComplete.NextMissionButton)
 
 	-- BFA Mission
-
 	local MissionFrame = _G.BFAMissionFrame
 	MissionFrame.OverlayElements:Hide()
 	MissionFrame.TopBorder:Hide()
