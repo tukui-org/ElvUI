@@ -20,8 +20,7 @@ local function LoadSkin()
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
 
-			reward:ClearAllPoints()
-			reward:SetPoint("TOPRIGHT", -E.mult, -E.mult)
+			reward:SetPoint("TOPRIGHT", -1, -1)
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
@@ -227,7 +226,6 @@ local function LoadSkin()
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
 				-- For some reason, this fix icon border in 8.1
-				reward:ClearAllPoints()
 				reward:SetPoint("TOPRIGHT", -5, -5)
 			end
 		end
