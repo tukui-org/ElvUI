@@ -979,9 +979,8 @@ end
 
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	if frame then
-		frame:SetScale(1)
-	end
+	if frame then frame:SetScale(1) end
+	mod:ClassBar_Update() --update the visibility
 end
 
 function mod:UpdateCVars()
@@ -1311,7 +1310,7 @@ function mod:Initialize()
 
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
-	if(self.ClassBar) then
+	if self.ClassBar then
 		self.ClassBar:SetScale(1)
 		self.ClassBar:EnableMouse(false)
 	end
@@ -1324,7 +1323,6 @@ function mod:Initialize()
 				if mod.ClassBar ~= bar then
 					mod:SetClassNameplateBar(bar) --update our ClassBar link
 				end
-				mod:ClassBar_Update() --update the visibility
 			end
 		end)
 	end
