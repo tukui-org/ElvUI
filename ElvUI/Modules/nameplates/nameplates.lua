@@ -792,6 +792,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 			blizzPlate:Hide() --Hide Blizzard's Nameplate
 			blizzPlate:UnregisterAllEvents() --Remove any events
 			CompactUnitFrame_UnregisterEvents(blizzPlate) --Let Blizzard remove any OnEvent and OnUpdate scripts
+
+			-- Attempt to hide the Blizzard default ClassNameplateManaBarFrame
+			ClassNameplateManaBarFrame:SetAlpha(0)
 		end)
 		frame.unitFrame.onShowHooked = true
 	end
