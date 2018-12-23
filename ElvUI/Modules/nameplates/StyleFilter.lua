@@ -273,8 +273,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		--position the portrait
 		self:ConfigureElement_Portrait(frame, true)
 		--position suramar detection
-		frame.TopLevelFrame = (frame.Portrait:IsShown() and frame.Portrait) or nil
-		self:ConfigureElement_Detection(frame)
+		self:ConfigureElement_Detection(frame, frame.Portrait:IsShown() and frame.Portrait)
 	end
 end
 
@@ -357,7 +356,6 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		frame.TopLevelFrame = nil --We can safely clear this here because it is set upon `UpdateElement_Auras` if needed
 		if (frame.UnitType and self.db.units[frame.UnitType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
 			frame.HealthBar:Show()
 			self:UpdateElement_Glow(frame)
