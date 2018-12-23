@@ -982,7 +982,7 @@ function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
 	mod:ClassBar_Update()
 
-	frame:SetScale(self.db.classbar.scale)
+	frame:SetScale(mod.db.classbar.scale)
 end
 
 function mod:UpdateCVars()
