@@ -980,7 +980,7 @@ end
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
 	if frame then
-		frame:SetScale(1.35)
+		frame:SetScale(1)
 	end
 end
 
@@ -1310,9 +1310,9 @@ function mod:Initialize()
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", mod.NamePlateDriverFrame_UpdateNamePlateOptions)
 
 	--Best to just Hijack Blizzard's nameplate classbar
-	self.ClassBar = NamePlateDriverFrame.nameplateBar
+	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
 	if(self.ClassBar) then
-		self.ClassBar:SetScale(1.35)
+		self.ClassBar:SetScale(1)
 		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
