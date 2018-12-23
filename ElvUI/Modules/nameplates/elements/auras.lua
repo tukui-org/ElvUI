@@ -204,6 +204,10 @@ function mod:UpdateElement_Auras(frame)
 		if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
 			mod:ConfigureElement_Detection(frame)
 		end
+
+		if (self.db.units[frame.UnitType].portrait and self.db.units[frame.UnitType].portrait.enable) then
+			mod:ConfigureElement_Portrait(frame)
+		end
 	end
 end
 
