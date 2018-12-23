@@ -188,6 +188,7 @@ local function LoadSkin()
 		local numSpecs = GetNumSpecializations(nil, self.isPet)
 		local sex = self.isPet and UnitSex("pet") or UnitSex("player")
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet, nil, sex)
+		if not id then return end
 		local scrollChild = self.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
