@@ -3,6 +3,7 @@
 **New Additions:**  
 Added `Weakened Soul` back to our Buff Indicator.  
 Added new Currencies to our Currencies Datatext.  
+Added NamePlate classbar scale option.  
 
 **Bug Fixes:**  
 Fixed a possible nil error on our NamePlate auras.  
@@ -16,6 +17,8 @@ Fixed lua error caused in NamePlate Style Filters about `GetSpecializationInfo`.
 Fixed bad values in incomingheals tags. (#950)  
 Fixed Copy Chat Log (and Copy Chat Line) from displaying lines sometimes.  
 Fixed minor positioning issue with role indicator on unitframes.  
+Fixed issue which caused NamePlate StyleFilter NameOnly option to misplace the ClassBar/Portrait on plates.  
+Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also correctly works on Druids now.  
 
 **Misc. Changes:**  
 Changed Health Backdrop Multiplier to be an Override instead.  
