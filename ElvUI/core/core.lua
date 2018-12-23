@@ -1006,12 +1006,8 @@ f:RegisterEvent('PLAYER_ENTERING_WORLD')
 f:SetScript('OnEvent', SendRecieve)
 f:SetScript('OnUpdate', function(self, elapsed)
 	self.delayed = (self.delayed or 0) + elapsed
-	if self.delayed > 10 then
+	if self.delayed > 25 then
 		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
-
-		if GetChannelName('ElvUIGVC') > 0 then -- Leave it
-			LeaveChannelByName('ElvUIGVC')
-		end
 
 		if numActiveChannels and (numActiveChannels >= 1) then
 			if GetChannelName('ElvUIGVC') == 0 and numActiveChannels < MAX_WOW_CHAT_CHANNELS then
@@ -1024,7 +1020,7 @@ f:SetScript('OnUpdate', function(self, elapsed)
 				self:SetScript('OnUpdate', nil)
 			end
 		end
-	elseif self.delayed > 30 then
+	elseif self.delayed > 45 then
 		self:SetScript('OnUpdate', nil)
 	end
 end)
