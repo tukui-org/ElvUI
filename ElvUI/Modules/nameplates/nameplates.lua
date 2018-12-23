@@ -1317,7 +1317,9 @@ function mod:Initialize()
 		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
-	NamePlateDriverFrame.classNamePlatePowerBar:UnregisterAllEvents()
+
+	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
+	if BlizzPlateManaBar then BlizzPlateManaBar:UnregisterAllEvents() end
 
 	if not self.db.hideBlizzardPlates then
 		--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
