@@ -40,7 +40,8 @@ function mod:ConfigureElement_Portrait(frame, triggered)
 	elseif frame.HealthBar:IsShown() then
 		frame.Portrait:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
 	else
-		frame.Portrait:SetPoint("BOTTOM", frame.Name, "TOP", 0, 3)
+		local topIsHealthBar = (frame.TopLevelFrame and frame.TopLevelFrame == frame.HealthBar)
+		frame.Portrait:SetPoint("BOTTOM", (not topIsHealthBar and frame.TopLevelFrame) or frame.Name, "TOP", 0, 3)
 	end
 end
 

@@ -37,7 +37,7 @@ function mod:ConfigureElement_Detection(frame, topLevel)
 	end
 
 	frame.DetectionModel:ClearAllPoints()
-	frame.DetectionModel:Point("BOTTOM", topLevel or frame.TopLevelFrame or frame.Name, "TOP", 0, 0)
+	frame.DetectionModel:Point("BOTTOM", frame.TopLevelFrame or topLevel or frame.Name, "TOP", 0, 0)
 end
 
 function mod:ConstructElement_Detection(frame)
