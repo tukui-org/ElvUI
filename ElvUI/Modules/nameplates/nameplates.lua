@@ -599,6 +599,10 @@ function mod:ConfigureAll()
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
+	if mod.ClassBar then
+		mod.ClassBar:SetScale(self.db.classbar.scale)
+	end
+
 	self:StyleFilterConfigureEvents()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
@@ -979,8 +983,9 @@ end
 
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	if frame then frame:SetScale(1) end
-	mod:ClassBar_Update() --update the visibility
+	mod:ClassBar_Update()
+
+	frame:SetScale(self.db.classbar.scale)
 end
 
 function mod:UpdateCVars()
@@ -1311,7 +1316,7 @@ function mod:Initialize()
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
 	if self.ClassBar then
-		self.ClassBar:SetScale(1)
+		self.ClassBar:SetScale(self.db.classbar.scale)
 		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)

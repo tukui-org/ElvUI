@@ -359,6 +359,7 @@ P['nameplates'] = {
 	},
 	['classbar'] = {
 		['enable'] = true,
+		['scale'] = 1,
 		['attachTo'] = 'TARGET',
 		['position'] = 'ABOVE'
 	},
