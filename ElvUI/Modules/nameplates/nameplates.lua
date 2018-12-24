@@ -1322,21 +1322,21 @@ function mod:Initialize()
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
-		BlizzPlateManaBar:SetAlpha(0)
+		BlizzPlateManaBar:Hide()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
 	if not self.db.hideBlizzardPlates then
 		--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
-		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function()
-			if self.classNamePlateMechanicFrame then
-				if mod.ClassBar ~= self.classNamePlateMechanicFrame then
-					mod:SetClassNameplateBar(self.classNamePlateMechanicFrame) --update our ClassBar link
+		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(frame)
+			if frame.classNamePlateMechanicFrame then
+				if mod.ClassBar ~= frame.classNamePlateMechanicFrame then
+					mod:SetClassNameplateBar(frame.classNamePlateMechanicFrame) --update our ClassBar link
 				end
 			end
-			if self.classNamePlatePowerBar then
-				self.classNamePlatePowerBar:SetAlpha(0)
-				self.classNamePlatePowerBar:UnregisterAllEvents()
+			if frame.classNamePlatePowerBar then
+				frame.classNamePlatePowerBar:Hide()
+				frame.classNamePlatePowerBar:UnregisterAllEvents()
 			end
 		end)
 	end
