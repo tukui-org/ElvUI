@@ -23,6 +23,7 @@ local function LoadSkin()
 
 			reward:ClearAllPoints()
 			reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+			reward:SetFrameLevel(5)
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
