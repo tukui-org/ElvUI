@@ -1322,7 +1322,7 @@ function mod:Initialize()
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
-		BlizzPlateManaBar:Hide()
+		BlizzPlateManaBar:SetAlpha(0)
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
@@ -1335,7 +1335,7 @@ function mod:Initialize()
 				end
 			end
 			if self.classNamePlatePowerBar then
-				self.classNamePlatePowerBar:Hide()
+				self.classNamePlatePowerBar:SetAlpha(0)
 				self.classNamePlatePowerBar:UnregisterAllEvents()
 			end
 		end)
