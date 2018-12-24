@@ -144,10 +144,9 @@ local GlobalStrings = {
 -- GLOBALS: ChatFrame_AddMessageEventFilter, ChatFrame_GetMessageEventFilters, QuickJoinFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomTexture, CUSTOM_CLASS_COLORS
 
-local CreatedFrames = 0;
-local lines = {};
-local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
+local CreatedFrames = 0
+local lfgRoles = {}
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
@@ -615,6 +614,7 @@ local function colorizeLine(text, r, g, b)
 	return text
 end
 
+local copyLines = {}
 function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
@@ -629,7 +629,7 @@ function CH:GetLines(frame)
 			--Add text color
 			message = colorizeLine(message, r, g, b)
 
-			lines[index] = message
+			copyLines[index] = message
 			index = index + 1
 		end
 	end
@@ -644,7 +644,7 @@ function CH:CopyChat(frame)
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
 		local lineCt = self:GetLines(frame)
-		local text = tconcat(lines, " \n", 1, lineCt)
+		local text = tconcat(copyLines, " \n", 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		CopyChatFrameEditBox:SetText(text)
 	else
@@ -2037,22 +2037,22 @@ function CH:SaveChatHistory(event, ...)
 		end
 	end
 
-	local temp = {}
+	local tempHistory = {}
 	for i = 1, select('#', ...) do
-		temp[i] = select(i, ...) or false
+		tempHistory[i] = select(i, ...) or false
 	end
 
-	if #temp > 0 then
-		if not strmatch(temp[1],'^|Kv%d-|k$') then -- ignore guild protection
-			temp[50] = event
-			temp[51] = time()
+	if #tempHistory > 0 then
+		if not strmatch(tempHistory[1],'^|Kv%d-|k$') then -- ignore guild protection
+			tempHistory[50] = event
+			tempHistory[51] = time()
 
 			local coloredName, battleTag
-			if temp[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(temp[2], temp[13], true) end
-			if battleTag then temp[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-			temp[52] = coloredName or CH:GetColoredName(event, ...)
+			if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
+			if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
+			tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
 
-			tinsert(data, temp)
+			tinsert(data, tempHistory)
 			while #data >= 128 do
 				tremove(data, 1)
 			end
