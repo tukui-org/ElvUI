@@ -86,7 +86,7 @@ local function LoadSkin()
 		QuestInfoItemHighlight:ClearAllPoints()
 		QuestInfoItemHighlight:SetOutside(self.Icon)
 
-		for _, Button in ipairs(QuestInfoRewardsFrame.RewardButtons) do
+		for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
 			Button.Name:SetTextColor(1, 1, 1)
 		end
 
