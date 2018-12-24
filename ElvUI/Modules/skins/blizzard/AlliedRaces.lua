@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 local _G = _G
-local select, unpack = select, unpack
+local select = select
 --Lua functions
 --WoW API / Variables
 

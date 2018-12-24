@@ -8,8 +8,6 @@ local floor = math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local GetScreenWidth = GetScreenWidth
-local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
 local RESET = RESET
 

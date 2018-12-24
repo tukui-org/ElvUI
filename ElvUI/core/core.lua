@@ -30,7 +30,6 @@ local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
-local LeaveChannelByName = LeaveChannelByName
 local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup

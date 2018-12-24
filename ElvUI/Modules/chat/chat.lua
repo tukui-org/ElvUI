@@ -1199,7 +1199,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				seenGroups[groupIndex] = true;
 				local groupList = "[";
 				for i=1, GetNumGroupMembers() do
-					local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
+					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i);
 					if ( name and subgroup == groupIndex ) then
 						local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
 						if ( classColorTable ) then
@@ -1523,7 +1523,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			local playerName, lineID, bnetIDAccount = arg2, arg11, arg13;
 			if ( isCommunityType ) then
 				local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0;
-				local messageInfo, clubId, streamId, clubType = C_Club_GetInfoFromLastCommunityChatLine();
+				local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine();
 
 				if (messageInfo ~= nil) then
 					if ( isBattleNetCommunity ) then
@@ -2058,8 +2058,6 @@ function CH:SaveChatHistory(event, ...)
 			end
 		end
 	end
-
-	temp = nil -- Destory!
 end
 
 function CH:FCF_SetWindowAlpha(frame, alpha)
