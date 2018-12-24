@@ -600,7 +600,7 @@ function mod:ConfigureAll()
 	self.db.units.PLAYER.healthbar.enable = true
 
 	if mod.ClassBar then
-		mod.ClassBar:SetScale(self.db.classbar.scale)
+		mod.ClassBar:SetScale(self.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
 	end
 
 	self:StyleFilterConfigureEvents()
@@ -983,7 +983,7 @@ function mod:SetClassNameplateBar(frame)
 
 	if frame then
 		mod:ClassBar_Update()
-		frame:SetScale(mod.db.classbar.scale)
+		frame:SetScale(mod.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
 	end
 end
 
@@ -1315,7 +1315,7 @@ function mod:Initialize()
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
 	if self.ClassBar then
-		self.ClassBar:SetScale(self.db.classbar.scale)
+		self.ClassBar:SetScale(self.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
 		self.ClassBar:EnableMouse(false)
 	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
