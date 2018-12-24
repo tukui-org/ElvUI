@@ -102,7 +102,8 @@ Lib.Filters.name = {
 	end,
 
 	match = function(self, item, _, search)
-		return Search:Find(search, C_Item.GetItemNameByID(item))
+	-- Modified: C_Item.GetItemNameByID returns nil for M+ keystones, a fallback is needed
+		return Search:Find(search, C_Item.GetItemNameByID(item) or item:match('%[(.-)%]'))
 	end
 }
 
