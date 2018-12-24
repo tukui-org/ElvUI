@@ -179,7 +179,7 @@ function mod:PLAYER_ENTERING_WORLD()
 end
 
 function mod:ClassBar_Update()
-	if(not self.ClassBar) then return end
+	if not self.ClassBar then return end
 	local frame
 
 	if(self.db.classbar.enable) then
@@ -982,7 +982,9 @@ function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
 	mod:ClassBar_Update()
 
-	frame:SetScale(mod.db.classbar.scale)
+	if frame then
+		frame:SetScale(mod.db.classbar.scale)
+	end
 end
 
 function mod:UpdateCVars()
