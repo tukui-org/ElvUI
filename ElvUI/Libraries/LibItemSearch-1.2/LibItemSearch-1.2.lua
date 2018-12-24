@@ -286,7 +286,7 @@ Lib.Filters.tipPhrases = {
 		end
 	end,
 
-	match = function(self, link, _, search, allowPartialMatch)
+	match = function(self, link, _, search)
 		local id = link:match('item:(%d+)')
 		if not id then
 			return
@@ -304,7 +304,7 @@ Lib.Filters.tipPhrases = {
 		for i = 1, Lib.Scanner:NumLines() do
 			local text = _G[Lib.Scanner:GetName() .. 'TextLeft' .. i]:GetText()
 			text = CleanString(text)
-			if search == text or (allowPartialMatch and text:find(search)) then
+			if search == text then
 				matches = true
 				break
 			end
