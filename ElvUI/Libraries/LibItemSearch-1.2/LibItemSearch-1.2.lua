@@ -167,7 +167,7 @@ Lib.Filters.quality = {
 	keywords = {},
 
 	canSearch = function(self, _, search)
-		for quality, name in pairs(qualities) do
+		for quality, name in pairs(self.keywords) do
 			if name:find(search) then
 				return quality
 			end
