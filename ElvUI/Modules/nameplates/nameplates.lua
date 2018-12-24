@@ -980,9 +980,9 @@ end
 
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	mod:ClassBar_Update()
 
 	if frame then
+		mod:ClassBar_Update()
 		frame:SetScale(mod.db.classbar.scale)
 	end
 end
