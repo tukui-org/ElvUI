@@ -444,18 +444,17 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:UpdateInVehicle(frame, true)
 
 	local CanAttack = UnitCanAttack(unit, self.playerUnitToken)
-	local isPlayer = UnitIsPlayer(unit)
 	frame.unitFrame.isTargetingMe = UnitIsUnit(unit..'target', 'player')
 
-	if(UnitIsUnit(unit, "player")) then
+	if UnitIsUnit(unit, "player") then
 		frame.unitFrame.UnitType = "PLAYER"
-	elseif isPlayer then
+	elseif UnitIsPlayer(unit) then
 		if CanAttack then
 			frame.unitFrame.UnitType = "ENEMY_PLAYER"
 			self:UpdateElement_HealerIcon(frame.unitFrame)
 		else
 			 local role = UnitGroupRolesAssigned(unit)
-			if(role == "HEALER") then
+			if role == "HEALER" then
 				frame.unitFrame.UnitType = role
 			else
 				frame.unitFrame.UnitType = "FRIENDLY_PLAYER"
@@ -470,7 +469,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		end
 	end
 
-	if(frame.unitFrame.UnitType == "PLAYER") then
+	if frame.unitFrame.UnitType == "PLAYER" then
 		self.PlayerFrame = frame
 		self.PlayerNamePlateAnchor:SetParent(frame)
 		self.PlayerNamePlateAnchor:SetAllPoints(frame.unitFrame)
@@ -480,19 +479,19 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		frame.unitFrame.IsPlayerFrame = nil
 	end
 
-	if(self.db.units[frame.unitFrame.UnitType] and self.db.units[frame.unitFrame.UnitType].healthbar and self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
+	if self.db.units[frame.unitFrame.UnitType] and self.db.units[frame.unitFrame.UnitType].healthbar and self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL" then
 		self:ConfigureElement_HealthBar(frame.unitFrame)
 		self:ConfigureElement_CutawayHealth(frame.unitFrame)
 		self:ConfigureElement_PowerBar(frame.unitFrame)
 		self:ConfigureElement_CastBar(frame.unitFrame)
 		self:ConfigureElement_Glow(frame.unitFrame)
 
-		if(self.db.units[frame.unitFrame.UnitType].buffs.enable) then
+		if self.db.units[frame.unitFrame.UnitType].buffs.enable then
 			frame.unitFrame.Buffs.db = self.db.units[frame.unitFrame.UnitType].buffs
 			self:UpdateAuraIcons(frame.unitFrame.Buffs)
 		end
 
-		if(self.db.units[frame.unitFrame.UnitType].debuffs.enable) then
+		if self.db.units[frame.unitFrame.UnitType].debuffs.enable then
 			frame.unitFrame.Debuffs.db = self.db.units[frame.unitFrame.UnitType].debuffs
 			self:UpdateAuraIcons(frame.unitFrame.Debuffs)
 		end
@@ -509,10 +508,10 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:RegisterEvents(frame.unitFrame, unit)
 	self:UpdateElement_All(frame.unitFrame, unit, nil, true)
 
-	if (self.db.displayStyle == "TARGET" and not frame.unitFrame.isTarget and frame.unitFrame.UnitType ~= "PLAYER") then
+	if self.db.displayStyle == "TARGET" and not frame.unitFrame.isTarget and frame.unitFrame.UnitType ~= "PLAYER" then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame.unitFrame:Hide()
-	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
+	elseif frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.unitFrame:Show()
 	end
 
@@ -670,25 +669,25 @@ function mod:SetBaseNamePlateSize(lockedInstance)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
-	if ( UnitHasVehicleUI(frame.unit) ) then
-		if ( not frame.inVehicle ) then
+	if UnitHasVehicleUI(frame.unit) then
+		if not frame.inVehicle then
 			frame.inVehicle = true;
-			if(UnitIsUnit(frame.unit, "player")) then
+			if UnitIsUnit(frame.unit, "player") then
 				frame.displayedUnit = "vehicle"
 			else
 				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
-			if(not noEvents) then
+			if not noEvents then
 				self:RegisterEvents(frame, frame.unit)
 				self:UpdateElement_All(frame)
 			end
 		end
 	else
-		if ( frame.inVehicle ) then
+		if frame.inVehicle then
 			frame.inVehicle = false;
 			frame.displayedUnit = frame.unit;
-			if(not noEvents) then
+			if not noEvents then
 				self:RegisterEvents(frame, frame.unit)
 				self:UpdateElement_All(frame)
 			end
