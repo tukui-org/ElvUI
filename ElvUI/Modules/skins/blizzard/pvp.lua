@@ -203,22 +203,21 @@ local function LoadSkin()
 	end
 
 	-- Honor Frame StatusBar
-	local bar = HonorFrame.ConquestBar
-	if bar then
-		if bar.Border then bar.Border:Hide() end
-		if bar.Background then bar.Background:Hide() end
+	local HonorBar = HonorFrame.ConquestBar
+	if HonorBar then
+		if HonorBar.Border then HonorBar.Border:Hide() end
+		if HonorBar.Background then HonorBar.Background:Hide() end
 
 		if E.myfaction == "Alliance" then
-			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+			HonorBar:SetStatusBarColor(0.05, 0.15, 0.36)
 		else
-			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+			HonorBar:SetStatusBarColor(0.63, 0.09, 0.09)
 		end
 
-		if not bar.backdrop then
-			bar:CreateBackdrop("Default")
-			bar.backdrop:SetOutside()
+		if not HonorBar.backdrop then
+			HonorBar:CreateBackdrop("Default")
+			HonorBar.backdrop:SetOutside()
 		end
-		E:RegisterStatusBar(bar)
 	end
 
 	-- Icon
@@ -227,22 +226,21 @@ local function LoadSkin()
 	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	-- Conquest Frame StatusBar
-	bar = ConquestFrame.ConquestBar -- swap
-	if bar then
-		if bar.Border then bar.Border:Hide() end
-		if bar.Background then bar.Background:Hide() end
+	local ConquestBar = ConquestFrame.ConquestBar -- swap
+	if ConquestBar then
+		if ConquestBar.Border then ConquestBar.Border:Hide() end
+		if ConquestBar.Background then ConquestBar.Background:Hide() end
 
 		if E.myfaction == "Alliance" then
-			bar:SetStatusBarColor(0.05, 0.15, 0.36)
+			ConquestBar:SetStatusBarColor(0.05, 0.15, 0.36)
 		else
-			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+			ConquestBar:SetStatusBarColor(0.63, 0.09, 0.09)
 		end
 
-		if not bar.backdrop then
-			bar:CreateBackdrop("Default")
-			bar.backdrop:SetOutside()
+		if not ConquestBar.backdrop then
+			ConquestBar:CreateBackdrop("Default")
+			ConquestBar.backdrop:SetOutside()
 		end
-		E:RegisterStatusBar(bar)
 	end
 
 	-- Icon
