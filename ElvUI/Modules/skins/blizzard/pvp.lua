@@ -216,6 +216,8 @@ local function LoadSkin()
 
 		Frame.ConquestBar.Reward:SetPoint("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
 		Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
+
+		S:HandleTexture(Frame.ConquestBar.Reward.Icon)
 	end
 
 	--Tutorials
