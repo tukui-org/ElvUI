@@ -202,51 +202,20 @@ local function LoadSkin()
 		_G.ConquestTooltip:SetTemplate("Transparent")
 	end
 
-	-- Honor Frame StatusBar
-	local HonorBar = HonorFrame.ConquestBar
-	if HonorBar then
-		if HonorBar.Border then HonorBar.Border:Hide() end
-		if HonorBar.Background then HonorBar.Background:Hide() end
+	for _, Frame in pairs({ HonorFrame, ConquestFrame }) do
+		Frame.ConquestBar.Border:Hide()
+		Frame.ConquestBar.Background:Hide()
+		Frame.ConquestBar.Reward.Ring:Hide()
+		Frame.ConquestBar.Reward.CircleMask:Hide()
 
-		if E.myfaction == "Alliance" then
-			HonorBar:SetStatusBarColor(0.05, 0.15, 0.36)
-		else
-			HonorBar:SetStatusBarColor(0.63, 0.09, 0.09)
+		if not Frame.ConquestBar.backdrop then
+			Frame.ConquestBar:CreateBackdrop("Default")
+			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
-		if not HonorBar.backdrop then
-			HonorBar:CreateBackdrop("Default")
-			HonorBar.backdrop:SetOutside()
-		end
+		Frame.ConquestBar.Reward:SetPoint("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
+		Frame.ConquestBar:SetStatusBarColor(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09})
 	end
-
-	-- Icon
-	HonorFrame.ConquestBar.Reward.Ring:Hide()
-	HonorFrame.ConquestBar.Reward.CircleMask:Hide()
-	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	-- Conquest Frame StatusBar
-	local ConquestBar = ConquestFrame.ConquestBar -- swap
-	if ConquestBar then
-		if ConquestBar.Border then ConquestBar.Border:Hide() end
-		if ConquestBar.Background then ConquestBar.Background:Hide() end
-
-		if E.myfaction == "Alliance" then
-			ConquestBar:SetStatusBarColor(0.05, 0.15, 0.36)
-		else
-			ConquestBar:SetStatusBarColor(0.63, 0.09, 0.09)
-		end
-
-		if not ConquestBar.backdrop then
-			ConquestBar:CreateBackdrop("Default")
-			ConquestBar.backdrop:SetOutside()
-		end
-	end
-
-	-- Icon
-	ConquestFrame.ConquestBar.Reward.Ring:Hide()
-	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
-	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	--Tutorials
 	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)
