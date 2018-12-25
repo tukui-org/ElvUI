@@ -202,6 +202,7 @@ local function LoadSkin()
 		_G.ConquestTooltip:SetTemplate("Transparent")
 	end
 
+	-- PvP StatusBars
 	for _, Frame in pairs({ HonorFrame, ConquestFrame }) do
 		Frame.ConquestBar.Border:Hide()
 		Frame.ConquestBar.Background:Hide()
