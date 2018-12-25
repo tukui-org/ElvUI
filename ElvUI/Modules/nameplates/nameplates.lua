@@ -448,20 +448,25 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 
 	if(UnitIsUnit(unit, "player")) then
 		frame.unitFrame.UnitType = "PLAYER"
-	elseif(not CanAttack and isPlayer) then
-		local role = UnitGroupRolesAssigned(unit)
-		if(role == "HEALER") then
-			frame.unitFrame.UnitType = role
+	elseif isPlayer then
+		if CanAttack then
+			frame.unitFrame.UnitType = "ENEMY_PLAYER"
+			self:UpdateElement_HealerIcon(frame.unitFrame)
 		else
-			frame.unitFrame.UnitType = "FRIENDLY_PLAYER"
+			 local role = UnitGroupRolesAssigned(unit)
+			if(role == "HEALER") then
+				frame.unitFrame.UnitType = role
+			else
+				frame.unitFrame.UnitType = "FRIENDLY_PLAYER"
+			end
 		end
-	elseif(not CanAttack and not isPlayer) then
-		frame.unitFrame.UnitType = "FRIENDLY_NPC"
-	elseif(CanAttack and isPlayer) then
-		frame.unitFrame.UnitType = "ENEMY_PLAYER"
-		self:UpdateElement_HealerIcon(frame.unitFrame)
 	else
-		frame.unitFrame.UnitType = "ENEMY_NPC"
+		local reaction = UnitReaction("player", unit)
+		if (reaction and reaction <= 4) or CanAttack then
+			frame.unitFrame.UnitType = "ENEMY_NPC"
+		else
+			frame.unitFrame.UnitType = "FRIENDLY_NPC"
+		end
 	end
 
 	if(frame.unitFrame.UnitType == "PLAYER") then
