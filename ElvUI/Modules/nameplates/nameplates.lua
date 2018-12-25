@@ -453,7 +453,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 			frame.unitFrame.UnitType = "ENEMY_PLAYER"
 			self:UpdateElement_HealerIcon(frame.unitFrame)
 		else
-			 local role = UnitGroupRolesAssigned(unit)
+			local role = UnitGroupRolesAssigned(unit)
 			if role == "HEALER" then
 				frame.unitFrame.UnitType = role
 			else
