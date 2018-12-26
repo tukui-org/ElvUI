@@ -320,10 +320,9 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	local emoji, pattern
 	for word in gmatch(msg, "%s-%S+%s*") do
-		pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
-		emoji = CH.Smileys[pattern]
+		local pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
+		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
 			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', '%1'..emoji..'%2');
 		end
@@ -340,11 +339,8 @@ function CH:GetSmileyReplacementText(msg)
 	local endpos, _;
 
 	while(startpos <= origlen) do
-		endpos = origlen;
 		local pos = find(msg,"|H",startpos,true);
-		if(pos ~= nil) then
-			endpos = pos;
-		end
+		endpos = pos or origlen
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
@@ -783,18 +779,17 @@ function CH:PositionChat(override)
 
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
-	local chat, chatbg, tab, id, isDocked
 	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
 	for i=1, CreatedFrames do
 		local BASE_OFFSET = 57 + E.Spacing*3
 
-		chat = _G[format("ChatFrame%d", i)]
-		chatbg = format("ChatFrame%dBackground", i)
-		id = chat:GetID()
-		tab = _G[format("ChatFrame%sTab", i)]
-		isDocked = chat.isDocked
+		local chat = _G[format("ChatFrame%d", i)]
+		local chatbg = format("ChatFrame%dBackground", i)
+		local id = chat:GetID()
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
 		tab.owner = chat
 
@@ -980,7 +975,6 @@ local function HyperLinkedCPL(data)
 				end
 			end
 		end
-		return
 	end
 end
 
@@ -994,7 +988,6 @@ local function HyperLinkedSQU(data)
 			QuickJoinFrame:SelectGroup(guid)
 			QuickJoinFrame:ScrollToGroup(guid)
 		end
-		return
 	end
 end
 
@@ -1004,7 +997,6 @@ local function HyperLinkedURL(data)
 		if currentLink and currentLink ~= "" then
 			SetChatEditBoxMessage(currentLink)
 		end
-		return
 	end
 end
 
@@ -1088,15 +1080,14 @@ end
 
 function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
-	local bnetIDAccount, isOnline, numGameAccounts, client, Class, _
 	local total = BNGetNumFriends();
 	for i = 1, total do
-		bnetIDAccount, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		local bnetIDAccount, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
 		if isOnline and (bnetIDAccount == id) then
-			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			local numGameAccounts = BNGetNumFriendGameAccounts(i);
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					_, _, client, _, _, _, _, Class = BNGetFriendGameAccountInfo(i, y);
+					local _, _, client, _, _, _, _, Class = BNGetFriendGameAccountInfo(i, y);
 					if (client == BNET_CLIENT_WOW) and Class and Class ~= '' then
 						return Class --return the first toon's class
 					end
@@ -1240,12 +1231,11 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 
 		local chatFilters = ChatFrame_GetMessageEventFilters(event)
 		if chatFilters then
-			local filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14;
 			for _, filterFunc in next, chatFilters do
-				filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 = filterFunc(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-				if ( filter ) then
+				local filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 = filterFunc(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+				if filter then
 					return true;
-				elseif ( newarg1 ) then
+				elseif newarg1 then
 					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14;
 				end
 			end
@@ -1732,12 +1722,10 @@ function CH:SetupChat()
 end
 
 local function PrepareMessage(author, message)
-	return format("%s%s", strupper(author), message)
+	return strupper(author)..message
 end
 
-function CH:ChatThrottleHandler(event, ...)
-	local arg1, arg2 = ...
-
+function CH:ChatThrottleHandler(event, arg1, arg2)
 	if arg2 ~= "" then
 		local message = PrepareMessage(arg2, arg1)
 		if msgList[message] == nil then
@@ -1827,12 +1815,12 @@ function CH:CheckKeyword(message)
 		message = gsub(message, gsub(hyperLink, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1'), tempLink)
 	end
 
-	local classColorTable, tempWord, rebuiltString, lowerCaseWord, wordMatch, classMatch
+	local rebuiltString
 	local isFirstWord = true
 	for word in gmatch(message, "%s-%S+%s*") do
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
-			tempWord = gsub(word, "[%s%p]", "")
-			lowerCaseWord = tempWord:lower()
+			local tempWord = gsub(word, "[%s%p]", "")
+			local lowerCaseWord = tempWord:lower()
 			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == keyword:lower() then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
@@ -1850,11 +1838,11 @@ function CH:CheckKeyword(message)
 				tempWord = gsub(word,"^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
 				lowerCaseWord = tempWord:lower()
 
-				classMatch = CH.ClassNames[lowerCaseWord]
-				wordMatch = classMatch and lowerCaseWord
+				local classMatch = CH.ClassNames[lowerCaseWord]
+				local wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+					local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
 					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 			end
@@ -1864,7 +1852,7 @@ function CH:CheckKeyword(message)
 			rebuiltString = word
 			isFirstWord = false
 		else
-			rebuiltString = format("%s%s", rebuiltString, word)
+			rebuiltString = rebuiltString..word
 		end
 	end
 
@@ -1935,8 +1923,7 @@ function CH:UpdateChatKeywords()
 	local keywords = self.db.keywords
 	keywords = gsub(keywords,',%s',',')
 
-	for i=1, #{split(',', keywords)} do
-		local stringValue = select(i, split(',', keywords));
+	for stringValue in keywords:gmatch("[^,]+") do
 		if stringValue ~= '' then
 			CH.Keywords[stringValue] = true;
 		end
@@ -2105,22 +2092,19 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 		return true
 	end
 
-	local numGameAccounts, accountName, isOnline, gameCharacterName, gameClient, realmName, _
 	for i = 1, BNGetNumFriends() do
-		_, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
+		local _, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(i);
 		if isOnline then
-			numGameAccounts = BNGetNumFriendGameAccounts(i);
-			if numGameAccounts > 0 then
-				for y = 1, numGameAccounts do
-					_, gameCharacterName, gameClient, realmName = BNGetFriendGameAccountInfo(i, y);
-					if (gameClient == BNET_CLIENT_WOW) and (accountName == playerName) then
-						playerName = gameCharacterName
-						if realmName ~= E.myrealm then
-							playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
-						end
-						if leaderName == playerName then
-							return true
-						end
+			local numGameAccounts = BNGetNumFriendGameAccounts(i);
+			for y = 1, numGameAccounts do
+				local _, gameCharacterName, gameClient, realmName = BNGetFriendGameAccountInfo(i, y);
+				if (gameClient == BNET_CLIENT_WOW) and (accountName == playerName) then
+					playerName = gameCharacterName
+					if realmName ~= E.myrealm then
+						playerName = format('%s-%s', playerName, gsub(realmName,'[%s%-]',''))
+					end
+					if leaderName == playerName then
+						return true
 					end
 				end
 			end
@@ -2182,10 +2166,9 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 		end
 	end
 
-	local isLFGList, firstQueue
 	local queues = C_SocialQueue_GetGroupQueues(guid)
-	firstQueue = queues and queues[1]
-	isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
+	local firstQueue = queues and queues[1]
+	local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 	if isLFGList and firstQueue and firstQueue.eligible then
 		local activityID, name, comment, leaderName, fullName, isLeader, _
