@@ -394,10 +394,10 @@ function CH:StyleChat(frame)
 
 	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	hooksecurefunc(tab.text, "SetTextColor", function(self, r, g, b)
+	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
 		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
-			self:SetTextColor(rR, gG, bB)
+			tt:SetTextColor(rR, gG, bB)
 		end
 	end)
 
@@ -411,21 +411,21 @@ function CH:StyleChat(frame)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
-	local function OnTextChanged(self)
-		local text = self:GetText()
+	local function OnTextChanged(editBox)
+		local text = editBox:GetText()
 
 		if InCombatLockdown() then
 			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
-			if (strlen(text) > MIN_REPEAT_CHARACTERS) then
+			if strlen(text) > MIN_REPEAT_CHARACTERS then
 			local repeatChar = true;
 			for i=1, MIN_REPEAT_CHARACTERS, 1 do
-				if ( strsub(text,(0-i), (0-i)) ~= strsub(text,(-1-i),(-1-i)) ) then
+				if strsub(text,(0-i), (0-i)) ~= strsub(text,(-1-i),(-1-i)) then
 					repeatChar = false;
 					break;
 				end
 			end
-				if ( repeatChar ) then
-					self:Hide()
+				if repeatChar then
+					editBox:Hide()
 					return;
 				end
 			end
@@ -442,36 +442,36 @@ function CH:StyleChat(frame)
 			end
 
 			if strsub(text, 1, 4) == "/gr " then
-				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5));
-				ChatEdit_ParseText(self, 0)
+				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5));
+				ChatEdit_ParseText(editBox, 0)
 			end
 		end
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
-	local function OnArrowPressed(self, key)
-		if #self.historyLines == 0 then
+	local function OnArrowPressed(editBox, key)
+		if #editBox.historyLines == 0 then
 			return
 		end
 
 		if key == "DOWN" then
-			self.historyIndex = self.historyIndex - 1
+			editBox.historyIndex = editBox.historyIndex - 1
 
-			if self.historyIndex < 1 then
-				self.historyIndex = 0
-				self:SetText("")
+			if editBox.historyIndex < 1 then
+				editBox.historyIndex = 0
+				editBox:SetText("")
 				return
 			end
 		elseif key == "UP" then
-			self.historyIndex = self.historyIndex + 1
+			editBox.historyIndex = editBox.historyIndex + 1
 
-			if self.historyIndex > #self.historyLines then
-				self.historyIndex = #self.historyLines
+			if editBox.historyIndex > #editBox.historyLines then
+				editBox.historyIndex = #editBox.historyLines
 			end
 		else
 			return
 		end
-		self:SetText(self.historyLines[#self.historyLines - (self.historyIndex - 1)])
+		editBox:SetText(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)])
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
@@ -490,8 +490,24 @@ function CH:StyleChat(frame)
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 	editbox:Hide()
 
-	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self.historyIndex = 0; self:Hide() end)
+	editbox:HookScript("OnEditFocusGained", function(editBox)
+		editBox:Show()
+		if not LeftChatPanel:IsShown() then
+			LeftChatPanel.editboxforced = true
+			LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton)
+		end
+	end)
+	editbox:HookScript("OnEditFocusLost", function(editBox)
+		if LeftChatPanel.editboxforced then
+			LeftChatPanel.editboxforced = nil
+			if LeftChatPanel:IsShown() then
+				LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton)
+			end
+		end
+
+		editBox.historyIndex = 0
+		editBox:Hide()
+	end)
 
 	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
@@ -532,7 +548,7 @@ function CH:StyleChat(frame)
 	frame.button.tex:SetInside()
 	frame.button.tex:SetTexture([[Interface\AddOns\ElvUI\media\textures\copy]])
 
-	frame.button:SetScript("OnMouseUp", function(self, btn)
+	frame.button:SetScript("OnMouseUp", function(_, btn)
 		if btn == "RightButton" and id == 1 then
 			ToggleFrame(ChatMenu)
 		else
@@ -540,12 +556,12 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	frame.button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(self)
-		if _G[self:GetParent():GetName().."TabText"]:IsShown() then
-			self:SetAlpha(0.35)
+	frame.button:SetScript("OnEnter", function(button) button:SetAlpha(1) end)
+	frame.button:SetScript("OnLeave", function(button)
+		if _G[button:GetParent():GetName().."TabText"]:IsShown() then
+			button:SetAlpha(0.35)
 		else
-			self:SetAlpha(0)
+			button:SetAlpha(0)
 		end
 	end)
 
@@ -1250,9 +1266,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 		--Cache name->class
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','') -- also used similar to nameWithRealm except for emotes to link the realm
 		if name and name ~= '' then
-			CH.ClassNames[name:lower()] = englishClass
+			CH.ClassNames[strlower(name)] = englishClass
 			nameWithRealm = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
-			CH.ClassNames[nameWithRealm:lower()] = englishClass
+			CH.ClassNames[strlower(nameWithRealm)] = englishClass
 		end
 
 		local channelLength = strlen(arg4);
@@ -1820,9 +1836,9 @@ function CH:CheckKeyword(message)
 	for word in gmatch(message, "%s-%S+%s*") do
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
 			local tempWord = gsub(word, "[%s%p]", "")
-			local lowerCaseWord = tempWord:lower()
+			local lowerCaseWord = strlower(tempWord)
 			for keyword in pairs(CH.Keywords) do
-				if lowerCaseWord == keyword:lower() then
+				if lowerCaseWord == strlower(keyword) then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
 					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
@@ -1836,7 +1852,7 @@ function CH:CheckKeyword(message)
 
 			if self.db.classColorMentionsChat then
 				tempWord = gsub(word,"^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
-				lowerCaseWord = tempWord:lower()
+				lowerCaseWord = strlower(tempWord)
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
 				local wordMatch = classMatch and lowerCaseWord
@@ -1923,7 +1939,7 @@ function CH:UpdateChatKeywords()
 	local keywords = self.db.keywords
 	keywords = gsub(keywords,',%s',',')
 
-	for stringValue in keywords:gmatch("[^,]+") do
+	for stringValue in gmatch(keywords, "[^,]+") do
 		if stringValue ~= '' then
 			CH.Keywords[stringValue] = true;
 		end
@@ -2370,7 +2386,7 @@ function CH:Initialize()
 	self:SecureHook('ChatEdit_OnEnterPressed')
 
 	if WIM then
-		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
+		WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end);
 		WIM.RegisterItemRefHandler('url', HyperLinkedURL)
 		WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
 		WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
@@ -2405,9 +2421,9 @@ function CH:Initialize()
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
 	GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
-	hooksecurefunc(GeneralDockManagerScrollFrame, 'SetPoint', function(self, point, anchor, attachTo, x, y)
-		if anchor == GeneralDockManagerOverflowButton and x == 0 and y == 0 then
-			self:Point(point, anchor, attachTo, -2, -6)
+	hooksecurefunc(GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
+		if anchor == GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
+			frame:Point(point, anchor, attachTo, -2, -6)
 		end
 	end)
 
@@ -2435,29 +2451,29 @@ function CH:Initialize()
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
 	frame:SetMinResize(350, 100)
-	frame:SetScript("OnMouseDown", function(self, button)
-		if button == "LeftButton" and not self.isMoving then
-			self:StartMoving();
-			self.isMoving = true;
-		elseif button == "RightButton" and not self.isSizing then
-			self:StartSizing();
-			self.isSizing = true;
+	frame:SetScript("OnMouseDown", function(copyChat, button)
+		if button == "LeftButton" and not copyChat.isMoving then
+			copyChat:StartMoving();
+			copyChat.isMoving = true;
+		elseif button == "RightButton" and not copyChat.isSizing then
+			copyChat:StartSizing();
+			copyChat.isSizing = true;
 		end
 	end)
-	frame:SetScript("OnMouseUp", function(self, button)
-		if button == "LeftButton" and self.isMoving then
-			self:StopMovingOrSizing();
-			self.isMoving = false;
-		elseif button == "RightButton" and self.isSizing then
-			self:StopMovingOrSizing();
-			self.isSizing = false;
+	frame:SetScript("OnMouseUp", function(copyChat, button)
+		if button == "LeftButton" and copyChat.isMoving then
+			copyChat:StopMovingOrSizing();
+			copyChat.isMoving = false;
+		elseif button == "RightButton" and copyChat.isSizing then
+			copyChat:StopMovingOrSizing();
+			copyChat.isSizing = false;
 		end
 	end)
-	frame:SetScript("OnHide", function(self)
-		if ( self.isMoving or self.isSizing) then
-			self:StopMovingOrSizing();
-			self.isMoving = false;
-			self.isSizing = false;
+	frame:SetScript("OnHide", function(copyChat)
+		if ( copyChat.isMoving or copyChat.isSizing) then
+			copyChat:StopMovingOrSizing();
+			copyChat.isMoving = false;
+			copyChat.isSizing = false;
 		end
 	end)
 	frame:SetFrameStrata("DIALOG")
@@ -2466,12 +2482,12 @@ function CH:Initialize()
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
 	S:HandleScrollBar(CopyChatScrollFrameScrollBar)
-	scrollArea:SetScript("OnSizeChanged", function(self)
-		CopyChatFrameEditBox:Width(self:GetWidth())
-		CopyChatFrameEditBox:Height(self:GetHeight())
+	scrollArea:SetScript("OnSizeChanged", function(scroll)
+		CopyChatFrameEditBox:Width(scroll:GetWidth())
+		CopyChatFrameEditBox:Height(scroll:GetHeight())
 	end)
-	scrollArea:HookScript("OnVerticalScroll", function(self, offset)
-		CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (CopyChatFrameEditBox:GetHeight() - offset - self:GetHeight()))
+	scrollArea:HookScript("OnVerticalScroll", function(scroll, offset)
+		CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
 	end)
 
 	local editBox = CreateFrame("EditBox", "CopyChatFrameEditBox", frame)
@@ -2484,7 +2500,7 @@ function CH:Initialize()
 	editBox:Height(200)
 	editBox:SetScript("OnEscapePressed", function() CopyChatFrame:Hide() end)
 	scrollArea:SetScrollChild(editBox)
-	CopyChatFrameEditBox:SetScript("OnTextChanged", function(self, userInput)
+	CopyChatFrameEditBox:SetScript("OnTextChanged", function(_, userInput)
 		if userInput then return end
 		local _, max = CopyChatScrollFrameScrollBar:GetMinMaxValues()
 		for i=1, max do
