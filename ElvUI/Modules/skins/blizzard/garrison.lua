@@ -199,6 +199,7 @@ local function LoadSkin()
 
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
+	local Report = GarrisonLandingPage.Report
 	GarrisonLandingPage:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
@@ -211,6 +212,41 @@ local function LoadSkin()
 		for i = 1, 10 do
 			select(i, GarrisonLandingPage:GetRegions()):Hide()
 		end
+
+		for _, tab in pairs({Report.InProgress, Report.Available}) do
+			tab:SetHighlightTexture("")
+			tab.Text:ClearAllPoints()
+			tab.Text:SetPoint("CENTER")
+
+			local bg = CreateFrame("Frame", nil, tab)
+			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
+			bg:CreateBackdrop("Transparent")
+
+			local selectedTex = bg:CreateTexture(nil, "BACKGROUND")
+			selectedTex:SetAllPoints()
+			selectedTex:SetColorTexture(unpack(E.media.rgbvaluecolor))
+			selectedTex:SetAlpha(0.25)
+			selectedTex:Hide()
+			tab.selectedTex = selectedTex
+
+			if tab == Report.InProgress then
+				bg:SetPoint("TOPLEFT", 5, 0)
+				bg:SetPoint("BOTTOMRIGHT")
+			else
+				bg:SetPoint("TOPLEFT")
+				bg:SetPoint("BOTTOMRIGHT", -7, 0)
+			end
+		end
+
+		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(self)
+			local unselectedTab = Report.unselectedTab
+			unselectedTab:SetHeight(36)
+			unselectedTab:SetNormalTexture("")
+			unselectedTab.selectedTex:Hide()
+
+			self:SetNormalTexture("")
+			self.selectedTex:Show()
+		end)
 	end
 
 	-- Landing page: Report
@@ -231,6 +267,16 @@ local function LoadSkin()
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
 				reward:SetPoint("TOPRIGHT", -5, -5)
+
+				if E.private.skins.parchmentRemover.enable then
+					button.BG:Hide()
+
+					local bg = CreateFrame("Frame", nil, button)
+					bg:SetPoint("TOPLEFT")
+					bg:SetPoint("BOTTOMRIGHT", 0, 1)
+					bg:SetFrameLevel(button:GetFrameLevel() - 1)
+					bg:CreateBackdrop("Transparent")
+				end
 			end
 		end
 	end
