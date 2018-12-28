@@ -250,7 +250,7 @@ local function LoadSkin()
 	end
 
 	-- Landing page: Report
-	local Report = GarrisonLandingPage.Report
+	Report = GarrisonLandingPage.Report -- reassigned
 	Report.List:StripTextures(true)
 	scrollFrame = Report.List.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)

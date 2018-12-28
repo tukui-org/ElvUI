@@ -29,7 +29,7 @@ local function LoadSkin()
 		scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
 		scrollFrame.Child.RacialTraitsLabel:SetTextColor(1, .8, 0)
 
-		AlliedRacesFrame:HookScript("OnShow", function(self)
+		AlliedRacesFrame:HookScript("OnShow", function()
 			local parent = scrollFrame.Child
 			for i = 1, parent:GetNumChildren() do
 				local bu = select(i, parent:GetChildren())
@@ -45,8 +45,8 @@ local function LoadSkin()
 		end)
 	else
 		AlliedRacesFrame.NineSlice:SetAlpha(0)
-		AlliedRacesFramePortrait:SetAlpha(0)
-		AlliedRacesFrameBg:SetAlpha(0)
+		_G.AlliedRacesFramePortrait:SetAlpha(0)
+		_G.AlliedRacesFrameBg:SetAlpha(0)
 		AlliedRacesFrame.TitleBg:SetAlpha(0)
 		AlliedRacesFrame.ModelFrame:StripTextures()
 
@@ -58,9 +58,9 @@ local function LoadSkin()
 		scrollFrame.ScrollBar.ScrollDownBorder:Hide()
 		S:HandleScrollSlider(scrollFrame.ScrollBar)
 
-		S:HandleCloseButton(AlliedRacesFrameCloseButton)
+		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 
-		AlliedRacesFrame:HookScript("OnShow", function(self)
+		AlliedRacesFrame:HookScript("OnShow", function()
 			local parent = scrollFrame.Child
 			for i = 1, parent:GetNumChildren() do
 				local bu = select(i, parent:GetChildren())
