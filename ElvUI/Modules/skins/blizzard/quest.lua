@@ -231,7 +231,7 @@ local function LoadSkin()
 			local requiredMoney = GetQuestLogRequiredMoney()
 			if requiredMoney > 0 then
 				if requiredMoney > GetMoney() then
-					_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+					_G.QuestInfoRequiredMoneyText:SetTextColor(.63, .09, .09)
 				else
 					_G.QuestInfoRequiredMoneyText:SetTextColor(1, .8, .1)
 				end
