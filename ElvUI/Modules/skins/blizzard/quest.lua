@@ -143,7 +143,7 @@ local function LoadSkin()
 						if finished then
 							objective:SetTextColor(1, .8, .1)
 						else
-							objective:SetTextColor(0.6, 0.6, 0.6)
+							objective:SetTextColor(.63, .09, .09)
 						end
 					end
 				end
