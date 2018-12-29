@@ -123,31 +123,15 @@ local function LoadSkin()
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
-	do
-		local reagentIndex = 1
-		hooksecurefunc("GarrisonCapacitiveDisplayFrame_Update", function()
-			local reagents = CapacitiveDisplay.Reagents
-			local reagent = reagents[reagentIndex]
-			while reagent do
-				reagent.NameFrame:SetTexture()
-				reagent.Icon:SetTexCoord(unpack(E.TexCoords))
-				reagent.Icon:SetDrawLayer("BORDER")
-
-				if not reagent.border then
-					reagent.border = CreateFrame("Frame", nil, reagent)
-					S:HandleIcon(reagent.Icon, reagent.border)
-					reagent.Count:SetParent(reagent.border)
-				end
-
-				if not reagent.backdrop then
-					reagent:CreateBackdrop("Default", true)
-				end
-
-				reagentIndex = reagentIndex + 1
-				reagent = reagents[reagentIndex]
+	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(self)
+		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
+			if not Reagent.backdrop then
+				Reagent.NameFrame:SetTexture('')
+				S:HandleTexture(Reagent.Icon, Reagent)
+				Reagent:CreateBackdrop()
 			end
-		end)
-	end
+		end
+	end)
 
 	-- Recruiter frame
 	S:HandlePortraitFrame(_G.GarrisonRecruiterFrame, true)
