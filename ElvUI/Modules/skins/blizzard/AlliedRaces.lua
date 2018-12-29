@@ -28,21 +28,6 @@ local function LoadSkin()
 		AlliedRacesFrame.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(1, .8, 0)
 		scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
 		scrollFrame.Child.RacialTraitsLabel:SetTextColor(1, .8, 0)
-
-		AlliedRacesFrame:HookScript("OnShow", function()
-			local parent = scrollFrame.Child
-			for i = 1, parent:GetNumChildren() do
-				local bu = select(i, parent:GetChildren())
-
-				if bu.Icon and not bu.IsSkinned then
-					select(3, bu:GetRegions()):Hide()
-					S:HandleTexture(bu.Icon, bu)
-					bu.Text:SetTextColor(1, 1, 1)
-
-					bu.IsSkinned = true
-				end
-			end
-		end)
 	else
 		AlliedRacesFrame.NineSlice:SetAlpha(0)
 		_G.AlliedRacesFramePortrait:SetAlpha(0)
@@ -59,21 +44,17 @@ local function LoadSkin()
 		S:HandleScrollSlider(scrollFrame.ScrollBar)
 
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
-
-		AlliedRacesFrame:HookScript("OnShow", function()
-			local parent = scrollFrame.Child
-			for i = 1, parent:GetNumChildren() do
-				local bu = select(i, parent:GetChildren())
-
-				if bu.Icon and not bu.IsSkinned then
-					select(3, bu:GetRegions()):Hide()
-					S:HandleTexture(bu.Icon, bu)
-
-					bu.IsSkinned = true
-				end
-			end
-		end)
 	end
+
+	AlliedRacesFrame:HookScript("OnShow", function(self)
+		for button in self.abilityPool:EnumerateActive() do
+			select(3, button:GetRegions()):Hide()
+			S:HandleTexture(button.Icon, button)
+			if E.private.skins.parchmentRemover.enable then
+				button.Text:SetTextColor(1, 1, 1)
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_AlliedRacesUI", "AlliedRaces", LoadSkin)
