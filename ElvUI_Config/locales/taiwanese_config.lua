@@ -1012,6 +1012,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "添加一個技能到過濾器"
 L["Add Spell ID or Name"] = "添加技能ID或者名字"
 L["Add SpellID"] = "添加技能ID"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = "額外能量文字"
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = "錨定新框架時的X偏移(單位:像素)"
@@ -1077,6 +1078,7 @@ L["Current / Max"] = "目前/最大值"
 L["Current"] = "目前值"
 L["Custom Dead Backdrop"] = "自定義死亡背景"
 L["Custom Health Backdrop"] = "自訂生命條背景"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "自定義字體"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "減益光環加亮顯示"
@@ -1239,6 +1241,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "能量"
 L["Powers"] = "能量"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "優先級"
 L["Profile Specific"] = "角色專用"
 L["PvP & Prestige Icon"] = "PvP和威望圖標"

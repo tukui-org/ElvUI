@@ -1010,6 +1010,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Добавить заклинание в фильтр"
 L["Add Spell ID or Name"] = "Добавить ID или имя заклинания"
 L["Add SpellID"] = "Добавить ID заклинания"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = "Текст дополнительного ресурса"
 L["Additional spacing between each individual group."] = "дополнительный отступ между группами."
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Отступ по оси X (в пикселях) при фиксации новой рамки."
@@ -1075,6 +1076,7 @@ L["Current / Max"] = "Текущее / Максимальное"
 L["Current"] = "Текущее"
 L["Custom Dead Backdrop"] = "Свой фон мертвого"
 L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Свой текст"
 L["Custom Texture"] = "Своя текстура"
 L["Debuff Highlighting"] = "Подсветка дебаффов"
@@ -1237,6 +1239,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Ресурс"
 L["Powers"] = "Ресурсы"
 L["Power Prediction"] = "Предсказание ресурса"
+L["Power Prediction Color"] = true
 L["Priority"] = "Приоритет"
 L["Profile Specific"] = "По профилю"
 L["PvP & Prestige Icon"] = "Иконки PvP и престижа"

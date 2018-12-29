@@ -1012,6 +1012,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Adicionar um feitiço ao filtro."
 L["Add Spell ID or Name"] = true
 L["Add SpellID"] = "Adicionar SpellID"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = true
@@ -1077,6 +1078,7 @@ L["Current / Max"] = "Atual / Máximo"
 L["Current"] = "Atual"
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = "Fundo de vida personalizada"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Textos Personalizados"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Destacar Penalidades"
@@ -1239,6 +1241,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Poder"
 L["Powers"] = "Poderes"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "prioridade"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true

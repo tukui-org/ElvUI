@@ -1011,6 +1011,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Ajouter un sort au filtre."
 L["Add Spell ID or Name"] = true
 L["Add SpellID"] = "Ajouter l'identifiant d'un sort"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Un décalage X (en pixels) à utiliser lors d'un ancrage d'une nouvelle fenêtre." --need review
@@ -1076,6 +1077,7 @@ L["Current / Max"] = "Actuel / Max"
 L["Current"] = "Actuel"
 L["Custom Dead Backdrop"] = "Fond 'mort' personnalisé"
 L["Custom Health Backdrop"] = "Fond de vie personnalisé"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Textes personnalisés"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Surbrillance des affaiblissements" --can we traduct "highlighting" by "surbrillance" ? Yes :)
@@ -1238,6 +1240,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Énergie"
 L["Powers"] = "Énergies"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "Priorité"
 L["Profile Specific"] = "Profil spécifique"
 L["PvP & Prestige Icon"] = "Icône prestige de PVP"
