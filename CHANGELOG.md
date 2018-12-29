@@ -4,6 +4,7 @@
 Added `Weakened Soul` back to our Buff Indicator.  
 Added new Currencies to our Currencies Datatext.  
 Added NamePlate classbar scale option.  
+Added color options for UnitFrame Power Predictions.  
 
 **Bug Fixes:**  
 Fixed a possible nil error on our NamePlate auras.  
