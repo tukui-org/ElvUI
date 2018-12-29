@@ -1159,8 +1159,8 @@ P['unitframe'] = {
 			['MAELSTROM'] = {r = 0, g = 0.5, b = 1},
 		},
 		['customPowerPrediction'] = false,
-		['customAdditionalPowerPredictionColor'] = {r = 1, g = 1, b = 1},
-		['customPowerPredictionColor'] = {r = 1, g = 1, b = 1},
+		['customAdditionalPowerPredictionColor'] = {r = 1, g = 1, b = 1, a = 1},
+		['customPowerPredictionColor'] = {r = 1, g = 1, b = 1, a = 1},
 		['reaction'] = {
 			['BAD'] = { r = 199/255, g = 64/255, b = 64/255 },
 			['NEUTRAL'] = { r = 218/255, g = 197/255, b = 92/255 },

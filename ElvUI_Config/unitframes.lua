@@ -2825,54 +2825,6 @@ E.Options.args.unitframe = {
 									name = MAELSTROM,
 									type = 'color'
 								},
-								spacer1 = {
-									order = 13,
-									type = "description",
-									name = "",
-								},
-								customPowerPrediction = {
-									order = 15,
-									type = 'toggle',
-									customWidth = 250,
-									name = L["Custom Power Prediction Color"],
-									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
-									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-								},
-								spacer2 = {
-									order = 16,
-									type = "description",
-									name = "",
-								},
-								customPowerPredictionColor = {
-									order = 17,
-									name = L["Power Prediction Color"],
-									type = 'color',
-									get = function(info)
-										local t = E.db.unitframe.colors[ info[#info] ]
-										local d = P.unitframe.colors[ info[#info] ]
-										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-									end,
-									set = function(info, r, g, b)
-										local t = E.db.unitframe.colors[ info[#info] ]
-										t.r, t.g, t.b = r, g, b
-										UF:Update_AllFrames()
-									end,
-								},
-								customAdditionalPowerPredictionColor = {
-									order = 18,
-									name = L["Additional Power Prediction Color"],
-									type = 'color',
-									get = function(info)
-										local t = E.db.unitframe.colors[ info[#info] ]
-										local d = P.unitframe.colors[ info[#info] ]
-										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-									end,
-									set = function(info, r, g, b)
-										local t = E.db.unitframe.colors[ info[#info] ]
-										t.r, t.g, t.b = r, g, b
-										UF:Update_AllFrames()
-									end,
-								},
 							},
 						},
 						reactionGroup = {
@@ -3101,8 +3053,50 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						debuffHighlight = {
+						powerPrediction = {
 							order = 9,
+							name = L["Power Prediction"],
+							type = 'group',
+							get = function(info)
+								local t = E.db.unitframe.colors[ info[#info] ]
+								local d = P.unitframe.colors[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								UF:Update_AllFrames()
+							end,
+							args = {
+								customPowerPrediction = {
+									order = 15,
+									type = 'toggle',
+									customWidth = 250,
+									name = L["Custom Power Prediction Color"],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+								},
+								spacer2 = {
+									order = 16,
+									type = "description",
+									name = "",
+								},
+								customPowerPredictionColor = {
+									order = 17,
+									name = L["Power Prediction Color"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								customAdditionalPowerPredictionColor = {
+									order = 18,
+									name = L["Additional Power Prediction Color"],
+									type = 'color',
+									hasAlpha = true,
+								},
+							},
+						},
+						debuffHighlight = {
+							order = 10,
 							name = L["Debuff Highlighting"],
 							type = 'group',
 							get = function(info)

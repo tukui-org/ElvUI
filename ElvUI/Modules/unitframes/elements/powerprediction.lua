@@ -24,7 +24,7 @@ function UF:Construct_PowerPrediction(frame)
 			if frame and frame.PowerPrediction and frame.PowerPrediction.altBar then
 				if UF and UF.db and UF.db.colors and UF.db.colors.customPowerPrediction then
 					local color = UF.db.colors.customAdditionalPowerPredictionColor
-					frame.PowerPrediction.altBar:SetStatusBarColor(color.r, color.g, color.b)
+					frame.PowerPrediction.altBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 				else
 					frame.PowerPrediction.altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 				end
