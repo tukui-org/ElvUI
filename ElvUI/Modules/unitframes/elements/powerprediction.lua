@@ -4,6 +4,7 @@ local UF = E:GetModule('UnitFrames');
 --Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 function UF:Construct_PowerPrediction(frame)
 	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
@@ -19,6 +20,12 @@ function UF:Construct_PowerPrediction(frame)
 		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
 		UF.statusbars[altBar] = true
 		altBar:Hide()
+
+		hooksecurefunc(frame.AdditionalPower, 'SetStatusBarColor', function(_, r, g, b)
+			if frame and frame.PowerPrediction and frame.PowerPrediction.altBar then
+				frame.PowerPrediction.altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			end
+		end)
 
 		PowerPrediction.altBar = altBar
 	end
@@ -37,14 +44,10 @@ function UF:Configure_PowerPrediction(frame)
 		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
 		local orientation = frame.db.power.orientation or frame.Power:GetOrientation()
 		local reverseFill = not not frame.db.power.reverseFill
-		local r, g, b = frame.Power:GetStatusBarColor()
 
-		mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 		mainBar:SetReverseFill(not reverseFill)
 
 		if altBar then
-			r, g, b = frame.AdditionalPower:GetStatusBarColor()
-			altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 			altBar:SetReverseFill(true)
 		end
 
