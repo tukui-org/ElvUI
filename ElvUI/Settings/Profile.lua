@@ -1158,9 +1158,6 @@ P['unitframe'] = {
 			['INSANITY'] = {r = 0.55, g = 0.14, b = 0.69},
 			['MAELSTROM'] = {r = 0, g = 0.5, b = 1},
 		},
-		['customPowerPrediction'] = false,
-		['customAdditionalPowerPredictionColor'] = {r = 1, g = 1, b = 1, a = 1},
-		['customPowerPredictionColor'] = {r = 1, g = 1, b = 1, a = 1},
 		['reaction'] = {
 			['BAD'] = { r = 199/255, g = 64/255, b = 64/255 },
 			['NEUTRAL'] = { r = 218/255, g = 197/255, b = 92/255 },
@@ -1183,6 +1180,11 @@ P['unitframe'] = {
 			['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 			['maxOverflow'] = 0,
+		},
+		['powerPrediction'] = {
+			['enable'] = false,
+			['additional'] = {r = 1, g = 1, b = 1, a = 1},
+			['color'] = {r = 1, g = 1, b = 1, a = 1},
 		},
 		['classResources'] = {
 			['bgColor'] = {r = 0.1,g = 0.1,b = 0.1, a = 1},

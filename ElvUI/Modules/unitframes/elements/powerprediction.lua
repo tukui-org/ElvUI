@@ -22,8 +22,8 @@ function UF:Construct_PowerPrediction(frame)
 
 		hooksecurefunc(frame.AdditionalPower, 'SetStatusBarColor', function(_, r, g, b)
 			if frame and frame.PowerPrediction and frame.PowerPrediction.altBar then
-				if UF and UF.db and UF.db.colors and UF.db.colors.customPowerPrediction then
-					local color = UF.db.colors.customAdditionalPowerPredictionColor
+				if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+					local color = UF.db.colors.powerPrediction.additional
 					frame.PowerPrediction.altBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 				else
 					frame.PowerPrediction.altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
