@@ -11,23 +11,25 @@ function UF:Construct_PowerPrediction(frame)
 	UF.statusbars[mainBar] = true
 	mainBar:Hide()
 
-	local PowerPrediction = {
-		mainBar = mainBar,
-		parent = frame
-	}
+	local PowerPrediction = { mainBar = mainBar, parent = frame }
 
 	if frame.AdditionalPower then
 		local altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
 		UF.statusbars[altBar] = true
 		altBar:Hide()
 
+		PowerPrediction.altBar = altBar
+
 		hooksecurefunc(frame.AdditionalPower, 'SetStatusBarColor', function(_, r, g, b)
 			if frame and frame.PowerPrediction and frame.PowerPrediction.altBar then
-				frame.PowerPrediction.altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+				if UF and UF.db and UF.db.colors and UF.db.colors.customPowerPrediction then
+					local color = UF.db.colors.customAdditionalPowerPredictionColor
+					frame.PowerPrediction.altBar:SetStatusBarColor(color.r, color.g, color.b)
+				else
+					frame.PowerPrediction.altBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+				end
 			end
 		end)
-
-		PowerPrediction.altBar = altBar
 	end
 
 	return PowerPrediction

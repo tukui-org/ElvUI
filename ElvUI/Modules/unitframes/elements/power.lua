@@ -18,7 +18,12 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)
 		if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
-			frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			if UF and UF.db and UF.db.colors and UF.db.colors.customPowerPrediction then
+				local color = UF.db.colors.customPowerPredictionColor
+				frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b)
+			else
+				frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			end
 		end
 	end)
 
