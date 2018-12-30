@@ -516,8 +516,6 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 
 	if not btn.icon then
 		btn.icon = btn:CreateTexture(nil, 'ARTWORK')
-		btn.icon:SetSnapToPixelGrid(false)
-		btn.icon:SetTexelSnappingBias(0)
 		btn.icon:Size(13)
 		btn.icon:Point('CENTER')
 		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
@@ -796,8 +794,6 @@ function S:HandleTexture(icon, parent)
 	if parent then
 		local layer, subLevel = icon:GetDrawLayer()
 		local iconBorder = parent:CreateTexture(nil, layer, nil, subLevel - 1)
-		iconBorder:SetSnapToPixelGrid(false)
-		iconBorder:SetTexelSnappingBias(0)
 		iconBorder:SetPoint("TOPLEFT", icon, -1, 1)
 		iconBorder:SetPoint("BOTTOMRIGHT", icon, 1, -1)
 		iconBorder:SetColorTexture(0, 0, 0)
