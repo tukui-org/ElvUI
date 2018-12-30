@@ -132,6 +132,8 @@ function mod:ConstructElement_Glow(frame)
 	f:Hide()
 
 	local glow = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	glow:SetSnapToPixelGrid(false)
+	glow:SetTexelSnappingBias(0)
 	glow:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	glow:Hide()
 	frame.Glow2 = glow
