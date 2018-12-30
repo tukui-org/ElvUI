@@ -93,7 +93,7 @@ local function LoadSkin()
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
-	--TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
+	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
