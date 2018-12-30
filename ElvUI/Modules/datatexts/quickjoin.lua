@@ -9,12 +9,14 @@ local next, pairs, select, type = next, pairs, select, type
 local twipe = table.wipe
 local format, join = string.format, string.join
 --WoW API / Variables
-local C_LFGList = C_LFGList
-local C_SocialQueue = C_SocialQueue
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local C_SocialQueue_GetAllGroups = C_SocialQueue.GetAllGroups
+local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
+local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
+local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS:
@@ -41,14 +43,14 @@ end
 local CHAT
 local function OnEvent(self)
 	twipe(quickJoin)
-	quickJoinGroups = C_SocialQueue.GetAllGroups()
+	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
 	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
 
-	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityID, activityName, leaderName, isLeader, activityFullName, activity, output, queueCount, queueName, _
+	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
 
 	for _, guid in pairs(quickJoinGroups) do
-		coloredName, players = UNKNOWN, C_SocialQueue.GetGroupMembers(guid)
+		coloredName, players = UNKNOWN, C_SocialQueue_GetGroupMembers(guid)
 		members = players and SocialQueueUtil_SortGroupMembers(players)
 		playerName = ""
 		if members then
@@ -64,26 +66,25 @@ local function OnEvent(self)
 			end
 		end
 
-		queues = C_SocialQueue.GetGroupQueues(guid)
+		queues = C_SocialQueue_GetGroupQueues(guid)
 		firstQueue, numQueues = queues and queues[1], queues and #queues or 0
 		isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 		if isLFGList and firstQueue and firstQueue.eligible then
 
 			if firstQueue.queueData.lfgListID then
-				_, activityID, activityName, _, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(firstQueue.queueData.lfgListID)
-				isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
+				searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+				if searchResultInfo then
+					activityName, leaderName = searchResultInfo.name, searchResultInfo.leaderName
+					isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
+				end
 			end
-
-			--[[if activityID or firstQueue.queueData.activityID then
-				activityFullName = C_LFGList.GetActivityInfo(activityID or firstQueue.queueData.activityID)
-			end]]
 
 			if isLeader then
 				coloredName = format("|TInterface\\GroupFrame\\UI-Group-LeaderIcon:16:16|t%s", coloredName)
 			end
 
-			activity = --[[activityFullName and activityFullName or ]]activityName or UNKNOWN
+			activity = activityName or UNKNOWN
 			if numQueues > 1 then
 				activity = format("[+%s]%s", numQueues - 1, activity)
 			end
