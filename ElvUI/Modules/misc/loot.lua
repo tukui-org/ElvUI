@@ -268,7 +268,7 @@ function M:LOOT_OPENED(_, autoloot)
 			end
 
 			-- Check for FasterLooting scripts or w/e (if bag is full)
-			if GetLootSlotInfo(i) then
+			if textureID then
 				slot:Enable()
 				slot:Show()
 			end
