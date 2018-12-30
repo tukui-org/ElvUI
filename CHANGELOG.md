@@ -22,6 +22,7 @@ Fixed issue which caused NamePlate StyleFilter NameOnly option to misplace the C
 Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also correctly works on Druids now.  
 Fixed issue with NamePlates glow beeing pixelated.  
 Fixed issues in bag searching. (#931)  
+Fixed Social Queue Datatext and Chat Message.  
 
 **Misc. Changes:**  
 Changed Health Backdrop Multiplier to be an Override instead.  
