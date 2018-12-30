@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs, select = unpack, pairs, select
+local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -124,7 +124,7 @@ local function LoadSkin()
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
 	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(self)
-		for _, Reagent in pairs(self.CapacitiveDisplay.Reagents) do
+		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
 			if not Reagent.backdrop then
 				Reagent.NameFrame:SetTexture('')
 				S:HandleTexture(Reagent.Icon, Reagent)
