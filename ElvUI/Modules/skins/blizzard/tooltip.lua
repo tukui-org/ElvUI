@@ -71,6 +71,14 @@ local function LoadSkin()
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
+	-- EmbeddedItemTooltip
+	local reward = _G.EmbeddedItemTooltip.ItemTooltip
+	local icon = reward.Icon
+	if reward and reward.backdrop then
+		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
+		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+	end
+
 	-- Skin GameTooltip Status Bar
 	GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(GameTooltipStatusBar)
@@ -85,7 +93,7 @@ local function LoadSkin()
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
-	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
+	--TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
