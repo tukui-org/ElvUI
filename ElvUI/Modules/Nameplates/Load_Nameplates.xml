@@ -1,0 +1,4 @@
+<Ui>
+	<Script file="Nameplates.lua"/>
+	<Script file="Elements\Tags.lua"/>
+</Ui>
