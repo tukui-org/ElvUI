@@ -2187,11 +2187,14 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 	if isLFGList and firstQueue and firstQueue.eligible then
-		local activityID, name, comment, leaderName, fullName, isLeader, _
+		local searchResultInfo, activityID, name, comment, leaderName, fullName, isLeader
 
 		if firstQueue.queueData.lfgListID then
-			_, activityID, name, comment, _, _, _, _, _, _, _, _, leaderName = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
-			isLeader = self:SocialQueueIsLeader(playerName, leaderName)
+			searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+			if searchResultInfo then
+				activityID, name, comment, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.comment, searchResultInfo.leaderName
+				isLeader = self:SocialQueueIsLeader(playerName, leaderName)
+			end
 		end
 
 		-- ignore groups created by the addon World Quest Group Finder/World Quest Tracker/World Quest Assistant/HandyNotes_Argus to reduce spam
