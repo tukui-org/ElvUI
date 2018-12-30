@@ -20,6 +20,7 @@ Fixed Copy Chat Log (and Copy Chat Line) from displaying lines sometimes.
 Fixed minor positioning issue with role indicator on unitframes.  
 Fixed issue which caused NamePlate StyleFilter NameOnly option to misplace the ClassBar/Portrait on plates.  
 Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also correctly works on Druids now.  
+Fixed issue with NamePlates glow beeing pixelated.  
 Fixed issues in bag searching. (#931)  
 
 **Misc. Changes:**  
