@@ -241,25 +241,25 @@ function NP:StylePlate(frame, realUnit)
 
 	frame.AdditionalPower = AdditionalPower
 
-	local mainBar = CreateFrame('StatusBar', nil, Power)
-	mainBar:SetReverseFill(true)
-	mainBar:SetPoint('TOP')
-	mainBar:SetPoint('BOTTOM')
-	mainBar:SetPoint('RIGHT', Power:GetStatusBarTexture(), 'RIGHT')
-	mainBar:SetWidth(130)
-	mainBar:SetStatusBarTexture(PowerTexture)
+	local PowerBar = CreateFrame('StatusBar', nil, Power)
+	PowerBar:SetReverseFill(true)
+	PowerBar:SetPoint('TOP')
+	PowerBar:SetPoint('BOTTOM')
+	PowerBar:SetPoint('RIGHT', Power:GetStatusBarTexture(), 'RIGHT')
+	PowerBar:SetWidth(130)
+	PowerBar:SetStatusBarTexture(PowerTexture)
 
-	local altBar = CreateFrame('StatusBar', nil, AdditionalPower)
-	altBar:SetReverseFill(true)
-	altBar:SetPoint('TOP')
-	altBar:SetPoint('BOTTOM')
-	altBar:SetPoint('RIGHT', AdditionalPower:GetStatusBarTexture(), 'RIGHT')
-	altBar:SetWidth(130)
-	altBar:SetStatusBarTexture(PowerTexture)
+	local AltPowerBar = CreateFrame('StatusBar', nil, AdditionalPower)
+	AltPowerBar:SetReverseFill(true)
+	AltPowerBar:SetPoint('TOP')
+	AltPowerBar:SetPoint('BOTTOM')
+	AltPowerBar:SetPoint('RIGHT', AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+	AltPowerBar:SetWidth(130)
+	AltPowerBar:SetStatusBarTexture(PowerTexture)
 
 	frame.PowerPrediction = {
-		mainBar = mainBar,
-		altBar = altBar
+		mainBar = PowerBar,
+		altBar = AltPowerBar
 	}
 
 	Name:SetPoint('BOTTOM', Health, 'TOP', 0, 15)
