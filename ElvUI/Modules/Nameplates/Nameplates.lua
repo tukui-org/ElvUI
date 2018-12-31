@@ -269,7 +269,6 @@ function NP:StylePlate(frame, realUnit)
 	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5)
 	Info:SetJustifyH('LEFT')
 	Info:SetFont(Font, FontSize, FontFlag)
-	Info.frequentUpdates = true
 
 	RaidIcon:SetSize(16, 16)
 	RaidIcon:SetPoint('TOP', Health, 0, 8)
@@ -352,8 +351,46 @@ function NP:CVarReset()
 	end
 end
 
+function NP:PLAYER_REGEN_DISABLED()
+	if (self.db.showFriendlyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowFriends", 1);
+	elseif (self.db.showFriendlyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowFriends", 0);
+	end
+
+	if (self.db.showEnemyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowEnemies", 1);
+	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowEnemies", 0);
+	end
+
+	--if self.db.units.PLAYER.useStaticPosition then
+	--	self:UpdateVisibility()
+	--end
+end
+
+function NP:PLAYER_REGEN_ENABLED()
+	if (self.db.showFriendlyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowFriends", 0);
+	elseif (self.db.showFriendlyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowFriends", 1);
+	end
+
+	if (self.db.showEnemyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowEnemies", 0);
+	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowEnemies", 1);
+	end
+
+	--if self.db.units.PLAYER.useStaticPosition then
+	--	self:UpdateVisibility()
+	--end
+end
+
 function NP:Initialize()
 	self.db = E.db.nameplates
+
+	if E.private.nameplates.enable ~= true then return end
 
 	ElvUF:RegisterStyle('ElvNP', function(frame, unit)
 		NP:Style(frame, unit)
