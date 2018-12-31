@@ -175,7 +175,7 @@ function oUF:HandleUnit(object, unit)
 		object:RegisterEvent('INSTANCE_ENCOUNTER_ENGAGE_UNIT', object.UpdateAllElements, true)
 		object:RegisterEvent('UNIT_TARGETABLE_CHANGED', object.UpdateAllElements)
 	elseif(unit:match('arena%d?$')) then
-		object:RegisterEvent('ARENA_OPPONENT_UPDATE', object.UpdateAllElements)
+		object:RegisterEvent('ARENA_OPPONENT_UPDATE', object.UpdateAllElements, true)
 		object:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', updateArenaPreparation, true)
 		object:SetAttribute('oUF-enableArenaPrep', true)
 		-- the event handler only fires for visible frames, so we have to hook it for arena prep
