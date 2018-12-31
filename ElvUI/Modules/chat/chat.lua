@@ -2379,6 +2379,7 @@ function CH:Initialize()
 		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "VoiceOverlay");
 		self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "VoiceOverlay");
 		self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "VoiceOverlay");
+		_G.VoiceActivityManager:UnregisterAllEvents();
 	end
 
 	self:SetupChat()
