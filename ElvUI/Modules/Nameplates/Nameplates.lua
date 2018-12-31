@@ -40,38 +40,36 @@ function NP:Style(frame, unit)
 	return frame
 end
 
-function NP:StylePlate(frame, realUnit)
-	local HealthTexture = LSM:Fetch('statusbar', self.db.statusbar)
-	local PowerTexture = LSM:Fetch('statusbar', self.db.statusbar)
-	local CastTexture = LSM:Fetch('statusbar', self.db.statusbar)
-	local Font, FontSize, FontFlag = LSM:Fetch('font', 'Arial'), 12, 'OUTLINE'
+function NP:StylePlate(nameplate, realUnit)
+	local Texture = LSM:Fetch('statusbar', self.db.statusbar)
+	local Font, FontSize, FontFlag = LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline
 
-	local Health = CreateFrame('StatusBar', nil, frame)
-	local Power = CreateFrame('StatusBar', nil, frame)
-	local AdditionalPower = CreateFrame('StatusBar', nil, frame)
-	local FloatingCombatFeedback = CreateFrame('Frame', nil, Health)
-	local CastBar = CreateFrame('StatusBar', nil, frame)
+	local Health = CreateFrame('StatusBar', nil, nameplate)
+	local Power = CreateFrame('StatusBar', nil, nameplate)
+	local AdditionalPower = CreateFrame('StatusBar', nil, nameplate)
+	local CastBar = CreateFrame('StatusBar', nil, nameplate)
 
-	local Name = Health:CreateFontString(nil, 'OVERLAY')
-	local Info = Health:CreateFontString(nil, 'OVERLAY')
-	local RaidIcon = Health:CreateTexture(nil, 'OVERLAY')
-	local QuestIcon = Health:CreateTexture(nil, 'OVERLAY', 2)
+	local Name = nameplate:CreateFontString(nil, 'OVERLAY')
+	local Info = nameplate:CreateFontString(nil, 'OVERLAY')
+	local RaidIcon = nameplate:CreateTexture(nil, 'OVERLAY')
+	local QuestIcon = nameplate:CreateTexture(nil, 'OVERLAY', 2)
 
-	frame:SetPoint('CENTER')
-	frame:SetSize(150, 10)
-	frame:SetScale(UIParent:GetEffectiveScale())
+	nameplate:SetPoint('CENTER')
+	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:SetScale(UIParent:GetEffectiveScale())
 
-	Health:SetFrameStrata(frame:GetFrameStrata())
+	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(4)
-	Health:SetAllPoints()
+	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
 	Health.backdrop:CreateShadow()
-	Health:SetStatusBarTexture(HealthTexture)
+	Health:SetStatusBarTexture(Texture)
 
 	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
-	Health.Value:SetFont(Font, FontSize, FontFlag)
+	Health.Value:SetFont(LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
+
 	Health.Value:SetPoint('RIGHT', Health, 'LEFT', -20, 0)
-	frame:Tag(Health.Value, '[curhp]')
+	nameplate:Tag(Health.Value, '[curhp]')
 
 	Health.PostUpdate = function(bar, _, min, max)
 		bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
@@ -94,7 +92,7 @@ function NP:StylePlate(frame, realUnit)
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
 		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, Health)
-		HealthPrediction[Bar]:SetStatusBarTexture(HealthTexture)
+		HealthPrediction[Bar]:SetStatusBarTexture(Texture)
 		HealthPrediction[Bar]:SetPoint('TOP')
 		HealthPrediction[Bar]:SetPoint('BOTTOM')
 		HealthPrediction[Bar]:SetWidth(150)
@@ -121,10 +119,10 @@ function NP:StylePlate(frame, realUnit)
 	HealthPrediction.maxOverflow = 1
 	HealthPrediction.frequentUpdates = true
 
-	frame.HealthPrediction = HealthPrediction
+	nameplate.HealthPrediction = HealthPrediction
 
-	CastBar:SetFrameStrata(frame:GetFrameStrata())
-	CastBar:SetStatusBarTexture(CastTexture)
+	CastBar:SetFrameStrata(nameplate:GetFrameStrata())
+	CastBar:SetStatusBarTexture(Texture)
 	CastBar:SetFrameLevel(6)
 	CastBar:CreateBackdrop('Transparent')
 	CastBar.backdrop:CreateShadow()
@@ -172,18 +170,18 @@ function NP:StylePlate(frame, realUnit)
 	CastBar.PostCastNotInterruptible = CheckInterrupt
 	CastBar.PostChannelStart = CheckInterrupt
 
-	Power:SetFrameStrata(frame:GetFrameStrata())
+	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(2)
 	Power:SetSize(130, 4)
 	Power:CreateBackdrop('Transparent')
 	Power.backdrop:CreateShadow()
 	Power:SetPoint('TOP', Health, 'TOP', 0, -14)
-	Power:SetStatusBarTexture(PowerTexture)
+	Power:SetStatusBarTexture(Texture)
 
 	Power.Value = Power:CreateFontString(nil, 'OVERLAY')
 	Power.Value:SetFont(Font, FontSize, FontFlag)
 	Power.Value:SetPoint('RIGHT', Power, 'LEFT', -20, 0)
-	frame:Tag(Power.Value, '[curpp]')
+	nameplate:Tag(Power.Value, '[curpp]')
 
 	Power.frequentUpdates = true
 	Power.colorTapping = true
@@ -213,18 +211,18 @@ function NP:StylePlate(frame, realUnit)
 	end
 
 	AdditionalPower:Hide()
-	AdditionalPower:SetFrameStrata(frame:GetFrameStrata())
+	AdditionalPower:SetFrameStrata(nameplate:GetFrameStrata())
 	AdditionalPower:SetFrameLevel(2)
 	AdditionalPower:SetSize(130, 4)
 	AdditionalPower:CreateBackdrop('Transparent')
 	AdditionalPower.backdrop:CreateShadow()
 	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2)
-	AdditionalPower:SetStatusBarTexture(PowerTexture)
+	AdditionalPower:SetStatusBarTexture(Texture)
 
 	AdditionalPower.Value = AdditionalPower:CreateFontString(nil, 'OVERLAY')
 	AdditionalPower.Value:SetFont(Font, FontSize, FontFlag)
 	AdditionalPower.Value:SetPoint('LEFT', AdditionalPower, 'RIGHT', 20, 0)
-	frame:Tag(AdditionalPower.Value, '[curmana]')
+	nameplate:Tag(AdditionalPower.Value, '[curmana]')
 
 	AdditionalPower.colorPower = true
 	AdditionalPower.PreUpdate = function(bar)
@@ -239,7 +237,7 @@ function NP:StylePlate(frame, realUnit)
 
 	AdditionalPower.PostUpdate = AdditionalPower.PostUpdate
 
-	frame.AdditionalPower = AdditionalPower
+	nameplate.AdditionalPower = AdditionalPower
 
 	local PowerBar = CreateFrame('StatusBar', nil, Power)
 	PowerBar:SetReverseFill(true)
@@ -247,7 +245,7 @@ function NP:StylePlate(frame, realUnit)
 	PowerBar:SetPoint('BOTTOM')
 	PowerBar:SetPoint('RIGHT', Power:GetStatusBarTexture(), 'RIGHT')
 	PowerBar:SetWidth(130)
-	PowerBar:SetStatusBarTexture(PowerTexture)
+	PowerBar:SetStatusBarTexture(Texture)
 
 	local AltPowerBar = CreateFrame('StatusBar', nil, AdditionalPower)
 	AltPowerBar:SetReverseFill(true)
@@ -255,9 +253,9 @@ function NP:StylePlate(frame, realUnit)
 	AltPowerBar:SetPoint('BOTTOM')
 	AltPowerBar:SetPoint('RIGHT', AdditionalPower:GetStatusBarTexture(), 'RIGHT')
 	AltPowerBar:SetWidth(130)
-	AltPowerBar:SetStatusBarTexture(PowerTexture)
+	AltPowerBar:SetStatusBarTexture(Texture)
 
-	frame.PowerPrediction = {
+	nameplate.PowerPrediction = {
 		mainBar = PowerBar,
 		altBar = AltPowerBar
 	}
@@ -279,12 +277,8 @@ function NP:StylePlate(frame, realUnit)
 	QuestIcon:SetTexture('Interface\\MINIMAP\\ObjectIcons')
 	QuestIcon:SetTexCoord(0.125, 0.250, 0.125, 0.250)
 
-	frame:Tag(Name, '[name] [level] [npctitle]')
-	frame:Tag(Info, '[quest:info]')
-
-	local Leader = Health:CreateTexture(nil, 'OVERLAY', 2)
-	Leader:Size(14, 14)
-	Leader:Point('TOPLEFT', 0, 8)
+	nameplate:Tag(Name, '[name] [level] [npctitle]')
+	nameplate:Tag(Info, '[quest:info]')
 
 	local PvP = Health:CreateTexture(nil, 'OVERLAY')
 	PvP:Size(36, 36)
@@ -310,39 +304,50 @@ function NP:StylePlate(frame, realUnit)
 	ThreatIndicator:SetPoint('CENTER', Health, 'TOPRIGHT')
 	ThreatIndicator.feedbackUnit = 'player'
 
-	frame.ThreatIndicator = ThreatIndicator
+	nameplate.ThreatIndicator = ThreatIndicator
 
 	local ClassificationIndicator = Health:CreateTexture(nil, 'OVERLAY')
 	ClassificationIndicator:SetSize(16, 16)
 	ClassificationIndicator:SetPoint('RIGHT', Health, 'LEFT')
 
-	frame.ClassificationIndicator = ClassificationIndicator
+	nameplate.ClassificationIndicator = ClassificationIndicator
 
 	-- Register with oUF
-	frame.Health = Health
-	frame.Power = Power
-	frame.Castbar = CastBar
+	nameplate.Health = Health
+	nameplate.Power = Power
+	nameplate.Castbar = CastBar
 
-	frame.Name = Name
-	frame.Info = Info
+	nameplate.Name = Name
+	nameplate.Info = Info
 
-	frame.QuestIndicator = QuestIcon
-	frame.RaidTargetIndicator = RaidTargetIndicator
-	frame.PvPIndicator = PvP
-
-	frame.FloatingCombatFeedback = FloatingCombatFeedback
+	nameplate.QuestIndicator = QuestIcon
+	nameplate.RaidTargetIndicator = RaidTargetIndicator
+	nameplate.PvPIndicator = PvP
 end
 
-function NP:PersonalStyle(self, event, unit)
+function NP:PersonalStyle(nameplate, event, unit)
+	-- self.db.units.PLAYER
+	nameplate.Health:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.healthbar.height)
 end
 
-function NP:FriendlyStyle(self, event, unit)
+function NP:FriendlyStyle(nameplate, event, unit)
+	-- self.db.units.FRIENDLY_PLAYER
+	nameplate.Health:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.healthbar.height)
 end
 
-function NP:NPCStyle(self, event, unit)
+function NP:FriendlyNPCStyle(nameplate, event, unit)
+	-- self.db.units.FRIENDLY_NPC
+	nameplate.Health:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.healthbar.height)
 end
 
-function NP:EnemyStyle(self, event, unit)
+function NP:EnemyStyle(nameplate, event, unit)
+	-- self.db.units.ENEMY_PLAYER
+	nameplate.Health:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.healthbar.height)
+end
+
+function NP:EnemyNPCStyle(nameplate, event, unit)
+	-- self.db.units.ENEMY_NPC
+	nameplate.Health:SetSize(self.db.units.ENEMY_NPC.healthbar.width, self.db.units.ENEMY_NPC.healthbar.height)
 end
 
 function NP:CVarReset()
@@ -438,7 +443,9 @@ function NP:Initialize()
 		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
 			NP:FriendlyStyle(nameplate, event, unit)
 		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
-			NP:NPCStyle(nameplate, event, unit)
+			NP:FriendlyNPCStyle(nameplate, event, unit)
+		elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
+			NP:EnemyNPCStyle(nameplate, event, unit)
 		else
 			NP:EnemyStyle(nameplate, event, unit)
 		end
