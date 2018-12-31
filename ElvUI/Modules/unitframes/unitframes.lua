@@ -1090,7 +1090,7 @@ local HandleFrame = function(baseName)
 end
 
 function ElvUF:DisableBlizzard(unit)
-	if(not unit) or InCombatLockdown() then return end
+	if (not unit) then return end
 
 	if (unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
 		HandleFrame(PlayerFrame)
