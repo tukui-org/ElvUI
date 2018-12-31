@@ -68,8 +68,8 @@ function NP:StylePlate(nameplate, realUnit)
 
 	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
 	Health.Value:SetFont(LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
-	Health.Value:SetPoint('CENTER', Health, 'CENTER', 0, 0)
-	nameplate:Tag(Health.Value, '[perhp]%')
+	Health.Value:SetPoint('CENTER', Health, 'CENTER', 0, 0) -- need option
+	nameplate:Tag(Health.Value, '[perhp]%') -- need option
 
 	Health.PostUpdate = function(bar, _, min, max)
 		bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
@@ -86,7 +86,7 @@ function NP:StylePlate(nameplate, realUnit)
 	Health.colorDisconnected = false
 	Health.colorClass = false
 
-	Health:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+	Health:SetStatusBarColor(0.2, 0.2, 0.2, 1) -- need option
 
 	Health.Smooth = true
 
@@ -128,15 +128,15 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar:SetFrameLevel(6)
 	CastBar:CreateBackdrop('Transparent')
 	--CastBar.backdrop:CreateShadow()
-	CastBar:SetHeight(16)
-	CastBar:SetPoint('TOPLEFT', Health, 'BOTTOMLEFT', 0, -20)
-	CastBar:SetPoint('TOPRIGHT', Health, 'BOTTOMRIGHT', 0, -20)
+	CastBar:SetHeight(16) -- need option
+	CastBar:SetPoint('TOPLEFT', Health, 'BOTTOMLEFT', 0, -20) -- need option
+	CastBar:SetPoint('TOPRIGHT', Health, 'BOTTOMRIGHT', 0, -20) -- need option
 
 	CastBar.Button = CreateFrame('Frame', nil, CastBar)
-	CastBar.Button:SetSize(18, 18)
+	CastBar.Button:SetSize(18, 18) -- need option
 	CastBar.Button:SetTemplate()
 	--CastBar.Button:CreateShadow()
-	CastBar.Button:SetPoint('RIGHT', CastBar, 'LEFT', -6, 0)
+	CastBar.Button:SetPoint('RIGHT', CastBar, 'LEFT', -6, 0) -- need option
 
 	CastBar.Icon = CastBar.Button:CreateTexture(nil, 'ARTWORK')
 	CastBar.Icon:SetInside()
@@ -150,10 +150,10 @@ function NP:StylePlate(nameplate, realUnit)
 
 	CastBar.Text = CastBar:CreateFontString(nil, 'OVERLAY')
 	CastBar.Text:SetFont(Font, FontSize, FontFlag)
-	CastBar.Text:SetPoint('LEFT', CastBar, 'LEFT', 4, 0)
+	CastBar.Text:SetPoint('LEFT', CastBar, 'LEFT', 4, 0) -- need option
 	CastBar.Text:SetTextColor(0.84, 0.75, 0.65)
 	CastBar.Text:SetJustifyH('LEFT')
-	CastBar.Text:SetSize(75, 16)
+	CastBar.Text:SetSize(75, 16) -- need option
 
 	local function CheckInterrupt(castbar, unit)
 		if (unit == 'vehicle') then
@@ -182,8 +182,8 @@ function NP:StylePlate(nameplate, realUnit)
 
 	Power.Value = Power:CreateFontString(nil, 'OVERLAY')
 	Power.Value:SetFont(Font, FontSize, FontFlag)
-	Power.Value:SetPoint('CENTER', Power, 'CENTER', 0, 0)
-	nameplate:Tag(Power.Value, '[perpp]%')
+	Power.Value:SetPoint('CENTER', Power, 'CENTER', 0, 0) -- need option
+	nameplate:Tag(Power.Value, '[perpp]%') -- need option
 
 	Power.frequentUpdates = true
 	Power.colorTapping = true
@@ -215,16 +215,16 @@ function NP:StylePlate(nameplate, realUnit)
 	AdditionalPower:Hide()
 	AdditionalPower:SetFrameStrata(nameplate:GetFrameStrata())
 	AdditionalPower:SetFrameLevel(2)
-	AdditionalPower:SetSize(130, 4)
+	AdditionalPower:SetSize(130, 4) -- need option
 	AdditionalPower:CreateBackdrop('Transparent')
 	--AdditionalPower.backdrop:CreateShadow()
-	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2)
+	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2) -- need option
 	AdditionalPower:SetStatusBarTexture(Texture)
 
 	AdditionalPower.Value = AdditionalPower:CreateFontString(nil, 'OVERLAY')
 	AdditionalPower.Value:SetFont(Font, FontSize, FontFlag)
-	AdditionalPower.Value:SetPoint('LEFT', AdditionalPower, 'RIGHT', 20, 0)
-	nameplate:Tag(AdditionalPower.Value, '[curmana]')
+	AdditionalPower.Value:SetPoint('CENTER', AdditionalPower, 'CENTER', 0, 0) -- need option
+	nameplate:Tag(AdditionalPower.Value, '[curmana]') -- need option
 
 	AdditionalPower.colorPower = true
 	AdditionalPower.PreUpdate = function(bar)
