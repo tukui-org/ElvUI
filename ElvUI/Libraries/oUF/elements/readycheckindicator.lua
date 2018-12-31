@@ -122,7 +122,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.ReadyCheckIndicator
-	unit = unit and unit:match('(%a+)%d+$')
+	unit = unit and unit:match('(%a+)%d*$')
 	if(element and (unit == 'party' or unit == 'raid')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
