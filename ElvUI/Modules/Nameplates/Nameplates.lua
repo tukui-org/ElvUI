@@ -67,7 +67,6 @@ function NP:StylePlate(nameplate, realUnit)
 
 	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
 	Health.Value:SetFont(LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
-
 	Health.Value:SetPoint('RIGHT', Health, 'LEFT', -20, 0)
 	nameplate:Tag(Health.Value, '[curhp]')
 
@@ -85,7 +84,9 @@ function NP:StylePlate(nameplate, realUnit)
 	Health.colorTapping = false
 	Health.colorDisconnected = false
 	Health.colorClass = false
+
 	Health:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+
 	Health.Smooth = true
 
 	local HealthPrediction = {}
@@ -327,6 +328,30 @@ end
 
 function NP:PersonalStyle(nameplate, event, unit)
 	-- self.db.units.PLAYER
+	-- ['glowStyle'] = 'TARGET_THREAT',
+
+	if self.db.units.PLAYER.healthbar.enable then
+		nameplate:EnableElement('Health')
+	else
+		nameplate:DisableElement('Health')
+	end
+
+	if self.db.units.PLAYER.healthbar.enable and self.db.units.PLAYER.healthbar.healPrediction then
+		nameplate:EnableElement('HealPrediction')
+	else
+		nameplate:DisableElement('HealPrediction')
+	end
+
+	if self.db.units.PLAYER.healthbar.text.enable then
+		nameplate.Health.Value:Show()
+	else
+		nameplate.Health.Value:Hide()
+	end
+
+	nameplate.Health.colorTapping = false
+	nameplate.Health.colorDisconnected = false
+	nameplate.Health.colorClass = self.db.units.PLAYER.healthbar.useClassColor
+
 	nameplate.Health:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.healthbar.height)
 end
 
@@ -335,14 +360,14 @@ function NP:FriendlyStyle(nameplate, event, unit)
 	nameplate.Health:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.healthbar.height)
 end
 
-function NP:FriendlyNPCStyle(nameplate, event, unit)
-	-- self.db.units.FRIENDLY_NPC
-	nameplate.Health:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.healthbar.height)
-end
-
 function NP:EnemyStyle(nameplate, event, unit)
 	-- self.db.units.ENEMY_PLAYER
 	nameplate.Health:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.healthbar.height)
+end
+
+function NP:FriendlyNPCStyle(nameplate, event, unit)
+	-- self.db.units.FRIENDLY_NPC
+	nameplate.Health:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.healthbar.height)
 end
 
 function NP:EnemyNPCStyle(nameplate, event, unit)
@@ -437,17 +462,18 @@ function NP:Initialize()
 	local function NamePlateCallBack(nameplate, event, unit)
 		local reaction = UnitReaction('player', unit)
 		local faction = UnitFactionGroup(unit)
-
-		if (UnitIsUnit(unit, 'player')) then
-			NP:PersonalStyle(nameplate, event, unit)
-		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
-			NP:FriendlyStyle(nameplate, event, unit)
-		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
-			NP:FriendlyNPCStyle(nameplate, event, unit)
-		elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
-			NP:EnemyNPCStyle(nameplate, event, unit)
-		else
-			NP:EnemyStyle(nameplate, event, unit)
+		if nameplate then
+			if (UnitIsUnit(unit, 'player')) then
+				NP:PersonalStyle(nameplate, event, unit)
+			elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
+				NP:FriendlyStyle(nameplate, event, unit)
+			elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
+				NP:FriendlyNPCStyle(nameplate, event, unit)
+			elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
+				NP:EnemyNPCStyle(nameplate, event, unit)
+			else
+				NP:EnemyStyle(nameplate, event, unit)
+			end
 		end
 	end
 
