@@ -604,10 +604,7 @@ function mod:ConfigureAll()
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
-	if mod.ClassBar then
-		mod.ClassBar:SetScale(self.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
-	end
-
+	self:ScaleClassNameplateBar(self.ClassBar)
 	self:StyleFilterConfigureEvents()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
@@ -983,13 +980,25 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 end
 
+function mod:ScaleClassNameplateBar(frame)
+	if not frame then return end
+	frame:EnableMouse(false)
+	frame:SetScale(mod.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
+	if frame.GetNumChildren then
+		for i=1, frame:GetNumChildren() do
+			local child = select(i, frame:GetChildren())
+			if child and child.EnableMouse then
+				child:EnableMouse(false)
+			end
+		end
+	end
+end
+
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
 
-	if frame then
-		mod:ClassBar_Update()
-		frame:SetScale(mod.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
-	end
+	mod:ScaleClassNameplateBar(frame)
+	mod:ClassBar_Update()
 end
 
 function mod:UpdateCVars()
@@ -1319,11 +1328,8 @@ function mod:Initialize()
 
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
-	if self.ClassBar then
-		self.ClassBar:SetScale(self.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
-		self.ClassBar:EnableMouse(false)
-	end
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
+	self:ScaleClassNameplateBar(self.ClassBar)
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
