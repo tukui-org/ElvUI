@@ -25,7 +25,9 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local function Update(self, event)
+local function Update(self, event, unit)
+	if(self.unit ~= unit) then return end
+
 	local element = self.ResurrectIndicator
 
 	--[[ Callback: ResurrectIndicator:PreUpdate()
@@ -37,7 +39,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local incomingResurrect = UnitHasIncomingResurrection(self.unit)
+	local incomingResurrect = UnitHasIncomingResurrection(unit)
 	if(incomingResurrect) then
 		element:Show()
 	else
@@ -67,7 +69,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 local function Enable(self)

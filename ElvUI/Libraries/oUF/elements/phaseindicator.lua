@@ -25,7 +25,9 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local function Update(self, event)
+local function Update(self, event, unit)
+	if(self.unit ~= unit) then return end
+
 	local element = self.PhaseIndicator
 
 	--[[ Callback: PhaseIndicator:PreUpdate()
@@ -37,8 +39,8 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isInSamePhase = UnitInPhase(self.unit) and not UnitIsWarModePhased(self.unit)
-	if(not isInSamePhase and UnitIsPlayer(self.unit) and UnitIsConnected(self.unit)) then
+	local isInSamePhase = UnitInPhase(unit) and not UnitIsWarModePhased(unit)
+	if(not isInSamePhase and UnitIsPlayer(unit) and UnitIsConnected(unit)) then
 		element:Show()
 	else
 		element:Hide()
@@ -67,7 +69,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 local function Enable(self)
@@ -76,7 +78,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_PHASE', Path, true)
+		self:RegisterEvent('UNIT_PHASE', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\TargetingFrame\UI-PhasingIcon]])

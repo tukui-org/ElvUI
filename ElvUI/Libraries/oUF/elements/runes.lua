@@ -175,6 +175,7 @@ local function Path(self, event, ...)
 end
 
 -- ElvUI block
+local VisibilityPath
 local function RunesEnable(self)
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
 	self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
@@ -223,7 +224,7 @@ local function Visibility(self, event, ...)
 	end
 end
 
-local VisibilityPath = function(self, ...)
+VisibilityPath = function(self, ...)
 	return (self.Runes.OverrideVisibility or Visibility) (self, ...)
 end
 -- end block
@@ -247,7 +248,7 @@ local function Enable(self, unit)
 			end
 		end
 
-		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path, true)
+		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
