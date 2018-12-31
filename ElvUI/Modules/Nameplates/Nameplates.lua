@@ -278,7 +278,7 @@ function NP:StylePlate(nameplate, realUnit)
 	QuestIcon:SetTexture('Interface\\MINIMAP\\ObjectIcons')
 	QuestIcon:SetTexCoord(0.125, 0.250, 0.125, 0.250)
 
-	nameplate:Tag(Name, '[name] [level] [npctitle]')
+	nameplate:Tag(Name, '[namecolor][name] [difficultycolor][level] [npctitle]')
 	nameplate:Tag(Info, '[quest:info]')
 
 	--local PvP = Health:CreateTexture(nil, 'OVERLAY')
