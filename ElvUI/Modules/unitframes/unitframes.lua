@@ -1087,7 +1087,7 @@ end
 function ElvUF:DisableBlizzard(unit)
 	if(not unit) or InCombatLockdown() then return end
 
-	if(unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
+	if (unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
@@ -1101,17 +1101,17 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 		RuneFrame:SetParent(PlayerFrame)
-	elseif(unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
+	elseif (unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
 		HandleFrame(PetFrame)
-	elseif(unit == 'target') and E.private.unitframe.disabledBlizzardFrames.target then
+	elseif (unit == 'target') and E.private.unitframe.disabledBlizzardFrames.target then
 		HandleFrame(TargetFrame)
 		HandleFrame(ComboFrame)
-	elseif(unit == 'focus') and E.private.unitframe.disabledBlizzardFrames.focus then
+	elseif (unit == 'focus') and E.private.unitframe.disabledBlizzardFrames.focus then
 		HandleFrame(FocusFrame)
 		HandleFrame(FocusFrameToT)
-	elseif(unit == 'targettarget') and E.private.unitframe.disabledBlizzardFrames.target then
+	elseif (unit == 'targettarget') and E.private.unitframe.disabledBlizzardFrames.target then
 		HandleFrame(TargetFrameToT)
-	elseif(unit:match'(boss)%d?$' == 'boss') and E.private.unitframe.disabledBlizzardFrames.boss then
+	elseif (unit:match'(boss)%d?$' == 'boss') and E.private.unitframe.disabledBlizzardFrames.boss then
 		local id = unit:match'boss(%d)'
 		if(id) then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
@@ -1120,7 +1120,7 @@ function ElvUF:DisableBlizzard(unit)
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end
-	elseif(unit:match'(party)%d?$' == 'party') and E.private.unitframe.disabledBlizzardFrames.party then
+	elseif (unit:match'(party)%d?$' == 'party') and E.private.unitframe.disabledBlizzardFrames.party then
 		local id = unit:match'party(%d)'
 		if(id) then
 			HandleFrame('PartyMemberFrame' .. id)
@@ -1130,7 +1130,7 @@ function ElvUF:DisableBlizzard(unit)
 			end
 		end
 		HandleFrame(PartyMemberBackground)
-	elseif(unit:match'(arena)%d?$' == 'arena') and E.private.unitframe.disabledBlizzardFrames.arena then
+	elseif (unit:match'(arena)%d?$' == 'arena') and E.private.unitframe.disabledBlizzardFrames.arena then
 		local id = unit:match'arena(%d)'
 
 		if(id) then
@@ -1143,6 +1143,11 @@ function ElvUF:DisableBlizzard(unit)
 				HandleFrame(('ArenaPrepFrame%d'):format(i))
 				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))
 			end
+		end
+	elseif (unit:match('nameplate%d+$')) then
+		local frame = C_NamePlate.GetNamePlateForUnit(unit)
+		if(frame and frame.UnitFrame) then
+			HandleFrame(frame.UnitFrame)
 		end
 	end
 end

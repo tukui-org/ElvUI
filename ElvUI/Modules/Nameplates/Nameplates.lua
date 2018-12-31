@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local ElvUF = ElvUI.oUF
 
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
-local UF = E:GetModule('UnitFrames')
 local LSM = LibStub('LibSharedMedia-3.0')
 
 --Cache global variables
@@ -35,7 +34,7 @@ function NP:Style(frame, unit)
 	if unit:match('nameplate') then
 		NP:StylePlate(frame, unit)
 	else
-		UF:Construct_UF(frame, unit)
+		E:GetModule('UnitFrames'):Construct_UF(frame, unit)
 	end
 
 	return frame
@@ -353,7 +352,20 @@ function NP:EnemyStyle(self, event, unit)
 end
 
 function NP:CVarReset()
-	local NamePlatesCVars = {
+	for cvar, value in next, NP.CVars do
+		SetCVar(cvar, value)
+	end
+end
+
+function NP:Initialize()
+	self.db = E.db.nameplates
+
+	ElvUF:RegisterStyle('ElvNP', function(frame, unit)
+		NP:Style(frame, unit)
+	end)
+	ElvUF:SetActiveStyle('ElvNP')
+
+	NP.CVars = {
 		['nameplateGlobalScale'] = 1,
 		['namePlateHorizontalScale'] = 1,
 		['nameplateLargerScale'] = 1,
@@ -385,19 +397,6 @@ function NP:CVarReset()
 		['showQuestTrackingTooltips'] = self.db.questIcon and '1',
 	}
 
-	for cvar, value in next, nameplateCVars do
-		SetCVar(cvar, value)
-	end
-end
-
-function NP:Initialize()
-	self.db = E.db.nameplates
-
-	ElvUF:RegisterStyle('ElvNP', function(frame, unit)
-		NP:Style(frame, unit)
-	end)
-	ElvUF:SetActiveStyle('ElvNP')
-
 	local function NamePlateCallBack(nameplate, event, unit)
 		local reaction = UnitReaction('player', unit)
 		local faction = UnitFactionGroup(unit)
@@ -413,7 +412,7 @@ function NP:Initialize()
 		end
 	end
 
-	ElvUF:SpawnNamePlates(nil, NamePlateCallBack)
+	ElvUF:SpawnNamePlates(nil, NamePlateCallBack, NP.CVars)
 
 	E.NamePlates = self
 end
