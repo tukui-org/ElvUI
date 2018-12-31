@@ -1,4 +1,5 @@
 <Ui>
 	<Script file="Nameplates.lua"/>
+	<Script file="Elements\ClassificationIndicator.lua"/>
 	<Script file="Elements\Tags.lua"/>
 </Ui>

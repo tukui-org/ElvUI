@@ -46,10 +46,6 @@ function NP:StylePlate(frame, realUnit)
 	local CastTexture = LSM:Fetch('statusbar', self.db.statusbar)
 	local Font, FontSize, FontFlag = LSM:Fetch('font', 'Arial'), 12, 'OUTLINE'
 
-	frame:SetPoint('CENTER')
-	frame:SetSize(150, 10)
-	frame:SetScale(UIParent:GetEffectiveScale())
-
 	local Health = CreateFrame('StatusBar', nil, frame)
 	local Power = CreateFrame('StatusBar', nil, frame)
 	local AdditionalPower = CreateFrame('StatusBar', nil, frame)
@@ -60,6 +56,10 @@ function NP:StylePlate(frame, realUnit)
 	local Info = Health:CreateFontString(nil, 'OVERLAY')
 	local RaidIcon = Health:CreateTexture(nil, 'OVERLAY')
 	local QuestIcon = Health:CreateTexture(nil, 'OVERLAY', 2)
+
+	frame:SetPoint('CENTER')
+	frame:SetSize(150, 10)
+	frame:SetScale(UIParent:GetEffectiveScale())
 
 	Health:SetFrameStrata(frame:GetFrameStrata())
 	Health:SetFrameLevel(4)
@@ -90,36 +90,38 @@ function NP:StylePlate(frame, realUnit)
 	Health:SetStatusBarColor(0.2, 0.2, 0.2, 1)
 	Health.Smooth = true
 
-	frame.HealthPrediction = {}
+	local HealthPrediction = {}
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
-		frame.HealthPrediction[Bar] = CreateFrame('StatusBar', nil, Health)
-		frame.HealthPrediction[Bar]:SetStatusBarTexture(HealthTexture)
-		frame.HealthPrediction[Bar]:SetPoint('TOP')
-		frame.HealthPrediction[Bar]:SetPoint('BOTTOM')
-		frame.HealthPrediction[Bar]:SetWidth(150)
+		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, Health)
+		HealthPrediction[Bar]:SetStatusBarTexture(HealthTexture)
+		HealthPrediction[Bar]:SetPoint('TOP')
+		HealthPrediction[Bar]:SetPoint('BOTTOM')
+		HealthPrediction[Bar]:SetWidth(150)
 	end
 
-	frame.HealthPrediction.myBar:SetPoint('LEFT', Health:GetStatusBarTexture(), 'RIGHT')
-	frame.HealthPrediction.myBar:SetFrameLevel(Health:GetFrameLevel() + 2)
-	frame.HealthPrediction.myBar:SetStatusBarColor(0, 0.3, 0.15, 1)
-	frame.HealthPrediction.myBar:SetMinMaxValues(0,1)
+	HealthPrediction.myBar:SetPoint('LEFT', Health:GetStatusBarTexture(), 'RIGHT')
+	HealthPrediction.myBar:SetFrameLevel(Health:GetFrameLevel() + 2)
+	HealthPrediction.myBar:SetStatusBarColor(0, 0.3, 0.15, 1)
+	HealthPrediction.myBar:SetMinMaxValues(0,1)
 
-	frame.HealthPrediction.otherBar:SetPoint('LEFT', frame.HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
-	frame.HealthPrediction.otherBar:SetFrameLevel(Health:GetFrameLevel() + 1)
-	frame.HealthPrediction.otherBar:SetStatusBarColor(0, 0.3, 0, 1)
+	HealthPrediction.otherBar:SetPoint('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
+	HealthPrediction.otherBar:SetFrameLevel(Health:GetFrameLevel() + 1)
+	HealthPrediction.otherBar:SetStatusBarColor(0, 0.3, 0, 1)
 
-	frame.HealthPrediction.absorbBar:SetPoint('LEFT', frame.HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
-	frame.HealthPrediction.absorbBar:SetFrameLevel(Health:GetFrameLevel())
-	frame.HealthPrediction.absorbBar:SetStatusBarColor(0.3, 0.3, 0, 1)
+	HealthPrediction.absorbBar:SetPoint('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
+	HealthPrediction.absorbBar:SetFrameLevel(Health:GetFrameLevel())
+	HealthPrediction.absorbBar:SetStatusBarColor(0.3, 0.3, 0, 1)
 
-	frame.HealthPrediction.healAbsorbBar:SetPoint('RIGHT', Health:GetStatusBarTexture())
-	frame.HealthPrediction.healAbsorbBar:SetFrameLevel(Health:GetFrameLevel() + 3)
-	frame.HealthPrediction.healAbsorbBar:SetStatusBarColor(1, 0.3, 0.3, 1)
-	frame.HealthPrediction.healAbsorbBar:SetReverseFill(true)
+	HealthPrediction.healAbsorbBar:SetPoint('RIGHT', Health:GetStatusBarTexture())
+	HealthPrediction.healAbsorbBar:SetFrameLevel(Health:GetFrameLevel() + 3)
+	HealthPrediction.healAbsorbBar:SetStatusBarColor(1, 0.3, 0.3, 1)
+	HealthPrediction.healAbsorbBar:SetReverseFill(true)
 
-	frame.HealthPrediction.maxOverflow = 1
-	frame.HealthPrediction.frequentUpdates = true
+	HealthPrediction.maxOverflow = 1
+	HealthPrediction.frequentUpdates = true
+
+	frame.HealthPrediction = HealthPrediction
 
 	CastBar:SetFrameStrata(frame:GetFrameStrata())
 	CastBar:SetStatusBarTexture(CastTexture)
@@ -281,19 +283,6 @@ function NP:StylePlate(frame, realUnit)
 	frame:Tag(Name, '[name] [level] [npctitle]')
 	frame:Tag(Info, '[quest:info]')
 
-	FloatingCombatFeedback:SetPoint('CENTER')
-	FloatingCombatFeedback:SetSize(16,16)
-	FloatingCombatFeedback.mode = 'Fountain'
-	FloatingCombatFeedback.xOffset = 60
-	FloatingCombatFeedback.yOffset = 10
-	FloatingCombatFeedback.yDirection = 1 -- 1 (Up) or -1 (Down)
-	FloatingCombatFeedback.scrollTime = 1.5
-
-	for i = 1, 12 do
-		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, 'OVERLAY')
-		FloatingCombatFeedback[i]:SetFont(Font, 18, 'THINOUTLINE')
-	end
-
 	local Leader = Health:CreateTexture(nil, 'OVERLAY', 2)
 	Leader:Size(14, 14)
 	Leader:Point('TOPLEFT', 0, 8)
@@ -323,6 +312,12 @@ function NP:StylePlate(frame, realUnit)
 	ThreatIndicator.feedbackUnit = 'player'
 
 	frame.ThreatIndicator = ThreatIndicator
+
+	local ClassificationIndicator = Health:CreateTexture(nil, 'OVERLAY')
+	ClassificationIndicator:SetSize(16, 16)
+	ClassificationIndicator:SetPoint('RIGHT', Health, 'LEFT')
+
+	frame.ClassificationIndicator = ClassificationIndicator
 
 	-- Register with oUF
 	frame.Health = Health
