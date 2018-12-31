@@ -9,11 +9,12 @@ local LSM = LibStub('LibSharedMedia-3.0')
 local pairs = pairs
 local type = type
 local gsub = gsub
-local twipe = table.wipe
+local wipe = table.wipe
 local format = string.format
-local match = string.match
+local strmatch = string.match
 local strjoin = strjoin
 local tonumber = tonumber
+local unpack = unpack
 
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -22,10 +23,16 @@ local UnitIsUnit = UnitIsUnit
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
+local UnitFactionGroup = UnitFactionGroup
+local UnitIsPVPSanctuary = UnitIsPVPSanctuary
+local UnitCanAttack = UnitCanAttack
+local UnitIsFriend = UnitIsFriend
+local GetRaidTargetIndex = GetRaidTargetIndex
+local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: CUSTOM_CLASS_COLORS, ADDITIONAL_POWER_BAR_NAME
 
 function NP:Style(frame, unit)
 	if (not unit) then
@@ -142,7 +149,7 @@ function NP:StylePlate(nameplate, realUnit)
 
 	CastBar.Icon = CastBar.Button:CreateTexture(nil, 'ARTWORK')
 	CastBar.Icon:SetInside()
-	CastBar.Icon:SetTexCoord(unpack({.08, .92, .08, .92}))
+	CastBar.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	CastBar.Time = CastBar:CreateFontString(nil, 'OVERLAY')
 	CastBar.Time:SetFont(Font, FontSize, FontFlag)
@@ -694,6 +701,9 @@ function NP:Initialize()
 	end
 
 	ElvUF:SpawnNamePlates('ElvUF_', NP.NamePlateCallBack)
+
+	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
+	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 
 	E.NamePlates = self
 end
