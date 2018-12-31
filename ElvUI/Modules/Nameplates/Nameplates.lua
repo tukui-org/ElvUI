@@ -281,9 +281,9 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:Tag(Name, '[name] [level] [npctitle]')
 	nameplate:Tag(Info, '[quest:info]')
 
-	local PvP = Health:CreateTexture(nil, 'OVERLAY')
-	PvP:Size(36, 36)
-	PvP:Point('CENTER', Health)
+	--local PvP = Health:CreateTexture(nil, 'OVERLAY')
+	--PvP:Size(36, 36)
+	--PvP:Point('CENTER', Health)
 
 	local RaidTargetIndicator = Health:CreateTexture(nil, 'OVERLAY', 7)
 	RaidTargetIndicator:SetSize(24, 24)
@@ -305,15 +305,10 @@ function NP:StylePlate(nameplate, realUnit)
 	ThreatIndicator:SetPoint('CENTER', Health, 'TOPRIGHT')
 	ThreatIndicator.feedbackUnit = 'player'
 
-	nameplate.ThreatIndicator = ThreatIndicator
-
 	local ClassificationIndicator = Health:CreateTexture(nil, 'OVERLAY')
 	ClassificationIndicator:SetSize(16, 16)
 	ClassificationIndicator:SetPoint('RIGHT', Health, 'LEFT')
 
-	nameplate.ClassificationIndicator = ClassificationIndicator
-
-	-- Register with oUF
 	nameplate.Health = Health
 	nameplate.Power = Power
 	nameplate.Castbar = CastBar
@@ -323,7 +318,10 @@ function NP:StylePlate(nameplate, realUnit)
 
 	nameplate.QuestIndicator = QuestIcon
 	nameplate.RaidTargetIndicator = RaidTargetIndicator
-	nameplate.PvPIndicator = PvP
+	--nameplate.PvPIndicator = PvP
+
+	nameplate.ThreatIndicator = ThreatIndicator
+	nameplate.ClassificationIndicator = ClassificationIndicator
 end
 
 function NP:PersonalStyle(nameplate, event, unit)
@@ -417,6 +415,12 @@ function NP:PLAYER_REGEN_ENABLED()
 	--end
 end
 
+function NP:ConfigureAll()
+	for nameplate in pairs(NP.Plates) do
+		NP.NamePlateCallBack(nameplate)
+	end
+end
+
 function NP:Initialize()
 	self.db = E.db.nameplates
 
@@ -427,41 +431,45 @@ function NP:Initialize()
 	end)
 	ElvUF:SetActiveStyle('ElvNP')
 
+	NP.Plates = {}
+
 	NP.CVars = {
 		['nameplateGlobalScale'] = 1,
 		['namePlateHorizontalScale'] = 1,
 		['nameplateLargerScale'] = 1,
-		['nameplateMaxDistance'] = self.db.loadDistance,
+		['nameplateMaxDistance'] =NP.db.loadDistance,
 		['nameplateMaxScale'] = 1,
 		['nameplateMinScale'] = 1,
-		['nameplateMotion'] = self.db.motionType == 'STACKED' and '1' or '0',
+		['nameplateMotion'] = NP.db.motionType == 'STACKED' and 1 or 0,
 		['nameplateOtherAtBase'] = 0,
-		['nameplateOtherBottomInset'] = self.db.clampToScreen and '0.1' or '-1',
-		['nameplateOtherTopInset'] = self.db.clampToScreen and '0.08' or '-1',
+		['nameplateOtherBottomInset'] = NP.db.clampToScreen and 0.1 or -1,
+		['nameplateOtherTopInset'] = NP.db.clampToScreen and 0.08 or -1,
 		['nameplateOverlapH'] = GetCVarDefault('nameplateOverlapH'),
 		['nameplateOverlapV'] = GetCVarDefault('nameplateOverlapV'),
-		['nameplatePersonalHideDelaySeconds'] = self.db.units.PLAYER.visibility.hideDelay,
-		['nameplatePersonalShowAlways'] = (self.db.units.PLAYER.visibility.showAlways == true and '1' or '0'),
-		['nameplatePersonalShowInCombat'] = (self.db.units.PLAYER.visibility.showInCombat == true and '1' or '0'),
-		['nameplatePersonalShowWithTarget'] = (self.db.units.PLAYER.visibility.showWithTarget == true and '1' or '0'),
+		['nameplatePersonalHideDelaySeconds'] = NP.db.units.PLAYER.visibility.hideDelay,
+		['nameplatePersonalShowAlways'] = (NP.db.units.PLAYER.visibility.showAlways == true and 1 or 0),
+		['nameplatePersonalShowInCombat'] = (NP.db.units.PLAYER.visibility.showInCombat == true and 1 or 0),
+		['nameplatePersonalShowWithTarget'] = (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0),
 		['nameplateResourceOnTarget'] = 0,
 		['nameplateSelectedScale'] = 1,
 		['nameplateSelfAlpha'] = 1,
 		['nameplateSelfScale'] = 1,
-		['nameplateShowAll'] = self.db.displayStyle ~= 'ALL' and '0' or '1',
+		['nameplateShowAll'] = NP.db.displayStyle ~= 'ALL' and 0 or 1,
 		['nameplateShowDebuffsOnFriendly'] = 0,
-		['nameplateShowFriendlyMinions'] = self.db.units.FRIENDLY_PLAYER.minions == true and '1' or '0',
-		['nameplateShowEnemyMinions'] = self.db.units.ENEMY_PLAYER.minions == true and '1' or '0',
-		['nameplateShowEnemyMinus'] = self.db.units.ENEMY_NPC.minors == true and '1' or '0',
+		['nameplateShowFriendlyMinions'] = NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0,
+		['nameplateShowEnemyMinions'] = NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0,
+		['nameplateShowEnemyMinus'] = NP.db.units.ENEMY_NPC.minors == true and 1 or 0,
 		['nameplateShowFriendlyNPCs'] = 1,
-		['nameplateShowSelf'] = (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and '0' or '1',
+		['nameplateShowSelf'] = (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1,
 		['namePlateVerticalScale'] = 1,
-		['showQuestTrackingTooltips'] = self.db.questIcon and '1',
+		['showQuestTrackingTooltips'] = NP.db.questIcon and 1,
 	}
 
-	local function NamePlateCallBack(nameplate, event, unit)
+	function NP.NamePlateCallBack(nameplate, event, unit)
+		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
 		local faction = UnitFactionGroup(unit)
+
 		if nameplate then
 			if (UnitIsUnit(unit, 'player')) then
 				NP:PersonalStyle(nameplate, event, unit)
@@ -475,9 +483,12 @@ function NP:Initialize()
 				NP:EnemyStyle(nameplate, event, unit)
 			end
 		end
+		if event == 'NAME_PLATE_UNIT_ADDED' then
+			NP.Plates[nameplate] = true
+		end
 	end
 
-	ElvUF:SpawnNamePlates(nil, NamePlateCallBack, NP.CVars)
+	ElvUF:SpawnNamePlates('ElvUF_', NP.NamePlateCallBack, NP.CVars)
 
 	E.NamePlates = self
 end
