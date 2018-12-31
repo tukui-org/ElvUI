@@ -20,13 +20,15 @@ function Private.UpdateUnits(frame, unit, realUnit)
 	if(frame.unit ~= unit or frame.realUnit ~= realUnit) then
 		if(frame.unitEvents) then
 			for event in next, frame.unitEvents do
-				-- IsEventRegistered returns the units in case of an event
-				-- registered with RegisterUnitEvent
 				local registered, unit1 = isEventRegistered(frame, event)
-				if(registered and unit1 and unit1 ~= unit) then
-					-- RegisterUnitEvent erases previously registered units so
-					-- do not bother to unregister it
-					registerUnitEvent(frame, event, unit, realUnit)
+				-- unit event registration for header units is postponed until
+				-- the frame units are known
+				-- we don't want to re-register unitless/shared events in case
+				-- someone added them by hand to the unitEvents table
+				if(registered and unit1 and unit1 ~= unit or not registered) then
+					-- BUG: passing explicit nil units to RegisterUnitEvent
+					-- makes it silently fall back to RegisterEvent
+					registerUnitEvent(frame, event, unit, realUnit or '')
 				end
 			end
 		end
@@ -87,7 +89,6 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 
 		if unitless then
 			-- re-register the event in case we have mixed registration
-			-- this will remove previously registered units
 			registerEvent(self, event)
 			if(self.unitEvents) then
 				self.unitEvents[event] = nil
@@ -96,16 +97,20 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 	else
 		self[event] = func
 
-		if not self:GetScript('OnEvent') then
+		if(not self:GetScript('OnEvent')) then
 			self:SetScript('OnEvent', onEvent)
 		end
 
-		if unitless then
+		if(unitless) then
 			registerEvent(self, event)
 		else
 			self.unitEvents = self.unitEvents or {}
 			self.unitEvents[event] = true
-			registerUnitEvent(self, event, self.unit)
+			-- UpdateUnits will take care of unit event registration for header
+			-- units
+			if(self.unit and not self:GetParent():GetAttribute('oUF-headerType')) then
+				registerUnitEvent(self, event, self.unit)
+			end
 		end
 	end
 end
@@ -141,6 +146,9 @@ function frame_metatable.__index:UnregisterEvent(event, func)
 		end
 	elseif(curev == func) then
 		self[event] = nil
+		if(self.unitEvents) then
+			self.unitEvents[event] = nil
+		end
 		unregisterEvent(self, event)
 	end
 end
