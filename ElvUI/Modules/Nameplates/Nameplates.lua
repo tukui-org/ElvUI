@@ -50,6 +50,7 @@ function NP:StylePlate(nameplate, realUnit)
 	local CastBar = CreateFrame('StatusBar', nil, nameplate)
 
 	local Name = nameplate:CreateFontString(nil, 'OVERLAY')
+	local Level = nameplate:CreateFontString(nil, 'OVERLAY')
 	local Info = nameplate:CreateFontString(nil, 'OVERLAY')
 	local RaidIcon = nameplate:CreateTexture(nil, 'OVERLAY')
 	local QuestIcon = nameplate:CreateTexture(nil, 'OVERLAY', 2)
@@ -62,13 +63,13 @@ function NP:StylePlate(nameplate, realUnit)
 	Health:SetFrameLevel(4)
 	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
-	Health.backdrop:CreateShadow()
+	--Health.backdrop:CreateShadow()
 	Health:SetStatusBarTexture(Texture)
 
 	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
 	Health.Value:SetFont(LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
-	Health.Value:SetPoint('RIGHT', Health, 'LEFT', -20, 0)
-	nameplate:Tag(Health.Value, '[curhp]')
+	Health.Value:SetPoint('CENTER', Health, 'CENTER', 0, 0)
+	nameplate:Tag(Health.Value, '[perhp]%')
 
 	Health.PostUpdate = function(bar, _, min, max)
 		bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
@@ -126,7 +127,7 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar:SetStatusBarTexture(Texture)
 	CastBar:SetFrameLevel(6)
 	CastBar:CreateBackdrop('Transparent')
-	CastBar.backdrop:CreateShadow()
+	--CastBar.backdrop:CreateShadow()
 	CastBar:SetHeight(16)
 	CastBar:SetPoint('TOPLEFT', Health, 'BOTTOMLEFT', 0, -20)
 	CastBar:SetPoint('TOPRIGHT', Health, 'BOTTOMRIGHT', 0, -20)
@@ -134,7 +135,7 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar.Button = CreateFrame('Frame', nil, CastBar)
 	CastBar.Button:SetSize(18, 18)
 	CastBar.Button:SetTemplate()
-	CastBar.Button:CreateShadow()
+	--CastBar.Button:CreateShadow()
 	CastBar.Button:SetPoint('RIGHT', CastBar, 'LEFT', -6, 0)
 
 	CastBar.Icon = CastBar.Button:CreateTexture(nil, 'ARTWORK')
@@ -175,14 +176,14 @@ function NP:StylePlate(nameplate, realUnit)
 	Power:SetFrameLevel(2)
 	Power:SetSize(130, 4)
 	Power:CreateBackdrop('Transparent')
-	Power.backdrop:CreateShadow()
+	--Power.backdrop:CreateShadow()
 	Power:SetPoint('TOP', Health, 'TOP', 0, -14)
 	Power:SetStatusBarTexture(Texture)
 
 	Power.Value = Power:CreateFontString(nil, 'OVERLAY')
 	Power.Value:SetFont(Font, FontSize, FontFlag)
-	Power.Value:SetPoint('RIGHT', Power, 'LEFT', -20, 0)
-	nameplate:Tag(Power.Value, '[curpp]')
+	Power.Value:SetPoint('CENTER', Power, 'CENTER', 0, 0)
+	nameplate:Tag(Power.Value, '[perpp]%')
 
 	Power.frequentUpdates = true
 	Power.colorTapping = true
@@ -216,7 +217,7 @@ function NP:StylePlate(nameplate, realUnit)
 	AdditionalPower:SetFrameLevel(2)
 	AdditionalPower:SetSize(130, 4)
 	AdditionalPower:CreateBackdrop('Transparent')
-	AdditionalPower.backdrop:CreateShadow()
+	--AdditionalPower.backdrop:CreateShadow()
 	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2)
 	AdditionalPower:SetStatusBarTexture(Texture)
 
@@ -261,24 +262,36 @@ function NP:StylePlate(nameplate, realUnit)
 		altBar = AltPowerBar
 	}
 
-	Name:SetPoint('BOTTOM', Health, 'TOP', 0, 15)
+	Name:ClearAllPoints()
+	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2)
 	Name:SetJustifyH('LEFT')
+	Name:SetJustifyV('BOTTOM')
 	Name:SetFont(Font, FontSize, FontFlag)
+	Name:SetWordWrap(false)
 
+	Level:ClearAllPoints()
+	Level:SetPoint('LEFT', Name, 'RIGHT', 0, 0)
+	Level:SetJustifyH('RIGHT')
+	Level:SetFont(Font, FontSize, FontFlag)
+
+	Info:ClearAllPoints()
 	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5)
 	Info:SetJustifyH('LEFT')
 	Info:SetFont(Font, FontSize, FontFlag)
 
-	RaidIcon:SetSize(16, 16)
+	RaidIcon:ClearAllPoints()
 	RaidIcon:SetPoint('TOP', Health, 0, 8)
+	RaidIcon:SetSize(16, 16)
 
 	QuestIcon:Hide()
 	QuestIcon:SetSize(24, 24)
+	QuestIcon:ClearAllPoints()
 	QuestIcon:SetPoint('CENTER', Name, 'CENTER', 0, 20)
 	QuestIcon:SetTexture('Interface\\MINIMAP\\ObjectIcons')
 	QuestIcon:SetTexCoord(0.125, 0.250, 0.125, 0.250)
 
-	nameplate:Tag(Name, '[namecolor][name] [difficultycolor][level] [npctitle]')
+	nameplate:Tag(Name, '[namecolor][name] [npctitle]')
+	nameplate:Tag(Level, '[difficultycolor][level]')
 	nameplate:Tag(Info, '[quest:info]')
 
 	--local PvP = Health:CreateTexture(nil, 'OVERLAY')
@@ -314,6 +327,7 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate.Castbar = CastBar
 
 	nameplate.Name = Name
+	nameplate.Level = Level
 	nameplate.Info = Info
 
 	nameplate.QuestIndicator = QuestIcon
