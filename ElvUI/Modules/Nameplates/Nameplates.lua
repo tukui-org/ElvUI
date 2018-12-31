@@ -466,11 +466,11 @@ function NP:Initialize()
 	}
 
 	function NP.NamePlateCallBack(nameplate, event, unit)
-		unit = unit or nameplate.unit
-		local reaction = UnitReaction('player', unit)
-		local faction = UnitFactionGroup(unit)
-
 		if nameplate then
+			unit = unit or nameplate.unit
+			local reaction = UnitReaction('player', unit)
+			local faction = UnitFactionGroup(unit)
+
 			if (UnitIsUnit(unit, 'player')) then
 				NP:PersonalStyle(nameplate, event, unit)
 			elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
@@ -483,6 +483,7 @@ function NP:Initialize()
 				NP:EnemyStyle(nameplate, event, unit)
 			end
 		end
+
 		if event == 'NAME_PLATE_UNIT_ADDED' then
 			NP.Plates[nameplate] = true
 		end
