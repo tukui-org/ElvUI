@@ -21,6 +21,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
+local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
@@ -71,22 +72,23 @@ function NP:StylePlate(nameplate, realUnit)
 	Health.Value:SetPoint('CENTER', Health, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(Health.Value, '[perhp]%') -- need option
 
-	Health.PostUpdate = function(bar, _, min, max)
-		bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
+	--Health.PostUpdate = function(bar, _, min, max)
+	--	bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
 
-		if (min ~= max) then
-			bar:SetStatusBarColor(bar.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
-		else
-			bar:SetStatusBarColor(0.2, 0.2, 0.2, 1)
-		end
-	end
+	--	if (min ~= max) then
+	--		bar:SetStatusBarColor(bar.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+	--	else
+	--		bar:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+	--	end
+	--end
+
+	--Health:SetStatusBarColor(0.2, 0.2, 0.2, 1) -- need option
+
+	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
 
 	Health.frequentUpdates = true
-	Health.colorTapping = false
+	Health.colorTapping = true
 	Health.colorDisconnected = false
-	Health.colorClass = false
-
-	Health:SetStatusBarColor(0.2, 0.2, 0.2, 1) -- need option
 
 	Health.Smooth = true
 
@@ -174,7 +176,6 @@ function NP:StylePlate(nameplate, realUnit)
 
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(2)
-	Power:SetSize(130, 4)
 	Power:CreateBackdrop('Transparent')
 	--Power.backdrop:CreateShadow()
 	Power:SetPoint('TOP', Health, 'TOP', 0, -14)
@@ -262,30 +263,25 @@ function NP:StylePlate(nameplate, realUnit)
 		altBar = AltPowerBar
 	}
 
-	Name:ClearAllPoints()
 	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2) -- need option
 	Name:SetJustifyH('LEFT')
 	Name:SetJustifyV('BOTTOM')
 	Name:SetFont(Font, FontSize, FontFlag)
 	Name:SetWordWrap(false)
 
-	Level:ClearAllPoints()
 	Level:SetPoint('LEFT', Name, 'RIGHT', 0, 0) -- need option
 	Level:SetJustifyH('RIGHT')
 	Level:SetFont(Font, FontSize, FontFlag)
 
-	Info:ClearAllPoints()
 	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5) -- need option
 	Info:SetJustifyH('LEFT')
 	Info:SetFont(Font, FontSize, FontFlag)
 
-	RaidIcon:ClearAllPoints()
 	RaidIcon:SetPoint('TOP', Health, 0, 8) -- need option
 	RaidIcon:SetSize(16, 16)
 
 	QuestIcon:Hide()
 	QuestIcon:SetSize(24, 24) -- need option
-	QuestIcon:ClearAllPoints()
 	QuestIcon:SetPoint('CENTER', Name, 'CENTER', 0, 20) -- need option
 	QuestIcon:SetTexture('Interface\\MINIMAP\\ObjectIcons')
 	QuestIcon:SetTexCoord(0.125, 0.250, 0.125, 0.250)
@@ -304,12 +300,14 @@ function NP:StylePlate(nameplate, realUnit)
 	RaidTargetIndicator.Override = function(ele, event)
 		local element = ele.RaidTargetIndicator
 
-		local index = GetRaidTargetIndex(ele.unit)
-		if (index) and not UnitIsUnit(ele.unit, 'player') then
-			SetRaidTargetIconTexture(element, index)
-			element:Show()
-		else
-			element:Hide()
+		if ele.unit then
+			local index = GetRaidTargetIndex(ele.unit)
+			if (index) and not UnitIsUnit(ele.unit, 'player') then
+				SetRaidTargetIconTexture(element, index)
+				element:Show()
+			else
+				element:Hide()
+			end
 		end
 	end
 
@@ -360,37 +358,248 @@ function NP:PersonalStyle(nameplate, event, unit)
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorTapping = false
-	nameplate.Health.colorDisconnected = false
 	nameplate.Health.colorClass = self.db.units.PLAYER.healthbar.useClassColor
 
 	nameplate.Health:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.healthbar.height)
+
+	if self.db.units.PLAYER.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if self.db.units.PLAYER.powerbar.enable and self.db.units.PLAYER.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
+
+	if self.db.units.PLAYER.powerbar.text.enable then
+		nameplate.Power.Value:Show()
+	else
+		nameplate.Power.Value:Hide()
+	end
+
+	nameplate.Power:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.powerbar.height)
 end
 
 function NP:FriendlyStyle(nameplate, event, unit)
 	-- self.db.units.FRIENDLY_PLAYER
+
+	if self.db.units.FRIENDLY_PLAYER.healthbar.enable then
+		nameplate:EnableElement('Health')
+	else
+		nameplate:DisableElement('Health')
+	end
+
+	if self.db.units.FRIENDLY_PLAYER.healthbar.enable and self.db.units.FRIENDLY_PLAYER.healthbar.healPrediction then
+		nameplate:EnableElement('HealPrediction')
+	else
+		nameplate:DisableElement('HealPrediction')
+	end
+
+	if self.db.units.FRIENDLY_PLAYER.healthbar.text.enable then
+		nameplate.Health.Value:Show()
+	else
+		nameplate.Health.Value:Hide()
+	end
+
+	nameplate.Health.colorClass = self.db.units.FRIENDLY_PLAYER.healthbar.useClassColor
+
 	nameplate.Health:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.healthbar.height)
+
+	if self.db.units.FRIENDLY_PLAYER.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if self.db.units.FRIENDLY_PLAYER.powerbar.enable and self.db.units.FRIENDLY_PLAYER.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
+
+	if self.db.units.FRIENDLY_PLAYER.powerbar.text.enable then
+		nameplate.Power.Value:Show()
+	else
+		nameplate.Power.Value:Hide()
+	end
+
+	nameplate.Power:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.powerbar.height)
 end
 
 function NP:EnemyStyle(nameplate, event, unit)
 	-- self.db.units.ENEMY_PLAYER
+	if self.db.units.ENEMY_PLAYER.healthbar.enable then
+		nameplate:EnableElement('Health')
+	else
+		nameplate:DisableElement('Health')
+	end
+
+	if self.db.units.ENEMY_PLAYER.healthbar.enable and self.db.units.ENEMY_PLAYER.healthbar.healPrediction then
+		nameplate:EnableElement('HealPrediction')
+	else
+		nameplate:DisableElement('HealPrediction')
+	end
+
+	if self.db.units.ENEMY_PLAYER.healthbar.text.enable then
+		nameplate.Health.Value:Show()
+	else
+		nameplate.Health.Value:Hide()
+	end
+
+	nameplate.Health.colorClass = self.db.units.ENEMY_PLAYER.healthbar.useClassColor
+
 	nameplate.Health:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.healthbar.height)
-end
+
+	if self.db.units.ENEMY_PLAYER.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if self.db.units.ENEMY_PLAYER.powerbar.enable and self.db.units.ENEMY_PLAYER.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
+
+	if self.db.units.ENEMY_PLAYER.powerbar.text.enable then
+		nameplate.Power.Value:Show()
+	else
+		nameplate.Power.Value:Hide()
+	end
+
+	nameplate.Power:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.powerbar.height)end
 
 function NP:FriendlyNPCStyle(nameplate, event, unit)
 	-- self.db.units.FRIENDLY_NPC
+	if self.db.units.FRIENDLY_NPC.healthbar.enable then
+		nameplate:EnableElement('Health')
+	else
+		nameplate:DisableElement('Health')
+	end
+
+	if self.db.units.FRIENDLY_NPC.healthbar.enable and self.db.units.FRIENDLY_NPC.healthbar.healPrediction then
+		nameplate:EnableElement('HealPrediction')
+	else
+		nameplate:DisableElement('HealPrediction')
+	end
+
+	if self.db.units.FRIENDLY_NPC.healthbar.text.enable then
+		nameplate.Health.Value:Show()
+	else
+		nameplate.Health.Value:Hide()
+	end
+
+	nameplate.Health.colorClass = self.db.units.FRIENDLY_NPC.healthbar.useClassColor
+
 	nameplate.Health:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.healthbar.height)
-end
+
+	if self.db.units.FRIENDLY_NPC.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if self.db.units.FRIENDLY_NPC.powerbar.enable and self.db.units.FRIENDLY_NPC.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
+
+	if self.db.units.FRIENDLY_NPC.powerbar.text.enable then
+		nameplate.Power.Value:Show()
+	else
+		nameplate.Power.Value:Hide()
+	end
+
+	nameplate.Power:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.powerbar.height)end
 
 function NP:EnemyNPCStyle(nameplate, event, unit)
 	-- self.db.units.ENEMY_NPC
+	if self.db.units.ENEMY_NPC.healthbar.enable then
+		nameplate:EnableElement('Health')
+	else
+		nameplate:DisableElement('Health')
+	end
+
+	if self.db.units.ENEMY_NPC.healthbar.enable and self.db.units.ENEMY_NPC.healthbar.healPrediction then
+		nameplate:EnableElement('HealPrediction')
+	else
+		nameplate:DisableElement('HealPrediction')
+	end
+
+	if self.db.units.ENEMY_NPC.healthbar.text.enable then
+		nameplate.Health.Value:Show()
+	else
+		nameplate.Health.Value:Hide()
+	end
+
+	nameplate.Health.colorClass = self.db.units.ENEMY_NPC.healthbar.useClassColor
+
 	nameplate.Health:SetSize(self.db.units.ENEMY_NPC.healthbar.width, self.db.units.ENEMY_NPC.healthbar.height)
+
+	if self.db.units.ENEMY_NPC.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if self.db.units.ENEMY_NPC.powerbar.enable and self.db.units.ENEMY_NPC.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
+
+	if self.db.units.ENEMY_NPC.powerbar.text.enable then
+		nameplate.Power.Value:Show()
+	else
+		nameplate.Power.Value:Hide()
+	end
+
+	nameplate.Power:SetSize(self.db.units.ENEMY_NPC.healthbar.width, self.db.units.ENEMY_NPC.powerbar.height)
 end
 
 function NP:CVarReset()
-	for cvar, value in next, NP.CVars do
-		SetCVar(cvar, value)
-	end
+	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
+	SetCVar('nameplateGlobalScale', GetCVarDefault('nameplateGlobalScale'))
+	SetCVar('NamePlateHorizontalScale', GetCVarDefault('NamePlateHorizontalScale'))
+	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
+	SetCVar('nameplateLargerScale', GetCVarDefault('nameplateLargerScale'))
+	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
+	SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'))
+	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
+	SetCVar('nameplateMaxScale', GetCVarDefault('nameplateMaxScale'))
+	SetCVar('nameplateMaxScaleDistance', GetCVarDefault('nameplateMaxScaleDistance'))
+	SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'))
+	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
+	SetCVar('nameplateMinScale', GetCVarDefault('nameplateMinScale'))
+	SetCVar('nameplateMinScaleDistance', GetCVarDefault('nameplateMinScaleDistance'))
+	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
+	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
+	SetCVar('nameplateOtherBottomInset', GetCVarDefault('nameplateOtherBottomInset'))
+	SetCVar('nameplateOtherTopInset', GetCVarDefault('nameplateOtherTopInset'))
+	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
+	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
+	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
+	SetCVar('nameplateSelectedAlpha', GetCVarDefault('nameplateSelectedAlpha'))
+	SetCVar('nameplateSelectedScale', GetCVarDefault('nameplateSelectedScale'))
+	SetCVar('nameplateSelfAlpha', GetCVarDefault('nameplateSelfAlpha'))
+	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
+	SetCVar('nameplateSelfScale', GetCVarDefault('nameplateSelfScale'))
+	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
+	SetCVar('nameplateShowEnemies', GetCVarDefault('nameplateShowEnemies'))
+	SetCVar('nameplateShowEnemyGuardians', GetCVarDefault('nameplateShowEnemyGuardians'))
+	SetCVar('nameplateShowEnemyPets', GetCVarDefault('nameplateShowEnemyPets'))
+	SetCVar('nameplateShowEnemyTotems', GetCVarDefault('nameplateShowEnemyTotems'))
+	SetCVar('nameplateShowFriendlyGuardians', GetCVarDefault('nameplateShowFriendlyGuardians'))
+	SetCVar('nameplateShowFriendlyNPCs', GetCVarDefault('nameplateShowFriendlyNPCs'))
+	SetCVar('nameplateShowFriendlyPets', GetCVarDefault('nameplateShowFriendlyPets'))
+	SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'))
+	SetCVar('nameplateShowFriends', GetCVarDefault('nameplateShowFriends'))
+	SetCVar('nameplateTargetBehindMaxDistance', GetCVarDefault('nameplateTargetBehindMaxDistance'))
 end
 
 function NP:PLAYER_REGEN_DISABLED()
@@ -430,6 +639,19 @@ function NP:PLAYER_REGEN_ENABLED()
 end
 
 function NP:ConfigureAll()
+	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways == true and 1 or 0))
+	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat == true and 1 or 0))
+	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0))
+	SetCVar('nameplateShowAll', NP.db.displayStyle ~= 'ALL' and 0 or 1)
+	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
+	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('showQuestTrackingTooltips', NP.db.questIcon and 1)
+
 	for nameplate in pairs(NP.Plates) do
 		NP.NamePlateCallBack(nameplate)
 	end
@@ -446,38 +668,6 @@ function NP:Initialize()
 	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
-
-	NP.CVars = {
-		['nameplateGlobalScale'] = 1,
-		['namePlateHorizontalScale'] = 1,
-		['nameplateLargerScale'] = 1,
-		['nameplateMaxDistance'] =NP.db.loadDistance,
-		['nameplateMaxScale'] = 1,
-		['nameplateMinScale'] = 1,
-		['nameplateMotion'] = NP.db.motionType == 'STACKED' and 1 or 0,
-		['nameplateOtherAtBase'] = 0,
-		['nameplateOtherBottomInset'] = NP.db.clampToScreen and 0.1 or -1,
-		['nameplateOtherTopInset'] = NP.db.clampToScreen and 0.08 or -1,
-		['nameplateOverlapH'] = GetCVarDefault('nameplateOverlapH'),
-		['nameplateOverlapV'] = GetCVarDefault('nameplateOverlapV'),
-		['nameplatePersonalHideDelaySeconds'] = NP.db.units.PLAYER.visibility.hideDelay,
-		['nameplatePersonalShowAlways'] = (NP.db.units.PLAYER.visibility.showAlways == true and 1 or 0),
-		['nameplatePersonalShowInCombat'] = (NP.db.units.PLAYER.visibility.showInCombat == true and 1 or 0),
-		['nameplatePersonalShowWithTarget'] = (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0),
-		['nameplateResourceOnTarget'] = 0,
-		['nameplateSelectedScale'] = 1,
-		['nameplateSelfAlpha'] = 1,
-		['nameplateSelfScale'] = 1,
-		['nameplateShowAll'] = NP.db.displayStyle ~= 'ALL' and 0 or 1,
-		['nameplateShowDebuffsOnFriendly'] = 0,
-		['nameplateShowFriendlyMinions'] = NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0,
-		['nameplateShowEnemyMinions'] = NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0,
-		['nameplateShowEnemyMinus'] = NP.db.units.ENEMY_NPC.minors == true and 1 or 0,
-		['nameplateShowFriendlyNPCs'] = 1,
-		['nameplateShowSelf'] = (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1,
-		['namePlateVerticalScale'] = 1,
-		['showQuestTrackingTooltips'] = NP.db.questIcon and 1,
-	}
 
 	function NP.NamePlateCallBack(nameplate, event, unit)
 		if nameplate then
@@ -503,7 +693,7 @@ function NP:Initialize()
 		end
 	end
 
-	ElvUF:SpawnNamePlates('ElvUF_', NP.NamePlateCallBack, NP.CVars)
+	ElvUF:SpawnNamePlates('ElvUF_', NP.NamePlateCallBack)
 
 	E.NamePlates = self
 end

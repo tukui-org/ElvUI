@@ -1049,37 +1049,42 @@ hiddenParent:Hide()
 
 local HandleFrame = function(baseName)
 	local frame
-	if(type(baseName) == 'string') then
+	if (type(baseName) == 'string') then
 		frame = _G[baseName]
 	else
 		frame = baseName
 	end
 
-	if(frame) then
+	if (frame) then
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
 		-- Keep frame hidden without causing taint
 		frame:SetParent(hiddenParent)
 
-		local health = frame.healthbar
-		if(health) then
+		local health = frame.healthBar or frame.healthbar
+		if (health) then
 			health:UnregisterAllEvents()
 		end
 
 		local power = frame.manabar
-		if(power) then
+		if (power) then
 			power:UnregisterAllEvents()
 		end
 
-		local spell = frame.spellbar
-		if(spell) then
+		local spell = frame.castBar or frame.spellbar
+		if (spell) then
 			spell:UnregisterAllEvents()
 		end
 
 		local altpowerbar = frame.powerBarAlt
-		if(altpowerbar) then
+		if (altpowerbar) then
 			altpowerbar:UnregisterAllEvents()
+		end
+
+		local buffFrame = frame.BuffFrame
+		if (buffFrame) then
+			buffFrame:UnregisterAllEvents()
 		end
 	end
 end
