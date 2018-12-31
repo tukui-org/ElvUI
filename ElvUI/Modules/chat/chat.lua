@@ -8,7 +8,7 @@ local _G = _G
 local wipe, time, difftime = wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
-local gsub, find, gmatch, format, split = string.gsub, string.find, string.gmatch, string.format, string.split
+local gsub, find, gmatch, format = string.gsub, string.find, string.gmatch, string.format
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
 local Ambiguate = Ambiguate
@@ -108,27 +108,6 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
-
---Variables that are only used in ChatFrame_MessageEventHandler
---Store them in a table as we would otherwise hit the "max 60 upvalues" limit
-local GlobalStrings = {
-	["AFK"] = AFK,
-	["BN_INLINE_TOAST_BROADCAST"] = BN_INLINE_TOAST_BROADCAST,
-	["BN_INLINE_TOAST_BROADCAST_INFORM"] = BN_INLINE_TOAST_BROADCAST_INFORM,
-	["BN_INLINE_TOAST_FRIEND_PENDING"] = BN_INLINE_TOAST_FRIEND_PENDING,
-	["CHAT_FILTERED"] = CHAT_FILTERED,
-	["CHAT_IGNORED"] = CHAT_IGNORED,
-	["CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE"] = CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE,
-	["CHAT_RESTRICTED_TRIAL"] = CHAT_RESTRICTED_TRIAL,
-	["CHAT_TELL_ALERT_TIME"] = CHAT_TELL_ALERT_TIME,
-	["CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL"] = CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL,
-	["DND"] = DND,
-	["ERR_CHAT_PLAYER_NOT_FOUND_S"] = ERR_CHAT_PLAYER_NOT_FOUND_S,
-	["ERR_FRIEND_OFFLINE_S"] = ERR_FRIEND_OFFLINE_S,
-	["ERR_FRIEND_ONLINE_SS"] = ERR_FRIEND_ONLINE_SS,
-	["PLAYER_LIST_DELIMITER"] = PLAYER_LIST_DELIMITER,
-	["RAID_WARNING"] = RAID_WARNING,
-}
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
@@ -271,9 +250,8 @@ end
 CH.Keywords = {}
 CH.ClassNames = {}
 
-local numScrollMessages
 local function ChatFrame_OnMouseScroll(frame, delta)
-	numScrollMessages = CH.db.numScrollMessages or 3
+	local numScrollMessages = CH.db.numScrollMessages or 3
 	if delta < 0 then
 		if IsShiftKeyDown() then
 			frame:ScrollToBottom()
@@ -1138,8 +1116,8 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
 	end
 
-	local CLASS = Class and Class ~= '' and gsub(strupper(Class),'%s','')
-	local COLOR = CLASS and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CLASS] or RAID_CLASS_COLORS[CLASS])
+	Class = Class and Class ~= '' and gsub(strupper(Class),'%s','')
+	local COLOR = Class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[Class] or RAID_CLASS_COLORS[Class])
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, isBattleTagPresence and BATTLE_TAG
 end
@@ -1151,8 +1129,8 @@ end
 
 function CH:GetPluginIcon(sender)
 	local icon
-	for i = 1, #PluginIconsCalls do
-		icon = PluginIconsCalls[i](sender)
+	for _,func in ipairs(PluginIconsCalls) do
+		icon = func(sender)
 		if icon and icon ~= "" then break end
 	end
 	return icon
@@ -1212,7 +1190,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 						if ( classColorTable ) then
 							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
 						end
-						groupList = groupList..(groupList == "[" and "" or GlobalStrings.PLAYER_LIST_DELIMITER)..name;
+						groupList = groupList..(groupList == "[" and "" or _G.PLAYER_LIST_DELIMITER)..name;
 					end
 				end
 				if groupList ~= "[" then
@@ -1339,9 +1317,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				local matchFound = false;
 				local message = strlower(arg1);
 				for playerName in pairs(self.privateMessageList) do
-					local playerNotFoundMsg = strlower(format(GlobalStrings.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName));
-					local charOnlineMsg = strlower(format(GlobalStrings.ERR_FRIEND_ONLINE_SS, playerName, playerName));
-					local charOfflineMsg = strlower(format(GlobalStrings.ERR_FRIEND_OFFLINE_S, playerName));
+					local playerNotFoundMsg = strlower(format(_G.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName));
+					local charOnlineMsg = strlower(format(_G.ERR_FRIEND_ONLINE_SS, playerName, playerName));
+					local charOfflineMsg = strlower(format(_G.ERR_FRIEND_OFFLINE_S, playerName));
 					if ( message == playerNotFoundMsg or message == charOnlineMsg or message == charOfflineMsg) then
 						matchFound = true;
 						break;
@@ -1395,11 +1373,11 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			end
 			self:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "IGNORED" ) then
-			self:AddMessage(format(GlobalStrings.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+			self:AddMessage(format(_G.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "FILTERED" ) then
-			self:AddMessage(format(GlobalStrings.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+			self:AddMessage(format(_G.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(GlobalStrings.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+			self:AddMessage(_G.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
 				self:AddMessage(format(_G["CHAT_"..type.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
@@ -1424,12 +1402,12 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				self:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 			if ( arg1 == "INVITE" and GetCVarBool("blockChannelInvites") ) then
-				self:AddMessage(GlobalStrings.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+				self:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring;
 			if ( arg1 == "TRIAL_RESTRICTED" ) then
-				globalstring = GlobalStrings.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
+				globalstring = _G.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
 				globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 				if ( not globalstring ) then
@@ -1453,7 +1431,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if ( arg1 == "FRIEND_REQUEST" ) then
 				message = globalstring;
 			elseif ( arg1 == "FRIEND_PENDING" ) then
-				message = format(GlobalStrings.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
+				message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
@@ -1481,11 +1459,11 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1));
 				local linkDisplayText = ("[%s]"):format(arg2);
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(type), 0);
-				self:AddMessage(format(GlobalStrings.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+				self:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
-				self:AddMessage(GlobalStrings.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
+				self:AddMessage(_G.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 			end
 		else
 			local body;
@@ -1634,9 +1612,9 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 				body = gsub(body, "^(.-|h) "..L["whispers"], "%1")
 				body = gsub(body, "^(.-|h) "..L["says"], "%1")
 				body = gsub(body, "^(.-|h) "..L["yells"], "%1")
-				body = gsub(body, "<"..GlobalStrings.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-				body = gsub(body, "<"..GlobalStrings.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = gsub(body, "^%["..GlobalStrings.RAID_WARNING.."%]", '['..L["RW"]..']')
+				body = gsub(body, "<".._G.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+				body = gsub(body, "<".._G.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+				body = gsub(body, "^%[".._G.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
@@ -1647,7 +1625,7 @@ function CH:ChatFrame_MessageEventHandler(self, event, arg1, arg2, arg3, arg4, a
 			if ( self.tellTimer and (GetTime() > self.tellTimer) ) then
 				PlaySound(SOUNDKIT.TELL_MESSAGE);
 			end
-			self.tellTimer = GetTime() + GlobalStrings.CHAT_TELL_ALERT_TIME;
+			self.tellTimer = GetTime() + _G.CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
 			FlashClientIcon();
 		end
@@ -2170,8 +2148,8 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	if players and next(players) then members = (players[2] and SocialQueueUtil_SortGroupMembers(players)) or players end
 	if not members then return end -- just bail because huh? no members in a group?
 
-	local firstMember, numMembers, extraCount, coloredName, playerName, nameColor = members[1], #members, ''
-	playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
+	local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 	if numMembers > 1 then
 		extraCount = format(' +%s', numMembers - 1)
 	end
