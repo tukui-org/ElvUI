@@ -243,18 +243,18 @@ function NP:StylePlate(nameplate, realUnit)
 
 	local PowerBar = CreateFrame('StatusBar', nil, Power)
 	PowerBar:SetReverseFill(true)
-	PowerBar:SetPoint('TOP')
+	PowerBar:SetPoint('TOP') -- need option
 	PowerBar:SetPoint('BOTTOM')
 	PowerBar:SetPoint('RIGHT', Power:GetStatusBarTexture(), 'RIGHT')
-	PowerBar:SetWidth(130)
+	PowerBar:SetWidth(130) -- need option
 	PowerBar:SetStatusBarTexture(Texture)
 
 	local AltPowerBar = CreateFrame('StatusBar', nil, AdditionalPower)
 	AltPowerBar:SetReverseFill(true)
-	AltPowerBar:SetPoint('TOP')
+	AltPowerBar:SetPoint('TOP') -- need option
 	AltPowerBar:SetPoint('BOTTOM')
 	AltPowerBar:SetPoint('RIGHT', AdditionalPower:GetStatusBarTexture(), 'RIGHT')
-	AltPowerBar:SetWidth(130)
+	AltPowerBar:SetWidth(130) -- need option
 	AltPowerBar:SetStatusBarTexture(Texture)
 
 	nameplate.PowerPrediction = {
@@ -263,30 +263,30 @@ function NP:StylePlate(nameplate, realUnit)
 	}
 
 	Name:ClearAllPoints()
-	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2)
+	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2) -- need option
 	Name:SetJustifyH('LEFT')
 	Name:SetJustifyV('BOTTOM')
 	Name:SetFont(Font, FontSize, FontFlag)
 	Name:SetWordWrap(false)
 
 	Level:ClearAllPoints()
-	Level:SetPoint('LEFT', Name, 'RIGHT', 0, 0)
+	Level:SetPoint('LEFT', Name, 'RIGHT', 0, 0) -- need option
 	Level:SetJustifyH('RIGHT')
 	Level:SetFont(Font, FontSize, FontFlag)
 
 	Info:ClearAllPoints()
-	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5)
+	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5) -- need option
 	Info:SetJustifyH('LEFT')
 	Info:SetFont(Font, FontSize, FontFlag)
 
 	RaidIcon:ClearAllPoints()
-	RaidIcon:SetPoint('TOP', Health, 0, 8)
+	RaidIcon:SetPoint('TOP', Health, 0, 8) -- need option
 	RaidIcon:SetSize(16, 16)
 
 	QuestIcon:Hide()
-	QuestIcon:SetSize(24, 24)
+	QuestIcon:SetSize(24, 24) -- need option
 	QuestIcon:ClearAllPoints()
-	QuestIcon:SetPoint('CENTER', Name, 'CENTER', 0, 20)
+	QuestIcon:SetPoint('CENTER', Name, 'CENTER', 0, 20) -- need option
 	QuestIcon:SetTexture('Interface\\MINIMAP\\ObjectIcons')
 	QuestIcon:SetTexCoord(0.125, 0.250, 0.125, 0.250)
 
