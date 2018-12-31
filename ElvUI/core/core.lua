@@ -1121,10 +1121,11 @@ function E:UpdateAll(ignoreInstall)
 		Minimap:UpdateSettings()
 	end
 
-	if E.private.nameplates.enable then
-		NamePlates:ConfigureAll()
-		NamePlates:StyleFilterInitializeAllFilters()
-	end
+	-- Look at this Azil
+	--if E.private.nameplates.enable then
+		--NamePlates:ConfigureAll()
+		--NamePlates:StyleFilterInitializeAllFilters()
+	--end
 
 	Threat:ToggleEnable()
 	Threat:UpdatePosition()
