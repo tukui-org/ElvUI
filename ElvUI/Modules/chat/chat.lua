@@ -2165,21 +2165,20 @@ function CH:SocialQueueEvent(event, guid, numAddedItems)
 	if not self.db.socialQueueMessages then return end
 	if numAddedItems == 0 or not guid then return end
 
-	local coloredName, players = UNKNOWN, C_SocialQueue_GetGroupMembers(guid)
-	local members = players and SocialQueueUtil_SortGroupMembers(players)
-	local playerName, nameColor
+	local members
+	local players = C_SocialQueue_GetGroupMembers(guid)
+	if players and next(players) then members = (players[2] and SocialQueueUtil_SortGroupMembers(players)) or players end
+	if not members then return end -- just bail because huh? no members in a group?
 
-	if members then
-		local firstMember, numMembers, extraCount = members[1], #members, ''
-		playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
-		if numMembers > 1 then
-			extraCount = format(' +%s', numMembers - 1)
-		end
-		if playerName then
-			coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
-		else
-			coloredName = format('{%s%s}', UNKNOWN, extraCount)
-		end
+	local firstMember, numMembers, extraCount, coloredName, playerName, nameColor = members[1], #members, ''
+	playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+	if numMembers > 1 then
+		extraCount = format(' +%s', numMembers - 1)
+	end
+	if playerName then
+		coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
+	else
+		coloredName = format('{%s%s}', UNKNOWN, extraCount)
 	end
 
 	local queues = C_SocialQueue_GetGroupQueues(guid)
