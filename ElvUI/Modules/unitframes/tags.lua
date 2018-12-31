@@ -1089,6 +1089,8 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
+
 ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)
 	return GetGuildInfo(unit) or nil
