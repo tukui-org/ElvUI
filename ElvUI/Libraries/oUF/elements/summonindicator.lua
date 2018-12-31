@@ -31,7 +31,9 @@ local SUMMON_STATUS_PENDING = Enum.SummonStatus.Pending or 1
 local SUMMON_STATUS_ACCEPTED = Enum.SummonStatus.Accepted or 2
 local SUMMON_STATUS_DECLINED = Enum.SummonStatus.Declined or 3
 
-local function Update(self)
+local function Update(self, event, unit)
+	if(self.unit ~= unit) then return end
+
 	local element = self.SummonIndicator
 
 	--[[ Callback: SummonIndicator:PreUpdate()
@@ -43,7 +45,7 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local status = C_IncomingSummon.IncomingSummonStatus(self.unit)
+	local status = C_IncomingSummon.IncomingSummonStatus(unit)
 	if(status ~= SUMMON_STATUS_NONE) then
 		if(status == SUMMON_STATUS_PENDING) then
 			element:SetAtlas('Raid-Icon-SummonPending')
@@ -81,7 +83,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 local function Enable(self)
@@ -90,7 +92,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('INCOMING_SUMMON_CHANGED', Path, true)
+		self:RegisterEvent('INCOMING_SUMMON_CHANGED', Path)
 
 		return true
 	end
