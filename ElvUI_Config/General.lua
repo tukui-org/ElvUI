@@ -189,7 +189,7 @@ E.Options.args.general = {
 				voiceOverlay = {
 					order = 22,
 					type = "toggle",
-					name = E.NewSign..L["Voice Overlay"],
+					name = L["Voice Overlay"],
 					desc = L["Replace Blizzard's Voice Overlay."],
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
