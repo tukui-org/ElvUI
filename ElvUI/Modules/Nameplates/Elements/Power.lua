@@ -37,14 +37,6 @@ function NP:Construct_PowerBar(frame)
 	return Power
 end
 
-function NP:Construct_PowerText(frame)
-	local Text = frame:CreateFontString(nil, 'OVERLAY')
-	Text:SetFont(E.LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
-	Text:SetPoint('CENTER', frame.Power, 'CENTER', 0, 0) -- need option
-
-	return Text
-end
-
 function NP:Construct_PowerPrediction(frame)
 	local PowerBar = CreateFrame('StatusBar', nil, frame.Power)
 	PowerBar:SetReverseFill(true)

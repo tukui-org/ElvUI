@@ -70,7 +70,7 @@ function NP:StylePlate(nameplate, realUnit)
 	local Font, FontSize, FontFlag = LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline
 
 	nameplate.Health = NP:Construct_HealthBar(nameplate)
-	nameplate.Health.Text = NP:Construct_HealthText(nameplate)
+	nameplate.Health.Text = NP:Construct_TagText(nameplate)
 	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(nameplate.Health.Text, '[perhp]%') -- need option
 
