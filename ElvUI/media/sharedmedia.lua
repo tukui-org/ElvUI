@@ -1,4 +1,4 @@
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = LibStub('LibSharedMedia-3.0')
 
 LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex]])

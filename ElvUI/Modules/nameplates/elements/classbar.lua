@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 if youScared then return end
 -- sourced from FrameXML/Constants.lua
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1

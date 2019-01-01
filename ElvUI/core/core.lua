@@ -48,6 +48,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Constants
 E.LSM = LSM
+E.Masque = Masque
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
@@ -1687,13 +1688,16 @@ function E:Initialize(loginFrame)
 	twipe(self.global)
 	twipe(self.private)
 
+	local AceDB = LibStub('AceDB-3.0')
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+
 	self.myguid = UnitGUID('player')
-	self.data = LibStub('AceDB-3.0'):New('ElvDB', self.DF)
+	self.data = AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'UpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileCopied', 'UpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
-	self.charSettings = LibStub('AceDB-3.0'):New('ElvPrivateDB', self.privateVars)
-	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, 'ElvUI')
+	self.charSettings = AceDB:New('ElvPrivateDB', self.privateVars)
+	LibDualSpec:EnhanceDatabase(self.data, 'ElvUI')
 	self.private = self.charSettings.profile
 	self.db = self.data.profile
 	self.global = self.data.global

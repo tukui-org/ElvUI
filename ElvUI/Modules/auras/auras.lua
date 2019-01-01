@@ -23,7 +23,7 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 -- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap, MMHolder
 -- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
-local Masque = LibStub("Masque", true)
+local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
 local MasqueGroupDebuffs = Masque and Masque:Group("ElvUI", "Debuffs")
 

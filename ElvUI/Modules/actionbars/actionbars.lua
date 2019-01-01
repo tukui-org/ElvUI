@@ -54,8 +54,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = E.LSM
-
-local Masque = LibStub("Masque", true)
+local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 local UIHider
