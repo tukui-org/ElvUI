@@ -294,22 +294,26 @@ function NP:StylePlate(nameplate, realUnit)
 	QuestIcons:SetPoint("LEFT", Health, "RIGHT", 4, 0) -- need option
 
 	local Item = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
+	Item:SetPoint('TOPLEFT')
 	Item:SetSize(self.db.questIconSize, self.db.questIconSize)
 	Item:SetTexCoord(unpack(E.TexCoords))
 	Item:Hide()
 	QuestIcons.Item = Item
 
 	local Loot = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
+	Loot:SetPoint('TOPLEFT')
 	Loot:SetSize(self.db.questIconSize, self.db.questIconSize)
 	Loot:Hide()
 	QuestIcons.Loot = Loot
 
 	local Skull = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
+	Skull:SetPoint('TOPLEFT')
 	Skull:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
 	Skull:Hide()
 	QuestIcons.Skull = Skull
 
 	local Chat = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
+	Chat:SetPoint('TOPLEFT')
 	Chat:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
 	Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	Chat:SetTexCoord(0, 0.5, 0.5, 1)
@@ -375,11 +379,12 @@ function NP:UnitStyle(nameplate, unit)
 	-- ['glowStyle'] = 'TARGET_THREAT',
 	local db = self.db.units[unit]
 
-	if strfind(unit, '_NPC') then
+	if (unit == 'FRIENDLY_NPC') or (unit == 'ENEMY_NPC') then
 		nameplate.Health.colorClass = false
 		nameplate.Health.colorReaction = true
 	else
 		nameplate.Health.colorClass = db.healthbar.useClassColor
+		nameplate.Health.colorReaction = false
 	end
 
 	if db.healthbar.enable then
@@ -567,7 +572,7 @@ function NP:ConfigureAll()
 	end
 
 	for nameplate in pairs(NP.Plates) do
-		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+		NP.NamePlateCallBack(nameplate)
 	end
 end
 
