@@ -108,9 +108,10 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent("UNIT_TARGET", Path)
+		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
 		self:RegisterEvent("UNIT_NAME_UPDATE", Path)
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Event)
-		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", Event)
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Event, true)
+		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", Event, true)
 
 		return true
 	end

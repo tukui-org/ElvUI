@@ -182,7 +182,46 @@ function NP:UnitStyle(nameplate, unit)
 	else
 		nameplate.Level:Hide()
 	end
+--[[
+	if self.db.targetGlow then
+		if frame.TopArrow and (shouldShow ~= 2) and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
+			local topArrowSpace = -3
+			if self.db.units[frame.UnitType].showName and (frame.Name:GetText() ~= nil and frame.Name:GetText() ~= "") then
+				topArrowSpace = self.db.fontSize + topArrowSpace
+			end
+			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, topArrowSpace)
+		end
 
+		if (frame.LeftArrow and frame.RightArrow) and (shouldShow ~= 2) and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
+			frame.RightArrow:Point("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", 3, 0)
+			frame.LeftArrow:Point("LEFT", frame.HealthBar, "RIGHT", -3, 0)
+		end
+
+		local castBar = frame.CastBar and frame.CastBar:IsShown() and frame.CastBar
+		local bottomBar = castBar or (frame.PowerBar and frame.PowerBar:IsShown() and frame.PowerBar)
+		local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
+
+		if frame.Glow and (self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7") then -- original glow
+			local offset = E:Scale(E.PixelMode and 6 or 8) -- edgeSize is 5 (not attached to the backdrop needs +1 for pixel mode or +3 for non pixel mode)
+			frame.Glow:SetOutside((iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, offset, offset, (iconPosition == "RIGHT" and castBar.Icon) or bottomBar)
+		end
+
+		if frame.Glow2 and (self.db.targetGlow == "style2" or self.db.targetGlow == "style6" or self.db.targetGlow == "style8") then -- new background glow
+			local scale = 1
+			if self.db.useTargetScale then
+				if self.db.targetScale >= 0.75 then
+					scale = self.db.targetScale
+				else
+					scale = 0.75
+				end
+			end
+
+			local size = (E.Border+14+(bottomBar and 3 or 0))*scale;
+			frame.Glow2:Point("TOPLEFT", (iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, "TOPLEFT", -(size*2), size)
+			frame.Glow2:Point("BOTTOMRIGHT", (iconPosition == "RIGHT" and castBar.Icon) or bottomBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
+		end
+	end
+]]
 	nameplate:UpdateAllElements('OnShow')
 end
 
