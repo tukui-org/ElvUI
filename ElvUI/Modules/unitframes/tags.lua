@@ -10,7 +10,8 @@ local unpack, pairs = unpack, pairs
 local twipe = table.wipe
 local floor = math.floor
 local format = string.format
-local len = string.len
+local strfind, strlower, strmatch, strsub = string.find, string.lower, string.match, string.sub
+local gmatch, gsub = gmatch, gsub
 --WoW API / Variables
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GetGuildInfo = GetGuildInfo
@@ -606,15 +607,29 @@ ElvUF.Tags.Methods['name:long'] = function(unit)
 	return name ~= nil and E:ShortenString(name, 20) or nil
 end
 
-ElvUF.Tags.Events["name:abbrev"] = "UNIT_NAME_UPDATE"
-ElvUF.Tags.Methods["name:abbrev"] = function(unit)
+local function abbrev(name)
+	local letter,lastWord = '', strmatch(name, '.+%s(.+)$')
+	if lastWord then
+		for word in gmatch(name, '.-%s') do
+			local firstNoPunc = strsub(gsub(word, '^[%s%p]*', ''), 1, 1)
+			if firstNoPunc ~= strlower(firstNoPunc) then
+				letter = format('%s%s. ', letter, firstNoPunc)
+			end
+		end
+		name = format('%s%s', letter, lastWord)
+	end
+	return name
+end
+
+ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
 
-	if name and len(name) > 15 then
-		name = name:gsub('(%S+) ', function(t) return t:sub(1,1)..'. ' end)
+	if name and strfind(name, '%s') then
+		name = abbrev(name)
 	end
 
-	return name
+	return name ~= nil and E:ShortenString(name, 20) or '' --The value 20 controls how many characters are allowed in the name before it gets truncated. Change it to fit your needs.
 end
 
 ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
