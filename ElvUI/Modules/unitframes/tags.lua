@@ -608,15 +608,15 @@ ElvUF.Tags.Methods['name:long'] = function(unit)
 end
 
 local function abbrev(name)
-	local letter,lastWord = '', strmatch(name, '.+%s(.+)$')
+	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
 	if lastWord then
 		for word in gmatch(name, '.-%s') do
-			local firstNoPunc = strsub(gsub(word, '^[%s%p]*', ''), 1, 1)
-			if firstNoPunc ~= strlower(firstNoPunc) then
-				letter = format('%s%s. ', letter, firstNoPunc)
+			local firstLetter = strsub(gsub(word, '^[%s%p]*', ''), 1, 1)
+			if firstLetter ~= strlower(firstLetter) then
+				letters = format('%s%s. ', letters, firstLetter)
 			end
 		end
-		name = format('%s%s', letter, lastWord)
+		name = format('%s%s', letters, lastWord)
 	end
 	return name
 end
