@@ -29,6 +29,8 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
+local Lerp = Lerp
+local C_NamePlate = C_NamePlate
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
@@ -276,7 +278,7 @@ function NP:StylePlate(nameplate, realUnit)
 	Name:SetFont(Font, FontSize, FontFlag)
 	Name:SetWordWrap(false)
 
-	Level:SetPoint('LEFT', Name, 'RIGHT', 0, 0) -- need option
+	Level:SetPoint('BOTTOMRIGHT', Health, 'TOPRIGHT', 0, E.Border*2) -- need option
 	Level:SetJustifyH('RIGHT')
 	Level:SetFont(Font, FontSize, FontFlag)
 
@@ -323,9 +325,9 @@ function NP:StylePlate(nameplate, realUnit)
 	ThreatIndicator:SetPoint('CENTER', Health, 'TOPRIGHT')
 	ThreatIndicator.feedbackUnit = 'player'
 
-	local ClassificationIndicator = Health:CreateTexture(nil, 'OVERLAY')
+	local ClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	ClassificationIndicator:SetSize(16, 16)
-	ClassificationIndicator:SetPoint('RIGHT', Health, 'LEFT')
+	ClassificationIndicator:SetPoint('RIGHT', Name, 'LEFT')
 
 	nameplate.Health = Health
 	nameplate.Power = Power
@@ -343,230 +345,350 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate.ClassificationIndicator = ClassificationIndicator
 end
 
-function NP:PersonalStyle(nameplate, event, unit)
-	-- self.db.units.PLAYER
+function NP:PersonalStyle(nameplate)
+	local db = self.db.units.PLAYER
 	-- ['glowStyle'] = 'TARGET_THREAT',
 
-	if self.db.units.PLAYER.healthbar.enable then
+	nameplate.Health.colorClass = db.healthbar.useClassColor
+
+	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
 	else
 		nameplate:DisableElement('Health')
 	end
 
-	if self.db.units.PLAYER.healthbar.enable and self.db.units.PLAYER.healthbar.healPrediction then
+	if db.healthbar.enable and db.healthbar.healPrediction then
 		nameplate:EnableElement('HealPrediction')
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	if self.db.units.PLAYER.healthbar.text.enable then
+	if db.healthbar.text.enable then
 		nameplate.Health.Value:Show()
 	else
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorClass = self.db.units.PLAYER.healthbar.useClassColor
+	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
-	nameplate.Health:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.healthbar.height)
-
-	if self.db.units.PLAYER.powerbar.enable then
+	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
 	else
 		nameplate:DisableElement('Power')
 	end
 
-	if self.db.units.PLAYER.powerbar.enable and self.db.units.PLAYER.powerbar.costPrediction then
+	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end
 
-	if self.db.units.PLAYER.powerbar.text.enable then
+	if db.powerbar.text.enable then
 		nameplate.Power.Value:Show()
 	else
 		nameplate.Power.Value:Hide()
 	end
 
-	nameplate.Power:SetSize(self.db.units.PLAYER.healthbar.width, self.db.units.PLAYER.powerbar.height)
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
+
+	if db.showName then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		if not db.showLevel then
+			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('CENTER')
+		else
+			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('LEFT')
+			nameplate.Name:SetJustifyV('BOTTOM')
+		end
+	else
+		nameplate.Name:Hide()
+	end
+
+	if db.showLevel then
+		nameplate.Level:Show()
+	else
+		nameplate.Level:Hide()
+	end
+
+	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:FriendlyStyle(nameplate, event, unit)
-	-- self.db.units.FRIENDLY_PLAYER
+function NP:FriendlyStyle(nameplate)
+	local db = self.db.units.FRIENDLY_PLAYER
+	-- ['glowStyle'] = 'TARGET_THREAT',
 
-	if self.db.units.FRIENDLY_PLAYER.healthbar.enable then
+	nameplate.Health.colorClass = db.healthbar.useClassColor
+
+	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
 	else
 		nameplate:DisableElement('Health')
 	end
 
-	if self.db.units.FRIENDLY_PLAYER.healthbar.enable and self.db.units.FRIENDLY_PLAYER.healthbar.healPrediction then
+	if db.healthbar.enable and db.healthbar.healPrediction then
 		nameplate:EnableElement('HealPrediction')
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	if self.db.units.FRIENDLY_PLAYER.healthbar.text.enable then
+	if db.healthbar.text.enable then
 		nameplate.Health.Value:Show()
 	else
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorClass = self.db.units.FRIENDLY_PLAYER.healthbar.useClassColor
+	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
-	nameplate.Health:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.healthbar.height)
-
-	if self.db.units.FRIENDLY_PLAYER.powerbar.enable then
+	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
 	else
 		nameplate:DisableElement('Power')
 	end
 
-	if self.db.units.FRIENDLY_PLAYER.powerbar.enable and self.db.units.FRIENDLY_PLAYER.powerbar.costPrediction then
+	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end
 
-	if self.db.units.FRIENDLY_PLAYER.powerbar.text.enable then
+	if db.powerbar.text.enable then
 		nameplate.Power.Value:Show()
 	else
 		nameplate.Power.Value:Hide()
 	end
 
-	nameplate.Power:SetSize(self.db.units.FRIENDLY_PLAYER.healthbar.width, self.db.units.FRIENDLY_PLAYER.powerbar.height)
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
+
+	if db.showName then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		if not db.showLevel then
+			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('CENTER')
+		else
+			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('LEFT')
+			nameplate.Name:SetJustifyV('BOTTOM')
+		end
+	else
+		nameplate.Name:Hide()
+	end
+
+	if db.showLevel then
+		nameplate.Level:Show()
+	else
+		nameplate.Level:Hide()
+	end
+
+	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:EnemyStyle(nameplate, event, unit)
-	-- self.db.units.ENEMY_PLAYER
-	if self.db.units.ENEMY_PLAYER.healthbar.enable then
+function NP:EnemyStyle(nameplate)
+	local db = self.db.units.ENEMY_PLAYER
+	nameplate.Health.colorClass = db.healthbar.useClassColor
+
+	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
 	else
 		nameplate:DisableElement('Health')
 	end
 
-	if self.db.units.ENEMY_PLAYER.healthbar.enable and self.db.units.ENEMY_PLAYER.healthbar.healPrediction then
+	if db.healthbar.enable and db.healthbar.healPrediction then
 		nameplate:EnableElement('HealPrediction')
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	if self.db.units.ENEMY_PLAYER.healthbar.text.enable then
+	if db.healthbar.text.enable then
 		nameplate.Health.Value:Show()
 	else
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorClass = self.db.units.ENEMY_PLAYER.healthbar.useClassColor
+	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
-	nameplate.Health:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.healthbar.height)
-
-	if self.db.units.ENEMY_PLAYER.powerbar.enable then
+	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
 	else
 		nameplate:DisableElement('Power')
 	end
 
-	if self.db.units.ENEMY_PLAYER.powerbar.enable and self.db.units.ENEMY_PLAYER.powerbar.costPrediction then
+	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end
 
-	if self.db.units.ENEMY_PLAYER.powerbar.text.enable then
+	if db.powerbar.text.enable then
 		nameplate.Power.Value:Show()
 	else
 		nameplate.Power.Value:Hide()
 	end
 
-	nameplate.Power:SetSize(self.db.units.ENEMY_PLAYER.healthbar.width, self.db.units.ENEMY_PLAYER.powerbar.height)end
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
 
-function NP:FriendlyNPCStyle(nameplate, event, unit)
-	-- self.db.units.FRIENDLY_NPC
-	if self.db.units.FRIENDLY_NPC.healthbar.enable then
+	if db.showName then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		if not db.showLevel then
+			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('CENTER')
+		else
+			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('LEFT')
+			nameplate.Name:SetJustifyV('BOTTOM')
+		end
+	else
+		nameplate.Name:Hide()
+	end
+
+	if db.showLevel then
+		nameplate.Level:Show()
+	else
+		nameplate.Level:Hide()
+	end
+
+	nameplate:UpdateAllElements('OnShow')
+end
+
+function NP:FriendlyNPCStyle(nameplate)
+	local db = self.db.units.FRIENDLY_NPC
+	nameplate.Health.colorClass = false
+	nameplate.Health.colorReaction = true
+
+	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
 	else
 		nameplate:DisableElement('Health')
 	end
 
-	if self.db.units.FRIENDLY_NPC.healthbar.enable and self.db.units.FRIENDLY_NPC.healthbar.healPrediction then
+	if db.healthbar.enable and db.healthbar.healPrediction then
 		nameplate:EnableElement('HealPrediction')
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	if self.db.units.FRIENDLY_NPC.healthbar.text.enable then
+	if db.healthbar.text.enable then
 		nameplate.Health.Value:Show()
 	else
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorClass = self.db.units.FRIENDLY_NPC.healthbar.useClassColor
+	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
-	nameplate.Health:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.healthbar.height)
-
-	if self.db.units.FRIENDLY_NPC.powerbar.enable then
+	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
 	else
 		nameplate:DisableElement('Power')
 	end
 
-	if self.db.units.FRIENDLY_NPC.powerbar.enable and self.db.units.FRIENDLY_NPC.powerbar.costPrediction then
+	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end
 
-	if self.db.units.FRIENDLY_NPC.powerbar.text.enable then
+	if db.powerbar.text.enable then
 		nameplate.Power.Value:Show()
 	else
 		nameplate.Power.Value:Hide()
 	end
 
-	nameplate.Power:SetSize(self.db.units.FRIENDLY_NPC.healthbar.width, self.db.units.FRIENDLY_NPC.powerbar.height)end
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
 
-function NP:EnemyNPCStyle(nameplate, event, unit)
-	-- self.db.units.ENEMY_NPC
-	if self.db.units.ENEMY_NPC.healthbar.enable then
+	if db.showName then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		if not db.showLevel then
+			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('CENTER')
+		else
+			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('LEFT')
+			nameplate.Name:SetJustifyV('BOTTOM')
+		end
+	else
+		nameplate.Name:Hide()
+	end
+
+	if db.showLevel then
+		nameplate.Level:Show()
+	else
+		nameplate.Level:Hide()
+	end
+
+	nameplate:UpdateAllElements('OnShow')
+end
+
+function NP:EnemyNPCStyle(nameplate)
+	local db = self.db.units.ENEMY_NPC
+	nameplate.Health.colorClass = false
+	nameplate.Health.colorReaction = true
+
+	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
 	else
 		nameplate:DisableElement('Health')
 	end
 
-	if self.db.units.ENEMY_NPC.healthbar.enable and self.db.units.ENEMY_NPC.healthbar.healPrediction then
+	if db.healthbar.enable and db.healthbar.healPrediction then
 		nameplate:EnableElement('HealPrediction')
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	if self.db.units.ENEMY_NPC.healthbar.text.enable then
+	if db.healthbar.text.enable then
 		nameplate.Health.Value:Show()
 	else
 		nameplate.Health.Value:Hide()
 	end
 
-	nameplate.Health.colorClass = self.db.units.ENEMY_NPC.healthbar.useClassColor
+	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
-	nameplate.Health:SetSize(self.db.units.ENEMY_NPC.healthbar.width, self.db.units.ENEMY_NPC.healthbar.height)
-
-	if self.db.units.ENEMY_NPC.powerbar.enable then
+	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
 	else
 		nameplate:DisableElement('Power')
 	end
 
-	if self.db.units.ENEMY_NPC.powerbar.enable and self.db.units.ENEMY_NPC.powerbar.costPrediction then
+	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end
 
-	if self.db.units.ENEMY_NPC.powerbar.text.enable then
+	if db.powerbar.text.enable then
 		nameplate.Power.Value:Show()
 	else
 		nameplate.Power.Value:Hide()
 	end
 
-	nameplate.Power:SetSize(self.db.units.ENEMY_NPC.healthbar.width, self.db.units.ENEMY_NPC.powerbar.height)
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
+
+	if db.showName then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		if not db.showLevel then
+			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('CENTER')
+		else
+			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+			nameplate.Name:SetJustifyH('LEFT')
+			nameplate.Name:SetJustifyV('BOTTOM')
+		end
+	else
+		nameplate.Name:Hide()
+	end
+
+	if db.showLevel then
+		nameplate.Level:Show()
+	else
+		nameplate.Level:Hide()
+	end
+
+	nameplate:UpdateAllElements('OnShow')
 end
 
 function NP:CVarReset()
@@ -659,8 +781,26 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('showQuestTrackingTooltips', NP.db.questIcon and 1)
 
+	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
+
+	-- workaround for #206
+	local friendlyWidth, friendlyHeight
+
+	if IsInInstance() then
+		-- handle it just like blizzard does when using blizzard friendly plates
+		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
+		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+		local zeroBasedScale = namePlateVerticalScale - 1.0
+
+		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
+		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
+	end
+
+	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
+
 	for nameplate in pairs(NP.Plates) do
-		NP.NamePlateCallBack(nameplate)
+		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
 end
 
@@ -676,8 +816,24 @@ function NP:Initialize()
 
 	NP.Plates = {}
 
+	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
+	if BlizzPlateManaBar then
+		BlizzPlateManaBar:Hide()
+		BlizzPlateManaBar:UnregisterAllEvents()
+	end
+
+	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(frame)
+		if frame.classNamePlateMechanicFrame then
+			frame.classNamePlateMechanicFrame:Hide()
+		end
+		if frame.classNamePlatePowerBar then
+			frame.classNamePlatePowerBar:Hide()
+			frame.classNamePlatePowerBar:UnregisterAllEvents()
+		end
+	end)
+
 	function NP.NamePlateCallBack(nameplate, event, unit)
-		if nameplate then
+		if event == 'NAME_PLATE_UNIT_ADDED' then
 			unit = unit or nameplate.unit
 			local reaction = UnitReaction('player', unit)
 			local faction = UnitFactionGroup(unit)
@@ -693,9 +849,6 @@ function NP:Initialize()
 			else
 				NP:EnemyStyle(nameplate, event, unit)
 			end
-		end
-
-		if event == 'NAME_PLATE_UNIT_ADDED' then
 			NP.Plates[nameplate] = true
 		end
 	end
