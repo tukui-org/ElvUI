@@ -593,6 +593,27 @@ function NP:CopySettings(from, to)
 	CopySettings(self.db.units[from], self.db.units[to])
 end
 
+function NP:NamePlateCallBack(nameplate, event, unit)
+	if event == 'NAME_PLATE_UNIT_ADDED' then
+		unit = unit or nameplate.unit
+		local reaction = UnitReaction('player', unit)
+		local faction = UnitFactionGroup(unit)
+
+		if (UnitIsUnit(unit, 'player')) then
+			NP:UnitStyle(nameplate, 'PLAYER')
+		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
+			NP:UnitStyle(nameplate, 'FRIENDLY_PLAYER')
+		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
+			NP:UnitStyle(nameplate, 'FRIENDLY_NPC')
+		elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
+			NP:UnitStyle(nameplate, 'ENEMY_NPC')
+		else
+			NP:UnitStyle(nameplate, 'ENEMY_PLAYER')
+		end
+		NP.Plates[nameplate] = true
+	end
+end
+
 function NP:Initialize()
 	self.db = E.db.nameplates
 
@@ -621,31 +642,12 @@ function NP:Initialize()
 		end
 	end)
 
-	function NP.NamePlateCallBack(nameplate, event, unit)
-		if event == 'NAME_PLATE_UNIT_ADDED' then
-			unit = unit or nameplate.unit
-			local reaction = UnitReaction('player', unit)
-			local faction = UnitFactionGroup(unit)
-
-			if (UnitIsUnit(unit, 'player')) then
-				NP:UnitStyle(nameplate, 'PLAYER')
-			elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
-				NP:UnitStyle(nameplate, 'FRIENDLY_PLAYER')
-			elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
-				NP:UnitStyle(nameplate, 'FRIENDLY_NPC')
-			elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
-				NP:UnitStyle(nameplate, 'ENEMY_NPC')
-			else
-				NP:UnitStyle(nameplate, 'ENEMY_PLAYER')
-			end
-			NP.Plates[nameplate] = true
-		end
-	end
-
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	ElvUF:SpawnNamePlates('ElvUF_', NP.NamePlateCallBack)
+	ElvUF:SpawnNamePlates('ElvUF_', function(nameplate, event, unit)
+		NP:NamePlateCallBack(nameplate, event, unit)
+	end)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
