@@ -66,8 +66,9 @@ function NP:Style(frame, unit)
 end
 
 function NP:StylePlate(nameplate, realUnit)
-	local Texture = LSM:Fetch('statusbar', self.db.statusbar)
-	local Font, FontSize, FontFlag = LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline
+	nameplate:SetPoint('CENTER')
+	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:SetScale(UIParent:GetEffectiveScale())
 
 	nameplate.Health = NP:Construct_HealthBar(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
@@ -83,123 +84,17 @@ function NP:StylePlate(nameplate, realUnit)
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
-	local Health = nameplate.Health
+	nameplate.Name = NP:Construct_TagText(nameplate)
+	nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
+	nameplate.Name:SetJustifyH('LEFT')
+	nameplate.Name:SetJustifyV('BOTTOM')
+	nameplate.Name:SetWordWrap(false)
+	nameplate:Tag(nameplate.Name, '[namecolor][name:abbrev] [npctitle]')
 
-	local CastBar = CreateFrame('StatusBar', nil, nameplate)
-
-	local Name = nameplate:CreateFontString(nil, 'OVERLAY')
-	local Level = nameplate:CreateFontString(nil, 'OVERLAY')
-	local Info = nameplate:CreateFontString(nil, 'OVERLAY')
-	local RaidIcon = nameplate:CreateTexture(nil, 'OVERLAY')
-	local QuestIcons = CreateFrame('Frame', nil, nameplate)
-
-	nameplate:SetPoint('CENTER')
-	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
-	nameplate:SetScale(UIParent:GetEffectiveScale())
-
-	CastBar:SetFrameStrata(nameplate:GetFrameStrata())
-	CastBar:SetStatusBarTexture(Texture)
-	CastBar:SetFrameLevel(6)
-	CastBar:CreateBackdrop('Transparent')
-	CastBar:SetHeight(16) -- need option
-	CastBar:SetPoint('TOPLEFT', Health, 'BOTTOMLEFT', 0, -20) -- need option
-	CastBar:SetPoint('TOPRIGHT', Health, 'BOTTOMRIGHT', 0, -20) -- need option
-
-	CastBar.Button = CreateFrame('Frame', nil, CastBar)
-	CastBar.Button:SetSize(18, 18) -- need option
-	CastBar.Button:SetTemplate()
-	CastBar.Button:SetPoint('RIGHT', CastBar, 'LEFT', -6, 0) -- need option
-
-	CastBar.Icon = CastBar.Button:CreateTexture(nil, 'ARTWORK')
-	CastBar.Icon:SetInside()
-	CastBar.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	CastBar.Time = CastBar:CreateFontString(nil, 'OVERLAY')
-	CastBar.Time:SetFont(Font, FontSize, FontFlag)
-	CastBar.Time:SetPoint('RIGHT', CastBar, 'RIGHT', -4, 0)
-	CastBar.Time:SetTextColor(0.84, 0.75, 0.65)
-	CastBar.Time:SetJustifyH('RIGHT')
-
-	CastBar.Text = CastBar:CreateFontString(nil, 'OVERLAY')
-	CastBar.Text:SetFont(Font, FontSize, FontFlag)
-	CastBar.Text:SetPoint('LEFT', CastBar, 'LEFT', 4, 0) -- need option
-	CastBar.Text:SetTextColor(0.84, 0.75, 0.65)
-	CastBar.Text:SetJustifyH('LEFT')
-	CastBar.Text:SetSize(75, 16) -- need option
-
-	local function CheckInterrupt(castbar, unit)
-		if (unit == 'vehicle') then
-			unit = 'player'
-		end
-
-		if (castbar.notInterruptible and UnitCanAttack('player', unit)) then
-			castbar:SetStatusBarColor(0.87, 0.37, 0.37, 0.7)
-		else
-			castbar:SetStatusBarColor(0.29, 0.67, 0.30, 0.7)
-		end
-	end
-
-	CastBar.PostCastStart = CheckInterrupt
-	CastBar.PostCastInterruptible = CheckInterrupt
-	CastBar.PostCastNotInterruptible = CheckInterrupt
-	CastBar.PostChannelStart = CheckInterrupt
-
-	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2) -- need option
-	Name:SetJustifyH('LEFT')
-	Name:SetJustifyV('BOTTOM')
-	Name:SetFont(Font, FontSize, FontFlag)
-	Name:SetWordWrap(false)
-
-	Level:SetPoint('BOTTOMRIGHT', Health, 'TOPRIGHT', 0, E.Border*2) -- need option
-	Level:SetJustifyH('RIGHT')
-	Level:SetFont(Font, FontSize, FontFlag)
-
-	RaidIcon:SetPoint('TOP', Health, 0, 8) -- need option
-	RaidIcon:SetSize(16, 16)
-
-	QuestIcons:Hide()
-	QuestIcons:SetSize(self.db.questIconSize, self.db.questIconSize)
-	QuestIcons:SetPoint("LEFT", Health, "RIGHT", 4, 0) -- need option
-
-	local Item = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Item:SetPoint('TOPLEFT')
-	Item:SetSize(self.db.questIconSize, self.db.questIconSize)
-	Item:SetTexCoord(unpack(E.TexCoords))
-	Item:Hide()
-	QuestIcons.Item = Item
-
-	local Loot = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Loot:SetPoint('TOPLEFT')
-	Loot:SetSize(self.db.questIconSize, self.db.questIconSize)
-	Loot:Hide()
-	QuestIcons.Loot = Loot
-
-	local Skull = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Skull:SetPoint('TOPLEFT')
-	Skull:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
-	Skull:Hide()
-	QuestIcons.Skull = Skull
-
-	local Chat = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Chat:SetPoint('TOPLEFT')
-	Chat:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
-	Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
-	Chat:SetTexCoord(0, 0.5, 0.5, 1)
-	Chat:Hide()
-	QuestIcons.Chat = Chat
-
-	local Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
-	Text:SetPoint('BOTTOMRIGHT', QuestIcons, 2, -0.8)
-	Text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-	QuestIcons.Text = Text
-
-	nameplate:Tag(Name, '[namecolor][name:abbrev] [npctitle]')
-	nameplate:Tag(Level, '[difficultycolor][level]')
-	--nameplate:Tag(Info, '[quest:info]')
-
-	--local PvP = Health:CreateTexture(nil, 'OVERLAY')
-	--PvP:Size(36, 36)
-	--PvP:Point('CENTER', Health)
+	nameplate.Level = NP:Construct_TagText(nameplate)
+	nameplate.Level:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, E.Border*2) -- need option
+	nameplate.Level:SetJustifyH('RIGHT')
+	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
 	local RaidTargetIndicator = Health:CreateTexture(nil, 'OVERLAY', 7)
 	RaidTargetIndicator:SetSize(24, 24)
@@ -223,22 +118,15 @@ function NP:StylePlate(nameplate, realUnit)
 	ThreatIndicator:SetPoint('CENTER', Health, 'TOPRIGHT')
 	ThreatIndicator.feedbackUnit = 'player'
 
-	local ClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	ClassificationIndicator:SetSize(16, 16)
-	ClassificationIndicator:SetPoint('RIGHT', Name, 'LEFT')
+	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
+	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
-	nameplate.Castbar = CastBar
+	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
-	nameplate.Name = Name
-	nameplate.Level = Level
-	nameplate.Info = Info
-
-	nameplate.QuestIcons = QuestIcons
+	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
 	nameplate.RaidTargetIndicator = RaidTargetIndicator
-	--nameplate.PvPIndicator = PvP
 
 	nameplate.ThreatIndicator = ThreatIndicator
-	nameplate.ClassificationIndicator = ClassificationIndicator
 end
 
 function NP:UnitStyle(nameplate, unit)

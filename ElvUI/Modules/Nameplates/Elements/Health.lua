@@ -10,17 +10,7 @@ function NP:Construct_HealthBar(frame)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 
-	--Health.PostUpdate = function(bar, _, min, max)
-	--	bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
-
-	--	if (min ~= max) then
-	--		bar:SetStatusBarColor(bar.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
-	--	else
-	--		bar:SetStatusBarColor(0.2, 0.2, 0.2, 1)
-	--	end
-	--end
-
-	--Health:SetStatusBarColor(0.2, 0.2, 0.2, 1) -- need option
+	Health.PostUpdate = function(bar, _, min, max) NP:HealthBar_PostUpdate(bar, _, min, max) end
 
 	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
 
@@ -31,6 +21,16 @@ function NP:Construct_HealthBar(frame)
 	Health.Smooth = true
 
 	return Health
+end
+
+function NP:HealthBar_PostUpdate(frame, _, min, max)
+	if self.db.DarkTheme then
+		if (min ~= max) then
+			frame:SetStatusBarColor(frame.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+		else
+			frame:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+		end
+	end
 end
 
 function NP:Construct_HealthPrediction(frame)
