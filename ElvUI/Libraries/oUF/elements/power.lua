@@ -91,8 +91,6 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
-local updateFrequentUpdates -- ElvUI
-
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
@@ -106,13 +104,6 @@ end
 local function UpdateColor(element, unit, cur, min, max, displayType)
 	local parent = element.__owner
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-
-	-- ElvUI block
-	if element.frequentUpdates ~= element.__frequentUpdates then
-		element.__frequentUpdates = element.frequentUpdates
-		updateFrequentUpdates(self)
-	end
-	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and element.tapped) then
@@ -258,34 +249,11 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
--- ElvUI block
-function updateFrequentUpdates(self)
-	local power = self.Power
-	if power.frequentUpdates and not self:IsEventRegistered('UNIT_POWER_FREQUENT') then
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-
-		if self:IsEventRegistered('UNIT_POWER_UPDATE') then
-			self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-		end
-	elseif not self:IsEventRegistered('UNIT_POWER_UPDATE') then
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-
-		if self:IsEventRegistered('UNIT_POWER_FREQUENT') then
-			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		end
-	end
-end
--- end block
-
 local function Enable(self)
 	local element = self.Power
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		-- ElvUI block
-		element.__frequentUpdates = element.frequentUpdates
-		updateFrequentUpdates(self)
-		-- end block
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)

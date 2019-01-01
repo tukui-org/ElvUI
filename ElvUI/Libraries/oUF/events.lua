@@ -4,6 +4,7 @@ local Private = oUF.Private
 
 local argcheck = Private.argcheck
 local error = Private.error
+local validateUnit = Private.validateUnit
 local frame_metatable = Private.frame_metatable
 
 -- Original event methods
@@ -87,7 +88,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 			table.insert(curev, func)
 		end
 
-		if unitless then
+		if(unitless) then
 			-- re-register the event in case we have mixed registration
 			registerEvent(self, event)
 			if(self.unitEvents) then
@@ -107,9 +108,10 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 			self.unitEvents = self.unitEvents or {}
 			self.unitEvents[event] = true
 			-- UpdateUnits will take care of unit event registration for header
-			-- units
-			if(self.unit and not self:GetParent():GetAttribute('oUF-headerType')) then
-				registerUnitEvent(self, event, self.unit)
+			-- units in case we don't have a valid unit yet
+			local unit = self.unit
+			if(unit and validateUnit(unit)) then
+				registerUnitEvent(self, event, unit)
 			end
 		end
 	end
