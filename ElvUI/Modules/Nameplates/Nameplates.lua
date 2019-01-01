@@ -325,9 +325,9 @@ function NP:StylePlate(nameplate, realUnit)
 	Text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	QuestIcons.Text = Text
 
-	nameplate:Tag(Name, '[namecolor][name] [npctitle]')
+	nameplate:Tag(Name, '[namecolor][name:abbrev] [npctitle]')
 	nameplate:Tag(Level, '[difficultycolor][level]')
-	nameplate:Tag(Info, '[quest:info]')
+	--nameplate:Tag(Info, '[quest:info]')
 
 	--local PvP = Health:CreateTexture(nil, 'OVERLAY')
 	--PvP:Size(36, 36)

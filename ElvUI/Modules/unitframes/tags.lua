@@ -605,6 +605,17 @@ ElvUF.Tags.Methods['name:long'] = function(unit)
 	return name ~= nil and E:ShortenString(name, 20) or nil
 end
 
+ElvUF.Tags.Events["name:abbrev"] = "UNIT_NAME_UPDATE"
+ElvUF.Tags.Methods["name:abbrev"] = function(unit)
+	local name = UnitName(unit)
+
+	if name and len(name) > 15 then
+		name = name:gsub('(%S+) ', function(t) return t:sub(1,1)..'. ' end)
+	end
+
+	return name
+end
+
 ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
 ElvUF.Tags.Methods['name:veryshort:status'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
