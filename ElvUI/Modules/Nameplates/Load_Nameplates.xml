@@ -1,6 +1,8 @@
 <Ui>
 	<Script file="Nameplates.lua"/>
-	<Script file="Elements\ClassificationIndicator.lua"/>
-	<Script file="Elements\QuestIcons.lua"/>
-	<Script file="Elements\Tags.lua"/>
+	<Script file="Tags.lua"/>
+	<Script file="Elements\Health.lua"/>
+	<Script file="Elements\Power.lua"/>
+	<Script file="Plugins\Elements\ClassificationIndicator.lua"/>
+	<Script file="Plugins\QuestIcons.lua"/>
 </Ui>

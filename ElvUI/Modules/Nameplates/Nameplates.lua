@@ -36,6 +36,21 @@ local C_NamePlate = C_NamePlate
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
 -- GLOBALS: CUSTOM_CLASS_COLORS, ADDITIONAL_POWER_BAR_NAME
 
+function NP:StyleFrame(frame, useMainFrame)
+	local parent = frame
+
+	if (parent:IsObjectType('Texture')) then
+		parent = frame:GetParent()
+	end
+
+	if useMainFrame then
+		parent:SetTemplate("Transparent")
+		return
+	end
+
+	parent:CreateBackdrop("Transparent")
+end
+
 function NP:Style(frame, unit)
 	if (not unit) then
 		return
@@ -54,9 +69,22 @@ function NP:StylePlate(nameplate, realUnit)
 	local Texture = LSM:Fetch('statusbar', self.db.statusbar)
 	local Font, FontSize, FontFlag = LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline
 
-	local Health = CreateFrame('StatusBar', nil, nameplate)
-	local Power = CreateFrame('StatusBar', nil, nameplate)
-	local AdditionalPower = CreateFrame('StatusBar', nil, nameplate)
+	nameplate.Health = NP:Construct_HealthBar(nameplate)
+	nameplate.Health.Text = NP:Construct_HealthText(nameplate)
+	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
+	nameplate:Tag(nameplate.Health.Text, '[perhp]%') -- need option
+
+	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
+
+	nameplate.Power = NP:Construct_PowerBar(nameplate)
+	nameplate.Power.Text = NP:Construct_TagText(nameplate)
+	nameplate.Power.Text:SetPoint('CENTER', nameplate.Power, 'CENTER', 0, 0) -- need option
+	nameplate:Tag(nameplate.Power.Text, '[perpp]%') -- need option
+
+	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
+
+	local Health = nameplate.Health
+
 	local CastBar = CreateFrame('StatusBar', nil, nameplate)
 
 	local Name = nameplate:CreateFontString(nil, 'OVERLAY')
@@ -68,70 +96,6 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:SetPoint('CENTER')
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(UIParent:GetEffectiveScale())
-
-	Health:SetFrameStrata(nameplate:GetFrameStrata())
-	Health:SetFrameLevel(4)
-	Health:SetPoint('CENTER')
-	Health:CreateBackdrop('Transparent')
-	Health:SetStatusBarTexture(Texture)
-
-	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
-	Health.Value:SetFont(LSM:Fetch('font', self.db.healthFont), self.db.healthFontSize, self.db.healthFontOutline)
-	Health.Value:SetPoint('CENTER', Health, 'CENTER', 0, 0) -- need option
-	nameplate:Tag(Health.Value, '[perhp]%') -- need option
-
-	--Health.PostUpdate = function(bar, _, min, max)
-	--	bar.Value:SetTextColor(bar.__owner:ColorGradient(min, max, .69, .31, .31, .65, .63, .35, .33, .59, .33))
-
-	--	if (min ~= max) then
-	--		bar:SetStatusBarColor(bar.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
-	--	else
-	--		bar:SetStatusBarColor(0.2, 0.2, 0.2, 1)
-	--	end
-	--end
-
-	--Health:SetStatusBarColor(0.2, 0.2, 0.2, 1) -- need option
-
-	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
-
-	Health.frequentUpdates = true
-	Health.colorTapping = true
-	Health.colorDisconnected = false
-
-	Health.Smooth = true
-
-	local HealthPrediction = {}
-
-	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
-		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, Health)
-		HealthPrediction[Bar]:SetStatusBarTexture(Texture)
-		HealthPrediction[Bar]:SetPoint('TOP')
-		HealthPrediction[Bar]:SetPoint('BOTTOM')
-		HealthPrediction[Bar]:SetWidth(150)
-	end
-
-	HealthPrediction.myBar:SetPoint('LEFT', Health:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.myBar:SetFrameLevel(Health:GetFrameLevel() + 2)
-	HealthPrediction.myBar:SetStatusBarColor(0, 0.3, 0.15, 1)
-	HealthPrediction.myBar:SetMinMaxValues(0,1)
-
-	HealthPrediction.otherBar:SetPoint('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.otherBar:SetFrameLevel(Health:GetFrameLevel() + 1)
-	HealthPrediction.otherBar:SetStatusBarColor(0, 0.3, 0, 1)
-
-	HealthPrediction.absorbBar:SetPoint('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.absorbBar:SetFrameLevel(Health:GetFrameLevel())
-	HealthPrediction.absorbBar:SetStatusBarColor(0.3, 0.3, 0, 1)
-
-	HealthPrediction.healAbsorbBar:SetPoint('RIGHT', Health:GetStatusBarTexture())
-	HealthPrediction.healAbsorbBar:SetFrameLevel(Health:GetFrameLevel() + 3)
-	HealthPrediction.healAbsorbBar:SetStatusBarColor(1, 0.3, 0.3, 1)
-	HealthPrediction.healAbsorbBar:SetReverseFill(true)
-
-	HealthPrediction.maxOverflow = 1
-	HealthPrediction.frequentUpdates = true
-
-	nameplate.HealthPrediction = HealthPrediction
 
 	CastBar:SetFrameStrata(nameplate:GetFrameStrata())
 	CastBar:SetStatusBarTexture(Texture)
@@ -180,93 +144,6 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar.PostCastNotInterruptible = CheckInterrupt
 	CastBar.PostChannelStart = CheckInterrupt
 
-	Power:SetFrameStrata(nameplate:GetFrameStrata())
-	Power:SetFrameLevel(2)
-	Power:CreateBackdrop('Transparent')
-	Power:SetPoint('TOP', Health, 'TOP', 0, -14)
-	Power:SetStatusBarTexture(Texture)
-
-	Power.Value = Power:CreateFontString(nil, 'OVERLAY')
-	Power.Value:SetFont(Font, FontSize, FontFlag)
-	Power.Value:SetPoint('CENTER', Power, 'CENTER', 0, 0) -- need option
-	nameplate:Tag(Power.Value, '[perpp]%') -- need option
-
-	Power.frequentUpdates = true
-	Power.colorTapping = true
-	Power.colorClass = true
-	Power.Smooth = true
-	Power.displayAltPower = true
-
-	Power.PreUpdate = function(power, unit)
-		local _, pToken = UnitPowerType(unit)
-		local Color = ElvUF.colors.power[pToken]
-
-		if Color then
-			power:SetStatusBarColor(Color[1], Color[2], Color[3])
-			power.Value:SetTextColor(Color[1], Color[2], Color[3])
-		end
-
-		power.Value:UpdateTag()
-	end
-
-	Power.PostUpdate = function(power, unit, _, _, max)
-		if max == 0 then
-			power:Hide()
-		else
-			power:Show()
-		end
-		power:PreUpdate(unit)
-	end
-
-	AdditionalPower:Hide()
-	AdditionalPower:SetFrameStrata(nameplate:GetFrameStrata())
-	AdditionalPower:SetFrameLevel(2)
-	AdditionalPower:SetSize(130, 4) -- need option
-	AdditionalPower:CreateBackdrop('Transparent')
-	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2) -- need option
-	AdditionalPower:SetStatusBarTexture(Texture)
-
-	AdditionalPower.Value = AdditionalPower:CreateFontString(nil, 'OVERLAY')
-	AdditionalPower.Value:SetFont(Font, FontSize, FontFlag)
-	AdditionalPower.Value:SetPoint('CENTER', AdditionalPower, 'CENTER', 0, 0) -- need option
-	nameplate:Tag(AdditionalPower.Value, '[curmana]') -- need option
-
-	AdditionalPower.colorPower = true
-	AdditionalPower.PreUpdate = function(bar)
-		local Color = ElvUF.colors.power[ADDITIONAL_POWER_BAR_NAME]
-
-		if Color then
-			bar.Value:SetTextColor(Color[1], Color[2], Color[3])
-		end
-
-		bar.Value:UpdateTag()
-	end
-
-	AdditionalPower.PostUpdate = AdditionalPower.PostUpdate
-
-	nameplate.AdditionalPower = AdditionalPower
-
-	local PowerBar = CreateFrame('StatusBar', nil, Power)
-	PowerBar:SetReverseFill(true)
-	PowerBar:SetPoint('TOP') -- need option
-	PowerBar:SetPoint('BOTTOM')
-	PowerBar:SetPoint('RIGHT', Power:GetStatusBarTexture(), 'RIGHT')
-	PowerBar:SetWidth(130) -- need option
-	PowerBar:SetStatusBarTexture(Texture)
-
-	local AltPowerBar = CreateFrame('StatusBar', nil, AdditionalPower)
-	AltPowerBar:SetReverseFill(true)
-	AltPowerBar:SetPoint('TOP') -- need option
-	AltPowerBar:SetPoint('BOTTOM')
-	AltPowerBar:SetPoint('RIGHT', AdditionalPower:GetStatusBarTexture(), 'RIGHT')
-	AltPowerBar:SetWidth(130) -- need option
-	AltPowerBar:SetStatusBarTexture(Texture)
-
-	nameplate.PowerPrediction = {
-		mainBar = PowerBar,
-		altBar = AltPowerBar
-	}
-
 	Name:SetPoint('BOTTOMLEFT', Health, 'TOPLEFT', 0, E.Border*2) -- need option
 	Name:SetJustifyH('LEFT')
 	Name:SetJustifyV('BOTTOM')
@@ -276,10 +153,6 @@ function NP:StylePlate(nameplate, realUnit)
 	Level:SetPoint('BOTTOMRIGHT', Health, 'TOPRIGHT', 0, E.Border*2) -- need option
 	Level:SetJustifyH('RIGHT')
 	Level:SetFont(Font, FontSize, FontFlag)
-
-	Info:SetPoint('TOP', Power, 'BOTTOM', 0, -5) -- need option
-	Info:SetJustifyH('LEFT')
-	Info:SetFont(Font, FontSize, FontFlag)
 
 	RaidIcon:SetPoint('TOP', Health, 0, 8) -- need option
 	RaidIcon:SetSize(16, 16)
@@ -354,8 +227,6 @@ function NP:StylePlate(nameplate, realUnit)
 	ClassificationIndicator:SetSize(16, 16)
 	ClassificationIndicator:SetPoint('RIGHT', Name, 'LEFT')
 
-	nameplate.Health = Health
-	nameplate.Power = Power
 	nameplate.Castbar = CastBar
 
 	nameplate.Name = Name
@@ -395,9 +266,9 @@ function NP:UnitStyle(nameplate, unit)
 	end
 
 	if db.healthbar.text.enable then
-		nameplate.Health.Value:Show()
+		nameplate.Health.Text:Show()
 	else
-		nameplate.Health.Value:Hide()
+		nameplate.Health.Text:Hide()
 	end
 
 	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
@@ -415,9 +286,9 @@ function NP:UnitStyle(nameplate, unit)
 	end
 
 	if db.powerbar.text.enable then
-		nameplate.Power.Value:Show()
+		nameplate.Power.Text:Show()
 	else
-		nameplate.Power.Value:Hide()
+		nameplate.Power.Text:Hide()
 	end
 
 	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
