@@ -572,7 +572,7 @@ function NP:ConfigureAll()
 	end
 
 	for nameplate in pairs(NP.Plates) do
-		NP.NamePlateCallBack(nameplate)
+		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
 end
 
@@ -619,7 +619,7 @@ function NP:Initialize()
 			elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
 				NP:UnitStyle(nameplate, 'ENEMY_NPC')
 			else
-				NP:UnitStyle(nameplate, 'ENEMY')
+				NP:UnitStyle(nameplate, 'ENEMY_PLAYER')
 			end
 			NP.Plates[nameplate] = true
 		end
