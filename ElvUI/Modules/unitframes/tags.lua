@@ -557,8 +557,9 @@ end
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, unitClass = UnitClass(unit)
-	if (UnitIsPlayer(unit)) then
+	local unitPlayer = UnitIsPlayer(unit)
+	if (unitPlayer) then
+		local _, unitClass = UnitClass(unit)
 		local class = ElvUF.colors.class[unitClass]
 		if not class then return "" end
 		return Hex(class[1], class[2], class[3])
