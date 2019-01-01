@@ -10,6 +10,7 @@ local unpack, pairs = unpack, pairs
 local twipe = table.wipe
 local floor = math.floor
 local format = string.format
+local len = string.len
 --WoW API / Variables
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GetGuildInfo = GetGuildInfo
