@@ -73,7 +73,6 @@ function NP:StylePlate(nameplate, realUnit)
 	Health:SetFrameLevel(4)
 	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
-	--Health.backdrop:CreateShadow()
 	Health:SetStatusBarTexture(Texture)
 
 	Health.Value = Health:CreateFontString(nil, 'OVERLAY')
@@ -138,7 +137,6 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar:SetStatusBarTexture(Texture)
 	CastBar:SetFrameLevel(6)
 	CastBar:CreateBackdrop('Transparent')
-	--CastBar.backdrop:CreateShadow()
 	CastBar:SetHeight(16) -- need option
 	CastBar:SetPoint('TOPLEFT', Health, 'BOTTOMLEFT', 0, -20) -- need option
 	CastBar:SetPoint('TOPRIGHT', Health, 'BOTTOMRIGHT', 0, -20) -- need option
@@ -146,7 +144,6 @@ function NP:StylePlate(nameplate, realUnit)
 	CastBar.Button = CreateFrame('Frame', nil, CastBar)
 	CastBar.Button:SetSize(18, 18) -- need option
 	CastBar.Button:SetTemplate()
-	--CastBar.Button:CreateShadow()
 	CastBar.Button:SetPoint('RIGHT', CastBar, 'LEFT', -6, 0) -- need option
 
 	CastBar.Icon = CastBar.Button:CreateTexture(nil, 'ARTWORK')
@@ -186,7 +183,6 @@ function NP:StylePlate(nameplate, realUnit)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(2)
 	Power:CreateBackdrop('Transparent')
-	--Power.backdrop:CreateShadow()
 	Power:SetPoint('TOP', Health, 'TOP', 0, -14)
 	Power:SetStatusBarTexture(Texture)
 
@@ -227,7 +223,6 @@ function NP:StylePlate(nameplate, realUnit)
 	AdditionalPower:SetFrameLevel(2)
 	AdditionalPower:SetSize(130, 4) -- need option
 	AdditionalPower:CreateBackdrop('Transparent')
-	--AdditionalPower.backdrop:CreateShadow()
 	AdditionalPower:SetPoint('TOP', Power, 'BOTTOM', 0, -2) -- need option
 	AdditionalPower:SetStatusBarTexture(Texture)
 
@@ -574,6 +569,28 @@ function NP:ConfigureAll()
 	for nameplate in pairs(NP.Plates) do
 		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
+end
+
+local function CopySettings(from, to)
+	for setting, value in pairs(from) do
+		if(type(value) == "table" and to[setting] ~= nil) then
+			CopySettings(from[setting], to[setting])
+		else
+			if(to[setting] ~= nil) then
+				to[setting] = from[setting]
+			end
+		end
+	end
+end
+
+function NP:ResetSettings(unit)
+	CopySettings(P.nameplates.units[unit], self.db.units[unit])
+end
+
+function NP:CopySettings(from, to)
+	if (from == to) then return end
+
+	CopySettings(self.db.units[from], self.db.units[to])
 end
 
 function NP:Initialize()
