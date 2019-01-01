@@ -6,14 +6,12 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
 local twipe = table.wipe
 local floor = math.floor
-local format = string.format
-local strfind, strlower, strmatch, strsub = string.find, string.lower, string.match, string.sub
-local gmatch, gsub = gmatch, gsub
+local unpack, pairs = unpack, pairs
+local gmatch, gsub, format = gmatch, gsub, format
+local strfind, strlower, strmatch, strsub = strfind, strlower, strmatch, strsub
 --WoW API / Variables
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPVPTimer = GetPVPTimer
@@ -55,9 +53,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
+
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
-local PVP = PVP
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local SPELL_POWER_CHI = Enum.PowerType.Chi
@@ -65,7 +62,11 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
+local PVP = PVP
+
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: Hex, PowerBarColor, _TAGS
