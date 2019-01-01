@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local ElvUF = ElvUI.oUF
 
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
-local LSM = LibStub('LibSharedMedia-3.0')
 
 --Cache global variables
 --Lua functions
@@ -96,36 +95,18 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate.Level:SetJustifyH('RIGHT')
 	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
-	local RaidTargetIndicator = Health:CreateTexture(nil, 'OVERLAY', 7)
-	RaidTargetIndicator:SetSize(24, 24)
-	RaidTargetIndicator:Point('BOTTOM', Health, 'TOP', 0, 24)
-	RaidTargetIndicator.Override = function(ele, event)
-		local element = ele.RaidTargetIndicator
-
-		if ele.unit then
-			local index = GetRaidTargetIndex(ele.unit)
-			if (index) and not UnitIsUnit(ele.unit, 'player') then
-				SetRaidTargetIconTexture(element, index)
-				element:Show()
-			else
-				element:Hide()
-			end
-		end
-	end
-
-	local ThreatIndicator = Health:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:SetSize(16, 16)
-	ThreatIndicator:SetPoint('CENTER', Health, 'TOPRIGHT')
-	ThreatIndicator.feedbackUnit = 'player'
-
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
 	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
 	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
-	nameplate.RaidTargetIndicator = RaidTargetIndicator
+	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
 
+	local ThreatIndicator = nameplate.Health:CreateTexture(nil, 'OVERLAY')
+	ThreatIndicator:SetSize(16, 16)
+	ThreatIndicator:SetPoint('CENTER', nameplate.Health, 'TOPRIGHT')
+	ThreatIndicator.feedbackUnit = 'player'
 	nameplate.ThreatIndicator = ThreatIndicator
 end
 
@@ -384,6 +365,7 @@ function NP:Initialize()
 	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
+	NP.StatusBars = {}
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
