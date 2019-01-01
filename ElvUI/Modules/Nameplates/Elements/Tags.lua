@@ -12,6 +12,7 @@ local unpack = unpack
 local LEVEL = LEVEL
 
 local Tooltip = CreateFrame("GameTooltip", "oUF_TooltipScanner", UIParent, "GameTooltipTemplate")
+Tooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
 
 oUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['npctitle'] = function(unit)
@@ -19,7 +20,6 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 		return Hex(.25, .75, .25)..(GetGuildInfo(unit) or '')..'|r'
 	end
 
-	Tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	Tooltip:SetUnit(unit)
 
 	local reactionType = UnitReaction(unit, "player")
