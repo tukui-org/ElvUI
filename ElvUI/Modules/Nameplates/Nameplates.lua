@@ -122,7 +122,6 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
-	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
@@ -254,6 +253,19 @@ function NP:UnitStyle(nameplate, unit)
 			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size*2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
+	end
+
+	if db.eliteIcon and db.eliteIcon.enable then
+		nameplate:EnableElement('ClassificationIndicator')
+		nameplate.ClassificationIndicator:ClearAllPoints()
+		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
+		if db.healthbar.enable then
+			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.HealthBar, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
+		else
+			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Level, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset) -- maybe find a better spot?
+		end
+	else
+		nameplate:DisableElement('ClassificationIndicator')
 	end
 
 	nameplate:UpdateAllElements('OnShow')
