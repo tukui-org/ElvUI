@@ -83,3 +83,23 @@ function NP:ConstructElement_TargetIndicator(frame)
 
 	return TargetIndicator
 end
+
+function NP:ConstructElement_Highlight(frame)
+	local Highlight = CreateFrame("Frame", nil, frame)
+	Highlight.texture = Highlight:CreateTexture("$parentHighlight", "ARTWORK", nil, 1)
+	Highlight.texture:SetVertexColor(1, 1, 1, .5)
+	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
+	Highlight.texture:Hide()
+
+	Highlight:HookScript("OnHide", function(f)
+		f.texture:Hide()
+	end)
+	Highlight:HookScript("OnShow", function(f)
+		f.texture:ClearAllPoints()
+		f.texture:SetPoint("TOPLEFT", frame.Health, "TOPLEFT")
+		f.texture:SetPoint("BOTTOMRIGHT", frame.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
+		f.texture:Show()
+	end)
+
+	return Highlight
+end

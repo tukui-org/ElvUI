@@ -12,4 +12,5 @@
 	<Script file="Plugins\HealerSpecs.lua"/>
 	<Script file="Plugins\QuestIcons.lua"/>
 	<Script file="Plugins\TargetIndicator.lua"/>
+	<Script file="Plugins\Highlight.lua"/>
 </Ui>

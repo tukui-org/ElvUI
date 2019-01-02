@@ -91,6 +91,10 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(UIParent:GetEffectiveScale())
 
+	nameplate.Highlight = nameplate:CreateTexture(nil, "HIGHLIGHT")
+	nameplate.Highlight:SetTexture(E.LSM:Fetch('background', 'Solid'))
+	nameplate.Highlight:SetAllPoints()
+
 	nameplate.Health = NP:Construct_HealthBar(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
 	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
@@ -126,6 +130,7 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
 
 	nameplate.TargetIndicator = NP:ConstructElement_TargetIndicator(nameplate)
+	nameplate.Highlight = NP:ConstructElement_Highlight(nameplate)
 end
 
 function NP:UnitStyle(nameplate, unit)
