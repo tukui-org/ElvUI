@@ -55,26 +55,31 @@ function NP:ConstructElement_TargetIndicator(frame)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, frame)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:Hide()
 
 	TargetIndicator.Spark = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.Spark:SetSnapToPixelGrid(false)
 	TargetIndicator.Spark:SetTexelSnappingBias(0)
 	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
+	TargetIndicator.Spark:Hide()
 
 	TargetIndicator.TopIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.TopIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.TopIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
+	TargetIndicator.TopIndicator:Hide()
 
 	TargetIndicator.LeftIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.LeftIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.LeftIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
+	TargetIndicator.LeftIndicator:Hide()
 
 	TargetIndicator.RightIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.RightIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.RightIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
+	TargetIndicator.RightIndicator:Hide()
 
 	return TargetIndicator
 end

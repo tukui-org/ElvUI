@@ -35,6 +35,28 @@ local C_NamePlate = C_NamePlate
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
 -- GLOBALS: CUSTOM_CLASS_COLORS, ADDITIONAL_POWER_BAR_NAME
 
+local function CopySettings(from, to)
+	for setting, value in pairs(from) do
+		if(type(value) == "table" and to[setting] ~= nil) then
+			CopySettings(from[setting], to[setting])
+		else
+			if(to[setting] ~= nil) then
+				to[setting] = from[setting]
+			end
+		end
+	end
+end
+
+function NP:ResetSettings(unit)
+	CopySettings(P.nameplates.units[unit], self.db.units[unit])
+end
+
+function NP:CopySettings(from, to)
+	if (from == to) then return end
+
+	CopySettings(self.db.units[from], self.db.units[to])
+end
+
 function NP:StyleFrame(frame, useMainFrame)
 	local parent = frame
 
@@ -103,11 +125,7 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
 
-	local ThreatIndicator = nameplate.Health:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:SetSize(16, 16)
-	ThreatIndicator:SetPoint('CENTER', nameplate.Health, 'TOPRIGHT')
-	ThreatIndicator.feedbackUnit = 'player'
-	nameplate.ThreatIndicator = ThreatIndicator
+	nameplate.TargetIndicator = NP:ConstructElement_TargetIndicator(nameplate)
 end
 
 function NP:UnitStyle(nameplate, unit)
@@ -182,46 +200,57 @@ function NP:UnitStyle(nameplate, unit)
 	else
 		nameplate.Level:Hide()
 	end
---[[
-	if self.db.targetGlow then
-		if frame.TopArrow and (shouldShow ~= 2) and (self.db.targetGlow == "style3" or self.db.targetGlow == "style5" or self.db.targetGlow == "style6") then -- top arrow
+
+	if db.castbar.enable then
+		if db.castbar.iconPosition then
+		end
+	end
+
+	nameplate.TargetIndicator.style = self['db'].targetGlow
+	nameplate.TargetIndicator.lowHealthThreshold = self['db'].lowHealthThreshold
+
+	if self['db'].targetGlow ~= 'none' then
+		local GlowStyle = self['db'].targetGlow
+		local Color = self['db'].glowColor
+		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
 			local topArrowSpace = -3
-			if self.db.units[frame.UnitType].showName and (frame.Name:GetText() ~= nil and frame.Name:GetText() ~= "") then
-				topArrowSpace = self.db.fontSize + topArrowSpace
+			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
+				topArrowSpace = self['db'].fontSize + topArrowSpace
 			end
-			frame.TopArrow:Point("BOTTOM", frame.HealthBar, "TOP", 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:Point("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
-		if (frame.LeftArrow and frame.RightArrow) and (shouldShow ~= 2) and (self.db.targetGlow == "style4" or self.db.targetGlow == "style7" or self.db.targetGlow == "style8") then -- side arrows
-			frame.RightArrow:Point("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.HealthBar, "LEFT", 3, 0)
-			frame.LeftArrow:Point("LEFT", frame.HealthBar, "RIGHT", -3, 0)
+		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == "style4" or GlowStyle == "style7" or GlowStyle == "style8") then
+			nameplate.TargetIndicator.LeftIndicator:Point("LEFT", nameplate.HealthBar, "RIGHT", -3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point("RIGHT", nameplate.HealthBar, "LEFT", 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
+			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
-		local castBar = frame.CastBar and frame.CastBar:IsShown() and frame.CastBar
-		local bottomBar = castBar or (frame.PowerBar and frame.PowerBar:IsShown() and frame.PowerBar)
-		local iconPosition = castBar and (castBar.Icon and castBar.Icon:IsShown()) and (frame.UnitType and self.db.units[frame.UnitType].castbar.iconPosition)
-
-		if frame.Glow and (self.db.targetGlow == "style1" or self.db.targetGlow == "style5" or self.db.targetGlow == "style7") then -- original glow
-			local offset = E:Scale(E.PixelMode and 6 or 8) -- edgeSize is 5 (not attached to the backdrop needs +1 for pixel mode or +3 for non pixel mode)
-			frame.Glow:SetOutside((iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, offset, offset, (iconPosition == "RIGHT" and castBar.Icon) or bottomBar)
+		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
+			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
+			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 		end
 
-		if frame.Glow2 and (self.db.targetGlow == "style2" or self.db.targetGlow == "style6" or self.db.targetGlow == "style8") then -- new background glow
+		if nameplate.TargetIndicator.Spark and (GlowStyle == "style2" or GlowStyle == "style6" or GlowStyle == "style8") then
 			local scale = 1
-			if self.db.useTargetScale then
-				if self.db.targetScale >= 0.75 then
-					scale = self.db.targetScale
+			if self['db'].useTargetScale then
+				if self['db'].targetScale >= 0.75 then
+					scale = self['db'].targetScale
 				else
 					scale = 0.75
 				end
 			end
 
-			local size = (E.Border+14+(bottomBar and 3 or 0))*scale;
-			frame.Glow2:Point("TOPLEFT", (iconPosition == "LEFT" and castBar.Icon) or frame.HealthBar, "TOPLEFT", -(size*2), size)
-			frame.Glow2:Point("BOTTOMRIGHT", (iconPosition == "RIGHT" and castBar.Icon) or bottomBar or frame.HealthBar, "BOTTOMRIGHT", size*2, -size)
+			local size = (E.Border+14)*scale;
+
+			nameplate.TargetIndicator.Spark:Point("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size*2), size)
+			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size*2, -size)
+			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end
-]]
+
 	nameplate:UpdateAllElements('OnShow')
 end
 
@@ -348,28 +377,6 @@ function NP:ConfigureAll()
 	for nameplate in pairs(NP.Plates) do
 		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
-end
-
-local function CopySettings(from, to)
-	for setting, value in pairs(from) do
-		if(type(value) == "table" and to[setting] ~= nil) then
-			CopySettings(from[setting], to[setting])
-		else
-			if(to[setting] ~= nil) then
-				to[setting] = from[setting]
-			end
-		end
-	end
-end
-
-function NP:ResetSettings(unit)
-	CopySettings(P.nameplates.units[unit], self.db.units[unit])
-end
-
-function NP:CopySettings(from, to)
-	if (from == to) then return end
-
-	CopySettings(self.db.units[from], self.db.units[to])
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)

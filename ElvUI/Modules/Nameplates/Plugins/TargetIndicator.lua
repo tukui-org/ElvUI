@@ -24,16 +24,18 @@ local UnitHealthMax = UnitHealthMax
 local _, ns = ...
 local oUF = ns.oUF
 
-local function Update(self)
+local function Update(self, event)
 	local element = self.TargetIndicator
 
 	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	for i = 1, #element do
-		element[i]:Hide()
-	end
+	if element.TopIndicator then element.TopIndicator:Hide() end
+	if element.LeftIndicator then element.LeftIndicator:Hide() end
+	if element.RightIndicator then element.RightIndicator:Hide() end
+	if element.Shadow then element.Shadow:Hide() end
+	if element.Spark then element.Spark:Hide() end
 
 	if UnitIsUnit(self.unit, "target") and (element.style ~= "none") then
 		if element.TopIndicator and (element.style == "style3" or element.style == "style5" or element.style == "style6") then
@@ -41,18 +43,39 @@ local function Update(self)
 		end
 
 		if (element.LeftIndicator and element.RightIndicator) and (element.style == "style4" or element.style == "style7" or element.style == "style8") then
-			element.RightArrow:Show()
-			element.LeftArrow:Show()
+			element.RightIndicator:Show()
+			element.LeftIndicator:Show()
 		end
-	end
 
-	if element.healthThreshold > 0 then
 		if element.Shadow and (element.style == "style1" or element.style == "style5" or element.style == "style7") then
 			element.Shadow:Show()
 		end
 
 		if element.Spark and (element.style == "style2" or element.style == "style6" or element.style == "style8") then
 			element.Spark:Show()
+		end
+	end
+
+	if element.lowHealthThreshold > 0 then
+		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
+		local perc = (maxHealth > 0 and health/maxHealth) or 0
+		if perc <= element.lowHealthThreshold then
+			local r, g, b
+			if perc <= element.lowHealthThreshold / 2 then
+				r, g, b = 1, 0, 0
+			else
+				r, g, b = 1, 1, 0
+			end
+
+			if element.Shadow and (element.style == "style1" or element.style == "style5" or element.style == "style7") then
+				element.Shadow:Show()
+				element.Shadow:SetBackdropBorderColor(r, g, b)
+			end
+
+			if element.Spark and (element.style == "style2" or element.style == "style6" or element.style == "style8") then
+				element.Spark:Show()
+				element.Spark:SetVertexColor(r, g, b)
+			end
 		end
 	end
 
@@ -79,12 +102,12 @@ local function Enable(self)
 			element.style = "style1"
 		end
 
-		if not element.healthThreshold then
-			element.healthThreshold = 30
+		if not element.lowHealthThreshold then
+			element.lowHealthThreshold = .4
 		end
 
 		if element.Shadow then
-			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetTexture() then
+			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() == nil then
 				element.Shadow:SetBackdrop({edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 			end
 		end
@@ -113,7 +136,8 @@ local function Enable(self)
 			end
 		end
 
-		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path)
+		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
+		self:RegisterEvent("UNIT_HEALTH", Path)
 
 		return true
 	end
@@ -122,9 +146,14 @@ end
 local function Disable(self)
 	local element = self.TargetIndicator
 	if (element) then
-		element:Hide()
+		if element.TopIndicator then element.TopIndicator:Hide() end
+		if element.LeftIndicator then element.LeftIndicator:Hide() end
+		if element.RightIndicator then element.RightIndicator:Hide() end
+		if element.Shadow then element.Shadow:Hide() end
+		if element.Spark then element.Spark:Hide() end
 
-		self:UnregisterEvent("PLAYER_TARGET_CHANGED")
+		self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)
+		self:UnregisterEvent("UNIT_HEALTH", Path)
 	end
 end
 
