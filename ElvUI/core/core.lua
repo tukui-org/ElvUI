@@ -1026,7 +1026,6 @@ f:SetScript('OnUpdate', function(self, elapsed)
 end)
 
 function E:UpdateStart()
-	E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	E:UpdateDB()
 	E:UpdateMoverPositions()
 	E:UpdateUnitFrames()
@@ -1255,19 +1254,18 @@ end
 
 local prevToNextUpdateMapping = {
 	--Previous = New update function name and delay
-	["none"] = {"UpdateStart", 0},
-	["UpdateStart"] = {"UpdateMediaItems", 0.05},
-	["UpdateMediaItems"] = {"UpdateLayout", 0.05},
-	["UpdateLayout"] = {"UpdateActionBars", 0.05},
-	["UpdateActionBars"] = {"UpdateNamePlates", 0.2},
-	["UpdateNamePlates"] = {"UpdateBags", 0.2},
-	["UpdateBags"] = {"UpdateChat", 0.05},
-	["UpdateChat"] = {"UpdateDataBars", 0.05},
-	["UpdateDataBars"] = {"UpdateDataTexts", 0.05},
-	["UpdateDataTexts"] = {"UpdateMinimap", 0.05},
-	["UpdateMinimap"] = {"UpdateAuras", 0.05},
-	["UpdateAuras"] = {"UpdateMisc", 0.05},
-	["UpdateMisc"] = {"UpdateEnd", 0.05},
+	["UpdateStart"] = {"UpdateMediaItems", 0.02},
+	["UpdateMediaItems"] = {"UpdateLayout", 0.02},
+	["UpdateLayout"] = {"UpdateActionBars", 0.02},
+	["UpdateActionBars"] = {"UpdateNamePlates", 0.05},
+	["UpdateNamePlates"] = {"UpdateBags", 0.05},
+	["UpdateBags"] = {"UpdateChat", 0.02},
+	["UpdateChat"] = {"UpdateDataBars", 0.02},
+	["UpdateDataBars"] = {"UpdateDataTexts", 0.02},
+	["UpdateDataTexts"] = {"UpdateMinimap", 0.02},
+	["UpdateMinimap"] = {"UpdateAuras", 0.02},
+	["UpdateAuras"] = {"UpdateMisc", 0.02},
+	["UpdateMisc"] = {"UpdateEnd", 0.02},
 }
 
 local function CallStaggeredUpdate()
@@ -1296,7 +1294,7 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
 		--Stagger updates
 		self.staggerUpdateRunning = true
-		self.callbacks:Fire("StaggeredUpdate")
+		self:UpdateStart()
 	else
 		--Fire away
 		E:UpdateAll(true)
