@@ -545,6 +545,7 @@ L["Show an alert frame if you have unspend talent points."] = true
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = true
 L["Skin the blizzard chat bubbles."] = true
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true

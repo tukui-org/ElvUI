@@ -549,6 +549,7 @@ L["Show an alert frame if you have unspend talent points."] = "Отобража�
 L["Skin Backdrop (No Borders)"] = "Стилизовать фон (без границ)"
 L["Skin Backdrop"] = "Стилизовать фон"
 L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = 'Масштаб "говорящей головы"'
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Тонкие границы изменят общий вид интерфейса. Это небольшое улучшение производительности относительно традиционного вида."

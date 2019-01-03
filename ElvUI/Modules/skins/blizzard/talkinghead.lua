@@ -11,19 +11,21 @@ local function LoadSkin()
 
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 
-	--TalkingHeadFrame:StripTextures()
-	
-	--TalkingHeadFrame.MainFrame:StripTextures()
-	TalkingHeadFrame.PortraitFrame:StripTextures()
-	
-	
 	TalkingHeadFrame.BackgroundFrame.TextBackground:SetAtlas(nil)
 	TalkingHeadFrame.PortraitFrame.Portrait:SetAtlas(nil)
 	TalkingHeadFrame.MainFrame.Model.PortraitBg:SetAtlas(nil)
-	TalkingHeadFrame.MainFrame.Model:CreateBackdrop("Transparent")
-	TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
-	TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint("CENTER")
-	TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
+	TalkingHeadFrame.PortraitFrame:StripTextures()
+
+	if E.db.general.talkingHeadFrameBackdrop then
+		TalkingHeadFrame:StripTextures()
+		TalkingHeadFrame.MainFrame:StripTextures()
+		TalkingHeadFrame:CreateBackdrop("Transparent")
+	else
+		TalkingHeadFrame.MainFrame.Model:CreateBackdrop("Transparent")
+		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
+		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint("CENTER")
+		TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
+	end
 
 	TalkingHeadFrame.BackgroundFrame.TextBackground.SetAtlas = E.noop
 	TalkingHeadFrame.PortraitFrame.Portrait.SetAtlas = E.noop

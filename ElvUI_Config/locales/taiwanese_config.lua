@@ -551,6 +551,7 @@ L["Show an alert frame if you have unspend talent points."] = "顯示未使用�
 L["Skin Backdrop (No Borders)"] = "美化背景(無邊界)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = "特寫框體縮放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "細邊框主題會改變所有的外觀,使用細邊框主題會略微提升性能"
