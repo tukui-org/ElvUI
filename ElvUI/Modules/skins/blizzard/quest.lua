@@ -86,15 +86,11 @@ local function LoadSkin()
 		QuestInfoItemHighlight:ClearAllPoints()
 		QuestInfoItemHighlight:SetOutside(self.Icon)
 
-		self.Name:SetTextColor(1, 1, 0)
-
-		local parent = self:GetParent()
-		for i=1, #parent.RewardButtons do
-			local questItem = _G.QuestInfoRewardsFrame.RewardButtons[i]
-			if(questItem ~= self) then
-				questItem.Name:SetTextColor(1, 1, 1)
-			end
+		for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
+			Button.Name:SetTextColor(1, 1, 1)
 		end
+
+		self.Name:SetTextColor(1, .8, .1)
 	end)
 
 	_G.QuestRewardScrollFrame:CreateBackdrop('Default')
@@ -147,7 +143,7 @@ local function LoadSkin()
 						if finished then
 							objective:SetTextColor(1, .8, .1)
 						else
-							objective:SetTextColor(0.6, 0.6, 0.6)
+							objective:SetTextColor(.63, .09, .09)
 						end
 					end
 				end
@@ -180,7 +176,7 @@ local function LoadSkin()
 			mapButton.IsSkinned = true
 		end
 
-		if rewardButton and not rewardButton.skinned then
+		if not rewardButton.backdrop then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
 			rewardButton.IconBorder:SetAlpha(0)
@@ -193,11 +189,9 @@ local function LoadSkin()
 				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 				self:SetTexture("")
 			end)
-			hooksecurefunc(rewardButton.IconBorder, "Hide", function(self)
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
-
-			rewardButton.skinned = true
+		else
+			rewardButton.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			rewardButton.Name:SetTextColor(1, 1, 1)
 		end
 	end)
 
@@ -237,7 +231,7 @@ local function LoadSkin()
 			local requiredMoney = GetQuestLogRequiredMoney()
 			if requiredMoney > 0 then
 				if requiredMoney > GetMoney() then
-					_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+					_G.QuestInfoRequiredMoneyText:SetTextColor(.63, .09, .09)
 				else
 					_G.QuestInfoRequiredMoneyText:SetTextColor(1, .8, .1)
 				end

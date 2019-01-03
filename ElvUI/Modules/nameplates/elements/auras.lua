@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -203,6 +203,10 @@ function mod:UpdateElement_Auras(frame)
 
 		if (self.db.units[frame.UnitType].detection and self.db.units[frame.UnitType].detection.enable) then
 			mod:ConfigureElement_Detection(frame)
+		end
+
+		if (self.db.units[frame.UnitType].portrait and self.db.units[frame.UnitType].portrait.enable) then
+			mod:ConfigureElement_Portrait(frame)
 		end
 	end
 end

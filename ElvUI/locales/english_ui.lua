@@ -1,5 +1,5 @@
 -- English localization file for enUS and enGB.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "enUS", true, true)
 if not L then return end
 
@@ -136,6 +136,7 @@ L["Unhittable:"] = true
 L["Waist"] = true
 L["World Protocol:"] = true
 L["Wrist"] = true
+L["WoW Token:"] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = true
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = true
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true

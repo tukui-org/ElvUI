@@ -1,5 +1,5 @@
 -- Korean localization file for koKR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "koKR")
 if not L then return end
 
@@ -136,6 +136,7 @@ L["Unhittable:"] = "100% 방어행동까지"
 L["Waist"] = "허리"
 L["World Protocol:"] = true
 L["Wrist"] = "손목"
+L["WoW Token:"] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "클릭 : 전문화 교체"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "우클릭 : 전리품 획득 전문화 변경"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF쉬프트 + 클릭:|r 특성 전문화창 보기"

@@ -1,22 +1,33 @@
 **Version 10.85 [  ]**
 
 **New Additions:**  
-Added 'Weakened Soul' back to our Buff Indicator.  
+Added `Weakened Soul` back to our Buff Indicator.  
+Added new Currencies to our Currencies Datatext.  
+Added NamePlate classbar scale option.  
+Added color options for UnitFrame Power Predictions.  
 
 **Bug Fixes:**  
-Fixed a nil error on our PvP skin.  
 Fixed a possible nil error on our NamePlate auras.  
-Fixed issue in Bags skin preventing the "highlight" visual from showing when searching for items.  
-Fixed nil error in the Obliterum skin.  
-Fixed issue which could result in Quest Icon not showing up on nameplates even if it was enabled.  
+Fixed nil error in the Obliterum & PvP skin.  
+Fixed an issue in Bags skin preventing the "highlight" visual from showing when searching for items.  
+Fixed an issue which could result in Quest Icon not showing up on nameplates even if it was enabled.  
+Fixed an issue that we accidentally use the general texture for the UnitFrame backdrop instead of the UnitFrame texture.  
+Fixed an issue which caused invisible GroupLootContainer frame to intercept mouse clicks. (#824)  
+Fixed an issue which caused pixel borders to be double or missing. NOTE: Mostly fixed but config is still strange. (#908)  
+Fixed lua error caused in NamePlate Style Filters about `GetSpecializationInfo`. (#926)  
+Fixed bad values in incomingheals tags. (#950)  
+Fixed Copy Chat Log (and Copy Chat Line) from displaying lines sometimes.  
+Fixed minor positioning issue with role indicator on unitframes.  
+Fixed issue which caused NamePlate StyleFilter NameOnly option to misplace the ClassBar/Portrait on plates.  
+Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also correctly works on Druids now.  
+Fixed issue with NamePlates glow beeing pixelated.  
+Fixed issues in bag searching. (#931)  
+Fixed Social Queue Datatext and Chat Message.  
 
 **Misc. Changes:**  
-Change the the default for Health Backdrop Multiplier to 0.2 was 0.6.  
+Changed Health Backdrop Multiplier to be an Override instead.  
 Updated oUF tags with recent changes.  
 Hid the Recipient Portrait on the TradeFrame.  
-Fixed minor positioning issue with role indicator on unitframes.  
-Fixed Copy Chat Log (and Copy Chat Line). Blizzard has protected some messages (known: Guild messages; maybe others) which we can no longer access as text.  
-Fixed lua error caused in NamePlate Style Filters about `GetSpecializationInfo`. (#926)  
 
 ___
 **Version 10.84 [ December 11th 2018 ]**

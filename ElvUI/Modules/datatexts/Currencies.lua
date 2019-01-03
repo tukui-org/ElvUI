@@ -16,15 +16,19 @@ local OTHER = OTHER
 -- GLOBALS: ToggleCharacter
 
 -- Currencies we care about
+local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local Currencies = {
 	--BfA
-	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1565)))},
-	["SEAFARERS_DUBLOON"] = {ID = 1710, NAME = GetCurrencyInfo(1710), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1710)))},
-	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1580)))},
-	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1560)))},
-	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(1587)))},
+	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format(iconString, select(3, GetCurrencyInfo(1565)))},
+	["SEAFARERS_DUBLOON"] = {ID = 1710, NAME = GetCurrencyInfo(1710), ICON = format(iconString, select(3, GetCurrencyInfo(1710)))},
+	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format(iconString, select(3, GetCurrencyInfo(1580)))},
+	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format(iconString, select(3, GetCurrencyInfo(1560)))},
+	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format(iconString, select(3, GetCurrencyInfo(1587)))},
+	["HONORBOUND_SERVICE_MEDAL"] = {ID = 1716, NAME = GetCurrencyInfo(1716), ICON = format(iconString, select(3, GetCurrencyInfo(1716)))},
+	["7TH_LEGION_SERVICE_MEDAL"] = {ID = 1717, NAME = GetCurrencyInfo(1717), ICON = format(iconString, select(3, GetCurrencyInfo(1717)))},
+	["TITAN_RESIDUUM"] = {ID = 1718, NAME = GetCurrencyInfo(1718), ICON = format(iconString, select(3, GetCurrencyInfo(1718)))},
 	-- Other
-	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(515)))},
+	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format(iconString, select(3, GetCurrencyInfo(515)))},
 }
 
 -- CurrencyList for config
@@ -69,6 +73,12 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(Currencies["SEAL_OF_WARTORN_FATE"].NAME, select(2, GetCurrencyInfo(Currencies["SEAL_OF_WARTORN_FATE"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["WAR_RESOURCES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_RESOURCES"].ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies["WAR_SUPPLIES"].NAME, select(2, GetCurrencyInfo(Currencies["WAR_SUPPLIES"].ID)), 1, 1, 1)
+	if E.myfaction == "Alliance" then
+		DT.tooltip:AddDoubleLine(Currencies["7TH_LEGION_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["7TH_LEGION_SERVICE_MEDAL"].ID)), 1, 1, 1)
+	else
+		DT.tooltip:AddDoubleLine(Currencies["HONORBOUND_SERVICE_MEDAL"].NAME, select(2, GetCurrencyInfo(Currencies["HONORBOUND_SERVICE_MEDAL"].ID)), 1, 1, 1)
+	end
+	DT.tooltip:AddDoubleLine(Currencies["TITAN_RESIDUUM"].NAME, select(2, GetCurrencyInfo(Currencies["TITAN_RESIDUUM"].ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)

@@ -6,6 +6,7 @@ local UF = E:GetModule('UnitFrames');
 local random = random
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -14,6 +15,17 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', nil, frame)
 	UF.statusbars[power] = true
+
+	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)
+		if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
+			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+				local color = UF.db.colors.powerPrediction.color
+				frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+			else
+				frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			end
+		end
+	end)
 
 	power.RaisedElementParent = CreateFrame('Frame', nil, power)
 	power.RaisedElementParent:SetFrameLevel(power:GetFrameLevel() + 100)

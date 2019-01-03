@@ -1,5 +1,5 @@
 -- Spanish localization file for esES and esMX.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "esES") or AceLocale:NewLocale("ElvUI", "esMX")
 if not L then return end
 
@@ -459,7 +459,6 @@ L["TopRightMiniPanel"] = "Minimap TopRight (Inside)"
 L["Use Tooltip"] = true
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Cuando estás dentro de un campo de batalla muestra la puntuación personal en las barras de texto principales."
 L["Word Wrap"] = true
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Debes estar agrupado con el jugador si no está en tu mismo servidor."
@@ -551,6 +550,7 @@ L["Show an alert frame if you have unspend talent points."] = true
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = "Apariencia del Fondo"
 L["Skin the blizzard chat bubbles."] = "Modificar la apariencia de las Burbujas de Chat de Blizzard"
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Cambia la fuente del texto que aparece encima de las cabezas de los jugadores. |cffFF0000AVISO: Esto requiere que reinicies el juego o reconectes."
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true
@@ -1011,6 +1011,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Añade un hechizo al filtro."
 L["Add Spell ID or Name"] = true
 L["Add SpellID"] = "Añadir ID de Hechizo"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = true
@@ -1076,6 +1077,7 @@ L["Current / Max"] = "Actual / Máximo"
 L["Current"] = "Actual"
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = "Fondo de Salud Personalizado"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Texto Personalizado"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Resaltado de Perjuicio"
@@ -1238,6 +1240,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Poder"
 L["Powers"] = "Poderes"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "Prioridad"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true
@@ -1307,6 +1310,7 @@ L["Statusbar Fill Orientation"] = true
 L["StatusBar Texture"] = "Textura de la Barra de Estado"
 L["Strata and Level"] = true
 L["Style"] = "Estilo"
+L["Summon Icon"] = true
 L["Tank Frames"] = "Marco de Tanques"
 L["Tank Target"] = "Objetivo del Tanque"
 L["Tapped"] = "Golpear"

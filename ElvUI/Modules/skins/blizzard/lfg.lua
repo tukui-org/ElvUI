@@ -566,7 +566,7 @@ local function LoadSkin()
 	hooksecurefunc("LFGListSearchPanel_UpdateAutoComplete", function(self)
 		for i = 1, LFGListFrame.SearchPanel.AutoCompleteFrame:GetNumChildren() do
 			local child = select(i, LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren())
-			if child and not child.isSkinned and child:GetObjectType() == "Button" then
+			if child and not child.isSkinned and child:IsObjectType('Button') then
 				S:HandleButton(child)
 				child.isSkinned = true
 			end
@@ -682,10 +682,10 @@ local function LoadSecondarySkin()
 	hooksecurefunc("ChallengesFrame_Update", function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
 			if not frame.backdrop then
+				frame:GetRegions():SetAlpha(0)
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				frame:DisableDrawLayer("BORDER")
-				frame.Icon:SetTexCoord(unpack(E.TexCoords))
+				S:HandleTexture(frame.Icon, frame)
 				frame.Icon:SetInside()
 			end
 		end

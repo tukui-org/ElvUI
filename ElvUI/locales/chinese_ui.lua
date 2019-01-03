@@ -1,5 +1,5 @@
 -- Chinese localization file for zhCN.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
@@ -136,6 +136,7 @@ L["Unhittable:"] = "未命中:"
 L["Waist"] = "腰"
 L["World Protocol:"] ="世界协议:"
 L["Wrist"] = "护腕"
+L["WoW Token:"] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左键点击:|r 更改当前专精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右键点击:|r 更改拾取专精"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左键:|r 显示专精天赋框架"

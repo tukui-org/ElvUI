@@ -1,5 +1,5 @@
 -- French localization file for frFR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "frFR")
 if not L then return end
 
@@ -459,7 +459,6 @@ L["TopRightMiniPanel"] = "Minicarte en haut à droite (intérieur)"
 L["Use Tooltip"] = "Utiliser l'infobulle"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Lorsqu'à l'intérieur d'un champ de bataille, afficher le tableau des scores personnels dans la barre principale des textes d'informations."
 L["Word Wrap"] = "Césure des mots"
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Doit être dans le même groupe avec le joueur s'il n'est pas du même serveur."
@@ -551,6 +550,7 @@ L["Show an alert frame if you have unspend talent points."] = true
 L["Skin Backdrop (No Borders)"] = "Habiller le fond (sans bordures)"
 L["Skin Backdrop"] = "Habiller le fond"
 L["Skin the blizzard chat bubbles."] = "Habillage des bulles de Chat."
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = "Zoom du cadre de dialogue flottant"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true
@@ -1012,6 +1012,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Ajouter un sort au filtre."
 L["Add Spell ID or Name"] = true
 L["Add SpellID"] = "Ajouter l'identifiant d'un sort"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Un décalage X (en pixels) à utiliser lors d'un ancrage d'une nouvelle fenêtre." --need review
@@ -1077,6 +1078,7 @@ L["Current / Max"] = "Actuel / Max"
 L["Current"] = "Actuel"
 L["Custom Dead Backdrop"] = "Fond 'mort' personnalisé"
 L["Custom Health Backdrop"] = "Fond de vie personnalisé"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Textes personnalisés"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Surbrillance des affaiblissements" --can we traduct "highlighting" by "surbrillance" ? Yes :)
@@ -1239,6 +1241,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Énergie"
 L["Powers"] = "Énergies"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "Priorité"
 L["Profile Specific"] = "Profil spécifique"
 L["PvP & Prestige Icon"] = "Icône prestige de PVP"
@@ -1308,6 +1311,7 @@ L["Statusbar Fill Orientation"] = "Orientation la barre d'état."
 L["StatusBar Texture"] = "Texture de la barre d'état."
 L["Strata and Level"] = "Couche et niveau"
 L["Style"] = "Style"
+L["Summon Icon"] = true
 L["Tank Frames"] = "Cadre des Tanks"
 L["Tank Target"] = "Cible de tank"
 L["Tapped"] = "Collé"

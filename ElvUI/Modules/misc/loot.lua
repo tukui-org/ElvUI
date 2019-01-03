@@ -267,8 +267,11 @@ function M:LOOT_OPENED(_, autoloot)
 				LBG.HideOverlayGlow(slot.iconFrame)
 			end
 
-			slot:Enable()
-			slot:Show()
+			-- Check for FasterLooting scripts or w/e (if bag is full)
+			if textureID then
+				slot:Enable()
+				slot:Show()
+			end
 		end
 	else
 		local slot = lootFrame.slots[1] or createSlot(1)

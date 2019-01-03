@@ -148,7 +148,7 @@ local function SkinGuildChallengeAlert(frame)
 
 	-- Background
 	local region = select(2, frame:GetRegions())
-	if region:GetObjectType() == "Texture" then
+	if region:IsObjectType('Texture') then
 		if region:GetTexture() == "Interface\\GuildFrame\\GuildChallenges" then
 			region:Kill()
 		end
@@ -180,13 +180,13 @@ local function SkinInvasionAlert(frame)
 		--Background contains the item border too, so have to remove it
 		if frame.GetRegions then
 			local region, icon = frame:GetRegions()
-			if region and region:GetObjectType() == "Texture" then
+			if region and region:IsObjectType('Texture') then
 				if region:GetAtlas() == "legioninvasion-Toast-Frame" then
 					region:Kill()
 				end
 			end
 			-- Icon border
-			if icon and icon:GetObjectType() == "Texture" then
+			if icon and icon:IsObjectType('Texture') then
 				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
 					icon.b = CreateFrame("Frame", nil, frame)
 					icon.b:SetTemplate("Default")
@@ -218,7 +218,7 @@ local function SkinScenarioAlert(frame)
 	-- Background
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
-		if region:GetObjectType() == "Texture" then
+		if region:IsObjectType('Texture') then
 			if region:GetAtlas() == "Toast-IconBG" or region:GetAtlas() == "Toast-Frame" then
 				region:Kill()
 			end
@@ -256,7 +256,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		if frame.GetNumRegions then
 			for i = 1, frame:GetNumRegions() do
 				local region = select(i, frame:GetRegions())
-				if region:GetObjectType() == "Texture" then
+				if region:IsObjectType('Texture') then
 					if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
 						region:Kill()
 					end
@@ -285,7 +285,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		if frame.GetNumRegions then
 			for i = 1, frame:GetNumRegions() do
 				local region = select(i, frame:GetRegions())
-				if region:GetObjectType() == "Texture" then
+				if region:IsObjectType('Texture') then
 					if region:GetAtlas() == "Garr_MissionToast" then
 						region:Kill()
 					end

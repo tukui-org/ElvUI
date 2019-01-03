@@ -28,7 +28,7 @@ local function LoadSkin()
 
 	for i=1, DeathRecapFrame:GetNumChildren() do
 		local child = select(i, DeathRecapFrame:GetChildren())
-		if (child:GetObjectType() == "Button" and child.GetText) and child:GetText() == CLOSE then
+		if (child:IsObjectType('Button') and child.GetText) and child:GetText() == CLOSE then
 			S:HandleButton(child)
 		end
 	end

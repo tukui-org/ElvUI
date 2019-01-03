@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs, select = unpack, pairs, select
+local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -16,9 +16,13 @@ local function LoadSkin()
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
 		--Set border color according to rarity of item
 		local firstRegion, r, g, b
+		local index = 0
 		for _, reward in pairs(self.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
+
+			reward:ClearAllPoints()
+			reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
@@ -35,6 +39,7 @@ local function LoadSkin()
 				S:HandleIcon(reward.Icon, reward.border)
 			end
 			reward.border.backdrop:SetBackdropBorderColor(r, g, b)
+			index = index + 1
 		end
 	end)
 
@@ -47,19 +52,6 @@ local function LoadSkin()
 			frame.IconBorder:SetTexture()
 		end
 
-		--[[ Set border color according to rarity of item
-		-- for _, reward in pairs(frame.Rewards) do -- WIP
-			local r, g, b
-			if frame.IconBorder:IsShown() then
-				-- This is an item, use the color set by WoW
-				r, g, b = frame.IconBorder:GetVertexColor()
-			else
-				-- This is a currency, use the default ElvUI border color
-				r, g, b = unpack(E.media.bordercolor)
-			end
-		-- end
-
-		frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
 
@@ -97,6 +89,7 @@ local function LoadSkin()
 	GarrisonBuildingFrame:StripTextures(true)
 	GarrisonBuildingFrame.TitleText:Show()
 	GarrisonBuildingFrame:CreateBackdrop("Transparent")
+
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
 	if E.private.skins.blizzard.tooltip then
 		GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
@@ -130,31 +123,15 @@ local function LoadSkin()
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
-	do
-		local reagentIndex = 1
-		hooksecurefunc("GarrisonCapacitiveDisplayFrame_Update", function()
-			local reagents = CapacitiveDisplay.Reagents
-			local reagent = reagents[reagentIndex]
-			while reagent do
-				reagent.NameFrame:SetTexture()
-				reagent.Icon:SetTexCoord(unpack(E.TexCoords))
-				reagent.Icon:SetDrawLayer("BORDER")
-
-				if not reagent.border then
-					reagent.border = CreateFrame("Frame", nil, reagent)
-					S:HandleIcon(reagent.Icon, reagent.border)
-					reagent.Count:SetParent(reagent.border)
-				end
-
-				if not reagent.backdrop then
-					reagent:CreateBackdrop("Default", true)
-				end
-
-				reagentIndex = reagentIndex + 1
-				reagent = reagents[reagentIndex]
+	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(self)
+		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
+			if not Reagent.backdrop then
+				Reagent.NameFrame:SetTexture('')
+				S:HandleTexture(Reagent.Icon, Reagent)
+				Reagent:CreateBackdrop()
 			end
-		end)
-	end
+		end
+	end)
 
 	-- Recruiter frame
 	S:HandlePortraitFrame(_G.GarrisonRecruiterFrame, true)
@@ -206,7 +183,7 @@ local function LoadSkin()
 
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
-	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
+	local Report = GarrisonLandingPage.Report
 	GarrisonLandingPage:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
@@ -215,8 +192,49 @@ local function LoadSkin()
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
 	_G.GarrisonLandingPageTab1:Point("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
+	if E.private.skins.parchmentRemover.enable then
+		for i = 1, 10 do
+			select(i, GarrisonLandingPage:GetRegions()):Hide()
+		end
+
+		for _, tab in pairs({Report.InProgress, Report.Available}) do
+			tab:SetHighlightTexture("")
+			tab.Text:ClearAllPoints()
+			tab.Text:SetPoint("CENTER")
+
+			local bg = CreateFrame("Frame", nil, tab)
+			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
+			bg:CreateBackdrop("Transparent")
+
+			local selectedTex = bg:CreateTexture(nil, "BACKGROUND")
+			selectedTex:SetAllPoints()
+			selectedTex:SetColorTexture(unpack(E.media.rgbvaluecolor))
+			selectedTex:SetAlpha(0.25)
+			selectedTex:Hide()
+			tab.selectedTex = selectedTex
+
+			if tab == Report.InProgress then
+				bg:SetPoint("TOPLEFT", 5, 0)
+				bg:SetPoint("BOTTOMRIGHT")
+			else
+				bg:SetPoint("TOPLEFT")
+				bg:SetPoint("BOTTOMRIGHT", -7, 0)
+			end
+		end
+
+		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(self)
+			local unselectedTab = Report.unselectedTab
+			unselectedTab:SetHeight(36)
+			unselectedTab:SetNormalTexture("")
+			unselectedTab.selectedTex:Hide()
+
+			self:SetNormalTexture("")
+			self.selectedTex:Show()
+		end)
+	end
+
 	-- Landing page: Report
-	local Report = GarrisonLandingPage.Report
+	Report = GarrisonLandingPage.Report -- reassigned
 	Report.List:StripTextures(true)
 	scrollFrame = Report.List.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
@@ -230,6 +248,19 @@ local function LoadSkin()
 				S:HandleIcon(reward.Icon, reward.border)
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:SetAlpha(0)
+				-- For some reason, this fix icon border in 8.1
+				reward:ClearAllPoints()
+				reward:SetPoint("TOPRIGHT", -5, -5)
+
+				if E.private.skins.parchmentRemover.enable then
+					button.BG:Hide()
+
+					local bg = CreateFrame("Frame", nil, button)
+					bg:SetPoint("TOPLEFT")
+					bg:SetPoint("BOTTOMRIGHT", 0, 1)
+					bg:SetFrameLevel(button:GetFrameLevel() - 1)
+					bg:CreateBackdrop("Transparent")
+				end
 			end
 		end
 	end
@@ -408,7 +439,6 @@ local function LoadSkin()
 	S:HandleButton(MissionComplete.NextMissionButton)
 
 	-- BFA Mission
-
 	local MissionFrame = _G.BFAMissionFrame
 	MissionFrame.OverlayElements:Hide()
 	MissionFrame.TopBorder:Hide()

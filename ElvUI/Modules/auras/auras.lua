@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -23,7 +23,7 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 -- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap, MMHolder
 -- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
-local Masque = LibStub("Masque", true)
+local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
 local MasqueGroupDebuffs = Masque and Masque:Group("ElvUI", "Debuffs")
 

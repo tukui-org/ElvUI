@@ -83,14 +83,17 @@ local function LoadSkin()
 		bu.Bg:Hide()
 		bu.Border:Hide()
 
-		bu:StripTextures()
-		bu:CreateBackdrop("Default")
-		bu:StyleButton(nil, true)
-		bu.SelectedTexture:SetInside()
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-
 		bu:SetNormalTexture("")
 		bu:SetHighlightTexture("")
+
+		bu:StripTextures()
+		bu:CreateBackdrop("Default")
+		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
+		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
+		bu:StyleButton(nil, true)
+
+		bu.SelectedTexture:SetInside(bu.backdrop)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		bu.Icon:SetTexCoord(unpack(E.TexCoords))
 		bu.Icon:SetPoint("TOPLEFT", 5, -3)
@@ -199,53 +202,23 @@ local function LoadSkin()
 		_G.ConquestTooltip:SetTemplate("Transparent")
 	end
 
-	-- Honor Frame StatusBar
-	local bar = HonorFrame.ConquestBar
-	if bar then
-		if bar.Border then bar.Border:Hide() end
-		if bar.Background then bar.Background:Hide() end
+	-- PvP StatusBars
+	for _, Frame in pairs({ HonorFrame, ConquestFrame }) do
+		Frame.ConquestBar.Border:Hide()
+		Frame.ConquestBar.Background:Hide()
+		Frame.ConquestBar.Reward.Ring:Hide()
+		Frame.ConquestBar.Reward.CircleMask:Hide()
 
-		if E.myfaction == "Alliance" then
-			bar:SetStatusBarColor(0.05, 0.15, 0.36)
-		else
-			bar:SetStatusBarColor(0.63, 0.09, 0.09)
+		if not Frame.ConquestBar.backdrop then
+			Frame.ConquestBar:CreateBackdrop("Default")
+			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
-		if not bar.backdrop then
-			bar:CreateBackdrop("Default")
-			bar.backdrop:SetOutside()
-		end
-		E:RegisterStatusBar(bar)
+		Frame.ConquestBar.Reward:SetPoint("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
+		Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
+
+		S:HandleTexture(Frame.ConquestBar.Reward.Icon)
 	end
-
-	-- Icon
-	HonorFrame.ConquestBar.Reward.Ring:Hide()
-	HonorFrame.ConquestBar.Reward.CircleMask:Hide()
-	HonorFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	-- Conquest Frame StatusBar
-	bar = ConquestFrame.ConquestBar -- swap
-	if bar then
-		if bar.Border then bar.Border:Hide() end
-		if bar.Background then bar.Background:Hide() end
-
-		if E.myfaction == "Alliance" then
-			bar:SetStatusBarColor(0.05, 0.15, 0.36)
-		else
-			bar:SetStatusBarColor(0.63, 0.09, 0.09)
-		end
-
-		if not bar.backdrop then
-			bar:CreateBackdrop("Default")
-			bar.backdrop:SetOutside()
-		end
-		E:RegisterStatusBar(bar)
-	end
-
-	-- Icon
-	ConquestFrame.ConquestBar.Reward.Ring:Hide()
-	ConquestFrame.ConquestBar.Reward.CircleMask:Hide()
-	ConquestFrame.ConquestBar.Reward.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	--Tutorials
 	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)

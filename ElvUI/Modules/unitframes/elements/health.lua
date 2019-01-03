@@ -202,7 +202,7 @@ function UF:Configure_HealthBar(frame)
 		end
 
 		if db.health.bgUseBarTexture then
-			health.bg:SetTexture(E.LSM:Fetch('statusbar', E.private.general.normTex))
+			health.bg:SetTexture(E.LSM:Fetch('statusbar', E.db.unitframe.statusbar))
 		end
 	end
 
@@ -240,16 +240,14 @@ function UF:PostUpdateHealth(unit, min, max)
 
 	-- Health by Value
 	local colors = E.db.unitframe.colors;
-	local multiplier = colors.healthmultiplier
+	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local r, g, b = self:GetStatusBarColor()
 		local newr, newg, newb = ElvUF:ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
-
-		if multiplier then
-			self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
-		end
+		self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
+		self.bg.multiplier = multiplier
 	end
 
 	-- Class Backdrop
@@ -264,7 +262,9 @@ function UF:PostUpdateHealth(unit, min, max)
 		end
 
 		if t then
+			multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 1
 			self.bg:SetVertexColor(t[1] * multiplier , t[2] * multiplier, t[3] * multiplier)
+			self.bg.multiplier = multiplier
 		end
 	end
 

@@ -18,6 +18,7 @@ P['general'] = {
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
+	['talkingHeadFrameBackdrop'] = false,
 	['vehicleSeatIndicatorSize'] = 128,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
@@ -359,6 +360,7 @@ P['nameplates'] = {
 	},
 	['classbar'] = {
 		['enable'] = true,
+		['scale'] = 1,
 		['attachTo'] = 'TARGET',
 		['position'] = 'ABOVE'
 	},
@@ -1126,7 +1128,7 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['useDeadBackdrop'] = false,
 		['classbackdrop'] = false,
-		['healthmultiplier'] = 0.2,
+		['healthmultiplier'] = 0,
 		['auraBarByType'] = true,
 		['auraBarTurtle'] = true,
 		['auraBarTurtleColor'] = {r = 143/255, g = 101/255, b = 158/255},
@@ -1179,6 +1181,11 @@ P['unitframe'] = {
 			['overabsorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['overhealabsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
 			['maxOverflow'] = 0,
+		},
+		['powerPrediction'] = {
+			['enable'] = false,
+			['additional'] = {r = 1, g = 1, b = 1, a = 1},
+			['color'] = {r = 1, g = 1, b = 1, a = 1},
 		},
 		['classResources'] = {
 			['bgColor'] = {r = 0.1,g = 0.1,b = 0.1, a = 1},
@@ -2731,6 +2738,14 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['summonIcon'] = {
+				['enable'] = true,
+				['size'] = 30,
+				['attachTo'] = 'CENTER',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
 		},
 		['raid'] = {
 			['enable'] = true,
@@ -2912,6 +2927,14 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['scale'] = 0.8,
 			},
+			['summonIcon'] = {
+				['enable'] = true,
+				['size'] = 30,
+				['attachTo'] = 'CENTER',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
 		},
 		['raid40'] = {
 			['enable'] = true,
@@ -3092,6 +3115,14 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 				['scale'] = 0.8,
+			},
+			['summonIcon'] = {
+				['enable'] = true,
+				['size'] = 30,
+				['attachTo'] = 'CENTER',
+				['attachToObject'] = 'Frame',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 		},
 		['raidpet'] = {

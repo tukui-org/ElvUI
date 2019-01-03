@@ -1,5 +1,5 @@
 -- Taiwanese localization file for zhTW.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
@@ -136,6 +136,7 @@ L["Unhittable:"] = "未命中:"
 L["Waist"] = "腰部"
 L["World Protocol:"] = "世界協議:"
 L["Wrist"] = "護腕"
+L["WoW Token:"] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左鍵:|r 變更目前職業專精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右鍵k:|r 變更目前拾取專精"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左鍵:|r 顯示天賦專精介面"

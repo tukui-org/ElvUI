@@ -58,6 +58,7 @@ end
 
 local function Update(self, event)
 	local element = self.ReadyCheckIndicator
+	local unit = self.unit
 
 	--[[ Callback: ReadyCheckIndicator:PreUpdate()
 	Called before the element has been updated.
@@ -68,7 +69,6 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local unit = self.unit
 	local status = GetReadyCheckStatus(unit)
 	if(UnitExists(unit) and status) then
 		if(status == 'ready') then
@@ -122,7 +122,8 @@ end
 
 local function Enable(self, unit)
 	local element = self.ReadyCheckIndicator
-	if(element and (unit and (unit:sub(1, 5) == 'party' or unit:sub(1,4) == 'raid'))) then
+	unit = unit and unit:match('(%a+)%d*$')
+	if(element and (unit == 'party' or unit == 'raid')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

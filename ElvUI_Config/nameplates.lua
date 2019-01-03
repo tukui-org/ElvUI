@@ -3335,6 +3335,12 @@ E.Options.args.nameplate = {
 								BELOW = L["Below"],
 							},
 						},
+						scale = {
+							order = 4,
+							type = "range",
+							name = L["Scale"],
+							min=0.5, max = 2, step = 0.1,
+						},
 					},
 				},
 				threatGroup = {

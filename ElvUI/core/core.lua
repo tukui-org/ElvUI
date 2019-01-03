@@ -30,7 +30,6 @@ local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetChannelName = GetChannelName
-local LeaveChannelByName = LeaveChannelByName
 local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup
@@ -49,6 +48,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Constants
 E.LSM = LSM
+E.Masque = Masque
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
@@ -553,9 +553,9 @@ end
 
 function E:UpdateStatusBars()
 	for _, statusBar in pairs(self.statusBars) do
-		if statusBar and statusBar:GetObjectType() == 'StatusBar' then
+		if statusBar and statusBar:IsObjectType('StatusBar') then
 			statusBar:SetStatusBarTexture(self.media.normTex)
-		elseif statusBar and statusBar:GetObjectType() == 'Texture' then
+		elseif statusBar and statusBar:IsObjectType('Texture') then
 			statusBar:SetTexture(self.media.normTex)
 		end
 	end
@@ -1006,12 +1006,8 @@ f:RegisterEvent('PLAYER_ENTERING_WORLD')
 f:SetScript('OnEvent', SendRecieve)
 f:SetScript('OnUpdate', function(self, elapsed)
 	self.delayed = (self.delayed or 0) + elapsed
-	if self.delayed > 10 then
+	if self.delayed > 25 then
 		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
-
-		if GetChannelName('ElvUIGVC') > 0 then -- Leave it
-			LeaveChannelByName('ElvUIGVC')
-		end
 
 		if numActiveChannels and (numActiveChannels >= 1) then
 			if GetChannelName('ElvUIGVC') == 0 and numActiveChannels < MAX_WOW_CHAT_CHANNELS then
@@ -1024,7 +1020,7 @@ f:SetScript('OnUpdate', function(self, elapsed)
 				self:SetScript('OnUpdate', nil)
 			end
 		end
-	elseif self.delayed > 30 then
+	elseif self.delayed > 45 then
 		self:SetScript('OnUpdate', nil)
 	end
 end)
@@ -1745,13 +1741,16 @@ function E:Initialize(loginFrame)
 	twipe(self.global)
 	twipe(self.private)
 
+	local AceDB = LibStub('AceDB-3.0')
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+
 	self.myguid = UnitGUID('player')
-	self.data = LibStub('AceDB-3.0'):New('ElvDB', self.DF)
+	self.data = AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
-	self.charSettings = LibStub('AceDB-3.0'):New('ElvPrivateDB', self.privateVars)
-	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, 'ElvUI')
+	self.charSettings = AceDB:New('ElvPrivateDB', self.privateVars)
+	LibDualSpec:EnhanceDatabase(self.data, 'ElvUI')
 	self.private = self.charSettings.profile
 	self.db = self.data.profile
 	self.global = self.data.global

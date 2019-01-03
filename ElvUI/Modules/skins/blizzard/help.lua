@@ -140,7 +140,7 @@ local function LoadSkin()
 	S:HandleButton(_G.HelpFrameGM_ResponseCancel)
 	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
-		if child and child:GetObjectType() == "Frame" and not child:GetName() then
+		if child and child:IsObjectType('Frame') and not child:GetName() then
 			child:SetTemplate("Default")
 		end
 	end

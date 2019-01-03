@@ -25,7 +25,7 @@ local function SkinTab(tab)
 	if not tab.isSkinned then
 		for i = 1, tab:GetNumRegions() do
 			local region = select(i, tab:GetRegions())
-			if region:GetObjectType() == "Texture" then
+			if region:IsObjectType('Texture') then
 				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
 					region:Kill()
 				end
