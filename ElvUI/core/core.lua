@@ -11,6 +11,7 @@ local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
+local GetTime = GetTime
 local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
@@ -1053,7 +1054,7 @@ function E:UpdateDB()
 	E:GetModule('UnitFrames').db = E.db.unitframe
 	E:GetModule('Threat').db = E.db.general.threat
 	E:GetModule('Totems').db = E.db.general.totems
-	
+
 	--Not part of staggered update
 end
 
@@ -1063,7 +1064,7 @@ function E:UpdateMoverPositions()
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
-	
+
 	--Not part of staggered update
 end
 
@@ -1072,36 +1073,33 @@ function E:UpdateUnitFrames()
 		local UnitFrames = E:GetModule('UnitFrames')
 		UnitFrames:Update_AllFrames()
 	end
-	
+
 	--Not part of staggered update
 end
 
 function E:UpdateMediaItems()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	E:UpdateMedia()
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
-	
+
 	E.prevStaggeredUpdate = "UpdateMediaItems"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateLayout()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	local Layout = E:GetModule('Layout')
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
-	
+
 	E.prevStaggeredUpdate = "UpdateLayout"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateActionBars()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.actionbar.enable then
 		local ActionBars = E:GetModule('ActionBars')
 		ActionBars:Extra_SetAlpha()
@@ -1111,19 +1109,18 @@ E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.
 		ActionBars:UpdateMicroPositionDimensions()
 		ActionBars:UpdatePetCooldownSettings()
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateActionBars"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateNamePlates()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.nameplates.enable then
 		local NamePlates = E:GetModule('NamePlates')
 		NamePlates:ConfigureAll()
 		NamePlates:StyleFilterInitializeAllFilters()
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateNamePlates"
 	E.callbacks:Fire("StaggeredUpdate")
 end
@@ -1134,7 +1131,6 @@ function E:UpdateTooltip()
 end
 
 function E:UpdateBags()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.bags.enable then
 		local Bags = E:GetModule('Bags')
 		Bags:Layout()
@@ -1143,59 +1139,54 @@ E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.
 		Bags:UpdateCountDisplay()
 		Bags:UpdateItemLevelDisplay()
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateBags"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateChat()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.chat.enable then
 		local Chat = E:GetModule('Chat')
 		Chat:PositionChat(true)
 		Chat:SetupChat()
 		Chat:UpdateAnchors()
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateChat"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateDataBars()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
-	
+
 	E.prevStaggeredUpdate = "UpdateDataBars"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateDataTexts()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
-	
+
 	E.prevStaggeredUpdate = "UpdateDataTexts"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateMinimap()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.general.minimap.enable then
 		local Minimap = E:GetModule('Minimap')
 		Minimap:UpdateSettings()
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateMinimap"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateAuras()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
 		local Auras = E:GetModule('Auras')
 		if ElvUIPlayerBuffs then
@@ -1205,13 +1196,12 @@ E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.
 			Auras:UpdateHeader(ElvUIPlayerDebuffs)
 		end
 	end
-	
+
 	E.prevStaggeredUpdate = "UpdateAuras"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateMisc()
-E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	E:GetModule('AFK'):Toggle()
 	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
@@ -1222,13 +1212,12 @@ E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.
 	local Totems = E:GetModule('Totems')
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
-	
+
 	E.prevStaggeredUpdate = "UpdateMisc"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateEnd()
-E:Print("Update running, time since scheduling:  ", format("%.2f", GetTime() - E.scheduledTime))
 	E:UpdateCooldownSettings('all')
 
 	if E.RefreshGUI then
@@ -1271,8 +1260,6 @@ local prevToNextUpdateMapping = {
 local function CallStaggeredUpdate()
 	local nextUpdate = prevToNextUpdateMapping[E.prevStaggeredUpdate]
 	if nextUpdate then
-		E.scheduledTime = GetTime()
-		E:Print(E.scheduledTime, " Scheduling update for ", nextUpdate[1], " in ", nextUpdate[2], " seconds")
 		C_Timer_After(nextUpdate[2], E[nextUpdate[1]])
 	end
 end
