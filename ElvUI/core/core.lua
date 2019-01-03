@@ -1025,6 +1025,16 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
+function E:UpdateStart()
+	E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
+	E:UpdateDB()
+	E:UpdateMoverPositions()
+	E:UpdateUnitFrames()
+
+	E.prevStaggeredUpdate = "UpdateStart"
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
 function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
@@ -1044,14 +1054,8 @@ function E:UpdateDB()
 	E:GetModule('UnitFrames').db = E.db.unitframe
 	E:GetModule('Threat').db = E.db.general.threat
 	E:GetModule('Totems').db = E.db.general.totems
-end
-
-function E:UpdateMediaItems()
-	E:UpdateMedia()
-	E:UpdateBorderColors()
-	E:UpdateBackdropColors()
-	E:UpdateFrameTemplates()
-	E:UpdateStatusBars()
+	
+	--Not part of staggered update
 end
 
 function E:UpdateMoverPositions()
@@ -1060,21 +1064,45 @@ function E:UpdateMoverPositions()
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
+	
+	--Not part of staggered update
 end
 
-function E:UpdateAuras()
-	if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
-		local Auras = E:GetModule('Auras')
-		if ElvUIPlayerBuffs then
-			Auras:UpdateHeader(ElvUIPlayerBuffs)
-		end
-		if ElvUIPlayerDebuffs then
-			Auras:UpdateHeader(ElvUIPlayerDebuffs)
-		end
+function E:UpdateUnitFrames()
+	if E.private.unitframe.enable then
+		local UnitFrames = E:GetModule('UnitFrames')
+		UnitFrames:Update_AllFrames()
 	end
+	
+	--Not part of staggered update
+end
+
+function E:UpdateMediaItems()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
+	E:UpdateMedia()
+	E:UpdateBorderColors()
+	E:UpdateBackdropColors()
+	E:UpdateFrameTemplates()
+	E:UpdateStatusBars()
+	
+	E.prevStaggeredUpdate = "UpdateMediaItems"
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateLayout()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
+	local Layout = E:GetModule('Layout')
+	Layout:ToggleChatPanels()
+	Layout:BottomPanelVisibility()
+	Layout:TopPanelVisibility()
+	Layout:SetDataPanelStyle()
+	
+	E.prevStaggeredUpdate = "UpdateLayout"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateActionBars()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.actionbar.enable then
 		local ActionBars = E:GetModule('ActionBars')
 		ActionBars:Extra_SetAlpha()
@@ -1084,9 +1112,30 @@ function E:UpdateActionBars()
 		ActionBars:UpdateMicroPositionDimensions()
 		ActionBars:UpdatePetCooldownSettings()
 	end
+	
+	E.prevStaggeredUpdate = "UpdateActionBars"
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateNamePlates()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
+	if E.private.nameplates.enable then
+		local NamePlates = E:GetModule('NamePlates')
+		NamePlates:ConfigureAll()
+		NamePlates:StyleFilterInitializeAllFilters()
+	end
+	
+	E.prevStaggeredUpdate = "UpdateNamePlates"
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateTooltip()
+	--Placeholder?
+	--local Tooltip = E:GetModule('Tooltip')
 end
 
 function E:UpdateBags()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.bags.enable then
 		local Bags = E:GetModule('Bags')
 		Bags:Layout()
@@ -1095,67 +1144,75 @@ function E:UpdateBags()
 		Bags:UpdateCountDisplay()
 		Bags:UpdateItemLevelDisplay()
 	end
+	
+	E.prevStaggeredUpdate = "UpdateBags"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateChat()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.chat.enable then
 		local Chat = E:GetModule('Chat')
 		Chat:PositionChat(true)
 		Chat:SetupChat()
 		Chat:UpdateAnchors()
 	end
+	
+	E.prevStaggeredUpdate = "UpdateChat"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateDataBars()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
+	
+	E.prevStaggeredUpdate = "UpdateDataBars"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateDataTexts()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
+	
+	E.prevStaggeredUpdate = "UpdateDataTexts"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateMinimap()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	if E.private.general.minimap.enable then
 		local Minimap = E:GetModule('Minimap')
 		Minimap:UpdateSettings()
 	end
+	
+	E.prevStaggeredUpdate = "UpdateMinimap"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
-function E:UpdateNamePlates()
-	if E.private.nameplates.enable then
-		local NamePlates = E:GetModule('NamePlates')
-		NamePlates:ConfigureAll()
-		NamePlates:StyleFilterInitializeAllFilters()
+function E:UpdateAuras()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
+	if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+		local Auras = E:GetModule('Auras')
+		if ElvUIPlayerBuffs then
+			Auras:UpdateHeader(ElvUIPlayerBuffs)
+		end
+		if ElvUIPlayerDebuffs then
+			Auras:UpdateHeader(ElvUIPlayerDebuffs)
+		end
 	end
-end
-
-function E:UpdateTooltip()
-	--Placeholder?
-	--local Tooltip = E:GetModule('Tooltip')
-end
-
-function E:UpdateUnitFrames()
-	if E.private.unitframe.enable then
-		local UnitFrames = E:GetModule('UnitFrames')
-		UnitFrames:Update_AllFrames()
-	end
-end
-
-function E:UpdateLayout()
-	local Layout = E:GetModule('Layout')
-	Layout:ToggleChatPanels()
-	Layout:BottomPanelVisibility()
-	Layout:TopPanelVisibility()
-	Layout:SetDataPanelStyle()
+	
+	E.prevStaggeredUpdate = "UpdateAuras"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateMisc()
+E:Print("Update running, time since scheduling: ", format("%.2f", GetTime() - E.scheduledTime))
 	E:GetModule('AFK'):Toggle()
 	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
@@ -1166,9 +1223,13 @@ function E:UpdateMisc()
 	local Totems = E:GetModule('Totems')
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
+	
+	E.prevStaggeredUpdate = "UpdateMisc"
+	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateEnd()
+E:Print("Update running, time since scheduling:  ", format("%.2f", GetTime() - E.scheduledTime))
 	E:UpdateCooldownSettings('all')
 
 	if E.RefreshGUI then
@@ -1184,10 +1245,41 @@ function E:UpdateEnd()
 		E:Install()
 	end
 
+	--Done updating, let code now
+	E.staggerUpdateRunning = false
+
 	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
 	--So call it, but skip updates inside it
 	E:UpdateAll(false)
 end
+
+local prevToNextUpdateMapping = {
+	--Previous = New update function name and delay
+	["none"] = {"UpdateStart", 0},
+	["UpdateStart"] = {"UpdateMediaItems", 0.05},
+	["UpdateMediaItems"] = {"UpdateLayout", 0.05},
+	["UpdateLayout"] = {"UpdateActionBars", 0.05},
+	["UpdateActionBars"] = {"UpdateNamePlates", 0.2},
+	["UpdateNamePlates"] = {"UpdateBags", 0.2},
+	["UpdateBags"] = {"UpdateChat", 0.05},
+	["UpdateChat"] = {"UpdateDataBars", 0.05},
+	["UpdateDataBars"] = {"UpdateDataTexts", 0.05},
+	["UpdateDataTexts"] = {"UpdateMinimap", 0.05},
+	["UpdateMinimap"] = {"UpdateAuras", 0.05},
+	["UpdateAuras"] = {"UpdateMisc", 0.05},
+	["UpdateMisc"] = {"UpdateEnd", 0.05},
+}
+
+local function CallStaggeredUpdate()
+	local nextUpdate = prevToNextUpdateMapping[E.prevStaggeredUpdate]
+	if nextUpdate then
+		E.scheduledTime = GetTime()
+		E:Print(E.scheduledTime, " Scheduling update for ", nextUpdate[1], " in ", nextUpdate[2], " seconds")
+		C_Timer_After(nextUpdate[2], E[nextUpdate[1]])
+	end
+end
+
+E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
 
 function E:StaggeredUpdateAll(event, ignoreInstall)
 	if not self.initialized then
@@ -1199,25 +1291,12 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 	end
 
 	self.ignoreInstall = ignoreInstall
+	self.prevStaggeredUpdate = "none"
 
-	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") then
+	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
 		--Stagger updates
-		self:UpdateDB()
-		self:UpdateMoverPositions()
-		self:UpdateUnitFrames()
-		C_Timer_After(0.05, E.UpdateMediaItems)
-		C_Timer_After(0.10, E.UpdateLayout)
-		C_Timer_After(0.20, E.UpdateActionBars)
-		C_Timer_After(0.40, E.UpdateNamePlates)
-		C_Timer_After(0.50, E.UpdateTooltip)
-		C_Timer_After(0.55, E.UpdateBags)
-		C_Timer_After(0.60, E.UpdateChat)
-		C_Timer_After(0.65, E.UpdateDataBars)
-		C_Timer_After(0.70, E.UpdateDataTexts)
-		C_Timer_After(0.75, E.UpdateMinimap)
-		C_Timer_After(0.80, E.UpdateAuras)
-		C_Timer_After(0.85, E.UpdateMisc)
-		C_Timer_After(0.90, E.UpdateEnd)
+		self.staggerUpdateRunning = true
+		self.callbacks:Fire("StaggeredUpdate")
 	else
 		--Fire away
 		E:UpdateAll(true)
