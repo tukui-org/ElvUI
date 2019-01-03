@@ -157,6 +157,8 @@ function NP:UnitStyle(nameplate, unit)
 		nameplate.Health.Text:Hide()
 	end
 
+	nameplate.Health.width = db.healthbar.width
+	nameplate.Health.height = db.healthbar.height
 	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 
 	if db.powerbar.enable then
@@ -300,6 +302,7 @@ function NP:CVarReset()
 	SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'))
 	SetCVar('nameplateShowFriends', GetCVarDefault('nameplateShowFriends'))
 	SetCVar('nameplateTargetBehindMaxDistance', GetCVarDefault('nameplateTargetBehindMaxDistance'))
+	SetCVar('nameplateSelectedScale', 1)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
@@ -344,12 +347,14 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('showQuestTrackingTooltips', NP.db.questIcon and 1)
 	SetCVar('nameplateMinAlpha', NP.db.nonTargetTransparency)
-	SetCVar('nameplateSelectedScale', NP.db.useTargetScale and NP.db.targetScale or GetCVarDefault('nameplateSelectedScale'))
 	SetCVar("nameplateOtherTopInset", NP.db.clampToScreen and 0.08 or -1)
 	SetCVar("nameplateOtherBottomInset", NP.db.clampToScreen and 0.1 or -1)
 
 	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
+
+	NP.targetScaleWidth = NP:SizeScale(NP.db.clickableWidth, NP.db.targetScale)
+	NP.targetScaleHeight = NP:SizeScale(NP.db.clickableHeight, NP.db.targetScale)
 
 	-- workaround for #206
 	local friendlyWidth, friendlyHeight
@@ -390,6 +395,16 @@ function NP:ConfigureAll()
 	for nameplate in pairs(NP.Plates) do
 		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
+end
+
+function NP:SizeScale(size, scale)
+	local number = size * scale
+
+	if mod(number, 2) == 1 then
+		number = number + (scale >= 1 and 1 or -1)
+	end
+
+	return number
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
@@ -471,6 +486,8 @@ function NP:Initialize()
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
+
+	NP:ConfigureAll()
 
 	E.NamePlates = self
 end
