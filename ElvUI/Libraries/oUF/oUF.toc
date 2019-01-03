@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: oUF
 ## Author: Haste, lightspark, p3lim, Rainrider
 ## Version: @project-version@

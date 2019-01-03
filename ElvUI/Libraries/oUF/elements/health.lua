@@ -180,6 +180,7 @@ end
 
 --[[ Health:SetFrequentUpdates(state)
 Used to toggle frequent updates.
+
 * self  - the Health element
 * state - the desired state of frequent updates (boolean)
 --]]
