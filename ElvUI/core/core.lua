@@ -1031,7 +1031,6 @@ function E:UpdateStart()
 	E:UpdateMoverPositions()
 	E:UpdateUnitFrames()
 
-	E.prevStaggeredUpdate = "UpdateStart"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1084,7 +1083,6 @@ function E:UpdateMediaItems()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
-	E.prevStaggeredUpdate = "UpdateMediaItems"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1095,33 +1093,26 @@ function E:UpdateLayout()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
 
-	E.prevStaggeredUpdate = "UpdateLayout"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateActionBars()
-	if E.private.actionbar.enable then
-		local ActionBars = E:GetModule('ActionBars')
-		ActionBars:Extra_SetAlpha()
-		ActionBars:Extra_SetScale()
-		ActionBars:ToggleDesaturation()
-		ActionBars:UpdateButtonSettings()
-		ActionBars:UpdateMicroPositionDimensions()
-		ActionBars:UpdatePetCooldownSettings()
-	end
+	local ActionBars = E:GetModule('ActionBars')
+	ActionBars:Extra_SetAlpha()
+	ActionBars:Extra_SetScale()
+	ActionBars:ToggleDesaturation()
+	ActionBars:UpdateButtonSettings()
+	ActionBars:UpdateMicroPositionDimensions()
+	ActionBars:UpdatePetCooldownSettings()
 
-	E.prevStaggeredUpdate = "UpdateActionBars"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateNamePlates()
-	if E.private.nameplates.enable then
-		local NamePlates = E:GetModule('NamePlates')
-		NamePlates:ConfigureAll()
-		NamePlates:StyleFilterInitializeAllFilters()
-	end
+	local NamePlates = E:GetModule('NamePlates')
+	NamePlates:ConfigureAll()
+	NamePlates:StyleFilterInitializeAllFilters()
 
-	E.prevStaggeredUpdate = "UpdateNamePlates"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1131,28 +1122,22 @@ function E:UpdateTooltip()
 end
 
 function E:UpdateBags()
-	if E.private.bags.enable then
-		local Bags = E:GetModule('Bags')
-		Bags:Layout()
-		Bags:Layout(true)
-		Bags:SizeAndPositionBagBar()
-		Bags:UpdateCountDisplay()
-		Bags:UpdateItemLevelDisplay()
-	end
+	local Bags = E:GetModule('Bags')
+	Bags:Layout()
+	Bags:Layout(true)
+	Bags:SizeAndPositionBagBar()
+	Bags:UpdateCountDisplay()
+	Bags:UpdateItemLevelDisplay()
 
-	E.prevStaggeredUpdate = "UpdateBags"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateChat()
-	if E.private.chat.enable then
-		local Chat = E:GetModule('Chat')
-		Chat:PositionChat(true)
-		Chat:SetupChat()
-		Chat:UpdateAnchors()
-	end
+	local Chat = E:GetModule('Chat')
+	Chat:PositionChat(true)
+	Chat:SetupChat()
+	Chat:UpdateAnchors()
 
-	E.prevStaggeredUpdate = "UpdateChat"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1164,7 +1149,6 @@ function E:UpdateDataBars()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
 
-	E.prevStaggeredUpdate = "UpdateDataBars"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1172,32 +1156,21 @@ function E:UpdateDataTexts()
 	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
 
-	E.prevStaggeredUpdate = "UpdateDataTexts"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateMinimap()
-	if E.private.general.minimap.enable then
-		local Minimap = E:GetModule('Minimap')
-		Minimap:UpdateSettings()
-	end
+	local Minimap = E:GetModule('Minimap')
+	Minimap:UpdateSettings()
 
-	E.prevStaggeredUpdate = "UpdateMinimap"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
 function E:UpdateAuras()
-	if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
-		local Auras = E:GetModule('Auras')
-		if ElvUIPlayerBuffs then
-			Auras:UpdateHeader(ElvUIPlayerBuffs)
-		end
-		if ElvUIPlayerDebuffs then
-			Auras:UpdateHeader(ElvUIPlayerDebuffs)
-		end
-	end
+	local Auras = E:GetModule('Auras')
+	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
+	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
-	E.prevStaggeredUpdate = "UpdateAuras"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1213,7 +1186,6 @@ function E:UpdateMisc()
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 
-	E.prevStaggeredUpdate = "UpdateMisc"
 	E.callbacks:Fire("StaggeredUpdate")
 end
 
@@ -1241,26 +1213,18 @@ function E:UpdateEnd()
 	E:UpdateAll(false)
 end
 
-local prevToNextUpdateMapping = {
-	--Previous = New update function name and delay
-	["UpdateStart"] = {"UpdateMediaItems", 0.02},
-	["UpdateMediaItems"] = {"UpdateLayout", 0.02},
-	["UpdateLayout"] = {"UpdateActionBars", 0.02},
-	["UpdateActionBars"] = {"UpdateNamePlates", 0.05},
-	["UpdateNamePlates"] = {"UpdateBags", 0.05},
-	["UpdateBags"] = {"UpdateChat", 0.02},
-	["UpdateChat"] = {"UpdateDataBars", 0.02},
-	["UpdateDataBars"] = {"UpdateDataTexts", 0.02},
-	["UpdateDataTexts"] = {"UpdateMinimap", 0.02},
-	["UpdateMinimap"] = {"UpdateAuras", 0.02},
-	["UpdateAuras"] = {"UpdateMisc", 0.02},
-	["UpdateMisc"] = {"UpdateEnd", 0.02},
-}
-
+local staggerDelay = 0.2
+local staggerTable = {}
 local function CallStaggeredUpdate()
-	local nextUpdate = prevToNextUpdateMapping[E.prevStaggeredUpdate]
+	local nextUpdate, nextDelay = staggerTable[1]
 	if nextUpdate then
-		C_Timer_After(nextUpdate[2], E[nextUpdate[1]])
+		tremove(staggerTable, 1)
+
+		if nextUpdate == 'UpdateNamePlates' or nextUpdate == 'UpdateBags' then
+			nextDelay = 0.5
+		end
+
+		C_Timer_After(nextDelay or staggerDelay, E[nextUpdate])
 	end
 end
 
@@ -1276,9 +1240,33 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 	end
 
 	self.ignoreInstall = ignoreInstall
-	self.prevStaggeredUpdate = "none"
 
 	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
+		tinsert(staggerTable, "UpdateMediaItems")
+		tinsert(staggerTable, "UpdateLayout")
+		if E.private.actionbar.enable then
+			tinsert(staggerTable, "UpdateActionBars")
+		end
+		if E.private.nameplates.enable then
+			tinsert(staggerTable, "UpdateNamePlates")
+		end
+		if E.private.bags.enable then
+			tinsert(staggerTable, "UpdateBags")
+		end
+		if E.private.chat.enable then
+			tinsert(staggerTable, "UpdateChat")
+		end
+		tinsert(staggerTable, "UpdateDataBars")
+		tinsert(staggerTable, "UpdateDataTexts")
+		if E.private.general.minimap.enable then
+			tinsert(staggerTable, "UpdateMinimap")
+		end
+		if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+			tinsert(staggerTable, "UpdateAuras")
+		end
+		tinsert(staggerTable, "UpdateMisc")
+		tinsert(staggerTable, "UpdateEnd")
+
 		--Stagger updates
 		self.staggerUpdateRunning = true
 		self:UpdateStart()
