@@ -1277,10 +1277,12 @@ end
 
 function E:UpdateAll(doUpdates)
 	if doUpdates then
+		-- this block should mimic `E:UpdateStart`
 		self:UpdateDB()
 		self:UpdateMoverPositions()
 		self:UpdateMediaItems()
 		self:UpdateUnitFrames()
+		--
 		self:UpdateLayout()
 		self:UpdateTooltip()
 		self:UpdateActionBars()
