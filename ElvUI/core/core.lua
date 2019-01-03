@@ -11,7 +11,6 @@ local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
-local GetTime = GetTime
 local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
