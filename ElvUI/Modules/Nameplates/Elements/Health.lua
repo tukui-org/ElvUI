@@ -34,7 +34,7 @@ function NP:HealthBar_PostUpdate(frame, _, min, max)
 end
 
 function NP:Construct_HealthPrediction(frame)
-	local HealthPrediction = {}
+	local HealthPrediction = CreateFrame('Frame', nil, frame)
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
 		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, frame.Health)

@@ -82,7 +82,7 @@ function NP:Style(frame, unit)
 	return frame
 end
 
-function NP:StylePlate(nameplate, realUnit)
+function NP:StylePlate(nameplate)
 	nameplate:SetPoint('CENTER')
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(UIParent:GetEffectiveScale())
@@ -312,10 +312,6 @@ function NP:PLAYER_REGEN_DISABLED()
 	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 0);
 	end
-
-	--if self.db.units.PLAYER.useStaticPosition then
-	--	self:UpdateVisibility()
-	--end
 end
 
 function NP:PLAYER_REGEN_ENABLED()
@@ -330,10 +326,6 @@ function NP:PLAYER_REGEN_ENABLED()
 	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 1);
 	end
-
-	--if self.db.units.PLAYER.useStaticPosition then
-	--	self:UpdateVisibility()
-	--end
 end
 
 function NP:ConfigureAll()
