@@ -139,8 +139,10 @@ function NP:UnitStyle(nameplate, unit)
 
 	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
+		nameplate.Highlight.texture:Show()
 	else
 		nameplate:DisableElement('Health')
+		nameplate.Highlight.texture:Hide()
 	end
 
 	if db.healthbar.enable and db.healthbar.healPrediction then
@@ -255,7 +257,7 @@ function NP:UnitStyle(nameplate, unit)
 		if db.healthbar.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.HealthBar, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 		else
-			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Level, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset) -- maybe find a better spot?
+			nameplate.ClassificationIndicator:Point("RIGHT", nameplate.Name, "LEFT", 0, 0)
 		end
 	else
 		nameplate:DisableElement('ClassificationIndicator')

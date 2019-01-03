@@ -87,7 +87,7 @@ end
 function NP:ConstructElement_Highlight(frame)
 	local Highlight = CreateFrame("Frame", nil, frame)
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
-	Highlight.texture:SetVertexColor(1, 1, 1, .5)
+	Highlight.texture:SetVertexColor(1, 1, 1, .3)
 	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
 
 	Highlight.PostUpdate = function(f)
