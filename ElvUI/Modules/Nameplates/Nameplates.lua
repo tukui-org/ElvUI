@@ -77,11 +77,7 @@ function NP:Style(frame, unit)
 		return
 	end
 
-	if unit:match('nameplate') then
-		NP:StylePlate(frame, unit)
-	else
-		E:GetModule('UnitFrames'):Construct_UF(frame, unit)
-	end
+	NP:StylePlate(frame, unit)
 
 	return frame
 end
@@ -90,10 +86,6 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:SetPoint('CENTER')
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(UIParent:GetEffectiveScale())
-
-	nameplate.Highlight = nameplate:CreateTexture(nil, "HIGHLIGHT")
-	nameplate.Highlight:SetTexture(E.LSM:Fetch('background', 'Solid'))
-	nameplate.Highlight:SetAllPoints()
 
 	nameplate.Health = NP:Construct_HealthBar(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
@@ -122,6 +114,7 @@ function NP:StylePlate(nameplate, realUnit)
 	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
+	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
@@ -247,10 +240,10 @@ function NP:UnitStyle(nameplate, unit)
 				end
 			end
 
-			local size = (E.Border+14)*scale;
+			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:Point("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size*2), size)
-			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size*2, -size)
+			nameplate.TargetIndicator.Spark:Point("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size * 2), size)
+			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size * 2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end
@@ -282,19 +275,15 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
 	SetCVar('nameplateMaxScale', GetCVarDefault('nameplateMaxScale'))
 	SetCVar('nameplateMaxScaleDistance', GetCVarDefault('nameplateMaxScaleDistance'))
-	SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'))
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	SetCVar('nameplateMinScale', GetCVarDefault('nameplateMinScale'))
 	SetCVar('nameplateMinScaleDistance', GetCVarDefault('nameplateMinScaleDistance'))
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
-	SetCVar('nameplateOtherBottomInset', GetCVarDefault('nameplateOtherBottomInset'))
-	SetCVar('nameplateOtherTopInset', GetCVarDefault('nameplateOtherTopInset'))
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
 	SetCVar('nameplateSelectedAlpha', GetCVarDefault('nameplateSelectedAlpha'))
-	SetCVar('nameplateSelectedScale', GetCVarDefault('nameplateSelectedScale'))
 	SetCVar('nameplateSelfAlpha', GetCVarDefault('nameplateSelfAlpha'))
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
 	SetCVar('nameplateSelfScale', GetCVarDefault('nameplateSelfScale'))
@@ -360,6 +349,10 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('showQuestTrackingTooltips', NP.db.questIcon and 1)
+	SetCVar('nameplateMinAlpha', NP.db.nonTargetTransparency)
+	SetCVar('nameplateSelectedScale', NP.db.useTargetScale and NP.db.targetScale or GetCVarDefault('nameplateSelectedScale'))
+	SetCVar("nameplateOtherTopInset", NP.db.clampToScreen and 0.08 or -1)
+	SetCVar("nameplateOtherBottomInset", NP.db.clampToScreen and 0.1 or -1)
 
 	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -391,12 +384,23 @@ function NP:ConfigureAll()
 		SetCVar("nameplateShowEnemies", 1);
 	end
 
+	if NP.db.units['PLAYER'].useStaticPosition then
+		ElvNP_Player:Enable()
+		ElvNP_Player:UpdateAllElements('OnShow')
+	else
+		ElvNP_Player:Disable()
+	end
+
+	NP:NamePlateCallBack(ElvNP_Player, 'NAME_PLATE_UNIT_ADDED')
+
 	for nameplate in pairs(NP.Plates) do
-		NP.NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
+	NP:UnitStyle(ElvNP_Player, 'PLAYER')
+
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
@@ -404,6 +408,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if (UnitIsUnit(unit, 'player')) then
 			NP:UnitStyle(nameplate, 'PLAYER')
+			NP:UnitStyle(ElvNP_Player, 'PLAYER')
 		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
 			NP:UnitStyle(nameplate, 'FRIENDLY_PLAYER')
 		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
@@ -449,7 +454,24 @@ function NP:Initialize()
 	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
 	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	ElvUF:SpawnNamePlates('ElvUF_', function(nameplate, event, unit)
+	ElvUF:Spawn('player', 'ElvNP_Player')
+	ElvNP_Player:SetAttribute("unit", "player")
+	ElvNP_Player:RegisterForClicks("LeftButtonDown", "RightButtonDown")
+	ElvNP_Player:SetAttribute("*type1", "target")
+	ElvNP_Player:SetAttribute("*type2", "togglemenu")
+	ElvNP_Player:SetAttribute("toggleForVehicle", true)
+	ElvNP_Player:SetPoint("TOP", UIParent, "CENTER", 0, -150)
+	ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	ElvNP_Player:SetScale(1)
+	ElvNP_Player:SetScript('OnEnter', UnitFrame_OnEnter)
+	ElvNP_Player:SetScript('OnLeave', UnitFrame_OnLeave)
+	if not NP.db.units['PLAYER'].useStaticPosition then
+		ElvNP_Player:Disable()
+	end
+
+	E:CreateMover(ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+
+	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
 	end)
 

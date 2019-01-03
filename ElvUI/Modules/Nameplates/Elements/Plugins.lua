@@ -51,31 +51,31 @@ function NP:Construct_ClassificationIndicator(frame)
 end
 
 function NP:ConstructElement_TargetIndicator(frame)
-	local TargetIndicator = {}
+	local TargetIndicator = CreateFrame('Frame', nil, frame)
 
-	TargetIndicator.Shadow = CreateFrame('Frame', nil, frame)
+	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
-	TargetIndicator.Spark = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	TargetIndicator.Spark = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.Spark:SetSnapToPixelGrid(false)
 	TargetIndicator.Spark:SetTexelSnappingBias(0)
 	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	TargetIndicator.Spark:Hide()
 
-	TargetIndicator.TopIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	TargetIndicator.TopIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.TopIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.TopIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
 	TargetIndicator.TopIndicator:Hide()
 
-	TargetIndicator.LeftIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	TargetIndicator.LeftIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.LeftIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.LeftIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
 	TargetIndicator.LeftIndicator:Hide()
 
-	TargetIndicator.RightIndicator = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	TargetIndicator.RightIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
 	TargetIndicator.RightIndicator:SetSnapToPixelGrid(false)
 	TargetIndicator.RightIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
@@ -86,20 +86,15 @@ end
 
 function NP:ConstructElement_Highlight(frame)
 	local Highlight = CreateFrame("Frame", nil, frame)
-	Highlight.texture = Highlight:CreateTexture("$parentHighlight", "ARTWORK", nil, 1)
+	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
 	Highlight.texture:SetVertexColor(1, 1, 1, .5)
 	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
-	Highlight.texture:Hide()
 
-	Highlight:HookScript("OnHide", function(f)
-		f.texture:Hide()
-	end)
-	Highlight:HookScript("OnShow", function(f)
+	Highlight.PostUpdate = function(f)
 		f.texture:ClearAllPoints()
 		f.texture:SetPoint("TOPLEFT", frame.Health, "TOPLEFT")
 		f.texture:SetPoint("BOTTOMRIGHT", frame.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
-		f.texture:Show()
-	end)
+	end
 
 	return Highlight
 end
