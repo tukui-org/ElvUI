@@ -11,6 +11,7 @@ local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
 local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
+local GetTime = GetTime
 local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
@@ -1025,12 +1026,15 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateAll(ignoreInstall)
-	if not self.initialized then
-		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
-		return
-	end
+function E:UpdateStart()
+	E:UpdateDB()
+	E:UpdateMoverPositions()
+	E:UpdateUnitFrames()
 
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
 	E.global = E.data.global
@@ -1038,124 +1042,259 @@ function E:UpdateAll(ignoreInstall)
 	E.db.install_complete = nil
 
 	E:DBConversions()
+	E:GetModule('Auras').db = E.db.auras
+	E:GetModule('ActionBars').db = E.db.actionbar
+	E:GetModule('Bags').db = E.db.bags
+	E:GetModule('Chat').db = E.db.chat
+	E:GetModule('DataBars').db = E.db.databars
+	E:GetModule('DataTexts').db = E.db.datatexts
+	E:GetModule('NamePlates').db = E.db.nameplates
+	E:GetModule('Tooltip').db = E.db.tooltip
+	E:GetModule('UnitFrames').db = E.db.unitframe
+	E:GetModule('Threat').db = E.db.general.threat
+	E:GetModule('Totems').db = E.db.general.totems
 
-	local ActionBars = E:GetModule('ActionBars')
-	local AFK = E:GetModule('AFK')
-	local Auras = E:GetModule('Auras')
-	local Bags = E:GetModule('Bags')
-	local Blizzard = E:GetModule('Blizzard')
-	local Chat = E:GetModule('Chat')
-	local DataBars = E:GetModule('DataBars')
-	local DataTexts = E:GetModule('DataTexts')
-	local Layout = E:GetModule('Layout')
-	local Minimap = E:GetModule('Minimap')
-	local NamePlates = E:GetModule('NamePlates')
-	local Threat = E:GetModule('Threat')
-	local Tooltip = E:GetModule('Tooltip')
-	local Totems = E:GetModule('Totems')
-	local UnitFrames = E:GetModule('UnitFrames')
+	--Not part of staggered update
+end
 
-	ActionBars.db = E.db.actionbar
-	Auras.db = E.db.auras
-	Bags.db = E.db.bags
-	Chat.db = E.db.chat
-	DataBars.db = E.db.databars
-	DataTexts.db = E.db.datatexts
-	NamePlates.db = E.db.nameplates
-	Threat.db = E.db.general.threat
-	Tooltip.db = E.db.tooltip
-	Totems.db = E.db.general.totems
-	UnitFrames.db = E.db.unitframe
-
+function E:UpdateMoverPositions()
 	--The mover is positioned before it is resized, which causes issues for unitframes
 	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
 
+	--Not part of staggered update
+end
+
+function E:UpdateUnitFrames()
+	if E.private.unitframe.enable then
+		local UnitFrames = E:GetModule('UnitFrames')
+		UnitFrames:Update_AllFrames()
+	end
+
+	--Not part of staggered update
+end
+
+function E:UpdateMediaItems()
 	E:UpdateMedia()
 	E:UpdateBorderColors()
 	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
-	E:UpdateCooldownSettings('all')
 
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateLayout()
+	local Layout = E:GetModule('Layout')
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
 
-	if E.private.actionbar.enable then
-		ActionBars:Extra_SetAlpha()
-		ActionBars:Extra_SetScale()
-		ActionBars:ToggleDesaturation()
-		ActionBars:UpdateButtonSettings()
-		ActionBars:UpdateMicroPositionDimensions()
-		ActionBars:UpdatePetCooldownSettings()
-	end
+	E.callbacks:Fire("StaggeredUpdate")
+end
 
-	AFK:Toggle()
+function E:UpdateActionBars()
+	local ActionBars = E:GetModule('ActionBars')
+	ActionBars:Extra_SetAlpha()
+	ActionBars:Extra_SetScale()
+	ActionBars:ToggleDesaturation()
+	ActionBars:UpdateButtonSettings()
+	ActionBars:UpdateMicroPositionDimensions()
+	ActionBars:UpdatePetCooldownSettings()
 
-	if E.private.bags.enable then
-		Bags:Layout()
-		Bags:Layout(true)
-		Bags:SizeAndPositionBagBar()
-		Bags:UpdateCountDisplay()
-		Bags:UpdateItemLevelDisplay()
-	end
+	E.callbacks:Fire("StaggeredUpdate")
+end
 
-	if E.private.chat.enable then
-		Chat:PositionChat(true)
-		Chat:SetupChat()
-		Chat:UpdateAnchors()
-	end
+function E:UpdateNamePlates()
+	local NamePlates = E:GetModule('NamePlates')
+	NamePlates:ConfigureAll()
+	NamePlates:StyleFilterInitializeAllFilters()
 
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateTooltip()
+	--Placeholder?
+	--local Tooltip = E:GetModule('Tooltip')
+end
+
+function E:UpdateBags()
+	local Bags = E:GetModule('Bags')
+	Bags:Layout()
+	Bags:Layout(true)
+	Bags:SizeAndPositionBagBar()
+	Bags:UpdateCountDisplay()
+	Bags:UpdateItemLevelDisplay()
+
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateChat()
+	local Chat = E:GetModule('Chat')
+	Chat:PositionChat(true)
+	Chat:SetupChat()
+	Chat:UpdateAnchors()
+
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateDataBars()
+	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
 
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateDataTexts()
+	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
 
-	if E.private.general.minimap.enable then
-		Minimap:UpdateSettings()
-	end
+	E.callbacks:Fire("StaggeredUpdate")
+end
 
-	if E.private.nameplates.enable then
-		NamePlates:ConfigureAll()
-		NamePlates:StyleFilterInitializeAllFilters()
-	end
+function E:UpdateMinimap()
+	local Minimap = E:GetModule('Minimap')
+	Minimap:UpdateSettings()
 
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateAuras()
+	local Auras = E:GetModule('Auras')
+	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
+	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
+
+	E.callbacks:Fire("StaggeredUpdate")
+end
+
+function E:UpdateMisc()
+	E:GetModule('AFK'):Toggle()
+	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
+
+	local Threat = E:GetModule('Threat')
 	Threat:ToggleEnable()
 	Threat:UpdatePosition()
+
+	local Totems = E:GetModule('Totems')
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 
-	if E.private.unitframe.enable then
-		UnitFrames:Update_AllFrames()
-	end
+	E.callbacks:Fire("StaggeredUpdate")
+end
 
-	if ElvUIPlayerBuffs then
-		Auras:UpdateHeader(ElvUIPlayerBuffs)
-	end
-
-	if ElvUIPlayerDebuffs then
-		Auras:UpdateHeader(ElvUIPlayerDebuffs)
-	end
+function E:UpdateEnd()
+	E:UpdateCooldownSettings('all')
 
 	if E.RefreshGUI then
 		E:RefreshGUI()
 	end
 
-	if (ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
-		E:Install()
-	end
-
-	Blizzard:SetObjectiveFrameHeight()
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect')
+
+	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
+		E.ignoreInstall = nil
+		E:Install()
+	end
+
+	--Done updating, let code now
+	E.staggerUpdateRunning = false
+
+	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
+	--So call it, but skip updates inside it
+	E:UpdateAll(false)
+end
+
+local staggerDelay = 0.2
+local staggerTable = {}
+local function CallStaggeredUpdate()
+	local nextUpdate, nextDelay = staggerTable[1]
+	if nextUpdate then
+		tremove(staggerTable, 1)
+
+		if nextUpdate == 'UpdateNamePlates' or nextUpdate == 'UpdateBags' then
+			nextDelay = 0.5
+		end
+
+		C_Timer_After(nextDelay or staggerDelay, E[nextUpdate])
+	end
+end
+
+E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
+
+function E:StaggeredUpdateAll(event, ignoreInstall)
+	if not self.initialized then
+		C_Timer_After(1, function()
+			E:StaggeredUpdateAll(event, ignoreInstall)
+		end)
+
+		return
+	end
+
+	self.ignoreInstall = ignoreInstall
+
+	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
+		tinsert(staggerTable, "UpdateMediaItems")
+		tinsert(staggerTable, "UpdateLayout")
+		if E.private.actionbar.enable then
+			tinsert(staggerTable, "UpdateActionBars")
+		end
+		if E.private.nameplates.enable then
+			tinsert(staggerTable, "UpdateNamePlates")
+		end
+		if E.private.bags.enable then
+			tinsert(staggerTable, "UpdateBags")
+		end
+		if E.private.chat.enable then
+			tinsert(staggerTable, "UpdateChat")
+		end
+		tinsert(staggerTable, "UpdateDataBars")
+		tinsert(staggerTable, "UpdateDataTexts")
+		if E.private.general.minimap.enable then
+			tinsert(staggerTable, "UpdateMinimap")
+		end
+		if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+			tinsert(staggerTable, "UpdateAuras")
+		end
+		tinsert(staggerTable, "UpdateMisc")
+		tinsert(staggerTable, "UpdateEnd")
+
+		--Stagger updates
+		self.staggerUpdateRunning = true
+		self:UpdateStart()
+	else
+		--Fire away
+		E:UpdateAll(true)
+	end
+end
+
+function E:UpdateAll(doUpdates)
+	if doUpdates then
+		self:UpdateDB()
+		self:UpdateMoverPositions()
+		self:UpdateMediaItems()
+		self:UpdateLayout()
+		self:UpdateTooltip()
+		self:UpdateActionBars()
+		self:UpdateBags()
+		self:UpdateChat()
+		self:UpdateDataBars()
+		self:UpdateDataTexts()
+		self:UpdateMinimap()
+		self:UpdateNamePlates()
+		self:UpdateUnitFrames()
+		self:UpdateAuras()
+		self:UpdateMisc()
+		self:UpdateEnd()
+	end
 end
 
 function E:RemoveNonPetBattleFrames()
@@ -1482,27 +1621,7 @@ function E:InitializeModules()
 	end
 end
 
---DATABASE CONVERSIONS
-local function auraFilterStrip(name, content, value)
-	if match(name, value) then
-		E.global.unitframe.aurafilters[gsub(name, value, '')] = E:CopyTable({}, content)
-		E.global.unitframe.aurafilters[name] = nil
-	end
-end
-
 function E:DBConversions()
-	--Make sure default filters use the correct filter type
-	for filter, filterType in pairs(E.DEFAULT_FILTER) do
-		E.global.unitframe.aurafilters[filter].type = filterType
-	end
-
-	--Add missing nameplates table to Minimalistic profile
-	if ElvDB.profiles['Minimalistic'] and not ElvDB.profiles['Minimalistic'].nameplates then
-		ElvDB.profiles['Minimalistic'].nameplates = {
-			['filters'] = {},
-		}
-	end
-
 	--Combat & Resting Icon options update
 	if E.db.unitframe.units.player.combatIcon ~= nil then
 		E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
@@ -1513,13 +1632,6 @@ function E:DBConversions()
 		E.db.unitframe.units.player.restIcon = nil
 	end
 
-	--Remove commas from aura filters
-	for name, content in pairs(E.global.unitframe.aurafilters) do
-		auraFilterStrip(name, content, ',')
-		auraFilterStrip(name, content, '^Friendly:')
-		auraFilterStrip(name, content, '^Enemy:')
-	end
-
 	--Convert old "Buffs and Debuffs" font size option to individual options
 	if E.db.auras.fontSize then
 		local fontSize = E.db.auras.fontSize
@@ -1528,13 +1640,6 @@ function E:DBConversions()
 		E.db.auras.debuffs.countFontSize = fontSize
 		E.db.auras.debuffs.durationFontSize = fontSize
 		E.db.auras.fontSize = nil
-	end
-
-	--Convert old private cooldown setting to profile setting
-	if E.private.cooldown and (E.private.cooldown.enable ~= nil) then
-		E.db.cooldown.enable = E.private.cooldown.enable
-		E.private.cooldown.enable = nil
-		E.private.cooldown = nil
 	end
 
 	--Convert Nameplate Aura Duration to new Cooldown system
@@ -1693,8 +1798,8 @@ function E:Initialize(loginFrame)
 
 	self.myguid = UnitGUID('player')
 	self.data = AceDB:New('ElvDB', self.DF)
-	self.data.RegisterCallback(self, 'OnProfileChanged', 'UpdateAll')
-	self.data.RegisterCallback(self, 'OnProfileCopied', 'UpdateAll')
+	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
+	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
 	self.charSettings = AceDB:New('ElvPrivateDB', self.privateVars)
 	LibDualSpec:EnhanceDatabase(self.data, 'ElvUI')
