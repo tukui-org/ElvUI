@@ -1213,7 +1213,7 @@ function E:UpdateEnd()
 	E:UpdateAll(false)
 end
 
-local staggerDelay = 0.2
+local staggerDelay = 0.02
 local staggerTable = {}
 local function CallStaggeredUpdate()
 	local nextUpdate, nextDelay = staggerTable[1]
@@ -1221,7 +1221,7 @@ local function CallStaggeredUpdate()
 		tremove(staggerTable, 1)
 
 		if nextUpdate == 'UpdateNamePlates' or nextUpdate == 'UpdateBags' then
-			nextDelay = 0.5
+			nextDelay = 0.05
 		end
 
 		C_Timer_After(nextDelay or staggerDelay, E[nextUpdate])
