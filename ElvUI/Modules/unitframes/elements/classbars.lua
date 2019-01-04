@@ -191,21 +191,7 @@ function UF:Configure_ClassBar(frame, cur)
 			bars.Holder.mover:SetScale(0.0001)
 			bars.Holder.mover:SetAlpha(0)
 		end
-	elseif not frame.CLASSBAR_DETACHED then
-		bars:ClearAllPoints()
-		if frame.ORIENTATION == "RIGHT" then
-			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
-		else
-			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
-		end
-
-		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-
-		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
-		end
-	else --Detached
+	elseif frame.CLASSBAR_DETACHED then
 		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
 
 		if not bars.Holder.mover then
@@ -229,6 +215,20 @@ function UF:Configure_ClassBar(frame, cur)
 			bars:SetFrameLevel(frame:GetFrameLevel() + 5)
 		else
 			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
+		end
+	else
+		bars:ClearAllPoints()
+		if frame.ORIENTATION == "RIGHT" then
+			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
+		else
+			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
+		end
+
+		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+
+		if bars.Holder and bars.Holder.mover then
+			bars.Holder.mover:SetScale(0.0001)
+			bars.Holder.mover:SetAlpha(0)
 		end
 	end
 
