@@ -402,7 +402,7 @@ local function eventHandler(self, event)
 
 	if event == "PLAYER_LOGIN" then
 		self:UnregisterEvent(event)
-		self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
+		self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	end
 
 	if lib.currentSpec > 0 and next(upgrades) then

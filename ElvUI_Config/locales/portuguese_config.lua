@@ -1,5 +1,5 @@
 -- Portuguese localization file for ptBR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
@@ -551,6 +551,7 @@ L["Show an alert frame if you have unspend talent points."] = true
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = "Redesenhar o Fundo"
 L["Skin the blizzard chat bubbles."] = "Redesenhar os balões de conversação da Blizzard"
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "A fonte do texto que aparece sobre a cabeça dos jogadores. |cffFF0000ATENÇÃO: Para esta alteração fazer efeito é necessário que o jogo seja reiniciado ou relogado.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true

@@ -18,6 +18,7 @@ P['general'] = {
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
+	['talkingHeadFrameBackdrop'] = false,
 	['vehicleSeatIndicatorSize'] = 128,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',

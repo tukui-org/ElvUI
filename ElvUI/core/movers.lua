@@ -476,7 +476,7 @@ end
 
 --Profile Change
 function E:SetMoversPositions()
-	--E:SetMoversPositions() is the first function called in E:UpdateAll().
+	--E:SetMoversPositions() is the first function called in E:StaggeredUpdateAll().
 	--Because of that, we can allow ourselves to re-enable all disabled movers here,
 	--as the subsequent updates to these elements will disable them again if needed.
 	for name in pairs(E.DisabledMovers) do

@@ -249,11 +249,31 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+--[[ Power:SetFrequentUpdates(state)
+Used to toggle frequent updates.
+
+* self  - the Power element
+* state - the desired state of frequent updates (boolean)
+--]]
+local function SetFrequentUpdates(element, state)
+	if(element.frequentUpdates ~= state) then
+		element.frequentUpdates = state
+		if(element.frequentUpdates) then
+			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		else
+			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
+		end
+	end
+end
+
 local function Enable(self)
 	local element = self.Power
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.SetFrequentUpdates = SetFrequentUpdates
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)

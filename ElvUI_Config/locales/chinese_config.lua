@@ -1,5 +1,5 @@
 -- Chinese localization file for zhCN.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
@@ -548,6 +548,7 @@ L["Show an alert frame if you have unspend talent points."] = "为你未使用�
 L["Skin Backdrop (No Borders)"] = "美化背景(无边框)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪聊天泡泡"
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = "剧情对话框缩放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重启游戏或重新登录才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "细边框主题会改变所有的外观,使用细边框主题会略微提升性能"
