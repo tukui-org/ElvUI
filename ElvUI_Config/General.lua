@@ -216,7 +216,7 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Talking Head Backdrop"],
 					get = function(info) return E.db.general.talkingHeadFrameBackdrop end,
-					set = function(info, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show("CONFIG_RL") end
 				},
 				vehicleSeatIndicatorSize = {
 					order = 26,
