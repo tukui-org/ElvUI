@@ -1,4 +1,16 @@
-**Version 10.85 [  ]**
+**Version 10.86 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.85 [ January 4th 2019 ]**
 
 **New Additions:**  
 Added `Weakened Soul` back to our Buff Indicator.  
