@@ -39,7 +39,7 @@ function NP:Construct_ClassPower(frame)
 	end
 
 	ClassPower.UpdateColor = function(element, powerType)
-		local color = oUF.colors.power[powerType]
+		local color = ElvUF.colors.power[powerType]
 		local r, g, b = color[1], color[2], color[3]
 		for i = 1, #element do
 
