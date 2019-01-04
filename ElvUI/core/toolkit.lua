@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -19,27 +19,12 @@ local function GetTemplate(t, isUnitFrameElement)
 	if t == 'ClassColor' then
 		local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 		borderr, borderg, borderb = color.r, color.g, color.b
-
-		if t ~= 'Transparent' then
-			backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
-		else
-			backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
-		end
+		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 	elseif t == 'Transparent' then
-		if isUnitFrameElement then
-			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
-		else
-			borderr, borderg, borderb = unpack(E.media.bordercolor)
-		end
-
+		borderr, borderg, borderb = unpack(isUnitFrameElement and E.media.unitframeBorderColor or E.media.bordercolor)
 		backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
 	else
-		if isUnitFrameElement then
-			borderr, borderg, borderb = unpack(E.media.unitframeBorderColor)
-		else
-			borderr, borderg, borderb = unpack(E.media.bordercolor)
-		end
-
+		borderr, borderg, borderb = unpack(isUnitFrameElement and E.media.unitframeBorderColor or E.media.bordercolor)
 		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 	end
 end
@@ -111,21 +96,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
 	if t ~= 'NoBackdrop' then
-		if E.private.general.pixelPerfect or f.forcePixelMode then
-			f:SetBackdrop({
-				bgFile = E.media.blankTex,
-				edgeFile = E.media.blankTex,
-				tile = false, tileSize = 0, edgeSize = E.mult,
-				insets = {left = 0, right = 0, top = 0, bottom = 0}
-			})
-		else
-			f:SetBackdrop({
-				bgFile = E.media.blankTex,
-				edgeFile = E.media.blankTex,
-				tile = false, tileSize = 0, edgeSize = E.mult,
-				insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-			})
-		end
+		f:SetBackdrop({
+			bgFile = E.media.blankTex,
+			edgeFile = E.media.blankTex,
+			tile = false, tileSize = 0, edgeSize = E.mult,
+			insets = {left = 0, right = 0, top = 0, bottom = 0}
+		})
 
 		if not f.backdropTexture and t ~= 'Transparent' then
 			local backdropTexture = f:CreateTexture(nil, 'BORDER')
@@ -138,32 +114,32 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				f.backdropTexture:Hide()
 				f.backdropTexture = nil
 			end
+		end
 
-			if not E.private.general.pixelPerfect and not f.forcePixelMode then
-				if not f.iborder then
-					local border = CreateFrame('Frame', nil, f)
-					border:SetInside(f, E.mult, E.mult)
-					border:SetBackdrop({
-						edgeFile = E.media.blankTex,
-						edgeSize = E.mult,
-						insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-					})
-					border:SetBackdropBorderColor(0, 0, 0, 1)
-					f.iborder = border
-				end
+		if not E.private.general.pixelPerfect and not f.forcePixelMode then
+			if not f.iborder then
+				local border = CreateFrame('Frame', nil, f)
+				border:SetInside(f, E.mult, E.mult)
+				border:SetBackdrop({
+					edgeFile = E.media.blankTex,
+					edgeSize = E.mult,
+					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.iborder = border
+			end
 
-				if not f.oborder then
-					local border = CreateFrame('Frame', nil, f)
-					border:SetOutside(f, E.mult, E.mult)
-					border:SetFrameLevel(f:GetFrameLevel() + 1)
-					border:SetBackdrop({
-						edgeFile = E.media.blankTex,
-						edgeSize = E.mult,
-						insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-					})
-					border:SetBackdropBorderColor(0, 0, 0, 1)
-					f.oborder = border
-				end
+			if not f.oborder then
+				local border = CreateFrame('Frame', nil, f)
+				border:SetOutside(f, E.mult, E.mult)
+				border:SetFrameLevel(f:GetFrameLevel() + 1)
+				border:SetBackdrop({
+					edgeFile = E.media.blankTex,
+					edgeSize = E.mult,
+					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.oborder = border
 			end
 		end
 

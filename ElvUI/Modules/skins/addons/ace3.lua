@@ -2,14 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local select = select
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LibStub
+local CreateFrame = CreateFrame
+local GetCVarBool = GetCVarBool
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
@@ -29,14 +28,14 @@ local function SkinDropdownPullout(self)
 end
 
 function S:SkinAce3()
-	local AceGUI = LibStub("AceGUI-3.0", true)
+	local AceGUI = _G.LibStub("AceGUI-3.0", true)
 	if not AceGUI then return end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	local ColorBlind = GetCVarBool('colorblindmode')
 
-	RegisterAsWidget = function(self, widget)
+	RegisterAsWidget = function(object, widget)
 		if not E.private.skins.ace3.enable then
-			return oldRegisterAsWidget(self, widget)
+			return oldRegisterAsWidget(object, widget)
 		end
 		local TYPE = widget.type
 		if TYPE == 'MultiLineEditBox' then
@@ -68,11 +67,11 @@ function S:SkinAce3()
 
 				check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
 
-				hooksecurefunc(check, "SetDesaturated", function(self, value)
+				hooksecurefunc(check, "SetDesaturated", function(chk, value)
 					if value == true then
-						self:SetVertexColor(.6, .6, .6, .8)
+						chk:SetVertexColor(.6, .6, .6, .8)
 					else
-						self:SetVertexColor(1, .82, 0, 0.8)
+						chk:SetVertexColor(1, .82, 0, 0.8)
 					end
 				end)
 
@@ -162,9 +161,9 @@ function S:SkinAce3()
 
 			button:SetPoint('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
-			hooksecurefunc(frame, 'SetPoint', function(self, a, b, c, d, e)
+			hooksecurefunc(frame, 'SetPoint', function(fr, a, b, c, d, e)
 				if d == 7 then
-					self:SetPoint(a, b, c, 0, e)
+					fr:SetPoint(a, b, c, 0, e)
 				end
 			end)
 
@@ -235,14 +234,14 @@ function S:SkinAce3()
 			widget.frame:StripTextures()
 		end
 
-		return oldRegisterAsWidget(self, widget)
+		return oldRegisterAsWidget(object, widget)
 	end
 	AceGUI.RegisterAsWidget = RegisterAsWidget
 	--LibStub("AceGUI-3.0"):Create("Window")
 	local oldRegisterAsContainer = AceGUI.RegisterAsContainer
-	RegisterAsContainer = function(self, widget)
+	RegisterAsContainer = function(object, widget)
 		if not E.private.skins.ace3.enable then
-			return oldRegisterAsContainer(self, widget)
+			return oldRegisterAsContainer(object, widget)
 		end
 		local TYPE = widget.type
 		if TYPE == 'ScrollFrame' then
@@ -256,7 +255,7 @@ function S:SkinAce3()
 				end
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
-					if child:GetObjectType() == 'Button' and child:GetText() then
+					if child:IsObjectType('Button') and child:GetText() then
 						S:HandleButton(child)
 					else
 						child:StripTextures()
@@ -273,13 +272,13 @@ function S:SkinAce3()
 				frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
 
 				local oldRefreshTree = widget.RefreshTree
-				widget.RefreshTree = function(self, scrollToSelection)
-					oldRefreshTree(self, scrollToSelection)
-					if not self.tree then return end
-					local status = self.status or self.localstatus
+				widget.RefreshTree = function(wdg, scrollToSelection)
+					oldRefreshTree(wdg, scrollToSelection)
+					if not wdg.tree then return end
+					local status = wdg.status or wdg.localstatus
 					local groupstatus = status.groups
-					local lines = self.lines
-					local buttons = self.buttons
+					local lines = wdg.lines
+					local buttons = wdg.buttons
 					local offset = status.scrollvalue
 
 					for i = offset + 1, #lines do
@@ -301,8 +300,8 @@ function S:SkinAce3()
 
 			if TYPE == 'TabGroup' then
 				local oldCreateTab = widget.CreateTab
-				widget.CreateTab = function(self, id)
-					local tab = oldCreateTab(self, id)
+				widget.CreateTab = function(wdg, id)
+					local tab = oldCreateTab(wdg, id)
 					tab:StripTextures()
 					tab.backdrop = CreateFrame('Frame', nil, tab)
 					tab.backdrop:SetTemplate('Transparent')
@@ -322,13 +321,13 @@ function S:SkinAce3()
 			frame:SetBackdropBorderColor(0,0,0,0) --Make border completely transparent
 		end
 
-		return oldRegisterAsContainer(self, widget)
+		return oldRegisterAsContainer(object, widget)
 	end
 	AceGUI.RegisterAsContainer = RegisterAsContainer
 end
 
 local function attemptSkin()
-	local AceGUI = LibStub("AceGUI-3.0", true)
+	local AceGUI = _G.LibStub("AceGUI-3.0", true)
 	if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
 		S:SkinAce3()
 	end

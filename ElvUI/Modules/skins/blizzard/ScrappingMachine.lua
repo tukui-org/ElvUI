@@ -7,19 +7,12 @@ local _G = _G
 local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Scrapping ~= true then return end
 
-	local MachineFrame = _G["ScrappingMachineFrame"]
-	MachineFrame:StripTextures()
-	ScrappingMachineFrameInset:Hide()
-
-	MachineFrame:CreateBackdrop("Transparent")
-
-	S:HandleCloseButton(ScrappingMachineFrameCloseButton)
+	local MachineFrame = _G.ScrappingMachineFrame
+	S:HandlePortraitFrame(MachineFrame, true)
 	S:HandleButton(MachineFrame.ScrapButton)
 
 	local ItemSlots = MachineFrame.ItemSlots
@@ -30,7 +23,7 @@ local function LoadSkin()
 		button:SetTemplate()
 		S:HandleTexture(button.Icon)
 		button.IconBorder:SetAlpha(0)
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
 		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(E['media'].bordercolor) end)
 	end
 

@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -132,6 +132,8 @@ function mod:ConstructElement_Glow(frame)
 	f:Hide()
 
 	local glow = frame:CreateTexture(nil, "BACKGROUND", nil, -5)
+	glow:SetSnapToPixelGrid(false)
+	glow:SetTexelSnappingBias(0)
 	glow:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
 	glow:Hide()
 	frame.Glow2 = glow

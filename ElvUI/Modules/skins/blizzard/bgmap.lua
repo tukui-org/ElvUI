@@ -4,28 +4,51 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BattlefieldMapTab, BattlefieldMapOptions, OpacityFrame
--- GLOBALS: SHOW_BATTLEFIELDMINIMAP_PLAYERS, LOCK_BATTLEFIELDMINIMAP, BATTLEFIELDMINIMAP_OPACITY_LABEL
--- GLOBALS: UIDROPDOWNMENU_MENU_LEVEL, UIParent, ToggleDropDownMenu, UIDropDownMenu_Initialize
+local function GetOpacity()
+	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
+end
+
+local function InitializeOptionsDropDown()
+	_G.BattlefieldMapTab:InitializeOptionsDropDown()
+end
+
+local function setBackdropAlpha()
+	if _G.BattlefieldMapFrame.backdrop then
+		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
+	end
+end
+
+-- alpha stuff
+local oldAlpha = 0
+local function setOldAlpha()
+	if oldAlpha then
+		_G.BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
+		oldAlpha = nil
+	end
+end
+
+local function setRealAlpha()
+	oldAlpha = GetOpacity()
+	_G.BattlefieldMapFrame:SetGlobalAlpha(1)
+end
+
+local function refreshAlpha()
+	oldAlpha = GetOpacity()
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 
-	local function GetOpacity()
-		return 1 - (BattlefieldMapOptions and BattlefieldMapOptions.opacity or 1)
-	end
+	local BattlefieldMapFrame = _G.BattlefieldMapFrame
+	local BattlefieldMapTab = _G.BattlefieldMapTab
 
-	local oldAlpha = GetOpacity()
-
-	local BattlefieldMapFrame = _G["BattlefieldMapFrame"]
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:StripTextures()
 
+	refreshAlpha() -- will need this soon
 	BattlefieldMapFrame:CreateBackdrop('Default')
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
@@ -44,52 +67,28 @@ local function LoadSkin()
 	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
 	BattlefieldMapTab:Kill()
 
-	local function InitializeOptionsDropDown()
-		BattlefieldMapTab:InitializeOptionsDropDown()
-	end
-
 	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
 		if btn == "LeftButton" then
 			BattlefieldMapTab:StopMovingOrSizing()
 			BattlefieldMapTab:SetUserPlaced(true)
 		elseif btn == "RightButton" then
-			UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
-			ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
+			_G.ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
 		end
 
-		if OpacityFrame:IsShown() then
-			OpacityFrame:Hide()
+		if _G.OpacityFrame:IsShown() then
+			_G.OpacityFrame:Hide()
 		end
 	end)
 
 	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseDown", function(_, btn)
-		if btn == "LeftButton" and (BattlefieldMapOptions and not BattlefieldMapOptions.locked) then
+		if btn == "LeftButton" and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
 			BattlefieldMapTab:StartMoving()
 		end
 	end)
 
-	local function setBackdropAlpha()
-		if BattlefieldMapFrame.backdrop then
-			BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
-		end
-	end
-
 	hooksecurefunc(BattlefieldMapFrame, "SetGlobalAlpha", setBackdropAlpha)
-	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", function()
-		oldAlpha = GetOpacity()
-	end)
-
-	local function setOldAlpha()
-		if oldAlpha then
-			BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
-			oldAlpha = nil
-		end
-	end
-
-	local function setRealAlpha()
-		oldAlpha = GetOpacity()
-		BattlefieldMapFrame:SetGlobalAlpha(1)
-	end
+	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", refreshAlpha)
 
 	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)

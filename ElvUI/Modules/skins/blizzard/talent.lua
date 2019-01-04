@@ -6,53 +6,40 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
-local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
+local hooksecurefunc = hooksecurefunc
 local CreateAnimationGroup = CreateAnimationGroup
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
-local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local UnitSex = UnitSex
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: MAX_PVP_TALENT_TIERS, MAX_PVP_TALENT_COLUMNS, SPEC_SPELLS_DISPLAY
--- GLOBALS: MAX_TALENT_TIERS, NUM_TALENT_COLUMNS, PlayerSpecTab1, PlayerSpecTab2
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
+local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
 
-	local PlayerTalentFrame = _G["PlayerTalentFrame"]
-	local objects = {
-		PlayerTalentFrame,
-		PlayerTalentFrameTalents,
-	}
+	local PlayerTalentFrame = _G.PlayerTalentFrame
+	S:HandlePortraitFrame(PlayerTalentFrame, true)
 
-	for _, object in pairs(objects) do
-		object:StripTextures()
-	end
+	_G.PlayerTalentFrameTalents:StripTextures()
 
-	PlayerTalentFramePortrait:Kill()
-	PlayerTalentFrame:StripTextures()
-	PlayerTalentFrame:SetTemplate('Transparent')
 
 	if E.global.general.disableTutorialButtons then
-		PlayerTalentFrameSpecializationTutorialButton:Kill()
-		PlayerTalentFrameTalentsTutorialButton:Kill()
-		PlayerTalentFramePetSpecializationTutorialButton:Kill()
+		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()
+		_G.PlayerTalentFrameTalentsTutorialButton:Kill()
+		_G.PlayerTalentFramePetSpecializationTutorialButton:Kill()
 	end
 
-	S:HandleCloseButton(PlayerTalentFrame.CloseButton)
-
 	local buttons = {
-		PlayerTalentFrameSpecializationLearnButton,
-		PlayerTalentFrameTalentsLearnButton,
-		PlayerTalentFramePetSpecializationLearnButton
+		_G.PlayerTalentFrameSpecializationLearnButton,
+		_G.PlayerTalentFrameTalentsLearnButton,
+		_G.PlayerTalentFramePetSpecializationLearnButton
 	}
 
-	S:HandleButton(PlayerTalentFrameActivateButton)
+	S:HandleButton(_G.PlayerTalentFrameActivateButton)
 
 	for _, button in pairs(buttons) do
 		S:HandleButton(button, true)
@@ -62,7 +49,7 @@ local function LoadSkin()
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 	end
 
-	for _, Frame in pairs({ PlayerTalentFrameSpecialization, PlayerTalentFramePetSpecialization }) do
+	for _, Frame in pairs({ _G.PlayerTalentFrameSpecialization, _G.PlayerTalentFramePetSpecialization }) do
 		Frame:StripTextures()
 
 		for _, Child in pairs({Frame:GetChildren()}) do
@@ -108,15 +95,15 @@ local function LoadSkin()
 		S:HandleTexture(Frame.spellsScroll.child.specIcon, Frame.spellsScroll.child)
 	end
 
-	for i = 1, MAX_TALENT_TIERS do
-		local row = PlayerTalentFrameTalents['tier'..i]
+	for i = 1, _G.MAX_TALENT_TIERS do
+		local row = _G.PlayerTalentFrameTalents['tier'..i]
 		row:StripTextures()
 		row.GlowFrame:Kill()
 
 		row.TopLine:Point("TOP", 0, 4)
 		row.BottomLine:Point("BOTTOM", 0, -4)
 
-		for j = 1, NUM_TALENT_COLUMNS do
+		for j = 1, _G.NUM_TALENT_COLUMNS do
 			local bu = row['talent'..j]
 
 			bu:StripTextures()
@@ -153,13 +140,13 @@ local function LoadSkin()
 			end)
 
 			bu.GlowFrame:StripTextures()
-			bu.GlowFrame:HookScript('OnShow', function(self)
+			bu.GlowFrame:HookScript('OnShow', function()
 				bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				if not bu.bg.transition:IsPlaying() then
 					bu.bg.transition:Play()
 				end
 			end)
-			bu.GlowFrame:HookScript('OnHide', function(self)
+			bu.GlowFrame:HookScript('OnHide', function()
 				if bu.bg.transition:IsPlaying() then
 					bu.bg.transition:Stop()
 				end
@@ -177,8 +164,8 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc("TalentFrame_Update", function(self)
-		for i = 1, MAX_TALENT_TIERS do
-			for j = 1, NUM_TALENT_COLUMNS do
+		for i = 1, _G.MAX_TALENT_TIERS do
+			for j = 1, _G.NUM_TALENT_COLUMNS do
 				local bu = self['tier'..i]['talent'..j]
 				if bu.bg and bu.knownSelection then
 					if bu.knownSelection:IsShown() then
@@ -196,11 +183,12 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
-		local playerTalentSpec = GetSpecialization(nil, self.isPet, PlayerSpecTab2:GetChecked() and 2 or 1)
+		local playerTalentSpec = GetSpecialization(nil, self.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
 		local numSpecs = GetNumSpecializations(nil, self.isPet)
 		local sex = self.isPet and UnitSex("pet") or UnitSex("player")
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet, nil, sex)
+		if not id then return end
 		local scrollChild = self.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
@@ -247,7 +235,7 @@ local function LoadSkin()
 		end
 	end)
 
-	local PvpTalentFrame = _G["PlayerTalentFrameTalents"].PvpTalentFrame
+	local PvpTalentFrame = _G.PlayerTalentFrameTalents.PvpTalentFrame
 	PvpTalentFrame:StripTextures()
 
 	for _, button in pairs(PvpTalentFrame.Slots) do
@@ -287,7 +275,7 @@ local function LoadSkin()
 	PvpTalentFrame.TalentList:SetPoint("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
 	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
 
-	local TalentList_CloseButton = select(4, PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
+	local TalentList_CloseButton = select(4, _G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
 	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then
 		S:HandleButton(TalentList_CloseButton, true)
 	end
@@ -297,7 +285,7 @@ local function LoadSkin()
 	PvpTalentFrame.OrbModelScene:SetAlpha(0)
 
 	PvpTalentFrame:SetSize(131, 379)
-	PvpTalentFrame:SetPoint("LEFT", PlayerTalentFrameTalents, "RIGHT", -135, 0)
+	PvpTalentFrame:SetPoint("LEFT", _G.PlayerTalentFrameTalents, "RIGHT", -135, 0)
 	PvpTalentFrame.Swords:SetPoint("BOTTOM", 0, 30)
 	PvpTalentFrame.Label:SetPoint("BOTTOM", 0, 104)
 	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
@@ -325,7 +313,7 @@ local function LoadSkin()
 		Button.selectedTexture:SetShown(Button.Selected:IsShown())
 	end
 
-	hooksecurefunc(PvpTalentFrame.TalentList, "Update", function(self)
+	hooksecurefunc(PvpTalentFrame.TalentList, "Update", function()
 		for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
 			if not Button.selectedTexture then return end
 			if Button.Selected:IsShown() then
@@ -336,11 +324,11 @@ local function LoadSkin()
 		end
 	end)
 
-	S:HandleButton(PlayerTalentFrameTalents.PvpTalentButton)
-	S:HandleScrollBar(PlayerTalentFrameTalents.PvpTalentFrame.TalentList.ScrollFrame.ScrollBar)
+	S:HandleButton(_G.PlayerTalentFrameTalents.PvpTalentButton)
+	S:HandleScrollBar(_G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList.ScrollFrame.ScrollBar)
 
-	S:HandleCloseButton(PlayerTalentFrameTalents.PvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
-	S:HandleCloseButton(PlayerTalentFrameTalents.PvpTalentFrame.WarmodeTutorialBox.CloseButton)
+	S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
+	S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)

@@ -15,9 +15,6 @@ local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SquareButton_SetIcon, ScriptErrorsFrame, HybridScrollFrame_GetOffset
-
 E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
@@ -70,6 +67,53 @@ S.ArrowRotation = {
 	['left'] = -1.57,
 	['right'] = 1.57,
 }
+
+function S:HandleInsetFrame(frame)
+	assert(frame, "doesn't exist!")
+
+	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
+	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
+	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
+
+	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
+	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
+	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
+
+	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
+	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
+
+	if frame.Bg then frame.Bg:Hide() end
+end
+
+-- All frames that have a Portrait
+function S:HandlePortraitFrame(frame, setBackdrop)
+	assert(frame, "doesn't exist!")
+
+	local name = frame and frame.GetName and frame:GetName()
+	local insetFrame = name and _G[name..'Inset'] or frame.Inset
+	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait
+	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
+	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
+
+	frame:StripTextures()
+
+	if portraitFrame then portraitFrame:SetAlpha(0) end
+	if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
+	if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
+
+	if insetFrame then
+		S:HandleInsetFrame(insetFrame)
+	end
+
+	if frame.CloseButton then
+		S:HandleCloseButton(frame.CloseButton)
+	end
+
+	if setBackdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:SetAllPoints()
+	end
+end
 
 function S:SetModifiedBackdrop()
 	if self.backdrop then self = self.backdrop end
@@ -178,21 +222,6 @@ function S:SkinLibDropDownMenu(prefix)
 	end
 end
 
-function S:HandleInsetFrameTemplate(frame)
-	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
-	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
-	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
-
-	if frame.InsetBorderBottom then frame.InsetBorderBottom:Hide() end
-	if frame.InsetBorderBottomLeft then frame.InsetBorderBottomLeft:Hide() end
-	if frame.InsetBorderBottomRight then frame.InsetBorderBottomRight:Hide() end
-
-	if frame.InsetBorderLeft then frame.InsetBorderLeft:Hide() end
-	if frame.InsetBorderRight then frame.InsetBorderRight:Hide() end
-
-	if frame.Bg then frame.Bg:Hide() end
-end
-
 function S:SkinTalentListButtons(frame)
 	local name = frame and frame.GetName and frame:GetName()
 	if name then
@@ -205,7 +234,7 @@ function S:SkinTalentListButtons(frame)
 	end
 
 	if frame.Inset then
-		S:HandleInsetFrameTemplate(frame.Inset)
+		S:HandleInsetFrame(frame.Inset)
 
 		frame.Inset:SetPoint("TOPLEFT", 4, -60)
 		frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
@@ -519,15 +548,15 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 
 	if useVertical then
 		if inverseDirection then
-			SquareButton_SetIcon(btn, 'UP')
+			_G.SquareButton_SetIcon(btn, 'UP')
 		else
-			SquareButton_SetIcon(btn, 'DOWN')
+			_G.SquareButton_SetIcon(btn, 'DOWN')
 		end
 	else
 		if inverseDirection then
-			SquareButton_SetIcon(btn, 'LEFT')
+			_G.SquareButton_SetIcon(btn, 'LEFT')
 		else
-			SquareButton_SetIcon(btn, 'RIGHT')
+			_G.SquareButton_SetIcon(btn, 'RIGHT')
 		end
 	end
 
@@ -863,7 +892,7 @@ function S:HandleSliderFrame(frame)
 
 		for i=1, frame:GetNumRegions() do
 			local region = select(i, frame:GetRegions())
-			if region and region:GetObjectType() == 'FontString' then
+			if region and region:IsObjectType('FontString') then
 				local point, anchor, anchorPoint, x, y = region:GetPoint()
 				if anchorPoint:find('BOTTOM') then
 					region:Point(point, anchor, anchorPoint, x, y - 4)
@@ -1087,7 +1116,7 @@ function S:HandleFollowerListOnUpdateData(frame)
 	local FollowerListUpdateDataLastOffset = nil
 	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
 		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
-		local offset = HybridScrollFrame_GetOffset(dataFrame.listScroll)
+		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
 		local Buttons = dataFrame.listScroll.buttons
 		local followersList = dataFrame.followersList
 
@@ -1187,8 +1216,10 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		button:StripTextures()
 		button:SetTemplate("Default")
 		button:StyleButton(true)
-		icon:SetInside()
+
 		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
+		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 	end
 end
 
@@ -1303,7 +1334,7 @@ function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
 end
 
 function S:SkinTextWithStateWidget(widgetFrame)
-	local text = widgetFrame.Text;
+	--local text = widgetFrame.Text;
 end
 
 function S:SkinHorizontalCurrenciesWidget(widgetFrame)
@@ -1486,18 +1517,19 @@ function S:Initialize()
 		if IsAddOnLoaded(addon) then
 			self.addonsToLoad[addon] = nil;
 			local _, catch = pcall(loadFunc)
-			if(catch and GetCVarBool('scriptErrors') == true) then
-				ScriptErrorsFrame:OnError(catch, false, false)
+			if catch and GetCVarBool('scriptErrors') then
+				_G.ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
 
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
 		local _, catch = pcall(loadFunc)
-		if(catch and GetCVarBool('scriptErrors') == true) then
-			ScriptErrorsFrame:OnError(catch, false, false)
+		if catch and GetCVarBool('scriptErrors') then
+			_G.ScriptErrorsFrame:OnError(catch, false, false)
 		end
 	end
+
 	wipe(self.nonAddonsToLoad)
 end
 

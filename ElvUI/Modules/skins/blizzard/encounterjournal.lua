@@ -8,16 +8,128 @@ local select, unpack, pairs = select, unpack, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: AJ_MAX_NUM_SUGGESTIONS, EJ_GetEncounterInfoByIndex
+
+local function SkinDungeons()
+	local b1 = _G.EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
+	if b1 and not b1.isSkinned then
+		S:HandleButton(b1)
+		b1.bgImage:SetInside()
+		b1.bgImage:SetTexCoord(.08, .6, .08, .6)
+		b1.bgImage:SetDrawLayer("ARTWORK")
+		b1.isSkinned = true
+	end
+
+	for i = 1, 100 do
+		local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
+		if b and not b.isSkinned then
+			S:HandleButton(b)
+			b.bgImage:SetInside()
+			b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
+			b.bgImage:SetDrawLayer("ARTWORK")
+			b.isSkinned = true
+		end
+	end
+end
+
+local function SkinBosses()
+	local bossIndex = 1;
+	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+	local bossButton;
+
+	while bossID do
+		bossButton = _G["EncounterJournalBossButton"..bossIndex];
+		if bossButton and not bossButton.isSkinned then
+			S:HandleButton(bossButton)
+			bossButton.creature:ClearAllPoints()
+			bossButton.creature:Point("TOPLEFT", 1, -4)
+			bossButton.isSkinned = true
+		end
+
+		bossIndex = bossIndex + 1;
+		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+	end
+end
+
+local function SkinOverviewInfo(self, _, index)
+	local header = self.overviews[index]
+	if not header.isSkinned then
+
+		header.descriptionBG:SetAlpha(0)
+		header.descriptionBGBottom:SetAlpha(0)
+		for i = 4, 18 do
+			select(i, header.button:GetRegions()):SetTexture("")
+		end
+
+		S:HandleButton(header.button)
+
+		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+		header.button.title.SetTextColor = E.noop
+		header.button.expandedIcon:SetTextColor(1, 1, 1)
+		header.button.expandedIcon.SetTextColor = E.noop
+
+		header.isSkinned = true
+	end
+end
+
+local function SkinOverviewInfoBullets(object)
+	local parent = object:GetParent()
+
+	if parent.Bullets then
+		for _, bullet in pairs(parent.Bullets) do
+			if not bullet.styled then
+				bullet.Text:SetTextColor(1, 1, 1)
+				bullet.styled = true
+			end
+		end
+	end
+end
+
+local function SkinAbilitiesInfo()
+	local index = 1
+	local header = _G["EncounterJournalInfoHeader"..index]
+	while header do
+		if not header.isSkinned then
+			header.flashAnim.Play = E.noop
+
+			header.descriptionBG:SetAlpha(0)
+			header.descriptionBGBottom:SetAlpha(0)
+			for i = 4, 18 do
+				select(i, header.button:GetRegions()):SetTexture("")
+			end
+
+			header.description:SetTextColor(1, 1, 1)
+			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+			header.button.title.SetTextColor = E.noop
+			header.button.expandedIcon:SetTextColor(1, 1, 1)
+			header.button.expandedIcon.SetTextColor = E.noop
+
+			S:HandleButton(header.button)
+
+			header.button.bg = CreateFrame("Frame", nil, header.button)
+			header.button.bg:SetTemplate("Default")
+			header.button.bg:SetOutside(header.button.abilityIcon)
+			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
+			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
+
+			header.isSkinned = true
+		end
+
+		if header.button.abilityIcon:IsShown() then
+			header.button.bg:Show()
+		else
+			header.button.bg:Hide()
+		end
+
+		index = index + 1
+		header = _G["EncounterJournalInfoHeader"..index]
+	end
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
-	local EJ = _G["EncounterJournal"]
-	EJ:StripTextures(true)
-	EJ.inset:StripTextures(true)
-	EJ:CreateBackdrop("Transparent")
+	local EJ = _G.EncounterJournal
+	S:HandlePortraitFrame(EJ, true)
 
 	EJ.navBar:StripTextures(true)
 	EJ.navBar.overlay:StripTextures(true)
@@ -28,7 +140,6 @@ local function LoadSkin()
 	S:HandleButton(EJ.navBar.home, true)
 
 	S:HandleEditBox(EJ.searchBox)
-	S:HandleCloseButton(EncounterJournalCloseButton)
 
 	--Instance Selection Frame
 	local InstanceSelect = EJ.instanceSelect
@@ -63,28 +174,28 @@ local function LoadSkin()
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
-	EncounterJournalEncounterFrameInfoBG:Kill()
+	_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	EncounterInfo.leftShadow:Kill()
 	EncounterInfo.rightShadow:Kill()
 	EncounterInfo.model.dungeonBG:Kill()
-	EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
+	_G.EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 
 	EncounterInfo.instanceButton:ClearAllPoints()
 	EncounterInfo.instanceButton:Point("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 
-	S:HandleButton(EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
+	S:HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 	S:HandleButton(EncounterInfo.reset)
 	S:HandleButton(EncounterInfo.difficulty)
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
+	EncounterInfo.difficulty:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
-	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture("Interface\\EncounterJournal\\UI-EncounterJournalTextures")
-	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
+	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture("Interface\\EncounterJournal\\UI-EncounterJournalTextures")
+	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
 	EncounterInfo.bossesScroll:CreateBackdrop("Transparent")
 	EncounterInfo.bossesScroll.backdrop:Point("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
@@ -101,7 +212,7 @@ local function LoadSkin()
 		scrollFrame:Height(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
 		scrollFrame:Width(370)
 		scrollFrame:ClearAllPoints()
-		scrollFrame:Point("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
+		scrollFrame:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
 		scrollFrame.backdrop:Point("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
 		scrollFrame.backdrop:Point("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
 	end
@@ -119,7 +230,7 @@ local function LoadSkin()
 
 	EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 	EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
-	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
+	_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
 	EncounterInfo.overviewScroll.child.overviewDescription.Text:SetTextColor(1, 1, 1)
 
 	EncounterInfo.overviewTab:Point('TOPLEFT', EncounterInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
@@ -161,7 +272,7 @@ local function LoadSkin()
 	EncounterInstance:CreateBackdrop("Transparent")
 	EncounterInstance:Height(EncounterInfo.bossesScroll:GetHeight())
 	EncounterInstance:ClearAllPoints()
-	EncounterInstance:Point("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
+	EncounterInstance:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
 	EncounterInstance.loreBG:SetSize(325, 280)
 	EncounterInstance.loreBG:ClearAllPoints()
 	EncounterInstance.loreBG:Point("TOP", EncounterInstance, "TOP", 0, 0)
@@ -171,12 +282,12 @@ local function LoadSkin()
 	EncounterInstance.loreScroll.child.lore:SetTextColor(1, 1, 1)
 
 	--Loot Frame
-	S:HandleScrollBar(EncounterJournalScrollBar)
-	S:HandleButton(EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
+	S:HandleScrollBar(_G.EncounterJournalScrollBar)
+	S:HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
 
 	--Suggestions
-	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
-		local suggestion = EncounterJournal.suggestFrame["Suggestion"..i];
+	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
+		local suggestion = _G.EncounterJournal.suggestFrame["Suggestion"..i];
 		if i == 1 then
 			S:HandleButton(suggestion.button)
 			S:HandleNextPrevButton(suggestion.prevButton)
@@ -188,7 +299,7 @@ local function LoadSkin()
 
 	--Suggestion Reward Tooltips
 	if E.private.skins.blizzard.tooltip then
-		local tooltip = EncounterJournalTooltip
+		local tooltip = _G.EncounterJournalTooltip
 		local item1 = tooltip.Item1
 		local item2 = tooltip.Item2
 		tooltip:SetTemplate("Transparent")
@@ -199,53 +310,14 @@ local function LoadSkin()
 	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
-	local function SkinDungeons()
-		local b1 = EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
-		if b1 and not b1.isSkinned then
-			S:HandleButton(b1)
-			b1.bgImage:SetInside()
-			b1.bgImage:SetTexCoord(.08, .6, .08, .6)
-			b1.bgImage:SetDrawLayer("ARTWORK")
-			b1.isSkinned = true
-		end
-
-		for i = 1, 100 do
-			local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
-			if b and not b.isSkinned then
-				S:HandleButton(b)
-				b.bgImage:SetInside()
-				b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
-				b.bgImage:SetDrawLayer("ARTWORK")
-				b.isSkinned = true
-			end
-		end
-	end
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
-	EncounterJournal_ListInstances()
+	_G.EncounterJournal_ListInstances()
 
 	--Boss selection buttons
-	local function SkinBosses()
-		local bossIndex = 1;
-		local _, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
-		local bossButton;
-
-		while bossID do
-			bossButton = _G["EncounterJournalBossButton"..bossIndex];
-			if bossButton and not bossButton.isSkinned then
-				S:HandleButton(bossButton)
-				bossButton.creature:ClearAllPoints()
-				bossButton.creature:Point("TOPLEFT", 1, -4)
-				bossButton.isSkinned = true
-			end
-
-			bossIndex = bossIndex + 1;
-			_, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
-		end
-	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 
 	-- Loot buttons
-	local items = EncounterJournal.encounter.info.lootScroll.buttons
+	local items = _G.EncounterJournal.encounter.info.lootScroll.buttons
 	for i = 1, #items do
 		local item = items[i]
 
@@ -291,93 +363,21 @@ local function LoadSkin()
 	end
 
 	--Overview Info (From Aurora)
-	local function SkinOverviewInfo(self, _, index)
-		local header = self.overviews[index]
-		if not header.isSkinned then
-
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture("")
-			end
-
-			S:HandleButton(header.button)
-
-			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-			header.button.title.SetTextColor = E.noop
-			header.button.expandedIcon:SetTextColor(1, 1, 1)
-			header.button.expandedIcon.SetTextColor = E.noop
-
-			header.isSkinned = true
-		end
-	end
 	hooksecurefunc("EncounterJournal_SetUpOverview", SkinOverviewInfo)
 
 	--Overview Info Bullets (From Aurora)
-	local function SkinOverviewInfoBullets(object)
-		local parent = object:GetParent()
-
-		if parent.Bullets then
-			for _, bullet in pairs(parent.Bullets) do
-				if not bullet.styled then
-					bullet.Text:SetTextColor(1, 1, 1)
-					bullet.styled = true
-				end
-			end
-		end
-	end
 	hooksecurefunc("EncounterJournal_SetBullets", SkinOverviewInfoBullets)
 
 	--Abilities Info (From Aurora)
-	local function SkinAbilitiesInfo()
-		local index = 1
-		local header = _G["EncounterJournalInfoHeader"..index]
-		while header do
-			if not header.isSkinned then
-				header.flashAnim.Play = E.noop
-
-				header.descriptionBG:SetAlpha(0)
-				header.descriptionBGBottom:SetAlpha(0)
-				for i = 4, 18 do
-					select(i, header.button:GetRegions()):SetTexture("")
-				end
-
-				header.description:SetTextColor(1, 1, 1)
-				header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-				header.button.title.SetTextColor = E.noop
-				header.button.expandedIcon:SetTextColor(1, 1, 1)
-				header.button.expandedIcon.SetTextColor = E.noop
-
-				S:HandleButton(header.button)
-
-				header.button.bg = CreateFrame("Frame", nil, header.button)
-				header.button.bg:SetTemplate("Default")
-				header.button.bg:SetOutside(header.button.abilityIcon)
-				header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
-				header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
-
-				header.isSkinned = true
-			end
-
-			if header.button.abilityIcon:IsShown() then
-				header.button.bg:Show()
-			else
-				header.button.bg:Hide()
-			end
-
-			index = index + 1
-			header = _G["EncounterJournalInfoHeader"..index]
-		end
-	end
 	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
 
 	-- Search
-	EncounterJournalSearchResults:StripTextures()
-	EncounterJournalSearchResults:SetTemplate("Default")
-	EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
+	_G.EncounterJournalSearchResults:StripTextures()
+	_G.EncounterJournalSearchResults:SetTemplate("Default")
+	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
-	S:HandleCloseButton(EncounterJournalSearchResultsCloseButton)
-	S:HandleScrollBar(EncounterJournalSearchResultsScrollFrameScrollBar)
+	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
+	S:HandleScrollBar(_G.EncounterJournalSearchResultsScrollFrameScrollBar)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal', "EncounterJournal", LoadSkin)

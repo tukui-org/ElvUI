@@ -7,16 +7,12 @@ local _G = _G
 local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
-
 --WoW API / Variables
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
 
-	local ArtifactFrame = _G["ArtifactFrame"]
+	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()
 	ArtifactFrame:CreateBackdrop("Transparent")
 	ArtifactFrame.BorderFrame:StripTextures()
@@ -26,7 +22,7 @@ local function LoadSkin()
 		S:HandleTab(_G["ArtifactFrameTab" .. i])
 	end
 
-	local ArtifactFrameTab1 = _G["ArtifactFrameTab1"]
+	local ArtifactFrameTab1 = _G.ArtifactFrameTab1
 	ArtifactFrameTab1:ClearAllPoints()
 	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 

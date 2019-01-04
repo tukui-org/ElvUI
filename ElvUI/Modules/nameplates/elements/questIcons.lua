@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -59,9 +59,10 @@ local QuestTypesLocalized = {
 	},
 	["ruRU"] = {
 		["убит"] = "KILL",
-		["уничтожен"] = "KILL",
+		["уничтож"] = "KILL",
 		["разбомблен"] = "KILL",
 		["разбит"] = "KILL",
+		["сразит"] = "KILL",
 		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {

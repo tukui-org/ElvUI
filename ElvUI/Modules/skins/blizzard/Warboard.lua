@@ -6,13 +6,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Warboard ~= true then return end
 
-	local WarboardQuestChoiceFrame = _G["WarboardQuestChoiceFrame"]
+	local WarboardQuestChoiceFrame = _G.WarboardQuestChoiceFrame
 	WarboardQuestChoiceFrame:StripTextures()
 	WarboardQuestChoiceFrame.NineSlice:Hide()
 	WarboardQuestChoiceFrame:CreateBackdrop("Transparent")
@@ -41,6 +38,7 @@ local function LoadSkin()
 	end
 
 	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
+		if self.CloseButton.Border then self.CloseButton.Border:SetAlpha(0) end
 		E:Delay(.5, WarboardQuestChoiceDelayed, self)
 	end)
 

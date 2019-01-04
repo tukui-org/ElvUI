@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.LSM
 
 --Cache global variables
 --Lua functions
@@ -28,8 +28,12 @@ local C_Timer_NewTimer = C_Timer.NewTimer
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
+local GetCVar = GetCVar
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetQuestLogTitle = GetQuestLogTitle
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local hooksecurefunc = hooksecurefunc
 local IsInInstance = IsInInstance
@@ -39,6 +43,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -46,12 +51,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPowerType = UnitPowerType
+local UnitReaction = UnitReaction
 local UnregisterUnitWatch = UnregisterUnitWatch
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
-local GetNumQuestLogEntries = GetNumQuestLogEntries
-local GetQuestLogTitle = GetQuestLogTitle
-local GetCVar = GetCVar
-local UnitGUID = UnitGUID
 local Lerp = Lerp
 local UNKNOWN = UNKNOWN
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -179,7 +180,7 @@ function mod:PLAYER_ENTERING_WORLD()
 end
 
 function mod:ClassBar_Update()
-	if(not self.ClassBar) then return end
+	if not self.ClassBar then return end
 	local frame
 
 	if(self.db.classbar.enable) then
@@ -381,7 +382,7 @@ end
 function mod:StyleFrame(frame, useMainFrame)
 	local parent = frame
 
-	if(parent:GetObjectType() == "Texture") then
+	if(parent:IsObjectType('Texture')) then
 		parent = frame:GetParent()
 	end
 
@@ -391,10 +392,6 @@ function mod:StyleFrame(frame, useMainFrame)
 	end
 
 	parent:CreateBackdrop("Transparent")
-end
-
-function mod:DISPLAY_SIZE_CHANGED()
-	self.mult = E.mult --[[* UIParent:GetScale()]]
 end
 
 function mod:CheckUnitType(frame)
@@ -447,28 +444,32 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:UpdateInVehicle(frame, true)
 
 	local CanAttack = UnitCanAttack(unit, self.playerUnitToken)
-	local isPlayer = UnitIsPlayer(unit)
 	frame.unitFrame.isTargetingMe = UnitIsUnit(unit..'target', 'player')
 
-	if(UnitIsUnit(unit, "player")) then
+	if UnitIsUnit(unit, "player") then
 		frame.unitFrame.UnitType = "PLAYER"
-	elseif(not CanAttack and isPlayer) then
-		local role = UnitGroupRolesAssigned(unit)
-		if(role == "HEALER") then
-			frame.unitFrame.UnitType = role
+	elseif UnitIsPlayer(unit) then
+		if CanAttack then
+			frame.unitFrame.UnitType = "ENEMY_PLAYER"
+			self:UpdateElement_HealerIcon(frame.unitFrame)
 		else
-			frame.unitFrame.UnitType = "FRIENDLY_PLAYER"
+			local role = UnitGroupRolesAssigned(unit)
+			if role == "HEALER" then
+				frame.unitFrame.UnitType = role
+			else
+				frame.unitFrame.UnitType = "FRIENDLY_PLAYER"
+			end
 		end
-	elseif(not CanAttack and not isPlayer) then
-		frame.unitFrame.UnitType = "FRIENDLY_NPC"
-	elseif(CanAttack and isPlayer) then
-		frame.unitFrame.UnitType = "ENEMY_PLAYER"
-		self:UpdateElement_HealerIcon(frame.unitFrame)
 	else
-		frame.unitFrame.UnitType = "ENEMY_NPC"
+		local reaction = UnitReaction("player", unit)
+		if (reaction and reaction <= 4) or CanAttack then
+			frame.unitFrame.UnitType = "ENEMY_NPC"
+		else
+			frame.unitFrame.UnitType = "FRIENDLY_NPC"
+		end
 	end
 
-	if(frame.unitFrame.UnitType == "PLAYER") then
+	if frame.unitFrame.UnitType == "PLAYER" then
 		self.PlayerFrame = frame
 		self.PlayerNamePlateAnchor:SetParent(frame)
 		self.PlayerNamePlateAnchor:SetAllPoints(frame.unitFrame)
@@ -478,19 +479,19 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 		frame.unitFrame.IsPlayerFrame = nil
 	end
 
-	if(self.db.units[frame.unitFrame.UnitType] and self.db.units[frame.unitFrame.UnitType].healthbar and self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
+	if self.db.units[frame.unitFrame.UnitType] and self.db.units[frame.unitFrame.UnitType].healthbar and self.db.units[frame.unitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL" then
 		self:ConfigureElement_HealthBar(frame.unitFrame)
 		self:ConfigureElement_CutawayHealth(frame.unitFrame)
 		self:ConfigureElement_PowerBar(frame.unitFrame)
 		self:ConfigureElement_CastBar(frame.unitFrame)
 		self:ConfigureElement_Glow(frame.unitFrame)
 
-		if(self.db.units[frame.unitFrame.UnitType].buffs.enable) then
+		if self.db.units[frame.unitFrame.UnitType].buffs.enable then
 			frame.unitFrame.Buffs.db = self.db.units[frame.unitFrame.UnitType].buffs
 			self:UpdateAuraIcons(frame.unitFrame.Buffs)
 		end
 
-		if(self.db.units[frame.unitFrame.UnitType].debuffs.enable) then
+		if self.db.units[frame.unitFrame.UnitType].debuffs.enable then
 			frame.unitFrame.Debuffs.db = self.db.units[frame.unitFrame.UnitType].debuffs
 			self:UpdateAuraIcons(frame.unitFrame.Debuffs)
 		end
@@ -507,10 +508,10 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:RegisterEvents(frame.unitFrame, unit)
 	self:UpdateElement_All(frame.unitFrame, unit, nil, true)
 
-	if (self.db.displayStyle == "TARGET" and not frame.unitFrame.isTarget and frame.unitFrame.UnitType ~= "PLAYER") then
+	if self.db.displayStyle == "TARGET" and not frame.unitFrame.isTarget and frame.unitFrame.UnitType ~= "PLAYER" then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame.unitFrame:Hide()
-	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
+	elseif frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.unitFrame:Show()
 	end
 
@@ -603,6 +604,7 @@ function mod:ConfigureAll()
 	--We don't allow player nameplate health to be disabled
 	self.db.units.PLAYER.healthbar.enable = true
 
+	self:ScaleClassNameplateBar(self.ClassBar)
 	self:StyleFilterConfigureEvents()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
@@ -664,25 +666,25 @@ function mod:SetBaseNamePlateSize(lockedInstance)
 end
 
 function mod:UpdateInVehicle(frame, noEvents)
-	if ( UnitHasVehicleUI(frame.unit) ) then
-		if ( not frame.inVehicle ) then
+	if UnitHasVehicleUI(frame.unit) then
+		if not frame.inVehicle then
 			frame.inVehicle = true;
-			if(UnitIsUnit(frame.unit, "player")) then
+			if UnitIsUnit(frame.unit, "player") then
 				frame.displayedUnit = "vehicle"
 			else
 				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
-			if(not noEvents) then
+			if not noEvents then
 				self:RegisterEvents(frame, frame.unit)
 				self:UpdateElement_All(frame)
 			end
 		end
 	else
-		if ( frame.inVehicle ) then
+		if frame.inVehicle then
 			frame.inVehicle = false;
 			frame.displayedUnit = frame.unit;
-			if(not noEvents) then
+			if not noEvents then
 				self:RegisterEvents(frame, frame.unit)
 				self:UpdateElement_All(frame)
 			end
@@ -978,11 +980,25 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 end
 
+function mod:ScaleClassNameplateBar(frame)
+	if not frame then return end
+	frame:EnableMouse(false)
+	frame:SetScale(mod.db.classbar.scale - (E.myclass == 'WARLOCK' and 0.2 or 0))
+	if frame.GetNumChildren then
+		for i=1, frame:GetNumChildren() do
+			local child = select(i, frame:GetChildren())
+			if child and child.EnableMouse then
+				child:EnableMouse(false)
+			end
+		end
+	end
+end
+
 function mod:SetClassNameplateBar(frame)
 	mod.ClassBar = frame
-	if frame then
-		frame:SetScale(1.35)
-	end
+
+	mod:ScaleClassNameplateBar(frame)
+	mod:ClassBar_Update()
 end
 
 function mod:UpdateCVars()
@@ -1006,6 +1022,9 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
 	E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
 	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
+
+	--Make sure quest icon info is available when enabled
+	E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
 end
 
 local function CopySettings(from, to)
@@ -1264,7 +1283,6 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_CREATED");
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
-	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
@@ -1309,26 +1327,31 @@ function mod:Initialize()
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", mod.NamePlateDriverFrame_UpdateNamePlateOptions)
 
 	--Best to just Hijack Blizzard's nameplate classbar
-	self.ClassBar = NamePlateDriverFrame.nameplateBar
-	if(self.ClassBar) then
-		self.ClassBar:SetScale(1.35)
-		self.ClassBar:EnableMouse(false)
-	end
+	self.ClassBar = NamePlateDriverFrame.classNamePlateMechanicFrame
 	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
+	self:ScaleClassNameplateBar(self.ClassBar)
+
+	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
+	if BlizzPlateManaBar then
+		BlizzPlateManaBar:Hide()
+		BlizzPlateManaBar:UnregisterAllEvents()
+	end
 
 	if not self.db.hideBlizzardPlates then
 		--This takes care of showing the nameplate and setting parent back after Blizzard changes during updates
-		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(self, _, bar)
-			if bar and bar == self.nameplateBar then
-				if mod.ClassBar ~= bar then
-					mod:SetClassNameplateBar(bar) --update our ClassBar link
+		hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(frame)
+			if frame.classNamePlateMechanicFrame then
+				if mod.ClassBar ~= frame.classNamePlateMechanicFrame then
+					mod:SetClassNameplateBar(frame.classNamePlateMechanicFrame) --update our ClassBar link
 				end
-				mod:ClassBar_Update() --update the visibility
+			end
+			if frame.classNamePlatePowerBar then
+				frame.classNamePlatePowerBar:Hide()
+				frame.classNamePlatePowerBar:UnregisterAllEvents()
 			end
 		end)
 	end
 
-	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
 
 	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)

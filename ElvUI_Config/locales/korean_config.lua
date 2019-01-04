@@ -1,5 +1,5 @@
 -- Korean localization file for koKR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "koKR")
 if not L then return end
 
@@ -506,7 +506,6 @@ L["TopRightMiniPanel"] = "미니맵 우상단 (내부)"
 L["Use Tooltip"] = "툴팁 사용"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "전장 안에 있는 경우 주 정보문자에 자신의 각종 점수들을 표시하게 합니다."
 L["Word Wrap"] = true
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "대상으로 잡은 유저가 타 서버 유저라면 반드시 그 유저와 파티를 맻고 있어야 합니다."
@@ -598,6 +597,7 @@ L["Show an alert frame if you have unspend talent points."] = "미사용 특성 
 L["Skin Backdrop (No Borders)"] = "반투명 스킨적용(테두리없음)"
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000주의|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "얇은 경계 테마 옵션은 인터페이스의 전반적인 외형을 변경합니다. 얇은 경계 테마를 사용하는 것은 기존보다 약간 성능이 향상됩니다."
@@ -1061,6 +1061,7 @@ L["Add a spell to the filter."] = "필터에 주문을 추가합니다."
 L["Add Spell ID or Name"] = "주문ID 또는 이름 추가하기"
 L["Add SpellID"] = "주문 ID 추가"
 L["Additional Power Text"] = true
+L["Additional Power Prediction Color"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = "기준 프레임에서 가로로 얼마만큼 떨어져 있을지를 결정합니다."
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "기준 프레임에서 세로로 얼마만큼 떨어져 있을지를 결정합니다."
@@ -1125,6 +1126,7 @@ L["Current / Max"] = "현재값 / 최대값"
 L["Current"] = "현재값"
 L["Custom Dead Backdrop"] = "사용자지정 죽음 배경"
 L["Custom Health Backdrop"] = "사용자지정 생명력 배경"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "사용자지정 문자"
 L["Custom Texture"] = "사용자 지정 텍스쳐"
 L["Debuff Highlighting"] = "해제가능한 약화효과 강조"
@@ -1287,6 +1289,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "자원"
 L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "우선도"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = "PVP & 명성 아이콘"
@@ -1356,6 +1359,7 @@ L["Statusbar Fill Orientation"] = "막대 진행 방향"
 L["StatusBar Texture"] = "진행막대 텍스쳐"
 L["Strata and Level"] = true
 L["Style"] = "디자인"
+L["Summon Icon"] = true
 L["Tank Frames"] = "방어전담 프레임"
 L["Tank Target"] = "방어전담 프레임"
 L["Tapped"] = "선점되었을 때의 색상"

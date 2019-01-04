@@ -14,60 +14,60 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local C_Timer_After = C_Timer.After
 
 --Return short value of a number
-local shortValueDec, value
+local shortValueDec, shortValue
 function E:ShortValue(v)
 	shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
-	value = abs(v)
+	shortValue = abs(v)
 	if E.db.general.numberPrefixStyle == "METRIC" then
-		if value >= 1e12 then
+		if shortValue >= 1e12 then
 			return format(shortValueDec.."T", v / 1e12)
-		elseif value >= 1e9 then
+		elseif shortValue >= 1e9 then
 			return format(shortValueDec.."G", v / 1e9)
-		elseif value >= 1e6 then
+		elseif shortValue >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)
-		elseif value >= 1e3 then
+		elseif shortValue >= 1e3 then
 			return format(shortValueDec.."k", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "CHINESE" then
-		if value >= 1e8 then
+		if shortValue >= 1e8 then
 			return format(shortValueDec.."Y", v / 1e8)
-		elseif value >= 1e4 then
+		elseif shortValue >= 1e4 then
 			return format(shortValueDec.."W", v / 1e4)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "KOREAN" then
-		if value >= 1e8 then
+		if shortValue >= 1e8 then
 			return format(shortValueDec.."억", v / 1e8)
-		elseif value >= 1e4 then
+		elseif shortValue >= 1e4 then
 			return format(shortValueDec.."만", v / 1e4)
-		elseif value >= 1e3 then
+		elseif shortValue >= 1e3 then
 			return format(shortValueDec.."천", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	elseif E.db.general.numberPrefixStyle == "GERMAN" then
-		if value >= 1e12 then
+		if shortValue >= 1e12 then
 			return format(shortValueDec.."Bio", v / 1e12)
-		elseif value >= 1e9 then
+		elseif shortValue >= 1e9 then
 			return format(shortValueDec.."Mrd", v / 1e9)
-		elseif value >= 1e6 then
+		elseif shortValue >= 1e6 then
 			return format(shortValueDec.."Mio", v / 1e6)
-		elseif value >= 1e3 then
+		elseif shortValue >= 1e3 then
 			return format(shortValueDec.."Tsd", v / 1e3)
 		else
 			return format("%.0f", v)
 		end
 	else
-		if value >= 1e12 then
+		if shortValue >= 1e12 then
 			return format(shortValueDec.."T", v / 1e12)
-		elseif value >= 1e9 then
+		elseif shortValue >= 1e9 then
 			return format(shortValueDec.."B", v / 1e9)
-		elseif value >= 1e6 then
+		elseif shortValue >= 1e6 then
 			return format(shortValueDec.."M", v / 1e6)
-		elseif value >= 1e3 then
+		elseif shortValue >= 1e3 then
 			return format(shortValueDec.."K", v / 1e3)
 		else
 			return format("%.0f", v)
@@ -206,7 +206,7 @@ function E:GetXYOffset(position, override)
 	end
 end
 
-local styles = {
+local gftStyles, gftDec, gftUseStyle, gftDeficit = {
 	-- keep percents in this table with `PERCENT` in the key, and `%.1f%%` in the value somewhere.
 	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
 	['CURRENT'] = '%s',
@@ -217,9 +217,8 @@ local styles = {
 	['DEFICIT'] = '-%s'
 }
 
-local gftDec, gftUseStyle, gftDeficit
 function E:GetFormattedText(style, min, max)
-	assert(styles[style], 'Invalid format style: '..style)
+	assert(gftStyles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
 	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
 
@@ -227,9 +226,9 @@ function E:GetFormattedText(style, min, max)
 
 	gftDec = (E.db.general.decimalLength or 1)
 	if (gftDec ~= 1) and style:find('PERCENT') then
-		gftUseStyle = styles[style]:gsub('%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
+		gftUseStyle = gftStyles[style]:gsub('%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
 	else
-		gftUseStyle = styles[style]
+		gftUseStyle = gftStyles[style]
 	end
 
 	if style == 'DEFICIT' then
@@ -238,7 +237,7 @@ function E:GetFormattedText(style, min, max)
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(styles.CURRENT, E:ShortValue(min))
+		return format(gftStyles.CURRENT, E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
 		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then

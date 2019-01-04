@@ -24,3 +24,17 @@ end
 function Private.UnitExists(unit)
 	return unit and (UnitExists(unit) or ShowBossFrameWhenUninteractable(unit))
 end
+
+local validator = CreateFrame('Frame')
+
+function Private.validateUnit(unit)
+	local isOK, _ = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
+	if isOK then
+		_, unit = validator:IsEventRegistered('UNIT_HEALTH')
+		if unit then
+			validator:UnregisterEvent('UNIT_HEALTH')
+
+			return true
+		end
+	end
+end

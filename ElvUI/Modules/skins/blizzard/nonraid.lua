@@ -7,51 +7,46 @@ local _G = _G
 local pairs = pairs
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.nonraid ~= true then return end
 
 	local StripAllTextures = {
-		"RaidInfoFrame",
-		"RaidInfoInstanceLabel",
-		"RaidInfoIDLabel",
+		_G.RaidInfoFrame,
+		_G.RaidInfoInstanceLabel,
+		_G.RaidInfoIDLabel,
 	}
-
 	local KillTextures = {
-		"RaidInfoScrollFrameScrollBarBG",
-		"RaidInfoScrollFrameScrollBarTop",
-		"RaidInfoScrollFrameScrollBarBottom",
-		"RaidInfoScrollFrameScrollBarMiddle",
+		_G.RaidInfoScrollFrameScrollBarBG,
+		_G.RaidInfoScrollFrameScrollBarTop,
+		_G.RaidInfoScrollFrameScrollBarBottom,
+		_G.RaidInfoScrollFrameScrollBarMiddle,
 	}
 	local buttons = {
-		"RaidFrameConvertToRaidButton",
-		"RaidFrameRaidInfoButton",
-		"RaidInfoExtendButton",
-		"RaidInfoCancelButton",
+		_G.RaidFrameConvertToRaidButton,
+		_G.RaidFrameRaidInfoButton,
+		_G.RaidInfoExtendButton,
+		_G.RaidInfoCancelButton,
 	}
 
 	for _, object in pairs(StripAllTextures) do
-		_G[object]:StripTextures()
+		object:StripTextures()
 	end
-
 	for _, texture in pairs(KillTextures) do
-		_G[texture]:Kill()
+		texture:Kill()
 	end
-
 	for i = 1, #buttons do
-		S:HandleButton(_G[buttons[i]])
+		S:HandleButton(buttons[i])
 	end
 
-	_G["RaidInfoScrollFrame"]:StripTextures()
-	local RaidInfoFrame = _G["RaidInfoFrame"]
+	_G.RaidInfoScrollFrame:StripTextures()
+
+	local RaidInfoFrame = _G.RaidInfoFrame
 	RaidInfoFrame:CreateBackdrop("Transparent")
 	RaidInfoFrame.backdrop:Point( "TOPLEFT", RaidInfoFrame, "TOPLEFT")
 	RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
-	S:HandleCloseButton(RaidInfoCloseButton,RaidInfoFrame)
-	S:HandleScrollBar(RaidInfoScrollFrameScrollBar)
-	S:HandleCheckBox(RaidFrameAllAssistCheckButton)
+	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
+	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
+	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 
 S:AddCallback("RaidInfo", LoadSkin)

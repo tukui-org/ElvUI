@@ -1,5 +1,5 @@
 -- German localization file for deDE.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "deDE")
 if not L then return end
 
@@ -461,7 +461,6 @@ L["TopRightMiniPanel"] = "Minimap Obenrechts (Innen)"
 L["Use Tooltip"] = "Benutze Tooltip"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Zeige innerhalb eines Schlachtfeldes persönliche Statistiken in den Haupt-Infoleisten."
 L["Word Wrap"] = "Zeilenumbruch"
-L["WoW Token:"] = true -- No need to translate
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."
@@ -553,6 +552,7 @@ L["Show an alert frame if you have unspend talent points."] = "Zeigt ein Alarmfe
 L["Skin Backdrop (No Borders)"] = "Skin für den Hintergrund (kein Rahmen)"
 L["Skin Backdrop"] = "Skin für den Hintergrund"
 L["Skin the blizzard chat bubbles."] = "Skin die Blizzard Chat Sprechblasen."
+L["Talking Head Backdrop"] = "Sprechender Kopf Hintergrund"
 L["Talking Head Scale"] = "Sprechender Kopf Skalierung"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Das Dünne Rahmen Theme ändert das gesamte Erscheinungsbild deines UI. Das Benutzten des Dünnen Rahmen Theme ist ein kleiner performance Schub gegenüber dem traditionellen Layout."
@@ -1016,6 +1016,7 @@ L["Add a spell to the filter."] = "Zauber zum Filter hinzufügen"
 L["Add Spell ID or Name"] = "Zauber ID oder Name hinzufügen"
 L["Add SpellID"] = "ZauberID hinzufügen"
 L["Additional Power Text"] = "Zusätzlicher Kraft Text"
+L["Additional Power Prediction Color"] = "Zusätzliche Kraft Verbrauch Farbe"
 L["Additional spacing between each individual group."] = "Zusätzlicher Abstand zwischen jeder Gruppe."
 L["An X offset (in pixels) to be used when anchoring new frames."] = "X-Versatz (in Pixeln) der verwendet werden soll um neue Fenster zu ankern"
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Y-Versatz (in Pixeln) der verwendet werden soll um neue Fenster zu ankern"
@@ -1080,6 +1081,7 @@ L["Current / Max"] = "Aktuell / Maximal"
 L["Current"] = "Aktuell"
 L["Custom Dead Backdrop"] = "Benutzerdefinierte Hintergrundfarbe vom Tod"
 L["Custom Health Backdrop"] = "Benutzerdefinierte Hintergrundfarbe vom Leben"
+L["Custom Power Prediction Color"] = "Benutzerdefinierte Kraft Verbrauch Farbe"
 L["Custom Texts"] = "Benutzerdefinierte Texte"
 L["Custom Texture"] = "Benutzerdefinierte Textur"
 L["Debuff Highlighting"] = "Hervorhebung von Schwächungszaubern"
@@ -1242,6 +1244,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Kraft"
 L["Powers"] = "Kräfte"
 L["Power Prediction"] = "Kraft Verbrauch"
+L["Power Prediction Color"] = "Kraft Verbrauch Farbe"
 L["Priority"] = "Priorität"
 L["Profile Specific"] = "Profilspezifisch"
 L["PvP & Prestige Icon"] = "PvP & Prestige Symbol"
@@ -1311,6 +1314,7 @@ L["Statusbar Fill Orientation"] = "Füllrichtung der Statusleiste"
 L["StatusBar Texture"] = "Statusleistentextur"
 L["Strata and Level"] = "Schicht und Ebene"
 L["Style"] = "Stil"
+L["Summon Icon"] = "Beschwörungssymbol"
 L["Tank Frames"] = "Tank Fenster"
 L["Tank Target"] = "Tank Ziel"
 L["Tapped"] = "Angeschlagen"

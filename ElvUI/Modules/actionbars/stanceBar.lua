@@ -22,7 +22,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: StanceBarFrame
 
-local Masque = LibStub("Masque", true)
+local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
 
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');

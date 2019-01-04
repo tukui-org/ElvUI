@@ -189,8 +189,8 @@ E.Options.args.general = {
 				voiceOverlay = {
 					order = 22,
 					type = "toggle",
-					name = E.NewSign..L["Voice Overlay"],
-					desc = L["Replace Blizzard's Voice Overlay. |cffFF0000WARNING: WORK IN PROGRESS|r"],
+					name = L["Voice Overlay"],
+					desc = L["Replace Blizzard's Voice Overlay."],
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
@@ -211,8 +211,15 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
-				vehicleSeatIndicatorSize = {
+				talkingHeadFrameBackdrop = {
 					order = 25,
+					type = "toggle",
+					name = L["Talking Head Backdrop"],
+					get = function(info) return E.db.general.talkingHeadFrameBackdrop end,
+					set = function(info, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show("CONFIG_RL") end
+				},
+				vehicleSeatIndicatorSize = {
+					order = 26,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -220,7 +227,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				decimalLength = {
-					order = 26,
+					order = 27,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -229,7 +236,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 27,
+					order = 28,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -242,7 +249,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 28,
+					order = 29,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
@@ -354,7 +361,7 @@ E.Options.args.general = {
 
 						if(E.db.unitframe.statusbar == previousValue) then
 							E.db.unitframe.statusbar = value
-							E:UpdateAll(true)
+							E:StaggeredUpdateAll(nil, true)
 						else
 							E:UpdateMedia()
 							E:UpdateStatusBars()
@@ -383,7 +390,7 @@ E.Options.args.general = {
 					func = function()
 						local texture = E.private.general.normTex
 						E.db.unitframe.statusbar = texture
-						E:UpdateAll(true)
+						E:StaggeredUpdateAll(nil, true)
 					end,
 				},
 				colorsHeaderSpacing = {

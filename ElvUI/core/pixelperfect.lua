@@ -1,32 +1,41 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
+local _G = _G
 --Lua functions
+local tonumber, strsub, strlen = tonumber, strsub, strlen
 local abs, floor, min, max = math.abs, math.floor, math.min, math.max
 --WoW API / Variables
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 local GetCVar, SetCVar = GetCVar, SetCVar
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent
+-- GLOBALS:
 
---Determine if Eyefinity is being used, setup the pixel perfect script.
-function E:UIScale(event, loginFrame)
-	local width = E.screenwidth
-	local height = E.screenheight
-	local scale
+function E:GetUIScale(useEffectiveScale)
+	local width, height = E.screenwidth or 0, E.screenheight or 0
+	if width == 0 or height == 0 then
+		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+		width, height = E.screenwidth or 0, E.screenheight or 0
+	end
+
+	local effectiveScale = _G.UIParent:GetEffectiveScale()
+	local magic = (not useEffectiveScale and height > 0 and 768 / height) or effectiveScale
 
 	local uiScaleCVar = GetCVar('uiScale')
-	if uiScaleCVar then
-		E.global.uiScale = uiScaleCVar
-	end
+	if uiScaleCVar then E.global.uiScale = uiScaleCVar end
 
 	local minScale = E.global.general.minUiScale or 0.64
-	if E.global.general.autoScale then
-		scale = max(minScale, min(1.15, 768/height))
-	else
-		scale = max(minScale, min(1.15, E.global.uiScale or (height > 0 and (768/height)) or UIParent:GetScale()))
+	local scale = max(minScale, min(1.15, (E.global.general.autoScale and magic) or E.global.uiScale or minScale))
+
+	if strlen(scale) > 6 then -- lock to ten thousands decimal place
+		scale = tonumber(strsub(scale, 0, 6))
 	end
 
+	return scale, magic, effectiveScale, width, height
+end
+
+function E:SetResolutionVariables(width, height)
 	if width < 1600 then
 		E.lowversion = true
 	elseif width >= 3840 and E.global.general.eyefinity then
@@ -55,29 +64,39 @@ function E:UIScale(event, loginFrame)
 		-- register a constant, we will need it later for launch.lua
 		E.eyefinity = width
 	end
+end
 
-	E.mult = 768/height/scale
-	E.Spacing = (E.PixelMode and 0) or E.mult
-	E.Border = (E.PixelMode and E.mult) or E.mult*2
+--Determine if Eyefinity is being used, setup the pixel perfect script.
+function E:UIScale(event, loginFrame)
+	local UIParent, _ = _G.UIParent
+	local scale, magic, effectiveScale, width, height = E:GetUIScale()
 
-	if E.global.general.autoScale then
-		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-		if E.Round and event == 'PLAYER_LOGIN' and (E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5)) then
-			SetCVar("useUiScale", 1)
-			SetCVar("uiScale", scale)
-		end
+	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
+	if E.global.general.autoScale and event == 'PLAYER_LOGIN' and (E.Round and E:Round(effectiveScale, 5) ~= E:Round(scale, 5)) then
+		SetCVar("useUiScale", 1)
+		SetCVar("uiScale", scale)
 
 		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
 		if scale < 0.64 then
 			UIParent:SetScale(scale)
 		end
+
+		-- call this after setting CVars and SetScale when using autoscale.. to recalculate based on the blizzard UIParent scale value.
+		scale, magic, _, width, height = E:GetUIScale(true)
 	end
 
+	E.mult = magic/scale
+	E.Spacing = (E.PixelMode and 0) or E.mult
+	E.Border = (E.PixelMode and E.mult) or E.mult*2
+
 	if event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED' then
+		--Check if we are using `E.eyefinity` also this will set `E.lowversion`
+		E:SetResolutionVariables(width, height)
+
 		--Resize E.UIParent if Eyefinity is on.
 		if E.eyefinity then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
-			if not E.global.general.autoScale or height > 1200 then
+			if (not E.global.general.autoScale) or height > 1200 then
 				local h = UIParent:GetHeight()
 				local ratio = (height / h)
 				local w = (width / ratio)

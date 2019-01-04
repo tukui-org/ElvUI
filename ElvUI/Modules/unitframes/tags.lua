@@ -6,12 +6,12 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, pairs = unpack, pairs
 local twipe = table.wipe
 local floor = math.floor
-local format = string.format
+local unpack, pairs = unpack, pairs
+local gmatch, gsub, format = gmatch, gsub, format
+local strfind, strlower, strmatch, strsub = strfind, strlower, strmatch, strsub
 --WoW API / Variables
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPVPTimer = GetPVPTimer
@@ -53,9 +53,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
+
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
-local PVP = PVP
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local SPELL_POWER_CHI = Enum.PowerType.Chi
@@ -63,7 +62,11 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
+local PVP = PVP
+
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: Hex, PowerBarColor, _TAGS
@@ -554,8 +557,9 @@ end
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, unitClass = UnitClass(unit)
-	if (UnitIsPlayer(unit)) then
+	local unitPlayer = UnitIsPlayer(unit)
+	if (unitPlayer) then
+		local _, unitClass = UnitClass(unit)
 		local class = ElvUF.colors.class[unitClass]
 		if not class then return "" end
 		return Hex(class[1], class[2], class[3])
@@ -603,6 +607,31 @@ ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 20) or nil
+end
+
+local function abbrev(name)
+	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
+	if lastWord then
+		for word in gmatch(name, '.-%s') do
+			local firstLetter = strsub(gsub(word, '^[%s%p]*', ''), 1, 1)
+			if firstLetter ~= strlower(firstLetter) then
+				letters = format('%s%s. ', letters, firstLetter)
+			end
+		end
+		name = format('%s%s', letters, lastWord)
+	end
+	return name
+end
+
+ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:abbrev'] = function(unit)
+	local name = UnitName(unit)
+
+	if name and strfind(name, '%s') then
+		name = abbrev(name)
+	end
+
+	return name ~= nil and E:ShortenString(name, 20) or '' --The value 20 controls how many characters are allowed in the name before it gets truncated. Change it to fit your needs.
 end
 
 ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
@@ -897,19 +926,19 @@ end
 
 ElvUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
+	local personal = UnitGetIncomingHeals(unit, 'player') or 0
 	local heal = UnitGetIncomingHeals(unit) or 0
-	if heal == 0 then
+	local others = heal - personal
+	if others == 0 then
 		return nil
 	else
-		return E:ShortValue(heal)
+		return E:ShortValue(others)
 	end
 end
 
 ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals'] = function(unit)
-	local personal = UnitGetIncomingHeals(unit, 'player') or 0
-	local others = UnitGetIncomingHeals(unit) or 0
-	local heal = personal + others
+	local heal = UnitGetIncomingHeals(unit) or 0
 	if heal == 0 then
 		return nil
 	else
@@ -1088,6 +1117,8 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 		return Hex(1, 0, 0) --Red
 	end
 end
+
+ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
 ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)

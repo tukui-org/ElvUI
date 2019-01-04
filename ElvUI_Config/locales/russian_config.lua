@@ -1,5 +1,5 @@
 -- Russian localization file for ruRU.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
@@ -458,7 +458,6 @@ L["TopRightMiniPanel"] = "Миникарта сверху справа (внут
 L["Use Tooltip"] = "Использовать подсказку"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "На полях боя отображать личную информацию на основных полосах инфо-текстов"
 L["Word Wrap"] = "Перенос слов"
-L["WoW Token:"] = "WoW токен:"
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Вы должны быть в группе в данным игроком, если он не с Вашего сервера."
@@ -550,6 +549,7 @@ L["Show an alert frame if you have unspend talent points."] = "Отобража�
 L["Skin Backdrop (No Borders)"] = "Стилизовать фон (без границ)"
 L["Skin Backdrop"] = "Стилизовать фон"
 L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
+L["Talking Head Backdrop"] = "Фон говорящей головы"
 L["Talking Head Scale"] = 'Масштаб "говорящей головы"'
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Тонкие границы изменят общий вид интерфейса. Это небольшое улучшение производительности относительно традиционного вида."
@@ -1011,6 +1011,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Добавить заклинание в фильтр"
 L["Add Spell ID or Name"] = "Добавить ID или имя заклинания"
 L["Add SpellID"] = "Добавить ID заклинания"
+L["Additional Power Prediction Color"] = "Дополнительный цвет предсказания ресурса"
 L["Additional Power Text"] = "Текст дополнительного ресурса"
 L["Additional spacing between each individual group."] = "дополнительный отступ между группами."
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Отступ по оси X (в пикселях) при фиксации новой рамки."
@@ -1076,6 +1077,7 @@ L["Current / Max"] = "Текущее / Максимальное"
 L["Current"] = "Текущее"
 L["Custom Dead Backdrop"] = "Свой фон мертвого"
 L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
+L["Custom Power Prediction Color"] = "Свой цвет предсказания ресурса"
 L["Custom Texts"] = "Свой текст"
 L["Custom Texture"] = "Своя текстура"
 L["Debuff Highlighting"] = "Подсветка дебаффов"
@@ -1238,6 +1240,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Ресурс"
 L["Powers"] = "Ресурсы"
 L["Power Prediction"] = "Предсказание ресурса"
+L["Power Prediction Color"] = "Цвет предсказания ресурса"
 L["Priority"] = "Приоритет"
 L["Profile Specific"] = "По профилю"
 L["PvP & Prestige Icon"] = "Иконки PvP и престижа"
@@ -1307,6 +1310,7 @@ L["Statusbar Fill Orientation"] = "Направление заполнения �
 L["StatusBar Texture"] = "Текстура полос состояния"
 L["Strata and Level"] = "Слой и уровень"
 L["Style"] = "Стиль"
+L["Summon Icon"] = "Иконка призыва"
 L["Tank Frames"] = "Танки"
 L["Tank Target"] = "Цели танков"
 L["Tapped"] = "Чужой"

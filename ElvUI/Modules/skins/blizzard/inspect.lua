@@ -7,20 +7,16 @@ local _G = _G
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: INSPECTED_UNIT, LE_EXPANSION_LEVEL_CURRENT, MAX_PLAYER_LEVEL_TABLE
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
 
-	local InspectFrame = _G["InspectFrame"]
-	InspectFrame:StripTextures(true)
-	InspectFrameInset:StripTextures(true)
-	InspectFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(InspectFrameCloseButton)
-	S:HandleButton(InspectPaperDollFrame.ViewButton)
+	local InspectFrame = _G.InspectFrame
+	S:HandlePortraitFrame(InspectFrame, true)
+	S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
 
 	--Create portrait element for the PvP Frame so we can see prestige
+	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, "OVERLAY")
 	portrait:SetSize(57,57);
 	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0);
@@ -48,8 +44,6 @@ local function LoadSkin()
 
 	-- PVP Talents
 	-- Probably needs some adjustments
-	local InspectPVPFrame = _G["InspectPVPFrame"]
-
 	local trinketSlot = InspectPVPFrame.TrinketSlot
 	trinketSlot.Border:Hide()
 	trinketSlot.Texture:SetTexCoord(unpack(E.TexCoords))
@@ -70,20 +64,21 @@ local function LoadSkin()
 		S:HandleTab(_G["InspectFrameTab"..i])
 	end
 
+	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop("Default")
 	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
-	InspectModelFrameBorderTopLeft:Kill()
-	InspectModelFrameBorderTopRight:Kill()
-	InspectModelFrameBorderTop:Kill()
-	InspectModelFrameBorderLeft:Kill()
-	InspectModelFrameBorderRight:Kill()
-	InspectModelFrameBorderBottomLeft:Kill()
-	InspectModelFrameBorderBottomRight:Kill()
-	InspectModelFrameBorderBottom:Kill()
-	InspectModelFrameBorderBottom2:Kill()
+	_G.InspectModelFrameBorderTopLeft:Kill()
+	_G.InspectModelFrameBorderTopRight:Kill()
+	_G.InspectModelFrameBorderTop:Kill()
+	_G.InspectModelFrameBorderLeft:Kill()
+	_G.InspectModelFrameBorderRight:Kill()
+	_G.InspectModelFrameBorderBottomLeft:Kill()
+	_G.InspectModelFrameBorderBottomRight:Kill()
+	_G.InspectModelFrameBorderBottom:Kill()
+	_G.InspectModelFrameBorderBottom2:Kill()
 
 	--Re-add the overlay texture which was removed via StripTextures
 	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
@@ -122,6 +117,7 @@ local function LoadSkin()
 		"MainHandSlot",
 		"SecondaryHandSlot",
 	}
+
 	for _, slot in pairs(slots) do
 		local icon = _G["Inspect"..slot.."IconTexture"]
 		slot = _G["Inspect"..slot]
@@ -143,8 +139,8 @@ local function LoadSkin()
 	end
 
 	InspectPVPFrame.BG:Kill()
-	InspectGuildFrameBG:Kill()
-	InspectTalentFrame:StripTextures()
+	_G.InspectGuildFrameBG:Kill()
+	_G.InspectTalentFrame:StripTextures()
 end
 
 S:AddCallbackForAddon("Blizzard_InspectUI", "Inspect", LoadSkin)

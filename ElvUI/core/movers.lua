@@ -285,23 +285,23 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		x = x - screenCenter
 	end
 
-	if mover.positionOverride then
-		if(mover.positionOverride == "TOPLEFT") then
+	if mover.positionOverride and (E.diffGetLeft and E.diffGetRight and E.diffGetTop and E.diffGetBottom) then
+		if mover.positionOverride == "TOPLEFT" then
 			x = mover:GetLeft() - E.diffGetLeft
 			y = mover:GetTop() - E.diffGetTop
-		elseif(mover.positionOverride == "TOPRIGHT") then
+		elseif mover.positionOverride == "TOPRIGHT" then
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetTop() - E.diffGetTop
-		elseif(mover.positionOverride == "BOTTOMLEFT") then
+		elseif mover.positionOverride == "BOTTOMLEFT" then
 			x = mover:GetLeft() - E.diffGetLeft
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif(mover.positionOverride == "BOTTOMRIGHT") then
+		elseif mover.positionOverride == "BOTTOMRIGHT" then
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif(mover.positionOverride == "BOTTOM") then
+		elseif mover.positionOverride == "BOTTOM" then
 			x = mover:GetCenter() - screenCenter
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif(mover.positionOverride == "TOP") then
+		elseif mover.positionOverride == "TOP" then
 			x = mover:GetCenter() - screenCenter
 			y = mover:GetTop() - E.diffGetTop
 		end
@@ -476,7 +476,7 @@ end
 
 --Profile Change
 function E:SetMoversPositions()
-	--E:SetMoversPositions() is the first function called in E:UpdateAll().
+	--E:SetMoversPositions() is the first function called in E:StaggeredUpdateAll().
 	--Because of that, we can allow ourselves to re-enable all disabled movers here,
 	--as the subsequent updates to these elements will disable them again if needed.
 	for name in pairs(E.DisabledMovers) do

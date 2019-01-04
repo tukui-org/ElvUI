@@ -1,5 +1,5 @@
 -- Taiwanese localization file for zhTW.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
@@ -460,7 +460,6 @@ L["TopRightMiniPanel"] = "小地圖右上 (內側)"
 L["Use Tooltip"] = "使用浮動提示"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "處於戰場時, 在主資訊文字條顯示你的戰場得分訊息."
 L["Word Wrap"] = "自動換行"
-L["WoW Token:"] = true
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "如果不是同一服務器, 那他必需和你在同一隊伍中."
@@ -552,6 +551,7 @@ L["Show an alert frame if you have unspend talent points."] = "顯示未使用�
 L["Skin Backdrop (No Borders)"] = "美化背景(無邊界)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = "特寫框體縮放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "細邊框主題會改變所有的外觀,使用細邊框主題會略微提升性能"
@@ -1013,6 +1013,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "添加一個技能到過濾器"
 L["Add Spell ID or Name"] = "添加技能ID或者名字"
 L["Add SpellID"] = "添加技能ID"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = "額外能量文字"
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = "錨定新框架時的X偏移(單位:像素)"
@@ -1078,6 +1079,7 @@ L["Current / Max"] = "目前/最大值"
 L["Current"] = "目前值"
 L["Custom Dead Backdrop"] = "自定義死亡背景"
 L["Custom Health Backdrop"] = "自訂生命條背景"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "自定義字體"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "減益光環加亮顯示"
@@ -1240,6 +1242,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "能量"
 L["Powers"] = "能量"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "優先級"
 L["Profile Specific"] = "角色專用"
 L["PvP & Prestige Icon"] = "PvP和威望圖標"
@@ -1309,6 +1312,7 @@ L["Statusbar Fill Orientation"] = "狀態條填充方向"
 L["StatusBar Texture"] = "狀態條材質"
 L["Strata and Level"] = "框架層級和層次"
 L["Style"] = "風格"
+L["Summon Icon"] = true
 L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目標"
 L["Tapped"] = "被攻擊"

@@ -6,17 +6,13 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 --WoW API / Variables
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+local hooksecurefunc = hooksecurefunc
 
 local function SkinLFGuild()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
 
-	local LookingForGuildFrame = _G["LookingForGuildFrame"]
-	LookingForGuildFrame:StripTextures()
-	LookingForGuildFrame:SetTemplate("Transparent")
-	LookingForGuildFrameInset:StripTextures(false)
+	local LookingForGuildFrame = _G.LookingForGuildFrame
+	S:HandlePortraitFrame(LookingForGuildFrame, true)
 
 	local checkbox = {
 		"LookingForGuildPvPButton",
@@ -34,16 +30,16 @@ local function SkinLFGuild()
 	end
 
 	-- have to skin these checkboxes seperate for some reason o_O
-	S:HandleCheckBox(LookingForGuildTankButton.checkButton)
-	S:HandleCheckBox(LookingForGuildHealerButton.checkButton)
-	S:HandleCheckBox(LookingForGuildDamagerButton.checkButton)
+	S:HandleCheckBox(_G.LookingForGuildTankButton.checkButton)
+	S:HandleCheckBox(_G.LookingForGuildHealerButton.checkButton)
+	S:HandleCheckBox(_G.LookingForGuildDamagerButton.checkButton)
 
-	S:HandleScrollBar(LookingForGuildBrowseFrameContainerScrollBar)
-	S:HandleButton(LookingForGuildBrowseButton)
-	S:HandleButton(LookingForGuildRequestButton)
-	S:HandleCloseButton(LookingForGuildFrameCloseButton)
-	LookingForGuildCommentInputFrame:CreateBackdrop("Default")
-	LookingForGuildCommentInputFrame:StripTextures(false)
+	S:HandleScrollBar(_G.LookingForGuildBrowseFrameContainerScrollBar)
+	S:HandleButton(_G.LookingForGuildBrowseButton)
+	S:HandleButton(_G.LookingForGuildRequestButton)
+
+	_G.LookingForGuildCommentInputFrame:CreateBackdrop("Default")
+	_G.LookingForGuildCommentInputFrame:StripTextures(false)
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
@@ -58,16 +54,16 @@ local function SkinLFGuild()
 		S:HandleTab(_G["LookingForGuildFrameTab"..i])
 	end
 
-	GuildFinderRequestMembershipFrame:StripTextures(true)
-	GuildFinderRequestMembershipFrame:SetTemplate("Transparent")
-	S:HandleButton(GuildFinderRequestMembershipFrameAcceptButton)
-	S:HandleButton(GuildFinderRequestMembershipFrameCancelButton)
-	GuildFinderRequestMembershipFrameInputFrame:StripTextures()
-	GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+	_G.GuildFinderRequestMembershipFrame:StripTextures(true)
+	_G.GuildFinderRequestMembershipFrame:SetTemplate("Transparent")
+	S:HandleButton(_G.GuildFinderRequestMembershipFrameAcceptButton)
+	S:HandleButton(_G.GuildFinderRequestMembershipFrameCancelButton)
+	_G.GuildFinderRequestMembershipFrameInputFrame:StripTextures()
+	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
 end
 
 local function LoadSkin()
-	if LookingForGuildFrame then
+	if _G.LookingForGuildFrame then
 		--Frame already created
 		SkinLFGuild()
 	else

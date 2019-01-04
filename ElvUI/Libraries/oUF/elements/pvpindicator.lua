@@ -36,9 +36,10 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local function Update(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit and unit ~= self.unit) then return end
 
 	local element = self.PvPIndicator
+	unit = unit or self.unit
 
 	--[[ Callback: PvPIndicator:PreUpdate(unit)
 	Called before the element has been updated.
@@ -127,7 +128,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('UNIT_FACTION', Path)
-		self:RegisterEvent('HONOR_LEVEL_UPDATE', Path)
+		self:RegisterEvent('HONOR_LEVEL_UPDATE', Path, true)
 
 		return true
 	end

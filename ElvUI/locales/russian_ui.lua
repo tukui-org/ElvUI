@@ -1,5 +1,5 @@
 -- Russian localization file for ruRU.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
@@ -136,6 +136,7 @@ L["Unhittable:"] = "Полная защита от ударов"
 L["Waist"] = "Пояс"
 L["World Protocol:"] = "Мировой протокол:"
 L["Wrist"] = "Запястья"
+L["WoW Token:"] = "WoW токен:"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFЛКМ:|r Изменить набор талантов"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFПКМ:|r Изменить специализацию для получения добычи"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + ЛКМ:|r Показать окно специализации"

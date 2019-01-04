@@ -53,9 +53,8 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 -- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
-local LSM = LibStub("LibSharedMedia-3.0")
-
-local Masque = LibStub("Masque", true)
+local LSM = E.LSM
+local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 local UIHider

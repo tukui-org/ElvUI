@@ -82,11 +82,11 @@ local Enable = function(self, unit)
 			showStatus = false;
 		end
 
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", Update)
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", Update)
-		self:RegisterEvent("PLAYER_TARGET_CHANGED", Update)
-		self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update)
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", Update, true)
+		self:RegisterEvent("PLAYER_REGEN_DISABLED", Update, true)
+		self:RegisterEvent("PLAYER_TARGET_CHANGED", Update, true)
+		self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
 		self:RegisterEvent("UNIT_HEALTH", Update)
 		self:RegisterEvent("UNIT_SPELLCAST_START", Update)
 		self:RegisterEvent("UNIT_SPELLCAST_STOP", Update)

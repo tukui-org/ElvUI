@@ -6,13 +6,37 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
+
+-- Floor Dropdown
+local function WorldMapFloorNavigationDropDown(Frame)
+	S:HandleWorldMapDropDownMenu(Frame)
+end
+
+-- Tracking Button
+local function WorldMapTrackingOptionsButton(Button)
+	local shadow = Button:GetRegions()
+	shadow:Hide()
+
+	Button.Background:Hide()
+	Button.IconOverlay:SetAlpha(0)
+	Button.Border:Hide()
+
+	local tex = Button:GetHighlightTexture()
+	tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
+	tex:SetAllPoints(Button.Icon)
+end
+
+-- Bounty Board
+local function WorldMapBountyBoard(Frame)
+	Frame.BountyName:FontTemplate()
+
+	S:HandleCloseButton(Frame.TutorialBox.CloseButton)
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
 
-	local WorldMapFrame = _G["WorldMapFrame"]
+	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
 	WorldMapFrame.BorderFrame:StripTextures()
 	WorldMapFrame.BorderFrame:SetFrameStrata(WorldMapFrame:GetFrameStrata())
@@ -24,6 +48,7 @@ local function LoadSkin()
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
 
+	local WorldMapFrameHomeButton = _G.WorldMapFrameHomeButton
 	WorldMapFrameHomeButton:StripTextures()
 	WorldMapFrameHomeButton:CreateBackdrop("Default", true)
 	WorldMapFrameHomeButton.backdrop:SetPoint("TOPLEFT", WorldMapFrameHomeButton, "TOPLEFT", 0, 0)
@@ -32,7 +57,7 @@ local function LoadSkin()
 	WorldMapFrameHomeButton.text:FontTemplate()
 
 	-- Quest Frames
-	local QuestMapFrame = _G["QuestMapFrame"]
+	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
 
 	if E.private.skins.parchmentRemover.enable then
@@ -44,10 +69,11 @@ local function LoadSkin()
 		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
 	end
 
-	local QuestScrollFrame = _G["QuestScrollFrame"]
+	local QuestScrollFrame = _G.QuestScrollFrame
 	QuestScrollFrame.DetailFrame:StripTextures()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 
+	local QuestScrollFrameScrollBar = _G.QuestScrollFrameScrollBar
 	QuestScrollFrame.DetailFrame:CreateBackdrop("Default")
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
@@ -78,37 +104,11 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, nil, true)
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton)
 
-	S:HandleCloseButton(WorldMapFrameCloseButton)
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
-	end
-
-	-- Floor Dropdown
-	local function WorldMapFloorNavigationDropDown(Frame)
-		S:HandleWorldMapDropDownMenu(Frame)
-	end
-
-	-- Tracking Button
-	local function WorldMapTrackingOptionsButton(Button)
-		local shadow = Button:GetRegions()
-		shadow:Hide()
-
-		Button.Background:Hide()
-		Button.IconOverlay:SetAlpha(0)
-		Button.Border:Hide()
-
-		local tex = Button:GetHighlightTexture()
-		tex:SetTexture([[Interface\Minimap\Tracking\None]], "ADD")
-		tex:SetAllPoints(Button.Icon)
-	end
-
-	-- Bounty Board
-	local function WorldMapBountyBoard(Frame)
-		Frame.BountyName:FontTemplate()
-
-		S:HandleCloseButton(Frame.TutorialBox.CloseButton)
 	end
 
 	-- Add a hook to adjust the OverlayFrames

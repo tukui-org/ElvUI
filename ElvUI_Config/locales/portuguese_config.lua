@@ -1,5 +1,5 @@
 -- Portuguese localization file for ptBR.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
@@ -551,6 +551,7 @@ L["Show an alert frame if you have unspend talent points."] = true
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = "Redesenhar o Fundo"
 L["Skin the blizzard chat bubbles."] = "Redesenhar os balões de conversação da Blizzard"
+L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "A fonte do texto que aparece sobre a cabeça dos jogadores. |cffFF0000ATENÇÃO: Para esta alteração fazer efeito é necessário que o jogo seja reiniciado ou relogado.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true
@@ -1012,6 +1013,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Adicionar um feitiço ao filtro."
 L["Add Spell ID or Name"] = true
 L["Add SpellID"] = "Adicionar SpellID"
+L["Additional Power Prediction Color"] = true
 L["Additional Power Text"] = true
 L["Additional spacing between each individual group."] = true
 L["An X offset (in pixels) to be used when anchoring new frames."] = true
@@ -1077,6 +1079,7 @@ L["Current / Max"] = "Atual / Máximo"
 L["Current"] = "Atual"
 L["Custom Dead Backdrop"] = true
 L["Custom Health Backdrop"] = "Fundo de vida personalizada"
+L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Textos Personalizados"
 L["Custom Texture"] = true
 L["Debuff Highlighting"] = "Destacar Penalidades"
@@ -1239,6 +1242,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Poder"
 L["Powers"] = "Poderes"
 L["Power Prediction"] = true
+L["Power Prediction Color"] = true
 L["Priority"] = "prioridade"
 L["Profile Specific"] = true
 L["PvP & Prestige Icon"] = true
@@ -1308,6 +1312,7 @@ L["Statusbar Fill Orientation"] = true
 L["StatusBar Texture"] = "Textura da barra de estado"
 L["Strata and Level"] = true
 L["Style"] = "Estilo"
+L["Summon Icon"] = true
 L["Tank Frames"] = "Quadro do Tanques"
 L["Tank Target"] = "Alvo do Tanque"
 L["Tapped"] = "Reservado"

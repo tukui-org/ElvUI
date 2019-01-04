@@ -9,20 +9,22 @@ local unpack = unpack
 local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ItemRefTooltip, FriendsTooltip, WorldMapTooltip
--- GLOBALS: WorldMapTaskTooltipStatusBar, ReputationParagonTooltipStatusBar
--- GLOBALS: ItemRefShoppingTooltip1, ItemRefShoppingTooltip2, ItemRefShoppingTooltip3
--- GLOBALS: WorldMapCompareTooltip1, WorldMapCompareTooltip2, WorldMapCompareTooltip3
--- GLOBALS: ShoppingTooltip1, ShoppingTooltip2, ShoppingTooltip3
--- GLOBALS: ItemRefCloseButton, AutoCompleteBox
+
+local function IslandTooltipStyle(self)
+	if not self.IsSkinned then
+		self:SetBackdrop(nil)
+		self:SetTemplate("Transparent")
+		self.IsSkinned = true
+	end
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
-	S:HandleCloseButton(ItemRefCloseButton)
+	S:HandleCloseButton(_G.ItemRefCloseButton)
 
 	-- World Quest Reward Icon
+	local WorldMapTooltip = _G.WorldMapTooltip
 	WorldMapTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	WorldMapTooltip.ItemTooltip:CreateBackdrop()
 	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
@@ -37,37 +39,44 @@ local function LoadSkin()
 	end)
 
 	-- Skin Blizzard Tooltips
-	local GameTooltip = _G['GameTooltip']
-	local GameTooltipStatusBar =  _G['GameTooltipStatusBar']
-
-	local StoryTooltip = QuestScrollFrame.StoryTooltip
+	local GameTooltip = _G.GameTooltip
+	local GameTooltipStatusBar =  _G.GameTooltipStatusBar
+	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 
-	local WarCampaignTooltip = QuestScrollFrame.WarCampaignTooltip
-
+	local WarCampaignTooltip = _G.QuestScrollFrame.WarCampaignTooltip
 	local tooltips = {
+		_G.ItemRefTooltip,
+		_G.ItemRefShoppingTooltip1,
+		_G.ItemRefShoppingTooltip2,
+		_G.ItemRefShoppingTooltip3,
+		_G.AutoCompleteBox,
+		_G.FriendsTooltip,
+		_G.ShoppingTooltip1,
+		_G.ShoppingTooltip2,
+		_G.ShoppingTooltip3,
+		_G.WorldMapCompareTooltip1,
+		_G.WorldMapCompareTooltip2,
+		_G.WorldMapCompareTooltip3,
+		_G.ReputationParagonTooltip,
+		_G.EmbeddedItemTooltip,
+		-- already have locals
 		GameTooltip,
-		ItemRefTooltip,
-		ItemRefShoppingTooltip1,
-		ItemRefShoppingTooltip2,
-		ItemRefShoppingTooltip3,
-		AutoCompleteBox,
-		FriendsTooltip,
-		ShoppingTooltip1,
-		ShoppingTooltip2,
-		ShoppingTooltip3,
-		WorldMapTooltip,
-		WorldMapCompareTooltip1,
-		WorldMapCompareTooltip2,
-		WorldMapCompareTooltip3,
-		ReputationParagonTooltip,
 		StoryTooltip,
-		EmbeddedItemTooltip,
+		WorldMapTooltip,
 		WarCampaignTooltip,
 	}
 
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
+	end
+
+	-- EmbeddedItemTooltip
+	local reward = _G.EmbeddedItemTooltip.ItemTooltip
+	local icon = reward.Icon
+	if reward and reward.backdrop then
+		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
+		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
 
 	-- Skin GameTooltip Status Bar
@@ -87,19 +96,10 @@ local function LoadSkin()
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
-	local function style(self)
-		if not self.IsSkinned then
-			self:SetBackdrop(nil)
-			self:SetTemplate("Transparent")
-
-			self.IsSkinned = true
-		end
-	end
-
 	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
 		if addon == "Blizzard_IslandsQueueUI" then
-			local IslandTooltip = _G["IslandsQueueFrameTooltip"]
-			IslandTooltip:GetParent():GetParent():HookScript("OnShow", style)
+			local IslandTooltip = _G.IslandsQueueFrameTooltip
+			IslandTooltip:GetParent():GetParent():HookScript("OnShow", IslandTooltipStyle)
 			IslandTooltip:GetParent().IconBorder:SetAlpha(0)
 			IslandTooltip:GetParent().Icon:SetTexCoord(unpack(E.TexCoords))
 		end

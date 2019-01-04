@@ -92,7 +92,7 @@ local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
--- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame, ItemLocation
 -- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames, HandleModifiedItemClick
 -- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton, SetInsertItemsLeftToRight
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
@@ -206,12 +206,7 @@ end
 function B:SetSearch(query)
 	local empty = len(query:gsub(' ', '')) == 0
 	local method = Search.Matches
-	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
-		if query == "rel" or query == "reli" or query == "relic" then
-			allowPartialMatch = true
-		end
-
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
@@ -221,7 +216,7 @@ function B:SetSearch(query)
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
-				local success, result = pcall(method, Search, link, query, allowPartialMatch)
+				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
 					SetItemButtonDesaturated(button);
 					button.searchOverlay:Hide();
