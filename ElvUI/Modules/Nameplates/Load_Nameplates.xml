@@ -3,6 +3,7 @@
 	<Script file="Tags.lua"/>
 	<Script file="Elements\Basic.lua"/>
 	<Script file="Elements\Castbar.lua"/>
+	<Script file="Elements\ClassPower.lua"/>
 	<Script file="Elements\Health.lua"/>
 	<Script file="Elements\Plugins.lua"/>
 	<Script file="Elements\Power.lua"/>

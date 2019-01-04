@@ -128,84 +128,13 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Highlight = NP:ConstructElement_Highlight(nameplate)
 
---[[
-	ClassPower:Hide()
-	ClassPower:SetFrameStrata(self:GetFrameStrata())
-	ClassPower:SetFrameLevel(2)
-	ClassPower:CreateBackdrop("Transparent")
-	ClassPower.Backdrop:CreateShadow()
-	ClassPower:SetSize(130, 4)
-	ClassPower:SetPoint("BOTTOM", Health, "BOTTOM", 0, 14)
+	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
+	nameplate:DisableElement('ClassPower')
 
-	for index = 1, (MAX_POINTS[UI.MyClass] or 5) do
-		local Bar = CreateFrame('StatusBar', nil, ClassPower)
-		Bar:SetSize(130 / (MAX_POINTS[UI.MyClass] or 5), 4)
-		Bar:SetPoint('TOPLEFT', ClassPower, 'TOPLEFT', (index - 1) * Bar:GetWidth(), 0)
-		Bar:SetStatusBarTexture(PowerTexture)
-
-		ClassPower[index] = Bar
+	if E.myclass == 'DEATHKNIGHT' then
+		nameplate.Runes = NP:Construct_Runes(nameplate)
+		nameplate:DisableElement('Runes')
 	end
-
-	ClassPower.UpdateColor = function(element, powerType)
-		local color = oUF.colors.power[powerType]
-		local r, g, b = color[1], color[2], color[3]
-		for i = 1, #element do
-
-			local bar = element[i]
-
-			if powerType == "COMBO_POINTS" then
-				r, g, b = unpack(COMBO_POINT_COLOR[i])
-			end
-
-			bar:SetStatusBarColor(r, g, b)
-		end
-	end
-
-	ClassPower.PostUpdate = function(self, cur, max, needUpdate, powerType)
-		if cur and cur > 0 then
-			self:Show()
-		else
-			self:Hide()
-		end
-		if needUpdate then
-			for index = 1, max do
-				self[index]:SetSize(130/max, 4)
-				self[index]:SetPoint('TOPLEFT', self, 'TOPLEFT', (index - 1) * self[index]:GetWidth(), 0)
-			end
-		end
-	end
-
-	if UI.MyClass == 'DEATHKNIGHT' then
-		local Runes = CreateFrame("Frame", self:GetName()..'Runes', self)
-		Runes:SetFrameStrata(self:GetFrameStrata())
-		Runes:SetFrameLevel(2)
-		Runes:SetPoint("BOTTOM", Health, "TOP", 0, 	4)
-		Runes:SetSize(130, 4)
-		Runes:CreateBackdrop()
-		Runes.Backdrop:CreateShadow()
-		Runes:Hide()
-		Runes.UpdateColor = function() end
-		Runes.PostUpdate = function()
-			if (UnitHasVehicleUI('player')) then
-				Runes:Hide()
-			else
-				Runes:Show()
-			end
-		end
-
-		for i = 1, 6 do
-			Runes[i] = CreateFrame("StatusBar", self:GetName()..'Rune'..i, Runes)
-			Runes[i]:Hide()
-			Runes[i]:SetStatusBarTexture(PowerTexture)
-			Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
-
-			Runes[i]:SetSize(130 / 6, 4)
-			Runes[i]:SetPoint('TOPLEFT', Runes, 'TOPLEFT', (i - 1) * Runes[i]:GetWidth(), 0)
-		end
-
-		self.Runes = Runes
-	end
-]]
 end
 
 function NP:UnitStyle(nameplate, unit)
@@ -295,7 +224,7 @@ function NP:UnitStyle(nameplate, unit)
 
 	if self['db'].targetGlow ~= 'none' then
 		local GlowStyle = self['db'].targetGlow
-		local Color = self['db'].glowColor
+		local Color = self['db'].colors.glow
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
 			local topArrowSpace = -3
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
@@ -346,6 +275,13 @@ function NP:UnitStyle(nameplate, unit)
 		end
 	else
 		nameplate:DisableElement('ClassificationIndicator')
+	end
+
+	if unit == 'PLAYER' then
+		nameplate:EnableElement('ClassPower')
+		if E.myclass == 'DEATHKNIGHT' then
+			nameplate:EnableElement('Runes')
+		end
 	end
 
 	nameplate:UpdateAllElements('OnShow')
