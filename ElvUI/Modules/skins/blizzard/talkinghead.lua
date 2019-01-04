@@ -7,7 +7,7 @@ local _G = _G
 --WoW API / Variables
 
 --Just some test code
-local talkingHeadTextureKitRegionFormatStrings = {
+--[[local talkingHeadTextureKitRegionFormatStrings = {
 	["TextBackground"] = "%s-TextBackground",
 	["Portrait"] = "%s-PortraitFrame",
 }
@@ -116,7 +116,7 @@ function TestTalkingHead()
 			frame.voHandle = voHandle;
 		end
 	end
-end
+end]]
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talkinghead ~= true then return end
