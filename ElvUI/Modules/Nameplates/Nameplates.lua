@@ -139,7 +139,7 @@ end
 
 function NP:UnitStyle(nameplate, unit)
 	-- ['glowStyle'] = 'TARGET_THREAT',
-	local db = self.db.units[unit]
+	local db = NP.db.units[unit]
 
 	if (unit == 'FRIENDLY_NPC') or (unit == 'ENEMY_NPC') then
 		nameplate.Health.colorClass = false
@@ -219,16 +219,16 @@ function NP:UnitStyle(nameplate, unit)
 		end
 	end
 
-	nameplate.TargetIndicator.style = self['db'].targetGlow
-	nameplate.TargetIndicator.lowHealthThreshold = self['db'].lowHealthThreshold
+	nameplate.TargetIndicator.style = NP['db'].targetGlow
+	nameplate.TargetIndicator.lowHealthThreshold = NP['db'].lowHealthThreshold
 
-	if self['db'].targetGlow ~= 'none' then
-		local GlowStyle = self['db'].targetGlow
-		local Color = self['db'].colors.glow
+	if NP['db'].targetGlow ~= 'none' then
+		local GlowStyle = NP['db'].targetGlow
+		local Color = NP['db'].colors.glow
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
 			local topArrowSpace = -3
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
-				topArrowSpace = self['db'].fontSize + topArrowSpace
+				topArrowSpace = NP['db'].fontSize + topArrowSpace
 			end
 			nameplate.TargetIndicator.TopIndicator:Point("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
@@ -248,9 +248,9 @@ function NP:UnitStyle(nameplate, unit)
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == "style2" or GlowStyle == "style6" or GlowStyle == "style8") then
 			local scale = 1
-			if self['db'].useTargetScale then
-				if self['db'].targetScale >= 0.75 then
-					scale = self['db'].targetScale
+			if NP['db'].useTargetScale then
+				if NP['db'].targetScale >= 0.75 then
+					scale = NP['db'].targetScale
 				else
 					scale = 0.75
 				end
@@ -371,9 +371,6 @@ function NP:ConfigureAll()
 
 	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
-
-	NP.targetScaleWidth = NP:SizeScale(NP.db.clickableWidth, NP.db.targetScale)
-	NP.targetScaleHeight = NP:SizeScale(NP.db.clickableHeight, NP.db.targetScale)
 
 	-- workaround for #206
 	local friendlyWidth, friendlyHeight

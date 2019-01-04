@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
+local ElvUF = ElvUI.oUF
 
 local NP = E:GetModule('NamePlates')
 
@@ -29,7 +30,7 @@ function NP:Construct_ClassPower(frame)
 	ClassPower:SetSize(130, 4)
 	ClassPower:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 14)
 
-	for index = 1, (MAX_POINTS[E.MyClass] or 5) do
+	for index = 1, (MAX_POINTS[E.myclass] or 5) do
 		local Bar = CreateFrame('StatusBar', nil, ClassPower)
 		Bar:SetSize(130 / (MAX_POINTS[E.MyClass] or 5), 7)
 		Bar:SetPoint('TOPLEFT', ClassPower, 'TOPLEFT', (index - 1) * Bar:GetWidth(), 0)
