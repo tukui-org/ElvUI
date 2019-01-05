@@ -1,14 +1,15 @@
-local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ElvUI = select(2, ...)
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 local Masque = E.Libs.Masque
-local _G = _G
 
 -- Locale doesn't exist yet, make it exist.
 local L = E.Libs.ACL:GetLocale('ElvUI', false)
-_G.ElvUI[2] = L
+ElvUI[2] = L
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
