@@ -176,6 +176,11 @@ local function LoadSkin()
 			mapButton.IsSkinned = true
 		end
 
+		if not rewardButton.backdrop then
+			rewardButton:CreateBackdrop("Default")
+			rewardButton.backdrop:SetOutside(rewardButton.Icon)
+		end
+
 		if not rewardButton.isSkinned then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
