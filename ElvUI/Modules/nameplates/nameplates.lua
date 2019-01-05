@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
+local select = select
 local pairs = pairs
 local type = type
 local gsub = gsub
