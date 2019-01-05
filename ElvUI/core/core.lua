@@ -13,7 +13,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
-local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
+local floor, gsub, strmatch, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local UnitGUID = UnitGUID
@@ -1687,7 +1687,7 @@ local function CompareCPUDiff(showall, minCalls)
 	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0
 
 	for name, oldUsage in pairs(CPU_USAGE) do
-		newName, newFunc = name:match('^([^:]+):(.+)$')
+		newName, newFunc = strmatch(name, '^([^:]+):(.+)$')
 		if not newFunc then
 			E:Print('CPU_USAGE:', name, newFunc)
 		else
@@ -1721,7 +1721,7 @@ function E:GetTopCPUFunc(msg)
 		return
 	end
 
-	local module, showall, delay, minCalls = msg:match('^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$')
+	local module, showall, delay, minCalls = strmatch(msg, '^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$')
 	local checkCore, mod = (not module or module == '') and 'E'
 
 	showall = (showall == 'true' and true) or false
