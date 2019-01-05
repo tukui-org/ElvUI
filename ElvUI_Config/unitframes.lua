@@ -33,7 +33,7 @@ local CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POW
 local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
 ------------------------------
 
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local ACD = E.Libs.AceConfigDialog
 
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',

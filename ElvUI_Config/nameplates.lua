@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local ACD = E.Libs.AceConfigDialog
 
 local next = next
 local ipairs = ipairs

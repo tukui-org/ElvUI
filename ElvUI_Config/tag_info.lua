@@ -2,15 +2,14 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local UF = E:GetModule('UnitFrames');
 
 
-local AceGUI = LibStub("AceGUI-3.0")
 -- Create a container frame
-local f = AceGUI:Create("Frame")
+local f = E.Libs.AceGUI:Create("Frame")
 f:SetTitle("ElvUI Unitframe Tags")
 f:SetStatusText("")
 f:SetLayout("Fill")
 f:Hide()
 
-local text = AceGUI:Create("MultiLineEditBox")
+local text = E.Libs.AceGUI:Create("MultiLineEditBox")
 text:SetText([[
 	testtesttesttesttesttesttesttesttesttesttesttesttesttest testtesttesttesttesttesttesttesttesttesttesttesttesttest
 	testtesttesttesttesttesttesttesttesttesttesttesttesttestesttesttesttesttesttesttesttesttesttesttesttesttesttestesttesttesttesttesttesttesttesttesttesttesttesttesttes

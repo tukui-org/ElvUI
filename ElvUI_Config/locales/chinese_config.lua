@@ -1,6 +1,5 @@
 -- Chinese localization file for zhCN.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhCN")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
 -- *_DESC locales

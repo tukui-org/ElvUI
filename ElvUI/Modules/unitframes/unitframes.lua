@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
-local LSM = E.LSM
-UF.LSM = E.LSM
+local LSM = E.Libs.LSM
+UF.LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions

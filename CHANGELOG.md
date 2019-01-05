@@ -1,4 +1,16 @@
-**Version 10.85 [  ]**
+**Version 10.86 [  ]**
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+**Version 10.85 [ January 4th 2019 ]**
 
 **New Additions:**  
 Added `Weakened Soul` back to our Buff Indicator.  
@@ -23,11 +35,13 @@ Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also corre
 Fixed issue with NamePlates glow beeing pixelated.  
 Fixed issues in bag searching. (#931)  
 Fixed Social Queue Datatext and Chat Message.  
+Fixed an issue that mostly affected actionbars, where elements would be misplaced after a profile change.  
 
 **Misc. Changes:**  
 Changed Health Backdrop Multiplier to be an Override instead.  
 Updated oUF tags with recent changes.  
 Hid the Recipient Portrait on the TradeFrame.  
+ElvUI now staggers the updates that happen when a profile is changed. This should have minimal effect on existing plugins.  
 
 ___
 **Version 10.84 [ December 11th 2018 ]**

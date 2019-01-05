@@ -1,4 +1,5 @@
-local LSM = LibStub('LibSharedMedia-3.0')
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local LSM = E.Libs.LSM
 
 LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex]])
