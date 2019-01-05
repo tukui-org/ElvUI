@@ -7,9 +7,6 @@ local _G = _G
 --WoW API / Variables
 local SetCVar = SetCVar
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: CHAT_FONT_HEIGHTS, UNIT_NAME_FONT, DAMAGE_TEXT_FONT, STANDARD_TEXT_FONT, NORMALOFFSET, BIGOFFSET, SHADOWCOLOR
-
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	obj:SetFont(font, size, style)
 	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
