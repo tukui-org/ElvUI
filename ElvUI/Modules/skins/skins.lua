@@ -780,9 +780,13 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	end
 end
 
-function S:HandleIcon(icon)
+function S:HandleIcon(icon, parent)
+	parent = parent or icon:GetParent()
+
 	icon:SetTexCoord(unpack(E.TexCoords))
-	icon:CreateBackdrop('Default')
+	parent:CreateBackdrop('Default')
+	icon:SetParent(parent.backdrop)
+	parent.backdrop:SetOutside(icon)
 end
 
 function S:HandleTexture(icon, parent)
