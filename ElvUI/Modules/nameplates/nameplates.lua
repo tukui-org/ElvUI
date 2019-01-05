@@ -1025,7 +1025,7 @@ function mod:UpdateCVars()
 
 	--Make sure quest icon info is available when enabled
 	if self.db.questIcon == true then
-		E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
+		E:LockCVar("showQuestTrackingTooltips", "1")
 	end
 end
 
