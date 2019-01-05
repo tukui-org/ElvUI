@@ -178,10 +178,8 @@ local function LoadSkin()
 
 		if not rewardButton.backdrop then
 			rewardButton.NameFrame:Hide()
-			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
+			S:HandleIcon(rewardButton.Icon)
 			rewardButton.IconBorder:SetAlpha(0)
-			rewardButton:CreateBackdrop("Default")
-			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 			rewardButton.Icon:SetDrawLayer("OVERLAY")
 			rewardButton.Count:SetDrawLayer("OVERLAY")
 
