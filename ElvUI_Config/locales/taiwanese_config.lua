@@ -1,6 +1,5 @@
 -- Taiwanese localization file for zhTW.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhTW")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
 -- *_DESC locales

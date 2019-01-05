@@ -1,6 +1,5 @@
 -- Korean localization file for koKR.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "koKR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 if not L then return end
 
 -- *_DESC locales

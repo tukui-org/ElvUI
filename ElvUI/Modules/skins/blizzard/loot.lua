@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local LBG = LibStub("LibButtonGlow-1.0", true)
+local LBG = E.Libs.ButtonGlow
 
 --Cache global variables
 --Lua functions

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
-local _G = _G
 --Lua functions
 local select = select
 --WoW API / Variables
@@ -28,8 +27,9 @@ local function SkinDropdownPullout(self)
 end
 
 function S:SkinAce3()
-	local AceGUI = _G.LibStub("AceGUI-3.0", true)
+	local AceGUI = E.Libs.AceGUI
 	if not AceGUI then return end
+
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	local ColorBlind = GetCVarBool('colorblindmode')
 
@@ -237,7 +237,7 @@ function S:SkinAce3()
 		return oldRegisterAsWidget(object, widget)
 	end
 	AceGUI.RegisterAsWidget = RegisterAsWidget
-	--LibStub("AceGUI-3.0"):Create("Window")
+
 	local oldRegisterAsContainer = AceGUI.RegisterAsContainer
 	RegisterAsContainer = function(object, widget)
 		if not E.private.skins.ace3.enable then
@@ -326,10 +326,12 @@ function S:SkinAce3()
 	AceGUI.RegisterAsContainer = RegisterAsContainer
 end
 
-local function attemptSkin()
-	local AceGUI = _G.LibStub("AceGUI-3.0", true)
-	if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
-		S:SkinAce3()
+local function attemptSkin(_, _, addon)
+	if addon == 'ElvUI_Config' then
+		local AceGUI = E.Libs.AceGUI
+		if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
+			S:SkinAce3()
+		end
 	end
 end
 

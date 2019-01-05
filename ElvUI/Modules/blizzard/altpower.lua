@@ -105,8 +105,8 @@ function B:UpdateAltPowerBarSettings()
 	local font = E.db.general.altPowerBar.font
 
 	bar:SetSize(width, height)
-	bar:SetStatusBarTexture(E.LSM:Fetch("statusbar", statusBar))
-	bar.text:SetFont(E.LSM:Fetch("font", font), fontSize, fontOutline)
+	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", statusBar))
+	bar.text:SetFont(E.Libs.LSM:Fetch("font", font), fontSize, fontOutline)
 	AltPowerBarHolder:SetSize(bar.backdrop:GetSize())
 
 	local textFormat = E.db.general.altPowerBar.textFormat

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local Sticky = LibStub("LibSimpleSticky-1.0")
+local Sticky = E.Libs.SimpleSticky
 
 --Cache global variables
 --Lua functions

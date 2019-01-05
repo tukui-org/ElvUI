@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-local Search = LibStub('LibItemSearch-1.2-ElvUI')
--- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
-local LibItemLevel = LibStub("LibItemLevel-ElvUI")
+local Search = E.Libs.ItemSearch
+local LibItemLevel = E.Libs.ItemLevel -- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
 
 --Cache global variables
 --Lua functions
@@ -296,7 +295,7 @@ function B:UpdateItemLevelDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
-					slot.itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 				end
 			end
 		end
@@ -316,7 +315,7 @@ function B:UpdateCountDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
-					slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 					slot.Count:SetTextColor(color.r, color.g, color.b)
 				end
 			end
@@ -332,7 +331,7 @@ function B:UpdateCountDisplay()
 		for i = 1, 98 do
 			local slot = self.BankFrame.reagentFrame.slots[i]
 			if slot then
-				slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				slot.Count:SetTextColor(color.r, color.g, color.b)
 				self:UpdateReagentSlot(i)
 			end
@@ -914,7 +913,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].Count:ClearAllPoints();
 					f.Bags[bagID][slotID].Count:Point('BOTTOMRIGHT', 0, 2);
-					f.Bags[bagID][slotID].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					f.Bags[bagID][slotID].Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 					f.Bags[bagID][slotID].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 					if not(f.Bags[bagID][slotID].questIcon) then
@@ -971,7 +970,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].itemLevel = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
 					f.Bags[bagID][slotID].itemLevel:Point("BOTTOMRIGHT", 0, 2)
-					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 					if f.Bags[bagID][slotID].BattlepayItemTexture then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
@@ -1075,7 +1074,7 @@ function B:Layout(isBank)
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints();
 				f.reagentFrame.slots[i].Count:Point('BOTTOMRIGHT', 0, 2);
-				f.reagentFrame.slots[i].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				f.reagentFrame.slots[i].Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				f.reagentFrame.slots[i].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 				f.reagentFrame.slots[i].searchOverlay:SetAllPoints();

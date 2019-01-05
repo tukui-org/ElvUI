@@ -26,8 +26,6 @@ local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DE
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
-local LibStub = LibStub
-
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
 
@@ -255,7 +253,7 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 			end
 
 			if IsAddOnLoaded("ElvUI_Config") then
-				local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
 				end
@@ -575,7 +573,7 @@ function E:StaticPopup_OnShow()
 
 	-- boost static popups over ace gui
 	if IsAddOnLoaded("ElvUI_Config") then
-		local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			self.frameStrataIncreased = true
 			self:SetFrameStrata("FULLSCREEN_DIALOG")

@@ -1,6 +1,6 @@
 -- Portuguese localization file for ptBR.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "ptBR")
+local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local L = E.Libs.ACL:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
 --*_ADDON locales
