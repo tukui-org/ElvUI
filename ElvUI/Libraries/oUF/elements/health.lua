@@ -185,16 +185,14 @@ Used to toggle frequent updates.
 * state - the desired state of frequent updates (boolean)
 --]]
 local function SetFrequentUpdates(element, state)
---	if(element.frequentUpdates ~= state) then
---		element.frequentUpdates = state
---		if(element.frequentUpdates) then
---			element.__owner:UnregisterEvent('UNIT_HEALTH', Path)
---			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
---		else
---			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
---			element.__owner:RegisterEvent('UNIT_HEALTH', Path)
---		end
---	end
+	if(element.frequentUpdates ~= state) then
+		element.frequentUpdates = state
+		if(element.frequentUpdates) then
+			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		else
+			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		end
+	end
 end
 
 local function Enable(self, unit)
@@ -204,12 +202,11 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 		element.SetFrequentUpdates = SetFrequentUpdates
 
---		if(element.frequentUpdates) then
+		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
---		else
-			self:RegisterEvent('UNIT_HEALTH', Path)
---		end
+		end
 
+		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping
