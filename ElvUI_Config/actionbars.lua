@@ -24,6 +24,8 @@ local points = {
 	["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 }
 
+local ACD = E.Libs.AceConfigDialog
+
 local function BuildABConfig()
 	group['general'] = {
 		order = 1,
@@ -929,21 +931,21 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["General"],
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "general") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "general") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		cooldownTextShortcut = {
 			order = 6,
 			type = "execute",
 			name = L["Cooldowns"],
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "cooldown", "actionbar") end,
+			func = function() ACD:SelectGroup("ElvUI", "cooldown", "actionbar") end,
 		},
 		petBarShortcut = {
 			order = 7,
 			type = "execute",
 			name = L["Pet Bar"],
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "barPet") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "barPet") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		spacer2 = {
@@ -956,7 +958,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Stance Bar"],
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "stanceBar") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "stanceBar") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		microbarShortcut = {
@@ -964,7 +966,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Micro Bar"],
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "microbar") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "microbar") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		extraActionButtonShortcut = {
@@ -972,7 +974,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Boss Button"],
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "extraActionButton") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "extraActionButton") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		spacer3 = {
@@ -985,7 +987,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..1,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar1") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar1") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		bar2Shortcut = {
@@ -993,7 +995,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..2,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar2") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar2") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		bar3Shortcut = {
@@ -1001,7 +1003,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..3,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar3") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar3") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		spacer4 = {
@@ -1014,7 +1016,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..4,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar4") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar4") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		bar5Shortcut = {
@@ -1022,7 +1024,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..5,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar5") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar5") end,
 			disabled = function() return not E.ActionBars; end,
 		},
 		bar6Shortcut = {
@@ -1030,7 +1032,7 @@ E.Options.args.actionbar = {
 			type = "execute",
 			name = L["Bar "]..6,
 			buttonElvUI = true,
-			func = function() E.Libs.AceConfigDialog:SelectGroup("ElvUI", "actionbar", "bar6") end,
+			func = function() ACD:SelectGroup("ElvUI", "actionbar", "bar6") end,
 			disabled = function() return not E.ActionBars; end,
 		}
 	},
