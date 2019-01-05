@@ -82,9 +82,9 @@ AddOn.Libs = {
 	Compress = _G.LibStub('LibCompress'),
 	Base64 = _G.LibStub('LibBase64-1.0-ElvUI'),
 	Masque = _G.LibStub('Masque', true)
+} -- added on ElvUI_Config load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
-	-- added on ElvUI_Config load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
-}
+AddOn.LSM = AddOn.Libs.LSM -- backwards compatible for plugins
 
 local tcopy = table.copy
 function AddOn:OnInitialize()
