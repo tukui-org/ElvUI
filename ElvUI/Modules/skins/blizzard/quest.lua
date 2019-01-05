@@ -176,18 +176,21 @@ local function LoadSkin()
 			mapButton.IsSkinned = true
 		end
 
-		rewardButton.NameFrame:Hide()
-		rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
-		rewardButton.IconBorder:SetAlpha(0)
-		rewardButton:CreateBackdrop("Default")
-		rewardButton.backdrop:SetOutside(rewardButton.Icon)
-		rewardButton.Icon:SetDrawLayer("OVERLAY")
-		rewardButton.Count:SetDrawLayer("OVERLAY")
+		if not rewardButton.isSkinned then
+			rewardButton.NameFrame:Hide()
+			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
+			rewardButton.IconBorder:SetAlpha(0)
+			rewardButton:CreateBackdrop("Default")
+			rewardButton.backdrop:SetOutside(rewardButton.Icon)
+			rewardButton.Icon:SetDrawLayer("OVERLAY")
+			rewardButton.Count:SetDrawLayer("OVERLAY")
 
-		hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
-		end)
+			hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
+				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:SetTexture("")
+			end)
+			rewardButton.isSkinned = true
+		end
 	end)
 
 	--Reward: Title
