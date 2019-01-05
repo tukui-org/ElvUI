@@ -253,7 +253,7 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 			end
 
 			if IsAddOnLoaded("ElvUI_Config") then
-				local ACD = LibStub("AceConfigDialog-3.0-ElvUI");
+				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
 				end
@@ -573,7 +573,7 @@ function E:StaticPopup_OnShow()
 
 	-- boost static popups over ace gui
 	if IsAddOnLoaded("ElvUI_Config") then
-		local ACD = LibStub("AceConfigDialog-3.0-ElvUI");
+		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			self.frameStrataIncreased = true
 			self:SetFrameStrata("FULLSCREEN_DIALOG")
