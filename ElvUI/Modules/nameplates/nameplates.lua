@@ -1024,7 +1024,9 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
 
 	--Make sure quest icon info is available when enabled
-	E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
+	if self.db.questIcon == true then
+		E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
+	end
 end
 
 local function CopySettings(from, to)
