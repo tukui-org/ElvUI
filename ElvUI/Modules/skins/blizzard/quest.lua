@@ -166,25 +166,22 @@ local function LoadSkin()
 		end
 	end
 
+	hooksecurefunc('QuestInfo_ShowRewards', function()
+		for _, frame in pairs(rewardFrames) do
+			HandleReward(_G.QuestInfoFrame.rewardsFrame[frame])
+		end
+	end)
+
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
 		local rewardButton = rewardsFrame.RewardButtons[index]
-		local mapButton = _G.MapQuestInfoRewardsFrame.RewardButtons[index]
 
-		if mapButton and not mapButton.IsSkinned then
-			HandleReward(mapButton)
-			mapButton.IsSkinned = true
-		end
-
-		if rewardButton and not rewardButton.backdrop then
-			rewardButton:CreateBackdrop("Default")
-			rewardButton.backdrop:SetOutside(rewardButton.Icon)
-		end -- HandleReward will do this on init
-
-		if rewardButton and not rewardButton.isSkinned then
+		if not rewardButton.backdrop then
 			rewardButton.NameFrame:Hide()
 			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
 			rewardButton.IconBorder:SetAlpha(0)
+			rewardButton:CreateBackdrop("Default")
+			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 			rewardButton.Icon:SetDrawLayer("OVERLAY")
 			rewardButton.Count:SetDrawLayer("OVERLAY")
 
@@ -193,11 +190,10 @@ local function LoadSkin()
 				if button and button.backdrop then
 					button.backdrop:SetBackdropBorderColor(r, g, b)
 				end
-
-				self:SetTexture("")
 			end)
-
-			rewardButton.isSkinned = true
+			hooksecurefunc(rewardButton.IconBorder, 'Hide', function(self) self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		else
+			rewardButton.Name:SetTextColor(1, 1, 1)
 		end
 	end)
 
