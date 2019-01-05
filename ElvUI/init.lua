@@ -45,8 +45,7 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 local LibStub = LibStub
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
-AddOn.callbacks = AddOn.callbacks or
-  LibStub("CallbackHandler-1.0"):New(AddOn)
+AddOn.callbacks = AddOn.callbacks or LibStub("CallbackHandler-1.0"):New(AddOn)
 AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = {}; AddOn.privateVars.profile = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
@@ -54,14 +53,26 @@ AddOn.Options = {
 	args = {},
 }
 
-local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
 Engine[1] = AddOn;
-Engine[2] = Locale;
+Engine[2] = {};
 Engine[3] = AddOn.privateVars.profile;
 Engine[4] = AddOn.DF.profile;
 Engine[5] = AddOn.DF.global;
 
 _G[AddOnName] = Engine;
+
+AddOn.oUF = Engine.oUF
+AddOn.Libs = {
+	EP = LibStub('LibElvUIPlugin-1.0'),
+	Masque = LibStub('Masque', true),
+	LSM = LibStub('LibSharedMedia-3.0'),
+	ACL = LibStub("AceLocale-3.0"),
+	LAB = LibStub("LibActionButton-1.0-ElvUI"),
+	LDB = LibStub("LibDataBroker-1.1"),
+	ItemSearch = LibStub('LibItemSearch-1.2-ElvUI'),
+	ItemLevel = LibStub("LibItemLevel-ElvUI"),
+}
+
 local tcopy = table.copy
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then

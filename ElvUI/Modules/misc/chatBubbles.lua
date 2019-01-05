@@ -106,7 +106,7 @@ function M:SkinBubble(frame)
 	name:SetPoint("TOPLEFT", 5, 5)
 	name:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
 	name:SetJustifyH("LEFT")
-	name:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
+	name:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 	frame.Name = name
 
 	if(E.private.general.chatBubbles == 'backdrop') then
@@ -186,18 +186,18 @@ function M:SkinBubble(frame)
 			frame.borderright.backdrop:SetColorTexture(0, 0, 0)
 			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
 		end
-		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		frame:SetBackdrop(nil)
 		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 		frame.backdrop:SetInside(frame, 4, 4)
 		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
 		frame.backdrop:SetDrawLayer("ARTWORK", -8)
-		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
 		frame:SetBackdrop(nil)
-		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
 		frame.Name:Hide()
 	end

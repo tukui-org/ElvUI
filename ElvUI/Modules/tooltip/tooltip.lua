@@ -691,7 +691,7 @@ function TT:RepositionBNET(frame, _, anchor)
 end
 
 function TT:SetTooltipFonts()
-	local font = E.LSM:Fetch("font", E.db.tooltip.font)
+	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local headerSize = E.db.tooltip.headerFontSize
 	local textSize = E.db.tooltip.textFontSize
@@ -762,7 +762,7 @@ function TT:Initialize()
 	GameTooltipStatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
-	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
+	GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then

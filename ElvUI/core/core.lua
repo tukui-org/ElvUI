@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = LibStub('LibSharedMedia-3.0')
-local Masque = LibStub('Masque', true)
+local LSM = E.Libs.LSM
+local Masque = E.Libs.Masque
 
 --Cache global variables
 --Lua functions
@@ -47,7 +47,9 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
 --Constants
-E.LSM = LSM
+ElvUI[2] = E.Libs.ACL:GetLocale('ElvUI', false)
+L = ElvUI[2]
+
 E.Masque = Masque
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
