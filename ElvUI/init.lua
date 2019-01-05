@@ -17,6 +17,7 @@ local pairs = pairs
 local unpack = unpack
 local strsplit = string.split
 local format = string.format
+local tcopy = table.copy
 
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
@@ -88,7 +89,6 @@ AddOn.Libs = {
 AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
 
-local tcopy = table.copy
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
