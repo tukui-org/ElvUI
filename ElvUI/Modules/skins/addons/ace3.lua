@@ -328,8 +328,6 @@ end
 
 local function attemptSkin(_, _, addon)
 	if addon == 'ElvUI_Config' then
-		E:ConfigLibReferences()
-
 		local AceGUI = E.Libs.AceGUI
 		if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
 			S:SkinAce3()

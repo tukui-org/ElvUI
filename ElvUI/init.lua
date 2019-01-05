@@ -82,16 +82,9 @@ AddOn.Libs = {
 	Compress = _G.LibStub('LibCompress'),
 	Base64 = _G.LibStub('LibBase64-1.0-ElvUI'),
 	Masque = _G.LibStub('Masque', true)
-}
 
-function AddOn:ConfigLibReferences()
-	if not self.Libs.AceConfigDialog then
-		self.Libs.AceConfigDialog = _G.LibStub('AceConfigDialog-3.0-ElvUI', true)
-	end
-	if not self.Libs.AceGUI then
-		self.Libs.AceGUI = _G.LibStub('AceGUI-3.0', true)
-	end
-end
+	-- added on ElvUI_Config load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
+}
 
 local tcopy = table.copy
 function AddOn:OnInitialize()
@@ -265,8 +258,6 @@ function AddOn:ToggleConfig(msg)
 			return
 		end
 	end
-
-	self:ConfigLibReferences() -- we also call this in the ace3 skin incase it hits first (usually it will)
 
 	local ACD = self.Libs.AceConfigDialog
 	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
