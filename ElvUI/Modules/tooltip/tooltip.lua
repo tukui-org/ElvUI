@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
-local LibInspect = LibStub('LibInspect')
-local LibItemLevel = LibStub('LibItemLevel-ElvUI')
+local LibInspect = E.Libs.Inspect
+local LibItemLevel = E.Libs.ItemLevel
 local S -- used to hold the skin module when we need it
 
 --Cache global variables

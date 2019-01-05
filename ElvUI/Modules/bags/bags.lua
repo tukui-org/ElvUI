@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-local Search = LibStub('LibItemSearch-1.2-ElvUI')
--- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
-local LibItemLevel = LibStub("LibItemLevel-ElvUI")
+local Search = E.Libs.ItemSearch
+local LibItemLevel = E.Libs.ItemLevel -- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
 
 --Cache global variables
 --Lua functions

@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
-local LDB = LibStub("LibDataBroker-1.1");
+local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 local TT = E:GetModule("Tooltip")
 

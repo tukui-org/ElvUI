@@ -43,8 +43,9 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local LibStub = LibStub
+local AceAddon = LibStub('AceAddon-3.0')
 local AddOnName, Engine = ...;
-local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
+local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
 AddOn.callbacks = AddOn.callbacks or LibStub("CallbackHandler-1.0"):New(AddOn)
 AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = {}; AddOn.privateVars.profile = {}; -- Defaults
 AddOn.Options = {
@@ -63,14 +64,23 @@ _G[AddOnName] = Engine;
 
 AddOn.oUF = Engine.oUF
 AddOn.Libs = {
+	AceAddon = AceAddon,
+	AceDB = LibStub('AceDB-3.0'),
 	EP = LibStub('LibElvUIPlugin-1.0'),
-	Masque = LibStub('Masque', true),
 	LSM = LibStub('LibSharedMedia-3.0'),
-	ACL = LibStub("AceLocale-3.0"),
-	LAB = LibStub("LibActionButton-1.0-ElvUI"),
-	LDB = LibStub("LibDataBroker-1.1"),
+	ACL = LibStub('AceLocale-3.0'),
+	LAB = LibStub('LibActionButton-1.0-ElvUI'),
+	LDB = LibStub('LibDataBroker-1.1'),
+	DualSpec = LibStub('LibDualSpec-1.0'),
+	SimpleSticky = LibStub('LibSimpleSticky-1.0'),
+	SpellRange = LibStub('SpellRange-1.0'),
+	ButtonGlow = LibStub('LibButtonGlow-1.0', true),
 	ItemSearch = LibStub('LibItemSearch-1.2-ElvUI'),
-	ItemLevel = LibStub("LibItemLevel-ElvUI"),
+	ItemLevel = LibStub('LibItemLevel-ElvUI'),
+	Inspect = LibStub('LibInspect'),
+	Compress = LibStub('LibCompress'),
+	Base64 = LibStub('LibBase64-1.0-ElvUI'),
+	Masque = LibStub('Masque', true),
 }
 
 local tcopy = table.copy
@@ -175,7 +185,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	if IsAddOnLoaded("ElvUI_Config") then
 		local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
-		if ACD.OpenFrames[AddOnName] then
+		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
 			self:RegisterEvent('PLAYER_REGEN_ENABLED');
 			ACD:Close(AddOnName);
 			err = true;
@@ -243,7 +253,7 @@ function AddOn:ToggleConfig(msg)
 	end
 
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
-	local ConfigOpen = ACD.OpenFrames[AddOnName]
+	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
 
 	local pages, msgStr
 	if msg and msg ~= "" then

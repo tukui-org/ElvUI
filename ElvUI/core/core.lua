@@ -42,7 +42,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvDB, LibStub, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
+-- GLOBALS: ElvDB, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
 -- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, MAX_WOW_CHAT_CHANNELS, CHAT_CONFIG_CHANNEL_LIST
 -- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
@@ -1796,16 +1796,13 @@ function E:Initialize(loginFrame)
 	twipe(self.global)
 	twipe(self.private)
 
-	local AceDB = LibStub('AceDB-3.0')
-	local LibDualSpec = LibStub('LibDualSpec-1.0')
-
 	self.myguid = UnitGUID('player')
-	self.data = AceDB:New('ElvDB', self.DF)
+	self.data = E.Libs.AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
-	self.charSettings = AceDB:New('ElvPrivateDB', self.privateVars)
-	LibDualSpec:EnhanceDatabase(self.data, 'ElvUI')
+	self.charSettings = E.Libs.AceDB:New('ElvPrivateDB', self.privateVars)
+	E.Libs.DualSpec:EnhanceDatabase(self.data, 'ElvUI')
 	self.private = self.charSettings.profile
 	self.db = self.data.profile
 	self.global = self.data.global

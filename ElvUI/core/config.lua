@@ -17,7 +17,7 @@ local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: LibStub, UIParent, GameTooltip, EditBox_ClearFocus, SquareButton_SetIcon
+-- GLOBALS: UIParent, GameTooltip, EditBox_ClearFocus, SquareButton_SetIcon
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
 local grid
