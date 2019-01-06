@@ -289,13 +289,12 @@ local function LoadSkin()
 		S:HandleTexture(bu.icon, bu)
 	end
 
-	--PVEFrame:CreateBackdrop("Transparent")
-	for i=1, 3 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
-	-- raid finder
+	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton, true)
 
 	_G.LFDParentFrame:StripTextures()
