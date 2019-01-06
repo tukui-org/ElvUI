@@ -289,7 +289,7 @@ local function LoadSkin()
 		S:HandleTexture(bu.icon, bu)
 	end
 
-	PVEFrame:CreateBackdrop("Transparent")
+	--PVEFrame:CreateBackdrop("Transparent")
 	for i=1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
