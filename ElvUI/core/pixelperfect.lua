@@ -83,6 +83,7 @@ function E:UIScale(event, loginFrame)
 
 		-- call this after setting CVars and SetScale when using autoscale.. to recalculate based on the blizzard UIParent scale value.
 		scale, magic, _, width, height = E:GetUIScale(true)
+		--UIParent.SetScale = function() end
 	end
 
 	E.mult = magic/scale
