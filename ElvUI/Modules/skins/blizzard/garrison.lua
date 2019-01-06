@@ -8,6 +8,7 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
@@ -22,7 +23,11 @@ local function LoadSkin()
 			if firstRegion then firstRegion:Hide() end
 
 			reward:ClearAllPoints()
-			reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
+				reward:SetPoint("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
+			else
+				reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+			end
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
