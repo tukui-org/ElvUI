@@ -364,9 +364,9 @@ P['nameplates'] = {
 		['position'] = 'ABOVE'
 	},
 	['colors'] = {
-		['glow'] = {r = 0.3, g = 0.7, b = 1, a = 1},
-		['cast'] = {r = 1, g = 0.81, b = 0},
-		['castNoInterrupt'] = {r = 0.78, g = 0.25, b = 0.25},
+		['glowColor'] = {r = 0.3, g = 0.7, b = 1, a = 1},
+		['castColor'] = {r = 1, g = 0.81, b = 0},
+		['castNoInterruptColor'] = {r = 0.78, g = 0.25, b = 0.25},
 		['reactions'] = {
 			['tapped'] = {r = 0.6, g = 0.6, b = 0.6},
 			['good'] = {r = .29,  g = .68, b = .30},

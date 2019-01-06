@@ -32,7 +32,7 @@ function NP:Construct_ClassPower(frame)
 
 	for index = 1, (MAX_POINTS[E.myclass] or 5) do
 		local Bar = CreateFrame('StatusBar', nil, ClassPower)
-		Bar:SetSize(130 / (MAX_POINTS[E.MyClass] or 5), 7)
+		Bar:SetSize(130 / (MAX_POINTS[E.myclass] or 5), 7)
 		Bar:SetPoint('TOPLEFT', ClassPower, 'TOPLEFT', (index - 1) * Bar:GetWidth(), 0)
 		Bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 

@@ -50,7 +50,7 @@ function NP:Construct_ClassificationIndicator(frame)
 	return ClassificationIndicator
 end
 
-function NP:ConstructElement_TargetIndicator(frame)
+function NP:Construct_TargetIndicator(frame)
 	local TargetIndicator = CreateFrame('Frame', nil, frame)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
@@ -84,7 +84,7 @@ function NP:ConstructElement_TargetIndicator(frame)
 	return TargetIndicator
 end
 
-function NP:ConstructElement_Highlight(frame)
+function NP:Construct_Highlight(frame)
 	local Highlight = CreateFrame("Frame", nil, frame)
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
 	Highlight.texture:SetVertexColor(1, 1, 1, .3)

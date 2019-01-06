@@ -3171,7 +3171,7 @@ E.Options.args.nameplate = {
 								NP:ConfigureAll()
 							end,
 							args = {
-								glow = {
+								glowColor = {
 									name = L["Target Indicator Color"],
 									type = 'color',
 									order = 5,
@@ -3248,13 +3248,13 @@ E.Options.args.nameplate = {
 								NP:ConfigureAll()
 							end,
 							args = {
-								cast = {
+								castColor = {
 									type = "color",
 									order = 1,
 									name = L["Cast Color"],
 									hasAlpha = false,
 								},
-								castNoInterrupt = {
+								castNoInterruptColor = {
 									name = L["Cast No Interrupt Color"],
 									order = 2,
 									type = 'color',

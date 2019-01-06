@@ -58,6 +58,6 @@ function NP:PostUpdateThreat(frame, unit, status)
 				end
 			end
 		end
-		frame.__owner.Health:SetStatusBarColor(r, g, b)
+		--frame.__owner.Health:SetStatusBarColor(r, g, b)
 	end
 end

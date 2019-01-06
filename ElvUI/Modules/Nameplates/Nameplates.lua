@@ -122,11 +122,11 @@ function NP:StylePlate(nameplate)
 
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
 
-	nameplate.TargetIndicator = NP:ConstructElement_TargetIndicator(nameplate)
+	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
 
 	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate)
 
-	nameplate.Highlight = NP:ConstructElement_Highlight(nameplate)
+	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 	nameplate:DisableElement('ClassPower')
@@ -215,6 +215,7 @@ function NP:UnitStyle(nameplate, unit)
 	end
 
 	if db.castbar.enable then
+		nameplate.Castbar.timeToHold = db.castbar.timeToHold
 		if db.castbar.iconPosition then
 		end
 	end
