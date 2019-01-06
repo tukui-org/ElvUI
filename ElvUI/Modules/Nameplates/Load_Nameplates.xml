@@ -1,6 +1,7 @@
 <Ui>
 	<Script file="Nameplates.lua"/>
 	<Script file="Tags.lua"/>
+	<Script file="Elements\Auras.lua"/>
 	<Script file="Elements\Basic.lua"/>
 	<Script file="Elements\Castbar.lua"/>
 	<Script file="Elements\ClassPower.lua"/>
