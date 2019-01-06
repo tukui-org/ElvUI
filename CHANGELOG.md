@@ -7,7 +7,7 @@
 
 
 **Misc. Changes:**  
-
+Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.
 
 ___
 **Version 10.85 [ January 4th 2019 ]**
