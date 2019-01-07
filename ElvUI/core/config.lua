@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local _G = _G
 local type, ipairs, tonumber = type, ipairs, tonumber
-local floor = math.floor
+local floor, select = math.floor, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
