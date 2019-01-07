@@ -5,40 +5,27 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nil, nameplate)
 	QuestIcons:Hide()
-	QuestIcons:SetSize(self.db.questIconSize, self.db.questIconSize)
+	QuestIcons:SetSize(NP.db.questIconSize, NP.db.questIconSize)
 	QuestIcons:SetPoint("LEFT", nameplate, "RIGHT", 4, 0) -- need option
 
-	local Item = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Item:SetPoint('TOPLEFT')
-	Item:SetSize(self.db.questIconSize, self.db.questIconSize)
-	Item:SetTexCoord(unpack(E.TexCoords))
-	Item:Hide()
-	QuestIcons.Item = Item
+	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
+		QuestIcons[object] = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
+		QuestIcons[object]:SetPoint('TOPLEFT')
+		QuestIcons[object]:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+		QuestIcons[object]:Hide()
+	end
 
-	local Loot = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Loot:SetPoint('TOPLEFT')
-	Loot:SetSize(self.db.questIconSize, self.db.questIconSize)
-	Loot:Hide()
-	QuestIcons.Loot = Loot
+	QuestIcons.Item:SetTexCoord(unpack(E.TexCoords))
 
-	local Skull = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Skull:SetPoint('TOPLEFT')
-	Skull:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
-	Skull:Hide()
-	QuestIcons.Skull = Skull
+	QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
-	local Chat = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-	Chat:SetPoint('TOPLEFT')
-	Chat:SetSize(self.db.questIconSize + 4, self.db.questIconSize + 4)
-	Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
-	Chat:SetTexCoord(0, 0.5, 0.5, 1)
-	Chat:Hide()
-	QuestIcons.Chat = Chat
+	QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
+	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
-	local Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
-	Text:SetPoint('BOTTOMRIGHT', QuestIcons, 2, -0.8)
-	Text:SetFont(E.LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-	QuestIcons.Text = Text
+	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
+	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 2, -0.8)
+	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch("font", NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
 end
@@ -77,29 +64,20 @@ function NP:Construct_TargetIndicator(nameplate)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
-	TargetIndicator.Spark = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-	TargetIndicator.Spark:SetSnapToPixelGrid(false)
-	TargetIndicator.Spark:SetTexelSnappingBias(0)
+	for _, object in pairs({'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}) do
+		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
+		TargetIndicator[object]:SetSnapToPixelGrid(false)
+		TargetIndicator[object]:SetTexelSnappingBias(0)
+		TargetIndicator[object]:Hide()
+	end
+
 	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
-	TargetIndicator.Spark:Hide()
 
-	TargetIndicator.TopIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-	TargetIndicator.TopIndicator:SetSnapToPixelGrid(false)
-	TargetIndicator.TopIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
-	TargetIndicator.TopIndicator:Hide()
 
-	TargetIndicator.LeftIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-	TargetIndicator.LeftIndicator:SetSnapToPixelGrid(false)
-	TargetIndicator.LeftIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
-	TargetIndicator.LeftIndicator:Hide()
 
-	TargetIndicator.RightIndicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
-	TargetIndicator.RightIndicator:SetSnapToPixelGrid(false)
-	TargetIndicator.RightIndicator:SetTexelSnappingBias(0)
 	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
-	TargetIndicator.RightIndicator:Hide()
 
 	return TargetIndicator
 end
