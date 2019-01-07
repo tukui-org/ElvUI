@@ -56,7 +56,7 @@ end
 function NP:HealthBar_PostUpdate(nameplate, _, min, max)
 	if self.db.DarkTheme then
 		if (min ~= max) then
-			nameplate:SetStatusBarColor(nameplate.__owner:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+			nameplate:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
 		else
 			nameplate:SetStatusBarColor(0.2, 0.2, 0.2, 1)
 		end
@@ -76,20 +76,20 @@ function NP:Construct_HealthPrediction(nameplate)
 
 	HealthPrediction.myBar:SetPoint('LEFT', nameplate.Health:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.myBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 2)
-	HealthPrediction.myBar:SetStatusBarColor(0, 0.3, 0.15, 1)
-	HealthPrediction.myBar:SetMinMaxValues(0,1)
+	HealthPrediction.myBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.personal))
+	HealthPrediction.myBar:SetMinMaxValues(0, 1)
 
 	HealthPrediction.otherBar:SetPoint('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.otherBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 1)
-	HealthPrediction.otherBar:SetStatusBarColor(0, 0.3, 0, 1)
+	HealthPrediction.otherBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.others))
 
 	HealthPrediction.absorbBar:SetPoint('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.absorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel())
-	HealthPrediction.absorbBar:SetStatusBarColor(0.3, 0.3, 0, 1)
+	HealthPrediction.absorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.absorbs))
 
 	HealthPrediction.healAbsorbBar:SetPoint('RIGHT', nameplate.Health:GetStatusBarTexture())
 	HealthPrediction.healAbsorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 3)
-	HealthPrediction.healAbsorbBar:SetStatusBarColor(1, 0.3, 0.3, 1)
+	HealthPrediction.healAbsorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.healAbsorbs))
 	HealthPrediction.healAbsorbBar:SetReverseFill(true)
 
 	HealthPrediction.maxOverflow = 1
