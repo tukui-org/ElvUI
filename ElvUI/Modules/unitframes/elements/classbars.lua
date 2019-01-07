@@ -399,8 +399,10 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	runes.PostUpdate = function()
 		if (UnitHasVehicleUI('player')) then
 			runes:Hide()
+			UF:PostUpdateVisibility(false, true)
 		else
 			runes:Show()
+			UF:PostUpdateVisibility(true, true)
 		end
 	end
 
