@@ -72,6 +72,7 @@ function E:ToggleConfigMode(override, configType)
 		end
 
 		ElvUIMoverPopupWindow:Show()
+
 		if IsAddOnLoaded("ElvUI_Config") then
 			if E.Libs.AceConfigDialog then
 				E.Libs.AceConfigDialog:Close("ElvUI")
@@ -81,6 +82,7 @@ function E:ToggleConfigMode(override, configType)
 				GameTooltip:Hide()
 			end
 		end
+
 		E.ConfigurationMode = true
 	else
 		E:Grid_Hide()
