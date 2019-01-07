@@ -174,66 +174,9 @@ local function Path(self, event, ...)
 	return (element.Override or Update) (self, event, ...)
 end
 
--- ElvUI block
-local VisibilityPath
-local function RunesEnable(self)
-	self:RegisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
-	self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
-
-	self.Runes:Show()
-
-	if self.Runes.PostUpdateVisibility then
-		self.Runes:PostUpdateVisibility(true, not self.Runes.isEnabled)
-	end
-
-	self.Runes.isEnabled = true
-
-	Path(self, 'RunesEnable')
+local function ForceUpdate(element)
+	return Path(element.__owner, 'ForceUpdate')
 end
-
-local function RunesDisable(self)
-	self:UnregisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
-	self:RegisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
-
-	self.Runes:Hide()
-
-	if self.Runes.PostUpdateVisibility then
-		self.Runes:PostUpdateVisibility(false, self.Runes.isEnabled)
-	end
-
-	self.Runes.isEnabled = false
-
-	Path(self, 'RunesDisable')
-end
-
-local function Visibility(self, event, ...)
-	local element = self.Runes
-	local shouldEnable
-
-	if not (UnitHasVehicleUI('player')) then
-		shouldEnable = true
-	end
-
-	local isEnabled = element.isEnabled
-	if(shouldEnable and not isEnabled) then
-		RunesEnable(self)
-	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
-		RunesDisable(self)
-	elseif(shouldEnable and isEnabled) then
-		Path(self, event, ...)
-	end
-end
-
-VisibilityPath = function(self, ...)
-	return (self.Runes.OverrideVisibility or Visibility) (self, ...)
-end
--- end block
-
--- changed by ElvUI
-local ForceUpdate = function(element)
-	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
-end
--- end block
 
 local function Enable(self, unit)
 	local element = self.Runes
@@ -264,9 +207,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
-
-		RunesDisable(self) -- ElvUI
 	end
 end
 
-oUF:AddElement('Runes', VisibilityPath, Enable, Disable) -- changed by ElvUI
+oUF:AddElement('Runes', Path, Enable, Disable)

@@ -396,7 +396,14 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg.multiplier = 0.3
 	end
 
-	runes.PostUpdateVisibility = UF.PostVisibilityRunes
+	runes.PostUpdate = function()
+		if (UnitHasVehicleUI('player')) then
+			runes:Hide()
+		else
+			runes:Show()
+		end
+	end
+
 	runes.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
