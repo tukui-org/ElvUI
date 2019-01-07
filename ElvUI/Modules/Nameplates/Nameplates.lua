@@ -57,21 +57,6 @@ function NP:CopySettings(from, to)
 	CopySettings(self.db.units[from], self.db.units[to])
 end
 
-function NP:StyleFrame(frame, useMainFrame)
-	local parent = frame
-
-	if (parent:IsObjectType('Texture')) then
-		parent = frame:GetParent()
-	end
-
-	if useMainFrame then
-		parent:SetTemplate("Transparent")
-		return
-	end
-
-	parent:CreateBackdrop("Transparent")
-end
-
 function NP:Style(frame, unit)
 	if (not unit) then
 		return
