@@ -329,7 +329,7 @@ end
 local function attemptSkin()
 	local AceGUI = E.Libs.AceGUI
 	if not AceGUI then
-		AceGUI = _G.LibStub('AceGUI-3.0')
+		AceGUI = _G.LibStub('AceGUI-3.0', true)
 		E.Libs.AceGUI = AceGUI
 	end
 
