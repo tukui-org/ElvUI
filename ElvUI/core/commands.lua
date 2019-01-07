@@ -24,15 +24,14 @@ local GetCVarBool = GetCVarBool
 -- GLOBALS: Minimap, EGrid, MacroEditBox, HelloKittyLeft
 
 function E:Grid(msg)
-	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
+	msg = msg and tonumber(msg)
+	if type(msg) == "number" and (msg <= 256 and msg >= 4) then
 		E.db.gridSize = msg
 		E:Grid_Show()
+	elseif EGrid and EGrid:IsShown() then
+		E:Grid_Hide()
 	else
-		if EGrid then
-			E:Grid_Hide()
-		else
-			E:Grid_Show()
-		end
+		E:Grid_Show()
 	end
 end
 
