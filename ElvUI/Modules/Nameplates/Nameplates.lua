@@ -142,7 +142,7 @@ function NP:StylePlate(nameplate)
 	end
 end
 
-function NP:UnitStyle(nameplate)
+function NP:UpdatePlate(nameplate)
 	NP:Update_Health(nameplate)
 
 	NP:Update_HealthPrediction(nameplate)
@@ -310,10 +310,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.frameType = 'ENEMY_PLAYER'
 		end
 
-		NP:UnitStyle(nameplate)
+		NP:UpdatePlate(nameplate)
 
 		if NP.db.units['PLAYER'].useStaticPosition then
-			NP:UnitStyle(ElvNP_Player)
+			NP:UpdatePlate(ElvNP_Player)
 		end
 
 		NP.Plates[nameplate] = true
