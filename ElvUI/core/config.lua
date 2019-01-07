@@ -116,7 +116,7 @@ end
 
 function E:Grid_Create()
 	if not grid then
-		grid = CreateFrame('Frame', 'EGrid', UIParent)
+		grid = CreateFrame('Frame', 'ElvUIGrid', UIParent)
 	else
 		grid.regionCount = 0
 		local numRegions = grid:GetNumRegions()
