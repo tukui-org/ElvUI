@@ -8,7 +8,7 @@ function NP:Construct_PowerBar(nameplate)
 	Power:SetFrameLevel(1)
 	Power:CreateBackdrop('Transparent')
 	Power:SetPoint('TOP', nameplate.Health, 'TOP', 0, -14)
-	Power:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', self.db.statusbar))
 
 	Power.frequentUpdates = true
 	Power.colorTapping = true
@@ -18,7 +18,7 @@ function NP:Construct_PowerBar(nameplate)
 
 	Power.PreUpdate = function(element, unit)
 		local _, pToken = UnitPowerType(unit)
-		local Color = element.__owner.colors.power[pToken]
+		local Color = _G.ElvUI.oUF.colors.power[pToken]
 
 		if Color then
 			element:SetStatusBarColor(Color[1], Color[2], Color[3])
@@ -29,9 +29,9 @@ function NP:Construct_PowerBar(nameplate)
 		if max == 0 then
 			element:Hide()
 		else
+			element:PreUpdate(unit)
 			element:Show()
 		end
-		element:PreUpdate(unit)
 	end
 
 	return Power

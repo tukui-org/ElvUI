@@ -2,16 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_RaidTargetIndicator(frame)
-	local RaidTargetIndicator = frame:CreateTexture(nil, 'OVERLAY', 7)
+function NP:Construct_RaidTargetIndicator(nameplate)
+	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', 7)
 	RaidTargetIndicator:SetSize(24, 24)
-	RaidTargetIndicator:Point('BOTTOM', frame.Health, 'TOP', 0, 24)
-	RaidTargetIndicator.Override = function(f, event)
-		local element = f.RaidTargetIndicator
+	RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
+	RaidTargetIndicator.Override = function(frame, event)
+		local element = frame.RaidTargetIndicator
 
-		if f.unit then
-			local index = GetRaidTargetIndex(f.unit)
-			if (index) and not UnitIsUnit(f.unit, 'player') then
+		if frame.unit then
+			local index = GetRaidTargetIndex(frame.unit)
+			if (index) and not UnitIsUnit(frame.unit, 'player') then
 				SetRaidTargetIconTexture(element, index)
 				element:Show()
 			else
@@ -23,5 +23,5 @@ function NP:Construct_RaidTargetIndicator(frame)
 	return RaidTargetIndicator
 end
 
-function NP:Update_RaidTargetIndicator(frame)
+function NP:Update_RaidTargetIndicator(nameplate)
 end

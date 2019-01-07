@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_Buffs(frame)
-	local Buffs = CreateFrame("Frame", self:GetName()..'Buffs', frame)
-	Buffs:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_Buffs(nameplate)
+	local Buffs = CreateFrame("Frame", self:GetName()..'Buffs', nameplate)
+	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(0)
 	Buffs:SetSize(300, 27)
 
@@ -25,9 +25,9 @@ function NP:Construct_Buffs(frame)
 	return Buffs
 end
 
-function NP:Construct_Debuffs(frame)
-	local Debuffs = CreateFrame("Frame", self:GetName()..'Debuffs', frame)
-	Debuffs:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_Debuffs(nameplate)
+	local Debuffs = CreateFrame("Frame", self:GetName()..'Debuffs', nameplate)
+	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(0)
 	Debuffs:SetSize(300, 27)
 
@@ -48,9 +48,9 @@ function NP:Construct_Debuffs(frame)
 	return Debuffs
 end
 
-function NP:Construct_Auras(frame)
-	local Auras = CreateFrame("Frame", self:GetName()..'Debuffs', frame)
-	Auras:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_Auras(nameplate)
+	local Auras = CreateFrame("Frame", self:GetName()..'Debuffs', nameplate)
+	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(0)
 	Auras:SetSize(300, 27)
 
@@ -69,6 +69,7 @@ function NP:Construct_Auras(frame)
 	Auras.PostCreateIcon = self.Construct_AuraIcon
 	Auras.PostUpdateIcon = self.PostUpdateAura
 	Auras.CustomFilter = self.AuraFilter
+
 	return Auras
 end
 
@@ -147,32 +148,21 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraIconSettings(button, true)
 end
 
-function NP:EnableDisable_Auras(frame)
-	if frame.db.debuffs.enable or frame.db.buffs.enable then
-		if not frame:IsElementEnabled('Aura') then
-			frame:EnableElement('Aura')
+function NP:EnableDisable_Auras(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.debuffs.enable or db.buffs.enable then
+		if not nameplate:IsElementEnabled('Aura') then
+			nameplate:EnableElement('Aura')
 		end
 	else
-		if frame:IsElementEnabled('Aura') then
-			frame:DisableElement('Aura')
+		if nameplate:IsElementEnabled('Aura') then
+			nameplate:DisableElement('Aura')
 		end
 	end
 end
 
 function NP:PostUpdateAura(unit, button)
-	local auras = button:GetParent()
-	local frame = auras:GetParent()
-	local type = auras.type
-	local db = frame.db and frame.db[type]
-
-	if db then
-		if db.clickThrough and button:IsMouseEnabled() then
-			button:EnableMouse(false)
-		elseif not db.clickThrough and not button:IsMouseEnabled() then
-			button:EnableMouse(true)
-		end
-	end
-
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)

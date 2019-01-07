@@ -106,4 +106,9 @@ function NP:Update_HealthPrediction(nameplate)
 	else
 		nameplate:DisableElement('HealPrediction')
 	end
+
+	nameplate.HealthPrediction.myBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.personal))
+	nameplate.HealthPrediction.otherBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.others))
+	nameplate.HealthPrediction.absorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.absorbs))
+	nameplate.HealthPrediction.healAbsorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.healAbsorbs))
 end
