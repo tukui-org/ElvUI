@@ -109,7 +109,7 @@ function E:Grid_GetRegion()
 			line:SetAlpha(1)
 			return line
 		else
-			return grid:CreateTexture(nil, 'BACKGROUND')
+			return grid:CreateTexture()
 		end
 	end
 end
@@ -117,6 +117,7 @@ end
 function E:Grid_Create()
 	if not grid then
 		grid = CreateFrame('Frame', 'ElvUIGrid', UIParent)
+		grid:SetFrameStrata('BACKGROUND')
 	else
 		grid.regionCount = 0
 		local numRegions = grid:GetNumRegions()
@@ -145,8 +146,10 @@ function E:Grid_Create()
 		local tx = E:Grid_GetRegion()
 		if i == E.db.gridSize / 2 then
 			tx:SetColorTexture(1, 0, 0)
+			tx:SetDrawLayer('BACKGROUND', 1)
 		else
 			tx:SetColorTexture(0, 0, 0)
+			tx:SetDrawLayer('BACKGROUND', 0)
 		end
 		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
@@ -157,6 +160,7 @@ function E:Grid_Create()
 	do
 		local tx = E:Grid_GetRegion()
 		tx:SetColorTexture(1, 0, 0)
+		tx:SetDrawLayer('BACKGROUND', 1)
 		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
@@ -165,12 +169,14 @@ function E:Grid_Create()
 	for i = 1, floor((height/2)/hStep) do
 		local tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
+		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
 
 		tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
+		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
