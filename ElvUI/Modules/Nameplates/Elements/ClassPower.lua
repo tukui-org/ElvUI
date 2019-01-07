@@ -27,7 +27,7 @@ function NP:Construct_ClassPower(frame)
 	ClassPower:SetFrameStrata(frame:GetFrameStrata())
 	ClassPower:SetFrameLevel(2)
 	ClassPower:CreateBackdrop("Transparent")
-	ClassPower:SetSize(130, 4)
+	ClassPower:SetSize(130, 7)
 	ClassPower:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 14)
 
 	for index = 1, (MAX_POINTS[E.myclass] or 5) do

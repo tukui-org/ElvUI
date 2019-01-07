@@ -3,33 +3,73 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
 function NP:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
-	buffs.spacing = E.Spacing
-	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
-	buffs.PostCreateIcon = self.Construct_AuraIcon
-	buffs.PostUpdateIcon = self.PostUpdateAura
-	buffs.CustomFilter = self.AuraFilter
-	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
-	buffs.type = 'buffs'
-	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	buffs:Width(100)
+	local Buffs = CreateFrame("Frame", self:GetName()..'Buffs', frame)
+	Buffs:SetFrameStrata(frame:GetFrameStrata())
+	Buffs:SetFrameLevel(0)
+	Buffs:SetSize(300, 27)
 
-	return buffs
+	Buffs.disableMouse = true
+	Buffs.size = 27
+	Buffs.num = 8
+	Buffs.spacing = E.Border
+	Buffs.onlyShowPlayer = false
+	Buffs.initialAnchor = "BOTTOMLEFT"
+	Buffs['growth-x'] = 'RIGHT'
+	Buffs['growth-y'] = 'UP'
+
+	Buffs.type = 'buffs'
+	Buffs.PostCreateIcon = self.Construct_AuraIcon
+	Buffs.PostUpdateIcon = self.PostUpdateAura
+	--buffs.CustomFilter = self.AuraFilter
+
+	return Buffs
 end
 
 function NP:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', frame:GetName().."Debuffs", frame)
-	debuffs.spacing = E.Spacing
-	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
-	debuffs.PostCreateIcon = self.Construct_AuraIcon
-	debuffs.PostUpdateIcon = self.PostUpdateAura
-	debuffs.CustomFilter = self.AuraFilter
-	debuffs.type = 'debuffs'
-	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
-	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	debuffs:Width(100)
+	local Debuffs = CreateFrame("Frame", self:GetName()..'Debuffs', frame)
+	Debuffs:SetFrameStrata(frame:GetFrameStrata())
+	Debuffs:SetFrameLevel(0)
+	Debuffs:SetSize(300, 27)
 
-	return debuffs
+	Debuffs.disableMouse = true
+	Debuffs.size = 27
+	Debuffs.num = 8
+	Debuffs.spacing = E.Border
+	Debuffs.onlyShowPlayer = false
+	Debuffs.initialAnchor = "BOTTOMRIGHT"
+	Debuffs.onlyShowPlayer = false
+	Debuffs['growth-x'] = 'LEFT'
+	Debuffs['growth-y'] = 'UP'
+
+	Debuffs.type = 'debuffs'
+	Debuffs.PostCreateIcon = self.Construct_AuraIcon
+	Debuffs.PostUpdateIcon = self.PostUpdateAura
+	--Debuffs.CustomFilter = self.AuraFilter
+	return Debuffs
+end
+
+function NP:Construct_Auras(frame)
+	local Auras = CreateFrame("Frame", self:GetName()..'Debuffs', frame)
+	Auras:SetFrameStrata(frame:GetFrameStrata())
+	Auras:SetFrameLevel(0)
+	Auras:SetSize(300, 27)
+
+	Auras.disableMouse = true
+	Auras.gap = true
+	Auras.size = 27
+	Auras.numDebuffs = 4
+	Auras.numBuffs = 4
+	Auras.spacing = E.Border
+	Auras.onlyShowPlayer = false
+	Auras.initialAnchor = 'BOTTOMLEFT'
+	Auras.onlyShowPlayer = false
+	Auras['growth-x'] = 'RIGHT'
+	Auras['growth-y'] = 'UP'
+
+	Auras.PostCreateIcon = self.Construct_AuraIcon
+	Auras.PostUpdateIcon = self.PostUpdateAura
+	Auras.CustomFilter = self.AuraFilter
+	return Auras
 end
 
 function NP:Construct_AuraIcon(button)

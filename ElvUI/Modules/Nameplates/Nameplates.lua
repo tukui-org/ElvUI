@@ -128,8 +128,10 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 
-	nameplate.Buffs = NP:Construct_Buffs(nameplate)
-	nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
+	nameplate.Auras = NP:Construct_Auras(nameplate)
+
+	--nameplate.Buffs = NP:Construct_Buffs(nameplate)
+	--nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 	nameplate:DisableElement('ClassPower')
@@ -287,6 +289,15 @@ function NP:UnitStyle(nameplate, unit)
 			nameplate:EnableElement('Runes')
 		end
 	end
+
+	nameplate.Auras:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
+	nameplate.Auras:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+
+	--nameplate.Debuffs:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
+	--nameplate.Debuffs:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+
+	--nameplate.Buffs:SetPoint("BOTTOMLEFT", nameplate.Debuffs, "TOPLEFT", 0, 1)
+	--nameplate.Buffs:SetPoint("BOTTOMRIGHT", nameplate.Debuffs, "TOPRIGHT", 0, 1)
 
 	nameplate:UpdateAllElements('OnShow')
 end
