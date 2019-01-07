@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)
 
 **Misc. Changes:**  
 Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.
