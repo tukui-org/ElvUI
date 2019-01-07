@@ -100,3 +100,12 @@ function NP:Construct_Runes(frame)
 
 	return Runes
 end
+
+function NP:Update_ClassPower(nameplate)
+	if nameplate.frameType == 'PLAYER' then
+		nameplate:EnableElement('ClassPower')
+		if E.myclass == 'DEATHKNIGHT' then
+			nameplate:EnableElement('Runes')
+		end
+	end
+end

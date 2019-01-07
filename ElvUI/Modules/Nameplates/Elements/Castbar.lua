@@ -2,15 +2,15 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_Castbar(frame)
-	local Castbar = CreateFrame('StatusBar', nil, frame)
-	Castbar:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_Castbar(nameplate)
+	local Castbar = CreateFrame('StatusBar', nil, nameplate)
+	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 	Castbar:SetFrameLevel(6)
 	Castbar:CreateBackdrop('Transparent')
 	Castbar:SetHeight(16) -- need option
-	Castbar:SetPoint('TOPLEFT', frame, 'BOTTOMLEFT', 0, -20) -- need option
-	Castbar:SetPoint('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -20) -- need option
+	Castbar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, -20) -- need option
+	Castbar:SetPoint('TOPRIGHT', nameplate, 'BOTTOMRIGHT', 0, -20) -- need option
 
 	Castbar.Button = CreateFrame('Frame', nil, Castbar)
 	Castbar.Button:SetSize(18, 18) -- need option
@@ -52,4 +52,14 @@ function NP:Construct_Castbar(frame)
 	Castbar.PostChannelStart = CheckInterrupt
 
 	return Castbar
+end
+
+function NP:Update_Castbar(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.castbar.enable then
+		nameplate.Castbar.timeToHold = db.castbar.timeToHold
+		if db.castbar.iconPosition then
+		end
+	end
 end

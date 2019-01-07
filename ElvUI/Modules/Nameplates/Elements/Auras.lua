@@ -72,6 +72,17 @@ function NP:Construct_Auras(frame)
 	return Auras
 end
 
+function NP:Update_Auras(nameplate)
+	nameplate.Auras:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
+	nameplate.Auras:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+
+	--nameplate.Debuffs:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
+	--nameplate.Debuffs:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+
+	--nameplate.Buffs:SetPoint("BOTTOMLEFT", nameplate.Debuffs, "TOPLEFT", 0, 1)
+	--nameplate.Buffs:SetPoint("BOTTOMRIGHT", nameplate.Debuffs, "TOPRIGHT", 0, 1)
+end
+
 function NP:Construct_AuraIcon(button)
 	local offset = E.Border
 

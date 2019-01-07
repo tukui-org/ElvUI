@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_PowerBar(frame)
-	local Power = CreateFrame('StatusBar', nil, frame)
-	Power:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_PowerBar(nameplate)
+	local Power = CreateFrame('StatusBar', nil, nameplate)
+	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(1)
 	Power:CreateBackdrop('Transparent')
-	Power:SetPoint('TOP', frame.Health, 'TOP', 0, -14)
+	Power:SetPoint('TOP', nameplate.Health, 'TOP', 0, -14)
 	Power:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 
 	Power.frequentUpdates = true
@@ -37,14 +37,45 @@ function NP:Construct_PowerBar(frame)
 	return Power
 end
 
-function NP:Construct_PowerPrediction(frame)
-	local PowerBar = CreateFrame('StatusBar', nil, frame.Power)
+function NP:Construct_PowerPrediction(nameplate)
+	local PowerBar = CreateFrame('StatusBar', nil, nameplate.Power)
 	PowerBar:SetReverseFill(true)
 	PowerBar:SetPoint('TOP') -- need option
 	PowerBar:SetPoint('BOTTOM')
-	PowerBar:SetPoint('RIGHT', frame.Power:GetStatusBarTexture(), 'RIGHT')
+	PowerBar:SetPoint('RIGHT', nameplate.Power:GetStatusBarTexture(), 'RIGHT')
 	PowerBar:SetWidth(130) -- need option
 	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 
 	return { mainBar = PowerBar }
+end
+
+function NP:Update_Power(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	NP:Update_Health(nameplate)
+	NP:Update_HealthPrediction(nameplate)
+
+	if db.powerbar.enable then
+		nameplate:EnableElement('Power')
+	else
+		nameplate:DisableElement('Power')
+	end
+
+	if db.powerbar.text.enable then
+		nameplate.Power.Text:Show()
+	else
+		nameplate.Power.Text:Hide()
+	end
+
+	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
+end
+
+function NP:Update_PowerPrediction(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.powerbar.enable and db.powerbar.costPrediction then
+		nameplate:EnableElement('PowerPrediction')
+	else
+		nameplate:DisableElement('PowerPrediction')
+	end
 end

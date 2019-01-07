@@ -22,3 +22,6 @@ function NP:Construct_RaidTargetIndicator(frame)
 
 	return RaidTargetIndicator
 end
+
+function NP:Update_RaidTargetIndicator(frame)
+end

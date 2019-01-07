@@ -142,162 +142,26 @@ function NP:StylePlate(nameplate)
 	end
 end
 
-function NP:UnitStyle(nameplate, unit)
-	-- ['glowStyle'] = 'TARGET_THREAT',
-	local db = NP.db.units[unit]
+function NP:UnitStyle(nameplate)
+	NP:Update_Health(nameplate)
 
-	if (unit == 'FRIENDLY_NPC') or (unit == 'ENEMY_NPC') then
-		nameplate.Health.colorClass = false
-		nameplate.Health.colorReaction = true
-	else
-		nameplate.Health.colorClass = db.healthbar.useClassColor
-		nameplate.Health.colorReaction = false
-	end
+	NP:Update_HealthPrediction(nameplate)
 
-	if db.healthbar.enable then
-		nameplate:EnableElement('Health')
-		nameplate.Highlight.texture:Show()
-	else
-		nameplate:DisableElement('Health')
-		nameplate.Highlight.texture:Hide()
-	end
+	NP:Update_Power(nameplate)
 
-	if db.healthbar.enable and db.healthbar.healPrediction then
-		nameplate:EnableElement('HealPrediction')
-	else
-		nameplate:DisableElement('HealPrediction')
-	end
+	NP:Update_PowerPrediction(nameplate)
 
-	if db.healthbar.text.enable then
-		nameplate.Health.Text:Show()
-	else
-		nameplate.Health.Text:Hide()
-	end
+	NP:Update_Castbar(nameplate)
 
-	nameplate.Health.width = db.healthbar.width
-	nameplate.Health.height = db.healthbar.height
-	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
+	NP:Update_TargetIndicator(nameplate)
 
-	if db.powerbar.enable then
-		nameplate:EnableElement('Power')
-	else
-		nameplate:DisableElement('Power')
-	end
+	NP:Update_ClassificationIndicator(nameplate)
 
-	if db.powerbar.enable and db.powerbar.costPrediction then
-		nameplate:EnableElement('PowerPrediction')
-	else
-		nameplate:DisableElement('PowerPrediction')
-	end
+	NP:Update_ClassPower(nameplate)
 
-	if db.powerbar.text.enable then
-		nameplate.Power.Text:Show()
-	else
-		nameplate.Power.Text:Hide()
-	end
+	NP:Update_Auras(nameplate)
 
-	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
-
-	if db.showName then
-		nameplate.Name:Show()
-		nameplate.Name:ClearAllPoints()
-		if not db.showLevel then
-			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
-			nameplate.Name:SetJustifyH('CENTER')
-		else
-			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
-			nameplate.Name:SetJustifyH('LEFT')
-			nameplate.Name:SetJustifyV('BOTTOM')
-		end
-	else
-		nameplate.Name:Hide()
-	end
-
-	if db.showLevel then
-		nameplate.Level:Show()
-	else
-		nameplate.Level:Hide()
-	end
-
-	if db.castbar.enable then
-		nameplate.Castbar.timeToHold = db.castbar.timeToHold
-		if db.castbar.iconPosition then
-		end
-	end
-
-	nameplate.TargetIndicator.style = NP['db'].targetGlow
-	nameplate.TargetIndicator.lowHealthThreshold = NP['db'].lowHealthThreshold
-
-	if NP['db'].targetGlow ~= 'none' then
-		local GlowStyle = NP['db'].targetGlow
-		local Color = NP['db'].colors.glow
-		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
-			local topArrowSpace = -3
-			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
-				topArrowSpace = NP['db'].fontSize + topArrowSpace
-			end
-			nameplate.TargetIndicator.TopIndicator:Point("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
-			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
-		end
-
-		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == "style4" or GlowStyle == "style7" or GlowStyle == "style8") then
-			nameplate.TargetIndicator.LeftIndicator:Point("LEFT", nameplate.HealthBar, "RIGHT", -3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point("RIGHT", nameplate.HealthBar, "LEFT", 3, 0)
-			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
-			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
-		end
-
-		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
-			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
-			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
-		end
-
-		if nameplate.TargetIndicator.Spark and (GlowStyle == "style2" or GlowStyle == "style6" or GlowStyle == "style8") then
-			local scale = 1
-			if NP['db'].useTargetScale then
-				if NP['db'].targetScale >= 0.75 then
-					scale = NP['db'].targetScale
-				else
-					scale = 0.75
-				end
-			end
-
-			local size = (E.Border + 14) * scale;
-
-			nameplate.TargetIndicator.Spark:Point("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size * 2), size)
-			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size * 2, -size)
-			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
-		end
-	end
-
-	if db.eliteIcon and db.eliteIcon.enable then
-		nameplate:EnableElement('ClassificationIndicator')
-		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
-		if db.healthbar.enable then
-			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.HealthBar, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
-		else
-			nameplate.ClassificationIndicator:Point("RIGHT", nameplate.Name, "LEFT", 0, 0)
-		end
-	else
-		nameplate:DisableElement('ClassificationIndicator')
-	end
-
-	if unit == 'PLAYER' then
-		nameplate:EnableElement('ClassPower')
-		if E.myclass == 'DEATHKNIGHT' then
-			nameplate:EnableElement('Runes')
-		end
-	end
-
-	nameplate.Auras:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
-	nameplate.Auras:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
-
-	--nameplate.Debuffs:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
-	--nameplate.Debuffs:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
-
-	--nameplate.Buffs:SetPoint("BOTTOMLEFT", nameplate.Debuffs, "TOPLEFT", 0, 1)
-	--nameplate.Buffs:SetPoint("BOTTOMRIGHT", nameplate.Debuffs, "TOPRIGHT", 0, 1)
+	NP:Update_Tags(nameplate)
 
 	nameplate:UpdateAllElements('OnShow')
 end
@@ -428,36 +292,30 @@ function NP:ConfigureAll()
 	end
 end
 
-function NP:SizeScale(size, scale)
-	local number = size * scale
-
-	if mod(number, 2) == 1 then
-		number = number + (scale >= 1 and 1 or -1)
-	end
-
-	return number
-end
-
 function NP:NamePlateCallBack(nameplate, event, unit)
-	NP:UnitStyle(ElvNP_Player, 'PLAYER')
-
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
 		local faction = UnitFactionGroup(unit)
 
 		if (UnitIsUnit(unit, 'player')) then
-			NP:UnitStyle(nameplate, 'PLAYER')
-			NP:UnitStyle(ElvNP_Player, 'PLAYER')
+			nameplate.frameType = 'PLAYER'
 		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
-			NP:UnitStyle(nameplate, 'FRIENDLY_PLAYER')
+			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
-			NP:UnitStyle(nameplate, 'FRIENDLY_NPC')
+			nameplate.frameType = 'FRIENDLY_NPC'
 		elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
-			NP:UnitStyle(nameplate, 'ENEMY_NPC')
+			nameplate.frameType = 'ENEMY_NPC'
 		else
-			NP:UnitStyle(nameplate, 'ENEMY_PLAYER')
+			nameplate.frameType = 'ENEMY_PLAYER'
 		end
+
+		NP:UnitStyle(nameplate)
+
+		if NP.db.units['PLAYER'].useStaticPosition then
+			NP:UnitStyle(ElvNP_Player)
+		end
+
 		NP.Plates[nameplate] = true
 	end
 end
@@ -505,6 +363,8 @@ function NP:Initialize()
 	ElvNP_Player:SetScale(1)
 	ElvNP_Player:SetScript('OnEnter', UnitFrame_OnEnter)
 	ElvNP_Player:SetScript('OnLeave', UnitFrame_OnLeave)
+	ElvNP_Player.frameType = 'PLAYER'
+
 	if not NP.db.units['PLAYER'].useStaticPosition then
 		ElvNP_Player:Disable()
 	end
