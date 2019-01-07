@@ -8,6 +8,7 @@ local floor, max = math.floor, math.max
 local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -376,6 +377,12 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
+local function PostUpdateRunes(self)
+	local useRunes = not UnitHasVehicleUI('player')
+	self:SetShown(useRunes)
+	UF.PostVisibilityRunes(self, useRunes)
+end
+
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
@@ -396,16 +403,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg.multiplier = 0.3
 	end
 
-	runes.PostUpdate = function()
-		if (UnitHasVehicleUI('player')) then
-			runes:Hide()
-			UF:PostUpdateVisibility(false, true)
-		else
-			runes:Show()
-			UF:PostUpdateVisibility(true, true)
-		end
-	end
-
+	runes.PostUpdate = PostUpdateRunes
 	runes.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
@@ -413,7 +411,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
-function UF:PostVisibilityRunes(enabled, stateChanged)
+function UF:PostVisibilityRunes(enabled)
 	local frame = self.origParent or self:GetParent()
 
 	if enabled then
@@ -422,14 +420,6 @@ function UF:PostVisibilityRunes(enabled, stateChanged)
 	else
 		frame.ClassBar = "ClassPower"
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
-	end
-
-	if stateChanged then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end
 
