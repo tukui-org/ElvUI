@@ -469,7 +469,7 @@ L["This feature will allow you to transfer settings to other characters."] = "Es
 L["You must be targeting a player."] = "Debes enfocar a un jugador."
 
 --Filters
-L["Quick Search"] = true
+L["Filter Search"] = true
 L["Reset Aura Filters"] = true --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true
 L["Search for a spell name inside of a filter."] = true
@@ -1314,7 +1314,6 @@ L["Tank Frames"] = "Marco de Tanques"
 L["Tank Target"] = "Objetivo del Tanque"
 L["Tapped"] = "Golpear"
 L["Targeting"] = true
-L["Target Glow"] = true
 L["Target On Mouse-Down"] = "Apuntar al Presionar el Botón del Ratón"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Apuntar unidades al presionar el botón en lugar de soltarlo. \n\n|cffFF0000Advertencia: Si estás usando Clique es probable que tengas que modificar tus ajustes de Clique cuando cambies esta opción.|r"
 L["Text Color"] = "Color de Texto"

@@ -20,7 +20,7 @@ E.Options.args.skins = {
 		ace3 = {
 			order = 2,
 			type = 'toggle',
-			name = L["Ace3"],
+			name = "Ace3",
 			get = function(info) return E.private.skins.ace3.enable end,
 			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},
