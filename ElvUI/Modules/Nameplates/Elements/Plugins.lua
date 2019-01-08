@@ -90,7 +90,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 	if NP['db'].targetGlow ~= 'none' then
 		local GlowStyle = NP['db'].targetGlow
-		local Color = NP['db'].colors.glow
+		local Color = NP['db'].colors.glowColor
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
 			local topArrowSpace = -3
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then

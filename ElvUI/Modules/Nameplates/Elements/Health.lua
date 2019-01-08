@@ -17,6 +17,7 @@ function NP:Construct_HealthBar(nameplate)
 	Health.frequentUpdates = true
 	Health.colorTapping = true
 	Health.colorDisconnected = false
+	Health.colorReaction = true
 
 	Health.Smooth = true
 
@@ -26,13 +27,7 @@ end
 function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if (nameplate.frameType == 'FRIENDLY_NPC') or (nameplate.frameType == 'ENEMY_NPC') then
-		nameplate.Health.colorClass = false
-		nameplate.Health.colorReaction = true
-	else
-		nameplate.Health.colorClass = db.healthbar.useClassColor
-		nameplate.Health.colorReaction = false
-	end
+	nameplate.Health.colorClass = db.healthbar.useClassColor
 
 	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
