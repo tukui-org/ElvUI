@@ -19,6 +19,7 @@ P['general'] = {
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
 	['talkingHeadFrameBackdrop'] = false,
+	['useNewCheckBox'] = true,
 	['vehicleSeatIndicatorSize'] = 128,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',

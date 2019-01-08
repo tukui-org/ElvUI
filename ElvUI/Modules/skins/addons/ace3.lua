@@ -32,7 +32,6 @@ function S:SkinAce3()
 	if not AceGUI then return end
 
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
-	local ColorBlind = GetCVarBool('colorblindmode')
 
 	RegisterAsWidget = function(object, widget)
 		if not E.private.skins.ace3.enable then
@@ -63,7 +62,7 @@ function S:SkinAce3()
 			checkbg:SetTexture('')
 			highlight:SetTexture('')
 
-			if not ColorBlind then
+			if E.db.general.useNewCheckBox then
 				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 
 				check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])

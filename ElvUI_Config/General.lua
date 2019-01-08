@@ -218,6 +218,13 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameBackdrop end,
 					set = function(info, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show("CONFIG_RL") end
 				},
+				useNewCheckBox = {
+					order = 25,
+					type = "toggle",
+					name = L["New CheckBox Skin"],
+					get = function(info) return E.db.general.useNewCheckBox end,
+					set = function(info, value) E.db.general.useNewCheckBox = value; E:StaticPopup_Show("CONFIG_RL") end
+				},
 				vehicleSeatIndicatorSize = {
 					order = 26,
 					type = "range",
