@@ -55,6 +55,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
 	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
+	if (type(arg2) == "string" and obj == _G[arg2]) or obj == _G[arg2] then arg2 = "ElvUIParent" end
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
