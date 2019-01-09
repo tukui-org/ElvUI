@@ -113,10 +113,10 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 
-	nameplate.Auras = NP:Construct_Auras(nameplate)
+	--nameplate.Auras = NP:Construct_Auras(nameplate)
 
-	--nameplate.Buffs = NP:Construct_Buffs(nameplate)
-	--nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
+	nameplate.Buffs = NP:Construct_Buffs(nameplate)
+	nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 	nameplate:DisableElement('ClassPower')

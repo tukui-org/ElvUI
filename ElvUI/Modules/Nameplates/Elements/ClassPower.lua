@@ -27,16 +27,21 @@ function NP:Construct_ClassPower(frame)
 	ClassPower:SetFrameStrata(frame:GetFrameStrata())
 	ClassPower:SetFrameLevel(2)
 	ClassPower:CreateBackdrop("Transparent")
-	ClassPower:SetSize(130, 7)
 	ClassPower:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 14)
 
-	for index = 1, (MAX_POINTS[E.myclass] or 5) do
-		local Bar = CreateFrame('StatusBar', nil, ClassPower)
-		Bar:SetSize(130 / (MAX_POINTS[E.myclass] or 5), 7)
-		Bar:SetPoint('TOPLEFT', ClassPower, 'TOPLEFT', (index - 1) * Bar:GetWidth(), 0)
-		Bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	ClassPower:SetSize(130 + ((MAX_POINTS[E.myclass] or 5) - 1), 7)
+	local Width = 130 / 6
 
-		ClassPower[index] = Bar
+	for i = 1, (MAX_POINTS[E.myclass] or 5) do
+		ClassPower[i] = CreateFrame('StatusBar', nil, ClassPower)
+		ClassPower[i]:SetSize(Width, 7)
+		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+
+		if i == 1 then
+			ClassPower[i]:SetPoint('LEFT', ClassPower, 'LEFT', 0, 0)
+		else
+			ClassPower[i]:SetPoint('LEFT', ClassPower[i - 1], 'LEFT', 1, 0)
+		end
 	end
 
 	ClassPower.UpdateColor = function(element, powerType)
@@ -61,9 +66,13 @@ function NP:Construct_ClassPower(frame)
 			element:Hide()
 		end
 		if needUpdate then
-			for index = 1, max do
-				element[index]:SetSize(130/max, 7)
-				element[index]:SetPoint('TOPLEFT', element, 'TOPLEFT', (index - 1) * element[index]:GetWidth(), 0)
+			for i = 1, max do
+				element[i]:SetSize(130 / max, 7)
+				if i == 1 then
+					element[i]:SetPoint('LEFT', element, 'LEFT', 0, 0)
+				else
+					element[i]:SetPoint('LEFT', element[i - 1], 'LEFT', 1, 0)
+				end
 			end
 		end
 	end
@@ -76,7 +85,6 @@ function NP:Construct_Runes(frame)
 	Runes:SetFrameStrata(frame:GetFrameStrata())
 	Runes:SetFrameLevel(2)
 	Runes:SetPoint("BOTTOM", frame.Health, "TOP", 0, 4)
-	Runes:SetSize(130, 7)
 	Runes:CreateBackdrop()
 	Runes:Hide()
 	Runes.UpdateColor = function() end
@@ -88,14 +96,21 @@ function NP:Construct_Runes(frame)
 		end
 	end
 
+	Runes:SetSize(130 + 5, 7)
+	local width = 130 / 6
+
 	for i = 1, 6 do
 		Runes[i] = CreateFrame("StatusBar", nil, Runes)
 		Runes[i]:Hide()
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 		Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
+		Runes[i]:SetSize(width, 7)
 
-		Runes[i]:SetSize(130 / 6, 7)
-		Runes[i]:SetPoint('TOPLEFT', Runes, 'TOPLEFT', (i - 1) * Runes[i]:GetWidth(), 0)
+		if i == 1 then
+			Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 0, 0)
+		else
+			Runes[i]:SetPoint('LEFT', Runes[i-1], 'RIGHT', 1, 0)
+		end
 	end
 
 	return Runes
