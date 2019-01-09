@@ -2197,6 +2197,7 @@ end
 function B:Initialize()
 	--Creating vendor grays frame
 	self:CreateSellFrame()
+	self:RegisterEvent("MERCHANT_CLOSED")
 
 	self:LoadBagBar();
 
@@ -2295,7 +2296,6 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
-	self:RegisterEvent("MERCHANT_CLOSED")
 
 	BankFrame:SetScale(0.0001)
 	BankFrame:SetAlpha(0)
