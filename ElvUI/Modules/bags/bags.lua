@@ -1278,7 +1278,19 @@ function B:UpdateTokens()
 		self:Layout();
 	end
 
+	f.currencyButton:ClearAllPoints()
+	if self.db.reverseSlots then
+		f.currencyButton:Point('TOP', f.editBox, 0, -4);
+		f.currencyButton:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, -18);
+		f.currencyButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, -18);
+	else
+		f.currencyButton:Point('BOTTOM', f, 0, 4);
+		f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18);
+		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18);
+	end
+
 	f.bottomOffset = 28;
+
 	if numTokens == 1 then
 		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3);
 	elseif numTokens == 2 then
@@ -1770,9 +1782,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Currency
 		f.currencyButton = CreateFrame('Frame', nil, f);
-		f.currencyButton:Point('BOTTOM', 0, 4);
-		f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18);
-		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18);
+
 		f.currencyButton:Height(22);
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName().."CurrencyButton"..i, f.currencyButton);
