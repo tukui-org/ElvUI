@@ -90,7 +90,7 @@ local LOCALE = {
 -- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
--- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
+-- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2,
 -- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_HEAD,INVSLOT_NECK,INVSLOT_SHOULDER,INVSLOT_BACK,INVSLOT_CHEST,
 -- GLOBALS: INVSLOT_WRIST,INVSLOT_HAND,INVSLOT_WAIST,INVSLOT_LEGS,INVSLOT_FEET, INVSLOT_FINGER1
 -- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
