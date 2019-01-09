@@ -119,6 +119,12 @@ local inventorySlots = {
 	INVTYPE_TABARD = 25,
 }
 
+local conjured_items = {
+	5512, -- Healthstone
+	162518, -- Mystical Flask
+	113509, -- Conjured Mana Bun
+}
+
 local safe = {
 	[BANK_CONTAINER] = true,
 	[0] = true
@@ -219,6 +225,14 @@ local function DefaultSort(a, b)
 
 	if bagPetIDs[b] then
 		bRarity = 1
+	end
+
+	if tContains(conjured_items, aID) then
+		aRarity = -99
+	end
+
+	if tContains(conjured_items, bID) then
+		bRarity = -99
 	end
 
 	if aRarity ~= bRarity and aRarity and bRarity then
