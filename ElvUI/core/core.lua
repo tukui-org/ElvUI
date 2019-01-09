@@ -1203,12 +1203,14 @@ function E:UpdateEnd()
 		E:Install()
 	end
 
+	if E.staggerUpdateRunning then
+		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
+		--So call it, but skip updates inside it
+		E:UpdateAll(false)
+	end
+
 	--Done updating, let code now
 	E.staggerUpdateRunning = false
-
-	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
-	--So call it, but skip updates inside it
-	E:UpdateAll(false)
 end
 
 local staggerDelay = 0.02
