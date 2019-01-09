@@ -929,6 +929,7 @@ L["BG Map"] = "Carte Champs de bataille"
 L["BG Score"] = "Scores Champs de bataille"
 L["Calendar Frame"] = "Fenêtre du Calendrier"
 L["Character Frame"] = "Fenêtre du Personnage"
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Outils de débogage"
 L["Gossip Frame"] = "Fenêtre PNJ"

@@ -24,8 +24,15 @@ E.Options.args.skins = {
 			get = function(info) return E.private.skins.ace3.enable end,
 			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 		},
-		parchmentRemover = {
+		checkBoxSkin = {
 			order = 3,
+			type = "toggle",
+			name = L["CheckBox Skin"],
+			get = function(info) return E.private.skins.checkBoxSkin end,
+			set = function(info, value) E.private.skins.checkBoxSkin = value; E:StaticPopup_Show("PRIVATE_RL") end
+		},
+		parchmentRemover = {
+			order = 4,
 			type = 'toggle',
 			name = L["Parchment Remover"],
 			get = function(info) return E.private.skins.parchmentRemover.enable end,

@@ -928,6 +928,7 @@ L["BG Map"] = "Mapa de CB"
 L["BG Score"] = "Puntuación de CB"
 L["Calendar Frame"] = "Calendario"
 L["Character Frame"] = "Personaje"
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Herramientas de Depuración"
 L["Gossip Frame"] = "Actualidad"

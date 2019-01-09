@@ -930,6 +930,7 @@ L["BG Map"] = "戰場地圖"
 L["BG Score"] = "戰場積分"
 L["Calendar Frame"] = "行事曆"
 L["Character Frame"] = "角色"
+L["CheckBox Skin"] = true
 L["Contribution"] = "捐獻"
 L["Debug Tools"] = "除錯工具"
 L["Gossip Frame"] = "對話"

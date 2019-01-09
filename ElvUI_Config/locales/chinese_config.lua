@@ -927,6 +927,7 @@ L["BG Map"] = "战场地图"
 L["BG Score"] = "战场记分"
 L["Calendar Frame"] = "日历框架"
 L["Character Frame"] = "角色"
+L["CheckBox Skin"] = true
 L["Contribution"] = "捐献"
 L["Debug Tools"] = "除错工具"
 L["Gossip Frame"] = "闲谈"

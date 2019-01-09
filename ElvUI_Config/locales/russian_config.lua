@@ -928,6 +928,7 @@ L["BG Map"] = "Карта ПБ"
 L["BG Score"] = "Таблица ПБ"
 L["Calendar Frame"] = "Календарь"
 L["Character Frame"] = "Окно персонажа"
+L["CheckBox Skin"] = true
 L["Contribution"] = "Вклад"
 L["Debug Tools"] = "Инструменты отладки"
 L["Gossip Frame"] = "Диалоги"

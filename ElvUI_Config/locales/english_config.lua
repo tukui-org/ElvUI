@@ -925,6 +925,7 @@ L["BG Map"] = true
 L["BG Score"] = true
 L["Calendar Frame"] = true
 L["Character Frame"] = true
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = true
 L["Gossip Frame"] = true

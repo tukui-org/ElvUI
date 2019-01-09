@@ -977,6 +977,7 @@ L["BG Map"] = "전장 맵"
 L["BG Score"] = "전장 점수판"
 L["Calendar Frame"] = "달력"
 L["Character Frame"] = "캐릭터 창"
+L["CheckBox Skin"] = true
 L["Contribution"] = "기여"
 L["Debug Tools"] = "오류 확인 창"
 L["Gossip Frame"] = "NPC 대화 창"
