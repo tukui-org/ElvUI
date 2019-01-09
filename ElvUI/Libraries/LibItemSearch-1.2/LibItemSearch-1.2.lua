@@ -102,7 +102,8 @@ Lib.Filters.name = {
 	end,
 
 	match = function(self, item, _, search)
-		return Search:Find(search, C_Item.GetItemNameByID(item))
+	-- Modified: C_Item.GetItemNameByID returns nil for M+ keystones, a fallback is needed
+		return Search:Find(search, C_Item.GetItemNameByID(item) or item:match('%[(.-)%]'))
 	end
 }
 
@@ -166,7 +167,7 @@ Lib.Filters.quality = {
 	keywords = {},
 
 	canSearch = function(self, _, search)
-		for quality, name in pairs(qualities) do
+		for quality, name in pairs(self.keywords) do
 			if name:find(search) then
 				return quality
 			end
@@ -285,7 +286,7 @@ Lib.Filters.tipPhrases = {
 		end
 	end,
 
-	match = function(self, link, _, search, allowPartialMatch)
+	match = function(self, link, _, search)
 		local id = link:match('item:(%d+)')
 		if not id then
 			return
@@ -303,7 +304,7 @@ Lib.Filters.tipPhrases = {
 		for i = 1, Lib.Scanner:NumLines() do
 			local text = _G[Lib.Scanner:GetName() .. 'TextLeft' .. i]:GetText()
 			text = CleanString(text)
-			if search == text or (allowPartialMatch and text:find(search)) then
+			if search == text then
 				matches = true
 				break
 			end

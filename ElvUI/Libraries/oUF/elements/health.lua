@@ -77,17 +77,9 @@ The following options are listed by priority. The first check that returns true 
 
 local _, ns = ...
 local oUF = ns.oUF
-local updateFrequentUpdates -- ElvUI
 
 local function UpdateColor(element, unit, cur, max)
 	local parent = element.__owner
-
-	-- ElvUI block
-	if element.frequentUpdates ~= element.__frequentUpdates then
-		element.__frequentUpdates = element.frequentUpdates
-		updateFrequentUpdates(parent)
-	end
-	-- end block
 
 	local r, g, b, t
 	if(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
@@ -186,45 +178,35 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
--- ElvUI block
-function updateFrequentUpdates(self)
-	local health = self.Health
-	if health.frequentUpdates and not self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
-		if GetCVarBool("predictedHealth") ~= true then
-			SetCVar("predictedHealth", "1")
-		end
+--[[ Health:SetFrequentUpdates(state)
+Used to toggle frequent updates.
 
-		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-
-		if self:IsEventRegistered("UNIT_HEALTH") then
-			self:UnregisterEvent("UNIT_HEALTH", Path)
-		end
-	elseif not self:IsEventRegistered("UNIT_HEALTH") then
-		self:RegisterEvent('UNIT_HEALTH', Path)
-
-		if self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
-			self:UnregisterEvent("UNIT_HEALTH_FREQUENT", Path)
+* self  - the Health element
+* state - the desired state of frequent updates (boolean)
+--]]
+local function SetFrequentUpdates(element, state)
+	if(element.frequentUpdates ~= state) then
+		element.frequentUpdates = state
+		if(element.frequentUpdates) then
+			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		else
+			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 	end
 end
--- end block
 
 local function Enable(self, unit)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		-- ElvUI block
-		element.__frequentUpdates = element.frequentUpdates
-		updateFrequentUpdates(self)
-		-- end block
+		element.SetFrequentUpdates = SetFrequentUpdates
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		else
-			self:RegisterEvent('UNIT_HEALTH', Path)
 		end
 
+		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping

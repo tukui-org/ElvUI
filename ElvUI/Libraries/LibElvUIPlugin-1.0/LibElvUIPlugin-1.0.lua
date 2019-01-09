@@ -209,7 +209,7 @@ function lib:GeneratePluginList()
 			list = list..Pname
 			if author then list = list..' '..INFO_BY..' '..author end
 			list = list..color..(plugin.isLib and ' '..LIBRARY or ' - '..INFO_VERSION..' '..plugin.version)
-			if plugin.old then list = list..INFO_NEW..plugin.newversion..')' end
+			if plugin.old then list = list..' ('..INFO_NEW..plugin.newversion..')' end
 			list = list..'|r\n'
 		end
 	end

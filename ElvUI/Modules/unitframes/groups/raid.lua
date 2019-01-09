@@ -42,6 +42,7 @@ function UF:Construct_RaidFrames()
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
+	self.SummonIndicator =  UF:Construct_SummonIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
@@ -214,6 +215,9 @@ function UF:Update_RaidFrames(frame, db)
 
 	-- Resurrect Icon
 	UF:Configure_ResurrectionIcon(frame)
+
+	-- Summon Icon
+	UF:Configure_SummonIcon(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

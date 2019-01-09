@@ -1,19 +1,70 @@
-**Version 10.84 [  ]**
+### Version 10.86 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)
+
+**Misc. Changes:**  
+Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.
+
+___
+**Version 10.85 [ January 4th 2019 ]**
+
+**New Additions:**  
+Added `Weakened Soul` back to our Buff Indicator.  
+Added new Currencies to our Currencies Datatext.  
+Added NamePlate classbar scale option.  
+Added color options for UnitFrame Power Predictions.  
+
+**Bug Fixes:**  
+Fixed a possible nil error on our NamePlate auras.  
+Fixed nil error in the Obliterum & PvP skin.  
+Fixed an issue in Bags skin preventing the "highlight" visual from showing when searching for items.  
+Fixed an issue which could result in Quest Icon not showing up on nameplates even if it was enabled.  
+Fixed an issue that we accidentally use the general texture for the UnitFrame backdrop instead of the UnitFrame texture.  
+Fixed an issue which caused invisible GroupLootContainer frame to intercept mouse clicks. (#824)  
+Fixed an issue which caused pixel borders to be double or missing. NOTE: Mostly fixed but config is still strange. (#908)  
+Fixed lua error caused in NamePlate Style Filters about `GetSpecializationInfo`. (#926)  
+Fixed bad values in incomingheals tags. (#950)  
+Fixed Copy Chat Log (and Copy Chat Line) from displaying lines sometimes.  
+Fixed minor positioning issue with role indicator on unitframes.  
+Fixed issue which caused NamePlate StyleFilter NameOnly option to misplace the ClassBar/Portrait on plates.  
+Fixed issue with ClassBar on NamePlates since 8.1 patch, the ClassBar also correctly works on Druids now.  
+Fixed issue with NamePlates glow beeing pixelated.  
+Fixed issues in bag searching. (#931)  
+Fixed Social Queue Datatext and Chat Message.  
+Fixed an issue that mostly affected actionbars, where elements would be misplaced after a profile change.  
+
+**Misc. Changes:**  
+Changed Health Backdrop Multiplier to be an Override instead.  
+Updated oUF tags with recent changes.  
+Hid the Recipient Portrait on the TradeFrame.  
+ElvUI now staggers the updates that happen when a profile is changed. This should have minimal effect on existing plugins.  
+
+___
+**Version 10.84 [ December 11th 2018 ]**
 
 **New Additions:**  
 Added option to use health texture also on the backdrop.  
 Added a seperate Tooltip option to display the NPC ID. (#873)  
 Added a position option (Left or Right) for the Quest Icon on the Nameplates.  
 Added option to change the position of the Keybind & Stack Text on the ActionBars. (#361)  
+Added option to show an icon on an item in the bags if it's scrappable.  
+Added option in our media section to remove the cropping from icons. Mostly used for Custom Texture Packs.  
+Added option in our media section to select the 'Font Outline'.  
+Added the WoW Token price in our Gold DataText.  
 
 **Bug Fixes:**  
 Fixed `realm:dash` tag error. (tags.lua:657: bad argument `#2` to 'format')  
-Fixed QuestGreetingPanel skin not take account to Parchment Remover.  
+Fixed QuestGreetingPanel & WorldMap skin not take account to Parchment Remover.  
 Fixed Masque issues with the AddOn `ElvUI_ExtraActionBars`. (#709)  
 
 **Misc. Changes:**  
 Updated LibItemSearch to latest version.  
 Updated the Ace3 (ElvUI config) checkbox skin to a permanent color.  
+Some Code improvements.  
 Various Skin tweaks.  
 
 ___

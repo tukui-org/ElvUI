@@ -149,6 +149,7 @@ local function SetupCVars()
 	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("nameplateShowFriendlyNPCs", 1)
+	SetCVar("showQuestTrackingTooltips", 1)
 
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
@@ -204,7 +205,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 
 	if not noDisplayMsg then
-		E:UpdateAll(true)
+		E:StaggeredUpdateAll(nil, true)
 	end
 
 	if InstallStatus then
@@ -304,7 +305,7 @@ function E:SetupResolution(noDataReset)
 		E:SetupTheme(E.private.theme, true)
 	end
 
-	E:UpdateAll(true)
+	E:StaggeredUpdateAll(nil, true)
 
 	if InstallStepComplete and not noDataReset then
 		InstallStepComplete.message = L["Resolution Style Set"]
@@ -572,7 +573,7 @@ function E:SetupLayout(layout, noDataReset)
 		E:SetupTheme(E.private.theme, true)
 	end
 
-	E:UpdateAll(true)
+	E:StaggeredUpdateAll(nil, true)
 end
 
 local function SetupAuras(style)

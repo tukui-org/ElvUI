@@ -10,17 +10,38 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CUSTOM_CLASS_COLORS, OrderHallCommandBar, OrderHallMissionFrame, ClassHallTalentInset
--- GLOBALS: OrderHallTalentFrame, OrderHallTalentFramePortrait, OrderHallTalentFramePortraitFrame
+local function colorBorder(child, backdrop, atlas)
+	if child.AlphaIconOverlay:IsShown() then --isBeingResearched or (talentAvailability and not selected)
+		local alpha = child.AlphaIconOverlay:GetAlpha()
+		if alpha <= 0.5 then --talentAvailability
+			backdrop:SetBackdropBorderColor(0.5, 0.5, 0.5) --[border = grey, shadow x2]
+			child.darkOverlay:SetColorTexture(0, 0, 0, 0.50)
+			child.darkOverlay:Show()
+		elseif alpha <= 0.7 then --isBeingResearched
+			backdrop:SetBackdropBorderColor(0,1,1) --[border = teal, shadow x1]
+			child.darkOverlay:SetColorTexture(0, 0, 0, 0.25)
+			child.darkOverlay:Show()
+		end
+	elseif atlas == "orderhalltalents-spellborder-green" then
+		backdrop:SetBackdropBorderColor(0,1,0) --[border = green, no shadow]
+		child.darkOverlay:Hide()
+	elseif atlas == "orderhalltalents-spellborder-yellow" then
+		backdrop:SetBackdropBorderColor(1,1,0) --[border = yellow, no shadow]
+		child.darkOverlay:Hide()
+	elseif atlas == "orderhalltalents-spellborder" then
+		backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		child.darkOverlay:SetColorTexture(0, 0, 0, 0.75) --[border will be default, shadow x3]
+		child.darkOverlay:Show()
+	end
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
 
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 
 	-- CommandBar
-	local OrderHallCommandBar = _G["OrderHallCommandBar"]
+	local OrderHallCommandBar = _G.OrderHallCommandBar
 	OrderHallCommandBar:StripTextures()
 	OrderHallCommandBar:CreateBackdrop("Transparent")
 	OrderHallCommandBar.ClassIcon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
@@ -30,32 +51,7 @@ local function LoadSkin()
 	OrderHallCommandBar.WorldMapButton:Hide()
 
 	-- Talent Frame
-	local function colorBorder(child, backdrop, atlas)
-		if child.AlphaIconOverlay:IsShown() then --isBeingResearched or (talentAvailability and not selected)
-			local alpha = child.AlphaIconOverlay:GetAlpha()
-			if alpha <= 0.5 then --talentAvailability
-				backdrop:SetBackdropBorderColor(0.5, 0.5, 0.5) --[border = grey, shadow x2]
-				child.darkOverlay:SetColorTexture(0, 0, 0, 0.50)
-				child.darkOverlay:Show()
-			elseif alpha <= 0.7 then --isBeingResearched
-				backdrop:SetBackdropBorderColor(0,1,1) --[border = teal, shadow x1]
-				child.darkOverlay:SetColorTexture(0, 0, 0, 0.25)
-				child.darkOverlay:Show()
-			end
-		elseif atlas == "orderhalltalents-spellborder-green" then
-			backdrop:SetBackdropBorderColor(0,1,0) --[border = green, no shadow]
-			child.darkOverlay:Hide()
-		elseif atlas == "orderhalltalents-spellborder-yellow" then
-			backdrop:SetBackdropBorderColor(1,1,0) --[border = yellow, no shadow]
-			child.darkOverlay:Hide()
-		elseif atlas == "orderhalltalents-spellborder" then
-			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			child.darkOverlay:SetColorTexture(0, 0, 0, 0.75) --[border will be default, shadow x3]
-			child.darkOverlay:Show()
-		end
-	end
-
-	OrderHallTalentFrame:HookScript("OnShow", function(self)
+	_G.OrderHallTalentFrame:HookScript("OnShow", function(self)
 		if self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture() then
 			self.StyleFrame:SetFrameLevel(1)
 

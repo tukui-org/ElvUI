@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LBG = LibStub('LibButtonGlow-1.0', true)
+local LBG = E.Libs.ButtonGlow
 local M = E:GetModule('Misc')
 
 --Cache global variables
@@ -267,8 +267,11 @@ function M:LOOT_OPENED(_, autoloot)
 				LBG.HideOverlayGlow(slot.iconFrame)
 			end
 
-			slot:Enable()
-			slot:Show()
+			-- Check for FasterLooting scripts or w/e (if bag is full)
+			if textureID then
+				slot:Enable()
+				slot:Show()
+			end
 		end
 	else
 		local slot = lootFrame.slots[1] or createSlot(1)

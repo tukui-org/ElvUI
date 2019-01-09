@@ -8,6 +8,7 @@ local floor, max = math.floor, math.max
 local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -54,69 +55,19 @@ function UF:Configure_ClassBar(frame, cur)
 	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		bars:ClearAllPoints()
-		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if (frame.MAX_CLASS_BAR == 1) or (frame.ClassBar == "AdditionalPower") or (frame.ClassBar == "Stagger") then
+		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
-
-		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
-
-		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
-		end
-	elseif not frame.CLASSBAR_DETACHED then
-		bars:ClearAllPoints()
-		if frame.ORIENTATION == "RIGHT" then
-			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
-		else
-			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
-		end
-
-		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-
-		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
-		end
-	else --Detached
+	elseif frame.CLASSBAR_DETACHED then --Detached
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
-		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
-
-		if not bars.Holder.mover then
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER+frame.SPACING)*2))
-			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,classbar')
-		else
-			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			bars.Holder.mover:SetScale(1)
-			bars.Holder.mover:SetAlpha(1)
-		end
-
-		if not db.classbar.strataAndLevel.useCustomStrata then
-			bars:SetFrameStrata("LOW")
-		else
-			bars:SetFrameStrata(db.classbar.strataAndLevel.frameStrata)
-		end
-
-		if not db.classbar.strataAndLevel.useCustomLevel then
-			bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-		else
-			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
-		end
 	end
 
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if (frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes') then
-
 		--This fixes issue with ComboPoints showing as active when they are not.
 		if frame.ClassBar == "ClassPower" and not cur then
 			cur = 0
@@ -138,19 +89,17 @@ function UF:Configure_ClassBar(frame, cur)
 				color = E.db.unitframe.colors.borderColor
 				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-				bars[i]:Height(bars:GetHeight())
+				bars[i]:SetHeight(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
 					bars[i]:SetWidth(CLASSBAR_WIDTH)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 						bars[i]:SetWidth(CLASSBAR_WIDTH)
-						bars.Holder:SetHeight(((frame.CLASSBAR_HEIGHT + db.classbar.spacing)* frame.MAX_CLASS_BAR) - db.classbar.spacing) -- fix the holder height
 					else
 						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
-						bars.Holder:SetHeight(frame.CLASSBAR_HEIGHT) -- set the holder height to default
 					end
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+					bars[i]:SetWidth((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -185,7 +134,7 @@ function UF:Configure_ClassBar(frame, cur)
 				elseif E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
 					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
 					bars[i]:SetStatusBarColor(r, g, b)
-					if (bars[i].bg) then
+					if bars[i].bg then
 						local mu = bars[i].bg.multiplier or 1
 						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
 					end
@@ -214,21 +163,73 @@ function UF:Configure_ClassBar(frame, cur)
 					end
 				end
 
-				if cur and cur >= i then bars[i]:Show() end
+				if cur and cur >= i then
+					bars[i]:Show()
+				end
 			end
 		end
 
-		if not frame.USE_MINI_CLASSBAR then
+		if (not frame.USE_MINI_CLASSBAR) and frame.USE_CLASSBAR then
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
 		end
-
 	elseif (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
 		if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 			bars:SetOrientation("VERTICAL")
 		else
 			bars:SetOrientation("HORIZONTAL")
+		end
+	end
+
+	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
+		bars:ClearAllPoints()
+		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
+
+		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
+
+		if bars.Holder and bars.Holder.mover then
+			bars.Holder.mover:SetScale(0.0001)
+			bars.Holder.mover:SetAlpha(0)
+		end
+	elseif frame.CLASSBAR_DETACHED then
+		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
+
+		if not bars.Holder.mover then
+			bars:ClearAllPoints()
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,classbar')
+		else
+			bars:ClearAllPoints()
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			bars.Holder.mover:SetScale(1)
+			bars.Holder.mover:SetAlpha(1)
+		end
+
+		if not db.classbar.strataAndLevel.useCustomStrata then
+			bars:SetFrameStrata("LOW")
+		else
+			bars:SetFrameStrata(db.classbar.strataAndLevel.frameStrata)
+		end
+
+		if not db.classbar.strataAndLevel.useCustomLevel then
+			bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+		else
+			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
+		end
+	else
+		bars:ClearAllPoints()
+		if frame.ORIENTATION == "RIGHT" then
+			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
+		else
+			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
+		end
+
+		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+
+		if bars.Holder and bars.Holder.mover then
+			bars.Holder.mover:SetScale(0.0001)
+			bars.Holder.mover:SetAlpha(0)
 		end
 	end
 
@@ -376,6 +377,12 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
+local function PostUpdateRunes(self)
+	local useRunes = not UnitHasVehicleUI('player')
+	self:SetShown(useRunes)
+	UF.PostVisibilityRunes(self, useRunes)
+end
+
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
@@ -395,7 +402,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg.multiplier = 0.3
 	end
 
-	runes.PostUpdateVisibility = UF.PostVisibilityRunes
+	runes.PostUpdate = PostUpdateRunes
 	runes.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
@@ -403,7 +410,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
-function UF:PostVisibilityRunes(enabled, stateChanged)
+function UF:PostVisibilityRunes(enabled)
 	local frame = self.origParent or self:GetParent()
 
 	if enabled then
@@ -412,14 +419,6 @@ function UF:PostVisibilityRunes(enabled, stateChanged)
 	else
 		frame.ClassBar = "ClassPower"
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
-	end
-
-	if stateChanged then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end
 

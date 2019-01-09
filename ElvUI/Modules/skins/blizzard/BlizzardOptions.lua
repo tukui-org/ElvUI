@@ -4,19 +4,41 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
+local ipairs = ipairs
 local pairs = pairs
 local print = print
 local ceil = math.ceil
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
+local CreateChatChannelList = CreateChatChannelList
 local GetChannelList = GetChannelList
 local IsMacClient = IsMacClient
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CHAT_CONFIG_CHANNEL_LIST, CHAT_CONFIG_CHAT_LEFT, CHANNELS, COMBAT_CONFIG_TABS
--- GLOBALS: COMBAT_CONFIG_UNIT_COLORS, CHAT_CONFIG_CHAT_CREATURE_LEFT
--- GLOBALS: CHAT_CONFIG_OTHER_COMBAT, CHAT_CONFIG_OTHER_PVP, CHAT_CONFIG_OTHER_SYSTEM
--- GLOBALS: COMBAT_CONFIG_MESSAGESOURCES_BY, COMBAT_CONFIG_MESSAGESOURCES_TO
+
+local function HandlePushToTalkButton(button)
+	button:SetSize(button:GetSize())
+
+	button.TopLeft:Hide()
+	button.TopRight:Hide()
+	button.BottomLeft:Hide()
+	button.BottomRight:Hide()
+	button.TopMiddle:Hide()
+	button.MiddleLeft:Hide()
+	button.MiddleRight:Hide()
+	button.BottomMiddle:Hide()
+	button.MiddleMiddle:Hide()
+	button:SetHighlightTexture("")
+
+	button:SetTemplate("Default", true)
+	button:HookScript("OnEnter", S.SetModifiedBackdrop)
+	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+end
+
+function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
+	HandlePushToTalkButton(btn.PushToTalkKeybindButton)
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.BlizzardOptions ~= true then return end
@@ -33,8 +55,8 @@ local function LoadSkin()
 		if title then
 			title:SetTexture("")
 			title:ClearAllPoints()
-			if title == _G["GameMenuFrameHeader"] then
-				title:Point("TOP", GameMenuFrame, 0, 7)
+			if title == _G.GameMenuFrameHeader then
+				title:Point("TOP", _G.GameMenuFrame, 0, 7)
 			else
 				title:Point("TOP", BlizzardHeader[i], 0, 0)
 			end
@@ -66,30 +88,31 @@ local function LoadSkin()
 			S:HandleButton(ElvuiButtons)
 		end
 	end
-	S:HandleButton(LFDReadyCheckPopup.YesButton)
-	S:HandleButton(LFDReadyCheckPopup.NoButton)
+	S:HandleButton(_G.LFDReadyCheckPopup.YesButton)
+	S:HandleButton(_G.LFDReadyCheckPopup.NoButton)
 
 	-- if a button position is not really where we want, we move it here
-	VideoOptionsFrameCancel:ClearAllPoints()
-	VideoOptionsFrameCancel:Point("RIGHT",VideoOptionsFrameApply,"LEFT",-4,0)
-	VideoOptionsFrameOkay:ClearAllPoints()
-	VideoOptionsFrameOkay:Point("RIGHT",VideoOptionsFrameCancel,"LEFT",-4,0)
-	AudioOptionsFrameOkay:ClearAllPoints()
-	AudioOptionsFrameOkay:Point("RIGHT",AudioOptionsFrameCancel,"LEFT",-4,0)
-	InterfaceOptionsFrameOkay:ClearAllPoints()
-	InterfaceOptionsFrameOkay:Point("RIGHT",InterfaceOptionsFrameCancel,"LEFT", -4,0)
+	_G.VideoOptionsFrameCancel:ClearAllPoints()
+	_G.VideoOptionsFrameCancel:Point("RIGHT",_G.VideoOptionsFrameApply,"LEFT",-4,0)
+	_G.VideoOptionsFrameOkay:ClearAllPoints()
+	_G.VideoOptionsFrameOkay:Point("RIGHT",_G.VideoOptionsFrameCancel,"LEFT",-4,0)
+	_G.AudioOptionsFrameOkay:ClearAllPoints()
+	_G.AudioOptionsFrameOkay:Point("RIGHT",_G.AudioOptionsFrameCancel,"LEFT",-4,0)
+	_G.InterfaceOptionsFrameOkay:ClearAllPoints()
+	_G.InterfaceOptionsFrameOkay:Point("RIGHT",_G.InterfaceOptionsFrameCancel,"LEFT", -4,0)
 
-	ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	ReadyCheckFrameYesButton:ClearAllPoints()
-	ReadyCheckFrameNoButton:ClearAllPoints()
-	ReadyCheckFrameYesButton:Point("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
-	ReadyCheckFrameNoButton:Point("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
-	ReadyCheckFrameText:SetParent(ReadyCheckFrame)
-	ReadyCheckFrameText:ClearAllPoints()
-	ReadyCheckFrameText:Point("TOP", 0, -15)
+	local ReadyCheckFrame = _G.ReadyCheckFrame
+	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
+	_G.ReadyCheckFrameNoButton:Point("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
+	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameText:ClearAllPoints()
+	_G.ReadyCheckFrameText:Point("TOP", 0, -15)
 
-	ReadyCheckListenerFrame:SetAlpha(0)
+	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript("OnShow", function(self)
 		-- bug fix, don't show it if player is initiator
 		if self.initiator and UnitIsUnit("player", self.initiator) then
@@ -97,33 +120,33 @@ local function LoadSkin()
 		end
 	end)
 
-	RolePollPopup:SetTemplate("Transparent")
+	_G.RolePollPopup:SetTemplate("Transparent")
 
-	InterfaceOptionsFrame:SetClampedToScreen(true)
-	InterfaceOptionsFrame:SetMovable(true)
-	InterfaceOptionsFrame:EnableMouse(true)
-	InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
-	InterfaceOptionsFrame:SetScript("OnDragStart", function(self)
+	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
+	_G.InterfaceOptionsFrame:SetMovable(true)
+	_G.InterfaceOptionsFrame:EnableMouse(true)
+	_G.InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
+	_G.InterfaceOptionsFrame:SetScript("OnDragStart", function(self)
 		if InCombatLockdown() then return end
 		self:StartMoving()
 		self.isMoving = true
 	end)
-	InterfaceOptionsFrame:SetScript("OnDragStop", function(self)
+	_G.InterfaceOptionsFrame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
 		self.isMoving = false
 	end)
 
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
-		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton9)
-		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton10)
-		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton11)
+		S:HandleCheckBox(_G.MacKeyboardOptionsFrameCheckButton9)
+		S:HandleCheckBox(_G.MacKeyboardOptionsFrameCheckButton10)
+		S:HandleCheckBox(_G.MacKeyboardOptionsFrameCheckButton11)
 	end
 
 	--Chat Config
-	local ChatConfigFrame = _G["ChatConfigFrame"]
+	local ChatConfigFrame = _G.ChatConfigFrame
 
-	hooksecurefunc(ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
 		for tab in self.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
@@ -160,9 +183,9 @@ local function LoadSkin()
 	end
 
 	ChatConfigFrame:SetTemplate("Transparent")
-	ChatConfigBackgroundFrame:SetTemplate("Transparent")
-	ChatConfigCategoryFrame:SetTemplate("Transparent")
-	ChatConfigCombatSettingsFilters:SetTemplate("Transparent")
+	_G.ChatConfigBackgroundFrame:SetTemplate("Transparent")
+	_G.ChatConfigCategoryFrame:SetTemplate("Transparent")
+	_G.ChatConfigCombatSettingsFilters:SetTemplate("Transparent")
 
 	local chatbuttons = {
 		"ChatConfigFrameDefaultButton",
@@ -180,27 +203,27 @@ local function LoadSkin()
 		S:HandleButton(_G[chatbuttons[i]], true)
 	end
 
-	ChatConfigFrameDefaultButton:ClearAllPoints()
-	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	ChatConfigFrameRedockButton:ClearAllPoints()
-	ChatConfigFrameRedockButton:Point("LEFT", ChatConfigFrameDefaultButton, "RIGHT", 1, 0)
-	CombatLogDefaultButton:ClearAllPoints()
-	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	ChatConfigFrameOkayButton:ClearAllPoints()
-	ChatConfigFrameOkayButton:Point("RIGHT", ChatConfigFrameCancelButton, "RIGHT", -11, -1)
-	ChatConfigCombatSettingsFiltersDeleteButton:ClearAllPoints()
-	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", ChatConfigCombatSettingsFilters, "BOTTOMRIGHT", 0, -1)
-	ChatConfigCombatSettingsFiltersAddFilterButton:ClearAllPoints()
-	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersDeleteButton, "LEFT", -1, 0)
-	ChatConfigCombatSettingsFiltersCopyFilterButton:ClearAllPoints()
-	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersAddFilterButton, "LEFT", -1, 0)
+	_G.ChatConfigFrameDefaultButton:ClearAllPoints()
+	_G.ChatConfigFrameDefaultButton:Point("TOPLEFT",_G.ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	_G.ChatConfigFrameRedockButton:ClearAllPoints()
+	_G.ChatConfigFrameRedockButton:Point("LEFT", _G.ChatConfigFrameDefaultButton, "RIGHT", 1, 0)
+	_G.CombatLogDefaultButton:ClearAllPoints()
+	_G.CombatLogDefaultButton:Point("TOPLEFT",_G.ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	_G.ChatConfigFrameOkayButton:ClearAllPoints()
+	_G.ChatConfigFrameOkayButton:Point("RIGHT", _G.ChatConfigFrameCancelButton, "RIGHT", -11, -1)
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:ClearAllPoints()
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", _G.ChatConfigCombatSettingsFilters, "BOTTOMRIGHT", 0, -1)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:ClearAllPoints()
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", _G.ChatConfigCombatSettingsFiltersDeleteButton, "LEFT", -1, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:ClearAllPoints()
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", _G.ChatConfigCombatSettingsFiltersAddFilterButton, "LEFT", -1, 0)
 
 	for i=1, 5 do
 		local tab = _G["CombatConfigTab"..i]
 		tab:StripTextures()
 	end
 
-	S:HandleEditBox(CombatConfigSettingsNameEditBox)
+	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 
 	local frames = {
 		"ChatConfigFrame",
@@ -241,8 +264,8 @@ local function LoadSkin()
 	for i = 1, #otherframe do
 		local SkinFrames = _G[otherframe[i]]
 		SkinFrames:ClearAllPoints()
-		if SkinFrames == CombatConfigColorsColorizeSpellNames then
-			SkinFrames:Point("TOP", CombatConfigColorsColorizeUnitName, "BOTTOM" ,0, -2)
+		if SkinFrames == _G.CombatConfigColorsColorizeSpellNames then
+			SkinFrames:Point("TOP", _G.CombatConfigColorsColorizeUnitName, "BOTTOM" ,0, -2)
 		else
 			SkinFrames:Point("TOP", _G[otherframe[i-1]], "BOTTOM", 0, -2)
 		end
@@ -271,19 +294,19 @@ local function LoadSkin()
 	end)
 
 	--Makes the skin work, but only after /reload ui :o   (found in chatconfingframe.xml)
-	CreateChatChannelList(ChatConfigChannelSettings, GetChannelList())
-	ChatConfigBackgroundFrame:SetScript("OnShow", function(self)
+	CreateChatChannelList(_G.ChatConfigChannelSettings, GetChannelList())
+	_G.ChatConfigBackgroundFrame:SetScript("OnShow", function()
 		-- >> Chat >> Chat Settings
-		for i = 1,#CHAT_CONFIG_CHAT_LEFT do
+		for i = 1,#_G.CHAT_CONFIG_CHAT_LEFT do
 			_G["ChatConfigChatSettingsLeftCheckBox"..i]:StripTextures()
 			_G["ChatConfigChatSettingsLeftCheckBox"..i]:CreateBackdrop()
 			_G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
 			_G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-			_G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
+			_G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(_G.ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
 			S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."Check"])
 		end
 		-- >> Other >> Combat
-		for i = 1,#CHAT_CONFIG_OTHER_COMBAT do
+		for i = 1,#_G.CHAT_CONFIG_OTHER_COMBAT do
 			_G["ChatConfigOtherSettingsCombatCheckBox"..i]:StripTextures()
 			_G["ChatConfigOtherSettingsCombatCheckBox"..i]:CreateBackdrop()
 			_G["ChatConfigOtherSettingsCombatCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -291,7 +314,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["ChatConfigOtherSettingsCombatCheckBox"..i.."Check"])
 		end
 		-- >> Other >> PvP
-		for i = 1,#CHAT_CONFIG_OTHER_PVP do
+		for i = 1,#_G.CHAT_CONFIG_OTHER_PVP do
 			_G["ChatConfigOtherSettingsPVPCheckBox"..i]:StripTextures()
 			_G["ChatConfigOtherSettingsPVPCheckBox"..i]:CreateBackdrop()
 			_G["ChatConfigOtherSettingsPVPCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -299,7 +322,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["ChatConfigOtherSettingsPVPCheckBox"..i.."Check"])
 		end
 		-- >> Other >> System
-		for i = 1,#CHAT_CONFIG_OTHER_SYSTEM do
+		for i = 1,#_G.CHAT_CONFIG_OTHER_SYSTEM do
 			_G["ChatConfigOtherSettingsSystemCheckBox"..i]:StripTextures()
 			_G["ChatConfigOtherSettingsSystemCheckBox"..i]:CreateBackdrop()
 			_G["ChatConfigOtherSettingsSystemCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -307,7 +330,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["ChatConfigOtherSettingsSystemCheckBox"..i.."Check"])
 		end
 		-- >> Other >> Creatures
-		for i = 1,#CHAT_CONFIG_CHAT_CREATURE_LEFT do
+		for i = 1,#_G.CHAT_CONFIG_CHAT_CREATURE_LEFT do
 			_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:StripTextures()
 			_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:CreateBackdrop()
 			_G["ChatConfigOtherSettingsCreatureCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -315,7 +338,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["ChatConfigOtherSettingsCreatureCheckBox"..i.."Check"])
 		end
 		-- >> Sources >> DoneBy
-		for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_BY do
+		for i = 1,#_G.COMBAT_CONFIG_MESSAGESOURCES_BY do
 			_G["CombatConfigMessageSourcesDoneByCheckBox"..i]:StripTextures()
 			_G["CombatConfigMessageSourcesDoneByCheckBox"..i]:CreateBackdrop()
 			_G["CombatConfigMessageSourcesDoneByCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -323,7 +346,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneByCheckBox"..i.."Check"])
 		end
 		-- >> Sources >> DoneTo
-		for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_TO do
+		for i = 1,#_G.COMBAT_CONFIG_MESSAGESOURCES_TO do
 			_G["CombatConfigMessageSourcesDoneToCheckBox"..i]:StripTextures()
 			_G["CombatConfigMessageSourcesDoneToCheckBox"..i]:CreateBackdrop()
 			_G["CombatConfigMessageSourcesDoneToCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -331,7 +354,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneToCheckBox"..i.."Check"])
 		end
 		-- >> Combat >> Colors >> Unit Colors
-		for i = 1,#COMBAT_CONFIG_UNIT_COLORS do
+		for i = 1,#_G.COMBAT_CONFIG_UNIT_COLORS do
 			_G["CombatConfigColorsUnitColorsSwatch"..i]:StripTextures()
 			_G["CombatConfigColorsUnitColorsSwatch"..i]:CreateBackdrop()
 			_G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("TOPLEFT",3,-1)
@@ -356,7 +379,7 @@ local function LoadSkin()
 	end)
 
 	-- >> Combat >> Tabs
-	for i = 1,#COMBAT_CONFIG_TABS do
+	for i = 1,#_G.COMBAT_CONFIG_TABS do
 		local cctab = _G["CombatConfigTab"..i]
 		if cctab then
 			S:HandleTab(cctab)
@@ -365,8 +388,8 @@ local function LoadSkin()
 			_G["CombatConfigTab"..i.."Text"]:Point("BOTTOM",0,10)
 		end
 	end
-	CombatConfigTab1:ClearAllPoints()
-	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
+	_G.CombatConfigTab1:ClearAllPoints()
+	_G.CombatConfigTab1:Point("BOTTOMLEFT",_G.ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
 
 	local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
@@ -396,15 +419,15 @@ local function LoadSkin()
 		S:HandleCheckBox(ccbtn)
 	end
 
-	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton, true, true)
-	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton, true)
-	ChatConfigMoveFilterUpButton:ClearAllPoints()
-	ChatConfigMoveFilterDownButton:ClearAllPoints()
-	ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
-	ChatConfigMoveFilterDownButton:Point("LEFT",ChatConfigMoveFilterUpButton,24,0)
-	S:HandleEditBox(CombatConfigSettingsNameEditBox)
-	ChatConfigFrameHeader:ClearAllPoints()
-	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
+	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton, true, true)
+	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton, true)
+	_G.ChatConfigMoveFilterUpButton:ClearAllPoints()
+	_G.ChatConfigMoveFilterDownButton:ClearAllPoints()
+	_G.ChatConfigMoveFilterUpButton:Point("TOPLEFT",_G.ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
+	_G.ChatConfigMoveFilterDownButton:Point("LEFT",_G.ChatConfigMoveFilterUpButton,24,0)
+	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
+	_G.ChatConfigFrameHeader:ClearAllPoints()
+	_G.ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
 	frames = {
 		"VideoOptionsFrameCategoryFrame",
@@ -427,7 +450,7 @@ local function LoadSkin()
 		if SkinFrames then
 			SkinFrames:StripTextures()
 			SkinFrames:CreateBackdrop("Transparent")
-			if SkinFrames ~= _G["VideoOptionsFramePanelContainer"] and SkinFrames ~= _G["InterfaceOptionsFramePanelContainer"] then
+			if SkinFrames ~= _G.VideoOptionsFramePanelContainer and SkinFrames ~= _G.InterfaceOptionsFramePanelContainer then
 				SkinFrames.backdrop:Point("TOPLEFT",-1,0)
 				SkinFrames.backdrop:Point("BOTTOMRIGHT",0,1)
 			else
@@ -448,14 +471,14 @@ local function LoadSkin()
 			itab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -4 or -6)
 		end
 	end
-	InterfaceOptionsFrameTab1:ClearAllPoints()
-	InterfaceOptionsFrameTab1:Point("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
-	VideoOptionsFrameDefaults:ClearAllPoints()
-	InterfaceOptionsFrameDefaults:ClearAllPoints()
-	InterfaceOptionsFrameCancel:ClearAllPoints()
-	VideoOptionsFrameDefaults:Point("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
-	InterfaceOptionsFrameDefaults:Point("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
-	InterfaceOptionsFrameCancel:Point("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
+	_G.InterfaceOptionsFrameTab1:ClearAllPoints()
+	_G.InterfaceOptionsFrameTab1:Point("BOTTOMLEFT",_G.InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
+	_G.VideoOptionsFrameDefaults:ClearAllPoints()
+	_G.InterfaceOptionsFrameDefaults:ClearAllPoints()
+	_G.InterfaceOptionsFrameCancel:ClearAllPoints()
+	_G.VideoOptionsFrameDefaults:Point("TOPLEFT",_G.VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
+	_G.InterfaceOptionsFrameDefaults:Point("TOPLEFT",_G.InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
+	_G.InterfaceOptionsFrameCancel:Point("TOPRIGHT",_G.InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
 
 	local interfacecheckbox = {
 		-- Controls
@@ -572,7 +595,7 @@ local function LoadSkin()
 	end
 
 	-- Display
-	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
+	S:HandleDropDownBox(_G.InterfaceOptionsDisplayPanelOutlineDropDown, 210)
 	local optioncheckbox = {
 		-- Display
 		"Display_RaidSettingsEnabledCheckBox",
@@ -698,56 +721,34 @@ local function LoadSkin()
 	end
 
 	-- Put back Twitter Birdy (only if your Real ID is enabled in your WoW Account)
-	InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
+	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
 
-	local AudioOptionsVoicePanel = _G["AudioOptionsVoicePanel"]
+	local AudioOptionsVoicePanel = _G.AudioOptionsVoicePanel
 	local TestInputDevice = AudioOptionsVoicePanel.TestInputDevice
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(TestInputDevice.ToggleTest)
 
 	-- PushToTalk KeybindButton - Wow 8.0
-	local function HandlePushToTalkButton(button)
-		button:SetSize(button:GetSize())
-
-		button.TopLeft:Hide()
-		button.TopRight:Hide()
-		button.BottomLeft:Hide()
-		button.BottomRight:Hide()
-		button.TopMiddle:Hide()
-		button.MiddleLeft:Hide()
-		button.MiddleRight:Hide()
-		button.BottomMiddle:Hide()
-		button.MiddleMiddle:Hide()
-		button:SetHighlightTexture("")
-
-		button:SetTemplate("Default", true)
-		button:HookScript("OnEnter", S.SetModifiedBackdrop)
-		button:HookScript("OnLeave", S.SetOriginalBackdrop)
-	end
-
-	function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(self)
-		HandlePushToTalkButton(self.PushToTalkKeybindButton)
-	end
 	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
-	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
-		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
-		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
-		S:HandleButton(CompactUnitFrameProfilesSaveButton)
-		S:HandleButton(CompactUnitFrameProfilesDeleteButton)
+	if _G.CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
+		S:HandleCheckBox(_G.CompactUnitFrameProfilesRaidStylePartyFrames)
+		S:HandleButton(_G.CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+		S:HandleButton(_G.CompactUnitFrameProfilesSaveButton)
+		S:HandleButton(_G.CompactUnitFrameProfilesDeleteButton)
 
-		CompactUnitFrameProfilesNewProfileDialog:StripTextures()
-		CompactUnitFrameProfilesNewProfileDialog:CreateBackdrop("Transparent")
-		S:HandleEditBox(CompactUnitFrameProfilesNewProfileDialogEditBox)
-		CompactUnitFrameProfilesNewProfileDialogEditBox:SetSize(150, 20)
-		S:HandleDropDownBox(CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
-		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCreateButton)
-		S:HandleButton(CompactUnitFrameProfilesNewProfileDialogCancelButton)
+		_G.CompactUnitFrameProfilesNewProfileDialog:StripTextures()
+		_G.CompactUnitFrameProfilesNewProfileDialog:CreateBackdrop("Transparent")
+		S:HandleEditBox(_G.CompactUnitFrameProfilesNewProfileDialogEditBox)
+		_G.CompactUnitFrameProfilesNewProfileDialogEditBox:SetSize(150, 20)
+		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
+		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
+		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCancelButton)
 	end
 
-	GraphicsButton:StripTextures()
-	RaidButton:StripTextures()
+	_G.GraphicsButton:StripTextures()
+	_G.RaidButton:StripTextures()
 	local raidcheckbox = {
 		"KeepGroupsTogether",
 		"HorizontalGroups",
@@ -862,6 +863,7 @@ local function LoadSkin()
 	MacOptionsFrameCancel:Width(MacOptionsFrameCancel:GetWidth() - 6)]]
 
 	--What's New
+	local SplashFrame = _G.SplashFrame
 	SplashFrame:CreateBackdrop("Transparent")
 	SplashFrame.Header:FontTemplate(nil, 22)
 	SplashFrame.RightTitle:FontTemplate(nil, 30)
@@ -869,9 +871,9 @@ local function LoadSkin()
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
 
 	-- New Voice Sliders
-	S:HandleSliderFrame(UnitPopupVoiceSpeakerVolume.Slider)
-	S:HandleSliderFrame(UnitPopupVoiceMicrophoneVolume.Slider)
-	S:HandleSliderFrame(UnitPopupVoiceUserVolume.Slider)
+	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
+	S:HandleSliderFrame(_G.UnitPopupVoiceMicrophoneVolume.Slider)
+	S:HandleSliderFrame(_G.UnitPopupVoiceUserVolume.Slider)
 end
 
 S:AddCallback("SkinBlizzard", LoadSkin)

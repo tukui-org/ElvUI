@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80100
 ## Author: Elv
 ## Version: 1.06
 ## Title: |cfffe7b2cElvUI Config|r

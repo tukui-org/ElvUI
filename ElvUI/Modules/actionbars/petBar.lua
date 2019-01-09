@@ -24,7 +24,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_Bar4, PetActionBarFrame, Spell
 
-local Masque = LibStub("Masque", true)
+local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
 
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');

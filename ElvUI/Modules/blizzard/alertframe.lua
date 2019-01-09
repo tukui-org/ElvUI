@@ -4,16 +4,12 @@ local B = E:GetModule('Blizzard');
 --Cache global variables
 --Lua functions
 local pairs = pairs
+local ipairs = ipairs
+local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: AlertFrame, AlertFrameMover, MissingLootFrame, GroupLootContainer
--- GLOBALS: LOOT_WON_ALERT_FRAMES, LOOT_UPGRADE_ALERT_FRAMES, MONEY_WON_ALERT_FRAMES
--- GLOBALS: AchievementAlertFrame1, CriteriaAlertFrame1, ChallengeModeAlertFrame1
--- GLOBALS: DungeonCompletionAlertFrame1, StorePurchaseAlertFrame, ScenarioAlertFrame1
--- GLOBALS: GuildChallengeAlertFrame, DigsiteCompleteToastFrame, GarrisonBuildingAlertFrame
--- GLOBALS: GarrisonMissionAlertFrame, GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
--- GLOBALS: GarrisonShipMissionAlertFrame, UIPARENT_MANAGED_FRAME_POSITIONS
--- GLOBALS: hooksecurefunc, ipairs
+-- GLOBALS: AlertFrame, GroupLootContainer, AlertFrameMover
+-- GLOBALS: UIPARENT_MANAGED_FRAME_POSITIONS
 
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:Width(180)
@@ -123,7 +119,7 @@ function B:GroupLootContainer_Update()
 			if prevFrame and not (prevFrame == frame) then
 				frame:SetPoint(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET);
 			else
-				frame:SetPoint(POSITION, self, POSITION, 0, 0);
+				frame:SetPoint(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5));
 			end
 			lastIdx = i;
 		end
@@ -148,6 +144,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
+	GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')
 
@@ -187,6 +184,6 @@ function B:AlertMovers()
 		/run DigsiteCompleteAlertSystem:AddAlert(1)
 
 		--Bonus Rolls
-		/run BonusRollFrame_StartBonusRoll(242969,1,179,1273,14)
+		/run BonusRollFrame_StartBonusRoll(242969,'test',10,515,1273,14) --515 is darkmoon token, change to another currency id you have
 	]]
 end

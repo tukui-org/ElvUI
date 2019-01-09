@@ -7,8 +7,6 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.voidstorage ~= true then return end
@@ -27,7 +25,7 @@ local function LoadSkin()
 		_G[object]:StripTextures()
 	end
 
-	local VoidStorageFrame = _G["VoidStorageFrame"]
+	local VoidStorageFrame = _G.VoidStorageFrame
 	for i = 1, 2 do
 		local tab = VoidStorageFrame["Page"..i]
 		tab:DisableDrawLayer("BACKGROUND")
@@ -37,18 +35,20 @@ local function LoadSkin()
 		tab:SetTemplate()
 	end
 
-	VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	VoidStorageFrame:SetTemplate("Transparent")
-	VoidStoragePurchaseFrame:SetTemplate("Default")
-	VoidStorageFrameMarbleBg:Kill()
-	VoidStorageFrameLines:Kill()
+	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
+	_G.VoidStoragePurchaseFrame:SetTemplate("Default")
+	_G.VoidStorageFrameMarbleBg:Kill()
+	_G.VoidStorageFrameLines:Kill()
 	select(2, VoidStorageFrame:GetRegions()):Kill()
 
-	S:HandleButton(VoidStoragePurchaseButton)
-	S:HandleButton(VoidStorageHelpBoxButton)
-	S:HandleButton(VoidStorageTransferButton)
+	S:HandleButton(_G.VoidStoragePurchaseButton)
+	S:HandleButton(_G.VoidStorageHelpBoxButton)
+	S:HandleButton(_G.VoidStorageTransferButton)
 
-	S:HandleCloseButton(VoidStorageBorderFrame.CloseButton)
+	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
+
+	local VoidItemSearchBox = _G.VoidItemSearchBox
 	VoidItemSearchBox:CreateBackdrop("Overlay")
 	VoidItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	VoidItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
@@ -62,8 +62,12 @@ local function LoadSkin()
 			S:HandleTexture(Button.icon)
 			Button.icon:SetInside()
 			Button.IconBorder:SetAlpha(0)
-			hooksecurefunc(Button.IconBorder, 'SetVertexColor', function(self, r, g, b) Button:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Button.IconBorder, 'Hide', function(self) Button:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(Button.IconBorder, 'SetVertexColor', function(_, r, g, b)
+				Button:SetBackdropBorderColor(r, g, b)
+			end)
+			hooksecurefunc(Button.IconBorder, 'Hide', function()
+				Button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 		end
 	end
 end

@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-local Search = LibStub('LibItemSearch-1.2-ElvUI')
--- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
-local LibItemLevel = LibStub("LibItemLevel-ElvUI")
+local Search = E.Libs.ItemSearch
+local LibItemLevel = E.Libs.ItemLevel -- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
 
 --Cache global variables
 --Lua functions
@@ -92,7 +91,7 @@ local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
--- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame, ItemLocation
 -- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames, HandleModifiedItemClick
 -- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton, SetInsertItemsLeftToRight
 -- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
@@ -206,12 +205,7 @@ end
 function B:SetSearch(query)
 	local empty = len(query:gsub(' ', '')) == 0
 	local method = Search.Matches
-	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
-		if query == "rel" or query == "reli" or query == "relic" then
-			allowPartialMatch = true
-		end
-
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
@@ -221,7 +215,7 @@ function B:SetSearch(query)
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
-				local success, result = pcall(method, Search, link, query, allowPartialMatch)
+				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
 					SetItemButtonDesaturated(button);
 					button.searchOverlay:Hide();
@@ -301,7 +295,7 @@ function B:UpdateItemLevelDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
-					slot.itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 				end
 			end
 		end
@@ -321,7 +315,7 @@ function B:UpdateCountDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
-					slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 					slot.Count:SetTextColor(color.r, color.g, color.b)
 				end
 			end
@@ -337,7 +331,7 @@ function B:UpdateCountDisplay()
 		for i = 1, 98 do
 			local slot = self.BankFrame.reagentFrame.slots[i]
 			if slot then
-				slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				slot.Count:SetTextColor(color.r, color.g, color.b)
 				self:UpdateReagentSlot(i)
 			end
@@ -919,7 +913,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].Count:ClearAllPoints();
 					f.Bags[bagID][slotID].Count:Point('BOTTOMRIGHT', 0, 2);
-					f.Bags[bagID][slotID].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					f.Bags[bagID][slotID].Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 					f.Bags[bagID][slotID].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 					if not(f.Bags[bagID][slotID].questIcon) then
@@ -976,7 +970,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].itemLevel = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
 					f.Bags[bagID][slotID].itemLevel:Point("BOTTOMRIGHT", 0, 2)
-					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 					if f.Bags[bagID][slotID].BattlepayItemTexture then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
@@ -1028,7 +1022,7 @@ function B:Layout(isBank)
 					end
 				else
 					anchorPoint = self.db.reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
-					f.Bags[bagID][slotID]:Point(anchorPoint, f.holderFrame, anchorPoint);
+					f.Bags[bagID][slotID]:Point(anchorPoint, f.holderFrame, anchorPoint, 0, self.db.reverseSlots and f.bottomOffset - 8 or 0);
 					lastRowButton = f.Bags[bagID][slotID];
 					numContainerRows = numContainerRows + 1;
 				end
@@ -1080,7 +1074,7 @@ function B:Layout(isBank)
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints();
 				f.reagentFrame.slots[i].Count:Point('BOTTOMRIGHT', 0, 2);
-				f.reagentFrame.slots[i].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				f.reagentFrame.slots[i].Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				f.reagentFrame.slots[i].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 				f.reagentFrame.slots[i].searchOverlay:SetAllPoints();
@@ -1285,6 +1279,7 @@ function B:UpdateTokens()
 	end
 
 	f.bottomOffset = 28;
+
 	if numTokens == 1 then
 		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3);
 	elseif numTokens == 2 then
@@ -1779,6 +1774,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.currencyButton:Point('BOTTOM', 0, 4);
 		f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18);
 		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18);
+
 		f.currencyButton:Height(22);
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName().."CurrencyButton"..i, f.currencyButton);
@@ -1840,8 +1836,10 @@ function B:ToggleBackpack()
 
 	if IsBagOpen(0) then
 		self:OpenBags()
+		PlaySound(IG_BACKPACK_OPEN)
 	else
 		self:CloseBags()
+		PlaySound(IG_BACKPACK_CLOSE)
 	end
 end
 
@@ -1864,7 +1862,6 @@ end
 
 function B:OpenBags()
 	self.BagFrame:Show()
-	PlaySound(IG_BACKPACK_OPEN)
 
 	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
 	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
@@ -1872,7 +1869,6 @@ end
 
 function B:CloseBags()
 	self.BagFrame:Hide()
-	PlaySound(IG_BACKPACK_CLOSE)
 
 	if self.BankFrame then
 		self.BankFrame:Hide()

@@ -9,23 +9,20 @@ local unpack = unpack
 local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: MAX_NUM_SOCKETS, GEM_TYPE_INFO
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
 
-	local ItemSocketingFrame = _G["ItemSocketingFrame"]
-	ItemSocketingFrame:StripTextures()
-	ItemSocketingDescription:DisableDrawLayer("BORDER")
-	ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
-	ItemSocketingFrame:SetTemplate("Transparent")
-	ItemSocketingFrameInset:Kill()
-	ItemSocketingScrollFrame:StripTextures()
-	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
-	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
+	local ItemSocketingFrame = _G.ItemSocketingFrame
+	S:HandlePortraitFrame(ItemSocketingFrame, true)
 
-	for i = 1, MAX_NUM_SOCKETS  do
+	_G.ItemSocketingDescription:DisableDrawLayer("BORDER")
+	_G.ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
+	_G.ItemSocketingScrollFrame:StripTextures()
+	_G.ItemSocketingScrollFrame:CreateBackdrop("Transparent")
+	S:HandleScrollBar(_G.ItemSocketingScrollFrameScrollBar, 2)
+
+	for i = 1, _G.MAX_NUM_SOCKETS  do
 		local button = _G[("ItemSocketingSocket%d"):format(i)]
 		local button_bracket = _G[("ItemSocketingSocket%dBracketFrame"):format(i)]
 		local button_bg = _G[("ItemSocketingSocket%dBackground"):format(i)]
@@ -42,19 +39,20 @@ local function LoadSkin()
 	hooksecurefunc("ItemSocketingFrame_Update", function()
 		local numSockets = GetNumSockets();
 		for i=1, numSockets do
-			local button = _G[("ItemSocketingSocket%d"):format(i)]
-			local gemColor = GetSocketTypes(i)
-			local color = GEM_TYPE_INFO[gemColor]
-			button:SetBackdropColor(color.r, color.g, color.b, 0.15)
-			button:SetBackdropBorderColor(color.r, color.g, color.b)
+			local color = _G.GEM_TYPE_INFO[GetSocketTypes(i)]
+
+			if color then
+				local button = _G["ItemSocketingSocket"..i]
+				button:SetBackdropColor(color.r, color.g, color.b, 0.15)
+				button:SetBackdropBorderColor(color.r, color.g, color.b)
+			end
 		end
 	end)
 
-	ItemSocketingFramePortrait:Kill()
-	ItemSocketingSocketButton:ClearAllPoints()
-	ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
-	S:HandleButton(ItemSocketingSocketButton)
-	S:HandleCloseButton(ItemSocketingFrameCloseButton)
+	_G.ItemSocketingFramePortrait:Kill()
+	_G.ItemSocketingSocketButton:ClearAllPoints()
+	_G.ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
+	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 
 S:AddCallbackForAddon("Blizzard_ItemSocketingUI", "ItemSocket", LoadSkin)

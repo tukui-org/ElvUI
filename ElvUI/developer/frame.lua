@@ -104,14 +104,14 @@ end
 local function TextureList(frame)
 	frame = _G[frame] or FRAME
 	--[[for key, obj in pairs(frame) do
-		if type(obj) == "table" and obj.GetObjectType and obj:GetObjectType() == "Texture" then
+		if type(obj) == "table" and obj.IsObjectType and obj:IsObjectType('Texture') then
 			print(key, obj:GetTexture())
 		end
 	end]]
 
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
-		if(region:GetObjectType() == "Texture") then
+		if(region:IsObjectType('Texture')) then
 			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end
 	end

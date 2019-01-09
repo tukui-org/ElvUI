@@ -16,7 +16,7 @@ local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
-local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
+local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetFriendInfo = GetFriendInfo
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
@@ -115,7 +115,7 @@ local function whisperClick(self, name, battleNet)
 	menuFrame:Hide()
 
 	if battleNet then
-		ChatFrame_SendSmartTell(name)
+		ChatFrame_SendBNetTell(name)
 	else
 		SetItemRef( "player:"..name, format("|Hplayer:%1$s|h[%1$s]|h",name), "LeftButton" )
 	end

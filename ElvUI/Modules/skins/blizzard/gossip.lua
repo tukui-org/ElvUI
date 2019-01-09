@@ -9,54 +9,54 @@ local pairs = pairs
 local strfind = strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUMGOSSIPBUTTONS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
 
-	ItemTextFrame:StripTextures(true)
-	ItemTextFrame:SetTemplate("Transparent")
+	_G.ItemTextFrame:StripTextures(true)
+	_G.ItemTextFrame:SetTemplate("Transparent")
 
-	ItemTextScrollFrame:StripTextures()
+	_G.ItemTextScrollFrame:StripTextures()
 
-	GossipFrame:SetTemplate("Transparent")
-	GossipFramePortrait:Kill()
+	_G.GossipFrame:SetTemplate("Transparent")
+	_G.GossipFramePortrait:Kill()
 
-	S:HandleCloseButton(ItemTextFrameCloseButton)
-	S:HandleCloseButton(GossipFrameCloseButton)
+	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
-	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
-	S:HandleScrollBar(ItemTextScrollFrameScrollBar)
+	S:HandleScrollBar(_G.GossipGreetingScrollFrameScrollBar, 5)
+	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 
-	S:HandleNextPrevButton(ItemTextPrevPageButton)
-	S:HandleNextPrevButton(ItemTextNextPageButton)
+	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
+	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 
-	ItemTextPageText:SetTextColor(1, 1, 1)
-
-	hooksecurefunc(ItemTextPageText, "SetTextColor", function(self, headerType, r, g, b)
+	_G.ItemTextPageText:SetTextColor(1, 1, 1)
+	hooksecurefunc(_G.ItemTextPageText, "SetTextColor", function(pageText, headerType, r, g, b)
 		if r ~= 1 or g ~= 1 or b ~= 1 then
-			ItemTextPageText:SetTextColor(headerType, 1, 1, 1)
+			pageText:SetTextColor(headerType, 1, 1, 1)
 		end
 	end)
 
-	local StripAllTextures = { "GossipFrameGreetingPanel", "GossipFrame", "GossipFrameInset", "GossipGreetingScrollFrame" }
+	local StripAllTextures = { "GossipFrameGreetingPanel", "GossipGreetingScrollFrame" }
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
 
+	local GossipFrame = _G.GossipFrame
+	S:HandlePortraitFrame(GossipFrame, true)
+
+	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
 	GossipGreetingScrollFrame:SetTemplate()
 
 	if E.private.skins.parchmentRemover.enable then
-		for i = 1, NUMGOSSIPBUTTONS do
+		for i = 1, _G.NUMGOSSIPBUTTONS do
 			_G["GossipTitleButton"..i]:GetFontString():SetTextColor(1, 1, 1)
 		end
 
-		GossipGreetingText:SetTextColor(1, 1, 1)
+		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc("GossipFrameUpdate", function()
-			for i = 1, NUMGOSSIPBUTTONS do
+			for i = 1, _G.NUMGOSSIPBUTTONS do
 				local button = _G["GossipTitleButton"..i]
 				if button:GetFontString() then
 					local Text = button:GetFontString():GetText()
@@ -74,11 +74,11 @@ local function LoadSkin()
 		GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 	end
 
-	GossipFrameGreetingGoodbyeButton:StripTextures()
-	S:HandleButton(GossipFrameGreetingGoodbyeButton)
+	_G.GossipFrameGreetingGoodbyeButton:StripTextures()
+	S:HandleButton(_G.GossipFrameGreetingGoodbyeButton)
+	S:HandleCloseButton(_G.GossipFrameCloseButton,GossipFrame.backdrop)
 
-	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
-
+	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
 	NPCFriendshipStatusBar:CreateBackdrop('Default')

@@ -1,6 +1,6 @@
 -- German localization file for deDE.
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "deDE")
+local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local L = E.Libs.ACL:NewLocale("ElvUI", "deDE")
 if not L then return end
 
 --*_ADDON locales
@@ -136,6 +136,7 @@ L["Unhittable:"] = "Unhittable:"
 L["Waist"] = "Taille"
 L["World Protocol:"] = "Welt Protokol"
 L["Wrist"] = "Handgelenke"
+L["WoW Token:"] = "WoW-Marke"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFLinksklick:|r Talentspezialisierung ändern"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFRechtsklick:|r Beutespezialisierung ändern"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Linksklick:|r Zeige Talent Spezialisierung UI"

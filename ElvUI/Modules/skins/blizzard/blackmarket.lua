@@ -10,7 +10,6 @@ local GetItemQualityColor = GetItemQualityColor
 local C_BlackMarket_GetNumItems = C_BlackMarket.GetNumItems
 local C_BlackMarket_GetItemInfoByIndex = C_BlackMarket.GetItemInfoByIndex
 local hooksecurefunc = hooksecurefunc
--- GLOBALS: HybridScrollFrame_GetOffset, BLACK_MARKET_TITLE
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)
@@ -23,13 +22,13 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
 
-	local BlackMarketFrame = _G["BlackMarketFrame"]
+	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()
 	BlackMarketFrame:SetTemplate('Transparent')
 	BlackMarketFrame.Inset:StripTextures()
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
-	S:HandleScrollBar(BlackMarketScrollFrameScrollBar, 4)
+	S:HandleScrollBar(_G.BlackMarketScrollFrameScrollBar, 4)
 	SkinTab(BlackMarketFrame.ColumnName)
 	SkinTab(BlackMarketFrame.ColumnLevel)
 	SkinTab(BlackMarketFrame.ColumnType)
@@ -38,16 +37,16 @@ local function LoadSkin()
 	SkinTab(BlackMarketFrame.ColumnCurrentBid)
 
 	BlackMarketFrame.MoneyFrameBorder:StripTextures()
-	S:HandleEditBox(BlackMarketBidPriceGold)
-	BlackMarketBidPriceGold.backdrop:Point("TOPLEFT", -2, 0)
-	BlackMarketBidPriceGold.backdrop:Point("BOTTOMRIGHT", -2, 0)
+	S:HandleEditBox(_G.BlackMarketBidPriceGold)
+	_G.BlackMarketBidPriceGold.backdrop:Point("TOPLEFT", -2, 0)
+	_G.BlackMarketBidPriceGold.backdrop:Point("BOTTOMRIGHT", -2, 0)
 
 	S:HandleButton(BlackMarketFrame.BidButton)
 
 	hooksecurefunc('BlackMarketScrollFrame_Update', function()
-		local buttons = BlackMarketScrollFrame.buttons;
+		local buttons = _G.BlackMarketScrollFrame.buttons;
 		local numButtons = #buttons;
-		local offset = HybridScrollFrame_GetOffset(BlackMarketScrollFrame);
+		local offset = _G.HybridScrollFrame_GetOffset(_G.BlackMarketScrollFrame);
 		local numItems = C_BlackMarket_GetNumItems();
 
 		for i = 1, numButtons do
@@ -75,9 +74,9 @@ local function LoadSkin()
 				button.skinned = true
 			end
 
-			if ( type(numItems) == "number" and index <= numItems ) then
+			if type(numItems) == "number" and index <= numItems then
 				local name, texture = C_BlackMarket_GetItemInfoByIndex(index);
-				if ( name ) then
+				if name then
 					button.Item.IconTexture:SetTexture(texture);
 				end
 			end
@@ -90,7 +89,7 @@ local function LoadSkin()
 
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())
-		if region and region:IsObjectType("FontString") and region:GetText() == BLACK_MARKET_TITLE then
+		if region and region:IsObjectType("FontString") and region:GetText() == _G.BLACK_MARKET_TITLE then
 			region:ClearAllPoints()
 			region:Point('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end

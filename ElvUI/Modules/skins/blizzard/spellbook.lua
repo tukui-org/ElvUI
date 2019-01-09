@@ -8,35 +8,69 @@ local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: SpellBookFrame_UpdateSkillLineTabs, SPELLS_PER_PAGE, MAX_SKILLLINE_TABS
+
+local function SkinTab(tab)
+	-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
+	-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
+	local normTex = tab.GetNormalTexture and tab:GetNormalTexture()
+	if normTex then
+		normTex:SetTexCoord(unpack(E.TexCoords))
+		normTex:SetInside()
+	end
+
+	if tab.isSkinned then return end
+
+	tab:StripTextures()
+	tab.pushed = true;
+	tab:CreateBackdrop("Default")
+	tab.backdrop:SetAllPoints()
+	tab:StyleButton(true)
+	hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+		if texPath ~= nil then
+			self:SetPushedTexture(nil);
+		end
+	end)
+
+	hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+		if texPath ~= nil then
+			self:SetHighlightTexture(nil);
+		end
+	end)
+
+	local point, relatedTo, point2, _, y = tab:GetPoint()
+	tab:Point(point, relatedTo, point2, 1, y)
+
+	tab.isSkinned = true
+end
+
+local function SkinSkillLine()
+	for i=1, _G.MAX_SKILLLINE_TABS do
+		SkinTab(_G["SpellBookSkillLineTab"..i])
+	end
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
 
-	S:HandleCloseButton(SpellBookFrameCloseButton)
+	local SpellBookFrame = _G.SpellBookFrame
+	S:HandlePortraitFrame(SpellBookFrame, true)
 
-	local SpellBookFrame = _G["SpellBookFrame"]
-	SpellBookFrame:SetTemplate("Transparent")
-
-	local StripAllTextures = { "SpellBookFrame", "SpellBookFrameInset", "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }
-
-	for _, object in pairs(StripAllTextures) do
+	for _, object in pairs({ "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }) do
 		_G[object]:StripTextures()
 	end
 
 	if E.global.general.disableTutorialButtons then
-		SpellBookFrameTutorialButton:Kill()
+		_G.SpellBookFrameTutorialButton:Kill()
 	end
 
 	if E.private.skins.parchmentRemover.enable then
-		SpellBookPage1:SetAlpha(0)
-		SpellBookPage2:SetAlpha(0)
-		SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
+		_G.SpellBookPage1:SetAlpha(0)
+		_G.SpellBookPage2:SetAlpha(0)
+		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
 		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
 		pagebackdrop:SetTemplate("Default")
-		pagebackdrop:Point("TOPLEFT", SpellBookPage1, "TOPLEFT", -2, 2)
+		pagebackdrop:Point("TOPLEFT", _G.SpellBookPage1, "TOPLEFT", -2, 2)
 		pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
 		SpellBookFrame.pagebackdrop = pagebackdrop
 		for i = 1, 2 do
@@ -45,10 +79,10 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleNextPrevButton(SpellBookPrevPageButton)
-	S:HandleNextPrevButton(SpellBookNextPageButton)
+	S:HandleNextPrevButton(_G.SpellBookPrevPageButton)
+	S:HandleNextPrevButton(_G.SpellBookNextPageButton)
 
-	for i = 1, SPELLS_PER_PAGE do
+	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G["SpellButton"..i]
 		local icon = _G["SpellButton"..i.."IconTexture"]
 		local highlight =_G["SpellButton"..i.."Highlight"]
@@ -87,7 +121,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc("SpellButton_UpdateButton", function()
-		for i = 1, SPELLS_PER_PAGE do
+		for i = 1, _G.SPELLS_PER_PAGE do
 			local button = _G["SpellButton"..i]
 			local icon = _G["SpellButton"..i.."IconTexture"]
 
@@ -113,48 +147,8 @@ local function LoadSkin()
 	end)
 
 	-- needs review
-	local function SkinTab(tab)
-		-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
-		-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
-		local normTex = tab:GetNormalTexture()
-		if normTex then
-			normTex:SetTexCoord(unpack(E.TexCoords))
-			normTex:SetInside()
-		end
-
-		if tab.isSkinned then return; end
-
-		tab:StripTextures()
-		tab.pushed = true;
-		tab:CreateBackdrop("Default")
-		tab.backdrop:SetAllPoints()
-		tab:StyleButton(true)
-		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetPushedTexture(nil);
-			end
-		end)
-
-		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetHighlightTexture(nil);
-			end
-		end)
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, 1, y)
-
-		tab.isSkinned = true
-	end
-
-	local function SkinSkillLine()
-		for i=1, MAX_SKILLLINE_TABS do
-			local tab = _G["SpellBookSkillLineTab"..i]
-			SkinTab(tab)
-		end
-	end
 	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", SkinSkillLine)
-	SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
+	_G.SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
 
 	--Profession Tab
 	local professionbuttons = {
@@ -234,8 +228,8 @@ local function LoadSkin()
 		S:HandleTab(_G["SpellBookFrameTabButton"..i])
 	end
 
-	SpellBookFrameTabButton1:ClearAllPoints()
-	SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
+	_G.SpellBookFrameTabButton1:ClearAllPoints()
+	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 end
 
 S:AddCallback("Spellbook", LoadSkin)

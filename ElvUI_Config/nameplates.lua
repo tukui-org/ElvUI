@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local ACD = E.Libs.AceConfigDialog
 
 local next = next
 local ipairs = ipairs
@@ -3334,6 +3334,12 @@ E.Options.args.nameplate = {
 								ABOVE = L["Above"],
 								BELOW = L["Below"],
 							},
+						},
+						scale = {
+							order = 4,
+							type = "range",
+							name = L["Scale"],
+							min=0.5, max = 2, step = 0.1,
 						},
 					},
 				},

@@ -7,22 +7,19 @@ local _G = _G
 local select = select
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 
 	local skins = {
-		"BNToastFrame",
-		"TicketStatusFrameButton",
+		_G.BNToastFrame,
+		_G.TicketStatusFrameButton,
 	}
 
 	for i = 1, #skins do
-		_G[skins[i]]:SetTemplate("Transparent")
+		skins[i]:SetTemplate("Transparent")
 	end
 
-	local ReportFrame = _G["PlayerReportFrame"]
+	local ReportFrame = _G.PlayerReportFrame
 	ReportFrame:StripTextures()
 	ReportFrame:CreateBackdrop("Transparent")
 	ReportFrame.Comment:StripTextures()
@@ -30,21 +27,21 @@ local function LoadSkin()
 	S:HandleButton(ReportFrame.ReportButton)
 	S:HandleButton(ReportFrame.CancelButton)
 
-	local ReportCheatingDialog = _G["ReportCheatingDialog"]
+	local ReportCheatingDialog = _G.ReportCheatingDialog
 	ReportCheatingDialog:StripTextures()
-	ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(ReportCheatingDialogReportButton)
-	S:HandleButton(ReportCheatingDialogCancelButton)
+	_G.ReportCheatingDialogCommentFrame:StripTextures()
+	S:HandleButton(_G.ReportCheatingDialogReportButton)
+	S:HandleButton(_G.ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:CreateBackdrop("Transparent")
-	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
+	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
 
-	local BattleTagInviteFrame = _G["BattleTagInviteFrame"]
+	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:CreateBackdrop("Transparent")
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())
-		if child:GetObjectType() == 'Button' then
+		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end
 	end

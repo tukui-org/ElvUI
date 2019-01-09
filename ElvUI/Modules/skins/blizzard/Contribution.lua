@@ -2,22 +2,23 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Contribution ~= true then return end
 
 	--Main Frame
+	local ContributionCollectionFrame = _G.ContributionCollectionFrame
 	S:HandleCloseButton(ContributionCollectionFrame.CloseButton)
 	ContributionCollectionFrame.CloseButton.CloseButtonBackground:SetAlpha(0)
 
 	if E.private.skins.blizzard.tooltip then
 		--Reward Tooltip
+		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
 		ContributionBuffTooltip:SetTemplate("Transparent")
 		ContributionBuffTooltip:CreateBackdrop()
@@ -27,6 +28,7 @@ local function LoadSkin()
 		ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
 	end
 
+	local ContributionMixin = _G.ContributionMixin
 	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(self)
 		-- Skin the Contribute Buttons
 		if (not self.isSkinned) then

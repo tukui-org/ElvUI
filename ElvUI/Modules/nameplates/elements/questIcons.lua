@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = LibStub("LibSharedMedia-3.0")
+local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
@@ -59,9 +59,10 @@ local QuestTypesLocalized = {
 	},
 	["ruRU"] = {
 		["убит"] = "KILL",
-		["уничтожен"] = "KILL",
+		["уничтож"] = "KILL",
 		["разбомблен"] = "KILL",
 		["разбит"] = "KILL",
+		["сразит"] = "KILL",
 		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {
@@ -182,9 +183,10 @@ function mod:Get_QuestIcon(frame, index)
 		icon:SetPoint("LEFT", frame.QuestIcon[index - 1], "RIGHT", 2, 0)
 	end
 
+	-- Usable Quest icons
 	local itemTexture = icon:CreateTexture(nil, 'BORDER', nil, 1)
-	itemTexture:SetPoint('TOPRIGHT', icon, 'BOTTOMLEFT', 12, 12)
-	itemTexture:SetSize(iconSize, iconSize)
+	itemTexture:SetPoint('TOPLEFT', icon, 'TOPLEFT', -3, 0)
+	itemTexture:SetSize(iconSize + 4, iconSize + 4)
 	itemTexture:SetTexCoord(unpack(E.TexCoords))
 	itemTexture:Hide()
 	icon.ItemTexture = itemTexture
@@ -298,7 +300,7 @@ function mod:QuestIcon_RelativePosition(frame, element)
 		elseif not isCastbarLeft and isEliteLeft then
 			frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
 		else
-			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 6, 0) -- make it simular position as for the left side
 		end
 	elseif self.db.questIconPosition == "LEFT" then
 		if isCastbarRight then
@@ -306,7 +308,7 @@ function mod:QuestIcon_RelativePosition(frame, element)
 		elseif not isCastbarRight and isEliteRight then
 			frame.QuestIcon:SetPoint("RIGHT", frame.Elite, "LEFT", -4, 0)
 		else
-			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -4, 0)
+			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", 0, 0)
 		end
 	end
 end

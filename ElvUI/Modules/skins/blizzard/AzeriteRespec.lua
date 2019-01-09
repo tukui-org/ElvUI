@@ -4,16 +4,12 @@ local S = E:GetModule('Skins')
 --Cache global variables
 --Lua functions
 local _G = _G
-local select = select
 --WoW API / Variables
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
 
-	local AzeriteRespecFrame = _G["AzeriteRespecFrame"]
+	local AzeriteRespecFrame = _G.AzeriteRespecFrame
 	AzeriteRespecFrame:SetClipsChildren(true)
 	AzeriteRespecFrame.Background:Hide()
 	AzeriteRespecFrame:StripTextures()

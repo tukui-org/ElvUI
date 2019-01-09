@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
-local LibCompress = LibStub:GetLibrary("LibCompress")
-local LibBase64 = LibStub("LibBase64-1.0-ElvUI")
+local LibCompress = E.Libs.Compress
+local LibBase64 = E.Libs.Base64
 
 --Cache global variables
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
@@ -15,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 --Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: LibStub, ElvDB, ElvPrivateDB, ReloadUI
+-- GLOBALS: ElvDB, ElvPrivateDB, ReloadUI
 
 ----------------------------------
 -- CONSTANTS
@@ -183,8 +183,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						maxLetters = 127,
 						OnAccept = function(self)
 							ElvDB.profiles[self.editBox:GetText()] = data
-							LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
-							E:UpdateAll(true)
+							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+							E:StaggeredUpdateAll(nil, true)
 							Downloads[sender] = nil
 						end,
 						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
@@ -206,9 +206,9 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				OnAccept = function()
 					if profileKey == "global" then
 						E:CopyTable(ElvDB.global, data)
-						E:UpdateAll(true)
+						E:StaggeredUpdateAll(nil, true)
 					else
-						LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
+						E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(profileKey)
 					end
 					Downloads[sender] = nil
 				end,
@@ -505,7 +505,7 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 	end
 
 	--Update all ElvUI modules
-	E:UpdateAll(true)
+	E:StaggeredUpdateAll(nil, true)
 end
 
 function D:ExportProfile(profileType, exportFormat)

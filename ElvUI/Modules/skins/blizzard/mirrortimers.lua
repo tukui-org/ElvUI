@@ -7,35 +7,30 @@ local _G = _G
 local format = format
 --WoW API / Variables
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: MIRRORTIMER_NUMTIMERS
+local function MirrorTimer_OnUpdate(frame, elapsed)
+	if frame.paused then return end
+	if frame.timeSinceUpdate >= 0.3 then
+		local minutes = frame.value/60
+		local seconds = frame.value%60
+		local text = frame.label:GetText()
+
+		if frame.value > 0 then
+			frame.TimerText:SetText(format("%s (%d:%02d)", text, minutes, seconds))
+		else
+			frame.TimerText:SetText(format("%s (0:00)", text))
+		end
+
+		frame.timeSinceUpdate = 0
+	else
+		frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed
+	end
+end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mirrorTimers ~= true then return end
 
-	local function MirrorTimer_OnUpdate(frame, elapsed)
-		if ( frame.paused ) then
-			return;
-		end
-
-		if frame.timeSinceUpdate >= 0.3 then
-			local minutes = frame.value/60
-			local seconds = frame.value%60
-			local text = frame.label:GetText()
-
-			if frame.value > 0 then
-				frame.TimerText:SetText(format("%s (%d:%02d)", text, minutes, seconds))
-			else
-				frame.TimerText:SetText(format("%s (0:00)", text))
-			end
-			frame.timeSinceUpdate = 0
-		else
-			frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed
-		end
-	end
-
 	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
-	for i = 1, MIRRORTIMER_NUMTIMERS do
+	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local mirrorTimer = _G['MirrorTimer'..i]
 		local statusBar = _G['MirrorTimer'..i..'StatusBar']
 		local text = _G['MirrorTimer'..i.."Text"]
