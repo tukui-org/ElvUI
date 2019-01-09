@@ -71,20 +71,20 @@ function NP:Construct_HealthPrediction(nameplate)
 
 	HealthPrediction.myBar:SetPoint('LEFT', nameplate.Health:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.myBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 2)
-	HealthPrediction.myBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.personal))
+	HealthPrediction.myBar:SetStatusBarColor(NP.db.colors.healPrediction.personal.r, NP.db.colors.healPrediction.personal.g, NP.db.colors.healPrediction.personal.b)
 	HealthPrediction.myBar:SetMinMaxValues(0, 1)
 
 	HealthPrediction.otherBar:SetPoint('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.otherBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 1)
-	HealthPrediction.otherBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.others))
+	HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
 
 	HealthPrediction.absorbBar:SetPoint('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.absorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel())
-	HealthPrediction.absorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.absorbs))
+	HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
 
 	HealthPrediction.healAbsorbBar:SetPoint('RIGHT', nameplate.Health:GetStatusBarTexture())
 	HealthPrediction.healAbsorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 3)
-	HealthPrediction.healAbsorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.healAbsorbs))
+	HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
 	HealthPrediction.healAbsorbBar:SetReverseFill(true)
 
 	HealthPrediction.maxOverflow = 1
@@ -102,8 +102,8 @@ function NP:Update_HealthPrediction(nameplate)
 		nameplate:DisableElement('HealPrediction')
 	end
 
-	nameplate.HealthPrediction.myBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.personal))
-	nameplate.HealthPrediction.otherBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.others))
-	nameplate.HealthPrediction.absorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.absorbs))
-	nameplate.HealthPrediction.healAbsorbBar:SetStatusBarColor(unpack(NP.db.colors.healPrediction.healAbsorbs))
+	nameplate.HealthPrediction.myBar:SetStatusBarColor(NP.db.colors.healPrediction.personal.r, NP.db.colors.healPrediction.personal.g, NP.db.colors.healPrediction.personal.b)
+	nameplate.HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
+	nameplate.HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
+	nameplate.HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
 end

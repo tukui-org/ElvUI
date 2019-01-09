@@ -20,7 +20,7 @@ function NP:Construct_Buffs(nameplate)
 	Buffs.type = 'buffs'
 	Buffs.PostCreateIcon = self.Construct_AuraIcon
 	Buffs.PostUpdateIcon = self.PostUpdateAura
-	--buffs.CustomFilter = self.AuraFilter
+	Buffs.CustomFilter = self.AuraFilter
 
 	return Buffs
 end
@@ -44,7 +44,8 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs.type = 'debuffs'
 	Debuffs.PostCreateIcon = self.Construct_AuraIcon
 	Debuffs.PostUpdateIcon = self.PostUpdateAura
-	--Debuffs.CustomFilter = self.AuraFilter
+	Debuffs.CustomFilter = self.AuraFilter
+
 	return Debuffs
 end
 
@@ -272,4 +273,87 @@ function NP:AuraIconUpdate(frame, db, button, font, outline, customFont)
 	button.unit = frame.unit -- used to update cooldown text
 
 --	E:ToggleBlizzardCooldownText(button.cd, button)
+end
+
+function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
+	local friendCheck, filterName, filter, filterType, spellList, spell
+	for i=1, select('#', ...) do
+		filterName = select(i, ...)
+		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
+		if friendCheck ~= false then
+			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
+				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
+			end
+			filter = E.global.unitframe.aurafilters[filterName]
+			if filter then
+				filterType = filter.type
+				spellList = filter.spells
+				spell = spellList and (spellList[spellID] or spellList[name])
+
+				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
+					return true
+				elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
+					return false
+				end
+			elseif filterName == 'Personal' and isPlayer and allowDuration then
+				return true
+			elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
+				return true
+			elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+				return true
+			elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
+				return true
+			elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
+				return true
+			elseif filterName == 'Dispellable' and canDispell and allowDuration then
+				return true
+			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
+				return true
+			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
+				return true
+			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
+				return true
+			elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
+				return false
+			elseif filterName == 'blockNoDuration' and noDuration then
+				return false
+			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
+				return false
+			elseif filterName == 'blockDispellable' and canDispell then
+				return false
+			elseif filterName == 'blockNotDispellable' and (not canDispell) then
+				return false
+			end
+		end
+	end
+end
+
+function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
+	local db = NP.db.units[self.__owner.frameType]
+
+	if not db then return end
+
+	local isPlayer = button.isPlayer
+	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	local priority = db[self.type].filters.priority
+
+	local noDuration = (not duration or duration == 0)
+	local allowDuration = noDuration or (duration and (duration > 0) and (db[self.type].filters.maxDuration == 0 or duration <= db[self.type].filters.maxDuration) and (db[self.type].filters.minDuration == 0 or duration >= db[self.type].filters.minDuration))
+	local filterCheck
+
+	if priority ~= '' then
+		local isUnit = unit and caster and UnitIsUnit(unit, caster)
+		local canDispell = (self.type == 'Buffs' and isStealable) or (self.type == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", priority))
+	else
+		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
+	end
+
+
+	if filterCheck == true then
+		return true
+	end
+
+	return false
 end
