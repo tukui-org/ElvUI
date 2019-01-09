@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
-
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 function NP:Construct_Buffs(nameplate)
 	local Buffs = CreateFrame("Frame", self:GetName()..'Buffs', nameplate)
@@ -236,14 +236,15 @@ function NP:UpdateAuraIconSettings(auras, noCycle)
 	auras.db = db
 
 	if db then
-		local font = E.Libs.LSM:Fetch("font", E.db.unitframe.font)
-		local outline = E.db.unitframe.fontOutline
+		local font = LSM:Fetch("font", E.db.nameplates.font)
+		local fontSize = E.db.nameplates.fontSize or 11
+		local outline = E.db.nameplates.fontOutline or "OUTLINE"
 		local customFont
 
 		if not noCycle then
 			while auras[index] do
 				if (not customFont) and (auras[index].timerOptions and auras[index].timerOptions.fontOptions) then
-					customFont = E.Libs.LSM:Fetch("font", auras[index].timerOptions.fontOptions.font)
+					customFont = LSM:Fetch("font", auras[index].timerOptions.fontOptions.font)
 				end
 
 				NP:AuraIconUpdate(frame, db, auras[index], font, outline, customFont)
@@ -252,7 +253,7 @@ function NP:UpdateAuraIconSettings(auras, noCycle)
 			end
 		else
 			if auras.timerOptions and auras.timerOptions.fontOptions then
-				customFont = E.Libs.LSM:Fetch("font", auras.timerOptions.fontOptions.font)
+				customFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
 			end
 
 			NP:AuraIconUpdate(frame, db, auras, font, outline, customFont)
