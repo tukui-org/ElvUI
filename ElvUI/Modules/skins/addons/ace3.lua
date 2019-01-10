@@ -8,7 +8,6 @@ local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
