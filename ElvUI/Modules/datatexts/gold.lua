@@ -97,7 +97,7 @@ local function OnEnter(self)
 					name = k,
 					amount = ElvDB["gold"][E.myrealm][k],
 					amountText = E:FormatMoney(ElvDB["gold"][E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
-					r = color.r, g = color.g, b =color.b,
+					r = color.r, g = color.g, b = color.b,
 				}
 			)
 		end
