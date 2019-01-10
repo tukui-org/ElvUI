@@ -37,6 +37,8 @@ local function OnEvent(self)
 	local NewMoney = GetMoney();
 	ElvDB = ElvDB or { };
 	ElvDB.gold = ElvDB.gold or {};
+	ElvDB["class"] = ElvDB["class"] or {};
+	ElvDB["class"][E.myrealm] = ElvDB["class"][E.myrealm] or {};
 	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {};
 	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney;
 
