@@ -37,10 +37,12 @@ local function OnEvent(self)
 	local NewMoney = GetMoney();
 	ElvDB = ElvDB or { };
 	ElvDB.gold = ElvDB.gold or {};
-	ElvDB["class"] = ElvDB["class"] or {};
-	ElvDB["class"][E.myrealm] = ElvDB["class"][E.myrealm] or {};
 	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {};
 	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney;
+
+	ElvDB.class = ElvDB.class or {};
+	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {};
+	ElvDB.class[E.myrealm][E.myname] = E.myclass;
 
 	local OldMoney = ElvDB.gold[E.myrealm][E.myname] or NewMoney
 
@@ -93,13 +95,13 @@ local function OnEnter(self)
 	local myGold = {}
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			local class = ElvDB["class"][E.myrealm][k]
+			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
 			local color = class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			tinsert(myGold,
 				{
 					name = k,
-					amount = ElvDB["gold"][E.myrealm][k],
-					amountText = E:FormatMoney(ElvDB["gold"][E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
+					amount = ElvDB.gold[E.myrealm][k],
+					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
 					r = color.r, g = color.g, b = color.b,
 				}
 			)
