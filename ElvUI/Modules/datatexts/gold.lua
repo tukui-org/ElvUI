@@ -5,6 +5,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local pairs = pairs
 local join = string.join
+local tinsert = table.insert
 --WoW API / Variables
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
@@ -86,11 +87,26 @@ local function OnEnter(self)
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
 
+	local myGold = {}
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			DT.tooltip:AddDoubleLine(k, E:FormatMoney(ElvDB.gold[E.myrealm][k], style, textOnly), 1, 1, 1, 1, 1, 1)
-			totalGold=totalGold+ElvDB.gold[E.myrealm][k]
+			local class = ElvDB["class"][E.myrealm][k]
+			local color = class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			tinsert (myGold,
+				{
+					name = k,
+					amount = ElvDB["gold"][E.myrealm][k],
+					amountText = E:FormatMoney(ElvDB["gold"][E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
+					r = color.r, g = color.g, b =color.b,
+				}
+			)
 		end
+		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
+	end
+
+	for i = 1, #myGold do
+		local g = myGold[i]
+		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name.." |TInterface\\COMMON\\Indicator-Green:14|t" or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
