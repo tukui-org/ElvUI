@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select, unpack, sort, wipe, ceil = select, unpack, table.sort, wipe, math.ceil
+local ipairs, select, unpack, sort, wipe, ceil = ipairs, select, unpack, table.sort, wipe, math.ceil
 local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
@@ -89,15 +89,13 @@ local mobilestatus = {
 
 local function BuildGuildTable()
 	wipe(guildTable)
-	local statusInfo
-	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile, guid
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
+		local name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
 		if not name then return end
 
-		statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
+		local statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
@@ -195,17 +193,16 @@ local function Click(self, btn)
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
 
-		local classc, levelc, grouped, info
+		local grouped
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		for i = 1, #guildTable do
-			info = guildTable[i]
+		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
@@ -254,22 +251,19 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, classc, levelc, info, grouped
-	local shown = 0
+	local zonec, grouped
 
 	DT.tooltip:AddLine(' ')
-	for i = 1, #guildTable do
+	for i, info in ipairs(guildTable) do
 		-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
-		if 30 - shown <= 1 then
+		if 30 - i < 1 then
 			if online - 30 > 1 then DT.tooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
 			break
 		end
 
-		info = guildTable[i]
-
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
-		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
 
@@ -280,7 +274,6 @@ local function OnEnter(self, _, noUpdate)
 		else
 			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], split("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
-		shown = shown + 1
 	end
 
 	DT.tooltip:Show()
