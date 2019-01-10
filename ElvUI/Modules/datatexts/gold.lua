@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
+local wipe = wipe
 local pairs = pairs
 local strjoin = strjoin
 local tinsert = tinsert
@@ -74,6 +75,7 @@ local function Click(self, btn)
 	end
 end
 
+local myGold = {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	local textOnly = not E.db.datatexts.goldCoins and true or false
@@ -92,7 +94,7 @@ local function OnEnter(self)
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
 
-	local myGold = {}
+	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
 			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
@@ -109,8 +111,7 @@ local function OnEnter(self)
 		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
 	end
 
-	for i = 1, #myGold do
-		local g = myGold[i]
+	for _, g in ipairs(myGold) do
 		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name.." |TInterface\\COMMON\\Indicator-Green:14|t" or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
