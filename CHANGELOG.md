@@ -4,10 +4,11 @@
 
 
 **Bug Fixes:**  
-Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)
+Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
 
 **Misc. Changes:**  
-Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.
+Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.  
+Updated gold datatext. Added an indicator for the current character and characters are now in class color.  
 
 ___
 **Version 10.85 [ January 4th 2019 ]**

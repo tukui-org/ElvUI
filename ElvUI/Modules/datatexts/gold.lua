@@ -92,7 +92,7 @@ local function OnEnter(self)
 		if ElvDB.gold[E.myrealm][k] then
 			local class = ElvDB["class"][E.myrealm][k]
 			local color = class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
-			tinsert (myGold,
+			tinsert(myGold,
 				{
 					name = k,
 					amount = ElvDB["gold"][E.myrealm][k],
