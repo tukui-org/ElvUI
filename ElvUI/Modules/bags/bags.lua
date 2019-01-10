@@ -8,8 +8,8 @@ local LibItemLevel = E.Libs.ItemLevel -- Workaround to fix broken Blizzard API t
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert, tremove, twipe, tmaxn = table.insert, table.remove, table.wipe, table.maxn
-local floor, ceil, abs, mod = math.floor, math.ceil, math.abs, math.fmod
-local format, len, sub = string.format, string.len, string.sub
+local floor, ceil, abs = math.floor, math.ceil, math.abs
+local format, sub = string.format, string.sub
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -159,7 +159,7 @@ function B:UpdateSearch()
 	local MIN_REPEAT_CHARACTERS = 3;
 	local searchString = self:GetText();
 	local prevSearchString = SEARCH_STRING;
-	if len(searchString) > MIN_REPEAT_CHARACTERS then
+	if #searchString > MIN_REPEAT_CHARACTERS then
 		local repeatChar = true
 		for i=1, MIN_REPEAT_CHARACTERS, 1 do
 			if sub(searchString,(0-i), (0-i)) ~= sub(searchString,(-1-i),(-1-i)) then
@@ -203,7 +203,7 @@ function B:ResetAndClear()
 end
 
 function B:SetSearch(query)
-	local empty = len(query:gsub(' ', '')) == 0
+	local empty = #(query:gsub(' ', '')) == 0
 	local method = Search.Matches
 	if Search.Filters.tipPhrases.keywords[query] then
 		method = Search.TooltipPhrase
@@ -248,14 +248,9 @@ function B:SetSearch(query)
 end
 
 function B:SetGuildBankSearch(query)
-	local empty = len(query:gsub(' ', '')) == 0
+	local empty = #(query:gsub(' ', '')) == 0
 	local method = Search.Matches
-	local allowPartialMatch
 	if Search.Filters.tipPhrases.keywords[query] then
-		if query == "rel" or query == "reli" or query == "relic" then
-			allowPartialMatch = true
-		end
-
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
@@ -273,7 +268,7 @@ function B:SetGuildBankSearch(query)
 				if col == 0 then col = 1 end
 				if btn == 0 then btn = 14 end
 				local button = _G["GuildBankColumn"..col.."Button"..btn]
-				local success, result = pcall(method, Search, link, query, allowPartialMatch)
+				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
 					SetItemButtonDesaturated(button);
 					button.searchOverlay:Hide();
@@ -398,8 +393,7 @@ function UpdateItemUpgradeIcon(slot)
 	end
 end
 
-local UpdateItemScrapIcon;
-function UpdateItemScrapIcon(slot)
+local function UpdateItemScrapIcon(slot)
 	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
 	-- Also the option dont update correctly.
 	if not E.db.bags.scrapIcon then
@@ -463,9 +457,8 @@ function B:UpdateSlot(bagID, slotID)
 	local assignedID = (self.isBank and bagID) or bagID - 1
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
-	slot.name, slot.rarity = nil, nil
-	local texture, count, locked, readable, noValue, _
-	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
+	local texture, count, locked, rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
+	slot.name, slot.rarity = nil, rarity
 
 	local clink = GetContainerItemLink(bagID, slotID)
 
@@ -503,8 +496,8 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif clink then
-		local itemEquipLoc, itemClassID, itemSubClassID
-		slot.name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
+		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
+		slot.name = name
 
 		-- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
 		local _, iLvl = LibItemLevel:GetItemInfo(clink)
@@ -999,9 +992,8 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:ClearAllPoints();
 				end
 
-				local anchorPoint, relativePoint
 				if lastButton then
-					anchorPoint, relativePoint = (self.db.reverseSlots and 'BOTTOM' or 'TOP'), (self.db.reverseSlots and 'TOP' or 'BOTTOM')
+					local anchorPoint, relativePoint = (self.db.reverseSlots and 'BOTTOM' or 'TOP'), (self.db.reverseSlots and 'TOP' or 'BOTTOM')
 					if isSplit and newBag and slotID == 1 then
 						f.Bags[bagID][slotID]:Point(anchorPoint, lastRowButton, relativePoint, 0, self.db.reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing));
 						lastRowButton = f.Bags[bagID][slotID];
@@ -1021,7 +1013,7 @@ function B:Layout(isBank)
 						f.Bags[bagID][slotID]:Point(anchorPoint, lastButton, relativePoint, self.db.reverseSlots and -buttonSpacing or buttonSpacing, 0);
 					end
 				else
-					anchorPoint = self.db.reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
+					local anchorPoint = self.db.reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
 					f.Bags[bagID][slotID]:Point(anchorPoint, f.holderFrame, anchorPoint, 0, self.db.reverseSlots and f.bottomOffset - 8 or 0);
 					lastRowButton = f.Bags[bagID][slotID];
 					numContainerRows = numContainerRows + 1;
@@ -1312,8 +1304,8 @@ function B:FormatMoney(amount)
 
 	local value = abs(amount)
 	local gold = floor(value / 10000)
-	local silver = floor(mod(value / 100, 100))
-	local copper = floor(mod(value, 100))
+	local silver = floor((value / 100) % 100)
+	local copper = floor(value % 100)
 
 	if gold > 0 then
 		str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
@@ -1329,16 +1321,16 @@ function B:FormatMoney(amount)
 end
 
 function B:GetGraysValue()
-	local value, itemID, rarity, itype, itemPrice, stackCount, stackPrice, _ = 0
+	local value = 0
 
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			itemID = GetContainerItemID(bag, slot)
+			local itemID = GetContainerItemID(bag, slot)
 			if itemID then
-				_, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
 				if itemPrice then
-					stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
-					stackPrice = itemPrice * stackCount
+					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+					local stackPrice = itemPrice * stackCount
 					if (rarity and rarity == 0) and (itype and itype ~= "Quest") and (stackPrice > 0) then
 						value = value + stackPrice
 					end
@@ -1357,12 +1349,11 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local link, rarity, itype, itemPrice, itemID, _
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
-			itemID = GetContainerItemID(bag, slot)
+			local itemID = GetContainerItemID(bag, slot)
 			if itemID then
-				_, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+				local _, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
 
 				if (rarity and rarity == 0) and (itype and itype ~= "Quest") and (itemPrice and itemPrice > 0) then
 					tinsert(B.SellFrame.Info.itemList, {bag,slot,itemPrice,link})
@@ -1950,7 +1941,7 @@ function B:PLAYER_ENTERING_WORLD()
 end
 
 function B:UpdateContainerFrameAnchors()
-	local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
+	local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
 	local screenWidth = GetScreenWidth();
 	local containerScale = 1;
 	local leftLimit = 0;
@@ -1969,9 +1960,8 @@ function B:UpdateContainerFrameAnchors()
 		leftMostPoint = screenWidth - xOffset;
 		column = 1;
 
-		local frameHeight;
 		for _, frameName in ipairs(ContainerFrame1.bags) do
-			frameHeight = _G[frameName]:GetHeight();
+			local frameHeight = _G[frameName]:GetHeight();
 
 			if freeScreenHeight < frameHeight then
 				-- Start a new column
@@ -2004,7 +1994,7 @@ function B:UpdateContainerFrameAnchors()
 
 	local bagsPerColumn = 0
 	for index, frameName in ipairs(ContainerFrame1.bags) do
-		frame = _G[frameName];
+		local frame = _G[frameName];
 		frame:SetScale(1);
 
 		if index == 1 then
@@ -2078,11 +2068,11 @@ function B:ProgressQuickVendor()
 	local bag, slot,itemPrice, link = unpack(item)
 
 	local stackPrice = 0
-	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 	if B.SellFrame.Info.delete then
 		PickupContainerItem(bag, slot)
 		DeleteCursorItem()
 	else
+		local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 		stackPrice = (itemPrice or 0) * stackCount
 		if E.db.bags.vendorGrays.details and link then
 			E:Print(format("%s|cFF00DDDDx%d|r %s", link, stackCount, B:FormatMoney(stackPrice)))
