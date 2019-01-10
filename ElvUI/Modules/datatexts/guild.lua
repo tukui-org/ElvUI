@@ -201,7 +201,7 @@ local function Click(self, btn)
 
 		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
-				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+				local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
@@ -262,7 +262,7 @@ local function OnEnter(self, _, noUpdate)
 
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
 

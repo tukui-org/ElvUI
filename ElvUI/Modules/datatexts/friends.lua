@@ -364,7 +364,7 @@ local function Click(self, btn)
 						shouldSkip = true
 					end
 					if not shouldSkip then
-						local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 						classc = classc or GetQuestDifficultyColor(info[2]);
 
 						menuCountWhispers = menuCountWhispers + 1
@@ -405,7 +405,7 @@ local function Click(self, btn)
 					end
 
 					if info[6] == wowString and (E.myfaction == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
-						local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]], GetQuestDifficultyColor(info[16])
 						classc = classc or GetQuestDifficultyColor(info[16])
 
 						menuCountInvites = menuCountInvites + 1
@@ -467,7 +467,7 @@ local function OnEnter(self)
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+					classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 
 					classc = classc or GetQuestDifficultyColor(info[2])
 
@@ -503,7 +503,7 @@ local function OnEnter(self)
 						end
 						if not shouldSkip then
 							if info[6] == wowString then
-								classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
+								classc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]]
 								if info[16] ~= '' then
 									levelc = GetQuestDifficultyColor(info[16])
 								else
