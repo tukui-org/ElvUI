@@ -14,8 +14,9 @@ local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
 local C_Timer_NewTicker = C_Timer.NewTicker
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvDB, ToggleAllBags
+-- GLOBALS: ElvDB, CUSTOM_CLASS_COLORS, ToggleAllBags
 
 local Ticker
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
