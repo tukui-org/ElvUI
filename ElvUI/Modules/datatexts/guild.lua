@@ -3,8 +3,8 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local ipairs, select, unpack, sort, wipe, ceil = ipairs, select, unpack, table.sort, wipe, math.ceil
-local format, find, join, split = string.format, string.find, string.join, string.split
+local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, table.sort, unpack, wipe, ceil
+local format, strfind, strjoin, strsplit = string.format, strfind, strjoin, strsplit
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -48,9 +48,9 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFFFF%s/%s (%s%%)"
-local moreMembersOnlineString = join("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
-local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
-local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
+local moreMembersOnlineString = strjoin("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
+local noteString = strjoin("", "|cff999999   ", LABEL_NOTE, ":|r %s")
+local officerNoteString = strjoin("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local guildTable, guildMotD = {}, ""
 local lastPanel
 
@@ -107,11 +107,11 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
-local FRIEND_ONLINE = select(2, split(" ", ERR_FRIEND_ONLINE_SS, 2))
+local FRIEND_ONLINE = select(2, strsplit(" ", ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	['CHAT_MSG_SYSTEM'] = function(self, arg1)
-		if(FRIEND_ONLINE ~= nil and arg1 and find(arg1, FRIEND_ONLINE)) then
+		if(FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE)) then
 			resendRequest = true
 		end
 	end,
@@ -271,7 +271,7 @@ local function OnEnter(self, _, noUpdate)
 			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], split("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 
@@ -283,7 +283,7 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", GUILD, ": ", hex, "%d|r")
+	displayString = strjoin("", GUILD, ": ", hex, "%d|r")
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel ~= nil then

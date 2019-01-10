@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
-local format, find, join, gsub = string.format, string.find, string.join, string.gsub
+local sort, next, wipe, tremove, tinsert = table.sort, next, wipe, tremove, tinsert
+local format, gsub, strfind, strjoin = string.format, string.gsub, strfind, strjoin
 --WoW API / Variables
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
@@ -125,7 +125,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
+local totalOnlineString = strjoin("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
@@ -334,7 +334,7 @@ local function OnEvent(self, event, message)
 	-- when this is the case, we invalidate our buffered table and update the
 	-- datatext information
 	if event == "CHAT_MSG_SYSTEM" then
-		if not (find(message, friendOnline) or find(message, friendOffline)) then return end
+		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
 	end
 
 	-- force update when showing tooltip
@@ -540,7 +540,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", "%s: ", hex, "%d|r")
+	displayString = strjoin("", "%s: ", hex, "%d|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

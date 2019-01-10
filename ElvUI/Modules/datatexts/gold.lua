@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local pairs = pairs
-local join = string.join
-local tinsert = table.insert
+local strjoin = strjoin
+local tinsert = tinsert
 --WoW API / Variables
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
@@ -23,8 +23,8 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
 local Profit	= 0
 local Spent		= 0
-local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
-local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
+local resetCountersFormatter = strjoin("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
+local resetInfoFormatter = strjoin("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end

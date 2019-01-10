@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local next, unpack = next, unpack
-local format, join = string.format, string.join
-local tsort, tinsert = table.sort, table.insert
+local format, strjoin = string.format, string.join
+local sort, tinsert = table.sort, table.insert
 local date, utf8sub = date, string.utf8sub
 
 --WoW API / Variables
@@ -37,8 +37,8 @@ local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
 local ukDisplayFormat = '';
-local europeDisplayFormat_nocolor = join("", "%02d", ":|r%02d")
-local ukDisplayFormat_nocolor = join("", "", "%d", ":|r%02d", " %s|r")
+local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
+local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
 local lockoutInfoFormat = "%s%s %s |cffaaaaaa(%s, %s/%s)"
 local lockoutInfoFormatNoEnc = "%s%s %s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
@@ -49,8 +49,8 @@ local enteredFrame = false;
 local Update, lastPanel; -- UpValue
 
 local function ValueColorUpdate(hex)
-	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
+	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
 
 	if lastPanel ~= nil then
 		Update(lastPanel, 20000)
@@ -196,7 +196,7 @@ local function OnEnter(self)
 		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-		tsort(lockedInstances.raids, sortFunc)
+		sort(lockedInstances.raids, sortFunc)
 
 		for i = 1, #lockedInstances.raids do
 			local difficultyLetter = lockedInstances.raids[i][2]
@@ -218,7 +218,7 @@ local function OnEnter(self)
 		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		tsort(lockedInstances.dungeons, sortFunc)
+		sort(lockedInstances.dungeons, sortFunc)
 
 		for i = 1,#lockedInstances.dungeons do
 			local difficultyLetter = lockedInstances.dungeons[i][2]
@@ -240,7 +240,7 @@ local function OnEnter(self)
 		local name, _, reset = GetSavedWorldBossInfo(i)
 		tinsert(worldbossLockoutList, {name, reset})
 	end
-	tsort(worldbossLockoutList, sortFunc)
+	sort(worldbossLockoutList, sortFunc)
 	for i = 1,#worldbossLockoutList do
 		local name, reset = unpack(worldbossLockoutList[i])
 		if(reset) then
