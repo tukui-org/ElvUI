@@ -309,6 +309,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	bars:Hide()
 
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
