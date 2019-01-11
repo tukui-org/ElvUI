@@ -47,4 +47,5 @@ end
 
 function B:SkinBlizzTimers()
 	self:RegisterEvent('START_TIMER')
+	self:START_TIMER()
 end
