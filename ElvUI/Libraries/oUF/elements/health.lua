@@ -114,16 +114,8 @@ local function UpdateColor(element, unit, cur, max)
 	end
 end
 
-local Update;
 local C_Timer_After = C_Timer.After;
-local RecheckHealth = function(self, event, unit)
-	if self and self.Health then
-		Update(self, event, unit)
-		self.Health.waitingForHealthRecheck = nil -- clear this after the update
-	end
-end
-
-Update = function(self, event, unit)
+local function Update(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
@@ -146,10 +138,15 @@ Update = function(self, event, unit)
 	else
 		element:SetValue(cur)
 
+		-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
 		if cur == 1 and event == 'UNIT_HEALTH' and not element.waitingForHealthRecheck then
-			-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
 			element.waitingForHealthRecheck = true
-			C_Timer_After(1, function() RecheckHealth(self, event, unit) end)
+			C_Timer_After(1, function()
+				if element then
+					Update(self, event, unit) -- call again after 1 second
+					element.waitingForHealthRecheck = nil -- clear this after the update
+				end
+			end)
 		end
 	end
 
