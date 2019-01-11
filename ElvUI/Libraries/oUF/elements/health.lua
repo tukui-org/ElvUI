@@ -206,6 +206,7 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
+		self:RegisterEvent('UNIT_AURA', Path)
 		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
