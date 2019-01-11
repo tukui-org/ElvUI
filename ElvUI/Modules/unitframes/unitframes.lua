@@ -481,6 +481,8 @@ function UF:Update_AllFrames()
 			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
+
+	UF:UpdateAllHeaders()
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -1155,13 +1157,12 @@ function UF:PLAYER_ENTERING_WORLD()
 		--We only want to run Update_AllFrames once when we first log in or /reload
 		UF:Update_AllFrames()
 		hasEnteredWorld = true
-		UF:UpdateAllHeaders()
-	end
-
-	local _, instanceType = IsInInstance()
-	if instanceType ~= "none" then
-		--We need to update headers when we zone into an instance
-		UF:UpdateAllHeaders()
+	else
+		local _, instanceType = IsInInstance()
+		if instanceType ~= "none" then
+			--We need to update headers when we zone into an instance
+			UF:UpdateAllHeaders()
+		end
 	end
 end
 

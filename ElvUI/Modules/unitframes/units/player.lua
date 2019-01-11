@@ -140,6 +140,9 @@ function UF:Update_PlayerFrame(frame, db)
 	--Combat Icon
 	UF:Configure_CombatIndicator(frame)
 
+	--Resource Bars
+	UF:Configure_ClassBar(frame)
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -165,9 +168,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Resource Bars
-	UF:Configure_ClassBar(frame)
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
