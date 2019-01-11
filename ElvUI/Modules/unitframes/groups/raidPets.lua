@@ -41,9 +41,6 @@ function UF:Construct_RaidpetFrames()
 	self.Range = UF:Construct_Range(self)
 	self.customTexts = {}
 
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
-
 	self.unitframeType = "raidpet"
 
 	return self

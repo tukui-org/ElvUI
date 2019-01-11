@@ -210,7 +210,7 @@ function UF:Configure_HealthBar(frame)
 	--Highlight Texture
 	UF:Configure_HighlightGlow(frame)
 
-	frame:UpdateElement("Health")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 function UF:GetHealthBottomOffset(frame)

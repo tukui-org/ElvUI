@@ -78,9 +78,6 @@ function UF:Construct_PartyFrames()
 
 	self.Range = UF:Construct_Range(self)
 
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
-
 	return self
 end
 

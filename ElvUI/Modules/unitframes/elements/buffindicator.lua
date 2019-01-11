@@ -241,5 +241,5 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 		frame.AuraWatch.Update(frame)
 	end
 
-	frame:UpdateElement("AuraWatch")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

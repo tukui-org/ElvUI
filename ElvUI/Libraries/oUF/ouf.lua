@@ -96,19 +96,6 @@ local frame_metatable = {
 Private.frame_metatable = frame_metatable
 
 for k, v in next, {
-	-- ElvUI block
-	UpdateElement = function(self, name)
-		local unit = self.unit
-		if(not unit or not UnitExists(unit)) then return end
-
-		local element = elements[name]
-		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
-		if(element.update) then
-			element.update(self, 'OnShow', unit)
-		end
-	end,
-	-- end block
-
 	--[[ frame:EnableElement(name, unit)
 	Used to activate an element for the given unit frame.
 
@@ -121,7 +108,7 @@ for k, v in next, {
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end -- ElvUI changed
+		if(not element or self:IsElementEnabled(name)) then return end
 
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
@@ -684,14 +671,14 @@ oUF implements some of its own attributes. These can be supplied by the layout, 
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
-function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideTemplate
+function oUF:Spawn(unit, overrideName)
 	argcheck(unit, 2, 'string')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
 
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, PetBattleFrameHider, overrideTemplate or 'SecureUnitButtonTemplate') -- ElvUI changed
+	local object = CreateFrame('Button', name, PetBattleFrameHider, 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
