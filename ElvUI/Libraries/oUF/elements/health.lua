@@ -114,7 +114,16 @@ local function UpdateColor(element, unit, cur, max)
 	end
 end
 
-local function Update(self, event, unit)
+local Update;
+local C_Timer_After = C_Timer.After;
+local RecheckHealth = function(self, event, unit)
+	if self and self.Health then
+		Update(self, event, unit)
+		self.Health.waitingForHealthRecheck = nil -- clear this after the update
+	end
+end
+
+Update = function(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
@@ -136,6 +145,12 @@ local function Update(self, event, unit)
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
+
+		if cur == 1 and event == 'UNIT_HEALTH' and not element.waitingForHealthRecheck then
+			-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
+			element.waitingForHealthRecheck = true
+			C_Timer_After(1, function() RecheckHealth(self, event, unit) end)
+		end
 	end
 
 	element.disconnected = disconnected
