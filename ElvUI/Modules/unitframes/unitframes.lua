@@ -1153,8 +1153,9 @@ local hasEnteredWorld = false
 function UF:PLAYER_ENTERING_WORLD()
 	if not hasEnteredWorld then
 		--We only want to run Update_AllFrames once when we first log in or /reload
-		self:Update_AllFrames()
+		UF:Update_AllFrames()
 		hasEnteredWorld = true
+		UF:UpdateAllHeaders()
 	end
 
 	local _, instanceType = IsInInstance()
