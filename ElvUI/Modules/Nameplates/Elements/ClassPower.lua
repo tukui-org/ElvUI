@@ -119,8 +119,15 @@ end
 function NP:Update_ClassPower(nameplate)
 	if nameplate.frameType == 'PLAYER' then
 		nameplate:EnableElement('ClassPower')
-		if E.myclass == 'DEATHKNIGHT' then
-			nameplate:EnableElement('Runes')
-		end
+	else
+		nameplate:DisableElement('ClassPower')
+	end
+end
+
+function NP:Update_Runes(nameplate)
+	if nameplate.frameType == 'PLAYER' then
+		nameplate:EnableElement('Runes')
+	else
+		nameplate:DisableElement('Runes')
 	end
 end

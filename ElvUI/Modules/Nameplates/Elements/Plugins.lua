@@ -31,6 +31,11 @@ function NP:Construct_QuestIcons(nameplate)
 end
 
 function NP:Update_QuestIcons(nameplate)
+	if NP.db.questIcon and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
+		nameplate:EnableElement('QuestIcons')
+	else
+		nameplate:DisableElement('QuestIcons')
+	end
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
@@ -42,8 +47,7 @@ end
 
 function NP:Update_ClassificationIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-
-	if db.eliteIcon and db.eliteIcon.enable then
+	if (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') and db.eliteIcon.enable then
 		nameplate:EnableElement('ClassificationIndicator')
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
@@ -131,17 +135,19 @@ function NP:Update_TargetIndicator(nameplate)
 	end
 end
 
+local function HighlightHealth(f)
+	f.texture:ClearAllPoints()
+	f.texture:SetPoint("TOPLEFT", f.__owner.Health, "TOPLEFT")
+	f.texture:SetPoint("BOTTOMRIGHT", f.__owner.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
+end
+
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame("Frame", nil, nameplate)
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
 	Highlight.texture:SetVertexColor(1, 1, 1, .3)
 	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
 
-	Highlight.PostUpdate = function(f)
-		f.texture:ClearAllPoints()
-		f.texture:SetPoint("TOPLEFT", nameplate.Health, "TOPLEFT")
-		f.texture:SetPoint("BOTTOMRIGHT", nameplate.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
-	end
+	Highlight.PostUpdate = HighlightHealth
 
 	return Highlight
 end

@@ -7,6 +7,7 @@
 	<Script file="Elements\Health.lua"/>
 	<Script file="Elements\Plugins.lua"/>
 	<Script file="Elements\Power.lua"/>
+	<Script file="Elements\PvP.lua"/>
 	<Script file="Elements\RaidTargetIndicator.lua"/>
 	<Script file="Elements\Tags.lua"/>
 	<Script file="Elements\Threat.lua"/>

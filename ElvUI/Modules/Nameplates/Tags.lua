@@ -53,6 +53,16 @@ oUF.Tags.Methods['interrupt'] = function(unit)
 	end
 end
 
+oUF.Tags.Events['interrupt:classcolor'] = 'COMBAT_LOG_EVENT_UNFILTERED'
+oUF.Tags.Methods['interrupt:classcolor'] = function(unit)
+	local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
+
+	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+		local class = select(2, UnitClass(sourceName)) or 'PRIEST'
+		return (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]):GenerateHexColorMarkup()..sourceName..'|r'
+	end
+end
+
 oUF.Tags.Events['quest:title'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
 oUF.Tags.Methods['quest:title'] = function(unit)
 	if UnitIsPlayer(unit) then

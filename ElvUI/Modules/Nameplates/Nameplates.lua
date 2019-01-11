@@ -119,15 +119,21 @@ function NP:StylePlate(nameplate)
 	nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
-	nameplate:DisableElement('ClassPower')
+
+	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
-		nameplate:DisableElement('Runes')
 	end
 end
 
 function NP:UpdatePlate(nameplate)
+	NP:Update_Auras(nameplate)
+
+	NP:Update_Castbar(nameplate)
+
+	NP:Update_ClassificationIndicator(nameplate)
+
 	NP:Update_Health(nameplate)
 
 	NP:Update_HealthPrediction(nameplate)
@@ -136,15 +142,13 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_PowerPrediction(nameplate)
 
-	NP:Update_Castbar(nameplate)
-
 	NP:Update_TargetIndicator(nameplate)
-
-	NP:Update_ClassificationIndicator(nameplate)
 
 	NP:Update_ClassPower(nameplate)
 
-	NP:Update_Auras(nameplate)
+	if E.myclass == 'DEATHKNIGHT' then
+		NP:Update_Runes(nameplate)
+	end
 
 	NP:Update_Tags(nameplate)
 
