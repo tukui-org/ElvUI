@@ -141,7 +141,7 @@ local function Update(self, event, unit)
 		-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
 		if cur == 1 and event == 'UNIT_HEALTH' and not element.waitingForHealthRecheck then
 			element.waitingForHealthRecheck = true
-			C_Timer_After(1, function()
+			C_Timer_After(0.5, function()
 				if element then
 					Update(self, event, unit) -- call again after 1 second
 					element.waitingForHealthRecheck = nil -- clear this after the update
