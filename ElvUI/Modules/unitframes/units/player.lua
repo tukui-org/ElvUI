@@ -206,19 +206,3 @@ function UF:Update_PlayerFrame(frame, db)
 end
 
 tinsert(UF.unitstoload, 'player')
-
-local function UpdateClassBar()
-	local frame = _G["ElvUF_Player"]
-	if frame and frame.ClassBar then
-		frame:UpdateElement(frame.ClassBar)
-		UF.ToggleResourceBar(frame[frame.ClassBar])
-	end
-end
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function(self, event)
-	self:UnregisterEvent(event)
-	if not E.db.unitframe.units.player.enable then return end
-	UpdateClassBar()
-end)
