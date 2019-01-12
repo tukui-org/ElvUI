@@ -8,6 +8,7 @@ Added a way to assign types of items to certain bags by right-clicking the bag i
 
 **Bug Fixes:**  
 Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
+Fixed issue which caused E:UpdateAll to be called twice, potentially causing errors in plugins.  
 
 **Misc. Changes:**  
 Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.  
