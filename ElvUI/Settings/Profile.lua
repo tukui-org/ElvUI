@@ -464,6 +464,9 @@ P['nameplates'] = {
 				['channelTimeFormat'] = 'CURRENT',
 				['timeToHold'] = 0,
 				['iconPosition'] = 'RIGHT',
+				['iconSize'] = 16,
+				['iconOffsetX'] = 6,
+				['iconOffsetY'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -532,6 +535,9 @@ P['nameplates'] = {
 				['channelTimeFormat'] = 'CURRENT',
 				['timeToHold'] = 0,
 				['iconPosition'] = 'RIGHT',
+				['iconSize'] = 16,
+				['iconOffsetX'] = 6,
+				['iconOffsetY'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -598,6 +604,9 @@ P['nameplates'] = {
 				['channelTimeFormat'] = 'CURRENT',
 				['timeToHold'] = 0,
 				['iconPosition'] = 'RIGHT',
+				['iconSize'] = 16,
+				['iconOffsetX'] = 6,
+				['iconOffsetY'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -661,6 +670,9 @@ P['nameplates'] = {
 				['channelTimeFormat'] = 'CURRENT',
 				['timeToHold'] = 0,
 				['iconPosition'] = 'RIGHT',
+				['iconSize'] = 16,
+				['iconOffsetX'] = 6,
+				['iconOffsetY'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -732,6 +744,9 @@ P['nameplates'] = {
 				['channelTimeFormat'] = 'CURRENT',
 				['timeToHold'] = 0,
 				['iconPosition'] = 'RIGHT',
+				['iconSize'] = 16,
+				['iconOffsetX'] = 6,
+				['iconOffsetY'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
