@@ -5,34 +5,22 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nil, nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
-	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 	Castbar:SetFrameLevel(6)
 	Castbar:CreateBackdrop('Transparent')
-	Castbar:SetHeight(16) -- need option
-	Castbar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, -20) -- need option
-	Castbar:SetPoint('TOPRIGHT', nameplate, 'BOTTOMRIGHT', 0, -20) -- need option
 
 	Castbar.Button = CreateFrame('Frame', nil, Castbar)
-	Castbar.Button:SetSize(18, 18) -- need option
 	Castbar.Button:SetTemplate()
-	Castbar.Button:SetPoint('RIGHT', Castbar, 'LEFT', -6, 0) -- need option
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
 	Castbar.Icon:SetInside()
 	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Time:SetFont(E.LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	Castbar.Time:SetPoint('RIGHT', Castbar, 'RIGHT', -4, 0)
-	Castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	Castbar.Time:SetJustifyH('RIGHT')
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Text:SetFont(E.LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-	Castbar.Text:SetPoint('LEFT', Castbar, 'LEFT', 4, 0) -- need option
-	Castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:SetSize(75, 16) -- need option
 
 	local function CheckInterrupt(castbar, unit)
 		if (unit == 'vehicle') then
@@ -70,9 +58,20 @@ function NP:Update_Castbar(nameplate)
 
 	if db.castbar.enable then
 		nameplate:EnableElement('Castbar')
+		nameplate.Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+		nameplate.Castbar.Time:SetFont(E.LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		nameplate.Castbar.Text:SetFont(E.LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
+		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
+		nameplate.Castbar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, -20) -- need option
+
 		nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
-		nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+		nameplate.Castbar.Button:ClearAllPoints()
+		nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+
+		nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
+		nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) -- need option
 	else
 		nameplate:DisableElement('Castbar')
 	end
