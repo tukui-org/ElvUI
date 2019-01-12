@@ -1680,12 +1680,16 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
-				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-				if not f.registerUpdate then
-					B:SortingFadeBags(f)
+				if B.db.useBlizzardCleanup then
+					SortBankBags()
+				else
+					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+					if not f.registerUpdate then
+						B:SortingFadeBags(f)
+					end
+					f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
+					B:CommandDecorator(B.SortBags, 'bank')();
 				end
-				f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
-				B:CommandDecorator(B.SortBags, 'bank')();
 			else
 				SortReagentBankBags()
 			end
@@ -1820,12 +1824,16 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:StyleButton(nil, true)
 		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
-			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-			if not f.registerUpdate then
-				B:SortingFadeBags(f)
+			if B.db.useBlizzardCleanup then
+				SortBags()
+			else
+				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+				if not f.registerUpdate then
+					B:SortingFadeBags(f)
+				end
+				f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
+				B:CommandDecorator(B.SortBags, 'bags')();
 			end
-			f.registerUpdate = true --Set variable that indicates this bag should be updated when sorting is done
-			B:CommandDecorator(B.SortBags, 'bags')();
 		end)
 		if E.db.bags.disableBagSort then
 			f.sortButton:Disable()

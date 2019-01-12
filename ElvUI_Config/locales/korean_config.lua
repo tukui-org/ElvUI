@@ -297,6 +297,8 @@ L["The size of the individual buttons on the bag frame."] = "통합가방 프레
 L["The size of the individual buttons on the bank frame."] = "통합은행 프레임의 슬롯크기를 결정합니다."
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["Top to Bottom"] = "위에서 아래로"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 

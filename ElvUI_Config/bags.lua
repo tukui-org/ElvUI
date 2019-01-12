@@ -141,8 +141,15 @@ E.Options.args.bags = {
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
-				strata = {
+				useBlizzardCleanup = {
 					order = 16,
+					type = "toggle",
+					name = L["Use Blizzard Cleanup"],
+					desc = L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."],
+					set = function(info, value) E.db.bags[info[#info]] = value; end
+				},
+				strata = {
+					order = 17,
 					type = "select",
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
@@ -156,7 +163,7 @@ E.Options.args.bags = {
 					},
 				},
 				countGroup = {
-					order = 17,
+					order = 30,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -206,7 +213,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 18,
+					order = 35,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,
@@ -706,6 +713,7 @@ E.Options.args.bags = {
 			order = 9,
 			type = "group",
 			name = L["Bag Sorting"],
+			disabled = function() return B.db.useBlizzardCleanup end,
 			args = {
 				header = {
 					order = 0,

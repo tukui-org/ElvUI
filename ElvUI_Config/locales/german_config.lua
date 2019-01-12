@@ -253,6 +253,8 @@ L["The size of the individual buttons on the bag frame."] = "Die Größe der ein
 L["The size of the individual buttons on the bank frame."] = "Die Größe der einzelnen Tasten auf dem Bankfenster."
 L["The spacing between buttons."] = "Der Abstand zwischen den Tasten."
 L["Top to Bottom"] = "Von oben nach unten"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
 L["Will attempt to sell another item in set interval after previous one was sold."] = "Versucht einen anderen Gegenstand in einem bestimmten Intervall zu verkaufen, nachdem der vorherige verkauft wurde."
 

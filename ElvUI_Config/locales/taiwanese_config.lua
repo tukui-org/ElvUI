@@ -252,6 +252,8 @@ L["The size of the individual buttons on the bag frame."] = "背包框架單個�
 L["The size of the individual buttons on the bank frame."] = "銀行框架單個格子的大小."
 L["The spacing between buttons."] = "兩個按鈕間的距離."
 L["Top to Bottom"] = "頂部至底部"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "使用硬幣圖示取代上色文字"
 L["Will attempt to sell another item in set interval after previous one was sold."] = "將會嘗試使用設定的時間間格後販賣下一個物品"
 
