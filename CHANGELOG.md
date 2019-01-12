@@ -1,6 +1,9 @@
 ### Version 10.86 [  ]
 
 **New Additions:**  
+Added option to toggle on/off the colors on bag slots for bags with assigned items.  
+Added option to use the Blizzard cleanup method instead of the ElvUI sorting.  
+Added a way to assign types of items to certain bags by right-clicking the bag icon in ElvUI.  
 
 
 **Bug Fixes:**  
