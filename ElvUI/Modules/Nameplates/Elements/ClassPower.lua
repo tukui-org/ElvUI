@@ -9,7 +9,7 @@ local MAX_POINTS = {
 	['MONK'] = 6,
 	['MAGE'] = 4,
 	['ROGUE'] = 6,
-	["DRUID"] = 5
+	['DRUID'] = 5
 }
 
 local COMBO_POINT_COLOR = {
@@ -22,20 +22,21 @@ local COMBO_POINT_COLOR = {
 }
 
 function NP:Construct_ClassPower(frame)
-	local ClassPower = CreateFrame("Frame", nil, frame)
+	local ClassPower = CreateFrame('Frame', nil, frame)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(frame:GetFrameStrata())
 	ClassPower:SetFrameLevel(2)
-	ClassPower:CreateBackdrop("Transparent")
-	ClassPower:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 14)
+	ClassPower:CreateBackdrop('Transparent')
+	ClassPower:SetPoint('BOTTOM', frame.Health, 'BOTTOM', 0, 14)
 
-	ClassPower:SetSize(130 + ((MAX_POINTS[E.myclass] or 5) - 1), 7)
-	local Width = 130 / 6
+	ClassPower:SetSize(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
+	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
 
 	for i = 1, (MAX_POINTS[E.myclass] or 5) do
 		ClassPower[i] = CreateFrame('StatusBar', nil, ClassPower)
-		ClassPower[i]:SetSize(Width, 7)
-		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+		ClassPower[i]:SetSize(Width, NP.db.classbar.height)
+		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		NP.StatusBars[ClassPower[i]] = true
 
 		if i == 1 then
 			ClassPower[i]:SetPoint('LEFT', ClassPower, 'LEFT', 0, 0)
@@ -44,14 +45,14 @@ function NP:Construct_ClassPower(frame)
 		end
 	end
 
-	ClassPower.UpdateColor = function(element, powerType)
+	function ClassPower:UpdateColor(powerType)
 		local color = ElvUF.colors.power[powerType]
 		local r, g, b = color[1], color[2], color[3]
-		for i = 1, #element do
+		for i = 1, #self do
 
-			local bar = element[i]
+			local bar = self[i]
 
-			if powerType == "COMBO_POINTS" then
+			if powerType == 'COMBO_POINTS' then
 				r, g, b = unpack(COMBO_POINT_COLOR[i])
 			end
 
@@ -59,19 +60,19 @@ function NP:Construct_ClassPower(frame)
 		end
 	end
 
-	ClassPower.PostUpdate = function(element, cur, max, needUpdate, powerType)
+	function ClassPower:PostUpdate(cur, max, needUpdate, powerType)
 		if cur and cur > 0 then
-			element:Show()
+			self:Show()
 		else
-			element:Hide()
+			self:Hide()
 		end
 		if needUpdate then
 			for i = 1, max do
-				element[i]:SetSize(130 / max, 7)
+				self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
 				if i == 1 then
-					element[i]:SetPoint('LEFT', element, 'LEFT', 0, 0)
+					self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
 				else
-					element[i]:SetPoint('LEFT', element[i - 1], 'LEFT', 1, 0)
+					self[i]:SetPoint('LEFT', self[i - 1], 'LEFT', 1, 0)
 				end
 			end
 		end
@@ -81,30 +82,33 @@ function NP:Construct_ClassPower(frame)
 end
 
 function NP:Construct_Runes(frame)
-	local Runes = CreateFrame("Frame", nil, frame)
+	local Runes = CreateFrame('Frame', nil, frame)
 	Runes:SetFrameStrata(frame:GetFrameStrata())
 	Runes:SetFrameLevel(2)
-	Runes:SetPoint("BOTTOM", frame.Health, "TOP", 0, 4)
-	Runes:CreateBackdrop()
+	Runes:SetPoint('BOTTOM', frame.Health, 'TOP', 0, 4)
+	Runes:CreateBackdrop('Transparent')
 	Runes:Hide()
-	Runes.UpdateColor = function() end
-	Runes.PostUpdate = function()
+
+	function Runes:UpdateColor() return end
+
+	function Runes:PostUpdate()
 		if (UnitHasVehicleUI('player')) then
-			Runes:Hide()
+			self:Hide()
 		else
-			Runes:Show()
+			self:Show()
 		end
 	end
 
-	Runes:SetSize(130 + 5, 7)
-	local width = 130 / 6
+	Runes:SetSize(NP.classbar.width + 5, NP.db.classbar.height)
+	local width = NP.classbar.width / 6
 
 	for i = 1, 6 do
-		Runes[i] = CreateFrame("StatusBar", nil, Runes)
+		Runes[i] = CreateFrame('StatusBar', nil, Runes)
 		Runes[i]:Hide()
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 		Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
-		Runes[i]:SetSize(width, 7)
+		Runes[i]:SetSize(width, NP.db.classbar.height)
+		NP.StatusBars[Runes[i]] = true
 
 		if i == 1 then
 			Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 0, 0)

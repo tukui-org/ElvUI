@@ -137,8 +137,7 @@ end
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame("Frame", nil, nameplate)
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
-	Highlight.texture:SetVertexColor(1, 1, 1, .3)
-	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
+	Highlight.texture:SetColorTexture(1, 1, 1, .3)
 
 	function Highlight:PostUpdate()
 		self.texture:ClearAllPoints()

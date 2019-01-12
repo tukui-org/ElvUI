@@ -9,9 +9,16 @@ function NP:Construct_HealthBar(nameplate)
 	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	NP.StatusBars[Health] = true
 
 	function Health:PostUpdate(unit, min, max)
-		NP:HealthBar_PostUpdate(self, unit, min, max)
+		if NP.db.DarkTheme then
+			if (min ~= max) then
+				nameplate:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+			else
+				nameplate:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+			end
+		end
 	end
 
 	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
@@ -48,16 +55,6 @@ function NP:Update_Health(nameplate)
 	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 end
 
-function NP:HealthBar_PostUpdate(nameplate, unit, min, max)
-	if self.db.DarkTheme then
-		if (min ~= max) then
-			nameplate:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
-		else
-			nameplate:SetStatusBarColor(0.2, 0.2, 0.2, 1)
-		end
-	end
-end
-
 function NP:Construct_HealthPrediction(nameplate)
 	local HealthPrediction = CreateFrame('Frame', nil, nameplate)
 
@@ -67,6 +64,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		HealthPrediction[Bar]:SetPoint('TOP')
 		HealthPrediction[Bar]:SetPoint('BOTTOM')
 		HealthPrediction[Bar]:SetWidth(150)
+		NP.StatusBars[HealthPrediction[Bar]] = true
 	end
 
 	HealthPrediction.myBar:SetPoint('LEFT', nameplate.Health:GetStatusBarTexture(), 'RIGHT')

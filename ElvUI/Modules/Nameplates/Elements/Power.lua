@@ -9,6 +9,7 @@ function NP:Construct_PowerBar(nameplate)
 	Power:CreateBackdrop('Transparent')
 	Power:SetPoint('TOP', nameplate.Health, 'TOP', 0, -14)
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', self.db.statusbar))
+	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true
 	Power.colorTapping = true
@@ -49,6 +50,7 @@ function NP:Construct_PowerPrediction(nameplate)
 	PowerBar:SetPoint('RIGHT', nameplate.Power:GetStatusBarTexture(), 'RIGHT')
 	PowerBar:SetWidth(130)
 	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	NP.StatusBars[PowerBar] = true
 
 	return { mainBar = PowerBar }
 end

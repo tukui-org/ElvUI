@@ -193,34 +193,37 @@ function NP:CVarReset()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	if (self.db.showFriendlyCombat == "TOGGLE_ON") then
+	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
 		SetCVar("nameplateShowFriends", 1);
-	elseif (self.db.showFriendlyCombat == "TOGGLE_OFF") then
+	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowFriends", 0);
 	end
 
-	if (self.db.showEnemyCombat == "TOGGLE_ON") then
+	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
 		SetCVar("nameplateShowEnemies", 1);
-	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
+	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 0);
 	end
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	if (self.db.showFriendlyCombat == "TOGGLE_ON") then
+	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
 		SetCVar("nameplateShowFriends", 0);
-	elseif (self.db.showFriendlyCombat == "TOGGLE_OFF") then
+	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowFriends", 1);
 	end
 
-	if (self.db.showEnemyCombat == "TOGGLE_ON") then
+	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
 		SetCVar("nameplateShowEnemies", 0);
-	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
+	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 1);
 	end
 end
 
 function NP:Update_StatusBars()
+	for StatusBar in pairs(NP.StatusBars) do
+		StatusBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+	end
 end
 
 function NP:Update_Fonts()
@@ -238,10 +241,13 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowEnemyMinions', NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('showQuestTrackingTooltips', NP.db.questIcon and 1)
 	SetCVar('nameplateMinAlpha', NP.db.nonTargetTransparency)
 	SetCVar("nameplateOtherTopInset", NP.db.clampToScreen and 0.08 or -1)
 	SetCVar("nameplateOtherBottomInset", NP.db.clampToScreen and 0.1 or -1)
+
+	if NP.db.questIcon then
+		SetCVar('showQuestTrackingTooltips', 1)
+	end
 
 	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -261,17 +267,7 @@ function NP:ConfigureAll()
 
 	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
 
-	if (self.db.showFriendlyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowFriends", 0);
-	elseif (self.db.showFriendlyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowFriends", 1);
-	end
-
-	if (self.db.showEnemyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowEnemies", 0);
-	elseif (self.db.showEnemyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowEnemies", 1);
-	end
+	NP:PLAYER_REGEN_ENABLED()
 
 	if NP.db.units['PLAYER'].useStaticPosition then
 		ElvNP_Player:Enable()
@@ -285,6 +281,9 @@ function NP:ConfigureAll()
 	for nameplate in pairs(NP.Plates) do
 		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
+
+	NP:Update_StatusBars()
+	NP:Update_Fonts()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
@@ -316,7 +315,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 end
 
 function NP:Initialize()
-	self.db = E.db.nameplates
+	NP.db = E.db.nameplates
 
 	if E.private.nameplates.enable ~= true then return end
 
@@ -344,8 +343,8 @@ function NP:Initialize()
 		end
 	end)
 
-	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
-	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
+	NP.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
+	NP.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
 	ElvNP_Player:SetAttribute("unit", "player")
@@ -372,10 +371,9 @@ function NP:Initialize()
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
+	NP:RegisterEvent('PLAYER_ENTERING_WORLD', 'ConfigureAll')
 
-	NP:ConfigureAll()
-
-	E.NamePlates = self
+	E.NamePlates = NP
 end
 
 local function InitializeCallback()
