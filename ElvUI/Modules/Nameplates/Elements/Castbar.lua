@@ -71,8 +71,8 @@ function NP:Update_Castbar(nameplate)
 	if db.castbar.enable then
 		nameplate:EnableElement('Castbar')
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
-		if db.castbar.iconPosition then
-		end
+		nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
+		nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
 	else
 		nameplate:DisableElement('Castbar')
 	end

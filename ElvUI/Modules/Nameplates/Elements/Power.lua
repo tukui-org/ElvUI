@@ -78,6 +78,7 @@ function NP:Update_PowerPrediction(nameplate)
 
 	if db.powerbar.enable and db.powerbar.costPrediction then
 		nameplate:EnableElement('PowerPrediction')
+		nameplate.PowerPrediction.mainBar:SetWidth(db.powerbar.width)
 	else
 		nameplate:DisableElement('PowerPrediction')
 	end

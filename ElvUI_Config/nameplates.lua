@@ -2046,6 +2046,24 @@ local function GetUnitSettings(unit, name)
 							["RIGHT"] = L["Right"],
 						},
 					},
+					iconSize = {
+						order = 12,
+						name = L["Icon Size"],
+						type = "range",
+						min = 4, max = 20, step = 1,
+					},
+					iconOffsetX = {
+						order = 13,
+						name = L["X-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+					iconOffsetY = {
+						order = 14,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
 				},
 			},
 			buffsGroup = {
