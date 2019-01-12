@@ -549,7 +549,7 @@ function B:UpdateSlot(bagID, slotID)
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
 			if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
-		elseif B.AssignmentColors[assignedBag] then
+		elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
@@ -559,7 +559,7 @@ function B:UpdateSlot(bagID, slotID)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			slot.ignoreBorderColors = nil
 		end
-	elseif B.AssignmentColors[assignedBag] then
+	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
