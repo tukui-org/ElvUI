@@ -460,7 +460,6 @@ function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
 	end
-	print(bagID, slotID)
 
 	local slot = self.Bags[bagID][slotID];
 	local bagType = self.Bags[bagID].type;
