@@ -687,7 +687,7 @@ function B:REAGENTBANK_PURCHASED()
 end
 
 --This is a copy from FrameXML/ContainerFrame.lua which has been modified slightly
-local function ContainerFrameFilterDropDown_Initialize(self, level)
+function B:ContainerFrameFilterDropDown_Initialize(level)
 	local frame = self:GetParent()
 	local id = frame.id
 
@@ -797,7 +797,7 @@ local function Container_OnShow(self)
 	end
 end
 
-local function CreateFilterIcon(parent)
+function B:CreateFilterIcon(parent)
 	--Create FilterIcon element needed for item type assignment
 	parent.FilterIcon = CreateFrame("Button", nil, parent)
 	parent.FilterIcon:Hide()
@@ -911,7 +911,7 @@ function B:Layout(isBank)
 			if not f.ContainerHolder[i] then
 				if isBank then
 					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
-					CreateFilterIcon(f.ContainerHolder[i])
+					B:CreateFilterIcon(f.ContainerHolder[i])
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" then
 							ToggleDropDownMenu(1, nil, holder.FilterDropDown, holder, 0, 0);
@@ -937,7 +937,7 @@ function B:Layout(isBank)
 						end)
 					else
 						f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. (bagID-1) .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
-						CreateFilterIcon(f.ContainerHolder[i])
+						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 							if button == "RightButton" then
 								ToggleDropDownMenu(1, nil, holder.FilterDropDown, holder, 0, 0);
@@ -975,7 +975,7 @@ function B:Layout(isBank)
 
 				--Create and initialize the dropdown menu used for item assignment
 				f.ContainerHolder[i].FilterDropDown = CreateFrame("Frame", f.ContainerHolder[i]:GetName().."FilterDropDown", f.ContainerHolder[i], "UIDropDownMenuTemplate")
-				UIDropDownMenu_Initialize(f.ContainerHolder[i].FilterDropDown, ContainerFrameFilterDropDown_Initialize, "MENU");
+				UIDropDownMenu_Initialize(f.ContainerHolder[i].FilterDropDown, B.ContainerFrameFilterDropDown_Initialize, "MENU");
 			end
 
 			f.ContainerHolder:Size(((buttonSize + buttonSpacing) * (isBank and i - 1 or i)) + buttonSpacing,buttonSize + (buttonSpacing * 2))
