@@ -220,6 +220,12 @@ function NP:PLAYER_REGEN_ENABLED()
 	end
 end
 
+function NP:Update_StatusBars()
+end
+
+function NP:Update_Fonts()
+end
+
 function NP:ConfigureAll()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
