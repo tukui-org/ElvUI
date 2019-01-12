@@ -301,67 +301,24 @@ P['bags'] = {
 
 --NamePlate
 P['nameplates'] = {
-	['statusbar'] = 'ElvUI Norm',
-	['font'] = 'PT Sans Narrow',
-	['fontSize'] = 11,
-	['fontOutline'] = 'OUTLINE',
-	['healthFont'] = 'PT Sans Narrow',
-	['healthFontSize'] = 11,
-	['healthFontOutline'] = 'OUTLINE',
-	['durationPosition'] = 'CENTER',
-	['stackFont'] = 'PT Sans Narrow',
-	['stackFontSize'] = 9,
-	['stackFontOutline'] = 'OUTLINE',
-	['useTargetScale'] = true,
-	['targetScale'] = 1.15,
-	['nonTargetTransparency'] = 0.35,
-	['motionType'] =  'STACKED',
-	['displayStyle'] = 'ALL',
-	['lowHealthThreshold'] = 0.4,
-	['showFriendlyCombat'] = 'DISABLED',
-	['showEnemyCombat'] = 'DISABLED',
-	['hideBlizzardPlates'] = false,
-	['showNPCTitles'] = true,
-	['clampToScreen'] = false,
-	['loadDistance'] = 40,
-	['targetGlow'] = 'style2',
-	['nameColoredGlow'] = false,
-	['cutawayHealth'] = false,
-	['cutawayHealthLength'] = 0.3,
-	['cutawayHealthFadeOutTime'] = 0.6,
 	['alwaysShowTargetHealth'] = true,
-	['questIcon'] = true,
-	['questIconSize'] = 16,
-	['questIconPosition'] = 'RIGHT',
-	['cooldown'] = {
-		['threshold'] = 4,
-		['override'] = true,
-		['reverse'] = false,
-		['hideBlizzard'] = false,
-		['expiringColor'] = { r = 1, g = 0, b = 0 },
-		['secondsColor'] = { r = 1, g = 1, b = 1 },
-		['minutesColor'] = { r = 1, g = 1, b = 1 },
-		['hoursColor'] = { r = 1, g = 1, b = 1 },
-		['daysColor'] = { r = 1, g = 1, b = 1 },
-
-		['checkSeconds'] = false,
-		['hhmmColor'] = { r = 1, g = 1, b = 1 },
-		['mmssColor'] = { r = 1, g = 1, b = 1 },
-		['hhmmThreshold'] = -1,
-		['mmssThreshold'] = -1,
-
-		['fonts'] = {
-			['enable'] = false,
-			['font'] = 'PT Sans Narrow',
-			['fontOutline'] = 'OUTLINE',
-			['fontSize'] = 10,
-		},
-	},
+	['clampToScreen'] = false,
+	['cutawayHealth'] = false,
+	['cutawayHealthFadeOutTime'] = 0.6,
+	['cutawayHealthLength'] = 0.3,
 	['classbar'] = {
-		['enable'] = true,
-		['scale'] = 1,
 		['attachTo'] = 'TARGET',
-		['position'] = 'ABOVE'
+		['enable'] = true,
+		['height'] = 7,
+		['position'] = 'ABOVE',
+		['width'] = 130,
+	},
+	['clickableWidth'] = 150,
+	['clickableHeight'] = 50,
+	['clickThrough'] = {
+		['personal'] = false,
+		['friendly'] = false,
+		['enemy'] = false,
 	},
 	['colors'] = {
 		['glowColor'] = {r = 0.3, g = 0.7, b = 1, a = 1},
@@ -390,12 +347,32 @@ P['nameplates'] = {
 			['beingTankedByTankColor'] = {r = 0.8, g = 0.1, b = 1},
 		},
 	},
-	['threat'] = {
-		['beingTankedByTank'] = true,
-		['goodScale'] = 0.8,
-		['badScale'] = 1.2,
-		['useThreatColor'] = true,
+	['cooldown'] = {
+		['threshold'] = 4,
+		['override'] = true,
+		['reverse'] = false,
+		['hideBlizzard'] = false,
+		['expiringColor'] = { r = 1, g = 0, b = 0 },
+		['secondsColor'] = { r = 1, g = 1, b = 1 },
+		['minutesColor'] = { r = 1, g = 1, b = 1 },
+		['hoursColor'] = { r = 1, g = 1, b = 1 },
+		['daysColor'] = { r = 1, g = 1, b = 1 },
+
+		['checkSeconds'] = false,
+		['hhmmColor'] = { r = 1, g = 1, b = 1 },
+		['mmssColor'] = { r = 1, g = 1, b = 1 },
+		['hhmmThreshold'] = -1,
+		['mmssThreshold'] = -1,
+
+		['fonts'] = {
+			['enable'] = false,
+			['font'] = 'PT Sans Narrow',
+			['fontOutline'] = 'OUTLINE',
+			['fontSize'] = 10,
+		},
 	},
+	['displayStyle'] = 'ALL',
+	['durationPosition'] = 'CENTER',
 	['filters'] = {
 		['Boss'] = {
 			['triggers'] = {
@@ -403,14 +380,37 @@ P['nameplates'] = {
 			},
 		},
 	},
-
-	['clickableWidth'] = 150,
-	['clickableHeight'] = 50,
-	['clickThrough'] = {
-		['personal'] = false,
-		['friendly'] = false,
-		['enemy'] = false,
+	['font'] = 'PT Sans Narrow',
+	['fontOutline'] = 'OUTLINE',
+	['fontSize'] = 11,
+	['healthFont'] = 'PT Sans Narrow',
+	['healthFontOutline'] = 'OUTLINE',
+	['healthFontSize'] = 11,
+	['hideBlizzardPlates'] = false,
+	['loadDistance'] = 40,
+	['lowHealthThreshold'] = 0.4,
+	['motionType'] =  'STACKED',
+	['nameColoredGlow'] = false,
+	['nonTargetTransparency'] = 0.35,
+	['questIcon'] = true,
+	['questIconPosition'] = 'RIGHT',
+	['questIconSize'] = 16,
+	['showEnemyCombat'] = 'DISABLED',
+	['showFriendlyCombat'] = 'DISABLED',
+	['showNPCTitles'] = true,
+	['stackFont'] = 'PT Sans Narrow',
+	['stackFontOutline'] = 'OUTLINE',
+	['stackFontSize'] = 9,
+	['statusbar'] = 'ElvUI Norm',
+	['targetGlow'] = 'style2',
+	['targetScale'] = 1.15,
+	['threat'] = {
+		['beingTankedByTank'] = true,
+		['goodScale'] = 0.8,
+		['badScale'] = 1.2,
+		['useThreatColor'] = true,
 	},
+	['useTargetScale'] = true,
 
 	['units'] = {
 		['PLAYER'] = {
@@ -419,26 +419,26 @@ P['nameplates'] = {
 			['clickthrough'] = false,
 			['portrait'] = {
 				['enable'] = false,
-				['width'] = 30,
 				['height'] = 24,
+				['width'] = 30,
 			},
 			['visibility'] = {
+				['hideDelay'] = 3,
 				['showAlways'] = false,
 				['showInCombat'] = true,
 				['showWithTarget'] = false,
-				['hideDelay'] = 3,
 			},
 			['healthbar'] = {
 				['enable'] = true,
-				['height'] = 10,
-				['width'] = 150,
-				['healPrediction'] = true,
 				['glowStyle'] = 'TARGET_THREAT',
+				['healPrediction'] = true,
+				['height'] = 10,
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
 				},
 				['useClassColor'] = true,
+				['width'] = 150,
 			},
 			['showName'] = false,
 			['showLevel'] = false,
@@ -446,6 +446,7 @@ P['nameplates'] = {
 				['enable'] = true,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
+				['width'] = 150,
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
@@ -454,9 +455,8 @@ P['nameplates'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
+				['width'] = 150,
 				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -487,78 +487,6 @@ P['nameplates'] = {
 					['priority'] = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate Player Debuffs
 				},
 			},
-			['name'] = {
-				['useClassColor'] = true,
-			},
-		},
-		['HEALER'] = {
-			['portrait'] = {
-				['enable'] = false,
-				['width'] = 30,
-				['height'] = 24,
-			},
-			['healthbar'] = {
-				['enable'] = true,
-				['height'] = 10,
-				['width'] = 150,
-				['healPrediction'] = true,
-				['glowStyle'] = 'TARGET_THREAT',
-				['text'] = {
-					['enable'] = false,
-					['format'] = 'CURRENT',
-				},
-				['useClassColor'] = true,
-			},
-			['showName'] = true,
-			['showLevel'] = false,
-			['powerbar'] = {
-				['enable'] = true,
-				['hideWhenEmpty'] = false,
-				['costPrediction'] = true,
-				['height'] = 8,
-				['text'] = {
-					['enable'] = false,
-					['format'] = 'CURRENT',
-				},
-			},
-			['castbar'] = {
-				['enable'] = true,
-				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
-				['displayTarget'] = false,
-				['hideSpellName'] = false,
-				['hideTime'] = false,
-				['castTimeFormat'] = 'CURRENT',
-				['channelTimeFormat'] = 'CURRENT',
-				['timeToHold'] = 0,
-				['iconPosition'] = 'RIGHT',
-			},
-			['buffs'] = {
-				['enable'] = true,
-				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
-				['filters'] = {
-					['minDuration'] = 0,
-					['maxDuration'] = 0,
-					['priority'] = 'Blacklist,blockNoDuration,Personal,TurtleBuffs' --NamePlate Healer Buffs
-				},
-			},
-			['debuffs'] = {
-				['enable'] = true,
-				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
-				['filters'] = {
-					['minDuration'] = 0,
-					['maxDuration'] = 0,
-					['priority'] = 'Blacklist,Dispellable,blockNoDuration,Personal,Boss,CCDebuffs' --NamePlate Healer Debuffs
-				},
-			},
-			['name'] = {
-				['useClassColor'] = true,
-			},
 		},
 		['FRIENDLY_PLAYER'] = {
 			['portrait'] = {
@@ -585,6 +513,7 @@ P['nameplates'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
+				['width'] = 150,
 				['height'] = 8,
 				['baseHeight'] = 18,
 				['text'] = {
@@ -594,9 +523,8 @@ P['nameplates'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
+				['width'] = 150,
 				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -608,8 +536,7 @@ P['nameplates'] = {
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				["baseHeight"] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
@@ -619,16 +546,12 @@ P['nameplates'] = {
 			['debuffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
 					['priority'] = 'Blacklist,Dispellable,blockNoDuration,Personal,Boss,CCDebuffs' --NamePlate FriendlyPlayer Debuffs
 				},
-			},
-			['name'] = {
-				['useClassColor'] = true,
 			},
 		},
 		['ENEMY_PLAYER'] = {
@@ -657,6 +580,7 @@ P['nameplates'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
+				['width'] = 150,
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
@@ -665,9 +589,8 @@ P['nameplates'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
+				['width'] = 150,
 				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -679,8 +602,7 @@ P['nameplates'] = {
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 300,
@@ -690,16 +612,12 @@ P['nameplates'] = {
 			['debuffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
 					['priority'] = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs' --NamePlate EnemyPlayer Debuffs
 				},
-			},
-			['name'] = {
-				['useClassColor'] = true,
 			},
 		},
 		['FRIENDLY_NPC'] = {
@@ -725,6 +643,7 @@ P['nameplates'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
+				['width'] = 150,
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
@@ -733,9 +652,8 @@ P['nameplates'] = {
 			},
 			['castbar'] = {
 				['enable'] = false,
+				['width'] = 150,
 				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -747,8 +665,7 @@ P['nameplates'] = {
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
@@ -758,8 +675,7 @@ P['nameplates'] = {
 			['debuffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
@@ -799,6 +715,7 @@ P['nameplates'] = {
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
 				['height'] = 8,
+				['width'] = 150,
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
@@ -806,9 +723,8 @@ P['nameplates'] = {
 			},
 			['castbar'] = {
 				['enable'] = true,
+				['width'] = 150,
 				['height'] = 8,
-				['sourceInterrupt'] = false,
-				['sourceInterruptClassColor'] = true,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -820,8 +736,7 @@ P['nameplates'] = {
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,
@@ -831,8 +746,7 @@ P['nameplates'] = {
 			['debuffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
-				['baseHeight'] = 18,
-				["widthOverride"] = 0,
+				['size'] = 18,
 				['filters'] = {
 					['minDuration'] = 0,
 					['maxDuration'] = 0,

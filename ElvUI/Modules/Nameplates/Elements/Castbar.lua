@@ -40,16 +40,27 @@ function NP:Construct_Castbar(nameplate)
 		end
 
 		if (castbar.notInterruptible and UnitCanAttack('player', unit)) then
-			castbar:SetStatusBarColor(0.87, 0.37, 0.37, 0.7)
+			castbar:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
 		else
-			castbar:SetStatusBarColor(0.29, 0.67, 0.30, 0.7)
+			castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
 		end
 	end
 
-	Castbar.PostCastStart = CheckInterrupt
-	Castbar.PostCastInterruptible = CheckInterrupt
-	Castbar.PostCastNotInterruptible = CheckInterrupt
-	Castbar.PostChannelStart = CheckInterrupt
+	function Castbar:PostCastStart(unit)
+		CheckInterrupt(self, unit)
+	end
+
+	function Castbar:PostCastInterruptible(unit)
+		CheckInterrupt(self, unit)
+	end
+
+	function Castbar:PostCastNotInterruptible(unit)
+		CheckInterrupt(self, unit)
+	end
+
+	function Castbar:PostChannelStart(unit)
+		CheckInterrupt(self, unit)
+	end
 
 	return Castbar
 end
@@ -58,8 +69,11 @@ function NP:Update_Castbar(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.castbar.enable then
+		nameplate:EnableElement('Castbar')
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
 		if db.castbar.iconPosition then
 		end
+	else
+		nameplate:DisableElement('Castbar')
 	end
 end

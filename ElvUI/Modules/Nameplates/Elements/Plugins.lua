@@ -40,7 +40,6 @@ end
 
 function NP:Construct_ClassificationIndicator(nameplate)
 	local ClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	ClassificationIndicator:SetSize(16, 16)
 
 	return ClassificationIndicator
 end
@@ -52,7 +51,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
 		if db.healthbar.enable then
-			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.HealthBar, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
+			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 		else
 			nameplate.ClassificationIndicator:Point("RIGHT", nameplate.Name, "LEFT", 0, 0)
 		end
@@ -135,22 +134,27 @@ function NP:Update_TargetIndicator(nameplate)
 	end
 end
 
-local function HighlightHealth(f)
-	f.texture:ClearAllPoints()
-	f.texture:SetPoint("TOPLEFT", f.__owner.Health, "TOPLEFT")
-	f.texture:SetPoint("BOTTOMRIGHT", f.__owner.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
-end
-
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame("Frame", nil, nameplate)
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
 	Highlight.texture:SetVertexColor(1, 1, 1, .3)
 	Highlight.texture:SetTexture(E.LSM:Fetch("statusbar", self.db.statusbar))
 
-	Highlight.PostUpdate = HighlightHealth
+	function Highlight:PostUpdate()
+		self.texture:ClearAllPoints()
+		self.texture:SetPoint("TOPLEFT", self.__owner.Health, "TOPLEFT")
+		self.texture:SetPoint("BOTTOMRIGHT", self.__owner.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
+	end
 
 	return Highlight
 end
 
 function NP:Update_Highlight(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.healthbar.enable then
+		nameplate.Highlight.texture:Show()
+	else
+		nameplate.Highlight.texture:Hide()
+	end
 end

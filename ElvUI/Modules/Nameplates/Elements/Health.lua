@@ -10,7 +10,9 @@ function NP:Construct_HealthBar(nameplate)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 
-	Health.PostUpdate = function(bar, _, min, max) NP:HealthBar_PostUpdate(bar, _, min, max) end
+	function Health:PostUpdate(unit, min, max)
+		NP:HealthBar_PostUpdate(self, unit, min, max)
+	end
 
 	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
 
@@ -31,10 +33,8 @@ function NP:Update_Health(nameplate)
 
 	if db.healthbar.enable then
 		nameplate:EnableElement('Health')
-		nameplate.Highlight.texture:Show()
 	else
 		nameplate:DisableElement('Health')
-		nameplate.Highlight.texture:Hide()
 	end
 
 	if db.healthbar.text.enable then
@@ -48,7 +48,7 @@ function NP:Update_Health(nameplate)
 	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
 end
 
-function NP:HealthBar_PostUpdate(nameplate, _, min, max)
+function NP:HealthBar_PostUpdate(nameplate, unit, min, max)
 	if self.db.DarkTheme then
 		if (min ~= max) then
 			nameplate:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))

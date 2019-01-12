@@ -15,22 +15,26 @@ function NP:Construct_PowerBar(nameplate)
 	Power.colorClass = true
 	Power.Smooth = true
 	Power.displayAltPower = true
+	Power.useAtlas = true
 
-	Power.PreUpdate = function(element, unit)
+	function Power:PreUpdate(unit)
 		local _, pToken = UnitPowerType(unit)
 		local Color = _G.ElvUI.oUF.colors.power[pToken]
 
 		if Color then
-			element:SetStatusBarColor(Color[1], Color[2], Color[3])
+			self:SetStatusBarColor(unpack(Color))
 		end
 	end
 
-	Power.PostUpdate = function(element, unit, _, _, max)
-		if max == 0 then
-			element:Hide()
+	function Power:PostUpdate(unit, cur, min, max)
+		local db = NP.db.units[self.__owner.frameType]
+		if not db then return end
+
+		if db.powerbar.hideWhenEmpty and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+			self:Hide()
 		else
-			element:PreUpdate(unit)
-			element:Show()
+			self:PreUpdate(unit)
+			self:Show()
 		end
 	end
 
@@ -40,10 +44,10 @@ end
 function NP:Construct_PowerPrediction(nameplate)
 	local PowerBar = CreateFrame('StatusBar', nil, nameplate.Power)
 	PowerBar:SetReverseFill(true)
-	PowerBar:SetPoint('TOP') -- need option
+	PowerBar:SetPoint('TOP')
 	PowerBar:SetPoint('BOTTOM')
 	PowerBar:SetPoint('RIGHT', nameplate.Power:GetStatusBarTexture(), 'RIGHT')
-	PowerBar:SetWidth(130) -- need option
+	PowerBar:SetWidth(130)
 	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 
 	return { mainBar = PowerBar }
@@ -51,9 +55,6 @@ end
 
 function NP:Update_Power(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-
-	NP:Update_Health(nameplate)
-	NP:Update_HealthPrediction(nameplate)
 
 	if db.powerbar.enable then
 		nameplate:EnableElement('Power')
@@ -67,7 +68,9 @@ function NP:Update_Power(nameplate)
 		nameplate.Power.Text:Hide()
 	end
 
-	nameplate.Power:SetSize(db.healthbar.width, db.powerbar.height)
+	nameplate.Power.width = db.powerbar.width
+	nameplate.Power.height = db.powerbar.height
+	nameplate.Power:SetSize(db.powerbar.width, db.powerbar.height)
 end
 
 function NP:Update_PowerPrediction(nameplate)
