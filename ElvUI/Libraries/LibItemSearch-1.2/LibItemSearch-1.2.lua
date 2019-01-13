@@ -242,7 +242,7 @@ Lib.Filters.azerite = {
 
 Lib.Filters.keystone = {
 	keyword1 = CHALLENGES:lower(), --English: "mythic keystone" (localized)
-	keyword2 = "mythic keystone" --unlocalized
+	keyword2 = "mythic keystone", --unlocalized
 
 	canSearch = function(self, operator, search)
 		return not operator and self.keyword1:find(search) or self.keyword2:find(search)
