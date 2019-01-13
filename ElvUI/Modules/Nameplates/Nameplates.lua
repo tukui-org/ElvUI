@@ -134,6 +134,8 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_ClassificationIndicator(nameplate)
 
+	NP:Update_QuestIcons(nameplate)
+
 	NP:Update_Health(nameplate)
 
 	NP:Update_HealthPrediction(nameplate)

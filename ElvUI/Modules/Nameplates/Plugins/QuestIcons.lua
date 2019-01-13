@@ -293,6 +293,7 @@ local function Enable(self)
 		self:RegisterEvent('QUEST_REMOVED', QUEST_REMOVED, true)
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', Path, true)
 
 		return true
 	end

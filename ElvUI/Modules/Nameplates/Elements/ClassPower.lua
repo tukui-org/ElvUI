@@ -41,7 +41,7 @@ function NP:Construct_ClassPower(frame)
 		if i == 1 then
 			ClassPower[i]:SetPoint('LEFT', ClassPower, 'LEFT', 0, 0)
 		else
-			ClassPower[i]:SetPoint('LEFT', ClassPower[i - 1], 'LEFT', 1, 0)
+			ClassPower[i]:SetPoint('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
 		end
 	end
 
@@ -72,7 +72,7 @@ function NP:Construct_ClassPower(frame)
 				if i == 1 then
 					self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
 				else
-					self[i]:SetPoint('LEFT', self[i - 1], 'LEFT', 1, 0)
+					self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
 				end
 			end
 		end

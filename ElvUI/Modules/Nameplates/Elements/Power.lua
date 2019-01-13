@@ -31,7 +31,7 @@ function NP:Construct_PowerBar(nameplate)
 		local db = NP.db.units[self.__owner.frameType]
 		if not db then return end
 
-		if db.powerbar.hideWhenEmpty and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+		if (db.powerbar and db.powerbar.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
 			self:Hide()
 		else
 			self:PreUpdate(unit)

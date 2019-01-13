@@ -118,7 +118,7 @@ function NP:Update_Auras(nameplate)
 end
 
 function NP:Construct_AuraIcon(button)
-	button:SetClipsChildren(true)
+	if not button then return end
 
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.text:Point('CENTER', 1, 1)
@@ -221,7 +221,7 @@ function NP:PostUpdateAura(unit, button)
 	local db = NP.db.units[parent.__owner.frameType]
 	local parentType = parent.type
 
-	if db then
+	if db and db[parentType] then
 		button:SetSize(db[parentType].width, db[parentType].height)
 	end
 
@@ -361,16 +361,22 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
 	local parent = button:GetParent()
 	local db = NP.db.units[parent.__owner.frameType]
-
-	if not db then return end
-
 	local parentType = parent.type
+	if not (db and db[parentType]) then
+		return true
+	end
+
 	local isPlayer = button.isPlayer
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+
+	if not db[parentType].filters then
+		return true
+	end
+
 	local priority = db[parentType].filters.priority
 
 	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and (db[parentType].filters.maxDuration == 0 or duration <= db[parentType].filters.maxDuration) and (db[parentType].filters.minDuration == 0 or duration >= db[parentType].filters.minDuration))
+	local allowDuration = noDuration or (duration and (duration > 0) and db[parentType].filters.maxDuration == 0 or duration <= db[parentType].filters.maxDuration) and (db[parentType].filters.minDuration == 0 or duration >= db[parentType].filters.minDuration)
 	local filterCheck
 
 	if priority ~= '' then

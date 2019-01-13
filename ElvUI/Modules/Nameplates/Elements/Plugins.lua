@@ -5,7 +5,7 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nil, nameplate)
 	QuestIcons:Hide()
-	QuestIcons:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+	QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	QuestIcons:SetPoint("LEFT", nameplate, "RIGHT", 4, 0) -- need option
 
 	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
@@ -24,8 +24,50 @@ function NP:Construct_QuestIcons(nameplate)
 	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
-	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 2, -0.8)
+	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
 	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch("font", NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+
+--function mod:QuestIcon_RelativePosition(frame, element)
+--	if not frame.QuestIcon then return end
+
+--	local unit, isCastbarLeft, isCastbarRight, isEliteLeft, isEliteRight = frame.UnitType, false, false, false, false
+--	if unit then
+--		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "RIGHT" then
+--			if frame.CastBar:IsShown() then isCastbarLeft = true end
+--		end
+
+--		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "RIGHT" then
+--			if frame.Elite:IsShown() then isEliteLeft = true end
+--		end
+
+--		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "LEFT" then
+--			if frame.CastBar:IsShown() then isCastbarRight = true end
+--		end
+
+--		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "LEFT" then
+--			if frame.Elite:IsShown() then isEliteRight = true end
+--		end
+--	end
+
+--	frame.QuestIcon:ClearAllPoints()
+--	if self.db.questIconPosition == "RIGHT" then
+--		if isCastbarLeft then
+--			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
+--		elseif not isCastbarLeft and isEliteLeft then
+--			frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
+--		else
+--			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
+--		end
+--	elseif self.db.questIconPosition == "LEFT" then
+--		if isCastbarRight then
+--			frame.QuestIcon:SetPoint("RIGHT", frame.CastBar.Icon, "LEFT", -4, 0)
+--		elseif not isCastbarRight and isEliteRight then
+--			frame.QuestIcon:SetPoint("RIGHT", frame.Elite, "LEFT", -4, 0)
+--		else
+--			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -4, 0)
+--		end
+--	end
+--end
 
 	return QuestIcons
 end
