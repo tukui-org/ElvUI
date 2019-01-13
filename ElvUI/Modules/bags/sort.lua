@@ -120,9 +120,9 @@ local inventorySlots = {
 }
 
 local conjured_items = {
-	5512, -- Healthstone
-	162518, -- Mystical Flask
-	113509, -- Conjured Mana Bun
+	[5512] = true, -- Healthstone
+	[162518] = true, -- Mystical Flask
+	[113509] = true, -- Conjured Mana Bun
 }
 
 local safe = {
@@ -227,11 +227,11 @@ local function DefaultSort(a, b)
 		bRarity = 1
 	end
 
-	if tContains(conjured_items, aID) then
+	if conjured_items[aID] then
 		aRarity = -99
 	end
 
-	if tContains(conjured_items, bID) then
+	if conjured_items[bID] then
 		bRarity = -99
 	end
 
