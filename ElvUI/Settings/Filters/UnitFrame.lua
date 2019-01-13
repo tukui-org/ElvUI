@@ -660,8 +660,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
+		[288388] = Defaults(), -- Reap Soul
+		[288694] = Defaults(), -- Shadow Smash
 
-		--BFA Dungeons
+	--BFA Dungeons
 		--Freehold
 		[258323] = Defaults(), -- Infected Wound
 		[257775] = Defaults(), -- Plague Step
