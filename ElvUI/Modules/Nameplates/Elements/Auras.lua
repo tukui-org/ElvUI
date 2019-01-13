@@ -18,9 +18,18 @@ function NP:Construct_Buffs(nameplate)
 	Buffs['growth-y'] = 'UP'
 
 	Buffs.type = 'buffs'
-	Buffs.PostCreateIcon = self.Construct_AuraIcon
-	Buffs.PostUpdateIcon = self.PostUpdateAura
-	Buffs.CustomFilter = self.AuraFilter
+
+	function Buffs:PostCreateIcon(button)
+		NP:Construct_AuraIcon(button)
+	end
+
+	function Buffs:PostUpdateIcon(unit, button)
+		NP:PostUpdateAura(unit, button)
+	end
+
+	function Buffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	end
 
 	return Buffs
 end
@@ -42,9 +51,18 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs['growth-y'] = 'UP'
 
 	Debuffs.type = 'debuffs'
-	Debuffs.PostCreateIcon = self.Construct_AuraIcon
-	Debuffs.PostUpdateIcon = self.PostUpdateAura
-	Debuffs.CustomFilter = self.AuraFilter
+
+	function Debuffs:PostCreateIcon(button)
+		NP:Construct_AuraIcon(button)
+	end
+
+	function Debuffs:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
+	end
+
+	function Debuffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	end
 
 	return Debuffs
 end
@@ -67,9 +85,17 @@ function NP:Construct_Auras(nameplate)
 	Auras['growth-x'] = 'RIGHT'
 	Auras['growth-y'] = 'UP'
 
-	Auras.PostCreateIcon = self.Construct_AuraIcon
-	Auras.PostUpdateIcon = self.PostUpdateAura
-	Auras.CustomFilter = self.AuraFilter
+	function Auras:PostCreateIcon(button)
+		NP:Construct_AuraIcon(button)
+	end
+
+	function Auras:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
+	end
+
+	function Auras:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	end
 
 	return Auras
 end
@@ -92,7 +118,7 @@ function NP:Update_Auras(nameplate)
 end
 
 function NP:Construct_AuraIcon(button)
-	local offset = E.Border
+	button:SetClipsChildren(true)
 
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.text:Point('CENTER', 1, 1)
@@ -130,9 +156,9 @@ function NP:Construct_AuraIcon(button)
 	----------
 
 	button.cd:SetReverse(true)
-	button.cd:SetInside(button, offset, offset)
+	button.cd:SetInside(button)
 
-	button.icon:SetInside(button, offset, offset)
+	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 
@@ -191,9 +217,12 @@ function NP:PostUpdateAura(unit, button)
 		end
 	end
 
-	local size = button:GetParent().size
-	if size then
-		button:SetSize(size, size)
+	local parent = button:GetParent()
+	local db = NP.db.units[parent.__owner.frameType]
+	local parentType = parent.type
+
+	if db then
+		button:SetSize(db[parentType].width, db[parentType].height)
 	end
 
 	--if E:Cooldown_IsEnabled(button) then
@@ -330,26 +359,27 @@ end
 
 function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
-	local db = NP.db.units[self.__owner.frameType]
+	local parent = button:GetParent()
+	local db = NP.db.units[parent.__owner.frameType]
 
 	if not db then return end
 
+	local parentType = parent.type
 	local isPlayer = button.isPlayer
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
-	local priority = db[self.type].filters.priority
+	local priority = db[parentType].filters.priority
 
 	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and (db[self.type].filters.maxDuration == 0 or duration <= db[self.type].filters.maxDuration) and (db[self.type].filters.minDuration == 0 or duration >= db[self.type].filters.minDuration))
+	local allowDuration = noDuration or (duration and (duration > 0) and (db[parentType].filters.maxDuration == 0 or duration <= db[parentType].filters.maxDuration) and (db[parentType].filters.minDuration == 0 or duration >= db[parentType].filters.minDuration))
 	local filterCheck
 
 	if priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
-		local canDispell = (self.type == 'Buffs' and isStealable) or (self.type == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+		local canDispell = (parentType == 'Buffs' and isStealable) or (parentType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
-
 
 	if filterCheck == true then
 		return true

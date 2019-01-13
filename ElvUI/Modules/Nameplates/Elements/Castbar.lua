@@ -26,32 +26,32 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Text:SetJustifyH('LEFT')
 	Castbar.Text:SetFont(E.LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline)
 
-	local function CheckInterrupt(castbar, unit)
+	function Castbar:CheckInterrupt(unit)
 		if (unit == 'vehicle') then
 			unit = 'player'
 		end
 
-		if (castbar.notInterruptible and UnitCanAttack('player', unit)) then
-			castbar:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
+		if (self.notInterruptible and UnitCanAttack('player', unit)) then
+			self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
 		else
-			castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
+			self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
 		end
 	end
 
 	function Castbar:PostCastStart(unit)
-		CheckInterrupt(self, unit)
+		self:CheckInterrupt(unit)
 	end
 
 	function Castbar:PostCastInterruptible(unit)
-		CheckInterrupt(self, unit)
+		self:CheckInterrupt(unit)
 	end
 
 	function Castbar:PostCastNotInterruptible(unit)
-		CheckInterrupt(self, unit)
+		self:CheckInterrupt(unit)
 	end
 
 	function Castbar:PostChannelStart(unit)
-		CheckInterrupt(self, unit)
+		self:CheckInterrupt(unit)
 	end
 
 	return Castbar
@@ -67,9 +67,14 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
 		nameplate.Castbar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, -20) -- need option
 
-		nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
-		nameplate.Castbar.Button:ClearAllPoints()
-		nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+		if db.castbar.showIcon then
+			nameplate.Castbar.Button:Show()
+			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:ClearAllPoints()
+			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+		else
+			nameplate.Castbar.Button:Hide()
+		end
 
 		nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
 		nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) -- need option

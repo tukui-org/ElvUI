@@ -2037,8 +2037,13 @@ local function GetUnitSettings(unit, name)
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
-					iconPosition = {
+					showIcon = {
 						order = 11,
+						type = "toggle",
+						name = L["Show Icon"],
+					},
+					iconPosition = {
+						order = 12,
 						type = "select",
 						name = L["Icon Position"],
 						values = {
@@ -2047,19 +2052,19 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					iconSize = {
-						order = 12,
+						order = 13,
 						name = L["Icon Size"],
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
 					iconOffsetX = {
-						order = 13,
+						order = 14,
 						name = L["X-Offset"],
 						type = "range",
 						min = -20, max = 20, step = 1,
 					},
 					iconOffsetY = {
-						order = 14,
+						order = 15,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -20, max = 20, step = 1,
@@ -2095,9 +2100,17 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					size = {
+					width = {
 						order = 3,
-						name = L["Icon Size"],
+						name = L["Icon Width"],
+						type = "range",
+						min = 6, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					height = {
+						order = 4,
+						name = L["Icon Height"],
 						type = "range",
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
@@ -2267,9 +2280,17 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					size = {
+					width = {
 						order = 3,
-						name = L["Icon Size"],
+						name = L["Icon Width"],
+						type = "range",
+						min = 6, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					height = {
+						order = 4,
+						name = L["Icon Height"],
 						type = "range",
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
