@@ -35,6 +35,22 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 	end
 end
 
+oUF.Tags.Events['arena:number'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['arena:number'] = function(unit)
+	if UnitIsUnit(unit, "arena1") then
+		return '1'
+	elseif UnitIsUnit(unit, "arena2") then
+		return '2'
+	elseif UnitIsUnit(unit, "arena3") then
+		return '3'
+	end
+end
+
+oUF.Tags.Events['class'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['class'] = function(unit)
+	return UnitClass(unit)
+end
+
 oUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then

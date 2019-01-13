@@ -103,6 +103,8 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
+	nameplate.Portrait = NP:Construct_Portrait(nameplate)
+
 	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
 
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
@@ -135,6 +137,8 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_ClassificationIndicator(nameplate)
 
 	NP:Update_QuestIcons(nameplate)
+
+	NP:Update_Portrait(nameplate)
 
 	NP:Update_Health(nameplate)
 
