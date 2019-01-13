@@ -24,8 +24,8 @@ function Lib:Tooltip(link, search)
 	return link and self.Filters.tip:match(link, nil, search)
 end
 
-function Lib:TooltipPhrase(link, search, allowPartialMatch)
-	return link and self.Filters.tipPhrases:match(link, nil, search, allowPartialMatch)
+function Lib:TooltipPhrase(link, search)
+	return link and self.Filters.tipPhrases:match(link, nil, search)
 end
 
 function Lib:InSet(link, search)
@@ -237,6 +237,20 @@ Lib.Filters.azerite = {
 
 	match = function(self, link)
 		return C_AzeriteItem.IsAzeriteItemByID(link) or C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID(link)
+	end
+}
+
+Lib.Filters.keystone = {
+	keyword1 = CHALLENGES:lower(), --English: "mythic keystone" (localized)
+	keyword2 = "mythic keystone" --unlocalized
+
+	canSearch = function(self, operator, search)
+		return not operator and self.keyword1:find(search) or self.keyword2:find(search)
+	end,
+
+	match = function(self, link)
+		local id = link:match('item:(%d+)')
+		return id and (select(12, GetItemInfo(id)) == 5) --itemClassID 5 which translates to "Keystone"
 	end
 }
 
