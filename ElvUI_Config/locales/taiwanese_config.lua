@@ -24,6 +24,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以�
     • t:[類型]，type:[類型] 或 slot:[類型]. 舉例，t:武器 會搜尋所有武器.
     • n:[名稱] 或 name:[名稱]. 舉例，輸入 n:muffins 會搜尋所有物品名稱中含有 "muffins".
     • s:[套裝] 或 set:[套裝]. 舉例，s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[關鍵字]，tip:[關鍵字] 或 tooltip:[關鍵字]. 舉例，tt:綁定 會搜尋所有物品提示中含有綁定兩字的物品 如 帳號綁定，裝備綁定 或 拾取綁定.
 
 
@@ -40,11 +41,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以�
     • boe : 裝備後綁定.
     • boa : 帳號綁定.
     • quest : 任務綁定
-    • reagents, reagent, crafting : 專業技能材料
-    • naval : 海軍裝備.
-    • follower, followe, follow : 追隨者物品
-    • relic, reli, rel : 神器符文.
-    • power, powe, pow : 賦予神器能量物品.]=]
+    • reagent, crafting : 專業技能材料
+    • keystone : Mythic Keystone.
+    • followers : 追隨者物品
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 
 範例：

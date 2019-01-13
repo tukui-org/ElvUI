@@ -24,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -40,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 
 例如:

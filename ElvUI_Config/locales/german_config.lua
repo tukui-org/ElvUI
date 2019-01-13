@@ -24,6 +24,7 @@ Spezifische Suche:
     • t:[suche], type:[suche] oder slot:[suche]. Beispielsweise t:waffe findet alle Waffen.
     • n:[name] oder name:[name]. Beispielsweise wenn du n:muffins eintippst, findest du alle Gegenstände die "muffins" im Namen haben.
     • s:[set] oder set:[set]. Zum Beispiel: s:feuer findet alle Gegenstände eines Ausrüstungssets mit Feuer im Namen.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[suche], tip:[suche] oder tooltip:[suche]. Beispielsweise tt:gebunden findet alle Gegenstände die am Account, beim Aufheben oder beim Ausrüsten gebunden sind.
 
 
@@ -40,11 +41,10 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • boe : Beim Ausrüsten gebundene Gegenstände.
     • boa : An den Account gebundene Gegenstände.
     • quest : Gebundene Quest Gegenstände.
-    • reagents, reagent, crafting : Berufs Reagenzien.
-    • naval : Schiffsausrüstung.
-    • follower, followe, follow : Anhänger Gegenstände.
-    • relic, reli, rel : Artefakt Relikte.
-    • power, powe, pow : Gegenstände die Artefaktkraft gewähren.]=]
+    • reagent, crafting : Berufs Reagenzien.
+    • keystone : Mythic Keystone.
+    • followers : Anhänger Gegenstände.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
 
 Beispiele:

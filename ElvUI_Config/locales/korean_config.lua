@@ -39,6 +39,12 @@ L["SEARCH_SYNTAX_DESC"] = [=[
 
     |cffceff00■|r s:세트이름 / set:세트이름
      - 입력한 글자가 포함됀 장비세트에 소속된 아이템들만 표시합니다.
+	
+	|cffceff00■|r r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]
+     - For example, reqlvl:30 will find all items that require level 30.
+	
+	|cffceff00■|r tt:[search], tip:[search] or tooltip:[search]
+     - For example, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
   |cff2eb7e4<< 조건부여 >>|r
@@ -65,11 +71,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[
      - boe : 착용 시 귀속 아이템을 표시합니다.
      - boa : 계정 귀속 아이템을 표시합니다.
      - quest : 퀘스트 아이템을 표시합니다.
-     - reagents, reagent, crafting : Profession reagents.
-     - naval : Naval equipment.
-     - follower, followe, follow : Follower items.
-     - relic, reli, rel : Artifact Relics.
-     - power, powe, pow : Items granting Artifact Power.]=]
+     - reagent, crafting : Profession reagents.
+	 - keystone : Mythic Keystone.
+     - followers : Follower items.
+     - champions : Champion equipment.]=]
 
 L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
 

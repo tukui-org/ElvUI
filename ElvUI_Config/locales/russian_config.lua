@@ -24,6 +24,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • t:[запрос], type:[запрос] or slot:[запрос]. Например, t:оружие покажет все предметы, являющиеся оружием.
     • n:[имя] or name:[имя]. Например, n:muffins покажет все предметы, в имени которых соержится "muffins".
     • s:[набор] or set:[набор]. Например, s:fire покажет предметы из наборов экипировки, название которых начинается с "fire".
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[запрос], tip:[запрос] or tooltip:[запрос]. Например, tt:уникальный покажет все предметы, которые являются уникальными или уникальными использующимися.
 
 
@@ -40,11 +41,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • boe : персональные при одевании.
     • boa : привязоные к учетной записи.
     • quest : специальные предметы для заданий.
-    • reagents, reagent, crafting : Реагенты профессий.
-    • naval : Оборудование флота.
-    • follower, followe, follow : Предметы последователей.
-    • relic, reli, rel : Реликвии артефактов.
-    • power, powe, pow : Предметы, дающие силу артефакта.]=]
+    • reagent, crafting : Реагенты профессий.
+    • keystone : Mythic Keystone.
+    • followers : Предметы последователей.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
 
 Примеры:
