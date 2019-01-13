@@ -250,7 +250,7 @@ Lib.Filters.keystone = {
 
 	match = function(self, link)
 		local id = link:match('item:(%d+)')
-		return id and (select(12, GetItemInfo(id)) == 5) --itemClassID 5 which translates to "Keystone"
+		return id and (select(12, GetItemInfo(id)) == 5 and select(13, GetItemInfo(id)) == 1) --itemClassID 5 and itemSubClassID 1 which translates to "Keystone"
 	end
 }
 
