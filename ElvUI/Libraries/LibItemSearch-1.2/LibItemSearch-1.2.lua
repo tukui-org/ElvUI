@@ -339,10 +339,16 @@ Lib.Filters.tipPhrases = {
 		[FOLLOWERLIST_LABEL_CHAMPIONS:lower()] = Lib:TooltipLine('item:147556', 2),
 		[GARRISON_FOLLOWERS:lower()] = Lib:TooltipLine('item:147556', 2),
 
+		['soulbound'] = ITEM_BIND_ON_PICKUP,
     	['bound'] = ITEM_BIND_ON_PICKUP,
     	['bop'] = ITEM_BIND_ON_PICKUP,
 		['boe'] = ITEM_BIND_ON_EQUIP,
 		['bou'] = ITEM_BIND_ON_USE,
 		['boa'] = ITEM_BIND_TO_BNETACCOUNT,
+		['quests'] = ITEM_BIND_QUEST,
+		['crafting reagent'] = PROFESSIONS_USED_IN_COOKING,
+		['toy'] = TOY,
+		['champions'] = Lib:TooltipLine('item:147556', 2),
+		['followers'] = Lib:TooltipLine('item:147556', 2),
 	}
 }
