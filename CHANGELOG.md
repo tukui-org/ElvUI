@@ -13,6 +13,7 @@ Fixed issue which caused E:UpdateAll to be called twice, potentially causing err
 **Misc. Changes:**  
 Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.  
 Updated gold datatext. Added an indicator for the current character and characters are now in class color.  
+Consumable items that disappear when logged out are now sorted last to avoid gaps in the ElvUI bags.  (credit: Belzaru)
 
 ___
 **Version 10.85 [ January 4th 2019 ]**
