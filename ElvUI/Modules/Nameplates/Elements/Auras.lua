@@ -196,7 +196,7 @@ function NP:PostUpdateAura(unit, button)
 		button:SetSize(db[parentType].width, db[parentType].height)
 	end
 
-	if button.cd then
+	if button:IsShown() and button.cd then
 		NP:UpdateCooldownTextPosition(button.cd)
 		NP:UpdateCooldownSettings(button.cd)
 	end

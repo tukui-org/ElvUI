@@ -16,9 +16,11 @@ function NP:PreUpdateThreat(element, unit)
 	local ROLE = UnitExists(unit..'target') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
 	if ROLE == "TANK" then
 		element.feedbackUnit = unit..'target'
+		element.offtank = not UnitIsUnit(unit..'target', "player")
 		element.isTank = true
 	else
 		element.feedbackUnit = 'player'
+		element.offtank = false
 		element.isTank = false
 	end
 end
@@ -49,13 +51,13 @@ function NP:PostUpdateThreat(element, unit, status)
 			else -- not tanking at all
 				if element.isTank then
 					--Check if it is being tanked by an offtank.
-					if NP.db.threat.beingTankedByTank then
+					if element.offtank then
 						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
 						r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
 					end
 				else
-					if NP.db.threat.beingTankedByTank then
+					if element.offtank then
 						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
 						r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
