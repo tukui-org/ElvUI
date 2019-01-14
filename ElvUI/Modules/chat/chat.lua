@@ -478,24 +478,6 @@ function CH:StyleChat(frame)
 		editbox:AddHistoryLine(text)
 	end
 
-	hooksecurefunc("ChatEdit_UpdateHeader", function()
-		local chatType = editbox:GetAttribute("chatType")
-		if not chatType then return end
-
-		local ChatTypeInfo = _G.ChatTypeInfo
-		local chanTarget = editbox:GetAttribute("channelTarget")
-		local chanName = chanTarget and GetChannelName(chanTarget)
-		if chanName and (chatType == "CHANNEL") then
-			if chanName == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			else
-				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..chanName].r,ChatTypeInfo[chatType..chanName].g,ChatTypeInfo[chatType..chanName].b)
-			end
-		else
-			editbox:SetBackdropBorderColor(ChatTypeInfo[chatType].r,ChatTypeInfo[chatType].g,ChatTypeInfo[chatType].b)
-		end
-	end)
-
 	if id ~= 2 then --Don't add timestamps to combat log, they don't work.
 		--This usually taints, but LibChatAnims should make sure it doesn't.
 		frame.OldAddMessage = frame.AddMessage
@@ -2387,6 +2369,27 @@ function CH:Initialize()
 	if not E.db.chat.lockPositions then
 		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
 	end
+	
+	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
+		local chatType = editbox:GetAttribute("chatType")
+		if not chatType then return end
+
+		local ChatTypeInfo = _G.ChatTypeInfo
+		local info = ChatTypeInfo[chatType]
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+		
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			else
+				info = ChatTypeInfo[chatType..chanName]
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+			end
+		else
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+		end
+	end)
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
