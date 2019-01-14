@@ -33,8 +33,10 @@ end
 
 function NP:PostUpdateThreat(threat, unit, status)
 	if NP.db.threat and NP.db.threat.useThreatColor then
-		if status then
-			local r, g, b
+		local r, g, b
+		if (not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+			r, g, b = self.db.reactions.tapped.r, self.db.reactions.tapped.g, self.db.reactions.tapped.b
+		elseif status then
 			if (status == 3) then --Securely Tanking
 				if threat.isTank then
 					r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
@@ -69,10 +71,8 @@ function NP:PostUpdateThreat(threat, unit, status)
 					end
 				end
 			end
-			threat.__owner.Health:SetStatusBarColor(r, g, b)
 		elseif not UnitIsPlayer(unit) then
 			local reactionType = UnitReaction(unit, 'player')
-			local r, g, b
 			if reactionType == 4 then
 				r, g, b = NP.db.colors.reactions.neutral.r, NP.db.colors.reactions.neutral.g, NP.db.colors.reactions.neutral.b
 			elseif reactionType > 4 then
@@ -80,8 +80,8 @@ function NP:PostUpdateThreat(threat, unit, status)
 			else
 				r, g, b = NP.db.colors.reactions.bad.r, NP.db.colors.reactions.bad.g, NP.db.colors.reactions.bad.b
 			end
-			threat.__owner.Health:SetStatusBarColor(r, g, b)
 		end
+		threat.__owner.Health:SetStatusBarColor(r, g, b)
 	end
 end
 
