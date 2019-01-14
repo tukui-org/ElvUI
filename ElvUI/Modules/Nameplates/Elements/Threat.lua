@@ -6,67 +6,81 @@ function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	ThreatIndicator:SetSize(16, 16)
 	ThreatIndicator:SetPoint('CENTER', nameplate, 'TOPRIGHT')
-	ThreatIndicator.PreUpdate = function(threat, unit) NP:PreUpdateThreat(threat, unit) end
-	ThreatIndicator.PostUpdate = function(threat, unit, status) NP:PostUpdateThreat(threat, unit, status) end
+
+	function ThreatIndicator:PreUpdate(unit)
+		NP:PreUpdateThreat(self, unit)
+	end
+
+	function ThreatIndicator:PostUpdate(unit, status)
+		NP:PostUpdateThreat(self, unit, status)
+	end
 
 	return ThreatIndicator
 end
 
-function NP:PreUpdateThreat(element, unit)
+function NP:PreUpdateThreat(threat, unit)
 	local ROLE = UnitExists(unit..'target') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
 	if ROLE == "TANK" then
-		element.feedbackUnit = unit..'target'
-		element.offtank = not UnitIsUnit(unit..'target', "player")
-		element.isTank = true
+		threat.feedbackUnit = unit..'target'
+		threat.offtank = not UnitIsUnit(unit..'target', "player")
+		threat.isTank = true
 	else
-		element.feedbackUnit = 'player'
-		element.offtank = false
-		element.isTank = false
+		threat.feedbackUnit = 'player'
+		threat.offtank = false
+		threat.isTank = false
 	end
 end
 
-function NP:PostUpdateThreat(element, unit, status)
+function NP:PostUpdateThreat(threat, unit, status)
 	if NP.db.threat and NP.db.threat.useThreatColor then
-		local IsInParty = (IsInRaid() or IsInGroup())
 		if status then
 			local r, g, b
 			if (status == 3) then --Securely Tanking
-				if element.isTank then
-					r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
+				if threat.isTank then
+					r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
 				else
-					r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
+					r, g, b = NP.db.colors['threat'].badColor.r, NP.db.colors['threat'].badColor.g, NP.db.colors['threat'].badColor.b
 				end
 			elseif (status == 2) then --insecurely tanking
-				if element.isTank then
-					r, g, b = NP.db.colors.threat.badTransition.r, NP.db.colors.threat.badTransition.g, NP.db.colors.threat.badTransition.b
+				if threat.isTank then
+					r, g, b = NP.db.colors['threat'].badTransition.r, NP.db.colors['threat'].badTransition.g, NP.db.colors['threat'].badTransition.b
 				else
-					r, g, b = NP.db.colors.threat.goodTransition.r, NP.db.colors.threat.goodTransition.g, NP.db.colors.threat.goodTransition.b
+					r, g, b = NP.db.colors['threat'].goodTransition.r, NP.db.colors['threat'].goodTransition.g, NP.db.colors['threat'].goodTransition.b
 				end
 			elseif (status == 1) then --not tanking but threat higher than tank
-				if element.isTank then
-					r, g, b = NP.db.colors.threat.goodTransition.r, NP.db.colors.threat.goodTransition.g, NP.db.colors.threat.goodTransition.b
+				if threat.isTank then
+					r, g, b = NP.db.colors['threat'].goodTransition.r, NP.db.colors['threat'].goodTransition.g, NP.db.colors['threat'].goodTransition.b
 				else
-					r, g, b = NP.db.colors.threat.badTransition.r, NP.db.colors.threat.badTransition.g, NP.db.colors.threat.badTransition.b
+					r, g, b = NP.db.colors['threat'].badTransition.r, NP.db.colors['threat'].badTransition.g, NP.db.colors['threat'].badTransition.b
 				end
 			else -- not tanking at all
-				if element.isTank then
+				if threat.isTank then
 					--Check if it is being tanked by an offtank.
-					if element.offtank then
-						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
+					if threat.offtank then
+						r, g, b = NP.db.colors['threat'].beingTankedByTankColor.r, NP.db.colors['threat'].beingTankedByTankColor.g, NP.db.colors['threat'].beingTankedByTankColor.b
 					else
-						r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
+						r, g, b = NP.db.colors['threat'].badColor.r, NP.db.colors['threat'].badColor.g, NP.db.colors['threat'].badColor.b
 					end
 				else
-					if element.offtank then
-						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
+					if threat.offtank then
+						r, g, b = NP.db.colors['threat'].beingTankedByTankColor.r, NP.db.colors['threat'].beingTankedByTankColor.g, NP.db.colors['threat'].beingTankedByTankColor.b
 					else
-						r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
+						r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
 					end
 				end
 			end
-			element.__owner.Health:SetStatusBarColor(r, g, b)
+			threat.__owner.Health:SetStatusBarColor(r, g, b)
 		elseif not UnitIsPlayer(unit) then
-			element.__owner.Health:SetStatusBarColor(unpack(element.__owner.colors.reaction[UnitReaction(unit, 'player')]))
+			local reactionType = UnitReaction(unit, 'player')
+			local r, g, b
+			if reactionType == 4 then
+				r, g, b = NP.db.colors.reactions.neutral.r, NP.db.colors.reactions.neutral.g, NP.db.colors.reactions.neutral.b
+			elseif reactionType > 4 then
+				r, g, b = NP.db.colors.reactions.good.r, NP.db.colors.reactions.good.g, NP.db.colors.reactions.good.b
+			else
+				r, g, b = NP.db.colors.reactions.bad.r, NP.db.colors.reactions.bad.g, NP.db.colors.reactions.bad.b
+			end
+			threat.__owner.Health:SetStatusBarColor(r, g, b)
 		end
 	end
 end
