@@ -22,9 +22,9 @@ function NP:Construct_Portrait(nameplate)
 end
 
 function NP:Update_Portrait(nameplate)
-	if (NP.db.units[nameplate.frameType].portrait and NP.db.units[nameplate.frameType].portrait) then
+	if (NP.db.units[nameplate.frameType].portrait and NP.db.units[nameplate.frameType].portrait.enable) then
 		nameplate:EnableElement('Portrait')
-		nameplate.Portrait:SetSize(32, 32)
+		nameplate.Portrait:SetSize(NP.db.units[nameplate.frameType].portrait.width, NP.db.units[nameplate.frameType].portrait.height)
 		nameplate.Portrait:SetPoint('RIGHT', nameplate, 'LEFT')
 	else
 		nameplate:DisableElement('Portrait')

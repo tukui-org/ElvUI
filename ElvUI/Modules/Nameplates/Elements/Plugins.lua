@@ -6,11 +6,10 @@ function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nil, nameplate)
 	QuestIcons:Hide()
 	QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-	QuestIcons:SetPoint("LEFT", nameplate, "RIGHT", 4, 0) -- need option
 
 	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
 		QuestIcons[object] = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-		QuestIcons[object]:SetPoint('TOPLEFT')
+		QuestIcons[object]:SetPoint('CENTER')
 		QuestIcons[object]:SetSize(NP.db.questIconSize, NP.db.questIconSize)
 		QuestIcons[object]:Hide()
 	end
@@ -27,54 +26,19 @@ function NP:Construct_QuestIcons(nameplate)
 	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
 	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch("font", NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
---function mod:QuestIcon_RelativePosition(frame, element)
---	if not frame.QuestIcon then return end
-
---	local unit, isCastbarLeft, isCastbarRight, isEliteLeft, isEliteRight = frame.UnitType, false, false, false, false
---	if unit then
---		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "RIGHT" then
---			if frame.CastBar:IsShown() then isCastbarLeft = true end
---		end
-
---		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "RIGHT" then
---			if frame.Elite:IsShown() then isEliteLeft = true end
---		end
-
---		if self.db.units[unit].castbar.enable and element == "Castbar" and self.db.units[unit].castbar.iconPosition == "LEFT" then
---			if frame.CastBar:IsShown() then isCastbarRight = true end
---		end
-
---		if self.db.units[unit].eliteIcon and self.db.units[unit].eliteIcon.enable and self.db.units[unit].eliteIcon.position == "LEFT" then
---			if frame.Elite:IsShown() then isEliteRight = true end
---		end
---	end
-
---	frame.QuestIcon:ClearAllPoints()
---	if self.db.questIconPosition == "RIGHT" then
---		if isCastbarLeft then
---			frame.QuestIcon:SetPoint("LEFT", frame.CastBar.Icon, "RIGHT", 4, 0)
---		elseif not isCastbarLeft and isEliteLeft then
---			frame.QuestIcon:SetPoint("LEFT", frame.Elite, "RIGHT", 4, 0)
---		else
---			frame.QuestIcon:SetPoint("LEFT", frame.HealthBar, "RIGHT", 4, 0)
---		end
---	elseif self.db.questIconPosition == "LEFT" then
---		if isCastbarRight then
---			frame.QuestIcon:SetPoint("RIGHT", frame.CastBar.Icon, "LEFT", -4, 0)
---		elseif not isCastbarRight and isEliteRight then
---			frame.QuestIcon:SetPoint("RIGHT", frame.Elite, "LEFT", -4, 0)
---		else
---			frame.QuestIcon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -4, 0)
---		end
---	end
---end
-
 	return QuestIcons
 end
 
 function NP:Update_QuestIcons(nameplate)
 	if NP.db.questIcon and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		nameplate:EnableElement('QuestIcons')
+		nameplate.QuestIcons:ClearAllPoints()
+		nameplate.QuestIcons:SetPoint("LEFT", nameplate, "RIGHT", 4, 0)
+		nameplate.QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Item:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Loot:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	else
 		nameplate:DisableElement('QuestIcons')
 	end
@@ -117,11 +81,8 @@ function NP:Construct_TargetIndicator(nameplate)
 	end
 
 	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
-
 	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
-
 	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
-
 	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
 
 	return TargetIndicator
@@ -141,13 +102,13 @@ function NP:Update_TargetIndicator(nameplate)
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
 				topArrowSpace = NP['db'].fontSize + topArrowSpace
 			end
-			nameplate.TargetIndicator.TopIndicator:Point("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:SetPoint("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == "style4" or GlowStyle == "style7" or GlowStyle == "style8") then
-			nameplate.TargetIndicator.LeftIndicator:Point("LEFT", nameplate.HealthBar, "RIGHT", -3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point("RIGHT", nameplate.HealthBar, "LEFT", 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:SetPoint("LEFT", nameplate.HealthBar, "RIGHT", -3, 0)
+			nameplate.TargetIndicator.RightIndicator:SetPoint("RIGHT", nameplate.HealthBar, "LEFT", 3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
@@ -169,8 +130,8 @@ function NP:Update_TargetIndicator(nameplate)
 
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:Point("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size * 2), size)
-			nameplate.TargetIndicator.Spark:Point("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size * 2, -size)
+			nameplate.TargetIndicator.Spark:SetPoint("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size * 2), size)
+			nameplate.TargetIndicator.Spark:SetPoint("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size * 2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end

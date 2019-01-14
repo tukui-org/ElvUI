@@ -17,7 +17,7 @@ Tooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
 oUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['npctitle'] = function(unit)
 	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(GetGuildInfo(unit) or '')..'|r'
+		return
 	end
 
 	Tooltip:SetUnit(unit)
@@ -35,14 +35,28 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 	end
 end
 
+oUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['guild'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return Hex(.25, .75, .25)..(GetGuildInfo(unit) or '')..'|r'
+	end
+end
+
+oUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['guild:rank'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return Hex(.25, .75, .25)..(select(2, GetGuildInfo(unit)) or '')..'|r'
+	end
+end
+
 oUF.Tags.Events['arena:number'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['arena:number'] = function(unit)
-	if UnitIsUnit(unit, "arena1") then
-		return '1'
-	elseif UnitIsUnit(unit, "arena2") then
-		return '2'
-	elseif UnitIsUnit(unit, "arena3") then
-		return '3'
+	if select(2, IsInInstance()) == 'arena' then
+		for i = 1, 5 do
+			if UnitIsUnit(unit, "arena"..i) then
+				return i
+			end
+		end
 	end
 end
 

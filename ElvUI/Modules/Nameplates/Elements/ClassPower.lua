@@ -25,7 +25,7 @@ function NP:Construct_ClassPower(frame)
 	local ClassPower = CreateFrame('Frame', nil, frame)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(frame:GetFrameStrata())
-	ClassPower:SetFrameLevel(2)
+	ClassPower:SetFrameLevel(1)
 	ClassPower:CreateBackdrop('Transparent')
 	ClassPower:SetPoint('BOTTOM', frame.Health, 'BOTTOM', 0, 14)
 
