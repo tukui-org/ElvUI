@@ -121,42 +121,24 @@ function NP:Construct_AuraIcon(button)
 	if not button then return end
 
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
 	button:SetTemplate()
 
-	-- cooldown override settings
-	--if not button.timerOptions then
-	--	button.timerOptions = {}
-	--end
-
-	--button.timerOptions.reverseToggle = UF.db.cooldown.reverse
-	--button.timerOptions.hideBlizzard = UF.db.cooldown.hideBlizzard
-
-	--if UF.db.cooldown.override and E.TimeColors.unitframe then
-	--	button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors.unitframe, UF.db.cooldown.threshold
-	--else
-	--	button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
-	--end
-
-	--if UF.db.cooldown.checkSeconds then
-	--	button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
-	--else
-	--	button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = nil, nil
-	--end
-
-	--if UF.db.cooldown.fonts and UF.db.cooldown.fonts.enable then
-	--	button.timerOptions.fontOptions = UF.db.cooldown.fonts
-	--elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-	--	button.timerOptions.fontOptions = E.db.cooldown.fonts
-	--else
-	--	button.timerOptions.fontOptions = nil
-	--end
-	----------
-
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)
+
+	button.cd.CooldownFontSize = 12
+	button.cd.CooldownOverride = 'nameplates'
+	button.cd.CooldownPreHook = function(cd) NP:UpdateCooldownTextPosition(cd) end
+
+	button.cd.CooldownSettings = {
+		['font'] = LSM:Fetch("font", self.db.font),
+		['fontSize'] = self.db.fontSize,
+		['fontOutline'] = self.db.fontOutline,
+	}
+
+	E:RegisterCooldown(button.cd)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -168,17 +150,6 @@ function NP:Construct_AuraIcon(button)
 
 	button.overlay:SetTexture(nil)
 	button.stealable:SetTexture(nil)
-
-	-- support cooldown override
-	--if not button.isRegisteredCooldown then
-	--	button.CooldownOverride = 'unitframe'
-	--	button.isRegisteredCooldown = true
-
-	--	if not E.RegisteredCooldowns.unitframe then E.RegisteredCooldowns.unitframe = {} end
-	--	tinsert(E.RegisteredCooldowns.unitframe, button)
-	--end
-
-	NP:UpdateAuraIconSettings(button, true)
 end
 
 function NP:EnableDisable_Auras(nameplate)
@@ -225,83 +196,34 @@ function NP:PostUpdateAura(unit, button)
 		button:SetSize(db[parentType].width, db[parentType].height)
 	end
 
-	--if E:Cooldown_IsEnabled(button) then
-	--	if button.expiration and button.duration and (button.duration ~= 0) then
-	--		local getTime = GetTime()
-	--		if not button:GetScript('OnUpdate') then
-	--			button.expirationTime = button.expiration
-	--			button.expirationSaved = button.expiration - getTime
-	--			button.nextupdate = -1
-	--			button:SetScript('OnUpdate', NP.UpdateAuraTimer)
-	--		end
-	--		if (button.expirationTime ~= button.expiration) or (button.expirationSaved ~= (button.expiration - getTime))  then
-	--			button.expirationTime = button.expiration
-	--			button.expirationSaved = button.expiration - getTime
-	--			button.nextupdate = -1
-	--		end
-	--	end
-
-	--	if button.expiration and button.duration and (button.duration == 0 or button.expiration <= 0) then
-	--		button.expirationTime = nil
-	--		button.expirationSaved = nil
-	--		button:SetScript('OnUpdate', nil)
-	--		if button.text:GetFont() then
-	--			button.text:SetText('')
-	--		end
-	--	end
-	--end
+	NP:UpdateCooldownTextPosition(button.cd)
+	NP:UpdateCooldownSettings(button.cd)
 end
 
-function NP:UpdateAuraIconSettings(auras, noCycle)
-	local frame = auras:GetParent()
-	local type = auras.type
-
-	if noCycle then
-		frame = auras:GetParent():GetParent()
-		type = auras:GetParent().type
-	end
-
-	if not frame.db then return end
-	local index, db = 1, frame.db[type]
-	auras.db = db
-
-	if db then
-		local font = LSM:Fetch("font", E.db.nameplates.font)
-		local fontSize = E.db.nameplates.fontSize or 11
-		local outline = E.db.nameplates.fontOutline or "OUTLINE"
-		local customFont
-
-		if not noCycle then
-			while auras[index] do
-				if (not customFont) and (auras[index].timerOptions and auras[index].timerOptions.fontOptions) then
-					customFont = LSM:Fetch("font", auras[index].timerOptions.fontOptions.font)
-				end
-
-				NP:AuraIconUpdate(frame, db, auras[index], font, outline, customFont)
-
-				index = index + 1
-			end
+function NP:UpdateCooldownTextPosition(cd)
+	if cd.timer and cd.timer.text then
+		cd.timer.text:ClearAllPoints()
+		if NP.db.durationPosition == "TOPLEFT" then
+			cd.timer.text:Point("TOPLEFT", 1, 1)
+		elseif NP.db.durationPosition == "BOTTOMLEFT" then
+			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
+		elseif NP.db.durationPosition == "TOPRIGHT" then
+			cd.timer.text:Point("TOPRIGHT", 1, 1)
 		else
-			if auras.timerOptions and auras.timerOptions.fontOptions then
-				customFont = LSM:Fetch("font", auras.timerOptions.fontOptions.font)
-			end
-
-			NP:AuraIconUpdate(frame, db, auras, font, outline, customFont)
+			cd.timer.text:Point("CENTER", 1, 1)
 		end
 	end
 end
 
-function NP:AuraIconUpdate(frame, db, button, font, outline, customFont)
-	if customFont and (button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable) then
-		button.text:FontTemplate(customFont, button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
-	else
-		button.text:FontTemplate(font, db.fontSize, outline)
+function NP:UpdateCooldownSettings(cd)
+	if cd and cd.CooldownSettings then
+		cd.CooldownSettings.font = LSM:Fetch("font", NP.db.font)
+		cd.CooldownSettings.fontSize = NP.db.fontSize
+		cd.CooldownSettings.fontOutline = NP.db.fontOutline
+		if cd.timer then
+			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
+		end
 	end
-
-	button.count:FontTemplate(font, db.countFontSize or db.fontSize, outline)
-	button.unit = frame.unit -- used to update cooldown text
-
---	E:ToggleBlizzardCooldownText(button.cd, button)
 end
 
 function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
