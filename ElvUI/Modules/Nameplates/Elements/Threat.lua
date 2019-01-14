@@ -63,7 +63,6 @@ function NP:PostUpdateThreat(element, unit, status)
 				end
 			end
 			element.__owner.Health:SetStatusBarColor(r, g, b)
-			print(status, element.isTank, element.feedbackUnit, element.__owner.Health:GetStatusBarColor())
 		elseif not UnitIsPlayer(unit) then
 			element.__owner.Health:SetStatusBarColor(unpack(element.__owner.colors.reaction[UnitReaction(unit, 'player')]))
 		end
