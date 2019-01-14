@@ -339,10 +339,11 @@ function CH:StyleChat(frame)
 	--Character count
 	editbox.characterCount = editbox:CreateFontString()
 	editbox.characterCount:FontTemplate()
+	editbox.characterCount:SetTextColor(190, 190, 190, 0.4)
 	editbox.characterCount:Point("TOPRIGHT", editBox, "TOPRIGHT", -5, 0)
 	editbox.characterCount:Point("BOTTOMRIGHT", editBox, "BOTTOMRIGHT", -5, 0)
 	editbox.characterCount:SetJustifyH("CENTER")
-	editbox.characterCount:Width(25)
+	editbox.characterCount:Width(30)
 
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
