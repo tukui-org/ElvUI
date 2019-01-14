@@ -12,8 +12,8 @@ function NP:Construct_PowerBar(nameplate)
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true
-	Power.colorTapping = true
-	Power.colorClass = true
+	Power.colorTapping = false
+	Power.colorClass = false
 	Power.Smooth = true
 	Power.displayAltPower = true
 	Power.useAtlas = true
@@ -70,6 +70,7 @@ function NP:Update_Power(nameplate)
 		nameplate.Power.Text:Hide()
 	end
 
+	nameplate.Power.colorClass = db.powerbar.useClassColor or false
 	nameplate.Power.width = db.powerbar.width
 	nameplate.Power.height = db.powerbar.height
 	nameplate.Power:SetSize(db.powerbar.width, db.powerbar.height)
