@@ -432,7 +432,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.colorPower = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
-	additionalPower:CreateBackdrop('Default')
+	additionalPower:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 	UF.statusbars[additionalPower] = true
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 
