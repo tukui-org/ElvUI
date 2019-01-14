@@ -71,13 +71,13 @@ AB.barDefaults = {
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
-		['page'] = 2,
+		['page'] = 5,
 		['bindButtons'] = "MULTIACTIONBAR2BUTTON",
 		['conditions'] = "",
 		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,2",
 	},
 	["bar3"] = {
-		['page'] = 3,
+		['page'] = 6,
 		['bindButtons'] = "MULTIACTIONBAR1BUTTON",
 		['conditions'] = "",
 		['position'] = "LEFT,ElvUI_Bar1,RIGHT,4,0",
@@ -89,13 +89,13 @@ AB.barDefaults = {
 		['position'] = "RIGHT,ElvUIParent,RIGHT,-4,0",
 	},
 	["bar5"] = {
-		['page'] = 5,
+		['page'] = 3,
 		['bindButtons'] = "MULTIACTIONBAR3BUTTON",
 		['conditions'] = "",
 		['position'] = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
 	},
 	["bar6"] = {
-		['page'] = 6,
+		['page'] = 2,
 		['bindButtons'] = "ELVUIBAR6BUTTON",
 		['conditions'] = "",
 		['position'] = "BOTTOM,ElvUI_Bar2,TOP,0,2",
