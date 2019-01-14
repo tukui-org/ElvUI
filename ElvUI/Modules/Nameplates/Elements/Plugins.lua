@@ -102,13 +102,13 @@ function NP:Update_TargetIndicator(nameplate)
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
 				topArrowSpace = NP['db'].fontSize + topArrowSpace
 			end
-			nameplate.TargetIndicator.TopIndicator:SetPoint("BOTTOM", nameplate.HealthBar, "TOP", 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:SetPoint("BOTTOM", nameplate.Health, "TOP", 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == "style4" or GlowStyle == "style7" or GlowStyle == "style8") then
-			nameplate.TargetIndicator.LeftIndicator:SetPoint("LEFT", nameplate.HealthBar, "RIGHT", -3, 0)
-			nameplate.TargetIndicator.RightIndicator:SetPoint("RIGHT", nameplate.HealthBar, "LEFT", 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:SetPoint("LEFT", nameplate.Health, "RIGHT", -3, 0)
+			nameplate.TargetIndicator.RightIndicator:SetPoint("RIGHT", nameplate.Health, "LEFT", 3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
@@ -130,8 +130,8 @@ function NP:Update_TargetIndicator(nameplate)
 
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:SetPoint("TOPLEFT", nameplate.HealthBar, "TOPLEFT", -(size * 2), size)
-			nameplate.TargetIndicator.Spark:SetPoint("BOTTOMRIGHT", nameplate.HealthBar, "BOTTOMRIGHT", size * 2, -size)
+			nameplate.TargetIndicator.Spark:SetPoint("TOPLEFT", nameplate.Health, "TOPLEFT", -(size * 2), size)
+			nameplate.TargetIndicator.Spark:SetPoint("BOTTOMRIGHT", nameplate.Health, "BOTTOMRIGHT", size * 2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end
