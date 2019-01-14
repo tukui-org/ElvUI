@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local _G = _G
 local type, ipairs, tonumber = type, ipairs, tonumber
-local floor = math.floor
+local floor, select = math.floor, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -65,20 +65,14 @@ function E:ToggleConfigMode(override, configType)
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
 	if E.ConfigurationMode ~= true then
-		if not grid then
-			E:Grid_Create()
-		elseif grid.boxSize ~= E.db.gridSize then
-			grid:Hide()
-			E:Grid_Create()
-		else
-			grid:Show()
-		end
+		E:Grid_Show()
 
 		if not ElvUIMoverPopupWindow then
 			E:CreateMoverPopup()
 		end
 
 		ElvUIMoverPopupWindow:Show()
+
 		if IsAddOnLoaded("ElvUI_Config") then
 			if E.Libs.AceConfigDialog then
 				E.Libs.AceConfigDialog:Close("ElvUI")
@@ -88,14 +82,13 @@ function E:ToggleConfigMode(override, configType)
 				GameTooltip:Hide()
 			end
 		end
+
 		E.ConfigurationMode = true
 	else
+		E:Grid_Hide()
+
 		if ElvUIMoverPopupWindow then
 			ElvUIMoverPopupWindow:Hide()
-		end
-
-		if grid then
-			grid:Hide()
 		end
 
 		E.ConfigurationMode = false
@@ -108,8 +101,35 @@ function E:ToggleConfigMode(override, configType)
 	self:ToggleMovers(E.ConfigurationMode, configType or 'ALL')
 end
 
+function E:Grid_GetRegion()
+	if grid then
+		if grid.regionCount and grid.regionCount > 0 then
+			local line = select(grid.regionCount, grid:GetRegions())
+			grid.regionCount = grid.regionCount - 1
+			line:SetAlpha(1)
+			return line
+		else
+			return grid:CreateTexture()
+		end
+	end
+end
+
 function E:Grid_Create()
-	grid = CreateFrame('Frame', 'EGrid', UIParent)
+	if not grid then
+		grid = CreateFrame('Frame', 'ElvUIGrid', UIParent)
+		grid:SetFrameStrata('BACKGROUND')
+	else
+		grid.regionCount = 0
+		local numRegions = grid:GetNumRegions()
+		for i = 1, numRegions do
+			local region = select(i, grid:GetRegions())
+			if region and region.IsObjectType and region:IsObjectType('Texture') then
+				grid.regionCount = grid.regionCount + 1
+				region:SetAlpha(0)
+			end
+		end
+	end
+
 	grid.boxSize = E.db.gridSize
 	grid:SetAllPoints(E.UIParent)
 	grid:Show()
@@ -123,34 +143,41 @@ function E:Grid_Create()
 	local hStep = height / E.db.gridSize
 
 	for i = 0, E.db.gridSize do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND')
+		local tx = E:Grid_GetRegion()
 		if i == E.db.gridSize / 2 then
 			tx:SetColorTexture(1, 0, 0)
+			tx:SetDrawLayer('BACKGROUND', 1)
 		else
 			tx:SetColorTexture(0, 0, 0)
+			tx:SetDrawLayer('BACKGROUND', 0)
 		end
+		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
 		tx:Point('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
 	end
 	height = E.screenheight
 
 	do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND')
+		local tx = E:Grid_GetRegion()
 		tx:SetColorTexture(1, 0, 0)
+		tx:SetDrawLayer('BACKGROUND', 1)
+		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
 	end
 
 	for i = 1, floor((height/2)/hStep) do
-		local tx = grid:CreateTexture(nil, 'BACKGROUND')
+		local tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
-
+		tx:SetDrawLayer('BACKGROUND', 0)
+		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
 
-		tx = grid:CreateTexture(nil, 'BACKGROUND')
+		tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
-
+		tx:SetDrawLayer('BACKGROUND', 0)
+		tx:ClearAllPoints()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
 	end

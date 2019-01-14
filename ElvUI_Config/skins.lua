@@ -10,26 +10,65 @@ E.Options.args.skins = {
 			type = "description",
 			name = L["SKINS_DESC"],
 		},
-		blizzardEnable = {
+		general = {
 			order = 1,
-			type = 'toggle',
-			name = L["Blizzard"],
-			get = function(info) return E.private.skins.blizzard.enable end,
-			set = function(info, value) E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			type = 'group',
+			name = L["General"],
+			guiInline = true,
+			args = {
+				blizzardEnable = {
+					order = 1,
+					type = 'toggle',
+					name = L["Blizzard"],
+					get = function(info) return E.private.skins.blizzard.enable end,
+					set = function(info, value) E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
+				ace3 = {
+					order = 2,
+					type = 'toggle',
+					name = "Ace3",
+					get = function(info) return E.private.skins.ace3.enable end,
+					set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
+				checkBoxSkin = {
+					order = 3,
+					type = "toggle",
+					name = L["CheckBox Skin"],
+					get = function(info) return E.private.skins.checkBoxSkin end,
+					set = function(info, value) E.private.skins.checkBoxSkin = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
+				parchmentRemover = {
+					order = 4,
+					type = 'toggle',
+					name = L["Parchment Remover"],
+					get = function(info) return E.private.skins.parchmentRemover.enable end,
+					set = function(info, value) E.private.skins.parchmentRemover.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
+			},
 		},
-		ace3 = {
+		talkingHead = {
 			order = 2,
-			type = 'toggle',
-			name = L["Ace3"],
-			get = function(info) return E.private.skins.ace3.enable end,
-			set = function(info, value) E.private.skins.ace3.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
-		},
-		parchmentRemover = {
-			order = 3,
-			type = 'toggle',
-			name = L["Parchment Remover"],
-			get = function(info) return E.private.skins.parchmentRemover.enable end,
-			set = function(info, value) E.private.skins.parchmentRemover.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			type = 'group',
+			name = L["TalkingHead"],
+			guiInline = true,
+			args = {
+				talkingHeadFrameScale = {
+					order = 24,
+					type = "range",
+					name = L["Talking Head Scale"],
+					isPercent = true,
+					min = 0.5, max = 2, step = 0.01,
+					get = function(info) return E.db.general.talkingHeadFrameScale end,
+					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
+				},
+				talkingHeadFrameBackdrop = {
+					order = 25,
+					type = "toggle",
+					name = L["Talking Head Backdrop"],
+					get = function(info) return E.db.general.talkingHeadFrameBackdrop end,
+					set = function(info, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show("CONFIG_RL") end
+				},
+			},
 		},
 		blizzard = {
 			order = 300,

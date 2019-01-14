@@ -94,21 +94,15 @@ function E:UIScale(event, loginFrame)
 		E:SetResolutionVariables(width, height)
 
 		--Resize E.UIParent if Eyefinity is on.
-		if E.eyefinity then
+		local testingEyefinity = false
+		if testingEyefinity then
+			-- Eyefinity Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
+			-- Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
+			width, height = UIParent:GetWidth() - 250, UIParent:GetHeight() - 250
+		elseif E.eyefinity and ((not E.global.general.autoScale) or height > 1200) then
 			-- if autoscale is off, find a new width value of E.UIParent for screen #1.
-			if (not E.global.general.autoScale) or height > 1200 then
-				local h = UIParent:GetHeight()
-				local ratio = (height / h)
-				local w = (width / ratio)
-
-				width = w
-				height = h
-			end
-			--[[ Eyefinity Test mode
-					--Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
-					--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-				E.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250)
-			]]
+			local uiHeight = UIParent:GetHeight()
+			width, height = E.eyefinity / (height / uiHeight), uiHeight
 		else
 			width, height = UIParent:GetSize()
 		end

@@ -114,6 +114,7 @@ local function UpdateColor(element, unit, cur, max)
 	end
 end
 
+local C_Timer_After = C_Timer.After;
 local function Update(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
@@ -136,6 +137,17 @@ local function Update(self, event, unit)
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
+
+		-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
+		if cur == 1 and event == 'UNIT_HEALTH' and not element.waitingForHealthRecheck then
+			element.waitingForHealthRecheck = true
+			C_Timer_After(1, function()
+				if element then
+					Update(self, event, unit) -- call again after 1 second
+					element.waitingForHealthRecheck = nil -- clear this after the update
+				end
+			end)
+		end
 	end
 
 	element.disconnected = disconnected
@@ -188,9 +200,11 @@ local function SetFrequentUpdates(element, state)
 	if(element.frequentUpdates ~= state) then
 		element.frequentUpdates = state
 		if(element.frequentUpdates) then
+			element.__owner:UnregisterEvent('UNIT_HEALTH', Path)
 			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		else
 			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			element.__owner:RegisterEvent('UNIT_HEALTH', Path)
 		end
 	end
 end

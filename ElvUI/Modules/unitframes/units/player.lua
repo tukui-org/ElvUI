@@ -140,6 +140,9 @@ function UF:Update_PlayerFrame(frame, db)
 	--Combat Icon
 	UF:Configure_CombatIndicator(frame)
 
+	--Resource Bars
+	UF:Configure_ClassBar(frame)
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -165,9 +168,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Resource Bars
-	UF:Configure_ClassBar(frame)
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
@@ -206,21 +206,3 @@ function UF:Update_PlayerFrame(frame, db)
 end
 
 tinsert(UF.unitstoload, 'player')
-
---Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
---ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.
-local function UpdateClassBar()
-	local frame = _G["ElvUF_Player"]
-	if frame and frame.ClassBar then
-		frame:UpdateElement(frame.ClassBar)
-		UF.ToggleResourceBar(frame[frame.ClassBar])
-	end
-end
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function(self, event)
-	self:UnregisterEvent(event)
-	if not E.db.unitframe.units.player.enable then return end
-	UpdateClassBar()
-end)

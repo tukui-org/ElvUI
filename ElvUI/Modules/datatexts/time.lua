@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local next, unpack = next, unpack
-local format, join = string.format, string.join
-local tsort, tinsert = table.sort, table.insert
+local format, strjoin = string.format, string.join
+local sort, tinsert = table.sort, table.insert
 local date, utf8sub = date, string.utf8sub
 
 --WoW API / Variables
@@ -37,8 +37,8 @@ local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
 local ukDisplayFormat = '';
-local europeDisplayFormat_nocolor = join("", "%02d", ":|r%02d")
-local ukDisplayFormat_nocolor = join("", "", "%d", ":|r%02d", " %s|r")
+local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
+local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
 local lockoutInfoFormat = "%s%s %s |cffaaaaaa(%s, %s/%s)"
 local lockoutInfoFormatNoEnc = "%s%s %s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
@@ -49,8 +49,8 @@ local enteredFrame = false;
 local Update, lastPanel; -- UpValue
 
 local function ValueColorUpdate(hex)
-	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
+	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
 
 	if lastPanel ~= nil then
 		Update(lastPanel, 20000)
@@ -119,6 +119,8 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and PLAYER_DIFFICULTY6) or utf8sub(PLAYER_DIFFICULTY6, 1, 1)  -- M
 }
 
+local function sortFunc(a,b) return a[1] < b[1] end
+
 local collectedInstanceImages = false
 local function OnEnter(self)
 	DT:SetupTooltip(self)
@@ -150,10 +152,9 @@ local function OnEnter(self)
 	end
 
 	local addedHeader = false
-	local localizedName, isActive, startTime, canEnter, _
 
 	for i = 1, GetNumWorldPVPAreas() do
-		_, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
+		local _, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
 		if canEnter then
 			if not addedHeader then
 				DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND)
@@ -171,17 +172,15 @@ local function OnEnter(self)
 	end
 
 	local lockedInstances = {raids = {}, dungeons = {}}
-	local name, difficulty, locked, extended, isRaid
-	local isLFR, isHeroicOrMythicDungeon, isHeroic, displayHeroic, displayMythic, sortName, difficultyLetter, buttonImg
 
 	for i = 1, GetNumSavedInstances() do
-		name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
+		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
 		if (locked or extended) and name then
-			isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
-			_, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-			sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-			difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
-			buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
+			local isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
+			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+			local difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
+			local buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
 
 			if isRaid then
 				tinsert(lockedInstances.raids, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
@@ -191,21 +190,20 @@ local function OnEnter(self)
 		end
 	end
 
-	local reset, maxPlayers, numEncounters, encounterProgress, lockoutColor
 	if next(lockedInstances.raids) then
 		if DT.tooltip:NumLines() > 0 then
 			DT.tooltip:AddLine(" ")
 		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-		tsort(lockedInstances.raids, function( a,b ) return a[1] < b[1] end)
+		sort(lockedInstances.raids, sortFunc)
 
 		for i = 1, #lockedInstances.raids do
-			difficultyLetter = lockedInstances.raids[i][2]
-			buttonImg = lockedInstances.raids[i][3]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
+			local difficultyLetter = lockedInstances.raids[i][2]
+			local buttonImg = lockedInstances.raids[i][3]
+			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
 
-			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
@@ -220,14 +218,14 @@ local function OnEnter(self)
 		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		tsort(lockedInstances.dungeons, function( a,b ) return a[1] < b[1] end)
+		sort(lockedInstances.dungeons, sortFunc)
 
 		for i = 1,#lockedInstances.dungeons do
-			difficultyLetter = lockedInstances.dungeons[i][2]
-			buttonImg = lockedInstances.dungeons[i][3]
-			name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
+			local difficultyLetter = lockedInstances.dungeons[i][2]
+			local buttonImg = lockedInstances.dungeons[i][3]
+			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
 
-			lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
@@ -239,12 +237,12 @@ local function OnEnter(self)
 	local addedLine = false
 	local worldbossLockoutList = {}
 	for i = 1, GetNumSavedWorldBosses() do
-		name, _, reset = GetSavedWorldBossInfo(i)
+		local name, _, reset = GetSavedWorldBossInfo(i)
 		tinsert(worldbossLockoutList, {name, reset})
 	end
-	tsort(worldbossLockoutList, function( a,b ) return a[1] < b[1] end)
+	sort(worldbossLockoutList, sortFunc)
 	for i = 1,#worldbossLockoutList do
-		name, reset = unpack(worldbossLockoutList[i])
+		local name, reset = unpack(worldbossLockoutList[i])
 		if(reset) then
 			if(not addedLine) then
 				if DT.tooltip:NumLines() > 0 then

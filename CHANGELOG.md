@@ -1,13 +1,20 @@
-**Version 10.86 [  ]**
+### Version 10.86 [  ]
 
 **New Additions:**  
+Added option to toggle on/off the colors on bag slots for bags with assigned items.  
+Added option to use the Blizzard cleanup method instead of the ElvUI sorting.  
+Added a way to assign types of items to certain bags by right-clicking the bag icon in ElvUI.  
 
 
 **Bug Fixes:**  
-
+Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
+Fixed issue which caused E:UpdateAll to be called twice, potentially causing errors in plugins.  
 
 **Misc. Changes:**  
-
+Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.  
+Updated gold datatext. Added an indicator for the current character and characters are now in class color.  
+Consumable items that disappear when logged out are now sorted last to avoid gaps in the ElvUI bags.  (credit: Belzaru)  
+Added a search filter for Mythic Keystone to LibItemSearch. You can search for keystones or ignore them from sorting with the term "keystone".
 
 ___
 **Version 10.85 [ January 4th 2019 ]**

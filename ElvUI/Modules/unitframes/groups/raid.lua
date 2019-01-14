@@ -57,9 +57,6 @@ function UF:Construct_RaidFrames()
 	self.customTexts = {}
 	self.InfoPanel = UF:Construct_InfoPanel(self)
 
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
-
 	self.unitframeType = "raid"
 
 	return self

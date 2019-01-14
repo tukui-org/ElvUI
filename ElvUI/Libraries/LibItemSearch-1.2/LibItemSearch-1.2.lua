@@ -24,8 +24,8 @@ function Lib:Tooltip(link, search)
 	return link and self.Filters.tip:match(link, nil, search)
 end
 
-function Lib:TooltipPhrase(link, search, allowPartialMatch)
-	return link and self.Filters.tipPhrases:match(link, nil, search, allowPartialMatch)
+function Lib:TooltipPhrase(link, search)
+	return link and self.Filters.tipPhrases:match(link, nil, search)
 end
 
 function Lib:InSet(link, search)
@@ -240,6 +240,20 @@ Lib.Filters.azerite = {
 	end
 }
 
+Lib.Filters.keystone = {
+	keyword1 = CHALLENGES:lower(), --English: "mythic keystone" (localized)
+	keyword2 = "mythic keystone", --unlocalized
+
+	canSearch = function(self, operator, search)
+		return not operator and self.keyword1:find(search) or self.keyword2:find(search)
+	end,
+
+	match = function(self, link)
+		local id = link:match('item:(%d+)')
+		return id and (select(12, GetItemInfo(id)) == 5 and select(13, GetItemInfo(id)) == 1) --itemClassID 5 and itemSubClassID 1 which translates to "Keystone"
+	end
+}
+
 --[[ Tooltips ]]--
 
 Lib.Filters.tip = {
@@ -325,10 +339,16 @@ Lib.Filters.tipPhrases = {
 		[FOLLOWERLIST_LABEL_CHAMPIONS:lower()] = Lib:TooltipLine('item:147556', 2),
 		[GARRISON_FOLLOWERS:lower()] = Lib:TooltipLine('item:147556', 2),
 
+		['soulbound'] = ITEM_BIND_ON_PICKUP,
     	['bound'] = ITEM_BIND_ON_PICKUP,
     	['bop'] = ITEM_BIND_ON_PICKUP,
 		['boe'] = ITEM_BIND_ON_EQUIP,
 		['bou'] = ITEM_BIND_ON_USE,
 		['boa'] = ITEM_BIND_TO_BNETACCOUNT,
+		['quests'] = ITEM_BIND_QUEST,
+		['crafting reagent'] = PROFESSIONS_USED_IN_COOKING,
+		['toy'] = TOY,
+		['champions'] = Lib:TooltipLine('item:147556', 2),
+		['followers'] = Lib:TooltipLine('item:147556', 2),
 	}
 }

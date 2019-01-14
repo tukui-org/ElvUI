@@ -144,6 +144,36 @@ function B:LoadBagBar()
 		tinsert(ElvUIBags.buttons, b)
 	end
 
+	--Item assignment
+	for i = 1, #ElvUIBags.buttons do
+		local bagButton = ElvUIBags.buttons[i]
+		if i == 1 then --Backpack
+			bagButton:SetScript("OnClick", function(self, button)
+				if button == "RightButton" then
+					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+				else
+					MainMenuBarBackpackButton_OnClick(self)
+				end
+			end)
+		else
+			B:CreateFilterIcon(bagButton)
+			bagButton:SetScript("OnClick", function(self, button)
+				if button == "RightButton" then
+					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+				else
+					BagSlotButton_OnClick(self)
+				end
+			end)
+		end
+
+		bagButton.id = (i - 1)
+		bagButton.FilterDropDown = CreateFrame("Frame", bagButton:GetName().."FilterDropDown", bagButton, "UIDropDownMenuTemplate")
+		UIDropDownMenu_Initialize(bagButton.FilterDropDown, B.ContainerFrameFilterDropDown_Initialize, "MENU");
+	end
+	--Hide and show to update assignment textures on first load
+	ElvUIBags:Hide()
+	ElvUIBags:Show()
+
 	self:SizeAndPositionBagBar()
 	E:CreateMover(ElvUIBags, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
 end

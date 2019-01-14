@@ -441,11 +441,6 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil
 	end
-
-	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
-		E:StaticPopup_Show('ELVUI_INFORM_NEW_CHANGES')
-		E.global.userInformedNewChanges1 = true
-	end
 end
 
 function E:ValueFuncCall()
@@ -1208,12 +1203,14 @@ function E:UpdateEnd()
 		E:Install()
 	end
 
+	if E.staggerUpdateRunning then
+		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
+		--So call it, but skip updates inside it
+		E:UpdateAll(false)
+	end
+
 	--Done updating, let code now
 	E.staggerUpdateRunning = false
-
-	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
-	--So call it, but skip updates inside it
-	E:UpdateAll(false)
 end
 
 local staggerDelay = 0.02

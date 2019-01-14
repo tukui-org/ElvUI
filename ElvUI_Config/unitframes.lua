@@ -2035,14 +2035,14 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	return config
 end
 
-local function GetOptionsTable_HealPrediction(updateFunc, groupName)
+local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 	local config = {
 		order = 101,
 		type = "group",
 		name = L["Heal Prediction"],
 		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
 		get = function(info) return E.db.unitframe.units[groupName].healPrediction[ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[ info[#info] ] = value; updateFunc(UF, groupName) end,
+		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[ info[#info] ] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
 			header = {
 				order = 0,
