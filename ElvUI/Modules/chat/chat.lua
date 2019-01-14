@@ -336,6 +336,14 @@ function CH:StyleChat(frame)
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scrollTex = _G[name.."ThumbTexture"]
 
+	--Character count
+	editbox.characterCount = editbox:CreateFontString()
+	editbox.characterCount:FontTemplate()
+	editbox.characterCount:Point("TOPRIGHT", editBox, "TOPRIGHT", -5, 0)
+	editbox.characterCount:Point("BOTTOMRIGHT", editBox, "BOTTOMRIGHT", -5, 0)
+	editbox.characterCount:SetJustifyH("CENTER")
+	editbox.characterCount:Width(25)
+
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
 		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
@@ -410,6 +418,7 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
+		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
@@ -2369,7 +2378,7 @@ function CH:Initialize()
 	if not E.db.chat.lockPositions then
 		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
 	end
-	
+
 	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
 		local chatType = editbox:GetAttribute("chatType")
 		if not chatType then return end
@@ -2378,7 +2387,11 @@ function CH:Initialize()
 		local info = ChatTypeInfo[chatType]
 		local chanTarget = editbox:GetAttribute("channelTarget")
 		local chanName = chanTarget and GetChannelName(chanTarget)
-		
+
+		--Increase inset on right side to make room for character count text
+		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
+		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+
 		if chanName and (chatType == "CHANNEL") then
 			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
