@@ -49,13 +49,13 @@ function NP:PostUpdateThreat(element, unit, status)
 			else -- not tanking at all
 				if element.isTank then
 					--Check if it is being tanked by an offtank.
-					if (IsInParty) and NP.db.threat.beingTankedByTank then
+					if NP.db.threat.beingTankedByTank then
 						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
 						r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
 					end
 				else
-					if (IsInParty) and NP.db.threat.beingTankedByTank then
+					if NP.db.threat.beingTankedByTank then
 						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
 						r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
@@ -63,6 +63,7 @@ function NP:PostUpdateThreat(element, unit, status)
 				end
 			end
 			element.__owner.Health:SetStatusBarColor(r, g, b)
+			print(status, element.isTank, element.feedbackUnit, element.__owner.Health:GetStatusBarColor())
 		elseif not UnitIsPlayer(unit) then
 			element.__owner.Health:SetStatusBarColor(unpack(element.__owner.colors.reaction[UnitReaction(unit, 'player')]))
 		end
