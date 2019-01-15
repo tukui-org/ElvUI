@@ -113,7 +113,7 @@ function UF:Construct_AuraIcon(button)
 
 		if auraName then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[auraName] = {
+			E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] = {
 				['enable'] = true,
 				['priority'] = 0,
 			}
@@ -534,6 +534,7 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.duration = duration
 	button.expiration = expiration
 	button.name = name
+	button.spellID = spellID
 	button.owner = caster --what uses this?
 	button.spell = name --what uses this? (SortAurasByName?)
 	button.priority = 0

@@ -336,6 +336,15 @@ function CH:StyleChat(frame)
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scrollTex = _G[name.."ThumbTexture"]
 
+	--Character count
+	editbox.characterCount = editbox:CreateFontString()
+	editbox.characterCount:FontTemplate()
+	editbox.characterCount:SetTextColor(190, 190, 190, 0.4)
+	editbox.characterCount:Point("TOPRIGHT", editBox, "TOPRIGHT", -5, 0)
+	editbox.characterCount:Point("BOTTOMRIGHT", editBox, "BOTTOMRIGHT", -5, 0)
+	editbox.characterCount:SetJustifyH("CENTER")
+	editbox.characterCount:Width(30)
+
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
 		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
@@ -410,6 +419,7 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
+		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
@@ -477,24 +487,6 @@ function CH:StyleChat(frame)
 	for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end
-
-	hooksecurefunc("ChatEdit_UpdateHeader", function()
-		local chatType = editbox:GetAttribute("chatType")
-		if not chatType then return end
-
-		local ChatTypeInfo = _G.ChatTypeInfo
-		local chanTarget = editbox:GetAttribute("channelTarget")
-		local chanName = chanTarget and GetChannelName(chanTarget)
-		if chanName and (chatType == "CHANNEL") then
-			if chanName == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			else
-				editbox:SetBackdropBorderColor(ChatTypeInfo[chatType..chanName].r,ChatTypeInfo[chatType..chanName].g,ChatTypeInfo[chatType..chanName].b)
-			end
-		else
-			editbox:SetBackdropBorderColor(ChatTypeInfo[chatType].r,ChatTypeInfo[chatType].g,ChatTypeInfo[chatType].b)
-		end
-	end)
 
 	if id ~= 2 then --Don't add timestamps to combat log, they don't work.
 		--This usually taints, but LibChatAnims should make sure it doesn't.
@@ -2387,6 +2379,31 @@ function CH:Initialize()
 	if not E.db.chat.lockPositions then
 		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
 	end
+
+	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
+		local chatType = editbox:GetAttribute("chatType")
+		if not chatType then return end
+
+		local ChatTypeInfo = _G.ChatTypeInfo
+		local info = ChatTypeInfo[chatType]
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+
+		--Increase inset on right side to make room for character count text
+		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
+		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			else
+				info = ChatTypeInfo[chatType..chanName]
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+			end
+		else
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+		end
+	end)
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
