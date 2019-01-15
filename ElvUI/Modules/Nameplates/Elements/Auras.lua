@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 function NP:Construct_Buffs(nameplate)
-	local Buffs = CreateFrame("Frame", self:GetName()..'Buffs', nameplate)
+	local Buffs = CreateFrame("Frame", nil, nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(0)
 	Buffs:SetSize(300, 27)
@@ -11,7 +11,7 @@ function NP:Construct_Buffs(nameplate)
 	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 8
-	Buffs.spacing = E.Border
+	Buffs.spacing = 4
 	Buffs.onlyShowPlayer = false
 	Buffs.initialAnchor = "BOTTOMLEFT"
 	Buffs['growth-x'] = 'RIGHT'
@@ -35,7 +35,7 @@ function NP:Construct_Buffs(nameplate)
 end
 
 function NP:Construct_Debuffs(nameplate)
-	local Debuffs = CreateFrame("Frame", self:GetName()..'Debuffs', nameplate)
+	local Debuffs = CreateFrame("Frame", nil, nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(0)
 	Debuffs:SetSize(300, 27)
@@ -43,10 +43,9 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 8
-	Debuffs.spacing = E.Border
+	Debuffs.spacing = 4
 	Debuffs.onlyShowPlayer = false
 	Debuffs.initialAnchor = "BOTTOMRIGHT"
-	Debuffs.onlyShowPlayer = false
 	Debuffs['growth-x'] = 'LEFT'
 	Debuffs['growth-y'] = 'UP'
 
@@ -68,7 +67,7 @@ function NP:Construct_Debuffs(nameplate)
 end
 
 function NP:Construct_Auras(nameplate)
-	local Auras = CreateFrame("Frame", self:GetName()..'Debuffs', nameplate)
+	local Auras = CreateFrame("Frame", nil, nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(0)
 	Auras:SetSize(300, 27)
@@ -78,12 +77,12 @@ function NP:Construct_Auras(nameplate)
 	Auras.size = 27
 	Auras.numDebuffs = 4
 	Auras.numBuffs = 4
-	Auras.spacing = E.Border
+	Auras.spacing = E.Border * 2
 	Auras.onlyShowPlayer = false
 	Auras.initialAnchor = 'BOTTOMLEFT'
-	Auras.onlyShowPlayer = false
 	Auras['growth-x'] = 'RIGHT'
 	Auras['growth-y'] = 'UP'
+	Auras.type = 'auras'
 
 	function Auras:PostCreateIcon(button)
 		NP:Construct_AuraIcon(button)
@@ -133,9 +132,9 @@ function NP:Construct_AuraIcon(button)
 	button.cd.CooldownPreHook = function(cd) NP:UpdateCooldownTextPosition(cd) end
 
 	button.cd.CooldownSettings = {
-		['font'] = LSM:Fetch("font", self.db.font),
-		['fontSize'] = self.db.fontSize,
-		['fontOutline'] = self.db.fontOutline,
+		['font'] = LSM:Fetch("font", NP.db.font),
+		['fontSize'] = NP.db.fontSize,
+		['fontOutline'] = NP.db.fontOutline,
 	}
 
 	E:RegisterCooldown(button.cd)
@@ -145,7 +144,7 @@ function NP:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture(nil)
@@ -158,6 +157,15 @@ function NP:EnableDisable_Auras(nameplate)
 	if db.debuffs.enable or db.buffs.enable then
 		if not nameplate:IsElementEnabled('Aura') then
 			nameplate:EnableElement('Aura')
+
+			nameplate.Buffs.size = db.buffs.size
+			nameplate.Buffs.num = db.buffs.numAuras
+
+			nameplate.Debuffs.size = db.debuffs.size
+			nameplate.Debuffs.num = db.debuffs.numAuras
+
+			--nameplate.Auras.numDebuffs = db.debuffs.numAuras
+			--nameplate.Auras.numBuffs = db.buffs.numAuras
 		end
 	else
 		if nameplate:IsElementEnabled('Aura') then
@@ -193,7 +201,7 @@ function NP:PostUpdateAura(unit, button)
 	local parentType = parent.type
 
 	if db and db[parentType] then
-		button:SetSize(db[parentType].width, db[parentType].height)
+		button:SetSize(db[parentType].size, db[parentType].size)
 	end
 
 	if button:IsShown() and button.cd then
