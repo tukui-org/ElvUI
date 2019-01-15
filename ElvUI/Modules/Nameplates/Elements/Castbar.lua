@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 
 function NP:Construct_Castbar(nameplate)
-	local Castbar = CreateFrame('StatusBar', nil, nameplate)
+	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(6)
 	Castbar:CreateBackdrop('Transparent')

@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_PowerBar(nameplate)
-	local Power = CreateFrame('StatusBar', nil, nameplate)
+function NP:Construct_Power(nameplate)
+	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(1)
 	Power:CreateBackdrop('Transparent')
@@ -43,7 +43,7 @@ function NP:Construct_PowerBar(nameplate)
 end
 
 function NP:Construct_PowerPrediction(nameplate)
-	local PowerBar = CreateFrame('StatusBar', nil, nameplate.Power)
+	local PowerBar = CreateFrame('StatusBar', nameplate:GetDebugName()..'PowerPrediction', nameplate.Power)
 	PowerBar:SetReverseFill(true)
 	PowerBar:SetPoint('TOP')
 	PowerBar:SetPoint('BOTTOM')

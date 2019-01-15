@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 function NP:Construct_Buffs(nameplate)
-	local Buffs = CreateFrame('Frame', nil, nameplate)
+	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(0)
 	Buffs:SetSize(300, 27)
@@ -35,7 +35,7 @@ function NP:Construct_Buffs(nameplate)
 end
 
 function NP:Construct_Debuffs(nameplate)
-	local Debuffs = CreateFrame('Frame', nil, nameplate)
+	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(0)
 	Debuffs:SetSize(300, 27)
@@ -67,7 +67,7 @@ function NP:Construct_Debuffs(nameplate)
 end
 
 function NP:Construct_Auras(nameplate)
-	local Auras = CreateFrame('Frame', nil, nameplate)
+	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(0)
 	Auras:SetSize(300, 27)

@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 
 function NP:Construct_HealthBar(nameplate)
-	local Health = CreateFrame('StatusBar', nil, nameplate)
+	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(1)
 	Health:SetPoint('CENTER')
@@ -56,7 +56,7 @@ function NP:Update_Health(nameplate)
 end
 
 function NP:Construct_HealthPrediction(nameplate)
-	local HealthPrediction = CreateFrame('Frame', nil, nameplate)
+	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
 		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, nameplate.Health)

@@ -235,7 +235,16 @@ end
 function NP:Update_Fonts()
 end
 
+function NP:CheckGroup()
+	print('Party Time')
+	NP.IsInGroup = IsInGroup() or IsInRaid()
+end
+
 function NP:ConfigureAll()
+	NP.InstanceType = select(2, IsInInstance())
+	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
+	NP.IsInGroup = IsInGroup() or IsInRaid()
+
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
@@ -261,7 +270,7 @@ function NP:ConfigureAll()
 	-- workaround for #206
 	local friendlyWidth, friendlyHeight
 
-	if IsInInstance() then
+	if NP.InstanceType ~= 'none' then
 		-- handle it just like blizzard does when using blizzard friendly plates
 		local namePlateVerticalScale = tonumber(GetCVar('NamePlateVerticalScale'))
 		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
@@ -336,7 +345,6 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
@@ -384,6 +392,8 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD', 'ConfigureAll')
 	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+	NP:RegisterEvent('GROUP_FORMED', 'CheckGroup')
+	NP:RegisterEvent('GROUP_LEFT', 'CheckGroup')
 
 	E.NamePlates = NP
 end

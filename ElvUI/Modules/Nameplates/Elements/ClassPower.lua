@@ -21,46 +21,13 @@ local COMBO_POINT_COLOR = {
 	[6] = {.33, .63, .33, 1},
 }
 
-local function UpdateColor(self, powerType)
-	local color = ElvUF.colors.power[powerType]
-	local r, g, b = color[1], color[2], color[3]
-	for i = 1, #self do
-
-		local bar = self[i]
-
-		if powerType == 'COMBO_POINTS' then
-			r, g, b = unpack(COMBO_POINT_COLOR[i])
-		end
-
-		bar:SetStatusBarColor(r, g, b)
-	end
-end
-
-local function PostUpdate(self, cur, max, needUpdate, powerType)
-	if cur and cur > 0 then
-		self:Show()
-	else
-		self:Hide()
-	end
-	if needUpdate then
-		for i = 1, max do
-			self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
-			if i == 1 then
-				self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
-			else
-				self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
-			end
-		end
-	end
-end
-
-function NP:Construct_ClassPower(frame)
-	local ClassPower = CreateFrame('Frame', nil, frame)
+function NP:Construct_ClassPower(nameplate)
+	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
 	ClassPower:Hide()
-	ClassPower:SetFrameStrata(frame:GetFrameStrata())
+	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(1)
 	ClassPower:CreateBackdrop('Transparent')
-	ClassPower:SetPoint('BOTTOM', frame.Health, 'BOTTOM', 0, 14)
+	ClassPower:SetPoint('BOTTOM', nameplate.Health, 'BOTTOM', 0, 14)
 
 	ClassPower:SetSize(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
 	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
@@ -78,17 +45,47 @@ function NP:Construct_ClassPower(frame)
 		end
 	end
 
-	ClassPower.UpdateColor = UpdateColor
-	--ClassPower.PostUpdate = PostUpdate
+	function ClassPower:UpdateColor(powerType)
+		local color = ElvUF.colors.power[powerType]
+		local r, g, b = color[1], color[2], color[3]
+		for i = 1, #self do
+
+			local bar = self[i]
+
+			if powerType == 'COMBO_POINTS' then
+				r, g, b = unpack(COMBO_POINT_COLOR[i])
+			end
+
+			bar:SetStatusBarColor(r, g, b)
+		end
+	end
+
+	function ClassPower:PostUpdate(cur, max, needUpdate, powerType)
+		if cur and cur > 0 then
+			self:Show()
+		else
+			self:Hide()
+		end
+		if needUpdate then
+			for i = 1, max do
+				self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
+				if i == 1 then
+					self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
+				else
+					self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
+				end
+			end
+		end
+	end
 
 	return ClassPower
 end
 
-function NP:Construct_Runes(frame)
-	local Runes = CreateFrame('Frame', nil, frame)
-	Runes:SetFrameStrata(frame:GetFrameStrata())
+function NP:Construct_Runes(nameplate)
+	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
+	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(2)
-	Runes:SetPoint('BOTTOM', frame.Health, 'TOP', 0, 4)
+	Runes:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, 4)
 	Runes:CreateBackdrop('Transparent')
 	Runes:Hide()
 

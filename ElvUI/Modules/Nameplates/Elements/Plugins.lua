@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 
 function NP:Construct_QuestIcons(nameplate)
-	local QuestIcons = CreateFrame('Frame', nil, nameplate)
+	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)
 	QuestIcons:Hide()
 	QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
@@ -67,7 +67,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 end
 
 function NP:Construct_TargetIndicator(nameplate)
-	local TargetIndicator = CreateFrame('Frame', nil, nameplate)
+	local TargetIndicator = CreateFrame('Frame', nameplate:GetDebugName()..'TargetIndicator', nameplate)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(5)})
@@ -138,7 +138,7 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame('Frame', nil, nameplate)
+	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK', nil, 1)
 	Highlight.texture:SetColorTexture(1, 1, 1, .3)
 
