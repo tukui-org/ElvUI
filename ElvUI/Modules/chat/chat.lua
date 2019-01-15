@@ -8,7 +8,7 @@ local _G = _G
 local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
-local gsub, find, gmatch, format = string.gsub, string.find, string.gmatch, string.format
+local gsub, strfind, gmatch, format = string.gsub, string.find, string.gmatch, string.format
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
 local Ambiguate = Ambiguate
@@ -296,19 +296,19 @@ function CH:InsertEmotions(msg)
 end
 
 function CH:GetSmileyReplacementText(msg)
-	if not msg or not self.db.emotionIcons or find(msg, '/run') or find(msg, '/dump') or find(msg, '/script') then return msg end
+	if not msg or not self.db.emotionIcons or strfind(msg, '/run') or strfind(msg, '/dump') or strfind(msg, '/script') then return msg end
 	local outstr = "";
 	local origlen = strlen(msg);
 	local startpos = 1;
 	local endpos, _;
 
 	while(startpos <= origlen) do
-		local pos = find(msg,"|H",startpos,true);
+		local pos = strfind(msg,"|H",startpos,true);
 		endpos = pos or origlen
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			_, endpos = find(msg,"|h.-|h",startpos);
+			_, endpos = strfind(msg,"|h.-|h",startpos);
 			endpos = endpos or origlen;
 			if(startpos < endpos) then
 				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
@@ -340,8 +340,8 @@ function CH:StyleChat(frame)
 	editbox.characterCount = editbox:CreateFontString()
 	editbox.characterCount:FontTemplate()
 	editbox.characterCount:SetTextColor(190, 190, 190, 0.4)
-	editbox.characterCount:Point("TOPRIGHT", editBox, "TOPRIGHT", -5, 0)
-	editbox.characterCount:Point("BOTTOMRIGHT", editBox, "BOTTOMRIGHT", -5, 0)
+	editbox.characterCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
+	editbox.characterCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
 	editbox.characterCount:SetJustifyH("CENTER")
 	editbox.characterCount:Width(30)
 
@@ -1878,7 +1878,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 end
 
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
-	if find(line, "/rl") then return end
+	if strfind(line, "/rl") then return end
 
 	if ( strlen(line) > 0 ) then
 		for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
@@ -2128,7 +2128,13 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 
 	local members
 	local players = C_SocialQueue_GetGroupMembers(guid)
-	if players and next(players) then members = (players[2] and SocialQueueUtil_SortGroupMembers(players)) or players end
+	if players and next(players) then
+		if type(players[1]) == 'table' and type(players[2]) == 'table' then
+			members = SocialQueueUtil_SortGroupMembers(players)
+		else
+			members = players
+		end
+	end
 	if not members then return end -- just bail because huh? no members in a group?
 
 	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
@@ -2158,7 +2164,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		end
 
 		-- ignore groups created by the addon World Quest Group Finder/World Quest Tracker/World Quest Assistant/HandyNotes_Argus to reduce spam
-		if comment and (find(comment, "World Quest Group Finder") or find(comment, "World Quest Tracker") or find(comment, "World Quest Assistant") or find(comment, "HandyNotes_Argus")) then return end
+		if comment and (strfind(comment, "World Quest Group Finder") or strfind(comment, "World Quest Tracker") or strfind(comment, "World Quest Assistant") or strfind(comment, "HandyNotes_Argus")) then return end
 
 		if activityID or firstQueue.queueData.activityID then
 			fullName = C_LFGList_GetActivityInfo(activityID or firstQueue.queueData.activityID)
