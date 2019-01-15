@@ -35,7 +35,7 @@ function NP:PostUpdateThreat(threat, unit, status)
 	if NP.db.threat and NP.db.threat.useThreatColor then
 		local r, g, b
 		if (not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-			r, g, b = NP.db.reactions.tapped.r, NP.db.reactions.tapped.g, NP.db.reactions.tapped.b
+			r, g, b = NP.db.colors.reactions.tapped.r, NP.db.colors.reactions.tapped.g, NP.db.colors.reactions.tapped.b
 		elseif status then
 			if (status == 3) then --Securely Tanking
 				if threat.isTank then
