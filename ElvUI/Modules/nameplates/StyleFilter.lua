@@ -2,21 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates');
 local LSM = E.Libs.LSM;
 
-local ipairs = ipairs
-local next = next
-local pairs = pairs
-local rawget = rawget
-local rawset = rawset
-local select = select
-local setmetatable = setmetatable
-local tonumber = tonumber
-local type = type
-local unpack = unpack
-
-local strsplit = string.split
-local tinsert = table.insert
-local tsort = table.sort
-local twipe = table.wipe
+local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
+local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
+local strsplit, tinsert, sort, wipe = strsplit, tinsert, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
@@ -39,11 +27,9 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
 local PowerBarColor = PowerBarColor
-
 local C_Timer_NewTimer = C_Timer.NewTimer
-
-local FAILED = FAILED
 local INTERRUPTED = INTERRUPTED
+local FAILED = FAILED
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -780,8 +766,8 @@ end
 mod.StyleFilterList = {}
 mod.StyleFilterEvents = {}
 function mod:StyleFilterConfigureEvents()
-	twipe(self.StyleFilterList)
-	twipe(self.StyleFilterEvents)
+	wipe(self.StyleFilterList)
+	wipe(self.StyleFilterEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
@@ -875,7 +861,7 @@ function mod:StyleFilterConfigureEvents()
 	end
 
 	if next(self.StyleFilterList) then
-		tsort(self.StyleFilterList, self.StyleFilterSort) --sort by priority
+		sort(self.StyleFilterList, self.StyleFilterSort) --sort by priority
 	else
 		self:ForEachPlate("ClearStyledPlate")
 		if self.PlayerFrame__ then
