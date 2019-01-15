@@ -72,14 +72,14 @@ function NP:StylePlate(nameplate)
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(UIParent:GetEffectiveScale())
 
-	nameplate.Health = NP:Construct_HealthBar(nameplate)
+	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
 	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(nameplate.Health.Text, '[perhp]%') -- need option
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
-	nameplate.Power = NP:Construct_PowerBar(nameplate)
+	nameplate.Power = NP:Construct_Power(nameplate)
 	nameplate.Power.Text = NP:Construct_TagText(nameplate)
 	nameplate.Power.Text:SetPoint('CENTER', nameplate.Power, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(nameplate.Power.Text, '[perpp]%') -- need option

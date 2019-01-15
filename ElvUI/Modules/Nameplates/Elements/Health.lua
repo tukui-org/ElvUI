@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_HealthBar(nameplate)
+function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(1)
