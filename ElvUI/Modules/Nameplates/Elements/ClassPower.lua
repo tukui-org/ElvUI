@@ -21,6 +21,39 @@ local COMBO_POINT_COLOR = {
 	[6] = {.33, .63, .33, 1},
 }
 
+local function UpdateColor(self, powerType)
+	local color = ElvUF.colors.power[powerType]
+	local r, g, b = color[1], color[2], color[3]
+	for i = 1, #self do
+
+		local bar = self[i]
+
+		if powerType == 'COMBO_POINTS' then
+			r, g, b = unpack(COMBO_POINT_COLOR[i])
+		end
+
+		bar:SetStatusBarColor(r, g, b)
+	end
+end
+
+local function PostUpdate(self, cur, max, needUpdate, powerType)
+	if cur and cur > 0 then
+		self:Show()
+	else
+		self:Hide()
+	end
+	if needUpdate then
+		for i = 1, max do
+			self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
+			if i == 1 then
+				self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
+			else
+				self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
+			end
+		end
+	end
+end
+
 function NP:Construct_ClassPower(frame)
 	local ClassPower = CreateFrame('Frame', nil, frame)
 	ClassPower:Hide()
@@ -45,38 +78,8 @@ function NP:Construct_ClassPower(frame)
 		end
 	end
 
-	function ClassPower:UpdateColor(powerType)
-		local color = ElvUF.colors.power[powerType]
-		local r, g, b = color[1], color[2], color[3]
-		for i = 1, #self do
-
-			local bar = self[i]
-
-			if powerType == 'COMBO_POINTS' then
-				r, g, b = unpack(COMBO_POINT_COLOR[i])
-			end
-
-			bar:SetStatusBarColor(r, g, b)
-		end
-	end
-
-	function ClassPower:PostUpdate(cur, max, needUpdate, powerType)
-		if cur and cur > 0 then
-			self:Show()
-		else
-			self:Hide()
-		end
-		if needUpdate then
-			for i = 1, max do
-				self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
-				if i == 1 then
-					self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
-				else
-					self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
-				end
-			end
-		end
-	end
+	ClassPower.UpdateColor = UpdateColor
+	--ClassPower.PostUpdate = PostUpdate
 
 	return ClassPower
 end
