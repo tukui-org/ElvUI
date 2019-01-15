@@ -189,7 +189,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.BorderChanged = true
 		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, true)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		if frame.PowerBar.backdrop and (mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable) then
+		if frame.PowerBar.backdrop and (frame.UnitType and mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable) then
 			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, true)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
@@ -310,7 +310,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.BorderChanged = nil
 		mod:StyleFilterBorderColorLock(frame.HealthBar.backdrop, false)
 		frame.HealthBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		if frame.PowerBar.backdrop and (mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable) then
+		if frame.PowerBar.backdrop and (frame.UnitType and mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable) then
 			mod:StyleFilterBorderColorLock(frame.PowerBar.backdrop, false)
 			frame.PowerBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
@@ -747,7 +747,7 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 	end
 
 	local healthBarEnabled = (frame.UnitType and mod.db.units[frame.UnitType].healthbar.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.UnitType and (mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable)
+	local powerBarEnabled = frame.UnitType and mod.db.units[frame.UnitType].powerbar and mod.db.units[frame.UnitType].powerbar.enable
 	local healthBarShown = healthBarEnabled and frame.HealthBar:IsShown()
 	self:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
