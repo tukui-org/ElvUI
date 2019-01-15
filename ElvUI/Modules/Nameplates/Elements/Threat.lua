@@ -20,14 +20,14 @@ end
 
 function NP:PreUpdateThreat(threat, unit)
 	local ROLE = UnitExists(unit..'target') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
-	if ROLE == "TANK" then
+	if ROLE == 'TANK' then
 		threat.feedbackUnit = unit..'target'
-		threat.offtank = not UnitIsUnit(unit..'target', "player")
+		threat.offtank = not UnitIsUnit(unit..'target', 'player')
 		threat.isTank = true
 	else
 		threat.feedbackUnit = 'player'
 		threat.offtank = false
-		threat.isTank = false
+		threat.isTank = NP.PlayerRole == 'TANK' and true or false
 	end
 end
 

@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 function NP:Construct_Buffs(nameplate)
-	local Buffs = CreateFrame("Frame", nil, nameplate)
+	local Buffs = CreateFrame('Frame', nil, nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(0)
 	Buffs:SetSize(300, 27)
@@ -13,7 +13,7 @@ function NP:Construct_Buffs(nameplate)
 	Buffs.num = 8
 	Buffs.spacing = 4
 	Buffs.onlyShowPlayer = false
-	Buffs.initialAnchor = "BOTTOMLEFT"
+	Buffs.initialAnchor = 'BOTTOMLEFT'
 	Buffs['growth-x'] = 'RIGHT'
 	Buffs['growth-y'] = 'UP'
 
@@ -35,7 +35,7 @@ function NP:Construct_Buffs(nameplate)
 end
 
 function NP:Construct_Debuffs(nameplate)
-	local Debuffs = CreateFrame("Frame", nil, nameplate)
+	local Debuffs = CreateFrame('Frame', nil, nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(0)
 	Debuffs:SetSize(300, 27)
@@ -45,7 +45,7 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs.num = 8
 	Debuffs.spacing = 4
 	Debuffs.onlyShowPlayer = false
-	Debuffs.initialAnchor = "BOTTOMRIGHT"
+	Debuffs.initialAnchor = 'BOTTOMRIGHT'
 	Debuffs['growth-x'] = 'LEFT'
 	Debuffs['growth-y'] = 'UP'
 
@@ -67,7 +67,7 @@ function NP:Construct_Debuffs(nameplate)
 end
 
 function NP:Construct_Auras(nameplate)
-	local Auras = CreateFrame("Frame", nil, nameplate)
+	local Auras = CreateFrame('Frame', nil, nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(0)
 	Auras:SetSize(300, 27)
@@ -101,18 +101,18 @@ end
 
 function NP:Update_Auras(nameplate)
 	if nameplate.Auras then
-		nameplate.Auras:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
-		nameplate.Auras:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+		nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+		nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
 	end
 
 	if nameplate.Debuffs then
-		nameplate.Debuffs:SetPoint("BOTTOMLEFT", nameplate.Health, "TOPLEFT", 0, 15)
-		nameplate.Debuffs:SetPoint("BOTTOMRIGHT", nameplate.Health, "TOPRIGHT", 0, 15)
+		nameplate.Debuffs:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+		nameplate.Debuffs:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
 	end
 
 	if nameplate.Buffs then
-		nameplate.Buffs:SetPoint("BOTTOMLEFT", nameplate.Debuffs, "TOPLEFT", 0, 1)
-		nameplate.Buffs:SetPoint("BOTTOMRIGHT", nameplate.Debuffs, "TOPRIGHT", 0, 1)
+		nameplate.Buffs:SetPoint('BOTTOMLEFT', nameplate.Debuffs, 'TOPLEFT', 0, 1)
+		nameplate.Buffs:SetPoint('BOTTOMRIGHT', nameplate.Debuffs, 'TOPRIGHT', 0, 1)
 	end
 end
 
@@ -132,7 +132,7 @@ function NP:Construct_AuraIcon(button)
 	button.cd.CooldownPreHook = function(cd) NP:UpdateCooldownTextPosition(cd) end
 
 	button.cd.CooldownSettings = {
-		['font'] = LSM:Fetch("font", NP.db.font),
+		['font'] = LSM:Fetch('font', NP.db.font),
 		['fontSize'] = NP.db.fontSize,
 		['fontOutline'] = NP.db.fontOutline,
 	}
@@ -181,7 +181,7 @@ function NP:PostUpdateAura(unit, button)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
 			local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none
-			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+			if button.name and (button.name == 'Unstable Affliction' or button.name == 'Vampiric Touch') and E.myclass ~= 'WARLOCK' then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else
 				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -213,21 +213,21 @@ end
 function NP:UpdateCooldownTextPosition(cd)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:ClearAllPoints()
-		if NP.db.durationPosition == "TOPLEFT" then
-			cd.timer.text:Point("TOPLEFT", 1, 1)
-		elseif NP.db.durationPosition == "BOTTOMLEFT" then
-			cd.timer.text:Point("BOTTOMLEFT", 1, 1)
-		elseif NP.db.durationPosition == "TOPRIGHT" then
-			cd.timer.text:Point("TOPRIGHT", 1, 1)
+		if NP.db.durationPosition == 'TOPLEFT' then
+			cd.timer.text:Point('TOPLEFT', 1, 1)
+		elseif NP.db.durationPosition == 'BOTTOMLEFT' then
+			cd.timer.text:Point('BOTTOMLEFT', 1, 1)
+		elseif NP.db.durationPosition == 'TOPRIGHT' then
+			cd.timer.text:Point('TOPRIGHT', 1, 1)
 		else
-			cd.timer.text:Point("CENTER", 1, 1)
+			cd.timer.text:Point('CENTER', 1, 1)
 		end
 	end
 end
 
 function NP:UpdateCooldownSettings(cd)
 	if cd and cd.CooldownSettings then
-		cd.CooldownSettings.font = LSM:Fetch("font", NP.db.font)
+		cd.CooldownSettings.font = LSM:Fetch('font', NP.db.font)
 		cd.CooldownSettings.fontSize = NP.db.fontSize
 		cd.CooldownSettings.fontOutline = NP.db.fontOutline
 		if cd.timer then
@@ -240,7 +240,7 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
-		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
+		friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
@@ -314,7 +314,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	if priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
 		local canDispell = (parentType == 'Buffs' and isStealable) or (parentType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", priority))
+		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end

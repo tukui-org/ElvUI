@@ -24,7 +24,7 @@ function NP:Construct_QuestIcons(nameplate)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
-	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch("font", NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
 end
@@ -33,7 +33,7 @@ function NP:Update_QuestIcons(nameplate)
 	if NP.db.questIcon and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		nameplate:EnableElement('QuestIcons')
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:SetPoint("LEFT", nameplate, "RIGHT", 4, 0)
+		nameplate.QuestIcons:SetPoint('LEFT', nameplate, 'RIGHT', 4, 0)
 		nameplate.QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 		nameplate.QuestIcons.Item:SetSize(NP.db.questIconSize, NP.db.questIconSize)
 		nameplate.QuestIcons.Loot:SetSize(NP.db.questIconSize, NP.db.questIconSize)
@@ -59,7 +59,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		if db.healthbar.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 		else
-			nameplate.ClassificationIndicator:Point("RIGHT", nameplate.Name, "LEFT", 0, 0)
+			nameplate.ClassificationIndicator:Point('RIGHT', nameplate.Name, 'LEFT', 0, 0)
 		end
 	else
 		nameplate:DisableElement('ClassificationIndicator')
@@ -70,11 +70,11 @@ function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nil, nameplate)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
-	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in pairs({'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}) do
-		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
+		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, 'BACKGROUND', nil, -5)
 		TargetIndicator[object]:SetSnapToPixelGrid(false)
 		TargetIndicator[object]:SetTexelSnappingBias(0)
 		TargetIndicator[object]:Hide()
@@ -97,28 +97,28 @@ function NP:Update_TargetIndicator(nameplate)
 	if NP['db'].targetGlow ~= 'none' then
 		local GlowStyle = NP['db'].targetGlow
 		local Color = NP['db'].colors.glowColor
-		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == "style3" or GlowStyle == "style5" or GlowStyle == "style6") then
+		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
 			local topArrowSpace = -3
-			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= "") then
+			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= '') then
 				topArrowSpace = NP['db'].fontSize + topArrowSpace
 			end
-			nameplate.TargetIndicator.TopIndicator:SetPoint("BOTTOM", nameplate.Health, "TOP", 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
-		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == "style4" or GlowStyle == "style7" or GlowStyle == "style8") then
-			nameplate.TargetIndicator.LeftIndicator:SetPoint("LEFT", nameplate.Health, "RIGHT", -3, 0)
-			nameplate.TargetIndicator.RightIndicator:SetPoint("RIGHT", nameplate.Health, "LEFT", 3, 0)
+		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
+			nameplate.TargetIndicator.LeftIndicator:SetPoint('LEFT', nameplate.Health, 'RIGHT', -3, 0)
+			nameplate.TargetIndicator.RightIndicator:SetPoint('RIGHT', nameplate.Health, 'LEFT', 3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
-		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
+		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
 			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
 			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 		end
 
-		if nameplate.TargetIndicator.Spark and (GlowStyle == "style2" or GlowStyle == "style6" or GlowStyle == "style8") then
+		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
 			local scale = 1
 			if NP['db'].useTargetScale then
 				if NP['db'].targetScale >= 0.75 then
@@ -130,22 +130,22 @@ function NP:Update_TargetIndicator(nameplate)
 
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:SetPoint("TOPLEFT", nameplate.Health, "TOPLEFT", -(size * 2), size)
-			nameplate.TargetIndicator.Spark:SetPoint("BOTTOMRIGHT", nameplate.Health, "BOTTOMRIGHT", size * 2, -size)
+			nameplate.TargetIndicator.Spark:SetPoint('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
+			nameplate.TargetIndicator.Spark:SetPoint('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', size * 2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame("Frame", nil, nameplate)
-	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK", nil, 1)
+	local Highlight = CreateFrame('Frame', nil, nameplate)
+	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK', nil, 1)
 	Highlight.texture:SetColorTexture(1, 1, 1, .3)
 
 	function Highlight:PostUpdate()
 		self.texture:ClearAllPoints()
-		self.texture:SetPoint("TOPLEFT", self.__owner.Health, "TOPLEFT")
-		self.texture:SetPoint("BOTTOMRIGHT", self.__owner.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
+		self.texture:SetPoint('TOPLEFT', self.__owner.Health, 'TOPLEFT')
+		self.texture:SetPoint('BOTTOMRIGHT', self.__owner.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 	end
 
 	return Highlight

@@ -37,7 +37,7 @@ local C_NamePlate = C_NamePlate
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
-		if(type(value) == "table" and to[setting] ~= nil) then
+		if(type(value) == 'table' and to[setting] ~= nil) then
 			CopySettings(from[setting], to[setting])
 		else
 			if(to[setting] ~= nil) then
@@ -199,30 +199,30 @@ function NP:CVarReset()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowFriends", 1);
-	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowFriends", 0);
+	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowFriends', 1);
+	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowFriends', 0);
 	end
 
-	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowEnemies", 1);
-	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowEnemies", 0);
+	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowEnemies', 1);
+	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowEnemies', 0);
 	end
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowFriends", 0);
-	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowFriends", 1);
+	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowFriends', 0);
+	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowFriends', 1);
 	end
 
-	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
-		SetCVar("nameplateShowEnemies", 0);
-	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
-		SetCVar("nameplateShowEnemies", 1);
+	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowEnemies', 0);
+	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowEnemies', 1);
 	end
 end
 
@@ -248,8 +248,8 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('nameplateMinAlpha', NP.db.nonTargetTransparency)
-	SetCVar("nameplateOtherTopInset", NP.db.clampToScreen and 0.08 or -1)
-	SetCVar("nameplateOtherBottomInset", NP.db.clampToScreen and 0.1 or -1)
+	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
+	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -263,8 +263,8 @@ function NP:ConfigureAll()
 
 	if IsInInstance() then
 		-- handle it just like blizzard does when using blizzard friendly plates
-		local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"))
-		local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
+		local namePlateVerticalScale = tonumber(GetCVar('NamePlateVerticalScale'))
+		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
 		local zeroBasedScale = namePlateVerticalScale - 1.0
 
 		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
@@ -320,6 +320,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	end
 end
 
+function NP:ACTIVE_TALENT_GROUP_CHANGED()
+	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -332,6 +336,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
+	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
@@ -339,7 +344,7 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBars", function(frame)
+	hooksecurefunc(NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if frame.classNamePlateMechanicFrame then
 			frame.classNamePlateMechanicFrame:Hide()
 		end
@@ -349,16 +354,16 @@ function NP:Initialize()
 		end
 	end)
 
-	NP.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
+	NP.Tooltip = CreateFrame('GameTooltip', 'ElvUIQuestTooltip', nil, 'GameTooltipTemplate')
 	NP.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
-	ElvNP_Player:SetAttribute("unit", "player")
-	ElvNP_Player:RegisterForClicks("LeftButtonDown", "RightButtonDown")
-	ElvNP_Player:SetAttribute("*type1", "target")
-	ElvNP_Player:SetAttribute("*type2", "togglemenu")
-	ElvNP_Player:SetAttribute("toggleForVehicle", true)
-	ElvNP_Player:SetPoint("TOP", UIParent, "CENTER", 0, -150)
+	ElvNP_Player:SetAttribute('unit', 'player')
+	ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+	ElvNP_Player:SetAttribute('*type1', 'target')
+	ElvNP_Player:SetAttribute('*type2', 'togglemenu')
+	ElvNP_Player:SetAttribute('toggleForVehicle', true)
+	ElvNP_Player:SetPoint('TOP', UIParent, 'CENTER', 0, -150)
 	ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	ElvNP_Player:SetScale(1)
 	ElvNP_Player:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -369,7 +374,7 @@ function NP:Initialize()
 		ElvNP_Player:Disable()
 	end
 
-	E:CreateMover(ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+	E:CreateMover(ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
@@ -378,6 +383,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD', 'ConfigureAll')
+	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 
 	E.NamePlates = NP
 end

@@ -15,7 +15,7 @@ function NP:Construct_PvPIndicator(nameplate)
 
 		if (not self.Badge) or (self.Badge and not self.Badge:IsShown()) then
 			if status ~= 'FFA' then
-				self:SetAtlas("bfa-landingbutton-"..strlower(status).."-up", true)
+				self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up', true)
 				self:SetTexCoord(0, 1, 0, 1)
 			end
 		end
