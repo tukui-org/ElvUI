@@ -2128,7 +2128,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 
 	local members
 	local players = C_SocialQueue_GetGroupMembers(guid)
-	if players and next(players) then members = (players[2] and SocialQueueUtil_SortGroupMembers(players)) or players end
+	if players and next(players) then members = (type(players[2]) == 'table' and SocialQueueUtil_SortGroupMembers(players)) or players end
 	if not members then return end -- just bail because huh? no members in a group?
 
 	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
