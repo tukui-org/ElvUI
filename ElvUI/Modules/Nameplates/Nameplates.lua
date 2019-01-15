@@ -240,10 +240,26 @@ function NP:CheckGroup()
 	NP.IsInGroup = IsInGroup() or IsInRaid()
 end
 
-function NP:ConfigureAll()
+function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
+
+	-- workaround for #206
+	local friendlyWidth, friendlyHeight
+
+	if NP.InstanceType ~= 'none' then
+		local namePlateVerticalScale = tonumber(GetCVar('NamePlateVerticalScale'))
+		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
+		local zeroBasedScale = namePlateVerticalScale - 1.0
+
+		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
+		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
+	end
+
+	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
+end
+
+function NP:ConfigureAll()
 	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
-	NP.IsInGroup = IsInGroup() or IsInRaid()
 
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
@@ -266,21 +282,6 @@ function NP:ConfigureAll()
 
 	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
-
-	-- workaround for #206
-	local friendlyWidth, friendlyHeight
-
-	if NP.InstanceType ~= 'none' then
-		-- handle it just like blizzard does when using blizzard friendly plates
-		local namePlateVerticalScale = tonumber(GetCVar('NamePlateVerticalScale'))
-		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
-		local zeroBasedScale = namePlateVerticalScale - 1.0
-
-		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
-		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
-	end
-
-	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
 
 	NP:PLAYER_REGEN_ENABLED()
 
@@ -390,10 +391,14 @@ function NP:Initialize()
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
-	NP:RegisterEvent('PLAYER_ENTERING_WORLD', 'ConfigureAll')
+	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 	NP:RegisterEvent('GROUP_FORMED', 'CheckGroup')
 	NP:RegisterEvent('GROUP_LEFT', 'CheckGroup')
+
+	NP:ACTIVE_TALENT_GROUP_CHANGED()
+	NP:CheckGroup()
+	NP:ConfigureAll()
 
 	E.NamePlates = NP
 end
