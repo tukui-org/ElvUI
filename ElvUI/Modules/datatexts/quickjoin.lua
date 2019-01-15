@@ -51,7 +51,13 @@ local function OnEvent(self)
 	for _, guid in pairs(quickJoinGroups) do
 		members = nil -- clear it
 		players = C_SocialQueue_GetGroupMembers(guid)
-		if players and next(players) then members = (type(players[2]) == 'table' and SocialQueueUtil_SortGroupMembers(players)) or players end
+		if players and next(players) then
+			if type(players[1]) == 'table' and type(players[2]) == 'table' then
+				members = SocialQueueUtil_SortGroupMembers(players)
+			else
+				members = players
+			end
+		end
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
