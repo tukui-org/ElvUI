@@ -929,8 +929,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 
 	local oUF_fake_register = function(self, event)
 		local curev = self[event]
-		local kind = type(curev)
-		if curev  then
+		if curev then
+			local kind = type(curev)
 			if kind == 'function' and curev ~= update then
 				self[event] = setmetatable({curev, update}, oUF_event_metatable)
 			elseif kind == 'table' then
@@ -947,8 +947,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 
 	local styleFilterWatching = function(self)
 		local curev = self.NAME_PLATE_UNIT_ADDED
-		local kind = type(curev)
-		if curev  then
+		if curev then
+			local kind = type(curev)
 			if kind == 'function' and curev == update then
 				return true
 			elseif kind == 'table' then
@@ -966,7 +966,6 @@ do -- oUF style filter inject watch functions without actually registering any e
 			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED')
 			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED')
 			oUF_fake_register(frame, 'UNIT_FACTION')
-			oUF_fake_register(frame, 'UNIT_TARGET') -- only used with healer icon element atm
 			oUF_fake_register(frame, 'UNIT_HEALTH')
 			oUF_fake_register(frame, 'UNIT_MAXHEALTH')
 			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT')
@@ -975,8 +974,9 @@ do -- oUF style filter inject watch functions without actually registering any e
 			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER')
 			oUF_fake_register(frame, 'UNIT_NAME_UPDATE')
 			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE')
-			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN') -- not setup yet
 			oUF_fake_register(frame, 'UNIT_AURA')
+			oUF_fake_register(frame, 'UNIT_TARGET') -- only used with healer icon element atm
+			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN') -- not setup yet
 		end
 	end
 end

@@ -26,9 +26,6 @@ local IsInInstance = IsInInstance
 local GetCVar = GetCVar
 local Lerp = Lerp
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvNP_Player
-
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
 		if(type(value) == 'table' and to[setting] ~= nil) then
@@ -279,13 +276,13 @@ function NP:ConfigureAll()
 	NP:PLAYER_REGEN_ENABLED()
 
 	if NP.db.units['PLAYER'].useStaticPosition then
-		ElvNP_Player:Enable()
-		ElvNP_Player:UpdateAllElements('OnShow')
+		_G.ElvNP_Player:Enable()
+		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
-		ElvNP_Player:Disable()
+		_G.ElvNP_Player:Disable()
 	end
 
-	NP:NamePlateCallBack(ElvNP_Player, 'NAME_PLATE_UNIT_ADDED')
+	NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED')
 
 	for nameplate in pairs(NP.Plates) do
 		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
@@ -301,13 +298,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		local reaction = UnitReaction('player', unit)
 		local faction = UnitFactionGroup(unit)
 
-		if (UnitIsUnit(unit, 'player')) then
+		if UnitIsUnit(unit, 'player') then
 			nameplate.frameType = 'PLAYER'
-		elseif (UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5)) then
+		elseif UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif (not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral') then
+		elseif not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral' then
 			nameplate.frameType = 'FRIENDLY_NPC'
-		elseif (not UnitIsPlayer(unit) and (reaction and reaction <= 4)) then
+		elseif not UnitIsPlayer(unit) and (reaction and reaction <= 4) then
 			nameplate.frameType = 'ENEMY_NPC'
 		else
 			nameplate.frameType = 'ENEMY_PLAYER'
@@ -317,7 +314,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		-- NP:StyleFilterRegisterForEvents(nameplate)
 
 		if NP.db.units['PLAYER'].useStaticPosition then
-			NP:UpdatePlate(ElvNP_Player)
+			NP:UpdatePlate(_G.ElvNP_Player)
 		end
 
 		NP.Plates[nameplate] = true
@@ -364,23 +361,23 @@ function NP:Initialize()
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
-	ElvNP_Player:SetAttribute('unit', 'player')
-	ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	ElvNP_Player:SetAttribute('*type1', 'target')
-	ElvNP_Player:SetAttribute('*type2', 'togglemenu')
-	ElvNP_Player:SetAttribute('toggleForVehicle', true)
-	ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
-	ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
-	ElvNP_Player:SetScale(1)
-	ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-	ElvNP_Player.frameType = 'PLAYER'
+	_G.ElvNP_Player:SetAttribute('unit', 'player')
+	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+	_G.ElvNP_Player:SetAttribute('*type1', 'target')
+	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
+	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
+	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Player:SetScale(1)
+	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	if not NP.db.units['PLAYER'].useStaticPosition then
-		ElvNP_Player:Disable()
+		_G.ElvNP_Player:Disable()
 	end
 
-	E:CreateMover(ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
