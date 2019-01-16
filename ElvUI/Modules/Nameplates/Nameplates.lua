@@ -4,12 +4,14 @@ local ElvUF = ElvUI.oUF
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 
 --Cache global variables
+local _G = _G
 --Lua functions
+local select = select
 local pairs = pairs
 local type = type
 local tonumber = tonumber
-
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
@@ -19,11 +21,13 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
 local C_NamePlate = C_NamePlate
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsInInstance = IsInInstance
+local GetCVar = GetCVar
 local Lerp = Lerp
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
--- GLOBALS: CUSTOM_CLASS_COLORS, ADDITIONAL_POWER_BAR_NAME
+-- GLOBALS: ElvNP_Player
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -60,7 +64,7 @@ end
 function NP:StylePlate(nameplate)
 	nameplate:SetPoint('CENTER')
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
-	nameplate:SetScale(UIParent:GetEffectiveScale())
+	nameplate:SetScale(_G.UIParent:GetEffectiveScale())
 
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate)
@@ -226,7 +230,6 @@ function NP:Update_Fonts()
 end
 
 function NP:CheckGroup()
-	print('Party Time')
 	NP.IsInGroup = IsInGroup() or IsInRaid()
 end
 
@@ -241,8 +244,8 @@ function NP:PLAYER_ENTERING_WORLD()
 		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
 		local zeroBasedScale = namePlateVerticalScale - 1.0
 
-		friendlyWidth = NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
-		friendlyHeight = NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
+		friendlyWidth = _G.NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
+		friendlyHeight = _G.NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
 	end
 
 	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
@@ -341,13 +344,13 @@ function NP:Initialize()
 	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 
-	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
+	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
 		BlizzPlateManaBar:Hide()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
+	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if frame.classNamePlateMechanicFrame then
 			frame.classNamePlateMechanicFrame:Hide()
 		end
@@ -358,7 +361,7 @@ function NP:Initialize()
 	end)
 
 	NP.Tooltip = CreateFrame('GameTooltip', 'ElvUIQuestTooltip', nil, 'GameTooltipTemplate')
-	NP.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
+	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
 	ElvNP_Player:SetAttribute('unit', 'player')
@@ -366,11 +369,11 @@ function NP:Initialize()
 	ElvNP_Player:SetAttribute('*type1', 'target')
 	ElvNP_Player:SetAttribute('*type2', 'togglemenu')
 	ElvNP_Player:SetAttribute('toggleForVehicle', true)
-	ElvNP_Player:SetPoint('TOP', UIParent, 'CENTER', 0, -150)
+	ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
 	ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	ElvNP_Player:SetScale(1)
-	ElvNP_Player:SetScript('OnEnter', UnitFrame_OnEnter)
-	ElvNP_Player:SetScript('OnLeave', UnitFrame_OnLeave)
+	ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	ElvNP_Player.frameType = 'PLAYER'
 
 	if not NP.db.units['PLAYER'].useStaticPosition then
