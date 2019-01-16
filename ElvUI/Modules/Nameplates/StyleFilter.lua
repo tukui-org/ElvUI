@@ -960,7 +960,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 	end
 
-	function mod:StyleFilterRegisterForEvents(frame)
+	function mod:StyleFilterEventWatch(frame)
 		if not styleFilterWatching(frame) then
 			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED')
 			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED')

@@ -151,6 +151,8 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_Tags(nameplate)
 
+	NP:UpdatePlateEvents(nameplate)
+
 	nameplate:UpdateAllElements('OnShow')
 end
 
@@ -313,7 +315,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP:UpdatePlate(nameplate)
-		-- NP:StyleFilterRegisterForEvents(nameplate)
 
 		if NP.db.units['PLAYER'].useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
@@ -325,6 +326,34 @@ end
 
 function NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
+end
+
+-- Event functions fired from the NamePlate itself
+NP.plateEvents = {
+	['PLAYER_TARGET_CHANGED'] = function(self)
+		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
+	end,
+	['UNIT_TARGET'] = function(self, _, unit)
+		unit = unit or self.unit
+		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
+	end,
+	['SPELL_UPDATE_COOLDOWN'] = function()
+
+	end
+}
+
+function NP:RegisterElementEvent(nameplate, event, func, unitless)
+	if not func then func = NP.plateEvents[event] end
+	if not func then return end
+
+	nameplate:RegisterEvent(event, func, unitless)
+end
+
+function NP:UpdatePlateEvents(nameplate)
+	NP:RegisterElementEvent(nameplate, 'PLAYER_TARGET_CHANGED', nil, true)
+	NP:RegisterElementEvent(nameplate, 'UNIT_TARGET')
+
+	-- NP:StyleFilterEventWatch(nameplate)
 end
 
 function NP:Initialize()
