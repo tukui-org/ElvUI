@@ -909,6 +909,10 @@ function mod:StyleFilterConfigureEvents()
 	if next(self.StyleFilterTriggerList) then
 		sort(self.StyleFilterTriggerList, self.StyleFilterSort) --sort by priority
 	else
+		if _G.ElvNP_Player then
+			self:ClearStyledPlate(_G.ElvNP_Player)
+		end
+
 		for nameplate in pairs(mod.Plates) do
 			self:ClearStyledPlate(nameplate)
 		end
