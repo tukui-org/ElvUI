@@ -28,6 +28,7 @@ function NP:Construct_Buffs(nameplate)
 	end
 
 	function Buffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		button.name, button.spellID, button.expiration = name, spellID, expiration
 		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	end
 
@@ -60,6 +61,7 @@ function NP:Construct_Debuffs(nameplate)
 	end
 
 	function Debuffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		button.name, button.spellID, button.expiration = name, spellID, expiration
 		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	end
 
@@ -93,6 +95,7 @@ function NP:Construct_Auras(nameplate)
 	end
 
 	function Auras:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		button.name, button.spellID, button.expiration = name, spellID, expiration
 		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	end
 

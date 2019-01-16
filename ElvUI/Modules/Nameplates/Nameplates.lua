@@ -327,6 +327,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP.Plates[nameplate] = true
+
+	--[[ style filter is not ready yet, undo this part for now
+		if not nameplate.StyleFilterWatch then
+			NP:StyleFilterRegisterForEvents(nameplate)
+		end
+		]]
 	end
 end
 
@@ -346,6 +352,9 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
+
+	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
+	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 
 	local BlizzPlateManaBar = NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
