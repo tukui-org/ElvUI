@@ -369,7 +369,7 @@ function NP:UpdatePlateEvents(nameplate)
 	NP:RegisterElementEvent(nameplate, 'SPELL_UPDATE_COOLDOWN', nil, true)
 	NP:RegisterElementEvent(nameplate, 'UNIT_TARGET')
 
-	-- NP:StyleFilterEventWatch(nameplate)
+	NP:StyleFilterEventWatch(nameplate)
 end
 
 function NP:Initialize()

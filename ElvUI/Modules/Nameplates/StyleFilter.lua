@@ -914,7 +914,9 @@ function mod:StyleFilterConfigureEvents()
 	end
 end
 
+local iWantToTestBrokenStyleFilters = false
 function mod:StyleFilterUpdate(frame, event)
+	if not iWantToTestBrokenStyleFilters then return end
 	if not (frame and self.StyleFilterTriggerEvents[event]) then return end
 
 	if self.StyleFilterTriggerEvents[event] ~= 1 then
