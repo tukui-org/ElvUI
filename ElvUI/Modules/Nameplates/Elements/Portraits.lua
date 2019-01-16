@@ -7,14 +7,20 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:SetSize(32, 32)
 	Portrait:SetPoint('RIGHT', nameplate, 'LEFT')
 	Portrait:SetTexCoord(.18, .82, .18, .82)
+	Portrait:CreateBackdrop()
 
 	function Portrait:PostUpdate(unit)
-		if UnitIsPlayer(unit) then
+		local db = NP.db.units[self.__owner.frameType]
+		if not db then return end
+
+		if db.portrait.classicon and UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit);
-			Portrait:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			Portrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[strupper(class)]))
+			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[strupper(class)]))
+			self.backdrop:Hide()
 		else
-			Portrait:SetTexCoord(.18, .82, .18, .82)
+			self:SetTexCoord(.18, .82, .18, .82)
+			self.backdrop:Show()
 		end
 	end
 
@@ -22,12 +28,13 @@ function NP:Construct_Portrait(nameplate)
 end
 
 function NP:Update_Portrait(nameplate)
-	if (NP.db.units[nameplate.frameType].portrait and NP.db.units[nameplate.frameType].portrait.enable) then
+	local db = NP.db.units[nameplate.frameType]
+	if (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 		end
-		nameplate.Portrait:SetSize(NP.db.units[nameplate.frameType].portrait.width, NP.db.units[nameplate.frameType].portrait.height)
-		nameplate.Portrait:SetPoint('RIGHT', nameplate, 'LEFT')
+		nameplate.Portrait:SetSize(db.portrait.width, db.portrait.height)
+		nameplate.Portrait:SetPoint(db.portrait.position == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate, db.portrait.position == 'RIGHT' and 'RIGHT' or 'LEFT', db.portrait.offsetX, db.portrait.offsetY)
 	else
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:DisableElement('Portrait')
