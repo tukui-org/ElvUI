@@ -7,29 +7,19 @@ local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.
 --Lua functions
 local pairs = pairs
 local type = type
-local gsub = gsub
-local wipe = table.wipe
-local format = string.format
-local strmatch = string.match
-local strjoin = strjoin
 local tonumber = tonumber
-local unpack = unpack
 
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
-local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
-local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
-local GetRaidTargetIndex = GetRaidTargetIndex
-local SetRaidTargetIconTexture = SetRaidTargetIconTexture
-local Lerp = Lerp
 local C_NamePlate = C_NamePlate
+local Lerp = Lerp
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: NamePlateDriverFrame, UIParent, WorldFrame
