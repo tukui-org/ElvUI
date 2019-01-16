@@ -4,8 +4,6 @@ local NP = E:GetModule('NamePlates')
 
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
-	Portrait:SetSize(32, 32)
-	Portrait:SetPoint('RIGHT', nameplate, 'LEFT')
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop()
 
@@ -34,6 +32,7 @@ function NP:Update_Portrait(nameplate)
 			nameplate:EnableElement('Portrait')
 		end
 		nameplate.Portrait:SetSize(db.portrait.width, db.portrait.height)
+		nameplate.Portrait:ClearAllPoints()
 		nameplate.Portrait:SetPoint(db.portrait.position == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate, db.portrait.position == 'RIGHT' and 'RIGHT' or 'LEFT', db.portrait.offsetX, db.portrait.offsetY)
 	else
 		if not nameplate:IsElementEnabled('Portrait') then

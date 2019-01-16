@@ -314,13 +314,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
-		local faction = UnitFactionGroup(unit)
 
 		if UnitIsUnit(unit, 'player') then
 			nameplate.frameType = 'PLAYER'
 		elseif UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif not UnitIsPlayer(unit) and (reaction and reaction >= 5) or faction == 'Neutral' then
+		elseif not UnitIsPlayer(unit) and (reaction and reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
 			nameplate.frameType = 'FRIENDLY_NPC'
 		elseif not UnitIsPlayer(unit) and (reaction and reaction <= 4) then
 			nameplate.frameType = 'ENEMY_NPC'
