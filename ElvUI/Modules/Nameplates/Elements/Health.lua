@@ -13,12 +13,14 @@ function NP:Construct_Health(nameplate)
 
 	function Health:PostUpdate(unit, min, max)
 		if NP.db.DarkTheme then
-			if (min ~= max) then
-				nameplate:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+			if min ~= max then
+				nameplate.Health:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
 			else
-				nameplate:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+				nameplate.Health:SetStatusBarColor(0.2, 0.2, 0.2, 1)
 			end
 		end
+
+		Health.r, Health.g, Health.b, Health.a = nameplate.Health:GetStatusBarColor()
 	end
 
 	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
