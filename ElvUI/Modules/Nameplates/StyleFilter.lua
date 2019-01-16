@@ -216,6 +216,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		end
 	end
 	if ScaleChanged then
+		--[[
 		frame.StyleChanged = true
 		frame.ScaleChanged = true
 		local scale = actions.scale
@@ -223,6 +224,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 			scale = scale * self.db.targetScale
 		end
 		self:SetFrameScale(frame, scale)
+		]]
 	end
 	if AlphaChanged then
 		frame.StyleChanged = true
@@ -327,12 +329,14 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	end
 	if ScaleChanged then
+		--[[
 		frame.ScaleChanged = nil
 		if frame.isTarget and self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
 		else
 			self:SetFrameScale(frame, frame.ThreatScale or 1)
 		end
+		]]
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
