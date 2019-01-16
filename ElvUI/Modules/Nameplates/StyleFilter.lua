@@ -945,22 +945,39 @@ do -- oUF style filter inject watch functions without actually registering any e
 		mod:StyleFilterUpdate(self, event)
 	end
 
+	local styleFilterWatching = function(self)
+		local curev = self.NAME_PLATE_UNIT_ADDED
+		local kind = type(curev)
+		if curev  then
+			if kind == 'function' and curev == update then
+				return true
+			elseif kind == 'table' then
+				for _, infunc in next, curev do
+					if infunc == update then
+						return true
+					end
+				end
+			end
+		end
+	end
+
 	function mod:StyleFilterRegisterForEvents(frame)
-		oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED', update)
-		oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED', update)
-		oUF_fake_register(frame, 'UNIT_FACTION', update)
-		oUF_fake_register(frame, 'UNIT_TARGET', update) -- only used with healer icon element atm
-		oUF_fake_register(frame, 'UNIT_HEALTH', update)
-		oUF_fake_register(frame, 'UNIT_MAXHEALTH', update)
-		oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT', update)
-		oUF_fake_register(frame, 'UNIT_POWER_UPDATE', update)
-		oUF_fake_register(frame, 'UNIT_POWER_FREQUENT', update)
-		oUF_fake_register(frame, 'UNIT_DISPLAYPOWER', update)
-		oUF_fake_register(frame, 'UNIT_NAME_UPDATE', update)
-		oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE', update)
-		oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN', update) -- not setup yet
-		oUF_fake_register(frame, 'UNIT_AURA', update)
-		frame.StyleFilterWatch = true
+		if not styleFilterWatching(frame) then
+			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED', update)
+			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED', update)
+			oUF_fake_register(frame, 'UNIT_FACTION', update)
+			oUF_fake_register(frame, 'UNIT_TARGET', update) -- only used with healer icon element atm
+			oUF_fake_register(frame, 'UNIT_HEALTH', update)
+			oUF_fake_register(frame, 'UNIT_MAXHEALTH', update)
+			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT', update)
+			oUF_fake_register(frame, 'UNIT_POWER_UPDATE', update)
+			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT', update)
+			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER', update)
+			oUF_fake_register(frame, 'UNIT_NAME_UPDATE', update)
+			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE', update)
+			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN', update) -- not setup yet
+			oUF_fake_register(frame, 'UNIT_AURA', update)
+		end
 	end
 end
 

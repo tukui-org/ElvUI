@@ -321,18 +321,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP:UpdatePlate(nameplate)
+		-- NP:StyleFilterRegisterForEvents(nameplate)
 
 		if NP.db.units['PLAYER'].useStaticPosition then
 			NP:UpdatePlate(ElvNP_Player)
 		end
 
 		NP.Plates[nameplate] = true
-
-	--[[ style filter is not ready yet, undo this part for now
-		if not nameplate.StyleFilterWatch then
-			NP:StyleFilterRegisterForEvents(nameplate)
-		end
-		]]
 	end
 end
 
