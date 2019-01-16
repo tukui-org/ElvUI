@@ -180,9 +180,9 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
 	local b = CreateFrame('Frame', nil, parent)
 	if f.forcePixelMode or forcePixelMode then
-		b:SetOutside(nil, E.mult, E.mult)
+		b:SetOutside(f, E.mult, E.mult)
 	else
-		b:SetOutside()
+		b:SetOutside(f)
 	end
 	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 
