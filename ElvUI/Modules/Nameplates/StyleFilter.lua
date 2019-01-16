@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates');
 local LSM = E.Libs.LSM;
 
+local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
 local strsplit, tinsert, sort, wipe = strsplit, tinsert, sort, wipe
@@ -30,8 +31,6 @@ local PowerBarColor = PowerBarColor
 local C_Timer_NewTimer = C_Timer.NewTimer
 local INTERRUPTED = INTERRUPTED
 local FAILED = FAILED
-
--- GLOBALS: ElvNP_Player
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -152,7 +151,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.VisibilityChanged = true
 		if frame.frameType == "PLAYER" then
 			if self.db.units.PLAYER.useStaticPosition then
-				ElvNP_Player:Hide()
+				_G.ElvNP_Player:Hide()
 				if self.PlayerNamePlateAnchor then
 					self.PlayerNamePlateAnchor:Hide()
 				end
@@ -281,7 +280,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.VisibilityChanged = nil
 		if frame.frameType == "PLAYER" then
 			if self.db.units.PLAYER.useStaticPosition then
-				ElvNP_Player:Show()
+				_G.ElvNP_Player:Show()
 				if self.PlayerNamePlateAnchor then
 					self.PlayerNamePlateAnchor:Show()
 				end
@@ -882,8 +881,8 @@ function mod:StyleFilterConfigureEvents()
 		sort(self.StyleFilterList, self.StyleFilterSort) --sort by priority
 	else
 		-- self:ForEachPlate("ClearStyledPlate")
-		if ElvNP_Player then
-			self:ClearStyledPlate(ElvNP_Player)
+		if _G.ElvNP_Player then
+			self:ClearStyledPlate(_G.ElvNP_Player)
 		end
 	end
 end
@@ -938,7 +937,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 					if infunc == update then return end
 				end
 
-				table.insert(curev, update)
+				tinsert(curev, update)
 			end
 		else
 			self[event] = update
