@@ -5,9 +5,9 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
-	Castbar:SetFrameLevel(6)
+	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
-	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[Castbar] = true
 
 	Castbar.Button = CreateFrame('Frame', nil, Castbar)
@@ -20,11 +20,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:SetPoint('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
-	Castbar.Time:SetFont(E.LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline)
+	Castbar.Time:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:SetFont(E.LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline)
+	Castbar.Text:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	function Castbar:CheckInterrupt(unit)
 		if (unit == 'vehicle') then

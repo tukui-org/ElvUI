@@ -58,51 +58,64 @@ function NP:Style(frame, unit)
 	return frame
 end
 
+function NP:Construct_RaisedELement(nameplate)
+	local RaisedElement = CreateFrame('Frame', nameplate:GetDebugName()..'RaisedElement', nameplate)
+	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
+	RaisedElement:SetFrameLevel(10)
+	RaisedElement:SetAllPoints()
+
+	return RaisedElement
+end
+
 function NP:StylePlate(nameplate)
 	nameplate:SetPoint('CENTER')
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(_G.UIParent:GetEffectiveScale())
 
+	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
+
 	nameplate.Health = NP:Construct_Health(nameplate)
-	nameplate.Health.Text = NP:Construct_TagText(nameplate)
+
+	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(nameplate.Health.Text, '[perhp]%') -- need option
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
 	nameplate.Power = NP:Construct_Power(nameplate)
-	nameplate.Power.Text = NP:Construct_TagText(nameplate)
+
+	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Power.Text:SetPoint('CENTER', nameplate.Power, 'CENTER', 0, 0) -- need option
 	nameplate:Tag(nameplate.Power.Text, '[perpp]%') -- need option
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
-	nameplate.Name = NP:Construct_TagText(nameplate)
+	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
 	nameplate.Name:SetJustifyH('LEFT')
 	nameplate.Name:SetJustifyV('BOTTOM')
 	nameplate.Name:SetWordWrap(false)
 	nameplate:Tag(nameplate.Name, '[namecolor][name:abbrev] [npctitle]')
 
-	nameplate.Level = NP:Construct_TagText(nameplate)
+	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Level:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, E.Border*2) -- need option
 	nameplate.Level:SetJustifyH('RIGHT')
 	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
-	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
+	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
-	nameplate.Portrait = NP:Construct_Portrait(nameplate)
+	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
 
-	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
+	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
 
-	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
+	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate.RaisedElement)
 
 	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
 
-	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate)
+	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate.RaisedElement)
 
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 
@@ -113,9 +126,9 @@ function NP:StylePlate(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
-	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate)
+	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement)
 
-	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate)
+	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)

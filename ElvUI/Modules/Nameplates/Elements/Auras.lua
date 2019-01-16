@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 function NP:Construct_Buffs(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
-	Buffs:SetFrameLevel(0)
+	Buffs:SetFrameLevel(5)
 	Buffs:SetSize(300, 27)
 
 	Buffs.disableMouse = true
@@ -38,7 +38,7 @@ end
 function NP:Construct_Debuffs(nameplate)
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
-	Debuffs:SetFrameLevel(0)
+	Debuffs:SetFrameLevel(5)
 	Debuffs:SetSize(300, 27)
 
 	Debuffs.disableMouse = true
@@ -71,7 +71,7 @@ end
 function NP:Construct_Auras(nameplate)
 	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
-	Auras:SetFrameLevel(0)
+	Auras:SetFrameLevel(5)
 	Auras:SetSize(300, 27)
 
 	Auras.disableMouse = true

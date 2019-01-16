@@ -5,10 +5,10 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_Power(nameplate)
 	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
-	Power:SetFrameLevel(1)
+	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetPoint('TOP', nameplate.Health, 'TOP', 0, -14)
-	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', self.db.statusbar))
+	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true
@@ -49,7 +49,7 @@ function NP:Construct_PowerPrediction(nameplate)
 	PowerBar:SetPoint('BOTTOM')
 	PowerBar:SetPoint('RIGHT', nameplate.Power:GetStatusBarTexture(), 'RIGHT')
 	PowerBar:SetWidth(130)
-	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[PowerBar] = true
 
 	return { mainBar = PowerBar }
