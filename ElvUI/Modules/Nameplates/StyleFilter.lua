@@ -915,6 +915,10 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
+	local update = function(self, event)
+		mod:StyleFilterUpdate(self, event)
+	end
+
 	local oUF_event_metatable = {
 		__call = function(funcs, self, ...)
 			for _, func in next, funcs do
@@ -923,26 +927,22 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end,
 	}
 
-	local oUF_fake_register = function(self, event, func)
+	local oUF_fake_register = function(self, event)
 		local curev = self[event]
 		local kind = type(curev)
 		if curev  then
-			if kind == 'function' and curev ~= func then
-				self[event] = setmetatable({curev, func}, oUF_event_metatable)
+			if kind == 'function' and curev ~= update then
+				self[event] = setmetatable({curev, update}, oUF_event_metatable)
 			elseif kind == 'table' then
 				for _, infunc in next, curev do
-					if infunc == func then return end
+					if infunc == update then return end
 				end
 
-				table.insert(curev, func)
+				table.insert(curev, update)
 			end
 		else
-			self[event] = func
+			self[event] = update
 		end
-	end
-
-	local update = function(self, event)
-		mod:StyleFilterUpdate(self, event)
 	end
 
 	local styleFilterWatching = function(self)
@@ -963,20 +963,20 @@ do -- oUF style filter inject watch functions without actually registering any e
 
 	function mod:StyleFilterRegisterForEvents(frame)
 		if not styleFilterWatching(frame) then
-			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED', update)
-			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED', update)
-			oUF_fake_register(frame, 'UNIT_FACTION', update)
-			oUF_fake_register(frame, 'UNIT_TARGET', update) -- only used with healer icon element atm
-			oUF_fake_register(frame, 'UNIT_HEALTH', update)
-			oUF_fake_register(frame, 'UNIT_MAXHEALTH', update)
-			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT', update)
-			oUF_fake_register(frame, 'UNIT_POWER_UPDATE', update)
-			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT', update)
-			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER', update)
-			oUF_fake_register(frame, 'UNIT_NAME_UPDATE', update)
-			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE', update)
-			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN', update) -- not setup yet
-			oUF_fake_register(frame, 'UNIT_AURA', update)
+			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED')
+			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED')
+			oUF_fake_register(frame, 'UNIT_FACTION')
+			oUF_fake_register(frame, 'UNIT_TARGET') -- only used with healer icon element atm
+			oUF_fake_register(frame, 'UNIT_HEALTH')
+			oUF_fake_register(frame, 'UNIT_MAXHEALTH')
+			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT')
+			oUF_fake_register(frame, 'UNIT_POWER_UPDATE')
+			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT')
+			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER')
+			oUF_fake_register(frame, 'UNIT_NAME_UPDATE')
+			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE')
+			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN') -- not setup yet
+			oUF_fake_register(frame, 'UNIT_AURA')
 		end
 	end
 end
