@@ -504,6 +504,7 @@ P['nameplates'] = {
 				['height'] = 24,
 			},
 			['minions'] = false,
+			['markHealers'] = true,
 			['healthbar'] = {
 				['enable'] = false,
 				['height'] = 10,

@@ -59,9 +59,13 @@ function NP:Update_Power(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.powerbar.enable then
-		nameplate:EnableElement('Power')
+		if not nameplate:IsElementEnabled('Power') then
+			nameplate:EnableElement('Power')
+		end
 	else
-		nameplate:DisableElement('Power')
+		if nameplate:IsElementEnabled('Power') then
+			nameplate:DisableElement('Power')
+		end
 	end
 
 	if db.powerbar.text.enable then
@@ -80,9 +84,14 @@ function NP:Update_PowerPrediction(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.powerbar.enable and db.powerbar.costPrediction then
-		nameplate:EnableElement('PowerPrediction')
+		if not nameplate:IsElementEnabled('PowerPrediction') then
+			nameplate:EnableElement('PowerPrediction')
+		end
+
 		nameplate.PowerPrediction.mainBar:SetWidth(db.powerbar.width)
 	else
-		nameplate:DisableElement('PowerPrediction')
+		if not nameplate:IsElementEnabled('PowerPrediction') then
+			nameplate:DisableElement('PowerPrediction')
+		end
 	end
 end

@@ -33,7 +33,7 @@ function NP:Construct_ClassPower(nameplate)
 	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
 
 	for i = 1, (MAX_POINTS[E.myclass] or 5) do
-		ClassPower[i] = CreateFrame('StatusBar', nil, ClassPower)
+		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetSize(Width, NP.db.classbar.height)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
@@ -103,7 +103,7 @@ function NP:Construct_Runes(nameplate)
 	local width = NP.classbar.width / 6
 
 	for i = 1, 6 do
-		Runes[i] = CreateFrame('StatusBar', nil, Runes)
+		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:Hide()
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
 		Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
@@ -122,16 +122,24 @@ end
 
 function NP:Update_ClassPower(nameplate)
 	if nameplate.frameType == 'PLAYER' then
-		nameplate:EnableElement('ClassPower')
+		if not nameplate:IsEnableElement('ClassPower') then
+			nameplate:EnableElement('ClassPower')
+		end
 	else
-		nameplate:DisableElement('ClassPower')
+		if nameplate:IsEnableElement('ClassPower') then
+			nameplate:DisableElement('ClassPower')
+		end
 	end
 end
 
 function NP:Update_Runes(nameplate)
 	if nameplate.frameType == 'PLAYER' then
-		nameplate:EnableElement('Runes')
+		if not nameplate:IsEnableElement('Runes') then
+			nameplate:EnableElement('Runes')
+		end
 	else
-		nameplate:DisableElement('Runes')
+		if nameplate:IsEnableElement('Runes') then
+			nameplate:DisableElement('Runes')
+		end
 	end
 end

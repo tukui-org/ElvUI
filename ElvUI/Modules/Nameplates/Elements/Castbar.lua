@@ -61,7 +61,9 @@ function NP:Update_Castbar(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.castbar.enable then
-		nameplate:EnableElement('Castbar')
+		if not nameplate:IsElementEnabled('Castbar') then
+			nameplate:EnableElement('Castbar')
+		end
 
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
 		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
@@ -79,6 +81,8 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
 		nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) -- need option
 	else
-		nameplate:DisableElement('Castbar')
+		if nameplate:IsElementEnabled('Castbar') then
+			nameplate:DisableElement('Castbar')
+		end
 	end
 end

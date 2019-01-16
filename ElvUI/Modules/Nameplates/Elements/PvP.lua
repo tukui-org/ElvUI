@@ -25,5 +25,10 @@ function NP:Construct_PvPIndicator(nameplate)
 end
 
 function NP:Update_PvPIndicator(nameplate)
-
+	--if not nameplate:IsElementEnabled('PvPIndicator') then
+	--	nameplate:EnableElement('PvPIndicator')
+	--end
+	--if nameplate:IsElementEnabled('PvPIndicator') then
+	--	nameplate:DisableElement('PvPIndicator')
+	--end
 end

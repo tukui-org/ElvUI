@@ -8,7 +8,7 @@ function NP:Construct_Health(nameplate)
 	Health:SetFrameLevel(1)
 	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
-	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[Health] = true
 
 	function Health:PostUpdate(unit, min, max)
@@ -39,9 +39,13 @@ function NP:Update_Health(nameplate)
 	nameplate.Health.colorClass = db.healthbar.useClassColor
 
 	if db.healthbar.enable then
-		nameplate:EnableElement('Health')
+		if not nameplate:IsElementEnabled('Health') then
+			nameplate:EnableElement('Health')
+		end
 	else
-		nameplate:DisableElement('Health')
+		if nameplate:IsElementEnabled('Health') then
+			nameplate:DisableElement('Health')
+		end
 	end
 
 	if db.healthbar.text.enable then
@@ -60,7 +64,7 @@ function NP:Construct_HealthPrediction(nameplate)
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
 		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, nameplate.Health)
-		HealthPrediction[Bar]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+		HealthPrediction[Bar]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		HealthPrediction[Bar]:SetPoint('TOP')
 		HealthPrediction[Bar]:SetPoint('BOTTOM')
 		HealthPrediction[Bar]:SetWidth(150)
@@ -95,9 +99,13 @@ function NP:Update_HealthPrediction(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.healthbar.enable and db.healthbar.healPrediction then
-		nameplate:EnableElement('HealPrediction')
+		if not nameplate:IsElementEnabled('HealthPrediction') then
+			nameplate:EnableElement('HealthPrediction')
+		end
 	else
-		nameplate:DisableElement('HealPrediction')
+		if nameplate:IsElementEnabled('HealthPrediction') then
+			nameplate:DisableElement('HealthPrediction')
+		end
 	end
 
 	nameplate.HealthPrediction.myBar:SetStatusBarColor(NP.db.colors.healPrediction.personal.r, NP.db.colors.healPrediction.personal.g, NP.db.colors.healPrediction.personal.b)

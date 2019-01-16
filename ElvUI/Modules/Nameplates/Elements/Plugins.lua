@@ -31,7 +31,9 @@ end
 
 function NP:Update_QuestIcons(nameplate)
 	if NP.db.questIcon and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
-		nameplate:EnableElement('QuestIcons')
+		if not nameplate:IsElementEnabled('QuestIcons') then
+			nameplate:EnableElement('QuestIcons')
+		end
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:SetPoint('LEFT', nameplate, 'RIGHT', 4, 0)
 		nameplate.QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
@@ -40,7 +42,9 @@ function NP:Update_QuestIcons(nameplate)
 		nameplate.QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 		nameplate.QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	else
-		nameplate:DisableElement('QuestIcons')
+		if nameplate:IsElementEnabled('QuestIcons') then
+			nameplate:DisableElement('QuestIcons')
+		end
 	end
 end
 
@@ -53,7 +57,10 @@ end
 function NP:Update_ClassificationIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') and db.eliteIcon.enable then
-		nameplate:EnableElement('ClassificationIndicator')
+		if not nameplate:IsElementEnabled('ClassificationIndicator') then
+			nameplate:EnableElement('ClassificationIndicator')
+		end
+
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
 		if db.healthbar.enable then
@@ -62,7 +69,9 @@ function NP:Update_ClassificationIndicator(nameplate)
 			nameplate.ClassificationIndicator:Point('RIGHT', nameplate.Name, 'LEFT', 0, 0)
 		end
 	else
-		nameplate:DisableElement('ClassificationIndicator')
+		if nameplate:IsElementEnabled('ClassificationIndicator') then
+			nameplate:DisableElement('ClassificationIndicator')
+		end
 	end
 end
 
@@ -158,5 +167,28 @@ function NP:Update_Highlight(nameplate)
 		nameplate.Highlight.texture:Show()
 	else
 		nameplate.Highlight.texture:Hide()
+	end
+end
+
+function NP:Construct_HealerSpecs(nameplate)
+	local texture = nameplate:CreateTexture(nil, "OVERLAY")
+	texture:SetPoint("RIGHT", nameplate.Health, "LEFT", -6, 0)
+	texture:SetSize(40, 40)
+	texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer]])
+	texture:Hide()
+
+	return texture
+end
+
+function NP:Update_HealerSpecs(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+	if (nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'ENEMY_PLAYER') and db.markHealers then
+		if not nameplate:IsElementEnabled('HealerSpecs') then
+			nameplate:EnableElement('HealerSpecs')
+		end
+	else
+		if nameplate:IsElementEnabled('HealerSpecs') then
+			nameplate:DisableElement('HealerSpecs')
+		end
 	end
 end

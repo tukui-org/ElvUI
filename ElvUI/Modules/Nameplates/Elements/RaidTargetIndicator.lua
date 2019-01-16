@@ -24,4 +24,10 @@ function NP:Construct_RaidTargetIndicator(nameplate)
 end
 
 function NP:Update_RaidTargetIndicator(nameplate)
+	--if not nameplate:IsElementEnabled('RaidTargetIndicator') then
+	--	nameplate:EnableElement('RaidTargetIndicator')
+	--end
+	--if nameplate:IsElementEnabled('RaidTargetIndicator') then
+	--	nameplate:DisableElement('RaidTargetIndicator')
+	--end
 end

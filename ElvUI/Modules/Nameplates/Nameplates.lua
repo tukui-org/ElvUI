@@ -115,6 +115,8 @@ function NP:StylePlate(nameplate)
 
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate)
 
+	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate)
+
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
