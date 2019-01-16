@@ -964,18 +964,18 @@ do -- oUF style filter inject watch functions without actually registering any e
 		if not styleFilterWatching(frame) then
 			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED')
 			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED')
+			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN')
+			oUF_fake_register(frame, 'UNIT_AURA')
+			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER')
 			oUF_fake_register(frame, 'UNIT_FACTION')
 			oUF_fake_register(frame, 'UNIT_HEALTH')
-			oUF_fake_register(frame, 'UNIT_MAXHEALTH')
 			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT')
-			oUF_fake_register(frame, 'UNIT_POWER_UPDATE')
-			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT')
-			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER')
+			oUF_fake_register(frame, 'UNIT_MAXHEALTH')
 			oUF_fake_register(frame, 'UNIT_NAME_UPDATE')
+			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT')
+			oUF_fake_register(frame, 'UNIT_POWER_UPDATE')
+			oUF_fake_register(frame, 'UNIT_TARGET')
 			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE')
-			oUF_fake_register(frame, 'UNIT_AURA')
-			oUF_fake_register(frame, 'UNIT_TARGET') -- only used with healer icon element atm
-			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN') -- not setup yet
 		end
 	end
 end
