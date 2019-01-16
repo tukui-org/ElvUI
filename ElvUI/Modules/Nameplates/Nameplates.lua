@@ -334,6 +334,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP.Plates[nameplate] = true
+
+		NP:StyleFilterUpdate(nameplate, event)
+	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
+		NP:ClearStyledPlate(nameplate)
 	end
 end
 

@@ -815,10 +815,7 @@ function mod:StyleFilterConfigureEvents()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
-				-- NOTE:
-				-- 0 for fake events
-				-- 1 to override StyleFilterWaitTime
-
+				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
 				self.StyleFilterTriggerEvents["FAKE_AuraWaitTimer"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterTriggerEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
