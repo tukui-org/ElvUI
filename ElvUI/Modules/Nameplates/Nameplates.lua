@@ -337,6 +337,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event)
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
+		nameplate.isTarget = nil
+		nameplate.isTargetingMe = nil
+
 		NP:ClearStyledPlate(nameplate)
 	end
 end
