@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM;
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
-local strsplit, tinsert, tremove, sort, wipe = strsplit, tinsert, tremove, sort, wipe
+local gsub, strsplit, tinsert, tremove, sort, wipe = gsub, strsplit, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
@@ -236,6 +236,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.NameColorChanged = true
 		local nameText = frame.Name:GetText()
 		if nameText and nameText ~= "" then
+			frame.Name:SetText(gsub(nameText, '|c[fF][fF]%x%x%x%x%x%x', ''))
 			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
 		end
 	end
@@ -348,7 +349,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil
-		frame.Name:SetTextColor(frame.Name.r, frame.Name.g, frame.Name.b)
+		frame.Name:UpdateTag()
 	end
 	if PortraitShown then
 		frame.PortraitShown = nil
