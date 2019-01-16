@@ -105,6 +105,12 @@ function NP:StylePlate(nameplate)
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
+	nameplate.FlashTexture = nameplate.Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
+	nameplate.FlashTexture:SetTexture(E.LSM:Fetch("background", "ElvUI Blank"))
+	nameplate.FlashTexture:Point("BOTTOMLEFT", nameplate.Health:GetStatusBarTexture(), "BOTTOMLEFT")
+	nameplate.FlashTexture:Point("TOPRIGHT", nameplate.Health:GetStatusBarTexture(), "TOPRIGHT")
+	nameplate.FlashTexture:Hide()
+
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 
 	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
