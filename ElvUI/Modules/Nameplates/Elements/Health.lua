@@ -21,13 +21,13 @@ function NP:Construct_Health(nameplate)
 	function Health:PostUpdate(unit, min, max)
 		if NP.db.DarkTheme then
 			if min ~= max then
-				nameplate.Health:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
+				self:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
 			else
-				nameplate.Health:SetStatusBarColor(0.2, 0.2, 0.2, 1)
+				self:SetStatusBarColor(0.2, 0.2, 0.2, 1)
 			end
 		end
 
-		Health.r, Health.g, Health.b, Health.a = nameplate.Health:GetStatusBarColor()
+		Health.r, Health.g, Health.b, Health.a = self:GetStatusBarColor()
 	end
 
 	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
@@ -45,9 +45,9 @@ end
 function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	nameplate.Health.colorClass = db.healthbar.useClassColor
+	nameplate.Health.colorClass = db.health.useClassColor
 
-	if db.healthbar.enable then
+	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then
 			nameplate:EnableElement('Health')
 		end
@@ -57,15 +57,15 @@ function NP:Update_Health(nameplate)
 		end
 	end
 
-	if db.healthbar.text.enable then
+	if db.health.text.enable then
 		nameplate.Health.Text:Show()
 	else
 		nameplate.Health.Text:Hide()
 	end
 
-	nameplate.Health.width = db.healthbar.width
-	nameplate.Health.height = db.healthbar.height
-	nameplate.Health:SetSize(db.healthbar.width, db.healthbar.height)
+	nameplate.Health.width = db.health.width
+	nameplate.Health.height = db.health.height
+	nameplate.Health:SetSize(db.health.width, db.health.height)
 end
 
 function NP:Construct_HealthPrediction(nameplate)
@@ -108,7 +108,7 @@ end
 function NP:Update_HealthPrediction(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.healthbar.enable and db.healthbar.healPrediction then
+	if db.health.enable and db.health.healPrediction then
 		if not nameplate:IsElementEnabled('HealthPrediction') then
 			nameplate:EnableElement('HealthPrediction')
 		end

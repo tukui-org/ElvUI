@@ -58,7 +58,7 @@ end
 function NP:Update_Power(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.powerbar.enable then
+	if db.power.enable then
 		if not nameplate:IsElementEnabled('Power') then
 			nameplate:EnableElement('Power')
 		end
@@ -68,27 +68,27 @@ function NP:Update_Power(nameplate)
 		end
 	end
 
-	if db.powerbar.text.enable then
+	if db.power.text.enable then
 		nameplate.Power.Text:Show()
 	else
 		nameplate.Power.Text:Hide()
 	end
 
-	nameplate.Power.colorClass = db.powerbar.useClassColor or false
-	nameplate.Power.width = db.powerbar.width
-	nameplate.Power.height = db.powerbar.height
-	nameplate.Power:SetSize(db.powerbar.width, db.powerbar.height)
+	nameplate.Power.colorClass = db.power.useClassColor or false
+	nameplate.Power.width = db.power.width
+	nameplate.Power.height = db.power.height
+	nameplate.Power:SetSize(db.power.width, db.power.height)
 end
 
 function NP:Update_PowerPrediction(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.powerbar.enable and db.powerbar.costPrediction then
+	if db.power.enable and db.power.costPrediction then
 		if not nameplate:IsElementEnabled('PowerPrediction') then
 			nameplate:EnableElement('PowerPrediction')
 		end
 
-		nameplate.PowerPrediction.mainBar:SetWidth(db.powerbar.width)
+		nameplate.PowerPrediction.mainBar:SetWidth(db.power.width)
 	else
 		if not nameplate:IsElementEnabled('PowerPrediction') then
 			nameplate:DisableElement('PowerPrediction')

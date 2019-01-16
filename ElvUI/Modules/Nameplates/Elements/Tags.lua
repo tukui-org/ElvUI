@@ -12,7 +12,7 @@ end
 function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.showName then
+	if db.name.enable then
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		if not db.showLevel then
@@ -31,7 +31,7 @@ end
 function NP:Update_Level(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.showLevel then
+	if db.level.enable then
 		nameplate.Level:Show()
 	else
 		nameplate.Level:Hide()
@@ -39,7 +39,15 @@ function NP:Update_Level(nameplate)
 end
 
 function NP:Update_Tags(nameplate)
-	NP:Update_Name(nameplate)
+	local db = NP.db.units[nameplate.frameType]
 
+	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
+	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
+	nameplate:Tag(nameplate.Name, db.name.format)
+	nameplate:Tag(nameplate.Level, db.level.format)
+
+	nameplate:UpdateTags()
+
+	NP:Update_Name(nameplate)
 	NP:Update_Level(nameplate)
 end

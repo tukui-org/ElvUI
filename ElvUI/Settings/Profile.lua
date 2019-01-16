@@ -433,21 +433,27 @@ P['nameplates'] = {
 				['showInCombat'] = true,
 				['showWithTarget'] = false,
 			},
-			['healthbar'] = {
+			['health'] = {
 				['enable'] = true,
 				['glowStyle'] = 'TARGET_THREAT',
 				['healPrediction'] = true,
 				['height'] = 10,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perhp]%',
 				},
 				['useClassColor'] = true,
 				['width'] = 150,
 			},
-			['showName'] = false,
-			['showLevel'] = false,
-			['powerbar'] = {
+			['name'] = {
+				['enable'] = false,
+				['format'] = '[namecolor][name:abbrev]',
+			},
+			['level'] = {
+				['enable'] = false,
+				['format'] = '[difficultycolor][level]',
+			},
+			['power'] = {
 				['enable'] = true,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
@@ -455,7 +461,7 @@ P['nameplates'] = {
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perpp]%',
 				},
 			},
 			['castbar'] = {
@@ -513,7 +519,7 @@ P['nameplates'] = {
 			},
 			['minions'] = false,
 			['markHealers'] = true,
-			['healthbar'] = {
+			['health'] = {
 				['enable'] = false,
 				['height'] = 10,
 				['width'] = 150,
@@ -521,13 +527,19 @@ P['nameplates'] = {
 				['glowStyle'] = 'TARGET_THREAT',
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perhp]%',
 				},
 				['useClassColor'] = true,
 			},
-			['showName'] = true,
-			['showLevel'] = false,
-			['powerbar'] = {
+			['name'] = {
+				['enable'] = false,
+				['format'] = '[namecolor][name:abbrev]',
+			},
+			['level'] = {
+				['enable'] = false,
+				['format'] = '[difficultycolor][level]',
+			},
+			['power'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
@@ -535,7 +547,7 @@ P['nameplates'] = {
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perpp]%',
 				},
 			},
 			['castbar'] = {
@@ -591,7 +603,7 @@ P['nameplates'] = {
 			},
 			['minions'] = false,
 			['markHealers'] = true,
-			['healthbar'] = {
+			['health'] = {
 				['enable'] = true,
 				['height'] = 10,
 				['width'] = 150,
@@ -599,13 +611,19 @@ P['nameplates'] = {
 				['glowStyle'] = 'TARGET_THREAT',
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perhp]%',
 				},
 				['useClassColor'] = true,
 			},
-			['showName'] = true,
-			['showLevel'] = true,
-			['powerbar'] = {
+			['name'] = {
+				['enable'] = false,
+				['format'] = '[namecolor][name:abbrev]',
+			},
+			['level'] = {
+				['enable'] = false,
+				['format'] = '[difficultycolor][level]',
+			},
+			['power'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
@@ -613,7 +631,7 @@ P['nameplates'] = {
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perpp]%',
 				},
 			},
 			['castbar'] = {
@@ -666,7 +684,7 @@ P['nameplates'] = {
 				['offsetX'] = 6,
 				['offsetY'] = 0,
 			},
-			['healthbar'] = {
+			['health'] = {
 				['enable'] = false,
 				['height'] = 10,
 				['width'] = 150,
@@ -674,12 +692,18 @@ P['nameplates'] = {
 				['glowStyle'] = 'TARGET_THREAT',
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perhp]%',
 				},
 			},
-			['showName'] = true,
-			['showLevel'] = true,
-			['powerbar'] = {
+			['name'] = {
+				['enable'] = false,
+				['format'] = '[namecolor][name:abbrev]',
+			},
+			['level'] = {
+				['enable'] = false,
+				['format'] = '[difficultycolor][level]',
+			},
+			['power'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
@@ -687,7 +711,7 @@ P['nameplates'] = {
 				['height'] = 8,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perpp]%',
 				},
 			},
 			['castbar'] = {
@@ -748,7 +772,7 @@ P['nameplates'] = {
 				['offsetY'] = 0,
 			},
 			['minors'] = true,
-			['healthbar'] = {
+			['health'] = {
 				['enable'] = true,
 				['height'] = 10,
 				['width'] = 150,
@@ -756,12 +780,18 @@ P['nameplates'] = {
 				['glowStyle'] = 'TARGET_THREAT',
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perhp]%',
 				},
 			},
-			['showName'] = true,
-			['showLevel'] = true,
-			['powerbar'] = {
+			['name'] = {
+				['enable'] = false,
+				['format'] = '[namecolor][name:abbrev]',
+			},
+			['level'] = {
+				['enable'] = false,
+				['format'] = '[difficultycolor][level]',
+			},
+			['power'] = {
 				['enable'] = false,
 				['hideWhenEmpty'] = false,
 				['costPrediction'] = true,
@@ -769,7 +799,7 @@ P['nameplates'] = {
 				['width'] = 150,
 				['text'] = {
 					['enable'] = false,
-					['format'] = 'CURRENT',
+					['format'] = '[perpp]%',
 				},
 			},
 			['castbar'] = {

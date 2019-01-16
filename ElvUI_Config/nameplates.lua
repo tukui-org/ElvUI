@@ -1840,8 +1840,8 @@ local function GetUnitSettings(unit, name)
 				order = 1,
 				name = L["Health"],
 				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].healthbar[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].healthbar[ info[#info] ] = value; NP:ConfigureAll() end,
+				get = function(info) return E.db.nameplates.units[unit].health[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].health[ info[#info] ] = value; NP:ConfigureAll() end,
 				args = {
 					header = {
 						order = 0,
@@ -1872,8 +1872,8 @@ local function GetUnitSettings(unit, name)
 						type = "group",
 						name = L["Text"],
 						guiInline = true,
-						get = function(info) return E.db.nameplates.units[unit].healthbar.text[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].healthbar.text[ info[#info] ] = value; NP:ConfigureAll() end,
+						get = function(info) return E.db.nameplates.units[unit].health.text[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].health.text[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							enable = {
 								order = 1,
@@ -1883,15 +1883,7 @@ local function GetUnitSettings(unit, name)
 							format = {
 								order = 2,
 								name = L["Format"],
-								type = "select",
-								values = {
-									['CURRENT'] = L["Current"],
-									['CURRENT_MAX'] = L["Current / Max"],
-									['CURRENT_PERCENT'] =  L["Current - Percent"],
-									['CURRENT_MAX_PERCENT'] = L["Current - Max | Percent"],
-									['PERCENT'] = L["Percent"],
-									['DEFICIT'] = L["Deficit"],
-								},
+								type = "input",
 							},
 						},
 					},
@@ -1901,9 +1893,8 @@ local function GetUnitSettings(unit, name)
 				order = 2,
 				name = L["Power"],
 				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].powerbar[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].powerbar[ info[#info] ] = value; NP:ConfigureAll() end,
-				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
+				get = function(info) return E.db.nameplates.units[unit].power[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].power[ info[#info] ] = value; NP:ConfigureAll() end,
 				args = {
 					header = {
 						order = 0,
@@ -1937,8 +1928,8 @@ local function GetUnitSettings(unit, name)
 						type = "group",
 						name = L["Text"],
 						guiInline = true,
-						get = function(info) return E.db.nameplates.units[unit].powerbar.text[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].powerbar.text[ info[#info] ] = value; NP:ConfigureAll() end,
+						get = function(info) return E.db.nameplates.units[unit].power.text[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].power.text[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							enable = {
 								order = 1,
@@ -1960,7 +1951,6 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
-				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
 				args = {
 					header = {
 						order = 0,
@@ -2068,7 +2058,6 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
-				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
 				args = {
 					header = {
 						order = 0,
@@ -2256,7 +2245,6 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
-				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
 				args = {
 					header = {
 						order = 0,
@@ -2467,12 +2455,35 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 5, max = 100, step = 1,
 					},
+					position = {
+						order = 4,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+						},
+					},
+					offsetX = {
+						order = 5,
+						name = L["X-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+					offsetY = {
+						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
 				},
 			},
 			levelGroup = {
 				order = 7,
 				name = LEVEL,
 				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].level[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].level[ info[#info] ] = value; NP:ConfigureAll() end,
 				args = {
 					header = {
 						order = 0,
@@ -2483,8 +2494,11 @@ local function GetUnitSettings(unit, name)
 						order = 1,
 						name = L["Enable"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].showLevel end,
-						set = function(info, value) E.db.nameplates.units[unit].showLevel = value; NP:ConfigureAll() end,
+					},
+					format = {
+						order = 2,
+						name = L["Format"],
+						type = "input",
 					},
 				},
 			},
@@ -2504,8 +2518,11 @@ local function GetUnitSettings(unit, name)
 						order = 1,
 						name = L["Enable"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].showName end,
-						set = function(info, value) E.db.nameplates.units[unit].showName = value; NP:ConfigureAll() end,
+					},
+					format = {
+						order = 2,
+						name = L["Format"],
+						type = "input",
 					},
 				},
 			},

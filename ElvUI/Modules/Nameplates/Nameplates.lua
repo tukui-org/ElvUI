@@ -78,7 +78,6 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
-	nameplate:Tag(nameplate.Health.Text, '[perhp]%') -- need option
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
@@ -86,7 +85,6 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Power.Text:SetPoint('CENTER', nameplate.Power, 'CENTER', 0, 0) -- need option
-	nameplate:Tag(nameplate.Power.Text, '[perpp]%') -- need option
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
@@ -95,12 +93,10 @@ function NP:StylePlate(nameplate)
 	nameplate.Name:SetJustifyH('LEFT')
 	nameplate.Name:SetJustifyV('BOTTOM')
 	nameplate.Name:SetWordWrap(false)
-	nameplate:Tag(nameplate.Name, '[namecolor][name:abbrev] [npctitle]')
 
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Level:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, E.Border*2) -- need option
 	nameplate.Level:SetJustifyH('RIGHT')
-	nameplate:Tag(nameplate.Level, '[difficultycolor][level]')
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
@@ -328,6 +324,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP:UpdatePlate(nameplate)
+
+		if nameplate:IsShown() then
+			E:UIFrameFadeIn(nameplate, 1, 0, 1)
+		end
 
 		if NP.db.units['PLAYER'].useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
