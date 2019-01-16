@@ -330,6 +330,7 @@ end
 
 -- Event functions fired from the NamePlate itself
 NP.plateEvents = {
+	-- any registered as `true` will call noop
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 	end,
@@ -337,20 +338,22 @@ NP.plateEvents = {
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end,
-	['SPELL_UPDATE_COOLDOWN'] = function()
-
-	end
+	['SPELL_UPDATE_COOLDOWN'] = true
 }
 
 function NP:RegisterElementEvent(nameplate, event, func, unitless)
-	if not func then func = NP.plateEvents[event] end
-	if not func then return end
+	if not func then
+		func = NP.plateEvents[event]
+		if func == true then func = E.noop end
+	end
 
+	if not func then return end
 	nameplate:RegisterEvent(event, func, unitless)
 end
 
 function NP:UpdatePlateEvents(nameplate)
 	NP:RegisterElementEvent(nameplate, 'PLAYER_TARGET_CHANGED', nil, true)
+	NP:RegisterElementEvent(nameplate, 'SPELL_UPDATE_COOLDOWN', nil, true)
 	NP:RegisterElementEvent(nameplate, 'UNIT_TARGET')
 
 	-- NP:StyleFilterEventWatch(nameplate)
