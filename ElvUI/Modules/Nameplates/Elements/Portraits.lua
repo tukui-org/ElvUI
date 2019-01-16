@@ -13,10 +13,10 @@ function NP:Construct_Portrait(nameplate)
 		local db = NP.db.units[self.__owner.frameType]
 		if not db then return end
 
-		if db.portrait.classicon and UnitIsPlayer(unit) then
+		if db.portrait and db.portrait.classicon and UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit);
 			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[strupper(class)]))
+			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]))
 			self.backdrop:Hide()
 		else
 			self:SetTexCoord(.18, .82, .18, .82)
