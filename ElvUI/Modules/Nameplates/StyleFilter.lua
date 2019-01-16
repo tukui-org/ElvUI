@@ -41,7 +41,7 @@ function mod:StyleFilterAuraWaitTimer(frame, button, varTimerName, timeLeft, mTi
 			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
             button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
 				if frame and frame:IsShown() then
-					mod:StyleFilterUpdate(frame, 'AuraWaitTimer_Update')
+					mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
                 end
                 if button and button[varTimerName] then
 	                button[varTimerName] = nil
@@ -431,7 +431,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 			if value == true then --only check spell that are checked
 				condition = 1
 				if castbarShown then
-					spell = frame.Castbar.Name:GetText() --Make sure we can check spell name
+					spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
 					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
 						if tonumber(spellName) then
 							spellName = GetSpellInfo(spellName)
@@ -779,14 +779,12 @@ function mod:StyleFilterSort(place)
 	end
 end
 
-mod.StyleFilterTriggerList = {} -- filter with sorted priority
+mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
-mod.StyleFilterPlateEvents = { -- events watched inside of ouf which is called on the nameplate itself
-	['NAME_PLATE_UNIT_ADDED'] = 1
-	-- rest is populated from `StyleFilterDefaultEvents` as needed
+mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
+	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	--'NAME_PLATE_UNIT_ADDED' -- this is assumed, of course
 	'PLAYER_TARGET_CHANGED',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
@@ -817,24 +815,25 @@ function mod:StyleFilterConfigureEvents()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
-				-- use 0 for fake events
-				-- use 1 instead of true to override StyleFilterWaitTime
-				self.StyleFilterTriggerEvents["UpdateElement_All"] = 0
-				self.StyleFilterTriggerEvents["AuraWaitTimer_Update"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				-- NOTE:
+				-- 0 for fake events
+				-- 1 to override StyleFilterWaitTime
+
+				self.StyleFilterTriggerEvents["FAKE_AuraWaitTimer"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				self.StyleFilterTriggerEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
 							if value == true then
-								self.StyleFilterTriggerEvents["UpdateElement_Cast"] = 0
+								self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
 								break
 							end
 						end
 					end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-						self.StyleFilterTriggerEvents["UpdateElement_Cast"] = 0
+						self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
 					end
 				end
 
