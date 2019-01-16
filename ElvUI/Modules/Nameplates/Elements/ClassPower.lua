@@ -99,13 +99,13 @@ function NP:Construct_Runes(nameplate)
 		end
 	end
 
-	Runes:SetSize(NP.classbar.width + 5, NP.db.classbar.height)
-	local width = NP.classbar.width / 6
+	Runes:SetSize(NP.db.classbar.width + 5, NP.db.classbar.height)
+	local width = NP.db.classbar.width / 6
 
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:Hide()
-		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', self.db.statusbar))
+		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
 		Runes[i]:SetSize(width, NP.db.classbar.height)
 		NP.StatusBars[Runes[i]] = true
