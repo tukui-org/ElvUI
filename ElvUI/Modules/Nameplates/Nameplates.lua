@@ -305,6 +305,7 @@ function NP:ConfigureAll()
 		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 	end
 
+	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	NP:Update_StatusBars()
 	NP:Update_Fonts()
 end
@@ -385,9 +386,6 @@ function NP:Initialize()
 	NP.Plates = {}
 	NP.StatusBars = {}
 
-	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
-	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
-
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
 		BlizzPlateManaBar:Hide()
@@ -437,6 +435,7 @@ function NP:Initialize()
 	NP:RegisterEvent('GROUP_FORMED', 'CheckGroup')
 	NP:RegisterEvent('GROUP_LEFT', 'CheckGroup')
 
+	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:CheckGroup()
 	NP:ConfigureAll()

@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM;
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
-local strsplit, tinsert, sort, wipe = strsplit, tinsert, sort, wipe
+local strsplit, tinsert, tremove, sort, wipe = strsplit, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetPvpTalentInfo = GetPvpTalentInfo
@@ -779,78 +779,105 @@ function mod:StyleFilterSort(place)
 	end
 end
 
-mod.StyleFilterList = {}
-mod.StyleFilterEvents = {}
+mod.StyleFilterTriggerList = {} -- filter with sorted priority
+mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
+mod.StyleFilterPlateEvents = { -- events watched inside of ouf which is called on the nameplate itself
+	['NAME_PLATE_UNIT_ADDED'] = 1
+	-- rest is populated from `StyleFilterDefaultEvents` as needed
+}
+mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
+	--'NAME_PLATE_UNIT_ADDED' -- this is assumed, of course
+	'PLAYER_TARGET_CHANGED',
+	'SPELL_UPDATE_COOLDOWN',
+	'UNIT_AURA',
+	'UNIT_DISPLAYPOWER',
+	'UNIT_FACTION',
+	'UNIT_HEALTH',
+	'UNIT_HEALTH_FREQUENT',
+	'UNIT_MAXHEALTH',
+	'UNIT_NAME_UPDATE',
+	'UNIT_POWER_FREQUENT',
+	'UNIT_POWER_UPDATE',
+	'UNIT_TARGET',
+	'UNIT_THREAT_LIST_UPDATE'
+}
+
+function mod:StyleFilterSetWatchEvents()
+	for _, event in ipairs(self.StyleFilterDefaultEvents) do
+		self.StyleFilterPlateEvents[event] = self.StyleFilterTriggerEvents[event] and true or nil
+	end
+end
+
 function mod:StyleFilterConfigureEvents()
-	wipe(self.StyleFilterList)
-	wipe(self.StyleFilterEvents)
+	wipe(self.StyleFilterTriggerList)
+	wipe(self.StyleFilterTriggerEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
-				tinsert(self.StyleFilterList, {filterName, filter.triggers.priority or 1})
+				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
 				-- use 0 for fake events
 				-- use 1 instead of true to override StyleFilterWaitTime
-				self.StyleFilterEvents["UpdateElement_All"] = 0
-				self.StyleFilterEvents["AuraWaitTimer_Update"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				self.StyleFilterEvents["NAME_PLATE_UNIT_ADDED"] = 1
+				self.StyleFilterTriggerEvents["UpdateElement_All"] = 0
+				self.StyleFilterTriggerEvents["AuraWaitTimer_Update"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				self.StyleFilterTriggerEvents["NAME_PLATE_UNIT_ADDED"] = 1
 
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
 							if value == true then
-								self.StyleFilterEvents["UpdateElement_Cast"] = 0
+								self.StyleFilterTriggerEvents["UpdateElement_Cast"] = 0
 								break
 							end
 						end
 					end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-						self.StyleFilterEvents["UpdateElement_Cast"] = 0
+						self.StyleFilterTriggerEvents["UpdateElement_Cast"] = 0
 					end
 				end
 
 				-- real events
-				self.StyleFilterEvents["PLAYER_TARGET_CHANGED"] = true
+				self.StyleFilterTriggerEvents["PLAYER_TARGET_CHANGED"] = true
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					self.StyleFilterEvents["UNIT_FACTION"] = true
+					self.StyleFilterTriggerEvents["UNIT_FACTION"] = true
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					self.StyleFilterEvents["UNIT_TARGET"] = true
+					self.StyleFilterTriggerEvents["UNIT_TARGET"] = true
 				end
 
 				if filter.triggers.healthThreshold then
-					self.StyleFilterEvents["UNIT_HEALTH"] = true
-					self.StyleFilterEvents["UNIT_MAXHEALTH"] = true
-					self.StyleFilterEvents["UNIT_HEALTH_FREQUENT"] = true
+					self.StyleFilterTriggerEvents["UNIT_HEALTH"] = true
+					self.StyleFilterTriggerEvents["UNIT_MAXHEALTH"] = true
+					self.StyleFilterTriggerEvents["UNIT_HEALTH_FREQUENT"] = true
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterEvents["UNIT_POWER_UPDATE"] = true
-					self.StyleFilterEvents["UNIT_POWER_FREQUENT"] = true
-					self.StyleFilterEvents["UNIT_DISPLAYPOWER"] = true
+					self.StyleFilterTriggerEvents["UNIT_POWER_UPDATE"] = true
+					self.StyleFilterTriggerEvents["UNIT_POWER_FREQUENT"] = true
+					self.StyleFilterTriggerEvents["UNIT_DISPLAYPOWER"] = true
 				end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
 						if value == true then
-							self.StyleFilterEvents["UNIT_NAME_UPDATE"] = true
+							self.StyleFilterTriggerEvents["UNIT_NAME_UPDATE"] = true
 							break
 						end
 					end
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
-					self.StyleFilterEvents["UNIT_THREAT_LIST_UPDATE"] = true
+					self.StyleFilterTriggerEvents["UNIT_THREAT_LIST_UPDATE"] = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
-							self.StyleFilterEvents["SPELL_UPDATE_COOLDOWN"] = true
+							self.StyleFilterTriggerEvents["SPELL_UPDATE_COOLDOWN"] = true
 							break
 						end
 					end
@@ -859,7 +886,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
-							self.StyleFilterEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
 							break
 						end
 					end
@@ -868,7 +895,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
-							self.StyleFilterEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
 							break
 						end
 					end
@@ -877,22 +904,21 @@ function mod:StyleFilterConfigureEvents()
 		end
 	end
 
-	if next(self.StyleFilterList) then
-		sort(self.StyleFilterList, self.StyleFilterSort) --sort by priority
+	mod:StyleFilterSetWatchEvents()
+
+	if next(self.StyleFilterTriggerList) then
+		sort(self.StyleFilterTriggerList, self.StyleFilterSort) --sort by priority
 	else
-		-- self:ForEachPlate("ClearStyledPlate")
-		if _G.ElvNP_Player then
-			self:ClearStyledPlate(_G.ElvNP_Player)
+		for nameplate in pairs(mod.Plates) do
+			self:ClearStyledPlate(nameplate)
 		end
 	end
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not (frame and self.StyleFilterEvents[event]) then return end
+	if not (frame and self.StyleFilterTriggerEvents[event]) then return end
 
-	-- print('StyleFilterUpdate', event, self.StyleFilterEvents[event])
-
-	if self.StyleFilterEvents[event] ~= 1 then
+	if self.StyleFilterTriggerEvents[event] ~= 1 then
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
@@ -905,8 +931,8 @@ function mod:StyleFilterUpdate(frame, event)
 	self:ClearStyledPlate(frame)
 
 	local filter
-	for filterNum in ipairs(self.StyleFilterList) do
-		filter = E.global.nameplate.filters[self.StyleFilterList[filterNum][1]];
+	for filterNum in ipairs(self.StyleFilterTriggerList) do
+		filter = E.global.nameplate.filters[self.StyleFilterTriggerList[filterNum][1]];
 		if filter then
 			self:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
 		end
@@ -926,26 +952,32 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end,
 	}
 
-	local oUF_fake_register = function(self, event)
+	local oUF_fake_register = function(self, event, remove)
 		local curev = self[event]
 		if curev then
 			local kind = type(curev)
 			if kind == 'function' and curev ~= update then
 				self[event] = setmetatable({curev, update}, oUF_event_metatable)
 			elseif kind == 'table' then
-				for _, infunc in next, curev do
-					if infunc == update then return end
+				for index, infunc in next, curev do
+					if infunc == update then
+						if remove then
+							tremove(curev, index)
+						end
+
+						return
+					end
 				end
 
 				tinsert(curev, update)
 			end
 		else
-			self[event] = update
+			self[event] = (not remove and update) or nil
 		end
 	end
 
-	local styleFilterWatching = function(self)
-		local curev = self.NAME_PLATE_UNIT_ADDED
+	local styleFilterIsWatching = function(self, event)
+		local curev = self[event]
 		if curev then
 			local kind = type(curev)
 			if kind == 'function' and curev == update then
@@ -961,21 +993,15 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end
 
 	function mod:StyleFilterEventWatch(frame)
-		if not styleFilterWatching(frame) then
-			oUF_fake_register(frame, 'NAME_PLATE_UNIT_ADDED')
-			oUF_fake_register(frame, 'PLAYER_TARGET_CHANGED')
-			oUF_fake_register(frame, 'SPELL_UPDATE_COOLDOWN')
-			oUF_fake_register(frame, 'UNIT_AURA')
-			oUF_fake_register(frame, 'UNIT_DISPLAYPOWER')
-			oUF_fake_register(frame, 'UNIT_FACTION')
-			oUF_fake_register(frame, 'UNIT_HEALTH')
-			oUF_fake_register(frame, 'UNIT_HEALTH_FREQUENT')
-			oUF_fake_register(frame, 'UNIT_MAXHEALTH')
-			oUF_fake_register(frame, 'UNIT_NAME_UPDATE')
-			oUF_fake_register(frame, 'UNIT_POWER_FREQUENT')
-			oUF_fake_register(frame, 'UNIT_POWER_UPDATE')
-			oUF_fake_register(frame, 'UNIT_TARGET')
-			oUF_fake_register(frame, 'UNIT_THREAT_LIST_UPDATE')
+		for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+			local holdsEvent = styleFilterIsWatching(frame, event)
+			if mod.StyleFilterPlateEvents[event] then
+				if not holdsEvent then
+					oUF_fake_register(frame, event)
+				end
+			elseif holdsEvent then
+				oUF_fake_register(frame, event, true)
+			end
 		end
 	end
 end
