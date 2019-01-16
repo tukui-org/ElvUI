@@ -122,11 +122,11 @@ end
 
 function NP:Update_ClassPower(nameplate)
 	if nameplate.frameType == 'PLAYER' then
-		if not nameplate:IsEnableElement('ClassPower') then
+		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 		end
 	else
-		if nameplate:IsEnableElement('ClassPower') then
+		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
 		end
 	end
@@ -134,11 +134,11 @@ end
 
 function NP:Update_Runes(nameplate)
 	if nameplate.frameType == 'PLAYER' then
-		if not nameplate:IsEnableElement('Runes') then
+		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 		end
 	else
-		if nameplate:IsEnableElement('Runes') then
+		if nameplate:IsElementEnabled('Runes') then
 			nameplate:DisableElement('Runes')
 		end
 	end
