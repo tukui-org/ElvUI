@@ -3370,27 +3370,27 @@ E.Options.args.nameplate = {
 									type = 'color',
 								},
 								MAELSTROM = {
-									order = 4,
+									order = 5,
 									name = L["MAELSTROM"],
 									type = 'color',
 								},
 								MANA = {
-									order = 1,
+									order = 6,
 									name = L["MANA"],
 									type = 'color',
 								},
 								PAIN = {
-									order = 1,
+									order = 7,
 									name = L["PAIN"],
 									type = 'color',
 								},
 								RAGE = {
-									order = 2,
+									order = 8,
 									name = L["RAGE"],
 									type = 'color',
 								},
 								RUNIC_POWER = {
-									order = 1,
+									order = 9,
 									name = L["RUNIC_POWER"],
 									type = 'color',
 								},
