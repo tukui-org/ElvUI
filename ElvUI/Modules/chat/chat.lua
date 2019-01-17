@@ -746,10 +746,11 @@ end
 
 function CH:PositionChat(override)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
-	local RightChatPanel, LeftChatPanel, RightChatDataPanel, LeftChatToggleButton = _G.RightChatPanel, _G.LeftChatPanel, _G.RightChatDataPanel, _G.LeftChatToggleButton
+	local RightChatPanel, LeftChatPanel, RightChatDataPanel, LeftChatToggleButton, LeftChatTab, CombatLogButton = _G.RightChatPanel, _G.LeftChatPanel, _G.RightChatDataPanel, _G.LeftChatToggleButton, _G.LeftChatTab, _G.CombatLogQuickButtonFrame_Custom
 	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	LeftChatPanel:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	CombatLogButton:Size(LeftChatTab:GetWidth(), LeftChatTab:GetHeight())
 
 	self.RightChatWindowID = FindRightChatID()
 
@@ -788,7 +789,7 @@ function CH:PositionChat(override)
 			if id ~= 2 then
 				chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 			else
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - _G.CombatLogQuickButtonFrame_Custom:GetHeight())
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogButton:GetHeight())
 			end
 
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
@@ -2507,15 +2508,26 @@ function CH:Initialize()
 	close:Point("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-
 	S:HandleCloseButton(close)
 
+	_G.ChatFrameMenuButton:Kill()
+
+	-- Combat Log Skinning (credit: Aftermathh)
+	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
+	CombatLogButton:StripTextures()
+	CombatLogButton:SetTemplate("Transparent")
+	CombatLogButton:ClearAllPoints()
+	CombatLogButton:Point("BOTTOM", _G.LeftChatTab, 0, -24)
+	for i = 1, 2 do
+		local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
+		local CombatLogText = CombatLogQuickButton:GetFontString()
+		CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
+	end
+	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
+	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
+	CombatLogProgressBar:SetInside(CombatLogButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", _G.CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
-
-	_G.ChatFrameMenuButton:Kill() -- We have it on your CopyChatButton via right click
-
-	-- The width got changed in Bfa
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 
 	--Chat Heads Frame
