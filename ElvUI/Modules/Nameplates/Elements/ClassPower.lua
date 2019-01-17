@@ -12,15 +12,6 @@ local MAX_POINTS = {
 	['DRUID'] = 5
 }
 
-local COMBO_POINT_COLOR = {
-	[1] = {.69, .31, .31, 1},
-	[2] = {.65, .42, .31, 1},
-	[3] = {.65, .63, .35, 1},
-	[4] = {.46, .63, .35, 1},
-	[5] = {.33, .63, .33, 1},
-	[6] = {.33, .63, .33, 1},
-}
-
 function NP:Construct_ClassPower(nameplate)
 	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
 	ClassPower:Hide()
@@ -53,7 +44,7 @@ function NP:Construct_ClassPower(nameplate)
 			local bar = self[i]
 
 			if powerType == 'COMBO_POINTS' then
-				r, g, b = unpack(COMBO_POINT_COLOR[i])
+				r, g, b = unpack(NP.db.colors.classResources.comboPoints[i])
 			end
 
 			bar:SetStatusBarColor(r, g, b)
@@ -105,7 +96,7 @@ function NP:Construct_Runes(nameplate)
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-		Runes[i]:SetStatusBarColor(0.31, 0.45, 0.63)
+		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
 		Runes[i]:SetSize(width, NP.db.classbar.height)
 		NP.StatusBars[Runes[i]] = true
 
@@ -135,6 +126,16 @@ function NP:Update_Runes(nameplate)
 	if nameplate.frameType == 'PLAYER' then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
+		end
+
+		nameplate.sortOrder = NP.db.classbar.sortDirection
+
+		nameplate.Runes:SetSize(NP.db.classbar.width + 5, NP.db.classbar.height)
+		local width = NP.db.classbar.width / 6
+
+		for i = 1, 6 do
+			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
+			nameplate.Runes[i]:SetSize(width, NP.db.classbar.height)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then

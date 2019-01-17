@@ -3333,6 +3333,86 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
+						power = {
+							order = 250,
+							name = L["Power Colors"],
+							type = 'group',
+							guiInline = true,
+							get = function(info)
+								local t = E.db.nameplates.colors.power[ info[#info] ]
+								local d = P.nameplates.colors.power[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.nameplates.colors.power[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+							args = {
+								ENERGY = {
+									order = 1,
+									name = L["ENERGY"],
+									type = 'color',
+								},
+								FOCUS = {
+									order = 2,
+									name = L["FOCUS"],
+									type = 'color',
+								},
+								FURY = {
+									order = 3,
+									name = L["FURY"],
+									type = 'color',
+								},
+								INSANITY = {
+									order = 4,
+									name = L["INSANITY"],
+									type = 'color',
+								},
+								MAELSTROM = {
+									order = 4,
+									name = L["MAELSTROM"],
+									type = 'color',
+								},
+								MANA = {
+									order = 1,
+									name = L["MANA"],
+									type = 'color',
+								},
+								PAIN = {
+									order = 1,
+									name = L["PAIN"],
+									type = 'color',
+								},
+								RAGE = {
+									order = 2,
+									name = L["RAGE"],
+									type = 'color',
+								},
+								RUNIC_POWER = {
+									order = 1,
+									name = L["RUNIC_POWER"],
+									type = 'color',
+								},
+							},
+						},
+						classResources = {
+							order = 275,
+							name = L["Class Resources"],
+							type = 'group',
+							guiInline = true,
+							get = function(info)
+								local t = E.db.nameplates.colors.classResources[ info[#info] ]
+								local d = P.nameplates.colors.classResources[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.nameplates.colors.classResources[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end,
+							args = {},
+						},
 					},
 				},
 				fontGroup = {
@@ -3514,6 +3594,18 @@ E.Options.args.nameplate = {
 							name = L["Width"],
 							type = "range",
 							min = 50, max = 200, step = 1,
+						},
+						sortDirection = {
+							name = L["Sort Direction"],
+							desc = L["Defines the sort order of the selected sort method."],
+							type = 'select',
+							order = 7,
+							values = {
+								['asc'] = L["Ascending"],
+								['desc'] = L["Descending"],
+								['NONE'] = NONE,
+							},
+							hidden = function() return (E.myclass ~= 'DEATHKNIGHT') end,
 						},
 					},
 				},
@@ -3722,3 +3814,47 @@ E.Options.args.nameplate = {
 		},
 	},
 }
+
+if E.myclass == 'PALADIN' then
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
+		type = 'color',
+		name = HOLY_POWER,
+		order = ORDER,
+	}
+elseif E.myclass == 'MAGE' then
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
+		type = 'color',
+		name = POWER_TYPE_ARCANE_CHARGES,
+		order = ORDER,
+	}
+elseif E.myclass == 'MONK' then
+	for i = 1, 6 do
+		E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['resource'..i] = {
+			type = 'color',
+			name = CHI_POWER..' #'..i,
+			order = ORDER + i,
+			get = function(info)
+				local t = E.db.nameplates.colors.classResources.MONK[i]
+				local d = P.nameplates.colors.classResources.MONK[i]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				local t = E.db.nameplates.colors.classResources.MONK[i]
+				t.r, t.g, t.b = r, g, b
+				NP:ConfigureAll()
+			end,
+		}
+	end
+elseif E.myclass == 'WARLOCK' then
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
+		type = 'color',
+		name = SOUL_SHARDS,
+		order = ORDER,
+	}
+elseif E.myclass == 'DEATHKNIGHT' then
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
+		type = 'color',
+		name = RUNES,
+		order = ORDER,
+	}
+end
