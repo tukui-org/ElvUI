@@ -150,6 +150,8 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_PowerPrediction(nameplate)
 
+	NP:Update_PvPIndicator(nameplate)
+
 	NP:Update_TargetIndicator(nameplate)
 
 	NP:Update_ClassPower(nameplate)
@@ -336,6 +338,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP.Plates[nameplate] = true
 
 		NP:StyleFilterUpdate(nameplate, event)
+
+		nameplate:UpdateTags()
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		nameplate.isTarget = nil
 		nameplate.isTargetingMe = nil

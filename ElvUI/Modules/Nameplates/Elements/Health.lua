@@ -63,6 +63,8 @@ function NP:Update_Health(nameplate)
 		nameplate.Health.Text:Hide()
 	end
 
+	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
+
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
 	nameplate.Health:SetSize(db.health.width, db.health.height)

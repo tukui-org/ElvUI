@@ -6,6 +6,7 @@ function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop()
+	Portrait:Hide()
 
 	function Portrait:PostUpdate(unit)
 		local db = NP.db.units[self.__owner.frameType]
@@ -30,13 +31,16 @@ function NP:Update_Portrait(nameplate)
 	if (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
+			nameplate.Portrait.backdrop:Show()
 		end
+
 		nameplate.Portrait:SetSize(db.portrait.width, db.portrait.height)
 		nameplate.Portrait:ClearAllPoints()
 		nameplate.Portrait:SetPoint(db.portrait.position == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate, db.portrait.position == 'RIGHT' and 'RIGHT' or 'LEFT', db.portrait.offsetX, db.portrait.offsetY)
 	else
-		if not nameplate:IsElementEnabled('Portrait') then
+		if nameplate:IsElementEnabled('Portrait') then
 			nameplate:DisableElement('Portrait')
+			nameplate.Portrait.backdrop:Hide()
 		end
 	end
 end

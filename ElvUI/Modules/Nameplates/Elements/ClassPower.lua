@@ -114,10 +114,12 @@ function NP:Update_ClassPower(nameplate)
 	if nameplate.frameType == 'PLAYER' then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
+			nameplate.ClassPower:Show()
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
+			nameplate.ClassPower:Hide()
 		end
 	end
 end
@@ -126,6 +128,7 @@ function NP:Update_Runes(nameplate)
 	if nameplate.frameType == 'PLAYER' then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
+			nameplate.Runes:Show()
 		end
 
 		nameplate.sortOrder = NP.db.classbar.sortDirection
@@ -140,6 +143,7 @@ function NP:Update_Runes(nameplate)
 	else
 		if nameplate:IsElementEnabled('Runes') then
 			nameplate:DisableElement('Runes')
+			nameplate.Runes:Hide()
 		end
 	end
 end

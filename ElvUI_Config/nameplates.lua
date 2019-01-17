@@ -2526,6 +2526,58 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
+			pvpIndicator = {
+				order = 9,
+				name = L["PvP Indicator"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].pvpindicator[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].pvpindicator[ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Name"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},
+					showBadge = {
+						order = 2,
+						name = L["Show Badge"],
+						desc = L["Show PvP Badge Indicator if available"],
+						type = "toggle",
+					},
+					size = {
+						order = 3,
+						name = L["Size"],
+						type = "range",
+						min = 5, max = 100, step = 1,
+					},
+					position = {
+						order = 5,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+						},
+					},
+					offsetX = {
+						order = 6,
+						name = L["X-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+					offsetY = {
+						order = 7,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+				},
+			},
 		},
 	}
 
@@ -3369,28 +3421,33 @@ E.Options.args.nameplate = {
 									name = L["INSANITY"],
 									type = 'color',
 								},
+								LUNAR_POWER = {
+									order = 4,
+									name = L["INSANITY"],
+									type = 'color',
+								},
 								MAELSTROM = {
-									order = 5,
+									order = 6,
 									name = L["MAELSTROM"],
 									type = 'color',
 								},
 								MANA = {
-									order = 6,
+									order = 7,
 									name = L["MANA"],
 									type = 'color',
 								},
 								PAIN = {
-									order = 7,
+									order = 8,
 									name = L["PAIN"],
 									type = 'color',
 								},
 								RAGE = {
-									order = 8,
+									order = 9,
 									name = L["RAGE"],
 									type = 'color',
 								},
 								RUNIC_POWER = {
-									order = 9,
+									order = 10,
 									name = L["RUNIC_POWER"],
 									type = 'color',
 								},

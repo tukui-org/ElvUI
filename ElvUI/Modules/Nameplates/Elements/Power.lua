@@ -74,6 +74,8 @@ function NP:Update_Power(nameplate)
 		nameplate.Power.Text:Hide()
 	end
 
+	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
+
 	nameplate.Power.colorClass = db.power.useClassColor or false
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
@@ -90,7 +92,7 @@ function NP:Update_PowerPrediction(nameplate)
 
 		nameplate.PowerPrediction.mainBar:SetWidth(db.power.width)
 	else
-		if not nameplate:IsElementEnabled('PowerPrediction') then
+		if nameplate:IsElementEnabled('PowerPrediction') then
 			nameplate:DisableElement('PowerPrediction')
 		end
 	end

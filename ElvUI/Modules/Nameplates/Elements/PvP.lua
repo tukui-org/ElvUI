@@ -4,8 +4,8 @@ local NP = E:GetModule('NamePlates')
 
 function NP:Construct_PvPIndicator(nameplate)
 	local PvPIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	PvPIndicator:Size(36, 36)
-	PvPIndicator:Point('CENTER', nameplate)
+	PvPIndicator:SetSize(36, 36)
+	PvPIndicator:SetPoint('CENTER', nameplate)
 	PvPIndicator.Badge_ = nameplate:CreateTexture(nil, 'ARTWORK')
 	PvPIndicator.Badge_:SetSize(50, 52)
 	PvPIndicator.Badge_:SetPoint('CENTER', PvPIndicator, 'CENTER')
@@ -25,10 +25,27 @@ function NP:Construct_PvPIndicator(nameplate)
 end
 
 function NP:Update_PvPIndicator(nameplate)
-	--if not nameplate:IsElementEnabled('PvPIndicator') then
-	--	nameplate:EnableElement('PvPIndicator')
-	--end
-	--if nameplate:IsElementEnabled('PvPIndicator') then
-	--	nameplate:DisableElement('PvPIndicator')
-	--end
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.pvpindicator and db.pvpindicator.enable then
+		if not nameplate:IsElementEnabled('PvPIndicator') then
+			nameplate:EnableElement('PvPIndicator')
+		end
+
+		nameplate.PvPIndicator:SetSize(db.pvpindicator.size, db.pvpindicator.size)
+		nameplate.PvPIndicator.Badge_:SetSize(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
+
+		nameplate.PvPIndicator.Badge = nil
+
+		if db.pvpindicator.showBadge then
+			nameplate.PvPIndicator.Badge = nameplate.PvPIndicator.Badge_
+		end
+
+		nameplate.PvPIndicator:ClearAllPoints()
+		nameplate.PvPIndicator:SetPoint(db.pvpindicator.position == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate, db.pvpindicator.position == 'RIGHT' and 'RIGHT' or 'LEFT', db.pvpindicator.offsetX, db.pvpindicator.offsetY)
+	else
+		if nameplate:IsElementEnabled('PvPIndicator') then
+			nameplate:DisableElement('PvPIndicator')
+		end
+	end
 end

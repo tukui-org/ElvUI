@@ -353,6 +353,7 @@ P['nameplates'] = {
 			['FOCUS'] = {r = 0.71, g = 0.43, b = 0.27},
 			['FURY'] = {r = 227/255, g = 126/255, b = 39/255},
 			['INSANITY'] = {r = 0.55, g = 0.14, b = 0.69},
+			['LUNAR_POWER'] = {r = .9, g = .86, b = .12},
 			['MAELSTROM'] = {r = 0, g = 0.5, b = 1},
 			['MANA'] = {r = 0.31, g = 0.45, b = 0.63},
 			['PAIN'] = {r = 225/255, g = 225/255, b = 225/255},
@@ -498,6 +499,14 @@ P['nameplates'] = {
 					['format'] = '[perpp]%',
 				},
 			},
+			['pvpindicator'] = {
+				['enable'] = true,
+				['showBadge'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 36,
+				['offsetX'] = 0,
+				['offsetY'] = 0,
+			},
 			['castbar'] = {
 				['enable'] = true,
 				['width'] = 150,
@@ -584,6 +593,14 @@ P['nameplates'] = {
 					['format'] = '[perpp]%',
 				},
 			},
+			['pvpindicator'] = {
+				['enable'] = true,
+				['showBadge'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 36,
+				['offsetX'] = 0,
+				['offsetY'] = 0,
+			},
 			['castbar'] = {
 				['enable'] = true,
 				['width'] = 150,
@@ -668,6 +685,14 @@ P['nameplates'] = {
 					['format'] = '[perpp]%',
 				},
 			},
+			['pvpindicator'] = {
+				['enable'] = true,
+				['showBadge'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 36,
+				['offsetX'] = 0,
+				['offsetY'] = 0,
+			},
 			['castbar'] = {
 				['enable'] = true,
 				['width'] = 150,
@@ -747,6 +772,14 @@ P['nameplates'] = {
 					['enable'] = false,
 					['format'] = '[perpp]%',
 				},
+			},
+			['pvpindicator'] = {
+				['enable'] = true,
+				['showBadge'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 36,
+				['offsetX'] = 0,
+				['offsetY'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = false,
@@ -835,6 +868,14 @@ P['nameplates'] = {
 					['enable'] = false,
 					['format'] = '[perpp]%',
 				},
+			},
+			['pvpindicator'] = {
+				['enable'] = true,
+				['showBadge'] = true,
+				['position'] = 'RIGHT',
+				['size'] = 36,
+				['offsetX'] = 0,
+				['offsetY'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,

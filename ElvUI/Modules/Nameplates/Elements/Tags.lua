@@ -41,12 +41,8 @@ end
 function NP:Update_Tags(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
-	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
 	nameplate:Tag(nameplate.Name, db.name.format)
 	nameplate:Tag(nameplate.Level, db.level.format)
-
-	nameplate:UpdateTags()
 
 	NP:Update_Name(nameplate)
 	NP:Update_Level(nameplate)
