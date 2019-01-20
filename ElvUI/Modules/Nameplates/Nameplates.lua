@@ -340,6 +340,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:StyleFilterUpdate(nameplate, event)
 
 		nameplate:UpdateTags()
+
+		if nameplate ~= _G.ElvNP_Player then
+			if UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit) then
+				nameplate:Disable()
+			else
+				nameplate:Enable()
+			end
+		end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		nameplate.isTarget = nil
 		nameplate.isTargetingMe = nil
