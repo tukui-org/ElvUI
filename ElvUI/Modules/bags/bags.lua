@@ -422,11 +422,11 @@ local function UpdateItemScrapIcon(slot)
 end
 
 function B:SCRAPPING_MACHINE_SHOW()
-	B:ScheduleTimer('Layout', .1)
+	E:Delay(.1, B.Layout, B)
 end
 
 function B:SCRAPPING_MACHINE_CLOSE()
-	B:ScheduleTimer('Layout', .1)
+	E:Delay(.1, B.Layout, B)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
