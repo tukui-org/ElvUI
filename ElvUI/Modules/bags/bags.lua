@@ -423,6 +423,18 @@ local function UpdateItemScrapIcon(slot)
 	end
 end
 
+function B:SCRAPPING_MACHINE_SHOW()
+	for _, bagFrame in pairs(self.BagFrames) do
+		bagFrame:UpdateAllSlots()
+	end
+end
+
+function B:SCRAPPING_MACHINE_CLOSE()
+	for _, bagFrame in pairs(self.BagFrames) do
+		bagFrame:UpdateAllSlots()
+	end
+end
+
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show and E.db.bags.newItemGlow then
@@ -492,6 +504,7 @@ function B:UpdateSlot(bagID, slotID)
 	if slot.ScrapIcon then
 		UpdateItemScrapIcon(slot)
 	end
+	slot:UpdateItemContextMatching() -- Update Scrap items
 
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
@@ -2415,6 +2428,8 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+	self:RegisterEvent("SCRAPPING_MACHINE_SHOW")
+	self:RegisterEvent("SCRAPPING_MACHINE_CLOSE")
 
 	BankFrame:SetScale(0.0001)
 	BankFrame:SetAlpha(0)
