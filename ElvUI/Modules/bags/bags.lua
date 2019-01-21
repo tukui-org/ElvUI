@@ -422,15 +422,11 @@ local function UpdateItemScrapIcon(slot)
 end
 
 function B:SCRAPPING_MACHINE_SHOW()
-	for _, bagFrame in pairs(self.BagFrames) do
-		bagFrame:UpdateAllSlots()
-	end
+	B:ScheduleTimer('Layout', .1)
 end
 
 function B:SCRAPPING_MACHINE_CLOSE()
-	for _, bagFrame in pairs(self.BagFrames) do
-		bagFrame:UpdateAllSlots()
-	end
+	B:ScheduleTimer('Layout', .1)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -502,6 +498,7 @@ function B:UpdateSlot(bagID, slotID)
 	if slot.ScrapIcon then
 		UpdateItemScrapIcon(slot)
 	end
+
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
 	if slot.UpgradeIcon then
