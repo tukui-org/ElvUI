@@ -504,7 +504,7 @@ function B:UpdateSlot(bagID, slotID)
 	if slot.ScrapIcon then
 		UpdateItemScrapIcon(slot)
 	end
-	slot:UpdateItemContextMatching() -- Update Scrap items
+	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
