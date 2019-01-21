@@ -342,9 +342,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate:UpdateTags()
 
 		if nameplate ~= _G.ElvNP_Player then
-			if UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit) then
+			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
 				nameplate:Disable()
-			else
+			elseif not nameplate:IsEnabled() then
 				nameplate:Enable()
 			end
 		end
@@ -424,7 +424,6 @@ function NP:Initialize()
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
-	_G.ElvNP_Player:SetAttribute('unit', 'player')
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
