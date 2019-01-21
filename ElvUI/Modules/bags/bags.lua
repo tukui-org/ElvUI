@@ -404,8 +404,6 @@ function UpdateItemUpgradeIcon(slot)
 end
 
 local function UpdateItemScrapIcon(slot)
-	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
-	-- Also the option dont update correctly.
 	if not E.db.bags.scrapIcon then
 		slot.ScrapIcon:SetShown(false)
 		return
