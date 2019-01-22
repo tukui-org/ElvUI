@@ -7,6 +7,7 @@ Added a way to assign types of items to certain bags by right-clicking the bag i
 Added a count of remaining available characters to the chat editbox.  
 Added the source text for mounts in the tooltip.  
 Added Blizzards way to highlight scrappable items if the Scrapping Machine Frame is open.  
+Added Battle of Dazar'alor raid and M+ Season 2 affix debuffs.  
 
 **Bug Fixes:**  
 Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
