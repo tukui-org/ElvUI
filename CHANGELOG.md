@@ -6,6 +6,7 @@ Added option to use the Blizzard cleanup method instead of the ElvUI sorting.
 Added a way to assign types of items to certain bags by right-clicking the bag icon in ElvUI.  
 Added a count of remaining available characters to the chat editbox.  
 Added the source text for mounts in the tooltip.  
+Added Blizzards way to highlight scrappable items if the Scrapping Machine Frame is open.  
 
 **Bug Fixes:**  
 Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
