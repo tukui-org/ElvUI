@@ -152,7 +152,7 @@ local canChangeMessage = function(linebreak, id)
 end
 
 function CH:MessageIsProtected(message)
-	return message ~= gsub(message, '[^:](|?)|K(.-)|k', canChangeMessage)
+	return message and (message ~= gsub(message, '[^:](|?)|K(.-)|k', canChangeMessage))
 end
 
 CH.Smileys = {}
@@ -593,7 +593,7 @@ function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
 		local message, r, g, b = frame:GetMessageInfo(i)
-		if not CH:MessageIsProtected(message) then
+		if message and not CH:MessageIsProtected(message) then
 			--Set fallback color values
 			r, g, b = r or 1, g or 1, b or 1
 
@@ -1953,7 +1953,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						if not CH:MessageIsProtected(d[1]) then
+						if d[1] and not CH:MessageIsProtected(d[1]) then
 							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 						end
 					end
