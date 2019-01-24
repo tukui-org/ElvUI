@@ -148,7 +148,7 @@ local tabTexs = {
 }
 
 function CH:MessageIsProtected(message)
-	return strmatch(message, '[^|]-|K[vq]%d-[^|]-|k')
+	return strmatch(message, '[^|]-|Kv%d-[^|]-|k')
 end
 
 CH.Smileys = {}
