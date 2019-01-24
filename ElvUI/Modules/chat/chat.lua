@@ -147,8 +147,12 @@ local tabTexs = {
 	'Highlight'
 }
 
+local canChangeMessage = function(linebreak, id)
+	if id and linebreak == "" then return id end
+end
+
 function CH:MessageIsProtected(message)
-	return strmatch(message, '[^|]-|Kv%d-[^|]-|k')
+	return message ~= gsub(message, '[^:](|?)|K(.-)|k', canChangeMessage)
 end
 
 CH.Smileys = {}
