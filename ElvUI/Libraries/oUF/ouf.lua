@@ -375,7 +375,7 @@ Used to make a (table of) function(s) available to all unit frames.
 * name - unique name of the function (string)
 * func - function or a table of functions (function or table)
 --]]
-function oUF:RegisterMetaFunction(name, func, override)
+function oUF:RegisterMetaFunction(name, func, override) -- ElvUI Changed added override
 	argcheck(name, 2, 'string')
 	argcheck(func, 3, 'function', 'table')
 
@@ -796,7 +796,7 @@ Used to register an element with oUF.
 * enable  - used to enable the element for a given unit frame and unit (function?)
 * disable - used to disable the element for a given unit frame (function?)
 --]]
-function oUF:AddElement(name, update, enable, disable, override)
+function oUF:AddElement(name, update, enable, disable, override)  -- ElvUI Changed added override
 	argcheck(name, 2, 'string')
 	argcheck(update, 3, 'function', 'nil')
 	argcheck(enable, 4, 'function', 'nil')
