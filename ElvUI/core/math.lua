@@ -278,7 +278,7 @@ end
 
 function E:AbbreviateString(str, allUpper)
 	local newString = ""
-	for word in gmatch(str, "[^%s]*") do
+	for word in gmatch(str, "[^%s]+") do
 		word = utf8sub(word, 1, 1) --get only first letter of each word
 		if allUpper then word = strupper(word) end
 		newString = newString .. word
