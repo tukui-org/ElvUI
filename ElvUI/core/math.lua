@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
-local select, tonumber, assert, type, unpack, pairs = select, tonumber, assert, type, unpack, pairs
+local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local tinsert, tremove, next = tinsert, tremove, next
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
-local format, sub, upper, split, utf8sub = string.format, string.sub, string.upper, string.split, string.utf8sub
+local format, sub, upper, utf8sub = string.format, string.sub, string.upper, string.utf8sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -14,10 +14,9 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local C_Timer_After = C_Timer.After
 
 --Return short value of a number
-local shortValueDec, shortValue
 function E:ShortValue(v)
-	shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
-	shortValue = abs(v)
+	local shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
+	local shortValue = abs(v)
 	if E.db.general.numberPrefixStyle == "METRIC" then
 		if shortValue >= 1e12 then
 			return format(shortValueDec.."T", v / 1e12)
@@ -206,7 +205,7 @@ function E:GetXYOffset(position, override)
 	end
 end
 
-local gftStyles, gftDec, gftUseStyle, gftDeficit = {
+local gftStyles = {
 	-- keep percents in this table with `PERCENT` in the key, and `%.1f%%` in the value somewhere.
 	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
 	['CURRENT'] = '%s',
@@ -224,7 +223,8 @@ function E:GetFormattedText(style, min, max)
 
 	if max == 0 then max = 1 end
 
-	gftDec = (E.db.general.decimalLength or 1)
+	local gftUseStyle
+	local gftDec = (E.db.general.decimalLength or 1)
 	if (gftDec ~= 1) and style:find('PERCENT') then
 		gftUseStyle = gftStyles[style]:gsub('%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
 	else
@@ -232,7 +232,7 @@ function E:GetFormattedText(style, min, max)
 	end
 
 	if style == 'DEFICIT' then
-		gftDeficit = max - min
+		local gftDeficit = max - min
 		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit))) or ''
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
@@ -247,15 +247,15 @@ function E:GetFormattedText(style, min, max)
 	end
 end
 
-function E:ShortenString(string, numChars, dots)
-	local bytes = string:len()
+function E:ShortenString(str, numChars, dots)
+	local bytes = #str
 	if (bytes <= numChars) then
-		return string
+		return str
 	else
 		local len, pos = 0, 1
 		while(pos <= bytes) do
 			len = len + 1
-			local c = string:byte(pos)
+			local c = str:byte(pos)
 			if (c > 0 and c <= 127) then
 				pos = pos + 1
 			elseif (c >= 192 and c <= 223) then
@@ -269,17 +269,16 @@ function E:ShortenString(string, numChars, dots)
 		end
 
 		if (len == numChars and pos <= bytes) then
-			return string:sub(1, pos - 1)..(dots and '...' or '')
+			return str:sub(1, pos - 1)..(dots and '...' or '')
 		else
-			return string
+			return str
 		end
 	end
 end
 
-function E:AbbreviateString(string, allUpper)
+function E:AbbreviateString(str, allUpper)
 	local newString = ""
-	local words = {split(" ", string)}
-	for _, word in pairs(words) do
+	for word in str:gmatch("[^ ]") do
 		word = utf8sub(word, 1, 1) --get only first letter of each word
 		if(allUpper) then
 			word = word:upper()
@@ -310,13 +309,12 @@ function E:Delay(delay, func, ...)
 		if waitFrame == nil then
 			waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
 			waitFrame:SetScript("onUpdate",function (_,elapse)
-				local waitRecord, waitDelay, waitFunc, waitParams
 				local i, count = 1, #waitTable
 				while i <= count do
-					waitRecord = tremove(waitTable,i)
-					waitDelay = tremove(waitRecord,1)
-					waitFunc = tremove(waitRecord,1)
-					waitParams = tremove(waitRecord,1)
+					local waitRecord = tremove(waitTable,i)
+					local waitDelay = tremove(waitRecord,1)
+					local waitFunc = tremove(waitRecord,1)
+					local waitParams = tremove(waitRecord,1)
 					if waitDelay > elapse then
 						tinsert(waitTable,i,{waitDelay-elapse,waitFunc,waitParams})
 						i = i + 1
