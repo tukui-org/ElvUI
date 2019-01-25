@@ -375,11 +375,11 @@ Used to make a (table of) function(s) available to all unit frames.
 * name - unique name of the function (string)
 * func - function or a table of functions (function or table)
 --]]
-function oUF:RegisterMetaFunction(name, func)
+function oUF:RegisterMetaFunction(name, func, override)
 	argcheck(name, 2, 'string')
 	argcheck(func, 3, 'function', 'table')
 
-	if(frame_metatable.__index[name]) then
+	if not override and (frame_metatable.__index[name]) then
 		return
 	end
 
@@ -796,13 +796,16 @@ Used to register an element with oUF.
 * enable  - used to enable the element for a given unit frame and unit (function?)
 * disable - used to disable the element for a given unit frame (function?)
 --]]
-function oUF:AddElement(name, update, enable, disable)
+function oUF:AddElement(name, update, enable, disable, override)
 	argcheck(name, 2, 'string')
 	argcheck(update, 3, 'function', 'nil')
 	argcheck(enable, 4, 'function', 'nil')
 	argcheck(disable, 5, 'function', 'nil')
 
-	if(elements[name]) then return error('Element [%s] is already registered.', name) end
+	if not override then
+		if(elements[name]) then return error('Element [%s] is already registered.', name) end
+	end
+
 	elements[name] = {
 		update = update;
 		enable = enable;
