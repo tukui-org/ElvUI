@@ -119,14 +119,7 @@ local function OnEnter(self, _, noUpdate)
 		for _, treeID in ipairs(talentTreeIDs) do
 			local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
 			for _, talent in ipairs(tree) do
-				local showTalent = false
-				if(talent.isBeingResearched) then
-					showTalent = true
-				end
-				if(talent.id == completeTalentID) then
-					showTalent = true
-				end
-				if(showTalent) then
+				if talent.isBeingResearched or talent.id == completeTalentID then
 					if not firstLine then
 						DT.tooltip:AddLine(" ")
 					end

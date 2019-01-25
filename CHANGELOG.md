@@ -5,7 +5,9 @@ Added option to toggle on/off the colors on bag slots for bags with assigned ite
 Added option to use the Blizzard cleanup method instead of the ElvUI sorting.  
 Added a way to assign types of items to certain bags by right-clicking the bag icon in ElvUI.  
 Added a count of remaining available characters to the chat editbox.  
-
+Added the source text for mounts in the tooltip.  
+Added Blizzards way to highlight scrappable items if the Scrapping Machine Frame is open.  
+Added Battle of Dazar'alor raid and M+ Season 2 affix debuffs.  
 
 **Bug Fixes:**  
 Fixed an issue which plays the bag sounds if you open the Game Menu. (#981)  
@@ -15,7 +17,8 @@ Fixed issue which caused E:UpdateAll to be called twice, potentially causing err
 Added a compatibility check for our Garrison Mission skin, if GarrisonMissionManger is loaded.  
 Updated gold datatext. Added an indicator for the current character and characters are now in class color.  
 Consumable items that disappear when logged out are now sorted last to avoid gaps in the ElvUI bags.  (credit: Belzaru)  
-Added a search filter for Mythic Keystone to LibItemSearch. You can search for keystones or ignore them from sorting with the term "keystone".
+Added a search filter for Mythic Keystone to LibItemSearch. You can search for keystones or ignore them from sorting with the term "keystone".  
+Moved the options for the Talking Head to the skin section.  
 
 ___
 **Version 10.85 [ January 4th 2019 ]**

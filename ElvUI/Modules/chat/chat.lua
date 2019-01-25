@@ -147,8 +147,12 @@ local tabTexs = {
 	'Highlight'
 }
 
+local canChangeMessage = function(arg1, id)
+	if id and arg1 == "" then return id end
+end
+
 function CH:MessageIsProtected(message)
-	return strmatch(message, '[^|]-|K[vq]%d-[^|]-|k')
+	return message and (message ~= gsub(message, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
 CH.Smileys = {}
@@ -159,7 +163,7 @@ function CH:RemoveSmiley(key)
 end
 
 function CH:AddSmiley(key, texture)
-	if key and (type(key) == 'string') and texture then
+	if key and (type(key) == 'string' and not strfind(key, ':%%', 1, true)) and texture then
 		CH.Smileys[key] = texture
 	end
 end
@@ -285,10 +289,12 @@ end
 
 function CH:InsertEmotions(msg)
 	for word in gmatch(msg, "%s-%S+%s*") do
-		local pattern = gsub(strtrim(word), '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
+		word = strtrim(word)
+		local pattern = gsub(word, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', '%1'..emoji..'%2');
+			local base64 = E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
+			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (base64 and ('%1|Helvmoji:%%'..base64..'|h|cFFffffff|r|h') or '%1')..emoji..'%2');
 		end
 	end
 
@@ -565,11 +571,14 @@ local removeIconFromLine
 do
 	local raidIconFunc = function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end
 	local stripTextureFunc = function(w, x, y) if x=="" then return (w~="" and w) or (y~="" and y) or "" end end
-	local hyperLinkFunc = function(x, y) if x=="" then return y end end
+	local hyperLinkFunc = function(w, x, y) if w~="" then return end
+		local emoji = (x~="" and x) and strmatch(x, 'elvmoji:%%(.+)')
+		return (emoji and E.Libs.Base64:Decode(emoji)) or y
+	end
 	removeIconFromLine = function(text)
 		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
 		text = gsub(text, "(%s?)(|?)|T.-|t(%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
-		text = gsub(text, "(|?)|H.-|h(.-)|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
+		text = gsub(text, "(|?)|H(.-)|h(.-)|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
 		return text
 	end
 end
@@ -589,7 +598,7 @@ function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
 		local message, r, g, b = frame:GetMessageInfo(i)
-		if not CH:MessageIsProtected(message) then
+		if message and not CH:MessageIsProtected(message) then
 			--Set fallback color values
 			r, g, b = r or 1, g or 1, b or 1
 
@@ -746,10 +755,11 @@ end
 
 function CH:PositionChat(override)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
-	local RightChatPanel, LeftChatPanel, RightChatDataPanel, LeftChatToggleButton = _G.RightChatPanel, _G.LeftChatPanel, _G.RightChatDataPanel, _G.LeftChatToggleButton
+	local RightChatPanel, LeftChatPanel, RightChatDataPanel, LeftChatToggleButton, LeftChatTab, CombatLogButton = _G.RightChatPanel, _G.LeftChatPanel, _G.RightChatDataPanel, _G.LeftChatToggleButton, _G.LeftChatTab, _G.CombatLogQuickButtonFrame_Custom
 	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	LeftChatPanel:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	CombatLogButton:Size(LeftChatTab:GetWidth(), LeftChatTab:GetHeight())
 
 	self.RightChatWindowID = FindRightChatID()
 
@@ -788,7 +798,7 @@ function CH:PositionChat(override)
 			if id ~= 2 then
 				chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 			else
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - _G.CombatLogQuickButtonFrame_Custom:GetHeight())
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogButton:GetHeight())
 			end
 
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
@@ -873,9 +883,9 @@ function CH:PrintURL(url)
 	return "|cFFFFFFFF[|Hurl:"..url.."|h"..url.."|h]|r "
 end
 
-function CH:FindURL(event, msg, ...)
+function CH:FindURL(event, msg, author, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and (CH.db.whisperSound ~= 'None') and not CH.SoundTimer then
-		if (strsub(msg,1,3) == "OQ,") then return false, msg, ... end
+		if (strsub(msg,1,3) == "OQ,") then return false, msg, author, ... end
 		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
 		end
@@ -884,9 +894,9 @@ function CH:FindURL(event, msg, ...)
 	end
 
 	if not CH.db.url then
-		msg = CH:CheckKeyword(msg);
+		msg = CH:CheckKeyword(msg, author);
 		msg = CH:GetSmileyReplacementText(msg);
-		return false, msg, ...
+		return false, msg, author, ...
 	end
 
 	local text, tag = msg, strmatch(msg, '{(.-)}')
@@ -897,24 +907,24 @@ function CH:FindURL(event, msg, ...)
 	text = gsub(gsub(text, "(%S)(|c.-|H.-|h.-|h|r)", '%1 %2'), "(|c.-|H.-|h.-|h|r)(%S)", '%1 %2')
 	-- http://example.com
 	local newMsg, found = gsub(text, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- www.example.com
 	newMsg, found = gsub(text, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- example@example.com
 	newMsg, found = gsub(text, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address with port 1.1.1.1:1
 	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?", CH:PrintURL("%1.%2.%3.%4%5"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address 1.1.1.1
 	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:PrintURL("%1.%2.%3.%4"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 
-	msg = CH:CheckKeyword(msg)
+	msg = CH:CheckKeyword(msg, author)
 	msg = CH:GetSmileyReplacementText(msg)
 
-	return false, msg, ...
+	return false, msg, author, ...
 end
 
 local function SetChatEditBoxMessage(message)
@@ -1772,17 +1782,19 @@ function CH:ThrottleSound()
 end
 
 local protectLinks = {}
-function CH:CheckKeyword(message)
-	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
-		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
-		for keyword in pairs(CH.Keywords) do
-			if hyperLink == keyword then
-				if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
-					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
-						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
-					end
+function CH:CheckKeyword(message, author)
+	if author ~= PLAYER_NAME then
+		for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
+			protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
+			for keyword in pairs(CH.Keywords) do
+				if hyperLink == keyword then
+					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
+						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+						end
 
-					self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+					end
 				end
 			end
 		end
@@ -1798,10 +1810,11 @@ function CH:CheckKeyword(message)
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
 			local tempWord = gsub(word, "[%s%p]", "")
 			local lowerCaseWord = strlower(tempWord)
+
 			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == strlower(keyword) then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
+					if (author ~= PLAYER_NAME) and (self.db.keywordSound ~= 'None') and not self.SoundTimer then
 						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
 						end
@@ -1948,7 +1961,7 @@ function CH:DisplayChatHistory()
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
-						if not CH:MessageIsProtected(d[1]) then
+						if d[1] and not CH:MessageIsProtected(d[1]) then
 							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 						end
 					end
@@ -2507,15 +2520,26 @@ function CH:Initialize()
 	close:Point("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-
 	S:HandleCloseButton(close)
 
+	_G.ChatFrameMenuButton:Kill()
+
+	-- Combat Log Skinning (credit: Aftermathh)
+	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
+	CombatLogButton:StripTextures()
+	CombatLogButton:SetTemplate("Transparent")
+	CombatLogButton:ClearAllPoints()
+	CombatLogButton:Point("BOTTOM", _G.LeftChatTab, 0, -24)
+	for i = 1, 2 do
+		local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
+		local CombatLogText = CombatLogQuickButton:GetFontString()
+		CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
+	end
+	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
+	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
+	CombatLogProgressBar:SetInside(CombatLogButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", _G.CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
-
-	_G.ChatFrameMenuButton:Kill() -- We have it on your CopyChatButton via right click
-
-	-- The width got changed in Bfa
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 
 	--Chat Heads Frame

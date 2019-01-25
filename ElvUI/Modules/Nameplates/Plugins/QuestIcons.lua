@@ -35,6 +35,7 @@ local QuestTypesLocalized = {
 		["zerstört"] = "KILL",
 		["töten"] = "KILL",
 		["besiegen"] = "KILL",
+		["besiegt"] = "KILL",
 		["sprecht"] = "CHAT",
 	},
 	["esMX"] = {

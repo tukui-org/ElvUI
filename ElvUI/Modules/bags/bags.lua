@@ -404,8 +404,6 @@ function UpdateItemUpgradeIcon(slot)
 end
 
 local function UpdateItemScrapIcon(slot)
-	-- TO DO: Add an update to only show the Scrap Icon if the ScrappingMachineFrame is open
-	-- Also the option dont update correctly.
 	if not E.db.bags.scrapIcon then
 		slot.ScrapIcon:SetShown(false)
 		return
@@ -421,6 +419,14 @@ local function UpdateItemScrapIcon(slot)
 			slot.ScrapIcon:SetShown(false)
 		end
 	end
+end
+
+function B:SCRAPPING_MACHINE_SHOW()
+	E:Delay(.1, B.Layout, B)
+end
+
+function B:SCRAPPING_MACHINE_CLOSE()
+	E:Delay(.1, B.Layout, B)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -492,6 +498,8 @@ function B:UpdateSlot(bagID, slotID)
 	if slot.ScrapIcon then
 		UpdateItemScrapIcon(slot)
 	end
+
+	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
@@ -2415,6 +2423,8 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+	self:RegisterEvent("SCRAPPING_MACHINE_SHOW")
+	self:RegisterEvent("SCRAPPING_MACHINE_CLOSE")
 
 	BankFrame:SetScale(0.0001)
 	BankFrame:SetAlpha(0)
