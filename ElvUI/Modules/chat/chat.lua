@@ -163,7 +163,7 @@ function CH:RemoveSmiley(key)
 end
 
 function CH:AddSmiley(key, texture)
-	if key and (type(key) == 'string' and not strfind(key, ':%%%%')) and texture then
+	if key and (type(key) == 'string' and not strfind(key, ':%%', 1, true)) and texture then
 		CH.Smileys[key] = texture
 	end
 end
