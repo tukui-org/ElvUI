@@ -883,9 +883,9 @@ function CH:PrintURL(url)
 	return "|cFFFFFFFF[|Hurl:"..url.."|h"..url.."|h]|r "
 end
 
-function CH:FindURL(event, msg, ...)
+function CH:FindURL(event, msg, author, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and (CH.db.whisperSound ~= 'None') and not CH.SoundTimer then
-		if (strsub(msg,1,3) == "OQ,") then return false, msg, ... end
+		if (strsub(msg,1,3) == "OQ,") then return false, msg, author, ... end
 		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
 		end
@@ -894,9 +894,9 @@ function CH:FindURL(event, msg, ...)
 	end
 
 	if not CH.db.url then
-		msg = CH:CheckKeyword(msg);
+		msg = CH:CheckKeyword(msg, author);
 		msg = CH:GetSmileyReplacementText(msg);
-		return false, msg, ...
+		return false, msg, author, ...
 	end
 
 	local text, tag = msg, strmatch(msg, '{(.-)}')
@@ -907,24 +907,24 @@ function CH:FindURL(event, msg, ...)
 	text = gsub(gsub(text, "(%S)(|c.-|H.-|h.-|h|r)", '%1 %2'), "(|c.-|H.-|h.-|h|r)(%S)", '%1 %2')
 	-- http://example.com
 	local newMsg, found = gsub(text, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- www.example.com
 	newMsg, found = gsub(text, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- example@example.com
 	newMsg, found = gsub(text, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address with port 1.1.1.1:1
 	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?", CH:PrintURL("%1.%2.%3.%4%5"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address 1.1.1.1
 	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:PrintURL("%1.%2.%3.%4"))
-	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg)), ... end
+	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 
-	msg = CH:CheckKeyword(msg)
+	msg = CH:CheckKeyword(msg, author)
 	msg = CH:GetSmileyReplacementText(msg)
 
-	return false, msg, ...
+	return false, msg, author, ...
 end
 
 local function SetChatEditBoxMessage(message)
@@ -1782,17 +1782,19 @@ function CH:ThrottleSound()
 end
 
 local protectLinks = {}
-function CH:CheckKeyword(message)
-	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
-		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
-		for keyword in pairs(CH.Keywords) do
-			if hyperLink == keyword then
-				if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
-					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
-						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
-					end
+function CH:CheckKeyword(message, author)
+	if not (author == PLAYER_NAME) then
+		for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
+			protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
+			for keyword in pairs(CH.Keywords) do
+				if hyperLink == keyword then
+					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
+						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+						end
 
-					self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+					end
 				end
 			end
 		end
@@ -1808,15 +1810,18 @@ function CH:CheckKeyword(message)
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
 			local tempWord = gsub(word, "[%s%p]", "")
 			local lowerCaseWord = strlower(tempWord)
-			for keyword in pairs(CH.Keywords) do
-				if lowerCaseWord == strlower(keyword) then
-					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
-						if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
-							PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
-						end
 
-						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+			if not (author == PLAYER_NAME) then
+				for keyword in pairs(CH.Keywords) do
+					if lowerCaseWord == strlower(keyword) then
+						word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
+						if (self.db.keywordSound ~= 'None') and not self.SoundTimer then
+							if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+								PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+							end
+
+							self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						end
 					end
 				end
 			end
