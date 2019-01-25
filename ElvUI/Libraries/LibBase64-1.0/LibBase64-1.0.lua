@@ -104,9 +104,8 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
 	end
 
 	local s = table.concat(t)
-	for i = 1, #t do
-		t[i] = nil
-	end
+	wipe(t)
+
 	return s
 end
 
@@ -128,9 +127,7 @@ function LibBase64:Decode(text)
 		if not (whitespace[byte] or byte == equals_byte) then
 			local num = byteToNum[byte]
 			if not num then
-				for k = 1, #t2 do
-					t2[k] = nil
-				end
+				wipe(t2)
 
 				error(("Bad argument #1 to `Decode'. Received an invalid char: %q"):format(text:sub(i, i)), 2)
 			end
@@ -167,15 +164,10 @@ function LibBase64:Decode(text)
 		end
 	end
 
-	for i = 1, #t2 do
-		t2[i] = nil
-	end
+	wipe(t2)
 
 	local s = table.concat(t)
-
-	for i = 1, #t do
-		t[i] = nil
-	end
+	wipe(t)
 
 	return s
 end
