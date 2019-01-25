@@ -6,11 +6,9 @@ Description: A library to encode and decode Base64 strings
 License: MIT
 ]]
 
-local LibBase64 = LibStub:NewLibrary("LibBase64-1.0-ElvUI", 1)
-
-if not LibBase64 then
-    return
-end
+local MAJOR, MINOR = 'LibBase64-1.0-ElvUI', 2
+local LibBase64 = LibStub:NewLibrary(MAJOR, MINOR)
+if not LibBase64 then return end
 
 local _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 local byteToNum = {}
@@ -19,7 +17,8 @@ for i = 1, #_chars do
     numToChar[i - 1] = _chars:sub(i, i)
     byteToNum[_chars:byte(i)] = i - 1
 end
-_chars = nil
+
+--[[ unused
 local A_byte = ("A"):byte()
 local Z_byte = ("Z"):byte()
 local a_byte = ("a"):byte()
@@ -28,6 +27,8 @@ local zero_byte = ("0"):byte()
 local nine_byte = ("9"):byte()
 local plus_byte = ("+"):byte()
 local slash_byte = ("/"):byte()
+]]
+
 local equals_byte = ("="):byte()
 local whitespace = {
     [(" "):byte()] = true,
@@ -49,15 +50,15 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
         error(("Bad argument #1 to `Encode'. Expected %q, got %q"):format("string", type(text)), 2)
     end
 
-    if maxLineLength == nil then
-        -- do nothing
-    elseif type(maxLineLength) ~= "number" then
-        error(("Bad argument #2 to `Encode'. Expected %q or %q, got %q"):format("number", "nil", type(maxLineLength)), 2)
-    elseif (maxLineLength % 4) ~= 0 then
-        error(("Bad argument #2 to `Encode'. Expected a multiple of 4, got %s"):format(maxLineLength), 2)
-    elseif maxLineLength <= 0 then
-        error(("Bad argument #2 to `Encode'. Expected a number > 0, got %s"):format(maxLineLength), 2)
-    end
+    if maxLineLength then
+		if type(maxLineLength) ~= "number" then
+	        error(("Bad argument #2 to `Encode'. Expected %q or %q, got %q"):format("number", "nil", type(maxLineLength)), 2)
+	    elseif (maxLineLength % 4) ~= 0 then
+	        error(("Bad argument #2 to `Encode'. Expected a multiple of 4, got %s"):format(maxLineLength), 2)
+	    elseif maxLineLength <= 0 then
+	        error(("Bad argument #2 to `Encode'. Expected a number > 0, got %s"):format(maxLineLength), 2)
+	    end
+	end
 
     if lineEnding == nil then
         lineEnding = "\r\n"
@@ -71,25 +72,22 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
 		local a, b, c = text:byte(i, i+2)
 		local nilNum = 0
 		if not b then
-			nilNum = 2
-			b = 0
-			c = 0
+			nilNum, b, c = 2, 0, 0
 		elseif not c then
-			nilNum = 1
-			c = 0
+			nilNum, c = 1, 0
 		end
 		local num = a * 2^16 + b * 2^8 + c
 
 		local d = num % 2^6
 		num = (num - d) / 2^6
 
-		local c = num % 2^6
+		c = num % 2^6
 		num = (num - c) / 2^6
 
-		local b = num % 2^6
+		b = num % 2^6
 		num = (num - b) / 2^6
 
-		local a = num % 2^6
+		a = num % 2^6
 
 		t[#t+1] = numToChar[a]
 
@@ -127,9 +125,7 @@ function LibBase64:Decode(text)
 
     for i = 1, #text do
         local byte = text:byte(i)
-        if whitespace[byte] or byte == equals_byte then
-            -- do nothing
-        else
+        if not (whitespace[byte] or byte == equals_byte) then
             local num = byteToNum[byte]
             if not num then
                 for k = 1, #t2 do
@@ -147,23 +143,20 @@ function LibBase64:Decode(text)
 
 		local nilNum = 0
 		if not c then
-			nilNum = 2
-			c = 0
-			d = 0
+			nilNum, c, d = 2, 0, 0
 		elseif not d then
-			nilNum = 1
-			d = 0
+			nilNum, d = 1, 0
 		end
 
 		local num = a * 2^18 + b * 2^12 + c * 2^6 + d
 
-		local c = num % 2^8
+		c = num % 2^8
 		num = (num - c) / 2^8
 
-		local b = num % 2^8
+		b = num % 2^8
 		num = (num - b) / 2^8
 
-		local a = num % 2^8
+		a = num % 2^8
 
 		t[#t+1] = string.char(a)
 		if nilNum < 2 then
@@ -198,9 +191,7 @@ function LibBase64:IsBase64(text)
 
 	for i = 1, #text do
 		local byte = text:byte(i)
-		if whitespace[byte] or byte == equals_byte then
-			-- do nothing
-		else
+		if not (whitespace[byte] or byte == equals_byte) then
 			local num = byteToNum[byte]
 			if not num then
 				return false
