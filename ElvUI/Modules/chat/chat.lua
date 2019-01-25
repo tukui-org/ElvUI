@@ -293,7 +293,7 @@ function CH:InsertEmotions(msg)
 		local pattern = gsub(word, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			local base64 = emoji and E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
+			local base64 = E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
 			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (base64 and ('%1|Helvmoji:'..base64..'|h|cFFffffff|r|h') or '%1')..emoji..'%2');
 		end
 	end
@@ -573,8 +573,7 @@ do
 	local stripTextureFunc = function(w, x, y) if x=="" then return (w~="" and w) or (y~="" and y) or "" end end
 	local hyperLinkFunc = function(w, x, y) if w~="" then return end
 		local emoji = (x~="" and x) and strmatch(x, 'elvmoji:(.+)')
-		local base64 = emoji and E.Libs.Base64:Decode(emoji)
-		return base64 or y
+		return (emoji and E.Libs.Base64:Decode(emoji)) or y
 	end
 	removeIconFromLine = function(text)
 		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
