@@ -10,34 +10,15 @@ local MAJOR, MINOR = 'LibBase64-1.0-ElvUI', 2
 local LibBase64 = LibStub:NewLibrary(MAJOR, MINOR)
 if not LibBase64 then return end
 
-local wipe = wipe
-local type = type
-local error = error
-local format = format
-local strsub = strsub
-local strchar = strchar
-local strbyte = strbyte
-local tconcat = table.concat
-
+local wipe, type, error, format, strsub, strchar, strbyte, tconcat = wipe, type, error, format, strsub, strchar, strbyte, table.concat
 local _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-local byteToNum = {}
-local numToChar = {}
+local byteToNum, numToChar = {}, {}
 for i = 1, #_chars do
 	numToChar[i - 1] = strsub(_chars, i, i)
 	byteToNum[strbyte(_chars, i)] = i - 1
 end
 
---[[ unused
-local A_byte = strbyte("A")
-local Z_byte = strbyte("Z")
-local a_byte = strbyte("a")
-local z_byte = strbyte("z")
-local zero_byte = strbyte("0")
-local nine_byte = strbyte("9")
-local plus_byte = strbyte("+")
-local slash_byte = strbyte("/")
-]]
-
+local t = {}
 local equals_byte = strbyte("=")
 local whitespace = {
 	[strbyte(" ")] = true,
@@ -45,8 +26,6 @@ local whitespace = {
 	[strbyte("\n")] = true,
 	[strbyte("\r")] = true,
 }
-
-local t = {}
 
 --- Encode a normal bytestring into a Base64-encoded string
 -- @param text a bytestring, can be binary data
@@ -76,7 +55,6 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
 	end
 
 	local currentLength = 0
-
 	for i = 1, #text, 3 do
 		local a, b, c = strbyte(text, i, i+2)
 		local nilNum = 0
@@ -85,25 +63,16 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
 		elseif not c then
 			nilNum, c = 1, 0
 		end
+
 		local num = a * 2^16 + b * 2^8 + c
-
-		local d = num % 2^6
-		num = (num - d) / 2^6
-
-		c = num % 2^6
-		num = (num - c) / 2^6
-
-		b = num % 2^6
-		num = (num - b) / 2^6
-
+		local d = num % 2^6;num = (num - d) / 2^6
+		c = num % 2^6;num = (num - c) / 2^6
+		b = num % 2^6;num = (num - b) / 2^6
 		a = num % 2^6
 
 		t[#t+1] = numToChar[a]
-
 		t[#t+1] = numToChar[b]
-
 		t[#t+1] = (nilNum >= 2) and "=" or numToChar[c]
-
 		t[#t+1] = (nilNum >= 1) and "=" or numToChar[d]
 
 		currentLength = currentLength + 4
@@ -147,7 +116,6 @@ function LibBase64:Decode(text)
 
 	for i = 1, #t2, 4 do
 		local a, b, c, d = t2[i], t2[i+1], t2[i+2], t2[i+3]
-
 		local nilNum = 0
 		if not c then
 			nilNum, c, d = 2, 0, 0
@@ -156,22 +124,13 @@ function LibBase64:Decode(text)
 		end
 
 		local num = a * 2^18 + b * 2^12 + c * 2^6 + d
-
-		c = num % 2^8
-		num = (num - c) / 2^8
-
-		b = num % 2^8
-		num = (num - b) / 2^8
-
+		c = num % 2^8;num = (num - c) / 2^8
+		b = num % 2^8;num = (num - b) / 2^8
 		a = num % 2^8
 
 		t[#t+1] = strchar(a)
-		if nilNum < 2 then
-			t[#t+1] = strchar(b)
-		end
-		if nilNum < 1 then
-			t[#t+1] = strchar(c)
-		end
+		if nilNum < 2 then t[#t+1] = strchar(b) end
+		if nilNum < 1 then t[#t+1] = strchar(c) end
 	end
 
 	wipe(t2)
