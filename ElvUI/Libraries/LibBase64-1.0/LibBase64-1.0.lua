@@ -132,7 +132,7 @@ function LibBase64:Decode(text)
         else
             local num = byteToNum[byte]
             if not num then
-                for i = 1, #t2 do
+                for k = 1, #t2 do
                     t2[k] = nil
                 end
 
