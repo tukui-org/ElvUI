@@ -90,7 +90,7 @@ function E:ColorGradient(perc, ...)
 	local segment, relperc = modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
-	return r1 + (r2-r1)*relperc, g1 + (g2-g1)*relperc, b1 + (b2-b1)*relperc
+	return r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc
 end
 
 --Return rounded number
@@ -125,26 +125,15 @@ end
 function E:FramesOverlap(frameA, frameB)
 	if not frameA or not frameB then return	end
 
-	local sA, sB = frameA:GetEffectiveScale(), frameB:GetEffectiveScale();
+	local sA, sB = frameA:GetEffectiveScale(), frameB:GetEffectiveScale()
 	if not sA or not sB then return	end
 
-	local frameALeft = frameA:GetLeft()
-	local frameARight = frameA:GetRight()
-	local frameABottom = frameA:GetBottom()
-	local frameATop = frameA:GetTop()
+	local frameALeft, frameARight, frameABottom, frameATop = frameA:GetLeft(), frameA:GetRight(), frameA:GetBottom(), frameA:GetTop()
+	local frameBLeft, frameBRight, frameBBottom, frameBTop = frameB:GetLeft(), frameB:GetRight(), frameB:GetBottom(), frameB:GetTop()
+	if not (frameALeft and frameARight and frameABottom and frameATop) then return end
+	if not (frameBLeft and frameBRight and frameBBottom and frameBTop) then return end
 
-	local frameBLeft = frameB:GetLeft()
-	local frameBRight = frameB:GetRight()
-	local frameBBottom = frameB:GetBottom()
-	local frameBTop = frameB:GetTop()
-
-	if not frameALeft or not frameARight or not frameABottom or not frameATop then return end
-	if not frameBLeft or not frameBRight or not frameBBottom or not frameBTop then return end
-
-	return ((frameALeft*sA) < (frameBRight*sB))
-		and ((frameBLeft*sB) < (frameARight*sA))
-		and ((frameABottom*sA) < (frameBTop*sB))
-		and ((frameBBottom*sB) < (frameATop*sA));
+	return ((frameALeft*sA) < (frameBRight*sB)) and ((frameBLeft*sB) < (frameARight*sA)) and ((frameABottom*sA) < (frameBTop*sB)) and ((frameBBottom*sB) < (frameATop*sA))
 end
 
 function E:GetScreenQuadrant(frame)
@@ -224,7 +213,7 @@ function E:GetFormattedText(style, min, max)
 	if max == 0 then max = 1 end
 
 	local gftUseStyle
-	local gftDec = (E.db.general.decimalLength or 1)
+	local gftDec = E.db.general.decimalLength or 1
 	if (gftDec ~= 1) and strfind(style, 'PERCENT') then
 		gftUseStyle = gsub(gftStyles[style], '%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
 	else
@@ -249,26 +238,28 @@ end
 
 function E:ShortenString(str, numChars, dots)
 	local bytes = #str
-	if (bytes <= numChars) then
+	if bytes <= numChars then
 		return str
 	else
 		local len, pos = 0, 1
-		while(pos <= bytes) do
+		while pos <= bytes do
 			len = len + 1
 			local c = str:byte(pos)
-			if (c > 0 and c <= 127) then
+			if c > 0 and c <= 127 then
 				pos = pos + 1
-			elseif (c >= 192 and c <= 223) then
+			elseif c >= 192 and c <= 223 then
 				pos = pos + 2
-			elseif (c >= 224 and c <= 239) then
+			elseif c >= 224 and c <= 239 then
 				pos = pos + 3
-			elseif (c >= 240 and c <= 247) then
+			elseif c >= 240 and c <= 247 then
 				pos = pos + 4
 			end
-			if (len == numChars) then break end
+			if len == numChars then
+				break
+			end
 		end
 
-		if (len == numChars and pos <= bytes) then
+		if len == numChars and pos <= bytes then
 			return strsub(str, 1, pos - 1)..(dots and '...' or '')
 		else
 			return str
@@ -281,7 +272,7 @@ function E:AbbreviateString(str, allUpper)
 	for word in gmatch(str, "[^%s]+") do
 		word = utf8sub(word, 1, 1) --get only first letter of each word
 		if allUpper then word = strupper(word) end
-		newString = newString .. word
+		newString = newString..word
 	end
 
 	return newString
@@ -333,9 +324,7 @@ function E:StringTitle(str)
 end
 
 E.TimeThreshold = 3
-
--- aura time colors for days, hours, minutes, seconds, fadetimer
-E.TimeColors = {
+E.TimeColors = { -- aura time colors for days, hours, minutes, seconds, fadetimer
 	[0] = '|cffeeeeee',
 	[1] = '|cffeeeeee',
 	[2] = '|cffeeeeee',
@@ -344,16 +333,14 @@ E.TimeColors = {
 	[5] = '|cff909090', --mmss
 	[6] = '|cff707070', --hhmm
 }
-
--- short and long aura time formats
-E.TimeFormats = {
-	[0] = { '%dd', '%dd' },
-	[1] = { '%dh', '%dh' },
-	[2] = { '%dm', '%dm' },
-	[3] = { '%ds', '%d' },
-	[4] = { '%.1fs', '%.1f' },
-	[5] = { '%d:%02d', '%d:%02d' }, --mmss
-	[6] = { '%d:%02d', '%d:%02d' }, --hhmm
+E.TimeFormats = { -- short and long aura time formats
+	[0] = {'%dd', '%dd'},
+	[1] = {'%dh', '%dh'},
+	[2] = {'%dm', '%dm'},
+	[3] = {'%ds', '%d'},
+	[4] = {'%.1fs', '%.1f'},
+	[5] = {'%d:%02d', '%d:%02d'}, --mmss
+	[6] = {'%d:%02d', '%d:%02d'}, --hhmm
 }
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
@@ -397,11 +384,9 @@ end
 
 function E:GetDistance(unit1, unit2)
 	local x1, y1, _, map1 = UnitPosition(unit1)
-
 	if not x1 then return end
 
 	local x2, y2, _, map2 = UnitPosition(unit2)
-
 	if not x2 then return end
 
 	if map1 ~= map2 then return end
@@ -409,14 +394,11 @@ function E:GetDistance(unit1, unit2)
 	local dX = x2 - x1
 	local dY = y2 - y1
 	local distance = sqrt(dX * dX + dY * dY)
-
 	return distance, atan2(dY, dX) - GetPlayerFacing()
 end
 
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
-local COLOR_COPPER = "|cffeda55f"
-local COLOR_SILVER = "|cffc7c7cf"
-local COLOR_GOLD = "|cffffd700"
+local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = "|cffeda55f", "|cffc7c7cf", "|cffffd700"
 local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
 local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
 local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
@@ -431,16 +413,10 @@ function E:FormatMoney(amount, style, textonly)
 	local copper = floor(mod(value, 100))
 
 	if not style or style == "SMART" then
-		local str = "";
-		if gold > 0 then
-			str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
-		end
-		if silver > 0 then
-			str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
-		end
-		if copper > 0 or value == 0 then
-			str = format("%s%d%s", str, copper, coppername)
-		end
+		local str = ""
+		if gold > 0 then str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "") end
+		if silver > 0 then str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "") end
+		if copper > 0 or value == 0 then str = format("%s%d%s", str, copper, coppername) end
 		return str
 	end
 
