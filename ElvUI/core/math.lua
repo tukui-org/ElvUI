@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local tinsert, tremove, next = tinsert, tremove, next
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
-local format, sub, upper, utf8sub = string.format, string.sub, string.upper, string.utf8sub
+local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -117,7 +117,7 @@ end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-	local rhex, ghex, bhex = sub(hex, 1, 2), sub(hex, 3, 4), sub(hex, 5, 6)
+	local rhex, ghex, bhex = strsub(hex, 1, 2), strsub(hex, 3, 4), strsub(hex, 5, 6)
 	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
 end
 
@@ -225,8 +225,8 @@ function E:GetFormattedText(style, min, max)
 
 	local gftUseStyle
 	local gftDec = (E.db.general.decimalLength or 1)
-	if (gftDec ~= 1) and style:find('PERCENT') then
-		gftUseStyle = gftStyles[style]:gsub('%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
+	if (gftDec ~= 1) and strfind(style, 'PERCENT') then
+		gftUseStyle = gsub(gftStyles[style], '%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
 	else
 		gftUseStyle = gftStyles[style]
 	end
@@ -269,7 +269,7 @@ function E:ShortenString(str, numChars, dots)
 		end
 
 		if (len == numChars and pos <= bytes) then
-			return str:sub(1, pos - 1)..(dots and '...' or '')
+			return strsub(str, 1, pos - 1)..(dots and '...' or '')
 		else
 			return str
 		end
@@ -278,11 +278,9 @@ end
 
 function E:AbbreviateString(str, allUpper)
 	local newString = ""
-	for word in str:gmatch("[^ ]") do
+	for word in gmatch(str, "[^%s]*") do
 		word = utf8sub(word, 1, 1) --get only first letter of each word
-		if(allUpper) then
-			word = word:upper()
-		end
+		if allUpper then word = strupper(word) end
 		newString = newString .. word
 	end
 
@@ -331,7 +329,7 @@ function E:Delay(delay, func, ...)
 end
 
 function E:StringTitle(str)
-	return str:gsub("(.)", upper, 1)
+	return gsub(str, "(.)", strupper, 1)
 end
 
 E.TimeThreshold = 3
