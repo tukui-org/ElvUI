@@ -293,7 +293,7 @@ function CH:InsertEmotions(msg)
 		local pattern = gsub(word, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			local base64 = emoji and E.Libs.Base64:Encode(word)
+			local base64 = emoji and E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
 			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (base64 and ('%1|Helvmoji:'..base64..'|h|cFFffffff|r|h') or '%1')..emoji..'%2');
 		end
 	end
