@@ -56,12 +56,12 @@ local t = {}
 -- @return a Base64-encoded string
 function LibBase64:Encode(text, maxLineLength, lineEnding)
 	if type(text) ~= "string" then
-		error(format("Bad argument #1 to `Encode'. Expected %q, got %q", "string", type(text)), 2)
+		error(format("Bad argument #1 to `Encode'. Expected string, got %q", type(text)), 2)
 	end
 
 	if maxLineLength then
 		if type(maxLineLength) ~= "number" then
-			error(format("Bad argument #2 to `Encode'. Expected %q or %q, got %q", "number", "nil", type(maxLineLength)), 2)
+			error(format("Bad argument #2 to `Encode'. Expected number or nil, got %q", type(maxLineLength)), 2)
 		elseif (maxLineLength % 4) ~= 0 then
 			error(format("Bad argument #2 to `Encode'. Expected a multiple of 4, got %s", maxLineLength), 2)
 		elseif maxLineLength <= 0 then
@@ -72,7 +72,7 @@ function LibBase64:Encode(text, maxLineLength, lineEnding)
 	if lineEnding == nil then
 		lineEnding = "\r\n"
 	elseif type(lineEnding) ~= "string" then
-		error(format("Bad argument #3 to `Encode'. Expected %q, got %q", "string", type(lineEnding)), 2)
+		error(format("Bad argument #3 to `Encode'. Expected string, got %q", type(lineEnding)), 2)
 	end
 
 	local currentLength = 0
@@ -128,7 +128,7 @@ local t2 = {}
 -- @return a bytestring
 function LibBase64:Decode(text)
 	if type(text) ~= "string" then
-		error(format("Bad argument #1 to `Decode'. Expected %q, got %q", "string", type(text)), 2)
+		error(format("Bad argument #1 to `Decode'. Expected string, got %q", type(text)), 2)
 	end
 
 	for i = 1, #text do
@@ -184,7 +184,7 @@ end
 
 function LibBase64:IsBase64(text)
 	if type(text) ~= "string" then
-		error(format("Bad argument #1 to `IsBase64'. Expected %q, got %q", "string", type(text)), 2)
+		error(format("Bad argument #1 to `IsBase64'. Expected string, got %q", type(text)), 2)
 	end
 
 	if #text % 4 ~= 0 then
