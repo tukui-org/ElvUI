@@ -201,6 +201,16 @@ function UF:Update_PlayerFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
+	if not (db.castbar.enable or db.enable) then
+		CastingBarFrame.unit = nil
+		CastingBarFrame.Show = nil
+		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
+
+		PetCastingBarFrame.unit = nil
+		PetCastingBarFrame.Show = nil
+		CastingBarFrame_OnLoad(PetCastingBarFrame, 'pet', false, false)
+	end
+
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
