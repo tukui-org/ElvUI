@@ -1190,7 +1190,7 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1;
 
 			if(not f.reagentFrame.slots[i]) then
-				f.reagentFrame.slots[i] = CreateFrame("Button", "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
+				f.reagentFrame.slots[i] = CreateFrame("ItemButton", "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
 				f.reagentFrame.slots[i]:SetID(i)
 
 				f.reagentFrame.slots[i]:StyleButton()
