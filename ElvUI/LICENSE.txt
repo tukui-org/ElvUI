@@ -2,7 +2,7 @@ ElvUI License
 	Copyright ©2009-2019 The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 
-	The author of this addon hereby grants you the following rights:
+	This addon is free to use and the authors hereby grants you the following rights:
 
 	1. 	You may make modifications to this addon for private use only, you
 		may not publicize any portion of this addon. The only exception being you may
