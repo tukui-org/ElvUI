@@ -267,8 +267,6 @@ function UF:Construct_UF(frame, unit)
 		UF["Construct_"..E:StringTitle(self.groupunits[unit]).."Frames"](self, frame, unit)
 	end
 
-	self:Update_StatusBars()
-	self:Update_FontStrings()
 	return frame
 end
 
@@ -484,7 +482,7 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	self:UpdateAllHeaders()
+	UF:UpdateAllHeaders()
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -1157,7 +1155,7 @@ local hasEnteredWorld = false
 function UF:PLAYER_ENTERING_WORLD()
 	if not hasEnteredWorld then
 		--We only want to run Update_AllFrames once when we first log in or /reload
-		self:Update_AllFrames()
+		UF:Update_AllFrames()
 		hasEnteredWorld = true
 	else
 		local _, instanceType = IsInInstance()

@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, wipe, next, tremove, tinsert = table.sort, wipe, next, tremove, tinsert
-local format, find, join, gsub = string.format, string.find, string.join, string.gsub
+local sort, next, wipe, tremove, tinsert = table.sort, next, wipe, tremove, tinsert
+local format, gsub, strfind, strjoin = string.format, string.gsub, strfind, strjoin
 --WoW API / Variables
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
@@ -125,7 +125,7 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
+local totalOnlineString = strjoin("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
@@ -173,9 +173,8 @@ end
 
 local function BuildFriendTable(total)
 	wipe(friendTable)
-	local _, name, level, class, area, connected, status, note, guid
 	for i = 1, total do
-		name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
+		local name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
 
 		if status == "<"..AFK..">" then
 			status = statusTable[1]
@@ -244,9 +243,8 @@ end
 
 local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText, hasFocus)
 	-- `hasFocus` is not added to BNTable[i]; we only need this to keep our friends datatext in sync with the friends list
-	local isAdded, bnInfo = 0
 	for i = 1, bnIndex do
-		isAdded, bnInfo = 0, BNTable[i]
+		local isAdded, bnInfo = 0, BNTable[i]
 		if bnInfo and (bnInfo[1] == bnetIDAccount) then
 			if bnInfo[6] == "BSAp" then
 				if client == "BSAp" then -- unlikely to happen
@@ -282,11 +280,8 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText)
 		end
 		if isAdded ~= 0 then
-			break
+			return bnIndex
 		end
-	end
-	if isAdded ~= 0 then
-		return bnIndex
 	end
 
 	bnIndex = bnIndex + 1 --bump the index one for a new addition
@@ -301,17 +296,14 @@ local function BuildBNTable(total)
 	wipe(clientSorted)
 
 	local bnIndex = 0
-	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText
-	local hasFocus, gameCharacterName, gameClient, realmName, faction, race, class, zoneName, level, isGameAFK, isGameBusy, guid, gameText
-	local numGameAccounts
 
 	for i = 1, total do
-		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isBnetAFK, isBnetDND, _, noteText = BNGetFriendInfo(i);
+		local bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isBnetAFK, isBnetDND, _, noteText = BNGetFriendInfo(i);
 		if isOnline then
-			numGameAccounts = BNGetNumFriendGameAccounts(i);
+			local numGameAccounts = BNGetNumFriendGameAccounts(i);
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					hasFocus, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, gameText, _, _, _, _, _, isGameAFK, isGameBusy, guid = BNGetFriendGameAccountInfo(i, y);
+					local hasFocus, gameCharacterName, gameClient, realmName, _, faction, race, class, _, zoneName, level, gameText, _, _, _, _, _, isGameAFK, isGameBusy, guid = BNGetFriendGameAccountInfo(i, y);
 					bnIndex = PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, gameCharacterName, bnetIDGameAccount, gameClient, isOnline, isBnetAFK or isGameAFK, isBnetDND or isGameBusy, noteText, realmName, faction, race, class, zoneName, level, guid, gameText, hasFocus);
 				end
 			else
@@ -323,13 +315,11 @@ local function BuildBNTable(total)
 	if next(BNTable) then
 		sort(BNTable, Sort)
 	end
-	if next(tableList) then
-		for c, v in pairs(tableList) do
-			if next(v) then
-				sort(v, Sort)
-			end
-			tinsert(clientSorted, c)
+	for c, v in pairs(tableList) do
+		if next(v) then
+			sort(v, Sort)
 		end
+		tinsert(clientSorted, c)
 	end
 	if next(clientSorted) then
 		sort(clientSorted, clientSort)
@@ -344,7 +334,7 @@ local function OnEvent(self, event, message)
 	-- when this is the case, we invalidate our buffered table and update the
 	-- datatext information
 	if event == "CHAT_MSG_SYSTEM" then
-		if not (find(message, friendOnline) or find(message, friendOffline)) then return end
+		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
 	end
 
 	-- force update when showing tooltip
@@ -360,23 +350,21 @@ local function Click(self, btn)
 	if btn == "RightButton" then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
-		local classc, levelc, info, shouldSkip
 
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if (#friendTable > 0) and not E.db.datatexts.friends.hideWoW then
-			for i = 1, #friendTable do
-				info = friendTable[i]
+		if not E.db.datatexts.friends.hideWoW then
+			for _, info in ipairs(friendTable) do
 				if info[5] then
-					shouldSkip = false
+					local shouldSkip = false
 					if (info[6] == statusTable[1]) and E.db.datatexts.friends.hideAFK then
 						shouldSkip = true
 					elseif (info[6] == statusTable[2]) and E.db.datatexts.friends.hideDND then
 						shouldSkip = true
 					end
 					if not shouldSkip then
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 						classc = classc or GetQuestDifficultyColor(info[2]);
 
 						menuCountWhispers = menuCountWhispers + 1
@@ -390,42 +378,38 @@ local function Click(self, btn)
 			end
 		end
 
-		if #BNTable > 0 then
-			local realID, hasBnet
-			for i = 1, #BNTable do
-				info = BNTable[i]
-				if info[7] then
-					shouldSkip = false
-					if (info[8] == true) and E.db.datatexts.friends.hideAFK then
-						shouldSkip = true
-					elseif (info[9] == true) and E.db.datatexts.friends.hideDND then
-						shouldSkip = true
+		for _, info in ipairs(BNTable) do
+			if info[7] then
+				local shouldSkip = false
+				if (info[8] == true) and E.db.datatexts.friends.hideAFK then
+					shouldSkip = true
+				elseif (info[9] == true) and E.db.datatexts.friends.hideDND then
+					shouldSkip = true
+				end
+				if info[6] and E.db.datatexts.friends['hide'..info[6]] then
+					shouldSkip = true
+				end
+				if not shouldSkip then
+					local realID, hasBnet = info[2], false
+
+					for _, z in ipairs(menuList[3].menuList) do
+						if z and z.text and (z.text == realID) then
+							hasBnet = true
+							break
+						end
 					end
-					if info[6] and E.db.datatexts.friends['hide'..info[6]] then
-						shouldSkip = true
+
+					if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
+						menuCountWhispers = menuCountWhispers + 1
+						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
-					if not shouldSkip then
-						realID, hasBnet = info[2], false
 
-						for _, z in ipairs(menuList[3].menuList) do
-							if z and z.text and (z.text == realID) then
-								hasBnet = true
-								break
-							end
-						end
+					if info[6] == wowString and (E.myfaction == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
+						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]], GetQuestDifficultyColor(info[16])
+						classc = classc or GetQuestDifficultyColor(info[16])
 
-						if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
-							menuCountWhispers = menuCountWhispers + 1
-							menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
-						end
-
-						if info[6] == wowString and (E.myfaction == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
-							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
-							classc = classc or GetQuestDifficultyColor(info[16])
-
-							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], arg2 = info[17], notCheckable=true, func = inviteClick}
-						end
+						menuCountInvites = menuCountInvites + 1
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], arg2 = info[17], notCheckable=true, func = inviteClick}
 					end
 				end
 			end
@@ -469,14 +453,13 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc, info, grouped, shouldSkip
+	local zonec, classc, levelc, realmc, grouped
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
-		for i = 1, #friendTable do
-			info = friendTable[i]
+		for _, info in ipairs(friendTable) do
 			if info[5] then
-				shouldSkip = false
+				local shouldSkip = false
 				if (info[6] == statusTable[1]) and E.db.datatexts.friends.hideAFK then
 					shouldSkip = true
 				elseif (info[6] == statusTable[2]) and E.db.datatexts.friends.hideDND then
@@ -484,7 +467,7 @@ local function OnEnter(self)
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+					classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 
 					classc = classc or GetQuestDifficultyColor(info[2])
 
@@ -496,15 +479,13 @@ local function OnEnter(self)
 	end
 
 	if numBNetOnline > 0 then
-		local status, client, Table, header
-		for z = 1, #clientSorted do
-			client = clientSorted[z]
-			Table = tableList[client]
-			header = format("%s (%s)", battleNetString, clientTags[client] or client)
-			shouldSkip = E.db.datatexts.friends['hide'..client]
-			if (#Table > 0) and not shouldSkip then
-				for i = 1, #Table do
-					info = Table[i]
+		local status
+		for _, client in ipairs(clientSorted) do
+			local Table = tableList[client]
+			local header = format("%s (%s)", battleNetString, clientTags[client] or client)
+			local shouldSkip = E.db.datatexts.friends['hide'..client]
+			if not shouldSkip then
+				for _, info in ipairs(Table) do
 					if info[7] then
 						shouldSkip = false
 						if info[8] == true then
@@ -522,7 +503,7 @@ local function OnEnter(self)
 						end
 						if not shouldSkip then
 							if info[6] == wowString then
-								classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]]
+								classc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]]
 								if info[16] ~= '' then
 									levelc = GetQuestDifficultyColor(info[16])
 								else
@@ -559,7 +540,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", "%s: ", hex, "%d|r")
+	displayString = strjoin("", "%s: ", hex, "%d|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

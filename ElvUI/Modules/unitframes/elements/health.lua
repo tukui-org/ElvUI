@@ -210,7 +210,9 @@ function UF:Configure_HealthBar(frame)
 	--Highlight Texture
 	UF:Configure_HighlightGlow(frame)
 
-	frame:UpdateElement("Health")
+	if frame:IsElementEnabled("Health") then
+	    frame.Health:ForceUpdate()
+	end
 end
 
 function UF:GetHealthBottomOffset(frame)

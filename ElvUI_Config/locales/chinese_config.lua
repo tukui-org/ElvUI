@@ -24,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -40,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -171,13 +171,13 @@ L["Add Item or Search Syntax"] = "添加物品或者匹配语法"
 L["Adjust the width of the bag frame."] = "调整背包框架宽度"
 L["Adjust the width of the bank frame."] = "调整银行框架宽度"
 L["Ascending"] = "升序"
-L["Bag"] = "背包"
-L["Bag Assignment"] = "背包分类"
 L["Bag 1"] = "背包1"
 L["Bag 2"] = "背包2"
 L["Bag 3"] = "背包3"
 L["Bag 4"] = "背包4"
+L["Bag Assignment"] = "背包分类"
 L["Bag Sorting"] = "背包排序"
+L["Bag"] = "背包"
 L["Bag-Bar"] = "背包条"
 L["Bank 1"] = "银行1"
 L["Bank 2"] = "银行2"
@@ -192,6 +192,7 @@ L["Bottom to Top"] = "底部到顶部"
 L["Button Size (Bag)"] = "背包格子尺寸"
 L["Button Size (Bank)"] = "银行格子尺寸"
 L["Clear Search On Close"] = "关闭时清除搜索"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "紧凑"
 L["Currency Format"] = "货币格式"
 L["Custom Color"] = "自定义颜色"
@@ -228,6 +229,7 @@ L["Search Syntax"] = "搜索语法"
 L["Sell Interval"] = "售卖周期"
 L["Set the size of your bag buttons."] = "设置背包按钮尺寸"
 L["Short (Whole Numbers)"] = "短(完整数字)"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "显示硬币"
 L["Show Junk Icon"] = "显示垃圾图标"
 L["Show New Item Glow"] = "新物品发光"
@@ -247,6 +249,8 @@ L["The size of the individual buttons on the bag frame."] = "背包框架单个�
 L["The size of the individual buttons on the bank frame."] = "银行框架单个格子的尺寸"
 L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = "顶部到底部"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "显示硬币图标而不是颜色文字"
 L["Will attempt to sell another item in set interval after previous one was sold."] = "尝试在设定的周期后卖下一个物品"
 
@@ -927,6 +931,7 @@ L["BG Map"] = "战场地图"
 L["BG Score"] = "战场记分"
 L["Calendar Frame"] = "日历框架"
 L["Character Frame"] = "角色"
+L["CheckBox Skin"] = true
 L["Contribution"] = "捐献"
 L["Debug Tools"] = "除错工具"
 L["Gossip Frame"] = "闲谈"

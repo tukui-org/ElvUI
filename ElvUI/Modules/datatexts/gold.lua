@@ -3,8 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
+local wipe = wipe
 local pairs = pairs
-local join = string.join
+local strjoin = strjoin
+local tinsert = tinsert
 --WoW API / Variables
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
@@ -13,16 +15,17 @@ local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
 local C_Timer_NewTicker = C_Timer.NewTicker
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvDB, ToggleAllBags
+-- GLOBALS: ElvDB, CUSTOM_CLASS_COLORS, ToggleAllBags
 
 local Ticker
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
 local Profit	= 0
 local Spent		= 0
-local resetCountersFormatter = join("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
-local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
+local resetCountersFormatter = strjoin("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
+local resetInfoFormatter = strjoin("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
@@ -37,6 +40,10 @@ local function OnEvent(self)
 	ElvDB.gold = ElvDB.gold or {};
 	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {};
 	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney;
+
+	ElvDB.class = ElvDB.class or {};
+	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {};
+	ElvDB.class[E.myrealm][E.myname] = E.myclass;
 
 	local OldMoney = ElvDB.gold[E.myrealm][E.myname] or NewMoney
 
@@ -68,6 +75,7 @@ local function Click(self, btn)
 	end
 end
 
+local myGold = {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	local textOnly = not E.db.datatexts.goldCoins and true or false
@@ -86,11 +94,25 @@ local function OnEnter(self)
 	local totalGold = 0
 	DT.tooltip:AddLine(L["Character: "])
 
+	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			DT.tooltip:AddDoubleLine(k, E:FormatMoney(ElvDB.gold[E.myrealm][k], style, textOnly), 1, 1, 1, 1, 1, 1)
-			totalGold=totalGold+ElvDB.gold[E.myrealm][k]
+			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
+			local color = class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			tinsert(myGold,
+				{
+					name = k,
+					amount = ElvDB.gold[E.myrealm][k],
+					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
+					r = color.r, g = color.g, b = color.b,
+				}
+			)
 		end
+		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
+	end
+
+	for _, g in ipairs(myGold) do
+		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name.." |TInterface\\COMMON\\Indicator-Green:14|t" or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

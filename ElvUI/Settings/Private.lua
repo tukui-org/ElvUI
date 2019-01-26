@@ -53,6 +53,7 @@ V['skins'] = {
 	['ace3'] = {
 		['enable'] = true,
 	},
+	['checkBoxSkin'] = true,
 	['parchmentRemover'] = {
 		['enable'] = false,
 	},

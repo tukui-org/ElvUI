@@ -8,7 +8,6 @@ local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 
 local RegisterAsWidget, RegisterAsContainer
 local function SkinDropdownPullout(self)
@@ -62,7 +61,7 @@ function S:SkinAce3()
 			checkbg:SetTexture('')
 			highlight:SetTexture('')
 
-			if E.db.general.useNewCheckBox then
+			if E.private.skins.checkBoxSkin then
 				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 
 				check:SetTexture([[Interface\AddOns\ElvUI\media\textures\melli]])

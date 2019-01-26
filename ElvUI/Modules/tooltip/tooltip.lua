@@ -638,15 +638,26 @@ end
 function TT:SetUnitAura(tt, unit, index, filter)
 	if tt:IsForbidden() then return end
 	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
-	if id and self.db.spellID then
-		if caster then
-			local name = UnitName(caster)
-			local _, class = UnitClass(caster)
-			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-			if not color then color = RAID_CLASS_COLORS.PRIEST end
-			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
-		else
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
+
+	if id then
+		if self.MountIDs[id] then
+			local _, descriptionText, sourceText = C_MountJournal.GetMountInfoExtraByID(self.MountIDs[id])
+			--tt:AddLine(descriptionText)
+			tt:AddLine(" ")
+			tt:AddLine(sourceText, 1, 1, 1)
+			tt:AddLine(" ")
+		end
+
+		if self.db.spellID then
+			if caster then
+				local name = UnitName(caster)
+				local _, class = UnitClass(caster)
+				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				if not color then color = RAID_CLASS_COLORS.PRIEST end
+				tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
+			else
+				tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
+			end
 		end
 
 		tt:Show()
@@ -751,6 +762,13 @@ end
 function TT:Initialize()
 	self.db = E.db.tooltip
 
+	self.MountIDs = {}
+	local mountIDs = C_MountJournal.GetMountIDs();
+	local _, spellID
+	for i, mountID in ipairs(mountIDs) do
+		self.MountIDs[select(2, C_MountJournal.GetMountInfoByID(mountID))] = mountID
+	end
+	
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
 	E:CreateMover(BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
 	self:SecureHook(BNToastFrame, "SetPoint", "RepositionBNET")

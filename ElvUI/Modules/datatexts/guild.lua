@@ -3,8 +3,8 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select, unpack, sort, wipe, ceil = select, unpack, table.sort, wipe, math.ceil
-local format, find, join, split = string.format, string.find, string.join, string.split
+local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, table.sort, unpack, wipe, ceil
+local format, strfind, strjoin, strsplit = string.format, strfind, strjoin, strsplit
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -34,8 +34,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 local EasyMenu = EasyMenu
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: GuildFrame, CUSTOM_CLASS_COLORS
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -49,9 +48,9 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFFFF%s/%s (%s%%)"
-local moreMembersOnlineString = join("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
-local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
-local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
+local moreMembersOnlineString = strjoin("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
+local noteString = strjoin("", "|cff999999   ", LABEL_NOTE, ":|r %s")
+local officerNoteString = strjoin("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
 local guildTable, guildMotD = {}, ""
 local lastPanel
 
@@ -89,15 +88,13 @@ local mobilestatus = {
 
 local function BuildGuildTable()
 	wipe(guildTable)
-	local statusInfo
-	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile, guid
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
+		local name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
 		if not name then return end
 
-		statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
+		local statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
@@ -110,11 +107,11 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
-local FRIEND_ONLINE = select(2, split(" ", ERR_FRIEND_ONLINE_SS, 2))
+local FRIEND_ONLINE = select(2, strsplit(" ", ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	['CHAT_MSG_SYSTEM'] = function(self, arg1)
-		if(FRIEND_ONLINE ~= nil and arg1 and find(arg1, FRIEND_ONLINE)) then
+		if(FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE)) then
 			resendRequest = true
 		end
 	end,
@@ -195,17 +192,16 @@ local function Click(self, btn)
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
 
-		local classc, levelc, grouped, info
+		local grouped
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		for i = 1, #guildTable do
-			info = guildTable[i]
+		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+				local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
@@ -254,22 +250,19 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, classc, levelc, info, grouped
-	local shown = 0
+	local zonec, grouped
 
 	DT.tooltip:AddLine(' ')
-	for i = 1, #guildTable do
+	for i, info in ipairs(guildTable) do
 		-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
-		if 30 - shown <= 1 then
+		if 30 - i < 1 then
 			if online - 30 > 1 then DT.tooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
 			break
 		end
 
-		info = guildTable[i]
-
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
-		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
 
@@ -278,9 +271,8 @@ local function OnEnter(self, _, noUpdate)
 			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], split("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
-		shown = shown + 1
 	end
 
 	DT.tooltip:Show()
@@ -291,7 +283,7 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", GUILD, ": ", hex, "%d|r")
+	displayString = strjoin("", GUILD, ": ", hex, "%d|r")
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel ~= nil then

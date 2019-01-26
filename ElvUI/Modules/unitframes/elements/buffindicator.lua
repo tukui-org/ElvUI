@@ -240,6 +240,4 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 	if frame.AuraWatch.Update then
 		frame.AuraWatch.Update(frame)
 	end
-
-	frame:UpdateElement("AuraWatch")
 end
