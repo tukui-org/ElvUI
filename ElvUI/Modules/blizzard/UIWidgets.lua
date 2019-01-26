@@ -32,6 +32,7 @@ local function UIWidgets()
 
 	hooksecurefunc(topCenterContainer, 'SetPoint', function(self, a, b, c, d, e)
 		if b ~= topCenterHolder then
+			self:ClearAllPoints()
 			self:SetPoint('CENTER', topCenterHolder)
 			self:SetParent(topCenterHolder)
 		end
@@ -39,6 +40,7 @@ local function UIWidgets()
 
 	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', function(self, a, b, c, d, e)
 		if b ~= belowMiniMapHolder then
+			self:ClearAllPoints()
 			self:SetPoint('CENTER', belowMiniMapHolder, 'CENTER')
 			self:SetParent(belowMiniMapHolder)
 		end
