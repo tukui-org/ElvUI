@@ -274,63 +274,31 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
-	-- Azerite Items
-	local slots = {
-		"HeadSlot",
-		"NeckSlot",
-		"ShoulderSlot",
-		"BackSlot",
-		"ChestSlot",
-		"ShirtSlot",
-		"TabardSlot",
-		"WristSlot",
-		"HandsSlot",
-		"WaistSlot",
-		"LegsSlot",
-		"FeetSlot",
-		"Finger0Slot",
-		"Finger1Slot",
-		"Trinket0Slot",
-		"Trinket1Slot",
-		"MainHandSlot",
-		"SecondaryHandSlot",
-	}
+	for _, Slot in pairs({PaperDollItemsFrame:GetChildren()}) do
+		if Slot:IsObjectType("Button") then
+			S:HandleTexture(Slot.icon)
+			Slot:StripTextures()
+			Slot:SetTemplate()
+			Slot:StyleButton(Slot)
+			Slot.icon:SetInside()
 
-	for _, i in pairs(slots) do
-		local slot = _G["Character"..i]
-		local icon = _G["Character"..i.."IconTexture"]
-		local border = _G["Character"..i].IconBorder
-		local cooldown = _G["Character"..i.."Cooldown"]
+			local Cooldown = _G[Slot:GetName().."Cooldown"]
+			E:RegisterCooldown(Cooldown)
 
-		border:Kill()
+			hooksecurefunc(Slot, "DisplayAsAzeriteItem", UpdateAzeriteItem)
+			hooksecurefunc(Slot, "DisplayAsAzeriteEmpoweredItem", UpdateAzeriteEmpoweredItem)
 
-		slot:StripTextures()
-		slot:StyleButton(true)
-		slot:SetNormalTexture("")
-		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
-		slot:SetTemplate("Default")
+			if Slot.popoutButton:GetPoint() == 'TOP' then
+				Slot.popoutButton:SetPoint("TOP", Slot, "BOTTOM", 0, 2)
+			else
+				Slot.popoutButton:SetPoint("LEFT", Slot, "RIGHT", -2, 0)
+			end
 
-		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
-
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:ClearAllPoints()
-		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
-		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
-
-		if(cooldown) then
-			E:RegisterCooldown(cooldown)
+			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
+			Slot.IconBorder:SetAlpha(0)
+			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function(_) Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 		end
-
-		hooksecurefunc(slot.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		hooksecurefunc(slot, "DisplayAsAzeriteItem", UpdateAzeriteItem)
-		hooksecurefunc(slot, "DisplayAsAzeriteEmpoweredItem", UpdateAzeriteEmpoweredItem)
 	end
 
 	-- Give character frame model backdrop it's color back
