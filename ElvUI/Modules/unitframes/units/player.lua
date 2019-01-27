@@ -167,6 +167,19 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
+	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) or (db.enable and not db.castbar.enable) then
+		CastingBarFrame.unit = nil
+		CastingBarFrame.Show = nil
+		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
+
+		PetCastingBarFrame.unit = nil
+		PetCastingBarFrame.Show = nil
+		CastingBarFrame_OnLoad(PetCastingBarFrame, 'pet', false, false)
+	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player then
+		CastingBarFrame:UnregisterAllEvents()
+		PetCastingBarFrame:UnregisterAllEvents()
+	end
+
 	UF:Configure_Castbar(frame)
 
 	--Combat Fade
@@ -200,16 +213,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	if not (db.castbar.enable or db.enable) then
-		CastingBarFrame.unit = nil
-		CastingBarFrame.Show = nil
-		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
-
-		PetCastingBarFrame.unit = nil
-		PetCastingBarFrame.Show = nil
-		CastingBarFrame_OnLoad(PetCastingBarFrame, 'pet', false, false)
-	end
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
