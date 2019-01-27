@@ -275,7 +275,7 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
 	for _, Slot in pairs({PaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType("Button") then
+		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
 			S:HandleTexture(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
