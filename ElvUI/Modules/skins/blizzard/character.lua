@@ -304,6 +304,7 @@ local function LoadSkin()
 
 		border:Kill()
 
+		slot:StripTextures()
 		slot:StyleButton(true)
 		slot:SetNormalTexture("")
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
