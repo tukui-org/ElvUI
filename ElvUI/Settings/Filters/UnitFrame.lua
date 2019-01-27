@@ -724,7 +724,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[258313] = Defaults(), -- Handcuff
 		[259711] = Defaults(), -- Lockdown
 		[256198] = Defaults(), -- Azerite Rounds: Incendiary
-		[256101] = Defaults(), -- Explosive Burst
+		[256101] = Defaults(), -- Explosive Burst (mythic)
+		[256105] = Defaults(), -- Explosive Burst (mythic+)
 		[256044] = Defaults(), -- Deadeye
 		[256474] = Defaults(), -- Heartstopper Venom
 
