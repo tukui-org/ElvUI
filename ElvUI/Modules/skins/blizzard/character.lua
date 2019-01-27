@@ -296,16 +296,29 @@ local function LoadSkin()
 		"SecondaryHandSlot",
 	}
 
-	for _, slot in pairs(slots) do
-		local icon = _G["Character"..slot.."IconTexture"]
-		local cooldown = _G["Character"..slot.."Cooldown"]
-		slot = _G["Character"..slot]
-		slot:StripTextures()
-		slot:StyleButton(false)
+	select(14, _G["CharacterMainHandSlot"]:GetRegions()):Hide()
+	select(14, _G["CharacterSecondaryHandSlot"]:GetRegions()):Hide()
+
+	for _, i in pairs(slots) do
+		_G["Character"..i.."Frame"]:Hide()
+		local slot = _G["Character"..i]
+		local icon = _G["Character"..i.."IconTexture"]
+		local border = _G["Character"..i].IconBorder
+		local cooldown = _G["Character"..i.."Cooldown"]
+
+		border:Kill()
+
+		slot:StyleButton(true)
+		slot:SetNormalTexture("")
+		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
+		slot:SetTemplate("Default")
+
 		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
-		slot:SetTemplate("Default", true)
+
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
+		icon:ClearAllPoints()
+		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
+		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 
 		if(cooldown) then
 			E:RegisterCooldown(cooldown)
