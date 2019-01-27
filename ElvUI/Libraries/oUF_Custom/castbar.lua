@@ -629,12 +629,8 @@ local function Enable(self, unit)
 
 		if(self.unit == 'player') then
 			CastingBarFrame:UnregisterAllEvents()
-			CastingBarFrame.Show = CastingBarFrame.Hide
-			CastingBarFrame:Hide()
 
 			PetCastingBarFrame:UnregisterAllEvents()
-			PetCastingBarFrame.Show = PetCastingBarFrame.Hide
-			PetCastingBarFrame:Hide()
 		end
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
