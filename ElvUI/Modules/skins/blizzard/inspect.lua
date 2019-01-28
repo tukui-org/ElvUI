@@ -107,7 +107,7 @@ local function LoadSkin()
 
 			Slot.IconBorder:SetAlpha(0)
 			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(self, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function(self) Slot:SetBackdropBorderColor(unpack(AS.BorderColor)) end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function(self) Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 		end
 	end
 
