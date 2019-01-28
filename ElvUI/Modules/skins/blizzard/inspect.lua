@@ -97,7 +97,7 @@ local function LoadSkin()
 		end
 	end
 
-	for _, Slot in pairs({InspectPaperDollItemsFrame:GetChildren()}) do
+	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
 			S:HandleTexture(Slot.icon)
 			Slot:StripTextures()
@@ -106,8 +106,8 @@ local function LoadSkin()
 			Slot.icon:SetInside()
 
 			Slot.IconBorder:SetAlpha(0)
-			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(self, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function(self) Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 		end
 	end
 
