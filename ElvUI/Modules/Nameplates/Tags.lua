@@ -162,5 +162,5 @@ oUF.Tags.Methods['quest:info'] = function(unit)
 				end
 			end
 		end
-    end
+	end
 end
