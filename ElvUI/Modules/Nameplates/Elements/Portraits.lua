@@ -36,7 +36,13 @@ function NP:Update_Portrait(nameplate)
 
 		nameplate.Portrait:SetSize(db.portrait.width, db.portrait.height)
 		nameplate.Portrait:ClearAllPoints()
-		nameplate.Portrait:SetPoint(db.portrait.position == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate, db.portrait.position == 'RIGHT' and 'RIGHT' or 'LEFT', db.portrait.offsetX, db.portrait.offsetY)
+		if db.portrait.position == 'RIGHT' then
+			nameplate.Portrait:SetPoint('LEFT', nameplate, 'RIGHT', db.portrait.xOffset, db.portrait.yOffset)
+		elseif db.portrait.position == 'LEFT' then
+			nameplate.Portrait:SetPoint('RIGHT', nameplate, 'LEFT', db.portrait.xOffset, db.portrait.yOffset)
+		else
+			nameplate.Portrait:SetPoint('CENTER', nameplate, 'CENTER', db.portrait.xOffset, db.portrait.yOffset)
+		end
 	else
 		if nameplate:IsElementEnabled('Portrait') then
 			nameplate:DisableElement('Portrait')

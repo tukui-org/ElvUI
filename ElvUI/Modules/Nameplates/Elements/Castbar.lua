@@ -85,7 +85,7 @@ function NP:Update_Castbar(nameplate)
 
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
 		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
-		nameplate.Castbar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, -20) -- need option
+		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', 0, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:Show()
@@ -97,6 +97,7 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
+
 		nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) -- need option
 	else
 		if nameplate:IsElementEnabled('Castbar') then

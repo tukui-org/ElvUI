@@ -6,14 +6,13 @@ function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
-	Health:SetPoint('CENTER')
 	Health:CreateBackdrop('Transparent')
-	Health:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
 	nameplate.FlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
-	nameplate.FlashTexture:SetTexture(E.LSM:Fetch("background", "ElvUI Blank"))
+	nameplate.FlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
 	nameplate.FlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
 	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
 	nameplate.FlashTexture:Hide()
@@ -51,6 +50,8 @@ function NP:Update_Health(nameplate)
 		if not nameplate:IsElementEnabled('Health') then
 			nameplate:EnableElement('Health')
 		end
+
+		nameplate.Health:SetPoint('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
 	else
 		if nameplate:IsElementEnabled('Health') then
 			nameplate:DisableElement('Health')

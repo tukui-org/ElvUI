@@ -7,7 +7,6 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
-	Power:SetPoint('TOP', nameplate.Health, 'TOP', 0, -14)
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 	NP.StatusBars[Power] = true
 
@@ -62,6 +61,8 @@ function NP:Update_Power(nameplate)
 		if not nameplate:IsElementEnabled('Power') then
 			nameplate:EnableElement('Power')
 		end
+
+		nameplate.Power:SetPoint('CENTER', nameplate, 'CENTER', 0, db.power.yOffset)
 	else
 		if nameplate:IsElementEnabled('Power') then
 			nameplate:DisableElement('Power')

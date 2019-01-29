@@ -1867,6 +1867,12 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 50, max = 200, step = 1,
 					},
+					yOffset = {
+						order = 4,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
 					textGroup = {
 						order = 100,
 						type = "group",
@@ -1922,6 +1928,12 @@ local function GetUnitSettings(unit, name)
 						name = L["Width"],
 						type = "range",
 						min = 50, max = 200, step = 1,
+					},
+					yOffset = {
+						order = 4,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
 					},
 					textGroup = {
 						order = 100,
@@ -2461,16 +2473,17 @@ local function GetUnitSettings(unit, name)
 						name = L["Icon Position"],
 						values = {
 							["LEFT"] = L["Left"],
+							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
 						},
 					},
-					offsetX = {
+					xOffset = {
 						order = 5,
 						name = L["X-Offset"],
 						type = "range",
 						min = -20, max = 20, step = 1,
 					},
-					offsetY = {
+					yOffset = {
 						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
@@ -2500,6 +2513,28 @@ local function GetUnitSettings(unit, name)
 						name = L["Format"],
 						type = "input",
 					},
+					position = {
+						order = 3,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["CENTER"] = L['Center'],
+							["RIGHT"] = L["Right"],
+						},
+					},
+					xOffset = {
+						order = 4,
+						name = L["X-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
 				},
 			},
 			nameGroup = {
@@ -2523,6 +2558,28 @@ local function GetUnitSettings(unit, name)
 						order = 2,
 						name = L["Format"],
 						type = "input",
+					},
+					position = {
+						order = 3,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["CENTER"] = L['Center'],
+							["RIGHT"] = L["Right"],
+						},
+					},
+					xOffset = {
+						order = 4,
+						name = L["X-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -20, max = 20, step = 1,
 					},
 				},
 			},
@@ -2556,22 +2613,23 @@ local function GetUnitSettings(unit, name)
 						min = 5, max = 100, step = 1,
 					},
 					position = {
-						order = 5,
+						order = 4,
 						type = "select",
 						name = L["Icon Position"],
 						values = {
 							["LEFT"] = L["Left"],
+							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
 						},
 					},
-					offsetX = {
-						order = 6,
+					xOffset = {
+						order = 5,
 						name = L["X-Offset"],
 						type = "range",
 						min = -20, max = 20, step = 1,
 					},
-					offsetY = {
-						order = 7,
+					yOffset = {
+						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -20, max = 20, step = 1,
@@ -2661,15 +2719,13 @@ local function GetUnitSettings(unit, name)
 			desc = unit == "FRIENDLY_PLAYER" and OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS or OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS,
 			type = "toggle",
 		}
-		if unit == "ENEMY_PLAYER" then
-			group.args.markHealers = {
-				type = "toggle",
-				order = 10,
-				name = L["Healer Icon"],
-				desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
-				set = function(info, value) E.db.nameplates.units.ENEMY_PLAYER[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
-			}
-		end
+		group.args.markHealers = {
+			type = "toggle",
+			order = 10,
+			name = L["Healer Icon"],
+			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
+			set = function(info, value) E.db.nameplates.units.ENEMY_PLAYER[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
+		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,
 			type = "toggle",
