@@ -1,4 +1,16 @@
-### Version 10.86 [  ]
+### Version 10.87 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.86 [ January 29th 2019 ]
 
 **New Additions:**  
 Added option to toggle on/off the colors on bag slots for bags with assigned items.  
