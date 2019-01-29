@@ -1,6 +1,5 @@
 -- Korean localization file for koKR.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "koKR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 if not L then return end
 
 -- *_DESC locales
@@ -40,6 +39,12 @@ L["SEARCH_SYNTAX_DESC"] = [=[
 
     |cffceff00■|r s:세트이름 / set:세트이름
      - 입력한 글자가 포함됀 장비세트에 소속된 아이템들만 표시합니다.
+	
+	|cffceff00■|r r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]
+     - For example, reqlvl:30 will find all items that require level 30.
+	
+	|cffceff00■|r tt:[search], tip:[search] or tooltip:[search]
+     - For example, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
   |cff2eb7e4<< 조건부여 >>|r
@@ -66,11 +71,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[
      - boe : 착용 시 귀속 아이템을 표시합니다.
      - boa : 계정 귀속 아이템을 표시합니다.
      - quest : 퀘스트 아이템을 표시합니다.
-     - reagents, reagent, crafting : Profession reagents.
-     - naval : Naval equipment.
-     - follower, followe, follow : Follower items.
-     - relic, reli, rel : Artifact Relics.
-     - power, powe, pow : Items granting Artifact Power.]=]
+     - reagent, crafting : Profession reagents.
+	 - keystone : Mythic Keystone.
+     - followers : Follower items.
+     - champions : Champion equipment.]=]
 
 L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
 
@@ -241,6 +245,7 @@ L["Bottom to Top"] = "상단 아래쪽으로 이동"
 L["Button Size (Bag)"] = "슬롯 크기 (가방)"
 L["Button Size (Bank)"] = "슬롯 크기 (은행)"
 L["Clear Search On Close"] = "닫으면 검색 칸 비우기"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "간략하게"
 L["Currency Format"] = "화폐 표시방법"
 L["Custom Color"] = true
@@ -277,6 +282,7 @@ L["Search Syntax"] = "아이템 검색법"
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 결정합니다."
 L["Short (Whole Numbers)"] = "골드만"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "동전 이미지로 보기"
 L["Show Junk Icon"] = "잡템 아이콘 표시"
 L["Show New Item Glow"] = true
@@ -296,6 +302,8 @@ L["The size of the individual buttons on the bag frame."] = "통합가방 프레
 L["The size of the individual buttons on the bank frame."] = "통합은행 프레임의 슬롯크기를 결정합니다."
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["Top to Bottom"] = "위에서 아래로"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
@@ -542,7 +550,7 @@ L["Bonus Reward Position"] = "추가보상 표시 위치"
 L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
 L["Chat Bubbles"] = "말풍선"
-L["Chat Bubble Names"] = "말풍성에 이름 표시"
+L["Chat Bubble Names"] = "말풍선에 이름 표시"
 L["Chat Output"] = true
 L["Color Gradient"] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
@@ -978,6 +986,7 @@ L["BG Map"] = "전장 맵"
 L["BG Score"] = "전장 점수판"
 L["Calendar Frame"] = "달력"
 L["Character Frame"] = "캐릭터 창"
+L["CheckBox Skin"] = true
 L["Contribution"] = "기여"
 L["Debug Tools"] = "오류 확인 창"
 L["Gossip Frame"] = "NPC 대화 창"
@@ -1364,7 +1373,6 @@ L["Tank Frames"] = "방어전담 프레임"
 L["Tank Target"] = "방어전담 프레임"
 L["Tapped"] = "선점되었을 때의 색상"
 L["Targeting"] = true
-L["Target Glow"] = "대상 후광"
 L["Target On Mouse-Down"] = "마우스를 누를 때 작동"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "마우스를 뗄 때 대상으로 잡는 게 아니라 마우스를 누를 때에 대상으로 잡습니다.|n|n|cff2eb7e4Clique|r 애드온을 쓰고 있다면 이 설정을 바꾼 후에 Clique 설정도 다시 해야 합니다."
 L["Text Color"] = "글자 색"

@@ -1,6 +1,5 @@
 -- French localization file for frFR.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "frFR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -41,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Entrer une séquence pour changer le format du texte.
 
 Exemples:
@@ -195,6 +194,7 @@ L["Bottom to Top"] = "Du bas vers le haut"
 L["Button Size (Bag)"] = "Taille des boutons (Sac)"
 L["Button Size (Bank)"] = "Taille des boutons (Banque)"
 L["Clear Search On Close"] = "Effacer la recherche lors de la fermeture"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "Condensé"
 L["Currency Format"] = "Format monétaire"
 L["Custom Color"] = true
@@ -231,6 +231,7 @@ L["Search Syntax"] = "Syntaxe pour la recherche"
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Définissez la taille de vos boutons de sac."
 L["Short (Whole Numbers)"] = "Court (nombres entiers)"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "Afficher les pièces"
 L["Show Junk Icon"] = "Afficher l'icône camelotte"
 L["Show New Item Glow"] = true
@@ -250,6 +251,8 @@ L["The size of the individual buttons on the bag frame."] = "La taille des bouto
 L["The size of the individual buttons on the bank frame."] = "La taille des boutons individuels sur la fenêtre de la banque."
 L["The spacing between buttons."] = "Espacement entre deux boutons."
 L["Top to Bottom"] = "Du haut vers le bas"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "Utiliser les icônes de pièces au lieu du texte coloré."
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
@@ -930,6 +933,7 @@ L["BG Map"] = "Carte Champs de bataille"
 L["BG Score"] = "Scores Champs de bataille"
 L["Calendar Frame"] = "Fenêtre du Calendrier"
 L["Character Frame"] = "Fenêtre du Personnage"
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Outils de débogage"
 L["Gossip Frame"] = "Fenêtre PNJ"
@@ -1316,7 +1320,6 @@ L["Tank Frames"] = "Cadre des Tanks"
 L["Tank Target"] = "Cible de tank"
 L["Tapped"] = "Collé"
 L["Targeting"] = true
-L["Target Glow"] = "Cible "
 L["Target On Mouse-Down"] =  "Cibler lors d'un appui sur le clic (et non pas en relachant le clic)" --Need review
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Cible les unités avec un appui sur le clic souris plutôt qu'au relâchement du clic. \n\n|cffFF0000Attention: Si vous utilisez l'addon 'Clique' vous devrez peut-être ajuster vos paramètres de clic lors du changement de celui-ci."
 L["Text Color"] = "Couleur du texte"

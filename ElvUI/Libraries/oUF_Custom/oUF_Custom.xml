@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="additionalpower.lua"/>
+	<Script file="auras.lua"/>
+	<Script file="castbar.lua"/>
+	<Script file="portrait.lua"/>
+	<Script file="stagger.lua"/>
+	<Script file="tags.lua"/>
+</Ui>

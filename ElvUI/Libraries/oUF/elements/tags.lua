@@ -71,11 +71,6 @@ local Private = oUF.Private
 
 local UnitExists = Private.UnitExists
 
--- ElvUI
-local format = string.format
-local tinsert, tremove = table.insert, table.remove
--- end block
-
 local _PATTERN = '%[..-%]+'
 
 local _ENV = {
@@ -87,13 +82,6 @@ local _ENV = {
 				r, g, b = unpack(r)
 			end
 		end
-
-		-- ElvUI
-		if not r or type(r) == 'string' then --wtf?
-			return '|cffFFFFFF'
-		end
-		-- end block
-
 		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
 }
@@ -610,7 +598,7 @@ local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
 	frame:RegisterEvent(event)
-	tinsert(events[event], fontstr) -- ElvUI changed
+	table.insert(events[event], fontstr)
 end
 
 local function registerEvents(fontstr, tagstr)
@@ -639,28 +627,6 @@ local function unregisterEvents(fontstr)
 	end
 end
 
--- ElvUI block
-local OnEnter = function(self)
-	for _, fs in pairs(self.__mousetags) do
-		fs:SetAlpha(1)
-	end
-end
-
-local OnLeave = function(self)
-	for _, fs in pairs(self.__mousetags) do
-		fs:SetAlpha(0)
-	end
-end
-
-local onUpdateDelay = {}
-local escapeSequences = {
-	["||c"] = "|c",
-	["||r"] = "|r",
-	["||T"] = "|T",
-	["||t"] = "|t",
-}
--- end block
-
 local tagPool = {}
 local funcPool = {}
 local tmp = {}
@@ -678,7 +644,6 @@ local function Tag(self, fs, tagstr, ...)
 
 	if(not self.__tags) then
 		self.__tags = {}
-		self.__mousetags = {} -- ElvUI
 		table.insert(self.__elements, Update)
 	else
 		-- Since people ignore everything that's good practice - unregister the tag
@@ -693,40 +658,6 @@ local function Tag(self, fs, tagstr, ...)
 	end
 
 	fs.parent = self
-
-	-- ElvUI
-	for escapeSequence, replacement in pairs(escapeSequences) do
-		while tagstr:find(escapeSequence) do
-			tagstr = tagstr:gsub(escapeSequence, replacement)
-		end
-	end
-
-	if tagstr:find('%[mouseover%]') then
-		tinsert(self.__mousetags, fs)
-		fs:SetAlpha(0)
-		if not self.__HookFunc then
-			self:HookScript('OnEnter', OnEnter)
-			self:HookScript('OnLeave', OnLeave)
-			self.__HookFunc = true;
-		end
-		tagstr = tagstr:gsub('%[mouseover%]', '')
-	else
-		for index, fontString in pairs(self.__mousetags) do
-			if fontString == fs then
-				self.__mousetags[index] = nil;
-				fs:SetAlpha(1)
-			end
-		end
-	end
-
-	local containsOnUpdate
-	for tag in tagstr:gmatch(_PATTERN) do
-		tag = getTagName(tag)
-		if not tagEvents[tag] then
-			containsOnUpdate = onUpdateDelay[tag] or 0.15;
-		end
-	end
-	-- end block
 
 	local func = tagPool[tagstr]
 	if(not func) then
@@ -780,12 +711,7 @@ local function Tag(self, fs, tagstr, ...)
 			if(tagFunc) then
 				table.insert(args, tagFunc)
 			else
-				-- ElvUI changed
-				numTags = -1
-				func = function(self)
-					return self:SetText(bracket)
-				end
-				-- end block
+				return error(string.format('Attempted to use invalid tag %s.', bracket), 3)
 			end
 		end
 
@@ -839,7 +765,7 @@ local function Tag(self, fs, tagstr, ...)
 					args[3](unit, realUnit) or ''
 				)
 			end
-		elseif numTags ~= -1 then -- ElvUI changed (from else)
+		else
 			func = function(self)
 				local parent = self.parent
 				local unit = parent.unit
@@ -859,29 +785,21 @@ local function Tag(self, fs, tagstr, ...)
 			end
 		end
 
-		-- ElvUI added check
-		if numTags ~= -1 then
-			tagPool[tagstr] = func
-		end
-		-- end block
+		tagPool[tagstr] = func
 	end
 	fs.UpdateTag = func
 
 	local unit = self.unit
-	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then -- ElvUI changed
+	if(self.__eventless or fs.frequentUpdates) then
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
-		-- ElvUI added check
-		elseif containsOnUpdate then
-			timer = containsOnUpdate
-		-- end block
 		else
 			timer = .5
 		end
 
 		if(not eventlessUnits[timer]) then eventlessUnits[timer] = {} end
-		tinsert(eventlessUnits[timer], fs) -- ElvUI changed
+		table.insert(eventlessUnits[timer], fs)
 
 		createOnUpdate(timer)
 	else
@@ -899,7 +817,7 @@ local function Tag(self, fs, tagstr, ...)
 		end
 	end
 
-	tinsert(self.__tags, fs) -- ElvUI changed
+	table.insert(self.__tags, fs)
 end
 
 --[[ Tags: frame:Untag(fs)
@@ -933,7 +851,6 @@ oUF.Tags = {
 	Methods = tags,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
-	OnUpdateThrottle = onUpdateDelay, -- ElvUI
 }
 
 oUF:RegisterMetaFunction('Tag', Tag)

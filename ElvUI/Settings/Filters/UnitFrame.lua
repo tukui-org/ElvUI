@@ -660,8 +660,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
 		[196376] = Defaults(), -- Grievous Tear
+		[288388] = Defaults(), -- Reap Soul
+		[288694] = Defaults(), -- Shadow Smash
 
-		--BFA Dungeons
+	--BFA Dungeons
 		--Freehold
 		[258323] = Defaults(), -- Infected Wound
 		[257775] = Defaults(), -- Plague Step
@@ -722,7 +724,8 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[258313] = Defaults(), -- Handcuff
 		[259711] = Defaults(), -- Lockdown
 		[256198] = Defaults(), -- Azerite Rounds: Incendiary
-		[256101] = Defaults(), -- Explosive Burst
+		[256101] = Defaults(), -- Explosive Burst (mythic)
+		[256105] = Defaults(), -- Explosive Burst (mythic+)
 		[256044] = Defaults(), -- Deadeye
 		[256474] = Defaults(), -- Heartstopper Venom
 
@@ -910,6 +913,74 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[285671] = Defaults(), -- Crushed
 		[285875] = Defaults(), -- Rending Bite
 		--[282010] = Defaults(), -- Shaken
+
+		-- Jaina
+		[285253] = Defaults(), -- Ice Shard
+		[287993] = Defaults(), -- Chilling Touch
+		[287365] = Defaults(), -- Searing Pitch
+		[288038] = Defaults(), -- Marked Target
+		[285254] = Defaults(), -- Avalanche
+		[287626] = Defaults(), -- Grasp of Frost
+		[287490] = Defaults(), -- Frozen Solid
+		[287199] = Defaults(), -- Ring of Ice
+		[288392] = Defaults(), -- Vengeful Seas
+
+		-- Stormwall Blockade
+		[284369] = Defaults(), -- Sea Storm
+		[284410] = Defaults(), -- Tempting Song
+		[284405] = Defaults(), -- Tempting Song
+		[284121] = Defaults(), -- Thunderous Boom
+		[286680] = Defaults(), -- Roiling Tides
+
+		-- Opulence
+		[286501] = Defaults(), -- Creeping Blaze
+		[283610] = Defaults(), -- Crush
+		[289383] = Defaults(), -- Chaotic Displacement
+		[285479] = Defaults(), -- Flame Jet
+		[283063] = Defaults(), -- Flames of Punishment
+		[283507] = Defaults(), -- Volatile Charge
+
+		-- King Rastakhan
+		[284995] = Defaults(), -- Zombie Dust
+		[285349] = Defaults(), -- Plague of Fire
+		[285044] = Defaults(), -- Toad Toxin
+		[284831] = Defaults(), -- Scorching Detonation
+		[289858] = Defaults(), -- Crushed
+		[284662] = Defaults(), -- Seal of Purification
+		[284676] = Defaults(), -- Seal of Purification
+		[285178] = Defaults(), -- Serpent's Breath
+		[285010] = Defaults(), -- Poison Toad Slime
+
+		-- Jadefire Masters
+		[282037] = Defaults(), -- Rising Flames
+		[284374] = Defaults(), -- Magma Trap
+		[285632] = Defaults(), -- Stalking
+		[288151] = Defaults(), -- Tested
+		[284089] = Defaults(), -- Successful Defense
+		[286988] = Defaults(), -- Searing Embers
+
+		-- Mekkatorque
+		[288806] = Defaults(), -- Gigavolt Blast
+		[289023] = Defaults(), -- Enormous
+		[286646] = Defaults(), -- Gigavolt Charge
+		[288939] = Defaults(), -- Gigavolt Radiation
+		[284168] = Defaults(), -- Shrunk
+		[286516] = Defaults(), -- Anti-Tampering Shock
+		[286480] = Defaults(), -- Anti-Tampering Shock
+		[284214] = Defaults(), -- Trample
+
+		-- Conclave of the Chosen
+		[284663] = Defaults(), -- Bwonsamdi's Wrath
+		[282444] = Defaults(), -- Lacerating Claws
+		[282592] = Defaults(), -- Bleeding Wounds
+		[282209] = Defaults(), -- Mark of Prey
+		[285879] = Defaults(), -- Mind Wipe
+		[282135] = Defaults(), -- Crawling Hex
+		[286060] = Defaults(), -- Cry of the Fallen
+		[282447] = Defaults(), -- Kimbul's Wrath
+		[282834] = Defaults(), -- Kimbul's Wrath
+		[286811] = Defaults(), -- Akunda's Wrath
+		[286838] = Defaults(), -- Static Orb
 	},
 }
 

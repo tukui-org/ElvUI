@@ -1,6 +1,5 @@
 -- Taiwanese localization file for zhTW.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhTW")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以�
     • t:[類型]，type:[類型] 或 slot:[類型]. 舉例，t:武器 會搜尋所有武器.
     • n:[名稱] 或 name:[名稱]. 舉例，輸入 n:muffins 會搜尋所有物品名稱中含有 "muffins".
     • s:[套裝] 或 set:[套裝]. 舉例，s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[關鍵字]，tip:[關鍵字] 或 tooltip:[關鍵字]. 舉例，tt:綁定 會搜尋所有物品提示中含有綁定兩字的物品 如 帳號綁定，裝備綁定 或 拾取綁定.
 
 
@@ -41,11 +41,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以�
     • boe : 裝備後綁定.
     • boa : 帳號綁定.
     • quest : 任務綁定
-    • reagents, reagent, crafting : 專業技能材料
-    • naval : 海軍裝備.
-    • follower, followe, follow : 追隨者物品
-    • relic, reli, rel : 神器符文.
-    • power, powe, pow : 賦予神器能量物品.]=]
+    • reagent, crafting : 專業技能材料
+    • keystone : Mythic Keystone.
+    • followers : 追隨者物品
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 
 範例：
@@ -196,6 +195,7 @@ L["Bottom to Top"] = "底部至頂部"
 L["Button Size (Bag)"] = "單個格子尺寸 (背包)"
 L["Button Size (Bank)"] = "單個格子尺寸 (銀行)"
 L["Clear Search On Close"] = "關閉時清空搜尋"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "濃縮"
 L["Currency Format"] = "貨幣格式"
 L["Custom Color"] = "自定顏色"
@@ -232,6 +232,7 @@ L["Search Syntax"] = "搜尋語法"
 L["Sell Interval"] = "販賣間格"
 L["Set the size of your bag buttons."] = "設定你的背包格子大小."
 L["Short (Whole Numbers)"] = "短 (完整數字)"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "顯示硬幣"
 L["Show Junk Icon"] = "顯示垃圾圖示"
 L["Show New Item Glow"] = "顯示新物品發光"
@@ -251,6 +252,8 @@ L["The size of the individual buttons on the bag frame."] = "背包框架單個�
 L["The size of the individual buttons on the bank frame."] = "銀行框架單個格子的大小."
 L["The spacing between buttons."] = "兩個按鈕間的距離."
 L["Top to Bottom"] = "頂部至底部"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "使用硬幣圖示取代上色文字"
 L["Will attempt to sell another item in set interval after previous one was sold."] = "將會嘗試使用設定的時間間格後販賣下一個物品"
 
@@ -931,6 +934,7 @@ L["BG Map"] = "戰場地圖"
 L["BG Score"] = "戰場積分"
 L["Calendar Frame"] = "行事曆"
 L["Character Frame"] = "角色"
+L["CheckBox Skin"] = true
 L["Contribution"] = "捐獻"
 L["Debug Tools"] = "除錯工具"
 L["Gossip Frame"] = "對話"
@@ -1316,7 +1320,6 @@ L["Summon Icon"] = true
 L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目標"
 L["Tapped"] = "被攻擊"
-L["Target Glow"] = "選中高亮"
 L["Target On Mouse-Down"] = "滑鼠按下設為目標"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "按下滑鼠時設為目標,而不是鬆開滑鼠按鍵時. \n\n|cffFF0000警告: 如果使用'Clique'等點擊施法插件, 你可能需要調整這些插件的設置."
 L["Targeting"] = true

@@ -24,7 +24,7 @@ local points = {
 	["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 }
 
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local ACD = E.Libs.AceConfigDialog
 
 local function BuildABConfig()
 	group['general'] = {

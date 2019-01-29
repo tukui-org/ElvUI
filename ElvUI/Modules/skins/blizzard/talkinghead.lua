@@ -132,11 +132,18 @@ local function LoadSkin()
 		TalkingHeadFrame:StripTextures()
 		TalkingHeadFrame.MainFrame:StripTextures()
 		TalkingHeadFrame:CreateBackdrop("Transparent")
+
+		local button = TalkingHeadFrame.MainFrame.CloseButton
+		S:HandleCloseButton(button)
+		button:ClearAllPoints()
+		button:Point('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 	else
 		TalkingHeadFrame.MainFrame.Model:CreateBackdrop("Transparent")
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
 		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint("CENTER")
 		TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
+
+		TalkingHeadFrame.MainFrame.CloseButton:Kill()
 	end
 
 	TalkingHeadFrame.BackgroundFrame.TextBackground.SetAtlas = E.noop
@@ -152,8 +159,6 @@ local function LoadSkin()
 	TalkingHeadFrame.TextFrame.Text.SetTextColor = E.noop
 	TalkingHeadFrame.TextFrame.Text:SetShadowColor(0, 0, 0, 1)
 	TalkingHeadFrame.TextFrame.Text:SetShadowOffset(2, -2)
-
-	TalkingHeadFrame.MainFrame.CloseButton:Kill()
 end
 
 S:AddCallbackForAddon("Blizzard_TalkingHeadUI", "TalkingHead", LoadSkin)

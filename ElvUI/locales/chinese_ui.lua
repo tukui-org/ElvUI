@@ -1,6 +1,6 @@
 -- Chinese localization file for zhCN.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhCN")
+local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
 --*_ADDON locales

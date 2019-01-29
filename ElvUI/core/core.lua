@@ -1,6 +1,11 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = LibStub('LibSharedMedia-3.0')
-local Masque = LibStub('Masque', true)
+local ElvUI = select(2, ...)
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local LSM = E.Libs.LSM
+local Masque = E.Libs.Masque
+
+-- Locale doesn't exist yet, make it exist.
+local L = E.Libs.ACL:GetLocale('ElvUI', false)
+ElvUI[2] = L
 
 --Cache global variables
 --Lua functions
@@ -8,7 +13,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
-local floor, gsub, match, strjoin = floor, string.gsub, string.match, strjoin
+local floor, gsub, strmatch, strjoin = floor, string.gsub, string.match, strjoin
 local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
 --WoW API / Variables
 local UnitGUID = UnitGUID
@@ -42,13 +47,11 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvDB, LibStub, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
+-- GLOBALS: ElvDB, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
 -- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, MAX_WOW_CHAT_CHANNELS, CHAT_CONFIG_CHANNEL_LIST
 -- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
 
 --Constants
-E.LSM = LSM
-E.Masque = Masque
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
@@ -437,11 +440,6 @@ function E:PLAYER_ENTERING_WORLD()
 	elseif self.BGTimer then
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil
-	end
-
-	if tonumber(E.version) >= 10.60 and not E.global.userInformedNewChanges1 then
-		E:StaticPopup_Show('ELVUI_INFORM_NEW_CHANGES')
-		E.global.userInformedNewChanges1 = true
 	end
 end
 
@@ -1205,12 +1203,14 @@ function E:UpdateEnd()
 		E:Install()
 	end
 
+	if E.staggerUpdateRunning then
+		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
+		--So call it, but skip updates inside it
+		E:UpdateAll(false)
+	end
+
 	--Done updating, let code now
 	E.staggerUpdateRunning = false
-
-	--We're doing a staggered update, but plugins expect the old UpdateAll to be called
-	--So call it, but skip updates inside it
-	E:UpdateAll(false)
 end
 
 local staggerDelay = 0.02
@@ -1684,7 +1684,7 @@ local function CompareCPUDiff(showall, minCalls)
 	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0
 
 	for name, oldUsage in pairs(CPU_USAGE) do
-		newName, newFunc = name:match('^([^:]+):(.+)$')
+		newName, newFunc = strmatch(name, '^([^:]+):(.+)$')
 		if not newFunc then
 			E:Print('CPU_USAGE:', name, newFunc)
 		else
@@ -1718,7 +1718,7 @@ function E:GetTopCPUFunc(msg)
 		return
 	end
 
-	local module, showall, delay, minCalls = msg:match('^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$')
+	local module, showall, delay, minCalls = strmatch(msg, '^(%S+)%s*(%S*)%s*(%S*)%s*(.*)$')
 	local checkCore, mod = (not module or module == '') and 'E'
 
 	showall = (showall == 'true' and true) or false
@@ -1794,16 +1794,13 @@ function E:Initialize(loginFrame)
 	twipe(self.global)
 	twipe(self.private)
 
-	local AceDB = LibStub('AceDB-3.0')
-	local LibDualSpec = LibStub('LibDualSpec-1.0')
-
 	self.myguid = UnitGUID('player')
-	self.data = AceDB:New('ElvDB', self.DF)
+	self.data = E.Libs.AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
-	self.charSettings = AceDB:New('ElvPrivateDB', self.privateVars)
-	LibDualSpec:EnhanceDatabase(self.data, 'ElvUI')
+	self.charSettings = E.Libs.AceDB:New('ElvPrivateDB', self.privateVars)
+	E.Libs.DualSpec:EnhanceDatabase(self.data, 'ElvUI')
 	self.private = self.charSettings.profile
 	self.db = self.data.profile
 	self.global = self.data.global

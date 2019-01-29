@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local SpellRange = LibStub("SpellRange-1.0")
+local SpellRange = E.Libs.SpellRange
 
 --Cache global variables
 --Lua functions

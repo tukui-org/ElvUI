@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 if youScared then return end
 -- sourced from FrameXML/Constants.lua
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
@@ -69,7 +69,7 @@ function mod:UpdateElement_ClassBar(frame, event, unit ...)
 		max = UnitPowerMax('player', ClassPowerID)
 		mod = UnitPowerDisplayMod(ClassPowerID)
 	end
-	
+
 	cur = mod == 0 and 0 or cur / mod
 
 	-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones

@@ -2,12 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Cache global variables
-local UNKNOWN = UNKNOWN
-local QUICK_JOIN = QUICK_JOIN
 --Lua functions
 local next, pairs, select, type = next, pairs, select, type
-local twipe = table.wipe
-local format, join = string.format, string.join
+local format, strjoin, wipe = string.format, strjoin, wipe
 --WoW API / Variables
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
@@ -17,13 +14,9 @@ local C_SocialQueue_GetAllGroups = C_SocialQueue.GetAllGroups
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
+local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS:
-
-local displayModifierString = ''
-local lastPanel;
-
+local displayModifierString, lastPanel = ''
 local quickJoinGroups, quickJoin = nil, {}
 
 local function OnEnter(self)
@@ -42,7 +35,7 @@ end
 
 local CHAT
 local function OnEvent(self)
-	twipe(quickJoin)
+	wipe(quickJoin)
 	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
 	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
@@ -51,7 +44,13 @@ local function OnEvent(self)
 	for _, guid in pairs(quickJoinGroups) do
 		members = nil -- clear it
 		players = C_SocialQueue_GetGroupMembers(guid)
-		if players and next(players) then members = (players[2] and SocialQueueUtil_SortGroupMembers(players)) or players end
+		if players and next(players) then
+			if type(players[1]) == 'table' and type(players[2]) == 'table' then
+				members = SocialQueueUtil_SortGroupMembers(players)
+			else
+				members = players
+			end
+		end
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
@@ -119,7 +118,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = join("", "%s: ", hex, "%s|r")
+	displayModifierString = strjoin("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

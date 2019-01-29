@@ -26,8 +26,6 @@ local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DE
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
-local LibStub = LibStub
-
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
 
@@ -255,7 +253,7 @@ E.PopupDialogs["RESET_UF_UNIT"] = {
 			end
 
 			if IsAddOnLoaded("ElvUI_Config") then
-				local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
 				end
@@ -502,51 +500,6 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs["ELVUI_INFORM_NEW_CHANGES"] = {
-	text = "There have been some major changes in this version of ElvUI. Style Filters have been introduced to NamePlates, and the Aura Filtering system for NamePlates and UnitFrames has been reworked. We recommend you read the following forum post for more information.",
-	OnShow = function(self)
-		self.editBox:SetAutoFocus(false)
-		self.editBox.width = self.editBox:GetWidth()
-		self.editBox:Width(300)
-		self.editBox:SetText("https://www.tukui.org/forum/viewtopic.php?f=8&t=286")
-		self.editBox:HighlightText()
-		self.button1:Disable()
-		self.HideOrig = self.Hide
-		self.Hide = E.noop
-		ChatEdit_FocusActiveWindow();
-	end,
-	OnHide = function(self)
-		self.editBox:Width(self.editBox.width or 50)
-		self.editBox.width = nil
-	end,
-	EditBoxOnTextChanged = function(self)
-		if(self:GetText() ~= "https://www.tukui.org/forum/viewtopic.php?f=8&t=286") then
-			self:SetText("https://www.tukui.org/forum/viewtopic.php?f=8&t=286")
-		end
-		self:HighlightText()
-		self:ClearFocus()
-		ChatEdit_FocusActiveWindow();
-	end,
-	OnEditFocusGained = function(self)
-		self:HighlightText()
-	end,
-	OnCancel = function(self, _, reason)
-		if ( reason == "timeout" ) then
-			self.button1:Enable();
-		end
-	end,
-	OnAccept = function(self)
-		self.Hide = self.HideOrig
-		self.HideOrig = nil
-		E:StaticPopup_Hide('ELVUI_INFORM_NEW_CHANGES')
-	end,
-	button1 = OKAY,
-	showAlert = 1,
-	timeout = 15,
-	hideOnEscape = 0,
-	hasEditBox = 1,
-}
-
 E.PopupDialogs["MODULE_COPY_CONFIRM"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -575,7 +528,7 @@ function E:StaticPopup_OnShow()
 
 	-- boost static popups over ace gui
 	if IsAddOnLoaded("ElvUI_Config") then
-		local ACD = LibStub and LibStub("AceConfigDialog-3.0-ElvUI");
+		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			self.frameStrataIncreased = true
 			self:SetFrameStrata("FULLSCREEN_DIALOG")

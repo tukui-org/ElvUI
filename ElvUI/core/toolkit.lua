@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
@@ -45,11 +45,8 @@ local function Height(frame, height)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5)
-	if arg2 == nil then
-		arg2 = obj:GetParent()
-	end
+	if arg2 == nil then arg2 = obj:GetParent() end
 
-	if type(arg1)=='number' then arg1 = E:Scale(arg1) end
 	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
 	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
 	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
@@ -183,9 +180,9 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
 	local b = CreateFrame('Frame', nil, parent)
 	if f.forcePixelMode or forcePixelMode then
-		b:SetOutside(nil, E.mult, E.mult)
+		b:SetOutside(f, E.mult, E.mult)
 	else
-		b:SetOutside()
+		b:SetOutside(f)
 	end
 	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 

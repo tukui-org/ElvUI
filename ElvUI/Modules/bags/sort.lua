@@ -1,14 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Bags');
-local Search = LibStub('LibItemSearch-1.2-ElvUI');
+local B = E:GetModule('Bags')
+local Search = E.Libs.ItemSearch
 
 --Cache global variables
 --Lua functions
-local ipairs, pairs, tonumber, select, unpack, pcall = ipairs, pairs, tonumber, select, unpack, pcall
-local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
-local floor = math.floor
-local band = bit.band
-local match, gmatch, find = string.match, string.gmatch, string.find
+local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
+local tinsert, tremove, sort, wipe = table.insert, table.remove, sort, wipe
+local tonumber, floor, band = tonumber, floor, bit.band
+local strmatch, gmatch, strfind = strmatch, gmatch, strfind
 --WoW API / Variables
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
@@ -119,22 +118,31 @@ local inventorySlots = {
 	INVTYPE_TABARD = 25,
 }
 
+local conjured_items = {
+	[5512] = true, -- Healthstone
+	[162518] = true, -- Mystical Flask
+	[113509] = true, -- Conjured Mana Bun
+}
+
 local safe = {
 	[BANK_CONTAINER] = true,
 	[0] = true
 }
 
-local frame = CreateFrame("Frame")
-local t, WAIT_TIME = 0, 0.05
-frame:SetScript("OnUpdate", function(self, elapsed)
-	t = t + (elapsed or 0.01)
-	if t > WAIT_TIME then
-		t = 0
-		B:DoMoves()
-	end
-end)
-frame:Hide()
-B.SortUpdateTimer = frame
+local WAIT_TIME = 0.05
+do
+	local t = 0
+	local frame = CreateFrame("Frame")
+	frame:SetScript("OnUpdate", function(_, elapsed)
+		t = t + (elapsed or 0.01)
+		if t > WAIT_TIME then
+			t = 0
+			B:DoMoves()
+		end
+	end)
+	frame:Hide()
+	B.SortUpdateTimer = frame
+end
 
 local function IsGuildBankBag(bagid)
 	return (bagid > 50 and bagid <= 58)
@@ -221,6 +229,14 @@ local function DefaultSort(a, b)
 		bRarity = 1
 	end
 
+	if conjured_items[aID] then
+		aRarity = -99
+	end
+
+	if conjured_items[bID] then
+		bRarity = -99
+	end
+
 	if aRarity ~= bRarity and aRarity and bRarity then
 		return aRarity > bRarity
 	end
@@ -230,8 +246,8 @@ local function DefaultSort(a, b)
 	end
 
 	if aItemClassId == LE_ITEM_CLASS_ARMOR or aItemClassId == LE_ITEM_CLASS_WEAPON then
-		local aEquipLoc = inventorySlots[aEquipLoc] or -1
-		local bEquipLoc = inventorySlots[bEquipLoc] or -1
+		aEquipLoc = inventorySlots[aEquipLoc] or -1
+		bEquipLoc = inventorySlots[bEquipLoc] or -1
 		if aEquipLoc == bEquipLoc then
 			return PrimarySort(a, b)
 		end
@@ -317,7 +333,7 @@ end
 function B:GetItemID(bag, slot)
 	if IsGuildBankBag(bag) then
 		local link = self:GetItemLink(bag, slot)
-		return link and tonumber(match(link, "item:(%d+)"))
+		return link and tonumber(strmatch(link, "item:(%d+)"))
 	else
 		return GetContainerItemID(bag, slot)
 	end
@@ -355,10 +371,10 @@ function B:SplitItem(bag, slot, amount)
 	end
 end
 
-function B:GetNumSlots(bag, role)
+function B:GetNumSlots(bag--[[, role]])
 	if IsGuildBankBag(bag) then
-		if not role then role = "deposit" end
-		local name, _, canView, canDeposit, numWithdrawals = GetGuildBankTabInfo(bag - 50)
+		--if not role then role = "deposit" end
+		local name, _, canView --[[, canDeposit, numWithdrawals]] = GetGuildBankTabInfo(bag - 50)
 		if name and canView --[[and ((role == "withdraw" and numWithdrawals ~= 0) or (role == "deposit" and canDeposit) or (role == "both" and numWithdrawals ~= 0 and canDeposit))]] then
 			return 98
 		end
@@ -372,12 +388,12 @@ end
 local function ConvertLinkToID(link)
 	if not link then return; end
 
-	if tonumber(match(link, "item:(%d+)")) then
-		return tonumber(match(link, "item:(%d+)"));
-	elseif tonumber(match(link, "keystone:(%d+)")) then
-		return tonumber(match(link, "keystone:(%d+)")), nil, true
+	if tonumber(strmatch(link, "item:(%d+)")) then
+		return tonumber(strmatch(link, "item:(%d+)"));
+	elseif tonumber(strmatch(link, "keystone:(%d+)")) then
+		return tonumber(strmatch(link, "keystone:(%d+)")), nil, true
 	else
-		return tonumber(match(link, "battlepet:(%d+)")), true;
+		return tonumber(strmatch(link, "battlepet:(%d+)")), true;
 	end
 end
 
@@ -516,9 +532,9 @@ function B.Stack(sourceBags, targetBags, canMove)
 		end
 	end
 
-	twipe(targetItems)
-	twipe(targetSlots)
-	twipe(sourceUsed)
+	wipe(targetItems)
+	wipe(targetSlots)
+	wipe(sourceUsed)
 end
 
 local blackListedSlots = {}
@@ -532,9 +548,9 @@ local function buildBlacklist(...)
 		if itemName then
 			blackList[itemName] = true
 		elseif entry ~= "" then
-			if find(entry, "%[") and find(entry, "%]") then
+			if strfind(entry, "%[") and strfind(entry, "%]") then
 				--For some reason the entry was not treated as a valid item. Extract the item name.
-				entry = match(entry, "%[(.*)%]")
+				entry = strmatch(entry, "%[(.*)%]")
 			end
 			blackListQueries[#blackListQueries+1] = entry
 		end
@@ -545,9 +561,9 @@ function B.Sort(bags, sorter, invertDirection)
 	if not sorter then sorter = invertDirection and ReverseSort or DefaultSort end
 
 	--Wipe tables before we begin
-	twipe(blackList)
-	twipe(blackListQueries)
-	twipe(blackListedSlots)
+	wipe(blackList)
+	wipe(blackListQueries)
+	wipe(blackListedSlots)
 
 	--Build blacklist of items based on the profile and global list
 	buildBlacklist(B.db.ignoredItems)
@@ -563,17 +579,14 @@ function B.Sort(bags, sorter, invertDirection)
 			end
 
 			if not blackListedSlots[bagSlot] then
-				local method, allowPartialMatch
+				local method
 				for _,itemsearchquery in pairs(blackListQueries) do
 					method = Search.Matches
 					if Search.Filters.tipPhrases.keywords[itemsearchquery] then
-						if itemsearchquery == "rel" or itemsearchquery == "reli" or itemsearchquery == "relic" then
-							allowPartialMatch = true
-						end
 						method = Search.TooltipPhrase
 						itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
 					end
-					local success, result = pcall(method, Search, link, itemsearchquery, allowPartialMatch)
+					local success, result = pcall(method, Search, link, itemsearchquery)
 					if success and result then
 						blackListedSlots[bagSlot] = result
 						break
@@ -588,7 +601,7 @@ function B.Sort(bags, sorter, invertDirection)
 		end
 	end
 
-	tsort(bagSorted, sorter)
+	sort(bagSorted, sorter)
 
 	local passNeeded = true
 	while passNeeded do
@@ -612,11 +625,11 @@ function B.Sort(bags, sorter, invertDirection)
 				i = i + 1
 			end
 		end
-		twipe(bagLocked)
+		wipe(bagLocked)
 	end
 
-	twipe(bagSorted)
-	twipe(initialOrder)
+	wipe(bagSorted)
+	wipe(initialOrder)
 end
 
 function B.FillBags(from, to)
@@ -631,15 +644,15 @@ function B.FillBags(from, to)
 	end
 
 	B.Fill(from, to)
-	twipe(specialtyBags)
+	wipe(specialtyBags)
 end
 
 function B.Fill(sourceBags, targetBags, reverse, canMove)
 	if not canMove then canMove = DefaultCanMove end
 
 	--Wipe tables before we begin
-	twipe(blackList)
-	twipe(blackListedSlots)
+	wipe(blackList)
+	wipe(blackListedSlots)
 
 	--Build blacklist of items based on the profile and global list
 	buildBlacklist(B.db.ignoredItems)
@@ -666,7 +679,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 			B:AddMove(bagSlot, tremove(emptySlots, 1))
 		end
 	end
-	twipe(emptySlots)
+	wipe(emptySlots)
 end
 
 function B.SortBags(...)
@@ -685,27 +698,27 @@ function B.SortBags(...)
 				B.Stack(bagCache.Normal, sortedBags)
 				B.Fill(bagCache.Normal, sortedBags, B.db.sortInverted)
 				B.Sort(sortedBags, nil, B.db.sortInverted)
-				twipe(sortedBags)
+				wipe(sortedBags)
 			end
 		end
 
 		if bagCache.Normal then
 			B.Stack(bagCache.Normal, bagCache.Normal, B.IsPartial)
 			B.Sort(bagCache.Normal, nil, B.db.sortInverted)
-			twipe(bagCache.Normal)
+			wipe(bagCache.Normal)
 		end
-		twipe(bagCache)
-		twipe(bagGroups)
+		wipe(bagCache)
+		wipe(bagGroups)
 	end
 end
 
 function B:StartStacking()
-	twipe(bagMaxStacks)
-	twipe(bagStacks)
-	twipe(bagIDs)
-	twipe(bagQualities)
-	twipe(bagPetIDs)
-	twipe(moveTracker)
+	wipe(bagMaxStacks)
+	wipe(bagStacks)
+	wipe(bagIDs)
+	wipe(bagQualities)
+	wipe(bagPetIDs)
+	wipe(moveTracker)
 
 	if #moves > 0 then
 		self.SortUpdateTimer:Show()
@@ -739,8 +752,8 @@ local function RegisterUpdateDelayed()
 end
 
 function B:StopStacking(message, noUpdate)
-	twipe(moves)
-	twipe(moveTracker)
+	wipe(moves)
+	wipe(moveTracker)
 	moveRetries, lastItemID, lockStop, lastDestination, lastMove = 0, nil, nil, nil, nil
 
 	self.SortUpdateTimer:Hide()
@@ -866,7 +879,7 @@ function B:DoMoves()
 	end
 
 	lastItemID, lockStop, lastDestination, lastMove = nil, nil, nil, nil
-	twipe(moveTracker)
+	wipe(moveTracker)
 
 	local success, moveID, targetID, moveSource, moveTarget, wasGuild
 	if #moves > 0 then
@@ -885,7 +898,7 @@ function B:DoMoves()
 			tremove(moves, i)
 
 			if moves[i-1] then
-				WAIT_TIME = wasGuild and 0.3 or 0;
+				WAIT_TIME = wasGuild and 0.3 or 0
 				return
 			end
 		end
@@ -894,7 +907,7 @@ function B:DoMoves()
 end
 
 function B:GetGroup(id)
-	if match(id, "^[-%d,]+$") then
+	if strmatch(id, "^[-%d,]+$") then
 		local bags = {}
 		for b in gmatch(id, "-?%d+") do
 			tinsert(bags, tonumber(b))
@@ -911,7 +924,7 @@ function B:CommandDecorator(func, groupsDefaults)
 			return;
 		end
 
-		twipe(bagGroups)
+		wipe(bagGroups)
 		if not groups or #groups == 0 then
 			groups = groupsDefaults
 		end
@@ -933,7 +946,7 @@ function B:CommandDecorator(func, groupsDefaults)
 		if func(unpack(bagGroups)) == false then
 			return
 		end
-		twipe(bagGroups)
+		wipe(bagGroups)
 		B:StartStacking()
 	end
 end

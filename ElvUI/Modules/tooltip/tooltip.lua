@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
-local LibInspect = LibStub('LibInspect')
-local LibItemLevel = LibStub('LibItemLevel-ElvUI')
+local LibInspect = E.Libs.Inspect
+local LibItemLevel = E.Libs.ItemLevel
 local S -- used to hold the skin module when we need it
 
 --Cache global variables
@@ -638,15 +638,26 @@ end
 function TT:SetUnitAura(tt, unit, index, filter)
 	if tt:IsForbidden() then return end
 	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
-	if id and self.db.spellID then
-		if caster then
-			local name = UnitName(caster)
-			local _, class = UnitClass(caster)
-			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-			if not color then color = RAID_CLASS_COLORS.PRIEST end
-			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
-		else
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
+
+	if id then
+		if self.MountIDs[id] then
+			local _, descriptionText, sourceText = C_MountJournal.GetMountInfoExtraByID(self.MountIDs[id])
+			--tt:AddLine(descriptionText)
+			tt:AddLine(" ")
+			tt:AddLine(sourceText, 1, 1, 1)
+			tt:AddLine(" ")
+		end
+
+		if self.db.spellID then
+			if caster then
+				local name = UnitName(caster)
+				local _, class = UnitClass(caster)
+				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				if not color then color = RAID_CLASS_COLORS.PRIEST end
+				tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id), format("|c%s%s|r", color.colorStr, name))
+			else
+				tt:AddLine(("|cFFCA3C3C%s|r %d"):format(LOCALE.ID, id))
+			end
 		end
 
 		tt:Show()
@@ -691,7 +702,7 @@ function TT:RepositionBNET(frame, _, anchor)
 end
 
 function TT:SetTooltipFonts()
-	local font = E.LSM:Fetch("font", E.db.tooltip.font)
+	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local headerSize = E.db.tooltip.headerFontSize
 	local textSize = E.db.tooltip.textFontSize
@@ -751,6 +762,13 @@ end
 function TT:Initialize()
 	self.db = E.db.tooltip
 
+	self.MountIDs = {}
+	local mountIDs = C_MountJournal.GetMountIDs();
+	local _, spellID
+	for i, mountID in ipairs(mountIDs) do
+		self.MountIDs[select(2, C_MountJournal.GetMountInfoByID(mountID))] = mountID
+	end
+	
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
 	E:CreateMover(BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
 	self:SecureHook(BNToastFrame, "SetPoint", "RepositionBNET")
@@ -762,7 +780,7 @@ function TT:Initialize()
 	GameTooltipStatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
-	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
+	GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then

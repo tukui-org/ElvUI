@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local LBG = LibStub("LibButtonGlow-1.0", true)
+local LBG = E.Libs.ButtonGlow
 
 --Cache global variables
 --Lua functions
@@ -289,13 +289,12 @@ local function LoadSkin()
 		S:HandleTexture(bu.icon, bu)
 	end
 
-	PVEFrame:CreateBackdrop("Transparent")
-	for i=1, 3 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
-	-- raid finder
+	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton, true)
 
 	_G.LFDParentFrame:StripTextures()
@@ -704,6 +703,22 @@ local function LoadSecondarySkin()
 	end)
 
 	hooksecurefunc(KeyStoneFrame, "OnKeystoneSlotted", HandleAffixIcons)
+
+	-- New Season Frame
+	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
+	S:HandleButton(NoticeFrame.Leave)
+	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
+	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)
+	NoticeFrame.SeasonDescription:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription2:SetTextColor(1, 1, 1)
+	NoticeFrame.SeasonDescription2:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription3:SetTextColor(1, .8, 0)
+	NoticeFrame.SeasonDescription3:SetShadowOffset(1, -1)
+
+	local affix = _G.ChallengesFrame.SeasonChangeNoticeFrame.Affix
+	affix:StripTextures()
+	S:HandleIcon(affix.Portrait)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)

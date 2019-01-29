@@ -5,9 +5,10 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local select, unpack = select, unpack
 local floor, max = math.floor, math.max
-local find, sub, gsub = string.find, string.sub, string.gsub
+local strfind, strsub, gsub = strfind, strsub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -168,7 +169,7 @@ function UF:Configure_ClassBar(frame, cur)
 			end
 		end
 
-		if not frame.USE_MINI_CLASSBAR then
+		if (not frame.USE_MINI_CLASSBAR) and frame.USE_CLASSBAR then
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
@@ -308,6 +309,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	bars:Hide()
 
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
@@ -334,7 +336,7 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
-function UF:UpdateClassBar(cur, max, hasMaxChanged)
+function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
@@ -342,7 +344,7 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged)
 	local isShown = self:IsShown()
 	local stateChanged
 
-	if not frame.USE_CLASSBAR or (cur == 0 and db.classbar.autoHide) or max == nil then
+	if not frame.USE_CLASSBAR or (current == 0 and db.classbar.autoHide) or maxBars == nil then
 		self:Hide()
 		if isShown then
 			stateChanged = true
@@ -355,17 +357,17 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged)
 	end
 
 	if hasMaxChanged then
-		frame.MAX_CLASS_BAR = max
-		UF:Configure_ClassBar(frame, cur)
+		frame.MAX_CLASS_BAR = maxBars
+		UF:Configure_ClassBar(frame, current)
 	elseif stateChanged then
-		UF:Configure_ClassBar(frame, cur)
+		UF:Configure_ClassBar(frame, current)
 	end
 
 	local r, g, b
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
 		self[i].bg:SetVertexColor(r, g, b, 0.15)
-		if(max and (i <= max)) then
+		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
 		else
 			self[i].bg:Hide()
@@ -376,10 +378,15 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
+local function PostUpdateRunes(self)
+	local useRunes = not UnitHasVehicleUI('player')
+	self:SetShown(useRunes)
+	UF.PostVisibilityRunes(self, useRunes)
+end
+
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
-	runes.backdrop:Hide()
 
 	for i = 1, UF.classMaxResourceBar[E.myclass] do
 		runes[i] = CreateFrame("StatusBar", frame:GetName().."RuneButton"..i, runes)
@@ -396,7 +403,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg.multiplier = 0.3
 	end
 
-	runes.PostUpdateVisibility = UF.PostVisibilityRunes
+	runes.PostUpdate = PostUpdateRunes
 	runes.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
@@ -404,7 +411,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
-function UF:PostVisibilityRunes(enabled, stateChanged)
+function UF:PostVisibilityRunes(enabled)
 	local frame = self.origParent or self:GetParent()
 
 	if enabled then
@@ -413,14 +420,6 @@ function UF:PostVisibilityRunes(enabled, stateChanged)
 	else
 		frame.ClassBar = "ClassPower"
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
-	end
-
-	if stateChanged then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end
 
@@ -433,7 +432,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.colorPower = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
-	additionalPower:CreateBackdrop('Default')
+	additionalPower:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 	UF.statusbars[additionalPower] = true
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 
@@ -451,11 +450,11 @@ function UF:Construct_AdditionalPowerBar(frame)
 	return additionalPower
 end
 
-function UF:PostUpdateAdditionalPower(_, min, max, event)
+function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if frame.USE_CLASSBAR and ((min ~= max or (not db.classbar.autoHide)) and (event ~= "ElementDisable")) then
+	if frame.USE_CLASSBAR and ((MIN ~= MAX or (not db.classbar.autoHide)) and (event ~= "ElementDisable")) then
 		if db.classbar.additionalPowerText then
 			local powerValue = frame.Power.value
 			local powerValueText = powerValue:GetText()
@@ -466,10 +465,10 @@ function UF:PostUpdateAdditionalPower(_, min, max, event)
 
 			--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
 			if powerValueText then
-				local _, endIndex = find(powerValueText, "|cff")
+				local _, endIndex = strfind(powerValueText, "|cff")
 				if endIndex then
 					endIndex = endIndex + 7 --Add hex code
-					powerValueText = sub(powerValueText, endIndex)
+					powerValueText = strsub(powerValueText, endIndex)
 					powerValueText = gsub(powerValueText, "%s+", "")
 				end
 			end
@@ -478,29 +477,29 @@ function UF:PostUpdateAdditionalPower(_, min, max, event)
 			if not frame.CLASSBAR_DETACHED then
 				self.text:SetParent(powerValueParent)
 				if (powerValueText and (powerValueText ~= "" and powerValueText ~= " ")) then
-					if find(powerTextPosition, "RIGHT") then
+					if strfind(powerTextPosition, "RIGHT") then
 						self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-						self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
-					elseif find(powerTextPosition, "LEFT") then
+						self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(MIN / MAX * 100))
+					elseif strfind(powerTextPosition, "LEFT") then
 						self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-						self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+						self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(MIN / MAX * 100))
 					else
 						if select(4, powerValue:GetPoint()) <= 0 then
 							self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-							self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+							self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(MIN / MAX * 100))
 						else
 							self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-							self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+							self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(MIN / MAX * 100))
 						end
 					end
 				else
 					self.text:Point(powerValue:GetPoint())
-					self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+					self.text:SetFormattedText(color.."%d%%|r", floor(MIN / MAX * 100))
 				end
 			else
 				self.text:SetParent(frame.RaisedElementParent) -- needs to be 'frame.RaisedElementParent' otherwise the new PowerPrediction Bar will overlap
 				self.text:Point("CENTER", self)
-				self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+				self.text:SetFormattedText(color.."%d%%|r", floor(MIN / MAX * 100))
 			end
 		else --Text disabled
 			self.text:SetText()

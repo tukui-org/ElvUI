@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+local ACD = E.Libs.AceConfigDialog
 
 local next = next
 local ipairs = ipairs
@@ -115,7 +115,7 @@ local function UpdateClassSpec(classTag, enabled)
 			args = {},
 		}
 	end
-	local coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
+	local coloredName = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classTag]) or RAID_CLASS_COLORS[classTag]
 	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 	for i=1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
 		local specID, name = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
@@ -168,7 +168,7 @@ local function UpdateClassSection()
 		local coloredName;
 		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder + 1
-			coloredName = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classTag]
+			coloredName = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classTag]) or RAID_CLASS_COLORS[classTag]
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
 			if classTrigger then

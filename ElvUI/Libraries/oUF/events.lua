@@ -128,25 +128,22 @@ Used to remove a function from the event handler list for a game event.
 function frame_metatable.__index:UnregisterEvent(event, func)
 	argcheck(event, 2, 'string')
 
+	local cleanUp = false
 	local curev = self[event]
 	if(type(curev) == 'table' and func) then
 		for k, infunc in next, curev do
 			if(infunc == func) then
-				table.remove(curev, k)
-
-				local n = #curev
-				if(n == 1) then
-					local _, handler = next(curev)
-					self[event] = handler
-				elseif(n == 0) then
-					-- This should not happen
-					unregisterEvent(self, event)
-				end
-
+				curev[k] = nil
 				break
 			end
 		end
-	elseif(curev == func) then
+
+		if(not next(curev)) then
+			cleanUp = true
+		end
+	end
+
+	if(cleanUp or curev == func) then
 		self[event] = nil
 		if(self.unitEvents) then
 			self.unitEvents[event] = nil

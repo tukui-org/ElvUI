@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
 local lower, split, format = string.lower, string.split, format
 --WoW API / Variables
@@ -21,18 +22,17 @@ local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: Minimap, EGrid, MacroEditBox, HelloKittyLeft
+-- GLOBALS: Minimap, MacroEditBox, HelloKittyLeft
 
 function E:Grid(msg)
-	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
+	msg = msg and tonumber(msg)
+	if type(msg) == "number" and (msg <= 256 and msg >= 4) then
 		E.db.gridSize = msg
 		E:Grid_Show()
+	elseif _G.ElvUIGrid and _G.ElvUIGrid:IsShown() then
+		E:Grid_Hide()
 	else
-		if EGrid then
-			E:Grid_Hide()
-		else
-			E:Grid_Show()
-		end
+		E:Grid_Show()
 	end
 end
 

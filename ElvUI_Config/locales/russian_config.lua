@@ -1,6 +1,5 @@
 -- Russian localization file for ruRU.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "ruRU")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • t:[запрос], type:[запрос] or slot:[запрос]. Например, t:оружие покажет все предметы, являющиеся оружием.
     • n:[имя] or name:[имя]. Например, n:muffins покажет все предметы, в имени которых соержится "muffins".
     • s:[набор] or set:[набор]. Например, s:fire покажет предметы из наборов экипировки, название которых начинается с "fire".
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[запрос], tip:[запрос] or tooltip:[запрос]. Например, tt:уникальный покажет все предметы, которые являются уникальными или уникальными использующимися.
 
 
@@ -41,11 +41,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • boe : персональные при одевании.
     • boa : привязоные к учетной записи.
     • quest : специальные предметы для заданий.
-    • reagents, reagent, crafting : Реагенты профессий.
-    • naval : Оборудование флота.
-    • follower, followe, follow : Предметы последователей.
-    • relic, reli, rel : Реликвии артефактов.
-    • power, powe, pow : Предметы, дающие силу артефакта.]=]
+    • reagent, crafting : Реагенты профессий.
+    • keystone : Mythic Keystone.
+    • followers : Предметы последователей.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
 
 Примеры:
@@ -195,6 +194,7 @@ L["Bottom to Top"] = "Снизу вверх"
 L["Button Size (Bag)"] = "Размер слотов сумок"
 L["Button Size (Bank)"] = "Размер слотов банка"
 L["Clear Search On Close"] = "Сбрасывать поиск при закрытии"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "Через запятую"
 L["Currency Format"] = "Формат валюты"
 L["Custom Color"] = "Свой цвет"
@@ -230,6 +230,7 @@ L["Search Syntax"] = "Синтаксис поиска"
 L["Sell Interval"] = "Интервал продажи"
 L["Set the size of your bag buttons."] = "Установите размер кнопок на панели."
 L["Short (Whole Numbers)"] = "Короткий (целые)"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "Показывать монеты"
 L["Show Junk Icon"] = "Иконки мусора"
 L["Show New Item Glow"] = "Свечение новых предметов"
@@ -249,6 +250,8 @@ L["The size of the individual buttons on the bag frame."] = "Размер каж
 L["The size of the individual buttons on the bank frame."] = "Размер каждого слота в банке"
 L["The spacing between buttons."] = "Расстояние между кнопками"
 L["Top to Bottom"] = "Сверху вниз"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
 L["Will attempt to sell another item in set interval after previous one was sold."] = "Будет пытаться продать следующий предмет через установленный интервал после предыдущего."
 
@@ -929,6 +932,7 @@ L["BG Map"] = "Карта ПБ"
 L["BG Score"] = "Таблица ПБ"
 L["Calendar Frame"] = "Календарь"
 L["Character Frame"] = "Окно персонажа"
+L["CheckBox Skin"] = true
 L["Contribution"] = "Вклад"
 L["Debug Tools"] = "Инструменты отладки"
 L["Gossip Frame"] = "Диалоги"
@@ -1315,7 +1319,6 @@ L["Tank Frames"] = "Танки"
 L["Tank Target"] = "Цели танков"
 L["Tapped"] = "Чужой"
 L["Targeting"] = "Цели"
-L["Target Glow"] = "Подсветка цели"
 L["Target On Mouse-Down"] = "Выделение при нажатии"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Выделять при нажатии кнопки мыши, а не при ее отпускании.\n\n|cffFF0000Внимание: Если Вы используете аддон 'Clique', то Вы также должны изменить его настройки при изменении этой."
 L["Text Color"] = "Цвет текста"

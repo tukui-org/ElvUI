@@ -97,45 +97,18 @@ local function LoadSkin()
 		end
 	end
 
-	local slots = {
-		"HeadSlot",
-		"NeckSlot",
-		"ShoulderSlot",
-		"BackSlot",
-		"ChestSlot",
-		"ShirtSlot",
-		"TabardSlot",
-		"WristSlot",
-		"HandsSlot",
-		"WaistSlot",
-		"LegsSlot",
-		"FeetSlot",
-		"Finger0Slot",
-		"Finger1Slot",
-		"Trinket0Slot",
-		"Trinket1Slot",
-		"MainHandSlot",
-		"SecondaryHandSlot",
-	}
+	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
+		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
+			S:HandleTexture(Slot.icon)
+			Slot:StripTextures()
+			Slot:SetTemplate()
+			Slot:StyleButton()
+			Slot.icon:SetInside()
 
-	for _, slot in pairs(slots) do
-		local icon = _G["Inspect"..slot.."IconTexture"]
-		slot = _G["Inspect"..slot]
-		slot:StripTextures()
-		slot:StyleButton(false)
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
-		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
-		slot:CreateBackdrop("Default")
-		slot.backdrop:SetAllPoints()
-
-		hooksecurefunc(slot.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r,g,b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
-			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+			Slot.IconBorder:SetAlpha(0)
+			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		end
 	end
 
 	InspectPVPFrame.BG:Kill()

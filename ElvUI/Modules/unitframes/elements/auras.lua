@@ -1,16 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
-local find = string.find
-local format = string.format
-local tinsert = table.insert
-local strsplit = strsplit
-local tsort = table.sort
-local ceil = math.ceil
+local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
 --WoW API / Variables
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -107,13 +101,13 @@ function UF:Construct_AuraIcon(button)
 	button.stealable:SetTexture(nil)
 
 	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnClick', function(self)
+	button:SetScript('OnClick', function(btn)
 		if E.db.unitframe.auraBlacklistModifier == "NONE" or not ((E.db.unitframe.auraBlacklistModifier == "SHIFT" and IsShiftKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "ALT" and IsAltKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "CTRL" and IsControlKeyDown())) then return; end
-		local auraName = self.name
+		local auraName = btn.name
 
 		if auraName then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[auraName] = {
+			E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = {
 				['enable'] = true,
 				['priority'] = 0,
 			}
@@ -201,8 +195,8 @@ function UF:Configure_Auras(frame, auraType)
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
 	auras:Height(auras.size * rows)
-	auras["growth-y"] = find(db[auraType].anchorPoint, 'TOP') and 'UP' or 'DOWN'
-	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (find(db[auraType].anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
+	auras["growth-y"] = strfind(db[auraType].anchorPoint, 'TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(db[auraType].anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
 
 	--These are needed for SmartAuraPosition
@@ -344,14 +338,14 @@ function UF:SortAuras()
 	if not self.db then return end
 
 	--Sorting by Index is Default
-	if(self.db.sortMethod == "TIME_REMAINING") then
-		tsort(self, SortAurasByTime)
-	elseif(self.db.sortMethod == "NAME") then
-		tsort(self, SortAurasByName)
-	elseif(self.db.sortMethod == "DURATION") then
-		tsort(self, SortAurasByDuration)
-	elseif (self.db.sortMethod == "PLAYER") then
-		tsort(self, SortAurasByCaster)
+	if self.db.sortMethod == "TIME_REMAINING" then
+		sort(self, SortAurasByTime)
+	elseif self.db.sortMethod == "NAME" then
+		sort(self, SortAurasByName)
+	elseif self.db.sortMethod == "DURATION" then
+		sort(self, SortAurasByDuration)
+	elseif self.db.sortMethod == "PLAYER" then
+		sort(self, SortAurasByCaster)
 	end
 
 	--Look into possibly applying filter priorities for auras here.
@@ -433,7 +427,7 @@ function UF:PostUpdateAura(unit, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
-			button.icon:SetDesaturated((unit and not find(unit, 'arena%d')) and true or false)
+			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
 			local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none
 			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
@@ -534,6 +528,7 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.duration = duration
 	button.expiration = expiration
 	button.name = name
+	button.spellID = spellID
 	button.owner = caster --what uses this?
 	button.spell = name --what uses this? (SortAurasByName?)
 	button.priority = 0

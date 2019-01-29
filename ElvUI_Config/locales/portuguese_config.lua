@@ -1,6 +1,5 @@
 -- Portuguese localization file for ptBR.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "ptBR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -41,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Fornece uma sting para mudar o formato do texto.
 
 Examples:
@@ -195,6 +194,7 @@ L["Bottom to Top"] = "De baixo para cima"
 L["Button Size (Bag)"] = "Tamanho do Botão (Bolsas)"
 L["Button Size (Bank)"] = "Tamanho do Botão (Banco)"
 L["Clear Search On Close"] = true
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = true
 L["Currency Format"] = "Formato de moeda"
 L["Custom Color"] = true
@@ -231,6 +231,7 @@ L["Search Syntax"] = true
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Define o tamanho dos botões das Bolsas"
 L["Short (Whole Numbers)"] = true
+L["Show Assigned Color"] = true
 L["Show Coins"] = true
 L["Show Junk Icon"] = true
 L["Show New Item Glow"] = true
@@ -250,6 +251,8 @@ L["The size of the individual buttons on the bag frame."] = "O tamanho individua
 L["The size of the individual buttons on the bank frame."] = "O tamanho individual de botões dentro do quadro do banco."
 L["The spacing between buttons."] = "Espaçamento entre botões."
 L["Top to Bottom"] = "De cima para baixo"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = true
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
@@ -931,6 +934,7 @@ L["BG Map"] = "Mapa do CB"
 L["BG Score"] = "Placar do CB"
 L["Calendar Frame"] = "Calendário"
 L["Character Frame"] = "Personagem"
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Ferramentas de Depuração"
 L["Gossip Frame"] = "Fofocas"
@@ -1317,7 +1321,6 @@ L["Tank Frames"] = "Quadro do Tanques"
 L["Tank Target"] = "Alvo do Tanque"
 L["Tapped"] = "Reservado"
 L["Targeting"] = true
-L["Target Glow"] = true
 L["Target On Mouse-Down"] = "Selecionar ao Pressionar o Mouse"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Seleciona unidades ao pressionar o mouse em ves de ao soltar. \n\n|cffFF0000Atenção: Se você estiver usando o addon 'Clique' poderá ter que ajustá-lo quando alterar essa opção."
 L["Text Color"] = "Cor do Texto"

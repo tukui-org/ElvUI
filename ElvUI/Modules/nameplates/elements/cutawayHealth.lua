@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 
 local UnitIsTapDenied = UnitIsTapDenied
 local C_Timer_After = C_Timer.After

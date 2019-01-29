@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
@@ -240,6 +240,4 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 	if frame.AuraWatch.Update then
 		frame.AuraWatch.Update(frame)
 	end
-
-	frame:UpdateElement("AuraWatch")
 end

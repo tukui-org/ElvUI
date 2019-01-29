@@ -16,7 +16,6 @@ local STAT_LIFESTEAL = STAT_LIFESTEAL
 local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
 local CR_LIFESTEAL = CR_LIFESTEAL
 
-local lifesteal
 local displayModifierString = ''
 local lastPanel;
 
@@ -33,7 +32,7 @@ local function OnEnter(self)
 end
 
 local function OnEvent(self)
-	lifesteal = GetLifesteal()
+	local lifesteal = GetLifesteal()
 	self.text:SetFormattedText(displayModifierString, STAT_LIFESTEAL, lifesteal)
 	lastPanel = self
 end

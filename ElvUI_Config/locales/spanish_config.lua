@@ -1,6 +1,5 @@
 -- Spanish localization file for esES and esMX.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "esES") or AceLocale:NewLocale("ElvUI", "esMX")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esES") or ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -41,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Proporciona una cadena para cambiar el formato de texto.
 
 Ejemplos:
@@ -195,6 +194,7 @@ L["Bottom to Top"] = "De Abajo hacia Arriba"
 L["Button Size (Bag)"] = "Tamaño de los Botones (Bolsas)"
 L["Button Size (Bank)"] = "Tamaño de los Botones (Banco)"
 L["Clear Search On Close"] = true
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = true
 L["Currency Format"] = "Formato de Moneda"
 L["Custom Color"] = true
@@ -231,6 +231,7 @@ L["Search Syntax"] = true
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "Establece el tamaño de tus botones de la bolsa."
 L["Short (Whole Numbers)"] = true
+L["Show Assigned Color"] = true
 L["Show Coins"] = true
 L["Show Junk Icon"] = true
 L["Show New Item Glow"] = true
@@ -250,6 +251,8 @@ L["The size of the individual buttons on the bag frame."] = "El tamaño de los b
 L["The size of the individual buttons on the bank frame."] = "El tamaño de los botones individuales en el marco del banco"
 L["The spacing between buttons."] = "Separación entre los botones."
 L["Top to Bottom"] = "De Arriba hacia Abajo"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = true
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
@@ -470,7 +473,7 @@ L["This feature will allow you to transfer settings to other characters."] = "Es
 L["You must be targeting a player."] = "Debes enfocar a un jugador."
 
 --Filters
-L["Quick Search"] = true
+L["Filter Search"] = true
 L["Reset Aura Filters"] = true --Used in Nameplates/UnitFrames general options
 L["Reset Filter"] = true
 L["Search for a spell name inside of a filter."] = true
@@ -929,6 +932,7 @@ L["BG Map"] = "Mapa de CB"
 L["BG Score"] = "Puntuación de CB"
 L["Calendar Frame"] = "Calendario"
 L["Character Frame"] = "Personaje"
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Herramientas de Depuración"
 L["Gossip Frame"] = "Actualidad"
@@ -1315,7 +1319,6 @@ L["Tank Frames"] = "Marco de Tanques"
 L["Tank Target"] = "Objetivo del Tanque"
 L["Tapped"] = "Golpear"
 L["Targeting"] = true
-L["Target Glow"] = true
 L["Target On Mouse-Down"] = "Apuntar al Presionar el Botón del Ratón"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Apuntar unidades al presionar el botón en lugar de soltarlo. \n\n|cffFF0000Advertencia: Si estás usando Clique es probable que tengas que modificar tus ajustes de Clique cuando cambies esta opción.|r"
 L["Text Color"] = "Color de Texto"

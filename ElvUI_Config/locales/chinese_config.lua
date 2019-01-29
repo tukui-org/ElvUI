@@ -1,6 +1,5 @@
 -- Chinese localization file for zhCN.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhCN")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -41,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -172,13 +171,13 @@ L["Add Item or Search Syntax"] = "添加物品或者匹配语法"
 L["Adjust the width of the bag frame."] = "调整背包框架宽度"
 L["Adjust the width of the bank frame."] = "调整银行框架宽度"
 L["Ascending"] = "升序"
-L["Bag"] = "背包"
-L["Bag Assignment"] = "背包分类"
 L["Bag 1"] = "背包1"
 L["Bag 2"] = "背包2"
 L["Bag 3"] = "背包3"
 L["Bag 4"] = "背包4"
+L["Bag Assignment"] = "背包分类"
 L["Bag Sorting"] = "背包排序"
+L["Bag"] = "背包"
 L["Bag-Bar"] = "背包条"
 L["Bank 1"] = "银行1"
 L["Bank 2"] = "银行2"
@@ -193,6 +192,7 @@ L["Bottom to Top"] = "底部到顶部"
 L["Button Size (Bag)"] = "背包格子尺寸"
 L["Button Size (Bank)"] = "银行格子尺寸"
 L["Clear Search On Close"] = "关闭时清除搜索"
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "紧凑"
 L["Currency Format"] = "货币格式"
 L["Custom Color"] = "自定义颜色"
@@ -229,6 +229,7 @@ L["Search Syntax"] = "搜索语法"
 L["Sell Interval"] = "售卖周期"
 L["Set the size of your bag buttons."] = "设置背包按钮尺寸"
 L["Short (Whole Numbers)"] = "短(完整数字)"
+L["Show Assigned Color"] = true
 L["Show Coins"] = "显示硬币"
 L["Show Junk Icon"] = "显示垃圾图标"
 L["Show New Item Glow"] = "新物品发光"
@@ -248,6 +249,8 @@ L["The size of the individual buttons on the bag frame."] = "背包框架单个�
 L["The size of the individual buttons on the bank frame."] = "银行框架单个格子的尺寸"
 L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = "顶部到底部"
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = "显示硬币图标而不是颜色文字"
 L["Will attempt to sell another item in set interval after previous one was sold."] = "尝试在设定的周期后卖下一个物品"
 
@@ -548,7 +551,7 @@ L["Show an alert frame if you have unspend talent points."] = "为你未使用�
 L["Skin Backdrop (No Borders)"] = "美化背景(无边框)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪聊天泡泡"
-L["Talking Head Backdrop"] = true
+L["Talking Head Backdrop"] = "剧情对话框背景"
 L["Talking Head Scale"] = "剧情对话框缩放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重启游戏或重新登录才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "细边框主题会改变所有的外观,使用细边框主题会略微提升性能"
@@ -928,6 +931,7 @@ L["BG Map"] = "战场地图"
 L["BG Score"] = "战场记分"
 L["Calendar Frame"] = "日历框架"
 L["Character Frame"] = "角色"
+L["CheckBox Skin"] = true
 L["Contribution"] = "捐献"
 L["Debug Tools"] = "除错工具"
 L["Gossip Frame"] = "闲谈"
@@ -1010,7 +1014,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "添加一个技能到过滤器"
 L["Add Spell ID or Name"] = "添加技能ID或者名字"
 L["Add SpellID"] = "添加技能ID"
-L["Additional Power Prediction Color"] = true
+L["Additional Power Prediction Color"] = "额外能量预估颜色"
 L["Additional Power Text"] = "额外能量文字"
 L["Additional spacing between each individual group."] = "各小队之间的额外间隔"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "锚定新框架时的X偏移(像素)"
@@ -1076,7 +1080,7 @@ L["Current / Max"] = "当前值 / 最大值"
 L["Current"] = "当前值"
 L["Custom Dead Backdrop"] = "自定义死亡背景"
 L["Custom Health Backdrop"] = "自定义生命条背景"
-L["Custom Power Prediction Color"] = true
+L["Custom Power Prediction Color"] = "自定义能量预估颜色"
 L["Custom Texts"] = "自定义字体"
 L["Custom Texture"] = "自定义材质"
 L["Debuff Highlighting"] = "减益光环加亮显示"
@@ -1152,7 +1156,7 @@ L["Groups Per Row/Column"] = "每行/列的队伍数"
 L["Growth direction from the first unitframe."] = "增长方向从第一个头像框架开始"
 L["Growth Direction"] = "增长方向"
 L["Heal Absorbs"] = "治疗吸收盾"
-L["Heal Prediction"] = "治疗量预测"
+L["Heal Prediction"] = "治疗量预估"
 L["Health Backdrop"] = "生命条背景"
 L["Health Backdrop Multiplier"] = "生命条背景倍数"
 L["Health Border"] = "生命条边框"
@@ -1238,8 +1242,8 @@ L["Position"] = "位置"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "NPC目标将隐藏能量文字"
 L["Power"] = "能量条"
 L["Powers"] = "能量"
-L["Power Prediction"] = "能量预测"
-L["Power Prediction Color"] = true
+L["Power Prediction"] = "能量预估"
+L["Power Prediction Color"] = "能量预估颜色"
 L["Priority"] = "优先级"
 L["Profile Specific"] = "角色专用"
 L["PvP & Prestige Icon"] = "PvP和威望图标"
@@ -1281,7 +1285,7 @@ L["Set the type of auras to show when a unit is a foe."] = "当单位是敌对�
 L["Set the type of auras to show when a unit is friendly."] = "当单位是友好时设置光环显示的类型"
 L["Sets the font instance's horizontal text alignment style."] = "设置字体实例的水平文本对齐方式"
 L["Show Absorb Amount"] = "显示吸收量"
-L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "在单位框架中显示即将回复的的预测治疗量, 过量治疗则以不同颜色显示"
+L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "在单位框架中显示即将回复的的预估治疗量, 过量治疗则以不同颜色显示"
 L["Show Aura From Other Players"] = "显示其他玩家的光环"
 L["Show Auras"] = "显示光环"
 L["Show Dispellable Debuffs"] = "显示可驱散的减益光环"
@@ -1314,7 +1318,6 @@ L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目标"
 L["Tapped"] = "被攻击"
 L["Targeting"] = "目标"
-L["Target Glow"] = "选中高亮"
 L["Target On Mouse-Down"] = "鼠标按下设为目标"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "按下鼠标时设为目标,而不是松开鼠标按键时. \n\n|cffFF0000警告: 如果使用'Clique'等点击施法插件, 你可能需要调整这些插件的设置"
 L["Text Color"] = "文字颜色"

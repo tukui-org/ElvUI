@@ -1,9 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
-local LSM = E.LSM
+local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
+local select = select
 local pairs = pairs
 local type = type
 local gsub = gsub
@@ -1024,7 +1025,9 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
 
 	--Make sure quest icon info is available when enabled
-	E:LockCVar("showQuestTrackingTooltips", self.db.questIcon and "1")
+	if self.db.questIcon == true then
+		E:LockCVar("showQuestTrackingTooltips", "1")
+	end
 end
 
 local function CopySettings(from, to)

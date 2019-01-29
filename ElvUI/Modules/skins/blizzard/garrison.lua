@@ -8,6 +8,7 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
@@ -22,7 +23,11 @@ local function LoadSkin()
 			if firstRegion then firstRegion:Hide() end
 
 			reward:ClearAllPoints()
-			reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
+				reward:SetPoint("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
+			else
+				reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+			end
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture(nil)
@@ -53,35 +58,6 @@ local function LoadSkin()
 		end
 
 		frame.Icon:SetDrawLayer("BORDER", 0)
-	end)
-
-	--This handles border color for rewards on Garrison/Order Hall Report Frame
-	hooksecurefunc("GarrisonLandingPageReportList_UpdateAvailable", function()
-		local GarrisonLandingPageReport = _G.GarrisonLandingPageReport
-		local items = GarrisonLandingPageReport.List.AvailableItems;
-		local numItems = #items;
-		local scrollFrame = GarrisonLandingPageReport.List.listScroll;
-		local offset = _G.HybridScrollFrame_GetOffset(scrollFrame);
-		local buttons = scrollFrame.buttons;
-		local numButtons = #buttons
-
-		for i = 1, numButtons do
-			local button = buttons[i];
-			local index = offset + i; -- adjust index
-			if ( index <= numItems ) then
-				local idx, item = 1, items[index];
-				for _, reward in pairs(item.rewards) do
-					local Reward = button.Rewards[idx];
-					if (reward.itemID) then
-						local r, g, b = Reward.IconBorder:GetVertexColor()
-						Reward.border.backdrop:SetBackdropBorderColor(r,g,b)
-					else
-						Reward.border.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end
-					idx = idx + 1;
-				end
-			end
-		end
 	end)
 
 	-- Building frame

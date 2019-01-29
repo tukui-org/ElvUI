@@ -1,6 +1,5 @@
 -- English localization file for enUS and enGB.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "enUS", true, true)
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Specific Searching:
     • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
     • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
     • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
@@ -41,11 +41,10 @@ The following search keywords can also be used:
     • boe : Bind on equip items.
     • boa : Bind on account items.
     • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=]
+    • reagent, crafting : Profession reagents.
+    • keystone : Mythic Keystone.
+    • followers : Follower items.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Provide a string to change the text format.
 
 Examples:
@@ -195,6 +194,7 @@ L["Bottom to Top"] = true
 L["Button Size (Bag)"] = true
 L["Button Size (Bank)"] = true
 L["Clear Search On Close"] = true
+L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = true
 L["Currency Format"] = true
 L["Custom Color"] = true
@@ -232,6 +232,7 @@ L["Search Syntax"] = true
 L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = true
 L["Short (Whole Numbers)"] = true
+L["Show Assigned Color"] = true
 L["Show Coins"] = true
 L["Show Junk Icon"] = true
 L["Show New Item Glow"] = true
@@ -251,6 +252,8 @@ L["The size of the individual buttons on the bag frame."] = true
 L["The size of the individual buttons on the bank frame."] = true
 L["The spacing between buttons."] = true
 L["Top to Bottom"] = true
+L["Use Blizzard Cleanup"] = true
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
 L["Use coin icons instead of colored text."] = true
 L["Will attempt to sell another item in set interval after previous one was sold."] = true
 
@@ -926,6 +929,7 @@ L["BG Map"] = true
 L["BG Score"] = true
 L["Calendar Frame"] = true
 L["Character Frame"] = true
+L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = true
 L["Gossip Frame"] = true
@@ -1312,7 +1316,6 @@ L["Tank Frames"] = true
 L["Tank Target"] = true
 L["Tapped"] = true
 L["Targeting"] = true
-L["Target Glow"] = true
 L["Target On Mouse-Down"] = true
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true
 L["Text Color"] = true

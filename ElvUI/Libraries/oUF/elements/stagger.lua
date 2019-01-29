@@ -51,7 +51,7 @@ local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function UpdateColor(element, cur, max)
 	local colors = element.__owner.colors.power[BREWMASTER_POWER_BAR_NAME]
-	local perc = max > 0 and (cur / max) or 0 -- ElvUI changed
+	local perc = cur / max
 
 	local t
 	if(perc >= STAGGER_RED_TRANSITION) then
@@ -130,35 +130,21 @@ local function Path(self, ...)
 	return (self.Stagger.Override or Update)(self, ...)
 end
 
--- ElvUI changed
 local function Visibility(self, event, unit)
-	local isShown = self.Stagger:IsShown()
-	local stateChanged = false
 	if(SPEC_MONK_BREWMASTER ~= GetSpecialization() or UnitHasVehiclePlayerFrameUI('player')) then
-		if(isShown) then
+		if(self.Stagger:IsShown()) then
 			self.Stagger:Hide()
 			self:UnregisterEvent('UNIT_AURA', Path)
-			stateChanged = true
-		end
-
-		if(self.Stagger.PostUpdateVisibility) then
-			self.Stagger.PostUpdateVisibility(self, event, unit, false, stateChanged)
 		end
 	else
-		if(not isShown) then
+		if(not self.Stagger:IsShown()) then
 			self.Stagger:Show()
 			self:RegisterEvent('UNIT_AURA', Path)
-			stateChanged = true
-		end
-
-		if(self.Stagger.PostUpdateVisibility) then
-			self.Stagger.PostUpdateVisibility(self, event, unit, true, stateChanged)
 		end
 
 		return Path(self, event, unit)
 	end
 end
--- end block
 
 local function VisibilityPath(self, ...)
 	--[[ Override: Stagger.OverrideVisibility(self, event, unit)

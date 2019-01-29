@@ -1,6 +1,5 @@
 -- German localization file for deDE.
-local AceLocale = LibStub("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "deDE")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 if not L then return end
 
 -- *_DESC locales
@@ -25,6 +24,7 @@ Spezifische Suche:
     • t:[suche], type:[suche] oder slot:[suche]. Beispielsweise t:waffe findet alle Waffen.
     • n:[name] oder name:[name]. Beispielsweise wenn du n:muffins eintippst, findest du alle Gegenstände die "muffins" im Namen haben.
     • s:[set] oder set:[set]. Zum Beispiel: s:feuer findet alle Gegenstände eines Ausrüstungssets mit Feuer im Namen.
+    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
     • tt:[suche], tip:[suche] oder tooltip:[suche]. Beispielsweise tt:gebunden findet alle Gegenstände die am Account, beim Aufheben oder beim Ausrüsten gebunden sind.
 
 
@@ -41,11 +41,10 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • boe : Beim Ausrüsten gebundene Gegenstände.
     • boa : An den Account gebundene Gegenstände.
     • quest : Gebundene Quest Gegenstände.
-    • reagents, reagent, crafting : Berufs Reagenzien.
-    • naval : Schiffsausrüstung.
-    • follower, followe, follow : Anhänger Gegenstände.
-    • relic, reli, rel : Artefakt Relikte.
-    • power, powe, pow : Gegenstände die Artefaktkraft gewähren.]=]
+    • reagent, crafting : Berufs Reagenzien.
+    • keystone : Mythic Keystone.
+    • followers : Anhänger Gegenstände.
+    • champions : Champion equipment.]=]
 L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
 
 Beispiele:
@@ -197,6 +196,7 @@ L["Bottom to Top"] = "Von unten nach oben"
 L["Button Size (Bag)"] = "Tasten Größe (Tasche)"
 L["Button Size (Bank)"] = "Tasten Größe (Bank)"
 L["Clear Search On Close"] = "Leere Suche beim Schließen"
+L["Colors the border according to the type of items assigned to the bag."] = "Färbt den Rand entsprechend zum Typ des Gegenstands der zugewiesenen Tasche."
 L["Condensed"] = "Gekürzt"
 L["Currency Format"] = "Währungsformat"
 L["Custom Color"] = "Benutzerdefinierte Farbe"
@@ -233,6 +233,7 @@ L["Search Syntax"] = "Suchsyntax"
 L["Sell Interval"] = "Verkaufsintervall"
 L["Set the size of your bag buttons."] = "Setze die Größe der Taschen Taste."
 L["Short (Whole Numbers)"] = "Kurz (ganze Zahlen)"
+L["Show Assigned Color"] = "Zeige zugewiesenen Farbe"
 L["Show Coins"] = "Währungssymbole anzeigen"
 L["Show Junk Icon"] = "Zeige Müll Symbol"
 L["Show New Item Glow"] = "Zeige neues Gegenstandleuchten"
@@ -252,6 +253,8 @@ L["The size of the individual buttons on the bag frame."] = "Die Größe der ein
 L["The size of the individual buttons on the bank frame."] = "Die Größe der einzelnen Tasten auf dem Bankfenster."
 L["The spacing between buttons."] = "Der Abstand zwischen den Tasten."
 L["Top to Bottom"] = "Von oben nach unten"
+L["Use Blizzard Cleanup"] = "Benutze Blizzard Sortierung"
+L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "Benutzt Blizzards Methode zum Sortieren der Taschen anstelle von ElvUI Sortierung."
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
 L["Will attempt to sell another item in set interval after previous one was sold."] = "Versucht einen anderen Gegenstand in einem bestimmten Intervall zu verkaufen, nachdem der vorherige verkauft wurde."
 
@@ -870,7 +873,7 @@ L["Tagged NPC"] = "Ausgewählter NPC"
 L["Talent to match"] = "Talent entsprechend"
 L["Tanked Color"] = "Angetankte Farbe"
 L["Target Indicator Color"] = "Ziel Indikator Farbe"
-L["Target/Low Health Indicator"] = "Ziel Indikator"
+L["Target/Low Health Indicator"] = "Ziel-/Geringer Leben Indikator"
 L["Target Scale"] = "Ziel Skalierung"
 L["Target, Quest, Combat"] = "Ziel, Quest, Kampf"
 L["Targeted Nameplate"] = "Ausgewählte Namensplaketten"
@@ -933,6 +936,7 @@ L["BG Map"] = "Schlachtfeldkarte"
 L["BG Score"] = "Schlachtfeldpunkte"
 L["Calendar Frame"] = "Kalender Fenster"
 L["Character Frame"] = "Charakterfenster"
+L["CheckBox Skin"] = "Auswahlkästchen Skin"
 L["Contribution"] = "Beitragsfenster"
 L["Debug Tools"] = "Debug Tools"
 L["Gossip Frame"] = "Begrüßungsfenster"
@@ -1319,7 +1323,6 @@ L["Tank Frames"] = "Tank Fenster"
 L["Tank Target"] = "Tank Ziel"
 L["Tapped"] = "Angeschlagen"
 L["Targeting"] = "Zielauswahl"
-L["Target Glow"] = "Ziel Leuchten"
 L["Target On Mouse-Down"] = "Ziel bei Maus-Runter"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Nimmt die Einheit ins Ziel bei Maus-Runter anstatt bei Maus-Hoch. |cffFF0000Warnung: Wenn du das Addon 'Clique' benutzt musst du das auch in den Clique Einstellungen ändern wenn du das hier benutzt."
 L["Text Color"] = "Text Farbe"
