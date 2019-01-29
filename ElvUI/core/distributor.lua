@@ -240,6 +240,9 @@ end
 --Keys that should not be exported
 local blacklistedKeys = {
 	["profile"] = {
+		["general"] = {
+			["numberPrefixStyle"] = true,
+		},
 		["actionbar"] = {
 			--[[
 			["bar1"] = {
