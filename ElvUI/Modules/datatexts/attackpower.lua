@@ -24,19 +24,17 @@ local MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP = MELEE_ATTACK_POWER_SPELL_POWER_TO
 local MELEE_ATTACK_POWER_TOOLTIP = MELEE_ATTACK_POWER_TOOLTIP
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS
 
-local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
+local pwr
 local displayNumberString = ''
 local lastPanel;
 
 local function OnEvent(self)
 	if E.myclass == "HUNTER" then
-		Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player");
-		Reffective = Rbase + RposBuff + RnegBuff;
-		pwr = Reffective
+		local Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player")
+		pwr = Rbase + RposBuff + RnegBuff
 	else
-		base, posBuff, negBuff = UnitAttackPower("player");
-		effective = base + posBuff + negBuff;
-		pwr = effective
+		local base, posBuff, negBuff = UnitAttackPower("player")
+		pwr = base + posBuff + negBuff
 	end
 
 	self.text:SetFormattedText(displayNumberString, L["AP"], pwr)
@@ -62,7 +60,7 @@ local function OnEnter(self)
 			DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, BreakUpLargeNumbers(pwr), 1, 1, 1);
 		end
 
-		local line = format(RANGED_ATTACK_POWER_TOOLTIP, BreakUpLargeNumbers(max((pwr), 0)/ATTACK_POWER_MAGIC_NUMBER))
+		local line = format(RANGED_ATTACK_POWER_TOOLTIP, BreakUpLargeNumbers(max(pwr, 0)/ATTACK_POWER_MAGIC_NUMBER))
 
 		local petAPBonus = ComputePetBonus( "PET_BONUS_RAP_TO_AP", pwr );
 		if( petAPBonus > 0 ) then
@@ -78,7 +76,7 @@ local function OnEnter(self)
 	else
 		local SpellPowerByAttackPower = GetOverrideSpellPowerByAP()
 		local OverrideAPBySpellPower = GetOverrideAPBySpellPower()
-		local damageBonus = BreakUpLargeNumbers(max((base+posBuff+negBuff), 0)/ATTACK_POWER_MAGIC_NUMBER);
+		local damageBonus = BreakUpLargeNumbers(max(pwr, 0)/ATTACK_POWER_MAGIC_NUMBER);
 		if (OverrideAPBySpellPower ~= nil) then
 			local holySchool = 2;
 			-- Start at 2 to skip physical damage
@@ -94,7 +92,7 @@ local function OnEnter(self)
 		end
 
 		if (SpellPowerByAttackPower ~= nil) then
-			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP, damageBonus, BreakUpLargeNumbers(effective * GetOverrideSpellPowerByAP() + 0.5)), nil, nil, nil, true);
+			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP, damageBonus, BreakUpLargeNumbers(pwr * GetOverrideSpellPowerByAP() + 0.5)), nil, nil, nil, true);
 		else
 			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_TOOLTIP, damageBonus), nil, nil, nil, true);
 		end

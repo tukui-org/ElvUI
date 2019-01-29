@@ -8,13 +8,12 @@ local join = string.join
 local GetSpellBonusDamage = GetSpellBonusDamage
 local GetSpellBonusHealing = GetSpellBonusHealing
 
-local spellpwr, healpwr
 local displayNumberString = ''
 local lastPanel;
 
 local function OnEvent(self)
-	spellpwr = GetSpellBonusDamage(7)
-	healpwr = GetSpellBonusHealing()
+	local spellpwr = GetSpellBonusDamage(7)
+	local healpwr = GetSpellBonusHealing()
 
 	if healpwr > spellpwr then
 		self.text:SetFormattedText(displayNumberString, L["HP"], healpwr)
