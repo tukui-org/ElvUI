@@ -36,7 +36,6 @@ function NP:Update_Portrait(nameplate)
 
 		nameplate.Portrait:SetSize(db.portrait.width, db.portrait.height)
 		nameplate.Portrait:ClearAllPoints()
-
 		nameplate.Portrait:SetPoint(NP.OppositePoint[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
 	else
 		if nameplate:IsElementEnabled('Portrait') then

@@ -13,9 +13,9 @@ function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.name.enable then
-		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint(NP.OppositePoint[db.name.position], nameplate, db.name.position, db.name.xOffset, db.name.yOffset)
+		nameplate.Name:Show()
 	else
 		nameplate.Name:Hide()
 	end
@@ -25,9 +25,9 @@ function NP:Update_Level(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.level.enable then
-		nameplate.Level:Show()
-
+		nameplate.Level:ClearAllPoints()
 		nameplate.Level:SetPoint(NP.OppositePoint[db.level.position], nameplate, db.level.position, db.level.xOffset, db.level.yOffset)
+		nameplate.Level:Show()
 	else
 		nameplate.Level:Hide()
 	end

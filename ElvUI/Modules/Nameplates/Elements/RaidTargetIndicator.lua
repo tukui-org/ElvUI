@@ -28,6 +28,8 @@ function NP:Update_RaidTargetIndicator(nameplate)
 	--if not nameplate:IsElementEnabled('RaidTargetIndicator') then
 	--	nameplate:EnableElement('RaidTargetIndicator')
 	--end
+	--RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
+
 	--if nameplate:IsElementEnabled('RaidTargetIndicator') then
 	--	nameplate:DisableElement('RaidTargetIndicator')
 	--end

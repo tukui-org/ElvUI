@@ -42,7 +42,6 @@ function NP:Update_PvPIndicator(nameplate)
 		end
 
 		nameplate.PvPIndicator:ClearAllPoints()
-
 		nameplate.PvPIndicator:SetPoint(NP.OppositePoint[db.pvpindicator.position], nameplate, db.pvpindicator.position, db.pvpindicator.xOffset, db.pvpindicator.yOffset)
 	else
 		if nameplate:IsElementEnabled('PvPIndicator') then

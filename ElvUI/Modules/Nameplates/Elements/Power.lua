@@ -70,9 +70,9 @@ function NP:Update_Power(nameplate)
 	end
 
 	if db.power.text.enable then
-		nameplate.Power.Text:Show()
-
+		nameplate.Power.Text:ClearAllPoints()
 		nameplate.Power.Text:SetPoint(NP.OppositePoint[db.power.text.position], nameplate, db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
+		nameplate.Power.Text:Show()
 	else
 		nameplate.Power.Text:Hide()
 	end

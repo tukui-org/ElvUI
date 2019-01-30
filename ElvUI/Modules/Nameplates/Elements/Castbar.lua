@@ -88,10 +88,10 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', 0, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
-			nameplate.Castbar.Button:Show()
-			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
 			nameplate.Castbar.Button:ClearAllPoints()
 			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'LEFT' or 'RIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'RIGHT' or 'LEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:Show()
 		else
 			nameplate.Castbar.Button:Hide()
 		end
