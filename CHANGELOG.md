@@ -4,7 +4,8 @@
 
 
 **Bug Fixes:**  
-
+Fixed an issue with the combat log header. (#1013)  
+Fixed a bag config error if the bag module was disabled.  
 
 **Misc. Changes:**  
 
