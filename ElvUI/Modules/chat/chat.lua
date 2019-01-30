@@ -349,7 +349,7 @@ function CH:StyleChat(frame)
 	editbox.characterCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
 	editbox.characterCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
 	editbox.characterCount:SetJustifyH("CENTER")
-	editbox.characterCount:Width(30)
+	editbox.characterCount:Width(40)
 
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
