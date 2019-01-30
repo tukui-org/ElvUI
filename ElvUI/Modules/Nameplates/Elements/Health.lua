@@ -60,6 +60,8 @@ function NP:Update_Health(nameplate)
 
 	if db.health.text.enable then
 		nameplate.Health.Text:Show()
+
+		nameplate.Health.Text:SetPoint(NP.OppositePoint[db.health.text.position], nameplate, db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
 	else
 		nameplate.Health.Text:Hide()
 	end

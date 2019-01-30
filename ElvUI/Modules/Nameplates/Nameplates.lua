@@ -26,6 +26,14 @@ local IsInInstance = IsInInstance
 local GetCVar = GetCVar
 local Lerp = Lerp
 
+NP.OppositePoint = {
+	["LEFT"] = "RIGHT",
+	["RIGHT"] = "LEFT",
+	["TOP"] = "BOTTOM",
+	["BOTTOM"] = "TOP",
+	["CENTER"] = "CENTER",
+}
+
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
 		if(type(value) == 'table' and to[setting] ~= nil) then
@@ -77,29 +85,20 @@ function NP:StylePlate(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Health.Text:SetPoint('CENTER', nameplate.Health, 'CENTER', 0, 0) -- need option
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
 	nameplate.Power = NP:Construct_Power(nameplate)
 
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Power.Text:SetPoint('CENTER', nameplate.Power, 'CENTER', 0, 0) -- need option
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
-	nameplate.Name:SetJustifyH('LEFT')
-	nameplate.Name:SetJustifyV('BOTTOM')
-	nameplate.Name:SetWordWrap(false)
 
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Level:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, E.Border*2) -- need option
-	nameplate.Level:SetJustifyH('RIGHT')
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
-	nameplate.ClassificationIndicator:SetPoint('TOPLEFT', nameplate, 'TOPLEFT')
 
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 

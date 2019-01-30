@@ -67,6 +67,15 @@ local function Update(self, event)
 				r, g, b = 1, 1, 0
 			end
 
+			if element.TopIndicator and (element.style == "style3" or element.style == "style5" or element.style == "style6") then
+				element.TopIndicator:SetVertexColor(r, g, b)
+			end
+
+			if (element.LeftIndicator and element.RightIndicator) and (element.style == "style4" or element.style == "style7" or element.style == "style8") then
+				element.RightIndicator:SetVertexColor(r, g, b)
+				element.LeftIndicator:SetVertexColor(r, g, b)
+			end
+
 			if element.Shadow and (element.style == "style1" or element.style == "style5" or element.style == "style7") then
 				element.Shadow:Show()
 				element.Shadow:SetBackdropBorderColor(r, g, b)

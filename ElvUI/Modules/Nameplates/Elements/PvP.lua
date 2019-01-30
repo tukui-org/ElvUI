@@ -43,13 +43,7 @@ function NP:Update_PvPIndicator(nameplate)
 
 		nameplate.PvPIndicator:ClearAllPoints()
 
-		if db.pvpindicator.position == 'RIGHT' then
-			nameplate.PvPIndicator:SetPoint('LEFT', nameplate, 'RIGHT', db.pvpindicator.xOffset, db.pvpindicator.yOffset)
-		elseif db.pvpindicator.position == 'LEFT' then
-			nameplate.PvPIndicator:SetPoint('RIGHT', nameplate, 'LEFT', db.pvpindicator.xOffset, db.pvpindicator.yOffset)
-		else
-			nameplate.PvPIndicator:SetPoint('CENTER', nameplate, 'CENTER', db.pvpindicator.xOffset, db.pvpindicator.yOffset)
-		end
+		nameplate.PvPIndicator:SetPoint(NP.OppositePoint[db.pvpindicator.position], nameplate, db.pvpindicator.position, db.pvpindicator.xOffset, db.pvpindicator.yOffset)
 	else
 		if nameplate:IsElementEnabled('PvPIndicator') then
 			nameplate:DisableElement('PvPIndicator')

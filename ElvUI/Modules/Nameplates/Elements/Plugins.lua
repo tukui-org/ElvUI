@@ -56,6 +56,7 @@ end
 
 function NP:Update_ClassificationIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
 	if (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') and db.eliteIcon.enable then
 		if not nameplate:IsElementEnabled('ClassificationIndicator') then
 			nameplate:EnableElement('ClassificationIndicator')
@@ -63,6 +64,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
+
 		if db.healthbar.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 		else

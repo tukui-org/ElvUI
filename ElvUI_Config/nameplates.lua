@@ -1891,6 +1891,30 @@ local function GetUnitSettings(unit, name)
 								name = L["Format"],
 								type = "input",
 							},
+							position = {
+								order = 3,
+								type = "select",
+								name = L["Position"],
+								values = {
+									["LEFT"] = L["Left"],
+									["RIGHT"] = L["Right"],
+									["TOP"] = L["Top"],
+									["BOTTOM"] = L["Bottom"],
+									["CENTER"] = L["Center"],
+								},
+							},
+							xOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
+							},
+							yOffset = {
+								order = 5,
+								name = L["Y-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
+							},
 						},
 					},
 				},
@@ -1952,6 +1976,30 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Format"],
 								type = "input",
+							},
+							position = {
+								order = 3,
+								type = "select",
+								name = L["Position"],
+								values = {
+									["LEFT"] = L["Left"],
+									["RIGHT"] = L["Right"],
+									["TOP"] = L["Top"],
+									["BOTTOM"] = L["Bottom"],
+									["CENTER"] = L["Center"],
+								},
+							},
+							xOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
+							},
+							yOffset = {
+								order = 5,
+								name = L["Y-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
 							},
 						},
 					},
@@ -2054,13 +2102,13 @@ local function GetUnitSettings(unit, name)
 						order = 14,
 						name = L["X-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					iconOffsetY = {
 						order = 15,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 				},
 			},
@@ -2473,21 +2521,23 @@ local function GetUnitSettings(unit, name)
 						name = L["Icon Position"],
 						values = {
 							["LEFT"] = L["Left"],
-							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
+							["TOP"] = L["Top"],
+							["BOTTOM"] = L["Bottom"],
+							["CENTER"] = L["Center"],
 						},
 					},
 					xOffset = {
 						order = 5,
 						name = L["X-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
 						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 				},
 			},
@@ -2516,24 +2566,26 @@ local function GetUnitSettings(unit, name)
 					position = {
 						order = 3,
 						type = "select",
-						name = L["Icon Position"],
+						name = L["Position"],
 						values = {
 							["LEFT"] = L["Left"],
-							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
+							["TOP"] = L["Top"],
+							["BOTTOM"] = L["Bottom"],
+							["CENTER"] = L["Center"],
 						},
 					},
 					xOffset = {
 						order = 4,
 						name = L["X-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
 						order = 5,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 				},
 			},
@@ -2562,24 +2614,26 @@ local function GetUnitSettings(unit, name)
 					position = {
 						order = 3,
 						type = "select",
-						name = L["Icon Position"],
+						name = L["Position"],
 						values = {
 							["LEFT"] = L["Left"],
-							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
+							["TOP"] = L["Top"],
+							["BOTTOM"] = L["Bottom"],
+							["CENTER"] = L["Center"],
 						},
 					},
 					xOffset = {
 						order = 4,
 						name = L["X-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
 						order = 5,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 				},
 			},
@@ -2618,21 +2672,23 @@ local function GetUnitSettings(unit, name)
 						name = L["Icon Position"],
 						values = {
 							["LEFT"] = L["Left"],
-							["CENTER"] = L['Center'],
 							["RIGHT"] = L["Right"],
+							["TOP"] = L["Top"],
+							["BOTTOM"] = L["Bottom"],
+							["CENTER"] = L["Center"],
 						},
 					},
 					xOffset = {
 						order = 5,
 						name = L["X-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
 						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -20, max = 20, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 				},
 			},
@@ -2731,13 +2787,7 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
-	elseif unit == "ENEMY_NPC" then
-		group.args.minors = {
-			order = 0,
-			name = L["Display Minor Units"],
-			desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
-			type = "toggle",
-		}
+	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
 		group.args.eliteIcon = {
 			order = 10,
 			name = L["Elite Icon"],
@@ -2755,10 +2805,16 @@ local function GetUnitSettings(unit, name)
 					name = L["Enable"],
 					type = "toggle",
 				},
-				position = {
+				size = {
 					order = 2,
+					type = "range",
+					name = L["Size"],
+					min = 12, max = 42, step = 1,
+				},
+				position = {
+					order = 3,
 					type = "select",
-					name = L["Position"],
+					name = L["Icon Position"],
 					values = {
 						["LEFT"] = L["Left"],
 						["RIGHT"] = L["Right"],
@@ -2766,12 +2822,6 @@ local function GetUnitSettings(unit, name)
 						["BOTTOM"] = L["Bottom"],
 						["CENTER"] = L["Center"],
 					},
-				},
-				size = {
-					order = 3,
-					type = "range",
-					name = L["Size"],
-					min = 12, max = 42, step = 1,
 				},
 				xOffset = {
 					order = 4,
@@ -2787,75 +2837,33 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
-		group.args.detection = {
-			order = 11,
-			name = L["Detection"],
-			type = "group",
-			get = function(info) return E.db.nameplates.units[unit].detection[ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit].detection[ info[#info] ] = value; NP:ConfigureAll() end,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Suramar Detection"],
-				},
-				enable = {
-					order = 1,
-					name = L["Enable"],
-					type = "toggle",
-				},
-			},
-		}
-	elseif unit == "FRIENDLY_NPC" then
-		group.args.eliteIcon = {
-			order = 10,
-			name = L["Elite Icon"],
-			type = "group",
-			get = function(info) return E.db.nameplates.units[unit].eliteIcon[ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit].eliteIcon[ info[#info] ] = value; NP:ConfigureAll() end,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Elite Icon"],
-				},
-				enable = {
-					order = 1,
-					name = L["Enable"],
-					type = "toggle",
-				},
-				position = {
-					order = 2,
-					type = "select",
-					name = L["Position"],
-					values = {
-						["LEFT"] = L["Left"],
-						["RIGHT"] = L["Right"],
-						["TOP"] = L["Top"],
-						["BOTTOM"] = L["Bottom"],
-						["CENTER"] = L["Center"],
+		if unit == "ENEMY_NPC" then
+			group.args.minors = {
+				order = 0,
+				name = L["Display Minor Units"],
+				desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
+				type = "toggle",
+			}
+			group.args.detection = {
+				order = 11,
+				name = L["Detection"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].detection[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].detection[ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Suramar Detection"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
 					},
 				},
-				size = {
-					order = 3,
-					type = "range",
-					name = L["Size"],
-					min = 12, max = 42, step = 1,
-				},
-				xOffset = {
-					order = 4,
-					name = L["X-Offset"],
-					type = "range",
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 5,
-					name = L["Y-Offset"],
-					type = "range",
-					min = -100, max = 100, step = 1,
-				},
-			},
-		}
+			}
+		end
 	end
 
 	ORDER = ORDER + 100
@@ -3687,14 +3695,11 @@ E.Options.args.nameplate = {
 								TARGET = L["Targeted Nameplate"],
 							},
 						},
-						position = {
-							type = "select",
+						yOffset = {
 							order = 3,
-							name = L["Position"],
-							values = {
-								ABOVE = L["Above"],
-								BELOW = L["Below"],
-							},
+							name = L["Y-Offset"],
+							type = "range",
+							min = -20, max = 20, step = 1,
 						},
 						height = {
 							order = 4,

@@ -18,7 +18,6 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
-	ClassPower:SetPoint('BOTTOM', nameplate.Health, 'BOTTOM', 0, 14)
 
 	ClassPower:SetSize(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
 	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
@@ -76,7 +75,6 @@ function NP:Construct_Runes(nameplate)
 	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
-	Runes:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, 4)
 	Runes:CreateBackdrop('Transparent')
 	Runes:Hide()
 
@@ -116,6 +114,8 @@ function NP:Update_ClassPower(nameplate)
 			nameplate:EnableElement('ClassPower')
 			nameplate.ClassPower:Show()
 		end
+
+		nameplate.ClassPower:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
@@ -130,6 +130,8 @@ function NP:Update_Runes(nameplate)
 			nameplate:EnableElement('Runes')
 			nameplate.Runes:Show()
 		end
+
+		nameplate.Runes:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 
 		nameplate.sortOrder = NP.db.classbar.sortDirection
 

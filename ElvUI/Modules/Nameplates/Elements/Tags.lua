@@ -15,14 +15,7 @@ function NP:Update_Name(nameplate)
 	if db.name.enable then
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
-		if not db.showLevel then
-			nameplate.Name:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, E.Border*2) -- need option
-			nameplate.Name:SetJustifyH('CENTER')
-		else
-			nameplate.Name:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, E.Border*2) -- need option
-			nameplate.Name:SetJustifyH('LEFT')
-			nameplate.Name:SetJustifyV('BOTTOM')
-		end
+		nameplate.Name:SetPoint(NP.OppositePoint[db.name.position], nameplate, db.name.position, db.name.xOffset, db.name.yOffset)
 	else
 		nameplate.Name:Hide()
 	end
@@ -33,6 +26,8 @@ function NP:Update_Level(nameplate)
 
 	if db.level.enable then
 		nameplate.Level:Show()
+
+		nameplate.Level:SetPoint(NP.OppositePoint[db.level.position], nameplate, db.level.position, db.level.xOffset, db.level.yOffset)
 	else
 		nameplate.Level:Hide()
 	end

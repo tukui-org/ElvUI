@@ -7,12 +7,12 @@ function NP:Construct_RaidTargetIndicator(nameplate)
 	RaidTargetIndicator:SetSize(24, 24)
 	RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
 
-	RaidTargetIndicator.Override = function(frame, event)
-		local element = frame.RaidTargetIndicator
+	function RaidTargetIndicator:Override(event)
+		local element = self.RaidTargetIndicator
 
-		if frame.unit then
-			local index = GetRaidTargetIndex(frame.unit)
-			if (index) and not UnitIsUnit(frame.unit, 'player') then
+		if self.unit then
+			local index = GetRaidTargetIndex(self.unit)
+			if (index) and not UnitIsUnit(self.unit, 'player') then
 				SetRaidTargetIconTexture(element, index)
 				element:Show()
 			else
