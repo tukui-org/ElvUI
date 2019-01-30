@@ -59,9 +59,9 @@ function NP:Update_Health(nameplate)
 	end
 
 	if db.health.text.enable then
+		nameplate.Health.Text:ClearAllPoints()
+		nameplate.Health.Text:SetPoint(NP.OppositePoint[db.health.text.position], nameplate.Health, db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
 		nameplate.Health.Text:Show()
-
-		nameplate.Health.Text:SetPoint(NP.OppositePoint[db.health.text.position], nameplate, db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
 	else
 		nameplate.Health.Text:Hide()
 	end
