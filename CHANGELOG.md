@@ -1,4 +1,16 @@
-### Version 10.87 [  ]
+### Version 10.88 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.87 [ January 30th 2019 ]
 
 **New Additions:**  
 
@@ -6,6 +18,7 @@
 **Bug Fixes:**  
 Fixed an issue with the combat log header. (#1013)  
 Fixed a bag config error if the bag module was disabled.  
+Fixed an error caused by incorrect file loading order.  
 
 **Misc. Changes:**  
 
