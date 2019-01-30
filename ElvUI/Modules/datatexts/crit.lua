@@ -25,7 +25,6 @@ local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
 local CR_CRIT_MELEE = CR_CRIT_MELEE
 local CRIT_ABBR = CRIT_ABBR
 
-local critRating
 local displayModifierString = ''
 local lastPanel;
 
@@ -52,6 +51,7 @@ local function OnEnter(self)
 end
 
 local function OnEvent(self)
+	local critRating
 	if E.role == "Caster" then
 		critRating = GetSpellCritChance(1)
 	else

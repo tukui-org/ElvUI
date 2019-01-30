@@ -73,9 +73,7 @@ local menuList = {
 		end
 	end},
 	{text = COLLECTIONS,
-	func = function()
-		ToggleCollectionsJournal()
-	end},
+	func = ToggleCollectionsJournal},
 	{text = CHAT_CHANNELS,
 	func = ToggleChannelFrame},
 	{text = TIMEMANAGER_TITLE,

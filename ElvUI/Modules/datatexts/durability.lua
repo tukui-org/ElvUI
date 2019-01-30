@@ -14,7 +14,7 @@ local DURABILITY = DURABILITY
 local displayString = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
-local current, max, lastPanel
+local lastPanel
 local invDurability = {}
 local slots = {
 	["SecondaryHandSlot"] = L["Offhand"],
@@ -35,7 +35,7 @@ local function OnEvent(self)
 
 	for index, value in pairs(slots) do
 		local slot = GetInventorySlotInfo(index)
-		current, max = GetInventoryItemDurability(slot)
+		local current, max = GetInventoryItemDurability(slot)
 
 		if current then
 			invDurability[value] = (current/max)*100

@@ -22,7 +22,7 @@ local MISS_CHANCE = MISS_CHANCE
 
 local displayString, lastPanel
 local targetlv, playerlv
-local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
+local basemisschance, leveldifference, dodge, parry, block, unhittable
 local chanceString = "%.2f%%"
 local AVD_DECAY_RATE = 1.5
 
@@ -62,8 +62,8 @@ local function OnEvent(self)
 		basemisschance = (basemisschance+ abs(leveldifference*AVD_DECAY_RATE))
 	end
 
-	unhittableMax = 100
-	numAvoidances = 4
+	local unhittableMax = 100
+	local numAvoidances = 4
 	if dodge <= 0 then dodge = 0 end
 	if parry <= 0 then parry = 0 end
 	if block <= 0 then block = 0 end
@@ -80,9 +80,9 @@ local function OnEvent(self)
 
 	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances)
 
-	avoided = (dodge+parry+basemisschance) --First roll on hit table determining if the hit missed
-	blocked = (100 - avoided)*block/100 --If the hit landed then the second roll determines if the his was blocked
-	avoidance = (avoided+blocked)
+	local avoided = (dodge+parry+basemisschance) --First roll on hit table determining if the hit missed
+	local blocked = (100 - avoided)*block/100 --If the hit landed then the second roll determines if the his was blocked
+	local avoidance = (avoided+blocked)
 	unhittable = avoidance - unhittableMax
 
 	self.text:SetFormattedText(displayString, L["AVD: "], avoidance)

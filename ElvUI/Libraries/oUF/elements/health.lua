@@ -114,7 +114,6 @@ local function UpdateColor(element, unit, cur, max)
 	end
 end
 
-local C_Timer_After = C_Timer.After;
 local function Update(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
@@ -137,17 +136,6 @@ local function Update(self, event, unit)
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
-
-		-- this is a bullshit `fix` for when someone spawns with 1 health via `UnitHealth(unit)`
-		if cur == 1 and event == 'UNIT_HEALTH' and not element.waitingForHealthRecheck then
-			element.waitingForHealthRecheck = true
-			C_Timer_After(1, function()
-				if element then
-					Update(self, event, unit) -- call again after 1 second
-					element.waitingForHealthRecheck = nil -- clear this after the update
-				end
-			end)
-		end
 	end
 
 	element.disconnected = disconnected
@@ -225,6 +213,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping
+		self:RegisterEvent('UNIT_AURA', Path) -- This is the bullshit fix.. Still Blizzard's Fault
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -250,6 +239,7 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 		self:UnregisterEvent('UNIT_FACTION', Path)
+		self:UnregisterEvent('UNIT_AURA', Path) -- This is the bullshit fix.. Still Blizzard's Fault
 	end
 end
 

@@ -31,12 +31,14 @@ local QuestTypesLocalized = {
 		["speak"] = "CHAT",
 	},
 	["deDE"] = {
-		["getötet"] = "KILL",
-		["zerstört"] = "KILL",
-		["töten"] = "KILL",
 		["besiegen"] = "KILL",
 		["besiegt"] = "KILL",
+		["getötet"] = "KILL",
 		["sprecht"] = "CHAT",
+		["töten"] = "KILL",
+		["tötet"] = "KILL",
+		["zerstört"] = "KILL",
+
 	},
 	["esMX"] = {
 		["slain"] = "KILL",
