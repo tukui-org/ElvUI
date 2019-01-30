@@ -349,7 +349,7 @@ function CH:StyleChat(frame)
 	editbox.characterCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
 	editbox.characterCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
 	editbox.characterCount:SetJustifyH("CENTER")
-	editbox.characterCount:Width(30)
+	editbox.characterCount:Width(40)
 
 	for _, texName in pairs(tabTexs) do
 		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
@@ -2526,10 +2526,14 @@ function CH:Initialize()
 
 	-- Combat Log Skinning (credit: Aftermathh)
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
+	local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
 	CombatLogButton:StripTextures()
 	CombatLogButton:SetTemplate("Transparent")
-	CombatLogButton:ClearAllPoints()
-	CombatLogButton:Point("BOTTOM", _G.LeftChatTab, 0, -24)
+	if CombatLogFontContainer then
+		CombatLogButton:ClearAllPoints()
+		CombatLogButton:Point("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)
+		CombatLogButton:Point("BOTTOMRIGHT", CombatLogFontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
+	end
 	for i = 1, 2 do
 		local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
 		local CombatLogText = CombatLogQuickButton:GetFontString()
