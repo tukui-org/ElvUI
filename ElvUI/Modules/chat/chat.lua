@@ -451,7 +451,8 @@ function CH:StyleChat(frame)
 		else
 			return
 		end
-		editBox:SetText(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)])
+
+		editBox:SetText(strtrim(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)]))
 	end
 
 	local LeftChatPanel, LeftChatDataPanel, LeftChatToggleButton = _G.LeftChatPanel, _G.LeftChatDataPanel, _G.LeftChatToggleButton
