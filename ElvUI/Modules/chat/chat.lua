@@ -1892,16 +1892,15 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 end
 
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
-	if strfind(line, "/rl") then return end
+	if strlen(line) > 0 then
+		if strfind(line, '/rl') then return end
 
-	if ( strlen(line) > 0 ) then
 		for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
-			if text == line then
-				return
-			end
+			if text == line then return end
 		end
 
-		tinsert(_G.ElvCharacterDB.ChatEditHistory, #_G.ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(_G.ElvCharacterDB.ChatEditHistory, #_G.ElvCharacterDB.ChatEditHistory + 1, strtrim(line))
+
 		if #_G.ElvCharacterDB.ChatEditHistory > 20 then
 			tremove(_G.ElvCharacterDB.ChatEditHistory, 1)
 		end
