@@ -222,6 +222,7 @@ P['bags'] = {
 	["useBlizzardCleanup"] = false,
 	['strata'] = 'HIGH',
 	['qualityColor'] = true,
+	['showBoE'] = false,
 	['colors'] = {
 		['profession'] = {
 			['leatherworking'] = { r = .88, g = .73, b = .29 },

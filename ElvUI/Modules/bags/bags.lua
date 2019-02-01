@@ -507,6 +507,27 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	slot.itemLevel:SetText("")
+	slot.bindType:SetText("")
+
+	if slot.rarity and slot.rarity > 1 then
+		E.ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+		E.ScanTooltip:SetBagItem(bagID, slotID)
+		E.ScanTooltip:Show()
+
+		for i = 2, 6 do -- trying line 2 to 6 for the bind texts, don't think they are further down
+			local line = _G[E.ScanTooltip:GetName().."TextLeft"..i]:GetText()
+			if (not line) or (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
+				break
+			end
+			if line == _G.ITEM_BIND_ON_EQUIP then
+				slot.bindType:SetText(L['BoE'])
+				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+				break
+			end
+		end
+
+		E.ScanTooltip:Hide()
+	end
 
 	if B.ProfessionColors[bagType] then
 		local r, g, b = unpack(B.ProfessionColors[bagType])
@@ -1101,6 +1122,10 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].itemLevel = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
 					f.Bags[bagID][slotID].itemLevel:Point("BOTTOMRIGHT", 0, 2)
 					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+
+					f.Bags[bagID][slotID].bindType = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
+					f.Bags[bagID][slotID].bindType:Point("TOP", 0, -2)
+					f.Bags[bagID][slotID].bindType:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 					if f.Bags[bagID][slotID].BattlepayItemTexture then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
