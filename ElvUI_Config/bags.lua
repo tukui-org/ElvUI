@@ -108,7 +108,7 @@ E.Options.args.bags = {
 					desc = L["Colors the border according to the type of items assigned to the bag."],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
-				qualityColor = {
+				qualityColors = {
 					order = 9,
 					type = 'toggle',
 					name = L["Show Quality Color"],
