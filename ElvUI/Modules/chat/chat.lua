@@ -1865,12 +1865,10 @@ function CH:AddLines(lines, ...)
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
-	local chatType = editBox:GetAttribute("chatType")
-	if not chatType then return end
-
 	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
 
-	local chatFrame = editBox:GetParent()
+	local chatType = editBox:GetAttribute("chatType")
+	local chatFrame = chatType and editBox:GetParent()
 	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
 		if not self.db.sticky then chatType = 'SAY' end
 		editBox:SetAttribute("chatType", chatType)
