@@ -1,7 +1,8 @@
 ### Version 10.88 [  ]
 
 **New Additions:**  
-
+Added quality border options for the bag items. (#869)  
+Added BoE/BoA text overlay in our Bags/Bank.  
 
 **Bug Fixes:**  
 
