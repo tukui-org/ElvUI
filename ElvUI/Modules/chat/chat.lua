@@ -429,8 +429,8 @@ function CH:StyleChat(frame)
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
-	local function OnArrowPressed(editBox, key)
-		if #editBox.historyLines == 0 then
+	local function OnKeyDown(editBox, key)
+		if (not editBox.historyLines) or #editBox.historyLines == 0 then
 			return
 		end
 
@@ -469,7 +469,7 @@ function CH:StyleChat(frame)
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = _G.ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript("OnArrowPressed", OnArrowPressed)
+	editbox:HookScript("OnKeyDown", OnKeyDown)
 	editbox:Hide()
 
 	editbox:HookScript("OnEditFocusGained", function(editBox)
@@ -1867,6 +1867,8 @@ end
 function CH:ChatEdit_OnEnterPressed(editBox)
 	local chatType = editBox:GetAttribute("chatType")
 	if not chatType then return end
+
+	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
 
 	local chatFrame = editBox:GetParent()
 	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
