@@ -84,6 +84,7 @@ local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
+local LE_ITEM_QUALITY_COMMON = LE_ITEM_QUALITY_COMMON
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -509,7 +510,7 @@ function B:UpdateSlot(bagID, slotID)
 	slot.itemLevel:SetText("")
 	slot.bindType:SetText("")
 
-	if B.db.showBindType and slot.rarity and slot.rarity > 1 then
+	if B.db.showBindType and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 		E.ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 		E.ScanTooltip:SetBagItem(bagID, slotID)
 		E.ScanTooltip:Show()
@@ -578,7 +579,7 @@ function B:UpdateSlot(bagID, slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
-		elseif B.db.qualityColors and slot.rarity and slot.rarity > 1 then
+		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
@@ -1320,7 +1321,7 @@ function B:UpdateReagentSlot(slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
-		elseif B.db.qualityColor and slot.rarity and slot.rarity > 1 then
+		elseif B.db.qualityColor and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
