@@ -428,7 +428,7 @@ function CH:StyleChat(frame)
 		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
-	--Work around broken SetAltArrowKeyMode API. Code from Prat
+	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
 	local function OnKeyDown(editBox, key)
 		if (not editBox.historyLines) or #editBox.historyLines == 0 then
 			return
