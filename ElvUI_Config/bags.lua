@@ -115,10 +115,10 @@ E.Options.args.bags = {
 					desc = L["Colors the border according to the Quality of the Item."],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
-				showBoE = {
+				showBindType = {
 					order = 10,
 					type = 'toggle',
-					name = L["Show BoE Text"],
+					name = L["Show Bind on Equip/Use Text"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				clearSearchOnClose = {

@@ -509,7 +509,7 @@ function B:UpdateSlot(bagID, slotID)
 	slot.itemLevel:SetText("")
 	slot.bindType:SetText("")
 
-	if slot.rarity and slot.rarity > 1 then
+	if B.db.showBindType and slot.rarity and slot.rarity > 1 then
 		E.ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 		E.ScanTooltip:SetBagItem(bagID, slotID)
 		E.ScanTooltip:Show()
@@ -521,6 +521,11 @@ function B:UpdateSlot(bagID, slotID)
 			end
 			if line == _G.ITEM_BIND_ON_EQUIP then
 				slot.bindType:SetText(L['BoE'])
+				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+				break
+			end
+			if line == _G.ITEM_BIND_ON_USE then
+				slot.bindType:SetText(L['BoU'])
 				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
 				break
 			end
