@@ -112,7 +112,7 @@ end
 
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
-	local ElvUIAssignBagDropdown = _G["ElvUIAssignBagDropdown"]
+
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:Point('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {}
@@ -152,8 +152,8 @@ function B:LoadBagBar()
 			B:CreateFilterIcon(bagButton)
 			bagButton:SetScript("OnClick", function(holder, button)
 				if button == "RightButton" and holder.id then
-					ElvUIAssignBagDropdown.holder = holder
-					ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					_G["ElvUIAssignBagDropdown"].holder = holder
+					ToggleDropDownMenu(1, nil, _G["ElvUIAssignBagDropdown"], "cursor")
 				else
 					MainMenuBarBackpackButton_OnClick(holder)
 				end
@@ -162,8 +162,8 @@ function B:LoadBagBar()
 			B:CreateFilterIcon(bagButton)
 			bagButton:SetScript("OnClick", function(holder, button)
 				if button == "RightButton" and holder.id then
-					ElvUIAssignBagDropdown.holder = holder
-					ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					_G["ElvUIAssignBagDropdown"].holder = holder
+					ToggleDropDownMenu(1, nil, _G["ElvUIAssignBagDropdown"], "cursor")
 				else
 					BagSlotButton_OnClick(holder)
 				end
