@@ -86,6 +86,7 @@ local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
+local LE_ITEM_QUALITY_COMMON = LE_ITEM_QUALITY_COMMON
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -509,6 +510,32 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	slot.itemLevel:SetText("")
+	slot.bindType:SetText("")
+
+	if B.db.showBindType and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
+		E.ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+		E.ScanTooltip:SetBagItem(bagID, slotID)
+		E.ScanTooltip:Show()
+
+		for i = 2, 6 do -- trying line 2 to 6 for the bind texts, don't think they are further down
+			local line = _G[E.ScanTooltip:GetName().."TextLeft"..i]:GetText()
+			if (not line) or (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
+				break
+			end
+			if line == _G.ITEM_BIND_ON_EQUIP then
+				slot.bindType:SetText(L['BoE'])
+				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+				break
+			end
+			if line == _G.ITEM_BIND_ON_USE then
+				slot.bindType:SetText(L['BoU'])
+				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+				break
+			end
+		end
+
+		E.ScanTooltip:Hide()
+	end
 
 	if B.ProfessionColors[bagType] then
 		local r, g, b = unpack(B.ProfessionColors[bagType])
@@ -554,11 +581,10 @@ function B:UpdateSlot(bagID, slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
-		elseif slot.rarity and slot.rarity > 1 then
+		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
-			if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
 		elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
@@ -569,6 +595,8 @@ function B:UpdateSlot(bagID, slotID)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			slot.ignoreBorderColors = nil
 		end
+
+		if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
@@ -1107,6 +1135,10 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].itemLevel:Point("BOTTOMRIGHT", 0, 2)
 					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
+					f.Bags[bagID][slotID].bindType = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
+					f.Bags[bagID][slotID].bindType:Point("TOP", 0, -2)
+					f.Bags[bagID][slotID].bindType:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+
 					if f.Bags[bagID][slotID].BattlepayItemTexture then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 					end
@@ -1295,7 +1327,7 @@ function B:UpdateReagentSlot(slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
-		elseif slot.rarity and slot.rarity > 1 then
+		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b);
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true

@@ -39,10 +39,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[
 
     |cffceff00■|r s:세트이름 / set:세트이름
      - 입력한 글자가 포함됀 장비세트에 소속된 아이템들만 표시합니다.
-	
+
 	|cffceff00■|r r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]
      - For example, reqlvl:30 will find all items that require level 30.
-	
+
 	|cffceff00■|r tt:[search], tip:[search] or tooltip:[search]
      - For example, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
@@ -245,6 +245,7 @@ L["Bottom to Top"] = "상단 아래쪽으로 이동"
 L["Button Size (Bag)"] = "슬롯 크기 (가방)"
 L["Button Size (Bank)"] = "슬롯 크기 (은행)"
 L["Clear Search On Close"] = "닫으면 검색 칸 비우기"
+L["Colors the border according to the Quality of the Item."] = true
 L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "간략하게"
 L["Currency Format"] = "화폐 표시방법"
@@ -283,9 +284,11 @@ L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 결정합니다."
 L["Short (Whole Numbers)"] = "골드만"
 L["Show Assigned Color"] = true
+L["Show Bind on Equip/Use Text"] = true
 L["Show Coins"] = "동전 이미지로 보기"
 L["Show Junk Icon"] = "잡템 아이콘 표시"
 L["Show New Item Glow"] = true
+L["Show Quality Color"] = true
 L["Show Scrap Icon"] = true
 L["Show Upgrade Icon"] = "강화 아이콘 표시"
 L["Smart"] = "스마트"
