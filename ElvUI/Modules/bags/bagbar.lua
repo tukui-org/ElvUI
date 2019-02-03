@@ -13,7 +13,8 @@ local RegisterStateDriver = RegisterStateDriver
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
--- GLOBALS: MainMenuBarBackpackButtonCount
+-- GLOBALS: MainMenuBarBackpackButtonCount, ToggleDropDownMenu, BagSlotButton_OnClick
+-- GLOBALS: MainMenuBarBackpackButton_OnClick
 
 local function OnEnter()
 	if not E.db.bags.bagBar.mouseover then return; end
@@ -111,7 +112,7 @@ end
 
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
-
+	local ElvUIAssignBagDropdown = _G["ElvUIAssignBagDropdown"]
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:Point('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {}
@@ -148,27 +149,28 @@ function B:LoadBagBar()
 	for i = 1, #ElvUIBags.buttons do
 		local bagButton = ElvUIBags.buttons[i]
 		if i == 1 then --Backpack
-			bagButton:SetScript("OnClick", function(self, button)
-				if button == "RightButton" then
-					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+			B:CreateFilterIcon(bagButton)
+			bagButton:SetScript("OnClick", function(holder, button)
+				if button == "RightButton" and holder.id then
+					ElvUIAssignBagDropdown.holder = holder
+					ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 				else
-					MainMenuBarBackpackButton_OnClick(self)
+					MainMenuBarBackpackButton_OnClick(holder)
 				end
 			end)
 		else
 			B:CreateFilterIcon(bagButton)
-			bagButton:SetScript("OnClick", function(self, button)
-				if button == "RightButton" then
-					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+			bagButton:SetScript("OnClick", function(holder, button)
+				if button == "RightButton" and holder.id then
+					ElvUIAssignBagDropdown.holder = holder
+					ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 				else
-					BagSlotButton_OnClick(self)
+					BagSlotButton_OnClick(holder)
 				end
 			end)
 		end
 
 		bagButton.id = (i - 1)
-		bagButton.FilterDropDown = CreateFrame("Frame", bagButton:GetName().."FilterDropDown", bagButton, "UIDropDownMenuTemplate")
-		UIDropDownMenu_Initialize(bagButton.FilterDropDown, B.ContainerFrameFilterDropDown_Initialize, "MENU");
 	end
 	--Hide and show to update assignment textures on first load
 	ElvUIBags:Hide()
