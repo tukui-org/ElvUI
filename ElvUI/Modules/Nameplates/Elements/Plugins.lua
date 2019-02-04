@@ -65,7 +65,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
 
-		if db.healthbar.enable then
+		if db.health.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 		else
 			nameplate.ClassificationIndicator:Point('RIGHT', nameplate.Name, 'LEFT', 0, 0)
