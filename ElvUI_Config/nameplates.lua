@@ -2684,11 +2684,8 @@ local function GetUnitSettings(unit, name)
 						type = "select",
 						name = L["Position"],
 						values = {
-							["LEFT"] = L["Left"],
-							["RIGHT"] = L["Right"],
-							["TOP"] = L["Top"],
-							["BOTTOM"] = L["Bottom"],
-							["CENTER"] = L["Center"],
+							["TOPLEFT"] = L["Topleft"],
+							["TOPRIGHT"] = L["Topright"],
 						},
 					},
 					xOffset = {
@@ -2752,11 +2749,8 @@ local function GetUnitSettings(unit, name)
 						type = "select",
 						name = L["Position"],
 						values = {
-							["LEFT"] = L["Left"],
-							["RIGHT"] = L["Right"],
-							["TOP"] = L["Top"],
-							["BOTTOM"] = L["Bottom"],
-							["CENTER"] = L["Center"],
+							["TOPLEFT"] = L["Topleft"],
+							["TOPRIGHT"] = L["Topright"],
 						},
 					},
 					xOffset = {
