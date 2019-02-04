@@ -1841,6 +1841,21 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 			},
+			showTestFrame = {
+				order = -9,
+				name = L["Show/Hide Test Frame"],
+				type = "execute",
+				func = function(info)
+					if not _G.ElvNP_Test:IsEnabled() or _G.ElvNP_Test.frameType ~= unit then
+						_G.ElvNP_Test:Enable()
+						_G.ElvNP_Test.frameType = unit
+						NP:UpdatePlate(_G.ElvNP_Test)
+						NP:ConfigureAll()
+					else
+						_G.ElvNP_Test:Disable()
+					end
+				end,
+			},
 			healthGroup = {
 				order = 1,
 				name = L["Health"],
