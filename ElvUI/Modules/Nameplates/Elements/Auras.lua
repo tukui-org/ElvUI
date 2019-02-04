@@ -9,7 +9,6 @@ function NP:Construct_Buffs(nameplate)
 	Buffs:SetSize(300, 27)
 
 	Buffs.disableMouse = true
-	Buffs.spacing = 4
 
 	Buffs.type = 'buffs'
 
@@ -36,7 +35,6 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs:SetSize(300, 27)
 
 	Debuffs.disableMouse = true
-	Debuffs.spacing = 4
 
 	Debuffs.type = 'debuffs'
 
@@ -90,23 +88,6 @@ function NP:Construct_Auras(nameplate)
 	return Auras
 end
 
-function NP:Update_Auras(nameplate)
-	if nameplate.Auras then
-		nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-		nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
-	end
-
-	if nameplate.Debuffs then
-		nameplate.Debuffs:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-		nameplate.Debuffs:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
-	end
-
-	if nameplate.Buffs then
-		nameplate.Buffs:SetPoint('BOTTOMLEFT', nameplate.Debuffs, 'TOPLEFT', 0, 1)
-		nameplate.Buffs:SetPoint('BOTTOMRIGHT', nameplate.Debuffs, 'TOPRIGHT', 0, 1)
-	end
-end
-
 function NP:Construct_AuraIcon(button)
 	if not button then return end
 
@@ -142,30 +123,49 @@ function NP:Construct_AuraIcon(button)
 	button.stealable:SetTexture(nil)
 end
 
-function NP:EnableDisable_Auras(nameplate)
+function NP:Update_Auras(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.debuffs.enable or db.buffs.enable then
-		nameplate.Buffs.size = db.buffs.size
-		nameplate.Buffs.num = db.buffs.numAuras
-		nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
-		nameplate.Buffs.spacing = db.buffs.spacing
-		nameplate.Buffs["growth-y"] = db.debuffs.growthY
-		nameplate.Buffs["growth-x"] = db.debuffs.growthX
-		nameplate.Buffs.initialAnchor = db.debuffs.anchorPoint
-
-		nameplate.Debuffs.size = db.debuffs.size
-		nameplate.Debuffs.num = db.debuffs.numAuras
-		nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
-		nameplate.Debuffs.spacing = db.debuffs.spacing
-		nameplate.Debuffs["growth-y"] = db.debuffs.growthY
-		nameplate.Debuffs["growth-x"] = db.debuffs.growthX
-		nameplate.Debuffs.initialAnchor = db.debuffs.anchorPoint
+		if not nameplate:IsElementEnabled('Aura') then
+			nameplate:EnableElement('Aura')
+		end
 
 		--nameplate.Auras.numDebuffs = db.debuffs.numAuras
 		--nameplate.Auras.numBuffs = db.buffs.numAuras
-		if not nameplate:IsElementEnabled('Aura') then
-			nameplate:EnableElement('Aura')
+
+		if nameplate.Auras then
+			nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+			nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+		end
+
+		if nameplate.Debuffs then
+			nameplate.Debuffs:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+			nameplate.Debuffs:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+			nameplate.Debuffs.size = db.debuffs.size
+			nameplate.Debuffs.num = db.debuffs.numAuras
+			nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
+			nameplate.Debuffs.spacing = db.debuffs.spacing
+			nameplate.Debuffs["growth-y"] = db.debuffs.growthY
+			nameplate.Debuffs["growth-x"] = db.debuffs.growthX
+			nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
+
+			nameplate.Debuffs:ForceUpdate()
+		end
+
+		if nameplate.Buffs then
+			nameplate.Buffs:SetPoint('BOTTOMLEFT', nameplate.Debuffs, 'TOPLEFT', 0, 1)
+			nameplate.Buffs:SetPoint('BOTTOMRIGHT', nameplate.Debuffs, 'TOPRIGHT', 0, 1)
+
+			nameplate.Buffs.size = db.buffs.size
+			nameplate.Buffs.num = db.buffs.numAuras
+			nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
+			nameplate.Buffs.spacing = db.buffs.spacing
+			nameplate.Buffs["growth-y"] = db.buffs.growthY
+			nameplate.Buffs["growth-x"] = db.buffs.growthX
+			nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
+
+			nameplate.Buffs:ForceUpdate()
 		end
 	else
 		if nameplate:IsElementEnabled('Aura') then
