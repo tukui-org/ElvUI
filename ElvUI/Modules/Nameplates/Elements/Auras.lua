@@ -138,9 +138,9 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if nameplate.Debuffs then
-			nameplate.Debuffs:SetSize(300, 27)
-			nameplate.Debuffs:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-			nameplate.Debuffs:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+			nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
+			nameplate.Debuffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.debuffs.yOffset)
+
 			nameplate.Debuffs.size = db.debuffs.size
 			nameplate.Debuffs.num = db.debuffs.numAuras
 			nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
@@ -153,9 +153,8 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if nameplate.Buffs then
-			nameplate.Buffs:SetSize(300, 27)
-			nameplate.Buffs:SetPoint('BOTTOMLEFT', nameplate.Debuffs, 'TOPLEFT', 0, 1)
-			nameplate.Buffs:SetPoint('BOTTOMRIGHT', nameplate.Debuffs, 'TOPRIGHT', 0, 1)
+			nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
+			nameplate.Buffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.buffs.yOffset)
 
 			nameplate.Buffs.size = db.buffs.size
 			nameplate.Buffs.num = db.buffs.numAuras

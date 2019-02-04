@@ -40,15 +40,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local selectedNameplateFilter
 
 local positionValues = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	CENTER = 'CENTER',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
 }
 
 local carryFilterFrom, carryFilterTo
@@ -2177,12 +2170,6 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 0, max = 60, step = 1,
 					},
-					xOffset = {
-						order = 6,
-						type = 'range',
-						name = L["xOffset"],
-						min = -1000, max = 1000, step = 1,
-					},
 					yOffset = {
 						order = 7,
 						type = 'range',
@@ -2407,12 +2394,6 @@ local function GetUnitSettings(unit, name)
 						name = L["Icon Spacing"],
 						type = "range",
 						min = 0, max = 60, step = 1,
-					},
-					xOffset = {
-						order = 6,
-						type = 'range',
-						name = L["xOffset"],
-						min = -1000, max = 1000, step = 1,
 					},
 					yOffset = {
 						order = 7,
