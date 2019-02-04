@@ -161,6 +161,7 @@ local function CastStart(self, event, unit)
 	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
 		element.duration = element.duration + (element.max * tradeskillCurrent);
 		element.max = element.max * tradeskillTotal;
+		element.holdTime = 1
 
 		if(unit == "player") then
 			tradeskillCurrent = tradeskillCurrent + 1;
@@ -279,6 +280,7 @@ local function CastStop(self, event, unit, castID, spellID)
 		end
 	end
 	-- end block
+
 	resetAttributes(element)
 
 	--[[ Callback: Castbar:PostCastStop(unit, spellID)
