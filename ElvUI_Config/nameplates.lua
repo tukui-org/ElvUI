@@ -2161,7 +2161,7 @@ local function GetUnitSettings(unit, name)
 					},
 					onlyShowPlayer = {
 						order = 2,
-						name = L["Enable"],
+						name = L["Show Player Only"],
 						type = "toggle",
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -2400,7 +2400,7 @@ local function GetUnitSettings(unit, name)
 					},
 					onlyShowPlayer = {
 						order = 2,
-						name = L["Enable"],
+						name = L["Show Player Only"],
 						type = "toggle",
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
