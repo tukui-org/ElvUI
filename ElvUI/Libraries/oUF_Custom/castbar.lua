@@ -404,7 +404,7 @@ local function onUpdate(self, elapsed)
 		end
 
 		self:SetValue(self.duration)
-	elseif(self.holdTime > 0) then
+	elseif (self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
 	else
 		resetAttributes(self)
@@ -440,6 +440,8 @@ local function Enable(self, unit)
 		-- ElvUI block
 		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
 		-- end block
+
+		element.holdTime = 0
 
 		element:SetScript('OnUpdate', element.OnUpdate or onUpdate)
 
