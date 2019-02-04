@@ -319,7 +319,7 @@ P['nameplates'] = {
 		['width'] = 130,
 	},
 	['clickableWidth'] = 150,
-	['clickableHeight'] = 50,
+	['clickableHeight'] = 30,
 	['clickThrough'] = {
 		['personal'] = false,
 		['friendly'] = false,
