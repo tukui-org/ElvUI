@@ -274,8 +274,8 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
-	for _, Slot in pairs({PaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType("Button") then
+	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
+		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
 			S:HandleTexture(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
@@ -297,7 +297,7 @@ local function LoadSkin()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 			Slot.IconBorder:SetAlpha(0)
 			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function(_) Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 		end
 	end
 

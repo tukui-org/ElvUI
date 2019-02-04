@@ -707,6 +707,9 @@ local function LoadSecondarySkin()
 	-- New Season Frame
 	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
 	S:HandleButton(NoticeFrame.Leave)
+	NoticeFrame:StripTextures()
+	NoticeFrame:CreateBackdrop("Overlay")
+	NoticeFrame:SetFrameLevel(5)
 	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
 	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)

@@ -16,7 +16,6 @@ local STAT_SPEED = STAT_SPEED
 local CR_SPEED_TOOLTIP = CR_SPEED_TOOLTIP
 local CR_SPEED = CR_SPEED
 
-local speed
 local displayModifierString = ''
 local lastPanel;
 
@@ -33,7 +32,7 @@ local function OnEnter(self)
 end
 
 local function OnEvent(self)
-	speed = GetSpeed();
+	local speed = GetSpeed();
 	self.text:SetFormattedText(displayModifierString, STAT_SPEED, speed)
 	lastPanel = self
 end
