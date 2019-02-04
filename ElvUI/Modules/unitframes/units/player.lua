@@ -167,6 +167,14 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
+	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) or (db.enable and not db.castbar.enable) then
+		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
+		CastingBarFrame_OnLoad(PetCastingBarFrame)
+	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player then
+		CastingBarFrame_SetUnit(CastingBarFrame, nil)
+		CastingBarFrame_SetUnit(PetCastingBarFrame, nil)
+	end
+
 	UF:Configure_Castbar(frame)
 
 	--Combat Fade

@@ -125,7 +125,7 @@ function UF:PartySmartVisibility(event)
 end
 
 function UF:Update_PartyFrames(frame, db)
-	if InCombatLockdown() then
+	if InCombatLockdown() or not (frame:IsShown()) then
 		return
 	end
 
