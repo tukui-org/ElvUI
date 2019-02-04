@@ -2696,26 +2696,6 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					justifyH = {
-						order = 6,
-						type = "select",
-						name = L["Justify Horizontal"],
-						values = {
-							["LEFT"] = L["Left"],
-							["RIGHT"] = L["Right"],
-							["CENTER"] = L["Center"],
-						},
-					},
-					justifyV = {
-						order = 7,
-						type = "select",
-						name = L["Justify Vertical"],
-						values = {
-							["TOP"] = L["Top"],
-							["MIDDLE"] = L["Middle"],
-							["BOTTOM"] = L["Bottom"],
-						},
-					},
 				},
 			},
 			nameGroup = {
@@ -2760,26 +2740,6 @@ local function GetUnitSettings(unit, name)
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
-					},
-					justifyH = {
-						order = 6,
-						type = "select",
-						name = L["Justify Horizontal"],
-						values = {
-							["LEFT"] = L["Left"],
-							["RIGHT"] = L["Right"],
-							["CENTER"] = L["Center"],
-						},
-					},
-					justifyV = {
-						order = 7,
-						type = "select",
-						name = L["Justify Vertical"],
-						values = {
-							["TOP"] = L["Top"],
-							["MIDDLE"] = L["Middle"],
-							["BOTTOM"] = L["Bottom"],
-						},
 					},
 				},
 			},
