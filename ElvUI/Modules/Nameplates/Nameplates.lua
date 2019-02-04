@@ -332,6 +332,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:UpdateTags()
 
+		NP:UpdatePlate(ElvNP_Test)
+
 		if nameplate ~= _G.ElvNP_Player then
 			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
 				nameplate:Disable()

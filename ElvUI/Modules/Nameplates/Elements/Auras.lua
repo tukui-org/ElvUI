@@ -138,33 +138,43 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if nameplate.Debuffs then
-			nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
-			nameplate.Debuffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.debuffs.yOffset)
+			if db.debuffs.enable then
+				nameplate.Debuffs:Show()
+				nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
+				nameplate.Debuffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.debuffs.yOffset)
 
-			nameplate.Debuffs.size = db.debuffs.size
-			nameplate.Debuffs.num = db.debuffs.numAuras
-			nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
-			nameplate.Debuffs.spacing = db.debuffs.spacing
-			nameplate.Debuffs["growth-y"] = db.debuffs.growthY
-			nameplate.Debuffs["growth-x"] = db.debuffs.growthX
-			nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
+				nameplate.Debuffs.size = db.debuffs.size
+				nameplate.Debuffs.num = db.debuffs.numAuras
+				nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
+				nameplate.Debuffs.spacing = db.debuffs.spacing
+				nameplate.Debuffs["growth-y"] = db.debuffs.growthY
+				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
+				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
-			nameplate.Debuffs:ForceUpdate()
+				nameplate.Debuffs:ForceUpdate()
+			else
+				nameplate.Debuffs:Hide()
+			end
 		end
 
 		if nameplate.Buffs then
-			nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
-			nameplate.Buffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.buffs.yOffset)
+			if db.buffs.enable then
+				nameplate.Buffs:Show()
+				nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
+				nameplate.Buffs:SetPoint('CENTER', nameplate, 'CENTER', 0, db.buffs.yOffset)
 
-			nameplate.Buffs.size = db.buffs.size
-			nameplate.Buffs.num = db.buffs.numAuras
-			nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
-			nameplate.Buffs.spacing = db.buffs.spacing
-			nameplate.Buffs["growth-y"] = db.buffs.growthY
-			nameplate.Buffs["growth-x"] = db.buffs.growthX
-			nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
+				nameplate.Buffs.size = db.buffs.size
+				nameplate.Buffs.num = db.buffs.numAuras
+				nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
+				nameplate.Buffs.spacing = db.buffs.spacing
+				nameplate.Buffs["growth-y"] = db.buffs.growthY
+				nameplate.Buffs["growth-x"] = db.buffs.growthX
+				nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
-			nameplate.Buffs:ForceUpdate()
+				nameplate.Buffs:ForceUpdate()
+			else
+				nameplate.Buffs:Hide()
+			end
 		end
 	else
 		if nameplate:IsElementEnabled('Aura') then
