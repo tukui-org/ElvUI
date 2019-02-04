@@ -60,7 +60,6 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
 	castbar.Spark:SetVertexColor(1, 1, 1)
-	castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
@@ -152,6 +151,7 @@ function UF:Configure_Castbar(frame)
 
 	if db.castbar.spark then
 		castbar.Spark:Show()
+		castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 	else
 		castbar.Spark:Hide()
 	end
