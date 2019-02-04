@@ -725,7 +725,7 @@ P['nameplates'] = {
 				['text'] = {
 					['enable'] = true,
 					['format'] = '[perhp]%',
-					['position'] = 'RIGHT',
+					['position'] = 'CENTER',
 					['xOffset'] = 0,
 					['yOffset'] = 0,
 				},
@@ -974,7 +974,7 @@ P['nameplates'] = {
 				['text'] = {
 					['enable'] = true,
 					['format'] = '[perhp]%',
-					['position'] = 'RIGHT',
+					['position'] = 'CENTER',
 					['xOffset'] = 0,
 					['yOffset'] = 0,
 				},
