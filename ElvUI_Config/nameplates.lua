@@ -2161,11 +2161,6 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle",
 					},
-					onlyShowPlayer = {
-						order = 2,
-						name = L["Show Player Only"],
-						type = "toggle",
-					},
 					numAuras = {
 						order = 3,
 						name = L["# Displayed Auras"],
@@ -2384,11 +2379,6 @@ local function GetUnitSettings(unit, name)
 					enable = {
 						order = 1,
 						name = L["Enable"],
-						type = "toggle",
-					},
-					onlyShowPlayer = {
-						order = 2,
-						name = L["Show Player Only"],
 						type = "toggle",
 					},
 					numAuras = {

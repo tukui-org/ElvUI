@@ -145,7 +145,7 @@ function NP:Update_Auras(nameplate)
 
 				nameplate.Debuffs.size = db.debuffs.size
 				nameplate.Debuffs.num = db.debuffs.numAuras
-				nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
+				nameplate.Debuffs.onlyShowPlayer = false
 				nameplate.Debuffs.spacing = db.debuffs.spacing
 				nameplate.Debuffs["growth-y"] = db.debuffs.growthY
 				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
@@ -165,7 +165,7 @@ function NP:Update_Auras(nameplate)
 
 				nameplate.Buffs.size = db.buffs.size
 				nameplate.Buffs.num = db.buffs.numAuras
-				nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
+				nameplate.Buffs.onlyShowPlayer = false
 				nameplate.Buffs.spacing = db.buffs.spacing
 				nameplate.Buffs["growth-y"] = db.buffs.growthY
 				nameplate.Buffs["growth-x"] = db.buffs.growthX
