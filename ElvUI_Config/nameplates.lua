@@ -39,6 +39,18 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local selectedNameplateFilter
 
+local positionValues = {
+	TOPLEFT = 'TOPLEFT',
+	LEFT = 'LEFT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	RIGHT = 'RIGHT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+	CENTER = 'CENTER',
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM',
+}
+
 local carryFilterFrom, carryFilterTo
 local function filterValue(value)
 	return gsub(value,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
@@ -2078,37 +2090,53 @@ local function GetUnitSettings(unit, name)
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
-					showIcon = {
+					yOffset = {
 						order = 11,
-						type = "toggle",
-						name = L["Show Icon"],
-					},
-					iconPosition = {
-						order = 12,
-						type = "select",
-						name = L["Icon Position"],
-						values = {
-							["LEFT"] = L["Left"],
-							["RIGHT"] = L["Right"],
-						},
-					},
-					iconSize = {
-						order = 13,
-						name = L["Icon Size"],
-						type = "range",
-						min = 4, max = 20, step = 1,
-					},
-					iconOffsetX = {
-						order = 14,
-						name = L["X-Offset"],
-						type = "range",
-						min = -100, max = 100, step = 1,
-					},
-					iconOffsetY = {
-						order = 15,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
+					},
+					iconGroup = {
+						order = 12,
+						name = L["Icon Group"],
+						type = "group",
+						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+						guiInline = true,
+						args = {
+							showIcon = {
+								order = 11,
+								type = "toggle",
+								name = L["Show Icon"],
+							},
+							iconPosition = {
+								order = 12,
+								type = "select",
+								name = L["Icon Position"],
+								values = {
+									["LEFT"] = L["Left"],
+									["RIGHT"] = L["Right"],
+								},
+							},
+							iconSize = {
+								order = 13,
+								name = L["Icon Size"],
+								type = "range",
+								min = 4, max = 20, step = 1,
+							},
+							iconOffsetX = {
+								order = 14,
+								name = L["X-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
+							},
+							iconOffsetY = {
+								order = 15,
+								name = L["Y-Offset"],
+								type = "range",
+								min = -100, max = 100, step = 1,
+							},
+						},
 					},
 				},
 			},
@@ -2131,8 +2159,15 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					numAuras = {
+					onlyShowPlayer = {
 						order = 2,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -2141,12 +2176,57 @@ local function GetUnitSettings(unit, name)
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					spacing = {
+						order = 5,
+						name = L["Icon Spacing"],
+						type = "range",
+						min = 6, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					xOffset = {
+						order = 6,
+						type = 'range',
+						name = L["xOffset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					yOffset = {
+						order = 7,
+						type = 'range',
+						name = L["yOffset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					anchorPoint = {
+						type = 'select',
+						order = 8,
+						name = L["Anchor Point"],
+						desc = L["What point to anchor to the frame you set to attach to."],
+						values = positionValues,
+					},
+					growthX = {
+						type = 'select',
+						order = 9,
+						name = L["Growth X Direction"],
+						values = {
+							['LEFT'] = L["Left"],
+							['RIGHT'] = L["Right"],
+						},
+					},
+					growthY = {
+						type = 'select',
+						order = 10,
+						name = L["Growth Y Direction"],
+						values = {
+							['UP'] = L["Up"],
+							['DOWN'] = L["Down"],
+						},
 					},
 					--width = {
 					--	order = 3,
@@ -2166,7 +2246,7 @@ local function GetUnitSettings(unit, name)
 					--},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 11,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2318,8 +2398,15 @@ local function GetUnitSettings(unit, name)
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
-					numAuras = {
+					onlyShowPlayer = {
 						order = 2,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -2328,12 +2415,57 @@ local function GetUnitSettings(unit, name)
 						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					spacing = {
+						order = 5,
+						name = L["Icon Size"],
+						type = "range",
+						min = 6, max = 60, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					xOffset = {
+						order = 6,
+						type = 'range',
+						name = L["xOffset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					yOffset = {
+						order = 7,
+						type = 'range',
+						name = L["yOffset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					anchorPoint = {
+						type = 'select',
+						order = 8,
+						name = L["Anchor Point"],
+						desc = L["What point to anchor to the frame you set to attach to."],
+						values = positionValues,
+					},
+					growthX = {
+						type = 'select',
+						order = 9,
+						name = L["Growth X Direction"],
+						values = {
+							['LEFT'] = L["Left"],
+							['RIGHT'] = L["Right"],
+						},
+					},
+					growthY = {
+						type = 'select',
+						order = 10,
+						name = L["Growth Y Direction"],
+						values = {
+							['UP'] = L["Up"],
+							['DOWN'] = L["Down"],
+						},
 					},
 					--width = {
 					--	order = 3,
@@ -2353,7 +2485,7 @@ local function GetUnitSettings(unit, name)
 					--},
 					filtersGroup = {
 						name = FILTERS,
-						order = 5,
+						order = 11,
 						type = "group",
 						guiInline = true,
 						args = {
@@ -2587,6 +2719,26 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
+					justifyH = {
+						order = 6,
+						type = "select",
+						name = L["Justify Horizontal"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+							["CENTER"] = L["Center"],
+						},
+					},
+					justifyV = {
+						order = 7,
+						type = "select",
+						name = L["Justify Vertical"],
+						values = {
+							["TOP"] = L["Top"],
+							["MIDDLE"] = L["Middle"],
+							["BOTTOM"] = L["Bottom"],
+						},
+					},
 				},
 			},
 			nameGroup = {
@@ -2634,6 +2786,26 @@ local function GetUnitSettings(unit, name)
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
+					},
+					justifyH = {
+						order = 6,
+						type = "select",
+						name = L["Justify Horizontal"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+							["CENTER"] = L["Center"],
+						},
+					},
+					justifyV = {
+						order = 7,
+						type = "select",
+						name = L["Justify Vertical"],
+						values = {
+							["TOP"] = L["Top"],
+							["MIDDLE"] = L["Middle"],
+							["BOTTOM"] = L["Bottom"],
+						},
 					},
 				},
 			},

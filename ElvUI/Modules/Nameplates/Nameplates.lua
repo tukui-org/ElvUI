@@ -26,14 +26,6 @@ local IsInInstance = IsInInstance
 local GetCVar = GetCVar
 local Lerp = Lerp
 
-NP.OppositePoint = {
-	["LEFT"] = "RIGHT",
-	["RIGHT"] = "LEFT",
-	["TOP"] = "BOTTOM",
-	["BOTTOM"] = "TOP",
-	["CENTER"] = "CENTER",
-}
-
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
 		if(type(value) == 'table' and to[setting] ~= nil) then

@@ -9,13 +9,7 @@ function NP:Construct_Buffs(nameplate)
 	Buffs:SetSize(300, 27)
 
 	Buffs.disableMouse = true
-	Buffs.size = 27
-	Buffs.num = 8
 	Buffs.spacing = 4
-	Buffs.onlyShowPlayer = false
-	Buffs.initialAnchor = 'BOTTOMLEFT'
-	Buffs['growth-x'] = 'RIGHT'
-	Buffs['growth-y'] = 'UP'
 
 	Buffs.type = 'buffs'
 
@@ -42,13 +36,7 @@ function NP:Construct_Debuffs(nameplate)
 	Debuffs:SetSize(300, 27)
 
 	Debuffs.disableMouse = true
-	Debuffs.size = 27
-	Debuffs.num = 8
 	Debuffs.spacing = 4
-	Debuffs.onlyShowPlayer = false
-	Debuffs.initialAnchor = 'BOTTOMRIGHT'
-	Debuffs['growth-x'] = 'LEFT'
-	Debuffs['growth-y'] = 'UP'
 
 	Debuffs.type = 'debuffs'
 
@@ -158,17 +146,26 @@ function NP:EnableDisable_Auras(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.debuffs.enable or db.buffs.enable then
+		nameplate.Buffs.size = db.buffs.size
+		nameplate.Buffs.num = db.buffs.numAuras
+		nameplate.Buffs.onlyShowPlayer = db.buffs.onlyShowPlayer
+		nameplate.Buffs.spacing = db.buffs.spacing
+		nameplate.Buffs["growth-y"] = db.debuffs.growthY
+		nameplate.Buffs["growth-x"] = db.debuffs.growthX
+		nameplate.Buffs.initialAnchor = db.debuffs.anchorPoint
+
+		nameplate.Debuffs.size = db.debuffs.size
+		nameplate.Debuffs.num = db.debuffs.numAuras
+		nameplate.Debuffs.onlyShowPlayer = db.debuffs.onlyShowPlayer
+		nameplate.Debuffs.spacing = db.debuffs.spacing
+		nameplate.Debuffs["growth-y"] = db.debuffs.growthY
+		nameplate.Debuffs["growth-x"] = db.debuffs.growthX
+		nameplate.Debuffs.initialAnchor = db.debuffs.anchorPoint
+
+		--nameplate.Auras.numDebuffs = db.debuffs.numAuras
+		--nameplate.Auras.numBuffs = db.buffs.numAuras
 		if not nameplate:IsElementEnabled('Aura') then
 			nameplate:EnableElement('Aura')
-
-			nameplate.Buffs.size = db.buffs.size
-			nameplate.Buffs.num = db.buffs.numAuras
-
-			nameplate.Debuffs.size = db.debuffs.size
-			nameplate.Debuffs.num = db.debuffs.numAuras
-
-			--nameplate.Auras.numDebuffs = db.debuffs.numAuras
-			--nameplate.Auras.numBuffs = db.buffs.numAuras
 		end
 	else
 		if nameplate:IsElementEnabled('Aura') then
