@@ -1910,8 +1910,6 @@ local function GetUnitSettings(unit, name)
 								values = {
 									["LEFT"] = L["Left"],
 									["RIGHT"] = L["Right"],
-									["TOP"] = L["Top"],
-									["BOTTOM"] = L["Bottom"],
 									["CENTER"] = L["Center"],
 								},
 							},
@@ -1996,8 +1994,6 @@ local function GetUnitSettings(unit, name)
 								values = {
 									["LEFT"] = L["Left"],
 									["RIGHT"] = L["Right"],
-									["TOP"] = L["Top"],
-									["BOTTOM"] = L["Bottom"],
 									["CENTER"] = L["Center"],
 								},
 							},

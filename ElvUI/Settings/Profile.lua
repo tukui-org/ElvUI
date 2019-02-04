@@ -511,7 +511,7 @@ P['nameplates'] = {
 					['format'] = '[perpp]%',
 					['position'] = 'CENTER',
 					['xOffset'] = 0,
-					['yOffset'] = -12,
+					['yOffset'] = 0,
 				},
 			},
 			['pvpindicator'] = {
@@ -627,9 +627,9 @@ P['nameplates'] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = '[perpp]%',
-					['position'] = 'RIGHT',
+					['position'] = 'CENTER',
 					['xOffset'] = 0,
-					['yOffset'] = -12,
+					['yOffset'] = 0,
 				},
 			},
 			['pvpindicator'] = {
@@ -747,9 +747,9 @@ P['nameplates'] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = '[perpp]%',
-					['position'] = 'RIGHT',
+					['position'] = 'CENTER',
 					['xOffset'] = 0,
-					['yOffset'] = -12,
+					['yOffset'] = 0,
 				},
 			},
 			['pvpindicator'] = {
@@ -863,9 +863,9 @@ P['nameplates'] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = '[perpp]%',
-					['position'] = 'RIGHT',
+					['position'] = 'CENTER',
 					['xOffset'] = 0,
-					['yOffset'] = -12,
+					['yOffset'] = 0,
 				},
 			},
 			['pvpindicator'] = {
@@ -989,7 +989,7 @@ P['nameplates'] = {
 					['format'] = '[perpp]%',
 					['position'] = 'CENTER',
 					['xOffset'] = 0,
-					['yOffset'] = -12,
+					['yOffset'] = 0,
 				},
 			},
 			['pvpindicator'] = {
