@@ -15,8 +15,6 @@ function NP:Update_Name(nameplate)
 	if db.name.enable then
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint(E.InversePoints[db.name.position], nameplate, db.name.position, db.name.xOffset, db.name.yOffset)
-		nameplate.Name:SetJustifyH(db.name.justifyH)
-		nameplate.Name:SetJustifyV(db.name.justifyV)
 		nameplate.Name:Show()
 	else
 		nameplate.Name:Hide()
@@ -29,8 +27,6 @@ function NP:Update_Level(nameplate)
 	if db.level.enable then
 		nameplate.Level:ClearAllPoints()
 		nameplate.Level:SetPoint(E.InversePoints[db.level.position], nameplate, db.level.position, db.level.xOffset, db.level.yOffset)
-		nameplate.Level:SetJustifyH(db.level.justifyH)
-		nameplate.Level:SetJustifyV(db.level.justifyV)
 		nameplate.Level:Show()
 	else
 		nameplate.Level:Hide()

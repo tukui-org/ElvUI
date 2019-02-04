@@ -2144,8 +2144,8 @@ local function GetUnitSettings(unit, name)
 				order = 4,
 				name = L["Buffs"],
 				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
+				get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 				args = {
 					header = {
 						order = 0,
@@ -2156,15 +2156,11 @@ local function GetUnitSettings(unit, name)
 						order = 1,
 						name = L["Enable"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					onlyShowPlayer = {
 						order = 2,
 						name = L["Show Player Only"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					numAuras = {
 						order = 3,
@@ -2172,24 +2168,18 @@ local function GetUnitSettings(unit, name)
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					size = {
 						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					spacing = {
 						order = 5,
 						name = L["Icon Spacing"],
 						type = "range",
 						min = 0, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					xOffset = {
 						order = 6,
@@ -2249,6 +2239,8 @@ local function GetUnitSettings(unit, name)
 						order = 11,
 						type = "group",
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							minDuration = {
 								order = 1,
@@ -2383,8 +2375,8 @@ local function GetUnitSettings(unit, name)
 				order = 5,
 				name = L["Debuffs"],
 				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
+				get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 				args = {
 					header = {
 						order = 0,
@@ -2395,15 +2387,11 @@ local function GetUnitSettings(unit, name)
 						order = 1,
 						name = L["Enable"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					onlyShowPlayer = {
 						order = 2,
 						name = L["Show Player Only"],
 						type = "toggle",
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					numAuras = {
 						order = 3,
@@ -2411,24 +2399,18 @@ local function GetUnitSettings(unit, name)
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					size = {
 						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					spacing = {
 						order = 5,
 						name = L["Icon Spacing"],
 						type = "range",
 						min = 0, max = 60, step = 1,
-						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					},
 					xOffset = {
 						order = 6,
@@ -2487,6 +2469,8 @@ local function GetUnitSettings(unit, name)
 						name = FILTERS,
 						order = 11,
 						type = "group",
+						get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
 						guiInline = true,
 						args = {
 							minDuration = {

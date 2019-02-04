@@ -491,8 +491,6 @@ P['nameplates'] = {
 				['position'] = 'LEFT',
 				['xOffset'] = 36,
 				['yOffset'] = 13,
-				['justifyH'] = 'LEFT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['level'] = {
 				['enable'] = true,
@@ -500,8 +498,6 @@ P['nameplates'] = {
 				['position'] = 'TOP',
 				['xOffset'] = 68,
 				['yOffset'] = -18,
-				['justifyH'] = 'RIGHT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['power'] = {
 				['enable'] = true,
@@ -613,8 +609,6 @@ P['nameplates'] = {
 				['position'] = 'TOP',
 				['xOffset'] = -50,
 				['yOffset'] = -18,
-				['justifyH'] = 'LEFT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['level'] = {
 				['enable'] = true,
@@ -622,8 +616,6 @@ P['nameplates'] = {
 				['position'] = 'LEFT',
 				['xOffset'] = 36,
 				['yOffset'] = 13,
-				['justifyH'] = 'RIGHT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['power'] = {
 				['enable'] = false,
@@ -737,8 +729,6 @@ P['nameplates'] = {
 				['position'] = 'LEFT',
 				['xOffset'] = 36,
 				['yOffset'] = 13,
-				['justifyH'] = 'LEFT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['level'] = {
 				['enable'] = true,
@@ -746,8 +736,6 @@ P['nameplates'] = {
 				['position'] = 'RIGHT',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
-				['justifyH'] = 'RIGHT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['power'] = {
 				['enable'] = false,
@@ -857,8 +845,6 @@ P['nameplates'] = {
 				['position'] = 'LEFT',
 				['xOffset'] = 36,
 				['yOffset'] = 13,
-				['justifyH'] = 'LEFT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['level'] = {
 				['enable'] = true,
@@ -866,8 +852,6 @@ P['nameplates'] = {
 				['position'] = 'TOP',
 				['xOffset'] = 68,
 				['yOffset'] = -18,
-				['justifyH'] = 'RIGHT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['power'] = {
 				['enable'] = false,
@@ -985,8 +969,6 @@ P['nameplates'] = {
 				['position'] = 'LEFT',
 				['xOffset'] = 36,
 				['yOffset'] = 13,
-				['justifyH'] = 'LEFT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['level'] = {
 				['enable'] = true,
@@ -994,8 +976,6 @@ P['nameplates'] = {
 				['position'] = 'TOP',
 				['xOffset'] = 66,
 				['yOffset'] = -18,
-				['justifyH'] = 'RIGHT',
-				['justifyV'] = 'MIDDLE',
 			},
 			['power'] = {
 				['enable'] = false,

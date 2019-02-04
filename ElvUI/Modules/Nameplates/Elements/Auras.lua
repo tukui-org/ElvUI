@@ -6,7 +6,6 @@ function NP:Construct_Buffs(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
-	Buffs:SetSize(300, 27)
 
 	Buffs.disableMouse = true
 
@@ -32,7 +31,6 @@ function NP:Construct_Debuffs(nameplate)
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
-	Debuffs:SetSize(300, 27)
 
 	Debuffs.disableMouse = true
 
@@ -140,6 +138,7 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if nameplate.Debuffs then
+			nameplate.Debuffs:SetSize(300, 27)
 			nameplate.Debuffs:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
 			nameplate.Debuffs:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
 			nameplate.Debuffs.size = db.debuffs.size
@@ -154,6 +153,7 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if nameplate.Buffs then
+			nameplate.Buffs:SetSize(300, 27)
 			nameplate.Buffs:SetPoint('BOTTOMLEFT', nameplate.Debuffs, 'TOPLEFT', 0, 1)
 			nameplate.Buffs:SetPoint('BOTTOMRIGHT', nameplate.Debuffs, 'TOPRIGHT', 0, 1)
 
