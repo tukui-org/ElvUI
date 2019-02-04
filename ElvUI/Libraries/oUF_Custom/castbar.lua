@@ -404,7 +404,7 @@ local function onUpdate(self, elapsed)
 		end
 
 		self:SetValue(self.duration)
-	elseif(self.holdTime > 0) then
+	elseif (self.holdTime and self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
 	else
 		resetAttributes(self)
