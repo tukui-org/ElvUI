@@ -38,12 +38,9 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.CustomDelayText = self.CustomCastDelayText
 	castbar.CustomTimeText = self.CustomTimeText
 	castbar.PostCastStart = self.PostCastStart
-	castbar.PostChannelStart = self.PostCastStart
 	castbar.PostCastStop = self.PostCastStop
-	castbar.PostChannelStop = self.PostCastStop
-	castbar.PostChannelUpdate = self.PostChannelUpdate
+	castbar.PostCastUpdate = self.PostChannelUpdate
 	castbar.PostCastInterruptible = self.PostCastInterruptible
-	castbar.PostCastNotInterruptible = self.PostCastNotInterruptible
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
@@ -63,6 +60,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
 	castbar.Spark:SetVertexColor(1, 1, 1)
+	castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
@@ -332,16 +330,14 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	end
 end
 
-function UF:PostCastStart(unit, name)
+function UF:PostCastStart(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return; end
 
 	if unit == "vehicle" then unit = "player" end
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(name..' > '..self.curTarget)
-	else
-		self.Text:SetText(name)
+		self.Text:SetText(GetSpellInfo(self.spellID)..' > '..self.curTarget)
 	end
 
 	-- Get length of Time, then calculate available length for Text
@@ -365,17 +361,17 @@ function UF:PostCastStart(unit, name)
 
 	if db.castbar.ticks and unit == "player" then
 		local unitframe = E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[name]
+		local baseTicks = unitframe.ChannelTicks[self.spellID]
 
 		-- Detect channeling spell and if it's the same as the previously channeled one
-		if baseTicks and name == self.prevSpellCast then
+		if baseTicks and self.spellID == self.prevSpellCast then
 			self.chainChannel = true
 		elseif baseTicks then
 			self.chainChannel = nil
-			self.prevSpellCast = name
+			self.prevSpellCast = self.spellID
 		end
 
-		if baseTicks and unitframe.ChannelTicksSize[name] and unitframe.HastedChannelTicks[name] then
+		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -392,15 +388,15 @@ function UF:PostCastStart(unit, name)
 				end
 			end
 
-			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
 			local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
-		elseif baseTicks and unitframe.ChannelTicksSize[name] then
+		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
 			local curHaste = UnitSpellHaste("player") * 0.01
-			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
 			local hastedTickSize = baseTickSize / (1 +  curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks)
 			local extraTickRatio = extraTick / hastedTickSize
@@ -430,7 +426,7 @@ function UF:PostCastStart(unit, name)
 		r, g, b = t[1], t[2], t[3]
 	end
 
-	if  self.notInterruptible and unit ~= "player" and UnitCanAttack("player", unit) then
+	if self.notInterruptible and unit ~= "player" and UnitCanAttack("player", unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
 
@@ -449,16 +445,16 @@ function UF:PostCastStop()
 	self.prevSpellCast = nil
 end
 
-function UF:PostChannelUpdate(unit, name)
+function UF:PostChannelUpdate(unit)
 	local db = self:GetParent().db
 	if not db then return; end
 	if not (unit == "player" or unit == "vehicle") then return end
 
 	if db.castbar.ticks then
 		local unitframe = E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[name]
+		local baseTicks = unitframe.ChannelTicks[self.spellID]
 
-		if baseTicks and unitframe.ChannelTicksSize[name] and unitframe.HastedChannelTicks[name] then
+		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -475,7 +471,7 @@ function UF:PostChannelUpdate(unit, name)
 				end
 			end
 
-			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
 			if self.chainChannel then
@@ -484,9 +480,9 @@ function UF:PostChannelUpdate(unit, name)
 			end
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks, self.extraTickRatio)
-		elseif baseTicks and unitframe.ChannelTicksSize[name] then
+		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
 			local curHaste = UnitSpellHaste("player") * 0.01
-			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks)
 			if self.chainChannel then
@@ -539,9 +535,4 @@ function UF:PostCastInterruptible(unit)
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 	end
-end
-
-function UF:PostCastNotInterruptible()
-	local colors = ElvUF.colors
-	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 end
