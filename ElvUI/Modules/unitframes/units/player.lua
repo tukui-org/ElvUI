@@ -168,16 +168,11 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Castbar
 	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) or (db.enable and not db.castbar.enable) then
-		CastingBarFrame.unit = nil
-		CastingBarFrame.Show = nil
 		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
-
-		PetCastingBarFrame.unit = nil
-		PetCastingBarFrame.Show = nil
-		CastingBarFrame_OnLoad(PetCastingBarFrame, 'pet', false, false)
+		CastingBarFrame_OnLoad(PetCastingBarFrame)
 	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player then
-		CastingBarFrame:UnregisterAllEvents()
-		PetCastingBarFrame:UnregisterAllEvents()
+		CastingBarFrame_SetUnit(CastingBarFrame, nil)
+		CastingBarFrame_SetUnit(PetCastingBarFrame, nil)
 	end
 
 	UF:Configure_Castbar(frame)
