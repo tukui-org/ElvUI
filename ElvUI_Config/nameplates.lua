@@ -2185,19 +2185,25 @@ local function GetUnitSettings(unit, name)
 					yOffset = {
 						order = 7,
 						type = 'range',
-						name = L["yOffset"],
+						name = L["Y-Offset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					xOffset = {
+						order = 8,
+						type = 'range',
+						name = L["X-Offset"],
 						min = -1000, max = 1000, step = 1,
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 8,
+						order = 9,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
 						values = positionValues,
 					},
 					growthX = {
 						type = 'select',
-						order = 9,
+						order = 10,
 						name = L["Growth X Direction"],
 						values = {
 							['LEFT'] = L["Left"],
@@ -2206,7 +2212,7 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 10,
+						order = 11,
 						name = L["Growth Y Direction"],
 						values = {
 							['UP'] = L["Up"],
@@ -2231,7 +2237,7 @@ local function GetUnitSettings(unit, name)
 					--},
 					filtersGroup = {
 						name = FILTERS,
-						order = 11,
+						order = 12,
 						type = "group",
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
@@ -2403,9 +2409,15 @@ local function GetUnitSettings(unit, name)
 						min = 0, max = 60, step = 1,
 					},
 					yOffset = {
+						order = 6,
+						type = 'range',
+						name = L["Y-Offset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					xOffset = {
 						order = 7,
 						type = 'range',
-						name = L["yOffset"],
+						name = L["X-Offset"],
 						min = -1000, max = 1000, step = 1,
 					},
 					anchorPoint = {
