@@ -429,7 +429,7 @@ function NP:Initialize()
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 150)
+	_G.ElvNP_Test:SetPoint('CENTER', _G.UIParent, 'CENTER', 0, 0)
 	_G.ElvNP_Test:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test.frameType = 'PLAYER'
