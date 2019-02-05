@@ -40,6 +40,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local selectedNameplateFilter
 
 local positionValues = {
+	TOPLEFT = 'TOPLEFT',
+	TOPRIGHT = 'TOPRIGHT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
 }
