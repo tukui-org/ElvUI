@@ -43,11 +43,7 @@ function NP:Construct_Castbar(nameplate)
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
-	function Castbar:PostCastFailed()
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
-
-	function Castbar:PostCastInterrupted()
+	function Castbar:PostCastFail()
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
@@ -55,20 +51,7 @@ function NP:Construct_Castbar(nameplate)
 		self:CheckInterrupt(unit)
 	end
 
-	function Castbar:PostCastNotInterruptible(unit)
-		self:CheckInterrupt(unit)
-	end
-
 	function Castbar:PostCastStop()
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
-
-	function Castbar:PostChannelStart(unit)
-		self:CheckInterrupt(unit)
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
-
-	function Castbar:PostChannelStop()
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
