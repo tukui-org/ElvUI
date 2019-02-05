@@ -140,7 +140,8 @@ function NP:Update_Auras(nameplate)
 
 		if nameplate.Debuffs then
 			if db.debuffs.enable then
-				local x, y = E:GetXYOffset(db.debuffs.anchorPoint, db.debuffs.spacing)
+				local x, y = 'TOPRIGHT', 0
+				x, y = E:GetXYOffset(db.debuffs.anchorPoint, db.debuffs.spacing)
 
 				nameplate.Debuffs:Show()
 				nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
@@ -163,7 +164,8 @@ function NP:Update_Auras(nameplate)
 
 		if nameplate.Buffs then
 			if db.buffs.enable then
-				local x, y = E:GetXYOffset(db.buffs.anchorPoint, db.buffs.spacing)
+				local x, y = 'TOPLEFT', 0
+				x, y = E:GetXYOffset(db.buffs.anchorPoint or 0, db.buffs.spacing or 0)
 
 				nameplate.Buffs:Show()
 				nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
