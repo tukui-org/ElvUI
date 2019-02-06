@@ -29,9 +29,9 @@ local function SkinTab(tab, xOffset)
 
 		local point, relatedTo, point2, _, y = tab:GetPoint()
 		tab:Point(point, relatedTo, point2, xOffset or 0, y)
-	end
 
-	tab.isSkinned = true
+		tab.isSkinned = true
+	end
 end
 
 local function SkinSkillLine()
