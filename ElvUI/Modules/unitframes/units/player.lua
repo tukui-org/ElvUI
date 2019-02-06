@@ -13,9 +13,6 @@ local max = math.max
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvUF_Target
-
 function UF:Construct_PlayerFrame(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
 
@@ -170,11 +167,11 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Castbar(frame)
 
 	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
-		CastingBarFrame_OnLoad(CastingBarFrame, 'player', true, false)
-		CastingBarFrame_OnLoad(PetCastingBarFrame)
+		_G.CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+		_G.CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player or (db.enable and not db.castbar.enable) then
-		CastingBarFrame_SetUnit(CastingBarFrame, nil)
-		CastingBarFrame_SetUnit(PetCastingBarFrame, nil)
+		_G.CastingBarFrame_SetUnit(_G.CastingBarFrame, nil)
+		_G.CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
 	end
 
 	--Combat Fade
@@ -197,8 +194,8 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_AuraBars(frame)
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation
-	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and ElvUF_Target then
-		UF:Configure_AuraBars(ElvUF_Target)
+	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and _G.ElvUF_Target then
+		UF:Configure_AuraBars(_G.ElvUF_Target)
 	end
 
 	--PvP & Prestige Icon
