@@ -141,10 +141,7 @@ local function LoadSkin()
 		hline:CreateBackdrop("Default")
 	end
 
-	_G.CalendarTodayFrame:SetSize(_G.CalendarDayButton1:GetWidth(), _G.CalendarDayButton1:GetHeight())
-	_G.CalendarTodayFrame:SetBackdropBorderColor(0, 0.44, .87, 1)
-	_G.CalendarTodayFrame:SetBackdropColor(0, 0, 0, 0)
-	_G.CalendarTodayFrame:HookScript("OnUpdate", function(self) self:SetAlpha(_G.CalendarTodayTextureGlow:GetAlpha()) end)
+	_G.CalendarTodayFrame:SetSize(_G.CalendarDayButton1:GetWidth()*10, _G.CalendarDayButton1:GetHeight()*10)
 	_G.CalendarTodayTexture:Hide()
 
 	--CreateEventFrame
