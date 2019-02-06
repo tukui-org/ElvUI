@@ -8,7 +8,7 @@ Added BoE/BoA text overlay in our Bag/Bank.
 
 
 **Misc. Changes:**  
-
+Various Skin updates.  
 
 ___
 ### Version 10.87 [ January 30th 2019 ]

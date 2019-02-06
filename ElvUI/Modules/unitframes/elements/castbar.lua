@@ -12,6 +12,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitCanAttack = UnitCanAttack
+local GetSpellInfo = GetSpellInfo
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -57,9 +58,9 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:SetJustifyH("LEFT")
 	castbar.Text:SetWordWrap(false)
 
-	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
-	castbar.Spark:SetBlendMode('ADD')
-	castbar.Spark:SetVertexColor(1, 1, 1)
+	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
+	castbar.Spark_:SetBlendMode('ADD')
+	castbar.Spark_:SetVertexColor(1, 1, 1)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
@@ -150,10 +151,10 @@ function UF:Configure_Castbar(frame)
 	end
 
 	if db.castbar.spark then
-		castbar.Spark:Show()
+		castbar.Spark = castbar.Spark_
 		castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 	else
-		castbar.Spark:Hide()
+		castbar.Spark = nil
 	end
 
 	castbar:ClearAllPoints()

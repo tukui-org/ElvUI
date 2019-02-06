@@ -15,7 +15,7 @@ local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local Enum = Enum
 
-local function SkinTab(tab)
+local function SkinTab(tab, xOffset)
 	local normTex = tab:GetNormalTexture()
 	if normTex then
 		normTex:SetTexCoord(unpack(E.TexCoords))
@@ -34,28 +34,17 @@ local function SkinTab(tab)
 
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
-		tab.backdrop:Point("TOPLEFT", -2, 2)
-		tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
-		tab:StyleButton(true)
+		tab.backdrop:SetAllPoints()
+		tab:StyleButton()
 		tab.Icon:SetTexCoord(unpack(E.TexCoords))
-
-		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetPushedTexture(nil);
-			end
-		end)
-
-		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetHighlightTexture(nil);
-			end
-		end)
+		tab.checked:SetAllPoints()
+		tab.hover:SetAllPoints()
 
 		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, 1, y)
-	end
+		tab:Point(point, relatedTo, point2, xOffset or 0, y)
 
-	tab.isSkinned = true
+		tab.isSkinned = true
+	end
 end
 
 local function UpdateNames(self)
@@ -151,7 +140,7 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	SkinTab(CommunitiesFrame.ChatTab)
+	SkinTab(CommunitiesFrame.ChatTab, E.Border + E.Spacing)
 	SkinTab(CommunitiesFrame.RosterTab)
 	SkinTab(CommunitiesFrame.GuildBenefitsTab)
 	SkinTab(CommunitiesFrame.GuildInfoTab)

@@ -116,6 +116,11 @@ end
 
 local function Update(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
+
+	if event == 'UNIT_AURA' and UnitAffectingCombat(unit) then
+		return
+	end
+
 	local element = self.Health
 
 	--[[ Callback: Health:PreUpdate(unit)

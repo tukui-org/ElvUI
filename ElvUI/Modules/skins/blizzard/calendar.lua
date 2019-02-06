@@ -9,6 +9,9 @@ local ipairs, select, unpack = ipairs, select, unpack
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
+--GLOBALS: NORMAL_FONT_COLOR
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
@@ -141,11 +144,19 @@ local function LoadSkin()
 		hline:CreateBackdrop("Default")
 	end
 
-	_G.CalendarTodayFrame:SetSize(_G.CalendarDayButton1:GetWidth(), _G.CalendarDayButton1:GetHeight())
-	_G.CalendarTodayFrame:SetBackdropBorderColor(0, 0.44, .87, 1)
-	_G.CalendarTodayFrame:SetBackdropColor(0, 0, 0, 0)
-	_G.CalendarTodayFrame:HookScript("OnUpdate", function(self) self:SetAlpha(_G.CalendarTodayTextureGlow:GetAlpha()) end)
+	hooksecurefunc("CalendarFrame_SetToday", function()
+		_G.CalendarTodayFrame:SetAllPoints()
+	end)
+
+	_G.CalendarTodayFrame:SetScript("OnUpdate", nil)
+	_G.CalendarTodayTextureGlow:Hide()
 	_G.CalendarTodayTexture:Hide()
+
+	_G.CalendarTodayFrame:SetBackdrop({
+		edgeFile = E.media.blankTex,
+		edgeSize = 2,
+	})
+	_G.CalendarTodayFrame:SetBackdropBorderColor(NORMAL_FONT_COLOR:GetRGB())
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
