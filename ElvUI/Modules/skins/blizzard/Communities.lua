@@ -34,8 +34,7 @@ local function SkinTab(tab, xOffset)
 
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
-		tab.backdrop:Point("TOPLEFT", -2, 2)
-		tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
+		tab.backdrop:SetAllPoints()
 		tab:StyleButton()
 		tab.Icon:SetTexCoord(unpack(E.TexCoords))
 		tab.checked:SetAllPoints()
