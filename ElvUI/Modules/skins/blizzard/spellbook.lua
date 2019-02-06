@@ -9,7 +9,7 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function SkinTab(tab)
+local function SkinTab(tab, xOffset)
 	-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
 	-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
 	local normTex = tab.GetNormalTexture and tab:GetNormalTexture()
@@ -18,34 +18,25 @@ local function SkinTab(tab)
 		normTex:SetInside()
 	end
 
-	if tab.isSkinned then return end
+	if not tab.isSkinned then
+		tab:StripTextures()
+		tab.pushed = true
+		tab:CreateBackdrop("Default")
+		tab.backdrop:SetAllPoints()
+		tab:StyleButton()
+		tab.checked:SetAllPoints()
+		tab.hover:SetAllPoints()
 
-	tab:StripTextures()
-	tab.pushed = true;
-	tab:CreateBackdrop("Default")
-	tab.backdrop:SetAllPoints()
-	tab:StyleButton(true)
-	hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-		if texPath ~= nil then
-			self:SetPushedTexture(nil);
-		end
-	end)
-
-	hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-		if texPath ~= nil then
-			self:SetHighlightTexture(nil);
-		end
-	end)
-
-	local point, relatedTo, point2, _, y = tab:GetPoint()
-	tab:Point(point, relatedTo, point2, 1, y)
+		local point, relatedTo, point2, _, y = tab:GetPoint()
+		tab:Point(point, relatedTo, point2, xOffset or 0, y)
+	end
 
 	tab.isSkinned = true
 end
 
 local function SkinSkillLine()
 	for i=1, _G.MAX_SKILLLINE_TABS do
-		SkinTab(_G["SpellBookSkillLineTab"..i])
+		SkinTab(_G["SpellBookSkillLineTab"..i], E.Border + E.Spacing)
 	end
 end
 
