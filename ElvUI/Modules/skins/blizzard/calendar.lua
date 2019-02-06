@@ -154,7 +154,7 @@ local function LoadSkin()
 
 	_G.CalendarTodayFrame:SetBackdrop({
 		edgeFile = E.media.blankTex,
-		edgeSize = E.mult,
+		edgeSize = 2,
 	})
 	_G.CalendarTodayFrame:SetBackdropBorderColor(NORMAL_FONT_COLOR:GetRGB())
 
