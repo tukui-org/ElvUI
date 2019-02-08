@@ -186,6 +186,13 @@ local function LoadSkin()
 	EncounterInfo.instanceTitle:Point("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 
 	S:HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
+
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameClassFilterClearFrame:GetRegions():SetAlpha(0)
+	local bg = _G.EncounterJournalEncounterFrameInfoLootScrollFrameClassFilterClearFrame
+	bg:CreateBackdrop("Transparent")
+	bg.backdrop:SetPoint("TOPLEFT", bg, 0, 0)
+	bg.backdrop:SetPoint("BOTTOMRIGHT", bg, 0, 7)
+
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 	S:HandleButton(EncounterInfo.reset)
