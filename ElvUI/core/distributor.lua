@@ -283,7 +283,6 @@ local blacklistedKeys = {
 		["uiScale"] = true,
 		["userInformedNewChanges1"] = true,
 		["general"] = {
-			["minUiScale"] = true,
 			["eyefinity"] = true,
 			["disableTutorialButtons"] = true,
 			["showMissingTalentAlert"] = true,
