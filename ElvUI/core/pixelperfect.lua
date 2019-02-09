@@ -22,6 +22,9 @@ function E:GetUIScale(useEffectiveScale)
 	local effectiveScale = _G.UIParent:GetEffectiveScale()
 	local magic = (not useEffectiveScale and height > 0 and 768 / height) or effectiveScale
 	local scale = E.global.general.UIScale
+	if strlen(scale) > 6 then -- lock to ten thousands decimal place
+		scale = tonumber(strsub(scale, 0, 6))
+	end
 
 	return scale, magic, effectiveScale, width, height
 end
