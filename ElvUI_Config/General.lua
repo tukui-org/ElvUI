@@ -50,8 +50,16 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.pixelPerfect end,
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				interruptAnnounce = {
+				UIScale = {
 					order = 3,
+					type = "range",
+					name = L["UI Scale"],
+					softMin = 0.20, softMax = 1.25, step = 0.00001,
+					get = function(info) return E.global.general.UIScale end,
+					set = function(info, value) E.global.general.UIScale = value; E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end
+				},				
+				interruptAnnounce = {
+					order = 4,
 					name = L["Announce Interrupts"],
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
@@ -65,7 +73,7 @@ E.Options.args.general = {
 					},
 				},
 				autoRepair = {
-					order = 4,
+					order = 5,
 					name = L["Auto Repair"],
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
@@ -76,7 +84,7 @@ E.Options.args.general = {
 					},
 				},
 				autoAcceptInvite = {
-					order = 5,
+					order = 6,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
@@ -170,14 +178,14 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.showMissingTalentAlert end,
 					set = function(info, value) E.global.general.showMissingTalentAlert = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				autoScale = {
+				--[[autoScale = {
 					order = 20,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",
 					get = function(info) return E.global.general.autoScale end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
+				},]]
 				raidUtility = {
 					order = 21,
 					type = "toggle",
@@ -194,14 +202,14 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				minUiScale = {
+				--[[minUiScale = {
 					order = 23,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
 					softMin = 0.20, softMax = 0.64, step = 0.01,
 					get = function(info) return E.global.general.minUiScale end,
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
+				},]]
 				vehicleSeatIndicatorSize = {
 					order = 24,
 					type = "range",

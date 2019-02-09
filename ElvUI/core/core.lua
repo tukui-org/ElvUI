@@ -1807,7 +1807,7 @@ function E:Initialize(loginFrame)
 	self:CheckIncompatible()
 	self:DBConversions()
 
-	self:UIScale('PLAYER_LOGIN', loginFrame)
+	self:UIScale()
 
 	if not E.db.general.cropIcon then
 		E.TexCoords = {0, 1, 0, 1}
@@ -1836,7 +1836,7 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
+	--self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 	self:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
