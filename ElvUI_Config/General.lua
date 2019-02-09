@@ -42,24 +42,30 @@ E.Options.args.general = {
 					type = 'select',
 					values = GetChatWindowInfo()
 				},
-				pixelPerfect = {
+				AutoScale = {
 					order = 2,
-					name = L["Thin Border Theme"],
-					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
-					type = 'toggle',
-					get = function(info) return E.private.general.pixelPerfect end,
-					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
+					type = 'execute',
+					name = L["Auto Scale"],
+					func = function() E.global.general.UIScale = max(0.4, min(1.15, 768 / E.screenheight));  E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				UIScale = {
 					order = 3,
 					type = "range",
 					name = L["UI Scale"],
-					softMin = 0.20, softMax = 1.25, step = 0.00001,
+					softMin = 0.40, softMax = 1.15, step = 0.00001,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value) E.global.general.UIScale = value; E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end
-				},				
-				interruptAnnounce = {
+				},	
+				pixelPerfect = {
 					order = 4,
+					name = L["Thin Border Theme"],
+					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
+					type = 'toggle',
+					get = function(info) return E.private.general.pixelPerfect end,
+					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},							
+				interruptAnnounce = {
+					order = 5,
 					name = L["Announce Interrupts"],
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
@@ -73,7 +79,7 @@ E.Options.args.general = {
 					},
 				},
 				autoRepair = {
-					order = 5,
+					order = 6,
 					name = L["Auto Repair"],
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
@@ -84,7 +90,7 @@ E.Options.args.general = {
 					},
 				},
 				autoAcceptInvite = {
-					order = 6,
+					order = 7,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
