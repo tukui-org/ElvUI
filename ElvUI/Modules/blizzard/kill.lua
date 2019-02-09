@@ -42,6 +42,7 @@ function B:KillBlizzard()
 		HelpPlateTooltip:Kill()
 	end
 	EJMicroButtonAlert:Kill()
+	Advanced_UIScaleSlider:Kill()
 	--CompanionsMicroButtonAlert:Kill()
 	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
 end
