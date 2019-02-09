@@ -43,6 +43,7 @@ function B:KillBlizzard()
 	end
 	EJMicroButtonAlert:Kill()
 	Advanced_UIScaleSlider:Kill()
+	Advanced_UseUIScale:Kill()
 	--CompanionsMicroButtonAlert:Kill()
 	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
 end
