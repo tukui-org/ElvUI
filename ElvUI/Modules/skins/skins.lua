@@ -619,13 +619,12 @@ function S:HandleMaxMinFrame(frame)
 
 			--S:HandleButton(button)
 
-			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
-			
 
-			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
-			
+
 		end
 	end
 end
