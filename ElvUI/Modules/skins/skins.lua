@@ -610,10 +610,6 @@ function S:HandleMaxMinFrame(frame)
 				button:GetPushedTexture():ClearAllPoints()
 				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 1)
 				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 2, 0)
-				button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
-				button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 			else
 				button:GetNormalTexture():ClearAllPoints()
 				button:GetNormalTexture():SetPoint("TOPLEFT", 0, 0)
@@ -621,11 +617,13 @@ function S:HandleMaxMinFrame(frame)
 				button:GetPushedTexture():ClearAllPoints()
 				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 0)
 				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 3, -2)
-				button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
-				button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 			end
+
+			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
+
+			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 		end
 	end
 end
