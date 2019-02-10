@@ -63,14 +63,9 @@ function E:UIScale()
 	end
 
 	E.UIParent:SetSize(width, height)
-	E.UIParent.origHeight = E.UIParent:GetHeight()
 	E.UIParent:ClearAllPoints()
-
-	if E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-		E.UIParent:Point("BOTTOM")
-	else
-		E.UIParent:Point("CENTER")
-	end
+	E.UIParent:Point(E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" and "BOTTOM" or "CENTER")
+	E.UIParent.origHeight = E.UIParent:GetHeight()
 
 	--Calculate potential coordinate differences
 	E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
