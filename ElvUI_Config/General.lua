@@ -55,7 +55,11 @@ E.Options.args.general = {
 					name = L["UI Scale"],
 					softMin = 0.40, softMax = 1.15, step = 0.00001,
 					get = function(info) return E.global.general.UIScale end,
-					set = function(info, value) E.global.general.UIScale = value; E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value)
+						E.global.general.UIScale = value
+						E:UIScale()
+						E:StaticPopup_Show("GLOBAL_RL")
+					end
 				},
 				pixelPerfect = {
 					order = 4,
