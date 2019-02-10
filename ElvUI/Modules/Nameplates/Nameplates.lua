@@ -151,6 +151,8 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_Runes(nameplate)
 	end
 
+	NP:Update_Highlight(nameplate)
+
 	NP:Update_HealerSpecs(nameplate)
 
 	NP:Update_Tags(nameplate)

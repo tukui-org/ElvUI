@@ -251,6 +251,7 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
+		if not filterName then return true end
 		friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
@@ -330,9 +331,5 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
 
-	if filterCheck == true then
-		return true
-	end
-
-	return false
+	return filterCheck
 end
