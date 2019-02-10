@@ -32,7 +32,7 @@ function E:UIScale(OnInitialize)
 		E.mult = PixelUtil_GetNearestPixelSize(1, scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = (E.PixelMode and E.mult) or E.mult*2
-	else
+	else -- Initialize
 		local UIParent = _G.UIParent
 		UIParent:SetScale(scale)
 
