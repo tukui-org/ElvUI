@@ -33,13 +33,6 @@ local function AreOtherAddOnsEnabled()
 	return "No"
 end
 
-local function GetUiScale()
-	local uiScale = GetCVar("uiScale")
-	local minUiScale = E.global.general.minUiScale
-
-	return max(uiScale, minUiScale)
-end
-
 local function GetDisplayMode()
 	local window, maximize = GetCVar("gxWindow"), GetCVar("gxMaximize")
 	local displayMode
@@ -220,7 +213,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText("Version of ElvUI: |cff4beb2c%s|r", E.version)
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText("Other AddOns Enabled: |cff4beb2c%s|r", AreOtherAddOnsEnabled())
 	StatusFrame.Section1.Content.Line3.Text:SetFormattedText("Auto Scale Enabled: |cff4beb2c%s|r", (E.global.general.autoScale == true and "Yes" or "No"))
-	StatusFrame.Section1.Content.Line4.Text:SetFormattedText("UI Scale Is: |cff4beb2c%.4f|r", GetUiScale())
+	StatusFrame.Section1.Content.Line4.Text:SetFormattedText("UI Scale Is: |cff4beb2c%.4f|r", E.global.general.UIScale)
 	StatusFrame.Section2.Content.Line1.Text:SetFormattedText("Version of WoW: |cff4beb2c%s (build %s)|r", E.wowpatch, E.wowbuild)
 	StatusFrame.Section2.Content.Line2.Text:SetFormattedText("Client Language: |cff4beb2c%s|r", GetLocale())
 	StatusFrame.Section2.Content.Line3.Text:SetFormattedText("Display Mode: |cff4beb2c%s|r", GetDisplayMode())
