@@ -2,56 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
-function NP:Construct_Buffs(nameplate)
-	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
-	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
-	Buffs:SetFrameLevel(5)
-
-	Buffs.disableMouse = true
-
-	Buffs.type = 'buffs'
-
-	function Buffs:PostCreateIcon(button)
-		NP:Construct_AuraIcon(button)
-	end
-
-	function Buffs:PostUpdateIcon(unit, button)
-		NP:PostUpdateAura(unit, button)
-	end
-
-	function Buffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-		button.name, button.spellID, button.expiration = name, spellID, expiration
-		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	end
-
-	return Buffs
-end
-
-function NP:Construct_Debuffs(nameplate)
-	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
-	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
-	Debuffs:SetFrameLevel(5)
-
-	Debuffs.disableMouse = true
-
-	Debuffs.type = 'debuffs'
-
-	function Debuffs:PostCreateIcon(button)
-		NP:Construct_AuraIcon(button)
-	end
-
-	function Debuffs:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
-	end
-
-	function Debuffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-		button.name, button.spellID, button.expiration = name, spellID, expiration
-		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	end
-
-	return Debuffs
-end
-
 function NP:Construct_Auras(nameplate)
 	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
@@ -70,6 +20,18 @@ function NP:Construct_Auras(nameplate)
 	Auras['growth-y'] = 'UP'
 	Auras.type = 'auras'
 
+	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
+	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
+	Buffs:SetFrameLevel(5)
+	Buffs.disableMouse = true
+	Buffs.type = 'buffs'
+
+	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
+	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
+	Debuffs:SetFrameLevel(5)
+	Debuffs.disableMouse = true
+	Debuffs.type = 'debuffs'
+
 	function Auras:PostCreateIcon(button)
 		NP:Construct_AuraIcon(button)
 	end
@@ -83,7 +45,35 @@ function NP:Construct_Auras(nameplate)
 		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	end
 
-	return Auras
+	function Buffs:PostCreateIcon(button)
+		NP:Construct_AuraIcon(button)
+	end
+
+	function Buffs:PostUpdateIcon(unit, button)
+		NP:PostUpdateAura(unit, button)
+	end
+
+	function Buffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		button.name, button.spellID, button.expiration = name, spellID, expiration
+		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	end
+
+	function Debuffs:PostCreateIcon(button)
+		NP:Construct_AuraIcon(button)
+	end
+
+	function Debuffs:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
+	end
+
+	function Debuffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+		button.name, button.spellID, button.expiration = name, spellID, expiration
+		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	end
+
+	nameplate.Auras = Auras
+	nameplate.Buffs = Buffs
+	nameplate.Debuffs = Debuffs
 end
 
 function NP:Construct_AuraIcon(button)
@@ -124,26 +114,27 @@ end
 function NP:Update_Auras(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.debuffs.enable or db.buffs.enable then
+	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
 		if not nameplate:IsElementEnabled('Aura') then
 			nameplate:EnableElement('Aura')
 		end
 
-		--nameplate.Auras.numDebuffs = db.debuffs.numAuras
-		--nameplate.Auras.numBuffs = db.buffs.numAuras
+		if db.auras.enable then
+			--nameplate.Auras.numDebuffs = db.debuffs.numAuras
+			--nameplate.Auras.numBuffs = db.buffs.numAuras
 
-		--if nameplate.Auras then
-			--nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-			--nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
-		--end
+			--if nameplate.Auras then
+				--nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+				--nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+			--end
 
-		if nameplate.Debuffs then
+			nameplate.Debuffs:Hide()
+			nameplate.Buffs:Hide()
+			nameplate.Auras:Show()
+		else
+			nameplate.Auras:Hide()
+
 			if db.debuffs.enable then
-				nameplate.Debuffs:Show()
-				nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
-				nameplate.Debuffs:ClearAllPoints()
-				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
-
 				nameplate.Debuffs.size = db.debuffs.size
 				nameplate.Debuffs.num = db.debuffs.numAuras
 				nameplate.Debuffs.onlyShowPlayer = false
@@ -152,19 +143,18 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
 				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
+				nameplate.Debuffs:ClearAllPoints()
+				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
+				nameplate.Debuffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
+				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
+				nameplate.Debuffs:Show()
+
 				nameplate.Debuffs:ForceUpdate()
 			else
 				nameplate.Debuffs:Hide()
 			end
-		end
 
-		if nameplate.Buffs then
 			if db.buffs.enable then
-				nameplate.Buffs:Show()
-				nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
-				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
-
 				nameplate.Buffs.size = db.buffs.size
 				nameplate.Buffs.num = db.buffs.numAuras
 				nameplate.Buffs.onlyShowPlayer = false
@@ -172,6 +162,12 @@ function NP:Update_Auras(nameplate)
 				nameplate.Buffs["growth-y"] = db.buffs.growthY
 				nameplate.Buffs["growth-x"] = db.buffs.growthX
 				nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
+
+				local mult = floor(NP.db.clickableWidth / db.buffs.size) < db.buffs.numAuras
+				nameplate.Buffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
+				nameplate.Buffs:ClearAllPoints()
+				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
+				nameplate.Buffs:Show()
 
 				nameplate.Buffs:ForceUpdate()
 			else

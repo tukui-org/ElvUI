@@ -106,16 +106,13 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 
-	--nameplate.Auras = NP:Construct_Auras(nameplate)
-
-	nameplate.Buffs = NP:Construct_Buffs(nameplate)
-	nameplate.Debuffs = NP:Construct_Debuffs(nameplate)
-
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement)
 
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
+
+	NP:Construct_Auras(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)

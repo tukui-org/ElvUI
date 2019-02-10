@@ -541,6 +541,10 @@ P['nameplates'] = {
 				['showIcon'] = true,
 				['yOffset'] = -23,
 			},
+			['auras'] = {
+				['enable'] = false,
+				['size'] = 27,
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -660,6 +664,10 @@ P['nameplates'] = {
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
 				['yOffset'] = -23,
+			},
+			['auras'] = {
+				['enable'] = false,
+				['size'] = 27,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -781,6 +789,10 @@ P['nameplates'] = {
 				['showIcon'] = true,
 				['yOffset'] = -23,
 			},
+			['auras'] = {
+				['enable'] = false,
+				['size'] = 27,
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -896,6 +908,10 @@ P['nameplates'] = {
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
 				['yOffset'] = -23,
+			},
+			['auras'] = {
+				['enable'] = false,
+				['size'] = 27,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -1020,6 +1036,10 @@ P['nameplates'] = {
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
 				['yOffset'] = -23,
+			},
+			['auras'] = {
+				['enable'] = false,
+				['size'] = 27,
 			},
 			['buffs'] = {
 				['enable'] = true,
