@@ -205,7 +205,7 @@ local function LoadSkin()
 		end
 	end)
 
-	_G.CalendarClassButton1:Point("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", 5, 0)
+	_G.CalendarClassButton1:Point("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and E.mult*4 or E.mult*8, 0)
 
 	for i = 1, #CLASS_SORT_ORDER do
 		local button = _G["CalendarClassButton"..i]

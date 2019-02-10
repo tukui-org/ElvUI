@@ -15,38 +15,6 @@ local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local Enum = Enum
 
-local function SkinTab(tab, xOffset)
-	local normTex = tab:GetNormalTexture()
-	if normTex then
-		normTex:SetTexCoord(unpack(E.TexCoords))
-		normTex:SetInside()
-	end
-
-	if not tab.isSkinned then
-		for i = 1, tab:GetNumRegions() do
-			local region = select(i, tab:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
-					region:Kill()
-				end
-			end
-		end
-
-		tab.pushed = true;
-		tab:CreateBackdrop("Default")
-		tab.backdrop:SetAllPoints()
-		tab:StyleButton()
-		tab.Icon:SetTexCoord(unpack(E.TexCoords))
-		tab.checked:SetAllPoints()
-		tab.hover:SetAllPoints()
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, xOffset or 0, y)
-
-		tab.isSkinned = true
-	end
-end
-
 local function UpdateNames(self)
 	if not self.expanded then return end
 
@@ -140,13 +108,18 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	SkinTab(CommunitiesFrame.ChatTab, E.PixelMode and 0 or E.Border + E.Spacing)
-	SkinTab(CommunitiesFrame.RosterTab)
-	SkinTab(CommunitiesFrame.GuildBenefitsTab)
-	SkinTab(CommunitiesFrame.GuildInfoTab)
+	S:HandleItemButton(CommunitiesFrame.ChatTab)
+	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	S:HandleItemButton(CommunitiesFrame.RosterTab)
+	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
+	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
+	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
+	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+
+
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment

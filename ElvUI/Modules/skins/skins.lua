@@ -591,16 +591,40 @@ function S:HandleMaxMinFrame(frame)
 			button:ClearAllPoints()
 			button:SetPoint("CENTER")
 			button:SetHitRectInsets(1, 1, 1, 1)
+			button:GetHighlightTexture():Kill()
+			button:SetScript("OnEnter", function(self, args)
+				self:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+				self:GetPushedTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+			end)
+			button:SetScript("OnLeave", function(self, args)
+				self:GetNormalTexture():SetVertexColor(1, 1, 1)
+				self:GetPushedTexture():SetVertexColor(1, 1, 1)
+			end)
 
-			S:HandleButton(button)
+			if name == "MaximizeButton" then
+				button:GetNormalTexture():ClearAllPoints()
+				button:GetNormalTexture():SetPoint("TOPLEFT", 0, 1)
+				button:GetNormalTexture():SetPoint("BOTTOMRIGHT", 2, 0)
+				button:GetPushedTexture():ClearAllPoints()
+				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 1)
+				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 2, 0)
+			else
+				button:GetNormalTexture():ClearAllPoints()
+				button:GetNormalTexture():SetPoint("TOPLEFT", 0, 0)
+				button:GetNormalTexture():SetPoint("BOTTOMRIGHT", 3, -2)
+				button:GetPushedTexture():ClearAllPoints()
+				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 0)
+				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 3, -2)
+			end
 
-			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			--S:HandleButton(button)
+
+			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
-			button:GetNormalTexture():SetInside(button, 2, 2)
 
-			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
+			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
-			button:GetPushedTexture():SetInside()
+
 		end
 	end
 end
