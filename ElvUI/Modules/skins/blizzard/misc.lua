@@ -270,11 +270,11 @@ local function LoadSkin()
 	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
 	for _, btn in pairs(buttons) do
 		btn:Size(14, 18)
-		S:HandleNextPrevButton(btn)
 
 		btn:ClearAllPoints()
 		if btn == StackSplitFrame.LeftButton then
 			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			S:HandleNextPrevButton(btn)
 		else
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 			S:HandleNextPrevButton(btn, nil, true)
