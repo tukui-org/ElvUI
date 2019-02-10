@@ -68,11 +68,13 @@ function E:UIScale(init)
 	end
 end
 
-function E:PixelScaleChanged(isPopup)
+function E:PixelScaleChanged(event)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
-	if (isPopup ~= 'UISCALE_CHANGE') and E.StaticPopupFrames then
+	if event == 'UISCALE_CHANGE' then
+		E:Delay(0.5, function() E:StaticPopup_Show(event) end)
+	elseif E.StaticPopupFrames then
 		E:StaticPopup_Show("UISCALE_CHANGE")
 	end
 end
