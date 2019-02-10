@@ -127,9 +127,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	self.PixelMode = self.private.general.pixelPerfect
 	self:UIScale(true)
-
 	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
