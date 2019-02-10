@@ -10,20 +10,18 @@ local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
 		--HQ resolution
-		if width >= 9840 then width = 3280 end					--WQSXGA
-		if width >= 7680 and width < 9840 then width = 2560 end	--WQXGA
-		if width >= 5760 and width < 7680 then width = 1920 end	--WUXGA & HDTV
-		if width >= 5040 and width < 5760 then width = 1680 end	--WSXGA+
+		if width >= 9840 then return 3280 end					--WQSXGA
+		if width >= 7680 and width < 9840 then return 2560 end	--WQXGA
+		if width >= 5760 and width < 7680 then return 1920 end	--WUXGA & HDTV
+		if width >= 5040 and width < 5760 then return 1680 end	--WSXGA+
 
 		--adding height condition here to be sure it work with bezel compensation because WSXGA+ and UXGA/HD+ got approx same width
-		if width >= 4800 and width < 5760 and height == 900 then width = 1600 end --UXGA & HD+
+		if width >= 4800 and width < 5760 and height == 900 then return 1600 end --UXGA & HD+
 
 		--low resolution screen
-		if width >= 4320 and width < 4800 then width = 1440 end	--WSXGA
-		if width >= 4080 and width < 4320 then width = 1360 end	--WXGA
-		if width >= 3840 and width < 4080 then width = 1224 end	--SXGA & SXGA (UVGA) & WXGA & HDTV
-
-		return width
+		if width >= 4320 and width < 4800 then return 1440 end	--WSXGA
+		if width >= 4080 and width < 4320 then return 1360 end	--WXGA
+		if width >= 3840 and width < 4080 then return 1224 end	--SXGA & SXGA (UVGA) & WXGA & HDTV
 	end
 end
 
@@ -46,7 +44,8 @@ function E:UIScale()
 	if testingEyefinity then
 		--Eyefinity Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 		--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-		width, height = UIParent:GetWidth() - 250, UIParent:GetHeight() - 250
+		local uiWidth, uiHeight = UIParent:GetSize()
+		width, height = uiWidth-250, uiHeight-250
 	elseif E.eyefinity and height > 1200 then
 		--find a new width value of E.UIParent for screen #1.
 		local uiHeight = UIParent:GetHeight()
@@ -63,11 +62,11 @@ function E:UIScale()
 	--Calculate potential coordinate differences
 	E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
 	E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
-	E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
 	E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
+	E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
 end
 
 --pixel perfect script of custom ui scale.
 function E:Scale(x)
-	return E.mult * floor(x/E.mult+.5)
+	return E.mult * floor(x / E.mult + 0.5)
 end
