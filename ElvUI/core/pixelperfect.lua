@@ -3,24 +3,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local _G = _G
 --Lua functions
-local tonumber, strsub, strlen = tonumber, strsub, strlen
 local abs, floor = math.abs, math.floor
 --WoW API / Variables
-local GetPhysicalScreenSize = GetPhysicalScreenSize
-
-function E:GetUIScale(useEffectiveScale)
-	local width, height = E.screenwidth or 0, E.screenheight or 0
-	if width == 0 or height == 0 then
-		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
-		width, height = E.screenwidth or 0, E.screenheight or 0
-	end
-
-	local uiParentScale = _G.UIParent:GetEffectiveScale()
-	local magic = (not useEffectiveScale and height > 0 and 768 / height) or uiParentScale
-	local scale = E.global.general.UIScale
-
-	return scale, magic, uiParentScale, width, height
-end
 
 function E:SetResolutionVariables(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -48,22 +32,19 @@ end
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale()
-	local UIParent, _ = _G.UIParent
-	local scale, magic, effectiveScale, width, height = E:GetUIScale()
+	local UIParent = _G.UIParent
 
-	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-	if effectiveScale ~= scale then
-		UIParent:SetScale(scale)
+	local scale = E.global.general.UIScale
+	UIParent:SetScale(scale)
 
-		-- call this after setting CVars and SetScale when using autoscale.. to recalculate based on the blizzard UIParent scale value.
-		scale, magic, _, width, height = E:GetUIScale(true)
-	end
+	local effectiveScale = UIParent:GetEffectiveScale()
+	local width, height = E.screenwidth, E.screenheight
 
-	E.mult = magic/scale
+	E.mult = effectiveScale / scale
 	E.Spacing = (E.PixelMode and 0) or E.mult
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
 
-	--Check if we are using `E.eyefinity` also this will set `E.lowversion`
+	--Check if we are using `E.eyefinity`
 	E:SetResolutionVariables(width, height)
 
 	--Resize E.UIParent if Eyefinity is on.

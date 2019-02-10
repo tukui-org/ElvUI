@@ -133,11 +133,8 @@ function AddOn:OnInitialize()
 		self.PixelMode = true;
 	end
 
-	self:UIScale();
-	self:UpdateMedia();
-
+	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	-- self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
