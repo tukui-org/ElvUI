@@ -35,8 +35,8 @@ local function HandleGoldIcon(button)
 
 	Button:CreateBackdrop("Default")
 	Button.backdrop:ClearAllPoints()
-	Button.backdrop:Size(40)
-	Button.backdrop:Point("LEFT", Button, "LEFT", 1, -1)
+	Button.backdrop:Size(42)
+	Button.backdrop:Point("LEFT", 1, -1)
 
 	iconTexture:SetTexCoord(unpack(E.TexCoords))
 	iconTexture:SetDrawLayer("OVERLAY")
@@ -57,8 +57,8 @@ local function SkinItemButton(parentFrame, _, index)
 	if item and not item.isSkinned then
 		item:CreateBackdrop("Default")
 		item.backdrop:ClearAllPoints()
-		item.backdrop:Size(40)
-		item.backdrop:Point("LEFT", item, "LEFT", 1, -1)
+		item.backdrop:Size(42)
+		item.backdrop:Point("LEFT", 1, -1)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
