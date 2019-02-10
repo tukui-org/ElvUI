@@ -53,7 +53,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
@@ -63,16 +63,11 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 		obj:ClearAllPoints()
 	end
 
-	if noScale then
-		obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-		obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
-	else
-		obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-		obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
-	end
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
-local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
@@ -82,13 +77,8 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 		obj:ClearAllPoints()
 	end
 
-	if noScale then
-		obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-		obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
-	else
-		obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-		obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
-	end
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
