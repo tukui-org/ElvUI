@@ -772,6 +772,8 @@ local function SetPage(PageNum)
 			E:UIScale()
 		end)
 		InstallOption2Button:SetText(L["Preview"])
+
+		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
@@ -936,7 +938,7 @@ function E:Install()
 		f.Slider:Height(15)
 		f.Slider:Width(400)
 		f.Slider:SetHitRectInsets(0, 0, -10, 0)
-		f.Slider:SetPoint("CENTER", 0, 40)
+		f.Slider:SetPoint("CENTER", 0, 45)
 		E:GetModule("Skins"):HandleSliderFrame(f.Slider)
 		f.Slider:Hide()
 
