@@ -68,6 +68,13 @@ function E:UIScale(init)
 	end
 end
 
+function E:PixelScaleChanged()
+	if E.StaticPopupFrames then
+		print("UISCALE_CHANGE")
+		E:StaticPopup_Show("UISCALE_CHANGE")
+	end
+end
+
 --pixel perfect script of custom ui scale.
 function E:Scale(x)
 	return E.mult * floor(x / E.mult + 0.5)
