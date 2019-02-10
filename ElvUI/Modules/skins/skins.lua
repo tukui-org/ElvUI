@@ -556,9 +556,9 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 		end
 	else
 		if inverseDirection then
-			btn.icon:SetRotation(S.ArrowRotation['left'])
-		else
 			btn.icon:SetRotation(S.ArrowRotation['right'])
+		else
+			btn.icon:SetRotation(S.ArrowRotation['left'])
 		end
 	end
 
