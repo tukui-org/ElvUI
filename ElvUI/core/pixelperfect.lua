@@ -4,13 +4,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local _G = _G
 --Lua functions
 local tonumber, strsub, strlen = tonumber, strsub, strlen
-local abs, floor, min, max = math.abs, math.floor, math.min, math.max
+local abs, floor = math.abs, math.floor
 --WoW API / Variables
 local GetPhysicalScreenSize = GetPhysicalScreenSize
-local GetCVar, SetCVar = GetCVar, SetCVar
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS:
 
 function E:GetUIScale(useEffectiveScale)
 	local width, height = E.screenwidth or 0, E.screenheight or 0
@@ -19,18 +15,15 @@ function E:GetUIScale(useEffectiveScale)
 		width, height = E.screenwidth or 0, E.screenheight or 0
 	end
 
-	local effectiveScale = _G.UIParent:GetEffectiveScale()
-	local magic = (not useEffectiveScale and height > 0 and 768 / height) or effectiveScale
+	local uiParentScale = _G.UIParent:GetEffectiveScale()
+	local magic = (not useEffectiveScale and height > 0 and 768 / height) or uiParentScale
 	local scale = E.global.general.UIScale
-	if strlen(scale) > 6 then -- lock to ten thousands decimal place
-		scale = tonumber(strsub(scale, 0, 6))
-	end
 
-	return scale, magic, effectiveScale, width, height
+	return scale, magic, uiParentScale, width, height
 end
 
 function E:SetResolutionVariables(width, height)
-	if width >= 3840 and E.global.general.eyefinity then
+	if E.global.general.eyefinity and width >= 3840 then
 		-- because some user enable bezel compensation, we need to find the real width of a single monitor.
 		-- I don't know how it really work, but i'm assuming they add pixel to width to compensate the bezel. :P
 
@@ -55,18 +48,15 @@ end
 
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 function E:UIScale()
-	if InCombatLockdown() then return end
 	local UIParent, _ = _G.UIParent
 	local scale, magic, effectiveScale, width, height = E:GetUIScale()
 
 	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
 	if effectiveScale ~= scale then
-		SetCVar("useUiScale", 1)
-		SetCVar("uiScale", scale)
 		UIParent:SetScale(scale)
 
 		-- call this after setting CVars and SetScale when using autoscale.. to recalculate based on the blizzard UIParent scale value.
-		scale, magic, _, width, height = E:GetUIScale()
+		scale, magic, _, width, height = E:GetUIScale(true)
 	end
 
 	E.mult = magic/scale

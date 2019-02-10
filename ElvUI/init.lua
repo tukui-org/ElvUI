@@ -173,10 +173,10 @@ function AddOn:PositionGameMenuButton()
 	end
 end
 
-local loginFrame=CreateFrame("Frame")
-loginFrame:RegisterEvent("PLAYER_LOGIN")
-loginFrame:SetScript("OnEvent", function(self)
-	AddOn:Initialize(self)
+local LoadUI=CreateFrame("Frame")
+LoadUI:RegisterEvent("PLAYER_LOGIN")
+LoadUI:SetScript("OnEvent", function()
+	AddOn:Initialize()
 end)
 
 function AddOn:PLAYER_REGEN_ENABLED()

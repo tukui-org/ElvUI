@@ -1789,7 +1789,7 @@ local function HandleCommandBar()
 	end
 end
 
-function E:Initialize(loginFrame)
+function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
@@ -1806,7 +1806,6 @@ function E:Initialize(loginFrame)
 	self.global = self.data.global
 	self:CheckIncompatible()
 	self:DBConversions()
-
 	self:UIScale()
 
 	if not E.db.general.cropIcon then
@@ -1836,7 +1835,6 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	--self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 	self:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
