@@ -224,6 +224,24 @@ local function LoadSkin()
 	--Tutorials
 	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)
 	S:HandleCloseButton(HonorFrame.BonusFrame.BrawlHelpBox.CloseButton)
+
+	-- New Season Frame
+	local NewSeasonPopup = _G.PVPQueueFrame.NewSeasonPopup
+	S:HandleButton(NewSeasonPopup.Leave)
+	NewSeasonPopup:StripTextures()
+	NewSeasonPopup:CreateBackdrop("Overlay")
+	NewSeasonPopup:SetFrameLevel(5)
+	NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
+	NewSeasonPopup.NewSeason:SetShadowOffset(1, -1)
+	NewSeasonPopup.SeasonDescription:SetTextColor(1, 1, 1)
+	NewSeasonPopup.SeasonDescription:SetShadowOffset(1, -1)
+	NewSeasonPopup.SeasonDescription2:SetTextColor(1, 1, 1)
+	NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
+
+	local RewardFrame = _G.SeasonRewardFrame
+	RewardFrame.CircleMask:SetAlpha(0)
+	RewardFrame.Ring:SetAlpha(0)
+	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 
 S:AddCallbackForAddon('Blizzard_PVPUI', "PvPUI", LoadSkin)
