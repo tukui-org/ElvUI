@@ -35,13 +35,16 @@ local function HandleGoldIcon(button)
 
 	Button:CreateBackdrop("Default")
 	Button.backdrop:ClearAllPoints()
-	Button.backdrop:Size(42)
 	Button.backdrop:Point("LEFT", 1, -1)
+	Button.backdrop:Size(42)
 
 	iconTexture:SetTexCoord(unpack(E.TexCoords))
 	iconTexture:SetDrawLayer("OVERLAY")
 	iconTexture:SetParent(Button.backdrop)
+	iconTexture:SetSnapToPixelGrid(false)
+	iconTexture:SetTexelSnappingBias(0)
 	iconTexture:SetInside()
+	iconTexture:SetScale(1)
 
 	count:SetParent(Button.backdrop)
 	count:SetDrawLayer("OVERLAY")
@@ -54,16 +57,19 @@ local function SkinItemButton(parentFrame, _, index)
 	local parentName = parentFrame:GetName();
 	local item = _G[parentName.."Item"..index];
 
-	if item and not item.isSkinned then
+	if item and not item.backdrop then
 		item:CreateBackdrop("Default")
 		item.backdrop:ClearAllPoints()
-		item.backdrop:Size(42)
 		item.backdrop:Point("LEFT", 1, -1)
+		item.backdrop:Size(42)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
 		item.Icon:SetParent(item.backdrop)
+		item.Icon:SetSnapToPixelGrid(false)
+		item.Icon:SetTexelSnappingBias(0)
 		item.Icon:SetInside()
+		item.Icon:SetScale(1)
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
 			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
@@ -83,8 +89,6 @@ local function SkinItemButton(parentFrame, _, index)
 
 		item.roleIcon1:SetParent(item.backdrop)
 		item.roleIcon2:SetParent(item.backdrop)
-
-		item.isSkinned = true
 	end
 end
 
