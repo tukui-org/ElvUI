@@ -196,16 +196,8 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.showMissingTalentAlert end,
 					set = function(info, value) E.global.general.showMissingTalentAlert = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				--[[autoScale = {
-					order = 20,
-					name = L["Auto Scale"],
-					desc = L["Automatically scale the User Interface based on your screen resolution"],
-					type = "toggle",
-					get = function(info) return E.global.general.autoScale end,
-					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},]]
 				raidUtility = {
-					order = 21,
+					order = 20,
 					type = "toggle",
 					name = RAID_CONTROL,
 					desc = L["Enables the ElvUI Raid Control panel."],
@@ -213,23 +205,15 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				voiceOverlay = {
-					order = 22,
+					order = 21,
 					type = "toggle",
 					name = L["Voice Overlay"],
 					desc = L["Replace Blizzard's Voice Overlay."],
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				--[[minUiScale = {
-					order = 23,
-					type = "range",
-					name = L["Lowest Allowed UI Scale"],
-					softMin = 0.20, softMax = 0.64, step = 0.01,
-					get = function(info) return E.global.general.minUiScale end,
-					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},]]
 				vehicleSeatIndicatorSize = {
-					order = 24,
+					order = 22,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -237,7 +221,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				decimalLength = {
-					order = 25,
+					order = 23,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -246,7 +230,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 26,
+					order = 24,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -259,7 +243,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 27,
+					order = 25,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
