@@ -5,7 +5,7 @@ local _G = _G
 --Lua functions
 local abs, floor = math.abs, math.floor
 --WoW API / Variables
-local PixelUtil_GetNearestPixelSize = PixelUtil.GetNearestPixelSize
+local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 
 function E:SetResolutionVariables(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
