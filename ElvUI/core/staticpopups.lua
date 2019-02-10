@@ -186,7 +186,7 @@ E.PopupDialogs['UISCALE_CHANGE'] = {
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
 	OnAlt = function ()
-		E:PixelScaleChanged()
+		E:PixelScaleChanged('UISCALE_CHANGE')
 		E:Delay(0.5, function()
 			E:StaticPopup_Show("UISCALE_CHANGE")
 		end)
