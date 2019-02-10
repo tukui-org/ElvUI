@@ -852,6 +852,7 @@ function S:HandleCloseButton(f, point)
 		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
+		f:SetHitRectInsets(6, 6, 7, 7)
 	end
 
 	if point then
