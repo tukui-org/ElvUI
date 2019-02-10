@@ -76,9 +76,9 @@ function E:PixelBestSize()
 end
 
 function E:PixelClip(num)
-	local string = num and tostring(num)
-	if string and strlen(string) > 4 then
-		return tonumber(strsub(string, 0, 4))
+	local str = num and tostring(num)
+	if str and strlen(str) > 4 then
+		return tonumber(strsub(str, 0, 4))
 	end
 	return num
 end
