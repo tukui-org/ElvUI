@@ -27,22 +27,23 @@ end
 
 local function HandleGoldIcon(button)
 	local Button = _G[button]
-	local nameFrame = Button.NameFrame
-	local count = Button.Count
+	if Button.backdrop then return end
 
-	Button.border = CreateFrame("Frame", nil, Button)
-	Button.border:SetTemplate()
-	Button.border:Size(40)
-	Button.border:Point("LEFT", 1, -1)
-
+	local count = _G[button.."Count"]
+	local nameFrame = _G[button.."NameFrame"]
 	local iconTexture = _G[button.."IconTexture"]
-	Button.IconTexture = Button.border:CreateTexture(nil, 'OVERLAY')
-	Button.IconTexture:SetTexture(iconTexture:GetTexture())
-	Button.IconTexture:SetTexCoord(unpack(E.TexCoords))
-	Button.IconTexture:SetInside()
-	iconTexture:SetAlpha(0)
 
-	count:SetParent(Button.border)
+	Button:CreateBackdrop("Default")
+	Button.backdrop:ClearAllPoints()
+	Button.backdrop:Size(40)
+	Button.backdrop:Point("LEFT", Button, "LEFT", 1, -1)
+
+	iconTexture:SetTexCoord(unpack(E.TexCoords))
+	iconTexture:SetDrawLayer("OVERLAY")
+	iconTexture:SetParent(Button.backdrop)
+	iconTexture:SetInside()
+
+	count:SetParent(Button.backdrop)
 	count:SetDrawLayer("OVERLAY")
 
 	nameFrame:SetTexture()
@@ -54,35 +55,34 @@ local function SkinItemButton(parentFrame, _, index)
 	local item = _G[parentName.."Item"..index];
 
 	if item and not item.isSkinned then
-		item.border = CreateFrame("Frame", nil, item)
-		item.border:SetTemplate()
-		item.border:Size(40)
-		item.border:Point("LEFT", 1, -1)
+		item:CreateBackdrop("Default")
+		item.backdrop:ClearAllPoints()
+		item.backdrop:Size(40)
+		item.backdrop:Point("LEFT", item, "LEFT", 1, -1)
+
+		item.Icon:SetTexCoord(unpack(E.TexCoords))
+		item.Icon:SetDrawLayer("OVERLAY")
+		item.Icon:SetParent(item.backdrop)
+		item.Icon:SetInside()
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().border:SetBackdropBorderColor(r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			self:SetTexture("")
 		end)
 		hooksecurefunc(item.IconBorder, "Hide", function(self)
-			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
-		item.IconTexture = item.border:CreateTexture(nil, 'OVERLAY')
-		item.IconTexture:SetTexture(item.Icon:GetTexture())
-		item.IconTexture:SetTexCoord(unpack(E.TexCoords))
-		item.IconTexture:SetInside()
-		item.Icon:SetAlpha(0)
-
 		item.Count:SetDrawLayer("OVERLAY")
-		item.Count:SetParent(item.border)
+		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
 		item.NameFrame:SetSize(118, 39)
 
 		item.shortageBorder:SetTexture(nil)
 
-		item.roleIcon1:SetParent(item.border)
-		item.roleIcon2:SetParent(item.border)
+		item.roleIcon1:SetParent(item.backdrop)
+		item.roleIcon2:SetParent(item.backdrop)
 
 		item.isSkinned = true
 	end
