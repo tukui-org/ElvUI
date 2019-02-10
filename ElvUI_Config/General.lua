@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local B = E:GetModule("Blizzard")
 
 local _G = _G
+local min, max = math.min, math.max
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -55,7 +56,7 @@ E.Options.args.general = {
 					softMin = 0.40, softMax = 1.15, step = 0.00001,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value) E.global.general.UIScale = value; E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end
-				},	
+				},
 				pixelPerfect = {
 					order = 4,
 					name = L["Thin Border Theme"],
@@ -63,7 +64,7 @@ E.Options.args.general = {
 					type = 'toggle',
 					get = function(info) return E.private.general.pixelPerfect end,
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},							
+				},
 				interruptAnnounce = {
 					order = 5,
 					name = L["Announce Interrupts"],
