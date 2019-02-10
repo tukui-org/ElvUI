@@ -840,26 +840,18 @@ function S:HandleItemButton(b, shrinkIcon)
 	b.isSkinned = true
 end
 
-function S:HandleCloseButton(f, point, text)
+local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
+local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
+function S:HandleCloseButton(f, point)
 	f:StripTextures()
 
-	if not f.backdrop then
-		f:CreateBackdrop('Default', true)
-		f.backdrop:Point('TOPLEFT', 7, -8)
-		f.backdrop:Point('BOTTOMRIGHT', -8, 8)
-		f:HookScript('OnEnter', S.SetModifiedBackdrop)
-		f:HookScript('OnLeave', S.SetOriginalBackdrop)
-		f:SetHitRectInsets(6, 6, 7, 7)
-	end
-
-	if not text then text = 'x' end
-
-	if not f.text then
-		f.text = f:CreateFontString(nil, 'OVERLAY')
-		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
-		f.text:SetText(text)
-		f.text:SetJustifyH('CENTER')
-		f.text:Point('CENTER', f, 'CENTER')
+	if not f.Texture then
+		f.Texture = f:CreateTexture(nil, 'OVERLAY')
+		f.Texture:SetPoint("CENTER")
+		f.Texture:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\close')
+		f.Texture:SetSize(12, 12)
+		f:HookScript('OnEnter', handleCloseButtonOnEnter)
+		f:HookScript('OnLeave', handleCloseButtonOnLeave)
 	end
 
 	if point then

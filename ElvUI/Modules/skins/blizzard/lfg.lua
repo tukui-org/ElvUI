@@ -56,6 +56,8 @@ local function SkinItemButton(parentFrame, _, index)
 			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
+		item.Icon:SetSnapToPixelGrid(false)
+		item.Icon:SetTexelSnappingBias(0)
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
 		item.Icon:SetParent(item.border)

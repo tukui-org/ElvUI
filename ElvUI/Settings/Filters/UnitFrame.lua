@@ -2,21 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Cache global variables
 --Lua functions
-local print, unpack = print, unpack
+local unpack = unpack
 local strlower = string.lower
 --WoW API / Variables
-local GetSpellInfo = GetSpellInfo
 local IsPlayerSpell = IsPlayerSpell
-
-local function SpellName(id)
-	local name = GetSpellInfo(id)
-	if not name then
-		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
-		return 'Impale'
-	else
-		return name
-	end
-end
 
 local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}

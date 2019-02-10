@@ -1676,7 +1676,7 @@ function CH:SetupChat()
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
 		frame:SetTimeVisible(100)
-		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+		frame:SetShadowOffset(E.mult, -E.mult)
 		frame:SetFading(self.db.fade)
 
 		if not frame.scriptsSet then
@@ -1888,7 +1888,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	else
 		chatFrame:SetShadowColor(0, 0, 0, 1)
 	end
-	chatFrame:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+	chatFrame:SetShadowOffset(E.mult, -E.mult)
 end
 
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line

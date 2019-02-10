@@ -10,9 +10,7 @@ local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
-E.mult = 1
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
-
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
@@ -113,7 +111,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			end
 		end
 
-		if not (E.private and E.private.general and E.private.general.pixelPerfect) and not f.forcePixelMode then
+		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
 				border:SetInside(f, E.mult, E.mult)

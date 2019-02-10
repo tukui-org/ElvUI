@@ -178,6 +178,24 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs['UISCALE_CHANGE'] = {
+	text = L["The UI Scale has been changes, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
+	OnAccept = function() ReloadUI(); end,
+	OnCancel = function() end,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	button3 = L["Preview Changes"],
+	OnAlt = function ()
+		E:UIScale()
+		E:Delay(0.5, function()
+			E:StaticPopup_Show("UISCALE_CHANGE")
+		end)
+	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
 	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
 	button1 = ACCEPT,
@@ -783,7 +801,7 @@ function E:StaticPopup_FindVisible(which, data)
 	end
 	for index = 1, MAX_STATIC_POPUPS, 1 do
 		local frame = _G["ElvUI_StaticPopup"..index];
-		if ( frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) ) then
+		if ( frame and frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) ) then
 			return frame;
 		end
 	end
@@ -893,7 +911,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		for i = index, MAX_STATIC_POPUPS do
 			local frame = _G["ElvUI_StaticPopup"..i];
-			if ( not frame:IsShown() ) then
+			if ( frame and  not frame:IsShown() ) then
 				dialog = frame;
 				break;
 			end
@@ -903,7 +921,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		if ( not dialog and info.preferredIndex ) then
 			for i = 1, info.preferredIndex do
 				local frame = _G["ElvUI_StaticPopup"..i];
-				if ( not frame:IsShown() ) then
+				if ( frame and not frame:IsShown() ) then
 					dialog = frame;
 					break;
 				end

@@ -36,7 +36,7 @@ end
 
 local function SkinSkillLine()
 	for i=1, _G.MAX_SKILLLINE_TABS do
-		SkinTab(_G["SpellBookSkillLineTab"..i], E.Border + E.Spacing)
+		SkinTab(_G["SpellBookSkillLineTab"..i], E.PixelMode and 0 or E.Border + E.Spacing)
 	end
 end
 

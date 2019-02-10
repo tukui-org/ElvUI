@@ -2,8 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Cache global variables
 --Lua functions
-local max = math.max
-
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -31,13 +29,6 @@ local function AreOtherAddOnsEnabled()
 		end
 	end
 	return "No"
-end
-
-local function GetUiScale()
-	local uiScale = GetCVar("uiScale")
-	local minUiScale = E.global.general.minUiScale
-
-	return max(uiScale, minUiScale)
 end
 
 local function GetDisplayMode()
@@ -179,7 +170,7 @@ function E:CreateStatusFrame()
 
 	--Main frame
 	local StatusFrame = CreateFrame("Frame", "ElvUIStatusReport", E.UIParent)
-	StatusFrame:Size(300, 600)
+	StatusFrame:Size(300, 530)
 	StatusFrame:Point("CENTER", E.UIParent, "CENTER")
 	StatusFrame:SetFrameStrata("HIGH")
 	StatusFrame:CreateBackdrop("Transparent", nil, true)
@@ -197,8 +188,8 @@ function E:CreateStatusFrame()
 	StatusFrame.TitleLogoFrame.Texture:SetAllPoints()
 
 	--Sections
-	StatusFrame.Section1 = CreateSection(300, 150, StatusFrame, "TOP", StatusFrame, "TOP", -30)
-	StatusFrame.Section2 = CreateSection(300, 175, StatusFrame, "TOP", StatusFrame.Section1, "BOTTOM", 0)
+	StatusFrame.Section1 = CreateSection(300, 100, StatusFrame, "TOP", StatusFrame, "TOP", -30)
+	StatusFrame.Section2 = CreateSection(300, 150, StatusFrame, "TOP", StatusFrame.Section1, "BOTTOM", 0)
 	StatusFrame.Section3 = CreateSection(300, 185, StatusFrame, "TOP", StatusFrame.Section2, "BOTTOM", 0)
 	StatusFrame.Section4 = CreateSection(300, 60, StatusFrame, "TOP", StatusFrame.Section3, "BOTTOM", 0)
 
@@ -209,7 +200,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4.Header.Text:SetText("|cfffe7b2cExport To|r")
 
 	--Section content
-	StatusFrame.Section1.Content = CreateContentLines(4, StatusFrame.Section1, StatusFrame.Section1.Header)
+	StatusFrame.Section1.Content = CreateContentLines(3, StatusFrame.Section1, StatusFrame.Section1.Header)
 	StatusFrame.Section2.Content = CreateContentLines(5, StatusFrame.Section2, StatusFrame.Section2.Header)
 	StatusFrame.Section3.Content = CreateContentLines(6, StatusFrame.Section3, StatusFrame.Section3.Header)
 	StatusFrame.Section4.Content = CreateFrame("Frame", nil, StatusFrame.Section4)
@@ -219,8 +210,7 @@ function E:CreateStatusFrame()
 	--Content lines
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText("Version of ElvUI: |cff4beb2c%s|r", E.version)
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText("Other AddOns Enabled: |cff4beb2c%s|r", AreOtherAddOnsEnabled())
-	StatusFrame.Section1.Content.Line3.Text:SetFormattedText("Auto Scale Enabled: |cff4beb2c%s|r", (E.global.general.autoScale == true and "Yes" or "No"))
-	StatusFrame.Section1.Content.Line4.Text:SetFormattedText("UI Scale Is: |cff4beb2c%.4f|r", GetUiScale())
+	StatusFrame.Section1.Content.Line3.Text:SetFormattedText("UI Scale Is: |cff4beb2c%s|r", E.global.general.UIScale)
 	StatusFrame.Section2.Content.Line1.Text:SetFormattedText("Version of WoW: |cff4beb2c%s (build %s)|r", E.wowpatch, E.wowbuild)
 	StatusFrame.Section2.Content.Line2.Text:SetFormattedText("Client Language: |cff4beb2c%s|r", GetLocale())
 	StatusFrame.Section2.Content.Line3.Text:SetFormattedText("Display Mode: |cff4beb2c%s|r", GetDisplayMode())

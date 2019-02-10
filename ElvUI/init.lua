@@ -127,17 +127,10 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	if self.private.general.pixelPerfect then
-		self.Border = self.mult;
-		self.Spacing = 0;
-		self.PixelMode = true;
-	end
+	self.PixelMode = self.private.general.pixelPerfect
 
-	self:UIScale();
-	self:UpdateMedia();
-
+	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	-- self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
@@ -173,10 +166,10 @@ function AddOn:PositionGameMenuButton()
 	end
 end
 
-local loginFrame=CreateFrame("Frame")
-loginFrame:RegisterEvent("PLAYER_LOGIN")
-loginFrame:SetScript("OnEvent", function(self)
-	AddOn:Initialize(self)
+local LoadUI=CreateFrame("Frame")
+LoadUI:RegisterEvent("PLAYER_LOGIN")
+LoadUI:SetScript("OnEvent", function()
+	AddOn:Initialize()
 end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
@@ -339,8 +332,8 @@ if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 	end)
 end
 
---DisplayModeCommunitiesTaint workaround
---credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeCommunitiesTaint
+--CommunitiesUI taint workaround
+--credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
 if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
@@ -358,4 +351,30 @@ if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	end)
 end
 
-DisableAddOn("ElvUI_EverySecondCounts")
+--CommunitiesUI taint workaround #2
+--credit: https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
+if (COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
+	COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
+	local function CleanDropdowns()
+		if COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
+			return
+		end
+		local f, f2 = FriendsFrame, FriendsTabHeader
+		local s = f:IsShown()
+		f:Hide()
+		f:Show()
+		if not f2:IsShown() then
+			f2:Show()
+			f2:Hide()
+		end
+		if not s then
+			f:Hide()
+		end
+	end
+	hooksecurefunc("Communities_LoadUI", CleanDropdowns)
+	hooksecurefunc("SetCVar", function(n)
+		if n == "lastSelectedClubId" then
+			CleanDropdowns()
+		end
+	end)
+end
