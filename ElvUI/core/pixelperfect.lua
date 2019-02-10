@@ -39,12 +39,11 @@ function E:UIScale()
 
 	local width, height = E.screenwidth, E.screenheight
 	local effectiveScale = UIParent:GetEffectiveScale()
-	local pixelScale = 768.0 / E.screenheight
+	local pixelScale = 768.0 / height
 
 	E.mult = (effectiveScale / scale) - ((effectiveScale - pixelScale) / scale)
 	E.Spacing = (E.PixelMode and 0) or E.mult
 	E.Border = (E.PixelMode and E.mult) or E.mult*2
-	-- print(E.mult, effectiveScale - pixelScale)
 
 	--Check if we are using `E.eyefinity`
 	E:SetResolutionVariables(width, height)
