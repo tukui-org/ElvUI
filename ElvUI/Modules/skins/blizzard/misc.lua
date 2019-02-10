@@ -267,6 +267,20 @@ local function LoadSkin()
 	S:HandleButton(StackSplitFrame.OkayButton)
 	S:HandleButton(StackSplitFrame.CancelButton)
 
+	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
+	for _, btn in pairs(buttons) do
+		btn:Size(14, 18)
+		S:HandleNextPrevButton(btn)
+
+		btn:ClearAllPoints()
+		if btn == StackSplitFrame.LeftButton then
+			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+		else
+			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			S:HandleNextPrevButton(btn, nil, true)
+		end
+	end
+
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
