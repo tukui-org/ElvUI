@@ -140,12 +140,8 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	--SkinTab(CommunitiesFrame.ChatTab, E.PixelMode and 0 or E.Border + E.Spacing)
-	--SkinTab(CommunitiesFrame.RosterTab)
-	--SkinTab(CommunitiesFrame.GuildBenefitsTab)
-	--SkinTab(CommunitiesFrame.GuildInfoTab)
-
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
+	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 	S:HandleItemButton(CommunitiesFrame.RosterTab)
 	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
 	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
