@@ -91,7 +91,6 @@ local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
-local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
@@ -857,7 +856,7 @@ end
 local function Container_OnShow(self)
 	if self.id > 0 and not IsInventoryItemProfessionBag("player", ContainerIDToInventoryID(self.id)) then
 		for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			local active = false
+			local active
 			if (self.id > NUM_BAG_SLOTS) then
 				active = GetBankBagSlotFlag(self.id - NUM_BAG_SLOTS, i)
 			else
