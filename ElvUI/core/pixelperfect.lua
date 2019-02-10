@@ -25,9 +25,9 @@ function E:IsEyefinity(width, height)
 	end
 end
 
-function E:UIScale(quick)
+function E:UIScale(OnInitialize)
 	local scale = E.global.general.UIScale
-	if quick then
+	if OnInitialize then
 		--Set variables for pixel scaling
 		E.mult = PixelUtil_GetNearestPixelSize(1, scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
