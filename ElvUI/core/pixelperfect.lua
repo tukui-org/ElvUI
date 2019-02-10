@@ -25,45 +25,47 @@ function E:IsEyefinity(width, height)
 	end
 end
 
-function E:UIScale()
-	local UIParent = _G.UIParent
+function E:UIScale(quick)
 	local scale = E.global.general.UIScale
-	UIParent:SetScale(scale)
-
-	--Check if we are using `E.eyefinity`
-	local width, height = E.screenwidth, E.screenheight
-	E.eyefinity = E:IsEyefinity(width, height)
-
-	--Set variables for pixel scaling
-	E.mult = PixelUtil_GetNearestPixelSize(1, scale)
-	E.Spacing = (E.PixelMode and 0) or E.mult
-	E.Border = (E.PixelMode and E.mult) or E.mult*2
-
-	--Resize E.UIParent if Eyefinity is on.
-	local testingEyefinity = false
-	if testingEyefinity then
-		--Eyefinity Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
-		--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-		local uiWidth, uiHeight = UIParent:GetSize()
-		width, height = uiWidth-250, uiHeight-250
-	elseif E.eyefinity and height > 1200 then
-		--find a new width value of E.UIParent for screen #1.
-		local uiHeight = UIParent:GetHeight()
-		width, height = E.eyefinity / (height / uiHeight), uiHeight
+	if quick then
+		--Set variables for pixel scaling
+		E.mult = PixelUtil_GetNearestPixelSize(1, scale)
+		E.Spacing = (E.PixelMode and 0) or E.mult
+		E.Border = (E.PixelMode and E.mult) or E.mult*2
 	else
-		width, height = UIParent:GetSize()
+		local UIParent = _G.UIParent
+		UIParent:SetScale(scale)
+
+		--Check if we are using `E.eyefinity`
+		local width, height = E.screenwidth, E.screenheight
+		E.eyefinity = E:IsEyefinity(width, height)
+
+		--Resize E.UIParent if Eyefinity is on.
+		local testingEyefinity = false
+		if testingEyefinity then
+			--Eyefinity Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
+			--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
+			local uiWidth, uiHeight = UIParent:GetSize()
+			width, height = uiWidth-250, uiHeight-250
+		elseif E.eyefinity and height > 1200 then
+			--find a new width value of E.UIParent for screen #1.
+			local uiHeight = UIParent:GetHeight()
+			width, height = E.eyefinity / (height / uiHeight), uiHeight
+		else
+			width, height = UIParent:GetSize()
+		end
+
+		E.UIParent:SetSize(width, height)
+		E.UIParent:ClearAllPoints()
+		E.UIParent:Point(E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" and "BOTTOM" or "CENTER")
+		E.UIParent.origHeight = E.UIParent:GetHeight()
+
+		--Calculate potential coordinate differences
+		E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
+		E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
+		E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
+		E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
 	end
-
-	E.UIParent:SetSize(width, height)
-	E.UIParent:ClearAllPoints()
-	E.UIParent:Point(E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" and "BOTTOM" or "CENTER")
-	E.UIParent.origHeight = E.UIParent:GetHeight()
-
-	--Calculate potential coordinate differences
-	E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
-	E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
-	E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
-	E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
 end
 
 --pixel perfect script of custom ui scale.

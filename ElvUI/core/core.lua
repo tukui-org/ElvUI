@@ -67,8 +67,7 @@ E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gx
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
-E.mult, E.Border, E.Spacing = 1, 1, 0
-E.PixelMode = false
+-- E.mult, E.Border, E.Spacing, E.PixelMode = 1, 1, 0, false
 
 --Tables
 E.media = {}
