@@ -178,6 +178,24 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs['UISCALE_CHANGE'] = {
+	text = L["The UI Scale has been changes, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
+	OnAccept = function() ReloadUI(); end,
+	OnCancel = function() end,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	button3 = L["Preview Changes"],
+	OnAlt = function ()
+		E:UIScale()
+		E:Delay(0.5, function()
+			E:StaticPopup_Show("UISCALE_CHANGE")
+		end)
+	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
 	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
 	button1 = ACCEPT,

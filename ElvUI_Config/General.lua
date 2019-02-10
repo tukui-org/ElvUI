@@ -47,7 +47,10 @@ E.Options.args.general = {
 					order = 2,
 					type = 'execute',
 					name = L["Auto Scale"],
-					func = function() E.global.general.UIScale = max(0.4, min(1.15, 768 / E.screenheight));  E:UIScale(); E:StaticPopup_Show("GLOBAL_RL") end,
+					func = function() 
+						E.global.general.UIScale = max(0.4, min(1.15, 768 / E.screenheight)); 
+						E:StaticPopup_Show("UISCALE_CHANGE") 
+					end,
 				},
 				UIScale = {
 					order = 3,
@@ -55,12 +58,11 @@ E.Options.args.general = {
 					name = L["UI Scale"],
 					softMin = 0.40, softMax = 1.15, step = 0.00001,
 					get = function(info) return E.global.general.UIScale end,
-					set = function(info, value)
-						E.global.general.UIScale = value
-						E:UIScale()
-						E:StaticPopup_Show("GLOBAL_RL")
+					set = function(info, value) 
+						E.global.general.UIScale = value; 
+						E:StaticPopup_Show("UISCALE_CHANGE") 
 					end
-				},
+				},	
 				pixelPerfect = {
 					order = 4,
 					name = L["Thin Border Theme"],
