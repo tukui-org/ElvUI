@@ -147,6 +147,10 @@ local function LoadSkin()
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
+	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
+	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+
+
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
