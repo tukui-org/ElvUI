@@ -71,7 +71,7 @@ local function SkinItemButton(parentFrame, _, index)
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
 			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(item.IconBorder, "Hide", function(self)
 			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -83,7 +83,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item.NameFrame:SetTexture()
 		item.NameFrame:SetSize(118, 39)
 
-		item.shortageBorder:SetTexture(nil)
+		item.shortageBorder:SetTexture()
 
 		item.roleIcon1:SetParent(item.backdrop)
 		item.roleIcon2:SetParent(item.backdrop)
@@ -97,8 +97,8 @@ end
 
 local function HandleAffixIcons(self)
 	for _, frame in ipairs(self.Affixes) do
-		frame.Border:SetTexture(nil)
-		frame.Portrait:SetTexture(nil)
+		frame.Border:SetTexture()
+		frame.Portrait:SetTexture()
 
 		if frame.info then
 			frame.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
@@ -432,13 +432,13 @@ local function LoadSkin()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end)
 
 				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end	)
 			end

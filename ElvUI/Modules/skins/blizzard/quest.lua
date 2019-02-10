@@ -194,7 +194,7 @@ local function LoadSkin()
 					button.backdrop:SetBackdropBorderColor(r, g, b)
 				end
 
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 
 			rewardButton.isSkinned = true
@@ -203,9 +203,9 @@ local function LoadSkin()
 
 	--Reward: Title
 	local QuestInfoPlayerTitleFrame = _G.QuestInfoPlayerTitleFrame
-	QuestInfoPlayerTitleFrame.FrameLeft:SetTexture(nil)
-	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture(nil)
-	QuestInfoPlayerTitleFrame.FrameRight:SetTexture(nil)
+	QuestInfoPlayerTitleFrame.FrameLeft:SetTexture()
+	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture()
+	QuestInfoPlayerTitleFrame.FrameRight:SetTexture()
 	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	QuestInfoPlayerTitleFrame:CreateBackdrop("Default")
 	QuestInfoPlayerTitleFrame.backdrop:SetOutside(QuestInfoPlayerTitleFrame.Icon)

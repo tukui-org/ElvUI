@@ -86,7 +86,7 @@ local function LoadSkin()
 			if region:IsObjectType("Texture") then
 				if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
 					and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
-					region:SetTexture(nil)
+					region:SetTexture()
 				end
 			end
 		end

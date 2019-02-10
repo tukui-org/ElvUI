@@ -53,14 +53,14 @@ local function LoadSkin()
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
 			if texture then
-				texture:SetTexture(nil)
+				texture:SetTexture()
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r,g,b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(button.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))

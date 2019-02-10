@@ -96,8 +96,8 @@ local function LoadSkin()
 			ResultIcon:GetNormalTexture():SetInside()
 		end
 		ResultIcon:SetTemplate("Default")
-		ResultIcon.IconBorder:SetTexture(nil)
-		ResultIcon.ResultBorder:SetTexture(nil)
+		ResultIcon.IconBorder:SetTexture()
+		ResultIcon.ResultBorder:SetTexture()
 
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.Reagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]

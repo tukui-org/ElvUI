@@ -44,7 +44,7 @@ local function LoadSkin()
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(self)
 		self:SetTemplate("Transparent")
 
-		self.NormalTexture:SetTexture("")
+		self.NormalTexture:SetTexture()
 	end)
 end
 

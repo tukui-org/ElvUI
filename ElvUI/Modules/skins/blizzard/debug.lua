@@ -33,7 +33,7 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
 	for i=1, #FrameTexs do
-		_G["ScriptErrorsFrame"..FrameTexs[i]]:SetTexture(nil)
+		_G["ScriptErrorsFrame"..FrameTexs[i]]:SetTexture()
 	end
 
 	-- Our Buttons
@@ -115,7 +115,7 @@ local function SkinTableAttributeDisplay(frame)
 
 		local t = frame.LinesScrollFrame.ScrollBar:GetThumbTexture()
 		if t then
-			t:SetTexture(nil)
+			t:SetTexture()
 			if not s.thumbbg then
 				s.thumbbg = CreateFrame("Frame", "$parentThumbBG", frame.LinesScrollFrame)
 				s.thumbbg:Point("TOPLEFT", t, "TOPLEFT", 2, -3)
@@ -159,7 +159,7 @@ local function LoadSkin()
 	end
 
 	for i=1, #FrameTexs do
-		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture(nil)
+		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture()
 	end
 
 	_G.EventTraceFrame:SetTemplate("Transparent")

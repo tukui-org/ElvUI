@@ -261,7 +261,7 @@ do
 		frame:ClearAllPoints()
 		frame:Hide()
 		frame:SetBackdrop(frameBackdrop)
-		frame.bgTex:SetTexture(nil)
+		frame.bgTex:SetTexture()
 		table.insert(DropDownCache, frame)
 		return nil
 	end

@@ -223,7 +223,7 @@ local function LoadSkin()
 			Button:SetHighlightTexture(E.media.blankTex)
 			Button:GetHighlightTexture():SetVertexColor(1, 1, 1, .2)
 
-			ItemButton:GetNormalTexture():SetTexture('')
+			ItemButton:GetNormalTexture():SetTexture()
 			Button:GetHighlightTexture():SetPoint("TOPLEFT", ItemButton, "TOPRIGHT", 2, 0)
 			Button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", Button, "BOTTOMRIGHT", -2, 5)
 
@@ -279,8 +279,8 @@ local function LoadSkin()
 	BrowseWowTokenResultsToken.backdrop:SetOutside(_G.BrowseWowTokenResultsTokenIconTexture)
 	BrowseWowTokenResultsToken.backdrop:SetBackdropBorderColor(BrowseWowTokenResultsToken.IconBorder:GetVertexColor())
 	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())
-	BrowseWowTokenResultsToken.IconBorder:SetTexture(nil)
-	BrowseWowTokenResultsToken.ItemBorder:SetTexture(nil)
+	BrowseWowTokenResultsToken.IconBorder:SetTexture()
+	BrowseWowTokenResultsToken.ItemBorder:SetTexture()
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = _G.WowTokenGameTimeTutorial

@@ -30,7 +30,7 @@ local function LoadSkin()
 			end
 
 			if reward.IconBorder then
-				reward.IconBorder:SetTexture(nil)
+				reward.IconBorder:SetTexture()
 			end
 
 			if reward.IconBorder and reward.IconBorder:IsShown() then
@@ -102,7 +102,7 @@ local function LoadSkin()
 	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(self)
 		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
 			if not Reagent.backdrop then
-				Reagent.NameFrame:SetTexture('')
+				Reagent.NameFrame:SetTexture()
 				S:HandleTexture(Reagent.Icon, Reagent)
 				Reagent:CreateBackdrop()
 			end
@@ -330,7 +330,7 @@ local function LoadSkin()
 	tooltip:SetTemplate("Transparent")
 	if icon then
 		S:HandleIcon(icon)
-		reward.IconBorder:SetTexture(nil)
+		reward.IconBorder:SetTexture()
 	end
 	if bonusIcon then
 		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks

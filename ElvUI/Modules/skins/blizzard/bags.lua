@@ -35,7 +35,7 @@ local function SkinButton(button)
 		for i=1, button:GetNumRegions() do
 			local region = select(i, button:GetRegions())
 			if region and region:IsObjectType('Texture') and region ~= button.searchOverlay and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
-				region:SetTexture(nil)
+				region:SetTexture()
 			end
 		end
 		button:SetTemplate("Default", true)

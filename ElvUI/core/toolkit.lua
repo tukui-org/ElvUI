@@ -93,7 +93,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t == 'NoBackdrop' then
 		f:SetBackdrop(nil)
 		if f.backdropTexture then
-			f.backdropTexture:SetTexture(nil)
+			f.backdropTexture:SetTexture()
 		end
 	else
 		f:SetBackdrop({
@@ -242,7 +242,7 @@ local function StripTextures(object, kill, alpha)
 		elseif alpha then
 			object:SetAlpha(0)
 		else
-			object:SetTexture(nil)
+			object:SetTexture()
 		end
 	else
 		local FrameName = object.GetName and object:GetName()
@@ -263,7 +263,7 @@ local function StripTextures(object, kill, alpha)
 					elseif alpha then
 						region:SetAlpha(0)
 					else
-						region:SetTexture(nil)
+						region:SetTexture()
 					end
 				end
 			end

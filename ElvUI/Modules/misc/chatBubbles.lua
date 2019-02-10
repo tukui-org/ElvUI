@@ -96,7 +96,7 @@ function M:SkinBubble(frame)
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:IsObjectType('Texture') then
-			region:SetTexture(nil)
+			region:SetTexture()
 		elseif region:IsObjectType('FontString') then
 			frame.text = region
 		end

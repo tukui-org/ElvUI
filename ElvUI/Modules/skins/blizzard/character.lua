@@ -20,7 +20,7 @@ local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
 local function UpdateAzeriteItem(self)
 	if not self.styled then
 		self.AzeriteTexture:SetAlpha(0)
-		self.RankFrame.Texture:SetTexture("")
+		self.RankFrame.Texture:SetTexture()
 		self.RankFrame.Label:FontTemplate(nil, nil, "OUTLINE")
 
 		self.styled = true
@@ -76,13 +76,13 @@ local function SkinItemFlyouts()
 
 	for i, button in ipairs(buttons) do
 		if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
-			buttonAnchor["bg"..i]:SetTexture(nil)
+			buttonAnchor["bg"..i]:SetTexture()
 		end
 
 		if not button.isHooked then
 			button.isHooked = true
 			button:StyleButton(false)
-			button:GetNormalTexture():SetTexture(nil)
+			button:GetNormalTexture():SetTexture()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -105,10 +105,10 @@ local function SkinItemFlyouts()
 					end)
 				end
 
-				button.IconBorder:SetTexture("")
+				button.IconBorder:SetTexture()
 				hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-					self:SetTexture("")
+					self:SetTexture()
 				end)
 				hooksecurefunc(button.IconBorder, 'Hide', function(self)
 					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -133,7 +133,7 @@ local function FixSidebarTabCoords()
 
 			-- Check for DejaCharacterStats. Lets hide the Texture if the AddOn is loaded.
 			if IsAddOnLoaded("DejaCharacterStats") then
-				tab.Hider:SetTexture("")
+				tab.Hider:SetTexture()
 			else
 				tab.Hider:SetColorTexture(0.0, 0.0, 0.0, 0.8)
 			end
@@ -185,13 +185,13 @@ local function UpdateFactionSkins()
 				E:RegisterStatusBar(statusbar)
 			end
 
-			_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
+			_G["ReputationBar"..i.."Background"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture()
 		end
 	end
 
@@ -403,9 +403,9 @@ local function LoadSkin()
 	--Titles
 	_G.PaperDollTitlesPane:HookScript("OnShow", function()
 		for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
-			object.BgTop:SetTexture(nil)
-			object.BgBottom:SetTexture(nil)
-			object.BgMiddle:SetTexture(nil)
+			object.BgTop:SetTexture()
+			object.BgBottom:SetTexture()
+			object.BgMiddle:SetTexture()
 			object.text:FontTemplate()
 			hooksecurefunc(object.text, "SetFont", function(self, font)
 				if font ~= E.media.normFont then
@@ -422,13 +422,13 @@ local function LoadSkin()
 	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
 	_G.PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", _G.PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
-	_G.PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
+	_G.PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture()
 
 	--Itemset buttons
 	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
-		object.BgTop:SetTexture(nil)
-		object.BgBottom:SetTexture(nil)
-		object.BgMiddle:SetTexture(nil)
+		object.BgTop:SetTexture()
+		object.BgBottom:SetTexture()
+		object.BgMiddle:SetTexture()
 		object.icon:Size(36, 36)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
@@ -476,7 +476,7 @@ local function LoadSkin()
 			S:HandleIcon(icon)
 			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
 				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(reward.IconBorder, "Hide", function(self)
 				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
