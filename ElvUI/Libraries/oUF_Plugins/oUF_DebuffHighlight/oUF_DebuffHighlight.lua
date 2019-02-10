@@ -110,7 +110,7 @@ local function Update(object, event, unit)
 		end
 
 		if object.DebuffHighlightUseTexture then
-			object.DebuffHighlight:SetTexture()
+			object.DebuffHighlight:SetTexture(nil)
 		else
 			object.DebuffHighlight:SetVertexColor(0, 0, 0, 0)
 		end
