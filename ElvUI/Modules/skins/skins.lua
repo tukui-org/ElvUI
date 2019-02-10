@@ -516,24 +516,26 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 
 	if not btn.icon then
 		btn.icon = btn:CreateTexture(nil, 'ARTWORK')
-		btn.icon:Size(13)
+		btn.icon:Size(12, 12)
 		btn.icon:Point('CENTER')
-		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
-		btn.icon:SetTexCoord(0.01562500, 0.20312500, 0.01562500, 0.20312500)
+		btn.icon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+		btn.icon:SetVertexColor(1, 1, 1)
 
 		btn:HookScript('OnMouseDown', function(button)
 			if button:IsEnabled() then
 				button.icon:Point("CENTER", -1, -1);
+				button.icon:SetVertexColor(unpack(E.media.rgbvaluecolor	))
 			end
 		end)
 
 		btn:HookScript('OnMouseUp', function(button)
 			button.icon:Point("CENTER", 0, 0);
+			button.icon:SetVertexColor(1, 1, 1)
 		end)
 
 		btn:HookScript('OnDisable', function(button)
 			SetDesaturation(button.icon, true);
-			button.icon:SetAlpha(0.5);
+			button.icon:SetAlpha(0.3);
 		end)
 
 		btn:HookScript('OnEnable', function(button)
@@ -548,15 +550,15 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 
 	if useVertical then
 		if inverseDirection then
-			_G.SquareButton_SetIcon(btn, 'UP')
+			btn.icon:SetRotation(S.ArrowRotation['down'])
 		else
-			_G.SquareButton_SetIcon(btn, 'DOWN')
+			btn.icon:SetRotation(S.ArrowRotation['up'])
 		end
 	else
 		if inverseDirection then
-			_G.SquareButton_SetIcon(btn, 'LEFT')
+			btn.icon:SetRotation(S.ArrowRotation['left'])
 		else
-			_G.SquareButton_SetIcon(btn, 'RIGHT')
+			btn.icon:SetRotation(S.ArrowRotation['right'])
 		end
 	end
 
@@ -616,8 +618,6 @@ function S:HandleMaxMinFrame(frame)
 				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 0)
 				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 3, -2)
 			end
-
-			--S:HandleButton(button)
 
 			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
