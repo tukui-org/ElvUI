@@ -1618,7 +1618,7 @@ function B:ContructContainerFrame(name, isBank)
 	end)
 
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
-	f.closeButton:Point('TOPRIGHT', -4, -4);
+	f.closeButton:SetPoint('TOPRIGHT', 5, 5);
 
 	SkinModule:HandleCloseButton(f.closeButton);
 
