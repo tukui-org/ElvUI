@@ -653,6 +653,10 @@ local function ResetAll()
 	InstallOption4Button:Hide()
 	InstallOption4Button:SetScript('OnClick', nil)
 	InstallOption4Button:SetText('')
+	InstallSlider:Hide()
+	InstallSlider.Min:SetText("")
+	InstallSlider.Max:SetText("")
+	InstallSlider.Cur:SetText("")
 	ElvUIInstallFrame.SubTitle:SetText("")
 	ElvUIInstallFrame.Desc1:SetText("")
 	ElvUIInstallFrame.Desc2:SetText("")
@@ -724,22 +728,50 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
-		f.SubTitle:SetText(L["Resolution"])
-		f.Desc1:SetFormattedText(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"])
-		if E.lowversion then
-			f.Desc2:SetText(L["This resolution requires that you change some settings to get everything to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["You may need to further alter these settings depending how low you resolution is."])
-			f.Desc3:SetText(L["Importance: |cff07D400High|r"])
-		else
-			f.Desc2:SetText(L["This resolution doesn't require that you change settings for the UI to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["This is completely optional."])
-			f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
-		end
+		f.SubTitle:SetText(L["UI Scale"])
+		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
+
+		InstallSlider:Show()
+		InstallSlider:SetMinMaxValues(0.4, 1.15)
+
+		InstallSlider.Cur:SetText(string)		
+		InstallSlider:SetValue(E.global.general.UIScale)
+		InstallSlider:SetScript("OnValueChanged", function(self)
+			E.global.general.UIScale = self:GetValue()
+
+			local string = tostring(E.global.general.UIScale)
+			if strlen(string) > 4 then
+				string = tonumber(strsub(string, 0, 4))
+			end			
+			InstallSlider.Cur:SetText(string)
+		end)
+
+		InstallSlider.Min:SetText(0.4)
+		InstallSlider.Max:SetText(1.15)
+
+		local string = tostring(E.global.general.UIScale)
+		if strlen(string) > 4 then
+			string = tonumber(strsub(string, 0, 4))
+		end			
+		InstallSlider.Cur:SetText(string)
+
 
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() E.SetupResolution('high') end)
-		InstallOption1Button:SetText(L["High Resolution"])
+		InstallOption1Button:SetScript('OnClick', function() 
+			local autoScale = max(0.4, min(1.15, 768 / E.screenheight))
+			if strlen(autoScale) > 4 then
+				autoScale = tonumber(strsub(autoScale, 0, 4))
+			end
+			E.global.general.UIScale = autoScale	
+			InstallSlider:SetValue(E.global.general.UIScale)
+		end)
+		InstallOption1Button:SetText(L["Auto Scale"])
+
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)
-		InstallOption2Button:SetText(L["Low Resolution"])
+		InstallOption2Button:SetScript('OnClick', function() 	
+			E:UIScale()
+		end)
+		InstallOption2Button:SetText(L["Preview"])
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
@@ -897,6 +929,24 @@ function E:Install()
 		f.Status.text:FontTemplate()
 		f.Status.text:Point("CENTER")
 		f.Status.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
+
+	
+		f.Slider = CreateFrame("Slider", "InstallSlider", f)
+		f.Slider:SetOrientation("HORIZONTAL")
+		f.Slider:Height(15)
+		f.Slider:Width(400)
+		f.Slider:SetHitRectInsets(0, 0, -10, 0)
+		f.Slider:SetPoint("CENTER", 0, 40)
+		E:GetModule("Skins"):HandleSliderFrame(f.Slider)
+		f.Slider:Hide()
+
+		f.Slider.Min = f.Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		f.Slider.Min:SetPoint("RIGHT", f.Slider, "LEFT", -3, 0)
+		f.Slider.Max = f.Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		f.Slider.Max:SetPoint("LEFT", f.Slider, "RIGHT", 3, 0)
+		f.Slider.Cur = f.Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		f.Slider.Cur:SetPoint("BOTTOM", f.Slider, "TOP", 0, 10)
+		f.Slider.Cur:FontTemplate(nil, 30, nil)
 
 		f.Option1 = CreateFrame("Button", "InstallOption1Button", f, "UIPanelButtonTemplate")
 		f.Option1:StripTextures()
