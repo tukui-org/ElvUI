@@ -589,7 +589,7 @@ function S:HandleMaxMinFrame(frame)
 		local button = frame[name]
 
 		if button then
-			button:SetSize(16, 16)
+			button:SetSize(14, 14)
 			button:ClearAllPoints()
 			button:SetPoint("CENTER")
 			button:SetHitRectInsets(1, 1, 1, 1)
