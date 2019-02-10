@@ -116,7 +116,7 @@ end
 
 function E:Grid_Create()
 	if not grid then
-		grid = CreateFrame('Frame', 'ElvUIGrid', UIParent)
+		grid = CreateFrame('Frame', 'ElvUIGrid', self.UIParent)
 		grid:SetFrameStrata('BACKGROUND')
 	else
 		grid.regionCount = 0
@@ -135,9 +135,9 @@ function E:Grid_Create()
 	grid:Show()
 
 	local size = 1
-	local width = E.eyefinity or E.screenwidth
-	local ratio = width / E.screenheight
-	local height = E.screenheight * ratio
+	local width = E.UIParent:GetWidth()
+	local ratio = width / E.UIParent:GetHeight()
+	local height = E.UIParent:GetHeight() * ratio
 
 	local wStep = width / E.db.gridSize
 	local hStep = height / E.db.gridSize
@@ -155,7 +155,7 @@ function E:Grid_Create()
 		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
 		tx:Point('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
 	end
-	height = E.screenheight
+	height = E.UIParent:GetHeight()
 
 	do
 		local tx = E:Grid_GetRegion()
