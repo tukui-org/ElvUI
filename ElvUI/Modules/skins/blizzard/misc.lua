@@ -279,6 +279,10 @@ local function LoadSkin()
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 			S:HandleNextPrevButton(btn)
 		end
+
+		if btn.SetTemplate then
+			btn:SetTemplate("NoBackdrop")
+		end
 	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
