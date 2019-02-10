@@ -11,8 +11,10 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 E.mult = 1
-local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
+E.Border = 1
+E.Spacing = 0
 
+local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 

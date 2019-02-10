@@ -127,13 +127,8 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	if self.private.general.pixelPerfect then
-		self.Border = self.mult;
-		self.Spacing = 0;
-		self.PixelMode = true;
-	end
+	self.PixelMode = self.private.general.pixelPerfect
 
-	self:UIScale()
 	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
