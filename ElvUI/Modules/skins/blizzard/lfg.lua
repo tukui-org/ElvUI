@@ -26,18 +26,21 @@ local function LFDQueueFrameRoleButtonIconOnHide(self)
 end
 
 local function HandleGoldIcon(button)
-	local iconTexture = _G[button.."IconTexture"]
-	local nameFrame = _G[button.."NameFrame"]
-	local count = _G[button.."Count"]
 	local Button = _G[button]
+	local nameFrame = Button.NameFrame
+	local count = Button.Count
 
 	Button.border = CreateFrame("Frame", nil, Button)
 	Button.border:SetTemplate()
-	Button.border:SetOutside(iconTexture)
+	Button.border:Size(40)
+	Button.border:Point("LEFT", 1, -1)
 
-	iconTexture:SetTexCoord(unpack(E.TexCoords))
-	iconTexture:SetDrawLayer("OVERLAY")
-	iconTexture:SetParent(Button.border)
+	local iconTexture = _G[button.."IconTexture"]
+	Button.IconTexture = Button.border:CreateTexture(nil, 'OVERLAY')
+	Button.IconTexture:SetTexture(iconTexture:GetTexture())
+	Button.IconTexture:SetTexCoord(unpack(E.TexCoords))
+	Button.IconTexture:SetInside()
+	iconTexture:SetAlpha(0)
 
 	count:SetParent(Button.border)
 	count:SetDrawLayer("OVERLAY")
@@ -53,7 +56,8 @@ local function SkinItemButton(parentFrame, _, index)
 	if item and not item.isSkinned then
 		item.border = CreateFrame("Frame", nil, item)
 		item.border:SetTemplate()
-		item.border:SetOutside(item.Icon)
+		item.border:Size(40)
+		item.border:Point("LEFT", 1, -1)
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
 			self:GetParent().border:SetBackdropBorderColor(r, g, b)
@@ -63,9 +67,11 @@ local function SkinItemButton(parentFrame, _, index)
 			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
-		item.Icon:SetTexCoord(unpack(E.TexCoords))
-		item.Icon:SetDrawLayer("OVERLAY")
-		item.Icon:SetParent(item.border)
+		item.IconTexture = item.border:CreateTexture(nil, 'OVERLAY')
+		item.IconTexture:SetTexture(item.Icon:GetTexture())
+		item.IconTexture:SetTexCoord(unpack(E.TexCoords))
+		item.IconTexture:SetInside()
+		item.Icon:SetAlpha(0)
 
 		item.Count:SetDrawLayer("OVERLAY")
 		item.Count:SetParent(item.border)
