@@ -49,11 +49,8 @@ E.Options.args.general = {
 					type = 'execute',
 					name = L["Auto Scale"],
 					func = function()
-						local autoScale = max(0.4, min(1.15, 768 / E.screenheight))
-						if strlen(autoScale) > 4 then
-							autoScale = tonumber(strsub(autoScale, 0, 4))
-						end
-						E.global.general.UIScale = autoScale
+						local autoScale = E:PixelBestSize()
+						E.global.general.UIScale = E:PixelClip(autoScale)
 						E:StaticPopup_Show("UISCALE_CHANGE")
 					end,
 				},

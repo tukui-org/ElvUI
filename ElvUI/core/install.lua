@@ -37,7 +37,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIInstallFrame, InstallStepComplete, InstallStatus, InstallNextButton, InstallPrevButton
 -- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
--- GLOBALS: LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel, CreateAnimationGroup
+-- GLOBALS: InstallSlider, LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel, CreateAnimationGroup
 -- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 -- GLOBALS: CUSTOM_CLASS_COLORS, MAX_WOW_CHAT_CHANNELS
 
@@ -734,42 +734,30 @@ local function SetPage(PageNum)
 		InstallSlider:Show()
 		InstallSlider:SetMinMaxValues(0.4, 1.15)
 
-		InstallSlider.Cur:SetText(string)		
-		InstallSlider:SetValue(E.global.general.UIScale)
+		local value = E:PixelClip(E.global.general.UIScale)
+		InstallSlider:SetValue(value)
+		InstallSlider.Cur:SetText(value)
+
 		InstallSlider:SetScript("OnValueChanged", function(self)
 			E.global.general.UIScale = self:GetValue()
-
-			local string = tostring(E.global.general.UIScale)
-			if strlen(string) > 4 then
-				string = tonumber(strsub(string, 0, 4))
-			end			
-			InstallSlider.Cur:SetText(string)
+			local value = E:PixelClip(E.global.general.UIScale)
+			InstallSlider.Cur:SetText(value)
 		end)
 
 		InstallSlider.Min:SetText(0.4)
 		InstallSlider.Max:SetText(1.15)
 
-		local string = tostring(E.global.general.UIScale)
-		if strlen(string) > 4 then
-			string = tonumber(strsub(string, 0, 4))
-		end			
-		InstallSlider.Cur:SetText(string)
-
-
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() 
-			local autoScale = max(0.4, min(1.15, 768 / E.screenheight))
-			if strlen(autoScale) > 4 then
-				autoScale = tonumber(strsub(autoScale, 0, 4))
-			end
-			E.global.general.UIScale = autoScale	
+		InstallOption1Button:SetScript('OnClick', function()
+			local autoScale = E:PixelBestSize()
+			E.global.general.UIScale = E:PixelClip(autoScale)
 			InstallSlider:SetValue(E.global.general.UIScale)
 		end)
 		InstallOption1Button:SetText(L["Auto Scale"])
 
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() 	
-			E:UIScale()
+		InstallOption2Button:SetScript('OnClick', function()
+			E:PixelScaleChanged(nil, true)
 		end)
 		InstallOption2Button:SetText(L["Preview"])
 
@@ -932,7 +920,6 @@ function E:Install()
 		f.Status.text:Point("CENTER")
 		f.Status.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
 
-	
 		f.Slider = CreateFrame("Slider", "InstallSlider", f)
 		f.Slider:SetOrientation("HORIZONTAL")
 		f.Slider:Height(15)

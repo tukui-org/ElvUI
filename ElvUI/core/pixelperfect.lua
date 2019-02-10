@@ -3,7 +3,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 local _G = _G
 --Lua functions
+local min, max = math.min, math.max
 local abs, floor = math.abs, math.floor
+local tostring, tonumber = tostring, tonumber
+local strsub, strlen = strsub, strlen
 --WoW API / Variables
 local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 
@@ -68,13 +71,25 @@ function E:UIScale(init)
 	end
 end
 
-function E:PixelScaleChanged(event)
+function E:PixelBestSize()
+	return max(0.4, min(1.15, 768 / E.screenheight))
+end
+
+function E:PixelClip(num)
+	local string = num and tostring(num)
+	if string and strlen(string) > 4 then
+		return tonumber(strsub(string, 0, 4))
+	end
+	return num
+end
+
+function E:PixelScaleChanged(event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
 	if event == 'UISCALE_CHANGE' then
 		E:Delay(0.5, function() E:StaticPopup_Show(event) end)
-	elseif E.StaticPopupFrames then
+	elseif E.StaticPopupFrames and not skip then
 		E:StaticPopup_Show("UISCALE_CHANGE")
 	end
 end
