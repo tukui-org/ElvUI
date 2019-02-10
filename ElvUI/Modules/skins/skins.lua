@@ -613,7 +613,7 @@ function S:HandleMaxMinFrame(frame)
 				button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
 				button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-				button:GetPushedTexture():SetRotation(S.ArrowRotation['down'])
+				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 			else
 				button:GetNormalTexture():ClearAllPoints()
 				button:GetNormalTexture():SetPoint("TOPLEFT", 0, 0)
