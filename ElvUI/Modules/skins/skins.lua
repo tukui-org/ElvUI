@@ -562,7 +562,6 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 		end
 	end
 
-	S:HandleButton(btn)
 	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)
 end
 
