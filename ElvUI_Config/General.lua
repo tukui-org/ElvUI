@@ -60,7 +60,7 @@ E.Options.args.general = {
 				UIScale = {
 					order = 3,
 					type = "range",
-					name = L["UI Scale"],
+					name = UI_SCALE,
 					softMin = 0.40, softMax = 1.15, step = 0.01,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
