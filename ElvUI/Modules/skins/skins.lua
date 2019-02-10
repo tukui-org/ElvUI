@@ -524,7 +524,7 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 		btn:HookScript('OnMouseDown', function(button)
 			if button:IsEnabled() then
 				button.icon:Point("CENTER", -1, -1);
-				button.icon:SetVertexColor(unpack(E.media.rgbvaluecolor	))
+				button.icon:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			end
 		end)
 
@@ -610,6 +610,10 @@ function S:HandleMaxMinFrame(frame)
 				button:GetPushedTexture():ClearAllPoints()
 				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 1)
 				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 2, 0)
+				button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+				button:GetNormalTexture():SetRotation(S.ArrowRotation['down'])
+				button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+				button:GetPushedTexture():SetRotation(S.ArrowRotation['down'])
 			else
 				button:GetNormalTexture():ClearAllPoints()
 				button:GetNormalTexture():SetPoint("TOPLEFT", 0, 0)
@@ -617,14 +621,11 @@ function S:HandleMaxMinFrame(frame)
 				button:GetPushedTexture():ClearAllPoints()
 				button:GetPushedTexture():SetPoint("TOPLEFT", 0, 0)
 				button:GetPushedTexture():SetPoint("BOTTOMRIGHT", 3, -2)
+				button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+				button:GetNormalTexture():SetRotation(S.ArrowRotation['up'])
+				button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+				button:GetPushedTexture():SetRotation(S.ArrowRotation['up'])
 			end
-
-			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
-
-			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
-
 		end
 	end
 end
