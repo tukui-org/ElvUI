@@ -86,7 +86,7 @@ local function LoadSkin()
 		S:HandleButton(_G.GameMenuFrame.ElvUI)
 
 		_G.GameMenuFrame:SetTemplate("Transparent")
-		_G.GameMenuFrameHeader:SetTexture("")
+		_G.GameMenuFrameHeader:SetTexture()
 		_G.GameMenuFrameHeader:ClearAllPoints()
 		_G.GameMenuFrameHeader:Point("TOP", _G.GameMenuFrame, 0, 7)
 	end
@@ -181,16 +181,16 @@ local function LoadSkin()
 		_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside()
 		local normTex = _G["StaticPopup"..i.."ItemFrame"]:GetNormalTexture()
 		if normTex then
-			normTex:SetTexture(nil)
+			normTex:SetTexture()
 			hooksecurefunc(normTex, "SetTexture", function(self, tex)
-				if tex ~= nil then self:SetTexture(nil) end
+				if tex ~= nil then self:SetTexture() end
 			end)
 		end
 
 		-- Quality IconBorder
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))

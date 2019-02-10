@@ -53,7 +53,7 @@ local function LoadSkin()
 	for i = 1, #BlizzardHeader do
 		local title = _G[BlizzardHeader[i].."Header"]
 		if title then
-			title:SetTexture("")
+			title:SetTexture()
 			title:ClearAllPoints()
 			if title == _G.GameMenuFrameHeader then
 				title:Point("TOP", _G.GameMenuFrame, 0, 7)

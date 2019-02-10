@@ -228,9 +228,9 @@ function S:SkinTalentListButtons(frame)
 		local bcl = _G[name.."BtnCornerLeft"]
 		local bcr = _G[name.."BtnCornerRight"]
 		local bbb = _G[name.."ButtonBottomBorder"]
-		if bcl then bcl:SetTexture("") end
-		if bcr then bcr:SetTexture("") end
-		if bbb then bbb:SetTexture("") end
+		if bcl then bcl:SetTexture() end
+		if bcr then bcr:SetTexture() end
+		if bbb then bbb:SetTexture() end
 	end
 
 	if frame.Inset then
@@ -279,20 +279,20 @@ end
 
 function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 	if frame:GetName() then
-		if frame.Background then frame.Background:SetTexture(nil) end
-		if frame.trackBG then frame.trackBG:SetTexture(nil) end
-		if frame.Middle then frame.Middle:SetTexture(nil) end
-		if frame.Top then frame.Top:SetTexture(nil) end
-		if frame.Bottom then frame.Bottom:SetTexture(nil) end
-		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture(nil) end
-		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture(nil) end
-		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture(nil) end
+		if frame.Background then frame.Background:SetTexture() end
+		if frame.trackBG then frame.trackBG:SetTexture() end
+		if frame.Middle then frame.Middle:SetTexture() end
+		if frame.Top then frame.Top:SetTexture() end
+		if frame.Bottom then frame.Bottom:SetTexture() end
+		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture() end
+		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture() end
+		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture() end
 
-		if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
-		if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
-		if _G[frame:GetName().."Top"] then _G[frame:GetName().."Top"]:SetTexture(nil) end
-		if _G[frame:GetName().."Bottom"] then _G[frame:GetName().."Bottom"]:SetTexture(nil) end
-		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:SetTexture(nil) end
+		if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture() end
+		if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture() end
+		if _G[frame:GetName().."Top"] then _G[frame:GetName().."Top"]:SetTexture() end
+		if _G[frame:GetName().."Bottom"] then _G[frame:GetName().."Bottom"]:SetTexture() end
+		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:SetTexture() end
 
 		if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
 			_G[frame:GetName().."ScrollUpButton"]:StripTextures()
@@ -315,7 +315,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 			end
 
 			if frame:GetThumbTexture() then
-				frame:GetThumbTexture():SetTexture(nil)
+				frame:GetThumbTexture():SetTexture()
 				if not frame.thumbbg then
 					if not thumbTrimY then thumbTrimY = 3 end
 					if not thumbTrimX then thumbTrimX = 2 end
@@ -331,14 +331,14 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 			end
 		end
 	else
-		if frame.Background then frame.Background:SetTexture(nil) end
-		if frame.trackBG then frame.trackBG:SetTexture(nil) end
-		if frame.Middle then frame.Middle:SetTexture(nil) end
-		if frame.Top then frame.Top:SetTexture(nil) end
-		if frame.Bottom then frame.Bottom:SetTexture(nil) end
-		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture(nil) end
-		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture(nil) end
-		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture(nil) end
+		if frame.Background then frame.Background:SetTexture() end
+		if frame.trackBG then frame.trackBG:SetTexture() end
+		if frame.Middle then frame.Middle:SetTexture() end
+		if frame.Top then frame.Top:SetTexture() end
+		if frame.Bottom then frame.Bottom:SetTexture() end
+		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture() end
+		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture() end
+		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture() end
 
 		if frame.ScrollUpButton and frame.ScrollDownButton then
 			if not frame.ScrollUpButton.icon then
@@ -359,7 +359,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 			end
 
 			if frame.thumbTexture then
-				frame.thumbTexture:SetTexture(nil)
+				frame.thumbTexture:SetTexture()
 				if not frame.thumbbg then
 					if not thumbTrimY then thumbTrimY = 3 end
 					if not thumbTrimX then thumbTrimX = 2 end
@@ -390,8 +390,8 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
 	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
 	if Slider.ScrollBarBottom then Slider.ScrollBarBottom:Hide() end
-	if Slider.Top then Slider.Top:SetTexture(nil) end
-	if Slider.Bottom then Slider.Bottom:SetTexture(nil) end
+	if Slider.Top then Slider.Top:SetTexture() end
+	if Slider.Bottom then Slider.Bottom:SetTexture() end
 
 	if not Slider.trackbg then
 		Slider.trackbg = CreateFrame("Frame", nil, Slider)
@@ -446,7 +446,7 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 
 	if Slider.thumbTexture then
 		if not thumbTrim then thumbTrim = 3 end
-		Slider.thumbTexture:SetTexture(nil)
+		Slider.thumbTexture:SetTexture()
 		if not Slider.thumbbg then
 			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
 			Slider.thumbbg:Point("TOPLEFT", Slider.thumbTexture, "TOPLEFT", 2, -thumbTrim)
@@ -459,7 +459,7 @@ function S:HandleScrollSlider(Slider, thumbTrim)
 		end
 	elseif Slider.ThumbTexture then
 		if not thumbTrim then thumbTrim = 3 end
-		Slider.ThumbTexture:SetTexture(nil)
+		Slider.ThumbTexture:SetTexture()
 		if not Slider.thumbbg then
 			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
 			Slider.thumbbg:Point("TOPLEFT", Slider.ThumbTexture, "TOPLEFT", 2, -thumbTrim)
@@ -488,12 +488,12 @@ function S:HandleTab(tab)
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
 		if tex then
-			tex:SetTexture(nil)
+			tex:SetTexture()
 		end
 	end
 
 	if tab.GetHighlightTexture and tab:GetHighlightTexture() then
-		tab:GetHighlightTexture():SetTexture(nil)
+		tab:GetHighlightTexture():SetTexture()
 	else
 		tab:StripTextures()
 	end
@@ -695,9 +695,9 @@ function S:HandleDropDownFrame(frame, width)
 		button:ClearAllPoints()
 		button:Point("RIGHT", right, "RIGHT", -20, 0)
 
-		button.NormalTexture:SetTexture("")
-		button.PushedTexture:SetTexture("")
-		button.HighlightTexture:SetTexture("")
+		button.NormalTexture:SetTexture()
+		button.PushedTexture:SetTexture()
+		button.HighlightTexture:SetTexture()
 
 		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
 			if not noReset then
@@ -852,6 +852,7 @@ function S:HandleCloseButton(f, point)
 		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
+		f:SetHitRectInsets(6, 6, 7, 7)
 	end
 
 	if point then
@@ -909,7 +910,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				S:HandleIcon(icon, iconButton)
 				icon:SetDrawLayer("BORDER", 0)
 				if iconButton.Border then
-					iconButton.Border:SetTexture(nil)
+					iconButton.Border:SetTexture()
 				end
 			end
 		end
@@ -930,7 +931,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		if weapon and not weapon.backdrop then
 			S:HandleIcon(weapon.Icon, weapon)
 			if weapon.Border then
-				weapon.Border:SetTexture(nil)
+				weapon.Border:SetTexture()
 			end
 		end
 
@@ -938,7 +939,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		if armor and not armor.backdrop then
 			S:HandleIcon(armor.Icon, armor)
 			if armor.Border then
-				armor.Border:SetTexture(nil)
+				armor.Border:SetTexture()
 			end
 		end
 	end
@@ -963,10 +964,10 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 					equipment[i]:SetTemplate('Default')
 					equipment[i]:SetSize(48, 48)
 					if equipment[i].BG then
-						equipment[i].BG:SetTexture(nil)
+						equipment[i].BG:SetTexture()
 					end
 					if equipment[i].Border then
-						equipment[i].Border:SetTexture(nil)
+						equipment[i].Border:SetTexture()
 					end
 					if equipment[i].Icon then
 						equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
@@ -1004,7 +1005,7 @@ function S:HandleShipFollowerPage(followerTab)
 	for i = 1, #traits do
 		local icon = traits[i].Portrait
 		local border = traits[i].Border
-		border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
+		border:SetTexture() -- I think the default border looks nice, not sure if we want to replace that
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
 			icon:SetTexCoord(unpack(E.TexCoords))
@@ -1041,8 +1042,8 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 				if button.Follower then
 					button.Follower.Name:SetWordWrap(false)
 					button.Follower.BG:Hide()
-					button.Follower.Selection:SetTexture("")
-					button.Follower.AbilitiesBG:SetTexture("")
+					button.Follower.Selection:SetTexture()
+					button.Follower.AbilitiesBG:SetTexture()
 					button.Follower.BusyFrame:SetAllPoints()
 
 					local hl = button.Follower:GetHighlightTexture()
@@ -1057,7 +1058,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 							if counter and not counter.template then
 								counter:SetTemplate()
 								if counter.Border then
-									counter.Border:SetTexture(nil)
+									counter.Border:SetTexture()
 								end
 								if counter.Icon then
 									counter.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -1138,8 +1139,8 @@ function S:HandleGarrisonPortrait(portrait)
 	portrait.Portrait:SetPoint("TOPLEFT", 1, -1)
 
 	portrait.PortraitRing:Hide()
-	portrait.PortraitRingQuality:SetTexture("")
-	portrait.PortraitRingCover:SetTexture("")
+	portrait.PortraitRingQuality:SetTexture()
+	portrait.PortraitRingCover:SetTexture()
 	portrait.LevelBorder:SetAlpha(0)
 
 	portrait.Level:ClearAllPoints()
@@ -1244,9 +1245,9 @@ function S:HandleWorldMapDropDownMenu(frame)
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)
 		button:SetSize(20, 20)
 
-		button.NormalTexture:SetTexture("")
-		button.PushedTexture:SetTexture("")
-		button.HighlightTexture:SetTexture("")
+		button.NormalTexture:SetTexture()
+		button.PushedTexture:SetTexture()
+		button.HighlightTexture:SetTexture()
 		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
 			if not noReset then
 				btn:ClearAllPoints()

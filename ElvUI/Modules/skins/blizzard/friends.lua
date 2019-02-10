@@ -38,9 +38,9 @@ local function SkinSocialHeaderTab(tab)
 	if not tab then return end
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
-		tex:SetTexture(nil)
+		tex:SetTexture()
 	end
-	tab:GetHighlightTexture():SetTexture(nil)
+	tab:GetHighlightTexture():SetTexture()
 	tab.backdrop = CreateFrame("Frame", nil, tab)
 	tab.backdrop:SetTemplate("Default")
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
@@ -122,7 +122,7 @@ local function LoadSkin()
 	for i=1, FriendsFrame:GetNumRegions() do
 		local region = select(i, FriendsFrame:GetRegions())
 		if region:IsObjectType('Texture') then
-			region:SetTexture(nil)
+			region:SetTexture()
 			region:SetAlpha(0)
 		end
 	end
@@ -254,9 +254,9 @@ local function LoadSkin()
 	S:HandleButton(_G.ScrollOfResurrectionFrameAcceptButton)
 	S:HandleButton(_G.ScrollOfResurrectionFrameCancelButton)
 
-	_G.ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture(nil)
-	_G.ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture(nil)
-	_G.ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture(nil)
+	_G.ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture()
+	_G.ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture()
+	_G.ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture()
 	_G.ScrollOfResurrectionFrameNoteFrame:StripTextures()
 	_G.ScrollOfResurrectionFrameNoteFrame:SetTemplate()
 	_G.ScrollOfResurrectionFrameTargetEditBox:SetTemplate()
@@ -288,9 +288,9 @@ local function LoadSkin()
 	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
-	_G.QuickJoinScrollFrameTop:SetTexture(nil)
-	_G.QuickJoinScrollFrameBottom:SetTexture(nil)
-	_G.QuickJoinScrollFrameMiddle:SetTexture(nil)
+	_G.QuickJoinScrollFrameTop:SetTexture()
+	_G.QuickJoinScrollFrameBottom:SetTexture()
+	_G.QuickJoinScrollFrameMiddle:SetTexture()
 	QuickJoinRoleSelectionFrame:StripTextures()
 	QuickJoinRoleSelectionFrame:SetTemplate("Transparent")
 	S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)

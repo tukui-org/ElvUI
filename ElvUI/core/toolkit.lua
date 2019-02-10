@@ -90,7 +90,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
-	if t ~= 'NoBackdrop' then
+	if t == 'NoBackdrop' then
+		f:SetBackdrop(nil)
+		if f.backdropTexture then
+			f.backdropTexture:SetTexture()
+		end
+	else
 		f:SetBackdrop({
 			bgFile = E.media.blankTex,
 			edgeFile = E.media.blankTex,
@@ -98,17 +103,17 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
 		})
 
-		if not f.backdropTexture and t ~= 'Transparent' then
-			local backdropTexture = f:CreateTexture(nil, 'BORDER')
-			backdropTexture:SetDrawLayer('BACKGROUND', 1)
-			f.backdropTexture = backdropTexture
-		elseif t == 'Transparent' then
+		if t == 'Transparent' then
 			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 
 			if f.backdropTexture then
 				f.backdropTexture:Hide()
 				f.backdropTexture = nil
 			end
+		elseif not f.backdropTexture then
+			local backdropTexture = f:CreateTexture(nil, 'BORDER')
+			backdropTexture:SetDrawLayer('BACKGROUND', 1)
+			f.backdropTexture = backdropTexture
 		end
 
 		if not E.PixelMode and not f.forcePixelMode then
@@ -154,11 +159,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			else
 				f.backdropTexture:SetInside(f)
 			end
-		end
-	else
-		f:SetBackdrop(nil)
-		if f.backdropTexture then
-			f.backdropTexture:SetTexture(nil)
 		end
 	end
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
@@ -242,7 +242,7 @@ local function StripTextures(object, kill, alpha)
 		elseif alpha then
 			object:SetAlpha(0)
 		else
-			object:SetTexture(nil)
+			object:SetTexture()
 		end
 	else
 		local FrameName = object.GetName and object:GetName()
@@ -263,7 +263,7 @@ local function StripTextures(object, kill, alpha)
 					elseif alpha then
 						region:SetAlpha(0)
 					else
-						region:SetTexture(nil)
+						region:SetTexture()
 					end
 				end
 			end

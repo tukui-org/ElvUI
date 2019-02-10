@@ -176,7 +176,7 @@ function M:Initialize()
 	if E.global.general.smallerWorldMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
 
-		WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
+		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
 		self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')

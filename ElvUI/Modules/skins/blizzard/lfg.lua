@@ -26,54 +26,67 @@ local function LFDQueueFrameRoleButtonIconOnHide(self)
 end
 
 local function HandleGoldIcon(button)
-	_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-	_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
-	_G[button.."Count"]:SetDrawLayer("OVERLAY")
-	_G[button.."NameFrame"]:SetTexture()
-	_G[button.."NameFrame"]:SetSize(118, 39)
+	local Button = _G[button]
+	if Button.backdrop then return end
 
-	_G[button].border = CreateFrame("Frame", nil, _G[button])
-	_G[button].border:SetTemplate()
-	_G[button].border:SetOutside(_G[button.."IconTexture"])
-	_G[button.."IconTexture"]:SetParent(_G[button].border)
-	_G[button.."Count"]:SetParent(_G[button].border)
+	local count = _G[button.."Count"]
+	local nameFrame = _G[button.."NameFrame"]
+	local iconTexture = _G[button.."IconTexture"]
+
+	Button:CreateBackdrop("Default")
+	Button.backdrop:ClearAllPoints()
+	Button.backdrop:Point("LEFT", 1, -1)
+	Button.backdrop:Size(42)
+
+	iconTexture:SetTexCoord(unpack(E.TexCoords))
+	iconTexture:SetDrawLayer("OVERLAY")
+	iconTexture:SetParent(Button.backdrop)
+	iconTexture:SetSnapToPixelGrid(false)
+	iconTexture:SetTexelSnappingBias(0)
+	iconTexture:SetInside()
+
+	count:SetParent(Button.backdrop)
+	count:SetDrawLayer("OVERLAY")
+
+	nameFrame:SetTexture()
+	nameFrame:SetSize(118, 39)
 end
 
 local function SkinItemButton(parentFrame, _, index)
 	local parentName = parentFrame:GetName();
 	local item = _G[parentName.."Item"..index];
 
-	if item and not item.isSkinned then
-		item.border = CreateFrame("Frame", nil, item)
-		item.border:SetTemplate()
-		item.border:SetOutside(item.Icon)
+	if item and not item.backdrop then
+		item:CreateBackdrop("Default")
+		item.backdrop:ClearAllPoints()
+		item.backdrop:Point("LEFT", 1, -1)
+		item.backdrop:Size(42)
 
-		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().border:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(item.IconBorder, "Hide", function(self)
-			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		item.Icon:SetSnapToPixelGrid(false)
-		item.Icon:SetTexelSnappingBias(0)
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
-		item.Icon:SetParent(item.border)
+		item.Icon:SetParent(item.backdrop)
+		item.Icon:SetSnapToPixelGrid(false)
+		item.Icon:SetTexelSnappingBias(0)
+		item.Icon:SetInside()
+
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture()
+		end)
+		hooksecurefunc(item.IconBorder, "Hide", function(self)
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		item.Count:SetDrawLayer("OVERLAY")
-		item.Count:SetParent(item.border)
+		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
 		item.NameFrame:SetSize(118, 39)
 
-		item.shortageBorder:SetTexture(nil)
+		item.shortageBorder:SetTexture()
 
-		item.roleIcon1:SetParent(item.border)
-		item.roleIcon2:SetParent(item.border)
-
-		item.isSkinned = true
+		item.roleIcon1:SetParent(item.backdrop)
+		item.roleIcon2:SetParent(item.backdrop)
 	end
 end
 
@@ -84,8 +97,8 @@ end
 
 local function HandleAffixIcons(self)
 	for _, frame in ipairs(self.Affixes) do
-		frame.Border:SetTexture(nil)
-		frame.Portrait:SetTexture(nil)
+		frame.Border:SetTexture()
+		frame.Portrait:SetTexture()
 
 		if frame.info then
 			frame.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
@@ -419,13 +432,13 @@ local function LoadSkin()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end)
 
 				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end	)
 			end

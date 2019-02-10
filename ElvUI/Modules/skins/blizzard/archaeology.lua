@@ -34,7 +34,7 @@ local function LoadSkin()
 			local artifact = ArchaeologyFrame.completedPage['artifact'..i]
 			frame.raceName:SetTextColor(1, 1, 1)
 
-			artifact.border:SetTexture(nil)
+			artifact.border:SetTexture()
 			S:HandleTexture(artifact.icon, artifact)
 			artifact.artifactName:SetTextColor(1, .8, .1)
 			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)

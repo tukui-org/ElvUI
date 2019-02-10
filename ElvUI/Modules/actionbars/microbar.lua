@@ -75,7 +75,7 @@ function AB:HandleMicroButton(button)
 
 	if button.Flash then
 		button.Flash:SetInside()
-		button.Flash:SetTexture(nil)
+		button.Flash:SetTexture()
 	end
 
 	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)

@@ -352,9 +352,9 @@ function CH:StyleChat(frame)
 	editbox.characterCount:Width(40)
 
 	for _, texName in pairs(tabTexs) do
-		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
-		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
-		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Left']:SetTexture()
+		_G[tab:GetName()..texName..'Middle']:SetTexture()
+		_G[tab:GetName()..texName..'Right']:SetTexture()
 	end
 
 	if scroll then
