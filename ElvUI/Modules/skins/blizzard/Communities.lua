@@ -15,38 +15,6 @@ local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local Enum = Enum
 
-local function SkinTab(tab, xOffset)
-	local normTex = tab:GetNormalTexture()
-	if normTex then
-		normTex:SetTexCoord(unpack(E.TexCoords))
-		normTex:SetInside()
-	end
-
-	if not tab.isSkinned then
-		for i = 1, tab:GetNumRegions() do
-			local region = select(i, tab:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
-					region:Kill()
-				end
-			end
-		end
-
-		tab.pushed = true;
-		tab:CreateBackdrop("Default")
-		tab.backdrop:SetAllPoints()
-		tab:StyleButton()
-		tab.Icon:SetTexCoord(unpack(E.TexCoords))
-		tab.checked:SetInside()
-		tab.hover:SetInside()
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, xOffset or 0, y)
-
-		tab.isSkinned = true
-	end
-end
-
 local function UpdateNames(self)
 	if not self.expanded then return end
 
