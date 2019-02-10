@@ -132,7 +132,6 @@ function NP:Update_Auras(nameplate)
 		--nameplate.Auras.numDebuffs = db.debuffs.numAuras
 		--nameplate.Auras.numBuffs = db.buffs.numAuras
 
-		-- Azil, is this needed??
 		--if nameplate.Auras then
 			--nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
 			--nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
@@ -140,13 +139,10 @@ function NP:Update_Auras(nameplate)
 
 		if nameplate.Debuffs then
 			if db.debuffs.enable then
-				local x, y = 'TOPRIGHT', 0
-				x, y = E:GetXYOffset(db.debuffs.anchorPoint, db.debuffs.spacing)
-
 				nameplate.Debuffs:Show()
 				nameplate.Debuffs:SetSize(NP.db.clickableWidth, 27)
 				nameplate.Debuffs:ClearAllPoints()
-				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', x + db.debuffs.xOffset, y + db.debuffs.yOffset)
+				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
 
 				nameplate.Debuffs.size = db.debuffs.size
 				nameplate.Debuffs.num = db.debuffs.numAuras
@@ -164,13 +160,10 @@ function NP:Update_Auras(nameplate)
 
 		if nameplate.Buffs then
 			if db.buffs.enable then
-				local x, y = 'TOPLEFT', 0
-				x, y = E:GetXYOffset(db.buffs.anchorPoint or 0, db.buffs.spacing or 0)
-
 				nameplate.Buffs:Show()
 				nameplate.Buffs:SetSize(NP.db.clickableWidth, 27)
 				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', nameplate, db.buffs.anchorPoint or 'TOPLEFT', x + db.buffs.xOffset , y + db.buffs.yOffset)
+				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
 
 				nameplate.Buffs.size = db.buffs.size
 				nameplate.Buffs.num = db.buffs.numAuras

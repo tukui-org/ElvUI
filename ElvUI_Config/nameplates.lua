@@ -2188,12 +2188,12 @@ local function GetUnitSettings(unit, name)
 						name = L["Y-Offset"],
 						min = -1000, max = 1000, step = 1,
 					},
-					xOffset = {
-						order = 8,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -1000, max = 1000, step = 1,
-					},
+					--xOffset = {
+					--	order = 8,
+					--	type = 'range',
+					--	name = L["X-Offset"],
+					--	min = -1000, max = 1000, step = 1,
+					--},
 					anchorPoint = {
 						type = 'select',
 						order = 9,
@@ -2414,12 +2414,12 @@ local function GetUnitSettings(unit, name)
 						name = L["Y-Offset"],
 						min = -1000, max = 1000, step = 1,
 					},
-					xOffset = {
-						order = 7,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -1000, max = 1000, step = 1,
-					},
+					--xOffset = {
+					--	order = 7,
+					--	type = 'range',
+					--	name = L["X-Offset"],
+					--	min = -1000, max = 1000, step = 1,
+					--},
 					anchorPoint = {
 						type = 'select',
 						order = 8,

@@ -151,6 +151,8 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_Runes(nameplate)
 	end
 
+	NP:Update_HealerSpecs(nameplate)
+
 	NP:Update_Tags(nameplate)
 
 	NP:UpdatePlateEvents(nameplate)
@@ -332,8 +334,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:UpdateTags()
 
-		if not InCombatLockdown() then
-			NP:UpdatePlate(ElvNP_Test)
+		if not InCombatLockdown() and _G.ElvNP_Test:IsEnabled() then
+			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
 		if nameplate ~= _G.ElvNP_Player then
@@ -431,12 +433,12 @@ function NP:Initialize()
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:SetPoint('CENTER', _G.UIParent, 'CENTER', 0, 0)
+	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 150)
 	_G.ElvNP_Test:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test.frameType = 'PLAYER'
-	NP:UpdatePlate(ElvNP_Test)
-	ElvNP_Test:Disable()
+	NP:UpdatePlate(_G.ElvNP_Test)
+	_G.ElvNP_Test:Disable()
 
 	if not NP.db.units['PLAYER'].useStaticPosition then
 		_G.ElvNP_Player:Disable()

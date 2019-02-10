@@ -77,7 +77,7 @@ local function Update(self)
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if realm then name = name.."-"..realm end
 
-		if Healers[name] and UnitIsPlayer(self.unit) and UnitIsEnemy(self.unit, "player") then
+		if Healers[name] then
 			element:Show()
 		else
 			element:Hide()

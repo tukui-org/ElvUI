@@ -149,15 +149,9 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
-	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK', nil, 1)
-	Highlight.texture:SetColorTexture(1, 1, 1, .3)
+	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate.raisedElement)
 
-	function Highlight:PostUpdate()
-		self.texture:ClearAllPoints()
-		self.texture:SetPoint('TOPLEFT', self.__owner.Health, 'TOPLEFT')
-		self.texture:SetPoint('BOTTOMRIGHT', self.__owner.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-	end
+	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK', nil, 1)
 
 	return Highlight
 end
@@ -165,8 +159,11 @@ end
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.healthbar.enable then
+	if db.health.enable then
+		nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
 		nameplate.Highlight.texture:Show()
+		nameplate.Highlight.texture:SetPoint('TOPLEFT', nameplate.Health, 'TOPLEFT')
+		nameplate.Highlight.texture:SetPoint('BOTTOMRIGHT', nameplate.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 	else
 		nameplate.Highlight.texture:Hide()
 	end
@@ -174,7 +171,6 @@ end
 
 function NP:Construct_HealerSpecs(nameplate)
 	local texture = nameplate:CreateTexture(nil, "OVERLAY")
-	texture:SetPoint("RIGHT", nameplate.Health, "LEFT", -6, 0)
 	texture:SetSize(40, 40)
 	texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer]])
 	texture:Hide()
@@ -184,10 +180,13 @@ end
 
 function NP:Update_HealerSpecs(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
 	if (nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'ENEMY_PLAYER') and db.markHealers then
 		if not nameplate:IsElementEnabled('HealerSpecs') then
 			nameplate:EnableElement('HealerSpecs')
 		end
+
+		nameplate.HealerSpecs:SetPoint("RIGHT", nameplate.Health, "LEFT", -6, 0)
 	else
 		if nameplate:IsElementEnabled('HealerSpecs') then
 			nameplate:DisableElement('HealerSpecs')

@@ -11,8 +11,17 @@ local UnitReaction = UnitReaction
 local unpack = unpack
 local LEVEL = LEVEL
 
-local Tooltip = CreateFrame("GameTooltip", "oUF_TooltipScanner", UIParent, "GameTooltipTemplate")
-Tooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
+oUF.Tags.Events['cast:name'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
+oUF.Tags.Methods['cast:name'] = function(unit)
+	local name = UnitCastingInfo(unit) or UnitChannelInfo(unit)
+	return name or ''
+end
+
+oUF.Tags.Events['cast:time'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
+oUF.Tags.Methods['cast:time'] = function(unit)
+	local name = UnitCastingInfo(unit) or UnitChannelInfo(unit)
+	return name or ''
+end
 
 oUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['npctitle'] = function(unit)
@@ -20,7 +29,7 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 		return
 	end
 
-	Tooltip:SetUnit(unit)
+	ElvUI[1].ScanTooltip:SetUnit(unit)
 
 	local reactionType = UnitReaction(unit, "player")
 	local r, g, b = 1, 1, 1
@@ -101,9 +110,9 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 
 	local QuestName
 
-	if oUF_TooltipScanner:NumLines() >= 3 then
-		for i = 3, oUF_TooltipScanner:NumLines() do
-			local QuestLine = _G['oUF_TooltipScannerTextLeft' .. i]
+	if ElvUI[1].ScanTooltip:NumLines() >= 3 then
+		for i = 3, ElvUI[1].ScanTooltip:NumLines() do
+			local QuestLine = _G[ElvUI[1].ScanTooltip:GetDebugName()..'TextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
 
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
@@ -133,9 +142,9 @@ oUF.Tags.Methods['quest:info'] = function(unit)
 	local ObjectiveCount = 0
 	local QuestName
 
-	if oUF_TooltipScanner:NumLines() >= 3 then
-		for i = 3, oUF_TooltipScanner:NumLines() do
-			local QuestLine = _G['oUF_TooltipScannerTextLeft' .. i]
+	if ElvUI[1].ScanTooltip:NumLines() >= 3 then
+		for i = 3, ElvUI[1].ScanTooltip:NumLines() do
+			local QuestLine = _G[ElvUI[1].ScanTooltip:GetDebugName()..'TextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
 
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
