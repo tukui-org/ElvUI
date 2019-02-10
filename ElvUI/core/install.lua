@@ -275,10 +275,9 @@ function E:SetupResolution(noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200
 		end
 
-		local isPixel = E.private.general.pixelPerfect
-		local xOffset = isPixel and 103 or 106
-		local yOffset = isPixel and 125 or 135
-		local yOffsetSmall = isPixel and 76 or 80
+		local xOffset = E.PixelMode and 103 or 106
+		local yOffset = E.PixelMode and 125 or 135
+		local yOffsetSmall = E.PixelMode and 76 or 80
 
 		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,"..-xOffset..","..yOffset
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,"..xOffset..","..yOffsetSmall
