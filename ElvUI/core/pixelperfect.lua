@@ -27,13 +27,13 @@ end
 
 function E:UIScale(init)
 	local scale = E.global.general.UIScale
-	if init then -- E.OnInitialize
+	if init then --E.OnInitialize
 		--Set variables for pixel scaling
 		E.PixelMode = E.private.general.pixelPerfect
 		E.mult = PixelUtil_GetNearestPixelSize(1, scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = (E.PixelMode and E.mult) or E.mult*2
-	else -- E.Initialize
+	else --E.Initialize
 		local UIParent = _G.UIParent
 		UIParent:SetScale(scale)
 
