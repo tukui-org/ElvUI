@@ -1050,6 +1050,7 @@ P['tooltip'] = {
 	['guildRanks'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
+	['showMount'] = true,
 	['npcID'] = true,
 	['role'] = true,
 	['font'] = 'PT Sans Narrow',

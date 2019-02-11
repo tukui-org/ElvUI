@@ -72,7 +72,7 @@ local LOCALE = {
 	FACTION_ALLIANCE = FACTION_ALLIANCE,
 	NONE = NONE,
 	ROLE = ROLE,
-
+	MOUNT = MOUNT,
 	-- Custom to find LEVEL string on tooltip
 	LEVEL1 = TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
 	LEVEL2 = TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
@@ -355,6 +355,17 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r%s %s%s", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", classification[creatureClassification] or "", creatureType or "", pvpFlag)
+		end
+	end
+
+	if(UnitIsPlayer(unit) and self.db.showMount) then
+		for i=1, 40 do
+			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
+
+			if self.MountIDs[id] then
+				GameTooltip:AddDoubleLine(format("%s:", LOCALE.MOUNT), name, nil, nil, nil, 1, 1, 1)
+				break
+			end
 		end
 	end
 
