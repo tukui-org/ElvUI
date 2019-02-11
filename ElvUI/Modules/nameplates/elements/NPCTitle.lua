@@ -20,6 +20,7 @@ local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_NPCTitleTooltip", UIParent
 
 function mod:UpdateElement_NPCTitle(frame, triggered)
 	if self.db.showNPCTitles and not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and (triggered or (not self.db.units[frame.UnitType].healthbar.enable and (not self.db.alwaysShowTargetHealth or not UnitIsUnit("target", frame.unit)))) then
+		ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		ScanTooltip:SetUnit(frame.unit)
 		ScanTooltip:Show()
 
