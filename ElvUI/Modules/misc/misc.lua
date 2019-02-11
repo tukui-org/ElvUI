@@ -319,17 +319,20 @@ function M:UpdateItemLevel()
 	local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 	for i=1, 17 do
 		if i ~= 4 then
+			local inspectItem = _G[InspectItems[i]]
+			inspectItem.iLvlText:SetText()
 			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
+
 			for x = 2, colorblind do
 				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
 				if line then
 					local iLvl = line:match(MATCH_ITEM_LEVEL)
-					print(i, iLvl)
 					if iLvl and iLvl ~= "1" then
-						_G[InspectItems[i]].iLvlText:SetText(iLvl)
+						inspectItem.iLvlText:SetText(iLvl)
 						count, iLevel = count + 1, iLevel + tonumber(iLvl)
+						break
 					end
 				end
 			end
