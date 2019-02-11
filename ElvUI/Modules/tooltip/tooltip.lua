@@ -344,11 +344,13 @@ end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
+	local isShiftKeyDown = IsShiftKeyDown()
+
 	local unit = select(2, tt:GetUnit())
 	if((tt:GetOwner() ~= UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
 		local modifier = self.db.visibility.unitFrames
 
-		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and isShiftKeyDown) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
 			tt:Hide()
 			return
 		end
@@ -366,9 +368,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
-	local level = UnitLevel(unit)
-	local isShiftKeyDown = IsShiftKeyDown()
-	local color = self:GetUnitColor(tt, unit, level, isShiftKeyDown)
+	local color = self:GetUnitColor(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
 		for i=1, 40 do
