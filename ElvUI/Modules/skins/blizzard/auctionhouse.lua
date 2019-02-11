@@ -125,6 +125,11 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.BrowseFilterScrollFrameScrollBar)
 	S:HandleScrollBar(_G.BrowseScrollFrameScrollBar)
 
+	_G.BrowseDropDown:SetPoint('TOPLEFT', _G.BrowseMaxLevel, 'TOPRIGHT', -6, 7)
+	_G.BrowseDropDown.Text:SetPoint("RIGHT", _G.BrowseDropDownRight, "RIGHT", -43, -2)
+	_G.BrowseDropDownName:SetPoint('BOTTOMLEFT', _G.BrowseDropDown, 'TOPLEFT', 20, -2)
+	_G.BrowseLevelHyphen:SetPoint('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
+
 	_G.SideDressUpFrame:StripTextures(true)
 	_G.SideDressUpFrame:SetTemplate("Transparent")
 	_G.SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)

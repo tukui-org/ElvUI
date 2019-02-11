@@ -242,6 +242,7 @@ function S:SkinTalentListButtons(frame)
 end
 
 function S:HandleButton(button, strip, isDeclineButton)
+	if button.isSkinned then return end
 	assert(button, "doesn't exist!")
 
 	local buttonName = button.GetName and button:GetName()
@@ -275,6 +276,8 @@ function S:HandleButton(button, strip, isDeclineButton)
 	button:SetTemplate("Default", true)
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+
+	button.isSkinned = true
 end
 
 local function GrabScrollBarElement(frame, element)
@@ -325,7 +328,8 @@ local tabs = {
 }
 
 function S:HandleTab(tab)
-	if not tab then return end
+	if (not tab or tab.backdrop) then return end
+
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
 		if tex then
@@ -347,6 +351,8 @@ function S:HandleTab(tab)
 end
 
 function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
+	if btn.isSkinned then return end
+
 	local Arrow
 	local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
 	if ButtonName then
@@ -390,9 +396,13 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	Disabled:SetRotation(S.ArrowRotation[Arrow])
 
 	Disabled:SetVertexColor(.3, .3, .3)
+
+	btn.isSkinned = true
 end
 
 function S:HandleRotateButton(btn)
+	if btn.isSkinned then return end
+
 	btn:SetTemplate("Default")
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
@@ -404,9 +414,12 @@ function S:HandleRotateButton(btn)
 	btn:GetNormalTexture():SetInside()
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+
+	btn.isSkinned = true
 end
 
 function S:HandleMaxMinFrame(frame)
+	if frame.isSkinned then return end
 	assert(frame, "does not exist.")
 
 	frame:StripTextures(true)
@@ -438,9 +451,13 @@ function S:HandleMaxMinFrame(frame)
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 		end
 	end
+
+	frame.isSkinned = true
 end
 
 function S:HandleEditBox(frame)
+	if frame.backdrop then return end
+
 	frame:CreateBackdrop("Default")
 
 	if frame.TopLeftTex then frame.TopLeftTex:Kill() end
@@ -471,8 +488,12 @@ function S:HandleEditBox(frame)
 end
 
 function S:HandleDropDownBox(frame, width)
-	local button = _G[frame:GetName().."Button"]
-	if not button then return end
+	if frame.backdrop then return end
+
+	local FrameName = frame.GetName and frame:GetName()
+
+	local button = FrameName and _G[FrameName..'Button'] or frame.Button
+	local text = FrameName and _G[FrameName..'Text'] or frame.Text
 
 	frame:StripTextures()
 
@@ -480,18 +501,21 @@ function S:HandleDropDownBox(frame, width)
 		frame:Width(width)
 	end
 
-	local frameText = _G[frame:GetName().."Text"]
-	if frameText then
-		_G[frame:GetName().."Text"]:ClearAllPoints()
-		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	if text then
+		local a, b, c, d, e = text:GetPoint()
+		text:SetPoint(a, b, c, d + 10, e - 4)
+		text:SetWidth(frame:GetWidth() / 1.4)
 	end
 
 	if button then
 		button:ClearAllPoints()
 		button:SetPoint("TOPRIGHT", -14, -8)
-
 		S:HandleNextPrevButton(button, true)
 		button:SetSize(16, 16)
+	end
+
+	if frame.Icon then
+		frame.Icon:SetPoint('LEFT', 23, 0)
 	end
 
 	frame:CreateBackdrop("Default")
@@ -499,70 +523,8 @@ function S:HandleDropDownBox(frame, width)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
--- New BFA DropDown Template (Original Function Credits: Aurora) ~ was modified.
-function S:HandleDropDownFrame(frame, width)
-	if not width then width = 155 end
-
-	local left = frame.Left
-	local middle = frame.Middle
-	local right = frame.Right
-	if left then
-		left:SetAlpha(0)
-		left:SetSize(25, 64)
-		left:SetPoint("TOPLEFT", 0, 17)
-	end
-	if middle then
-		middle:SetAlpha(0)
-		middle:SetHeight(64)
-	end
-	if right then
-		right:SetAlpha(0)
-		right:SetSize(25, 64)
-	end
-
-	local button = frame.Button
-	if button then
-		button:SetSize(24, 24)
-		button:ClearAllPoints()
-		button:Point("RIGHT", right, "RIGHT", -20, 0)
-
-		button.NormalTexture:SetTexture()
-		button.PushedTexture:SetTexture()
-		button.HighlightTexture:SetTexture()
-
-		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
-			if not noReset then
-				btn:ClearAllPoints()
-				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-20), E:Scale(0), true)
-			end
-		end)
-
-		self:HandleNextPrevButton(button, true)
-	end
-
-	local disabled = button and button.DisabledTexture
-	if disabled then
-		disabled:SetAllPoints(button)
-		disabled:SetColorTexture(0, 0, 0, .3)
-		disabled:SetDrawLayer("OVERLAY")
-	end
-
-	if middle and (not frame.noResize) then
-		frame:SetWidth(40)
-		middle:SetWidth(width)
-	end
-
-	if right and frame.Text then
-		frame.Text:SetSize(0, 10)
-		frame.Text:SetPoint("RIGHT", right, -43, 2)
-	end
-
-	frame:CreateBackdrop("Default")
-	frame.backdrop:Point("TOPLEFT", 20, -2)
-	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-end
-
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
+	if frame.isSkinned then return end
 	assert(frame, 'does not exist.')
 
 	frame:StripTextures()
@@ -609,6 +571,8 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 			if texPath ~= "" then checkbox:SetHighlightTexture("") end
 		end)
 	end
+
+	frame.isSkinned = true
 end
 
 function S:HandleIcon(icon, parent)
