@@ -216,7 +216,7 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:GetUnitColor(tt, unit, level, isShiftKeyDown)
+function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 	local color
 	if UnitIsPlayer(unit) then
 		local localeClass, class = UnitClass(unit)
@@ -369,7 +369,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
-	local color = self:GetUnitColor(tt, unit, UnitLevel(unit), isShiftKeyDown)
+	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
 		for i=1, 40 do
