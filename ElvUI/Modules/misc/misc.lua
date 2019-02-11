@@ -322,18 +322,18 @@ function M:UpdateItemLevel()
 			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
-			_G[InspectItems[i]].iLvlText:SetText()
 			for x = 2, colorblind do
 				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
 				if line then
 					local iLvl = line:match(MATCH_ITEM_LEVEL)
-					_G[InspectItems[i]].iLvlText:SetText(iLvl)
+					print(i, iLvl)
 					if iLvl and iLvl ~= "1" then
+						_G[InspectItems[i]].iLvlText:SetText(iLvl)
 						count, iLevel = count + 1, iLevel + tonumber(iLvl)
 					end
 				end
 			end
-			
+
 			ScanTooltip:Hide()
 		end
 	end
