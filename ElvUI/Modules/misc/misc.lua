@@ -55,9 +55,6 @@ local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
-
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 
 function M:ErrorFrameToggle(event)
@@ -200,7 +197,7 @@ function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
-		RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"]);
+		RaidNotice_AddMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo["RAID_BOSS_EMOTE"]);
 	end
 end
 
@@ -210,7 +207,7 @@ function M:AutoInvite(event, leaderName)
 	if not E.db.general.autoAcceptInvite then return; end
 
 	if event == "PARTY_INVITE_REQUEST" then
-		if QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
+		if _G.QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if IsInGroup() then return end
 		hideStatic = true
 
