@@ -291,12 +291,11 @@ end
 
 function M:UpdateItemLevel()
 	local iLevel, count = 0, 0
-	for i = 1,17 do
-		local link = GetInventoryItemLink("target", i)
+	for i=1, 17 do
+		local link = GetInventoryItemLink(_G.InspectFrame.unit, i)
 		if link and i ~= 4 then
-			local _ ,_ , _, iLvl = GetItemInfo(link)
-			count = count + 1
-			iLevel = iLevel + iLvl
+			local _, _, _, iLvl = GetItemInfo(link)
+			if iLvl then count, iLevel = count + 1, iLevel + iLvl end
 		end
 	end
 
