@@ -9,7 +9,6 @@ local tinsert, wipe = table.insert, table.wipe
 local strfind = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local SetDesaturation = SetDesaturation
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
@@ -304,7 +303,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 	end
 
 	if Thumb then
-		Thumb:SetTexture('')
+		Thumb:SetTexture()
 		Thumb:CreateBackdrop("Default", true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
