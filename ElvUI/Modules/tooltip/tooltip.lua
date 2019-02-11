@@ -358,7 +358,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	if(UnitIsPlayer(unit) and self.db.showMount) then
+	if(UnitIsPlayer(unit) and self.db.showMount and unit ~= "player") then
 		for i=1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 
