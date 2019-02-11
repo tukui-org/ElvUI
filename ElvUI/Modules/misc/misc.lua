@@ -292,6 +292,26 @@ function M:PLAYER_ENTERING_WORLD()
 	self:ToggleChatBubbleScript()
 end
 
+local InspectItems = {
+	"InspectHeadSlot",
+	"InspectNeckSlot",
+	"InspectShoulderSlot",
+	"",
+	"InspectChestSlot",
+	"InspectWaistSlot",
+	"InspectLegsSlot",
+	"InspectFeetSlot",
+	"InspectWristSlot",
+	"InspectHandsSlot",
+	"InspectFinger0Slot",
+	"InspectFinger1Slot",
+	"InspectTrinket0Slot",
+	"InspectTrinket1Slot",
+	"InspectBackSlot",
+	"InspectMainHandSlot",
+	"InspectSecondaryHandSlot",
+  }
+
 function M:UpdateItemLevel()
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
@@ -302,17 +322,18 @@ function M:UpdateItemLevel()
 			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
-
+			_G[InspectItems[i]].iLvlText:SetText()
 			for x = 2, colorblind do
 				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
 				if line then
 					local iLvl = line:match(MATCH_ITEM_LEVEL)
+					_G[InspectItems[i]].iLvlText:SetText(iLvl)
 					if iLvl and iLvl ~= "1" then
 						count, iLevel = count + 1, iLevel + tonumber(iLvl)
 					end
 				end
 			end
-
+			
 			ScanTooltip:Hide()
 		end
 	end
@@ -330,6 +351,14 @@ function M:ADDON_LOADED(_, addon)
 		_G.InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
 		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
+
+		for i, slot in pairs(InspectItems) do
+			if i ~= 4 then
+				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
+				_G[slot].iLvlText:FontTemplate()
+				_G[slot].iLvlText:SetPoint("TOPLEFT", _G[slot], "TOPLEFT", 2, -2)
+			end
+		end
 
 		self:UnregisterEvent("ADDON_LOADED")
 	end
