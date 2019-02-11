@@ -1048,7 +1048,6 @@ P['tooltip'] = {
 	['targetInfo'] = true,
 	['playerTitles'] = true,
 	['guildRanks'] = true,
-	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
 	['npcID'] = true,
