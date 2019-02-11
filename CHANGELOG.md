@@ -4,6 +4,7 @@
 Added new scale options. (/ec - General - Auto Scale | UI Scale)  
 Added quality border option for Bag/Bank items. (#869)  
 Added BoE/BoA text overlay in our Bag/Bank.  
+Added optional mount name for units on tooltips.  
 
 **Bug Fixes:**  
 Corrected more Pixel Perfect issues! :D  
