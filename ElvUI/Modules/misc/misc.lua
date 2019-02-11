@@ -287,6 +287,31 @@ function M:PLAYER_ENTERING_WORLD()
 	self:ToggleChatBubbleScript()
 end
 
+function M:UpdateItemLevel()
+	local iLevel, count = 0, 0
+	for i = 1,17 do
+		local link = GetInventoryItemLink("target", i)
+		if link and i ~= 4 then
+			local _ ,_ , _, iLvl = GetItemInfo(link)
+			count = count + 1
+			iLevel = iLevel + iLvl
+		end
+	end
+	local itemLevelAverage = E:Round(iLevel / count)
+	InspectFrame.ItemLevelText:SetFormattedText(L["Average Item Level: %s"], itemLevelAverage)
+end
+
+function M:ADDON_LOADED(event, addon)
+	if(addon == "Blizzard_InspectUI") then
+		InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
+		InspectFrame.ItemLevelText = InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		InspectFrame.ItemLevelText:SetPoint("BOTTOMRIGHT", InspectFrame, "BOTTOMRIGHT", -6, 6)
+
+		self:UnregisterEvent("ADDON_LOADED")
+	end
+end
+
+--/run t,c=0,0 for i=1,17 do l=GetInventoryItemLink("target",i)if l and i~=4 then _,_,_,l=GetItemInfo(l)c=c+1 t=t+l end end print(t/c)
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
@@ -303,6 +328,12 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	if(IsAddOnLoaded("Blizzard_InspectUI")) then
+		self:ADDON_LOADED(nil, "Blizzard_InspectUI")
+	else
+		self:RegisterEvent("ADDON_LOADED")
+	end
 end
 
 local function InitializeCallback()
