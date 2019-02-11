@@ -153,8 +153,6 @@ function E:GetColor(r, g, b, a)
 	return { r = r, b = b, g = g, a = a }
 end
 
-
-
 function E:SetupTheme(theme, noDisplayMsg)
 	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	E.private.theme = theme
@@ -443,7 +441,6 @@ function E:SetupLayout(layout, noDataReset)
 	E:StaggeredUpdateAll(nil, true)
 end
 
-
 local function InstallComplete()
 	E.private.install_complete = E.version
 
@@ -544,7 +541,7 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
-		f.SubTitle:SetText(L["UI Scale"])
+		f.SubTitle:SetText(UISCALE)
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
 		InstallSlider:SetMinMaxValues(0.4, 1.15)
