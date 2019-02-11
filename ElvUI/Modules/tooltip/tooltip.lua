@@ -228,12 +228,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	if(not unit) then
+	if not unit then
 		local GMF = GetMouseFocus()
-		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
+		if GMF and GMF.GetAttribute and GMF:GetAttribute("unit") then
 			unit = GMF:GetAttribute("unit")
 		end
-		if(not unit or not UnitExists(unit)) then
+		if not unit or not UnitExists(unit) then
 			return
 		end
 	end
@@ -243,7 +243,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local isShiftKeyDown = IsShiftKeyDown()
 
 	local color
-	if(UnitIsPlayer(unit)) then
+	if UnitIsPlayer(unit) then
 		local localeClass, class = UnitClass(unit)
 		local name, realm = UnitName(unit)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
@@ -252,11 +252,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if not localeClass or not class then return; end
 		color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 
-		if(self.db.playerTitles and pvpName) then
+		if self.db.playerTitles and pvpName then
 			name = pvpName
 		end
 
-		if(realm and realm ~= "") then
+		if realm and realm ~= "" then
 			if(isShiftKeyDown) or self.db.alwaysShowRealm then
 				name = name.."-"..realm
 			elseif(relationship == LE_REALM_RELATION_COALESCED) then
@@ -266,30 +266,31 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 		end
 
-		if(UnitIsAFK(unit)) then
+		if UnitIsAFK(unit) then
 			name = name..AFK_LABEL
-		elseif(UnitIsDND(unit)) then
+		elseif UnitIsDND(unit) then
 			name = name..DND_LABEL
 		end
 
 		GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name)
 
 		local lineOffset = 2
-		if(guildName) then
-			if(guildRealm and isShiftKeyDown) then
+		if guildName then
+			if guildRealm and isShiftKeyDown then
 				guildName = guildName.."-"..guildRealm
 			end
 
-			if(self.db.guildRanks) then
+			if self.db.guildRanks then
 				GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r> [|cff00ff10%s|r]"):format(guildName, guildRankName))
 			else
 				GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r>"):format(guildName))
 			end
+
 			lineOffset = 3
 		end
 
 		local levelLine = self:GetLevelLine(tt, lineOffset)
-		if(levelLine) then
+		if levelLine then
 			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
 			local _, factionGroup = UnitFactionGroup(unit)
@@ -329,7 +330,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 
 		local levelLine = self:GetLevelLine(tt, 2)
-		if(levelLine) then
+		if levelLine then
 			local isPetWild, isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit);
 			local creatureClassification = UnitClassification(unit)
 			local creatureType = UnitCreatureType(unit)
@@ -363,7 +364,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	if(UnitIsPlayer(unit) and self.db.showMount and unit ~= "player") then
+	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
 		for i=1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 
@@ -375,7 +376,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	local unitTarget = unit.."target"
-	if(self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget)) then
+	if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
 		local targetColor
 		if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
 			local _, class = UnitClass(unitTarget)
@@ -387,7 +388,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		GameTooltip:AddDoubleLine(format("%s:", LOCALE.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 	end
 
-	if(self.db.targetInfo and IsInGroup()) then
+	if self.db.targetInfo and IsInGroup() then
 		for i = 1, GetNumGroupMembers() do
 			local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
@@ -414,7 +415,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	if(color) then
+	if color then
 		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
 		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
