@@ -222,7 +222,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.nameplates.glowColor.r = 1
 		E.db.nameplates.glowColor.b = 1
 		E.db.datatexts.panels.LeftChatDataPanel.right = "Quick Join"
-
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.height = 12
 		E.db.tooltip.healthBar.fontOutline = "MONOCHROMEOUTLINE"
@@ -392,7 +391,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.unitframe.units.party.power.height = 13
 		E.db.unitframe.units.party.width = 231
 		E.db.unitframe.units.party.height = 74
-
 		E.db.actionbar.bar3.buttonsize = 50
 		E.db.actionbar.bar3.buttons = 8
 		E.db.actionbar.bar3.buttonsPerRow = 10
@@ -420,7 +418,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.nameplates.stackFontOutline = "MONOCHROMEOUTLINE"
 		E.db.nameplates.healthFontSize = 9
 		E.db.nameplates.fontOutline = "MONOCHROMEOUTLINE"
-
 		E.db.auras.debuffs.countFontSize = 10
 		E.db.auras.debuffs.size = 40
 		E.db.auras.buffs.countFontSize = 10
@@ -482,13 +479,13 @@ end
 local function SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
+
 	_G.InstallStatus.anim.progress:SetChange(PageNum)
 	_G.InstallStatus.anim.progress:Play()
 	_G.InstallStatus.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
 
 	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	_G.ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
-	local f = _G.ElvUIInstallFrame
 
 	if PageNum == MAX_PAGE then
 		_G.InstallNextButton:Disable()
@@ -507,12 +504,12 @@ local function SetPage(PageNum)
 	local InstallOption3Button = _G.InstallOption3Button
 	local InstallSlider = _G.InstallSlider
 
+	local f = _G.ElvUIInstallFrame
 	if PageNum == 1 then
 		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
-
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
 		InstallOption1Button:SetText(L["Skip Process"])
@@ -537,7 +534,6 @@ local function SetPage(PageNum)
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
 		f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
-
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
 		InstallOption1Button:SetText(L["Classic"])
@@ -550,14 +546,12 @@ local function SetPage(PageNum)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["UI Scale"])
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
-
 		InstallSlider:Show()
 		InstallSlider:SetMinMaxValues(0.4, 1.15)
 
 		local value = E:PixelClip(E.global.general.UIScale)
 		InstallSlider:SetValue(value)
 		InstallSlider.Cur:SetText(value)
-
 		InstallSlider:SetScript("OnValueChanged", function(self)
 			E.global.general.UIScale = self:GetValue()
 			local scale = E:PixelClip(E.global.general.UIScale)
@@ -566,21 +560,20 @@ local function SetPage(PageNum)
 
 		InstallSlider.Min:SetText(0.4)
 		InstallSlider.Max:SetText(1.15)
-
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			local autoScale = E:PixelBestSize()
 			E.global.general.UIScale = E:PixelClip(autoScale)
 			InstallSlider:SetValue(E.global.general.UIScale)
 		end)
-		InstallOption1Button:SetText(L["Auto Scale"])
 
+		InstallOption1Button:SetText(L["Auto Scale"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
 			E:PixelScaleChanged(nil, true)
 		end)
-		InstallOption2Button:SetText(L["Preview"])
 
+		InstallOption2Button:SetText(L["Preview"])
 		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Layout"])
@@ -715,6 +708,7 @@ function E:Install()
 		f.Status:SetMinMaxValues(0, MAX_PAGE)
 		f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
 		f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
+
 		-- Setup StatusBar Animation
 		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
@@ -780,7 +774,6 @@ function E:Install()
 		f.Option4:SetScript('OnShow', function()
 			f.Option1:Width(100)
 			f.Option2:Width(100)
-
 			f.Option1:ClearAllPoints()
 			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0)
 			f.Option2:ClearAllPoints()
@@ -810,9 +803,7 @@ function E:Install()
 
 		local close = CreateFrame("Button", "InstallCloseButton", f, "UIPanelCloseButton")
 		close:Point("TOPRIGHT", f, "TOPRIGHT")
-		close:SetScript("OnClick", function()
-			f:Hide()
-		end)
+		close:SetScript("OnClick", function() f:Hide() end)
 		E.Skins:HandleCloseButton(close)
 
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
