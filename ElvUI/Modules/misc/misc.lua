@@ -344,6 +344,7 @@ function M:UpdateItemLevel()
 					local iLvl = line:match(MATCH_ITEM_LEVEL)
 					if iLvl and iLvl ~= "1" then
 						inspectItem.iLvlText:SetText(iLvl)
+						inspectItem.iLvlText:SetTextColor(_G.ElvUI_InspectTooltipTextLeft1:GetTextColor())
 						count, iLevel = count + 1, iLevel + tonumber(iLvl)
 						break
 					end
