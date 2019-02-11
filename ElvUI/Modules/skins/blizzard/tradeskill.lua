@@ -96,8 +96,8 @@ local function LoadSkin()
 			ResultIcon:GetNormalTexture():SetInside()
 		end
 		ResultIcon:SetTemplate("Default")
-		ResultIcon.IconBorder:SetTexture(nil)
-		ResultIcon.ResultBorder:SetTexture(nil)
+		ResultIcon.IconBorder:SetTexture()
+		ResultIcon.ResultBorder:SetTexture()
 
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.Reagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
@@ -138,7 +138,7 @@ local function LoadSkin()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
 	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
-	S:HandleScrollSlider(TradeSkillFrame.RecipeList.scrollBar)
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 end
 
 S:AddCallbackForAddon("Blizzard_TradeSkillUI", "TradeSkill", LoadSkin)

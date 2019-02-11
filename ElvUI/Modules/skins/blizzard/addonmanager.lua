@@ -29,7 +29,8 @@ local function LoadSkin()
 
 	S:HandleCheckBox(_G.AddonListForceLoad)
 	_G.AddonListForceLoad:SetSize(26, 26)
-	S:HandleDropDownBox(_G.AddonCharacterDropDown)
+
+	S:HandleDropDownBox(_G.AddonCharacterDropDown, 150)
 
 	for i = 1, _G.MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])

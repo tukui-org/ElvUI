@@ -654,9 +654,9 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		button.useMasque = useMasque;
 	end
 
-	if flash then flash:SetTexture(nil); end
-	if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
-	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
+	if flash then flash:SetTexture(); end
+	if normal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
+	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0); end
 
 	if border and not button.useMasque then
 		border:Kill();

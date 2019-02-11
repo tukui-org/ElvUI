@@ -15,49 +15,6 @@ local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local Enum = Enum
 
-local function SkinTab(tab)
-	local normTex = tab:GetNormalTexture()
-	if normTex then
-		normTex:SetTexCoord(unpack(E.TexCoords))
-		normTex:SetInside()
-	end
-
-	if not tab.isSkinned then
-		for i = 1, tab:GetNumRegions() do
-			local region = select(i, tab:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
-					region:Kill()
-				end
-			end
-		end
-
-		tab.pushed = true;
-		tab:CreateBackdrop("Default")
-		tab.backdrop:Point("TOPLEFT", -2, 2)
-		tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
-		tab:StyleButton(true)
-		tab.Icon:SetTexCoord(unpack(E.TexCoords))
-
-		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetPushedTexture(nil);
-			end
-		end)
-
-		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetHighlightTexture(nil);
-			end
-		end)
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, 1, y)
-	end
-
-	tab.isSkinned = true
-end
-
 local function UpdateNames(self)
 	if not self.expanded then return end
 
@@ -151,22 +108,27 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	SkinTab(CommunitiesFrame.ChatTab)
-	SkinTab(CommunitiesFrame.RosterTab)
-	SkinTab(CommunitiesFrame.GuildBenefitsTab)
-	SkinTab(CommunitiesFrame.GuildInfoTab)
+	S:HandleItemButton(CommunitiesFrame.ChatTab)
+	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	S:HandleItemButton(CommunitiesFrame.RosterTab)
+	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
+	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
+	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
+	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+
+
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
-	S:HandleScrollSlider(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	S:HandleScrollSlider(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
+	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
@@ -270,7 +232,7 @@ local function LoadSkin()
 
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
-	S:HandleScrollSlider(_G.CommunitiesFrameRewards.scrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameRewards.scrollBar)
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		if not button.backdrop then
@@ -386,7 +348,7 @@ local function LoadSkin()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	-- Filters Frame
@@ -480,7 +442,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollSlider(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
@@ -548,7 +510,7 @@ local function LoadSkin()
 	S:HandleDropDownFrame(TicketManager.ExpiresDropDownMenu)
 	S:HandleDropDownFrame(TicketManager.UsesDropDownMenu)
 
-	S:HandleScrollSlider(TicketManager.InviteManager.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)
 end
 

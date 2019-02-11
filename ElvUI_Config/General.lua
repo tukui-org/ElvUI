@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local B = E:GetModule("Blizzard")
 
 local _G = _G
+local min, max = math.min, math.max
+local strlen, strsub, tonumber = strlen, strsub, tonumber
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -42,8 +44,29 @@ E.Options.args.general = {
 					type = 'select',
 					values = GetChatWindowInfo()
 				},
-				pixelPerfect = {
+				AutoScale = {
 					order = 2,
+					type = 'execute',
+					name = L["Auto Scale"],
+					func = function()
+						local autoScale = E:PixelBestSize()
+						E.global.general.UIScale = E:PixelClip(autoScale)
+						E:StaticPopup_Show("UISCALE_CHANGE")
+					end,
+				},
+				UIScale = {
+					order = 3,
+					type = "range",
+					name = UI_SCALE,
+					softMin = 0.40, softMax = 1.15, step = 0.01,
+					get = function(info) return E.global.general.UIScale end,
+					set = function(info, value)
+						E.global.general.UIScale = value;
+						E:StaticPopup_Show("UISCALE_CHANGE")
+					end
+				},
+				pixelPerfect = {
+					order = 4,
 					name = L["Thin Border Theme"],
 					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
@@ -51,7 +74,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				interruptAnnounce = {
-					order = 3,
+					order = 5,
 					name = L["Announce Interrupts"],
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
@@ -65,7 +88,7 @@ E.Options.args.general = {
 					},
 				},
 				autoRepair = {
-					order = 4,
+					order = 6,
 					name = L["Auto Repair"],
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
@@ -76,7 +99,7 @@ E.Options.args.general = {
 					},
 				},
 				autoAcceptInvite = {
-					order = 5,
+					order = 7,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
@@ -170,16 +193,8 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.showMissingTalentAlert end,
 					set = function(info, value) E.global.general.showMissingTalentAlert = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				autoScale = {
-					order = 20,
-					name = L["Auto Scale"],
-					desc = L["Automatically scale the User Interface based on your screen resolution"],
-					type = "toggle",
-					get = function(info) return E.global.general.autoScale end,
-					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				raidUtility = {
-					order = 21,
+					order = 20,
 					type = "toggle",
 					name = RAID_CONTROL,
 					desc = L["Enables the ElvUI Raid Control panel."],
@@ -187,23 +202,15 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				voiceOverlay = {
-					order = 22,
+					order = 21,
 					type = "toggle",
 					name = L["Voice Overlay"],
 					desc = L["Replace Blizzard's Voice Overlay."],
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				minUiScale = {
-					order = 23,
-					type = "range",
-					name = L["Lowest Allowed UI Scale"],
-					softMin = 0.20, softMax = 0.64, step = 0.01,
-					get = function(info) return E.global.general.minUiScale end,
-					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				vehicleSeatIndicatorSize = {
-					order = 24,
+					order = 22,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -211,7 +218,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				decimalLength = {
-					order = 25,
+					order = 23,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -220,7 +227,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 26,
+					order = 24,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -233,7 +240,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 27,
+					order = 25,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],

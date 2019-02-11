@@ -67,7 +67,6 @@ E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gx
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
-E.PixelMode = false
 
 --Tables
 E.media = {}
@@ -1789,7 +1788,7 @@ local function HandleCommandBar()
 	end
 end
 
-function E:Initialize(loginFrame)
+function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
@@ -1806,8 +1805,7 @@ function E:Initialize(loginFrame)
 	self.global = self.data.global
 	self:CheckIncompatible()
 	self:DBConversions()
-
-	self:UIScale('PLAYER_LOGIN', loginFrame)
+	self:UIScale()
 
 	if not E.db.general.cropIcon then
 		E.TexCoords = {0, 1, 0, 1}
@@ -1836,9 +1834,9 @@ function E:Initialize(loginFrame)
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateStatusBars()
-	self:RegisterEvent('UI_SCALE_CHANGED', 'UIScale')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
+	self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 	self:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')

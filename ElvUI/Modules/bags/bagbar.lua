@@ -8,21 +8,17 @@ local unpack = unpack
 local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local RegisterStateDriver = RegisterStateDriver
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
--- GLOBALS: MainMenuBarBackpackButtonCount
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 
 local function OnEnter()
 	if not E.db.bags.bagBar.mouseover then return; end
-	UIFrameFadeIn(ElvUIBags, 0.2, ElvUIBags:GetAlpha(), 1)
+	E:UIFrameFadeIn(_G.ElvUIBags, 0.2, _G.ElvUIBags:GetAlpha(), 1)
 end
 
 local function OnLeave()
 	if not E.db.bags.bagBar.mouseover then return; end
-	E:UIFrameFadeOut(ElvUIBags, 0.2, ElvUIBags:GetAlpha(), 0)
+	E:UIFrameFadeOut(_G.ElvUIBags, 0.2, _G.ElvUIBags:GetAlpha(), 0)
 end
 
 function B:SkinBag(bag)
@@ -39,7 +35,7 @@ function B:SkinBag(bag)
 end
 
 function B:SizeAndPositionBagBar()
-	if not ElvUIBags then return; end
+	if not _G.ElvUIBags then return; end
 
 	local buttonSpacing = E.db.bags.bagBar.spacing
 	local backdropSpacing = E.db.bags.bagBar.backdropSpacing
@@ -53,46 +49,46 @@ function B:SizeAndPositionBagBar()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(ElvUIBags, "visibility", visibility);
+	RegisterStateDriver(_G.ElvUIBags, "visibility", visibility);
 
 	if E.db.bags.bagBar.mouseover then
-		ElvUIBags:SetAlpha(0)
+		_G.ElvUIBags:SetAlpha(0)
 	else
-		ElvUIBags:SetAlpha(1)
+		_G.ElvUIBags:SetAlpha(1)
 	end
 
 	if showBackdrop then
-		ElvUIBags.backdrop:Show()
+		_G.ElvUIBags.backdrop:Show()
 	else
-		ElvUIBags.backdrop:Hide()
+		_G.ElvUIBags.backdrop:Hide()
 	end
 
-	for i=1, #ElvUIBags.buttons do
-		local button = ElvUIBags.buttons[i]
-		local prevButton = ElvUIBags.buttons[i-1]
+	for i=1, #_G.ElvUIBags.buttons do
+		local button = _G.ElvUIBags.buttons[i]
+		local prevButton = _G.ElvUIBags.buttons[i-1]
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', ElvUIBags, 'LEFT', (showBackdrop and (backdropSpacing + E.Border) or 0), 0)
+				button:Point('LEFT', _G.ElvUIBags, 'LEFT', (showBackdrop and (backdropSpacing + E.Border) or 0), 0)
 			elseif prevButton then
 				button:Point('LEFT', prevButton, 'RIGHT', buttonSpacing, 0)
 			end
 		elseif growthDirection == 'VERTICAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', ElvUIBags, 'TOP', 0, -(showBackdrop and (backdropSpacing + E.Border) or 0))
+				button:Point('TOP', _G.ElvUIBags, 'TOP', 0, -(showBackdrop and (backdropSpacing + E.Border) or 0))
 			elseif prevButton then
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -buttonSpacing)
 			end
 		elseif growthDirection == 'HORIZONTAL' and sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', ElvUIBags, 'RIGHT', -(showBackdrop and (backdropSpacing + E.Border) or 0), 0)
+				button:Point('RIGHT', _G.ElvUIBags, 'RIGHT', -(showBackdrop and (backdropSpacing + E.Border) or 0), 0)
 			elseif prevButton then
 				button:Point('RIGHT', prevButton, 'LEFT', -buttonSpacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, (showBackdrop and (backdropSpacing + E.Border) or 0))
+				button:Point('BOTTOM', _G.ElvUIBags, 'BOTTOM', 0, (showBackdrop and (backdropSpacing + E.Border) or 0))
 			elseif prevButton then
 				button:Point('BOTTOM', prevButton, 'TOP', 0, buttonSpacing)
 			end
@@ -101,11 +97,11 @@ function B:SizeAndPositionBagBar()
 	end
 
 	if growthDirection == 'HORIZONTAL' then
-		ElvUIBags:Width(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
-		ElvUIBags:Height(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		_G.ElvUIBags:Width(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		_G.ElvUIBags:Height(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
 	else
-		ElvUIBags:Height(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
-		ElvUIBags:Width(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		_G.ElvUIBags:Height(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		_G.ElvUIBags:Width(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
 	end
 end
 
@@ -113,7 +109,7 @@ function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	ElvUIBags:Point('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
+	ElvUIBags:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {}
 	ElvUIBags:CreateBackdrop()
 	ElvUIBags.backdrop:SetAllPoints()
@@ -121,17 +117,17 @@ function B:LoadBagBar()
 	ElvUIBags:SetScript("OnEnter", OnEnter)
 	ElvUIBags:SetScript("OnLeave", OnLeave)
 
-	MainMenuBarBackpackButton:SetParent(ElvUIBags)
-	MainMenuBarBackpackButton.SetParent = E.dummy
-	MainMenuBarBackpackButton:ClearAllPoints()
-	MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
-	MainMenuBarBackpackButtonCount:ClearAllPoints()
-	MainMenuBarBackpackButtonCount:Point("BOTTOMRIGHT", MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
-	MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
-	MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
+	_G.MainMenuBarBackpackButton:SetParent(ElvUIBags)
+	_G.MainMenuBarBackpackButton.SetParent = E.dummy
+	_G.MainMenuBarBackpackButton:ClearAllPoints()
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
+	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
+	_G.MainMenuBarBackpackButtonCount:Point("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
+	_G.MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
+	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 
-	tinsert(ElvUIBags.buttons, MainMenuBarBackpackButton)
-	self:SkinBag(MainMenuBarBackpackButton)
+	tinsert(ElvUIBags.buttons, _G.MainMenuBarBackpackButton)
+	self:SkinBag(_G.MainMenuBarBackpackButton)
 
 	for i=0, NUM_BAG_FRAMES-1 do
 		local b = _G["CharacterBag"..i.."Slot"]
@@ -148,27 +144,28 @@ function B:LoadBagBar()
 	for i = 1, #ElvUIBags.buttons do
 		local bagButton = ElvUIBags.buttons[i]
 		if i == 1 then --Backpack
-			bagButton:SetScript("OnClick", function(self, button)
-				if button == "RightButton" then
-					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+			B:CreateFilterIcon(bagButton)
+			bagButton:SetScript("OnClick", function(holder, button)
+				if button == "RightButton" and holder.id then
+					_G.ElvUIAssignBagDropdown.holder = holder
+					_G.ToggleDropDownMenu(1, nil, _G.ElvUIAssignBagDropdown, "cursor")
 				else
-					MainMenuBarBackpackButton_OnClick(self)
+					_G.MainMenuBarBackpackButton_OnClick(holder)
 				end
 			end)
 		else
 			B:CreateFilterIcon(bagButton)
-			bagButton:SetScript("OnClick", function(self, button)
-				if button == "RightButton" then
-					ToggleDropDownMenu(1, nil, self.FilterDropDown, self, 0, 0);
+			bagButton:SetScript("OnClick", function(holder, button)
+				if button == "RightButton" and holder.id then
+					_G.ElvUIAssignBagDropdown.holder = holder
+					_G.ToggleDropDownMenu(1, nil, _G.ElvUIAssignBagDropdown, "cursor")
 				else
-					BagSlotButton_OnClick(self)
+					_G.BagSlotButton_OnClick(holder)
 				end
 			end)
 		end
 
 		bagButton.id = (i - 1)
-		bagButton.FilterDropDown = CreateFrame("Frame", bagButton:GetName().."FilterDropDown", bagButton, "UIDropDownMenuTemplate")
-		UIDropDownMenu_Initialize(bagButton.FilterDropDown, B.ContainerFrameFilterDropDown_Initialize, "MENU");
 	end
 	--Hide and show to update assignment textures on first load
 	ElvUIBags:Hide()

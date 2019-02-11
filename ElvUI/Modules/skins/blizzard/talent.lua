@@ -304,7 +304,7 @@ local function LoadSkin()
 		S:HandleTexture(Button.Icon)
 		Button:StyleButton()
 		Button:CreateBackdrop()
-		Button.Selected:SetTexture("")
+		Button.Selected:SetTexture()
 		Button.backdrop:SetAllPoints()
 
 		Button.selectedTexture = Button:CreateTexture(nil, 'ARTWORK')

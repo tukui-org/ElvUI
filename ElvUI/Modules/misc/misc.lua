@@ -4,7 +4,9 @@ E.Misc = M;
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local format, gsub = string.format, string.gsub
+local tonumber = tonumber
 --WoW API / Variables
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
@@ -43,17 +45,20 @@ local BNGetFriendInfo = BNGetFriendInfo
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local StaticPopup_Hide = StaticPopup_Hide
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local GetInventoryItemLink = GetInventoryItemLink
+local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
-local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local CHARACTER_LINK_ITEM_LEVEL_TOOLTIP = CHARACTER_LINK_ITEM_LEVEL_TOOLTIP
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
+local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
+
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_InspectTooltip", UIParent, "GameTooltipTemplate")
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -195,7 +200,7 @@ function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
-		RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"]);
+		RaidNotice_AddMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo["RAID_BOSS_EMOTE"]);
 	end
 end
 
@@ -205,7 +210,7 @@ function M:AutoInvite(event, leaderName)
 	if not E.db.general.autoAcceptInvite then return; end
 
 	if event == "PARTY_INVITE_REQUEST" then
-		if QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
+		if _G.QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if IsInGroup() then return end
 		hideStatic = true
 
@@ -270,7 +275,7 @@ function M:AutoInvite(event, leaderName)
 			end
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
-		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custom created group
+		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
 		StaticPopup_Hide("PARTY_INVITE")
 		hideStatic = false
 	end
@@ -285,6 +290,48 @@ end
 function M:PLAYER_ENTERING_WORLD()
 	self:ForceCVars()
 	self:ToggleChatBubbleScript()
+end
+
+function M:UpdateItemLevel()
+	local unit = _G.InspectFrame.unit or "target"
+	local iLevel, count = 0, 0
+
+	for i=1, 17 do
+		if i ~= 4 then
+			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+			ScanTooltip:SetInventoryItem(unit, i)
+			ScanTooltip:Show()
+
+			for x = 2, 3 do
+				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
+				if line then
+					local iLvl = line:match(MATCH_ITEM_LEVEL)
+					if iLvl and iLvl ~= "1" then
+						count, iLevel = count + 1, iLevel + tonumber(iLvl)
+					end
+				end
+			end
+
+			ScanTooltip:Hide()
+		end
+	end
+
+	if iLevel > 0 then
+		local itemLevelAverage = E:Round(iLevel / count)
+		_G.InspectFrame.ItemLevelText:SetFormattedText(CHARACTER_LINK_ITEM_LEVEL_TOOLTIP, itemLevelAverage)
+	else
+		_G.InspectFrame.ItemLevelText:SetText('')
+	end
+end
+
+function M:ADDON_LOADED(_, addon)
+	if addon == "Blizzard_InspectUI" then
+		_G.InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
+		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
+
+		self:UnregisterEvent("ADDON_LOADED")
+	end
 end
 
 function M:Initialize()
@@ -303,6 +350,12 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	if IsAddOnLoaded("Blizzard_InspectUI") then
+		self:ADDON_LOADED(nil, "Blizzard_InspectUI")
+	else
+		self:RegisterEvent("ADDON_LOADED")
+	end
 end
 
 local function InitializeCallback()

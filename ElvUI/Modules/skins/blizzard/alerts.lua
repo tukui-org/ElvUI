@@ -34,7 +34,7 @@ local function SkinAchievementAlert(frame)
 	end
 
 	-- Background
-	frame.Background:SetTexture(nil)
+	frame.Background:SetTexture()
 	frame.OldAchievement:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
@@ -298,7 +298,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
 
 		frame.PortraitFrame.PortraitRing:Hide()
-		frame.PortraitFrame.PortraitRingQuality:SetTexture("")
+		frame.PortraitFrame.PortraitRingQuality:SetTexture()
 		frame.PortraitFrame.LevelBorder:SetAlpha(0)
 
 		local level = frame.PortraitFrame.Level
@@ -514,7 +514,7 @@ local function SkinLootWonAlert(frame)
 	frame.BGAtlas:Kill()
 	frame.PvPBackground:Kill()
 
-	frame.SpecRing:SetTexture("")
+	frame.SpecRing:SetTexture()
 	frame.SpecIcon:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -15)
 	frame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 

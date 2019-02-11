@@ -352,9 +352,9 @@ function CH:StyleChat(frame)
 	editbox.characterCount:Width(40)
 
 	for _, texName in pairs(tabTexs) do
-		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
-		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
-		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Left']:SetTexture()
+		_G[tab:GetName()..texName..'Middle']:SetTexture()
+		_G[tab:GetName()..texName..'Right']:SetTexture()
 	end
 
 	if scroll then
@@ -428,9 +428,9 @@ function CH:StyleChat(frame)
 		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
-	--Work around broken SetAltArrowKeyMode API. Code from Prat
-	local function OnArrowPressed(editBox, key)
-		if #editBox.historyLines == 0 then
+	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
+	local function OnKeyDown(editBox, key)
+		if (not editBox.historyLines) or #editBox.historyLines == 0 then
 			return
 		end
 
@@ -451,7 +451,8 @@ function CH:StyleChat(frame)
 		else
 			return
 		end
-		editBox:SetText(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)])
+
+		editBox:SetText(strtrim(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)]))
 	end
 
 	local LeftChatPanel, LeftChatDataPanel, LeftChatToggleButton = _G.LeftChatPanel, _G.LeftChatDataPanel, _G.LeftChatToggleButton
@@ -468,7 +469,7 @@ function CH:StyleChat(frame)
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = _G.ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript("OnArrowPressed", OnArrowPressed)
+	editbox:HookScript("OnKeyDown", OnKeyDown)
 	editbox:Hide()
 
 	editbox:HookScript("OnEditFocusGained", function(editBox)
@@ -1675,7 +1676,7 @@ function CH:SetupChat()
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
 		frame:SetTimeVisible(100)
-		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+		frame:SetShadowOffset(E.mult, -E.mult)
 		frame:SetFading(self.db.fade)
 
 		if not frame.scriptsSet then
@@ -1864,10 +1865,10 @@ function CH:AddLines(lines, ...)
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
-	local chatType = editBox:GetAttribute("chatType")
-	if not chatType then return end
+	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
 
-	local chatFrame = editBox:GetParent()
+	local chatType = editBox:GetAttribute("chatType")
+	local chatFrame = chatType and editBox:GetParent()
 	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
 		if not self.db.sticky then chatType = 'SAY' end
 		editBox:SetAttribute("chatType", chatType)
@@ -1887,20 +1888,21 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	else
 		chatFrame:SetShadowColor(0, 0, 0, 1)
 	end
-	chatFrame:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+	chatFrame:SetShadowOffset(E.mult, -E.mult)
 end
 
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
-	if strfind(line, "/rl") then return end
+	line = line and strtrim(line)
 
-	if ( strlen(line) > 0 ) then
+	if line and strlen(line) > 0 then
+		if strfind(line, '/rl') then return end
+
 		for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
-			if text == line then
-				return
-			end
+			if text == line then return end
 		end
 
 		tinsert(_G.ElvCharacterDB.ChatEditHistory, #_G.ElvCharacterDB.ChatEditHistory + 1, line)
+
 		if #_G.ElvCharacterDB.ChatEditHistory > 20 then
 			tremove(_G.ElvCharacterDB.ChatEditHistory, 1)
 		end
@@ -2526,10 +2528,14 @@ function CH:Initialize()
 
 	-- Combat Log Skinning (credit: Aftermathh)
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
+	local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
 	CombatLogButton:StripTextures()
 	CombatLogButton:SetTemplate("Transparent")
-	CombatLogButton:ClearAllPoints()
-	CombatLogButton:Point("BOTTOM", _G.LeftChatTab, 0, -24)
+	if CombatLogFontContainer then
+		CombatLogButton:ClearAllPoints()
+		CombatLogButton:Point("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)
+		CombatLogButton:Point("BOTTOMRIGHT", CombatLogFontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
+	end
 	for i = 1, 2 do
 		local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
 		local CombatLogText = CombatLogQuickButton:GetFontString()

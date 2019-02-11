@@ -58,8 +58,8 @@ function S:SkinAce3()
 			checkbg:CreateBackdrop('Default')
 			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
-			checkbg:SetTexture('')
-			highlight:SetTexture('')
+			checkbg:SetTexture()
+			highlight:SetTexture()
 
 			if E.private.skins.checkBoxSkin then
 				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)

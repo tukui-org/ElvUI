@@ -2,29 +2,23 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local min = math.min
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ObjectiveTrackerFrame, ObjectiveFrameMover, ObjectiveTrackerBonusRewardsFrame
-
-local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
-ObjectiveFrameHolder:Width(130)
-ObjectiveFrameHolder:Height(22)
-ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-
 function B:SetObjectiveFrameHeight()
-	local top = ObjectiveTrackerFrame:GetTop() or 0
+	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
 	local screenHeight = GetScreenHeight()
 	local gapFromTop = screenHeight - top
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	ObjectiveTrackerFrame:Height(objectiveFrameHeight)
+	_G.ObjectiveTrackerFrame:Height(objectiveFrameHeight)
 end
 
 local function IsFramePositionedLeft(frame)
@@ -40,7 +34,14 @@ local function IsFramePositionedLeft(frame)
 end
 
 function B:MoveObjectiveFrame()
+	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
+	ObjectiveFrameHolder:Width(130)
+	ObjectiveFrameHolder:Height(22)
+	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+	local ObjectiveFrameMover = _G.ObjectiveFrameMover
+	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
 
 	ObjectiveTrackerFrame:ClearAllPoints()
@@ -57,7 +58,7 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
 
 	local function RewardsFrame_SetPosition(block)
-		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
+		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
 			rewardsFrame:Point("TOPLEFT", block, "TOPRIGHT", -10, -4);

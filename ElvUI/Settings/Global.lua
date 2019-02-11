@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Global Settings
 G['general'] = {
-	['autoScale'] = true,
-	['minUiScale'] = 0.64,
+	['UIScale'] = 0.64,
 	['eyefinity'] = false,
 	['smallerWorldMap'] = true,
 	['smallerWorldMapScale'] = 0.9,

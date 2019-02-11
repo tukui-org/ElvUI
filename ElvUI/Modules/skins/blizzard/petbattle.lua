@@ -37,19 +37,19 @@ local function SkinPetButton(self, bf)
 end
 
 local function SkinPetTooltip(tt)
-	tt.Background:SetTexture(nil)
+	tt.Background:SetTexture()
 	if tt.Delimiter1 then
-		tt.Delimiter1:SetTexture(nil)
-		tt.Delimiter2:SetTexture(nil)
+		tt.Delimiter1:SetTexture()
+		tt.Delimiter2:SetTexture()
 	end
-	tt.BorderTop:SetTexture(nil)
-	tt.BorderTopLeft:SetTexture(nil)
-	tt.BorderTopRight:SetTexture(nil)
-	tt.BorderLeft:SetTexture(nil)
-	tt.BorderRight:SetTexture(nil)
-	tt.BorderBottom:SetTexture(nil)
-	tt.BorderBottomRight:SetTexture(nil)
-	tt.BorderBottomLeft:SetTexture(nil)
+	tt.BorderTop:SetTexture()
+	tt.BorderTopLeft:SetTexture()
+	tt.BorderTopRight:SetTexture()
+	tt.BorderLeft:SetTexture()
+	tt.BorderRight:SetTexture()
+	tt.BorderBottom:SetTexture()
+	tt.BorderBottomRight:SetTexture()
+	tt.BorderBottomLeft:SetTexture()
 	tt:SetTemplate("Transparent")
 end
 

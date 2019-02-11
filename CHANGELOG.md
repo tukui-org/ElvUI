@@ -1,10 +1,30 @@
-### Version 10.87 [  ]
+### Version 10.88 [  ]
+
+**New Additions:**  
+Added new scale options. (/ec - General - Auto Scale | UI Scale)  
+Added quality border option for Bag/Bank items. (#869)  
+Added BoE/BoA text overlay in our Bag/Bank.  
+Added optional mount name for units on tooltips.  
+
+**Bug Fixes:**  
+Corrected more Pixel Perfect issues! :D  
+
+**Misc. Changes:**  
+Various Skin updates.  
+Modified the bag item level code; items might actually show the correct item level now. :o  
+Added item level to the inspect frame.  
+Removed inspect info from tooltips.  
+
+___
+### Version 10.87 [ January 30th 2019 ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-
+Fixed an issue with the combat log header. (#1013)  
+Fixed a bag config error if the bag module was disabled.  
+Fixed an error caused by incorrect file loading order.  
 
 **Misc. Changes:**  
 

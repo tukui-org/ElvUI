@@ -2,23 +2,23 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 --Cache global variables
+local _G = _G
 --Lua functions
 local pairs = pairs
 local ipairs = ipairs
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: AlertFrame, GroupLootContainer, AlertFrameMover
 -- GLOBALS: UIPARENT_MANAGED_FRAME_POSITIONS
 
-local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
-AlertFrameHolder:Width(180)
-AlertFrameHolder:Height(20)
-AlertFrameHolder:Point("TOP", E.UIParent, "TOP", 0, -18)
-
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
 function E:PostAlertMove()
+	local AlertFrameMover = _G.AlertFrameMover
+	local AlertFrameHolder = _G.AlertFrameHolder
+
 	local _, y = AlertFrameMover:GetCenter();
 	local screenHeight = E.UIParent:GetTop();
 	if y > (screenHeight / 2) then
@@ -144,6 +144,11 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
+	local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
+	AlertFrameHolder:Width(180)
+	AlertFrameHolder:Height(20)
+	AlertFrameHolder:Point("TOP", E.UIParent, "TOP", 0, -18)
+
 	GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')

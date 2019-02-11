@@ -126,9 +126,9 @@ local function LoadSkin()
 
 		bu:SetHighlightTexture(nil)
 		bu.unusable:SetAlpha(0)
-		bu.iconBorder:SetTexture('')
-		bu.background:SetTexture('')
-		bu.selectedTexture:SetTexture('')
+		bu.iconBorder:SetTexture()
+		bu.background:SetTexture()
+		bu.selectedTexture:SetTexture()
 
 		bu.factionIcon:SetDrawLayer('OVERLAY')
 		bu.factionIcon:SetPoint('TOPRIGHT', -1, -4)
@@ -206,10 +206,10 @@ local function LoadSkin()
 		end)
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
-		bu.dragButton.levelBG:SetTexture(nil)
+		bu.dragButton.levelBG:SetTexture()
 
-		bu.iconBorder:SetTexture('')
-		bu.selectedTexture:SetTexture('')
+		bu.iconBorder:SetTexture()
+		bu.selectedTexture:SetTexture()
 
 		hooksecurefunc(bu.iconBorder, 'SetVertexColor', function(_, r, g, b)
 			bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
@@ -287,19 +287,19 @@ local function LoadSkin()
 
 	if E.private.skins.blizzard.tooltip then
 		local tt = _G.PetJournalPrimaryAbilityTooltip
-		tt.Background:SetTexture(nil)
+		tt.Background:SetTexture()
 		if tt.Delimiter1 then
-			tt.Delimiter1:SetTexture(nil)
-			tt.Delimiter2:SetTexture(nil)
+			tt.Delimiter1:SetTexture()
+			tt.Delimiter2:SetTexture()
 		end
-		tt.BorderTop:SetTexture(nil)
-		tt.BorderTopLeft:SetTexture(nil)
-		tt.BorderTopRight:SetTexture(nil)
-		tt.BorderLeft:SetTexture(nil)
-		tt.BorderRight:SetTexture(nil)
-		tt.BorderBottom:SetTexture(nil)
-		tt.BorderBottomRight:SetTexture(nil)
-		tt.BorderBottomLeft:SetTexture(nil)
+		tt.BorderTop:SetTexture()
+		tt.BorderTopLeft:SetTexture()
+		tt.BorderTopRight:SetTexture()
+		tt.BorderLeft:SetTexture()
+		tt.BorderRight:SetTexture()
+		tt.BorderBottom:SetTexture()
+		tt.BorderBottomRight:SetTexture()
+		tt.BorderBottomLeft:SetTexture()
 		tt:SetTemplate("Transparent")
 	end
 
@@ -398,7 +398,7 @@ local function LoadSkin()
 			button.styled = true
 		end
 
-		button.levelBackground:SetTexture(nil)
+		button.levelBackground:SetTexture()
 
 		button.name:SetPoint('LEFT', button, 'RIGHT', 4, 8)
 		button.level:SetPoint('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)

@@ -280,11 +280,9 @@ local blacklistedKeys = {
 	},
 	["private"] = {},
 	["global"] = {
-		["uiScale"] = true,
 		["userInformedNewChanges1"] = true,
 		["general"] = {
-			["autoScale"] = true,
-			["minUiScale"] = true,
+			["UIScale"] = true,
 			["eyefinity"] = true,
 			["disableTutorialButtons"] = true,
 			["showMissingTalentAlert"] = true,
