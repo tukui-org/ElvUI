@@ -21,7 +21,6 @@ local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetTime = GetTime
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -211,54 +210,6 @@ function TT:GetLevelLine(tt, offset)
 		end
 	end
 end
-
-function TT:GetItemLvL(items, talents)
-	if not items or not talents then return "?" end
-
-	local total = 0
-	local artifactEquipped = false
-	for i = 1, #SlotName do
-		local currentSlot = SlotName[i]
-		local itemLink = items[currentSlot]
-		if(itemLink) then
-			local _, _, rarity, itemLevelOriginal, _, _, _, _, equipSlot = GetItemInfo(itemLink)
-
-			--Check if we have an artifact equipped in main hand
-			if(currentSlot == INVSLOT_MAINHAND and rarity and rarity == 6) then
-				artifactEquipped = true
-			end
-
-			--If we have artifact equipped in main hand, then we should not count the offhand as it displays an incorrect item level
-			if (not artifactEquipped or (artifactEquipped and currentSlot ~= INVSLOT_OFFHAND)) then
-				local _, itemLevelLib = LibItemLevel:GetItemInfo(itemLink)
-				local itemLevelFinal = 0
-				if(itemLevelOriginal and itemLevelLib) then
-					itemLevelFinal = (itemLevelOriginal ~= itemLevelLib) and itemLevelLib or itemLevelOriginal
-					if itemLevelFinal == 0 then itemLevelFinal = itemLevelOriginal end
-				else
-					itemLevelFinal = itemLevelLib or itemLevelOriginal
-				end
-				if(itemLevelFinal > 0) then
-					if ((currentSlot == INVSLOT_MAINHAND and artifactEquipped) or ((equipSlot == "INVTYPE_2HWEAPON" or equipSlot == "INVTYPE_RANGEDRIGHT" or equipSlot == "INVTYPE_RANGED") and talents.id ~= 72)) and (not items[INVSLOT_OFFHAND] or artifactEquipped) then
-						itemLevelFinal = itemLevelFinal * 2
-					end
-					total = total + itemLevelFinal
-				end
-			end
-		end
-	end
-
-	if(total > 0) then
-		return floor(total / #SlotName)
-	else
-		return "?"
-	end
-end
-
-function TT:GetTalentSpec(talents)
-	return (talents and talents.icon and talents.name) and ("|T"..talents.icon..":12:12:0:0:64:64:5:59:5:59|t "..talents.name) or "?"
-end
-
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
