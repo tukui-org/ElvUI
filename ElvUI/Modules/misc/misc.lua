@@ -313,6 +313,7 @@ local InspectItems = {
   }
 
 function M:UpdateItemLevel()
+	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
 
@@ -321,7 +322,7 @@ function M:UpdateItemLevel()
 		if i ~= 4 then
 			local inspectItem = _G[InspectItems[i]]
 			inspectItem.iLvlText:SetText()
-			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+			ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
 
@@ -351,7 +352,6 @@ end
 
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
-		_G.InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
 		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
 
@@ -373,6 +373,7 @@ function M:Initialize()
 	self:LoadChatBubbles()
 	self:LoadLoot()
 	self:RegisterEvent('MERCHANT_SHOW')
+	self:RegisterEvent('INSPECT_READY', 'UpdateItemLevel')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
