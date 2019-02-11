@@ -344,9 +344,10 @@ end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
-	local isShiftKeyDown = IsShiftKeyDown()
 
 	local unit = select(2, tt:GetUnit())
+	local isShiftKeyDown = IsShiftKeyDown()
+
 	if((tt:GetOwner() ~= UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
 		local modifier = self.db.visibility.unitFrames
 
