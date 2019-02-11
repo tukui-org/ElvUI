@@ -558,9 +558,7 @@ function B:UpdateSlot(bagID, slotID)
 			if line then
 				local itemLevel = line:match(MATCH_ITEM_LEVEL)
 				if itemLevel then
-					if itemLevel ~= "1" then
-						iLvl = tonumber(itemLevel)
-					end
+					iLvl = tonumber(itemLevel)
 					break
 				end
 			end
