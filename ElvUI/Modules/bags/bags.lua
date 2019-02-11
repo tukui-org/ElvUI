@@ -549,7 +549,7 @@ function B:UpdateSlot(bagID, slotID)
 			for i = 2, bindTypeLines do
 				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
 				if not line or line == "" then break end
-				if showBindType and not (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
+				if showBindType then
 					BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
 				end
 				if canShowItemLevel and (i <= itemLevelLines) then
