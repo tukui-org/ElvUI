@@ -5,7 +5,7 @@ local S -- used to hold the skin module when we need it
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, select, next = unpack, select, next
+local unpack, select, ipairs = unpack, select, ipairs
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor, tonumber = math.floor, tonumber
 local find, format, sub = string.find, string.format, string.sub
@@ -17,7 +17,6 @@ local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetItemCount = GetItemCount
-local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -60,6 +59,11 @@ local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitBuff = UnitBuff
+
+local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
+local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
+local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 
 local LOCALE = {
 	PVP = PVP,
@@ -73,6 +77,7 @@ local LOCALE = {
 	NONE = NONE,
 	ROLE = ROLE,
 	MOUNT = MOUNT,
+
 	-- Custom to find LEVEL string on tooltip
 	LEVEL1 = TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
 	LEVEL2 = TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
@@ -566,7 +571,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 
 	if id then
 		if self.MountIDs[id] then
-			local _, descriptionText, sourceText = C_MountJournal.GetMountInfoExtraByID(self.MountIDs[id])
+			local _, descriptionText, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 			--tt:AddLine(descriptionText)
 			tt:AddLine(" ")
 			tt:AddLine(sourceText, 1, 1, 1)
@@ -688,10 +693,10 @@ function TT:Initialize()
 	self.db = E.db.tooltip
 
 	self.MountIDs = {}
-	local mountIDs = C_MountJournal.GetMountIDs();
+	local mountIDs = C_MountJournal_GetMountIDs();
 	local _, spellID
 	for i, mountID in ipairs(mountIDs) do
-		self.MountIDs[select(2, C_MountJournal.GetMountInfoByID(mountID))] = mountID
+		self.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end
 
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
@@ -701,7 +706,6 @@ function TT:Initialize()
 	E.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", UIParent, "GameTooltipTemplate")
 	E.ScanTooltip:SetPoint("CENTER")
 	E.ScanTooltip:SetSize(200, 200)
-	GameTooltip_SetDefaultAnchor(E.ScanTooltip, UIParent)
 
 	if E.private.tooltip.enable ~= true then return end
 	E.Tooltip = TT
@@ -727,17 +731,19 @@ function TT:Initialize()
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip,general')
 
+	self:SecureHook('SetItemRef')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
-	self:SecureHook("SetItemRef")
-	self:SecureHook(GameTooltip, "SetUnitAura")
-	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
-	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	self:SecureHookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
+	self:SecureHook(GameTooltip, 'SetUnitAura')
+	self:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
+	self:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
+	self:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
+
+	_G.GameTooltip_SetDefaultAnchor(E.ScanTooltip, _G.UIParent)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
