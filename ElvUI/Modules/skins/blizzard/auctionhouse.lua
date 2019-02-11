@@ -119,7 +119,7 @@ local function LoadSkin()
 	_G.AuctionsScrollFrame:StripTextures()
 	_G.BidScrollFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.BrowseDropDown)
+	S:HandleDropDownBox(_G.BrowseDropDown, 155)
 	S:HandleDropDownBox(_G.PriceDropDown)
 	S:HandleDropDownBox(_G.DurationDropDown)
 	S:HandleScrollBar(_G.BrowseFilterScrollFrameScrollBar)
