@@ -108,6 +108,12 @@ E.Options.args.tooltip = {
 					name = L["Guild Ranks"],
 					desc = L["Display guild ranks if a unit is guilded."],
 				},
+				showMount = {
+					order = 11,
+					type = 'toggle',
+					name = L["Current Mount"],
+					desc = L["Display current mount the unit is riding."]
+				},
 				spellID = {
 					order = 11,
 					type = 'toggle',
