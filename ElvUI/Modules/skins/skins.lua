@@ -6,7 +6,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe = table.insert, table.wipe
-local find = string.find
+local strfind = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetDesaturation = SetDesaturation
@@ -62,10 +62,10 @@ S.Blizzard.Regions = {
 
 -- Depends on the arrow texture to be up by default.
 S.ArrowRotation = {
-	['down'] = 0,
-	['up'] = 3.14,
-	['left'] = -1.57,
-	['right'] = 1.57,
+	['up'] = 0,
+	['down'] = 3.14,
+	['left'] = 1.57,
+	['right'] = -1.57,
 }
 
 function S:HandleInsetFrame(frame)
@@ -139,6 +139,7 @@ end
 -- We need to test this for the BGScore frame
 S.PVPHonorXPBarFrames = {}
 S.PVPHonorXPBarSkinned = false
+
 function S:SkinPVPHonorXPBar(frame)
 	S.PVPHonorXPBarFrames[frame] = true
 
@@ -277,199 +278,40 @@ function S:HandleButton(button, strip, isDeclineButton)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
 end
 
-function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
-	if frame:GetName() then
-		if frame.Background then frame.Background:SetTexture() end
-		if frame.trackBG then frame.trackBG:SetTexture() end
-		if frame.Middle then frame.Middle:SetTexture() end
-		if frame.Top then frame.Top:SetTexture() end
-		if frame.Bottom then frame.Bottom:SetTexture() end
-		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture() end
-		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture() end
-		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture() end
-
-		if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture() end
-		if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture() end
-		if _G[frame:GetName().."Top"] then _G[frame:GetName().."Top"]:SetTexture() end
-		if _G[frame:GetName().."Bottom"] then _G[frame:GetName().."Bottom"]:SetTexture() end
-		if _G[frame:GetName().."Middle"] then _G[frame:GetName().."Middle"]:SetTexture() end
-
-		if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
-			_G[frame:GetName().."ScrollUpButton"]:StripTextures()
-			if not _G[frame:GetName().."ScrollUpButton"].icon then
-				S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"], true, true)
-				_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)
-			end
-
-			_G[frame:GetName().."ScrollDownButton"]:StripTextures()
-			if not _G[frame:GetName().."ScrollDownButton"].icon then
-				S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"], true)
-				_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)
-			end
-
-			if not frame.trackbg then
-				frame.trackbg = CreateFrame("Frame", nil, frame)
-				frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
-				frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Default", true, true)
-			end
-
-			if frame:GetThumbTexture() then
-				frame:GetThumbTexture():SetTexture()
-				if not frame.thumbbg then
-					if not thumbTrimY then thumbTrimY = 3 end
-					if not thumbTrimX then thumbTrimX = 2 end
-					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrimY)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
-					frame.thumbbg:SetTemplate("Default", true, true)
-					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-					if frame.trackbg then
-						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
-					end
-				end
-			end
-		end
-	else
-		if frame.Background then frame.Background:SetTexture() end
-		if frame.trackBG then frame.trackBG:SetTexture() end
-		if frame.Middle then frame.Middle:SetTexture() end
-		if frame.Top then frame.Top:SetTexture() end
-		if frame.Bottom then frame.Bottom:SetTexture() end
-		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture() end
-		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture() end
-		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture() end
-
-		if frame.ScrollUpButton and frame.ScrollDownButton then
-			if not frame.ScrollUpButton.icon then
-				S:HandleNextPrevButton(frame.ScrollUpButton, true, true)
-				frame.ScrollUpButton:Size(frame.ScrollUpButton:GetWidth() + 7, frame.ScrollUpButton:GetHeight() + 7)
-			end
-
-			if not frame.ScrollDownButton.icon then
-				S:HandleNextPrevButton(frame.ScrollDownButton, true)
-				frame.ScrollDownButton:Size(frame.ScrollDownButton:GetWidth() + 7, frame.ScrollDownButton:GetHeight() + 7)
-			end
-
-			if not frame.trackbg then
-				frame.trackbg = CreateFrame("Frame", nil, frame)
-				frame.trackbg:Point("TOPLEFT", frame.ScrollUpButton, "BOTTOMLEFT", 0, -1)
-				frame.trackbg:Point("BOTTOMRIGHT", frame.ScrollDownButton, "TOPRIGHT", 0, 1)
-				frame.trackbg:SetTemplate("Default", true, true)
-			end
-
-			if frame.thumbTexture then
-				frame.thumbTexture:SetTexture()
-				if not frame.thumbbg then
-					if not thumbTrimY then thumbTrimY = 3 end
-					if not thumbTrimX then thumbTrimX = 2 end
-					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame.thumbTexture, "TOPLEFT", 2, -thumbTrimY)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame.thumbTexture, "BOTTOMRIGHT", -thumbTrimX, thumbTrimY)
-					frame.thumbbg:SetTemplate("Default", true, true)
-					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-					if frame.trackbg then
-						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel()+1)
-					end
-				end
-			end
-		end
-	end
+local function GrabScrollBarElement(frame, element)
+	local FrameName = frame:GetDebugName()
+	return frame[element] or FrameName and (_G[FrameName..element] or strfind(FrameName, element)) or nil
 end
 
--- HybridScrollFrame (Taken from Aurora)
-function S:HandleScrollSlider(Slider, thumbTrim)
-	local parent = Slider:GetParent()
-	if not parent then return end
-	Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
-	Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
+function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
+	if frame.backdrop then return end
+	local parent = frame:GetParent()
 
-	Slider:StripTextures()
+	local ScrollUpButton = GrabScrollBarElement(frame, 'ScrollUpButton') or GrabScrollBarElement(frame, 'UpButton') or GrabScrollBarElement(frame, 'ScrollUp') or GrabScrollBarElement(parent, 'scrollUp')
+	local ScrollDownButton = GrabScrollBarElement(frame, 'ScrollDownButton') or GrabScrollBarElement(frame, 'DownButton') or GrabScrollBarElement(frame, 'ScrollDown') or GrabScrollBarElement(parent, 'scrollDown')
+	local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
-	if Slider.trackBG then Slider.trackBG:Hide() end
-	if Slider.ScrollBarTop then Slider.ScrollBarTop:Hide() end
-	if Slider.ScrollBarMiddle then Slider.ScrollBarMiddle:Hide() end
-	if Slider.ScrollBarBottom then Slider.ScrollBarBottom:Hide() end
-	if Slider.Top then Slider.Top:SetTexture() end
-	if Slider.Bottom then Slider.Bottom:SetTexture() end
+	frame:StripTextures()
+	frame:CreateBackdrop()
+	frame.backdrop:SetPoint('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
+	frame.backdrop:SetFrameLevel(frame.backdrop:GetFrameLevel() + 1)
 
-	if not Slider.trackbg then
-		Slider.trackbg = CreateFrame("Frame", nil, Slider)
-		if Slider.ScrollUp and Slider.ScrollDown then
-			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUp, "BOTTOMLEFT", 0, 0)
-			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDown, "TOPRIGHT", 0, 0)
-		elseif Slider.ScrollUpButton and Slider.ScrollDownButton then
-			Slider.trackbg:Point("TOPLEFT", Slider.ScrollUpButton, "BOTTOMLEFT", 0, -1)
-			Slider.trackbg:Point("BOTTOMRIGHT", Slider.ScrollDownButton, "TOPRIGHT", 0, 1)
-		elseif parent.scrollUp and parent.scrollDown then
-			Slider.trackbg:Point("TOPLEFT", parent.scrollUp, "BOTTOMLEFT", 0, -1)
-			Slider.trackbg:Point("BOTTOMRIGHT", parent.scrollDown, "TOPRIGHT", 0, 1)
-		end
-		Slider.trackbg:SetTemplate("Default", true, true)
-	end
-
-	if Slider.ScrollUp and Slider.ScrollDown then
-		if not Slider.ScrollUp.icon then
-			S:HandleNextPrevButton(Slider.ScrollUp, true, true)
-			Slider.ScrollUp:Size(Slider:GetWidth(), Slider.ScrollUp:GetHeight() + 7)
-		end
-
-		if not Slider.ScrollDown.icon then
-			S:HandleNextPrevButton(Slider.ScrollDown, true)
-			Slider.ScrollDown:Size(Slider:GetWidth(), Slider.ScrollDown:GetHeight() + 7)
+	for _, Button in pairs({ ScrollUpButton, ScrollDownButton }) do
+		if Button then
+			S:HandleNextPrevButton(Button)
 		end
 	end
 
-	if Slider.ScrollUpButton  and Slider.ScrollDownButton then
-		if not Slider.ScrollUpButton.icon then
-			S:HandleNextPrevButton(Slider.ScrollUpButton, true, true)
-			Slider.ScrollUpButton:Size(Slider:GetWidth(), Slider.ScrollUpButton:GetHeight() + 7)
-		end
-
-		if not Slider.ScrollDownButton.icon then
-			S:HandleNextPrevButton(Slider.ScrollDownButton, true)
-			Slider.ScrollDownButton:Size(Slider:GetWidth(), Slider.ScrollDownButton:GetHeight() + 7)
-		end
-	end
-
-	if parent.scrollUp and parent.scrollDown then
-		if not parent.scrollUp.icon then
-			S:HandleNextPrevButton(parent.scrollUp, true, true)
-			parent.scrollUp:Size(Slider:GetWidth(), parent.scrollUp:GetHeight() + 7)
-		end
-
-		if not parent.scrollDown.icon then
-			S:HandleNextPrevButton(parent.scrollDown, true)
-			parent.scrollDown:Size(Slider:GetWidth(), parent.scrollDown:GetHeight() + 7)
-		end
-	end
-
-	if Slider.thumbTexture then
-		if not thumbTrim then thumbTrim = 3 end
-		Slider.thumbTexture:SetTexture()
-		if not Slider.thumbbg then
-			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
-			Slider.thumbbg:Point("TOPLEFT", Slider.thumbTexture, "TOPLEFT", 2, -thumbTrim)
-			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
-			Slider.thumbbg:SetTemplate("Default", true, true)
-			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-			if Slider.trackbg then
-				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
-			end
-		end
-	elseif Slider.ThumbTexture then
-		if not thumbTrim then thumbTrim = 3 end
-		Slider.ThumbTexture:SetTexture()
-		if not Slider.thumbbg then
-			Slider.thumbbg = CreateFrame("Frame", nil, Slider)
-			Slider.thumbbg:Point("TOPLEFT", Slider.ThumbTexture, "TOPLEFT", 2, -thumbTrim)
-			Slider.thumbbg:Point("BOTTOMRIGHT", Slider.ThumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
-			Slider.thumbbg:SetTemplate("Default", true, true)
-			Slider.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-			if Slider.trackbg then
-				Slider.thumbbg:SetFrameLevel(Slider.trackbg:GetFrameLevel()+1)
-			end
-		end
+	if Thumb then
+		Thumb:SetTexture('')
+		Thumb:CreateBackdrop("Default", true, true)
+		if not thumbTrimY then thumbTrimY = 3 end
+		if not thumbTrimX then thumbTrimX = 2 end
+		Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
+		Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+		Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
+		Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 	end
 end
 
@@ -506,64 +348,48 @@ function S:HandleTab(tab)
 end
 
 function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
-	inverseDirection = inverseDirection or btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
+	local Arrow
+	local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
+	if ButtonName then
+		if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'back')) then
+			Arrow = 'left'
+		elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
+			Arrow = 'right'
+		elseif (strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize')) then
+			Arrow = 'up'
+		else
+			Arrow = 'down'
+		end
+	end
 
 	btn:StripTextures()
-	btn:SetNormalTexture(nil)
-	btn:SetPushedTexture(nil)
-	btn:SetHighlightTexture(nil)
-	btn:SetDisabledTexture(nil)
-
-	if not btn.icon then
-		btn.icon = btn:CreateTexture(nil, 'ARTWORK')
-		btn.icon:Size(12, 12)
-		btn.icon:Point('CENTER')
-		btn.icon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-		btn.icon:SetVertexColor(1, 1, 1)
-
-		btn:HookScript('OnMouseDown', function(button)
-			if button:IsEnabled() then
-				button.icon:Point("CENTER", -1, -1);
-				button.icon:SetVertexColor(unpack(E.media.rgbvaluecolor))
-			end
-		end)
-
-		btn:HookScript('OnMouseUp', function(button)
-			button.icon:Point("CENTER", 0, 0);
-			button.icon:SetVertexColor(1, 1, 1)
-		end)
-
-		btn:HookScript('OnDisable', function(button)
-			SetDesaturation(button.icon, true);
-			button.icon:SetAlpha(0.3);
-		end)
-
-		btn:HookScript('OnEnable', function(button)
-			SetDesaturation(button.icon, false);
-			button.icon:SetAlpha(1.0);
-		end)
-
-		if not btn:IsEnabled() then
-			btn:GetScript('OnDisable')(btn)
-		end
-	end
-
-	if useVertical then
-		if inverseDirection then
-			btn.icon:SetRotation(S.ArrowRotation['down'])
-		else
-			btn.icon:SetRotation(S.ArrowRotation['up'])
-		end
-	else
-		if inverseDirection then
-			btn.icon:SetRotation(S.ArrowRotation['right'])
-		else
-			btn.icon:SetRotation(S.ArrowRotation['left'])
-		end
-	end
-
 	S:HandleButton(btn)
-	btn:Size(btn:GetWidth() - 7, btn:GetHeight() - 7)
+
+	btn:SetHighlightTexture(nil)
+
+	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+
+	if not Arrow then
+		Arrow = useVertical and (inverseDirection and 'down' or 'up') or inverseDirection and 'left' or 'right'
+	end
+
+	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
+
+	Normal:SetInside()
+	Pushed:SetInside()
+	Disabled:SetInside()
+
+	Normal:SetTexCoord(0, 1, 0, 1)
+	Pushed:SetTexCoord(0, 1, 0, 1)
+	Disabled:SetTexCoord(0, 1, 0, 1)
+
+	Normal:SetRotation(S.ArrowRotation[Arrow])
+	Pushed:SetRotation(S.ArrowRotation[Arrow])
+	Disabled:SetRotation(S.ArrowRotation[Arrow])
+
+	Disabled:SetVertexColor(.3, .3, .3)
 end
 
 function S:HandleRotateButton(btn)
@@ -638,7 +464,7 @@ function S:HandleEditBox(frame)
 		if _G[frameName.."Right"] then _G[frameName.."Right"]:Kill() end
 		if _G[frameName.."Mid"] then _G[frameName.."Mid"]:Kill() end
 
-		if frameName:find("Silver") or frameName:find("Copper") then
+		if strfind(frameName, "Silver") or strfind(frameName, "Copper") then
 			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 		end
 	end
@@ -851,6 +677,7 @@ end
 
 local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
 local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
+
 function S:HandleCloseButton(f, point)
 	f:StripTextures()
 
@@ -896,7 +723,7 @@ function S:HandleSliderFrame(frame)
 			local region = select(i, frame:GetRegions())
 			if region and region:IsObjectType('FontString') then
 				local point, anchor, anchorPoint, x, y = region:GetPoint()
-				if anchorPoint:find('BOTTOM') then
+				if strfind(anchorPoint, 'BOTTOM') then
 					region:Point(point, anchor, anchorPoint, x, y - 4)
 				end
 			end

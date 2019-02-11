@@ -20,7 +20,7 @@ local function LoadSkin()
 		scrollFrame.ScrollBar.Border:Hide()
 		scrollFrame.ScrollBar.ScrollUpBorder:Hide()
 		scrollFrame.ScrollBar.ScrollDownBorder:Hide()
-		S:HandleScrollSlider(scrollFrame.ScrollBar)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		scrollFrame.Child.ObjectivesFrame:StripTextures()
 		scrollFrame.Child.ObjectivesFrame:CreateBackdrop("Transparent")
@@ -41,7 +41,7 @@ local function LoadSkin()
 		scrollFrame.ScrollBar.Border:Hide()
 		scrollFrame.ScrollBar.ScrollUpBorder:Hide()
 		scrollFrame.ScrollBar.ScrollDownBorder:Hide()
-		S:HandleScrollSlider(scrollFrame.ScrollBar)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 	end

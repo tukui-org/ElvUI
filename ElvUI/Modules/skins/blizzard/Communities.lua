@@ -126,9 +126,9 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
-	S:HandleScrollSlider(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	S:HandleScrollSlider(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
+	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
@@ -232,7 +232,7 @@ local function LoadSkin()
 
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
-	S:HandleScrollSlider(_G.CommunitiesFrameRewards.scrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameRewards.scrollBar)
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		if not button.backdrop then
@@ -348,7 +348,7 @@ local function LoadSkin()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	-- Filters Frame
@@ -442,7 +442,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollSlider(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
@@ -510,7 +510,7 @@ local function LoadSkin()
 	S:HandleDropDownFrame(TicketManager.ExpiresDropDownMenu)
 	S:HandleDropDownFrame(TicketManager.UsesDropDownMenu)
 
-	S:HandleScrollSlider(TicketManager.InviteManager.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)
 end
 
