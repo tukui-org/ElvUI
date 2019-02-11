@@ -524,25 +524,6 @@ function B:UpdateSlot(bagID, slotID)
 		ScanTooltip:Show()
 	end
 
-	if showBindType then
-		for i = 2, 6 do -- trying line 2 to 6 for the bind texts, don't think they are further down
-			local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
-			if (not line) or (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
-				break
-			end
-			if line == _G.ITEM_BIND_ON_EQUIP then
-				slot.bindType:SetText(L['BoE'])
-				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
-				break
-			end
-			if line == _G.ITEM_BIND_ON_USE then
-				slot.bindType:SetText(L['BoU'])
-				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
-				break
-			end
-		end
-	end
-
 	if professionColors then
 		local r, g, b = unpack(professionColors)
 		slot.newItemGlow:SetVertexColor(r, g, b)
@@ -559,28 +540,38 @@ function B:UpdateSlot(bagID, slotID)
 			r, g, b = GetItemQualityColor(slot.rarity);
 		end
 
-		--Item Level
-		if showItemLevel and IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity) then
-			local iLvl --GetDetailedItemLevelInfo(clink)
-			local colorblind = GetCVarBool('colorblindmode') and 4 or 3
-			for x = 2, colorblind do
-				local line = _G["ElvUI_BagItemsTooltipTextLeft"..x]:GetText()
-				if line then
+		if showBindType or showItemLevel then
+			local colorblind = GetCVarBool('colorblindmode')
+			local canShowItemLevel = showItemLevel and IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
+			local itemLevelLines, bindTypeLines = colorblind and 4 or 3, colorblind and 7 or 6
+			local iLvl, BoE, BoU --GetDetailedItemLevelInfo this api dont work for some time correctly for ilvl
+
+			for i = 2, bindTypeLines do
+				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
+				if not line or line == "" then break end
+				if showBindType and not (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
+					BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
+				end
+				if canShowItemLevel and (i <= itemLevelLines) then
 					local itemLevel = line:match(MATCH_ITEM_LEVEL)
-					if itemLevel then
-						iLvl = tonumber(itemLevel)
-						break
-					end
+					if itemLevel then iLvl = tonumber(itemLevel) end
+				end
+				if ((not showBindType) or (BoE or BoU)) and ((not canShowItemLevel) or iLvl) then
+					break
 				end
 			end
-			if iLvl then
-				if (iLvl >= B.db.itemLevelThreshold) then
-					slot.itemLevel:SetText(iLvl)
-					if B.db.itemLevelCustomColorEnable then
-						slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-					else
-						slot.itemLevel:SetTextColor(r, g, b)
-					end
+
+			if BoE or BoU then
+				slot.bindType:SetText(BoE and L['BoE'] or L['BoU'])
+				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+			end
+
+			if iLvl and iLvl >= B.db.itemLevelThreshold then
+				slot.itemLevel:SetText(iLvl)
+				if B.db.itemLevelCustomColorEnable then
+					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+				else
+					slot.itemLevel:SetTextColor(r, g, b)
 				end
 			end
 		end
