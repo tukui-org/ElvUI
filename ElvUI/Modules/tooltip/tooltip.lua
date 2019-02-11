@@ -702,8 +702,7 @@ function TT:Initialize()
 
 	self.MountIDs = {}
 	local mountIDs = C_MountJournal_GetMountIDs();
-	local _, spellID
-	for i, mountID in ipairs(mountIDs) do
+	for _, mountID in ipairs(mountIDs) do
 		self.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end
 
