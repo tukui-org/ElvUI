@@ -42,7 +42,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS, MAX_WOW_CHAT_CHANNELS
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 8
+local MAX_PAGE = 7
 
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
@@ -158,9 +158,11 @@ local function SetupCVars()
 	InstallStepComplete:Show()
 end
 
-function E:GetColor(r, b, g, a)
+function E:GetColor(r, g, b, a)
 	return { r = r, b = b, g = g, a = a }
 end
+
+
 
 function E:SetupTheme(theme, noDisplayMsg)
 	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
@@ -170,7 +172,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	if theme == "classic" then
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		E.db.general.backdropfadecolor = E:GetColor(0.13, 0.13, 0.13, 0.69)
 		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
@@ -182,7 +184,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
 		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.g, classColor.b)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
 	else
@@ -199,9 +201,9 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	--Value Color
 	if theme == "class" then
-		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.valuecolor = E:GetColor(.09, .819, .513)
+		E.db.general.valuecolor = E:GetColor(254/255, 123/255, 44/255)
 	end
 
 	if not noDisplayMsg then
@@ -216,101 +218,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 end
 
-function E:SetupResolution(noDataReset)
-	if not noDataReset then
-		E:ResetMovers('')
-	end
-
-	if self == 'low' then
-		if not E.db.movers then E.db.movers = {}; end
-		if not noDataReset then
-			E.db.chat.panelWidth = 400
-			E.db.chat.panelHeight = 180
-			E.db.chat.panelWidthRight = 400
-			E.db.chat.panelHeightRight = 180
-
-			E.db.bags.bagWidth = 394
-			E.db.bags.bankWidth = 394
-
-			E:CopyTable(E.db.actionbar, P.actionbar)
-
-			E.db.actionbar.bar1.heightMult = 2
-			E.db.actionbar.bar2.enabled = true
-			E.db.actionbar.bar3.enabled = false
-			E.db.actionbar.bar5.enabled = false
-		end
-
-		if not noDataReset then
-			E.db.auras.wrapAfter = 10
-		end
-
-		E.db.movers.ElvAB_2 = "CENTER,ElvUIParent,BOTTOM,0,56.18"
-
-		if not noDataReset then
-			E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-
-			E.db.unitframe.fontSize = 10
-
-			E.db.unitframe.units.player.width = 200
-			E.db.unitframe.units.player.castbar.width = 200
-			E.db.unitframe.units.player.classbar.fill = 'fill'
-			E.db.unitframe.units.player.health.text_format = "[healthcolor][health:current]"
-
-			E.db.unitframe.units.target.width = 200
-			E.db.unitframe.units.target.castbar.width = 200
-			E.db.unitframe.units.target.health.text_format = '[healthcolor][health:current]'
-
-			E.db.unitframe.units.pet.power.enable = false
-			E.db.unitframe.units.pet.width = 200
-			E.db.unitframe.units.pet.height = 26
-
-			E.db.unitframe.units.targettarget.debuffs.enable = false
-			E.db.unitframe.units.targettarget.power.enable = false
-			E.db.unitframe.units.targettarget.width = 200
-			E.db.unitframe.units.targettarget.height = 26
-
-			E.db.unitframe.units.boss.width = 200
-			E.db.unitframe.units.boss.castbar.width = 200
-			E.db.unitframe.units.arena.width = 200
-			E.db.unitframe.units.arena.castbar.width = 200
-		end
-
-		local xOffset = E.PixelMode and 103 or 106
-		local yOffset = E.PixelMode and 125 or 135
-		local yOffsetSmall = E.PixelMode and 76 or 80
-
-		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,"..-xOffset..","..yOffset
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,"..xOffset..","..yOffsetSmall
-		E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,"..xOffset..","..yOffset
-		E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,"..-xOffset..","..yOffsetSmall
-		E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-
-		E.db.lowresolutionset = true
-	elseif not noDataReset then
-		E.db.chat.panelWidth = P.chat.panelWidth
-		E.db.chat.panelHeight = P.chat.panelHeight
-
-		E.db.bags.bagWidth = P.bags.bagWidth
-		E.db.bags.bankWidth = P.bags.bankWidth
-
-		E:CopyTable(E.db.actionbar, P.actionbar)
-		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-		E.db.auras.wrapAfter = P.auras.wrapAfter
-
-		E.db.lowresolutionset = nil
-	end
-
-	if not noDataReset and E.private.theme then
-		E:SetupTheme(E.private.theme, true)
-	end
-
-	E:StaggeredUpdateAll(nil, true)
-
-	if InstallStepComplete and not noDataReset then
-		InstallStepComplete.message = L["Resolution Style Set"]
-		InstallStepComplete:Show()
-	end
-end
 
 function E:SetupLayout(layout, noDataReset)
 	--Unitframes
@@ -322,245 +229,220 @@ function E:SetupLayout(layout, noDataReset)
 		E:ResetMovers('')
 		if not E.db.movers then E.db.movers = {} end
 
-		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
-		if E.PixelMode then
-			E.db.movers.ElvAB_2 = "BOTTOM,ElvUIParent,BOTTOM,0,38"
-		else
-			E.db.movers.ElvAB_2 = "BOTTOM,ElvUIParent,BOTTOM,0,40"
-		end
-		if not E.db.lowresolutionset then
-			E.db.actionbar.bar3.buttons = 6
-			E.db.actionbar.bar5.buttons = 6
-			E.db.actionbar.bar4.enabled = true
-		end
+		E.db["nameplates"]["glowColor"]["g"] = 1
+		E.db["nameplates"]["glowColor"]["r"] = 1
+		E.db["nameplates"]["glowColor"]["b"] = 1
+		E.db["datatexts"]["panels"]["LeftChatDataPanel"]["right"] = "Quick Join"
+
+		E.db["tooltip"]["fontSize"] = 10
+		E.db["tooltip"]["healthBar"]["height"] = 12
+		E.db["tooltip"]["healthBar"]["fontOutline"] = "MONOCHROMEOUTLINE"		
 	end
 
-	if layout == 'healer' then
-		if not IsAddOnLoaded('Clique') then
-			E:StaticPopup_Show("CLIQUE_ADVERT")
-		end
+	if (layout == "tank" or layout == "dpsCaster") and not noDataReset then
+		E.db["databars"]["reputation"]["enable"] = true
+		E.db["databars"]["reputation"]["orientation"] = "HORIZONTAL"
+		E.db["databars"]["reputation"]["height"] = 10
+		E.db["databars"]["reputation"]["width"] = 222
+		E.db["databars"]["azerite"]["orientation"] = "HORIZONTAL"
+		E.db["databars"]["azerite"]["height"] = 10
+		E.db["databars"]["azerite"]["width"] = 222
+		E.db["databars"]["experience"]["height"] = 10
+		E.db["databars"]["experience"]["orientation"] = "HORIZONTAL"
+		E.db["databars"]["experience"]["textSize"] = 12
+		E.db["databars"]["experience"]["width"] = 348
+		E.db["databars"]["honor"]["orientation"] = "HORIZONTAL"
+		E.db["databars"]["honor"]["height"] = 10
+		E.db["databars"]["honor"]["width"] = 222
+		E.db["general"]["talkingHeadFrameScale"] = 1
+		E.db["general"]["minimap"]["size"] = 220
+		E.db["general"]["bonusObjectivePosition"] = "AUTO"
+		E.db["general"]["totems"]["size"] = 50
+		E.db["general"]["totems"]["growthDirection"] = "HORIZONTAL"
+		E.db["general"]["totems"]["spacing"] = 8
+		E.db["general"]["objectiveFrameHeight"] = 400
+		E.db["movers"]["ElvUF_PlayerCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,-1,95"
+		E.db["movers"]["ElvUF_RaidMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,243"
+		E.db["movers"]["BossButton"] = "BOTTOM,ElvUIParent,BOTTOM,-1,293"
+		E.db["movers"]["LootFrameMover"] = "TOPLEFT,ElvUIParent,TOPLEFT,418,-186"
+		E.db["movers"]["ZoneAbility"] = "BOTTOM,ElvUIParent,BOTTOM,-1,293"
+		E.db["movers"]["SocialMenuMover"] = "TOPLEFT,ElvUIParent,TOPLEFT,4,-187"
+		E.db["movers"]["ElvUF_RaidpetMover"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,737"
+		E.db["movers"]["ElvUF_FocusMover"] = "BOTTOM,ElvUIParent,BOTTOM,342,59"
+		E.db["movers"]["VehicleSeatMover"] = "TOPLEFT,ElvUIParent,TOPLEFT,4,-4"
+		E.db["movers"]["ExperienceBarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,43"
+		E.db["movers"]["ElvUF_TargetTargetMover"] = "BOTTOM,ElvUIParent,BOTTOM,342,100"
+		E.db["movers"]["LossControlMover"] = "BOTTOM,ElvUIParent,BOTTOM,-1,507"
+		E.db["movers"]["LevelUpBossBannerMover"] = "TOP,ElvUIParent,TOP,-1,-120"
+		E.db["movers"]["MirrorTimer1Mover"] = "TOP,ElvUIParent,TOP,-1,-96"
+		E.db["movers"]["ElvAB_1"] = "BOTTOM,ElvUIParent,BOTTOM,-1,191"
+		E.db["movers"]["ElvAB_2"] = "BOTTOM,ElvUIParent,BOTTOM,0,4"
+		E.db["movers"]["BelowMinimapContainerMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-4,-274"
+		E.db["movers"]["TalkingHeadFrameMover"] = "BOTTOM,ElvUIParent,BOTTOM,-1,373"
+		E.db["movers"]["AzeriteBarMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-245"
+		E.db["movers"]["ElvAB_3"] = "BOTTOM,ElvUIParent,BOTTOM,-1,139"
+		E.db["movers"]["ReputationBarMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-264"
+		E.db["movers"]["ObjectiveFrameMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-163,-325"
+		E.db["movers"]["BNETMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-4,-274"
+		E.db["movers"]["ShiftAB"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,769"
+		E.db["movers"]["VOICECHAT"] = "TOPLEFT,ElvUIParent,TOPLEFT,368,-210"
+		E.db["movers"]["HonorBarMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-255"
+		E.db["movers"]["ElvUF_TargetCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,-1,243"
+		E.db["movers"]["AltPowerBarMover"] = "TOP,ElvUIParent,TOP,-1,-36"
+		E.db["movers"]["ElvUF_PlayerMover"] = "BOTTOM,ElvUIParent,BOTTOM,-342,139"
+		E.db["movers"]["ElvUF_Raid40Mover"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,482"
+		E.db["movers"]["TotemBarMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,490,4"
+		E.db["movers"]["ElvUF_TargetMover"] = "BOTTOM,ElvUIParent,BOTTOM,342,139"
+		E.db["movers"]["ElvUF_PartyMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,248"
+		E.db["movers"]["AlertFrameMover"] = "TOP,ElvUIParent,TOP,-1,-18"
+		E.db["movers"]["ElvAB_5"] = "BOTTOM,ElvUIParent,BOTTOM,-92,57"
+		E.db["movers"]["ElvUF_PetMover"] = "BOTTOM,ElvUIParent,BOTTOM,-342,100"
+		E.db["bags"]["bagWidth"] = 474
+		E.db["bags"]["scrapIcon"] = true
+		E.db["bags"]["bagSize"] = 42
+		E.db["bags"]["bankWidth"] = 474
+		E.db["bags"]["bankSize"] = 42
+		E.db["bags"]["itemLevelCustomColorEnable"] = true
+		E.db["chat"]["fontSize"] = 10
+		E.db["chat"]["panelHeight"] = 236
+		E.db["chat"]["panelColorConverted"] = true
+		E.db["chat"]["tapFontSize"] = 10
+		E.db["chat"]["panelWidth"] = 472
+		E.db["unitframe"]["smoothbars"] = true
+		E.db["unitframe"]["thinBorders"] = true
+		E.db["unitframe"]["units"]["pet"]["debuffs"]["enable"] = true
+		E.db["unitframe"]["units"]["pet"]["debuffs"]["anchorPoint"] = "TOPRIGHT"
+		E.db["unitframe"]["units"]["pet"]["disableTargetGlow"] = false
+		E.db["unitframe"]["units"]["pet"]["width"] = 270
+		E.db["unitframe"]["units"]["pet"]["infoPanel"]["height"] = 14
+		E.db["unitframe"]["units"]["pet"]["portrait"]["camDistanceScale"] = 2
+		E.db["unitframe"]["units"]["pet"]["castbar"]["iconSize"] = 32
+		E.db["unitframe"]["units"]["pet"]["castbar"]["width"] = 270
+		E.db["unitframe"]["units"]["boss"]["debuffs"]["numrows"] = 1
+		E.db["unitframe"]["units"]["boss"]["debuffs"]["sizeOverride"] = 27
+		E.db["unitframe"]["units"]["boss"]["debuffs"]["maxDuration"] = 300
+		E.db["unitframe"]["units"]["boss"]["debuffs"]["yOffset"] = -16
+		E.db["unitframe"]["units"]["boss"]["portrait"]["camDistanceScale"] = 2
+		E.db["unitframe"]["units"]["boss"]["portrait"]["width"] = 45
+		E.db["unitframe"]["units"]["boss"]["castbar"]["width"] = 246
+		E.db["unitframe"]["units"]["boss"]["width"] = 246
+		E.db["unitframe"]["units"]["boss"]["infoPanel"]["height"] = 17
+		E.db["unitframe"]["units"]["boss"]["height"] = 60
+		E.db["unitframe"]["units"]["boss"]["buffs"]["maxDuration"] = 300
+		E.db["unitframe"]["units"]["boss"]["buffs"]["sizeOverride"] = 27
+		E.db["unitframe"]["units"]["boss"]["buffs"]["yOffset"] = 16
+		E.db["unitframe"]["units"]["targettarget"]["debuffs"]["enable"] = false
+		E.db["unitframe"]["units"]["targettarget"]["debuffs"]["anchorPoint"] = "TOPRIGHT"
+		E.db["unitframe"]["units"]["targettarget"]["power"]["enable"] = false
+		E.db["unitframe"]["units"]["targettarget"]["disableMouseoverGlow"] = true
+		E.db["unitframe"]["units"]["targettarget"]["width"] = 270
+		E.db["unitframe"]["units"]["targettarget"]["threatStyle"] = "GLOW"
+		E.db["unitframe"]["units"]["targettarget"]["raidicon"]["attachTo"] = "LEFT"
+		E.db["unitframe"]["units"]["targettarget"]["raidicon"]["enable"] = false
+		E.db["unitframe"]["units"]["targettarget"]["raidicon"]["xOffset"] = 2
+		E.db["unitframe"]["units"]["targettarget"]["raidicon"]["yOffset"] = 0
+		E.db["unitframe"]["units"]["player"]["debuffs"]["perrow"] = 7
+		E.db["unitframe"]["units"]["player"]["classbar"]["height"] = 14
+		E.db["unitframe"]["units"]["player"]["aurabar"]["height"] = 26
+		E.db["unitframe"]["units"]["player"]["healPrediction"]["showOverAbsorbs"] = false
+		E.db["unitframe"]["units"]["player"]["disableMouseoverGlow"] = true
+		E.db["unitframe"]["units"]["player"]["infoPanel"]["enable"] = true
+		E.db["unitframe"]["units"]["player"]["power"]["height"] = 22
+		E.db["unitframe"]["units"]["player"]["power"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["player"]["health"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["player"]["castbar"]["insideInfoPanel"] = false
+		E.db["unitframe"]["units"]["player"]["castbar"]["height"] = 40
+		E.db["unitframe"]["units"]["player"]["castbar"]["width"] = 405
+		E.db["unitframe"]["units"]["player"]["height"] = 82
+		E.db["unitframe"]["units"]["player"]["buffs"]["perrow"] = 7
+		E.db["unitframe"]["units"]["raid40"]["enable"] = false
+		E.db["unitframe"]["units"]["raid40"]["rdebuffs"]["font"] = "PT Sans Narrow"
+		E.db["unitframe"]["units"]["focus"]["width"] = 270
+		E.db["unitframe"]["units"]["focus"]["castbar"]["width"] = 270
+		E.db["unitframe"]["units"]["target"]["debuffs"]["anchorPoint"] = "TOPLEFT"
+		E.db["unitframe"]["units"]["target"]["debuffs"]["enable"] = false
+		E.db["unitframe"]["units"]["target"]["debuffs"]["maxDuration"] = 0
+		E.db["unitframe"]["units"]["target"]["debuffs"]["attachTo"] = "FRAME"
+		E.db["unitframe"]["units"]["target"]["debuffs"]["perrow"] = 7
+		E.db["unitframe"]["units"]["target"]["power"]["height"] = 22
+		E.db["unitframe"]["units"]["target"]["power"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["target"]["healPrediction"]["showOverAbsorbs"] = false
+		E.db["unitframe"]["units"]["target"]["disableMouseoverGlow"] = true
+		E.db["unitframe"]["units"]["target"]["castbar"]["height"] = 40
+		E.db["unitframe"]["units"]["target"]["castbar"]["width"] = 405
+		E.db["unitframe"]["units"]["target"]["castbar"]["insideInfoPanel"] = false
+		E.db["unitframe"]["units"]["target"]["infoPanel"]["enable"] = true
+		E.db["unitframe"]["units"]["target"]["orientation"] = "LEFT"
+		E.db["unitframe"]["units"]["target"]["health"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["target"]["name"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["target"]["name"]["text_format"] = "[namecolor][name]"
+		E.db["unitframe"]["units"]["target"]["height"] = 82
+		E.db["unitframe"]["units"]["target"]["buffs"]["anchorPoint"] = "TOPLEFT"
+		E.db["unitframe"]["units"]["target"]["buffs"]["perrow"] = 7
+		E.db["unitframe"]["units"]["target"]["aurabar"]["height"] = 26
+		E.db["unitframe"]["units"]["raid"]["rdebuffs"]["font"] = "PT Sans Narrow"
+		E.db["unitframe"]["units"]["raid"]["rdebuffs"]["size"] = 30
+		E.db["unitframe"]["units"]["raid"]["rdebuffs"]["xOffset"] = 30
+		E.db["unitframe"]["units"]["raid"]["rdebuffs"]["yOffset"] = 25
+		E.db["unitframe"]["units"]["raid"]["numGroups"] = 8
+		E.db["unitframe"]["units"]["raid"]["growthDirection"] = "RIGHT_UP"
+		E.db["unitframe"]["units"]["raid"]["resurrectIcon"]["attachTo"] = "BOTTOMRIGHT"
+		E.db["unitframe"]["units"]["raid"]["roleIcon"]["attachTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["raid"]["roleIcon"]["size"] = 12
+		E.db["unitframe"]["units"]["raid"]["roleIcon"]["xOffset"] = 0
+		E.db["unitframe"]["units"]["raid"]["roleIcon"]["position"] = "BOTTOMRIGHT"
+		E.db["unitframe"]["units"]["raid"]["width"] = 92
+		E.db["unitframe"]["units"]["raid"]["infoPanel"]["enable"] = true
+		E.db["unitframe"]["units"]["raid"]["name"]["attachTextTo"] = "InfoPanel"
+		E.db["unitframe"]["units"]["raid"]["name"]["xOffset"] = 2
+		E.db["unitframe"]["units"]["raid"]["name"]["position"] = "BOTTOMLEFT"
+		E.db["unitframe"]["units"]["raid"]["health"]["frequentUpdates"] = true
+		E.db["unitframe"]["units"]["raid"]["visibility"] = "[nogroup] hide; show"
+		E.db["unitframe"]["units"]["party"]["enable"] = false
+		E.db["unitframe"]["units"]["party"]["rdebuffs"]["font"] = "PT Sans Narrow"
+		E.db["unitframe"]["units"]["party"]["power"]["height"] = 13
+		E.db["unitframe"]["units"]["party"]["width"] = 231
+		E.db["unitframe"]["units"]["party"]["height"] = 74
+		
+		E.db["actionbar"]["bar3"]["buttonsize"] = 50
+		E.db["actionbar"]["bar3"]["buttons"] = 8
+		E.db["actionbar"]["bar3"]["buttonsPerRow"] = 10
+		E.db["actionbar"]["bar3"]["visibility"] = "[petbattle] hide; show"
+		E.db["actionbar"]["bar3"]["buttonspacing"] = 1
+		E.db["actionbar"]["bar6"]["visibility"] = "[petbattle] hide; show"
+		E.db["actionbar"]["bar2"]["enabled"] = true
+		E.db["actionbar"]["bar2"]["buttons"] = 9
+		E.db["actionbar"]["bar2"]["buttonspacing"] = 1
+		E.db["actionbar"]["bar2"]["buttonsize"] = 38
+		E.db["actionbar"]["bar2"]["visibility"] = "[petbattle] hide; show"
+		E.db["actionbar"]["bar1"]["buttonspacing"] = 1
+		E.db["actionbar"]["bar1"]["buttonsize"] = 50
+		E.db["actionbar"]["bar1"]["buttons"] = 8
+		E.db["actionbar"]["backdropSpacingConverted"] = true
+		E.db["actionbar"]["bar5"]["enabled"] = false
+		E.db["actionbar"]["bar5"]["visibility"] = "[petbattle] hide; show"
+		E.db["actionbar"]["bar4"]["enabled"] = false
+		E.db["actionbar"]["bar4"]["visibility"] = "[petbattle] hide; show"
+		E.db["nameplates"]["fontSize"] = 9
+		E.db["nameplates"]["stackFont"] = "Homespun"
+		E.db["nameplates"]["healthFont"] = "Homespun"
+		E.db["nameplates"]["healthFontOutline"] = "MONOCHROMEOUTLINE"
+		E.db["nameplates"]["font"] = "Homespun"
+		E.db["nameplates"]["stackFontOutline"] = "MONOCHROMEOUTLINE"
+		E.db["nameplates"]["healthFontSize"] = 9
+		E.db["nameplates"]["fontOutline"] = "MONOCHROMEOUTLINE"
 
-		if not noDataReset then
-			E.db.unitframe.units.raid.horizontalSpacing = 9
-			E.db.unitframe.units.raid.rdebuffs.enable = false
-			E.db.unitframe.units.raid.verticalSpacing = 9
-			E.db.unitframe.units.raid.debuffs.sizeOverride = 16
-			E.db.unitframe.units.raid.debuffs.enable = true
-			E.db.unitframe.units.raid.debuffs.anchorPoint = "TOPRIGHT"
-			E.db.unitframe.units.raid.debuffs.xOffset = -4
-			E.db.unitframe.units.raid.debuffs.yOffset = -7
-			E.db.unitframe.units.raid.height = 45
-			E.db.unitframe.units.raid.buffs.xOffset = 50
-			E.db.unitframe.units.raid.buffs.yOffset = -6
-			E.db.unitframe.units.raid.buffs.clickThrough = true
-			E.db.unitframe.units.raid.buffs.perrow = 1
-			E.db.unitframe.units.raid.buffs.sizeOverride = 22
-			E.db.unitframe.units.raid.buffs.enable = true
-			E.db.unitframe.units.raid.growthDirection = "LEFT_UP"
-
-			E.db.unitframe.units.party.growthDirection = "LEFT_UP"
-			E.db.unitframe.units.party.horizontalSpacing = 9
-			E.db.unitframe.units.party.verticalSpacing = 9
-			E.db.unitframe.units.party.debuffs.sizeOverride = 16
-			E.db.unitframe.units.party.debuffs.enable = true
-			E.db.unitframe.units.party.debuffs.anchorPoint = "TOPRIGHT"
-			E.db.unitframe.units.party.debuffs.xOffset = -4
-			E.db.unitframe.units.party.debuffs.yOffset = -7
-			E.db.unitframe.units.party.height = 45
-			E.db.unitframe.units.party.buffs.xOffset = 50
-			E.db.unitframe.units.party.buffs.yOffset = -6
-			E.db.unitframe.units.party.buffs.clickThrough = true
-			E.db.unitframe.units.party.buffs.perrow = 1
-			E.db.unitframe.units.party.buffs.sizeOverride = 22
-			E.db.unitframe.units.party.buffs.enable = true
-			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
-			E.db.unitframe.units.party.health.text_format = "[healthcolor][health:deficit]"
-			E.db.unitframe.units.party.health.position = "BOTTOM"
-			E.db.unitframe.units.party.width = 80
-			E.db.unitframe.units.party.height = 45
-			E.db.unitframe.units.party.name.text_format = "[namecolor][name:short]"
-			E.db.unitframe.units.party.name.position = "TOP"
-			E.db.unitframe.units.party.power.text_format = ""
-
-			E.db.unitframe.units.raid40.height = 30
-			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
-
-			E.db.unitframe.units.party.health.frequentUpdates = true
-			E.db.unitframe.units.raid.health.frequentUpdates = true
-			E.db.unitframe.units.raid40.health.frequentUpdates = true
-
-			E.db.unitframe.units.party.healPrediction.enable = true
-			E.db.unitframe.units.raid.healPrediction.enable = true
-			E.db.unitframe.units.raid40.healPrediction.enable = true
-			E.db.unitframe.units.player.castbar.insideInfoPanel = false
-			E.db.actionbar.bar2.enabled = true
-			if not E.db.lowresolutionset then
-				E.db.actionbar.bar3.buttons = 12
-				E.db.actionbar.bar5.buttons = 12
-				E.db.actionbar.bar4.enabled = false
-				if not E.PixelMode then
-					E.db.actionbar.bar1.heightMult = 2
-				end
-			end
-		end
-
-		if not E.db.movers then E.db.movers = {}; end
-		 --Make sure we account for EyeFinity or other scenarious where ElvUIParent is not the same size as UIParent
-		local xOffset = ((GetScreenWidth() - E.diffGetLeft - E.diffGetRight) * 0.34375)
-
-		if E.PixelMode then
-			E.db.movers.ElvAB_3 = "BOTTOM,ElvUIParent,BOTTOM,312,4"
-			E.db.movers.ElvAB_5 = "BOTTOM,ElvUIParent,BOTTOM,-312,4"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-
-			if not E.db.lowresolutionset then
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,278,132"
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-278,132"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,176"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,132"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,432"
-				E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,275"
-			else
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-102,182"
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,182"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,120"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-102,120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-				E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
-			end
-		else
-			E.db.movers.ElvAB_3 = "BOTTOM,ElvUIParent,BOTTOM,332,4"
-			E.db.movers.ElvAB_5 = "BOTTOM,ElvUIParent,BOTTOM,-332,4"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHT,ElvUIParent,BOTTOMLEFT,"..xOffset..",450"
-
-			if not E.db.lowresolutionset then
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,307,145"
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-307,145"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,186"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,145"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,432"
-				E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,275"
-			else
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-118,182"
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,182"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,120"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-118,120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-				E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
-			end
-		end
-	elseif E.db.lowresolutionset then
-		if not E.db.movers then E.db.movers = {}; end
-		if E.PixelMode then
-			E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-102,135"
-			E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,135"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,80"
-			E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-102,80"
-			E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-118,142"
-			E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,142"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,84"
-			E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-118,84"
-			E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-		end
-
-		E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
+		E.db["auras"]["debuffs"]["countFontSize"] = 10
+		E.db["auras"]["debuffs"]["size"] = 40
+		E.db["auras"]["buffs"]["countFontSize"] = 10
+		E.db["auras"]["buffs"]["size"] = 40
+	end
+	
+	if(layout == "dpsCaster" and not noDataReset) then
+		E.db["movers"]["ElvUF_PlayerCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,243"
+		E.db["movers"]["ElvUF_TargetCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,97"	
 	end
 
-	if layout ~= 'healer' and not E.db.lowresolutionset then
-		E.db.actionbar.bar1.heightMult = 1
-	end
-
-	if E.db.lowresolutionset and not noDataReset then
-		E.db.unitframe.units.player.width = 200
-		if layout ~= 'healer' then
-			E.db.unitframe.units.player.castbar.width = 200
-		end
-		E.db.unitframe.units.player.classbar.fill = 'fill'
-
-		E.db.unitframe.units.target.width = 200
-		E.db.unitframe.units.target.castbar.width = 200
-
-		E.db.unitframe.units.pet.power.enable = false
-		E.db.unitframe.units.pet.width = 200
-		E.db.unitframe.units.pet.height = 26
-
-		E.db.unitframe.units.targettarget.debuffs.enable = false
-		E.db.unitframe.units.targettarget.power.enable = false
-		E.db.unitframe.units.targettarget.width = 200
-		E.db.unitframe.units.targettarget.height = 26
-
-		E.db.unitframe.units.boss.width = 200
-		E.db.unitframe.units.boss.castbar.width = 200
-		E.db.unitframe.units.arena.width = 200
-		E.db.unitframe.units.arena.castbar.width = 200
-	end
-
-	if(layout == 'dpsCaster' or layout == 'healer' or (layout == 'dpsMelee' and E.myclass == 'HUNTER')) then
-		if not E.db.movers then E.db.movers = {}; end
-		E.db.unitframe.units.player.castbar.width = E.PixelMode and 406 or 436
-		E.db.unitframe.units.player.castbar.height = 28
-		E.db.unitframe.units.player.castbar.insideInfoPanel = false
-		local yOffset = 80
-		if not E.db.lowresolutionset then
-			if layout ~= 'healer' then
-				yOffset = 42
-
-				if E.PixelMode then
-					E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-278,110"
-					E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,278,110"
-					E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,110"
-					E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,150"
-					E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,195"
-				else
-					E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-307,110"
-					E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,307,110"
-					E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,110"
-					E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,150"
-					E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,195"
-				end
-			else
-				yOffset = 76
-			end
-		elseif E.db.lowresolutionset then
-			if E.PixelMode then
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-102,182"
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,182"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,102,120"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-102,120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-			else
-				E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-118,182"
-				E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,182"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,118,120"
-				E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-118,120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,310,332"
-			end
-
-			E.db.movers.BossButton = "TOP,ElvUIParent,TOP,0,-138"
-		end
-
-		if E.PixelMode then
-			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,"..yOffset
-		else
-			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,-2,"..(yOffset + 5)
-		end
-	elseif (layout == 'dpsMelee' or layout == 'tank') and not E.db.lowresolutionset and not E.PixelMode then
-		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-307,76"
-		E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,307,76"
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOM,ElvUIParent,BOTTOM,0,76"
-		E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,0,115"
-		E.db.movers.BossButton = "BOTTOM,ElvUIParent,BOTTOM,0,158"
-
-	end
-
-	--Datatexts
 	if not noDataReset and InstallStepComplete then
 		InstallStepComplete.message = L["Layout Set"]
 		InstallStepComplete:Show()
@@ -575,62 +457,6 @@ function E:SetupLayout(layout, noDataReset)
 	E:StaggeredUpdateAll(nil, true)
 end
 
-local function SetupAuras(style)
-	local UF = E:GetModule('UnitFrames')
-
-	local frame = UF.player
-	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
-	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
-	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	frame = UF.target
-	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
-	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
-	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	frame = UF.focus
-	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
-	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
-	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	if not style then
-		--PLAYER
-		E.db.unitframe.units.player.buffs.enable = true
-		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
-		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
-		E.db.unitframe.units.player.aurabar.enable = false
-		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
-		end
-
-		--TARGET
-		E.db.unitframe.units.target.debuffs.enable = true
-		E.db.unitframe.units.target.aurabar.enable = false
-		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
-		end
-	end
-
-	if InstallStepComplete then
-		InstallStepComplete.message = L["Auras Set"]
-		InstallStepComplete:Show()
-	end
-end
 
 local function InstallComplete()
 	E.private.install_complete = E.version
@@ -769,28 +595,14 @@ local function SetPage(PageNum)
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption1Button:SetText(L["Tank"])
+		InstallOption1Button:SetText(L["Tank / Physical DPS"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
 		InstallOption2Button:SetText(L["Healer"])
 		InstallOption3Button:Show()
-		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsMelee') end)
-		InstallOption3Button:SetText(L["Physical DPS"])
-		InstallOption4Button:Show()
-		InstallOption4Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption4Button:SetText(L["Caster DPS"])
+		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
+		InstallOption3Button:SetText(L["Caster DPS"])
 	elseif PageNum == 7 then
-		f.SubTitle:SetText(L["Auras"])
-		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
-		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
-		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
-		InstallOption1Button:SetText(L["Aura Bars & Icons"])
-		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
-		InstallOption2Button:SetText(L["Icons Only"])
-	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
