@@ -293,12 +293,13 @@ function M:PLAYER_ENTERING_WORLD()
 end
 
 function M:UpdateItemLevel()
+	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
+
 	for i=1, 17 do
-		local link = GetInventoryItemLink(_G.InspectFrame.unit, i)
-		if link and i ~= 4 then
+		if i ~= 4 then
 			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
-			ScanTooltip:SetHyperlink(link)
+			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
 
 			for x = 2, 3 do
