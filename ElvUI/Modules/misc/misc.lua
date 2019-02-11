@@ -306,11 +306,8 @@ function M:UpdateItemLevel()
 				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
 				if line then
 					local iLvl = line:match(MATCH_ITEM_LEVEL)
-					if iLvl then
-						if iLvl ~= "1" then
-							count, iLevel = count + 1, iLevel + tonumber(iLvl)
-						end
-						break
+					if iLvl and iLvl ~= "1" then
+						count, iLevel = count + 1, iLevel + tonumber(iLvl)
 					end
 				end
 			end
