@@ -312,7 +312,7 @@ local InspectItems = {
 	"InspectSecondaryHandSlot",
 }
 
-function M:UpdateiLvLPoints(id)
+function M:GetItemLevelPoints(id)
 	if not id then return end
 
 	if id <= 5 or (id == 9 or id == 15) then
@@ -369,10 +369,10 @@ function M:ADDON_LOADED(_, addon)
 
 		for i, slot in pairs(InspectItems) do
 			if i ~= 4 then
-				local a, b = M:UpdateiLvLPoints(i)
+				local x, y = M:GetItemLevelPoints(i)
 				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
 				_G[slot].iLvlText:FontTemplate()
-				_G[slot].iLvlText:Point("BOTTOM", _G[slot], a, b)
+				_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
 			end
 		end
 
