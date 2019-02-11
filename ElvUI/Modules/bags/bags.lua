@@ -1054,9 +1054,8 @@ function B:Layout(isBank)
 		if numSlots > 0 then
 			if not f.Bags[bagID] then
 				f.Bags[bagID] = CreateFrame('Frame', f:GetName()..'Bag'..bagID, f.holderFrame);
-				f.Bags[bagID]:SetID(bagID);
 				f.Bags[bagID].UpdateBagSlots = B.UpdateBagSlots;
-				f.Bags[bagID].UpdateSlot = nil
+				f.Bags[bagID]:SetID(bagID);
 			end
 
 			f.Bags[bagID].numSlots = numSlots;
