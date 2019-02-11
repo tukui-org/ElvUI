@@ -365,6 +365,7 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	S:HandleButton(btn)
 
 	btn:SetHighlightTexture(nil)
+	btn:SetSize(16, 16)
 
 	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
