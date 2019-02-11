@@ -549,12 +549,14 @@ function B:UpdateSlot(bagID, slotID)
 			for i = 2, bindTypeLines do
 				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
 				if not line or line == "" then break end
-				if showBindType then
-					BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
-				end
 				if canShowItemLevel and (i <= itemLevelLines) then
 					local itemLevel = line:match(MATCH_ITEM_LEVEL)
 					if itemLevel then iLvl = tonumber(itemLevel) end
+				end
+				if showBindType then
+					-- as long as we check the ilvl first, we can savely break on these because they fall after ilvl
+					if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+					BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
 				end
 				if ((not showBindType) or (BoE or BoU)) and ((not canShowItemLevel) or iLvl) then
 					break
