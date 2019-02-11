@@ -4,6 +4,7 @@ E.Misc = M;
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local format, gsub = string.format, string.gsub
 --WoW API / Variables
 local UnitGUID = UnitGUID
@@ -43,12 +44,16 @@ local BNGetFriendInfo = BNGetFriendInfo
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local StaticPopup_Hide = StaticPopup_Hide
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local GetInventoryItemLink = GetInventoryItemLink
+local GetItemInfo = GetItemInfo
+local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
-local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local CHARACTER_LINK_ITEM_LEVEL_TOOLTIP = CHARACTER_LINK_ITEM_LEVEL_TOOLTIP
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
@@ -270,7 +275,7 @@ function M:AutoInvite(event, leaderName)
 			end
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
-		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custom created group
+		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
 		StaticPopup_Hide("PARTY_INVITE")
 		hideStatic = false
 	end
@@ -297,15 +302,16 @@ function M:UpdateItemLevel()
 			iLevel = iLevel + iLvl
 		end
 	end
+
 	local itemLevelAverage = E:Round(iLevel / count)
-	InspectFrame.ItemLevelText:SetFormattedText(L["Average Item Level: %s"], itemLevelAverage)
+	_G.InspectFrame.ItemLevelText:SetFormattedText(CHARACTER_LINK_ITEM_LEVEL_TOOLTIP, itemLevelAverage)
 end
 
-function M:ADDON_LOADED(event, addon)
-	if(addon == "Blizzard_InspectUI") then
-		InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
-		InspectFrame.ItemLevelText = InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-		InspectFrame.ItemLevelText:SetPoint("BOTTOMRIGHT", InspectFrame, "BOTTOMRIGHT", -6, 6)
+function M:ADDON_LOADED(_, addon)
+	if addon == "Blizzard_InspectUI" then
+		_G.InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
+		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		_G.InspectFrame.ItemLevelText:SetPoint("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
 
 		self:UnregisterEvent("ADDON_LOADED")
 	end
@@ -328,7 +334,7 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
-	if(IsAddOnLoaded("Blizzard_InspectUI")) then
+	if IsAddOnLoaded("Blizzard_InspectUI") then
 		self:ADDON_LOADED(nil, "Blizzard_InspectUI")
 	else
 		self:RegisterEvent("ADDON_LOADED")
