@@ -8,8 +8,6 @@ local ipairs = ipairs
 local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
-local GetScreenWidth = GetScreenWidth
 local SetCVar = SetCVar
 local PlaySoundFile = PlaySoundFile
 local ReloadUI = ReloadUI
@@ -34,28 +32,21 @@ local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvUIInstallFrame, InstallStepComplete, InstallStatus, InstallNextButton, InstallPrevButton
--- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
--- GLOBALS: InstallSlider, LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel, CreateAnimationGroup
--- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
--- GLOBALS: CUSTOM_CLASS_COLORS, MAX_WOW_CHAT_CHANNELS
-
 local CURRENT_PAGE = 0
 local MAX_PAGE = 7
 
 local function SetupChat()
-	InstallStepComplete.message = L["Chat Set"]
-	InstallStepComplete:Show()
+	_G.InstallStepComplete.message = L["Chat Set"]
+	_G.InstallStepComplete:Show()
 	FCF_ResetChatWindows() -- Monitor this
-	FCF_SetLocked(ChatFrame1, 1)
-	FCF_DockFrame(ChatFrame2)
-	FCF_SetLocked(ChatFrame2, 1)
+	FCF_SetLocked(_G.ChatFrame1, 1)
+	FCF_DockFrame(_G.ChatFrame2)
+	FCF_SetLocked(_G.ChatFrame2, 1)
 
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(ChatFrame3)
-	FCF_SetLocked(ChatFrame3, 1)
-	ChatFrame3:Show()
+	FCF_UnDockFrame(_G.ChatFrame3)
+	FCF_SetLocked(_G.ChatFrame3, 1)
+	_G.ChatFrame3:Show()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -63,10 +54,10 @@ local function SetupChat()
 		-- move general bottom left
 		if i == 1 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+			frame:Point("BOTTOMLEFT", _G.LeftChatToggleButton, "TOPLEFT", 1, 3)
 		elseif i == 3 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
+			frame:Point("BOTTOMLEFT", _G.RightChatDataPanel, "TOPLEFT", 1, 3)
 		end
 
 		FCF_SavePositionAndDimensions(frame)
@@ -87,25 +78,25 @@ local function SetupChat()
 
 	-- keys taken from `ChatTypeGroup` but doesnt add: "OPENING", "TRADESKILLS", "PET_INFO", "COMBAT_MISC_INFO", "COMMUNITIES_CHANNEL", "PET_BATTLE_COMBAT_LOG", "PET_BATTLE_INFO", "TARGETICONS"
 	local chatGroup = { "SYSTEM", "CHANNEL", "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "MONSTER_SAY", "MONSTER_YELL", "MONSTER_EMOTE", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER", "ERRORS", "AFK", "DND", "IGNORED", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "BN_WHISPER", "BN_INLINE_TOAST_ALERT" }
-	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
+	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame1)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(ChatFrame1, v)
+		ChatFrame_AddMessageGroup(_G.ChatFrame1, v)
 	end
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { "COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_FACTION_CHANGE", "SKILL", "LOOT", "CURRENCY", "MONEY" }
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
+	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame3)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(ChatFrame3, v)
+		ChatFrame_AddMessageGroup(_G.ChatFrame3, v)
 	end
 
-	ChatFrame_AddChannel(ChatFrame1, GENERAL)
-	ChatFrame_RemoveChannel(ChatFrame1, TRADE)
-	ChatFrame_AddChannel(ChatFrame3, TRADE)
+	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
+	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
+	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "COMMUNITIES_CHANNEL" }
-	for i = 1, MAX_WOW_CHAT_CHANNELS do
+	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
 		tinsert(chatGroup, "CHANNEL"..i)
 	end
 	for _, v in ipairs(chatGroup) do
@@ -120,11 +111,11 @@ local function SetupChat()
 	if E.Chat then
 		E.Chat:PositionChat(true)
 		if E.db.RightChatPanelFaded then
-			RightChatToggleButton:Click()
+			_G.RightChatToggleButton:Click()
 		end
 
 		if E.db.LeftChatPanelFaded then
-			LeftChatToggleButton:Click()
+			_G.LeftChatToggleButton:Click()
 		end
 	end
 
@@ -151,11 +142,11 @@ local function SetupCVars()
 	SetCVar("nameplateShowFriendlyNPCs", 1)
 	SetCVar("showQuestTrackingTooltips", 1)
 
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
-	InstallStepComplete.message = L["CVars Set"]
-	InstallStepComplete:Show()
+	_G.InstallStepComplete.message = L["CVars Set"]
+	_G.InstallStepComplete:Show()
 end
 
 function E:GetColor(r, g, b, a)
@@ -165,7 +156,7 @@ end
 
 
 function E:SetupTheme(theme, noDisplayMsg)
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	E.private.theme = theme
 
 	--Set colors
@@ -210,11 +201,9 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E:StaggeredUpdateAll(nil, true)
 	end
 
-	if InstallStatus then
-		if InstallStepComplete and not noDisplayMsg then
-			InstallStepComplete.message = L["Theme Set"]
-			InstallStepComplete:Show()
-		end
+	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["Theme Set"]
+		_G.InstallStepComplete:Show()
 	end
 end
 
@@ -438,14 +427,14 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.auras.buffs.size = 40
 	end
 
-	if(layout == "dpsCaster" and not noDataReset) then
+	if layout == "dpsCaster" and not noDataReset then
 		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
 		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
 	end
 
-	if not noDataReset and InstallStepComplete then
-		InstallStepComplete.message = L["Layout Set"]
-		InstallStepComplete:Show()
+	if not noDataReset and _G.InstallStepComplete then
+		_G.InstallStepComplete.message = L["Layout Set"]
+		_G.InstallStepComplete:Show()
 	end
 
 	E.db.layoutSet = layout
@@ -465,53 +454,58 @@ local function InstallComplete()
 end
 
 local function ResetAll()
-	InstallNextButton:Disable()
-	InstallPrevButton:Disable()
-	InstallOption1Button:Hide()
-	InstallOption1Button:SetScript("OnClick", nil)
-	InstallOption1Button:SetText("")
-	InstallOption2Button:Hide()
-	InstallOption2Button:SetScript('OnClick', nil)
-	InstallOption2Button:SetText('')
-	InstallOption3Button:Hide()
-	InstallOption3Button:SetScript('OnClick', nil)
-	InstallOption3Button:SetText('')
-	InstallOption4Button:Hide()
-	InstallOption4Button:SetScript('OnClick', nil)
-	InstallOption4Button:SetText('')
-	InstallSlider:Hide()
-	InstallSlider.Min:SetText("")
-	InstallSlider.Max:SetText("")
-	InstallSlider.Cur:SetText("")
-	ElvUIInstallFrame.SubTitle:SetText("")
-	ElvUIInstallFrame.Desc1:SetText("")
-	ElvUIInstallFrame.Desc2:SetText("")
-	ElvUIInstallFrame.Desc3:SetText("")
-	ElvUIInstallFrame:Size(550, 400)
+	_G.InstallNextButton:Disable()
+	_G.InstallPrevButton:Disable()
+	_G.InstallOption1Button:Hide()
+	_G.InstallOption1Button:SetScript("OnClick", nil)
+	_G.InstallOption1Button:SetText("")
+	_G.InstallOption2Button:Hide()
+	_G.InstallOption2Button:SetScript('OnClick', nil)
+	_G.InstallOption2Button:SetText('')
+	_G.InstallOption3Button:Hide()
+	_G.InstallOption3Button:SetScript('OnClick', nil)
+	_G.InstallOption3Button:SetText('')
+	_G.InstallOption4Button:Hide()
+	_G.InstallOption4Button:SetScript('OnClick', nil)
+	_G.InstallOption4Button:SetText('')
+	_G.InstallSlider:Hide()
+	_G.InstallSlider.Min:SetText("")
+	_G.InstallSlider.Max:SetText("")
+	_G.InstallSlider.Cur:SetText("")
+	_G.ElvUIInstallFrame.SubTitle:SetText("")
+	_G.ElvUIInstallFrame.Desc1:SetText("")
+	_G.ElvUIInstallFrame.Desc2:SetText("")
+	_G.ElvUIInstallFrame.Desc3:SetText("")
+	_G.ElvUIInstallFrame:Size(550, 400)
 end
 
 local function SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
-	InstallStatus.anim.progress:SetChange(PageNum)
-	InstallStatus.anim.progress:Play()
-	InstallStatus.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
+	_G.InstallStatus.anim.progress:SetChange(PageNum)
+	_G.InstallStatus.anim.progress:Play()
+	_G.InstallStatus.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
 
 	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
-	local f = ElvUIInstallFrame
+	_G.ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
+	local f = _G.ElvUIInstallFrame
 
 	if PageNum == MAX_PAGE then
-		InstallNextButton:Disable()
+		_G.InstallNextButton:Disable()
 	else
-		InstallNextButton:Enable()
+		_G.InstallNextButton:Enable()
 	end
 
 	if PageNum == 1 then
-		InstallPrevButton:Disable()
+		_G.InstallPrevButton:Disable()
 	else
-		InstallPrevButton:Enable()
+		_G.InstallPrevButton:Enable()
 	end
+
+	local InstallOption1Button = _G.InstallOption1Button
+	local InstallOption2Button = _G.InstallOption2Button
+	local InstallOption3Button = _G.InstallOption3Button
+	local InstallSlider = _G.InstallSlider
 
 	if PageNum == 1 then
 		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
@@ -566,8 +560,8 @@ local function SetPage(PageNum)
 
 		InstallSlider:SetScript("OnValueChanged", function(self)
 			E.global.general.UIScale = self:GetValue()
-			local value = E:PixelClip(E.global.general.UIScale)
-			InstallSlider.Cur:SetText(value)
+			local scale = E:PixelClip(E.global.general.UIScale)
+			InstallSlider.Cur:SetText(scale)
 		end)
 
 		InstallSlider.Min:SetText(0.4)
@@ -612,7 +606,7 @@ local function SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript("OnClick", InstallComplete)
 		InstallOption2Button:SetText(L["Finished"])
-		ElvUIInstallFrame:Size(550, 350)
+		_G.ElvUIInstallFrame:Size(550, 350)
 	end
 end
 
@@ -632,20 +626,20 @@ end
 
 --Install UI
 function E:Install()
-	if not InstallStepComplete then
+	if not _G.InstallStepComplete then
 		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point("TOP", 0, -190)
 		imsg:Hide()
-		imsg:SetScript('OnShow', function(self)
-			if self.message then
+		imsg:SetScript('OnShow', function(f)
+			if f.message then
 				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
-				self.text:SetText(self.message)
-				UIFrameFadeOut(self, 3.5, 1, 0)
-				E:Delay(4, function() self:Hide() end)
-				self.message = nil
+				f.text:SetText(f.message)
+				UIFrameFadeOut(f, 3.5, 1, 0)
+				E:Delay(4, function() f:Hide() end)
+				f.message = nil
 			else
-				self:Hide()
+				f:Hide()
 			end
 		end)
 
@@ -679,7 +673,7 @@ function E:Install()
 	end
 
 	--Create Frame
-	if not ElvUIInstallFrame then
+	if not _G.ElvUIInstallFrame then
 		local f = CreateFrame("Button", "ElvUIInstallFrame", E.UIParent)
 		f.SetPage = SetPage
 		f:Size(550, 400)
@@ -722,7 +716,7 @@ function E:Install()
 		f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
 		f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
 		-- Setup StatusBar Animation
-		f.Status.anim = CreateAnimationGroup(f.Status)
+		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
 		f.Status.anim.progress:SetSmoothing("Out")
 		f.Status.anim.progress:SetDuration(.3)
@@ -827,6 +821,6 @@ function E:Install()
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 	end
 
-	ElvUIInstallFrame:Show()
+	_G.ElvUIInstallFrame:Show()
 	NextPage()
 end
