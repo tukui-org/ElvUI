@@ -10,6 +10,9 @@ Corrected more Pixel Perfect issues! :D
 
 **Misc. Changes:**  
 Various Skin updates.  
+Modified the bag item level code; items might actually show the correct item level now. :o  
+Added item level to the inspect frame.  
+Removed inspect info from tooltips.  
 
 ___
 ### Version 10.87 [ January 30th 2019 ]
