@@ -11,6 +11,7 @@ local strsub, strlen = strsub, strlen
 local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 
 function E:IsEyefinity(width, height)
+	print('IsEyefinity', width, height)
 	if E.global.general.eyefinity and width >= 3840 then
 		--HQ resolution
 		if width >= 9840 then return 3280 end					--WQSXGA
@@ -29,6 +30,7 @@ function E:IsEyefinity(width, height)
 end
 
 function E:UIScale(init)
+	print('UIScale init', init)
 	local scale = E.global.general.UIScale
 	if init then --E.OnInitialize
 		--Set variables for pixel scaling
@@ -72,10 +74,12 @@ function E:UIScale(init)
 end
 
 function E:PixelBestSize()
+	print('PixelBestSize')
 	return max(0.4, min(1.15, 768 / E.screenheight))
 end
 
 function E:PixelClip(num)
+	print('PixelClip')
 	local str = num and tostring(num)
 	if str and strlen(str) > 4 then
 		return tonumber(strsub(str, 0, 4))
@@ -84,6 +88,7 @@ function E:PixelClip(num)
 end
 
 function E:PixelScaleChanged(event, skip)
+	print('PixelScaleChanged', event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
