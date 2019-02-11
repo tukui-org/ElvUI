@@ -310,7 +310,19 @@ local InspectItems = {
 	"InspectBackSlot",
 	"InspectMainHandSlot",
 	"InspectSecondaryHandSlot",
-  }
+}
+
+function M:UpdateiLvLPoints(id)
+	if not id then return end
+
+	if id <= 5 or (id == 9 or id == 15) then
+		return -4, 3 -- Left side
+	elseif (id >= 6 and id <= 8) or (id >= 10 and id <= 14) then
+		return 6, 3 -- Right side
+	else
+		return 0, 3 -- Weapon Slots
+	end
+end
 
 function M:UpdateItemLevel()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
@@ -344,7 +356,7 @@ function M:UpdateItemLevel()
 
 	if iLevel > 0 then
 		local itemLevelAverage = E:Round(iLevel / count)
-		_G.InspectFrame.ItemLevelText:SetFormattedText(CHARACTER_LINK_ITEM_LEVEL_TOOLTIP, itemLevelAverage)
+		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Gear Score: %d"], itemLevelAverage)
 	else
 		_G.InspectFrame.ItemLevelText:SetText('')
 	end
@@ -357,9 +369,10 @@ function M:ADDON_LOADED(_, addon)
 
 		for i, slot in pairs(InspectItems) do
 			if i ~= 4 then
+				local a, b = M:UpdateiLvLPoints(i)
 				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
 				_G[slot].iLvlText:FontTemplate()
-				_G[slot].iLvlText:SetPoint("TOPLEFT", _G[slot], "TOPLEFT", 2, -2)
+				_G[slot].iLvlText:Point("BOTTOM", _G[slot], a, b)
 			end
 		end
 
