@@ -70,7 +70,6 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local UpdateSlot = UpdateSlot
 local GetCVarBool = GetCVarBool
 local UseContainerItem = UseContainerItem
 
@@ -1064,7 +1063,7 @@ function B:Layout(isBank)
 				f.Bags[bagID] = CreateFrame('Frame', f:GetName()..'Bag'..bagID, f.holderFrame);
 				f.Bags[bagID]:SetID(bagID);
 				f.Bags[bagID].UpdateBagSlots = B.UpdateBagSlots;
-				f.Bags[bagID].UpdateSlot = UpdateSlot;
+				f.Bags[bagID].UpdateSlot = B.UpdateSlot;
 			end
 
 			f.Bags[bagID].numSlots = numSlots;
