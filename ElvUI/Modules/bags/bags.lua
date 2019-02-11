@@ -71,6 +71,7 @@ local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UpdateSlot = UpdateSlot
+local GetCVarBool = GetCVarBool
 local UseContainerItem = UseContainerItem
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -550,10 +551,11 @@ function B:UpdateSlot(bagID, slotID)
 		slot.name = name
 
 		local iLvl --GetDetailedItemLevelInfo(clink)
+		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
 		ScanTooltip:SetBagItem(bagID, slotID)
 		ScanTooltip:Show()
-		for x = 2, 3 do
+		for x = 2, colorblind do
 			local line = _G["ElvUI_BagItemsTooltipTextLeft"..x]:GetText()
 			if line then
 				local itemLevel = line:match(MATCH_ITEM_LEVEL)
