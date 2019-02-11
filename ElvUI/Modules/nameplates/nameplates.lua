@@ -1295,9 +1295,6 @@ function mod:Initialize()
 	self:RegisterEvent("QUEST_REMOVED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 
-	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
-	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
-
 	local numEntries = GetNumQuestLogEntries();
 	for questLogIndex = 1, numEntries do
 		local title, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex);

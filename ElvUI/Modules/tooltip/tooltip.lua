@@ -710,10 +710,6 @@ function TT:Initialize()
 	E:CreateMover(BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
 	self:SecureHook(BNToastFrame, "SetPoint", "RepositionBNET")
 
-	E.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", UIParent, "GameTooltipTemplate")
-	E.ScanTooltip:SetPoint("CENTER")
-	E.ScanTooltip:SetSize(200, 200)
-
 	if E.private.tooltip.enable ~= true then return end
 	E.Tooltip = TT
 
@@ -749,8 +745,6 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
-
-	_G.GameTooltip_SetDefaultAnchor(E.ScanTooltip, _G.UIParent)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars

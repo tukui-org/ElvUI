@@ -6,6 +6,7 @@ E.Misc = M;
 --Lua functions
 local _G = _G
 local format, gsub = string.format, string.gsub
+local tonumber = tonumber
 --WoW API / Variables
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
@@ -45,7 +46,6 @@ local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local StaticPopup_Hide = StaticPopup_Hide
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local GetInventoryItemLink = GetInventoryItemLink
-local GetItemInfo = GetItemInfo
 local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
@@ -56,6 +56,9 @@ local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
+local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
+
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_InspectTooltip", UIParent, "GameTooltipTemplate")
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -294,15 +297,33 @@ function M:UpdateItemLevel()
 	for i=1, 17 do
 		local link = GetInventoryItemLink(_G.InspectFrame.unit, i)
 		if link and i ~= 4 then
-			local _, _, _, iLvl = GetItemInfo(link)
-			if iLvl and iLvl > 1 then
-				count, iLevel = count + 1, iLevel + iLvl
+			ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+			ScanTooltip:SetHyperlink(link)
+			ScanTooltip:Show()
+
+			for x = 2, 3 do
+				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
+				if line then
+					local iLvl = line:match(MATCH_ITEM_LEVEL)
+					if iLvl then
+						if iLvl ~= "1" then
+							count, iLevel = count + 1, iLevel + tonumber(iLvl)
+						end
+						break
+					end
+				end
 			end
+
+			ScanTooltip:Hide()
 		end
 	end
 
-	local itemLevelAverage = E:Round(iLevel / count)
-	_G.InspectFrame.ItemLevelText:SetFormattedText(CHARACTER_LINK_ITEM_LEVEL_TOOLTIP, itemLevelAverage)
+	if iLevel > 0 then
+		local itemLevelAverage = E:Round(iLevel / count)
+		_G.InspectFrame.ItemLevelText:SetFormattedText(CHARACTER_LINK_ITEM_LEVEL_TOOLTIP, itemLevelAverage)
+	else
+		_G.InspectFrame.ItemLevelText:SetText('')
+	end
 end
 
 function M:ADDON_LOADED(_, addon)

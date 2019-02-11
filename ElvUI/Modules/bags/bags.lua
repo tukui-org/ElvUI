@@ -9,6 +9,7 @@ local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, 
 local tinsert, tremove, twipe, tmaxn = table.insert, table.remove, table.wipe, table.maxn
 local floor, ceil, abs = math.floor, math.ceil, math.abs
 local format, sub = string.format, string.sub
+local tonumber = tonumber
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -98,6 +99,7 @@ local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
 
+local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local hooksecurefunc = hooksecurefunc
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -116,6 +118,8 @@ local BAG_FILTER_ICONS = {
 	[LE_BAG_FILTER_FLAG_CONSUMABLES] = "Interface\\ICONS\\INV_Potion_93",
 	[LE_BAG_FILTER_FLAG_TRADE_GOODS] = "Interface\\ICONS\\INV_Fabric_Silk_02",
 }
+
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_BagItemsTooltip", UIParent, "GameTooltipTemplate")
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -512,12 +516,12 @@ function B:UpdateSlot(bagID, slotID)
 	slot.bindType:SetText("")
 
 	if B.db.showBindType and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
-		E.ScanTooltip:SetOwner(self, "ANCHOR_NONE")
-		E.ScanTooltip:SetBagItem(bagID, slotID)
-		E.ScanTooltip:Show()
+		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+		ScanTooltip:SetBagItem(bagID, slotID)
+		ScanTooltip:Show()
 
 		for i = 2, 6 do -- trying line 2 to 6 for the bind texts, don't think they are further down
-			local line = _G[E.ScanTooltip:GetName().."TextLeft"..i]:GetText()
+			local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
 			if (not line) or (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
 				break
 			end
@@ -533,7 +537,7 @@ function B:UpdateSlot(bagID, slotID)
 			end
 		end
 
-		E.ScanTooltip:Hide()
+		ScanTooltip:Hide()
 	end
 
 	if B.ProfessionColors[bagType] then
@@ -545,7 +549,24 @@ function B:UpdateSlot(bagID, slotID)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		slot.name = name
 
-		local iLvl = GetDetailedItemLevelInfo(clink)
+		local iLvl --GetDetailedItemLevelInfo(clink)
+		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+		ScanTooltip:SetBagItem(bagID, slotID)
+		ScanTooltip:Show()
+		for x = 2, 3 do
+			local line = _G["ElvUI_BagItemsTooltipTextLeft"..x]:GetText()
+			if line then
+				local itemLevel = line:match(MATCH_ITEM_LEVEL)
+				if itemLevel then
+					if itemLevel ~= "1" then
+						iLvl = tonumber(itemLevel)
+					end
+					break
+				end
+			end
+		end
+		ScanTooltip:Hide()
+
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
