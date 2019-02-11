@@ -112,7 +112,7 @@ E.Options.args.tooltip = {
 					order = 11,
 					type = 'toggle',
 					name = L["Current Mount"],
-					desc = L["Display current mount the unit is riding."]
+					desc = L["Display current mount the unit is riding."],
 				},
 				spellID = {
 					order = 11,
