@@ -473,10 +473,11 @@ function S:HandleDropDownBox(frame, width)
 	local button = _G[frame:GetName().."Button"]
 	if not button then return end
 
-	if not width then width = 155 end
-
 	frame:StripTextures()
-	frame:Width(width)
+
+	if width then
+		frame:Width(width)
+	end
 
 	local frameText = _G[frame:GetName().."Text"]
 	if frameText then
@@ -486,19 +487,14 @@ function S:HandleDropDownBox(frame, width)
 
 	if button then
 		button:ClearAllPoints()
-		button:Point("RIGHT", frame, "RIGHT", -10, 3)
-		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
-			if not noReset then
-				btn:ClearAllPoints()
-				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
-			end
-		end)
+		button:SetPoint("TOPRIGHT", -14, -8)
 
-		self:HandleNextPrevButton(button, true)
+		S:HandleNextPrevButton(button, true)
+		button:SetSize(16, 16)
 	end
 
 	frame:CreateBackdrop("Default")
-	frame.backdrop:Point("TOPLEFT", 20, -2)
+	frame.backdrop:Point("TOPLEFT", 20, -6)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
