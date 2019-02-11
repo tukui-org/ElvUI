@@ -308,7 +308,7 @@ function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
 		_G.InspectFrame:HookScript("OnShow", self.UpdateItemLevel)
 		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-		_G.InspectFrame.ItemLevelText:SetPoint("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
+		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
 
 		self:UnregisterEvent("ADDON_LOADED")
 	end
