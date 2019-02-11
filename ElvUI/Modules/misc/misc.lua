@@ -311,7 +311,6 @@ function M:ADDON_LOADED(event, addon)
 	end
 end
 
---/run t,c=0,0 for i=1,17 do l=GetInventoryItemLink("target",i)if l and i~=4 then _,_,_,l=GetItemInfo(l)c=c+1 t=t+l end end print(t/c)
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
