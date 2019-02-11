@@ -565,7 +565,7 @@ function B:UpdateSlot(bagID, slotID)
 
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L['BoE'] or L['BoU'])
-				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
+				slot.bindType:SetVertexColor(r, g, b)
 			end
 
 			if iLvl and iLvl >= B.db.itemLevelThreshold then
