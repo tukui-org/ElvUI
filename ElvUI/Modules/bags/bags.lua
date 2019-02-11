@@ -42,6 +42,7 @@ local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
+local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
@@ -544,10 +545,7 @@ function B:UpdateSlot(bagID, slotID)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		slot.name = name
 
-		-- Workaround to fix broken Blizzard API to get the GetDetailedItemLevelInfo
-		--local _, iLvl = LibItemLevel:GetItemInfo(clink)
 		local iLvl = GetDetailedItemLevelInfo(clink)
-
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
