@@ -316,11 +316,11 @@ function M:GetItemLevelPoints(id)
 	if not id then return end
 
 	if id <= 5 or (id == 9 or id == 15) then
-		return -4, 3 -- Left side
+		return 40, 3 -- Left side
 	elseif (id >= 6 and id <= 8) or (id >= 10 and id <= 14) then
-		return 6, 3 -- Right side
+		return -40, 3 -- Right side
 	else
-		return 0, 3 -- Weapon Slots
+		return 0, 45 -- Weapon Slots
 	end
 end
 
