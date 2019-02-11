@@ -1,7 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
-local LibInspect = E.Libs.Inspect
-local LibItemLevel = E.Libs.ItemLevel
 local S -- used to hold the skin module when we need it
 
 --Cache global variables
@@ -84,7 +82,7 @@ local LOCALE = {
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
 -- GLOBALS: RightChatToggleButton, BNToastFrame, MMHolder, GameTooltipText
--- GLOBALS: BNETMover, ItemRefTooltip, InspectFrame,  GameTooltipHeaderText, GameTooltipTextSmall
+-- GLOBALS: BNETMover, ItemRefTooltip,  GameTooltipHeaderText, GameTooltipTextSmall
 -- GLOBALS: ShoppingTooltip1TextLeft1, ShoppingTooltip1TextLeft2, ShoppingTooltip1TextLeft3
 -- GLOBALS: ShoppingTooltip1TextLeft4, ShoppingTooltip1TextRight1, ShoppingTooltip1TextRight2
 -- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
@@ -96,7 +94,7 @@ local LOCALE = {
 -- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local targetList, inspectCache, inspectAge = {}, {}, 900
+local targetList = {}
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
@@ -261,30 +259,6 @@ function TT:GetTalentSpec(talents)
 	return (talents and talents.icon and talents.name) and ("|T"..talents.icon..":12:12:0:0:64:64:5:59:5:59|t "..talents.name) or "?"
 end
 
-function TT:InspectReady(guid, data)
-	if(not (guid and data and data.items and data.talents)) then return end
-	if(not inspectCache[guid]) then inspectCache[guid] = {} end
-
-	inspectCache[guid].age = GetTime()
-	inspectCache[guid].itemLevel = self:GetItemLvL(data.items, data.talents)
-	inspectCache[guid].talent = self:GetTalentSpec(data.talents)
-
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:SetUnit("mouseover")
-	end
-end
-
-function TT:ShowInspectInfo(tt, unit, r, g, b)
-	if tt:IsForbidden() then return end
-	local unitGUID = UnitGUID(unit)
-
-	if(inspectCache[unitGUID] and inspectCache[unitGUID].age and (GetTime() - inspectCache[unitGUID].age) < inspectAge) then
-		tt:AddDoubleLine(L["Talent Specialization:"], inspectCache[unitGUID].talent, nil, nil, nil, r, g, b)
-		tt:AddDoubleLine(L["Item Level:"], inspectCache[unitGUID].itemLevel, nil, nil, nil, 1, 1, 1)
-	elseif(not InspectFrame or (InspectFrame and not InspectFrame:IsShown())) then
-		LibInspect:RequestItems(unit, true)
-	end
-end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
@@ -382,11 +356,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 				GameTooltip:AddDoubleLine(LOCALE.ROLE, role, nil, nil, nil, r, g, b)
 			end
-		end
-
-		--High CPU usage, restricting it to shift key down only.
-		if(self.db.inspectInfo and isShiftKeyDown) then
-			self:ShowInspectInfo(tt, unit, color.r, color.g, color.b)
 		end
 	else
 		if UnitIsTapDenied(unit) then
@@ -623,12 +592,6 @@ function TT:SetStyle(tt)
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
-function TT:PLAYER_ENTERING_WORLD()
-	if next(inspectCache) then
-		twipe(inspectCache)
-	end
-end
-
 function TT:MODIFIER_STATE_CHANGED(_, key)
 	if((key == "LSHIFT" or key == "RSHIFT") and UnitExists("mouseover")) then
 		GameTooltip:SetUnit('mouseover')
@@ -813,10 +776,6 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-
-	LibInspect:AddHook('ElvUI', 'items', function(guid, data, _) self:InspectReady(guid, data) end)
-	LibInspect:SetMaxAge(inspectAge)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
