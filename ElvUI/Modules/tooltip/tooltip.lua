@@ -216,32 +216,7 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:GameTooltip_OnTooltipSetUnit(tt)
-	if tt:IsForbidden() then return end
-	local unit = select(2, tt:GetUnit())
-	if((tt:GetOwner() ~= UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
-		local modifier = self.db.visibility.unitFrames
-
-		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
-			tt:Hide()
-			return
-		end
-	end
-
-	if not unit then
-		local GMF = GetMouseFocus()
-		if GMF and GMF.GetAttribute and GMF:GetAttribute("unit") then
-			unit = GMF:GetAttribute("unit")
-		end
-		if not unit or not UnitExists(unit) then
-			return
-		end
-	end
-
-	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
-	local level = UnitLevel(unit)
-	local isShiftKeyDown = IsShiftKeyDown()
-
+function TT:GetUnitColor(tt, unit, level, isShiftKeyDown)
 	local color
 	if UnitIsPlayer(unit) then
 		local localeClass, class = UnitClass(unit)
@@ -363,6 +338,37 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r%s %s%s", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", classification[creatureClassification] or "", creatureType or "", pvpFlag)
 		end
 	end
+
+	return color
+end
+
+function TT:GameTooltip_OnTooltipSetUnit(tt)
+	if tt:IsForbidden() then return end
+	local unit = select(2, tt:GetUnit())
+	if((tt:GetOwner() ~= UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
+		local modifier = self.db.visibility.unitFrames
+
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+			tt:Hide()
+			return
+		end
+	end
+
+	if not unit then
+		local GMF = GetMouseFocus()
+		if GMF and GMF.GetAttribute and GMF:GetAttribute("unit") then
+			unit = GMF:GetAttribute("unit")
+		end
+		if not unit or not UnitExists(unit) then
+			return
+		end
+	end
+
+	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
+
+	local level = UnitLevel(unit)
+	local isShiftKeyDown = IsShiftKeyDown()
+	local color = self:GetUnitColor(tt, unit, level, isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
 		for i=1, 40 do
