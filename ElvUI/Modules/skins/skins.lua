@@ -307,13 +307,16 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	if Thumb then
 		Thumb:SetTexture()
-		Thumb:CreateBackdrop("Default", true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
-		Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-		Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
-		Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-		Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+
+		if not Thumb.bg then
+			Thumb.bg = CreateFrame("Frame", nil, frame)
+			Thumb.bg:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
+			Thumb.bg:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+			Thumb.bg:SetTemplate("Default", true, true)
+			Thumb.bg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+		end
 	end
 end
 
