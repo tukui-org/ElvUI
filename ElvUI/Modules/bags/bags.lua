@@ -543,7 +543,7 @@ function B:UpdateSlot(bagID, slotID)
 		if showBindType or showItemLevel then
 			local colorblind = GetCVarBool('colorblindmode')
 			local canShowItemLevel = showItemLevel and IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			local itemLevelLines, bindTypeLines = colorblind and 4 or 3, colorblind and 7 or 6
+			local itemLevelLines, bindTypeLines = colorblind and 4 or 3, colorblind and 8 or 7
 			local iLvl, BoE, BoU --GetDetailedItemLevelInfo this api dont work for some time correctly for ilvl
 
 			for i = 2, bindTypeLines do
