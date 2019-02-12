@@ -333,6 +333,29 @@ function M:GetItemLevelPoints(id)
 	end
 end
 
+function M:ToggleInspectInfo()
+	if E.db.general.displayInspectInfo then
+		M:RegisterEvent('INSPECT_READY', 'UpdateItemLevel')
+	else
+		M:UnregisterEvent('INSPECT_READY')
+
+		if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
+		_G.InspectFrame.ItemLevelText:SetText('')
+
+		for i=1, 17 do
+			if i ~= 4 then
+				local inspectItem = _G[InspectItems[i]]
+				inspectItem.enchantText:SetText()
+				inspectItem.iLvlText:SetText()
+
+				for y=1, 10 do
+					inspectItem['textureSlot'..y]:SetTexture()
+				end
+			end
+		end
+	end
+end
+
 function M:UpdateItemLevel()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
@@ -429,8 +452,8 @@ function M:Initialize()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
 	self:LoadLoot()
+	self:ToggleInspectInfo()
 	self:RegisterEvent('MERCHANT_SHOW')
-	self:RegisterEvent('INSPECT_READY', 'UpdateItemLevel')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")

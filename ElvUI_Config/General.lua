@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule("Blizzard")
+local M = E:GetModule("Misc")
 
 local _G = _G
 local min, max = math.min, math.max
@@ -209,8 +210,19 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				vehicleSeatIndicatorSize = {
+				displayInspectInfo = {
 					order = 22,
+					type = "toggle",
+					name = L["Display Inspect Info"],
+					desc = L["Show Item level, enchants, and gems when inspecting another player."],
+					get = function(info) return E.db.general.displayInspectInfo end,
+					set = function(info, value)
+						E.db.general.displayInspectInfo = value;
+						M:ToggleInspectInfo()
+					end
+				},
+				vehicleSeatIndicatorSize = {
+					order = 23,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -218,7 +230,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				decimalLength = {
-					order = 23,
+					order = 24,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -227,7 +239,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				commandBarSetting = {
-					order = 24,
+					order = 25,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -240,7 +252,7 @@ E.Options.args.general = {
 					},
 				},
 				numberPrefixStyle = {
-					order = 25,
+					order = 26,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
