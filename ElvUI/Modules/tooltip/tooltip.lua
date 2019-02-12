@@ -372,11 +372,16 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
-		for i=1, 40 do
+		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 
 			if self.MountIDs[id] then
+				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
+
 				GameTooltip:AddDoubleLine(format("%s:", LOCALE.MOUNT), name, nil, nil, nil, 1, 1, 1)
+				if sourceText and IsShiftKeyDown() then
+					GameTooltip:AddLine(sourceText, 1, 1, 1)
+				end
 				break
 			end
 		end
