@@ -16,7 +16,7 @@ local function LoadSkin()
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
-	S:HandleDropDownBox(_G.AddonCharacterDropDown, 150)
+	S:HandleDropDownBox(_G.AddonCharacterDropDown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar, 5)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 
