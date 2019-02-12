@@ -505,7 +505,6 @@ function S:HandleDropDownBox(frame, width)
 		local a, b, c, d, e = text:GetPoint()
 		text:SetPoint(a, b, c, d + 10, e - 4)
 		text:SetWidth(frame:GetWidth() / 1.4)
-		text:SetJustifyH("LEFT")
 	end
 
 	if button then
