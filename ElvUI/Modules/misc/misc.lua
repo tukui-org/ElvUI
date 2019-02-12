@@ -414,8 +414,7 @@ function M:ADDON_LOADED(_, addon)
 
 				for u=1, 10 do
 					local offset = 8+(u*16)
-					--local newY = (justify == "BOTTOM" and y+(offset*1.2)) or y
-					local newX = --[[(justify == "BOTTOM" and 0) or]] (justify == "BOTTOMRIGHT" and x-offset) or x+offset
+					local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
 					_G[slot]['textureSlot'..u] = M:CreateSlotTexture(slot, newX, --[[newY or]] y)
 				end
 			end
