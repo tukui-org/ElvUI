@@ -18,7 +18,7 @@ local function SkinDropdownPullout(self)
 			self.obj.dropdown:SetTemplate('Default', true)
 
 			if self.obj.dropdown.slider then
-				self.obj.dropdown.slider:SetTemplate('Default')
+				self.obj.dropdown.slider:SetTemplate()
 				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
 				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 			end
@@ -41,7 +41,7 @@ function S:SkinAce3()
 			local frame = widget.frame
 
 			if not widget.scrollBG.template then
-				widget.scrollBG:SetTemplate('Default')
+				widget.scrollBG:SetTemplate()
 			end
 
 			S:HandleButton(widget.button)
@@ -183,7 +183,7 @@ function S:SkinAce3()
 
 			S:HandleSliderFrame(frame)
 
-			editbox:SetTemplate('Default')
+			editbox:SetTemplate()
 			editbox:Height(15)
 			editbox:Point('TOP', frame, 'BOTTOM', 0, -1)
 

@@ -188,7 +188,7 @@ function A:CreateIcon(button)
 			end
 			MasqueGroupBuffs:ReSkin()
 		else
-			button:SetTemplate('Default')
+			button:SetTemplate()
 		end
 	elseif auraType == "HARMFUL" then
 		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
@@ -198,7 +198,7 @@ function A:CreateIcon(button)
 			end
 			MasqueGroupDebuffs:ReSkin()
 		else
-			button:SetTemplate('Default')
+			button:SetTemplate()
 		end
 	end
 end

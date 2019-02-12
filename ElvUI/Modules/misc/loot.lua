@@ -126,7 +126,7 @@ local function createSlot(id)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:Point('RIGHT', frame)
-	iconFrame:SetTemplate('Default')
+	iconFrame:SetTemplate()
 	frame.iconFrame = iconFrame
 	E.frames[iconFrame] = nil
 

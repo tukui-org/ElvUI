@@ -37,7 +37,7 @@ local function LoadSkin()
 
 	VoidStorageFrame:SetTemplate("Transparent")
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
-	_G.VoidStoragePurchaseFrame:SetTemplate("Default")
+	_G.VoidStoragePurchaseFrame:SetTemplate()
 	_G.VoidStorageFrameMarbleBg:Kill()
 	_G.VoidStorageFrameLines:Kill()
 	select(2, VoidStorageFrame:GetRegions()):Kill()

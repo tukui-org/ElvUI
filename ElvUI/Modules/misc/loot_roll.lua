@@ -126,7 +126,7 @@ end
 function M:CreateRollFrame()
 	local frame = CreateFrame("Frame", nil, E.UIParent)
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
-	frame:SetTemplate('Default')
+	frame:SetTemplate()
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetFrameStrata("MEDIUM")
 	frame:SetFrameLevel(10)

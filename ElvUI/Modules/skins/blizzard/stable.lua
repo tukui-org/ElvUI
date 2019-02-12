@@ -63,7 +63,7 @@ local function LoadSkin()
 		b:Point("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
 		PetStableSelectedPetIcon:SetSize(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate("Default")
+		b:SetTemplate()
 	end
 
 	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do

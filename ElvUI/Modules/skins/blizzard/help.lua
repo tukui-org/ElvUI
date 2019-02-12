@@ -141,7 +141,7 @@ local function LoadSkin()
 	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
 		if child and child:IsObjectType('Frame') and not child:GetName() then
-			child:SetTemplate("Default")
+			child:SetTemplate()
 		end
 	end
 end

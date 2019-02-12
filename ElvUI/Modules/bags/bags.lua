@@ -1962,7 +1962,7 @@ function B:ContructContainerFrame(name, isBank)
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName().."CurrencyButton"..i, f.currencyButton);
 			f.currencyButton[i]:Size(16);
-			f.currencyButton[i]:SetTemplate('Default');
+			f.currencyButton[i]:SetTemplate();
 			f.currencyButton[i]:SetID(i);
 			f.currencyButton[i].icon = f.currencyButton[i]:CreateTexture(nil, 'OVERLAY');
 			f.currencyButton[i].icon:SetInside();

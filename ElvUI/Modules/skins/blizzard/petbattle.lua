@@ -296,7 +296,7 @@ local function LoadSkin()
 
 		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
-		infoBar.HealthBarBackdrop:SetTemplate("Default")
+		infoBar.HealthBarBackdrop:SetTemplate()
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border*2))
 		infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
 		infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Spacing)

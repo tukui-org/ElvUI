@@ -118,11 +118,11 @@ local function LoadSkin()
 
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
 	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
+	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate()
 	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
+	BonusRollFrame.SpecIcon.b:SetTemplate()
 	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)

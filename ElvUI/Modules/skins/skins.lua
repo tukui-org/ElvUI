@@ -344,7 +344,7 @@ function S:HandleTab(tab)
 	end
 
 	tab.backdrop = CreateFrame("Frame", nil, tab)
-	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
@@ -403,7 +403,7 @@ end
 function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
-	btn:SetTemplate("Default")
+	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
@@ -529,7 +529,7 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	frame:StripTextures()
 
 	if noBackdrop then
-		frame:SetTemplate("Default")
+		frame:SetTemplate()
 		frame:Size(16)
 	else
 		frame:CreateBackdrop('Default')
@@ -756,7 +756,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 
 				-- handle its styling
 				if not equipment[i].template then
-					equipment[i]:SetTemplate('Default')
+					equipment[i]:SetTemplate()
 					equipment[i]:SetSize(48, 48)
 					if equipment[i].BG then
 						equipment[i].BG:SetTexture()
@@ -1002,7 +1002,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		local button = _G[buttonNameTemplate..i]
 		local icon = _G[button:GetName().."Icon"]
 		button:StripTextures()
-		button:SetTemplate("Default")
+		button:SetTemplate()
 		button:StyleButton(true)
 
 		icon:SetTexCoord(unpack(E.TexCoords))

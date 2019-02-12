@@ -304,7 +304,7 @@ function RU:Initialize()
 		end
 
 		frame:SetSize(28, 28)
-		--frame:SetTemplate("Default")
+		--frame:SetTemplate()
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
 		texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\UI-LFG-ICON-ROLES") --(337499)
