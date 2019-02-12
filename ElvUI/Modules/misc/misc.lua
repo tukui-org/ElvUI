@@ -313,7 +313,7 @@ local InspectItems = {
 	"InspectSecondaryHandSlot",
 }
 
-function M:CreateSlotTexture(slot, x, y)
+function M:CreateInspectTexture(slot, x, y)
 	local texture = _G[slot]:CreateTexture()
 	texture:Point("BOTTOM", _G[slot], x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
@@ -321,7 +321,7 @@ function M:CreateSlotTexture(slot, x, y)
 	return texture
 end
 
-function M:GetItemLevelPoints(id)
+function M:GetInspectPoints(id)
 	if not id then return end
 
 	if id <= 5 or (id == 9 or id == 15) then
@@ -335,7 +335,7 @@ end
 
 function M:ToggleInspectInfo()
 	if E.db.general.displayInspectInfo then
-		M:RegisterEvent('INSPECT_READY', 'UpdateItemLevel')
+		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
 	else
 		M:UnregisterEvent('INSPECT_READY')
 
@@ -356,7 +356,7 @@ function M:ToggleInspectInfo()
 	end
 end
 
-function M:UpdateItemLevel()
+function M:UpdateInspectInfo()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
@@ -421,7 +421,7 @@ function M:ADDON_LOADED(_, addon)
 
 		for i, slot in pairs(InspectItems) do
 			if i ~= 4 then
-				local x, y, z, justify = M:GetItemLevelPoints(i)
+				local x, y, z, justify = M:GetInspectPoints(i)
 				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
 				_G[slot].iLvlText:FontTemplate(nil, 12)
 				_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
@@ -438,7 +438,7 @@ function M:ADDON_LOADED(_, addon)
 				for u=1, 10 do
 					local offset = 8+(u*16)
 					local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-					_G[slot]['textureSlot'..u] = M:CreateSlotTexture(slot, newX, --[[newY or]] y)
+					_G[slot]['textureSlot'..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 				end
 			end
 		end
