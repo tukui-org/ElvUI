@@ -392,18 +392,19 @@ end
 
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
-		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK")
 		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
+		_G.InspectFrame.ItemLevelText:FontTemplate(nil, 12)
 
 		for i, slot in pairs(InspectItems) do
 			if i ~= 4 then
 				local x, y, z, justify = M:GetItemLevelPoints(i)
 				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
-				_G[slot].iLvlText:FontTemplate()
+				_G[slot].iLvlText:FontTemplate(nil, 12)
 				_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
 
 				_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
-				_G[slot].enchantText:FontTemplate()
+				_G[slot].enchantText:FontTemplate(nil, 11)
 
 				if i == 16 or i == 17 then
 					_G[slot].enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", _G[slot], i==16 and -40 or 40, 3)
