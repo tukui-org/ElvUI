@@ -25,6 +25,8 @@ local function LoadSkin()
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
 
+	_G.AddonListScrollFrame:StripTextures()
+
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar, 5)
 
 	S:HandleCheckBox(_G.AddonListForceLoad)
