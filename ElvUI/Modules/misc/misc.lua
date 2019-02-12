@@ -404,10 +404,15 @@ function M:ADDON_LOADED(_, addon)
 
 				_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
 				_G[slot].enchantText:FontTemplate()
-				_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+
+				if i == 16 or i == 17 then
+					_G[slot].enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", _G[slot], i==16 and -40 or 40, 3)
+				else
+					_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+				end
 
 				for u=1, 10 do
-					local offset = u*25
+					local offset = 8+(u*16)
 					--local newY = (justify == "BOTTOM" and y+(offset*1.2)) or y
 					local newX = --[[(justify == "BOTTOM" and 0) or]] (justify == "BOTTOMRIGHT" and x-offset) or x+offset
 					_G[slot]['textureSlot'..u] = M:CreateSlotTexture(slot, newX, --[[newY or]] y)
