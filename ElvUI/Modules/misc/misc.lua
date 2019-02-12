@@ -6,7 +6,7 @@ E.Misc = M;
 --Lua functions
 local _G = _G
 local format, gsub = string.format, string.gsub
-local tonumber = tonumber
+local tonumber, unpack = tonumber, unpack
 --WoW API / Variables
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
