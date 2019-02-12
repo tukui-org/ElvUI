@@ -115,7 +115,7 @@ function mod:GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	ScanTooltip:SetUnit(unitID)
 	ScanTooltip:Show()
 

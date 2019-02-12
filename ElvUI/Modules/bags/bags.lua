@@ -519,7 +519,7 @@ function B:UpdateSlot(bagID, slotID)
 	local showItemLevel = B.db.itemLevel and clink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	if showBindType or showItemLevel then
-		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+		ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 		ScanTooltip:SetBagItem(bagID, slotID)
 		ScanTooltip:Show()
 	end
