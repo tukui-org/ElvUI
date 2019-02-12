@@ -57,6 +57,7 @@ local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
+local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 
 local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_InspectTooltip", UIParent, "GameTooltipTemplate")
 
@@ -312,15 +313,23 @@ local InspectItems = {
 	"InspectSecondaryHandSlot",
 }
 
+function M:CreateSlotTexture(slot, x, y)
+	local texture = _G[slot]:CreateTexture()
+	texture:Point("BOTTOM", _G[slot], x, y)
+	texture:SetTexCoord(unpack(E.TexCoords))
+	texture:Size(14)
+	return texture
+end
+
 function M:GetItemLevelPoints(id)
 	if not id then return end
 
 	if id <= 5 or (id == 9 or id == 15) then
-		return 40, 3 -- Left side
+		return 40, 3, 18, "BOTTOMLEFT" -- Left side
 	elseif (id >= 6 and id <= 8) or (id >= 10 and id <= 14) then
-		return -40, 3 -- Right side
+		return -40, 3, 18, "BOTTOMRIGHT" -- Right side
 	else
-		return 0, 45 -- Weapon Slots
+		return 0, 45, 60, "BOTTOM"
 	end
 end
 
@@ -329,24 +338,42 @@ function M:UpdateItemLevel()
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
 
-	local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 	for i=1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[InspectItems[i]]
+			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
+
 			ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
 
-			for x = 2, colorblind do
-				local line = _G["ElvUI_InspectTooltipTextLeft"..x]:GetText()
+			for y=1, 10 do
+				inspectItem['textureSlot'..y]:SetTexture()
+				local texture = _G["ElvUI_InspectTooltipTexture"..y]
+				local hasTexture = texture and texture:GetTexture()
+				if hasTexture then
+					inspectItem['textureSlot'..y]:SetTexture(hasTexture)
+					texture:SetTexture()
+				end
+			end
+
+			for x = 1, ScanTooltip:NumLines() do
+				local line = _G["ElvUI_InspectTooltipTextLeft"..x]
 				if line then
-					local iLvl = line:match(MATCH_ITEM_LEVEL)
+					local lineText = line:GetText()
+					local lr, lg, lb = line:GetTextColor()
+					local tr, tg, tb = _G.ElvUI_InspectTooltipTextLeft1:GetTextColor()
+					local iLvl = lineText:match(MATCH_ITEM_LEVEL)
+					local enchant = lineText:match(MATCH_ENCHANT)
+					if enchant then
+						inspectItem.enchantText:SetText(enchant)
+						inspectItem.enchantText:SetTextColor(lr, lg, lb)
+					end
 					if iLvl and iLvl ~= "1" then
 						inspectItem.iLvlText:SetText(iLvl)
-						inspectItem.iLvlText:SetTextColor(_G.ElvUI_InspectTooltipTextLeft1:GetTextColor())
+						inspectItem.iLvlText:SetTextColor(tr, tg, tb)
 						count, iLevel = count + 1, iLevel + tonumber(iLvl)
-						break
 					end
 				end
 			end
@@ -370,10 +397,21 @@ function M:ADDON_LOADED(_, addon)
 
 		for i, slot in pairs(InspectItems) do
 			if i ~= 4 then
-				local x, y = M:GetItemLevelPoints(i)
+				local x, y, z, justify = M:GetItemLevelPoints(i)
 				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
 				_G[slot].iLvlText:FontTemplate()
 				_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
+
+				_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
+				_G[slot].enchantText:FontTemplate()
+				_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+
+				for u=1, 10 do
+					local offset = u*25
+					--local newY = (justify == "BOTTOM" and y+(offset*1.2)) or y
+					local newX = --[[(justify == "BOTTOM" and 0) or]] (justify == "BOTTOMRIGHT" and x-offset) or x+offset
+					_G[slot]['textureSlot'..u] = M:CreateSlotTexture(slot, newX, --[[newY or]] y)
+				end
 			end
 		end
 
