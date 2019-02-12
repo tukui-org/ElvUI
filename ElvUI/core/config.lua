@@ -478,35 +478,39 @@ function E:CreateMoverPopup()
 	end)
 	S:HandleButton(resetButton)
 
-	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
+	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame)
 	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, 1)
 	end)
-	SquareButton_SetIcon(upButton, "UP");
+	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
+	upButton:SetSize(22, 22)
 
-	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
+	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame)
 	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, -1)
 	end)
-	SquareButton_SetIcon(downButton, "DOWN");
+	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
+	downButton:SetSize(22, 22)
 
-	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
+	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame)
 	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function()
 		E:NudgeMover(-1)
 	end)
-	SquareButton_SetIcon(leftButton, "LEFT");
+	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
+	leftButton:SetSize(22, 22)
 
-	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
+	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame)
 	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function()
 		E:NudgeMover(1)
 	end)
-	SquareButton_SetIcon(rightButton, "RIGHT");
+	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
+	rightButton:SetSize(22, 22)
 end
