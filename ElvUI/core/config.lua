@@ -358,7 +358,7 @@ function E:CreateMoverPopup()
 
 	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
 	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
-	S:HandleDropDownBox(configMode, 148)
+	S:HandleDropDownBox(configMode, 165)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
