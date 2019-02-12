@@ -516,6 +516,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte superior de la pantalla. Es es sólo algo cosmético."
 L["Display battleground messages in the middle of the screen."] = true
 L["Display emotion icons in chat."] = "Muestra emoticonos en el chat."
+L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "Emoticonos"
 L["Enable + Adjust Movers"] = true
@@ -553,6 +554,7 @@ L["Reset Anchors"] = "Restaurar Fijadores"
 L["Reverse Fill Direction"] = true
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Envia los errores ADDON_ACTION_BLOCKED al marco de errores de Lua. Esos errores en la mayoría de los casos son poco importantes y no afectan al rendimiento del juego. Muchos de esos errores no pueden ser subsanados. Por favor, reporta sólo esos errores si notas algún defecto que entorpezca el juego"
 L["Show an alert frame if you have unspend talent points."] = true
+L["Shows item level of each item, enchants, and gems when inspecting another player.\nAlso displays Gear Score on the bottom right side of the inspect frame. This is an average of each equipped item."] = true
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = "Apariencia del Fondo"
 L["Skin the blizzard chat bubbles."] = "Modificar la apariencia de las Burbujas de Chat de Blizzard"

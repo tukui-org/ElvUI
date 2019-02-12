@@ -517,6 +517,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "顯示跨越螢幕頂部的面板,僅僅是用于裝飾."
 L["Display battleground messages in the middle of the screen."] = "屏幕中間顯示戰場信息"
 L["Display emotion icons in chat."] = "在對話中顯示表情圖示."
+L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "在聊天氣泡上顯示人物名稱. 當背景被停用或是在副本內時此功能無法運作"
 L["Emotion Icons"] = "表情圖示"
 L["Enable + Adjust Movers"] = "啟用並移動其他框架"
@@ -554,6 +555,7 @@ L["Reset Anchors"] = "重置位置"
 L["Reverse Fill Direction"] = "翻轉填充方向"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "發送ADDON_ACTION_BLOCKED錯誤至Lua錯誤框, 這些錯誤並不重要, 不會影響你的遊戲體驗. 並且很多這類錯誤無法被修復. 請只將影響遊戲體驗的錯誤發送給我們."
 L["Show an alert frame if you have unspend talent points."] = "顯示未使用天賦警告."
+L["Shows item level of each item, enchants, and gems when inspecting another player.\nAlso displays Gear Score on the bottom right side of the inspect frame. This is an average of each equipped item."] = true
 L["Skin Backdrop (No Borders)"] = "美化背景(無邊界)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."

@@ -515,6 +515,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Отображать панель на верхней границе экрана. Это косметический элемент."
 L["Display battleground messages in the middle of the screen."] = "Отображать сообщения полей боя в центре экрана."
 L["Display emotion icons in chat."] = "Показывать смайлы в чате"
+L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "Отображать имя юнита на облачках сообщений. Не будет работать, если фон отключен или в подземельях."
 L["Emotion Icons"] = "Иконки эмоций"
 L["Enable + Adjust Movers"] = "Включить и двигать фиксаторы"
@@ -552,6 +553,7 @@ L["Reset Anchors"] = "Сбросить позиции"
 L["Reverse Fill Direction"] = "Обратное заполнение"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Отображать ошибки типа ADDON_ACTION_BLOCKED в фрейме ошибок lua. Эти ошибки в большинстве случаев не сильно важны и не влияют на производительность. Также многие из этих ошибок не могут быть исправлены. Пожалуйста, сообщайте об этих ошибках только если Вы заметите дефект в игре."
 L["Show an alert frame if you have unspend talent points."] = "Отображать предупреждение, если у вас есть не распределенные очки талантов."
+L["Shows item level of each item, enchants, and gems when inspecting another player.\nAlso displays Gear Score on the bottom right side of the inspect frame. This is an average of each equipped item."] = true
 L["Skin Backdrop (No Borders)"] = "Стилизовать фон (без границ)"
 L["Skin Backdrop"] = "Стилизовать фон"
 L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"

@@ -516,6 +516,7 @@ L["Display a panel across the bottom of the screen. This is for cosmetic only."]
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
 L["Display battleground messages in the middle of the screen."] = "Afficher le message du champ de bataille au milieu de l'écran"
 L["Display emotion icons in chat."] = "Afficher les émoticônes dans le chat"
+L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Emotion Icons"] = "Emoticônes"
 L["Enable + Adjust Movers"] = true
@@ -553,6 +554,7 @@ L["Reset Anchors"] = "Réinitialiser les ancres"
 L["Reverse Fill Direction"] = "Inverser la direction de remplissage"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Envoyer les ADDON_ACTION_BLOCKED dans la fenêtre d'erreur LUA. Ces erreurs sont minimes dans la plupart des cas et n'affecteront pas votre expérience de jeu. Tenez compte que nombreuses de celles-ci ne peuvent être fixé. Signalez-les uniquement si cela affecte grandement le jeu."
 L["Show an alert frame if you have unspend talent points."] = true
+L["Shows item level of each item, enchants, and gems when inspecting another player.\nAlso displays Gear Score on the bottom right side of the inspect frame. This is an average of each equipped item."] = true
 L["Skin Backdrop (No Borders)"] = "Habiller le fond (sans bordures)"
 L["Skin Backdrop"] = "Habiller le fond"
 L["Skin the blizzard chat bubbles."] = "Habillage des bulles de Chat."

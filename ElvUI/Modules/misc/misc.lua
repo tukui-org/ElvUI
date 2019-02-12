@@ -361,7 +361,7 @@ function M:UpdateInspectInfo()
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel, count = 0, 0
 
-	for i=1, 17 do
+	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[InspectItems[i]]
 			inspectItem.enchantText:SetText()
@@ -371,7 +371,7 @@ function M:UpdateInspectInfo()
 			ScanTooltip:SetInventoryItem(unit, i)
 			ScanTooltip:Show()
 
-			for y=1, 10 do
+			for y = 1, 10 do
 				inspectItem['textureSlot'..y]:SetTexture()
 				local texture = _G["ElvUI_InspectTooltipTexture"..y]
 				local hasTexture = texture and texture:GetTexture()
