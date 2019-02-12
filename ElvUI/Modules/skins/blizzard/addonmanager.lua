@@ -16,23 +16,18 @@ local function LoadSkin()
 	--Original Size: 500, 478
 	AddonList:SetSize(550, 478)
 
-	--Original Size: 449,99, 382
-	--Adjusting the ScrollFrame will also positon the ScrollBar.
+	--Original Size: 449, 99, 382 (Adjusting the ScrollFrame will also positon the ScrollBar)
 	_G.AddonListScrollFrame:SetSize(499, 382)
 
 	S:HandleButton(AddonList.EnableAllButton, true)
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
-
-	_G.AddonListScrollFrame:StripTextures()
-
-	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar, 5)
-
-	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:SetSize(26, 26)
-
 	S:HandleDropDownBox(_G.AddonCharacterDropDown, 150)
+	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar, 5)
+	S:HandleCheckBox(_G.AddonListForceLoad)
+	_G.AddonListScrollFrame:StripTextures()
+	_G.AddonListForceLoad:SetSize(26, 26)
 
 	for i = 1, _G.MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
