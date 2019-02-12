@@ -508,7 +508,6 @@ function S:HandleDropDownBox(frame, width)
 	end
 
 	if button then
-		button:ClearAllPoints()
 		button:SetPoint("TOPRIGHT", -14, -8)
 		S:HandleNextPrevButton(button, true)
 		button:SetSize(16, 16)

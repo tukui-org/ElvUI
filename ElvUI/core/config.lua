@@ -370,11 +370,26 @@ function E:CreateMoverPopup()
 	nudgeFrame:Width(200)
 	nudgeFrame:Height(110)
 	nudgeFrame:SetTemplate('Transparent')
+	nudgeFrame:CreateShadow()
+	nudgeFrame.shadow:SetBackdropBorderColor(1, 1, 1, .8)
 	nudgeFrame:Point('TOP', ElvUIMoverPopupWindow, 'BOTTOM', 0, -15)
 	nudgeFrame:SetFrameLevel(500)
 	nudgeFrame:Hide()
 	nudgeFrame:EnableMouse(true)
 	nudgeFrame:SetClampedToScreen(true)
+	nudgeFrame:SetPropagateKeyboardInput(true)
+	nudgeFrame:SetScript("OnKeyDown", function(self, btn)
+		local Mod = IsAltKeyDown() or IsControlKeyDown()
+		if btn == 'NUMPAD4' then
+			E:NudgeMover(-1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD6' then
+			E:NudgeMover(1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD8' then
+			E:NudgeMover(nil, 1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD2' then
+			E:NudgeMover(nil, -1 * (Mod and 10 or 1))
+		end
+	end)
 	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
 
 	desc = nudgeFrame:CreateFontString("ARTWORK")

@@ -181,14 +181,19 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local function OnEnter(self)
 		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
-		ElvUIMoverNudgeWindow:Show()
 		E.AssignFrameToNudge(self)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end
 
 	local function OnMouseDown(self, button)
-		if button == "RightButton" then
+		if button == "LeftButton" and not isDragging then
+			if _G.ElvUIMoverNudgeWindow:IsShown() then
+				_G.ElvUIMoverNudgeWindow:Hide()
+			else
+				_G.ElvUIMoverNudgeWindow:Show()
+			end
+		elseif button == "RightButton" then
 			isDragging = false
 			if E.db.general.stickyFrames then
 				Sticky:StopMoving(self)
@@ -210,6 +215,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local function OnLeave(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		_G.ElvUIMoverNudgeWindow:Hide()
 	end
 
 	local function OnShow(self)
