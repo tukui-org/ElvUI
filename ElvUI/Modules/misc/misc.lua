@@ -367,7 +367,7 @@ function M:UpdateItemLevel()
 					local iLvl = lineText:match(MATCH_ITEM_LEVEL)
 					local enchant = lineText:match(MATCH_ENCHANT)
 					if enchant then
-						inspectItem.enchantText:SetText(enchant)
+						inspectItem.enchantText:SetText(enchant:sub(1,20))
 						inspectItem.enchantText:SetTextColor(lr, lg, lb)
 					end
 					if iLvl and iLvl ~= "1" then
