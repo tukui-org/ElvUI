@@ -286,7 +286,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
 
-				GameTooltip:AddDoubleLine(LOCALE.ROLE, role, nil, nil, nil, r, g, b)
+				GameTooltip:AddDoubleLine(format("%s:", LOCALE.ROLE), role, nil, nil, nil, r, g, b)
 			end
 		end
 	else
