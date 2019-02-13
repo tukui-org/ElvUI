@@ -20,10 +20,15 @@ local function SkinNavBarButtons(self)
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		if navButton.MenuArrowButton then
-			S:HandleNextPrevButton(navButton.MenuArrowButton, nil, nil, "down")
-			navButton.MenuArrowButton:HookScript("OnLeave", function() navButton.MenuArrowButton.NormalTexture:SetAlpha(1) end)
-			navButton.MenuArrowButton.NormalTexture:SetAlpha(1)
+			navButton.MenuArrowButton:StripTextures()
+			if navButton.MenuArrowButton.Art then
+				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
+				navButton.MenuArrowButton.Art:SetRotation(3.14)
+			end
 		end
+
+		navButton.xoffset = 1
 
 		navButton.isSkinned = true
 	end
