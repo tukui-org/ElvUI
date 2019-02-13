@@ -9,7 +9,6 @@ local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local min, lower = math.min, string.lower
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles

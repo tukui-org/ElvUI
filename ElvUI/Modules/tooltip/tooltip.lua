@@ -93,9 +93,7 @@ local LOCALE = {
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
 -- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
--- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_HEAD,INVSLOT_NECK,INVSLOT_SHOULDER,INVSLOT_BACK,INVSLOT_CHEST,
--- GLOBALS: INVSLOT_WRIST,INVSLOT_HAND,INVSLOT_WAIST,INVSLOT_LEGS,INVSLOT_FEET, INVSLOT_FINGER1
--- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local targetList = {}
@@ -109,13 +107,6 @@ local classification = {
 	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
 	rare = format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
-}
-
-local SlotName = {
-	INVSLOT_HEAD, INVSLOT_NECK, INVSLOT_SHOULDER, INVSLOT_BACK, INVSLOT_CHEST,
-	INVSLOT_WRIST, INVSLOT_HAND, INVSLOT_WAIST, INVSLOT_LEGS, INVSLOT_FEET,
-	INVSLOT_FINGER1, INVSLOT_FINGER2, INVSLOT_TRINKET1, INVSLOT_TRINKET2,
-	INVSLOT_MAINHAND, INVSLOT_OFFHAND
 }
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)

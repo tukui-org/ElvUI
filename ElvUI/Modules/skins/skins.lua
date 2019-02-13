@@ -390,7 +390,7 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir)
 	Normal:SetTexCoord(0, 1, 0, 1)
 	Pushed:SetTexCoord(0, 1, 0, 1)
 	Disabled:SetTexCoord(0, 1, 0, 1)
-	
+
 	Arrow = arrowDir or Arrow
 	Normal:SetRotation(S.ArrowRotation[Arrow])
 	Pushed:SetRotation(S.ArrowRotation[Arrow])
@@ -435,12 +435,12 @@ function S:HandleMaxMinFrame(frame)
 			button:SetHitRectInsets(1, 1, 1, 1)
 			button:GetHighlightTexture():Kill()
 
-			button:SetScript("OnEnter", function(self, args)
+			button:SetScript("OnEnter", function(self)
 				self:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 				self:GetPushedTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			end)
 
-			button:SetScript("OnLeave", function(self, args)
+			button:SetScript("OnLeave", function(self)
 				self:GetNormalTexture():SetVertexColor(1, 1, 1)
 				self:GetPushedTexture():SetVertexColor(1, 1, 1)
 			end)
