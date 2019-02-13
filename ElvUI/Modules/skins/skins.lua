@@ -433,7 +433,7 @@ function S:HandleMaxMinFrame(frame)
 
 	frame:StripTextures(true)
 
-	for name, direction in pairs ({ ["MaximizeButton"] = 'down', ["MinimizeButton"] = 'up'}) do
+	for name, direction in pairs ({ ["MaximizeButton"] = 'up', ["MinimizeButton"] = 'down'}) do
 		local button = frame[name]
 
 		if button then
