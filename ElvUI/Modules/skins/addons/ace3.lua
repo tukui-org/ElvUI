@@ -89,7 +89,7 @@ function S:SkinAce3()
 			local text = widget.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true, nil, nil, 'system')
 
 			if not frame.backdrop then
 				frame:CreateBackdrop('Default')
@@ -119,7 +119,7 @@ function S:SkinAce3()
 			local text = frame.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, true, nil, nil, 'system')
 
 			if not frame.backdrop then
 				frame:CreateBackdrop('Default')

@@ -350,7 +350,7 @@ function S:HandleTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir)
+function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir, color)
 	if btn.isSkinned then return end
 
 	local Arrow
@@ -395,6 +395,14 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir)
 	Normal:SetRotation(S.ArrowRotation[Arrow])
 	Pushed:SetRotation(S.ArrowRotation[Arrow])
 	Disabled:SetRotation(S.ArrowRotation[Arrow])
+
+	if color == 'system' then
+		Normal:SetVertexColor(1, .8, 0)
+	elseif color == 'value' then
+		Normal:SetVertexColor(unpack(E.media.rgbvaluecolor))
+	else
+		Normal:SetVertexColor(1, 1, 1)
+	end
 
 	Disabled:SetVertexColor(.3, .3, .3)
 
