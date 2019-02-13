@@ -3,8 +3,6 @@ local B = E:GetModule("Blizzard")
 local M = E:GetModule("Misc")
 
 local _G = _G
-local min, max = math.min, math.max
-local strlen, strsub, tonumber = strlen, strsub, tonumber
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -767,7 +765,7 @@ E.Options.args.general = {
 						["ENABLED"] = L["Enable"],
 						["ENABLED_RESIZEPARENT"] = L["Enable + Adjust Movers"],
 					},
-				},			
+				},
 				disableTutorialButtons = {
 					order = 11,
 					type = 'toggle',
@@ -775,7 +773,7 @@ E.Options.args.general = {
 					desc = L["Disables the tutorial button found on some frames."],
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
-				},					
+				},
 			},
 		},
 		misc = {
@@ -822,8 +820,8 @@ E.Options.args.general = {
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
-				},				
+				},
 			},
-		},		
+		},
 	},
 }
