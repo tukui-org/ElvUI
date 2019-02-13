@@ -6,7 +6,7 @@ E.Misc = M;
 --Lua functions
 local _G = _G
 local format, gsub = string.format, string.gsub
-local pairs, tonumber, unpack = pairs, tonumber, unpack
+local pairs, tonumber, unpack, max = pairs, tonumber, unpack, max
 --WoW API / Variables
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
@@ -48,6 +48,10 @@ local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
+local GetInventoryItemLink = GetInventoryItemLink
+local GetInventoryItemTexture = GetInventoryItemTexture
+local GetItemInfo = GetItemInfo
+local GetInspectSpecialization = GetInspectSpecialization
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -58,6 +62,16 @@ local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 
 local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_InspectTooltip", UIParent, "GameTooltipTemplate")
+
+local ARMOR_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
+local X2_INVTYPES = {
+    INVTYPE_2HWEAPON = true,
+    INVTYPE_RANGEDRIGHT = true,
+    INVTYPE_RANGED = true,
+}
+local X2_EXCEPTIONS = {
+    [2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
+}
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -354,10 +368,63 @@ function M:ToggleInspectInfo()
 	end
 end
 
+function M:CalculateAverageItemLevel(iLevelDB)
+	local unit = _G.InspectFrame.unit or "target"
+	local spec = GetInspectSpecialization(unit)
+	local isOK, total, link = true, 0
+
+	if not spec or spec == 0 then
+		isOK = false
+	end
+
+	-- Armour
+	for _, id in next, ARMOR_SLOTS do
+		link = GetInventoryItemLink(unit, id)
+		if link then
+			local cur = iLevelDB[id]
+			if cur and cur > 0 then
+				total = total + cur
+			end
+		elseif GetInventoryItemTexture(unit, id) then
+			isOK = false
+		end
+	end
+
+	-- Main hand
+	local mainItemLevel, mainQuality, mainEquipLoc, mainItemClass, mainItemSubClass, _ = 0
+	link = GetInventoryItemLink(unit, 16)
+	if link then
+		mainItemLevel = iLevelDB[16]
+		_, _, mainQuality, _, _, _, _, _, mainEquipLoc, _, _, mainItemClass, mainItemSubClass = GetItemInfo(link)
+	elseif GetInventoryItemTexture(unit, 16) then
+		isOK = false
+	end
+
+	-- Off hand
+	local offItemLevel, offEquipLoc = 0
+	link = GetInventoryItemLink(unit, 17)
+	if link then
+		offItemLevel = iLevelDB[17]
+		_, _, _, _, _, _, _, _, offEquipLoc = GetItemInfo(link)
+	elseif GetInventoryItemTexture(unit, 17) then
+		isOK = false
+	end
+
+	if mainQuality == 6 or (not offEquipLoc and X2_INVTYPES[mainEquipLoc] and X2_EXCEPTIONS[mainItemClass] ~= mainItemSubClass and spec ~= 72) then
+		mainItemLevel = max(mainItemLevel, offItemLevel)
+		total = total + mainItemLevel * 2
+	else
+		total = total + mainItemLevel + offItemLevel
+	end
+
+	return isOK, total / 16
+end
+
 function M:UpdateInspectInfo()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
-	local iLevel, count = 0, 0
+	local iLevel = 0
+	local iLevelDB = {}
 
 	for i = 1, 17 do
 		if i ~= 4 then
@@ -394,7 +461,7 @@ function M:UpdateInspectInfo()
 					if iLvl and iLvl ~= "1" then
 						inspectItem.iLvlText:SetText(iLvl)
 						inspectItem.iLvlText:SetTextColor(tr, tg, tb)
-						count, iLevel = count + 1, iLevel + tonumber(iLvl)
+						iLevelDB[i] = tonumber(iLvl)
 					end
 				end
 			end
@@ -403,9 +470,10 @@ function M:UpdateInspectInfo()
 		end
 	end
 
-	if iLevel > 0 then
-		local itemLevelAverage = E:Round(iLevel / count)
-		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Gear Score: %d"], itemLevelAverage)
+	inspectOK, iLevel = self:CalculateAverageItemLevel(iLevelDB)
+
+	if inspectOK then
+		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLevel)
 	else
 		_G.InspectFrame.ItemLevelText:SetText('')
 	end
