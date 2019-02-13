@@ -43,7 +43,7 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
 -- GLOBALS: QueueStatusMinimapButtonBorder, RightMiniPanel, SpellBookFrame, StoreMicroButton, TalentFrame_LoadUI
 -- GLOBALS: TimeManagerClockButton, TimeManagerFrame, TopLeftMiniPanel, TopMiniPanel, TopRightMiniPanel, UIParent
--- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster, ToggleDropDownMenu
+-- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster, ToggleDropDownMenu, HideDropDownMenu
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
@@ -147,6 +147,8 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:Minimap_OnMouseDown(btn)
+	HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
+	menuFrame:Hide()
 	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if position:match("LEFT") then
