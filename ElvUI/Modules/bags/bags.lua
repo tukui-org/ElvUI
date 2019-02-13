@@ -976,7 +976,7 @@ function B:Layout(isBank)
 					end)
 				else
 					if bagID == 0 then --Backpack needs different setup
-						f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBagBackpack", f.ContainerHolder, "ItemButtonTemplate, ItemAnimTemplate")
+						f.ContainerHolder[i] = CreateFrame("ItemButton", "ElvUIMainBagBackpack", f.ContainerHolder, "ItemAnimTemplate")
 						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
