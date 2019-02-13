@@ -215,7 +215,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local function OnLeave(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
-		_G.ElvUIMoverNudgeWindow:Hide()
 	end
 
 	local function OnShow(self)
