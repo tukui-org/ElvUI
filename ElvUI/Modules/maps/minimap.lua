@@ -146,7 +146,7 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
-function M:Minimap_OnMouseUp(btn)
+function M:Minimap_OnMouseDown(btn)
 	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if position:match("LEFT") then
@@ -476,8 +476,8 @@ function M:Initialize()
 	MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
-	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-
+	Minimap:SetScript("OnMouseDown", M.Minimap_OnMouseDown)
+	Minimap:SetScript("OnMouseUp", E.noop)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
