@@ -59,7 +59,7 @@ local function SkinLFGuild()
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameAcceptButton)
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameCancelButton)
 	_G.GuildFinderRequestMembershipFrameInputFrame:StripTextures()
-	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate()
 end
 
 local function LoadSkin()

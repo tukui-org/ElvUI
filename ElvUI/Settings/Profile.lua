@@ -20,6 +20,7 @@ P['general'] = {
 	['talkingHeadFrameScale'] = 0.9,
 	['talkingHeadFrameBackdrop'] = false,
 	['vehicleSeatIndicatorSize'] = 128,
+	['displayInspectInfo'] = true,
 	['afk'] = true,
 	['numberPrefixStyle'] = 'ENGLISH',
 	['decimalLength'] = 1,

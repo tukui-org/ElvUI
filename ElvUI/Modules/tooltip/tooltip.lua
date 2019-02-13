@@ -92,10 +92,8 @@ local LOCALE = {
 -- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
--- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2,
--- GLOBALS: CUSTOM_CLASS_COLORS, INVSLOT_HEAD,INVSLOT_NECK,INVSLOT_SHOULDER,INVSLOT_BACK,INVSLOT_CHEST,
--- GLOBALS: INVSLOT_WRIST,INVSLOT_HAND,INVSLOT_WAIST,INVSLOT_LEGS,INVSLOT_FEET, INVSLOT_FINGER1
--- GLOBALS: INVSLOT_FINGER2,INVSLOT_TRINKET1,INVSLOT_TRINKET2, INVSLOT_MAINHAND,INVSLOT_OFFHAND
+-- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
+-- GLOBALS: CUSTOM_CLASS_COLORS
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local targetList = {}
@@ -109,13 +107,6 @@ local classification = {
 	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
 	rare = format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
-}
-
-local SlotName = {
-	INVSLOT_HEAD, INVSLOT_NECK, INVSLOT_SHOULDER, INVSLOT_BACK, INVSLOT_CHEST,
-	INVSLOT_WRIST, INVSLOT_HAND, INVSLOT_WAIST, INVSLOT_LEGS, INVSLOT_FEET,
-	INVSLOT_FINGER1, INVSLOT_FINGER2, INVSLOT_TRINKET1, INVSLOT_TRINKET2,
-	INVSLOT_MAINHAND, INVSLOT_OFFHAND
 }
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
@@ -286,7 +277,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
 
-				GameTooltip:AddDoubleLine(LOCALE.ROLE, role, nil, nil, nil, r, g, b)
+				GameTooltip:AddDoubleLine(format("%s:", LOCALE.ROLE), role, nil, nil, nil, r, g, b)
 			end
 		end
 	else
@@ -372,11 +363,16 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
-		for i=1, 40 do
+		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 
 			if self.MountIDs[id] then
+				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
+
 				GameTooltip:AddDoubleLine(format("%s:", LOCALE.MOUNT), name, nil, nil, nil, 1, 1, 1)
+				if sourceText and IsShiftKeyDown() then
+					GameTooltip:AddLine(sourceText, 1, 1, 1)
+				end
 				break
 			end
 		end

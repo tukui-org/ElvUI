@@ -471,7 +471,7 @@ function AB:CreateVehicleLeave()
 	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-	vehicle:SetTemplate("Default")
+	vehicle:SetTemplate()
 	vehicle:RegisterForClicks("AnyUp")
 
 	vehicle:SetScript("OnClick", Vehicle_OnClick)

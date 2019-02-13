@@ -99,11 +99,11 @@ local function LoadSkin()
 	_G.CalendarFilterFrame.backdrop:Point("TOPLEFT", 20, 2)
 	_G.CalendarFilterFrame.backdrop:Point("BOTTOMRIGHT", _G.CalendarFilterButton, "BOTTOMRIGHT", 2, -2)
 
-	_G.CalendarContextMenu:SetTemplate("Default")
+	_G.CalendarContextMenu:SetTemplate()
 	_G.CalendarContextMenu.SetBackdropColor = E.noop
 	_G.CalendarContextMenu.SetBackdropBorderColor = E.noop
 
-	_G.CalendarInviteStatusContextMenu:SetTemplate("Default")
+	_G.CalendarInviteStatusContextMenu:SetTemplate()
 	_G.CalendarInviteStatusContextMenu.SetBackdropColor = E.noop
 	_G.CalendarInviteStatusContextMenu.SetBackdropBorderColor = E.noop
 
@@ -179,7 +179,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.CalendarCreateEventCommunityDropDown, 240)
 
 	_G.CalendarCreateEventDescriptionContainer:StripTextures()
-	_G.CalendarCreateEventDescriptionContainer:SetTemplate("Default")
+	_G.CalendarCreateEventDescriptionContainer:SetTemplate()
 
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
 

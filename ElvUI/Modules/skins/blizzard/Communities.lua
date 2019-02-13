@@ -130,8 +130,8 @@ local function LoadSkin()
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
 	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
-	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
@@ -155,7 +155,7 @@ local function LoadSkin()
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
-	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
+	S:HandleDropDownBox(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
@@ -167,7 +167,7 @@ local function LoadSkin()
 	ColumnDisplay.InsetBorderTop:Hide()
 
 	S:HandleInsetFrame(CommunitiesFrame.MemberList.InsetFrame)
-	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
@@ -436,7 +436,7 @@ local function LoadSkin()
 	NotificationSettings:CreateBackdrop("Transparent")
 	NotificationSettings.backdrop:SetAllPoints()
 
-	S:HandleDropDownFrame(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
 	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
@@ -507,8 +507,8 @@ local function LoadSkin()
 	S:HandleButton(TicketManager.Close)
 	S:HandleButton(TicketManager.GenerateLinkButton)
 
-	S:HandleDropDownFrame(TicketManager.ExpiresDropDownMenu)
-	S:HandleDropDownFrame(TicketManager.UsesDropDownMenu)
+	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
+	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
 
 	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)

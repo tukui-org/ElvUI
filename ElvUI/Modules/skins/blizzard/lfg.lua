@@ -9,7 +9,6 @@ local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local min, lower = math.min, string.lower
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
@@ -653,7 +652,7 @@ local function LoadSkin()
 		local button = self.CategoryButtons[btnIndex]
 		if(button) then
 			if not button.isSkinned then
-				button:SetTemplate("Default")
+				button:SetTemplate()
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()

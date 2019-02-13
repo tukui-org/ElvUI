@@ -32,7 +32,7 @@ local function LoadSkin()
 
 	local TimeManagerStopwatchCheck = _G.TimeManagerStopwatchCheck
 	_G.TimeManagerStopwatchFrame:StripTextures()
-	TimeManagerStopwatchCheck:SetTemplate("Default")
+	TimeManagerStopwatchCheck:SetTemplate()
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
 

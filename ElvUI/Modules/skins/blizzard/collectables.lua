@@ -275,7 +275,7 @@ local function LoadSkin()
 	end
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:SetTemplate('Default')
+	_G.PetJournalPetCard:SetTemplate()
 	_G.PetJournalPetCardInset:StripTextures()
 	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 

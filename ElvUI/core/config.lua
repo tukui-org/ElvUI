@@ -251,6 +251,8 @@ function E:CreateMoverPopup()
 			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
+	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	f:CreateShadow(5)
 	f:Hide()
 
 	local S = E:GetModule('Skins')
@@ -264,6 +266,7 @@ function E:CreateMoverPopup()
 	header:RegisterForClicks('AnyUp', 'AnyDown')
 	header:SetScript('OnMouseDown', function() f:StartMoving() end)
 	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
+	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
@@ -358,7 +361,7 @@ function E:CreateMoverPopup()
 
 	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
 	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
-	S:HandleDropDownBox(configMode, 148)
+	S:HandleDropDownBox(configMode, 165)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
@@ -370,11 +373,25 @@ function E:CreateMoverPopup()
 	nudgeFrame:Width(200)
 	nudgeFrame:Height(110)
 	nudgeFrame:SetTemplate('Transparent')
-	nudgeFrame:Point('TOP', ElvUIMoverPopupWindow, 'BOTTOM', 0, -15)
+	nudgeFrame:CreateShadow(5)
+	nudgeFrame:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	nudgeFrame:SetFrameLevel(500)
 	nudgeFrame:Hide()
 	nudgeFrame:EnableMouse(true)
 	nudgeFrame:SetClampedToScreen(true)
+	nudgeFrame:SetPropagateKeyboardInput(true)
+	nudgeFrame:SetScript("OnKeyDown", function(self, btn)
+		local Mod = IsAltKeyDown() or IsControlKeyDown()
+		if btn == 'NUMPAD4' then
+			E:NudgeMover(-1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD6' then
+			E:NudgeMover(1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD8' then
+			E:NudgeMover(nil, 1 * (Mod and 10 or 1))
+		elseif btn == 'NUMPAD2' then
+			E:NudgeMover(nil, -1 * (Mod and 10 or 1))
+		end
+	end)
 	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
 
 	desc = nudgeFrame:CreateFontString("ARTWORK")
@@ -391,6 +408,7 @@ function E:CreateMoverPopup()
 	header:Width(100); header:Height(25)
 	header:Point("CENTER", nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
+	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 
 	title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
@@ -478,35 +496,39 @@ function E:CreateMoverPopup()
 	end)
 	S:HandleButton(resetButton)
 
-	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
+	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame)
 	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, 1)
 	end)
-	SquareButton_SetIcon(upButton, "UP");
+	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
+	upButton:SetSize(22, 22)
 
-	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
+	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame)
 	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, -1)
 	end)
-	SquareButton_SetIcon(downButton, "DOWN");
+	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
+	downButton:SetSize(22, 22)
 
-	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
+	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame)
 	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function()
 		E:NudgeMover(-1)
 	end)
-	SquareButton_SetIcon(leftButton, "LEFT");
+	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
+	leftButton:SetSize(22, 22)
 
-	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
+	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame)
 	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function()
 		E:NudgeMover(1)
 	end)
-	SquareButton_SetIcon(rightButton, "RIGHT");
+	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
+	rightButton:SetSize(22, 22)
 end

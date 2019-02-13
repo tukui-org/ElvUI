@@ -75,7 +75,7 @@ local function LoadSkin()
 
 	-- send mail
 	_G.SendMailScrollFrame:StripTextures(true)
-	_G.SendMailScrollFrame:SetTemplate("Default")
+	_G.SendMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
 
@@ -112,7 +112,7 @@ local function LoadSkin()
 	_G.MailFrameInset:Kill()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:SetTemplate("Default")
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 

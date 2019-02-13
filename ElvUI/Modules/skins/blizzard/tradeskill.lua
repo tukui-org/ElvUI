@@ -95,7 +95,7 @@ local function LoadSkin()
 			ResultIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			ResultIcon:GetNormalTexture():SetInside()
 		end
-		ResultIcon:SetTemplate("Default")
+		ResultIcon:SetTemplate()
 		ResultIcon.IconBorder:SetTexture()
 		ResultIcon.ResultBorder:SetTexture()
 
@@ -109,7 +109,7 @@ local function LoadSkin()
 			if not Icon.backdrop then
 				Icon.backdrop = CreateFrame("Frame", nil, Button)
 				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
-				Icon.backdrop:SetTemplate("Default")
+				Icon.backdrop:SetTemplate()
 				Icon.backdrop:SetOutside(Icon)
 			end
 

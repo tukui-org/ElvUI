@@ -16,7 +16,7 @@ function UF:Construct_DebuffHighlight(frame)
 	frame.DebuffHighlightAlpha = 0.45
 	frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	local x = frame.shadow
 	frame.shadow = nil
 	x:Hide();

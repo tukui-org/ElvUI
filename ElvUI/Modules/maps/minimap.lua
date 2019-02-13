@@ -43,7 +43,7 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: MinimapZoomIn, MinimapZoomOut, MMHolder, PlayerTalentFrame, QueueStatusFrame, QueueStatusMinimapButton
 -- GLOBALS: QueueStatusMinimapButtonBorder, RightMiniPanel, SpellBookFrame, StoreMicroButton, TalentFrame_LoadUI
 -- GLOBALS: TimeManagerClockButton, TimeManagerFrame, TopLeftMiniPanel, TopMiniPanel, TopRightMiniPanel, UIParent
--- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster, ToggleDropDownMenu
+-- GLOBALS: VideoOptionsFrame, VideoOptionsFrameCancel, MinimapCluster, ToggleDropDownMenu, HideDropDownMenu
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
@@ -146,7 +146,9 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
-function M:Minimap_OnMouseUp(btn)
+function M:Minimap_OnMouseDown(btn)
+	HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
+	menuFrame:Hide()
 	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if position:match("LEFT") then
@@ -476,8 +478,8 @@ function M:Initialize()
 	MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
-	Minimap:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-
+	Minimap:SetScript("OnMouseDown", M.Minimap_OnMouseDown)
+	Minimap:SetScript("OnMouseUp", E.noop)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")

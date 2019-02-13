@@ -43,7 +43,6 @@ local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
-local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
@@ -70,7 +69,7 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local UpdateSlot = UpdateSlot
+local GetCVarBool = GetCVarBool
 local UseContainerItem = UseContainerItem
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -515,55 +514,23 @@ function B:UpdateSlot(bagID, slotID)
 	slot.itemLevel:SetText("")
 	slot.bindType:SetText("")
 
-	if B.db.showBindType and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
-		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
+	local professionColors = B.ProfessionColors[bagType]
+	local showItemLevel = B.db.itemLevel and clink and not professionColors
+	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
+	if showBindType or showItemLevel then
+		ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 		ScanTooltip:SetBagItem(bagID, slotID)
 		ScanTooltip:Show()
-
-		for i = 2, 6 do -- trying line 2 to 6 for the bind texts, don't think they are further down
-			local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
-			if (not line) or (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then
-				break
-			end
-			if line == _G.ITEM_BIND_ON_EQUIP then
-				slot.bindType:SetText(L['BoE'])
-				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
-				break
-			end
-			if line == _G.ITEM_BIND_ON_USE then
-				slot.bindType:SetText(L['BoU'])
-				slot.bindType:SetVertexColor(GetItemQualityColor(slot.rarity))
-				break
-			end
-		end
-
-		ScanTooltip:Hide()
 	end
 
-	if B.ProfessionColors[bagType] then
-		local r, g, b = unpack(B.ProfessionColors[bagType])
+	if professionColors then
+		local r, g, b = unpack(professionColors)
 		slot.newItemGlow:SetVertexColor(r, g, b)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif clink then
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		slot.name = name
-
-		local iLvl --GetDetailedItemLevelInfo(clink)
-		ScanTooltip:SetOwner(self, "ANCHOR_NONE")
-		ScanTooltip:SetBagItem(bagID, slotID)
-		ScanTooltip:Show()
-		for x = 2, 3 do
-			local line = _G["ElvUI_BagItemsTooltipTextLeft"..x]:GetText()
-			if line then
-				local itemLevel = line:match(MATCH_ITEM_LEVEL)
-				if itemLevel then
-					iLvl = tonumber(itemLevel)
-					break
-				end
-			end
-		end
-		ScanTooltip:Hide()
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -572,9 +539,35 @@ function B:UpdateSlot(bagID, slotID)
 			r, g, b = GetItemQualityColor(slot.rarity);
 		end
 
-		--Item Level
-		if iLvl and B.db.itemLevel and IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity) then
-			if (iLvl >= B.db.itemLevelThreshold) then
+		if showBindType or showItemLevel then
+			local colorblind = GetCVarBool('colorblindmode')
+			local canShowItemLevel = showItemLevel and IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
+			local itemLevelLines, bindTypeLines = colorblind and 4 or 3, colorblind and 8 or 7
+			local iLvl, BoE, BoU --GetDetailedItemLevelInfo this api dont work for some time correctly for ilvl
+
+			for i = 2, bindTypeLines do
+				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
+				if not line or line == "" then break end
+				if canShowItemLevel and (i <= itemLevelLines) then
+					local itemLevel = line:match(MATCH_ITEM_LEVEL)
+					if itemLevel then iLvl = tonumber(itemLevel) end
+				end
+				if showBindType then
+					-- as long as we check the ilvl first, we can savely break on these because they fall after ilvl
+					if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+					BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
+				end
+				if ((not showBindType) or (BoE or BoU)) and ((not canShowItemLevel) or iLvl) then
+					break
+				end
+			end
+
+			if BoE or BoU then
+				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
+				slot.bindType:SetVertexColor(r, g, b)
+			end
+
+			if iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
 				if B.db.itemLevelCustomColorEnable then
 					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
@@ -622,6 +615,8 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		slot.ignoreBorderColors = nil
 	end
+
+	ScanTooltip:Hide()
 
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
@@ -1059,9 +1054,8 @@ function B:Layout(isBank)
 		if numSlots > 0 then
 			if not f.Bags[bagID] then
 				f.Bags[bagID] = CreateFrame('Frame', f:GetName()..'Bag'..bagID, f.holderFrame);
-				f.Bags[bagID]:SetID(bagID);
 				f.Bags[bagID].UpdateBagSlots = B.UpdateBagSlots;
-				f.Bags[bagID].UpdateSlot = UpdateSlot;
+				f.Bags[bagID]:SetID(bagID);
 			end
 
 			f.Bags[bagID].numSlots = numSlots;
@@ -1965,7 +1959,7 @@ function B:ContructContainerFrame(name, isBank)
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName().."CurrencyButton"..i, f.currencyButton);
 			f.currencyButton[i]:Size(16);
-			f.currencyButton[i]:SetTemplate('Default');
+			f.currencyButton[i]:SetTemplate();
 			f.currencyButton[i]:SetID(i);
 			f.currencyButton[i].icon = f.currencyButton[i]:CreateTexture(nil, 'OVERLAY');
 			f.currencyButton[i].icon:SetInside();

@@ -20,8 +20,15 @@ local function SkinNavBarButtons(self)
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		if navButton.MenuArrowButton then
-			S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			navButton.MenuArrowButton:StripTextures()
+			if navButton.MenuArrowButton.Art then
+				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
+				navButton.MenuArrowButton.Art:SetRotation(3.14)
+			end
 		end
+
+		navButton.xoffset = 1
 
 		navButton.isSkinned = true
 	end
@@ -174,7 +181,7 @@ local function LoadSkin()
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["StaticPopup"..i.."ItemFrameNameFrame"]:Kill()
-		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
+		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate()
 		_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
 		_G["StaticPopup"..i.."ItemFrame"].IconBorder:SetAlpha(0)
 		_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
@@ -215,7 +222,7 @@ local function LoadSkin()
 		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
 		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:SetTemplate("Default")
+		b:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()

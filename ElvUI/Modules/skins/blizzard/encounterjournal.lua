@@ -106,7 +106,7 @@ local function SkinAbilitiesInfo()
 			S:HandleButton(header.button)
 
 			header.button.bg = CreateFrame("Frame", nil, header.button)
-			header.button.bg:SetTemplate("Default")
+			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
 			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
@@ -340,7 +340,7 @@ local function LoadSkin()
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
 		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
-		item.IconBackdrop:SetTemplate("Default")
+		item.IconBackdrop:SetTemplate()
 
 		item.name:ClearAllPoints()
 		item.name:Point("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
@@ -380,7 +380,7 @@ local function LoadSkin()
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
-	_G.EncounterJournalSearchResults:SetTemplate("Default")
+	_G.EncounterJournalSearchResults:SetTemplate()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)

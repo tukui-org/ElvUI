@@ -700,7 +700,7 @@ local function LoadSkin()
 	for i = 1, #optiondropdown do
 		local odropdown = _G[optiondropdown[i]]
 		if odropdown then
-			S:HandleDropDownBox(odropdown,165)
+			S:HandleDropDownBox(odropdown)
 		else
 			print(optiondropdown[i])
 		end

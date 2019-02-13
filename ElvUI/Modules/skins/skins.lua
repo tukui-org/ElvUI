@@ -242,6 +242,7 @@ function S:SkinTalentListButtons(frame)
 end
 
 function S:HandleButton(button, strip, isDeclineButton)
+	if button.isSkinned then return end
 	assert(button, "doesn't exist!")
 
 	local buttonName = button.GetName and button:GetName()
@@ -275,6 +276,8 @@ function S:HandleButton(button, strip, isDeclineButton)
 	button:SetTemplate("Default", true)
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+
+	button.isSkinned = true
 end
 
 local function GrabScrollBarElement(frame, element)
@@ -304,13 +307,13 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	if Thumb then
 		Thumb:SetTexture()
-		Thumb:CreateBackdrop("Default", true, true)
+		Thumb:CreateBackdrop('Default', true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
 		Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
 		Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 		Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-		Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+		Thumb.backdrop.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 	end
 end
 
@@ -325,7 +328,8 @@ local tabs = {
 }
 
 function S:HandleTab(tab)
-	if not tab then return end
+	if (not tab or tab.backdrop) then return end
+
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
 		if tex then
@@ -340,16 +344,18 @@ function S:HandleTab(tab)
 	end
 
 	tab.backdrop = CreateFrame("Frame", nil, tab)
-	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
+function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir)
+	if btn.isSkinned then return end
+
 	local Arrow
 	local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
-	if ButtonName then
+	if ButtonName and not arrowDir then
 		if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'back')) then
 			Arrow = 'left'
 		elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
@@ -371,7 +377,7 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 
-	if not Arrow then
+	if not Arrow and not arrowDir then
 		Arrow = useVertical and (inverseDirection and 'down' or 'up') or inverseDirection and 'left' or 'right'
 	end
 
@@ -385,15 +391,20 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	Pushed:SetTexCoord(0, 1, 0, 1)
 	Disabled:SetTexCoord(0, 1, 0, 1)
 
+	Arrow = arrowDir or Arrow
 	Normal:SetRotation(S.ArrowRotation[Arrow])
 	Pushed:SetRotation(S.ArrowRotation[Arrow])
 	Disabled:SetRotation(S.ArrowRotation[Arrow])
 
 	Disabled:SetVertexColor(.3, .3, .3)
+
+	btn.isSkinned = true
 end
 
 function S:HandleRotateButton(btn)
-	btn:SetTemplate("Default")
+	if btn.isSkinned then return end
+
+	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
@@ -404,9 +415,12 @@ function S:HandleRotateButton(btn)
 	btn:GetNormalTexture():SetInside()
 	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
 	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+
+	btn.isSkinned = true
 end
 
 function S:HandleMaxMinFrame(frame)
+	if frame.isSkinned then return end
 	assert(frame, "does not exist.")
 
 	frame:StripTextures(true)
@@ -421,12 +435,12 @@ function S:HandleMaxMinFrame(frame)
 			button:SetHitRectInsets(1, 1, 1, 1)
 			button:GetHighlightTexture():Kill()
 
-			button:SetScript("OnEnter", function(self, args)
+			button:SetScript("OnEnter", function(self)
 				self:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 				self:GetPushedTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			end)
 
-			button:SetScript("OnLeave", function(self, args)
+			button:SetScript("OnLeave", function(self)
 				self:GetNormalTexture():SetVertexColor(1, 1, 1)
 				self:GetPushedTexture():SetVertexColor(1, 1, 1)
 			end)
@@ -438,9 +452,13 @@ function S:HandleMaxMinFrame(frame)
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 		end
 	end
+
+	frame.isSkinned = true
 end
 
 function S:HandleEditBox(frame)
+	if frame.backdrop then return end
+
 	frame:CreateBackdrop("Default")
 
 	if frame.TopLeftTex then frame.TopLeftTex:Kill() end
@@ -471,8 +489,12 @@ function S:HandleEditBox(frame)
 end
 
 function S:HandleDropDownBox(frame, width)
-	local button = _G[frame:GetName().."Button"]
-	if not button then return end
+	if frame.backdrop then return end
+
+	local FrameName = frame.GetName and frame:GetName()
+
+	local button = FrameName and _G[FrameName..'Button'] or frame.Button
+	local text = FrameName and _G[FrameName..'Text'] or frame.Text
 
 	frame:StripTextures()
 
@@ -480,18 +502,20 @@ function S:HandleDropDownBox(frame, width)
 		frame:Width(width)
 	end
 
-	local frameText = _G[frame:GetName().."Text"]
-	if frameText then
-		_G[frame:GetName().."Text"]:ClearAllPoints()
-		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	if text then
+		local a, b, c, d, e = text:GetPoint()
+		text:SetPoint(a, b, c, d + 10, e - 4)
+		text:SetWidth(frame:GetWidth() / 1.4)
 	end
 
 	if button then
-		button:ClearAllPoints()
 		button:SetPoint("TOPRIGHT", -14, -8)
-
 		S:HandleNextPrevButton(button, true)
 		button:SetSize(16, 16)
+	end
+
+	if frame.Icon then
+		frame.Icon:SetPoint('LEFT', 23, 0)
 	end
 
 	frame:CreateBackdrop("Default")
@@ -499,76 +523,14 @@ function S:HandleDropDownBox(frame, width)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
--- New BFA DropDown Template (Original Function Credits: Aurora) ~ was modified.
-function S:HandleDropDownFrame(frame, width)
-	if not width then width = 155 end
-
-	local left = frame.Left
-	local middle = frame.Middle
-	local right = frame.Right
-	if left then
-		left:SetAlpha(0)
-		left:SetSize(25, 64)
-		left:SetPoint("TOPLEFT", 0, 17)
-	end
-	if middle then
-		middle:SetAlpha(0)
-		middle:SetHeight(64)
-	end
-	if right then
-		right:SetAlpha(0)
-		right:SetSize(25, 64)
-	end
-
-	local button = frame.Button
-	if button then
-		button:SetSize(24, 24)
-		button:ClearAllPoints()
-		button:Point("RIGHT", right, "RIGHT", -20, 0)
-
-		button.NormalTexture:SetTexture()
-		button.PushedTexture:SetTexture()
-		button.HighlightTexture:SetTexture()
-
-		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
-			if not noReset then
-				btn:ClearAllPoints()
-				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-20), E:Scale(0), true)
-			end
-		end)
-
-		self:HandleNextPrevButton(button, true)
-	end
-
-	local disabled = button and button.DisabledTexture
-	if disabled then
-		disabled:SetAllPoints(button)
-		disabled:SetColorTexture(0, 0, 0, .3)
-		disabled:SetDrawLayer("OVERLAY")
-	end
-
-	if middle and (not frame.noResize) then
-		frame:SetWidth(40)
-		middle:SetWidth(width)
-	end
-
-	if right and frame.Text then
-		frame.Text:SetSize(0, 10)
-		frame.Text:SetPoint("RIGHT", right, -43, 2)
-	end
-
-	frame:CreateBackdrop("Default")
-	frame.backdrop:Point("TOPLEFT", 20, -2)
-	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-end
-
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
+	if frame.isSkinned then return end
 	assert(frame, 'does not exist.')
 
 	frame:StripTextures()
 
 	if noBackdrop then
-		frame:SetTemplate("Default")
+		frame:SetTemplate()
 		frame:Size(16)
 	else
 		frame:CreateBackdrop('Default')
@@ -609,6 +571,8 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 			if texPath ~= "" then checkbox:SetHighlightTexture("") end
 		end)
 	end
+
+	frame.isSkinned = true
 end
 
 function S:HandleIcon(icon, parent)
@@ -793,7 +757,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 
 				-- handle its styling
 				if not equipment[i].template then
-					equipment[i]:SetTemplate('Default')
+					equipment[i]:SetTemplate()
 					equipment[i]:SetSize(48, 48)
 					if equipment[i].BG then
 						equipment[i].BG:SetTexture()
@@ -1039,7 +1003,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		local button = _G[buttonNameTemplate..i]
 		local icon = _G[button:GetName().."Icon"]
 		button:StripTextures()
-		button:SetTemplate("Default")
+		button:SetTemplate()
 		button:StyleButton(true)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
