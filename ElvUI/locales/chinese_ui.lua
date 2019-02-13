@@ -158,15 +158,12 @@ L["Your profile was successfully recieved by the player."] = "你的配置文件
 
 --Install
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
-L["Aura Bars & Icons"] = "光环条与图标"
-L["Auras Set"] = "光环样式设置"
 L["Auras"] = "光环"
 L["Caster DPS"] = "法系输出"
 L["Chat Set"] = "聊天设定"
 L["Chat"] = "聊天框"
 L["Choose a theme layout you wish to use for your initial setup."] = "为你的个人设置选择一个你喜欢的皮肤主题."
 L["Classic"] = "经典"
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "点击下面的按钮调整聊天框、单位框架的尺寸，以及移动动作条位置"
 L["Config Mode:"] = "设置模式:"
 L["CVars Set"] = "参数设定"
 L["CVars"] = "参数"
@@ -177,10 +174,7 @@ L["ElvUI Installation"] = "安装 ElvUI"
 L["Finished"] = "完成"
 L["Grid Size:"] = "网格尺寸:"
 L["Healer"] = "治疗"
-L["High Resolution"] = "高分辨率"
-L["high"] = "高"
 L["Icons Only"] = "图标"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你有不想显示的图标或光环条, 你可以简单的通过按住Shift右键点击使它隐藏."
 L["Importance: |cff07D400High|r"] = "重要度: |cff07D400高|r"
 L["Importance: |cffD3CF00Medium|r"] = "重要性: |cffD3CF00中|r"
 L["Importance: |cffFF0000Low|r"] = "重要性:|cffFF0000低|r"
@@ -188,16 +182,11 @@ L["Installation Complete"] = "安装完成"
 L["Layout Set"] = "界面布局设置"
 L["Layout"] = "界面布局"
 L["Lock"] = "锁定"
-L["Low Resolution"] = "低分辨率"
-L["low"] = "低"
 L["Nudge"] = "微调"
 L["Please click the button below so you can setup variables and ReloadUI."] = "请按下方按钮设定变数并重载介面。"
 L["Please click the button below to setup your CVars."] = "请按下方按钮设定参数."
 L["Please press the continue button to go onto the next step."] = "请按继续按钮到下一步"
 L["Preview"] = true
-L["Resolution Style Set"] = "分辨率样式设置"
-L["Resolution"] = "分辨率"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "选择你想要在ElvUI的单位框体里使用何种光环系统. 选择光环条和图标将同时使用光环条和图标, 选择图标来仅仅显示图标."
 L["Setup Chat"] = "设定聊天框"
 L["Setup CVars"] = "设定参数"
 L["Skip Process"] = "跳过"
@@ -208,19 +197,14 @@ L["The in-game configuration menu can be accessed by typing the /ec command or b
 L["Theme Set"] = "主题设置"
 L["Theme Setup"] = "主题安装"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "此安装程序有助你了解 ElvUI 部份功能，并可协助你预先设定 UI。"
-L["This is completely optional."] = "这是可选项。"
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "此安装步骤将会设定聊天框的名称、位置和颜色。"
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "此安装步骤将会设定 WOW 预设选项，建议你执行此步骤，以确保功能均可正常运作。"
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "这个分辨率不需要你改动任何设置以适应你的屏幕。"
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = "这个分辨率需要你改变一些设置才能适应你的屏幕。"
 L["This will change the layout of your unitframes and actionbars."] = "这将会改变你单位框架和动作条的构架。"
 L["Trade"] = "交易"
 L["Welcome to ElvUI version %s!"] = "欢迎使用 ElvUI 版本 %s!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "你已经完成安装过程. 如果你需要技术支持请访问http://www.tukui.org"
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "你可以在游戏内的设定选项内更改ElvUI的字体、颜色等设定."
 L["You can now choose what layout you wish to use based on your combat role."] = "你现在可以根据你的战斗角色选择合适的布局。"
-L["You may need to further alter these settings depending how low you resolution is."] = "根据你的分辨率你可能需要改动这些设置。"
-L["Your current resolution is %s, this is considered a %s resolution."] = "你当前的分辨率是 %s, 这被认为是个 %s 分辨率。"
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
@@ -383,8 +367,6 @@ L["You must purchase a bank slot first!"] = "你必需购买一个银行背包�
 
 --Tooltip
 L["Count"] = "计数"
-L["Item Level:"] = "物品等级:"
-L["Talent Specialization:"] = "天赋专精:"
 L["Targeted By:"] = "同目标的有:"
 
 --Tutorials

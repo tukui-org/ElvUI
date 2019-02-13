@@ -46,7 +46,7 @@ local function group(order, db, label)
 				type = "toggle",
 				order = 3,
 				name = L["Force Hide Blizzard Text"],
-				desc = L["This option will force hide Blizzard's cooldown text if it's enabled at \n[Interface > ActionBars > Show Numbers on Cooldown]."],
+				desc = L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."],
 				get = function(info) return (profile(db))[ info[#info] ] end,
 				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
 				disabled = function()
