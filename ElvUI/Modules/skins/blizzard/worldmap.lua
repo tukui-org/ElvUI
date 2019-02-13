@@ -101,8 +101,8 @@ local function LoadSkin()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, nil, true)
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, nil, nil, "left")
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, nil, nil, "right")
 
 	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)

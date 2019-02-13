@@ -20,7 +20,9 @@ local function SkinNavBarButtons(self)
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		if navButton.MenuArrowButton then
-			S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			S:HandleNextPrevButton(navButton.MenuArrowButton, nil, nil, "down")
+			navButton.MenuArrowButton:HookScript("OnLeave", function() navButton.MenuArrowButton.NormalTexture:SetAlpha(1) end)
+			navButton.MenuArrowButton.NormalTexture:SetAlpha(1)
 		end
 
 		navButton.isSkinned = true

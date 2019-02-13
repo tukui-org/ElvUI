@@ -350,12 +350,12 @@ function S:HandleTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
+function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir)
 	if btn.isSkinned then return end
 
 	local Arrow
 	local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
-	if ButtonName then
+	if ButtonName and not arrowDir then
 		if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'back')) then
 			Arrow = 'left'
 		elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
@@ -377,7 +377,7 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 
-	if not Arrow then
+	if not Arrow and not arrowDir then
 		Arrow = useVertical and (inverseDirection and 'down' or 'up') or inverseDirection and 'left' or 'right'
 	end
 
@@ -390,7 +390,8 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	Normal:SetTexCoord(0, 1, 0, 1)
 	Pushed:SetTexCoord(0, 1, 0, 1)
 	Disabled:SetTexCoord(0, 1, 0, 1)
-
+	
+	Arrow = arrowDir or Arrow
 	Normal:SetRotation(S.ArrowRotation[Arrow])
 	Pushed:SetRotation(S.ArrowRotation[Arrow])
 	Disabled:SetRotation(S.ArrowRotation[Arrow])
