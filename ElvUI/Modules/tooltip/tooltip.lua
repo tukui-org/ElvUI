@@ -10,6 +10,13 @@ local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor, tonumber = math.floor, tonumber
 local find, format, sub = string.find, string.format, string.sub
 --WoW API / Variables
+local CanInspect = CanInspect
+local GetTime = GetTime
+local NotifyInspect = NotifyInspect
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetInspectSpecialization = GetInspectSpecialization
+local GetSpecializationInfoByID = GetSpecializationInfoByID
 local CreateFrame = CreateFrame
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
@@ -66,21 +73,21 @@ local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 
 local LOCALE = {
-	PVP = PVP,
-	FACTION_HORDE = FACTION_HORDE,
-	FOREIGN_SERVER_LABEL = FOREIGN_SERVER_LABEL,
-	ID = ID,
-	INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL,
-	TARGET = TARGET,
-	DEAD = DEAD,
-	FACTION_ALLIANCE = FACTION_ALLIANCE,
-	NONE = NONE,
-	ROLE = ROLE,
-	MOUNT = MOUNT,
+	PVP = _G.PVP,
+	FACTION_HORDE = _G.FACTION_HORDE,
+	FOREIGN_SERVER_LABEL = _G.FOREIGN_SERVER_LABEL,
+	ID = _G.ID,
+	INTERACTIVE_SERVER_LABEL = _G.INTERACTIVE_SERVER_LABEL,
+	TARGET = _G.TARGET,
+	DEAD = _G.DEAD,
+	FACTION_ALLIANCE = _G.FACTION_ALLIANCE,
+	NONE = _G.NONE,
+	ROLE = _G.ROLE,
+	MOUNT = _G.MOUNT,
 
 	-- Custom to find LEVEL string on tooltip
-	LEVEL1 = TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
-	LEVEL2 = TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
+	LEVEL1 = _G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''),
+	LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
 }
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -103,10 +110,10 @@ local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
 local keybindFrame
 
 local classification = {
-	worldboss = format("|cffAF5050 %s|r", BOSS),
-	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
+	worldboss = format("|cffAF5050 %s|r", _G.BOSS),
+	rareelite = format("|cffAF5050+ %s|r", _G.ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
-	rare = format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
+	rare = format("|cffAF5050 %s|r", _G.ITEM_QUALITY3_DESC)
 }
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
@@ -350,7 +357,7 @@ function TT:INSPECT_READY(event, unitGUID)
 		GameTooltip:SetUnit("mouseover")
 	end
 
-	self:UnregisterEvent("INSPECT_READY", INSPECT_READY)
+	self:UnregisterEvent(event)
 end
 
 function TT:GetSpecializationInfo(unit, isPlayer)
@@ -386,7 +393,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
 			inspectGUIDCache[unitGUID].specName = nil
 			inspectGUIDCache[unitGUID].itemLevel = nil
 
-			return C_Timer.After(0.33, function()
+			return E:Delay(0.33, function()
 				self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b, addLines)
 			end)
 		end
@@ -403,7 +410,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
 			tooltip:AddDoubleLine(L["Item Level:"], L["Waiting.."], nil, nil, nil, 1, 1, 1)
 		end
 
-		self:RegisterEvent("INSPECT_READY", INSPECT_READY)
+		self:RegisterEvent("INSPECT_READY", 'INSPECT_READY')
 	end
 end
 
