@@ -128,13 +128,13 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		end
 	end
 
-	return isOK, total / 16
+	return isOK and total / 16
 end
 
 local iLevelDB = {}
 function E:GetUnitItemLevel(unit)
 	if UnitIsUnit("player", unit) then
-		return floor(select(2, GetAverageItemLevel()))
+		return select(2, GetAverageItemLevel()), nil
 	end
 
 	wipe(iLevelDB)

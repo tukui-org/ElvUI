@@ -338,13 +338,15 @@ function TT:INSPECT_READY(event, unitGUID)
     if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
         if not inspectGUIDCache[unitGUID] then
             inspectGUIDCache[unitGUID] = {}
-        end
-		local isOkay, iLvl = E:GetUnitItemLevel("mouseover")
-		inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
-		if isOkay then
+		end
+		
+		local iLvl = E:GetUnitItemLevel("mouseover")
+		if iLvl then
 			inspectGUIDCache[unitGUID].time = GetTime()
 			inspectGUIDCache[unitGUID].itemLevel = iLvl
+			inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
 		end
+
 		GameTooltip:SetUnit("mouseover")
     end
 

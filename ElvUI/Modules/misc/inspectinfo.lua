@@ -103,9 +103,9 @@ function M:UpdateInspectInfo()
 		end
 	end
 
-	local inspectOK, iLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit)
-	if inspectOK then
-		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLevel)
+	local iLvl = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit)
+	if iLvl then
+		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLvl)
 	else
 		_G.InspectFrame.ItemLevelText:SetText('')
 	end
