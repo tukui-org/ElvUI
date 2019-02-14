@@ -5,8 +5,6 @@ local _G = _G
 local unpack = unpack
 local pairs = pairs
 
-local IsAddOnLoaded = IsAddOnLoaded
-
 local InspectItems = {
 	"InspectHeadSlot",
 	"InspectNeckSlot",
@@ -111,44 +109,32 @@ function M:UpdateInspectInfo()
 	end
 end
 
-function M:ADDON_LOADED(_, addon)
-	if addon == "Blizzard_InspectUI" then
-		_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK")
-		_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
-		_G.InspectFrame.ItemLevelText:FontTemplate(nil, 12)
+function M:InspectUILoaded()
+	_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK")
+	_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
+	_G.InspectFrame.ItemLevelText:FontTemplate(nil, 12)
 
-		for i, slot in pairs(InspectItems) do
-			if i ~= 4 then
-				local x, y, z, justify = M:GetInspectPoints(i)
-				_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
-				_G[slot].iLvlText:FontTemplate(nil, 12)
-				_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
+	for i, slot in pairs(InspectItems) do
+		if i ~= 4 then
+			local x, y, z, justify = M:GetInspectPoints(i)
+			_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
+			_G[slot].iLvlText:FontTemplate(nil, 12)
+			_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
 
-				_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
-				_G[slot].enchantText:FontTemplate(nil, 11)
+			_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
+			_G[slot].enchantText:FontTemplate(nil, 11)
 
-				if i == 16 or i == 17 then
-					_G[slot].enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", _G[slot], i==16 and -40 or 40, 3)
-				else
-					_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
-				end
+			if i == 16 or i == 17 then
+				_G[slot].enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", _G[slot], i==16 and -40 or 40, 3)
+			else
+				_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+			end
 
-				for u=1, 10 do
-					local offset = 8+(u*16)
-					local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-					_G[slot]["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
-				end
+			for u=1, 10 do
+				local offset = 8+(u*16)
+				local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
+				_G[slot]["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 			end
 		end
-
-		self:UnregisterEvent("ADDON_LOADED")
-	end
-end
-
-function M:LoadInspectInfo()
-	if IsAddOnLoaded("Blizzard_InspectUI") then
-		self:ADDON_LOADED(nil, "Blizzard_InspectUI")
-	else
-		self:RegisterEvent("ADDON_LOADED")
 	end
 end

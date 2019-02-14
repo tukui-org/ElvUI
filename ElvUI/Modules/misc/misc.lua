@@ -7,46 +7,47 @@ E.Misc = M;
 local _G = _G
 local format, gsub = string.format, string.gsub
 --WoW API / Variables
-local UnitGUID = UnitGUID
-local UnitInRaid = UnitInRaid
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
-local IsArenaSkirmish = IsArenaSkirmish
-local IsActiveBattlefieldArena = IsActiveBattlefieldArena
-local SendChatMessage = SendChatMessage
-local IsShiftKeyDown = IsShiftKeyDown
-local CanMerchantRepair = CanMerchantRepair
-local GetRepairAllCost = GetRepairAllCost
-local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local AcceptGroup = AcceptGroup
+local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
+local BNGetFriendInfo = BNGetFriendInfo
+local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
+local BNGetNumFriends = BNGetNumFriends
 local CanGuildBankRepair = CanGuildBankRepair
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local RepairAllItems = RepairAllItems
-local InCombatLockdown = InCombatLockdown
+local CanMerchantRepair = CanMerchantRepair
+local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local GetFriendInfo = GetFriendInfo
+local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetNumFriends = GetNumFriends
 local GetNumGroupMembers = GetNumGroupMembers
+local GetNumGuildMembers = GetNumGuildMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
-local UninviteUnit = UninviteUnit
-local UnitExists = UnitExists
-local UnitName = UnitName
+local GetRepairAllCost = GetRepairAllCost
+local GuildRoster = GuildRoster
+local InCombatLockdown = InCombatLockdown
+local IsActiveBattlefieldArena = IsActiveBattlefieldArena
+local IsAddOnLoaded = IsAddOnLoaded
+local IsArenaSkirmish = IsArenaSkirmish
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsInGuild = IsInGuild
+local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
+local IsShiftKeyDown = IsShiftKeyDown
 local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
-local GetNumFriends = GetNumFriends
+local RepairAllItems = RepairAllItems
+local SendChatMessage = SendChatMessage
 local ShowFriends = ShowFriends
-local IsInGuild = IsInGuild
-local GuildRoster = GuildRoster
-local GetFriendInfo = GetFriendInfo
-local AcceptGroup = AcceptGroup
-local GetNumGuildMembers = GetNumGuildMembers
-local GetGuildRosterInfo = GetGuildRosterInfo
-local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
-local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
-local BNGetNumFriends = BNGetNumFriends
-local BNGetFriendInfo = BNGetFriendInfo
-local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local StaticPopup_Hide = StaticPopup_Hide
-local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
+local UninviteUnit = UninviteUnit
+local UnitExists = UnitExists
+local UnitGUID = UnitGUID
+local UnitInRaid = UnitInRaid
+local UnitName = UnitName
+
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
-
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -286,6 +287,13 @@ function M:PLAYER_ENTERING_WORLD()
 	self:ToggleChatBubbleScript()
 end
 
+function M:ADDON_LOADED(_, addon)
+	if addon == "Blizzard_InspectUI" then
+		M:InspectUILoaded()
+		self:UnregisterEvent("ADDON_LOADED")
+	end
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
@@ -303,6 +311,12 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	if IsAddOnLoaded("Blizzard_InspectUI") then
+		M:InspectUILoaded()
+	else
+		self:RegisterEvent("ADDON_LOADED")
+	end
 end
 
 local function InitializeCallback()
