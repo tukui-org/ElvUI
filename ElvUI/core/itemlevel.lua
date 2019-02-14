@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local floor, select, tonumber = floor, select, tonumber
+local select, tonumber = select, tonumber
 local next, max, wipe = next, max, wipe
 
 local _G = _G
