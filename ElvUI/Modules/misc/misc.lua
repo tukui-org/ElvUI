@@ -367,7 +367,7 @@ function M:UpdateInspectInfo()
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetTTGearSlotInfo(unit, i, true)
+			iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
 
 			iLevelDB[i] = iLvl
 

@@ -493,7 +493,7 @@ function E:FormatMoney(amount, style, textonly)
 	return self:FormatMoney(amount, "SMART")
 end
 
-function E:GetTTGearSlotInfo(unit, slot, deepScan)
+function E:GetGearSlotInfo(unit, slot, deepScan)
 	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	ScanTooltip:SetInventoryItem(unit, slot)
 	ScanTooltip:Show()
