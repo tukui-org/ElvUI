@@ -368,6 +368,7 @@ L["You must purchase a bank slot first!"] = "우선 은행가방 칸을 구입�
 --Tooltip
 L["Count"] = "갯수"
 L["Targeted By:"] = "선택됨:"
+L["Waiting.."] = true
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "단축키 설정의 맨 아래에 있는 ElvUI 부분에서 |cff2eb7e4[Raid Marker]|r 기능을 사용하면 대상에게 징표를 간단히 찍을 수 있습니다."

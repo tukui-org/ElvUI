@@ -368,6 +368,7 @@ L["You must purchase a bank slot first!"] = "你必需先購買一個銀行背�
 --Tooltip
 L["Count"] = "計數"
 L["Targeted By:"] = "同目標的有:"
+L["Waiting.."] = true
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "你可以通過按ESC鍵-> 按鍵設定, 滾動到ElvUI設定下方設定一個快速標記的快捷鍵."

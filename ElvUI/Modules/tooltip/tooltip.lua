@@ -335,11 +335,11 @@ end
 
 local inspectGUIDCache = {}
 function TT:INSPECT_READY(event, unitGUID)
-    if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
-        if not inspectGUIDCache[unitGUID] then
-            inspectGUIDCache[unitGUID] = {}
+	if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
+		if not inspectGUIDCache[unitGUID] then
+			inspectGUIDCache[unitGUID] = {}
 		end
-		
+
 		local iLvl = E:GetUnitItemLevel("mouseover")
 		if iLvl then
 			inspectGUIDCache[unitGUID].time = GetTime()
@@ -348,9 +348,9 @@ function TT:INSPECT_READY(event, unitGUID)
 		end
 
 		GameTooltip:SetUnit("mouseover")
-    end
+	end
 
-    self:UnregisterEvent("INSPECT_READY", INSPECT_READY)
+	self:UnregisterEvent("INSPECT_READY", INSPECT_READY)
 end
 
 function TT:GetSpecializationInfo(unit, isPlayer)
@@ -360,7 +360,7 @@ function TT:GetSpecializationInfo(unit, isPlayer)
 	else
 		spec = GetInspectSpecialization(unit);
 	end
-	
+
 	if spec and spec > 0 then
 		if isPlayer then
 			return select(2, GetSpecializationInfo(spec))
@@ -371,40 +371,40 @@ function TT:GetSpecializationInfo(unit, isPlayer)
 end
 
 function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
-    if not CanInspect(unit) or numTries > 3 then return end
+	if not CanInspect(unit) or numTries > 3 then return end
 
 	local unitGUID = UnitGUID(unit)
 
-    if unitGUID == E.myguid and addLines then
-        tooltip:AddDoubleLine(_G.SPECIALIZATION..":", self:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
+	if unitGUID == E.myguid and addLines then
+		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", self:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
 		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
-    elseif inspectGUIDCache[unitGUID] and inspectGUIDCache[unitGUID].time then
-        local specName = inspectGUIDCache[unitGUID].specName
-        local itemLevel = inspectGUIDCache[unitGUID].itemLevel
-        if not (specName and itemLevel) or (GetTime() - inspectGUIDCache[unitGUID].time > 120) then
-            inspectGUIDCache[unitGUID].time = nil
-            inspectGUIDCache[unitGUID].specName = nil
-            inspectGUIDCache[unitGUID].itemLevel = nil
+	elseif inspectGUIDCache[unitGUID] and inspectGUIDCache[unitGUID].time then
+		local specName = inspectGUIDCache[unitGUID].specName
+		local itemLevel = inspectGUIDCache[unitGUID].itemLevel
+		if not (specName and itemLevel) or (GetTime() - inspectGUIDCache[unitGUID].time > 120) then
+			inspectGUIDCache[unitGUID].time = nil
+			inspectGUIDCache[unitGUID].specName = nil
+			inspectGUIDCache[unitGUID].itemLevel = nil
 
-            return C_Timer.After(0.33, function()
-                self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b, addLines)
-            end)
-        end
+			return C_Timer.After(0.33, function()
+				self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b, addLines)
+			end)
+		end
 
 		if addLines then
 			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
 			tooltip:AddDoubleLine(L["Item Level:"], floor(itemLevel), nil, nil, nil, 1, 1, 1)
 		end
-    else
-        NotifyInspect(unit)
+	else
+		NotifyInspect(unit)
 
 		if addLines then
 			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", L["Waiting.."], nil, nil, nil, r, g, b)
 			tooltip:AddDoubleLine(L["Item Level:"], L["Waiting.."], nil, nil, nil, 1, 1, 1)
 		end
 
-        self:RegisterEvent("INSPECT_READY", INSPECT_READY)
-    end
+		self:RegisterEvent("INSPECT_READY", INSPECT_READY)
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
@@ -435,7 +435,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
-	
+
 	self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b, isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) and not isShiftKeyDown then
@@ -454,7 +454,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	
+
 	local unitTarget = unit.."target"
 	if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
 		local targetColor
