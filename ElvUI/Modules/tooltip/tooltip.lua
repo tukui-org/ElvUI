@@ -202,7 +202,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
 		if not localeClass or not class then return; end
-		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class] or RAID_CLASS_COLORS.PRIEST
+		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 
 		if self.db.playerTitles and pvpName then
 			name = pvpName
@@ -275,8 +275,6 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				if unitReaction then
 					unitReaction = format("%s", unitReaction) --Cast to string because our table is indexed by string keys
 					color = E.db.tooltip.factionColors[unitReaction]
-				else
-					color = RAID_CLASS_COLORS.PRIEST
 				end
 			else
 				color = FACTION_BAR_COLORS[unitReaction]
@@ -318,7 +316,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		end
 	end
 
-	return color
+	return color or RAID_CLASS_COLORS.PRIEST
 end
 
 local inspectGUIDCache = {}
