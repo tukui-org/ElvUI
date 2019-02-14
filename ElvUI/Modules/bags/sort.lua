@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
---Cache global variables
 --Lua functions
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
 local tinsert, tremove, sort, wipe = table.insert, table.remove, sort, wipe

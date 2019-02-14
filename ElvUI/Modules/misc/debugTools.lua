@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
 E.DebugTools = D
 
---Cache global variables
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame

@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 local tinsert, tremove, next, wipe, max = tinsert, tremove, next, wipe, math.max
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod

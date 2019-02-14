@@ -4,7 +4,6 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 local TT = E:GetModule("Tooltip")
 
---Cache global variables
 --Lua functions
 local pairs, type, error = pairs, type, error
 local len = string.len

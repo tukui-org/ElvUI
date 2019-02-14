@@ -7,7 +7,6 @@ local Masque = E.Libs.Masque
 local L = E.Libs.ACL:GetLocale('ElvUI', false)
 ElvUI[2] = L
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring

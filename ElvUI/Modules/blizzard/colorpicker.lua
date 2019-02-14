@@ -5,7 +5,6 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
---Cache global variables
 local tonumber, collectgarbage = tonumber, collectgarbage
 local floor = math.floor
 local format, strsub = string.format, strsub

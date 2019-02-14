@@ -3,7 +3,6 @@ local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0"
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
---Cache global variables
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
 local len, format, split, find = string.len, string.format, string.split, string.find
 --WoW API / Variables

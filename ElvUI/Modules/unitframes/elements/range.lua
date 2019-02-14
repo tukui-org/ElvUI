@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local SpellRange = E.Libs.SpellRange
 
---Cache global variables
 --Lua functions
 local pairs, ipairs = pairs, ipairs
 --WoW API / Variables

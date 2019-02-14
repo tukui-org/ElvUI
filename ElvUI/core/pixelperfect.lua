@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 local _G = _G
 --Lua functions
 local min, max = math.min, math.max

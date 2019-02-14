@@ -3,7 +3,6 @@ local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.
 local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring

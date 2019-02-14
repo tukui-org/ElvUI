@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local S -- used to hold the skin module when we need it
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs

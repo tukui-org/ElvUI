@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs = unpack, type, select, getmetatable, assert, pairs

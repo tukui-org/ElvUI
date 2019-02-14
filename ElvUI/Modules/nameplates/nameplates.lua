@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local select = select
 local pairs = pairs

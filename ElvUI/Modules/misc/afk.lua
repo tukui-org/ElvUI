@@ -3,7 +3,6 @@ local AFKString = _G["AFK"]
 local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
 local CH = E:GetModule("Chat")
 
---Cache global variables
 --Lua functions
 local _G = _G
 local GetTime = GetTime

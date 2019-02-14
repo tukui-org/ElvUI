@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tinsert = table.insert

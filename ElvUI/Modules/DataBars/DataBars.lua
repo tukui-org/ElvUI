@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:NewModule("DataBars", 'AceEvent-3.0')
 E.DataBars = mod
 
---Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetExpansionLevel = GetExpansionLevel

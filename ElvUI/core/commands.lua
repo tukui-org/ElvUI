@@ -1,6 +1,5 @@
 local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, type, pairs, select = _G.tonumber, _G.type, _G.pairs, _G.select

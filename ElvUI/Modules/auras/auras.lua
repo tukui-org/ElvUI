@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local GetTime = GetTime

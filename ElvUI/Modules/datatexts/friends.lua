@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = table.sort, next, wipe, tremove, tinsert
