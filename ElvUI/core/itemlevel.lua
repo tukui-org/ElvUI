@@ -15,16 +15,14 @@ local GetInspectSpecialization = GetInspectSpecialization
 
 local MATCH_ITEM_LEVEL = _G.ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = _G.ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", _G.UIParent, "GameTooltipTemplate") -- pull this out once main scantooltip is committed
-local ARMOR_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
-local X2_INVTYPES = {
-    INVTYPE_2HWEAPON = true,
-    INVTYPE_RANGEDRIGHT = true,
-    INVTYPE_RANGED = true,
-}
-local X2_EXCEPTIONS = {
-    [2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", _G.UIParent, "GameTooltipTemplate")
+local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
+	INVTYPE_2HWEAPON = true,
+	INVTYPE_RANGEDRIGHT = true,
+	INVTYPE_RANGED = true,
+}, {
+	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
+}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
