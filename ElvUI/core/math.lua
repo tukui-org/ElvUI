@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
-local tinsert, tremove, next, wipe = tinsert, tremove, next, wipe
+local _G = _G
+local tinsert, tremove, next, wipe, max = tinsert, tremove, next, wipe, math.max
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
@@ -9,6 +10,9 @@ local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 
 --WoW API / Variables
+local GetAverageItemLevel = GetAverageItemLevel
+local UnitIsUnit = UnitIsUnit
+local GetCVarBool = GetCVarBool
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
@@ -535,10 +539,6 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			if line then
 				local lineText = line:GetText()
 				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
-				if enchant then
-					enchantText = enchant:sub(1, 18)
-					enchantColors = {lr, lg, lb}
-				end
 				if itemLevel and itemLevel ~= "1" then
 					iLvl = tonumber(itemLevel)
 				end
