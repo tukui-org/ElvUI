@@ -118,7 +118,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, textures, 
 end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
-	local AvgItemLevel = (which == 'Character' and E:Round((select(2, GetAverageItemLevel())), 2)) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	local AvgItemLevel = (which == 'Character' and E:GetPlayerItemLevel()) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
 	if AvgItemLevel then
 		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 	else
@@ -129,6 +129,8 @@ end
 function M:TryGearAgain(unit, i, deepScan, iLevelDB, inspectItem)
 	E:Delay(0.05, function()
 		local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
+		if iLvl == 'tooSoon' then return end
+
 		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, textures, enchantColors, itemLevelColors)
 	end)
 end
