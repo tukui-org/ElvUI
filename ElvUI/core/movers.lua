@@ -13,9 +13,6 @@ local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvUIParent, ElvUIMoverNudgeWindow
-
 E.CreatedMovers = {}
 E.DisabledMovers = {}
 
@@ -31,7 +28,7 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = ElvUIParent end
+	if not anchor then anchor = _G.ElvUIParent end
 
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
@@ -41,8 +38,8 @@ local function UpdateCoords(self)
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
 
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
-	ElvUIMoverNudgeWindow:ClearAllPoints()
-	ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	_G.ElvUIMoverNudgeWindow:ClearAllPoints()
+	_G.ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -164,7 +161,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		E:SaveMoverPosition(name)
 
-		if ElvUIMoverNudgeWindow then
+		if _G.ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self, x, y)
 		end
 

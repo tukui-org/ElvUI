@@ -23,9 +23,6 @@ local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvUIBindPopupWindowCheckButton
-
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
 
@@ -131,11 +128,8 @@ E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 		E:GetModule('ActionBars').bindingsChanged = nil;
 	end,
 	OnCancel = function()
-		if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
-			ElvUIBindPopupWindowCheckButton:SetChecked();
-		else
-			ElvUIBindPopupWindowCheckButton:SetChecked(1);
-		end
+		local isChecked = _G.ElvUIBindPopupWindowCheckButton:GetChecked()
+		_G.ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
 	end,
 	timeout = 0,
 	whileDead = 1,
