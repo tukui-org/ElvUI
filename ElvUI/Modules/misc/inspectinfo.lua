@@ -70,8 +70,9 @@ end
 
 function M:UpdateInspectInfo()
 	if not (_G.InspectFrame and _G.InspectFrame.unit and _G.InspectFrame.ItemLevelText) then return end
-	local iLevelDB = {}
+	if _G.InspectFrame:IsShown() then return end
 
+	local iLevelDB = {}
 	local iLvl, enchant, textures, enchantColors, itemLevelColors
 
 	for i = 1, 17 do
