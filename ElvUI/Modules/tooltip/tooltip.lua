@@ -381,15 +381,11 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
 			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
 			tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		end
-	else
+	elseif addLines then
 		NotifyInspect(unit)
-
-		if addLines then
-			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", L["Waiting.."], nil, nil, nil, r, g, b)
-			tooltip:AddDoubleLine(L["Item Level:"], L["Waiting.."], nil, nil, nil, 1, 1, 1)
-		end
-
-		self:RegisterEvent("INSPECT_READY", 'INSPECT_READY')
+		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", L["Waiting.."], nil, nil, nil, r, g, b)
+		tooltip:AddDoubleLine(L["Item Level:"], L["Waiting.."], nil, nil, nil, 1, 1, 1)
+		self:RegisterEvent("INSPECT_READY")
 	end
 end
 
