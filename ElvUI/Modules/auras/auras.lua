@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 
 --Cache global variables
 --Lua functions
+local _G = _G
 local GetTime = GetTime
 local select, unpack = select, unpack
 local tinsert = table.insert
@@ -18,10 +19,6 @@ local UnitAura = UnitAura
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap, MMHolder
--- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
@@ -233,7 +230,7 @@ function A:UpdateAura(button, index)
 		end
 
 		if filter == "HARMFUL" then
-			local color = DebuffTypeColor[dtype or ""]
+			local color = _G.DebuffTypeColor[dtype or ""]
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -412,8 +409,8 @@ end
 
 function A:Initialize()
 	if E.private.auras.disableBlizzard then
-		BuffFrame:Kill()
-		TemporaryEnchantFrame:Kill()
+		_G.BuffFrame:Kill()
+		_G.TemporaryEnchantFrame:Kill()
 	end
 
 	if not E.private.auras.enable then return end
@@ -421,11 +418,11 @@ function A:Initialize()
 	self.db = E.db.auras
 
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
-	self.BuffFrame:Point("TOPRIGHT", MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
+	self.BuffFrame:Point("TOPRIGHT", _G.MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
-	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
+	self.DebuffFrame:Point("BOTTOMRIGHT", _G.MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 
 	if Masque then

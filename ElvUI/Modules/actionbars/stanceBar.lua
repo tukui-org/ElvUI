@@ -19,9 +19,6 @@ local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: StanceBarFrame
-
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
 
@@ -73,7 +70,7 @@ function AB:StyleShapeShift()
 				end
 
 				if isActive then
-					StanceBarFrame.lastSelected = button:GetID();
+					_G.StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
 						button.checked:SetColorTexture(1, 1, 1, 0.5)
 						button:SetChecked(true);
