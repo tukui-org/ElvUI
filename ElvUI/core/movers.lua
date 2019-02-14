@@ -4,7 +4,7 @@ local Sticky = E.Libs.SimpleSticky
 --Lua functions
 local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
-local format, split, find = string.format, string.split, string.find
+local format, split, find = format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown

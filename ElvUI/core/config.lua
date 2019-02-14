@@ -1,17 +1,17 @@
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
 local _G = _G
-local unpack = _G.unpack
-local type, ipairs, tonumber = _G.type, _G.ipairs, _G.tonumber
-local floor, select = _G.floor, _G.select
+local unpack = unpack
+local type, ipairs, tonumber = type, ipairs, tonumber
+local floor, select = floor, select
 --WoW API / Variables
-local CreateFrame = _G.CreateFrame
-local IsAddOnLoaded = _G.IsAddOnLoaded
-local InCombatLockdown = _G.InCombatLockdown
-local IsControlKeyDown = _G.IsControlKeyDown
-local IsAltKeyDown = _G.IsAltKeyDown
-local RESET = _G.RESET
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local InCombatLockdown = InCombatLockdown
+local IsControlKeyDown = IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
+local RESET = RESET
 
 local grid
 local selectedValue = 'ALL'

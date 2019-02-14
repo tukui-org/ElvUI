@@ -1,24 +1,24 @@
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
 local _G = _G
-local tonumber, type, pairs, select = _G.tonumber, _G.type, _G.pairs, _G.select
-local lower, split, format = _G.strlower, _G.strsplit, _G.format
+local tonumber, type, pairs, select = tonumber, type, pairs, select
+local lower, split, format = strlower, strsplit, format
 --WoW API / Variables
-local EnableAddOn, DisableAllAddOns = _G.EnableAddOn, _G.DisableAllAddOns
-local SetCVar = _G.SetCVar
-local ReloadUI = _G.ReloadUI
-local GuildControlGetNumRanks = _G.GuildControlGetNumRanks
-local GuildControlGetRankName = _G.GuildControlGetRankName
-local GetNumGuildMembers, GetGuildRosterInfo = _G.GetNumGuildMembers, _G.GetGuildRosterInfo
-local GetGuildRosterLastOnline = _G.GetGuildRosterLastOnline
-local GuildUninvite = _G.GuildUninvite
-local SendChatMessage = _G.SendChatMessage
-local debugprofilestop = _G.debugprofilestop
-local UpdateAddOnCPUUsage, GetAddOnCPUUsage = _G.UpdateAddOnCPUUsage, _G.GetAddOnCPUUsage
-local ResetCPUUsage = _G.ResetCPUUsage
-local GetAddOnInfo = _G.GetAddOnInfo
-local GetCVarBool = _G.GetCVarBool
+local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
+local SetCVar = SetCVar
+local ReloadUI = ReloadUI
+local GuildControlGetNumRanks = GuildControlGetNumRanks
+local GuildControlGetRankName = GuildControlGetRankName
+local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
+local GetGuildRosterLastOnline = GetGuildRosterLastOnline
+local GuildUninvite = GuildUninvite
+local SendChatMessage = SendChatMessage
+local debugprofilestop = debugprofilestop
+local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
+local ResetCPUUsage = ResetCPUUsage
+local GetAddOnInfo = GetAddOnInfo
+local GetCVarBool = GetCVarBool
 
 function E:Grid(msg)
 	msg = msg and tonumber(msg)

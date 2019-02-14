@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 local _G = _G
 --Lua functions
-local min, max = math.min, math.max
-local abs, floor = math.abs, math.floor
+local min, max = min, max
+local abs, floor = abs, floor
 local tostring, tonumber = tostring, tonumber
 local strsub, strlen = strsub, strlen
 --WoW API / Variables

@@ -1,19 +1,19 @@
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
 --Lua functions
 local _G = _G
-local tonumber, type, gsub, pcall, loadstring = _G.tonumber, _G.type, _G.gsub, _G.pcall, _G.loadstring
-local len, format, split, find = _G.strlen, _G.format, _G.strsplit, _G.strfind
+local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
+local len, format, split, find = strlen, format, strsplit, strfind
 --WoW API / Variables
-local CreateFrame = _G.CreateFrame
-local IsInRaid, UnitInRaid = _G.IsInRaid, _G.UnitInRaid
-local IsInGroup, UnitInParty = _G.IsInGroup, _G.UnitInParty
-local LE_PARTY_CATEGORY_HOME = _G.LE_PARTY_CATEGORY_HOME
-local LE_PARTY_CATEGORY_INSTANCE = _G.LE_PARTY_CATEGORY_INSTANCE
-local ACCEPT, CANCEL, YES, NO = _G.ACCEPT, _G.CANCEL, _G.YES, _G.NO
+local CreateFrame = CreateFrame
+local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
+local IsInGroup, UnitInParty = IsInGroup, UnitInParty
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 ----------------------------------
 -- CONSTANTS

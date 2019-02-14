@@ -1,12 +1,12 @@
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
 local _G = _G
-local tinsert = _G.tinsert
+local tinsert = tinsert
 --WoW API / Variables
-local CreateFrame = _G.CreateFrame
-local ToggleFrame = _G.ToggleFrame
-local GetCursorPosition = _G.GetCursorPosition
+local CreateFrame = CreateFrame
+local ToggleFrame = ToggleFrame
+local GetCursorPosition = GetCursorPosition
 
 local PADDING = 10
 local BUTTON_HEIGHT = 16

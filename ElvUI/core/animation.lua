@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- Animation Functions
 ------------------------------------------------------------------------
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local random = _G.random
-local tremove = _G.tremove
+local random = random
+local tremove = tremove
 -----
 
 function E:SetUpAnimGroup(object, type, ...)

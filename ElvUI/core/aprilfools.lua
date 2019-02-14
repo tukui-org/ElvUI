@@ -5,19 +5,19 @@
 	Hello Kitty: 		Try it out with the command /hellokitty (pay attention to the popups, read what it says)
 ]]
 
-local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
 local _G = _G
-local pairs = _G.pairs
-local twipe, tinsert = _G.wipe, _G.tinsert
+local pairs = pairs
+local twipe, tinsert = wipe, tinsert
 --WoW API / Variables
-local CreateFrame = _G.CreateFrame
-local DoEmote = _G.DoEmote
-local GetCVar, SetCVar = _G.GetCVar, _G.SetCVar
-local NUM_PET_ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS
-local PlayMusic, StopMusic = _G.PlayMusic, _G.StopMusic
-local SendChatMessage = _G.SendChatMessage
+local CreateFrame = CreateFrame
+local DoEmote = DoEmote
+local GetCVar, SetCVar = GetCVar, SetCVar
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local SendChatMessage = SendChatMessage
 -----
 
 --Harlem Shake (Activate with command: /harlemshake)

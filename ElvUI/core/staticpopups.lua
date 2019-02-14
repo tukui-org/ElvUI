@@ -3,8 +3,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
-local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
-local lower, format = string.lower, string.format
+local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
+local lower, format = strlower, format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded

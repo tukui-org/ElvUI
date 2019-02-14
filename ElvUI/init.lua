@@ -12,33 +12,33 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 --Lua functions
 local _G = _G
-local format = _G.format
-local pairs = _G.pairs
-local strsplit = _G.strsplit
-local tcopy = _G.table.copy
-local unpack = _G.unpack
-local wipe = _G.wipe
+local format = format
+local pairs = pairs
+local strsplit = strsplit
+local tcopy = table.copy
+local unpack = unpack
+local wipe = wipe
 --WoW API / Variables
-local hooksecurefunc = _G.hooksecurefunc
-local issecurevariable = _G.issecurevariable
+local hooksecurefunc = hooksecurefunc
+local issecurevariable = issecurevariable
 
-local CreateFrame = _G.CreateFrame
-local GetAddOnInfo = _G.GetAddOnInfo
-local GetAddOnMetadata = _G.GetAddOnMetadata
-local GetTime = _G.GetTime
-local HideUIPanel = _G.HideUIPanel
-local InCombatLockdown = _G.InCombatLockdown
-local IsAddOnLoaded = _G.IsAddOnLoaded
-local LoadAddOn = _G.LoadAddOn
-local ReloadUI = _G.ReloadUI
+local CreateFrame = CreateFrame
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnMetadata = GetAddOnMetadata
+local GetTime = GetTime
+local HideUIPanel = HideUIPanel
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
+local LoadAddOn = LoadAddOn
+local ReloadUI = ReloadUI
 
-local ERR_NOT_IN_COMBAT = _G.ERR_NOT_IN_COMBAT
-local GameMenuButtonAddons = _G.GameMenuButtonAddons
-local GameMenuButtonLogout = _G.GameMenuButtonLogout
-local GameMenuFrame = _G.GameMenuFrame
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuFrame = GameMenuFrame
 -----
 
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
+BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AceAddon = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
