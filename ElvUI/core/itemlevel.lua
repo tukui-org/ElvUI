@@ -119,11 +119,13 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		isOK = false
 	end
 
-	if mainQuality == 6 or (not offEquipLoc and X2_INVTYPES[mainEquipLoc] and X2_EXCEPTIONS[mainItemClass] ~= mainItemSubClass and spec ~= 72) then
-		mainItemLevel = max(mainItemLevel, offItemLevel)
-		total = total + mainItemLevel * 2
-	else
-		total = total + mainItemLevel + offItemLevel
+	if mainItemLevel and offItemLevel then
+		if (mainQuality == 6) or (not offEquipLoc and X2_INVTYPES[mainEquipLoc] and X2_EXCEPTIONS[mainItemClass] ~= mainItemSubClass and spec ~= 72) then
+			mainItemLevel = max(mainItemLevel, offItemLevel)
+			total = total + mainItemLevel * 2
+		else
+			total = total + mainItemLevel + offItemLevel
+		end
 	end
 
 	return isOK, total / 16
