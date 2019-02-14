@@ -319,9 +319,6 @@ function LO:CreateChatPanels()
 	local SPACING = E.Border*3 - E.Spacing
 	local SIDE_BUTTON_SPACING = (E.PixelMode and E.Border*4) or SPACING*2
 
-	local LeftChatPanel = _G.LeftChatPanel
-	local RightChatPanel = _G.RightChatPanel
-
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
 	lchat:SetFrameStrata('BACKGROUND')
@@ -331,6 +328,7 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent', nil, true)
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	local LeftChatPanel = _G.LeftChatPanel
 
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -391,6 +389,7 @@ function LO:CreateChatPanels()
 	rchat:CreateBackdrop('Transparent', nil, true)
 	rchat.backdrop:SetAllPoints()
 	E:CreateMover(rchat, "RightChatMover", L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	local RightChatPanel = _G.RightChatPanel
 
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
