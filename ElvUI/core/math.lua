@@ -18,11 +18,11 @@ local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
-local C_Timer_After = C_Timer.After
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemInfo = GetItemInfo
 local GetInspectSpecialization = GetInspectSpecialization
+local C_Timer_After = C_Timer.After
 
 local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", UIParent, "GameTooltipTemplate") -- pull this out once main scantooltip is committed
 local ARMOR_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
