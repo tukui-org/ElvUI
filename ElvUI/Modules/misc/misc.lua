@@ -288,7 +288,7 @@ end
 
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
-		M:InspectUILoaded()
+		M:SetupInspectPageInfo()
 		self:UnregisterEvent("ADDON_LOADED")
 	end
 end
@@ -298,7 +298,7 @@ function M:Initialize()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
 	self:LoadLoot()
-	self:ToggleInspectInfo()
+	self:ToggleItemLevelInfo(true)
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')

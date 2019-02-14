@@ -6,28 +6,28 @@ local unpack = unpack
 local pairs = pairs
 
 local InspectItems = {
-	"InspectHeadSlot",
-	"InspectNeckSlot",
-	"InspectShoulderSlot",
+	"HeadSlot",
+	"NeckSlot",
+	"ShoulderSlot",
 	"",
-	"InspectChestSlot",
-	"InspectWaistSlot",
-	"InspectLegsSlot",
-	"InspectFeetSlot",
-	"InspectWristSlot",
-	"InspectHandsSlot",
-	"InspectFinger0Slot",
-	"InspectFinger1Slot",
-	"InspectTrinket0Slot",
-	"InspectTrinket1Slot",
-	"InspectBackSlot",
-	"InspectMainHandSlot",
-	"InspectSecondaryHandSlot",
+	"ChestSlot",
+	"WaistSlot",
+	"LegsSlot",
+	"FeetSlot",
+	"WristSlot",
+	"HandsSlot",
+	"Finger0Slot",
+	"Finger1Slot",
+	"Trinket0Slot",
+	"Trinket1Slot",
+	"BackSlot",
+	"MainHandSlot",
+	"SecondaryHandSlot",
 }
 
 function M:CreateInspectTexture(slot, x, y)
-	local texture = _G[slot]:CreateTexture()
-	texture:Point("BOTTOM", _G[slot], x, y)
+	local texture = slot:CreateTexture()
+	texture:Point("BOTTOM", slot, x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
 	return texture
@@ -45,41 +45,70 @@ function M:GetInspectPoints(id)
 	end
 end
 
-function M:ToggleInspectInfo()
-	if E.db.general.displayInspectInfo then
-		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
-	else
-		M:UnregisterEvent('INSPECT_READY')
+function M:UpdateInspectInfo()
+	M:UpdatePageInfo(_G.InspectFrame, 'Inspect')
+end
 
-		if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
-		_G.InspectFrame.ItemLevelText:SetText('')
+function M:UpdateCharacterInfo()
+	if not E.db.general.displayCharacterInfo then return end
 
-		for i=1, 17 do
-			if i ~= 4 then
-				local inspectItem = _G[InspectItems[i]]
-				inspectItem.enchantText:SetText()
-				inspectItem.iLvlText:SetText()
+	M:UpdatePageInfo(_G.CharacterFrame, 'Character')
+end
 
-				for y=1, 10 do
-					inspectItem['textureSlot'..y]:SetTexture()
-				end
+function M:ClearPageInfo(frame, which)
+	if not (frame and frame.ItemLevelText) then return end
+	frame.ItemLevelText:SetText('')
+
+	for i=1, 17 do
+		if i ~= 4 then
+			local inspectItem = _G[which..InspectItems[i]]
+			inspectItem.enchantText:SetText()
+			inspectItem.iLvlText:SetText()
+
+			for y=1, 10 do
+				inspectItem['textureSlot'..y]:SetTexture()
 			end
 		end
 	end
 end
 
-function M:UpdateInspectInfo()
-	if not (_G.InspectFrame and _G.InspectFrame.unit and _G.InspectFrame.ItemLevelText) then return end
-	if _G.InspectFrame:IsShown() then return end
+function M:ToggleItemLevelInfo(setupCharacterPage)
+	if setupCharacterPage then
+		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
+	end
+
+	if E.db.general.displayCharacterInfo then
+		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+
+		if not _G.CharacterFrame.CharacterInfoHooked then
+			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
+			_G.CharacterFrame.CharacterInfoHooked = true
+		end
+	else
+		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+		M:ClearPageInfo(_G.CharacterFrame, 'Character')
+	end
+
+	if E.db.general.displayInspectInfo then
+		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
+	else
+		M:UnregisterEvent('INSPECT_READY')
+		M:ClearPageInfo(_G.InspectFrame, 'Inspect')
+	end
+end
+
+function M:UpdatePageInfo(frame, which)
+	if not (which and frame and frame.ItemLevelText) then return end
+	if frame == _G.InspectFrame and (frame:IsShown() or not frame.unit) then return end
 
 	local iLevelDB = {}
 	for i = 1, 17 do
 		if i ~= 4 then
-			local inspectItem = _G[InspectItems[i]]
+			local inspectItem = _G[which..InspectItems[i]]
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(_G.InspectFrame.unit, i, true)
+			local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(frame.unit or "player", i, true)
 
 			iLevelDB[i] = iLvl
 
@@ -101,40 +130,47 @@ function M:UpdateInspectInfo()
 		end
 	end
 
-	local AvgItemLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit)
+	local AvgItemLevel = (which == 'Inspect' and E:CalculateAverageItemLevel(iLevelDB, frame.unit)) or E:Round((select(2, GetAverageItemLevel())), 2)
 	if AvgItemLevel then
-		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 	else
-		_G.InspectFrame.ItemLevelText:SetText('')
+		frame.ItemLevelText:SetText('')
 	end
 end
 
-function M:InspectUILoaded()
-	_G.InspectFrame.ItemLevelText = _G.InspectFrame:CreateFontString(nil, "ARTWORK")
-	_G.InspectFrame.ItemLevelText:Point("BOTTOMRIGHT", _G.InspectFrame, "BOTTOMRIGHT", -6, 6)
-	_G.InspectFrame.ItemLevelText:FontTemplate(nil, 12)
+function M:CreateSlotStrings(frame, which)
+	if not (frame and which) then return end
 
-	for i, slot in pairs(InspectItems) do
+	frame.ItemLevelText = frame:CreateFontString(nil, "ARTWORK")
+	frame.ItemLevelText:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, 6)
+	frame.ItemLevelText:FontTemplate(nil, 12)
+
+	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
+			local slot = _G[which..s]
 			local x, y, z, justify = M:GetInspectPoints(i)
-			_G[slot].iLvlText = _G[slot]:CreateFontString(nil, "OVERLAY")
-			_G[slot].iLvlText:FontTemplate(nil, 12)
-			_G[slot].iLvlText:Point("BOTTOM", _G[slot], x, y)
+			slot.iLvlText = slot:CreateFontString(nil, "OVERLAY")
+			slot.iLvlText:FontTemplate(nil, 12)
+			slot.iLvlText:Point("BOTTOM", slot, x, y)
 
-			_G[slot].enchantText = _G[slot]:CreateFontString(nil, "OVERLAY")
-			_G[slot].enchantText:FontTemplate(nil, 11)
+			slot.enchantText = slot:CreateFontString(nil, "OVERLAY")
+			slot.enchantText:FontTemplate(nil, 11)
 
 			if i == 16 or i == 17 then
-				_G[slot].enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", _G[slot], i==16 and -40 or 40, 3)
+				slot.enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", slot, i==16 and -40 or 40, 3)
 			else
-				_G[slot].enchantText:Point(justify, _G[slot], x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+				slot.enchantText:Point(justify, slot, x + (justify == "BOTTOMLEFT" and 5 or -5), z)
 			end
 
 			for u=1, 10 do
 				local offset = 8+(u*16)
 				local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-				_G[slot]["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
+				slot["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 			end
 		end
 	end
+end
+
+function M:SetupInspectPageInfo()
+	M:CreateSlotStrings(_G.InspectFrame, 'Inspect')
 end
