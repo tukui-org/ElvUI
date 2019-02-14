@@ -14,11 +14,6 @@ local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local RESET = RESET
 
-local UIDropDownMenu_SetSelectedValue = UIDropDownMenu_SetSelectedValue
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
-local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
-
 local grid
 local selectedValue = 'ALL'
 
@@ -185,20 +180,20 @@ end
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
-	UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, self.value);
+	_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, self.value);
 end
 
 local function ConfigMode_Initialize()
-	local info = UIDropDownMenu_CreateInfo();
+	local info = _G.UIDropDownMenu_CreateInfo();
 	info.func = ConfigMode_OnClick;
 
 	for _, configMode in ipairs(E.ConfigModeLayouts) do
 		info.text = E.ConfigModeLocalizedStrings[configMode];
 		info.value = configMode;
-		UIDropDownMenu_AddButton(info);
+		_G.UIDropDownMenu_AddButton(info);
 	end
 
-	UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
+	_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
@@ -248,7 +243,7 @@ function E:CreateMoverPopup()
 	f:Point("BOTTOM", _G.UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if _G.ElvUIMoverPopupWindowDropDown then
-			UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, 'ALL');
+			_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -303,7 +298,7 @@ function E:CreateMoverPopup()
 		end
 
 		selectedValue = 'ALL'
-		UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
+		_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
@@ -366,7 +361,7 @@ function E:CreateMoverPopup()
 	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
 
-	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
+	_G.UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata("DIALOG")
