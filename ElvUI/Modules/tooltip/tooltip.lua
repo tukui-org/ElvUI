@@ -325,7 +325,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 	inspectGUIDCache[unitGUID].itemLevel = itemLevel
 	inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
 
-	GameTooltip:SetUnit("mouseover")
+	GameTooltip:Show()
 end
 
 function TT:INSPECT_READY(event, unitGUID)
@@ -645,7 +645,7 @@ function TT:SetStyle(tt)
 end
 
 function TT:MODIFIER_STATE_CHANGED(_, key)
-	if((key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and UnitExists("mouseover")) then
+	if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and UnitExists("mouseover") then
 		GameTooltip:SetUnit('mouseover')
 	end
 end
