@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local floor = math.floor
-local format, join = string.format, string.join
+local floor = floor
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetTime = GetTime
 local IsInInstance = IsInInstance
@@ -53,7 +53,7 @@ local function OnEvent(self, event, _, timeSeconds)
 end
 
 local function ValueColorUpdate(hex)
-	displayNumberString = join("", "%s: ", hex, "%s|r")
+	displayNumberString = strjoin("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

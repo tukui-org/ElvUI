@@ -4,9 +4,9 @@ local Search = E.Libs.ItemSearch
 
 --Lua functions
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
-local tinsert, tremove, sort, wipe = table.insert, table.remove, sort, wipe
-local tonumber, floor, band = tonumber, floor, bit.band
+local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
+local tonumber, floor, band = tonumber, floor, bit.band
 --WoW API / Variables
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown

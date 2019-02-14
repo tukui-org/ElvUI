@@ -6,7 +6,7 @@ local _G = _G
 local pairs = pairs
 local select = select
 local assert = assert
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit

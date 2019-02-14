@@ -3,7 +3,7 @@ local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
 --Lua functions
 local pairs, select = pairs, select
-local twipe = table.wipe
+local wipe = wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitReaction = UnitReaction
@@ -127,7 +127,7 @@ function THREAT:Update()
 		self.bar:Hide()
 	end
 
-	twipe(self.list)
+	wipe(self.list)
 end
 
 function THREAT:ToggleEnable()

@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, table.sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit = string.format, strfind, strjoin, strsplit
+local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
+local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo

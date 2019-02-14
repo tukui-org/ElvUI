@@ -4,7 +4,7 @@ E.Minimap = M
 
 --Lua functions
 local _G = _G
-local tinsert = table.insert
+local tinsert = tinsert
 local strsub = strsub
 --WoW API / Variables
 local C_Timer_After = C_Timer.After

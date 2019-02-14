@@ -3,8 +3,8 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local next, unpack = next, unpack
-local format, strjoin = string.format, string.join
-local sort, tinsert = table.sort, table.insert
+local format, strjoin = format, strjoin
+local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
 --WoW API / Variables

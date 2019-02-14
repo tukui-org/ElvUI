@@ -5,8 +5,8 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
 local _G = _G
-local twipe = table.wipe
-local floor = math.floor
+local wipe = wipe
+local floor = floor
 local unpack, pairs = unpack, pairs
 local gmatch, gsub, format = gmatch, gsub, format
 local strfind, strlower, strmatch, strsub = strfind, strlower, strmatch, strsub
@@ -951,7 +951,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:SetScript("OnEvent", function()
 	local groupType, groupSize
-	twipe(GroupUnits)
+	wipe(GroupUnits)
 
 	if IsInRaid() then
 		groupType = "raid"

@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local pairs = pairs
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetInventoryItemDurability = GetInventoryItemDurability
@@ -63,7 +63,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
+	displayString = strjoin("", DURABILITY, ": ", hex, "%d%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

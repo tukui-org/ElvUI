@@ -5,11 +5,11 @@ local CH = E:GetModule("Chat")
 
 --Lua functions
 local _G = _G
-local GetTime = GetTime
-local tostring, pcall = tostring, pcall
 local floor = floor
-local format, strsub, gsub = string.format, string.sub, string.gsub
+local tostring, pcall = tostring, pcall
+local format, strsub, gsub = format, strsub, gsub
 --WoW API / Variables
+local GetTime = GetTime
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local Chat_GetChatCategory = Chat_GetChatCategory

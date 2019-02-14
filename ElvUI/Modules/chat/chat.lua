@@ -6,8 +6,8 @@ local _G = _G
 --Lua functions
 local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
-local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
-local gsub, strfind, gmatch, format = string.gsub, string.find, string.gmatch, string.format
+local tinsert, tremove, tconcat = tinsert, tremove, table.concat
+local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 --WoW API / Variables
 local Ambiguate = Ambiguate

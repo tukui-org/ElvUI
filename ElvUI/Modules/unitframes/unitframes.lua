@@ -6,9 +6,9 @@ UF.LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
-local min = math.min
-local tinsert = table.insert
-local find, gsub, format = string.find, string.gsub, string.format
+local min = min
+local tinsert = tinsert
+local strfind, gsub, format = strfind, gsub, format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -282,15 +282,15 @@ end
 function UF:GetPositionOffset(position, offset)
 	if not offset then offset = 2; end
 	local x, y = 0, 0
-	if find(position, 'LEFT') then
+	if strfind(position, 'LEFT') then
 		x = offset
-	elseif find(position, 'RIGHT') then
+	elseif strfind(position, 'RIGHT') then
 		x = -offset
 	end
 
-	if find(position, 'TOP') then
+	if strfind(position, 'TOP') then
 		y = -offset
-	elseif find(position, 'BOTTOM') then
+	elseif strfind(position, 'BOTTOM') then
 		y = offset
 	end
 
@@ -305,9 +305,9 @@ function UF:GetAuraOffset(p1, p2)
 		x = 3
 	end
 
-	if find(p1, 'TOP') and find(p2, 'BOTTOM') then
+	if strfind(p1, 'TOP') and strfind(p2, 'BOTTOM') then
 		y = -1
-	elseif find(p1, 'BOTTOM') and find(p2, 'TOP') then
+	elseif strfind(p1, 'BOTTOM') and strfind(p2, 'TOP') then
 		y = 1
 	end
 

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
@@ -24,8 +24,8 @@ local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 
 local lastPanel, active
 local displayString = '';
-local activeString = join("", "|cff00FF00" , ACTIVE_PETS, "|r")
-local inactiveString = join("", "|cffFF0000", FACTION_INACTIVE, "|r")
+local activeString = strjoin("", "|cff00FF00" , ACTIVE_PETS, "|r")
+local inactiveString = strjoin("", "|cffFF0000", FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
@@ -80,7 +80,7 @@ local function OnEnter(self)
 	for i = 1, GetNumSpecializations() do
 		local _, name = GetSpecializationInfo(i);
 		if name then
-			DT.tooltip:AddLine(join(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
+			DT.tooltip:AddLine(strjoin(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 
@@ -155,7 +155,7 @@ local function OnClick(self, button)
 end
 
 local function ValueColorUpdate()
-	displayString = join("", "|cffFFFFFF%s:|r ")
+	displayString = strjoin("", "|cffFFFFFF%s:|r ")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

@@ -3,8 +3,8 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, next, wipe, tremove, tinsert = table.sort, next, wipe, tremove, tinsert
-local format, gsub, strfind, strjoin = string.format, string.gsub, strfind, strjoin
+local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
+local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
 --WoW API / Variables
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo

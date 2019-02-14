@@ -4,7 +4,7 @@ local B = E:GetModule('Bags');
 --Lua functions
 local _G = _G
 local unpack = unpack
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver

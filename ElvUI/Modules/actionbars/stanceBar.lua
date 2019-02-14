@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars');
 --Lua functions
 local _G = _G
 local ceil = math.ceil;
-local format, find = format, string.find
+local format, strfind = format, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
@@ -129,7 +129,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	--Now that we have set positionOverride for mover, convert "TOP" or "BOTTOM" to anchor points we can use
 	local position = E:GetScreenQuadrant(bar)
-	if find(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
+	if strfind(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
 		if point == "TOP" then
 			point = "TOPLEFT"
 		elseif point == "BOTTOM" then

@@ -6,7 +6,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
 local _G = _G
-local tinsert = table.insert
+local tinsert = tinsert
 
 function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')

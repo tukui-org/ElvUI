@@ -3,8 +3,8 @@ local UF = E:GetModule('UnitFrames');
 
 --Lua functions
 local select, unpack = select, unpack
-local floor, max = math.floor, math.max
-local strfind, strsub, gsub = strfind, strsub, string.gsub
+local strfind, strsub, gsub = strfind, strsub, gsub
+local floor, max = floor, max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI

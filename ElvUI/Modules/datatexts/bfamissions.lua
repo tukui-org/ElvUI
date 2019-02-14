@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local format = string.format
-local tsort = table.sort
+local format = format
+local sort = sort
 local ipairs = ipairs
 --WoW API / Variables
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
@@ -64,7 +64,7 @@ local function OnEnter(self, _, noUpdate)
 	DT.tooltip:AddLine(L["Mission(s) Report:"]) -- always show the header
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
-		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		firstLine = false
 		for i = 1, numMissions do

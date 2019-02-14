@@ -4,7 +4,7 @@ local M = E:GetModule('Misc');
 --Lua functions
 local _G = _G
 local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RollOnLoot = RollOnLoot

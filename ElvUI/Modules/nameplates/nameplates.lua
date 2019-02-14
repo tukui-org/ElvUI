@@ -7,9 +7,9 @@ local select = select
 local pairs = pairs
 local type = type
 local gsub = gsub
-local twipe = table.wipe
-local format = string.format
-local match = string.match
+local wipe = wipe
+local format = format
+local strmatch = strmatch
 local strjoin = strjoin
 local tonumber = tonumber
 
@@ -150,7 +150,7 @@ function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
 end
 
 function mod:PLAYER_ENTERING_WORLD()
-	twipe(self.Healers)
+	wipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
 	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
@@ -672,7 +672,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 			if UnitIsUnit(frame.unit, "player") then
 				frame.displayedUnit = "vehicle"
 			else
-				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
+				local prefix, id, suffix = strmatch(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
 			if not noEvents then
@@ -752,7 +752,7 @@ function mod:GetNameplateID(frame)
 	end
 
 	local plateName = frame:GetName()
-	return plateName and tonumber(match(plateName, "%d+$")), frame.namePlateUnitToken and UnitGUID(frame.namePlateUnitToken)
+	return plateName and tonumber(strmatch(plateName, "%d+$")), frame.namePlateUnitToken and UnitGUID(frame.namePlateUnitToken)
 end
 
 function mod:NAME_PLATE_CREATED(_, frame)

@@ -5,8 +5,8 @@ local M = E:GetModule('Misc')
 --Lua functions
 local _G = _G
 local unpack, pairs = unpack, pairs
-local tinsert = table.insert
-local max = math.max
+local tinsert = tinsert
+local max = max
 --WoW API / Variables
 local CloseLoot = CloseLoot
 local CreateFrame = CreateFrame

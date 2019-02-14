@@ -4,9 +4,9 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local select, unpack = select, unpack
-local tinsert, tremove = table.insert, table.remove
-local strlower, strsplit = string.lower, strsplit
-local match = string.match
+local tinsert, tremove = tinsert, tremove
+local strlower, strsplit = strlower, strsplit
+local strmatch = strmatch
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
@@ -67,7 +67,7 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
-		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy

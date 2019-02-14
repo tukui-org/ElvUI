@@ -5,7 +5,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 local ceil = math.ceil
-local format, gsub, split, strfind = string.format, string.gsub, string.split, strfind
+local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
 local CanExitVehicle = CanExitVehicle
 local ClearOverrideBindings = ClearOverrideBindings
@@ -327,7 +327,7 @@ function AB:CreateBar(id)
 	bar:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = split(',', self.barDefaults['bar'..id].position)
+	local point, anchor, attachTo, x, y = strsplit(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop();

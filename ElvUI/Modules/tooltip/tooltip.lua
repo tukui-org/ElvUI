@@ -5,9 +5,9 @@ local S -- used to hold the skin module when we need it
 --Lua functions
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
-local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
-local floor, tonumber = math.floor, tonumber
-local find, format, sub = string.find, string.format, string.sub
+local wipe, tinsert, tconcat = wipe, tinsert, table.concat
+local floor, tonumber = floor, tonumber
+local strfind, format, strsub = strfind, format, strsub
 --WoW API / Variables
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
@@ -103,7 +103,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	end
 
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if (self.db.visibility.actionbars ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Bar") or find(ownerName, "ElvUI_StanceBar") or find(ownerName, "PetAction")) and not keybindFrame.active) then
+	if (self.db.visibility.actionbars ~= 'NONE' and ownerName and (strfind(ownerName, "ElvUI_Bar") or strfind(ownerName, "ElvUI_StanceBar") or strfind(ownerName, "PetAction")) and not keybindFrame.active) then
 		local modifier = self.db.visibility.actionbars
 
 		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
@@ -467,7 +467,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local numList = #targetList
 		if (numList > 0) then
 			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
-			twipe(targetList);
+			wipe(targetList);
 		end
 	end
 
@@ -523,7 +523,7 @@ end
 function TT:GameTooltip_OnTooltipSetItem(tt)
 	if tt:IsForbidden() then return end
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if (self.db.visibility and self.db.visibility.bags ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Container") or find(ownerName, "ElvUI_BankContainer"))) then
+	if (self.db.visibility and self.db.visibility.bags ~= 'NONE' and ownerName and (strfind(ownerName, "ElvUI_Container") or strfind(ownerName, "ElvUI_BankContainer"))) then
 		local modifier = self.db.visibility.bags
 
 		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
@@ -684,8 +684,8 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 end
 
 function TT:SetItemRef(link)
-	if find(link,"^spell:") and self.db.spellID then
-		local id = sub(link,7)
+	if strfind(link,"^spell:") and self.db.spellID then
+		local id = strsub(link,7)
 		_G.ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		_G.ItemRefTooltip:Show()
 	end

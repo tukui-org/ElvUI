@@ -6,10 +6,10 @@ local next = next
 local ipairs = ipairs
 local tremove = tremove
 local tinsert = tinsert
-local tsort = table.sort
+local sort = sort
 local tonumber = tonumber
 local tconcat = table.concat
-local format = string.format
+local format = format
 local GetSpellInfo = GetSpellInfo
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
@@ -162,7 +162,7 @@ local function UpdateClassSection()
 			for classTag in pairs(classTable) do
 				tinsert(classIndexTable, classTag)
 			end
-			tsort(classIndexTable)
+			sort(classIndexTable)
 		end
 		classOrder = 0
 		local coloredName;

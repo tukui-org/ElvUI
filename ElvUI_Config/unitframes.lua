@@ -7,14 +7,14 @@ local type = type
 local select = select
 local pairs = pairs
 local ipairs = ipairs
-local format = string.format
-local tremove = table.remove
+local format = format
+local tremove = tremove
 local tconcat = table.concat
-local tinsert = table.insert
-local twipe = table.wipe
+local tinsert = tinsert
+local wipe = wipe
 local strsplit = strsplit
-local match = string.match
-local gsub = string.gsub
+local strmatch = strmatch
+local gsub = gsub
 local IsAddOnLoaded = IsAddOnLoaded
 local GetScreenWidth = GetScreenWidth
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
@@ -122,7 +122,7 @@ end
 
 local function filterMatch(s,v)
 	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
-	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
+	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..",")
 end
 
 local function filterPriority(auraType, groupName, value, remove, movehere, friendState)
@@ -139,7 +139,7 @@ local function filterPriority(auraType, groupName, value, remove, movehere, frie
 		tremove(tbl, sm);tinsert(tbl, sv, movehere);
 		E.db.unitframe.units[groupName][auraType].priority = tconcat(tbl,',')
 	elseif found and friendState then
-		local realValue = match(value, "^Friendly:([^,]*)") or match(value, "^Enemy:([^,]*)") or value
+		local realValue = strmatch(value, "^Friendly:([^,]*)") or strmatch(value, "^Enemy:([^,]*)") or value
 		local friend = filterMatch(filter, filterValue("Friendly:"..realValue))
 		local enemy = filterMatch(filter, filterValue("Enemy:"..realValue))
 		local default = filterMatch(filter, filterValue(realValue))
@@ -148,7 +148,7 @@ local function filterPriority(auraType, groupName, value, remove, movehere, frie
 			(friend and (not enemy) and format("%s%s","Enemy:",realValue))					--[x] friend [ ] enemy: > enemy
 		or	((not enemy and not friend) and format("%s%s","Friendly:",realValue))			--[ ] friend [ ] enemy: > friendly
 		or	(enemy and (not friend) and default and format("%s%s","Friendly:",realValue))	--[ ] friend [x] enemy: (default exists) > friendly
-		or	(enemy and (not friend) and match(value, "^Enemy:") and realValue)				--[ ] friend [x] enemy: (no default) > realvalue
+		or	(enemy and (not friend) and strmatch(value, "^Enemy:") and realValue)				--[ ] friend [x] enemy: (no default) > realvalue
 		or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
 
 		if state then
@@ -392,7 +392,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			filterPriority('aurabar', groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, TEXT)
-			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 			local text = friend or enemy or TEXT
 			local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
@@ -663,7 +663,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			filterPriority(auraType, groupName, carryFilterFrom, true)
 		end,
 		stateSwitchGetText = function(_, TEXT)
-			local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+			local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 			local text = friend or enemy or TEXT
 			local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
@@ -7803,7 +7803,7 @@ function E:RefreshCustomTextsConfigs()
 	for _, customText in pairs(CUSTOMTEXT_CONFIGS) do
 		customText.hidden = true
 	end
-	twipe(CUSTOMTEXT_CONFIGS)
+	wipe(CUSTOMTEXT_CONFIGS)
 
 	for unit in pairs(E.db.unitframe.units) do
 		if E.db.unitframe.units[unit].customTexts then

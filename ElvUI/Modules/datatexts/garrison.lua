@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local format = string.format
-local tsort = table.sort
+local format = format
+local sort = sort
 --WoW API / Variables
 local C_GarrisonGetBuildings = C_Garrison.GetBuildings
 local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
@@ -67,7 +67,7 @@ local function OnEnter(self, _, noUpdate)
 	C_GarrisonGetInProgressMissions(inProgressMissions, LE_FOLLOWER_TYPE_GARRISON_6_0)
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
-		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		if(numBuildings > 0) then
 			DT.tooltip:AddLine(" ")
@@ -94,7 +94,7 @@ local function OnEnter(self, _, noUpdate)
 	C_GarrisonGetInProgressMissions(inProgressShipMissions, LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 	local numShipMissions = #inProgressShipMissions
 	if(numShipMissions > 0) then
-		tsort(inProgressShipMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressShipMissions, sortFunction) --Sort by time left, lowest first
 
 		if(numBuildings > 0 or numMissions > 0) then
 			DT.tooltip:AddLine(" ")

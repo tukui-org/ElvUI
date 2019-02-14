@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local select, ipairs = select, ipairs
 local format = string.format
-local tsort = table.sort
+local sort = sort
 --WoW API / Variables
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
@@ -53,7 +53,7 @@ local function OnEnter(self, _, noUpdate)
 	local inProgressMissions = C_Garrison_GetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 	local numMissions = (inProgressMissions and #inProgressMissions or 0)
 	if(numMissions > 0) then
-		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		DT.tooltip:AddLine(ORDER_HALL_MISSIONS) -- "Class Hall Missions"
 		firstLine = false

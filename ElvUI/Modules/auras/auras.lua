@@ -6,18 +6,18 @@ local LSM = E.Libs.LSM
 local _G = _G
 local GetTime = GetTime
 local select, unpack = select, unpack
-local tinsert = table.insert
-local floor = math.floor
-local format = string.format
+local tinsert = tinsert
+local floor = floor
+local format = format
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local RegisterAttributeDriver = RegisterAttributeDriver
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
-local UnitAura = UnitAura
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
+local CreateFrame = CreateFrame
+local UnitAura = UnitAura
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")

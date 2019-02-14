@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -41,7 +41,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
+	displayModifierString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

@@ -4,7 +4,7 @@ E.Misc = M;
 
 --Lua functions
 local _G = _G
-local format, gsub = string.format, string.gsub
+local format, gsub = format, gsub
 --WoW API / Variables
 local AcceptGroup = AcceptGroup
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo

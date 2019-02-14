@@ -4,8 +4,8 @@ local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
-local tinsert, twipe, tsort = table.insert, table.wipe, table.sort
-local find = string.find
+local tinsert, wipe, sort = tinsert, wipe, sort
+local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
@@ -107,7 +107,7 @@ end
 
 local roleIconRoster = {}
 local function onEnter(self)
-	twipe(roleIconRoster)
+	wipe(roleIconRoster)
 
 	for i = 1, NUM_RAID_GROUPS do
 		roleIconRoster[i] = {}
@@ -115,8 +115,8 @@ local function onEnter(self)
 
 	local role = self.role
 	local point = E:GetScreenQuadrant(_G.RaidUtility_ShowButton)
-	local bottom = point and find(point, "BOTTOM")
-	local left = point and find(point, "LEFT")
+	local bottom = point and strfind(point, "BOTTOM")
+	local left = point and strfind(point, "LEFT")
 
 	local anchor1 = (bottom and left and "BOTTOMLEFT") or (bottom and "BOTTOMRIGHT") or (left and "TOPLEFT") or "TOPRIGHT"
 	local anchor2 = (bottom and left and "BOTTOMRIGHT") or (bottom and "BOTTOMLEFT") or (left and "TOPRIGHT") or "TOPLEFT"
@@ -138,7 +138,7 @@ local function onEnter(self)
 	end
 
 	for Group, list in ipairs(roleIconRoster) do
-		tsort(list, sortColoredNames)
+		sort(list, sortColoredNames)
 		for _, Name in ipairs(list) do
 			GameTooltip:AddLine(("[%d] %s"):format(Group, Name), 1, 1, 1)
 		end
@@ -150,7 +150,7 @@ end
 
 local function RaidUtility_PositionRoleIcons()
 	local point = E:GetScreenQuadrant(_G.RaidUtility_ShowButton)
-	local left = point and find(point, "LEFT")
+	local left = point and strfind(point, "LEFT")
 	_G.RaidUtilityRoleIcons:ClearAllPoints()
 	if left then
 		_G.RaidUtilityRoleIcons:SetPoint("LEFT", _G.RaidUtilityPanel, "RIGHT", -1, 0)
@@ -172,7 +172,7 @@ local function UpdateIcons(self)
 		RaidUtility_PositionRoleIcons()
 	end
 
-	twipe(count)
+	wipe(count)
 
 	local role
 	for i = 1, GetNumGroupMembers() do
@@ -264,7 +264,7 @@ function RU:Initialize()
 		local screenWidth = E.UIParent:GetWidth() / 2
 		xOffset = xOffset - screenWidth
 		sb:ClearAllPoints()
-		if find(point, "BOTTOM") then
+		if strfind(point, "BOTTOM") then
 			sb:Point('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
 		else
 			sb:Point('TOP', E.UIParent, 'TOP', xOffset, 1)

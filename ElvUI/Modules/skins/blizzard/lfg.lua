@@ -5,7 +5,7 @@ local LBG = E.Libs.ButtonGlow
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local min, lower = math.min, string.lower
+local min, strlower = min, strlower
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local GetLFGProposal = GetLFGProposal
@@ -207,7 +207,7 @@ local function LoadSkin()
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
-				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((lower(buttonName):find("tank") and "TANK") or (lower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
+				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((strlower(buttonName):find("tank") and "TANK") or (strlower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
 			end
 		end
 	end

@@ -6,7 +6,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
 local _G = _G
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
 local InCombatLockdown = InCombatLockdown
 
