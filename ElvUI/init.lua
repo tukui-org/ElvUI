@@ -10,15 +10,14 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
---Cache global variables
+--Lua functions
 local _G = _G
-local wipe = _G.wipe
-local pairs = _G.pairs
-local unpack = _G.unpack
-local strsplit = _G.strsplit
 local format = _G.format
+local pairs = _G.pairs
+local strsplit = _G.strsplit
 local tcopy = _G.table.copy
-
+local unpack = _G.unpack
+local wipe = _G.wipe
 --WoW API / Variables
 local hooksecurefunc = _G.hooksecurefunc
 local issecurevariable = _G.issecurevariable
@@ -33,10 +32,11 @@ local IsAddOnLoaded = _G.IsAddOnLoaded
 local LoadAddOn = _G.LoadAddOn
 local ReloadUI = _G.ReloadUI
 
-local GameMenuFrame = _G.GameMenuFrame
+local ERR_NOT_IN_COMBAT = _G.ERR_NOT_IN_COMBAT
 local GameMenuButtonAddons = _G.GameMenuButtonAddons
 local GameMenuButtonLogout = _G.GameMenuButtonLogout
-local ERR_NOT_IN_COMBAT = _G.ERR_NOT_IN_COMBAT
+local GameMenuFrame = _G.GameMenuFrame
+-----
 
 _G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 

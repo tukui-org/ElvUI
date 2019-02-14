@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- Animation Functions
 ------------------------------------------------------------------------
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
-local tremove = tremove
-local random = math.random
+local random = _G.random
+local tremove = _G.tremove
+-----
 
 function E:SetUpAnimGroup(object, type, ...)
 	if not type then type = 'Flash' end

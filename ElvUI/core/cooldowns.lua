@@ -1,17 +1,15 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
 --Lua functions
-local next, ipairs, pairs = next, ipairs, pairs
-local floor = math.floor
-local tinsert = table.insert
+local _G = _G
+local next, ipairs, pairs = _G.next, _G.ipairs, _G.pairs
+local floor = _G.floor
+local tinsert = _G.tinsert
 --WoW API / Variables
-local GetTime = GetTime
-local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent
+local GetTime = _G.GetTime
+local CreateFrame = _G.CreateFrame
+local hooksecurefunc = _G.hooksecurefunc
 
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
 local FONT_SIZE = 20 --the base font size to use at a scale of 1
@@ -31,7 +29,7 @@ function E:Cooldown_OnUpdate(elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
-			if self.fontScale and ((self.fontScale * self:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE) then
+			if self.fontScale and ((self.fontScale * self:GetEffectiveScale() / _G.UIParent:GetScale()) < MIN_SCALE) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else

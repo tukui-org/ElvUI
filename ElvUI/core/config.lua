@@ -1,18 +1,18 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
-local type, ipairs, tonumber = type, ipairs, tonumber
-local floor, select = math.floor, select
+local unpack = _G.unpack
+local type, ipairs, tonumber = _G.type, _G.ipairs, _G.tonumber
+local floor, select = _G.floor, _G.select
 --WoW API / Variables
-local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
-local InCombatLockdown = InCombatLockdown
-local IsControlKeyDown = IsControlKeyDown
-local IsAltKeyDown = IsAltKeyDown
-local RESET = RESET
+local CreateFrame = _G.CreateFrame
+local IsAddOnLoaded = _G.IsAddOnLoaded
+local InCombatLockdown = _G.InCombatLockdown
+local IsControlKeyDown = _G.IsControlKeyDown
+local IsAltKeyDown = _G.IsAltKeyDown
+local RESET = _G.RESET
 
 local grid
 local selectedValue = 'ALL'
@@ -28,13 +28,13 @@ E.ConfigModeLayouts = {
 }
 
 E.ConfigModeLocalizedStrings = {
-	ALL = ALL,
-	GENERAL = GENERAL,
-	SOLO = SOLO,
-	PARTY = PARTY,
-	ARENA = ARENA,
-	RAID = RAID,
-	ACTIONBARS = ACTIONBARS_LABEL
+	ALL = _G.ALL,
+	GENERAL = _G.GENERAL,
+	SOLO = _G.SOLO,
+	PARTY = _G.PARTY,
+	ARENA = _G.ARENA,
+	RAID = _G.RAID,
+	ACTIONBARS = _G.ACTIONBARS_LABEL
 }
 
 function E:Grid_Show()
